@@ -41,11 +41,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="ConcreteModelElementChange" eSuperTypes="#//ModelChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="AtomicConcreteModelElementChange" eSuperTypes="#//ConcreteModelElementChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="AtomicRootObjectChange" eSuperTypes="#//AtomicConcreteModelElementChange">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="changedElement" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changedElement" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AtomicFeatureChange" eSuperTypes="#//AtomicConcreteModelElementChange">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="changedFeature" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//FeatureOfElement"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changedFeature" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassFeatureReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AtomicMultiValuedFeatureChange" eSuperTypes="#//AtomicFeatureChange"/>
@@ -66,7 +66,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoutineInput">
     <eStructuralFeatures xsi:type="ecore:EReference" name="modelInputElements" upperBound="-1"
-        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedModelElement"
+        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedMetaclassReference"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="javaInputElements" upperBound="-1"
         eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedJavaElement"
@@ -77,7 +77,7 @@
         eType="#//MatcherStatement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MatcherStatement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RetrieveModelElement" eSuperTypes="#//MatcherStatement platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement #//Taggable">
+  <eClassifiers xsi:type="ecore:EClass" name="RetrieveModelElement" eSuperTypes="#//MatcherStatement platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassReference #//Taggable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="abscence" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -93,7 +93,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoutineCallStatement" eSuperTypes="#//RoutineCallBlock #//CodeBlock #//ActionStatement"/>
   <eClassifiers xsi:type="ecore:EClass" name="ActionStatement" eSuperTypes="#//ExecuteActionBlock #//CodeBlock"/>
-  <eClassifiers xsi:type="ecore:EClass" name="CreateModelElement" eSuperTypes="#//ActionStatement platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement">
+  <eClassifiers xsi:type="ecore:EClass" name="CreateModelElement" eSuperTypes="#//ActionStatement platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassReference">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="initializationBlock" eType="#//ExecutionCodeBlock"
         containment="true"/>

@@ -3,7 +3,7 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +22,7 @@ import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
  * @model
  * @generated
  */
-public interface CreateModelElement extends ActionStatement, ModelElement
+public interface CreateModelElement extends ActionStatement, MetaclassReference
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.

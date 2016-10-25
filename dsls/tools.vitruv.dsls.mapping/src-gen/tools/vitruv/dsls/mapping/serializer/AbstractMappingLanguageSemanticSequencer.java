@@ -83,13 +83,13 @@ import tools.vitruv.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression;
 import tools.vitruv.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression;
 import tools.vitruv.dsls.mapping.services.MappingLanguageGrammarAccess;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 import tools.vitruv.dsls.mirbase.serializer.MirBaseSemanticSequencer;
 
 @SuppressWarnings("all")
@@ -185,8 +185,11 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 			case MirBasePackage.DUMMY_ENTRY_RULE:
 				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
 				return; 
-			case MirBasePackage.FEATURE_OF_ELEMENT:
-				sequence_FeatureOfElement(context, (FeatureOfElement) semanticObject); 
+			case MirBasePackage.METACLASS_FEATURE_REFERENCE:
+				sequence_MetaclassFeatureReference_MetaclassReference(context, (MetaclassFeatureReference) semanticObject); 
+				return; 
+			case MirBasePackage.METACLASS_REFERENCE:
+				sequence_MetaclassReference(context, (MetaclassReference) semanticObject); 
 				return; 
 			case MirBasePackage.METAMODEL_IMPORT:
 				sequence_MetamodelImport(context, (MetamodelImport) semanticObject); 
@@ -194,19 +197,16 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 			case MirBasePackage.METAMODEL_REFERENCE:
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
 				return; 
-			case MirBasePackage.MODEL_ELEMENT:
-				sequence_ModelElement(context, (ModelElement) semanticObject); 
-				return; 
 			case MirBasePackage.NAMED_JAVA_ELEMENT:
 				sequence_NamedJavaElement(context, (NamedJavaElement) semanticObject); 
 				return; 
-			case MirBasePackage.NAMED_MODEL_ELEMENT:
+			case MirBasePackage.NAMED_METACLASS_REFERENCE:
 				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
-					sequence_ClassicallyNamedModelElement_ModelElement(context, (NamedModelElement) semanticObject); 
+					sequence_ClassicallyNamedModelElement_MetaclassReference(context, (NamedMetaclassReference) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getNamedModelElementRule()) {
-					sequence_ModelElement_NamedModelElement(context, (NamedModelElement) semanticObject); 
+				else if (rule == grammarAccess.getNamedMetaclassReferenceRule()) {
+					sequence_MetaclassReference_NamedMetaclassReference(context, (NamedMetaclassReference) semanticObject); 
 					return; 
 				}
 				else break;
@@ -559,7 +559,7 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 	 *     ContextVariable returns ContextVariable
 	 *
 	 * Constraint:
-	 *     (requiredMappingPath=RequiredMappingPathBase? targetClass=[NamedModelElement|ValidID])
+	 *     (requiredMappingPath=RequiredMappingPathBase? targetClass=[NamedMetaclassReference|ValidID])
 	 */
 	protected void sequence_ContextVariable(ISerializationContext context, ContextVariable semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -765,7 +765,7 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 	 *     Signature returns Signature
 	 *
 	 * Constraint:
-	 *     (declaredPackage=MetamodelReference? (elements+=NamedModelElement elements+=NamedModelElement*)?)
+	 *     (declaredPackage=MetamodelReference? (elements+=NamedMetaclassReference elements+=NamedMetaclassReference*)?)
 	 */
 	protected void sequence_Signature(ISerializationContext context, Signature semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

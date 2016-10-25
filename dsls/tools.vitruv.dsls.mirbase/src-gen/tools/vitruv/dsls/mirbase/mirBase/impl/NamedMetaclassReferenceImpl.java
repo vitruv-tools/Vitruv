@@ -6,45 +6,53 @@ package tools.vitruv.dsls.mirbase.mirBase.impl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Model Element</b></em>'.
+ * An implementation of the model object '<em><b>Named Metaclass Reference</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.impl.ModelElementImpl#getElement <em>Element</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.impl.NamedMetaclassReferenceImpl#getName <em>Name</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ModelElementImpl extends MinimalEObjectImpl.Container implements ModelElement
+public class NamedMetaclassReferenceImpl extends MetaclassReferenceImpl implements NamedMetaclassReference
 {
   /**
-   * The cached value of the '{@link #getElement() <em>Element</em>}' reference.
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getElement()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected EClass element;
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ModelElementImpl()
+  protected NamedMetaclassReferenceImpl()
   {
     super();
   }
@@ -57,7 +65,7 @@ public class ModelElementImpl extends MinimalEObjectImpl.Container implements Mo
   @Override
   protected EClass eStaticClass()
   {
-    return MirBasePackage.Literals.MODEL_ELEMENT;
+    return MirBasePackage.Literals.NAMED_METACLASS_REFERENCE;
   }
 
   /**
@@ -65,19 +73,9 @@ public class ModelElementImpl extends MinimalEObjectImpl.Container implements Mo
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getElement()
+  public String getName()
   {
-    if (element != null && element.eIsProxy())
-    {
-      InternalEObject oldElement = (InternalEObject)element;
-      element = (EClass)eResolveProxy(oldElement);
-      if (element != oldElement)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MirBasePackage.MODEL_ELEMENT__ELEMENT, oldElement, element));
-      }
-    }
-    return element;
+    return name;
   }
 
   /**
@@ -85,22 +83,12 @@ public class ModelElementImpl extends MinimalEObjectImpl.Container implements Mo
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass basicGetElement()
+  public void setName(String newName)
   {
-    return element;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setElement(EClass newElement)
-  {
-    EClass oldElement = element;
-    element = newElement;
+    String oldName = name;
+    name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MirBasePackage.MODEL_ELEMENT__ELEMENT, oldElement, element));
+      eNotify(new ENotificationImpl(this, Notification.SET, MirBasePackage.NAMED_METACLASS_REFERENCE__NAME, oldName, name));
   }
 
   /**
@@ -113,9 +101,8 @@ public class ModelElementImpl extends MinimalEObjectImpl.Container implements Mo
   {
     switch (featureID)
     {
-      case MirBasePackage.MODEL_ELEMENT__ELEMENT:
-        if (resolve) return getElement();
-        return basicGetElement();
+      case MirBasePackage.NAMED_METACLASS_REFERENCE__NAME:
+        return getName();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -130,8 +117,8 @@ public class ModelElementImpl extends MinimalEObjectImpl.Container implements Mo
   {
     switch (featureID)
     {
-      case MirBasePackage.MODEL_ELEMENT__ELEMENT:
-        setElement((EClass)newValue);
+      case MirBasePackage.NAMED_METACLASS_REFERENCE__NAME:
+        setName((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -147,8 +134,8 @@ public class ModelElementImpl extends MinimalEObjectImpl.Container implements Mo
   {
     switch (featureID)
     {
-      case MirBasePackage.MODEL_ELEMENT__ELEMENT:
-        setElement((EClass)null);
+      case MirBasePackage.NAMED_METACLASS_REFERENCE__NAME:
+        setName(NAME_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -164,10 +151,27 @@ public class ModelElementImpl extends MinimalEObjectImpl.Container implements Mo
   {
     switch (featureID)
     {
-      case MirBasePackage.MODEL_ELEMENT__ELEMENT:
-        return element != null;
+      case MirBasePackage.NAMED_METACLASS_REFERENCE__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     }
     return super.eIsSet(featureID);
   }
 
-} //ModelElementImpl
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
+  }
+
+} //NamedMetaclassReferenceImpl

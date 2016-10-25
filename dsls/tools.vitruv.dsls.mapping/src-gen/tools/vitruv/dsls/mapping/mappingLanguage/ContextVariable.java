@@ -5,7 +5,7 @@ package tools.vitruv.dsls.mapping.mappingLanguage;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -61,12 +61,12 @@ public interface ContextVariable extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Target Class</em>' reference.
-   * @see #setTargetClass(NamedModelElement)
+   * @see #setTargetClass(NamedMetaclassReference)
    * @see tools.vitruv.dsls.mapping.mappingLanguage.MappingLanguagePackage#getContextVariable_TargetClass()
    * @model
    * @generated
    */
-  NamedModelElement getTargetClass();
+  NamedMetaclassReference getTargetClass();
 
   /**
    * Sets the value of the '{@link tools.vitruv.dsls.mapping.mappingLanguage.ContextVariable#getTargetClass <em>Target Class</em>}' reference.
@@ -76,6 +76,6 @@ public interface ContextVariable extends EObject
    * @see #getTargetClass()
    * @generated
    */
-  void setTargetClass(NamedModelElement value);
+  void setTargetClass(NamedMetaclassReference value);
 
 } // ContextVariable

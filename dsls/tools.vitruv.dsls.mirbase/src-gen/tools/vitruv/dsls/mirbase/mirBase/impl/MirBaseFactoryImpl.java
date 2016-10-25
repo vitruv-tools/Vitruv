@@ -69,9 +69,9 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
       case MirBasePackage.MIR_BASE_FILE: return createMirBaseFile();
       case MirBasePackage.METAMODEL_IMPORT: return createMetamodelImport();
       case MirBasePackage.NAMED_JAVA_ELEMENT: return createNamedJavaElement();
-      case MirBasePackage.MODEL_ELEMENT: return createModelElement();
-      case MirBasePackage.NAMED_MODEL_ELEMENT: return createNamedModelElement();
-      case MirBasePackage.FEATURE_OF_ELEMENT: return createFeatureOfElement();
+      case MirBasePackage.METACLASS_REFERENCE: return createMetaclassReference();
+      case MirBasePackage.NAMED_METACLASS_REFERENCE: return createNamedMetaclassReference();
+      case MirBasePackage.METACLASS_FEATURE_REFERENCE: return createMetaclassFeatureReference();
       case MirBasePackage.METAMODEL_REFERENCE: return createMetamodelReference();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -127,10 +127,10 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public ModelElement createModelElement()
+  public MetaclassReference createMetaclassReference()
   {
-    ModelElementImpl modelElement = new ModelElementImpl();
-    return modelElement;
+    MetaclassReferenceImpl metaclassReference = new MetaclassReferenceImpl();
+    return metaclassReference;
   }
 
   /**
@@ -138,10 +138,10 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public NamedModelElement createNamedModelElement()
+  public NamedMetaclassReference createNamedMetaclassReference()
   {
-    NamedModelElementImpl namedModelElement = new NamedModelElementImpl();
-    return namedModelElement;
+    NamedMetaclassReferenceImpl namedMetaclassReference = new NamedMetaclassReferenceImpl();
+    return namedMetaclassReference;
   }
 
   /**
@@ -149,10 +149,10 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureOfElement createFeatureOfElement()
+  public MetaclassFeatureReference createMetaclassFeatureReference()
   {
-    FeatureOfElementImpl featureOfElement = new FeatureOfElementImpl();
-    return featureOfElement;
+    MetaclassFeatureReferenceImpl metaclassFeatureReference = new MetaclassFeatureReferenceImpl();
+    return metaclassFeatureReference;
   }
 
   /**

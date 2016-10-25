@@ -8,8 +8,8 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile;
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 
 import tools.vitruv.dsls.response.responseLanguage.*;
 
@@ -237,7 +237,7 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         RetrieveModelElement retrieveModelElement = (RetrieveModelElement)theEObject;
         T result = caseRetrieveModelElement(retrieveModelElement);
         if (result == null) result = caseMatcherStatement(retrieveModelElement);
-        if (result == null) result = caseModelElement(retrieveModelElement);
+        if (result == null) result = caseMetaclassReference(retrieveModelElement);
         if (result == null) result = caseTaggable(retrieveModelElement);
         if (result == null) result = defaultCase(theEObject);
         return result;
@@ -283,7 +283,7 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         CreateModelElement createModelElement = (CreateModelElement)theEObject;
         T result = caseCreateModelElement(createModelElement);
         if (result == null) result = caseActionStatement(createModelElement);
-        if (result == null) result = caseModelElement(createModelElement);
+        if (result == null) result = caseMetaclassReference(createModelElement);
         if (result == null) result = caseExecuteActionBlock(createModelElement);
         if (result == null) result = caseCodeBlock(createModelElement);
         if (result == null) result = defaultCase(theEObject);
@@ -1208,17 +1208,17 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Model Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Metaclass Reference</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Model Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Metaclass Reference</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseModelElement(ModelElement object)
+  public T caseMetaclassReference(MetaclassReference object)
   {
     return null;
   }

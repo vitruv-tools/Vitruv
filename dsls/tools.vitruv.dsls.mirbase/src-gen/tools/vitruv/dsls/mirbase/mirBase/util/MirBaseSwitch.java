@@ -102,25 +102,26 @@ public class MirBaseSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MirBasePackage.MODEL_ELEMENT:
+      case MirBasePackage.METACLASS_REFERENCE:
       {
-        ModelElement modelElement = (ModelElement)theEObject;
-        T result = caseModelElement(modelElement);
+        MetaclassReference metaclassReference = (MetaclassReference)theEObject;
+        T result = caseMetaclassReference(metaclassReference);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MirBasePackage.NAMED_MODEL_ELEMENT:
+      case MirBasePackage.NAMED_METACLASS_REFERENCE:
       {
-        NamedModelElement namedModelElement = (NamedModelElement)theEObject;
-        T result = caseNamedModelElement(namedModelElement);
-        if (result == null) result = caseModelElement(namedModelElement);
+        NamedMetaclassReference namedMetaclassReference = (NamedMetaclassReference)theEObject;
+        T result = caseNamedMetaclassReference(namedMetaclassReference);
+        if (result == null) result = caseMetaclassReference(namedMetaclassReference);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MirBasePackage.FEATURE_OF_ELEMENT:
+      case MirBasePackage.METACLASS_FEATURE_REFERENCE:
       {
-        FeatureOfElement featureOfElement = (FeatureOfElement)theEObject;
-        T result = caseFeatureOfElement(featureOfElement);
+        MetaclassFeatureReference metaclassFeatureReference = (MetaclassFeatureReference)theEObject;
+        T result = caseMetaclassFeatureReference(metaclassFeatureReference);
+        if (result == null) result = caseMetaclassReference(metaclassFeatureReference);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -200,49 +201,49 @@ public class MirBaseSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Model Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Metaclass Reference</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Model Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Metaclass Reference</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseModelElement(ModelElement object)
+  public T caseMetaclassReference(MetaclassReference object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Named Model Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Named Metaclass Reference</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Named Model Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Named Metaclass Reference</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseNamedModelElement(NamedModelElement object)
+  public T caseNamedMetaclassReference(NamedMetaclassReference object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Feature Of Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Metaclass Feature Reference</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Feature Of Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Metaclass Feature Reference</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseFeatureOfElement(FeatureOfElement object)
+  public T caseMetaclassFeatureReference(MetaclassFeatureReference object)
   {
     return null;
   }

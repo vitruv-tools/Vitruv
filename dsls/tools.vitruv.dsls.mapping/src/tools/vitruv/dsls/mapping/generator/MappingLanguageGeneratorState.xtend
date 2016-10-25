@@ -12,14 +12,14 @@ import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import static extension tools.vitruv.dsls.mapping.helpers.MappingLanguageHelper.*
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 
 @Accessors(PUBLIC_GETTER)
 class MappingLanguageGeneratorState {
 	private List<Mapping> mappings
 	private List<MetamodelImport> imports
 	private Map<Mapping, List<MetamodelImport>> mappingToImports
-	private Map<Mapping, Map<MetamodelImport, List<NamedModelElement>>> mappingToImportToModelElements
+	private Map<Mapping, Map<MetamodelImport, List<NamedMetaclassReference>>> mappingToImportToModelElements
 	private Map<Mapping, Map<MetamodelImport, List<ConstraintExpression>>> mappingToImportToConstraints
 
 	public new(MappingFile file) {

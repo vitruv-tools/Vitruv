@@ -10,8 +10,8 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile;
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 
 import tools.vitruv.dsls.response.responseLanguage.*;
 
@@ -304,9 +304,9 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
         return createMirBaseFileAdapter();
       }
       @Override
-      public Adapter caseModelElement(ModelElement object)
+      public Adapter caseMetaclassReference(MetaclassReference object)
       {
-        return createModelElementAdapter();
+        return createMetaclassReferenceAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object)
@@ -1006,16 +1006,16 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.ModelElement <em>Model Element</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.MetaclassReference <em>Metaclass Reference</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.mirbase.mirBase.ModelElement
+   * @see tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
    * @generated
    */
-  public Adapter createModelElementAdapter()
+  public Adapter createMetaclassReferenceAdapter()
   {
     return null;
   }

@@ -3,7 +3,7 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,12 +32,12 @@ public interface AtomicRootObjectChange extends AtomicConcreteModelElementChange
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Changed Element</em>' containment reference.
-   * @see #setChangedElement(ModelElement)
+   * @see #setChangedElement(MetaclassReference)
    * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getAtomicRootObjectChange_ChangedElement()
    * @model containment="true"
    * @generated
    */
-  ModelElement getChangedElement();
+  MetaclassReference getChangedElement();
 
   /**
    * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.AtomicRootObjectChange#getChangedElement <em>Changed Element</em>}' containment reference.
@@ -47,6 +47,6 @@ public interface AtomicRootObjectChange extends AtomicConcreteModelElementChange
    * @see #getChangedElement()
    * @generated
    */
-  void setChangedElement(ModelElement value);
+  void setChangedElement(MetaclassReference value);
 
 } // AtomicRootObjectChange

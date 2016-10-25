@@ -22,10 +22,10 @@ import org.eclipse.emf.ecore.EPackage
 import static extension tools.vitruv.dsls.mapping.helpers.EMFHelper.*
 import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import static extension java.util.Objects.*
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.mapping.mappingLanguage.SignatureConstraintBlock
 import tools.vitruv.dsls.mapping.mappingLanguage.ConstraintExpression
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 class MappingLanguageHelper {
 	public static def inferPackagesForSignaturesAndConstraints(Mapping mapping) {
@@ -102,8 +102,8 @@ class MappingLanguageHelper {
 		getPackage(equalsLiteralExpression.target.context.targetClass)
 	}
 
-	public static def dispatch EPackage getPackage(ModelElement modelElement) {
-		modelElement?.element?.EPackage
+	public static def dispatch EPackage getPackage(MetaclassReference modelElement) {
+		modelElement?.metaclass?.EPackage
 	}
 
 	public static def dispatch EPackage getPackage(FeatureOfContextVariable feat) {
@@ -111,11 +111,11 @@ class MappingLanguageHelper {
 	}
 
 	public static def dispatch EPackage getPackage(Signature signature) {
-		signature?.declaredPackage?.model?.package ?: signature.elements.map[element.EPackage].getIdenticalElement
+		signature?.declaredPackage?.model?.package ?: signature.elements.map[metaclass.EPackage].getIdenticalElement
 	}
 
 	public static def dispatch EPackage getPackage(ConstraintBlock constraintBlock) {
-		constraintBlock.eAllContents.filter(ContextVariable).map[targetClass.element.EPackage].getIdenticalElement
+		constraintBlock.eAllContents.filter(ContextVariable).map[targetClass.metaclass.EPackage].getIdenticalElement
 	}
 
 	public static def getImport(EObject eObject) {
@@ -126,8 +126,8 @@ class MappingLanguageHelper {
 		return imports.get(index)
 	}
 
-	public static def getTypesAndNames(ImportHelper ih, List<NamedModelElement> elements) {
-		elements?.map[new Pair(ih.typeRef(element.instanceTypeName), name.toFirstLower)] ?: #[]
+	public static def getTypesAndNames(ImportHelper ih, List<NamedMetaclassReference> elements) {
+		elements?.map[new Pair(ih.typeRef(metaclass.instanceTypeName), name.toFirstLower)] ?: #[]
 	}
 
 	public static def RequiredMapping getLastMapping(RequiredMappingPathBase mappingPath) {
@@ -187,8 +187,8 @@ class MappingLanguageHelper {
 		object.name ?: "eClass"
 	}
 
-	public static def dispatch getBaseName(ModelElement object) {
-		object.element?.name ?: "eClass"
+	public static def dispatch getBaseName(MetaclassReference object) {
+		object.metaclass?.name ?: "eClass"
 	}
 
 	public static def dispatch getBaseName(RequiredMapping object) {

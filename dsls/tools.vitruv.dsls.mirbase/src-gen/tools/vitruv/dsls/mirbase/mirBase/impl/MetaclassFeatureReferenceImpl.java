@@ -10,37 +10,25 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Feature Of Element</b></em>'.
+ * An implementation of the model object '<em><b>Metaclass Feature Reference</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.impl.FeatureOfElementImpl#getElement <em>Element</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.impl.FeatureOfElementImpl#getFeature <em>Feature</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetaclassFeatureReferenceImpl#getFeature <em>Feature</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class FeatureOfElementImpl extends MinimalEObjectImpl.Container implements FeatureOfElement
+public class MetaclassFeatureReferenceImpl extends MetaclassReferenceImpl implements MetaclassFeatureReference
 {
-  /**
-   * The cached value of the '{@link #getElement() <em>Element</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getElement()
-   * @generated
-   * @ordered
-   */
-  protected EClass element;
-
   /**
    * The cached value of the '{@link #getFeature() <em>Feature</em>}' reference.
    * <!-- begin-user-doc -->
@@ -56,7 +44,7 @@ public class FeatureOfElementImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  protected FeatureOfElementImpl()
+  protected MetaclassFeatureReferenceImpl()
   {
     super();
   }
@@ -69,50 +57,7 @@ public class FeatureOfElementImpl extends MinimalEObjectImpl.Container implement
   @Override
   protected EClass eStaticClass()
   {
-    return MirBasePackage.Literals.FEATURE_OF_ELEMENT;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getElement()
-  {
-    if (element != null && element.eIsProxy())
-    {
-      InternalEObject oldElement = (InternalEObject)element;
-      element = (EClass)eResolveProxy(oldElement);
-      if (element != oldElement)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MirBasePackage.FEATURE_OF_ELEMENT__ELEMENT, oldElement, element));
-      }
-    }
-    return element;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass basicGetElement()
-  {
-    return element;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setElement(EClass newElement)
-  {
-    EClass oldElement = element;
-    element = newElement;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MirBasePackage.FEATURE_OF_ELEMENT__ELEMENT, oldElement, element));
+    return MirBasePackage.Literals.METACLASS_FEATURE_REFERENCE;
   }
 
   /**
@@ -129,7 +74,7 @@ public class FeatureOfElementImpl extends MinimalEObjectImpl.Container implement
       if (feature != oldFeature)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MirBasePackage.FEATURE_OF_ELEMENT__FEATURE, oldFeature, feature));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MirBasePackage.METACLASS_FEATURE_REFERENCE__FEATURE, oldFeature, feature));
       }
     }
     return feature;
@@ -155,7 +100,7 @@ public class FeatureOfElementImpl extends MinimalEObjectImpl.Container implement
     EStructuralFeature oldFeature = feature;
     feature = newFeature;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MirBasePackage.FEATURE_OF_ELEMENT__FEATURE, oldFeature, feature));
+      eNotify(new ENotificationImpl(this, Notification.SET, MirBasePackage.METACLASS_FEATURE_REFERENCE__FEATURE, oldFeature, feature));
   }
 
   /**
@@ -168,10 +113,7 @@ public class FeatureOfElementImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case MirBasePackage.FEATURE_OF_ELEMENT__ELEMENT:
-        if (resolve) return getElement();
-        return basicGetElement();
-      case MirBasePackage.FEATURE_OF_ELEMENT__FEATURE:
+      case MirBasePackage.METACLASS_FEATURE_REFERENCE__FEATURE:
         if (resolve) return getFeature();
         return basicGetFeature();
     }
@@ -188,10 +130,7 @@ public class FeatureOfElementImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case MirBasePackage.FEATURE_OF_ELEMENT__ELEMENT:
-        setElement((EClass)newValue);
-        return;
-      case MirBasePackage.FEATURE_OF_ELEMENT__FEATURE:
+      case MirBasePackage.METACLASS_FEATURE_REFERENCE__FEATURE:
         setFeature((EStructuralFeature)newValue);
         return;
     }
@@ -208,10 +147,7 @@ public class FeatureOfElementImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case MirBasePackage.FEATURE_OF_ELEMENT__ELEMENT:
-        setElement((EClass)null);
-        return;
-      case MirBasePackage.FEATURE_OF_ELEMENT__FEATURE:
+      case MirBasePackage.METACLASS_FEATURE_REFERENCE__FEATURE:
         setFeature((EStructuralFeature)null);
         return;
     }
@@ -228,12 +164,10 @@ public class FeatureOfElementImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case MirBasePackage.FEATURE_OF_ELEMENT__ELEMENT:
-        return element != null;
-      case MirBasePackage.FEATURE_OF_ELEMENT__FEATURE:
+      case MirBasePackage.METACLASS_FEATURE_REFERENCE__FEATURE:
         return feature != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //FeatureOfElementImpl
+} //MetaclassFeatureReferenceImpl

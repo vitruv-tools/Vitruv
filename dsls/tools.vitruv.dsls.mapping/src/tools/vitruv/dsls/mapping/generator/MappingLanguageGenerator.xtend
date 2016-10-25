@@ -247,7 +247,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						«FOR imp : imports SEPARATOR "\n\n"»
 						public final static «typeRef(EPackage)» «imp.name.toUpperCase»_PACKAGE = «ePackageInstance(ih, imp.package)»;
 						public final static «typeRef(List)»<«typeRef(EClass)»> «imp.name.toUpperCase»_SIGNATURE = «typeRef(Arrays)».asList(
-							«FOR modelElement : getModelElements(mapping, imp) SEPARATOR ","»«eRef(ih, modelElement.element)»«ENDFOR»
+							«FOR modelElement : getModelElements(mapping, imp) SEPARATOR ","»«eRef(ih, modelElement.metaclass)»«ENDFOR»
 						);
 						«ENDFOR»
 					
@@ -398,7 +398,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 
 						public final static «typeRef(EPackage)» PACKAGE = «ePackageInstance(ih, imp.package)»;
 						public final static «typeRef(List)»<«typeRef(EClass)»> SIGNATURE = «typeRef(Arrays)».asList(
-							«FOR modelElement : getModelElements(mapping, imp) SEPARATOR ","»«eRef(ih, modelElement.element)»«ENDFOR»
+							«FOR modelElement : getModelElements(mapping, imp) SEPARATOR ","»«eRef(ih, modelElement.metaclass)»«ENDFOR»
 						);
 					
 						public final static «typeRef(List)»<«typeRef(MappingRealization)»> REQUIREMENTS = «typeRef(Arrays)».asList(

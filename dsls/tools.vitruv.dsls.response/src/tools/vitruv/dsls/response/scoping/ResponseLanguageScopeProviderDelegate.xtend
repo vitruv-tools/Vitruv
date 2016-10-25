@@ -2,7 +2,6 @@ package tools.vitruv.dsls.response.scoping
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
@@ -13,37 +12,44 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.dsls.response.responseLanguage.AtomicMultiValuedFeatureChange
 import tools.vitruv.dsls.response.responseLanguage.AtomicSingleValuedFeatureChange
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement
 import org.eclipse.emf.ecore.EcorePackage
 import tools.vitruv.dsls.response.responseLanguage.inputTypes.InputTypesPackage
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput
 import tools.vitruv.dsls.response.responseLanguage.CreateModelElement
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 
 class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 	override getScope(EObject context, EReference reference) {
-		// context differs during content assist and validation: once we need to take the context, once the container
-		if (reference.equals(FEATURE_OF_ELEMENT__FEATURE))
-			return createEStructuralFeatureScope(context as FeatureOfElement)
-		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
-			|| reference.equals(MODEL_ELEMENT__ELEMENT)) {
-			if (context instanceof CreateModelElement
-				|| context.eContainer() instanceof CreateModelElement
-			) {
-				return createQualifiedEClassScopeWithoutAbstract(context.eResource);
-			} else if (reference.equals(MODEL_ELEMENT__ELEMENT) && 
-				(context.eContainer() instanceof RoutineInput || context instanceof RoutineInput)
-			) {
-				return createQualifiedEClassScopeWithSpecialInputTypes(context.eResource);
-			} else {
-				return createQualifiedEClassScopeWithEObject(context.eResource)
+		// context differs during content assist: 
+		// * if no input is provided yet, the container is the context as the element is not known yet
+		// * if some input is already provided, the element is the context
+		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
+			return createEStructuralFeatureScope(context as MetaclassFeatureReference)
+		else if (reference.equals(METACLASS_REFERENCE__METACLASS)) {
+			val contextContainer = context.eContainer();
+			if (context instanceof CreateModelElement) {
+				return createQualifiedEClassScopeWithoutAbstract(context.metamodel);
+			} else if (contextContainer instanceof CreateModelElement) {
+				return createQualifiedEClassScopeWithoutAbstract(contextContainer.metamodel);
+			} else if (contextContainer instanceof RoutineInput) {
+				val inputElement = context as MetaclassReference;
+				return createQualifiedEClassScopeWithSpecialInputTypes(inputElement.metamodel);
+			} else if (context instanceof RoutineInput) {
+				return createQualifiedEClassScopeWithSpecialInputTypes(null);
+			} else if (context instanceof MetaclassReference) {
+				return createQualifiedEClassScopeWithEObject(context.metamodel)
+			} else if (contextContainer instanceof MetaclassReference) {
+				return createQualifiedEClassScopeWithEObject(contextContainer.metamodel)
 			}
 		}
 		super.getScope(context, reference)
 	}
 	
-	def createEStructuralFeatureScope(FeatureOfElement variable) {
-		if (variable?.element != null) {
-			val changeType = variable.eContainer;
+	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
+		if (featureReference?.metaclass != null) {
+			val changeType = featureReference.eContainer;
 			val filterFunction = if (changeType instanceof AtomicMultiValuedFeatureChange) {
 				[EStructuralFeature feat | feat.many];
 			} else if (changeType instanceof AtomicSingleValuedFeatureChange) {
@@ -51,7 +57,7 @@ class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 			} else {
 				[EStructuralFeature feat | true];
 			}
-			createScope(IScope.NULLSCOPE, variable.element.EAllStructuralFeatures.filter(filterFunction).iterator, [
+			createScope(IScope.NULLSCOPE, featureReference.metaclass.EAllStructuralFeatures.filter(filterFunction).iterator, [
 				EObjectDescription.create(it.name, it)
 			])
 		} else {
@@ -59,13 +65,16 @@ class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 		}
 	}
 
-	def createQualifiedEClassScopeWithSpecialInputTypes(Resource res) {
-		val classifierDescriptions = res.metamodelImports.map[
-			import | collectObjectDescriptions(import.package, true, true, import.useSimpleNames, import.name)
-		].flatten + #[createEObjectDescription(EcorePackage.Literals.EOBJECT, true, null),
-			createEObjectDescription(InputTypesPackage.Literals.STRING, true, null),
-			createEObjectDescription(InputTypesPackage.Literals.INT, true, null)
-		];
+	def createQualifiedEClassScopeWithSpecialInputTypes(MetamodelImport metamodelImport) {
+		val classifierDescriptions = 
+			if (metamodelImport == null || metamodelImport.package == null) {
+				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, true),
+					createEObjectDescription(InputTypesPackage.Literals.STRING, true),
+					createEObjectDescription(InputTypesPackage.Literals.INT, true)
+				];
+			} else {
+				collectObjectDescriptions(metamodelImport.package, true, true, metamodelImport.useSimpleNames)		
+			}
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope

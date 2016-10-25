@@ -17,19 +17,19 @@ MetamodelImport:
 NamedJavaElement:
 	type=JvmTypeReference 'as' name=ValidID;
 
-fragment ModelElement returns ModelElement:
-	element=[ecore::EClass|QualifiedName]
+fragment MetaclassReference returns MetaclassReference:
+	(metamodel=[MetamodelImport] '::')? metaclass=[ecore::EClass|QualifiedName] 
 ;
 
-UnnamedModelElement returns ModelElement:
-	ModelElement;
+UnnamedMetaclassReference returns MetaclassReference:
+	MetaclassReference;
 
-NamedModelElement returns NamedModelElement:
-	ModelElement ('as' name=ValidID)?
+NamedMetaclassReference returns NamedMetaclassReference:
+	MetaclassReference ('as' name=ValidID)?
 ;
 
-ClassicallyNamedModelElement returns NamedModelElement:
-	ModelElement name=ValidID
+ClassicallyNamedModelElement returns NamedMetaclassReference:
+	MetaclassReference name=ValidID
 ;
 
 //fragment ModelElement:
@@ -43,8 +43,8 @@ ClassicallyNamedModelElement returns NamedModelElement:
 //	ModelElement ('as' name=ValidID)?
 //;
 	
-FeatureOfElement:
-	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']'
+MetaclassFeatureReference:
+	MetaclassReference '[' feature=[ecore::EStructuralFeature|ValidID] ']'
 ;
 	
 MetamodelReference:

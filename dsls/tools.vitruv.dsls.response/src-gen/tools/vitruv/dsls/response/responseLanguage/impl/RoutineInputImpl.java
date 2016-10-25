@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
@@ -47,7 +47,7 @@ public class RoutineInputImpl extends MinimalEObjectImpl.Container implements Ro
    * @generated
    * @ordered
    */
-  protected EList<NamedModelElement> modelInputElements;
+  protected EList<NamedMetaclassReference> modelInputElements;
 
   /**
    * The cached value of the '{@link #getJavaInputElements() <em>Java Input Elements</em>}' containment reference list.
@@ -85,11 +85,11 @@ public class RoutineInputImpl extends MinimalEObjectImpl.Container implements Ro
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<NamedModelElement> getModelInputElements()
+  public EList<NamedMetaclassReference> getModelInputElements()
   {
     if (modelInputElements == null)
     {
-      modelInputElements = new EObjectContainmentEList<NamedModelElement>(NamedModelElement.class, this, ResponseLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS);
+      modelInputElements = new EObjectContainmentEList<NamedMetaclassReference>(NamedMetaclassReference.class, this, ResponseLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS);
     }
     return modelInputElements;
   }
@@ -157,7 +157,7 @@ public class RoutineInputImpl extends MinimalEObjectImpl.Container implements Ro
     {
       case ResponseLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
         getModelInputElements().clear();
-        getModelInputElements().addAll((Collection<? extends NamedModelElement>)newValue);
+        getModelInputElements().addAll((Collection<? extends NamedMetaclassReference>)newValue);
         return;
       case ResponseLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
         getJavaInputElements().clear();

@@ -6,7 +6,7 @@ package tools.vitruv.dsls.mapping.ui.labeling
 import com.google.inject.Inject
 import tools.vitruv.dsls.mapping.mappingLanguage.Mapping
 import tools.vitruv.dsls.mapping.mappingLanguage.ConstraintBlock
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 
 /**
  * Provides labels for EObjects.
@@ -27,7 +27,7 @@ class MappingLanguageLabelProvider extends org.eclipse.xtext.xbase.ui.labeling.X
 			"Mapping " + mapping.name
 	}
 	
-	def String text(NamedModelElement modelElement) '''«modelElement.name» («modelElement.element.instanceTypeName»)'''
+	def String text(NamedMetaclassReference modelElement) '''«modelElement.name» («modelElement.metaclass.instanceTypeName»)'''
 	
 	def String text(ConstraintBlock constraintBlock) '''constraints'''
 }

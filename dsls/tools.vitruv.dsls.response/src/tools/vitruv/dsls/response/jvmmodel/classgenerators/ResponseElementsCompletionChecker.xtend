@@ -5,7 +5,7 @@ import org.eclipse.emf.ecore.EClass
 
 class ResponseElementsCompletionChecker {
 	public def boolean isComplete(RetrieveModelElement retrieveElement) {
-		return retrieveElement?.correspondenceSource?.code != null && retrieveElement.element.complete;
+		return retrieveElement?.correspondenceSource?.code != null && retrieveElement.metaclass.complete;
 	}
 	
 	public def boolean isComplete(EClass eClass) {

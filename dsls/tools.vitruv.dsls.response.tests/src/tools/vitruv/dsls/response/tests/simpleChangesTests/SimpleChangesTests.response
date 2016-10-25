@@ -11,15 +11,15 @@ execute actions in minimal
  * UpdateSingleValuedEAttribute
  */
 reaction ReplacedSingleValuedEAttribute {
-	after value replaced for minimal.Root[singleValuedEAttribute]
+	after value replaced for minimal::Root[singleValuedEAttribute]
 	call replaceSingleValuedEAttribute(change.affectedEObject, change.newValue)
 }
 
-routine replaceSingleValuedEAttribute(minimal.Root root, Int value) {
+routine replaceSingleValuedEAttribute(minimal::Root root, Int value) {
 	match {
 		// The check statements do only test that multiple check statements work
 		check { ^root != null }
-		val targetElement = retrieve minimal.Root corresponding to root
+		val targetElement = retrieve minimal::Root corresponding to root
 		check { ^value != null }
 	}
 	action {
@@ -36,13 +36,13 @@ routine replaceSingleValuedEAttribute(minimal.Root root, Int value) {
  * UpdateSingleValuedEAttribute
  */
 reaction ReplacedNonRootId {
-	after value replaced for minimal.NonRoot[id]
+	after value replaced for minimal::NonRoot[id]
 	call replaceNonRootId(change.affectedEObject, change.newValue)
 }
 
-routine replaceNonRootId(minimal.NonRoot nonRoot, String value) {
+routine replaceNonRootId(minimal::NonRoot nonRoot, String value) {
 	match {
-		val targetElement = retrieve minimal.NonRoot corresponding to nonRoot
+		val targetElement = retrieve minimal::NonRoot corresponding to nonRoot
 	}
 	action {
 		update targetElement {
@@ -55,8 +55,8 @@ routine replaceNonRootId(minimal.NonRoot nonRoot, String value) {
 // * UnsetSingleValuedEAttribute
 // */
 //reaction UnsetSingleValuedEAttribute
-//after delete value of minimal.Root[singleValuedEAttribute] 
-//action { update root minimal.Root corresponding to {
+//after delete value of minimal::Root[singleValuedEAttribute] 
+//action { update root minimal::Root corresponding to {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
 //} execute {
 //	targetElement.singleValuedEAttribute = null;
@@ -69,16 +69,16 @@ routine replaceNonRootId(minimal.NonRoot nonRoot, String value) {
  * CreateNonRootEObjectInList
  */
 reaction CreatedNonRootEObjectInList {
-	after list entry created and inserted in minimal.Root[multiValuedContainmentEReference]
+	after list entry created and inserted in minimal::Root[multiValuedContainmentEReference]
 	call insertNonRoot(change.affectedEObject, change.newValue)
 }
 
-routine insertNonRoot(minimal.Root root, minimal.NonRoot insertedNonRoot) {
+routine insertNonRoot(minimal::Root root, minimal::NonRoot insertedNonRoot) {
 	match {
-		val targetElement = retrieve minimal.Root corresponding to root
+		val targetElement = retrieve minimal::Root corresponding to root
 	}
 	action {
-		val newNonRoot = create minimal.NonRoot and initialize {
+		val newNonRoot = create minimal::NonRoot and initialize {
 			newNonRoot.id = insertedNonRoot.id
 		}
 		update targetElement {
@@ -95,13 +95,13 @@ routine insertNonRoot(minimal.Root root, minimal.NonRoot insertedNonRoot) {
  * DeleteNonRootEObjectInList
  */
 reaction DeletedNonRootEObjectInList {
-	after list entry deleted and removed in minimal.Root[multiValuedContainmentEReference]
+	after list entry deleted and removed in minimal::Root[multiValuedContainmentEReference]
 	call removeNonRoot(change.oldValue)
 }
 
-routine removeNonRoot(minimal.NonRoot removedNonRoot) {
+routine removeNonRoot(minimal::NonRoot removedNonRoot) {
 	match {
-		val targetElement = retrieve minimal.NonRoot corresponding to removedNonRoot
+		val targetElement = retrieve minimal::NonRoot corresponding to removedNonRoot
 	}
 	action {
 		call {
@@ -115,7 +115,7 @@ routine removeNonRoot(minimal.NonRoot removedNonRoot) {
  * ReplaceNonRootEObjectSingle
  */
 reaction ReplacedNonRootEObjectSingleResponse {
-	after value replaced for minimal.Root[singleValuedContainmentEReference]
+	after value replaced for minimal::Root[singleValuedContainmentEReference]
 	call {
 		if (change.fromNonDefaultValue) {
 			deleteNonRootEObjectSingle(change.oldValue);
@@ -126,9 +126,9 @@ reaction ReplacedNonRootEObjectSingleResponse {
 	} 
 }
 
-routine deleteNonRootEObjectSingle(minimal.NonRoot containedObject) {
+routine deleteNonRootEObjectSingle(minimal::NonRoot containedObject) {
 	match {
-		val targetElement = retrieve minimal.NonRoot corresponding to containedObject
+		val targetElement = retrieve minimal::NonRoot corresponding to containedObject
 	}
 	action {
 		delete targetElement
@@ -138,12 +138,12 @@ routine deleteNonRootEObjectSingle(minimal.NonRoot containedObject) {
 	}
 }
 
-routine createNonRootEObjectSingle(minimal.Root sourceRoot, minimal.NonRoot containedObject) {
+routine createNonRootEObjectSingle(minimal::Root sourceRoot, minimal::NonRoot containedObject) {
 	match {
-		val targetElement = retrieve minimal.Root corresponding to sourceRoot
+		val targetElement = retrieve minimal::Root corresponding to sourceRoot
 	}
 	action {
-		val newNonRoot = create minimal.NonRoot and initialize {
+		val newNonRoot = create minimal::NonRoot and initialize {
 			newNonRoot.id = containedObject.id
 		}
 		update targetElement {
@@ -160,14 +160,14 @@ routine createNonRootEObjectSingle(minimal.Root sourceRoot, minimal.NonRoot cont
  * UpdateSingleValuedNonContainmentEReference
  */
 reaction ReplacedSingleValuedNonContainmentEReference {
-	after value replaced for minimal.Root[singleValuedNonContainmentEReference]
+	after value replaced for minimal::Root[singleValuedNonContainmentEReference]
 	call replaceSingleValuedNonContainmentReference(change.affectedEObject, change.newValue)
 }
 
-routine replaceSingleValuedNonContainmentReference(minimal.Root root, minimal.NonRoot newReferencedElement) {
+routine replaceSingleValuedNonContainmentReference(minimal::Root root, minimal::NonRoot newReferencedElement) {
 	match {
-		val targetContainer = retrieve minimal.Root corresponding to root
-		val targetElement = retrieve minimal.NonRoot corresponding to newReferencedElement
+		val targetContainer = retrieve minimal::Root corresponding to root
+		val targetElement = retrieve minimal::NonRoot corresponding to newReferencedElement
 	}
 	action {
 		update targetContainer {
@@ -183,8 +183,8 @@ routine replaceSingleValuedNonContainmentReference(minimal.Root root, minimal.No
 // * UnsetNonContainmentEReference
 // */
 //reaction UnsetNonContainmentEReference
-//after delete value minimal.Root[singleValuedNonContainmentEReference] 
-//action { update root minimal.Root corresponding to {
+//after delete value minimal::Root[singleValuedNonContainmentEReference] 
+//action { update root minimal::Root corresponding to {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
 //} 
 //execute {
@@ -198,13 +198,13 @@ routine replaceSingleValuedNonContainmentReference(minimal.Root root, minimal.No
  * InsertEAttributeValue
  */
 reaction InsertedEAttributeValue {
-	after list entry created and inserted in minimal.Root[multiValuedEAttribute] 
+	after list entry created and inserted in minimal::Root[multiValuedEAttribute] 
 	call insertEAttribute(change.affectedEObject, change.newValue)
 }
 
-routine insertEAttribute(minimal.Root root, Int attributeValue) {
+routine insertEAttribute(minimal::Root root, Int attributeValue) {
 	match {
-		val targetElement = retrieve minimal.Root corresponding to root
+		val targetElement = retrieve minimal::Root corresponding to root
 	}
 	action {
 		update targetElement {
@@ -220,13 +220,13 @@ routine insertEAttribute(minimal.Root root, Int attributeValue) {
  * RemoveEAttributeValue
  */
 reaction RemovedEAttributeValue {
-	after list entry deleted and removed in minimal.Root[multiValuedEAttribute] 
+	after list entry deleted and removed in minimal::Root[multiValuedEAttribute] 
 	call removeEAttribute(change.affectedEObject, change.oldValue)
 }
 
-routine removeEAttribute(minimal.Root root, Int removedAttributeValue) {
+routine removeEAttribute(minimal::Root root, Int removedAttributeValue) {
 	match {
-		val targetElement = retrieve minimal.Root corresponding to root
+		val targetElement = retrieve minimal::Root corresponding to root
 	}
 	action {
 		update targetElement {
@@ -243,13 +243,13 @@ routine removeEAttribute(minimal.Root root, Int removedAttributeValue) {
  * InsertNonContainmentEReference
  */
 reaction InsertedNonContainmentEReference {
-	after list entry created and inserted in minimal.Root[multiValuedNonContainmentEReference] 
+	after list entry created and inserted in minimal::Root[multiValuedNonContainmentEReference] 
 	call insertNonContainmentReference(change.affectedEObject, change.newValue)
 }
 
-routine insertNonContainmentReference(minimal.Root root, minimal.NonRoot insertedNonRoot) {
+routine insertNonContainmentReference(minimal::Root root, minimal::NonRoot insertedNonRoot) {
 	match {
-		val targetElement = retrieve minimal.Root corresponding to root
+		val targetElement = retrieve minimal::Root corresponding to root
 	}
 	action {
 		update targetElement {
@@ -267,13 +267,13 @@ routine insertNonContainmentReference(minimal.Root root, minimal.NonRoot inserte
  * RemoveNonContainmentEReference
  */
 reaction RemoveedNonContainmentEReference {
-	after list entry deleted and removed in minimal.Root[multiValuedNonContainmentEReference] 
+	after list entry deleted and removed in minimal::Root[multiValuedNonContainmentEReference] 
 	call removeNonContainmentReference(change.affectedEObject, change.oldValue)
 }
 
-routine removeNonContainmentReference(minimal.Root root, minimal.NonRoot removedNonRoot) {
+routine removeNonContainmentReference(minimal::Root root, minimal::NonRoot removedNonRoot) {
 	match {
-		val targetRoot = retrieve minimal.Root corresponding to root
+		val targetRoot = retrieve minimal::Root corresponding to root
 	}
 	action {
 		update targetRoot {
@@ -289,8 +289,8 @@ routine removeNonContainmentReference(minimal.Root root, minimal.NonRoot removed
 // * ReplaceNonContainmentEReference
 // */
 //reaction ReplaceNonContainmentEReference
-//after element update of minimal.Root[multiValuedNonContainmentEReference] 
-//action { update root minimal.Root corresponding to {
+//after element update of minimal::Root[multiValuedNonContainmentEReference] 
+//action { update root minimal::Root corresponding to {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
 //} 
 //execute {
@@ -302,8 +302,8 @@ routine removeNonContainmentReference(minimal.Root root, minimal.NonRoot removed
 ///*
 // * PermuteNonContainmentEReference
 // */
-//reaction after element old change PermuteNonContainmentEReferenceValues of minimal.Root[multiValuedNonContainmentEReference] 
-//action { update root minimal.Root corresponding to {
+//reaction after element old change PermuteNonContainmentEReferenceValues of minimal::Root[multiValuedNonContainmentEReference] 
+//action { update root minimal::Root corresponding to {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
 //} execute {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
@@ -312,9 +312,9 @@ routine removeNonContainmentReference(minimal.Root root, minimal.NonRoot removed
 //}
 
 
-routine createRoot(minimal.Root root) {
+routine createRoot(minimal::Root root) {
 	action {
-		val newRoot = create minimal.Root and initialize {
+		val newRoot = create minimal::Root and initialize {
 			newRoot.id = root.id;
 		}
 		add correspondence between newRoot and root
@@ -324,9 +324,9 @@ routine createRoot(minimal.Root root) {
 	}
 }
 
-routine deleteRoot(minimal.Root root) {
+routine deleteRoot(minimal::Root root) {
 	match {
-		val oldModel = retrieve minimal.Root corresponding to root
+		val oldModel = retrieve minimal::Root corresponding to root
 	}
 	action {
 		delete oldModel
@@ -337,12 +337,12 @@ routine deleteRoot(minimal.Root root) {
  * Creates the model for comparing the further test model with.
  */
 reaction CreateRootTest {
-	after root created and inserted minimal.Root
+	after root created and inserted minimal::Root
 	call createRoot(change.newValue)
 }
 
 reaction DeleteRootTest {
-	after root deleted and removed minimal.Root
+	after root deleted and removed minimal::Root
 	call deleteRoot(change.oldValue)
 }
 
@@ -350,17 +350,17 @@ reaction DeleteRootTest {
  * Initializes the nonRootObjectContainer for second model
  */
 reaction HelperResponseForNonRootObjectContainerInitialization {
-	after value replaced for minimal.Root[nonRootObjectContainerHelper]
+	after value replaced for minimal::Root[nonRootObjectContainerHelper]
 		with change.isToNonDefaultValue
 	call createNonRootObjectContainer(change.affectedEObject, change.newValue)
 }
 
-routine createNonRootObjectContainer(minimal.Root root, minimal.NonRootObjectContainerHelper nonRootObjectContainer) {
+routine createNonRootObjectContainer(minimal::Root root, minimal::NonRootObjectContainerHelper nonRootObjectContainer) {
 	match {
-		val targetElement = retrieve minimal.Root corresponding to root
+		val targetElement = retrieve minimal::Root corresponding to root
 	}
 	action {
-		val newNonRootContainer = create minimal.NonRootObjectContainerHelper and initialize {
+		val newNonRootContainer = create minimal::NonRootObjectContainerHelper and initialize {
 			newNonRootContainer.id = nonRootObjectContainer.id;
 		}
 		update targetElement {
@@ -374,16 +374,16 @@ routine createNonRootObjectContainer(minimal.Root root, minimal.NonRootObjectCon
  * Initializes the nonRootObjectContainer for second model
  */
 reaction HelperResponseForNonRootObjectContainerContentsInitialization {
-	after list entry created and inserted in minimal.NonRootObjectContainerHelper[nonRootObjectsContainment]
+	after list entry created and inserted in minimal::NonRootObjectContainerHelper[nonRootObjectsContainment]
 	call createNonRootInContainer(change.affectedEObject, change.newValue)
 }
 
-routine createNonRootInContainer(minimal.NonRootObjectContainerHelper container, minimal.NonRoot insertedNonRoot) {
+routine createNonRootInContainer(minimal::NonRootObjectContainerHelper container, minimal::NonRoot insertedNonRoot) {
 	match {
-		val nonRootContainer = retrieve minimal.NonRootObjectContainerHelper corresponding to container
+		val nonRootContainer = retrieve minimal::NonRootObjectContainerHelper corresponding to container
 	}
 	action {
-		val newNonRoot = create minimal.NonRoot and initialize {
+		val newNonRoot = create minimal::NonRoot and initialize {
 			newNonRoot.id = insertedNonRoot.id;
 		}
 		update nonRootContainer {

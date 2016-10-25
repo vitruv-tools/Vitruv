@@ -9,7 +9,6 @@ import tools.vitruv.dsls.mapping.mappingLanguage.MappingFile
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMapping
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathBase
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathTail
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 import tools.vitruv.framework.util.datatypes.Pair
 import java.util.Iterator
@@ -27,6 +26,7 @@ import static tools.vitruv.dsls.mapping.mappingLanguage.MappingLanguagePackage.L
 import static extension tools.vitruv.dsls.mapping.helpers.EMFHelper.*
 import static extension tools.vitruv.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension java.util.Objects.*
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 /**
  * @author Dominik Werle
@@ -61,7 +61,7 @@ class MappingLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate 
 			return createQualifiedEClassScope(context.eResource)
 		else if ((reference.equals(FEATURE_OF_CONTEXT_VARIABLE__FEATURE))
 			&& (context instanceof FeatureOfContextVariable))
-			return createEStructuralFeatureScope((context as FeatureOfContextVariable)?.context?.targetClass?.element)
+			return createEStructuralFeatureScope((context as FeatureOfContextVariable)?.context?.targetClass?.metaclass)
 		else if (reference.equals(REQUIRED_MAPPING_PATH_BASE__REQUIRED_MAPPING))
 			return createRequiredMappingPathBaseScope(context)
 		else if (reference.equals(REQUIRED_MAPPING_PATH_TAIL__REQUIRED_MAPPING))
@@ -101,8 +101,8 @@ class MappingLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate 
 		baseScope
 	}
 //
-	def <T> Iterable<ModelElement> validModelElements(Iterable<T> iterable) {
-		iterable.filter(ModelElement).filter[hasQualifiedName]
+	def <T> Iterable<MetaclassReference> validModelElements(Iterable<T> iterable) {
+		iterable.filter(MetaclassReference).filter[hasQualifiedName]
 	}
 
 	def dispatch Pair<String, EObject> namePair(EObject eObject) {

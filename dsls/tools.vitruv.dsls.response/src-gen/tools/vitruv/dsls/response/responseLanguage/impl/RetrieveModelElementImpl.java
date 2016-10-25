@@ -11,8 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport;
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 
 import tools.vitruv.dsls.response.responseLanguage.CorrespondingObjectCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock;
@@ -29,7 +30,8 @@ import tools.vitruv.dsls.response.responseLanguage.Taggable;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#getElement <em>Element</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#getMetamodel <em>Metamodel</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#getMetaclass <em>Metaclass</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#getTag <em>Tag</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#isOptional <em>Optional</em>}</li>
@@ -43,14 +45,24 @@ import tools.vitruv.dsls.response.responseLanguage.Taggable;
 public class RetrieveModelElementImpl extends MatcherStatementImpl implements RetrieveModelElement
 {
   /**
-   * The cached value of the '{@link #getElement() <em>Element</em>}' reference.
+   * The cached value of the '{@link #getMetamodel() <em>Metamodel</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getElement()
+   * @see #getMetamodel()
    * @generated
    * @ordered
    */
-  protected EClass element;
+  protected MetamodelImport metamodel;
+
+  /**
+   * The cached value of the '{@link #getMetaclass() <em>Metaclass</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getMetaclass()
+   * @generated
+   * @ordered
+   */
+  protected EClass metaclass;
 
   /**
    * The cached value of the '{@link #getTag() <em>Tag</em>}' containment reference.
@@ -168,19 +180,19 @@ public class RetrieveModelElementImpl extends MatcherStatementImpl implements Re
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getElement()
+  public MetamodelImport getMetamodel()
   {
-    if (element != null && element.eIsProxy())
+    if (metamodel != null && metamodel.eIsProxy())
     {
-      InternalEObject oldElement = (InternalEObject)element;
-      element = (EClass)eResolveProxy(oldElement);
-      if (element != oldElement)
+      InternalEObject oldMetamodel = (InternalEObject)metamodel;
+      metamodel = (MetamodelImport)eResolveProxy(oldMetamodel);
+      if (metamodel != oldMetamodel)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT, oldElement, element));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METAMODEL, oldMetamodel, metamodel));
       }
     }
-    return element;
+    return metamodel;
   }
 
   /**
@@ -188,9 +200,9 @@ public class RetrieveModelElementImpl extends MatcherStatementImpl implements Re
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass basicGetElement()
+  public MetamodelImport basicGetMetamodel()
   {
-    return element;
+    return metamodel;
   }
 
   /**
@@ -198,12 +210,55 @@ public class RetrieveModelElementImpl extends MatcherStatementImpl implements Re
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setElement(EClass newElement)
+  public void setMetamodel(MetamodelImport newMetamodel)
   {
-    EClass oldElement = element;
-    element = newElement;
+    MetamodelImport oldMetamodel = metamodel;
+    metamodel = newMetamodel;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT, oldElement, element));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METAMODEL, oldMetamodel, metamodel));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getMetaclass()
+  {
+    if (metaclass != null && metaclass.eIsProxy())
+    {
+      InternalEObject oldMetaclass = (InternalEObject)metaclass;
+      metaclass = (EClass)eResolveProxy(oldMetaclass);
+      if (metaclass != oldMetaclass)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METACLASS, oldMetaclass, metaclass));
+      }
+    }
+    return metaclass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass basicGetMetaclass()
+  {
+    return metaclass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setMetaclass(EClass newMetaclass)
+  {
+    EClass oldMetaclass = metaclass;
+    metaclass = newMetaclass;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METACLASS, oldMetaclass, metaclass));
   }
 
   /**
@@ -449,9 +504,12 @@ public class RetrieveModelElementImpl extends MatcherStatementImpl implements Re
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT:
-        if (resolve) return getElement();
-        return basicGetElement();
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METAMODEL:
+        if (resolve) return getMetamodel();
+        return basicGetMetamodel();
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METACLASS:
+        if (resolve) return getMetaclass();
+        return basicGetMetaclass();
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__TAG:
         return getTag();
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__NAME:
@@ -478,8 +536,11 @@ public class RetrieveModelElementImpl extends MatcherStatementImpl implements Re
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT:
-        setElement((EClass)newValue);
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METAMODEL:
+        setMetamodel((MetamodelImport)newValue);
+        return;
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METACLASS:
+        setMetaclass((EClass)newValue);
         return;
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__TAG:
         setTag((TagCodeBlock)newValue);
@@ -513,8 +574,11 @@ public class RetrieveModelElementImpl extends MatcherStatementImpl implements Re
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT:
-        setElement((EClass)null);
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METAMODEL:
+        setMetamodel((MetamodelImport)null);
+        return;
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METACLASS:
+        setMetaclass((EClass)null);
         return;
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__TAG:
         setTag((TagCodeBlock)null);
@@ -548,8 +612,10 @@ public class RetrieveModelElementImpl extends MatcherStatementImpl implements Re
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT:
-        return element != null;
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METAMODEL:
+        return metamodel != null;
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METACLASS:
+        return metaclass != null;
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__TAG:
         return tag != null;
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__NAME:
@@ -574,11 +640,12 @@ public class RetrieveModelElementImpl extends MatcherStatementImpl implements Re
   @Override
   public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
   {
-    if (baseClass == ModelElement.class)
+    if (baseClass == MetaclassReference.class)
     {
       switch (derivedFeatureID)
       {
-        case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT: return MirBasePackage.MODEL_ELEMENT__ELEMENT;
+        case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METAMODEL: return MirBasePackage.METACLASS_REFERENCE__METAMODEL;
+        case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METACLASS: return MirBasePackage.METACLASS_REFERENCE__METACLASS;
         default: return -1;
       }
     }
@@ -601,11 +668,12 @@ public class RetrieveModelElementImpl extends MatcherStatementImpl implements Re
   @Override
   public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
   {
-    if (baseClass == ModelElement.class)
+    if (baseClass == MetaclassReference.class)
     {
       switch (baseFeatureID)
       {
-        case MirBasePackage.MODEL_ELEMENT__ELEMENT: return ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT;
+        case MirBasePackage.METACLASS_REFERENCE__METAMODEL: return ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METAMODEL;
+        case MirBasePackage.METACLASS_REFERENCE__METACLASS: return ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__METACLASS;
         default: return -1;
       }
     }
