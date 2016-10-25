@@ -9,27 +9,27 @@ in reaction to changes in java
 execute actions in pcm
 
 reaction ChangeFieldModifierEventParser {
-	after list entry created and inserted in java.Field[annotationsAndModifiers]
+	after list entry created and inserted in java::Field[annotationsAndModifiers]
 	call { }
 }
 
 reaction RemoveFieldModifierEventParser {
-	after list entry deleted and removed in java.Field[annotationsAndModifiers]
+	after list entry deleted and removed in java::Field[annotationsAndModifiers]
 	call { }
 }
 
 reaction AddMethodEventParser {
-	after list entry created and inserted in java.ConcreteClassifier[members]
+	after list entry created and inserted in java::ConcreteClassifier[members]
 		with  change.newValue instanceof Method
 	call addedMethodEventParser(change.affectedEObject, change.newValue as Method)
 }
 
-routine addedMethodEventParser(java.ConcreteClassifier clazz, java.Method method) {
+routine addedMethodEventParser(java::ConcreteClassifier clazz, java::Method method) {
 	match {
-		val opInterface = retrieve pcm.OperationInterface corresponding to clazz
+		val opInterface = retrieve pcm::OperationInterface corresponding to clazz
 	}
 	action {
-		val opSig = create pcm.OperationSignature and initialize {
+		val opSig = create pcm::OperationSignature and initialize {
 			opSig.entityName = method.name
 			opSig.interface__OperationSignature = opInterface
 			// TODO is this necessary or can we use the add correspondence statement creating a ResponseCorrespondence?
