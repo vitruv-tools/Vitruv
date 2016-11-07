@@ -16,6 +16,7 @@ import tools.vitruv.framework.tuid.TuidCalculator
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
 import java.util.ArrayList
+import org.eclipse.emf.ecore.EPackage
 
 class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener {
 	List<String> fileExtensions
@@ -23,6 +24,13 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	Set<String> nsURIs
 	Map<Object, Object> defaultLoadOptions
 	Map<Object, Object> defaultSaveOptions
+
+	/**
+	 * Returns the namespace URI of the given {@link EPackage} and all subpackages.
+	 */
+	protected static def Iterable<String> getNsURIsRecursive(EPackage rootPackage) {
+		return #[rootPackage.nsURI] + rootPackage.ESubpackages.map[it.nsURIsRecursive].flatten;
+	}
 
 	// TODO HK Remove this default implementation and make the generation abstract, 
 	// requiring concrete metamodels to be implemented as subclasses
