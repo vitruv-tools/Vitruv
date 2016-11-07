@@ -42,11 +42,7 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		return new HashSet<String>(Arrays::asList(nsURIs))
 	}
 
-	def protected static String getTUIDPrefix(String... nsURIs) {
-		return getTUIDPrefix(getNsURISet(nsURIs))
-	}
-
-	def private static String getTUIDPrefix(Set<String> nsURIs) {
+	def protected static String getTUIDPrefix(Iterable<String> nsURIs) {
 		if (nsURIs !== null && nsURIs.size() > 0) {
 			return nsURIs.iterator().next()
 		} else {
