@@ -24,11 +24,17 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	Map<Object, Object> defaultLoadOptions
 	Map<Object, Object> defaultSaveOptions
 
+	// TODO HK Remove this default implementation and make the generation abstract, 
+	// requiring concrete metamodels to be implemented as subclasses
+	protected def TUIDCalculatorAndResolver generateTuidCalculator(Set<String> nsURIs) {
+		return new DefaultTUIDCalculatorAndResolver(getTUIDPrefix(nsURIs));
+	}
+
 	def private static Set<String> getNsURISet(String... nsURIs) {
 		return new HashSet<String>(Arrays::asList(nsURIs))
 	}
 
-	def private static String getTUIDPrefix(String... nsURIs) {
+	def protected static String getTUIDPrefix(String... nsURIs) {
 		return getTUIDPrefix(getNsURISet(nsURIs))
 	}
 
@@ -42,39 +48,34 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	}
 
 	new(String nsURI, VURI uri, String... fileExtensions) {
-		this(getNsURISet(nsURI), uri, new DefaultTUIDCalculatorAndResolver(getTUIDPrefix(nsURI)), fileExtensions)
+		this(getNsURISet(nsURI), uri, fileExtensions)
 	}
 
 	new(Set<String> nsURIs, VURI uri, String... fileExtensions) {
-		this(nsURIs, uri, new DefaultTUIDCalculatorAndResolver(getTUIDPrefix(nsURIs)), fileExtensions)
+		super(uri);
+		initialize(nsURIs, generateTuidCalculator(nsURIs), Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
+	}
+		
+	/**
+	 * @Deprecated Overwrite and define "generateTuidCalculator" method instead. 
+	 */
+	@Deprecated
+	new(String nsURI, VURI uri, TUIDCalculatorAndResolver tuidCalculator, String... fileExtensions) {
+		this(getNsURISet(nsURI), uri, tuidCalculator, fileExtensions)
 	}
 
-	new(String nsURI, String nameOfIDFeature, String nameOfNameAttribute, VURI uri, String... fileExtensions) {
-		this(getNsURISet(nsURI), uri,
-			new DefaultTUIDCalculatorAndResolver(getTUIDPrefix(nsURI), nameOfIDFeature, nameOfNameAttribute),
-			fileExtensions)
+	/**
+	 * @Deprecated Overwrite and define "generateTuidCalculator" method instead. 
+	 */
+	@Deprecated
+	new(Set<String> nsURIs, VURI uri, TUIDCalculatorAndResolver tuidCalculator, String... fileExtensions) {
+		super(uri);
+		initialize(nsURIs, tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
 	}
 
-	new(Set<String> nsURIs, String nameOfIDFeature, VURI uri, String... fileExtensions) {
-		this(nsURIs, uri, new DefaultTUIDCalculatorAndResolver(getTUIDPrefix(nsURIs), nameOfIDFeature),
-			fileExtensions)
-	}
-
-	new(String nsURI, VURI uri, TUIDCalculatorAndResolver tuidCalculatorAndResolver, String... fileExtensions) {
-		this(getNsURISet(nsURI), uri, tuidCalculatorAndResolver, fileExtensions)
-	}
-
-	new(Set<String> nsURIs, VURI uri, TUIDCalculatorAndResolver tuidCalculatorAndResolver,
-		String... fileExtensions) {
-		this(nsURIs, uri, tuidCalculatorAndResolver, Collections::emptyMap(), Collections::emptyMap(),
-			fileExtensions)
-	}
-
-	new(Set<String> nsURIs, VURI uri, TUIDCalculatorAndResolver tuidCalculatorAndResolver,
-		Map<Object, Object> defaultLoadOptions, Map<Object, Object> defaultSaveOptions, String... fileExtensions) {
-		super(uri)
+	protected def void initialize(Set<String> nsURIs, TUIDCalculatorAndResolver tuidCalculator, Map<Object, Object> defaultLoadOptions, Map<Object, Object> defaultSaveOptions, String... fileExtensions) {
 		this.fileExtensions = fileExtensions
-		this.tuidCalculatorAndResolver = tuidCalculatorAndResolver
+		this.tuidCalculatorAndResolver = tuidCalculator;
 		this.nsURIs = nsURIs
 		this.defaultLoadOptions = defaultLoadOptions
 		this.defaultSaveOptions = defaultSaveOptions
@@ -102,14 +103,14 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	def List<String> calculateTUIDsFromEObjects(List<EObject> eObjects) {
 		return eObjects.map[calculateTUIDFromEObject(it)].toList
 	}
-	
-	def String calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix){
+
+	def String calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
 		return this.tuidCalculatorAndResolver.calculateTUIDFromEObject(eObject, virtualRootObject, prefix)
 	}
 
 	def VURI getModelVURIContainingIdentifiedEObject(String tuid) {
 		val modelVURI = this.tuidCalculatorAndResolver.getModelVURIContainingIdentifiedEObject(tuid)
-		if(null == modelVURI){
+		if (null == modelVURI) {
 			return null;
 		}
 		return VURI::getInstance(modelVURI)
@@ -158,21 +159,21 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	override canCalculateTuid(EObject object) {
 		return hasMetaclassInstances(#[object]) && hasTUID(object);
 	}
-	
+
 	override calculateTuid(EObject object) {
 		return TUID.getInstance(calculateTUIDFromEObject(object));
 	}
-	
+
 	override performPreAction(TUID oldTuid) {
 		if (this.hasTUID(oldTuid.toString)) {
 			removeIfRootAndCached(oldTuid.toString);
 		}
 	}
-	
+
 	override performPostAction(TUID newTuid) {
 		// Do nothing
 	}
-	
+
 	override toString() {
 		return "Metamodel for namespaces: " + nsURIs;
 	}
@@ -180,9 +181,9 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	def boolean isMetamodelForVuri(VURI metamodelVURI) {
 		return nsURIs.exists[VURI.getInstance(it).equals(metamodelVURI)];
 	}
-	
+
 	def boolean isMetamodelFor(VURI modelVuri) {
 		return fileExtensions.contains(modelVuri.fileExtension);
 	}
-	
+
 }
