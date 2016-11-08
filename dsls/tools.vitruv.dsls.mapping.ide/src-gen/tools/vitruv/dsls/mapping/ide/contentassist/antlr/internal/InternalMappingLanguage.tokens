@@ -78,7 +78,7 @@
 'true'=99
 'try'=93
 'typeof'=90
-'using simple names'=100
+'using qualified names'=100
 'val'=45
 'var'=103
 'when'=55

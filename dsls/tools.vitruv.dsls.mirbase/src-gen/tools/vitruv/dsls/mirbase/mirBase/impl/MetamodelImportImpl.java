@@ -25,7 +25,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
  * <ul>
  *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetamodelImportImpl#getPackage <em>Package</em>}</li>
  *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetamodelImportImpl#getName <em>Name</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetamodelImportImpl#isUseSimpleNames <em>Use Simple Names</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetamodelImportImpl#isUseQualifiedNames <em>Use Qualified Names</em>}</li>
  * </ul>
  *
  * @generated
@@ -63,24 +63,24 @@ public class MetamodelImportImpl extends MinimalEObjectImpl.Container implements
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The default value of the '{@link #isUseSimpleNames() <em>Use Simple Names</em>}' attribute.
+   * The default value of the '{@link #isUseQualifiedNames() <em>Use Qualified Names</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #isUseSimpleNames()
+   * @see #isUseQualifiedNames()
    * @generated
    * @ordered
    */
-  protected static final boolean USE_SIMPLE_NAMES_EDEFAULT = false;
+  protected static final boolean USE_QUALIFIED_NAMES_EDEFAULT = false;
 
   /**
-   * The cached value of the '{@link #isUseSimpleNames() <em>Use Simple Names</em>}' attribute.
+   * The cached value of the '{@link #isUseQualifiedNames() <em>Use Qualified Names</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #isUseSimpleNames()
+   * @see #isUseQualifiedNames()
    * @generated
    * @ordered
    */
-  protected boolean useSimpleNames = USE_SIMPLE_NAMES_EDEFAULT;
+  protected boolean useQualifiedNames = USE_QUALIFIED_NAMES_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -174,9 +174,9 @@ public class MetamodelImportImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean isUseSimpleNames()
+  public boolean isUseQualifiedNames()
   {
-    return useSimpleNames;
+    return useQualifiedNames;
   }
 
   /**
@@ -184,12 +184,12 @@ public class MetamodelImportImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setUseSimpleNames(boolean newUseSimpleNames)
+  public void setUseQualifiedNames(boolean newUseQualifiedNames)
   {
-    boolean oldUseSimpleNames = useSimpleNames;
-    useSimpleNames = newUseSimpleNames;
+    boolean oldUseQualifiedNames = useQualifiedNames;
+    useQualifiedNames = newUseQualifiedNames;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MirBasePackage.METAMODEL_IMPORT__USE_SIMPLE_NAMES, oldUseSimpleNames, useSimpleNames));
+      eNotify(new ENotificationImpl(this, Notification.SET, MirBasePackage.METAMODEL_IMPORT__USE_QUALIFIED_NAMES, oldUseQualifiedNames, useQualifiedNames));
   }
 
   /**
@@ -207,8 +207,8 @@ public class MetamodelImportImpl extends MinimalEObjectImpl.Container implements
         return basicGetPackage();
       case MirBasePackage.METAMODEL_IMPORT__NAME:
         return getName();
-      case MirBasePackage.METAMODEL_IMPORT__USE_SIMPLE_NAMES:
-        return isUseSimpleNames();
+      case MirBasePackage.METAMODEL_IMPORT__USE_QUALIFIED_NAMES:
+        return isUseQualifiedNames();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -229,8 +229,8 @@ public class MetamodelImportImpl extends MinimalEObjectImpl.Container implements
       case MirBasePackage.METAMODEL_IMPORT__NAME:
         setName((String)newValue);
         return;
-      case MirBasePackage.METAMODEL_IMPORT__USE_SIMPLE_NAMES:
-        setUseSimpleNames((Boolean)newValue);
+      case MirBasePackage.METAMODEL_IMPORT__USE_QUALIFIED_NAMES:
+        setUseQualifiedNames((Boolean)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -252,8 +252,8 @@ public class MetamodelImportImpl extends MinimalEObjectImpl.Container implements
       case MirBasePackage.METAMODEL_IMPORT__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case MirBasePackage.METAMODEL_IMPORT__USE_SIMPLE_NAMES:
-        setUseSimpleNames(USE_SIMPLE_NAMES_EDEFAULT);
+      case MirBasePackage.METAMODEL_IMPORT__USE_QUALIFIED_NAMES:
+        setUseQualifiedNames(USE_QUALIFIED_NAMES_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -273,8 +273,8 @@ public class MetamodelImportImpl extends MinimalEObjectImpl.Container implements
         return package_ != null;
       case MirBasePackage.METAMODEL_IMPORT__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case MirBasePackage.METAMODEL_IMPORT__USE_SIMPLE_NAMES:
-        return useSimpleNames != USE_SIMPLE_NAMES_EDEFAULT;
+      case MirBasePackage.METAMODEL_IMPORT__USE_QUALIFIED_NAMES:
+        return useQualifiedNames != USE_QUALIFIED_NAMES_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }
@@ -292,8 +292,8 @@ public class MetamodelImportImpl extends MinimalEObjectImpl.Container implements
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (name: ");
     result.append(name);
-    result.append(", useSimpleNames: ");
-    result.append(useSimpleNames);
+    result.append(", useQualifiedNames: ");
+    result.append(useQualifiedNames);
     result.append(')');
     return result.toString();
   }

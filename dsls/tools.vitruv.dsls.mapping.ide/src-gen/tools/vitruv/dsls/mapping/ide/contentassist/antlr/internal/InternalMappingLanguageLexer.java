@@ -1937,10 +1937,10 @@ public class InternalMappingLanguageLexer extends Lexer {
         try {
             int _type = T__100;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMappingLanguage.g:98:8: ( 'using simple names' )
-            // InternalMappingLanguage.g:98:10: 'using simple names'
+            // InternalMappingLanguage.g:98:8: ( 'using qualified names' )
+            // InternalMappingLanguage.g:98:10: 'using qualified names'
             {
-            match("using simple names"); 
+            match("using qualified names"); 
 
 
             }

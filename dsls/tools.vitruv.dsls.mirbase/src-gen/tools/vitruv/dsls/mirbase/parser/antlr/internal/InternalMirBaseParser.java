@@ -22,7 +22,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalMirBaseParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'import'", "'as'", "'using simple names'", "'::'", "'='", "'+='", "'-='", "'*='", "'/='", "'%='", "'<'", "'>'", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'?.'", "','", "'('", "')'", "'#'", "'{'", "'}'", "'['", "']'", "'|'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'var'", "'val'", "'extends'", "'static'", "'extension'", "'super'", "'new'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'import'", "'as'", "'using qualified names'", "'::'", "'='", "'+='", "'-='", "'*='", "'/='", "'%='", "'<'", "'>'", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'?.'", "','", "'('", "')'", "'#'", "'{'", "'}'", "'['", "']'", "'|'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'var'", "'val'", "'extends'", "'static'", "'extension'", "'super'", "'new'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
     };
     public static final int RULE_HEX=6;
     public static final int T__50=50;
@@ -374,14 +374,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleMetamodelImport"
-    // InternalMirBase.g:129:1: ruleMetamodelImport returns [EObject current=null] : (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )? ) ;
+    // InternalMirBase.g:129:1: ruleMetamodelImport returns [EObject current=null] : (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )? ) ;
     public final EObject ruleMetamodelImport() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_0=null;
         Token otherlv_1=null;
         Token otherlv_2=null;
-        Token lv_useSimpleNames_4_0=null;
+        Token lv_useQualifiedNames_4_0=null;
         AntlrDatatypeRuleToken lv_name_3_0 = null;
 
 
@@ -389,11 +389,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:135:2: ( (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )? ) )
-            // InternalMirBase.g:136:2: (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )? )
+            // InternalMirBase.g:135:2: ( (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )? ) )
+            // InternalMirBase.g:136:2: (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )? )
             {
-            // InternalMirBase.g:136:2: (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )? )
-            // InternalMirBase.g:137:3: otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )?
+            // InternalMirBase.g:136:2: (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )? )
+            // InternalMirBase.g:137:3: otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )?
             {
             otherlv_0=(Token)match(input,13,FOLLOW_4); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -467,7 +467,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:177:3: ( (lv_useSimpleNames_4_0= 'using simple names' ) )?
+            // InternalMirBase.g:177:3: ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )?
             int alt2=2;
             int LA2_0 = input.LA(1);
 
@@ -476,15 +476,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt2) {
                 case 1 :
-                    // InternalMirBase.g:178:4: (lv_useSimpleNames_4_0= 'using simple names' )
+                    // InternalMirBase.g:178:4: (lv_useQualifiedNames_4_0= 'using qualified names' )
                     {
-                    // InternalMirBase.g:178:4: (lv_useSimpleNames_4_0= 'using simple names' )
-                    // InternalMirBase.g:179:5: lv_useSimpleNames_4_0= 'using simple names'
+                    // InternalMirBase.g:178:4: (lv_useQualifiedNames_4_0= 'using qualified names' )
+                    // InternalMirBase.g:179:5: lv_useQualifiedNames_4_0= 'using qualified names'
                     {
-                    lv_useSimpleNames_4_0=(Token)match(input,15,FOLLOW_2); if (state.failed) return current;
+                    lv_useQualifiedNames_4_0=(Token)match(input,15,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      					newLeafNode(lv_useSimpleNames_4_0, grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0());
+                      					newLeafNode(lv_useQualifiedNames_4_0, grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0());
                       				
                     }
                     if ( state.backtracking==0 ) {
@@ -492,7 +492,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       					if (current==null) {
                       						current = createModelElement(grammarAccess.getMetamodelImportRule());
                       					}
-                      					setWithLastConsumed(current, "useSimpleNames", true, "using simple names");
+                      					setWithLastConsumed(current, "useQualifiedNames", true, "using qualified names");
                       				
                     }
 

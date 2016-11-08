@@ -142,13 +142,13 @@ public interface MirBasePackage extends EPackage
   int METAMODEL_IMPORT__NAME = 1;
 
   /**
-   * The feature id for the '<em><b>Use Simple Names</b></em>' attribute.
+   * The feature id for the '<em><b>Use Qualified Names</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int METAMODEL_IMPORT__USE_SIMPLE_NAMES = 2;
+  int METAMODEL_IMPORT__USE_QUALIFIED_NAMES = 2;
 
   /**
    * The number of structural features of the '<em>Metamodel Import</em>' class.
@@ -418,15 +418,15 @@ public interface MirBasePackage extends EPackage
   EAttribute getMetamodelImport_Name();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#isUseSimpleNames <em>Use Simple Names</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#isUseQualifiedNames <em>Use Qualified Names</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Use Simple Names</em>'.
-   * @see tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#isUseSimpleNames()
+   * @return the meta object for the attribute '<em>Use Qualified Names</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#isUseQualifiedNames()
    * @see #getMetamodelImport()
    * @generated
    */
-  EAttribute getMetamodelImport_UseSimpleNames();
+  EAttribute getMetamodelImport_UseQualifiedNames();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement <em>Named Java Element</em>}'.
@@ -633,12 +633,12 @@ public interface MirBasePackage extends EPackage
     EAttribute METAMODEL_IMPORT__NAME = eINSTANCE.getMetamodelImport_Name();
 
     /**
-     * The meta object literal for the '<em><b>Use Simple Names</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Use Qualified Names</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute METAMODEL_IMPORT__USE_SIMPLE_NAMES = eINSTANCE.getMetamodelImport_UseSimpleNames();
+    EAttribute METAMODEL_IMPORT__USE_QUALIFIED_NAMES = eINSTANCE.getMetamodelImport_UseQualifiedNames();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.NamedJavaElementImpl <em>Named Java Element</em>}' class.

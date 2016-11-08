@@ -1729,7 +1729,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//MetamodelImport:
-	//	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID useSimpleNames?='using simple names'?;
+	//	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID useQualifiedNames?='using qualified names'?;
 	public MirBaseGrammarAccess.MetamodelImportElements getMetamodelImportAccess() {
 		return gaMirBase.getMetamodelImportAccess();
 	}

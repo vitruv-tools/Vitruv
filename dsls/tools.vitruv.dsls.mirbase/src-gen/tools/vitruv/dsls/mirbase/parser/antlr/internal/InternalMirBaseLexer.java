@@ -158,10 +158,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__15;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:13:7: ( 'using simple names' )
-            // InternalMirBase.g:13:9: 'using simple names'
+            // InternalMirBase.g:13:7: ( 'using qualified names' )
+            // InternalMirBase.g:13:9: 'using qualified names'
             {
-            match("using simple names"); 
+            match("using qualified names"); 
 
 
             }

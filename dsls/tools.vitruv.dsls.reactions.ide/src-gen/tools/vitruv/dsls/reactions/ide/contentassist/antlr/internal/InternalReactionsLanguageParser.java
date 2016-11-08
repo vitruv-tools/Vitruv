@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalReactionsLanguageParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_STRING", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'reactions:'", "'in reaction to changes in'", "'execute actions in'", "'reaction'", "'{'", "'}'", "'invariant'", "'after'", "'with'", "'root created and inserted'", "'root deleted and removed'", "'list entry created and inserted in'", "'list entry deleted and removed in'", "'list permuted'", "'value replaced for'", "'any change'", "'routine'", "'('", "')'", "'plain'", "','", "'match'", "'corresponding to'", "'retrieve'", "'tagged with'", "'check'", "'action'", "'create'", "'and'", "'initialize'", "'delete'", "'update'", "'add correspondence between'", "'tag with'", "'remove correspondence between'", "'execute'", "'call'", "'return'", "'as'", "'::'", "'['", "']'", "'instanceof'", "'#'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'optional'", "'require absence of'", "'using simple names'", "'?.'", "'|'", "'var'", "'true'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_STRING", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'reactions:'", "'in reaction to changes in'", "'execute actions in'", "'reaction'", "'{'", "'}'", "'invariant'", "'after'", "'with'", "'root created and inserted'", "'root deleted and removed'", "'list entry created and inserted in'", "'list entry deleted and removed in'", "'list permuted'", "'value replaced for'", "'any change'", "'routine'", "'('", "')'", "'plain'", "','", "'match'", "'corresponding to'", "'retrieve'", "'tagged with'", "'check'", "'action'", "'create'", "'and'", "'initialize'", "'delete'", "'update'", "'add correspondence between'", "'tag with'", "'remove correspondence between'", "'execute'", "'call'", "'return'", "'as'", "'::'", "'['", "']'", "'instanceof'", "'#'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'optional'", "'require absence of'", "'using qualified names'", "'?.'", "'|'", "'var'", "'true'"
     };
     public static final int RULE_HEX=5;
     public static final int T__50=50;
@@ -28917,22 +28917,22 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__MetamodelImport__Group__4__Impl"
-    // InternalReactionsLanguage.g:8497:1: rule__MetamodelImport__Group__4__Impl : ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? ) ;
+    // InternalReactionsLanguage.g:8497:1: rule__MetamodelImport__Group__4__Impl : ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? ) ;
     public final void rule__MetamodelImport__Group__4__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:8501:1: ( ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? ) )
-            // InternalReactionsLanguage.g:8502:1: ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? )
+            // InternalReactionsLanguage.g:8501:1: ( ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? ) )
+            // InternalReactionsLanguage.g:8502:1: ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? )
             {
-            // InternalReactionsLanguage.g:8502:1: ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? )
-            // InternalReactionsLanguage.g:8503:2: ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )?
+            // InternalReactionsLanguage.g:8502:1: ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? )
+            // InternalReactionsLanguage.g:8503:2: ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )?
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesAssignment_4()); 
+               before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesAssignment_4()); 
             }
-            // InternalReactionsLanguage.g:8504:2: ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )?
+            // InternalReactionsLanguage.g:8504:2: ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )?
             int alt74=2;
             int LA74_0 = input.LA(1);
 
@@ -28941,10 +28941,10 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             }
             switch (alt74) {
                 case 1 :
-                    // InternalReactionsLanguage.g:8504:3: rule__MetamodelImport__UseSimpleNamesAssignment_4
+                    // InternalReactionsLanguage.g:8504:3: rule__MetamodelImport__UseQualifiedNamesAssignment_4
                     {
                     pushFollow(FOLLOW_2);
-                    rule__MetamodelImport__UseSimpleNamesAssignment_4();
+                    rule__MetamodelImport__UseQualifiedNamesAssignment_4();
 
                     state._fsp--;
                     if (state.failed) return ;
@@ -28955,7 +28955,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesAssignment_4()); 
+               after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesAssignment_4()); 
             }
 
             }
@@ -69258,37 +69258,37 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
     // $ANTLR end "rule__MetamodelImport__NameAssignment_3"
 
 
-    // $ANTLR start "rule__MetamodelImport__UseSimpleNamesAssignment_4"
-    // InternalReactionsLanguage.g:21229:1: rule__MetamodelImport__UseSimpleNamesAssignment_4 : ( ( 'using simple names' ) ) ;
-    public final void rule__MetamodelImport__UseSimpleNamesAssignment_4() throws RecognitionException {
+    // $ANTLR start "rule__MetamodelImport__UseQualifiedNamesAssignment_4"
+    // InternalReactionsLanguage.g:21229:1: rule__MetamodelImport__UseQualifiedNamesAssignment_4 : ( ( 'using qualified names' ) ) ;
+    public final void rule__MetamodelImport__UseQualifiedNamesAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:21233:1: ( ( ( 'using simple names' ) ) )
-            // InternalReactionsLanguage.g:21234:2: ( ( 'using simple names' ) )
+            // InternalReactionsLanguage.g:21233:1: ( ( ( 'using qualified names' ) ) )
+            // InternalReactionsLanguage.g:21234:2: ( ( 'using qualified names' ) )
             {
-            // InternalReactionsLanguage.g:21234:2: ( ( 'using simple names' ) )
-            // InternalReactionsLanguage.g:21235:3: ( 'using simple names' )
+            // InternalReactionsLanguage.g:21234:2: ( ( 'using qualified names' ) )
+            // InternalReactionsLanguage.g:21235:3: ( 'using qualified names' )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
-            // InternalReactionsLanguage.g:21236:3: ( 'using simple names' )
-            // InternalReactionsLanguage.g:21237:4: 'using simple names'
+            // InternalReactionsLanguage.g:21236:3: ( 'using qualified names' )
+            // InternalReactionsLanguage.g:21237:4: 'using qualified names'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
             match(input,117,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
 
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
 
             }
@@ -69308,7 +69308,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetamodelImport__UseSimpleNamesAssignment_4"
+    // $ANTLR end "rule__MetamodelImport__UseQualifiedNamesAssignment_4"
 
 
     // $ANTLR start "rule__NamedJavaElement__TypeAssignment_0"

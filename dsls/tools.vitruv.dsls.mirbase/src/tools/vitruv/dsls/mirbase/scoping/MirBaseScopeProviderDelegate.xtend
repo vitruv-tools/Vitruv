@@ -94,10 +94,10 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 */
 	private def createQualifiedEClassScope(Resource res, boolean includeAbstract, boolean includeEObject) {
 		val classifierDescriptions = res.metamodelImports.map[
-			import | collectObjectDescriptions(import.package, true, includeAbstract, import.useSimpleNames)
+			import | collectObjectDescriptions(import.package, true, includeAbstract, import.useQualifiedNames)
 		].flatten +
 			if (includeEObject) {
-				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, true)];	
+				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false)];	
 			} else {
 				#[];
 			}
@@ -117,13 +117,13 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 		val classifierDescriptions = 
 			if (metamodelImport == null || metamodelImport.package == null) {
 				if (includeEObject) {
-					#[createEObjectDescription(EcorePackage.Literals.EOBJECT, true)];
+					#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false)];
 				} else {
 					#[];
 				}
 			} else { 
 				collectObjectDescriptions(metamodelImport.package, 
-					true, includeAbstract, metamodelImport.useSimpleNames)
+					true, includeAbstract, metamodelImport.useQualifiedNames)
 			}
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
@@ -147,9 +147,9 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	}
 	
 	protected def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
-		boolean includeSubpackages, boolean includeAbstract, boolean useSimpleNames) {
+		boolean includeSubpackages, boolean includeAbstract, boolean useQualifiedNames) {
 		var classes = collectEClasses(pckg, includeSubpackages);
-		val result = classes.filter[includeAbstract || !abstract].map[it.createEObjectDescription(useSimpleNames)];
+		val result = classes.filter[includeAbstract || !abstract].map[it.createEObjectDescription(useQualifiedNames)];
 		return result;
 	}
 	
@@ -166,12 +166,12 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 * Creates and returns a {@link EObjectDescription} with simple name
 	 * or in case of a qualified name with the given package prefix.
 	 */
-	protected def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useSimpleName) {
+	protected def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useQualifiedNames) {
 		var QualifiedName qualifiedName;
-		if (useSimpleName) {
-			qualifiedName = QualifiedName.create(classifier.name);
-		} else {
+		if (useQualifiedNames) {
 			qualifiedName = qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1);
+		} else {
+			qualifiedName = QualifiedName.create(classifier.name);
 		}
 		return EObjectDescription.create(qualifiedName, classifier);
 	}

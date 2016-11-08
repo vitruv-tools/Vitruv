@@ -408,7 +408,7 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 	 *     MetamodelImport returns MetamodelImport
 	 *
 	 * Constraint:
-	 *     (package=[EPackage|STRING] name=ValidID useSimpleNames?='using simple names'?)
+	 *     (package=[EPackage|STRING] name=ValidID useQualifiedNames?='using qualified names'?)
 	 */
 	protected void sequence_MetamodelImport(ISerializationContext context, MetamodelImport semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

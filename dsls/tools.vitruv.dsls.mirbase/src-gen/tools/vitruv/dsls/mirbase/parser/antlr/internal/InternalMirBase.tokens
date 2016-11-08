@@ -65,7 +65,7 @@
 'true'=77
 'try'=82
 'typeof'=79
-'using simple names'=15
+'using qualified names'=15
 'val'=70
 'var'=69
 'while'=67

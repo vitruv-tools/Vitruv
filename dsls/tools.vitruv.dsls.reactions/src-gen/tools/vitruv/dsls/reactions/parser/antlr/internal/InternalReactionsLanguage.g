@@ -2422,15 +2422,15 @@ ruleMetamodelImport returns [EObject current=null]
 		)
 		(
 			(
-				lv_useSimpleNames_4_0='using simple names'
+				lv_useQualifiedNames_4_0='using qualified names'
 				{
-					newLeafNode(lv_useSimpleNames_4_0, grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0());
+					newLeafNode(lv_useQualifiedNames_4_0, grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0());
 				}
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getMetamodelImportRule());
 					}
-					setWithLastConsumed($current, "useSimpleNames", true, "using simple names");
+					setWithLastConsumed($current, "useQualifiedNames", true, "using qualified names");
 				}
 			)
 		)?

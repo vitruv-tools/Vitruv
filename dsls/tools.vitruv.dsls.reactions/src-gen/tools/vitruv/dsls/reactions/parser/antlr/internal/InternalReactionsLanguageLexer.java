@@ -1068,10 +1068,10 @@ public class InternalReactionsLanguageLexer extends Lexer {
         try {
             int _type = T__57;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalReactionsLanguage.g:55:7: ( 'using simple names' )
-            // InternalReactionsLanguage.g:55:9: 'using simple names'
+            // InternalReactionsLanguage.g:55:7: ( 'using qualified names' )
+            // InternalReactionsLanguage.g:55:9: 'using qualified names'
             {
-            match("using simple names"); 
+            match("using qualified names"); 
 
 
             }

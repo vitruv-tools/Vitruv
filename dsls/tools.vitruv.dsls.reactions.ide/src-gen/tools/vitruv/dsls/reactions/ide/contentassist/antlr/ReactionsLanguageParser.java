@@ -366,7 +366,7 @@ public class ReactionsLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment(), "rule__MirBaseFile__MetamodelImportsAssignment");
 					put(grammarAccess.getMetamodelImportAccess().getPackageAssignment_1(), "rule__MetamodelImport__PackageAssignment_1");
 					put(grammarAccess.getMetamodelImportAccess().getNameAssignment_3(), "rule__MetamodelImport__NameAssignment_3");
-					put(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesAssignment_4(), "rule__MetamodelImport__UseSimpleNamesAssignment_4");
+					put(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesAssignment_4(), "rule__MetamodelImport__UseQualifiedNamesAssignment_4");
 					put(grammarAccess.getNamedJavaElementAccess().getTypeAssignment_0(), "rule__NamedJavaElement__TypeAssignment_0");
 					put(grammarAccess.getNamedJavaElementAccess().getNameAssignment_2(), "rule__NamedJavaElement__NameAssignment_2");
 					put(grammarAccess.getMetaclassReferenceAccess().getMetamodelAssignment_0_0(), "rule__MetaclassReference__MetamodelAssignment_0_0");

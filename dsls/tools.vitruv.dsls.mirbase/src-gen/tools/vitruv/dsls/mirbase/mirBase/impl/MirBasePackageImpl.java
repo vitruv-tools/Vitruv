@@ -218,7 +218,7 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getMetamodelImport_UseSimpleNames()
+  public EAttribute getMetamodelImport_UseQualifiedNames()
   {
     return (EAttribute)metamodelImportEClass.getEStructuralFeatures().get(2);
   }
@@ -381,7 +381,7 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     metamodelImportEClass = createEClass(METAMODEL_IMPORT);
     createEReference(metamodelImportEClass, METAMODEL_IMPORT__PACKAGE);
     createEAttribute(metamodelImportEClass, METAMODEL_IMPORT__NAME);
-    createEAttribute(metamodelImportEClass, METAMODEL_IMPORT__USE_SIMPLE_NAMES);
+    createEAttribute(metamodelImportEClass, METAMODEL_IMPORT__USE_QUALIFIED_NAMES);
 
     namedJavaElementEClass = createEClass(NAMED_JAVA_ELEMENT);
     createEReference(namedJavaElementEClass, NAMED_JAVA_ELEMENT__TYPE);
@@ -446,7 +446,7 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     initEClass(metamodelImportEClass, MetamodelImport.class, "MetamodelImport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMetamodelImport_Package(), ecorePackage.getEPackage(), null, "package", null, 0, 1, MetamodelImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMetamodelImport_Name(), ecorePackage.getEString(), "name", null, 0, 1, MetamodelImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getMetamodelImport_UseSimpleNames(), ecorePackage.getEBoolean(), "useSimpleNames", null, 0, 1, MetamodelImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMetamodelImport_UseQualifiedNames(), ecorePackage.getEBoolean(), "useQualifiedNames", null, 0, 1, MetamodelImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(namedJavaElementEClass, NamedJavaElement.class, "NamedJavaElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNamedJavaElement_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, NamedJavaElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

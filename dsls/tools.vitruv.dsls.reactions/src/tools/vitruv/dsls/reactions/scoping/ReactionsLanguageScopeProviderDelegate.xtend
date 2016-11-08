@@ -68,12 +68,12 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 	def createQualifiedEClassScopeWithSpecialInputTypes(MetamodelImport metamodelImport) {
 		val classifierDescriptions = 
 			if (metamodelImport == null || metamodelImport.package == null) {
-				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, true),
-					createEObjectDescription(InputTypesPackage.Literals.STRING, true),
-					createEObjectDescription(InputTypesPackage.Literals.INT, true)
+				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false),
+					createEObjectDescription(InputTypesPackage.Literals.STRING, false),
+					createEObjectDescription(InputTypesPackage.Literals.INT, false)
 				];
 			} else {
-				collectObjectDescriptions(metamodelImport.package, true, true, metamodelImport.useSimpleNames)		
+				collectObjectDescriptions(metamodelImport.package, true, true, metamodelImport.useQualifiedNames)		
 			}
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)

@@ -1,8 +1,8 @@
 import org.emftext.language.java.members.Method
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 
-import "http://www.emftext.org/java" as java using simple names
-import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
+import "http://www.emftext.org/java" as java
+import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
 
 reactions: ParserIntegrationReaction
 in reaction to changes in java

@@ -13,8 +13,8 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.applications.pcmjava.util.java2pcm.TypeReferenceCorrespondenceHelper
 
-import "http://www.emftext.org/java" as java using simple names
-import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
+import "http://www.emftext.org/java" as java
+import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
 
 // TODO We can convert several custom statements to reactions language statements, e.g. correspondence creation, element creation
 reactions: PackageMappingIntegration

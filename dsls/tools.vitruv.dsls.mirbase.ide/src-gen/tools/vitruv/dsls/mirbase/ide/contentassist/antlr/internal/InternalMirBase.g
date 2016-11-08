@@ -3226,9 +3226,9 @@ rule__MetamodelImport__Group__4__Impl
 	}
 :
 (
-	{ before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesAssignment_4()); }
-	(rule__MetamodelImport__UseSimpleNamesAssignment_4)?
-	{ after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesAssignment_4()); }
+	{ before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesAssignment_4()); }
+	(rule__MetamodelImport__UseQualifiedNamesAssignment_4)?
+	{ after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesAssignment_4()); }
 )
 ;
 finally {
@@ -15037,19 +15037,19 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__MetamodelImport__UseSimpleNamesAssignment_4
+rule__MetamodelImport__UseQualifiedNamesAssignment_4
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); }
+		{ before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); }
 		(
-			{ before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); }
-			'using simple names'
-			{ after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); }
+			{ before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); }
+			'using qualified names'
+			{ after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); }
 		)
-		{ after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); }
+		{ after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); }
 	)
 ;
 finally {

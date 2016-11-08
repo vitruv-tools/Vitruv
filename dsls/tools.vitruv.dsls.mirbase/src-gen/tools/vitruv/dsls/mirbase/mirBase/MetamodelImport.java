@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EPackage;
  * <ul>
  *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#getPackage <em>Package</em>}</li>
  *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#getName <em>Name</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#isUseSimpleNames <em>Use Simple Names</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#isUseQualifiedNames <em>Use Qualified Names</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.dsls.mirbase.mirBase.MirBasePackage#getMetamodelImport()
@@ -79,29 +79,29 @@ public interface MetamodelImport extends EObject
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>Use Simple Names</b></em>' attribute.
+   * Returns the value of the '<em><b>Use Qualified Names</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Use Simple Names</em>' attribute isn't clear,
+   * If the meaning of the '<em>Use Qualified Names</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Use Simple Names</em>' attribute.
-   * @see #setUseSimpleNames(boolean)
-   * @see tools.vitruv.dsls.mirbase.mirBase.MirBasePackage#getMetamodelImport_UseSimpleNames()
+   * @return the value of the '<em>Use Qualified Names</em>' attribute.
+   * @see #setUseQualifiedNames(boolean)
+   * @see tools.vitruv.dsls.mirbase.mirBase.MirBasePackage#getMetamodelImport_UseQualifiedNames()
    * @model
    * @generated
    */
-  boolean isUseSimpleNames();
+  boolean isUseQualifiedNames();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#isUseSimpleNames <em>Use Simple Names</em>}' attribute.
+   * Sets the value of the '{@link tools.vitruv.dsls.mirbase.mirBase.MetamodelImport#isUseQualifiedNames <em>Use Qualified Names</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Use Simple Names</em>' attribute.
-   * @see #isUseSimpleNames()
+   * @param value the new value of the '<em>Use Qualified Names</em>' attribute.
+   * @see #isUseQualifiedNames()
    * @generated
    */
-  void setUseSimpleNames(boolean value);
+  void setUseQualifiedNames(boolean value);
 
 } // MetamodelImport

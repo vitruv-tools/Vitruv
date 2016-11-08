@@ -59,14 +59,14 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cAsKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cNameValidIDParserRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
-		private final Assignment cUseSimpleNamesAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final Keyword cUseSimpleNamesUsingSimpleNamesKeyword_4_0 = (Keyword)cUseSimpleNamesAssignment_4.eContents().get(0);
+		private final Assignment cUseQualifiedNamesAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final Keyword cUseQualifiedNamesUsingQualifiedNamesKeyword_4_0 = (Keyword)cUseQualifiedNamesAssignment_4.eContents().get(0);
 		
 		//MetamodelImport:
-		//	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID useSimpleNames?='using simple names'?;
+		//	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID useQualifiedNames?='using qualified names'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'import' package=[ecore::EPackage|STRING] 'as' name=ValidID useSimpleNames?='using simple names'?
+		//'import' package=[ecore::EPackage|STRING] 'as' name=ValidID useQualifiedNames?='using qualified names'?
 		public Group getGroup() { return cGroup; }
 		
 		//'import'
@@ -90,11 +90,11 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_3_0() { return cNameValidIDParserRuleCall_3_0; }
 		
-		//useSimpleNames?='using simple names'?
-		public Assignment getUseSimpleNamesAssignment_4() { return cUseSimpleNamesAssignment_4; }
+		//useQualifiedNames?='using qualified names'?
+		public Assignment getUseQualifiedNamesAssignment_4() { return cUseQualifiedNamesAssignment_4; }
 		
-		//'using simple names'
-		public Keyword getUseSimpleNamesUsingSimpleNamesKeyword_4_0() { return cUseSimpleNamesUsingSimpleNamesKeyword_4_0; }
+		//'using qualified names'
+		public Keyword getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0() { return cUseQualifiedNamesUsingQualifiedNamesKeyword_4_0; }
 	}
 	public class NamedJavaElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mirbase.MirBase.NamedJavaElement");
@@ -389,7 +389,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//MetamodelImport:
-	//	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID useSimpleNames?='using simple names'?;
+	//	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID useQualifiedNames?='using qualified names'?;
 	public MetamodelImportElements getMetamodelImportAccess() {
 		return pMetamodelImport;
 	}

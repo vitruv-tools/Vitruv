@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalMirBaseParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'as'", "'::'", "'instanceof'", "','", "')'", "'#'", "'{'", "'}'", "'['", "']'", "';'", "'('", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'using simple names'", "'?.'", "'|'", "'var'", "'true'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'as'", "'::'", "'instanceof'", "','", "')'", "'#'", "'{'", "'}'", "'['", "']'", "';'", "'('", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'using qualified names'", "'?.'", "'|'", "'var'", "'true'"
     };
     public static final int RULE_HEX=5;
     public static final int T__50=50;
@@ -11910,22 +11910,22 @@ public class InternalMirBaseParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__MetamodelImport__Group__4__Impl"
-    // InternalMirBase.g:3223:1: rule__MetamodelImport__Group__4__Impl : ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? ) ;
+    // InternalMirBase.g:3223:1: rule__MetamodelImport__Group__4__Impl : ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? ) ;
     public final void rule__MetamodelImport__Group__4__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMirBase.g:3227:1: ( ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? ) )
-            // InternalMirBase.g:3228:1: ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? )
+            // InternalMirBase.g:3227:1: ( ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? ) )
+            // InternalMirBase.g:3228:1: ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? )
             {
-            // InternalMirBase.g:3228:1: ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? )
-            // InternalMirBase.g:3229:2: ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )?
+            // InternalMirBase.g:3228:1: ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? )
+            // InternalMirBase.g:3229:2: ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )?
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesAssignment_4()); 
+               before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesAssignment_4()); 
             }
-            // InternalMirBase.g:3230:2: ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )?
+            // InternalMirBase.g:3230:2: ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )?
             int alt42=2;
             int LA42_0 = input.LA(1);
 
@@ -11934,10 +11934,10 @@ public class InternalMirBaseParser extends AbstractInternalContentAssistParser {
             }
             switch (alt42) {
                 case 1 :
-                    // InternalMirBase.g:3230:3: rule__MetamodelImport__UseSimpleNamesAssignment_4
+                    // InternalMirBase.g:3230:3: rule__MetamodelImport__UseQualifiedNamesAssignment_4
                     {
                     pushFollow(FOLLOW_2);
-                    rule__MetamodelImport__UseSimpleNamesAssignment_4();
+                    rule__MetamodelImport__UseQualifiedNamesAssignment_4();
 
                     state._fsp--;
                     if (state.failed) return ;
@@ -11948,7 +11948,7 @@ public class InternalMirBaseParser extends AbstractInternalContentAssistParser {
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesAssignment_4()); 
+               after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesAssignment_4()); 
             }
 
             }
@@ -49503,37 +49503,37 @@ public class InternalMirBaseParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__MetamodelImport__NameAssignment_3"
 
 
-    // $ANTLR start "rule__MetamodelImport__UseSimpleNamesAssignment_4"
-    // InternalMirBase.g:15040:1: rule__MetamodelImport__UseSimpleNamesAssignment_4 : ( ( 'using simple names' ) ) ;
-    public final void rule__MetamodelImport__UseSimpleNamesAssignment_4() throws RecognitionException {
+    // $ANTLR start "rule__MetamodelImport__UseQualifiedNamesAssignment_4"
+    // InternalMirBase.g:15040:1: rule__MetamodelImport__UseQualifiedNamesAssignment_4 : ( ( 'using qualified names' ) ) ;
+    public final void rule__MetamodelImport__UseQualifiedNamesAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMirBase.g:15044:1: ( ( ( 'using simple names' ) ) )
-            // InternalMirBase.g:15045:2: ( ( 'using simple names' ) )
+            // InternalMirBase.g:15044:1: ( ( ( 'using qualified names' ) ) )
+            // InternalMirBase.g:15045:2: ( ( 'using qualified names' ) )
             {
-            // InternalMirBase.g:15045:2: ( ( 'using simple names' ) )
-            // InternalMirBase.g:15046:3: ( 'using simple names' )
+            // InternalMirBase.g:15045:2: ( ( 'using qualified names' ) )
+            // InternalMirBase.g:15046:3: ( 'using qualified names' )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
-            // InternalMirBase.g:15047:3: ( 'using simple names' )
-            // InternalMirBase.g:15048:4: 'using simple names'
+            // InternalMirBase.g:15047:3: ( 'using qualified names' )
+            // InternalMirBase.g:15048:4: 'using qualified names'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
             match(input,83,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
 
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
 
             }
@@ -49553,7 +49553,7 @@ public class InternalMirBaseParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__MetamodelImport__UseSimpleNamesAssignment_4"
+    // $ANTLR end "rule__MetamodelImport__UseQualifiedNamesAssignment_4"
 
 
     // $ANTLR start "rule__MetaclassReference__MetamodelAssignment_0_0"

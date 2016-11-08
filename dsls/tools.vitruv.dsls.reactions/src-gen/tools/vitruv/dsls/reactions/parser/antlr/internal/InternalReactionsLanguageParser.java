@@ -22,7 +22,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ML_COMMENT", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'reactions:'", "'in reaction to changes in'", "'execute actions in'", "'reaction'", "'{'", "'}'", "'invariant'", "'after'", "'with'", "'root created and inserted'", "'root deleted and removed'", "'list entry created and inserted in'", "'list entry deleted and removed in'", "'list permuted'", "'value replaced for'", "'any change'", "'routine'", "'('", "'plain'", "','", "')'", "'match'", "'val'", "'='", "'retrieve'", "'optional'", "'require absence of'", "'corresponding to'", "'tagged with'", "'check'", "'action'", "'create'", "'and'", "'initialize'", "'delete'", "'update'", "'add correspondence between'", "'tag with'", "'remove correspondence between'", "'execute'", "'call'", "'return'", "'import'", "'as'", "'using simple names'", "'::'", "'['", "']'", "'+='", "'-='", "'*='", "'/='", "'%='", "'<'", "'>'", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'?.'", "'#'", "'|'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'var'", "'extends'", "'static'", "'extension'", "'super'", "'new'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ML_COMMENT", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'reactions:'", "'in reaction to changes in'", "'execute actions in'", "'reaction'", "'{'", "'}'", "'invariant'", "'after'", "'with'", "'root created and inserted'", "'root deleted and removed'", "'list entry created and inserted in'", "'list entry deleted and removed in'", "'list permuted'", "'value replaced for'", "'any change'", "'routine'", "'('", "'plain'", "','", "')'", "'match'", "'val'", "'='", "'retrieve'", "'optional'", "'require absence of'", "'corresponding to'", "'tagged with'", "'check'", "'action'", "'create'", "'and'", "'initialize'", "'delete'", "'update'", "'add correspondence between'", "'tag with'", "'remove correspondence between'", "'execute'", "'call'", "'return'", "'import'", "'as'", "'using qualified names'", "'::'", "'['", "']'", "'+='", "'-='", "'*='", "'/='", "'%='", "'<'", "'>'", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'?.'", "'#'", "'|'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'var'", "'extends'", "'static'", "'extension'", "'super'", "'new'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
     };
     public static final int RULE_HEX=7;
     public static final int T__50=50;
@@ -6847,14 +6847,14 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
 
 
     // $ANTLR start "ruleMetamodelImport"
-    // InternalReactionsLanguage.g:2375:1: ruleMetamodelImport returns [EObject current=null] : (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )? ) ;
+    // InternalReactionsLanguage.g:2375:1: ruleMetamodelImport returns [EObject current=null] : (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )? ) ;
     public final EObject ruleMetamodelImport() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_0=null;
         Token otherlv_1=null;
         Token otherlv_2=null;
-        Token lv_useSimpleNames_4_0=null;
+        Token lv_useQualifiedNames_4_0=null;
         AntlrDatatypeRuleToken lv_name_3_0 = null;
 
 
@@ -6862,11 +6862,11 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
         	enterRule();
 
         try {
-            // InternalReactionsLanguage.g:2381:2: ( (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )? ) )
-            // InternalReactionsLanguage.g:2382:2: (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )? )
+            // InternalReactionsLanguage.g:2381:2: ( (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )? ) )
+            // InternalReactionsLanguage.g:2382:2: (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )? )
             {
-            // InternalReactionsLanguage.g:2382:2: (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )? )
-            // InternalReactionsLanguage.g:2383:3: otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useSimpleNames_4_0= 'using simple names' ) )?
+            // InternalReactionsLanguage.g:2382:2: (otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )? )
+            // InternalReactionsLanguage.g:2383:3: otherlv_0= 'import' ( (otherlv_1= RULE_STRING ) ) otherlv_2= 'as' ( (lv_name_3_0= ruleValidID ) ) ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )?
             {
             otherlv_0=(Token)match(input,55,FOLLOW_41); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -6940,7 +6940,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
 
             }
 
-            // InternalReactionsLanguage.g:2423:3: ( (lv_useSimpleNames_4_0= 'using simple names' ) )?
+            // InternalReactionsLanguage.g:2423:3: ( (lv_useQualifiedNames_4_0= 'using qualified names' ) )?
             int alt32=2;
             int LA32_0 = input.LA(1);
 
@@ -6949,15 +6949,15 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
             }
             switch (alt32) {
                 case 1 :
-                    // InternalReactionsLanguage.g:2424:4: (lv_useSimpleNames_4_0= 'using simple names' )
+                    // InternalReactionsLanguage.g:2424:4: (lv_useQualifiedNames_4_0= 'using qualified names' )
                     {
-                    // InternalReactionsLanguage.g:2424:4: (lv_useSimpleNames_4_0= 'using simple names' )
-                    // InternalReactionsLanguage.g:2425:5: lv_useSimpleNames_4_0= 'using simple names'
+                    // InternalReactionsLanguage.g:2424:4: (lv_useQualifiedNames_4_0= 'using qualified names' )
+                    // InternalReactionsLanguage.g:2425:5: lv_useQualifiedNames_4_0= 'using qualified names'
                     {
-                    lv_useSimpleNames_4_0=(Token)match(input,57,FOLLOW_2); if (state.failed) return current;
+                    lv_useQualifiedNames_4_0=(Token)match(input,57,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      					newLeafNode(lv_useSimpleNames_4_0, grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0());
+                      					newLeafNode(lv_useQualifiedNames_4_0, grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0());
                       				
                     }
                     if ( state.backtracking==0 ) {
@@ -6965,7 +6965,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
                       					if (current==null) {
                       						current = createModelElement(grammarAccess.getMetamodelImportRule());
                       					}
-                      					setWithLastConsumed(current, "useSimpleNames", true, "using simple names");
+                      					setWithLastConsumed(current, "useQualifiedNames", true, "using qualified names");
                       				
                     }
 

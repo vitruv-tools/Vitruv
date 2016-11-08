@@ -13,7 +13,7 @@
     <genClasses ecoreClass="MirBase.ecore#//MetamodelImport">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetamodelImport/package"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//MetamodelImport/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//MetamodelImport/useSimpleNames"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//MetamodelImport/useQualifiedNames"/>
     </genClasses>
     <genClasses ecoreClass="MirBase.ecore#//NamedJavaElement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MirBase.ecore#//NamedJavaElement/type"/>

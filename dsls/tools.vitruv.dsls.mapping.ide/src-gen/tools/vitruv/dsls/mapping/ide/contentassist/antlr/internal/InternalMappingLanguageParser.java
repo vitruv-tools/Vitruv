@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalMappingLanguageParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'false'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "':'", "'create'", "'with'", "'mapping'", "'when'", "'('", "')'", "','", "'map'", "'and'", "'{'", "'}'", "'['", "']'", "'as'", "';'", "'xbase'", "'check'", "'enforce'", "'from'", "'in'", "'notnull'", "'default-contain'", "'default-resource'", "'relative-to'", "'equal'", "'::'", "'null'", "'instanceof'", "'#'", "'if'", "'else'", "'switch'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'true'", "'using simple names'", "'?.'", "'|'", "'var'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'false'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "':'", "'create'", "'with'", "'mapping'", "'when'", "'('", "')'", "','", "'map'", "'and'", "'{'", "'}'", "'['", "']'", "'as'", "';'", "'xbase'", "'check'", "'enforce'", "'from'", "'in'", "'notnull'", "'default-contain'", "'default-resource'", "'relative-to'", "'equal'", "'::'", "'null'", "'instanceof'", "'#'", "'if'", "'else'", "'switch'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'true'", "'using qualified names'", "'?.'", "'|'", "'var'"
     };
     public static final int RULE_HEX=5;
     public static final int T__50=50;
@@ -27476,22 +27476,22 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__MetamodelImport__Group__4__Impl"
-    // InternalMappingLanguage.g:8052:1: rule__MetamodelImport__Group__4__Impl : ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? ) ;
+    // InternalMappingLanguage.g:8052:1: rule__MetamodelImport__Group__4__Impl : ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? ) ;
     public final void rule__MetamodelImport__Group__4__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingLanguage.g:8056:1: ( ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? ) )
-            // InternalMappingLanguage.g:8057:1: ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? )
+            // InternalMappingLanguage.g:8056:1: ( ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? ) )
+            // InternalMappingLanguage.g:8057:1: ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? )
             {
-            // InternalMappingLanguage.g:8057:1: ( ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )? )
-            // InternalMappingLanguage.g:8058:2: ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )?
+            // InternalMappingLanguage.g:8057:1: ( ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )? )
+            // InternalMappingLanguage.g:8058:2: ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )?
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesAssignment_4()); 
+               before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesAssignment_4()); 
             }
-            // InternalMappingLanguage.g:8059:2: ( rule__MetamodelImport__UseSimpleNamesAssignment_4 )?
+            // InternalMappingLanguage.g:8059:2: ( rule__MetamodelImport__UseQualifiedNamesAssignment_4 )?
             int alt73=2;
             int LA73_0 = input.LA(1);
 
@@ -27500,10 +27500,10 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
             }
             switch (alt73) {
                 case 1 :
-                    // InternalMappingLanguage.g:8059:3: rule__MetamodelImport__UseSimpleNamesAssignment_4
+                    // InternalMappingLanguage.g:8059:3: rule__MetamodelImport__UseQualifiedNamesAssignment_4
                     {
                     pushFollow(FOLLOW_2);
-                    rule__MetamodelImport__UseSimpleNamesAssignment_4();
+                    rule__MetamodelImport__UseQualifiedNamesAssignment_4();
 
                     state._fsp--;
                     if (state.failed) return ;
@@ -27514,7 +27514,7 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesAssignment_4()); 
+               after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesAssignment_4()); 
             }
 
             }
@@ -67724,37 +67724,37 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__MetamodelImport__NameAssignment_3"
 
 
-    // $ANTLR start "rule__MetamodelImport__UseSimpleNamesAssignment_4"
-    // InternalMappingLanguage.g:20755:1: rule__MetamodelImport__UseSimpleNamesAssignment_4 : ( ( 'using simple names' ) ) ;
-    public final void rule__MetamodelImport__UseSimpleNamesAssignment_4() throws RecognitionException {
+    // $ANTLR start "rule__MetamodelImport__UseQualifiedNamesAssignment_4"
+    // InternalMappingLanguage.g:20755:1: rule__MetamodelImport__UseQualifiedNamesAssignment_4 : ( ( 'using qualified names' ) ) ;
+    public final void rule__MetamodelImport__UseQualifiedNamesAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingLanguage.g:20759:1: ( ( ( 'using simple names' ) ) )
-            // InternalMappingLanguage.g:20760:2: ( ( 'using simple names' ) )
+            // InternalMappingLanguage.g:20759:1: ( ( ( 'using qualified names' ) ) )
+            // InternalMappingLanguage.g:20760:2: ( ( 'using qualified names' ) )
             {
-            // InternalMappingLanguage.g:20760:2: ( ( 'using simple names' ) )
-            // InternalMappingLanguage.g:20761:3: ( 'using simple names' )
+            // InternalMappingLanguage.g:20760:2: ( ( 'using qualified names' ) )
+            // InternalMappingLanguage.g:20761:3: ( 'using qualified names' )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
-            // InternalMappingLanguage.g:20762:3: ( 'using simple names' )
-            // InternalMappingLanguage.g:20763:4: 'using simple names'
+            // InternalMappingLanguage.g:20762:3: ( 'using qualified names' )
+            // InternalMappingLanguage.g:20763:4: 'using qualified names'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               before(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
             match(input,100,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
 
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); 
+               after(grammarAccess.getMetamodelImportAccess().getUseQualifiedNamesUsingQualifiedNamesKeyword_4_0()); 
             }
 
             }
@@ -67774,7 +67774,7 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
         }
         return ;
     }
-    // $ANTLR end "rule__MetamodelImport__UseSimpleNamesAssignment_4"
+    // $ANTLR end "rule__MetamodelImport__UseQualifiedNamesAssignment_4"
 
 
     // $ANTLR start "rule__MetaclassReference__MetamodelAssignment_0_0"
