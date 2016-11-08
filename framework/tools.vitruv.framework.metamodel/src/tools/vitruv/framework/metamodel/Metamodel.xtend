@@ -34,8 +34,8 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 
 	// TODO HK Remove this default implementation and make the generation abstract, 
 	// requiring concrete metamodels to be implemented as subclasses
-	protected def TUIDCalculatorAndResolver generateTuidCalculator(Set<String> nsURIs) {
-		return new DefaultTUIDCalculatorAndResolver(getTUIDPrefix(nsURIs));
+	protected def TUIDCalculatorAndResolver generateTuidCalculator(String nsPrefix) {
+		return new DefaultTUIDCalculatorAndResolver(nsPrefix);
 	}
 
 	def private static Set<String> getNsURISet(String... nsURIs) {
@@ -57,7 +57,7 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 
 	new(Set<String> nsURIs, VURI uri, String... fileExtensions) {
 		super(uri);
-		initialize(nsURIs, generateTuidCalculator(nsURIs), Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
+		initialize(nsURIs, generateTuidCalculator(getTUIDPrefix(nsURIs)), Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
 	}
 		
 	/**

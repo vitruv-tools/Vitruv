@@ -1,6 +1,5 @@
 package tools.vitruv.domains.uml.metamodel
 
-import java.util.Set
 import org.eclipse.uml2.uml.UMLPackage
 import org.eclipse.uml2.uml.resource.UMLResource
 import tools.vitruv.framework.metamodel.Metamodel
@@ -17,8 +16,8 @@ class UmlMetamodel extends Metamodel {
 		super(NAMESPACE_URI, VURI::getInstance(NAMESPACE_URI), FILE_EXTENSION);
 	}
 
-	override protected TUIDCalculatorAndResolver generateTuidCalculator(Set<String> nsURIs) {
-		return new AttributeTUIDCalculatorAndResolver(NAMESPACE_URI, #[UMLPackage.Literals.NAMED_ELEMENT__NAME.getName()]);
+	override protected TUIDCalculatorAndResolver generateTuidCalculator(String nsPrefix) {
+		return new AttributeTUIDCalculatorAndResolver(nsPrefix, #[UMLPackage.Literals.NAMED_ELEMENT__NAME.getName()]);
 	}
 
 	def public static synchronized UmlMetamodel getInstance() {
