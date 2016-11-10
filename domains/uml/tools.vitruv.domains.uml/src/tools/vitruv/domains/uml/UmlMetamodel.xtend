@@ -18,7 +18,7 @@ class UmlMetamodel extends Metamodel {
 	}
 
 	override protected TUIDCalculatorAndResolver generateTuidCalculator(String nsPrefix) {
-		return new AttributeTUIDCalculatorAndResolver(nsPrefix, #[UMLPackage.Literals.NAMED_ELEMENT__NAME.getName()]);
+		return new AttributeTUIDCalculatorAndResolver(UMLPackage.eNS_URI, #[UMLPackage.Literals.NAMED_ELEMENT__NAME.getName()]);
 	}
 
 	def public static synchronized UmlMetamodel getInstance() {
