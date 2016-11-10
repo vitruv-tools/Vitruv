@@ -4,7 +4,7 @@ import tools.vitruv.framework.metamodel.Metamodel
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver
 import tools.vitruv.framework.util.datatypes.VURI
 import com.google.common.collect.Sets
-import tools.vitruv.domains.uml.metamodel.UmlMetamodel
+import tools.vitruv.domains.uml.UmlMetamodel
 import org.eclipse.papyrus.sysml14.sysmlPackage
 
 class SysMlMetamodel extends Metamodel {

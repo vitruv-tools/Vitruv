@@ -1,4 +1,4 @@
-package tools.vitruv.domains.uml.metamodel
+package tools.vitruv.domains.uml
 
 import org.junit.Test
 import org.eclipse.uml2.uml.UMLFactory

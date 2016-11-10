@@ -4,7 +4,7 @@ Bundle-Name: Vitruvius Domain SysML
 Bundle-SymbolicName: tools.vitruv.domains.sysml
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: tools.vitruv.domains.uml.metamodel,
+Require-Bundle: tools.vitruv.domains.uml,
  tools.vitruv.framework.metamodel,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,

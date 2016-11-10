@@ -1,4 +1,4 @@
-package tools.vitruv.domains.uml.metamodel
+package tools.vitruv.domains.uml
 
 import org.eclipse.uml2.uml.UMLPackage
 import org.eclipse.uml2.uml.resource.UMLResource
