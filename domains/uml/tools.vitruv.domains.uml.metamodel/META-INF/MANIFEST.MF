@@ -13,4 +13,5 @@ Require-Bundle: org.junit,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro
+Export-Package: tools.vitruv.domains.uml.metamodel
 
