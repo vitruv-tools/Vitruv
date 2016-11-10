@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Domain SysML
+Bundle-SymbolicName: tools.vitruv.domains.sysml
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: tools.vitruv.domains.uml.metamodel,
+ tools.vitruv.framework.metamodel,
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.tuid,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.junit,
+ org.eclipse.papyrus.sysml14,
+ org.apache.log4j
+
