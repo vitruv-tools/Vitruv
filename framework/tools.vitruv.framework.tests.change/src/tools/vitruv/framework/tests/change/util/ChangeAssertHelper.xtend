@@ -125,8 +125,8 @@ class ChangeAssertHelper {
 		}
 				
 		def static void assertUri(RootEChange rootChange, String expectedValue) {
-			Assert.assertEquals("Change " + rootChange + " shall have the uri " + expectedValue,
-				expectedValue, rootChange.uri)
+			Assert.assertEquals("Change " + rootChange + " shall have the uri " + "file:/" + expectedValue,
+				"file:/" + expectedValue, rootChange.uri)
 		}
 
 		def static void assertReplaceSingleValuedEReference(EChange change, Object expectedOldValue,

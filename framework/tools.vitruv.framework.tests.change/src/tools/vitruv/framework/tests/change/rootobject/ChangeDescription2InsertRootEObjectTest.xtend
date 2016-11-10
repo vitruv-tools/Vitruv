@@ -15,5 +15,24 @@ class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChan
 		assertInsertRoot(0, isCreate, this.uri1)
 		//claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
 	}
+	
+	@Test
+	def void insertCreateTwoRootEObjectsInResource(){
+		// prepare
+		startRecordingOnResourceSet
+		// test
+		insertRootEObjectInResource(this.resource1)
+		// assert
+		val isCreate = true
+		assertInsertRoot(0, isCreate, this.uri1)
+		
+		startRecordingOnResourceSet
+		// test
+		insertRootEObjectInResource2(this.resource1)
+		// assert
+		assertInsertRoot2(0, isCreate, this.uri1)
+		
+		//claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
+	}
 }
 

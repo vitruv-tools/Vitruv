@@ -146,20 +146,20 @@ public class ChangeDescription2EChangesTransformation {
 		val resourceURI = resourceChange.resourceURI
 		for (listChange : resourceChange.listChanges) {
 			switch listChange.kind.value {
-				case ChangeKind.ADD: addChangeForAddResourceChange(resourceChange, resourceURI)
+				case ChangeKind.ADD: addChangeForAddResourceChange(resourceChange, listChange, resourceURI)
 				case ChangeKind.REMOVE: addChangeForRemoveResourceChange(resourceChange, listChange, resourceURI)
 			}
 		}
 	}
 
-	def private void addChangeForAddResourceChange(ResourceChange resourceChange, String resourceURI) {
-		val rootElementsList = resourceChange.value
-		var rootToAdd = rootElementsList.claimNotMany as EObject
-		var oldRootContainer = rootToAdd.eContainer
-		var oldRootResource = rootToAdd.eResource
-		eChanges.add(
-			EMFModelChangeTransformationUtil.createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource,
-				resourceURI))
+	def private void addChangeForAddResourceChange(ResourceChange resourceChange, ListChange listChange, String resourceURI) {
+		for (rootToAdd : listChange.referenceValues) {
+			var oldRootContainer = rootToAdd.eContainer
+			var oldRootResource = rootToAdd.eResource
+			eChanges.add(
+				EMFModelChangeTransformationUtil.createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource,
+					resourceURI))
+		}
 	}
 
 	def private void addChangeForRemoveResourceChange(ResourceChange resourceChange, ListChange listChange,
