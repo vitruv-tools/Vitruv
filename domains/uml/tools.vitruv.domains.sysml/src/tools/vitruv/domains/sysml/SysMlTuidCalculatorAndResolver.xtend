@@ -5,15 +5,30 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.papyrus.sysml14.blocks.Block
 import org.eclipse.uml2.uml.UMLPackage
 import org.eclipse.papyrus.sysml14.blocks.ValueType
+import tools.vitruv.domains.uml.UmlMetamodel
 
 package class SysMlTuidCalculatorAndResolver extends AttributeTUIDCalculatorAndResolver {
+	private val UmlMetamodel umlMetamodel;
 	
-	new() {
-		super(UMLPackage.eNS_PREFIX, UMLPackage.Literals.NAMED_ELEMENT__NAME.name)
+	new(String nsPrefix) {
+		super(nsPrefix, UMLPackage.Literals.NAMED_ELEMENT__NAME.name)
+		umlMetamodel = UmlMetamodel.instance;
 	}
 	
-	override protected calculateIndividualTUIDDelegator(EObject obj) throws IllegalArgumentException {
-		super.calculateIndividualTUIDDelegator(obj.stereotypedObject);
+	override calculateTUIDFromEObject(EObject eObject) {
+		if (SysMlMetamodel.NAMESPACE_URIS.contains(eObject.eClass.EPackage.nsURI)) {
+			super.calculateTUIDFromEObject(eObject);	
+		} else {
+			return umlMetamodel.calculateTUIDFromEObject(eObject);
+		}
+	}
+	
+	override calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
+		if (SysMlMetamodel.NAMESPACE_URIS.contains(eObject.eClass.EPackage.nsURI)) {
+			super.calculateTUIDFromEObject(eObject.stereotypedObject);
+		} else {
+			return umlMetamodel.calculateTUIDFromEObject(eObject);
+		}
 	}
 	
 	def protected dispatch EObject getStereotypedObject(EObject object) throws IllegalArgumentException {

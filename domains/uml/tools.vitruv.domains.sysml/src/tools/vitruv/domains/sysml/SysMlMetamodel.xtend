@@ -17,7 +17,7 @@ class SysMlMetamodel extends Metamodel {
 	}
 
 	override protected TUIDCalculatorAndResolver generateTuidCalculator(String nsPrefix) {
-		return new SysMlTuidCalculatorAndResolver();
+		return new SysMlTuidCalculatorAndResolver(sysmlPackage.eNS_URI);
 	}
 
 	def public static synchronized SysMlMetamodel getInstance() {
