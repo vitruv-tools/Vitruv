@@ -13,6 +13,14 @@ import org.eclipse.emf.ecore.EObject
 
 class AsemMetamodelTest {
 	private static val TEST_NAME = "Test";
+	
+	@Test
+	public def void testResponsibilityChecks() {
+		val clazz = ClassifiersFactory.eINSTANCE.createClass();
+		Assert.assertTrue(AsemMetamodel.instance.hasMetaclassInstances(#[clazz]));
+		Assert.assertTrue(AsemMetamodel.instance.hasTUID(clazz));
+	}
+	
 	@Test
 	def public void testTuidInClassifiersPackage() {
 		testNamedTuid(ClassifiersFactory.eINSTANCE.createClass());
