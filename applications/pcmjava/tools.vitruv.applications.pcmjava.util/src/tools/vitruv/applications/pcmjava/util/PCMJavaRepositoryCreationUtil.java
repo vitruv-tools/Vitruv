@@ -1,16 +1,11 @@
 package tools.vitruv.applications.pcmjava.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import tools.vitruv.domains.java.util.JaMoPPNamespace;
 import tools.vitruv.domains.pcm.PcmDomain;
-import tools.vitruv.domains.java.util.jamopp.JaMoPPTUIDCalculatorAndResolver;
+import tools.vitruv.domains.java.JavaDomain;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
  * Util class for the PCM Java case study
@@ -34,17 +29,8 @@ public class PCMJavaRepositoryCreationUtil {
      */
     public static List<Metamodel> createPcmJamoppMetamodels() {
     	List<Metamodel> result = new ArrayList<Metamodel>();
-        // PCM
         result.add(new PcmDomain().getMetamodel());
-        
-        // JaMoPP
-        final VURI jaMoPPURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
-        final Set<String> jamoppNSURIs = new HashSet<String>();
-        jamoppNSURIs.addAll(Arrays.asList(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE_URIS));
-        final Metamodel jaMoPPMM = new Metamodel(jamoppNSURIs, jaMoPPURI, new JaMoPPTUIDCalculatorAndResolver(),
-                JaMoPPNamespace.JAVA_FILE_EXTENSION);
-        result.add(jaMoPPMM);
-        
+        result.add(new JavaDomain().getMetamodel());
         return result;
     }
 
