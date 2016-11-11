@@ -12,5 +12,5 @@ Require-Bundle: tools.vitruv.framework.metamodel,
  org.eclipse.xtend.lib.macro,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,
- org.junit4
+ org.junit
 Export-Package: tools.vitruv.domains.pcm
