@@ -38,7 +38,7 @@ class ReactionElementStatesHandlerImpl implements ReactionElementStatesHandler {
 		if (element == null) {
 			return;
 		}
-		ReactionsCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceModel, element, null);
+		ReactionsCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceModel, element);
 		if (element.eContainer() == null) {
 			if (element.eResource() != null) {
 				logger.debug("Deleting root object: " + element);
@@ -57,7 +57,7 @@ class ReactionElementStatesHandlerImpl implements ReactionElementStatesHandler {
 	
 	override void removeCorrespondenceBetween(EObject firstElement, EObject secondElement) {
 		ReactionsCorrespondenceHelper.removeCorrespondencesBetweenElements(correspondenceModel, 
-			firstElement, null, secondElement, null);
+			firstElement, secondElement);
 	}
 	
 	override initializeCreateElementState(EObject element) {

@@ -18,22 +18,15 @@ final class ReactionsCorrespondenceHelper {
 		]);
 	}
 
-	private static def getTUID(CorrespondenceModel correspondenceModel, EObject object,
-		EObject parent) {
-		if (parent == null) {
-			return correspondenceModel.calculateTUIDFromEObject(object);
-		} else {
-			val rootTUID = correspondenceModel.calculateTUIDFromEObject(parent);
-			val String prefix = rootTUID.toString;
-			return correspondenceModel.calculateTUIDFromEObject(object, object.eContainer(), prefix);
-		}
+	private static def getTUID(CorrespondenceModel correspondenceModel, EObject object) {
+		return correspondenceModel.calculateTUIDFromEObject(object);
 	}
 
 	public static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceModel,
-		EObject source, EObject sourceParent, EObject target, EObject targetParent) {
+		EObject source, EObject target) {
 		val correspondenceModelView = correspondenceModel.reactionsView;
-		val sourceTUID = correspondenceModel.getTUID(source, sourceParent);
-		val targetTUID = correspondenceModel.getTUID(target, targetParent);
+		val sourceTUID = correspondenceModel.getTUID(source);
+		val targetTUID = correspondenceModel.getTUID(target);
 		val correspondences = correspondenceModelView.getCorrespondencesForTUIDs(#[sourceTUID]);
 		for (correspondence : correspondences.toList) {
 			if ((correspondence.ATUIDs.contains(sourceTUID) && correspondence.BTUIDs.contains(targetTUID)) ||
@@ -44,8 +37,8 @@ final class ReactionsCorrespondenceHelper {
 	}
 	
 	public static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceModel,
-		EObject source, EObject sourceParent) {
-		val sourceTUID = correspondenceModel.getTUID(source, sourceParent);
+		EObject source) {
+		val sourceTUID = correspondenceModel.getTUID(source);
 		val correspondenceModelView = correspondenceModel.reactionsView;
 		val correspondences = correspondenceModelView.getCorrespondencesForTUIDs(#[sourceTUID]);
 		for (correspondence : correspondences.toList) {
@@ -64,20 +57,11 @@ final class ReactionsCorrespondenceHelper {
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(
 		CorrespondenceModel correspondenceModel, EObject source, String expectedTag,
 		Class<T> type) {
-			val tuid = correspondenceModel.getTUID(source, null);
+			val tuid = correspondenceModel.getTUID(source);
 			return correspondenceModel.reactionsView.getCorrespondencesForTUIDs(#[tuid]).filter [
 				expectedTag.nullOrEmpty || tag == expectedTag
 			].map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
 		}
-
-	public static def <T> Iterable<T> getCorrespondingObjectsOfType(
-		CorrespondenceModel correspondenceModel, EObject source, EObject sourceParent,
-		Class<T> type) {
-		val tuid = correspondenceModel.getTUID(source, sourceParent);
-		return correspondenceModel.reactionsView.getCorrespondencesForTUIDs(#[tuid]).map [
-			it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)
-		].flatten;
-	}
 
 	private static def <T> Iterable<T> getCorrespondingObjectsOfTypeInCorrespondence(
 		ReactionsCorrespondence correspondence, TUID source, Class<T> type) {

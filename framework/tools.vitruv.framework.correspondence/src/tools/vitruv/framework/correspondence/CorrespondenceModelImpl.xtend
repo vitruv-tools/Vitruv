@@ -104,6 +104,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
          return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject))
 	}
 	
+	@Deprecated
 	override calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
 		 val Metamodel metamodel = eObject.getMetamodelForEObject()
 		 if(null == metamodel){
