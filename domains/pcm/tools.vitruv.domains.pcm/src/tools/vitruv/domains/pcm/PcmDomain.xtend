@@ -1,14 +1,14 @@
 package tools.vitruv.domains.pcm
 
 class PcmDomain {
-	private val PcmMetamodel pcMMetamodel;
+	private val PcmMetamodel pcmMetamodel;
 	
 	public new() {
-		pcMMetamodel = new PcmMetamodel();
+		pcmMetamodel = new PcmMetamodel();
 	}
 	
 	// TODO HK Replace with generic type parameter when introducing parametrized super class
 	def public PcmMetamodel getMetamodel() {
-		return pcMMetamodel;
+		return pcmMetamodel;
 	}
 }
