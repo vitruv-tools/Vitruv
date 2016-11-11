@@ -17,14 +17,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import tools.vitruv.framework.tests.util.TestUtil;
-import tools.vitruv.framework.tuid.DefaultTUIDCalculatorAndResolver;
-import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import pcm_mockup.Component;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
+import tools.vitruv.framework.tests.util.TestUtil;
+import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
+import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
+import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 
 /**
  * These tests can be executed as simple JUnit tests (no Plug-in tests)
@@ -194,7 +194,7 @@ public class TUIDCacheTest {
     private TUIDCalculatorAndResolver prepareTUIDCAR() {
         EcoreResourceBridge.registerMetamodelPackages(Pcm_mockupPackage.eNS_URI, Pcm_mockupFactory.eINSTANCE);
         EcoreResourceBridge.registerDefaultXMIExtensionFactory("pcm_mockup");
-        TUIDCalculatorAndResolver tuidCAR = new DefaultTUIDCalculatorAndResolver(Pcm_mockupPackage.eNS_URI);
+        TUIDCalculatorAndResolver tuidCAR = new AttributeTUIDCalculatorAndResolver(Pcm_mockupPackage.eNS_URI, "id");
         return tuidCAR;
     }
 

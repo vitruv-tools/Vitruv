@@ -16,9 +16,9 @@ public abstract class AbstractVSUMTest extends MetaRepositoryTest {
             final String mm2URIString, final String fileExt2) {
         List<Metamodel> metamodels = new ArrayList<Metamodel>();
         metamodels.add(new Metamodel(VURI.getInstance(mm1URIString), mm1URIString,
-                new AttributeTUIDCalculatorAndResolver(mm1URIString), fileExt1));
+                new AttributeTUIDCalculatorAndResolver(mm1URIString, "id"), fileExt1));
         metamodels.add(new Metamodel(VURI.getInstance(mm2URIString), mm2URIString,
-                new AttributeTUIDCalculatorAndResolver(mm2URIString), fileExt2));
+                new AttributeTUIDCalculatorAndResolver(mm2URIString, "id"), fileExt2));
         return createVSUM(metamodels);
     }
 

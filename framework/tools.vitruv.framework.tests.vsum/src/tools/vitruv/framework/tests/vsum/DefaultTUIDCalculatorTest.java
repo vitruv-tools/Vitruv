@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import pcm_mockup.Component;
 import pcm_mockup.Repository;
-import tools.vitruv.framework.tuid.DefaultTUIDCalculatorAndResolver;
+import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
@@ -35,7 +35,8 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
 
     public EObject testTUIDCalculator(final String tuidPrefix, final EObject rootEObject, final EObject eObject,
             final String expectedTUID) {
-        TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new DefaultTUIDCalculatorAndResolver(tuidPrefix);
+        TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new AttributeTUIDCalculatorAndResolver(tuidPrefix,
+                "id");
         String calculatedTuid = defaultTUIDCalculatorAndResolver.calculateTUIDFromEObject(eObject);
         // Calculated TUID contains more than just the UUID itself. It also contains the resource
         // and the class name that was used to create the TUID. Hence, we just compare with contains
