@@ -16,7 +16,7 @@ class PcmDomain {
 	}
 	
 	// TODO HK Replace with generic type parameter when introducing parametrized super class
-	def public PcmMetamodel createMetamodel() {
+	def public PcmMetamodel getMetamodel() {
 		return pcMMetamodel;
 	}
 }

@@ -16,7 +16,7 @@ import org.emftext.language.java.containers.JavaRoot
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.domains.java.util.JaMoPPNamespace
-import tools.vitruv.domains.pcm.util.PCMNamespace
+import tools.vitruv.domains.pcm.PcmNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.framework.util.command.ChangePropagationResult
@@ -92,7 +92,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		val transformationResult = new ChangePropagationResult
-		if (!affectedReference.name.equals(PCMNamespace.INNER_DECLARATION_COMPOSITE_DATA_TYPE)) {
+		if (!affectedReference.name.equals(PcmNamespace.INNER_DECLARATION_COMPOSITE_DATA_TYPE)) {
 			return transformationResult
 		}
 		val compositeDataType = newAffectedEObject as CompositeDataType

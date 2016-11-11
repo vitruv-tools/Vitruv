@@ -22,7 +22,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
-import tools.vitruv.domains.pcm.util.PCMNamespace
+import tools.vitruv.domains.pcm.PcmNamespace
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
@@ -190,7 +190,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		val OperationSignature pcmDummyOpSig = RepositoryFactory.eINSTANCE.createOperationSignature
 		val InterfaceMethod jaMoPPDummyInterfaceMethod = MembersFactory.eINSTANCE.createInterfaceMethod
 		val EReference pcmOpSigDataTypeReference = EObjectUtil.getReferenceByName(
-			pcmDummyOpSig, PCMNamespace.PCM_OPERATION_SIGNATURE_RETURN_TYPE)
+			pcmDummyOpSig, PcmNamespace.PCM_OPERATION_SIGNATURE_RETURN_TYPE)
 		val EReference jaMoPPInterfaceMethodTypeReference = EObjectUtil.getReferenceByName(
 			jaMoPPDummyInterfaceMethod, JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE)
 		featureCorrespondenceMap.put(pcmOpSigDataTypeReference, jaMoPPInterfaceMethodTypeReference)

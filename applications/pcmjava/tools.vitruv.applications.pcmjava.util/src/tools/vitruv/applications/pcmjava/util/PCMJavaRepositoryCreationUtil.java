@@ -35,7 +35,7 @@ public class PCMJavaRepositoryCreationUtil {
     public static List<Metamodel> createPcmJamoppMetamodels() {
     	List<Metamodel> result = new ArrayList<Metamodel>();
         // PCM
-        result.add(PcmDomain.getInstance().createMetamodel());
+        result.add(PcmDomain.getInstance().getMetamodel());
         
         // JaMoPP
         final VURI jaMoPPURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);

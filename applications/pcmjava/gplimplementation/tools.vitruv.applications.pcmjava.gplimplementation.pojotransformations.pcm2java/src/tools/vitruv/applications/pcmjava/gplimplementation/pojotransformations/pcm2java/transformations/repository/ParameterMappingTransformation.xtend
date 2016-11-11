@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.repository.Parameter
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
-import tools.vitruv.domains.pcm.util.PCMNamespace
+import tools.vitruv.domains.pcm.PcmNamespace
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
@@ -69,7 +69,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		if (correspondingObjects.nullOrEmpty || correspondingObjects.filter(typeof(org.emftext.language.java.parameters.Parameter)).nullOrEmpty) {
 			return transformationResult
 		}
-		if (affectedAttribute.name.equals(PCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME)) {
+		if (affectedAttribute.name.equals(PcmNamespace.PCM_ATTRIBUTE_ENTITY_NAME)) {
 			val boolean saveFilesOfChangedEObjects = true
 			PCM2JaMoPPUtils.updateNameAttribute(correspondingObjects, newValue, affectedAttribute,
 				featureCorrespondenceMap, correspondenceModel, saveFilesOfChangedEObjects)
@@ -92,7 +92,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		}
 		val correspondingParameter = correspondingEObjects.filter(typeof(org.emftext.language.java.parameters.Parameter)).
 			get(0)
-		if (affectedReference.name.equals(PCMNamespace.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE) &&
+		if (affectedReference.name.equals(PcmNamespace.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE) &&
 			newValue instanceof DataType) {
 			try {
 				val TypeReference typeReference = DataTypeCorrespondenceHelper.
@@ -114,10 +114,10 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		val pcmDummyParam = RepositoryFactory.eINSTANCE.createParameter
 		val jaMoPPDummyParam = ParametersFactory.eINSTANCE.createOrdinaryParameter
 		val EStructuralFeature pcmDataTypeAttribute = EObjectUtil.
-			getReferenceByName(pcmDummyParam, PCMNamespace.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE);
+			getReferenceByName(pcmDummyParam, PcmNamespace.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE);
 		val jaMoPPTypeReference = EObjectUtil.getReferenceByName(
 			jaMoPPDummyParam, JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE)
-		val EStructuralFeature pcmParameterNameAttribute = EObjectUtil.getAttributeByName(pcmDummyParam, PCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME)
+		val EStructuralFeature pcmParameterNameAttribute = EObjectUtil.getAttributeByName(pcmDummyParam, PcmNamespace.PCM_ATTRIBUTE_ENTITY_NAME)
 		val EStructuralFeature jaMoPPParammeterNameAttribute = EObjectUtil.getAttributeByName(jaMoPPDummyParam, JaMoPPNamespace.JAMOPP_ATTRIBUTE_NAME)
 		featureCorrespondenceMap.put(pcmDataTypeAttribute, jaMoPPTypeReference)
 		featureCorrespondenceMap.put(pcmParameterNameAttribute, jaMoPPParammeterNameAttribute)

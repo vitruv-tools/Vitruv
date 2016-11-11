@@ -17,9 +17,9 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
-import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.domains.pcm.PcmNamespace
 
 class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -68,7 +68,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 			// if the object has not changed we do not do anything
 			return new ChangePropagationResult 
 		}
-		if (affectedReference.name.equals(PCMNamespace.ASSEMBLY_CONTEXT_ENCAPSULATED_COMPONENT) &&
+		if (affectedReference.name.equals(PcmNamespace.ASSEMBLY_CONTEXT_ENCAPSULATED_COMPONENT) &&
 			newValue instanceof RepositoryComponent && affectedEObject instanceof AssemblyContext) {
 			val typedElementCorrespondences = correspondenceModel.
 				getCorrespondingEObjectsByType(affectedEObject as AssemblyContext, Field)

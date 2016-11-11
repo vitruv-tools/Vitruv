@@ -32,7 +32,7 @@ import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.domains.java.builder.JavaAddBuilder;
 import tools.vitruv.domains.java.builder.JavaBuilder;
 import tools.vitruv.domains.java.util.JaMoPPNamespace;
-import tools.vitruv.domains.pcm.util.PCMNamespace;
+import tools.vitruv.domains.pcm.PcmNamespace;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.correspondence.Correspondence;
@@ -132,7 +132,7 @@ public class CodeIntegrationTest {
         virtualModel = new VirtualModelImpl(META_PROJECT_NAME, config);
         // add PCM Java Builder to Project under test
         final JavaAddBuilder pcmJavaBuilder = new JavaAddBuilder();
-        pcmJavaBuilder.addBuilderToProject(this.testProject, META_PROJECT_NAME, Collections.singletonList(PCMNamespace.REPOSITORY_FILE_EXTENSION));
+        pcmJavaBuilder.addBuilderToProject(this.testProject, META_PROJECT_NAME, Collections.singletonList(PcmNamespace.REPOSITORY_FILE_EXTENSION));
         // build the project
         progress = new DoneFlagProgressMonitor();
         this.testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, JavaBuilder.BUILDER_ID,
@@ -189,7 +189,7 @@ public class CodeIntegrationTest {
 
     protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
         final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
-        final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
+        final VURI pcmVURI = VURI.getInstance(PcmNamespace.METAMODEL_NAMESPACE);
         final CorrespondenceModel corresponcenceInstance = virtualModel
                 .getCorrespondenceModel(pcmVURI, jaMoPPVURI);
         return corresponcenceInstance;

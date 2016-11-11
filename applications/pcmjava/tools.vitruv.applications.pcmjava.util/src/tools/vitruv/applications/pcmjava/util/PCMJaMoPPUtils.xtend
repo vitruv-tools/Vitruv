@@ -27,12 +27,12 @@ import org.palladiosimulator.pcm.system.System
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
-import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.domains.pcm.PcmNamespace
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
@@ -106,13 +106,13 @@ class PCMJaMoPPUtils {
 
 	def dispatch static addRootChangeToTransformationResult(Repository repo, CorrespondenceModel correspondenceModel,
 		VURI sourceModelVURI, ChangePropagationResult transformationResult) {
-		handlePCMRootEObject(repo, sourceModelVURI, correspondenceModel, PCMNamespace.REPOSITORY_FILE_EXTENSION,
+		handlePCMRootEObject(repo, sourceModelVURI, correspondenceModel, PcmNamespace.REPOSITORY_FILE_EXTENSION,
 			transformationResult)
 	}
 
 	def dispatch static addRootChangeToTransformationResult(System system, CorrespondenceModel correspondenceModel,
 		VURI sourceModelVURI, ChangePropagationResult transformationResult) {
-		handlePCMRootEObject(system, sourceModelVURI, correspondenceModel, PCMNamespace.SYSTEM_FILE_EXTENSION,
+		handlePCMRootEObject(system, sourceModelVURI, correspondenceModel, PcmNamespace.SYSTEM_FILE_EXTENSION,
 			transformationResult)
 	}
 

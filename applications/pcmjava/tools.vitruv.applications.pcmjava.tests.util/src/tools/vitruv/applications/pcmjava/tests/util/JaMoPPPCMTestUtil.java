@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 
 import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.domains.java.util.JaMoPPNamespace;
-import tools.vitruv.domains.pcm.util.PCMNamespace;
+import tools.vitruv.domains.pcm.PcmNamespace;
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import tools.vitruv.framework.metamodel.Metamodel;
 
@@ -51,7 +51,7 @@ public final class JaMoPPPCMTestUtil {
         m.put(JaMoPPNamespace.JAVA_FILE_EXTENSION, new JavaResourceFactory());
         // register PCM
         EPackage.Registry.INSTANCE.put(PcmPackage.eNS_URI, PcmPackage.eINSTANCE);
-        m.put(PCMNamespace.REPOSITORY_FILE_EXTENSION, new PcmResourceFactoryImpl());
+        m.put(PcmNamespace.REPOSITORY_FILE_EXTENSION, new PcmResourceFactoryImpl());
         // register correspondence model for xmi files
         EPackage.Registry.INSTANCE.put(CorrespondencePackage.eNS_URI, CorrespondencePackage.eINSTANCE);
         m.put("xmi", new XMIResourceFactoryImpl());

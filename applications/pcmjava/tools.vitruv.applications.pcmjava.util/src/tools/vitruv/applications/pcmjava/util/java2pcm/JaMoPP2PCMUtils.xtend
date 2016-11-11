@@ -37,9 +37,9 @@ import static extension tools.vitruv.framework.correspondence.CorrespondenceMode
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.domains.java.util.JaMoPPNamespace
-import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.domains.pcm.PcmNamespace
 
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private new() {
@@ -71,7 +71,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 
 	def static addName2EntityNameCorrespondence(Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap) {
 		addJaMoPP2PCMCorrespondenceToFeatureCorrespondenceMap(JaMoPPNamespace.JAMOPP_ATTRIBUTE_NAME,
-			PCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME, featureCorrespondenceMap)
+			PcmNamespace.PCM_ATTRIBUTE_ENTITY_NAME, featureCorrespondenceMap)
 	}
 
 	def static updateNameAttribute(

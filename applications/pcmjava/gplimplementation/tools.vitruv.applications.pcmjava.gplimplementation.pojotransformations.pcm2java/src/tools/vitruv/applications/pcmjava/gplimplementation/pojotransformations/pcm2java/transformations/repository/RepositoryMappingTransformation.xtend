@@ -13,7 +13,7 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
-import tools.vitruv.domains.pcm.util.PCMNamespace
+import tools.vitruv.domains.pcm.PcmNamespace
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
@@ -29,7 +29,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	override void setCorrespondenceForFeatures() {
 		var repositoryNameAttribute = RepositoryFactory.eINSTANCE.createRepository.eClass.getEAllAttributes.filter [ attribute |
-			attribute.name.equalsIgnoreCase(PCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME)
+			attribute.name.equalsIgnoreCase(PcmNamespace.PCM_ATTRIBUTE_ENTITY_NAME)
 		].iterator.next
 		var packageNameAttribute = ContainersFactory.eINSTANCE.createPackage.eClass.getEAllAttributes.filter [ attribute |
 			attribute.name.equalsIgnoreCase(JaMoPPNamespace.JAMOPP_ATTRIBUTE_NAME)

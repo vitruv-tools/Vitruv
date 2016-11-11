@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations
 
-import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -10,6 +9,7 @@ import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
 import org.palladiosimulator.pcm.core.entity.NamedElement
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.domains.pcm.PcmNamespace
 
 /**
  * base class for RepositoryComponentMappingTransformation and SystemMappingTransformation
@@ -51,9 +51,9 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		if ((affectedReference.name.equals(PCMNamespace.SYSTEM_ASSEMBLY_CONTEXTS__COMPOSED_STRUCTURE) ||
-			affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
-			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) &&
+		if ((affectedReference.name.equals(PcmNamespace.SYSTEM_ASSEMBLY_CONTEXTS__COMPOSED_STRUCTURE) ||
+			affectedReference.name.equals(PcmNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
+			affectedReference.name.equals(PcmNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) &&
 			newValue instanceof NamedElement) {
 			PCM2JaMoPPUtils.
 				handleAssemblyContextAddedAsNonRootEObjectInList(newAffectedEObject as ComposedProvidingRequiringEntity,
@@ -70,8 +70,8 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 		int index) {
 
 		//provided role removed - deletion of eobject should already be done in OperationProvidedRoleMappingTransformation - mark bc to save
-		if (affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
-			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
+		if (affectedReference.name.equals(PcmNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
+			affectedReference.name.equals(PcmNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 		}
 		return new ChangePropagationResult
 	}
@@ -82,8 +82,8 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	 */
 	override insertNonRootEObjectInContainmentList(EObject oldAffectedEObject, EObject newAffectedEObject,
 		EReference affectedReference, EObject newValue) {
-		if (affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
-			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
+		if (affectedReference.name.equals(PcmNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
+			affectedReference.name.equals(PcmNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			
 		}
 		return new ChangePropagationResult

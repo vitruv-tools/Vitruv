@@ -70,9 +70,9 @@ import org.emftext.language.java.modifiers.Public
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.domains.java.util.JaMoPPNamespace
-import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.domains.pcm.PcmNamespace
 
 abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCM2JaMoPPUtils.simpleName)
@@ -92,7 +92,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def static addEntityName2NameCorrespondence(Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap) {
-		addPCM2JaMoPPCorrespondenceToFeatureCorrespondenceMap(PCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME,
+		addPCM2JaMoPPCorrespondenceToFeatureCorrespondenceMap(PcmNamespace.PCM_ATTRIBUTE_ENTITY_NAME,
 			JaMoPPNamespace.JAMOPP_ATTRIBUTE_NAME, featureCorrespondenceMap)
 	}
 

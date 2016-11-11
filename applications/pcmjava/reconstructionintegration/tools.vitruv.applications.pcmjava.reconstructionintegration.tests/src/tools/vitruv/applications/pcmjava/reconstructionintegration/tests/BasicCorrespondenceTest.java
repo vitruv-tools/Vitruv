@@ -55,7 +55,7 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
             + "internal_architecture_model.repository";
 
 //    /** The Constant pcmMMUri. */
-//    private static final VURI pcmMMUri = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
+//    private static final VURI pcmMMUri = VURI.getInstance(PcmNamespace.PCM_METAMODEL_NAMESPACE);
 
     /** The transformation. */
     private PCMJaMoPPCorrespondenceModelTransformation transformation;

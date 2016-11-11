@@ -18,6 +18,7 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.modelsynchronization,
  tools.vitruv.extensions.constructionsimulation,
  tools.vitruv.extensions.constructionsimulation.util,
+ tools.vitruv.domains.pcm.util,
  tools.vitruv.applications.pcmjava.util 
 Export-Package: tools.vitruv.applications.pcmjava.reconstructionintegration.composite,
  tools.vitruv.applications.pcmjava.reconstructionintegration.invariantcheckers,

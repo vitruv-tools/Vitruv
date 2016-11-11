@@ -22,11 +22,10 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.correspondence,
  tools.vitruv.framework.metamodel,
- tools.vitruv.domains.pcm.util;visibility:=reexport,
+ tools.vitruv.domains.pcm;visibility:=reexport,
  tools.vitruv.domains.java.util;visibility:=reexport,
  tools.vitruv.domains.java.echange,
- tools.vitruv.domains.java.util.jamoppparser,
- tools.vitruv.domains.pcm
+ tools.vitruv.domains.java.util.jamoppparser
 Export-Package: tools.vitruv.applications.pcmjava.util,
  tools.vitruv.applications.pcmjava.util.java2pcm,
  tools.vitruv.applications.pcmjava.util.pcm2java

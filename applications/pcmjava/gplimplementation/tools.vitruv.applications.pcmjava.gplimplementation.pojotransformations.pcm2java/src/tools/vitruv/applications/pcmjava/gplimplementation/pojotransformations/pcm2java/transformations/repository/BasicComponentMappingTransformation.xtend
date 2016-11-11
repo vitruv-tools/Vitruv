@@ -11,11 +11,11 @@ import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
-import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.domains.pcm.PcmNamespace
 
 class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -73,7 +73,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 
 	override setCorrespondenceForFeatures() {
 		var basicComponentNameAttribute = RepositoryFactory.eINSTANCE.createBasicComponent.eClass.getEAllAttributes.
-			filter[attribute|attribute.name.equalsIgnoreCase(PCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME)].
+			filter[attribute|attribute.name.equalsIgnoreCase(PcmNamespace.PCM_ATTRIBUTE_ENTITY_NAME)].
 			iterator.next
 		var classNameAttribute = ClassifiersFactory.eINSTANCE.createClass.eClass.getEAllAttributes.filter[attribute|
 			attribute.name.equalsIgnoreCase(JaMoPPNamespace.JAMOPP_ATTRIBUTE_NAME)].iterator.next
@@ -90,8 +90,8 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		int index) {
 		val transformationResult = new ChangePropagationResult
 		//provided role removed - deletion of eobject should already be done in OperationProvidedRoleMappingTransformation - mark bc to save
-		if (affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
-			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
+		if (affectedReference.name.equals(PcmNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
+			affectedReference.name.equals(PcmNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			return transformationResult
 		}
 		return transformationResult
@@ -103,8 +103,8 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	override insertNonRootEObjectInContainmentList(EObject oldAffectedEObject, EObject newAffectedEObject,
 		EReference affectedReference, EObject newValue) {
 		val transformationResult = new ChangePropagationResult
-		if (affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
-			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
+		if (affectedReference.name.equals(PcmNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
+			affectedReference.name.equals(PcmNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			return transformationResult
 		}
 	}
@@ -115,8 +115,8 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		EObject[] oldCorrespondingEObjectsToDelete) {
 		val transformationResult = new ChangePropagationResult
-		if (affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
-			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
+		if (affectedReference.name.equals(PcmNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
+			affectedReference.name.equals(PcmNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			if (null != affectedEObject) {
 				return transformationResult
 			}

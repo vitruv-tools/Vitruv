@@ -84,7 +84,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.system.System;
 
 import tools.vitruv.domains.java.util.JaMoPPNamespace;
-import tools.vitruv.domains.pcm.util.PCMNamespace;
+import tools.vitruv.domains.pcm.PcmNamespace;
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import tools.vitruv.domains.emf.util.BuildProjects;
 import tools.vitruv.domains.java.builder.JavaAddBuilder;
@@ -135,7 +135,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		this.testUserInteractor = new TestUserInteractor();
 		// add PCM Java Builder to Project under test
 		final JavaAddBuilder pcmJavaBuilder = new JavaAddBuilder();
-		pcmJavaBuilder.addBuilderToProject(this.currentTestProject, getVirtualModel().getName(), Collections.singletonList(PCMNamespace.REPOSITORY_FILE_EXTENSION));
+		pcmJavaBuilder.addBuilderToProject(this.currentTestProject, getVirtualModel().getName(), Collections.singletonList(PcmNamespace.REPOSITORY_FILE_EXTENSION));
 		// build the project
 		BuildProjects.issueIncrementalBuild(currentTestProject, JavaBuilder.BUILDER_ID);
 
@@ -154,7 +154,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	@Override
 	protected CorrespondenceModel getCorrespondenceModel() throws CoreException  {
 		final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
-		final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
+		final VURI pcmVURI = VURI.getInstance(PcmNamespace.METAMODEL_NAMESPACE);
 		final CorrespondenceModel corresponcenceInstance = getVirtualModel().getCorrespondenceModel(pcmVURI, jaMoPPVURI);
 		return corresponcenceInstance;
 	}
