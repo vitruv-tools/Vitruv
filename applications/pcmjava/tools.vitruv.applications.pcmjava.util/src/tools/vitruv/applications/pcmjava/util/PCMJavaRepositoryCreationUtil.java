@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import tools.vitruv.domains.java.util.JaMoPPNamespace;
-import tools.vitruv.domains.pcm.util.PCMNamespace;
+import tools.vitruv.domains.pcm.PcmDomain;
 import tools.vitruv.domains.java.util.jamopp.JaMoPPTUIDCalculatorAndResolver;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -35,14 +35,7 @@ public class PCMJavaRepositoryCreationUtil {
     public static List<Metamodel> createPcmJamoppMetamodels() {
     	List<Metamodel> result = new ArrayList<Metamodel>();
         // PCM
-        final VURI pcmMMUri = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
-        final Set<String> pcmNSUris = new HashSet<String>();
-        pcmNSUris.addAll(Arrays.asList(PCMNamespace.PCM_METAMODEL_NAMESPACE_URIS));
-        String[] fileExtensions = new String[2];
-        fileExtensions[0] = PCMNamespace.REPOSITORY_FILE_EXTENSION;
-        fileExtensions[1] = PCMNamespace.SYSTEM_FILE_EXTENSION;
-        final Metamodel pcmMM = new Metamodel(pcmNSUris, pcmMMUri, fileExtensions);
-        result.add(pcmMM);
+        result.add(PcmDomain.getInstance().createMetamodel());
         
         // JaMoPP
         final VURI jaMoPPURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
