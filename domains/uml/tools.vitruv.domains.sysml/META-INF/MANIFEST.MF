@@ -15,4 +15,5 @@ Require-Bundle: tools.vitruv.domains.uml,
  org.junit,
  org.eclipse.papyrus.sysml14,
  org.apache.log4j
+Export-Package: tools.vitruv.domains.sysml
 
