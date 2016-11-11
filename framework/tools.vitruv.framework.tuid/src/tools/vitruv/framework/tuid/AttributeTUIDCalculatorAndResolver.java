@@ -2,7 +2,6 @@ package tools.vitruv.framework.tuid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
@@ -25,7 +24,7 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
         this.attributeNames = Arrays.asList(attributeNames);
     }
 
-    public AttributeTUIDCalculatorAndResolver(final String tuidPrefix, final Collection<String> attributeNames) {
+    public AttributeTUIDCalculatorAndResolver(final String tuidPrefix, final List<String> attributeNames) {
         super(tuidPrefix);
         this.attributeNames = new ArrayList<String>(attributeNames);
     }
