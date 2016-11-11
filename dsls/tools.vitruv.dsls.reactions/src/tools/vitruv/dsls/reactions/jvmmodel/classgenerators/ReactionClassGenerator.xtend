@@ -108,7 +108,7 @@ class ReactionClassGenerator extends ClassGenerator {
 			
 	private def StringConcatenationClient getTypedChangeString() '''
 		«val trigger = reaction.trigger
-		»«change»«IF trigger instanceof ConcreteModelElementChange»<«FOR typeParam : getGenericTypeParametersOfChange(trigger) SEPARATOR ', '»«typeParam»«ENDFOR»>«ENDIF»'''
+		»«change»«IF trigger instanceof ConcreteModelElementChange»<«FOR typeParam : getGenericTypeParameterFQNsOfChange(trigger) SEPARATOR ', '»«typeParam»«ENDFOR»>«ENDIF»'''
 		
 		
 	protected def generateMethodCheckPrecondition() {
