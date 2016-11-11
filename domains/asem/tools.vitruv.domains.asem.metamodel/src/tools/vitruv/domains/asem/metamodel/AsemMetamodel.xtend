@@ -15,11 +15,11 @@ class AsemMetamodel extends Metamodel {
 	private static val nsURIs = rootPackage.nsURIsRecursive;
 	
 	private new() {
-		super(newHashSet(nsURIs), VURI::getInstance(rootPackage.nsURI), FILE_EXTENSION);
+		super(VURI.getInstance(rootPackage.nsURI), nsURIs, generateTuidCalculator(), FILE_EXTENSION);
 	}
 
-	override protected TUIDCalculatorAndResolver generateTuidCalculator(String nsPrefix) {
-		return new AttributeTUIDCalculatorAndResolver(nsPrefix, 
+	def protected static TUIDCalculatorAndResolver generateTuidCalculator() {
+		return new AttributeTUIDCalculatorAndResolver(ASEMPackage.eNS_URI, 
 			#[BasePackage.Literals.IDENTIFIABLE__ID.name, BasePackage.Literals.NAMED__NAME.name]
 		);
 	}

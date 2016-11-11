@@ -40,16 +40,12 @@ public final class MappingLanguageTestUtil {
 		return TestUtil.createVSUM(metamodels, transformer);
 	}
 
-	public static Metamodel createMetamodel(String nsURI, String... extensions) {
-		return new Metamodel(nsURI, VURI.getInstance(nsURI), extensions);
-	}
-	
 	public static Metamodel createMetamodel(String nsURI, TUIDCalculatorAndResolver tuidCalculatorAndResolver, String... extensions) {
-		return new Metamodel(nsURI, VURI.getInstance(nsURI), tuidCalculatorAndResolver, extensions);
+		return new Metamodel(VURI.getInstance(nsURI), nsURI, tuidCalculatorAndResolver, extensions);
 	}
 	
 	public static Metamodel createAttributeTUIDMetamodel(String nsURI, String... extensions) {
-		return new Metamodel(nsURI, VURI.getInstance(nsURI), new AttributeTUIDCalculatorAndResolver(nsURI, DEFAULT_ATTRIBUTE_NAMES), extensions);
+		return new Metamodel(VURI.getInstance(nsURI), nsURI, new AttributeTUIDCalculatorAndResolver(nsURI, DEFAULT_ATTRIBUTE_NAMES), extensions);
 	}
 	
 	public static Injector injector(Consumer<Binder> configure) {

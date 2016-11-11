@@ -1,14 +1,11 @@
 package tools.vitruv.framework.metamodel
 
-import java.util.Arrays
 import java.util.Collections
-import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver
-import tools.vitruv.framework.tuid.DefaultTUIDCalculatorAndResolver
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.AbstractURIHaving
 import tools.vitruv.framework.tuid.TUID
@@ -28,18 +25,8 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	/**
 	 * Returns the namespace URI of the given {@link EPackage} and all subpackages.
 	 */
-	protected static def Iterable<String> getNsURIsRecursive(EPackage rootPackage) {
-		return #[rootPackage.nsURI] + rootPackage.ESubpackages.map[it.nsURIsRecursive].flatten;
-	}
-
-	// TODO HK Remove this default implementation and make the generation abstract, 
-	// requiring concrete metamodels to be implemented as subclasses
-	protected def TUIDCalculatorAndResolver generateTuidCalculator(String nsPrefix) {
-		return new DefaultTUIDCalculatorAndResolver(nsPrefix);
-	}
-
-	def private static Set<String> getNsURISet(String... nsURIs) {
-		return new HashSet<String>(Arrays::asList(nsURIs))
+	protected static def Set<String> getNsURIsRecursive(EPackage rootPackage) {
+		return (#[rootPackage.nsURI] + rootPackage.ESubpackages.map[it.nsURIsRecursive].flatten).toSet;
 	}
 
 	def protected static String getTUIDPrefix(Iterable<String> nsURIs) {
@@ -51,30 +38,17 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		}
 	}
 
-	new(String nsURI, VURI uri, String... fileExtensions) {
-		this(getNsURISet(nsURI), uri, fileExtensions)
+	/** 
+	 * Convenience method if the metamodel consists of only a single namespace
+	 */
+	new(VURI mainNamespaceUri, String namespaceUri, TUIDCalculatorAndResolver tuidCalculator, String... fileExtensions) {
+		super(mainNamespaceUri);
+		initialize(newHashSet(namespaceUri), tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
 	}
 
-	new(Set<String> nsURIs, VURI uri, String... fileExtensions) {
-		super(uri);
-		initialize(nsURIs, generateTuidCalculator(getTUIDPrefix(nsURIs)), Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
-	}
-		
-	/**
-	 * @Deprecated Overwrite and define "generateTuidCalculator" method instead. 
-	 */
-	@Deprecated
-	new(String nsURI, VURI uri, TUIDCalculatorAndResolver tuidCalculator, String... fileExtensions) {
-		this(getNsURISet(nsURI), uri, tuidCalculator, fileExtensions)
-	}
-
-	/**
-	 * @Deprecated Overwrite and define "generateTuidCalculator" method instead. 
-	 */
-	@Deprecated
-	new(Set<String> nsURIs, VURI uri, TUIDCalculatorAndResolver tuidCalculator, String... fileExtensions) {
-		super(uri);
-		initialize(nsURIs, tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
+	new(VURI mainNamespaceUri, Set<String> namespaceUris, TUIDCalculatorAndResolver tuidCalculator, String... fileExtensions) {
+		super(mainNamespaceUri);
+		initialize(namespaceUris, tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
 	}
 
 	protected def void initialize(Set<String> nsURIs, TUIDCalculatorAndResolver tuidCalculator, Map<Object, Object> defaultLoadOptions, Map<Object, Object> defaultSaveOptions, String... fileExtensions) {

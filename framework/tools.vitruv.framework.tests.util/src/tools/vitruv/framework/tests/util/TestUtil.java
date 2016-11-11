@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.Path;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VSUMConstants;
@@ -95,7 +96,7 @@ public final class TestUtil {
      * @return
      */
     public static Metamodel createMetamodel(final String nsURI, final VURI uri, final String fileExt) {
-        final Metamodel mm = new Metamodel(nsURI, uri, fileExt);
+        final Metamodel mm = new Metamodel(uri, nsURI, new AttributeTUIDCalculatorAndResolver(nsURI), fileExt);
         return mm;
     }
 

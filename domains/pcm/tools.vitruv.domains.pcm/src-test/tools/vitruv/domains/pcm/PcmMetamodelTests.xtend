@@ -17,8 +17,12 @@ class PcmMetamodelTests {
 	public def void testResponsibilityChecks() {
 		val component = RepositoryFactory.eINSTANCE.createBasicComponent();
 		val pcmMetamodel = new PcmMetamodel();
-		Assert.assertTrue(pcmMetamodel.hasMetaclassInstances(#[component]));
-		Assert.assertTrue(pcmMetamodel.hasTUID(component));
+		Assert.assertTrue("Metamodel support only " + pcmMetamodel.nsURIs + ", but not " + component.eClass.EPackage.nsURI + " of component",
+			pcmMetamodel.hasMetaclassInstances(#[component])
+		);
+		Assert.assertTrue("Metamodel has TUID only for elements of " + pcmMetamodel.nsURIs + ", but not of component's " + component.eClass.EPackage.nsURI,
+			pcmMetamodel.hasTUID(component)
+		);
 	}
 	
 	@Test

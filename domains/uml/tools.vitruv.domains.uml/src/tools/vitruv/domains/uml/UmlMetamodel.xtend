@@ -6,7 +6,6 @@ import tools.vitruv.framework.metamodel.Metamodel
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver
 import tools.vitruv.framework.util.datatypes.VURI
-import com.google.common.collect.Sets
 
 class UmlMetamodel extends Metamodel {
 	public static val NAMESPACE_URIS = UMLPackage.eINSTANCE.nsURIsRecursive;
@@ -14,10 +13,10 @@ class UmlMetamodel extends Metamodel {
 	private static UmlMetamodel instance;
 
 	private new() {
-		super(Sets.newHashSet(NAMESPACE_URIS), VURI::getInstance(NAMESPACE_URIS.get(0)), FILE_EXTENSION);
+		super(VURI.getInstance(UMLPackage.eNS_URI), NAMESPACE_URIS, generateTuidCalculator(), FILE_EXTENSION);
 	}
 
-	override protected TUIDCalculatorAndResolver generateTuidCalculator(String nsPrefix) {
+	def protected static TUIDCalculatorAndResolver generateTuidCalculator() {
 		return new AttributeTUIDCalculatorAndResolver(UMLPackage.eNS_URI, #[UMLPackage.Literals.NAMED_ELEMENT__NAME.getName()]);
 	}
 

@@ -15,6 +15,7 @@ import java.util.List
 import allElementTypes.Identified
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver
 
 abstract class AbstractAllElementTypesReactionsTests extends AbstractReactionsTests {
 	protected static val MODEL_FILE_EXTENSION = "minimalAllElements";
@@ -26,7 +27,9 @@ abstract class AbstractAllElementTypesReactionsTests extends AbstractReactionsTe
 		metamodelNSUris.addAll(Arrays.asList(AllElementTypesPackage.eNS_URI));
 		val String[] fileExtensions = newArrayOfSize(1);
 		fileExtensions.set(0, MODEL_FILE_EXTENSION);
-		val minimalMetamodel = new Metamodel(metamodelNSUris, metamodelUri, fileExtensions);
+		val minimalMetamodel = new Metamodel(metamodelUri, metamodelNSUris, 
+			new AttributeTUIDCalculatorAndResolver(AllElementTypesPackage.eNS_URI, AllElementTypesPackage.Literals.IDENTIFIED__ID.name),
+			fileExtensions);
 		return #[minimalMetamodel];
 	}
 
