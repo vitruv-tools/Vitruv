@@ -20,7 +20,7 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import tools.vitruv.applications.pcmjava.util.java2pcm.TypeReferenceCorrespondenceHelper
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
-import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.java.JavaNamespace
 import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
@@ -77,7 +77,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 		EReference affectedReference, EObject oldValue, EObject newValue) {
 		val transformationResult = new ChangePropagationResult
 		if (oldAffectedEObject instanceof Method &&
-			affectedReference.name.equals(JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE) &&
+			affectedReference.name.equals(JavaNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE) &&
 			newValue instanceof TypeReference) {
 			val correspondingPCMSignatures = correspondenceModel.
 				getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
@@ -142,7 +142,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		if(affectedReference.name != JaMoPPNamespace.JAMOPP_STATEMENTS_REFERENCE){
+		if(affectedReference.name != JavaNamespace.JAMOPP_STATEMENTS_REFERENCE){
 			val oldTUID = correspondenceModel.calculateTUIDFromEObject(oldAffectedEObject)
 			PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, correspondenceModel)
 			oldTUID.updateTuid(oldAffectedEObject)

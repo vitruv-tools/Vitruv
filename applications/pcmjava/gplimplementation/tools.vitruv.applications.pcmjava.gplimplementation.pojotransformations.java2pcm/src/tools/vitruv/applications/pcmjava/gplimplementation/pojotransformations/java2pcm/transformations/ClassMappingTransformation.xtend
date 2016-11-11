@@ -26,7 +26,7 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
-import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.java.JavaNamespace
 import tools.vitruv.framework.util.command.ChangePropagationResult
 
 /**
@@ -203,7 +203,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		var EObject eObjectToSave = null
 		val affectedClass = newAffectedEObject as ConcreteClassifier
 		if (!components.nullOrEmpty &&
-			JaMoPPNamespace.JAMOPP_ANNOTATIONS_AND_MODIFIERS_REFERENCE_NAME.equals(affectedReference.name) &&
+			JavaNamespace.JAMOPP_ANNOTATIONS_AND_MODIFIERS_REFERENCE_NAME.equals(affectedReference.name) &&
 			(oldValue instanceof PublicImpl)) {
 			val component = components.get(0)
 			val msg = "Public modifier has been removed from " + affectedClass.name + "."
@@ -221,7 +221,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 				}
 			}
 		} else if (!components.nullOrEmpty &&
-			JaMoPPNamespace.JAMOPP_MEMBERS_REFERENCE.equals(affectedReference.name) &&
+			JavaNamespace.JAMOPP_MEMBERS_REFERENCE.equals(affectedReference.name) &&
 			oldValue instanceof Field) {
 			PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, correspondenceModel)
 

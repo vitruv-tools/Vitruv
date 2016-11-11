@@ -16,7 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  tools.vitruv.framework.util,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.tuid,
- tools.vitruv.domains.java.util,
  tools.vitruv.domains.pcm.util
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

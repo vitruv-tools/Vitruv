@@ -21,7 +21,7 @@ import org.palladiosimulator.pcm.repository.OperationInterface
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
-import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.java.JavaNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.framework.util.command.ChangePropagationResult
@@ -47,7 +47,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		correspondingInterface.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
 		var CompilationUnit correspondingCompilationUnit = ContainersFactory.eINSTANCE.createCompilationUnit
 		correspondingCompilationUnit.name = operationInterface.entityName + "." +
-			JaMoPPNamespace.JAVA_FILE_EXTENSION
+			JavaNamespace.FILE_EXTENSION
 		correspondingCompilationUnit.classifiers.add(correspondingInterface)
 
 		// add compilation unit to contracts package, which correspondent to the repository

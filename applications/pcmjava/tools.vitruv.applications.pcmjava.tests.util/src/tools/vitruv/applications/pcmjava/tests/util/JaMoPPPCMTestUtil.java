@@ -14,7 +14,7 @@ import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 
 import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
-import tools.vitruv.domains.java.util.JaMoPPNamespace;
+import tools.vitruv.domains.java.JavaNamespace;
 import tools.vitruv.domains.pcm.PcmNamespace;
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import tools.vitruv.framework.metamodel.Metamodel;
@@ -48,7 +48,7 @@ public final class JaMoPPPCMTestUtil {
 
         // register JaMoPP package and factory globally
         EPackage.Registry.INSTANCE.put(JavaPackage.eNS_URI, JavaPackage.eINSTANCE);
-        m.put(JaMoPPNamespace.JAVA_FILE_EXTENSION, new JavaResourceFactory());
+        m.put(JavaNamespace.FILE_EXTENSION, new JavaResourceFactory());
         // register PCM
         EPackage.Registry.INSTANCE.put(PcmPackage.eNS_URI, PcmPackage.eINSTANCE);
         m.put(PcmNamespace.REPOSITORY_FILE_EXTENSION, new PcmResourceFactoryImpl());

@@ -26,7 +26,7 @@ import org.somox.sourcecodedecorator.MethodLevelSourceCodeLink
 import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.domains.pcm.PcmNamespace
-import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.java.JavaNamespace
 import tools.vitruv.framework.vsum.InternalVirtualModel
 
 /**
@@ -55,7 +55,7 @@ class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorrespondenceMode
 		
 		// Initialize CorrepondenceInstance for PCM <-> JaMoPP mappings
 		var mmUriA = VURI.getInstance(PcmNamespace.METAMODEL_NAMESPACE)
-		var mmURiB = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
+		var mmURiB = VURI.getInstance(JavaNamespace.METAMODEL_NAMESPACE)
 		this.cInstance = vsum.getCorrespondenceModel(mmUriA, mmURiB);
 		
 		this.scdmPath = scdmPath;

@@ -20,7 +20,7 @@ import org.palladiosimulator.pcm.repository.DataType
 import org.palladiosimulator.pcm.repository.InnerDeclaration
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import tools.vitruv.domains.pcm.PcmNamespace
-import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.java.JavaNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
 import tools.vitruv.framework.util.command.ChangePropagationResult
@@ -38,7 +38,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		var innerDatatypeAttribute = RepositoryFactory.eINSTANCE.createInnerDeclaration.eClass.EAllReferences.filter[attribute|
 			attribute.name.equals(PcmNamespace.DATATYPE_INNERDECLARATION)].iterator.next
 		var typeRefAttribute = MembersFactory.eINSTANCE.createClassMethod.eClass.EAllReferences.filter[attribute|
-			attribute.name.equals(JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE)].iterator.next
+			attribute.name.equals(JavaNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE)].iterator.next
 		featureCorrespondenceMap.put(innerDatatypeAttribute, typeRefAttribute)
 	}
 

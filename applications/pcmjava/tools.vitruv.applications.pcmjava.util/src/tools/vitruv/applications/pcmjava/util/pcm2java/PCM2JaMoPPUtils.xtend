@@ -69,10 +69,10 @@ import org.emftext.language.java.modifiers.Public
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
-import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.domains.pcm.PcmNamespace
+import tools.vitruv.domains.java.JavaNamespace
 
 abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCM2JaMoPPUtils.simpleName)
@@ -93,7 +93,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 
 	def static addEntityName2NameCorrespondence(Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap) {
 		addPCM2JaMoPPCorrespondenceToFeatureCorrespondenceMap(PcmNamespace.PCM_ATTRIBUTE_ENTITY_NAME,
-			JaMoPPNamespace.JAMOPP_ATTRIBUTE_NAME, featureCorrespondenceMap)
+			JavaNamespace.JAMOPP_ATTRIBUTE_NAME, featureCorrespondenceMap)
 	}
 
 	def static updateNameAttribute(
@@ -198,7 +198,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 				javaRoot.namespaces.add(newValue.toString)
 				newName = newName + "Impl"
 			}
-			newName = newName + "." + JaMoPPNamespace.JAVA_FILE_EXTENSION
+			newName = newName + "." + JavaNamespace.FILE_EXTENSION
 			handleClassifierNameChange((javaRoot as CompilationUnit).classifiers.get(0), newValue,
 				correspondenceModel, changeNamespanceIfCompilationUnit, oldClassifierTUID)
 		}

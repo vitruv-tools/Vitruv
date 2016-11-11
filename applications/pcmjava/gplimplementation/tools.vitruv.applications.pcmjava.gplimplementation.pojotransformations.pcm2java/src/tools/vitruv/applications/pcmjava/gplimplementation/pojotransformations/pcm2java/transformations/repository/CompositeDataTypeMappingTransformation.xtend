@@ -15,7 +15,7 @@ import org.emftext.language.java.containers.JavaRoot
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
-import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.java.JavaNamespace
 import tools.vitruv.domains.pcm.PcmNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
@@ -53,7 +53,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 
 		var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(correspondenceModel,
 			cdt.repository__DataType, cdt.entityName, userInteracting)
-		compUnit.name = cdt.entityName + "." + JaMoPPNamespace.JAVA_FILE_EXTENSION
+		compUnit.name = cdt.entityName + "." + JavaNamespace.FILE_EXTENSION
 		if (null != datatypePackage) {
 			compUnit.namespaces.addAll(datatypePackage.namespaces)
 			compUnit.namespaces.add(datatypePackage.name)

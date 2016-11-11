@@ -83,10 +83,10 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.system.System;
 
-import tools.vitruv.domains.java.util.JaMoPPNamespace;
 import tools.vitruv.domains.pcm.PcmNamespace;
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import tools.vitruv.domains.emf.util.BuildProjects;
+import tools.vitruv.domains.java.JavaNamespace;
 import tools.vitruv.domains.java.builder.JavaAddBuilder;
 import tools.vitruv.domains.java.builder.JavaBuilder;
 import tools.vitruv.domains.java.builder.JavaRemoveBuilder;
@@ -153,7 +153,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 
 	@Override
 	protected CorrespondenceModel getCorrespondenceModel() throws CoreException  {
-		final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
+		final VURI jaMoPPVURI = VURI.getInstance(JavaNamespace.METAMODEL_NAMESPACE);
 		final VURI pcmVURI = VURI.getInstance(PcmNamespace.METAMODEL_NAMESPACE);
 		final CorrespondenceModel corresponcenceInstance = getVirtualModel().getCorrespondenceModel(pcmVURI, jaMoPPVURI);
 		return corresponcenceInstance;
@@ -401,7 +401,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 
 	private VURI getVURIForElementInPackage(final IPackageFragment packageFragment, final String elementName) {
 		String vuriKey = packageFragment.getResource().getFullPath().toString() + "/" + elementName + "."
-				+ JaMoPPNamespace.JAVA_FILE_EXTENSION;
+				+ JavaNamespace.FILE_EXTENSION;
 		if (vuriKey.startsWith("/")) {
 			vuriKey = vuriKey.substring(1, vuriKey.length());
 		}

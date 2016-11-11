@@ -16,7 +16,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import tools.vitruv.domains.pcm.PcmNamespace
-import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.java.JavaNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil
@@ -116,9 +116,9 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		val EStructuralFeature pcmDataTypeAttribute = EObjectUtil.
 			getReferenceByName(pcmDummyParam, PcmNamespace.PCM_PARAMETER_ATTRIBUTE_DATA_TYPE);
 		val jaMoPPTypeReference = EObjectUtil.getReferenceByName(
-			jaMoPPDummyParam, JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE)
+			jaMoPPDummyParam, JavaNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE)
 		val EStructuralFeature pcmParameterNameAttribute = EObjectUtil.getAttributeByName(pcmDummyParam, PcmNamespace.PCM_ATTRIBUTE_ENTITY_NAME)
-		val EStructuralFeature jaMoPPParammeterNameAttribute = EObjectUtil.getAttributeByName(jaMoPPDummyParam, JaMoPPNamespace.JAMOPP_ATTRIBUTE_NAME)
+		val EStructuralFeature jaMoPPParammeterNameAttribute = EObjectUtil.getAttributeByName(jaMoPPDummyParam, JavaNamespace.JAMOPP_ATTRIBUTE_NAME)
 		featureCorrespondenceMap.put(pcmDataTypeAttribute, jaMoPPTypeReference)
 		featureCorrespondenceMap.put(pcmParameterNameAttribute, jaMoPPParammeterNameAttribute)
 	}

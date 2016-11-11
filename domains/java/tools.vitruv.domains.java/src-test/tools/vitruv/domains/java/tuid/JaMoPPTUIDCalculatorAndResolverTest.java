@@ -28,8 +28,8 @@ import org.emftext.language.java.statements.ExpressionStatement;
 import org.junit.Before;
 import org.junit.Test;
 
-import tools.vitruv.domains.java.util.JaMoPPNamespace;
 import tools.vitruv.framework.util.datatypes.VURI;
+import static tools.vitruv.domains.java.JavaNamespace.*;
 
 public class JaMoPPTUIDCalculatorAndResolverTest {
 
@@ -66,7 +66,7 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
 
         // register JaMoPP package and factory globally
         EPackage.Registry.INSTANCE.put(JavaPackage.eNS_URI, JavaPackage.eINSTANCE);
-        m.put(JaMoPPNamespace.JAVA_FILE_EXTENSION, new JavaResourceFactory());
+        m.put(FILE_EXTENSION, new JavaResourceFactory());
         m.put("xmi", new XMIResourceFactoryImpl());
     }
 

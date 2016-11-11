@@ -9,7 +9,7 @@ import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.applications.pcmjava.linkingintegration.change2command.internal.IntegrationChange2CommandResult
 import tools.vitruv.framework.util.datatypes.MetamodelPair
-import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.java.JavaNamespace
 import tools.vitruv.domains.pcm.PcmNamespace
 import tools.vitruv.framework.change.processing.impl.AbstractChangePropagationSpecification
 import tools.vitruv.framework.util.command.ChangePropagationResult
@@ -20,7 +20,7 @@ class CodeIntegrationChangeProcessor extends AbstractChangePropagationSpecificat
 	
 	new(UserInteracting userInteracting) {
 		super(userInteracting);
-		this.metamodelPair = new MetamodelPair(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE, PcmNamespace.METAMODEL_NAMESPACE);
+		this.metamodelPair = new MetamodelPair(JavaNamespace.METAMODEL_NAMESPACE, PcmNamespace.METAMODEL_NAMESPACE);
 		this.integrationTransformer = new IntegrationChange2CommandTransformer(getUserInteracting());
 	}
 	

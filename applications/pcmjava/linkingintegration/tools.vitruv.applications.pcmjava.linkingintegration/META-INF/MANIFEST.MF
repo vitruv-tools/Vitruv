@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.xtend.lib,
  tools.vitruv.extensions.dslsruntime.reactions,
  tools.vitruv.domains.pcm,
  tools.vitruv.domains.pcm.util,
- tools.vitruv.domains.java.util,
+ tools.vitruv.domains.java,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.correspondence
 Export-Package: tools.vitruv.applications.pcmjava.linkingintegration

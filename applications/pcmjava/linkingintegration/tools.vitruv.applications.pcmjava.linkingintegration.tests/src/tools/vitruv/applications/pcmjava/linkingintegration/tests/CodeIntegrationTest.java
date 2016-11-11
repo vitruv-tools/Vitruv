@@ -31,7 +31,7 @@ import tools.vitruv.applications.pcmjava.linkingintegration.tests.util.CodeInteg
 import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.domains.java.builder.JavaAddBuilder;
 import tools.vitruv.domains.java.builder.JavaBuilder;
-import tools.vitruv.domains.java.util.JaMoPPNamespace;
+import tools.vitruv.domains.java.JavaNamespace;
 import tools.vitruv.domains.pcm.PcmNamespace;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
@@ -188,7 +188,7 @@ public class CodeIntegrationTest {
     }
 
     protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
-        final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
+        final VURI jaMoPPVURI = VURI.getInstance(JavaNamespace.METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PcmNamespace.METAMODEL_NAMESPACE);
         final CorrespondenceModel corresponcenceInstance = virtualModel
                 .getCorrespondenceModel(pcmVURI, jaMoPPVURI);

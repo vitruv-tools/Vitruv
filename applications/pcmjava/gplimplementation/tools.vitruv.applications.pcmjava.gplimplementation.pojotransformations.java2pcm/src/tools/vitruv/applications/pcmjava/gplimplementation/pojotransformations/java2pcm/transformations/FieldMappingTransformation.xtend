@@ -21,7 +21,7 @@ import static extension tools.vitruv.framework.correspondence.CorrespondenceMode
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import tools.vitruv.applications.pcmjava.util.java2pcm.TypeReferenceCorrespondenceHelper
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
-import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.java.JavaNamespace
 import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
@@ -119,7 +119,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 	override replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, EObject newValue) {
 		val transformationResult = new ChangePropagationResult
-		if (affectedReference.name.equals(JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE) &&
+		if (affectedReference.name.equals(JavaNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE) &&
 			newValue instanceof TypeReference) {
 			val newTypeReference = newValue as TypeReference
 

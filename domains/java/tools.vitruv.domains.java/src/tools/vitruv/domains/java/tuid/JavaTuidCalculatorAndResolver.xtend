@@ -25,6 +25,7 @@ import org.emftext.language.java.types.ClassifierReference
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
 import tools.vitruv.framework.tuid.HierarchicalTUIDCalculatorAndResolver
+import static tools.vitruv.domains.java.JavaNamespace.*
 
 /**
  * TUID calculator and resolver for the JaMoPP meta-model. 
@@ -44,10 +45,9 @@ class JavaTuidCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolve
 	private val String IDENTIFIER_REFERENCE_SELECTOR = "identifierReference"
 	private val String NEW_CONSTRUCTOR_CALL_SELECTOR = "newConstructorCall"
 	private val String CONDITIONAL_EXPRESSION_SELECTOR = "conditionalExpression"
-	private static val String NS_URI = "http://www.emftext.org/java"
 	
 	new() {
-		super(NS_URI)
+		super(METAMODEL_NAMESPACE)
 	}
 
 	// ============================================================================
