@@ -4,7 +4,7 @@ import tools.vitruv.framework.metamodel.Metamodel
 import com.google.common.collect.Sets
 import tools.vitruv.framework.util.datatypes.VURI
 import org.emftext.language.java.JavaPackage
-import tools.vitruv.domains.java.util.jamopp.JaMoPPTUIDCalculatorAndResolver
+import tools.vitruv.domains.java.tuid.JavaTuidCalculatorAndResolver
 
 class JavaMetamodel extends Metamodel {
 	package new() {
@@ -14,7 +14,7 @@ class JavaMetamodel extends Metamodel {
 	}
 	
 	override protected generateTuidCalculator(String nsPrefix) {
-		return new JaMoPPTUIDCalculatorAndResolver();
+		return new JavaTuidCalculatorAndResolver();
 	}
 	
 }

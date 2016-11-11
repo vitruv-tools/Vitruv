@@ -11,6 +11,5 @@ Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.xtext.xbase.lib,
  org.apache.commons.lang;bundle-version="2.6.0",
  tools.vitruv.framework.tuid
-Export-Package: tools.vitruv.domains.java.util.jamopp,
- tools.vitruv.domains.java.util
+Export-Package: tools.vitruv.domains.java.util
 

@@ -13,6 +13,10 @@ Require-Bundle: tools.vitruv.framework.metamodel,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,
  tools.vitruv.domains.java.util,
- org.junit4
+ org.apache.log4j,
+ org.apache.commons.lang,
+ org.junit,
+ org.emftext.language.java.resource.java,
+ org.eclipse.emf.ecore.xmi
 Export-Package: tools.vitruv.domains.java
 

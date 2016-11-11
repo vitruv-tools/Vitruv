@@ -1,4 +1,4 @@
-package tools.vitruv.domains.java.util.jamopp
+package tools.vitruv.domains.java.tuid
 
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -29,9 +29,9 @@ import tools.vitruv.framework.tuid.HierarchicalTUIDCalculatorAndResolver
 /**
  * TUID calculator and resolver for the JaMoPP meta-model. 
  */
-class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver<JavaRoot> {
+class JavaTuidCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver<JavaRoot> {
 
-	private val static Logger logger = Logger.getLogger(JaMoPPTUIDCalculatorAndResolver);
+	private val static Logger logger = Logger.getLogger(JavaTuidCalculatorAndResolver);
 
 	private val String CLASSIFIER_SELECTOR = "classifier"
 	private val String IMPORT_SELECTOR = "import"

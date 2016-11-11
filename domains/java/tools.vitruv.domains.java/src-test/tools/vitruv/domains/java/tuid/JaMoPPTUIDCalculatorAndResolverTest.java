@@ -1,30 +1,34 @@
-package tools.vitruv.applications.pcmjava.tests.jamoppuidcalculatorandresolver;
+package tools.vitruv.domains.java.tuid;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.emftext.language.java.JavaPackage;
 import org.emftext.language.java.classifiers.Classifier;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
+import org.emftext.language.java.resource.java.mopp.JavaResourceFactory;
 import org.emftext.language.java.statements.ExpressionStatement;
 import org.junit.Before;
 import org.junit.Test;
 
-import tools.vitruv.applications.pcmjava.tests.util.JaMoPPPCMTestUtil;
-import tools.vitruv.domains.java.util.jamopp.JaMoPPTUIDCalculatorAndResolver;
+import tools.vitruv.domains.java.util.JaMoPPNamespace;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public class JaMoPPTUIDCalculatorAndResolverTest {
@@ -33,15 +37,15 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
 
     private EObject jaMoPPCompilationUnit;
     private EObject jaMoPPPackage;
-    private JaMoPPTUIDCalculatorAndResolver jamoppTUIDCR;
+    private JavaTuidCalculatorAndResolver jamoppTUIDCR;
     private VURI compUnitUri;
     private VURI packageUri;
 
     @Before
     public void setUp() throws Exception {
-        this.jamoppTUIDCR = new JaMoPPTUIDCalculatorAndResolver();
+        this.jamoppTUIDCR = new JavaTuidCalculatorAndResolver();
         Logger.getRootLogger().addAppender(new ConsoleAppender());
-        JaMoPPPCMTestUtil.registerMetamodels();
+        registerMetamodels();
 
         // create new ResourceSet
         final ResourceSet resSet = new ResourceSetImpl();
@@ -51,6 +55,19 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
         this.jaMoPPCompilationUnit = this.getRootJaMoPPObjectFromURIStr(resSet, this.compUnitUri);
         this.packageUri = VURI.getInstance("MockupProject/src-test/package-info.java");
         this.jaMoPPPackage = this.getRootJaMoPPObjectFromURIStr(resSet, this.packageUri);
+    }
+    
+    /**
+     * Register JaMoPP, PCM and Correspondence packages to use these models in a non-Plugin test.
+     */
+    public static void registerMetamodels() {
+        final Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
+        final Map<String, Object> m = reg.getExtensionToFactoryMap();
+
+        // register JaMoPP package and factory globally
+        EPackage.Registry.INSTANCE.put(JavaPackage.eNS_URI, JavaPackage.eINSTANCE);
+        m.put(JaMoPPNamespace.JAVA_FILE_EXTENSION, new JavaResourceFactory());
+        m.put("xmi", new XMIResourceFactoryImpl());
     }
 
     public EObject getRootJaMoPPObjectFromURIStr(final ResourceSet resSet, final VURI uri) {
