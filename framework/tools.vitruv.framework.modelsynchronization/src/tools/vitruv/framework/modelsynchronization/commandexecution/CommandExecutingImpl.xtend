@@ -48,6 +48,7 @@ class CommandExecutingImpl implements CommandExecuting {
 				}
 			}
 		}
+		// FIXME This should be done by the VSUM, not by the command executor«
 		modelRepository.saveAllModels();
 	}
 
