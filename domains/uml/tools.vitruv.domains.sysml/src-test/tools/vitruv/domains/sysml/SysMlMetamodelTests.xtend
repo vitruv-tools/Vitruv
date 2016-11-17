@@ -12,9 +12,17 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import java.util.ArrayList
 import java.util.List
+import org.junit.Before
 
 class SysMlMetamodelTests {
 	private static val TEST_CLASS_NAME = "Test";
+	private var SysMlMetamodel sysMlMetamodel;
+	
+	@Before
+	public def void setup() {
+		TuidManager.instance.reinitialize
+		sysMlMetamodel = new SysMlDomain().metamodel;
+	}
 	
 	@Test
 	public def void testTuidCalculationForUmlElemente() {
@@ -30,22 +38,20 @@ class SysMlMetamodelTests {
 	public def void testTuidCalculationForSysMlElements() {
 		val block = createBlock();
 		testTuid(block, TEST_CLASS_NAME);
-		Assert.assertEquals(SysMlMetamodel.instance.calculateTuid(block), SysMlMetamodel.instance.calculateTuid(block.base_Class));
+		Assert.assertEquals(sysMlMetamodel.calculateTuid(block), sysMlMetamodel.calculateTuid(block.base_Class));
 	}
 	
 	@Test
 	public def void testResponsibilityChecks() {
 		val block = createBlock();
-		Assert.assertTrue(SysMlMetamodel.instance.hasMetaclassInstances(#[block]));
-		Assert.assertTrue(SysMlMetamodel.instance.hasMetaclassInstances(#[block.base_Class]));
-		Assert.assertTrue(SysMlMetamodel.instance.hasTUID(block));
-		Assert.assertTrue(SysMlMetamodel.instance.hasTUID(block.base_Class));
+		Assert.assertTrue(sysMlMetamodel.hasMetaclassInstances(#[block]));
+		Assert.assertTrue(sysMlMetamodel.hasMetaclassInstances(#[block.base_Class]));
+		Assert.assertTrue(sysMlMetamodel.hasTUID(block));
+		Assert.assertTrue(sysMlMetamodel.hasTUID(block.base_Class));
 	}
 	
 	@Test
 	public def void testTuidUpdate() {
-		// We have to initialize the metamodel, so that it is registered for TUID calculation
-		SysMlMetamodel.instance;
 		val List<String> tuids = new ArrayList<String>();
 		val dummyTuidUpdateListener = new TuidUpdateListener() {
 			override performPreAction(TUID oldTUID) {
@@ -85,7 +91,7 @@ class SysMlMetamodelTests {
 	}
 	
 	private def void assertTuid(EObject object, String expectedNamespaceUri, String expectedIdentifier) {
-		val tuid = SysMlMetamodel.getInstance().calculateTuid(object).toString;
+		val tuid = sysMlMetamodel.calculateTuid(object).toString;
 		assertTuid(tuid, expectedNamespaceUri, expectedIdentifier);
 	}
 	
@@ -97,10 +103,4 @@ class SysMlMetamodelTests {
 		Assert.assertEquals(expectedIdentifier, tuidFragments.get(2));
 	}
 	
-	@Test
-	public def void testSingletonRealization() {
-		val instance1 = SysMlMetamodel.instance;
-		val instance2 = SysMlMetamodel.instance;
-		Assert.assertEquals(instance1, instance2);
-	}
 }

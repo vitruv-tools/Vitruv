@@ -12,10 +12,9 @@ import static tools.vitruv.domains.sysml.SysMlNamspace.*;
 
 class SysMlMetamodel extends Metamodel {
 	public static val NAMESPACE_URIS = ROOT_PACKAGE.nsURIsRecursive;
-	private static SysMlMetamodel instance;
 	private val extension SysMlToUmlResolver sysMlToUmlResolver;
 	
-	private new() {
+	package new() {
 		super(VURI.getInstance(METAMODEL_NAMESPACE), newHashSet(UmlMetamodel.NAMESPACE_URIS + NAMESPACE_URIS),
 			generateTuidCalculator(), FILE_EXTENSION
 		);
@@ -33,11 +32,4 @@ class SysMlMetamodel extends Metamodel {
 		super.hasMetaclassInstances(eObjects.map[stereotypedObject])
 	}
 
-	def public static synchronized SysMlMetamodel getInstance() {
-		if (instance === null) {
-			instance = new SysMlMetamodel()
-		}
-		return instance;
-	}
-	
 }
