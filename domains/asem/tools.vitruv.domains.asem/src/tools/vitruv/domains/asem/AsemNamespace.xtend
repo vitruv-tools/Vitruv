@@ -3,7 +3,7 @@ package tools.vitruv.domains.asem
 import org.eclipse.emf.ecore.EPackage
 import edu.kit.ipd.sdq.ASEM.ASEMPackage
 
-class AsemNamespace {
+final class AsemNamespace {
 	private new() {
 	}
 
