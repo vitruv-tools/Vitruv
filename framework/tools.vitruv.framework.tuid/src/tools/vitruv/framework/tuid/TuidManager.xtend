@@ -6,8 +6,10 @@ import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import java.util.HashMap
 import tools.vitruv.framework.util.XtendAssertHelper
+import org.apache.log4j.Logger
 
 final class TuidManager {
+	private static val logger = Logger.getLogger(TuidManager);
 	private static val instance = new TuidManager();
 	private val List<TuidCalculator> tuidCalculator;
 	private val List<TuidUpdateListener> tuidUpdateListener;
@@ -92,6 +94,7 @@ final class TuidManager {
 			if (hasTuidCalculator(object)) {
 				val newTuid = object.calculateTuid
 				oldTuid.updateTuid(newTuid);
+				logger.debug("Changed TUID from " + oldTuid + " to " + newTuid);
 				XtendAssertHelper.assertTrue(oldTuid.equals(newTuid));
 			}
 		}
