@@ -1,11 +1,11 @@
-package tools.vitruv.domains.asem.metamodel
+package tools.vitruv.domains.asem
 
 import tools.vitruv.framework.metamodel.Metamodel
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver
 import edu.kit.ipd.sdq.ASEM.base.BasePackage
 import tools.vitruv.framework.util.datatypes.VURI
-import static tools.vitruv.domains.asem.metamodel.AsemNamespace.*;
+import static tools.vitruv.domains.asem.AsemNamespace.*;
 
 class AsemMetamodel extends Metamodel {
 	package new() {

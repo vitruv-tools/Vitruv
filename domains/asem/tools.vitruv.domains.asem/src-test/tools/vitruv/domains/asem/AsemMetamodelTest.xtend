@@ -1,4 +1,4 @@
-package tools.vitruv.domains.asem.metamodel
+package tools.vitruv.domains.asem
 
 import org.junit.Test
 import org.junit.Assert
