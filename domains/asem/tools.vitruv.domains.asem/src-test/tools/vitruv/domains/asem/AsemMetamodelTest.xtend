@@ -11,6 +11,7 @@ import edu.kit.ipd.sdq.ASEM.dataexchange.DataexchangeFactory
 import edu.kit.ipd.sdq.ASEM.primitivetypes.PrimitivetypesFactory
 import org.eclipse.emf.ecore.EObject
 import org.junit.Before
+import tools.vitruv.framework.tuid.TuidManager
 
 class AsemMetamodelTest {
 	private static val TEST_NAME = "Test";
@@ -18,6 +19,7 @@ class AsemMetamodelTest {
 	
 	@Before
 	public def void setup() {
+		TuidManager.instance.reinitialize();
 		asemMetamodel = new AsemDomain().metamodel;
 	}
 	
