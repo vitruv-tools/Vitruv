@@ -586,6 +586,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 			// re-add the entry that maps the tuid to the set if tuid lists that contain it
 			tuid2tuidListsMap.put(tuid, newSetOfoldTUIDLists)
 			tuidUpdateData = null;
+			setChangeAfterLastSaveFlag();
 			return null;
 		]);
 	}
