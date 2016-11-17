@@ -1,10 +1,10 @@
-package tools.vitruv.domains.sysml
+package tools.vitruv.domains.sysml.tuid
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.papyrus.sysml14.blocks.Block
 import org.eclipse.papyrus.sysml14.blocks.ValueType
 
-package final class SysMlToUmlResolver {
+final class SysMlToUmlResolver {
 	private static SysMlToUmlResolver instance;
 	
 	private new() {}
@@ -16,15 +16,15 @@ package final class SysMlToUmlResolver {
 		return instance;
 	}
 	
-	def protected dispatch EObject getStereotypedObject(EObject object) throws IllegalArgumentException {
+	def dispatch EObject getStereotypedObject(EObject object) throws IllegalArgumentException {
 		return object;
 	}
 	
-	def protected dispatch EObject getStereotypedObject(Block block) throws IllegalArgumentException {
+	def dispatch EObject getStereotypedObject(Block block) throws IllegalArgumentException {
 		return block.base_Class;
 	}
 	
-	def protected dispatch EObject getStereotypedObject(ValueType valueType) throws IllegalArgumentException {
+	def dispatch EObject getStereotypedObject(ValueType valueType) throws IllegalArgumentException {
 		return valueType.base_DataType;
 	}
 }

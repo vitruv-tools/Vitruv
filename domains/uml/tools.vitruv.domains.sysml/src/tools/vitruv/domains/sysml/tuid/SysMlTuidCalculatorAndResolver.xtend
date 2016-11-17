@@ -1,10 +1,11 @@
-package tools.vitruv.domains.sysml
+package tools.vitruv.domains.sysml.tuid
 
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.uml2.uml.UMLPackage
+import tools.vitruv.domains.sysml.SysMlMetamodel
 
-package class SysMlTuidCalculatorAndResolver extends AttributeTUIDCalculatorAndResolver {
+class SysMlTuidCalculatorAndResolver extends AttributeTUIDCalculatorAndResolver {
 	private val extension SysMlToUmlResolver sysMlToUmlResolver;
 	//private val UmlMetamodel umlMetamodel;
 	
@@ -23,7 +24,7 @@ package class SysMlTuidCalculatorAndResolver extends AttributeTUIDCalculatorAndR
 	}
 	
 	override calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
-		if (SysMlMetamodel.NAMESPACE_URIS.contains(eObject.eClass.EPackage.nsURI)) {
+		if (SysMlMetamodel.NAMESPACE_URIS.contains(eObject.eClass.getEPackage.nsURI)) {
 			super.calculateTUIDFromEObject(eObject.stereotypedObject, virtualRootObject, prefix);
 		} else {
 			super.calculateTUIDFromEObject(eObject, virtualRootObject, prefix);
