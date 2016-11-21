@@ -19,7 +19,7 @@ class CreateRootTestReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    InsertRootEObject<Root> typedChange = (InsertRootEObject<Root>)change;
+    InsertRootEObject<allElementTypes.Root> typedChange = (InsertRootEObject<allElementTypes.Root>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

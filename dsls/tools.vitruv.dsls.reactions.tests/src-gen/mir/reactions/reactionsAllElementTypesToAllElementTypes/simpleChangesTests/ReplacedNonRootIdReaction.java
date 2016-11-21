@@ -19,7 +19,7 @@ class ReplacedNonRootIdReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<NonRoot, String> typedChange = (ReplaceSingleValuedEAttribute<NonRoot, String>)change;
+    ReplaceSingleValuedEAttribute<allElementTypes.NonRoot, java.lang.String> typedChange = (ReplaceSingleValuedEAttribute<allElementTypes.NonRoot, java.lang.String>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootIdReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootIdReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

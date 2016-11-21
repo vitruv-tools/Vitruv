@@ -19,7 +19,7 @@ class InsertedEAttributeValueReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    InsertEAttributeValue<Root, Integer> typedChange = (InsertEAttributeValue<Root, Integer>)change;
+    InsertEAttributeValue<allElementTypes.Root, java.lang.Integer> typedChange = (InsertEAttributeValue<allElementTypes.Root, java.lang.Integer>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedEAttributeValueReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedEAttributeValueReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

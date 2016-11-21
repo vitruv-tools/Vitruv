@@ -20,7 +20,7 @@ class DeletedNonRootEObjectInListReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    RemoveEReference<Root, NonRoot> typedChange = (RemoveEReference<Root, NonRoot>)change;
+    RemoveEReference<allElementTypes.Root, allElementTypes.NonRoot> typedChange = (RemoveEReference<allElementTypes.Root, allElementTypes.NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeletedNonRootEObjectInListReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeletedNonRootEObjectInListReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

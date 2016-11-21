@@ -20,7 +20,7 @@ class CreatedNonRootEObjectInListReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
+    InsertEReference<allElementTypes.Root, allElementTypes.NonRoot> typedChange = (InsertEReference<allElementTypes.Root, allElementTypes.NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

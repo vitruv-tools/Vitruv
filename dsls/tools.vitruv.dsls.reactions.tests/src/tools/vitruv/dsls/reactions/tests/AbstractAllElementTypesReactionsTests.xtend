@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.reactions.tests
 
-import tools.vitruv.dsls.reactions.tests.AbstractReactionsTests
 import tools.vitruv.framework.util.datatypes.VURI
 import java.util.Arrays
 import java.util.HashSet
@@ -16,8 +15,9 @@ import allElementTypes.Identified
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver
+import tools.vitruv.framework.tests.VitruviusChangePropagationTest
 
-abstract class AbstractAllElementTypesReactionsTests extends AbstractReactionsTests {
+abstract class AbstractAllElementTypesReactionsTests extends VitruviusChangePropagationTest {
 	protected static val MODEL_FILE_EXTENSION = "minimalAllElements";
 	
 	protected override createMetamodels() {

@@ -20,7 +20,7 @@ class ReplacedSingleValuedNonContainmentEReferenceReaction extends AbstractReact
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
+    ReplaceSingleValuedEReference<allElementTypes.Root, allElementTypes.NonRoot> typedChange = (ReplaceSingleValuedEReference<allElementTypes.Root, allElementTypes.NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedNonContainmentEReferenceReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedNonContainmentEReferenceReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

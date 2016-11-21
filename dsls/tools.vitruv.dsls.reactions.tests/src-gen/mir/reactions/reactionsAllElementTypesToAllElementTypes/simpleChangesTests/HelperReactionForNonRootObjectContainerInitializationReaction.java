@@ -25,7 +25,7 @@ class HelperReactionForNonRootObjectContainerInitializationReaction extends Abst
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> typedChange = (ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper>)change;
+    ReplaceSingleValuedEReference<allElementTypes.Root, allElementTypes.NonRootObjectContainerHelper> typedChange = (ReplaceSingleValuedEReference<allElementTypes.Root, allElementTypes.NonRootObjectContainerHelper>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerInitializationReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerInitializationReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
