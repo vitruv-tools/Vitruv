@@ -1,11 +1,19 @@
+# Eclipse/Java
 .metadata
 bin/
-xtend-gen/
 tmp/
-EvaluationData/
 *.tmp
 *.bak
 *.swp
 *.class
+
+# Xtend
+xtend-gen/
 *._trace
 *.xtendbin
+
+# Maven
+target/
+
+# Custom
+EvaluationData
