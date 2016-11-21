@@ -20,7 +20,7 @@ class DeletedOperationSignatureReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    RemoveEReference<OperationInterface, OperationSignature> typedChange = (RemoveEReference<OperationInterface, OperationSignature>)change;
+    RemoveEReference<org.palladiosimulator.pcm.repository.OperationInterface, org.palladiosimulator.pcm.repository.OperationSignature> typedChange = (RemoveEReference<org.palladiosimulator.pcm.repository.OperationInterface, org.palladiosimulator.pcm.repository.OperationSignature>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.DeletedOperationSignatureReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.DeletedOperationSignatureReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

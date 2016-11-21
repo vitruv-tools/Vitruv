@@ -26,7 +26,7 @@ class DeletedCollectionDataTypeReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    RemoveEReference<Repository, DataType> typedChange = (RemoveEReference<Repository, DataType>)change;
+    RemoveEReference<org.palladiosimulator.pcm.repository.Repository, org.palladiosimulator.pcm.repository.DataType> typedChange = (RemoveEReference<org.palladiosimulator.pcm.repository.Repository, org.palladiosimulator.pcm.repository.DataType>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.DeletedCollectionDataTypeReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.DeletedCollectionDataTypeReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

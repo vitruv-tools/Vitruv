@@ -19,7 +19,7 @@ class DeletedProvidedRoleFromSystemReaction extends AbstractReactionRealization 
   }
   
   public void executeReaction(final EChange change) {
-    RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole> typedChange = (RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole>)change;
+    RemoveEReference<org.palladiosimulator.pcm.system.System, org.palladiosimulator.pcm.repository.ProvidedRole> typedChange = (RemoveEReference<org.palladiosimulator.pcm.system.System, org.palladiosimulator.pcm.repository.ProvidedRole>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.DeletedProvidedRoleFromSystemReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.DeletedProvidedRoleFromSystemReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

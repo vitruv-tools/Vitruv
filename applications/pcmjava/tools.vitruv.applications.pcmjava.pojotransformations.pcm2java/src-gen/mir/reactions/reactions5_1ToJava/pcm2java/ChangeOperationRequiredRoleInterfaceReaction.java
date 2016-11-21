@@ -20,7 +20,7 @@ class ChangeOperationRequiredRoleInterfaceReaction extends AbstractReactionReali
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEReference<OperationRequiredRole, OperationInterface> typedChange = (ReplaceSingleValuedEReference<OperationRequiredRole, OperationInterface>)change;
+    ReplaceSingleValuedEReference<org.palladiosimulator.pcm.repository.OperationRequiredRole, org.palladiosimulator.pcm.repository.OperationInterface> typedChange = (ReplaceSingleValuedEReference<org.palladiosimulator.pcm.repository.OperationRequiredRole, org.palladiosimulator.pcm.repository.OperationInterface>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.ChangeOperationRequiredRoleInterfaceReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.ChangeOperationRequiredRoleInterfaceReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

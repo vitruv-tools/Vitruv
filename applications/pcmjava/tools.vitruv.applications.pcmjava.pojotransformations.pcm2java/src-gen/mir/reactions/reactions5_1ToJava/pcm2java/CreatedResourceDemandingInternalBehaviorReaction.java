@@ -20,7 +20,7 @@ class CreatedResourceDemandingInternalBehaviorReaction extends AbstractReactionR
   }
   
   public void executeReaction(final EChange change) {
-    InsertEReference<BasicComponent, ResourceDemandingInternalBehaviour> typedChange = (InsertEReference<BasicComponent, ResourceDemandingInternalBehaviour>)change;
+    InsertEReference<org.palladiosimulator.pcm.repository.BasicComponent, org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour> typedChange = (InsertEReference<org.palladiosimulator.pcm.repository.BasicComponent, org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.CreatedResourceDemandingInternalBehaviorReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.CreatedResourceDemandingInternalBehaviorReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

@@ -19,7 +19,7 @@ class RenamedCompositeDataTypeReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<CompositeDataType, String> typedChange = (ReplaceSingleValuedEAttribute<CompositeDataType, String>)change;
+    ReplaceSingleValuedEAttribute<org.palladiosimulator.pcm.repository.CompositeDataType, java.lang.String> typedChange = (ReplaceSingleValuedEAttribute<org.palladiosimulator.pcm.repository.CompositeDataType, java.lang.String>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.RenamedCompositeDataTypeReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.RenamedCompositeDataTypeReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

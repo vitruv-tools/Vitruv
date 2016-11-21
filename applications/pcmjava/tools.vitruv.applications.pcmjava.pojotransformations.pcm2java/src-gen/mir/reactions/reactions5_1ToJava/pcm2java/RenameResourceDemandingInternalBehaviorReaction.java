@@ -19,7 +19,7 @@ class RenameResourceDemandingInternalBehaviorReaction extends AbstractReactionRe
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<ResourceDemandingInternalBehaviour, String> typedChange = (ReplaceSingleValuedEAttribute<ResourceDemandingInternalBehaviour, String>)change;
+    ReplaceSingleValuedEAttribute<org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour, java.lang.String> typedChange = (ReplaceSingleValuedEAttribute<org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour, java.lang.String>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.RenameResourceDemandingInternalBehaviorReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.RenameResourceDemandingInternalBehaviorReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
-import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Pcm2JavaHelper;
+import tools.vitruv.domains.java.util.JavaPersistenceHelper;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
@@ -50,7 +50,7 @@ public class RenameJavaClassifierRoutine extends AbstractRepairRoutineRealizatio
       EList<String> _namespaces_3 = compilationUnit.getNamespaces();
       String _name = containingPackage.getName();
       _namespaces_3.add(_name);
-      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
+      String _buildJavaFilePath = JavaPersistenceHelper.buildJavaFilePath(compilationUnit);
       this.persistProjectRelative(classSourceElement, compilationUnit, _buildJavaFilePath);
     }
     

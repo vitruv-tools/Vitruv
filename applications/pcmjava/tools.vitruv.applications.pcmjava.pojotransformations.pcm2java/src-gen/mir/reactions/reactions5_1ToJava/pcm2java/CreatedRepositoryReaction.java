@@ -19,7 +19,7 @@ class CreatedRepositoryReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    InsertRootEObject<Repository> typedChange = (InsertRootEObject<Repository>)change;
+    InsertRootEObject<org.palladiosimulator.pcm.repository.Repository> typedChange = (InsertRootEObject<org.palladiosimulator.pcm.repository.Repository>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.CreatedRepositoryReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.CreatedRepositoryReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

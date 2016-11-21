@@ -7,7 +7,7 @@ import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.containers.impl.ContainersFactoryImpl;
-import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Pcm2JavaHelper;
+import tools.vitruv.domains.java.util.JavaPersistenceHelper;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
@@ -54,7 +54,7 @@ public class CreateJavaPackageRoutine extends AbstractRepairRoutineRealization {
         _namespaces_2.add(_name);
       }
       javaPackage.setName(packageName);
-      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(javaPackage);
+      String _buildJavaFilePath = JavaPersistenceHelper.buildJavaFilePath(javaPackage);
       this.persistProjectRelative(sourceElementMappedToPackage, javaPackage, _buildJavaFilePath);
     }
   }

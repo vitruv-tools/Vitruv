@@ -20,7 +20,7 @@ class ChangeOperationSignatureOfSeffReaction extends AbstractReactionRealization
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature> typedChange = (ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature>)change;
+    ReplaceSingleValuedEReference<org.palladiosimulator.pcm.seff.ResourceDemandingSEFF, org.palladiosimulator.pcm.repository.Signature> typedChange = (ReplaceSingleValuedEReference<org.palladiosimulator.pcm.seff.ResourceDemandingSEFF, org.palladiosimulator.pcm.repository.Signature>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.ChangeOperationSignatureOfSeffReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.ChangeOperationSignatureOfSeffReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

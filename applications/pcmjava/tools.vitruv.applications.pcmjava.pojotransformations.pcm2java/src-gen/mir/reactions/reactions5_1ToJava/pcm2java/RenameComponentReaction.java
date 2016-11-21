@@ -19,7 +19,7 @@ class RenameComponentReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<RepositoryComponent, String> typedChange = (ReplaceSingleValuedEAttribute<RepositoryComponent, String>)change;
+    ReplaceSingleValuedEAttribute<org.palladiosimulator.pcm.repository.RepositoryComponent, java.lang.String> typedChange = (ReplaceSingleValuedEAttribute<org.palladiosimulator.pcm.repository.RepositoryComponent, java.lang.String>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
     mir.reactions.reactions5_1ToJava.pcm2java.RenameComponentReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.RenameComponentReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);

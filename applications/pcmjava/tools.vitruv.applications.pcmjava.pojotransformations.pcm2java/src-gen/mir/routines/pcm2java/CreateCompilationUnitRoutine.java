@@ -9,7 +9,7 @@ import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.impl.ContainersFactoryImpl;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
-import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Pcm2JavaHelper;
+import tools.vitruv.domains.java.util.JavaPersistenceHelper;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
@@ -40,7 +40,7 @@ public class CreateCompilationUnitRoutine extends AbstractRepairRoutineRealizati
       compilationUnit.setName(_name_1);
       EList<ConcreteClassifier> _classifiers = compilationUnit.getClassifiers();
       _classifiers.add(classifier);
-      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
+      String _buildJavaFilePath = JavaPersistenceHelper.buildJavaFilePath(compilationUnit);
       this.persistProjectRelative(sourceElementMappedToClass, compilationUnit, _buildJavaFilePath);
     }
     
