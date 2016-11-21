@@ -17,7 +17,6 @@ import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 public class DefaultTUIDCalculatorTest extends VSUMTest {
-    @Override
     @Test
     public void testAll() {
         InternalVirtualModel vsum = createMetaRepositoryVSUMAndModelInstances();
