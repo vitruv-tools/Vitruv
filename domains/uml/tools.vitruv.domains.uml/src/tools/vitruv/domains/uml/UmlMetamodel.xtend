@@ -10,9 +10,8 @@ import tools.vitruv.framework.util.datatypes.VURI
 class UmlMetamodel extends Metamodel {
 	public static val NAMESPACE_URIS = UMLPackage.eINSTANCE.nsURIsRecursive;
 	public static final String FILE_EXTENSION = UMLResource::FILE_EXTENSION;
-	private static UmlMetamodel instance;
 
-	private new() {
+	package new() {
 		super(VURI.getInstance(UMLPackage.eNS_URI), NAMESPACE_URIS, generateTuidCalculator(), FILE_EXTENSION);
 	}
 
@@ -20,11 +19,4 @@ class UmlMetamodel extends Metamodel {
 		return new AttributeTUIDCalculatorAndResolver(UMLPackage.eNS_URI, #[UMLPackage.Literals.NAMED_ELEMENT__NAME.getName()]);
 	}
 
-	def public static synchronized UmlMetamodel getInstance() {
-		if (instance === null) {
-			instance = new UmlMetamodel()
-		}
-		return instance;
-	}
-	
 }

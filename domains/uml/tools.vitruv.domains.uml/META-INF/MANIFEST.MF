@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit, 
  org.eclipse.uml2.uml;visibility:=reexport,
- tools.vitruv.framework.metamodel,
+ tools.vitruv.framework.metamodel;visibility:=reexport,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,
  com.google.guava,
