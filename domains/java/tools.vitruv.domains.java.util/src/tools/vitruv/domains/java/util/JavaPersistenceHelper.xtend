@@ -11,7 +11,7 @@ class JavaPersistenceHelper {
 		"package-info"
 	} 
 	
-	public static def String buildJavaFilePath(String fileName, Iterable<String> namespaces) {
+	public static def String buildJavaFilePath(String fileName, String... namespaces) {
 		return '''src/«FOR namespace : namespaces SEPARATOR "/" AFTER "/"»«namespace»«ENDFOR»«fileName».java''';
 	}
 	
