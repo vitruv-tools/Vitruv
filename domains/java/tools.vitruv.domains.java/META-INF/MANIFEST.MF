@@ -14,7 +14,7 @@ Require-Bundle: com.google.guava,
  org.apache.commons.lang,
  org.junit,
  org.emftext.language.java;visibility:=reexport,
- tools.vitruv.framework.metamodel,
+ tools.vitruv.framework.metamodel;visibility:=reexport,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid
 Export-Package: tools.vitruv.domains.java

@@ -5,10 +5,10 @@ Bundle-SymbolicName: tools.vitruv.domains.asem
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit, 
- tools.vitruv.framework.metamodel,
+ tools.vitruv.framework.metamodel;visibility:=reexport,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.util,
- edu.kit.ipd.sdq.asem,
+ edu.kit.ipd.sdq.asem;visibility:=reexport,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,

@@ -4,8 +4,8 @@ Bundle-Name: Vitruvius Domain SysML
 Bundle-SymbolicName: tools.vitruv.domains.sysml
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: tools.vitruv.domains.uml,
- tools.vitruv.framework.metamodel,
+Require-Bundle: tools.vitruv.domains.uml;visibility:=reexport,
+ tools.vitruv.framework.metamodel;visibility:=reexport,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,
  com.google.guava,
@@ -13,7 +13,7 @@ Require-Bundle: tools.vitruv.domains.uml,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  org.junit,
- org.eclipse.papyrus.sysml14,
+ org.eclipse.papyrus.sysml14;visibility:=reexport,
  org.apache.log4j
 Export-Package: tools.vitruv.domains.sysml
 

@@ -4,7 +4,7 @@ Bundle-Name: Vitruvius Domain PCM
 Bundle-SymbolicName: tools.vitruv.domains.pcm
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: tools.vitruv.framework.metamodel,
+Require-Bundle: tools.vitruv.framework.metamodel;visibility:=reexport,
  org.palladiosimulator.pcm;visibility:=reexport,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
