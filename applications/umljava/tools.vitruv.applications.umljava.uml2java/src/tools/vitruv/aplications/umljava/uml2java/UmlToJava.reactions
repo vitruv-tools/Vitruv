@@ -1,0 +1,30 @@
+import static extension tools.vitruv.domains.java.util.JavaPersistenceHelper.*;
+
+import "http://www.eclipse.org/uml2/5.0.0/UML" as uml
+import "http://www.emftext.org/java" as java
+
+reactions: UmlToJava
+in reaction to changes in uml
+execute actions in java
+
+reaction CreatedUmlClass {
+	after list entry created and inserted in uml::Model[packagedElement]
+	with change.newValue instanceof org.eclipse.uml2.uml.Class
+	call createJavaClass(change.newValue as org.eclipse.uml2.uml.Class)
+}
+
+routine createJavaClass(uml::Class umlClass) {
+	action {
+		val javaClass = create java::Class and initialize {
+			javaClass.name = umlClass.name;
+		}
+		add correspondence between umlClass and javaClass
+		val javaCompilationUnit = create java::CompilationUnit and initialize {
+			javaCompilationUnit.name = umlClass.name;
+			//javaCompilationUnit.namespaces += "testPackage" // FIXME Only for testing purposes
+			javaCompilationUnit.classifiers += javaClass;
+			persistProjectRelative(umlClass, javaCompilationUnit, buildJavaFilePath(javaCompilationUnit));
+		}
+		add correspondence between umlClass and javaCompilationUnit
+	}
+}
