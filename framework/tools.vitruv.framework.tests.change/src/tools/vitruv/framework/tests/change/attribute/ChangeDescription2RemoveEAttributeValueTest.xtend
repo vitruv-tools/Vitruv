@@ -4,9 +4,11 @@ import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformatio
 import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import org.junit.Ignore
 
 class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2ChangeTransformationTest {
 
+	@Ignore
 	@Test
 	def public testUnsetRemoveEAttributeValue() {
 		this.rootElement.multiValuedEAttribute.add(42)

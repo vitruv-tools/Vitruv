@@ -4,9 +4,10 @@ import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformatio
 import org.junit.Test
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.feature.reference.PermuteEReferences
+import org.junit.Ignore
 
 class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTransformationTest{
-	
+	@Ignore
 	@Test
 	def public void testPermuteContainmentEReference(){
 		//prepare
@@ -21,6 +22,7 @@ class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTr
 		changes.assertPermuteListTest(this.rootElement, expectedList, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, PermuteEReferences)
 	}
 	
+	@Ignore
 	@Test
 	def public void testPermuteManyContainmentEReference(){
 		//prepare
@@ -36,6 +38,7 @@ class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTr
 		changes.assertPermuteListTest(this.rootElement, expectedList, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, PermuteEReferences)
 	}
 	
+	@Ignore
 	@Test
 	def public void testPermuteNonContainmentEReference(){
 		//prepare
@@ -52,6 +55,7 @@ class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTr
 		changes.assertPermuteListTest(this.rootElement, expectedList, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, PermuteEReferences)
 	}
 	
+	@Ignore
 	@Test
 	def public void testPermuteManyNonContainmentEReference(){
 		//prepare

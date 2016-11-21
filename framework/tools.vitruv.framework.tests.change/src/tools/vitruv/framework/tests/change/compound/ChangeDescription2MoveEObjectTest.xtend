@@ -3,9 +3,11 @@ package tools.vitruv.framework.tests.change.compound
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import org.junit.Test
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import org.junit.Ignore
 
 class ChangeDescription2MoveEObjectTest extends ChangeDescription2ChangeTransformationTest {
 
+	@Ignore
 	@Test
 	def public void testMoveEObjectFromContainmentSingleToContainmentList() {
 		// prepare

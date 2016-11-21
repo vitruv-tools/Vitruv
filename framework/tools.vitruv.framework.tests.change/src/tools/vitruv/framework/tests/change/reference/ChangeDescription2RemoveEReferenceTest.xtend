@@ -4,6 +4,7 @@ import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.EChange
+import org.junit.Ignore
 
 class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenceTest {
 
@@ -52,6 +53,7 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		testRemoveEReference(isContainment, isExplicitUnset)
 	}
 	
+	@Ignore
 	@Test
 	def public void testRemoveNonContainmentEReferenceFromListWithExplicitUnset() {
 		val isContainment = false
@@ -66,6 +68,7 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		testRemoveEReference(isContainment, isExplicitUnset)
 	}
 
+	@Ignore
 	@Test
 	def public void testRemoveContainmentEReferenceFromListWithExplicitUnset() {
 		val isContainment = true

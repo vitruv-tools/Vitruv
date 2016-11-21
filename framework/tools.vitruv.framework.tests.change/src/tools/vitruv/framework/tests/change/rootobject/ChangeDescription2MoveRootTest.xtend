@@ -1,9 +1,11 @@
 package tools.vitruv.framework.tests.change.rootobject
 
 import org.junit.Test
+import org.junit.Ignore
 
 class ChangeDescription2MoveRootTest extends ChangeDescription2RootChangeTest {
 	
+	@Ignore
 	@Test
 	def void moveRootEObjectBetweenResources(){
 		// prepare

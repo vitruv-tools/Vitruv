@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import org.junit.Ignore
 
 class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescription2ChangeTransformationTest {
 
@@ -53,6 +54,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 			this.rootElement, true, true)
 	}
 
+	@Ignore
 	@Test
 	def public void testUnsetExistingSingleValuedEReferenceContainment() {
 		val nonRoot = createAndAddNonRootToContainment(true)
@@ -140,6 +142,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 			this.rootElement, false, false)
 	}
 
+	@Ignore
 	@Test
 	def public void testUnsetReplaceExistingSingleValuedEReferenceNonContainment() {
 		val nonRoot = createAndAddNonRootToContainment(true)

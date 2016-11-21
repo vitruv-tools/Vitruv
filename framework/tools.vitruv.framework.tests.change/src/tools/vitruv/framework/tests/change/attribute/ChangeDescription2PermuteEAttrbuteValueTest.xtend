@@ -5,9 +5,11 @@ import org.junit.Test
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.ChangeDescription2ChangeTransformationTestUtil.*
 import tools.vitruv.framework.change.echange.feature.attribute.PermuteEAttributeValues
+import org.junit.Ignore
 
 class ChangeDescription2PermuteEAttrbuteValueTest extends tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest {
 
+	@Ignore
 	@Test
 	def public permuteAttributeTest() {
 		// prepare test
@@ -23,6 +25,7 @@ class ChangeDescription2PermuteEAttrbuteValueTest extends tools.vitruv.framework
 		changes.assertPermuteListTest(rootElement, expectedIndicesForElementsAtOldIndices, MULTI_VALUE_E_ATTRIBUTE_NAME, PermuteEAttributeValues)
 	}
 
+	@Ignore
 	@Test
 	def public permuteAttributeTestComplex() {
 		// prepare test
