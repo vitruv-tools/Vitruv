@@ -19,7 +19,6 @@ Require-Bundle: org.eclipse.core.runtime,
  tools.vitruv.framework.monitorededitor,
  tools.vitruv.domains.emf,
  tools.vitruv.domains.emf.monitorededitor,
- tools.vitruv.domains.java.monitorededitor,
- tools.vitruv.applications.pcmjava.util
+ tools.vitruv.domains.java.monitorededitor
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.domains.java.builder
