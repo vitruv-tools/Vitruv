@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<QMLContractType:Dimension xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:QMLContractType="http:///QMLContractType.ecore" xmlns:identifier="http://sdq.ipd.uka.de/Identifier/1.0" identifier:id="_r_iViqCrEd-s9uTaURbrKA" entityName="cost">
-  <type xsi:type="QMLContractType:DimensionTypeNumeric" identifier:id="_wbxmsbBWEd-7u-Jl-Efv2Q">
-    <relationSemantics identifier:id="_wbxmsrBWEd-7u-Jl-Efv2Q"/>
-  </type>
-</QMLContractType:Dimension>
