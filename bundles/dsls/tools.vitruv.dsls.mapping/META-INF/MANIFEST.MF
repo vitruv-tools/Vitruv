@@ -21,7 +21,6 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.debug.core,
  tools.vitruv.dsls.mapping.util,
  tools.vitruv.extensions.dslsruntime.mapping,
- tools.vitruv.dsls.mapping.testframework,
  org.apache.log4j;bundle-version="1.2.15",
  tools.vitruv.dsls.mirbase;bundle-version="1.0.0",
  org.eclipse.xtend.lib,
@@ -29,7 +28,8 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.modelsynchronization,
- tools.vitruv.framework.change.processing
+ tools.vitruv.framework.change.processing,
+ org.eclipse.xtext.xtext.generator
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.mapping,

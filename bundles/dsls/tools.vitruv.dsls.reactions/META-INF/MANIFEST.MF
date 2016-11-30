@@ -25,6 +25,7 @@ Require-Bundle: org.eclipse.xtext,
  tools.vitruv.framework.userinteraction,
  tools.vitruv.dsls.mirbase,
  org.eclipse.xtext.ui,
+ org.eclipse.xtext.xtext.generator,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.processing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
