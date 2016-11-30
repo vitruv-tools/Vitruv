@@ -3,11 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>tools.vitruv</groupId>
-	<artifactId>tools.vitruv.framework</artifactId>
+	<parent>
+		<groupId>tools.vitruv</groupId>
+		<artifactId>bundles</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+	<artifactId>framework</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Vitruvius Framework</name>
+	<name>Vitruvius Framework Module</name>
 
 	<modules>
 		<module>tools.vitruv.framework.change</module>
@@ -17,10 +22,8 @@
 		<module>tools.vitruv.framework.metamodel</module>
 		<module>tools.vitruv.framework.modelsynchronization</module>
 		<module>tools.vitruv.framework.monitorededitor</module>
-		<module>tools.vitruv.framework.tests.change</module>
 		<module>tools.vitruv.framework.tests.util</module>
 		<module>tools.vitruv.framework.tests.util.metamodels</module>
-		<module>tools.vitruv.framework.tests.vsum</module>
 		<module>tools.vitruv.framework.tuid</module>
 		<module>tools.vitruv.framework.userinteracting</module>
 		<module>tools.vitruv.framework.util</module>
@@ -28,137 +31,5 @@
 		<module>../commons/edu.kit.ipd.sdq.commons.util.emf</module>
 		<module>../commons/edu.kit.ipd.sdq.commons.util.java</module>
 	</modules>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<xtext.version>2.10.0</xtext.version>
-		<tycho.version>0.26.0</tycho.version>
-	</properties>
-
-	<repositories>
-		<!-- If you adjust a repository here, please also adjust the repository in the b3 aggregator. -->
-		<repository>
-			<id>Eclipse</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/neon</url>
-		</repository>
-	</repositories>
-
-	<build>
-		<plugins>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-				<configuration>
-					<compilerId>eclipse</compilerId>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<optimize>true</optimize>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.plexus</groupId>
-						<artifactId>plexus-compiler-eclipse</artifactId>
-						<version>2.7</version>
-						<scope>runtime</scope>
-					</dependency>
-				</dependencies>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.eclipse.xtend</groupId>
-				<artifactId>xtend-maven-plugin</artifactId>
-				<version>${xtext.version}</version>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>xtend-gen</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>gen-clean</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-						<configuration>
-							<filesets>
-								<fileset>
-									<directory>xtend-gen</directory>
-								</fileset>
-							</filesets>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<pomDependencies>consider</pomDependencies>
-					<environments>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-					</environments>
-				</configuration>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
-			</plugin>
-			
-		</plugins>
-	</build>
 
 </project>
