@@ -4,20 +4,20 @@
 package tools.vitruv.dsls.mirbase.tests
 
 import com.google.inject.Inject
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule
 
 @RunWith(XtextRunner)
 @InjectWith(MirBaseInjectorProvider)
 class MirBaseParsingTest{
 
 	@Inject
-	ParseHelper<MetamodelImport> parseHelper
+	ParseHelper<DummyEntryRule> parseHelper
 
 	@Test 
 	def void loadModel() {
