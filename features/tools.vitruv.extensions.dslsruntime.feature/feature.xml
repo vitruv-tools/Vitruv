@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="tools.vitruv.extensions.dslsruntime.feature"
+      label="%featureName"
+      version="1.0.0.qualifier"
+      provider-name="Vitruv Tools">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="">
+      TBA
+   </license>
+
+   <requires>
+      <import feature="tools.vitruv.framework.feature" version="1.0.0.qualifier"/>
+   </requires>
+
+   <plugin
+         id="tools.vitruv.extensions.dslsruntime.mapping"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.extensions.dslsruntime.reactions"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
