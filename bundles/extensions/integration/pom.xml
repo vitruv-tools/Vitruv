@@ -12,7 +12,7 @@
 	<artifactId>integration</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Vitruvius Extensions Integration Module</name>
+	<name>Extensions Integration Module</name>
 
 	<modules>
 		<module>tools.vitruv.extensions.integration.correspondence</module>
