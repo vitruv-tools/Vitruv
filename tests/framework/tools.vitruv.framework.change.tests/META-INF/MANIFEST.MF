@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Changedescription2change Test
-Bundle-SymbolicName: tools.vitruv.framework.tests.change
+Bundle-SymbolicName: tools.vitruv.framework.change.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
