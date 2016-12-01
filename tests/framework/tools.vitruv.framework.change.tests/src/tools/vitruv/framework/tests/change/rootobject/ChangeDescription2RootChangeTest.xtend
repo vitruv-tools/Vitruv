@@ -17,8 +17,19 @@ class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransform
 	var rs = new ResourceSetImpl
 	var protected Resource resource1
 	var protected Resource resource2
-	var protected String uri1 = System.getProperty("java.io.tmpdir").replace("\\", "/") + "dummyURI1.xmi"
-	var protected String uri2 =  System.getProperty("java.io.tmpdir").replace("\\", "/") + "dummyURI2.xmi"
+	var protected String uri1 = tempDirPath + "dummyURI1.xmi"
+	var protected String uri2 =  tempDirPath + "dummyURI2.xmi"
+	
+	def private String getTempDirPath() {
+		var path = System.getProperty("java.io.tmpdir").replace("\\", "/");
+		if (path.startsWith("/")) {
+			path = path.substring(1);
+		}
+		if (!path.endsWith("/")) {
+			path = path + "/";
+		} 
+		return path;
+	}
 	
 	@Before
 	def override beforeTest(){

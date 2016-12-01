@@ -31,7 +31,7 @@ import tools.vitruv.framework.change.echange.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import static org.junit.Assert.*;
-
+import org.eclipse.emf.common.util.URI
 
 class ChangeAssertHelper {
 
@@ -125,8 +125,8 @@ class ChangeAssertHelper {
 		}
 				
 		def static void assertUri(RootEChange rootChange, String expectedValue) {
-			Assert.assertEquals("Change " + rootChange + " shall have the uri " + "file:/" + expectedValue,
-				"file:/" + expectedValue, rootChange.uri)
+			Assert.assertEquals("Change " + rootChange + " shall have the uri " + URI.createFileURI(expectedValue).toString,
+				URI.createFileURI(expectedValue).toString, rootChange.uri)
 		}
 
 		def static void assertReplaceSingleValuedEReference(EChange change, Object expectedOldValue,
