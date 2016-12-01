@@ -10,6 +10,7 @@
 
 	<modules>
 		<module>bundles</module>
+		<module>tests</module>
 	</modules>
 
 	<properties>
@@ -23,7 +24,6 @@
 		<maven.deploy-plugin.version>2.8.2</maven.deploy-plugin.version>
 		<bintray.deploy.plugin.version>0.1.1</bintray.deploy.plugin.version>
 		<bintray.deploy.repository>Vitruv</bintray.deploy.repository>
-		<xtext.version>2.10.0</xtext.version>
 	</properties>
 
 	<repositories>
