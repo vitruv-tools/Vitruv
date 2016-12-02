@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="tools.vitruv.extensions.feature"
+      id="tools.vitruv.extensions.integration.feature"
       label="%featureName"
       version="1.0.0.qualifier"
       provider-name="Vitruv Tools">
@@ -17,10 +17,15 @@
       TBA
    </license>
 
-   <includes
-         id="tools.vitruv.extensions.dslsruntime.feature"
+   <requires>
+      <import feature="tools.vitruv.framework.feature" version="1.0.0.qualifier"/>
+   </requires>
+
+   <plugin
+         id="tools.vitruv.extensions.integration.correspondence"
+         download-size="0"
+         install-size="0"
          version="0.0.0"
-         name="DSLs Runtime"
-         optional="true"/>
+         unpack="false"/>
 
 </feature>
