@@ -15,3 +15,7 @@ before_install:
 install: true
 
 script: mvn clean verify
+
+after_script:
+- chmod a+x /tmp/BuildUtilities/travis-ci/deployNightly.sh
+- . /tmp/BuildUtilities/travis-ci/deployNightly.sh
