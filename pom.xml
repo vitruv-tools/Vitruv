@@ -57,21 +57,6 @@
 						<version>2.7</version>
 						<scope>runtime</scope>
 					</dependency>
-					<dependency>
-						<groupId>org.eclipse.xtext</groupId>
-						<artifactId>org.eclipse.xtext.xtext</artifactId>
-						<version>${xtext.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.eclipse.xtext</groupId>
-						<artifactId>org.eclipse.xtext.xtext.generator</artifactId>
-						<version>${xtext.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.eclipse.xtext</groupId>
-						<artifactId>org.eclipse.xtext.xbase</artifactId>
-						<version>${xtext.version}</version>
-					</dependency>
 				</dependencies>
 			</plugin>
 			
