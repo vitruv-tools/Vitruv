@@ -23,5 +23,26 @@
 		<module>tools.vitruv.dsls.reactions.tests</module>
 		<module>tools.vitruv.dsls.reactions.ui.tests</module>
 	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<useUIHarness>true</useUIHarness>
+					<failIfNoTests>false</failIfNoTests>
+					<excludes>
+						<exclude>**/Abstract*</exclude>
+					</excludes>
+					<includes>
+						<include>**/*Tests.java</include>
+						<include>**/*Tests.class</include>
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
