@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <feature url="features/tools.vitruv.framework.feature_1.0.0.qualifier.jar" id="tools.vitruv.framework.feature" version="1.0.0.qualifier">
-      <category name="Vitruv Framework"/>
+      <category name="Vitruv Core"/>
    </feature>
    <feature url="features/tools.vitruv.dsls.feature_1.0.0.qualifier.jar" id="tools.vitruv.dsls.feature" version="1.0.0.qualifier">
       <category name="Vitruv Application Development"/>
    </feature>
    <feature url="features/tools.vitruv.extensions.dslsruntime.feature_1.0.0.qualifier.jar" id="tools.vitruv.extensions.dslsruntime.feature" version="1.0.0.qualifier">
-      <category name="Vitruv Framework"/>
+      <category name="Vitruv Core"/>
    </feature>
    <feature url="features/tools.vitruv.extensions.constructionsimulation.feature_1.0.0.qualifier.jar" id="tools.vitruv.extensions.constructionsimulation.feature" version="1.0.0.qualifier">
-      <category name="Vitruv Framework"/>
+      <category name="Vitruv Core"/>
    </feature>
    <feature url="features/tools.vitruv.extensions.integration.feature_1.0.0.qualifier.jar" id="tools.vitruv.extensions.integration.feature" version="1.0.0.qualifier">
-      <category name="Vitruv Framework"/>
+      <category name="Vitruv Core"/>
    </feature>
    <category-def name="Vitruv Core" label="Vitruv Core">
       <description>
