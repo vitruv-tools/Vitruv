@@ -15,14 +15,14 @@
    <feature url="features/tools.vitruv.extensions.integration.feature_1.0.0.qualifier.jar" id="tools.vitruv.extensions.integration.feature" version="1.0.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <category-def name="Vitruv Framework" label="Vitruv Framework">
+   <category-def name="Vitruv Core" label="Vitruv Core">
       <description>
-         Framework components for Vitruv
+         Core components of Vitruv, including the essential framework
       </description>
    </category-def>
    <category-def name="Vitruv Application Development" label="Vitruv Application Development">
       <description>
-         DSLs for developing Vitruv applications
+         DSLs for developing consistency-preserving Vitruv applications
       </description>
    </category-def>
 </site>
