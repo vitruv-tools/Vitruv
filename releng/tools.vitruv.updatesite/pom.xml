@@ -11,7 +11,7 @@
 	</parent>
 	
 	<artifactId>tools.vitruv.updatesite</artifactId>
-	<name>Vitruv</name>
+	<name>Vitruv Framework Update Site</name>
 	<packaging>eclipse-repository</packaging>
 	
 </project>
