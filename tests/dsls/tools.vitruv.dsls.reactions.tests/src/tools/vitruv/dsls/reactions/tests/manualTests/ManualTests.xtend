@@ -10,11 +10,14 @@ import com.google.inject.Provider
 import com.google.inject.Inject
 import tools.vitruv.dsls.reactions.api.generator.IReactionsEnvironmentGenerator
 import tools.vitruv.dsls.reactions.api.generator.ReactionBuilderFactory
+import org.junit.Ignore
 
 class ManualTests {
 	private static class Injections {
 		@Inject Provider<EclipseResourceFileSystemAccess2> fsaProv;
 	}
+
+	@Ignore
 	@Test
 	public def testGenerateReactionsEnvironment() {
 		val injections = new Injections();
