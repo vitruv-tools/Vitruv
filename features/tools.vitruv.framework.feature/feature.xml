@@ -19,6 +19,11 @@
 
    <requires>
       <import feature="org.eclipse.xtend.sdk" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.emf.ecore" version="2.12.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.emf.transaction" version="1.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.emf.ecore.editor" version="2.12.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.emf.ecore.edit" version="2.9.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.emf.common" version="2.12.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
