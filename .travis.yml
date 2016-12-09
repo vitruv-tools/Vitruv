@@ -26,4 +26,4 @@ install: true
 script: mvn clean verify
 
 after_success:
-- . /tmp/BuildUtilities/travis-ci/deployNightly.sh framework releng/tools.vitruv.updatesite repository
+- . /tmp/BuildUtilities/travis-ci/deployNightly.sh framework releng/tools.vitruv.updatesite.aggregated final

@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>tools.vitruv</groupId>
+		<artifactId>releng</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>tools.vitruv.updatesite.aggregated</artifactId>
+	<packaging>pom</packaging>
+	<name>Vitruv Aggregated Update Site</name>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>workspace-clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>workspace</directory>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-eclipserun-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<repositories>
+						<repository>
+							<id>Eclipse Neon</id>
+							<layout>p2</layout>
+							<url>http://download.eclipse.org/releases/neon</url>
+						</repository>
+						<repository>
+							<id>Eclipse Neon Updates</id>
+							<layout>p2</layout>
+							<url>http://download.eclipse.org/eclipse/updates/4.6</url>
+						</repository>
+						<repository>
+							<id>Eclipse CBI Aggregator</id>
+							<layout>p2</layout>
+							<url>http://download.eclipse.org/cbi/updates/aggregator/ide/4.6/</url>
+						</repository>
+					</repositories>
+					<jvmArgs>
+						<args>-Xmx1024m</args>
+					</jvmArgs>
+					<applicationsArgs>
+						<args>-application</args>
+						<args>org.eclipse.cbi.p2repo.cli.headless</args>
+						<args>aggregate</args>
+						<args>--buildModel</args>
+						<args>updatesite.aggr</args>
+						<args>--action</args>
+						<args>BUILD</args>
+					</applicationsArgs>
+					<dependencies>
+						<dependency>
+							<artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
+							<type>eclipse-feature</type>
+						</dependency>
+						<dependency>
+							<artifactId>org.eclipse.e4.rcp</artifactId>
+							<type>eclipse-feature</type>
+						</dependency>
+						<dependency>
+							<artifactId>org.eclipse.cbi.p2repo.aggregator.editor.feature</artifactId>
+							<type>eclipse-feature</type>
+						</dependency>                 
+					</dependencies>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>eclipse-run</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+			</plugin>
+			
+		</plugins>
+	</build>
+</project>

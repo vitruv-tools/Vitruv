@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>tools.vitruv.updatesite</module>
+		<module>tools.vitruv.updatesite.aggregated</module>
 	</modules>
 
 </project>
