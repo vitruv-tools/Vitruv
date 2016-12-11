@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="tools.vitruv.license.feature"
-      label="%featureName"
+      label="%licenseFeatureName"
       version="1.0.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%licenseProviderName">
 
    <description>
-      %description
+      %licenseDescription
    </description>
 
-   <copyright url="%copyrightURL">
-      %copyright
+   <copyright url="%licenseCopyrightURL">
+      %licenseCopyright
    </copyright>
 
    <license url="%licenseURL">
