@@ -13,7 +13,6 @@
         <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.10.0" categories="//@customCategories[identifier='externals']"/>
       </repositories>
     </contributions>
-    <validationRepositories location="http://vitruv-tools.github.io/p2/nightly/framework"/>
   </validationSets>
   <configurations architecture="x86_64"/>
   <configurations/>
