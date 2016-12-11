@@ -13,7 +13,7 @@ cache:
 git:
     submodules: false
 
-    # Enable UI
+# Enable UI
 # Use sed to replace the SSH URL with the public URL, then initialize submodules
 before_install:
     - sh -e /etc/init.d/xvfb start - sleep 10
