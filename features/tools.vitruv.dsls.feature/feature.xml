@@ -2,24 +2,26 @@
 <feature
       id="tools.vitruv.dsls.feature"
       label="%featureName"
-      version="1.0.0.qualifier"
-      provider-name="Vitruv Tools">
+      version="0.1.0.qualifier"
+      provider-name="%providerName"	  
+      license-feature="%licenseFeature"
+      license-feature-version="%licenseFeatureVersion">
 
    <description>
       %description
    </description>
 
-   <copyright>
+   <copyright url="%copyrightURL">
       %copyright
    </copyright>
 
-   <license url="">
-      TBA
+   <license url="%licenseURL">
+      %license
    </license>
 
    <requires>
-      <import feature="tools.vitruv.extensions.dslsruntime.feature" version="1.0.0.qualifier"/>
-      <import feature="tools.vitruv.framework.feature" version="1.0.0.qualifier"/>
+      <import feature="tools.vitruv.extensions.dslsruntime.feature" version="0.1.0.qualifier" match="greaterOrEqual"/>
+      <import feature="tools.vitruv.framework.feature" version="0.1.0.qualifier" match="greaterOrEqual"/>
       <import feature="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.xtext.xbase" version="2.10" match="greaterOrEqual"/>
       <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>

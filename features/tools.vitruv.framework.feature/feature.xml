@@ -2,19 +2,21 @@
 <feature
       id="tools.vitruv.framework.feature"
       label="%featureName"
-      version="1.0.0.qualifier"
-      provider-name="Vitruv Tools">
+      version="0.1.0.qualifier"
+      provider-name="%providerName"	  
+      license-feature="%licenseFeature"
+      license-feature-version="%licenseFeatureVersion">
 
    <description>
       %description
    </description>
 
-   <copyright>
+   <copyright url="%copyrightURL">
       %copyright
    </copyright>
 
-   <license url="">
-      TBA
+   <license url="%licenseURL">
+      %license
    </license>
 
    <requires>
