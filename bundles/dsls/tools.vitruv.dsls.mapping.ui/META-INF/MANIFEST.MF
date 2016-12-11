@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius DSLs Mapping Language UI
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.mapping.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: tools.vitruv.dsls.mapping;visibility:=reexport,
@@ -19,8 +19,8 @@ Require-Bundle: tools.vitruv.dsls.mapping;visibility:=reexport,
  org.eclipse.compare,
  org.eclipse.swt,
  org.eclipse.xtend.lib;resolution:=optional,
- tools.vitruv.dsls.mapping.ide;bundle-version="1.0.0",
- tools.vitruv.dsls.mirbase;bundle-version="1.0.0",
+ tools.vitruv.dsls.mapping.ide;bundle-version="0.1.0",
+ tools.vitruv.dsls.mirbase;bundle-version="0.1.0",
  tools.vitruv.dsls.mirbase.ui
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -28,3 +28,4 @@ Export-Package: tools.vitruv.dsls.mapping.ui.internal,
  tools.vitruv.dsls.mapping.ui.quickfix,
  tools.vitruv.dsls.mapping.ui.contentassist
 Bundle-Activator: tools.vitruv.dsls.mapping.ui.internal.MappingActivator
+Bundle-Vendor: vitruv.tools

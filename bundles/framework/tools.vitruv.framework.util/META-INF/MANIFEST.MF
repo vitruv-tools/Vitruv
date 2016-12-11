@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Framework Utilities
 Bundle-SymbolicName: tools.vitruv.framework.util
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.framework.util,
  tools.vitruv.framework.util.bridges,
@@ -27,3 +27,4 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.common.ui,
  org.eclipse.emf.ecore.change,
  edu.kit.ipd.sdq.commons.util.emf
+Bundle-Vendor: vitruv.tools

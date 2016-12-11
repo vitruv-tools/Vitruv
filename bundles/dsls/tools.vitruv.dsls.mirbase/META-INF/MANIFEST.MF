@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius DSLs MIR Base Language
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.mirbase; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.core.resources,
  org.eclipse.pde.core,
  org.eclipse.core.runtime,
- tools.vitruv.dsls.common;bundle-version="1.0.0"
+ tools.vitruv.dsls.common
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.mirbase.jvmmodel,
  tools.vitruv.dsls.mirbase.mirBase.impl,
@@ -33,3 +33,4 @@ Export-Package: tools.vitruv.dsls.mirbase.jvmmodel,
  tools.vitruv.dsls.mirbase.validation,
  tools.vitruv.dsls.mirbase
 Import-Package: org.apache.log4j
+Bundle-Vendor: vitruv.tools

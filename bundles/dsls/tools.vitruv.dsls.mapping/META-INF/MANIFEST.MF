@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius DSLs Mapping Language
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.mapping;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;visibility:=reexport,
@@ -22,9 +22,9 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  tools.vitruv.dsls.mapping.util,
  tools.vitruv.extensions.dslsruntime.mapping,
  org.apache.log4j;bundle-version="1.2.15",
- tools.vitruv.dsls.mirbase;bundle-version="1.0.0",
+ tools.vitruv.dsls.mirbase;bundle-version="0.1.0",
  org.eclipse.xtend.lib,
- tools.vitruv.dsls.reactions;bundle-version="1.0.0",
+ tools.vitruv.dsls.reactions;bundle-version="0.1.0",
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.modelsynchronization,
@@ -46,4 +46,5 @@ Export-Package: tools.vitruv.dsls.mapping,
  tools.vitruv.dsls.mapping.services,
  tools.vitruv.dsls.mapping.validation,
  tools.vitruv.dsls.mapping.scoping
+Bundle-Vendor: vitruv.tools
 

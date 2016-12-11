@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Framework User Interactor
 Bundle-SymbolicName: tools.vitruv.framework.userinteraction
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.osgi,
@@ -10,6 +10,7 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.ui.workbench,
  org.eclipse.jface,
  org.eclipse.emf.common,
- tools.vitruv.framework.util;bundle-version="1.0.0"
+ tools.vitruv.framework.util
 Export-Package: tools.vitruv.framework.userinteraction,
  tools.vitruv.framework.userinteraction.impl
+Bundle-Vendor: vitruv.tools

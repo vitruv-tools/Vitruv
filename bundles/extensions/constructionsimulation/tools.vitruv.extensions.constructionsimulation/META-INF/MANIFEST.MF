@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Extension Model Construction Simulation
 Bundle-SymbolicName: tools.vitruv.extensions.constructionsimulation;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.junit,
@@ -31,3 +31,4 @@ Export-Package: tools.vitruv.extensions.constructionsimulation.handler,
  tools.vitruv.extensions.constructionsimulation.strategies,
  tools.vitruv.extensions.constructionsimulation.traversal,
  tools.vitruv.extensions.constructionsimulation.traversal.util
+Bundle-Vendor: vitruv.tools
