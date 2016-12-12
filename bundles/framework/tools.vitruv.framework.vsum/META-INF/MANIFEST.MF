@@ -21,6 +21,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro
 Export-Package: tools.vitruv.framework.vsum,
- tools.vitruv.framework.vsum.helper
+ tools.vitruv.framework.vsum.helper,
+ tools.vitruv.framework.vsum.domains
 Bundle-Vendor: vitruv.tools
 
