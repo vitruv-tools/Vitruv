@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="tools.vitruv.framework.vsum.ui.Vitruv"
+            name="Vitruvius">
+      </category>
+      <wizard
+            category="tools.vitruv.framework.vsum.ui.Vitruv"
+            class="tools.vitruv.framework.vsum.ui.NewVitruvWizard"
+            id="tools.vitruv.framework.vsum.ui.newvitruvwizard"
+            name="Vitruvius Project">
+      </wizard>
+   </extension>
+
+</plugin>
