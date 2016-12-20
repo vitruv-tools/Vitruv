@@ -1,0 +1,28 @@
+@Ecore(nsURI="http://tools.vitruv/EChange/Compound/1.0")
+@GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+package tools.vitruv.framework.change.echange.compound
+
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+
+abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
+	op unique tools.vitruv.framework.change.echange.AtomicEChange[+] getAtomicChanges()
+}
+
+class MoveEObject<A extends EObject , B extends EObject , T extends EObject> extends CompoundEChange {
+	refers tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange < A > subtractWhereChange
+	contains tools.vitruv.framework.change.echange.EObjectSubtractedEChange < T >[1] subtractWhatChange
+	refers tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange < B > addWhereChange
+	contains tools.vitruv.framework.change.echange.EObjectAddedEChange < T >[1] addWhatChange
+	@GenModel(body="org.eclipse.emf.common.util.BasicEList<AtomicEChange> list = new org.eclipse.emf.common.util.BasicEList<AtomicEChange>();\r\nUpdateReferenceEChange<A> subWhereChange = getSubtractWhereChange();\r\nif (subWhereChange != null) {\r\n    list.add(subWhereChange);\r\n}\r\nlist.add(getSubtractWhatChange());\r\nUpdateReferenceEChange<B> addWhereChange = getAddWhereChange();\r\nif (addWhereChange != null) {\r\n    list.add(addWhereChange);\r\n}\r\nlist.add(getAddWhatChange());\r\nreturn list;")
+	op unique tools.vitruv.framework.change.echange.AtomicEChange[+] getAtomicChanges()
+}
+
+class ExplicitUnsetEFeature<A extends EObject , F extends EStructuralFeature , T extends Object , S extends tools.vitruv.framework.change.echange.feature.FeatureEChange < A , F > & tools.vitruv.framework.change.echange.SubtractiveEChange < T >> extends CompoundEChange {
+	refers unsettable S[+] subtractiveChanges
+}
+
+class ReplaceInEList<A extends EObject , F extends EStructuralFeature , T extends EObject , R extends tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange < A , F , T > & tools.vitruv.framework.change.echange.feature.FeatureEChange < A , F > & tools.vitruv.framework.change.echange.SubtractiveEChange < T > , I extends tools.vitruv.framework.change.echange.feature.list.InsertInListEChange < A , F , T > & tools.vitruv.framework.change.echange.feature.FeatureEChange < A , F > & tools.vitruv.framework.change.echange.AdditiveEChange < T >> extends CompoundEChange {
+	contains R[1] removeChange
+	contains I[1] insertChange
+}
