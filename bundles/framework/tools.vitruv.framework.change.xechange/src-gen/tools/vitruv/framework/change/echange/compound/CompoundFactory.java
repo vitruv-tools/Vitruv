@@ -59,6 +59,24 @@ public interface CompoundFactory extends EFactory {
 	<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> ReplaceInEList<A, F, T, R, I> createReplaceInEList();
 
 	/**
+	 * Returns a new object of class '<em>Subtraction</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Subtraction</em>'.
+	 * @generated
+	 */
+	<T extends Object> CompoundSubtraction<T> createCompoundSubtraction();
+
+	/**
+	 * Returns a new object of class '<em>Addition</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Addition</em>'.
+	 * @generated
+	 */
+	<T extends Object> CompoundAddition<T> createCompoundAddition();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

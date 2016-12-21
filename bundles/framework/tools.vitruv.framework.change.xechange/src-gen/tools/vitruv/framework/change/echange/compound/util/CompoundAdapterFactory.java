@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
+import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
@@ -94,8 +95,28 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 				return createReplaceInEListAdapter();
 			}
 			@Override
+			public <T extends Object> Adapter caseCompoundSubtraction(CompoundSubtraction<T> object) {
+				return createCompoundSubtractionAdapter();
+			}
+			@Override
+			public <T extends Object> Adapter caseCompoundAddition(CompoundAddition<T> object) {
+				return createCompoundAdditionAdapter();
+			}
+			@Override
 			public Adapter caseEChange(EChange object) {
 				return createEChangeAdapter();
+			}
+			@Override
+			public Adapter caseAtomicEChange(AtomicEChange object) {
+				return createAtomicEChangeAdapter();
+			}
+			@Override
+			public <T extends Object> Adapter caseSubtractiveEChange(SubtractiveEChange<T> object) {
+				return createSubtractiveEChangeAdapter();
+			}
+			@Override
+			public <T extends Object> Adapter caseAdditiveEChange(AdditiveEChange<T> object) {
+				return createAdditiveEChangeAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -174,6 +195,34 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.CompoundSubtraction <em>Subtraction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundSubtraction
+	 * @generated
+	 */
+	public Adapter createCompoundSubtractionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.CompoundAddition <em>Addition</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundAddition
+	 * @generated
+	 */
+	public Adapter createCompoundAdditionAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.EChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -184,6 +233,48 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createEChangeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.AtomicEChange <em>Atomic EChange</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.AtomicEChange
+	 * @generated
+	 */
+	public Adapter createAtomicEChangeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.SubtractiveEChange <em>Subtractive EChange</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.SubtractiveEChange
+	 * @generated
+	 */
+	public Adapter createSubtractiveEChangeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.AdditiveEChange <em>Additive EChange</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.AdditiveEChange
+	 * @generated
+	 */
+	public Adapter createAdditiveEChangeAdapter() {
 		return null;
 	}
 

@@ -27,11 +27,19 @@ class MoveEObject<A extends EObject , B extends EObject , T extends EObject> ext
 	op unique AtomicEChange[+] getAtomicChanges()
 }
 
-class ExplicitUnsetEFeature<A extends EObject , F extends EStructuralFeature , T extends Object , S extends FeatureEChange <A , F> & SubtractiveEChange <T>> extends CompoundEChange {
-	contains S[+] subtractiveChanges
+class ExplicitUnsetEFeature<A extends EObject , F extends EStructuralFeature , T extends Object , S extends FeatureEChange < A , F > & SubtractiveEChange < T >> extends CompoundSubtraction<T> {
+	contains S[+] featureChange
 }
 
 class ReplaceInEList<A extends EObject , F extends EStructuralFeature , T extends EObject , R extends RemoveFromListEChange <A , F , T> & FeatureEChange <A , F> & SubtractiveEChange <T> , I extends InsertInListEChange <A , F , T> & FeatureEChange <A , F> & AdditiveEChange <T>> extends CompoundEChange {
 	contains R[1] removeChange
 	contains I[1] insertChange
+}
+
+class CompoundSubtraction<T extends Object> extends SubtractiveEChange<T> {
+	contains SubtractiveEChange<T>[+] subtractiveChanges
+}
+
+class CompoundAddition<T extends Object> extends AdditiveEChange<T> {
+	contains AdditiveEChange<T>[+] additiveChanges
 }

@@ -170,6 +170,52 @@ public interface CompoundPackage extends EPackage {
 	int MOVE_EOBJECT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl <em>Subtraction</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundSubtraction()
+	 * @generated
+	 */
+	int COMPOUND_SUBTRACTION = 4;
+
+	/**
+	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Subtraction</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION_FEATURE_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Get Old Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___GET_OLD_VALUE = EChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE;
+
+	/**
+	 * The number of operations of the '<em>Subtraction</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION_OPERATION_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -186,7 +232,16 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+	int EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES;
+
+	/**
+	 * The feature id for the '<em><b>Feature Change</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE = COMPOUND_SUBTRACTION_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Explicit Unset EFeature</em>' class.
@@ -195,16 +250,16 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
+	int EXPLICIT_UNSET_EFEATURE___GET_OLD_VALUE = COMPOUND_SUBTRACTION___GET_OLD_VALUE;
 
 	/**
 	 * The number of operations of the '<em>Explicit Unset EFeature</em>' class.
@@ -213,7 +268,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+	int EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT = COMPOUND_SUBTRACTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.
@@ -269,6 +324,52 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_IN_ELIST_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundAdditionImpl <em>Addition</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundAdditionImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundAddition()
+	 * @generated
+	 */
+	int COMPOUND_ADDITION = 5;
+
+	/**
+	 * The feature id for the '<em><b>Additive Changes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION__ADDITIVE_CHANGES = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Addition</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION_FEATURE_COUNT = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION___GET_NEW_VALUE = EChangePackage.ADDITIVE_ECHANGE___GET_NEW_VALUE;
+
+	/**
+	 * The number of operations of the '<em>Addition</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION_OPERATION_COUNT = EChangePackage.ADDITIVE_ECHANGE_OPERATION_COUNT + 0;
 
 
 	/**
@@ -366,15 +467,15 @@ public interface CompoundPackage extends EPackage {
 	EClass getExplicitUnsetEFeature();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getSubtractiveChanges <em>Subtractive Changes</em>}'.
+	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getFeatureChange <em>Feature Change</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Subtractive Changes</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getSubtractiveChanges()
+	 * @return the meta object for the containment reference list '<em>Feature Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getFeatureChange()
 	 * @see #getExplicitUnsetEFeature()
 	 * @generated
 	 */
-	EReference getExplicitUnsetEFeature_SubtractiveChanges();
+	EReference getExplicitUnsetEFeature_FeatureChange();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList <em>Replace In EList</em>}'.
@@ -407,6 +508,48 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getReplaceInEList_InsertChange();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CompoundSubtraction <em>Subtraction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Subtraction</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundSubtraction
+	 * @generated
+	 */
+	EClass getCompoundSubtraction();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.change.echange.compound.CompoundSubtraction#getSubtractiveChanges <em>Subtractive Changes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Subtractive Changes</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundSubtraction#getSubtractiveChanges()
+	 * @see #getCompoundSubtraction()
+	 * @generated
+	 */
+	EReference getCompoundSubtraction_SubtractiveChanges();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CompoundAddition <em>Addition</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Addition</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundAddition
+	 * @generated
+	 */
+	EClass getCompoundAddition();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.change.echange.compound.CompoundAddition#getAdditiveChanges <em>Additive Changes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Additive Changes</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundAddition#getAdditiveChanges()
+	 * @see #getCompoundAddition()
+	 * @generated
+	 */
+	EReference getCompoundAddition_AdditiveChanges();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -510,12 +653,12 @@ public interface CompoundPackage extends EPackage {
 		EClass EXPLICIT_UNSET_EFEATURE = eINSTANCE.getExplicitUnsetEFeature();
 
 		/**
-		 * The meta object literal for the '<em><b>Subtractive Changes</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Feature Change</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = eINSTANCE.getExplicitUnsetEFeature_SubtractiveChanges();
+		EReference EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE = eINSTANCE.getExplicitUnsetEFeature_FeatureChange();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.
@@ -542,6 +685,42 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EReference REPLACE_IN_ELIST__INSERT_CHANGE = eINSTANCE.getReplaceInEList_InsertChange();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl <em>Subtraction</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundSubtraction()
+		 * @generated
+		 */
+		EClass COMPOUND_SUBTRACTION = eINSTANCE.getCompoundSubtraction();
+
+		/**
+		 * The meta object literal for the '<em><b>Subtractive Changes</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES = eINSTANCE.getCompoundSubtraction_SubtractiveChanges();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundAdditionImpl <em>Addition</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundAdditionImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundAddition()
+		 * @generated
+		 */
+		EClass COMPOUND_ADDITION = eINSTANCE.getCompoundAddition();
+
+		/**
+		 * The meta object literal for the '<em><b>Additive Changes</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COMPOUND_ADDITION__ADDITIVE_CHANGES = eINSTANCE.getCompoundAddition_AdditiveChanges();
 
 	}
 

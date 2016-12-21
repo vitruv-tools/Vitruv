@@ -20,27 +20,27 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getSubtractiveChanges <em>Subtractive Changes</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getFeatureChange <em>Feature Change</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature()
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface ExplicitUnsetEFeature<A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> extends CompoundEChange {
+public interface ExplicitUnsetEFeature<A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> extends CompoundSubtraction<T> {
 	/**
-	 * Returns the value of the '<em><b>Subtractive Changes</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Feature Change</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Subtractive Changes</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Feature Change</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Subtractive Changes</em>' containment reference list.
-	 * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature_SubtractiveChanges()
+	 * @return the value of the '<em>Feature Change</em>' containment reference list.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature_FeatureChange()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	EList<S> getSubtractiveChanges();
+	EList<S> getFeatureChange();
 
 } // ExplicitUnsetEFeature

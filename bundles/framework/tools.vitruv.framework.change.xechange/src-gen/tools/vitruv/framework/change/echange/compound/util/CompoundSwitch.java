@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.Switch;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
+import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
@@ -94,7 +95,9 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE: {
 				ExplicitUnsetEFeature<?, ?, ?, ?> explicitUnsetEFeature = (ExplicitUnsetEFeature<?, ?, ?, ?>)theEObject;
 				T1 result = caseExplicitUnsetEFeature(explicitUnsetEFeature);
-				if (result == null) result = caseCompoundEChange(explicitUnsetEFeature);
+				if (result == null) result = caseCompoundSubtraction(explicitUnsetEFeature);
+				if (result == null) result = caseSubtractiveEChange(explicitUnsetEFeature);
+				if (result == null) result = caseAtomicEChange(explicitUnsetEFeature);
 				if (result == null) result = caseEChange(explicitUnsetEFeature);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -104,6 +107,24 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				T1 result = caseReplaceInEList(replaceInEList);
 				if (result == null) result = caseCompoundEChange(replaceInEList);
 				if (result == null) result = caseEChange(replaceInEList);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CompoundPackage.COMPOUND_SUBTRACTION: {
+				CompoundSubtraction<?> compoundSubtraction = (CompoundSubtraction<?>)theEObject;
+				T1 result = caseCompoundSubtraction(compoundSubtraction);
+				if (result == null) result = caseSubtractiveEChange(compoundSubtraction);
+				if (result == null) result = caseAtomicEChange(compoundSubtraction);
+				if (result == null) result = caseEChange(compoundSubtraction);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CompoundPackage.COMPOUND_ADDITION: {
+				CompoundAddition<?> compoundAddition = (CompoundAddition<?>)theEObject;
+				T1 result = caseCompoundAddition(compoundAddition);
+				if (result == null) result = caseAdditiveEChange(compoundAddition);
+				if (result == null) result = caseAtomicEChange(compoundAddition);
+				if (result == null) result = caseEChange(compoundAddition);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -172,6 +193,36 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Subtraction</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Subtraction</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends Object> T1 caseCompoundSubtraction(CompoundSubtraction<T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Addition</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Addition</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends Object> T1 caseCompoundAddition(CompoundAddition<T> object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -183,6 +234,51 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseEChange(EChange object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseAtomicEChange(AtomicEChange object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends Object> T1 caseAdditiveEChange(AdditiveEChange<T> object) {
 		return null;
 	}
 

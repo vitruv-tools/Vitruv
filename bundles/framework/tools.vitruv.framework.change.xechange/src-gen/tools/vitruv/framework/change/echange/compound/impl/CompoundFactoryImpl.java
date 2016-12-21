@@ -68,6 +68,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 			case CompoundPackage.MOVE_EOBJECT: return createMoveEObject();
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE: return createExplicitUnsetEFeature();
 			case CompoundPackage.REPLACE_IN_ELIST: return createReplaceInEList();
+			case CompoundPackage.COMPOUND_SUBTRACTION: return createCompoundSubtraction();
+			case CompoundPackage.COMPOUND_ADDITION: return createCompoundAddition();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -101,6 +103,26 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> ReplaceInEList<A, F, T, R, I> createReplaceInEList() {
 		ReplaceInEListImpl<A, F, T, R, I> replaceInEList = new ReplaceInEListImpl<A, F, T, R, I>();
 		return replaceInEList;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <T extends Object> CompoundSubtraction<T> createCompoundSubtraction() {
+		CompoundSubtractionImpl<T> compoundSubtraction = new CompoundSubtractionImpl<T>();
+		return compoundSubtraction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <T extends Object> CompoundAddition<T> createCompoundAddition() {
+		CompoundAdditionImpl<T> compoundAddition = new CompoundAdditionImpl<T>();
+		return compoundAddition;
 	}
 
 	/**

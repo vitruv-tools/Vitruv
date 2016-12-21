@@ -9,8 +9,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -19,40 +17,40 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature;
+import tools.vitruv.framework.change.echange.compound.CompoundSubtraction;
 
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
+import tools.vitruv.framework.change.echange.impl.SubtractiveEChangeImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Explicit Unset EFeature</b></em>'.
+ * An implementation of the model object '<em><b>Subtraction</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl#getFeatureChange <em>Feature Change</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl#getSubtractiveChanges <em>Subtractive Changes</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> extends CompoundSubtractionImpl<T> implements ExplicitUnsetEFeature<A, F, T, S> {
+public class CompoundSubtractionImpl<T extends Object> extends SubtractiveEChangeImpl<T> implements CompoundSubtraction<T> {
 	/**
-	 * The cached value of the '{@link #getFeatureChange() <em>Feature Change</em>}' containment reference list.
+	 * The cached value of the '{@link #getSubtractiveChanges() <em>Subtractive Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getFeatureChange()
+	 * @see #getSubtractiveChanges()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<S> featureChange;
+	protected EList<SubtractiveEChange<T>> subtractiveChanges;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ExplicitUnsetEFeatureImpl() {
+	protected CompoundSubtractionImpl() {
 		super();
 	}
 
@@ -63,7 +61,7 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return CompoundPackage.Literals.EXPLICIT_UNSET_EFEATURE;
+		return CompoundPackage.Literals.COMPOUND_SUBTRACTION;
 	}
 
 	/**
@@ -71,11 +69,11 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<S> getFeatureChange() {
-		if (featureChange == null) {
-			featureChange = new EObjectContainmentEList<S>(FeatureEChange.class, this, CompoundPackage.EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE);
+	public EList<SubtractiveEChange<T>> getSubtractiveChanges() {
+		if (subtractiveChanges == null) {
+			subtractiveChanges = new EObjectContainmentEList<SubtractiveEChange<T>>(SubtractiveEChange.class, this, CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES);
 		}
-		return featureChange;
+		return subtractiveChanges;
 	}
 
 	/**
@@ -86,8 +84,8 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE:
-				return ((InternalEList<?>)getFeatureChange()).basicRemove(otherEnd, msgs);
+			case CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES:
+				return ((InternalEList<?>)getSubtractiveChanges()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -100,8 +98,8 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE:
-				return getFeatureChange();
+			case CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES:
+				return getSubtractiveChanges();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -115,9 +113,9 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE:
-				getFeatureChange().clear();
-				getFeatureChange().addAll((Collection<? extends S>)newValue);
+			case CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES:
+				getSubtractiveChanges().clear();
+				getSubtractiveChanges().addAll((Collection<? extends SubtractiveEChange<T>>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -131,8 +129,8 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE:
-				getFeatureChange().clear();
+			case CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES:
+				getSubtractiveChanges().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -146,10 +144,10 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE:
-				return featureChange != null && !featureChange.isEmpty();
+			case CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES:
+				return subtractiveChanges != null && !subtractiveChanges.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //ExplicitUnsetEFeatureImpl
+} //CompoundSubtractionImpl
