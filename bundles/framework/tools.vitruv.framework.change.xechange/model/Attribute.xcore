@@ -4,26 +4,33 @@ package tools.vitruv.framework.change.echange.feature.attribute
 
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.change.echange.AdditiveEChange
+import tools.vitruv.framework.change.echange.SubtractiveEChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
+import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
 
-abstract class UpdateAttributeEChange<A extends EObject> extends tools.vitruv.framework.change.echange.feature.FeatureEChange < A , EAttribute > {
+abstract class UpdateAttributeEChange<A extends EObject> extends FeatureEChange<A, EAttribute> {
 }
 
-abstract class AdditiveAttributeEChange<A extends EObject , T extends Object> extends tools.vitruv.framework.change.echange.AdditiveEChange < T > , UpdateAttributeEChange < A > {
+abstract class AdditiveAttributeEChange<A extends EObject, T extends Object> extends AdditiveEChange<T>, UpdateAttributeEChange<A> {
 	T[1] newValue
 }
 
-abstract class SubtractiveAttributeEChange<A extends EObject , T extends Object> extends tools.vitruv.framework.change.echange.SubtractiveEChange < T > , UpdateAttributeEChange < A > {
+abstract class SubtractiveAttributeEChange<A extends EObject, T extends Object> extends SubtractiveEChange<T>, UpdateAttributeEChange<A> {
 	T[1] oldValue
 }
 
-class InsertEAttributeValue<A extends EObject , T extends Object> extends tools.vitruv.framework.change.echange.feature.list.InsertInListEChange < A , EAttribute , T > , AdditiveAttributeEChange < A , T > {
+class InsertEAttributeValue<A extends EObject, T extends Object> extends InsertInListEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T> {
 }
 
-class RemoveEAttributeValue<A extends EObject , T extends Object> extends tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange < A , EAttribute , T > , SubtractiveAttributeEChange < A , T > {
+class RemoveEAttributeValue<A extends EObject, T extends Object> extends RemoveFromListEChange<A, EAttribute, T>, SubtractiveAttributeEChange<A, T> {
 }
 
-class PermuteEAttributeValues<A extends EObject> extends tools.vitruv.framework.change.echange.feature.list.PermuteListEChange < A , EAttribute > , UpdateAttributeEChange < A > {
+class PermuteEAttributeValues<A extends EObject> extends PermuteListEChange<A, EAttribute>, UpdateAttributeEChange<A> {
 }
 
-class ReplaceSingleValuedEAttribute<A extends EObject , T extends Object> extends AdditiveAttributeEChange < A , T > , SubtractiveAttributeEChange < A , T > , tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange < A , EAttribute , T > {
+class ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EAttribute, T> {
 }

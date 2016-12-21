@@ -180,7 +180,7 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EFEATURE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Subtractive Changes</b></em>' reference list.
+	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -366,10 +366,10 @@ public interface CompoundPackage extends EPackage {
 	EClass getExplicitUnsetEFeature();
 
 	/**
-	 * Returns the meta object for the reference list '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getSubtractiveChanges <em>Subtractive Changes</em>}'.
+	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getSubtractiveChanges <em>Subtractive Changes</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Subtractive Changes</em>'.
+	 * @return the meta object for the containment reference list '<em>Subtractive Changes</em>'.
 	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getSubtractiveChanges()
 	 * @see #getExplicitUnsetEFeature()
 	 * @generated
@@ -510,7 +510,7 @@ public interface CompoundPackage extends EPackage {
 		EClass EXPLICIT_UNSET_EFEATURE = eINSTANCE.getExplicitUnsetEFeature();
 
 		/**
-		 * The meta object literal for the '<em><b>Subtractive Changes</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Subtractive Changes</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

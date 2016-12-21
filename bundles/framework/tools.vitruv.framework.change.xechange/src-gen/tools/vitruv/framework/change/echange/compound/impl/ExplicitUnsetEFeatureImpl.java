@@ -4,13 +4,16 @@ package tools.vitruv.framework.change.echange.compound.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
@@ -35,7 +38,7 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange;
  */
 public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> extends CompoundEChangeImpl implements ExplicitUnsetEFeature<A, F, T, S> {
 	/**
-	 * The cached value of the '{@link #getSubtractiveChanges() <em>Subtractive Changes</em>}' reference list.
+	 * The cached value of the '{@link #getSubtractiveChanges() <em>Subtractive Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getSubtractiveChanges()
@@ -70,7 +73,7 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	 */
 	public EList<S> getSubtractiveChanges() {
 		if (subtractiveChanges == null) {
-			subtractiveChanges = new EObjectResolvingEList.Unsettable<S>(FeatureEChange.class, this, CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES);
+			subtractiveChanges = new EObjectContainmentEList<S>(FeatureEChange.class, this, CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES);
 		}
 		return subtractiveChanges;
 	}
@@ -80,17 +83,13 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void unsetSubtractiveChanges() {
-		if (subtractiveChanges != null) ((InternalEList.Unsettable<?>)subtractiveChanges).unset();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isSetSubtractiveChanges() {
-		return subtractiveChanges != null && ((InternalEList.Unsettable<?>)subtractiveChanges).isSet();
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES:
+				return ((InternalEList<?>)getSubtractiveChanges()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -133,7 +132,7 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES:
-				unsetSubtractiveChanges();
+				getSubtractiveChanges().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -148,7 +147,7 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES:
-				return isSetSubtractiveChanges();
+				return subtractiveChanges != null && !subtractiveChanges.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

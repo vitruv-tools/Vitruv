@@ -4,14 +4,15 @@ package tools.vitruv.framework.change.echange.feature
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import tools.vitruv.framework.change.echange.AtomicEChange
 
-abstract class FeatureEChange<A extends EObject , F extends EStructuralFeature> extends tools.vitruv.framework.change.echange.AtomicEChange {
+abstract class FeatureEChange<A extends EObject , F extends EStructuralFeature> extends AtomicEChange {
 	refers F[1] affectedFeature
 	refers A[1] affectedEObject
 }
 
-abstract class UpdateMultiValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange< A , F > {
+abstract class UpdateMultiValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange<A, F> {
 }
 
-abstract class UpdateSingleValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange< A , F > {
+abstract class UpdateSingleValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange<A, F> {
 }
