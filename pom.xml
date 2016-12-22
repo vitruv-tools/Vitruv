@@ -37,6 +37,11 @@
 			<layout>p2</layout>
 			<url>http://vitruv-tools.github.io/updatesite/nightly/license</url>
 		</repository>
+		<repository>
+			<id>SDQ Commons</id>
+			<layout>p2</layout>
+			<url>http://kit-sdq.github.io/updatesite/nightly/commons</url>
+		</repository>
 	</repositories>
 
 	<build>

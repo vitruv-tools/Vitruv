@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aggregator:Aggregation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:aggregator="http://www.eclipse.org/cbi/p2repo/2011/aggregator/1.1.0" label="Vitruv Domains" buildRoot="target">
+<aggregator:Aggregation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:aggregator="http://www.eclipse.org/cbi/p2repo/2011/aggregator/1.1.0" label="Vitruv Framework Update Site" buildRoot="target">
   <validationSets label="main">
     <contributions label="local">
       <repositories location="../tools.vitruv.updatesite/target/repository"/>
@@ -15,6 +15,10 @@
       <repositories location="http://vitruv-tools.github.io/updatesite/nightly/license" mirrorArtifacts="false">
         <features name="tools.vitruv.license.feature.feature.group" versionRange="1.0.0" categories="//@customCategories[identifier='externals']"/>
       </repositories>
+      <repositories location="http://kit-sdq.github.io/updatesite/nightly/commons" mirrorArtifacts="false">
+        <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="1.0.0" categories="//@customCategories[identifier='externals']"/>
+        <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="1.0.0" categories="//@customCategories[identifier='externals']"/>
+      </repositories>
     </contributions>
   </validationSets>
   <configurations architecture="x86_64"/>
@@ -23,5 +27,5 @@
   <configurations operatingSystem="linux" windowSystem="gtk" architecture="x86_64"/>
   <configurations operatingSystem="macosx" windowSystem="cocoa"/>
   <configurations operatingSystem="macosx" windowSystem="cocoa" architecture="x86_64"/>
-  <customCategories identifier="externals" label="External Dependencies" features="//@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.1 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.2 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.3 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.4 //@validationSets[label='main']/@contributions[label='externals']/@repositories.1/@features.0"/>
+  <customCategories identifier="externals" label="External Dependencies" features="//@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.1 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.2 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.3 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.4 //@validationSets[label='main']/@contributions[label='externals']/@repositories.1/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.2/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.2/@features.1"/>
 </aggregator:Aggregation>
