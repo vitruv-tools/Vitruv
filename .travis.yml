@@ -14,11 +14,8 @@ git:
     submodules: false
 
 # Enable UI
-# Use sed to replace the SSH URL with the public URL, then initialize submodules
 before_install:
     - sh -e /etc/init.d/xvfb start - sleep 10
-    - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-    - git submodule update --init --recursive
     - git clone --depth 1 https://github.com/kit-sdq/BuildUtilities.git /tmp/BuildUtilities
     - . /tmp/BuildUtilities/travis-ci/installMaven.sh
 install: true
