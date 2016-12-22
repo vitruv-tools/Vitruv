@@ -124,22 +124,13 @@ public interface RootPackage extends EPackage {
 	int INSERT_ROOT_EOBJECT__NEW_VALUE = ROOT_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Is Create</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_ROOT_EOBJECT__IS_CREATE = ROOT_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Insert Root EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 2;
+	int INSERT_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -188,22 +179,13 @@ public interface RootPackage extends EPackage {
 	int REMOVE_ROOT_EOBJECT__OLD_VALUE = ROOT_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Is Delete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_ROOT_EOBJECT__IS_DELETE = ROOT_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Remove Root EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 2;
+	int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.

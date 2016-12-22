@@ -2,12 +2,10 @@
  */
 package tools.vitruv.framework.change.echange.impl;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -18,8 +16,6 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangeFactory;
 import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.EObjectAddedEChange;
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 /**
@@ -56,20 +52,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * @generated
 	 */
 	private EClass subtractiveEChangeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass eObjectAddedEChangeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass eObjectSubtractedEChangeEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -194,60 +176,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getEObjectAddedEChange() {
-		return eObjectAddedEChangeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getEObjectAddedEChange_NewValue() {
-		return (EReference)eObjectAddedEChangeEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getEObjectAddedEChange_IsCreate() {
-		return (EAttribute)eObjectAddedEChangeEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getEObjectSubtractedEChange() {
-		return eObjectSubtractedEChangeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getEObjectSubtractedEChange_OldValue() {
-		return (EReference)eObjectSubtractedEChangeEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getEObjectSubtractedEChange_IsDelete() {
-		return (EAttribute)eObjectSubtractedEChangeEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EChangeFactory getEChangeFactory() {
 		return (EChangeFactory)getEFactoryInstance();
 	}
@@ -280,14 +208,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		subtractiveEChangeEClass = createEClass(SUBTRACTIVE_ECHANGE);
 		createEOperation(subtractiveEChangeEClass, SUBTRACTIVE_ECHANGE___GET_OLD_VALUE);
-
-		eObjectAddedEChangeEClass = createEClass(EOBJECT_ADDED_ECHANGE);
-		createEReference(eObjectAddedEChangeEClass, EOBJECT_ADDED_ECHANGE__NEW_VALUE);
-		createEAttribute(eObjectAddedEChangeEClass, EOBJECT_ADDED_ECHANGE__IS_CREATE);
-
-		eObjectSubtractedEChangeEClass = createEClass(EOBJECT_SUBTRACTED_ECHANGE);
-		createEReference(eObjectSubtractedEChangeEClass, EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE);
-		createEAttribute(eObjectSubtractedEChangeEClass, EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE);
 	}
 
 	/**
@@ -319,31 +239,17 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		// Create type parameters
 		ETypeParameter additiveEChangeEClass_T = addETypeParameter(additiveEChangeEClass, "T");
 		ETypeParameter subtractiveEChangeEClass_T = addETypeParameter(subtractiveEChangeEClass, "T");
-		ETypeParameter eObjectAddedEChangeEClass_T = addETypeParameter(eObjectAddedEChangeEClass, "T");
-		ETypeParameter eObjectSubtractedEChangeEClass_T = addETypeParameter(eObjectSubtractedEChangeEClass, "T");
 
 		// Set bounds for type parameters
 		EGenericType g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		additiveEChangeEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		subtractiveEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		eObjectAddedEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		eObjectSubtractedEChangeEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
 		atomicEChangeEClass.getESuperTypes().add(this.getEChange());
 		additiveEChangeEClass.getESuperTypes().add(this.getAtomicEChange());
 		subtractiveEChangeEClass.getESuperTypes().add(this.getAtomicEChange());
-		g1 = createEGenericType(this.getAdditiveEChange());
-		EGenericType g2 = createEGenericType(eObjectAddedEChangeEClass_T);
-		g1.getETypeArguments().add(g2);
-		eObjectAddedEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getSubtractiveEChange());
-		g2 = createEGenericType(eObjectSubtractedEChangeEClass_T);
-		g1.getETypeArguments().add(g2);
-		eObjectSubtractedEChangeEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -361,16 +267,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		op = initEOperation(getSubtractiveEChange__GetOldValue(), null, "getOldValue", 1, 1, !IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(subtractiveEChangeEClass_T);
 		initEOperation(op, g1);
-
-		initEClass(eObjectAddedEChangeEClass, EObjectAddedEChange.class, "EObjectAddedEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(eObjectAddedEChangeEClass_T);
-		initEReference(getEObjectAddedEChange_NewValue(), g1, null, "newValue", null, 1, 1, EObjectAddedEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEObjectAddedEChange_IsCreate(), theEcorePackage.getEBoolean(), "isCreate", null, 1, 1, EObjectAddedEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(eObjectSubtractedEChangeEClass, EObjectSubtractedEChange.class, "EObjectSubtractedEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(eObjectSubtractedEChangeEClass_T);
-		initEReference(getEObjectSubtractedEChange_OldValue(), g1, null, "oldValue", null, 1, 1, EObjectSubtractedEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEObjectSubtractedEChange_IsDelete(), theEcorePackage.getEBoolean(), "isDelete", null, 1, 1, EObjectSubtractedEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

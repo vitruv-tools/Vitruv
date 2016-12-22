@@ -2,6 +2,8 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -14,12 +16,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
 import tools.vitruv.framework.change.echange.compound.CompoundSubtraction;
-
-import tools.vitruv.framework.change.echange.impl.SubtractiveEChangeImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,7 +35,7 @@ import tools.vitruv.framework.change.echange.impl.SubtractiveEChangeImpl;
  *
  * @generated
  */
-public class CompoundSubtractionImpl<T extends Object> extends SubtractiveEChangeImpl<T> implements CompoundSubtraction<T> {
+public class CompoundSubtractionImpl<T extends Object> extends CompoundEChangeImpl implements CompoundSubtraction<T> {
 	/**
 	 * The cached value of the '{@link #getSubtractiveChanges() <em>Subtractive Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -43,7 +44,7 @@ public class CompoundSubtractionImpl<T extends Object> extends SubtractiveEChang
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<SubtractiveEChange<T>> subtractiveChanges;
+	protected EList<SubtractiveEChange<? extends T>> subtractiveChanges;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -69,11 +70,20 @@ public class CompoundSubtractionImpl<T extends Object> extends SubtractiveEChang
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<SubtractiveEChange<T>> getSubtractiveChanges() {
+	public EList<SubtractiveEChange<? extends T>> getSubtractiveChanges() {
 		if (subtractiveChanges == null) {
-			subtractiveChanges = new EObjectContainmentEList<SubtractiveEChange<T>>(SubtractiveEChange.class, this, CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES);
+			subtractiveChanges = new EObjectContainmentEList<SubtractiveEChange<? extends T>>(SubtractiveEChange.class, this, CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES);
 		}
 		return subtractiveChanges;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<AtomicEChange> getAtomicChanges() {
+		return (EList) getSubtractiveChanges();
 	}
 
 	/**
@@ -115,7 +125,7 @@ public class CompoundSubtractionImpl<T extends Object> extends SubtractiveEChang
 		switch (featureID) {
 			case CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES:
 				getSubtractiveChanges().clear();
-				getSubtractiveChanges().addAll((Collection<? extends SubtractiveEChange<T>>)newValue);
+				getSubtractiveChanges().addAll((Collection<? extends SubtractiveEChange<? extends T>>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -148,6 +158,20 @@ public class CompoundSubtractionImpl<T extends Object> extends SubtractiveEChang
 				return subtractiveChanges != null && !subtractiveChanges.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case CompoundPackage.COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES:
+				return getAtomicChanges();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //CompoundSubtractionImpl

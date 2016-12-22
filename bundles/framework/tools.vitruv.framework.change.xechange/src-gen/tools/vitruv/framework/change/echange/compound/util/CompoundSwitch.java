@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.Switch;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
@@ -96,8 +95,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				ExplicitUnsetEFeature<?, ?, ?, ?> explicitUnsetEFeature = (ExplicitUnsetEFeature<?, ?, ?, ?>)theEObject;
 				T1 result = caseExplicitUnsetEFeature(explicitUnsetEFeature);
 				if (result == null) result = caseCompoundSubtraction(explicitUnsetEFeature);
-				if (result == null) result = caseSubtractiveEChange(explicitUnsetEFeature);
-				if (result == null) result = caseAtomicEChange(explicitUnsetEFeature);
+				if (result == null) result = caseCompoundEChange(explicitUnsetEFeature);
 				if (result == null) result = caseEChange(explicitUnsetEFeature);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -113,8 +111,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 			case CompoundPackage.COMPOUND_SUBTRACTION: {
 				CompoundSubtraction<?> compoundSubtraction = (CompoundSubtraction<?>)theEObject;
 				T1 result = caseCompoundSubtraction(compoundSubtraction);
-				if (result == null) result = caseSubtractiveEChange(compoundSubtraction);
-				if (result == null) result = caseAtomicEChange(compoundSubtraction);
+				if (result == null) result = caseCompoundEChange(compoundSubtraction);
 				if (result == null) result = caseEChange(compoundSubtraction);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -122,9 +119,40 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 			case CompoundPackage.COMPOUND_ADDITION: {
 				CompoundAddition<?> compoundAddition = (CompoundAddition<?>)theEObject;
 				T1 result = caseCompoundAddition(compoundAddition);
-				if (result == null) result = caseAdditiveEChange(compoundAddition);
-				if (result == null) result = caseAtomicEChange(compoundAddition);
+				if (result == null) result = caseCompoundEChange(compoundAddition);
 				if (result == null) result = caseEChange(compoundAddition);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CompoundPackage.CREATE_AND_INSERT_ROOT: {
+				CreateAndInsertRoot<?> createAndInsertRoot = (CreateAndInsertRoot<?>)theEObject;
+				T1 result = caseCreateAndInsertRoot(createAndInsertRoot);
+				if (result == null) result = caseCompoundEChange(createAndInsertRoot);
+				if (result == null) result = caseEChange(createAndInsertRoot);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CompoundPackage.REMOVE_AND_DELETE_ROOT: {
+				RemoveAndDeleteRoot<?> removeAndDeleteRoot = (RemoveAndDeleteRoot<?>)theEObject;
+				T1 result = caseRemoveAndDeleteRoot(removeAndDeleteRoot);
+				if (result == null) result = caseCompoundEChange(removeAndDeleteRoot);
+				if (result == null) result = caseEChange(removeAndDeleteRoot);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CompoundPackage.CREATE_AND_INSERT_NON_ROOT: {
+				CreateAndInsertNonRoot<?, ?> createAndInsertNonRoot = (CreateAndInsertNonRoot<?, ?>)theEObject;
+				T1 result = caseCreateAndInsertNonRoot(createAndInsertNonRoot);
+				if (result == null) result = caseCompoundEChange(createAndInsertNonRoot);
+				if (result == null) result = caseEChange(createAndInsertNonRoot);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CompoundPackage.REMOVE_AND_DELETE_NON_ROOT: {
+				RemoveAndDeleteNonRoot<?, ?> removeAndDeleteNonRoot = (RemoveAndDeleteNonRoot<?, ?>)theEObject;
+				T1 result = caseRemoveAndDeleteNonRoot(removeAndDeleteNonRoot);
+				if (result == null) result = caseCompoundEChange(removeAndDeleteNonRoot);
+				if (result == null) result = caseEChange(removeAndDeleteNonRoot);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -223,6 +251,66 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Create And Insert Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Create And Insert Root</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends EObject> T1 caseCreateAndInsertRoot(CreateAndInsertRoot<T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Remove And Delete Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Remove And Delete Root</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends EObject> T1 caseRemoveAndDeleteRoot(RemoveAndDeleteRoot<T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Create And Insert Non Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Create And Insert Non Root</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, T extends EObject> T1 caseCreateAndInsertNonRoot(CreateAndInsertNonRoot<A, T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Remove And Delete Non Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Remove And Delete Non Root</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, T extends EObject> T1 caseRemoveAndDeleteNonRoot(RemoveAndDeleteNonRoot<A, T> object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -234,51 +322,6 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseEChange(EChange object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T1 caseAtomicEChange(AtomicEChange object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <T extends Object> T1 caseAdditiveEChange(AdditiveEChange<T> object) {
 		return null;
 	}
 

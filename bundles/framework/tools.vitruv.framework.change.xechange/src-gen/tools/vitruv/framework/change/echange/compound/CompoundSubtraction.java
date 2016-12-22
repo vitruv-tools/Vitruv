@@ -4,6 +4,7 @@ package tools.vitruv.framework.change.echange.compound;
 
 import org.eclipse.emf.common.util.EList;
 
+import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 /**
@@ -22,10 +23,10 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface CompoundSubtraction<T extends Object> extends SubtractiveEChange<T> {
+public interface CompoundSubtraction<T extends Object> extends CompoundEChange {
 	/**
 	 * Returns the value of the '<em><b>Subtractive Changes</b></em>' containment reference list.
-	 * The list contents are of type {@link tools.vitruv.framework.change.echange.SubtractiveEChange}&lt;T>.
+	 * The list contents are of type {@link tools.vitruv.framework.change.echange.SubtractiveEChange}&lt;? extends T>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Subtractive Changes</em>' containment reference list isn't clear,
@@ -37,6 +38,15 @@ public interface CompoundSubtraction<T extends Object> extends SubtractiveEChang
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	EList<SubtractiveEChange<T>> getSubtractiveChanges();
+	EList<SubtractiveEChange<? extends T>> getSubtractiveChanges();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" required="true"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (EList) getSubtractiveChanges();'"
+	 * @generated
+	 */
+	EList<AtomicEChange> getAtomicChanges();
 
 } // CompoundSubtraction

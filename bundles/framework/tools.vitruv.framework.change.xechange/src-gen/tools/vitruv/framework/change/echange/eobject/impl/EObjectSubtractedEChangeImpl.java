@@ -1,6 +1,6 @@
 /**
  */
-package tools.vitruv.framework.change.echange.impl;
+package tools.vitruv.framework.change.echange.eobject.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -10,8 +10,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
+import tools.vitruv.framework.change.echange.impl.SubtractiveEChangeImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,8 +23,7 @@ import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.change.echange.impl.EObjectSubtractedEChangeImpl#getOldValue <em>Old Value</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.impl.EObjectSubtractedEChangeImpl#isIsDelete <em>Is Delete</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectSubtractedEChangeImpl#getOldValue <em>Old Value</em>}</li>
  * </ul>
  *
  * @generated
@@ -37,26 +38,6 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 	 * @ordered
 	 */
 	protected T oldValue;
-
-	/**
-	 * The default value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsDelete()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean IS_DELETE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsDelete()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean isDelete = IS_DELETE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -74,7 +55,7 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return EChangePackage.Literals.EOBJECT_SUBTRACTED_ECHANGE;
+		return EobjectPackage.Literals.EOBJECT_SUBTRACTED_ECHANGE;
 	}
 
 	/**
@@ -89,7 +70,7 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 			oldValue = (T)eResolveProxy(oldOldValue);
 			if (oldValue != oldOldValue) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE, oldOldValue, oldValue));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE, oldOldValue, oldValue));
 			}
 		}
 		return oldValue;
@@ -113,28 +94,7 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 		T oldOldValue = oldValue;
 		oldValue = newOldValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE, oldOldValue, oldValue));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isIsDelete() {
-		return isDelete;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setIsDelete(boolean newIsDelete) {
-		boolean oldIsDelete = isDelete;
-		isDelete = newIsDelete;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE, oldIsDelete, isDelete));
+			eNotify(new ENotificationImpl(this, Notification.SET, EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE, oldOldValue, oldValue));
 	}
 
 	/**
@@ -145,11 +105,9 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE:
+			case EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE:
 				if (resolve) return getOldValue();
 				return basicGetOldValue();
-			case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE:
-				return isIsDelete();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -163,11 +121,8 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE:
+			case EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE:
 				setOldValue((T)newValue);
-				return;
-			case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE:
-				setIsDelete((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -181,11 +136,8 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE:
+			case EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE:
 				setOldValue((T)null);
-				return;
-			case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE:
-				setIsDelete(IS_DELETE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -199,28 +151,10 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE:
+			case EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE:
 				return oldValue != null;
-			case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE:
-				return isDelete != IS_DELETE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (isDelete: ");
-		result.append(isDelete);
-		result.append(')');
-		return result.toString();
 	}
 
 } //EObjectSubtractedEChangeImpl

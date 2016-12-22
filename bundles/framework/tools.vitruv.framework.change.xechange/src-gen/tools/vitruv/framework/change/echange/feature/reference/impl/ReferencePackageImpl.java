@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
-import tools.vitruv.framework.change.echange.EChangePackage;
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
@@ -132,6 +132,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		isInited = true;
 
 		// Initialize simple dependencies
+		EobjectPackage.eINSTANCE.eClass();
 		ListPackage.eINSTANCE.eClass();
 		SinglePackage.eINSTANCE.eClass();
 
@@ -292,7 +293,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		// Obtain other dependent packages
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
-		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
+		EobjectPackage theEobjectPackage = (EobjectPackage)EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI);
 		ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
 		SinglePackage theSinglePackage = (SinglePackage)EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI);
 
@@ -343,7 +344,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		g2 = createEGenericType(theEcorePackage.getEReference());
 		g1.getETypeArguments().add(g2);
 		updateReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theEChangePackage.getEObjectAddedEChange());
+		g1 = createEGenericType(theEobjectPackage.getEObjectAddedEChange());
 		g2 = createEGenericType(additiveReferenceEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
@@ -351,7 +352,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		g2 = createEGenericType(additiveReferenceEChangeEClass_A);
 		g1.getETypeArguments().add(g2);
 		additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theEChangePackage.getEObjectSubtractedEChange());
+		g1 = createEGenericType(theEobjectPackage.getEObjectSubtractedEChange());
 		g2 = createEGenericType(subtractiveReferenceEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		subtractiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);

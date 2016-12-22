@@ -15,8 +15,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
+
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
 
@@ -36,7 +38,6 @@ import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl#getOldValue <em>Old Value</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl#isIsDelete <em>Is Delete</em>}</li>
  * </ul>
  *
  * @generated
@@ -51,26 +52,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * @ordered
 	 */
 	protected T oldValue;
-
-	/**
-	 * The default value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsDelete()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean IS_DELETE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsDelete()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean isDelete = IS_DELETE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -135,27 +116,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isIsDelete() {
-		return isDelete;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setIsDelete(boolean newIsDelete) {
-		boolean oldIsDelete = isDelete;
-		isDelete = newIsDelete;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE, oldIsDelete, isDelete));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public boolean isFromNonDefaultValue() {
 		return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());
 	}
@@ -180,8 +140,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE:
 				if (resolve) return getOldValue();
 				return basicGetOldValue();
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE:
-				return isIsDelete();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -198,9 +156,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE:
 				setOldValue((T)newValue);
 				return;
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE:
-				setIsDelete((Boolean)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -216,9 +171,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE:
 				setOldValue((T)null);
 				return;
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE:
-				setIsDelete(IS_DELETE_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -233,8 +185,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		switch (featureID) {
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE:
 				return oldValue != null;
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE:
-				return isDelete != IS_DELETE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -253,8 +203,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		}
 		if (baseClass == EObjectSubtractedEChange.class) {
 			switch (derivedFeatureID) {
-				case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE: return EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
-				case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE: return EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE;
+				case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE: return EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -290,8 +239,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		}
 		if (baseClass == EObjectSubtractedEChange.class) {
 			switch (baseFeatureID) {
-				case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE;
-				case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE;
+				case EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -365,22 +313,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 				return isToNonDefaultValue();
 		}
 		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (isDelete: ");
-		result.append(isDelete);
-		result.append(')');
-		return result.toString();
 	}
 
 } //ReplaceSingleValuedEReferenceImpl

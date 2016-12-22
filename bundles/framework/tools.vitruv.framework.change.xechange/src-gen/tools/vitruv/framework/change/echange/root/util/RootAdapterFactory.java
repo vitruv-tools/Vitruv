@@ -12,9 +12,10 @@ import org.eclipse.emf.ecore.EObject;
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.EObjectAddedEChange;
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
+
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 
 import tools.vitruv.framework.change.echange.root.*;
 
@@ -215,13 +216,13 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.EObjectAddedEChange <em>EObject Added EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange <em>EObject Added EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see tools.vitruv.framework.change.echange.EObjectAddedEChange
+	 * @see tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 	 * @generated
 	 */
 	public Adapter createEObjectAddedEChangeAdapter() {
@@ -243,13 +244,13 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.EObjectSubtractedEChange <em>EObject Subtracted EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange <em>EObject Subtracted EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see tools.vitruv.framework.change.echange.EObjectSubtractedEChange
+	 * @see tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 	 * @generated
 	 */
 	public Adapter createEObjectSubtractedEChangeAdapter() {

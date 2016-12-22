@@ -4,7 +4,7 @@ package tools.vitruv.framework.change.echange.root;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.framework.change.echange.EObjectAddedEChange;
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 
 /**
  * <!-- begin-user-doc -->

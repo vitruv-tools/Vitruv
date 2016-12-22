@@ -2,6 +2,8 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -15,11 +17,10 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
+import tools.vitruv.framework.change.echange.AtomicEChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundAddition;
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-
-import tools.vitruv.framework.change.echange.impl.AdditiveEChangeImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,7 +35,7 @@ import tools.vitruv.framework.change.echange.impl.AdditiveEChangeImpl;
  *
  * @generated
  */
-public class CompoundAdditionImpl<T extends Object> extends AdditiveEChangeImpl<T> implements CompoundAddition<T> {
+public class CompoundAdditionImpl<T extends Object> extends CompoundEChangeImpl implements CompoundAddition<T> {
 	/**
 	 * The cached value of the '{@link #getAdditiveChanges() <em>Additive Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -43,7 +44,7 @@ public class CompoundAdditionImpl<T extends Object> extends AdditiveEChangeImpl<
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<AdditiveEChange<T>> additiveChanges;
+	protected EList<AdditiveEChange<? extends T>> additiveChanges;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -69,11 +70,20 @@ public class CompoundAdditionImpl<T extends Object> extends AdditiveEChangeImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<AdditiveEChange<T>> getAdditiveChanges() {
+	public EList<AdditiveEChange<? extends T>> getAdditiveChanges() {
 		if (additiveChanges == null) {
-			additiveChanges = new EObjectContainmentEList<AdditiveEChange<T>>(AdditiveEChange.class, this, CompoundPackage.COMPOUND_ADDITION__ADDITIVE_CHANGES);
+			additiveChanges = new EObjectContainmentEList<AdditiveEChange<? extends T>>(AdditiveEChange.class, this, CompoundPackage.COMPOUND_ADDITION__ADDITIVE_CHANGES);
 		}
 		return additiveChanges;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<AtomicEChange> getAtomicChanges() {
+		return (EList) getAdditiveChanges();
 	}
 
 	/**
@@ -115,7 +125,7 @@ public class CompoundAdditionImpl<T extends Object> extends AdditiveEChangeImpl<
 		switch (featureID) {
 			case CompoundPackage.COMPOUND_ADDITION__ADDITIVE_CHANGES:
 				getAdditiveChanges().clear();
-				getAdditiveChanges().addAll((Collection<? extends AdditiveEChange<T>>)newValue);
+				getAdditiveChanges().addAll((Collection<? extends AdditiveEChange<? extends T>>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -148,6 +158,20 @@ public class CompoundAdditionImpl<T extends Object> extends AdditiveEChangeImpl<
 				return additiveChanges != null && !additiveChanges.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case CompoundPackage.COMPOUND_ADDITION___GET_ATOMIC_CHANGES:
+				return getAtomicChanges();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //CompoundAdditionImpl

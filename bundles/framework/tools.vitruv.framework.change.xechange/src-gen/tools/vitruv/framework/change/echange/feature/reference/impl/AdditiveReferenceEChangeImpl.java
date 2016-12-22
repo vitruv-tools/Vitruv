@@ -15,14 +15,14 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import tools.vitruv.framework.change.echange.eobject.impl.EObjectAddedEChangeImpl;
+
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange;
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
-
-import tools.vitruv.framework.change.echange.impl.EObjectAddedEChangeImpl;
 
 /**
  * <!-- begin-user-doc -->

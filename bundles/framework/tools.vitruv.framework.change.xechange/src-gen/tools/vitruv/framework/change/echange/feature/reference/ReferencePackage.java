@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 
-import tools.vitruv.framework.change.echange.EChangePackage;
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
@@ -134,16 +134,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE = EChangePackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
-
-	/**
-	 * The feature id for the '<em><b>Is Create</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_REFERENCE_ECHANGE__IS_CREATE = EChangePackage.EOBJECT_ADDED_ECHANGE__IS_CREATE;
+	int ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE = EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -152,7 +143,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = EChangePackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 0;
+	int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -161,7 +152,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 1;
+	int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Additive Reference EChange</em>' class.
@@ -170,7 +161,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EChangePackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 2;
+	int ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -179,7 +170,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE___GET_NEW_VALUE = EChangePackage.EOBJECT_ADDED_ECHANGE___GET_NEW_VALUE;
+	int ADDITIVE_REFERENCE_ECHANGE___GET_NEW_VALUE = EobjectPackage.EOBJECT_ADDED_ECHANGE___GET_NEW_VALUE;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -188,7 +179,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = EChangePackage.EOBJECT_ADDED_ECHANGE_OPERATION_COUNT + 0;
+	int ADDITIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = EobjectPackage.EOBJECT_ADDED_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Additive Reference EChange</em>' class.
@@ -197,7 +188,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT = EChangePackage.EOBJECT_ADDED_ECHANGE_OPERATION_COUNT + 1;
+	int ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT = EobjectPackage.EOBJECT_ADDED_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.SubtractiveReferenceEChangeImpl <em>Subtractive Reference EChange</em>}' class.
@@ -216,16 +207,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE = EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
-
-	/**
-	 * The feature id for the '<em><b>Is Delete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__IS_DELETE = EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE;
+	int SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -234,7 +216,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = EChangePackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 0;
+	int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -243,7 +225,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 1;
+	int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Subtractive Reference EChange</em>' class.
@@ -252,7 +234,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EChangePackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 2;
+	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -261,7 +243,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_OLD_VALUE = EChangePackage.EOBJECT_SUBTRACTED_ECHANGE___GET_OLD_VALUE;
+	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_OLD_VALUE = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE___GET_OLD_VALUE;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -270,7 +252,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = EChangePackage.EOBJECT_SUBTRACTED_ECHANGE_OPERATION_COUNT + 0;
+	int SUBTRACTIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Subtractive Reference EChange</em>' class.
@@ -279,7 +261,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE_OPERATION_COUNT = EChangePackage.EOBJECT_SUBTRACTED_ECHANGE_OPERATION_COUNT + 1;
+	int SUBTRACTIVE_REFERENCE_ECHANGE_OPERATION_COUNT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl <em>Insert EReference</em>}' class.
@@ -328,22 +310,13 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE__NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Is Create</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE__IS_CREATE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Insert EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 2;
+	int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -419,22 +392,13 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE__OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Is Delete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE__IS_DELETE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Remove EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 2;
+	int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -547,15 +511,6 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE;
 
 	/**
-	 * The feature id for the '<em><b>Is Create</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE = ADDITIVE_REFERENCE_ECHANGE__IS_CREATE;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -583,22 +538,13 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE = ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Is Delete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE = ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Replace Single Valued EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT + 2;
+	int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.

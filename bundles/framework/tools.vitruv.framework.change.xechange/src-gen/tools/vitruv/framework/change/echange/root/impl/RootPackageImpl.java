@@ -13,6 +13,8 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject;
 import tools.vitruv.framework.change.echange.root.RootEChange;
@@ -94,7 +96,7 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		isInited = true;
 
 		// Initialize simple dependencies
-		EChangePackage.eINSTANCE.eClass();
+		EobjectPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theRootPackage.createPackageContents();
@@ -209,6 +211,7 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		// Obtain other dependent packages
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
+		EobjectPackage theEobjectPackage = (EobjectPackage)EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI);
 
 		// Create type parameters
 		ETypeParameter insertRootEObjectEClass_T = addETypeParameter(insertRootEObjectEClass, "T");
@@ -224,13 +227,13 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		rootEChangeEClass.getESuperTypes().add(theEChangePackage.getAtomicEChange());
 		g1 = createEGenericType(this.getRootEChange());
 		insertRootEObjectEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theEChangePackage.getEObjectAddedEChange());
+		g1 = createEGenericType(theEobjectPackage.getEObjectAddedEChange());
 		EGenericType g2 = createEGenericType(insertRootEObjectEClass_T);
 		g1.getETypeArguments().add(g2);
 		insertRootEObjectEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getRootEChange());
 		removeRootEObjectEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theEChangePackage.getEObjectSubtractedEChange());
+		g1 = createEGenericType(theEobjectPackage.getEObjectSubtractedEChange());
 		g2 = createEGenericType(removeRootEObjectEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeRootEObjectEClass.getEGenericSuperTypes().add(g1);

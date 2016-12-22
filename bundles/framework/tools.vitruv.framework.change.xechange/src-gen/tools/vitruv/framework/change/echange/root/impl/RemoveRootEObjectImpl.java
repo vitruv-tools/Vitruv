@@ -10,9 +10,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
+
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject;
 import tools.vitruv.framework.change.echange.root.RootPackage;
@@ -26,7 +27,6 @@ import tools.vitruv.framework.change.echange.root.RootPackage;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.root.impl.RemoveRootEObjectImpl#getOldValue <em>Old Value</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.root.impl.RemoveRootEObjectImpl#isIsDelete <em>Is Delete</em>}</li>
  * </ul>
  *
  * @generated
@@ -41,26 +41,6 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 * @ordered
 	 */
 	protected T oldValue;
-
-	/**
-	 * The default value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsDelete()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean IS_DELETE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsDelete()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean isDelete = IS_DELETE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -125,35 +105,12 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isIsDelete() {
-		return isDelete;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setIsDelete(boolean newIsDelete) {
-		boolean oldIsDelete = isDelete;
-		isDelete = newIsDelete;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE, oldIsDelete, isDelete));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE:
 				if (resolve) return getOldValue();
 				return basicGetOldValue();
-			case RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE:
-				return isIsDelete();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -170,9 +127,6 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 			case RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE:
 				setOldValue((T)newValue);
 				return;
-			case RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE:
-				setIsDelete((Boolean)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -188,9 +142,6 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 			case RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE:
 				setOldValue((T)null);
 				return;
-			case RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE:
-				setIsDelete(IS_DELETE_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -205,8 +156,6 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 		switch (featureID) {
 			case RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE:
 				return oldValue != null;
-			case RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE:
-				return isDelete != IS_DELETE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -225,8 +174,7 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 		}
 		if (baseClass == EObjectSubtractedEChange.class) {
 			switch (derivedFeatureID) {
-				case RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE: return EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
-				case RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE: return EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE;
+				case RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE: return EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -247,28 +195,11 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 		}
 		if (baseClass == EObjectSubtractedEChange.class) {
 			switch (baseFeatureID) {
-				case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE: return RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE;
-				case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE: return RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE;
+				case EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE: return RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE;
 				default: return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (isDelete: ");
-		result.append(isDelete);
-		result.append(')');
-		return result.toString();
 	}
 
 } //RemoveRootEObjectImpl

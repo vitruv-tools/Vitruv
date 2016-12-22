@@ -15,14 +15,6 @@
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated Single -->
-      <package
-            uri="http://tools.vitruv/EChange/Feature/Single/1.0"
-            class="tools.vitruv.framework.change.echange.feature.single.SinglePackage"
-            genModel="model/Single.xcore"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated Root -->
       <package
             uri="http://tools.vitruv/EChange/Root/1.0"
@@ -68,6 +60,22 @@
             uri="http://tools.vitruv/EChange/Feature/Attribute/1.0"
             class="tools.vitruv.framework.change.echange.feature.attribute.AttributePackage"
             genModel="model/Attribute.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated EObject -->
+      <package
+            uri="http://tools.vitruv/EChange/EObject/1.0"
+            class="tools.vitruv.framework.change.echange.eobject.EobjectPackage"
+            genModel="model/EObject.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Single -->
+      <package
+            uri="http://tools.vitruv/EChange/Feature/Single/1.0"
+            class="tools.vitruv.framework.change.echange.feature.single.SinglePackage"
+            genModel="model/Single.xcore"/>
    </extension>
 
 </plugin>

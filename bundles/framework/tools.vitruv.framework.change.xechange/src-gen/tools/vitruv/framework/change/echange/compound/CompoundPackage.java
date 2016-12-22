@@ -186,7 +186,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 0;
+	int COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Subtraction</em>' class.
@@ -195,16 +195,16 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION_FEATURE_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
+	int COMPOUND_SUBTRACTION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Get Old Value</em>' operation.
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION___GET_OLD_VALUE = EChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE;
+	int COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Subtraction</em>' class.
@@ -213,7 +213,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION_OPERATION_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_OPERATION_COUNT + 0;
+	int COMPOUND_SUBTRACTION_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
@@ -253,13 +253,13 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Get Old Value</em>' operation.
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___GET_OLD_VALUE = COMPOUND_SUBTRACTION___GET_OLD_VALUE;
+	int EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES = COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES;
 
 	/**
 	 * The number of operations of the '<em>Explicit Unset EFeature</em>' class.
@@ -314,7 +314,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
+	int REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Replace In EList</em>' class.
@@ -323,7 +323,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+	int REPLACE_IN_ELIST_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundAdditionImpl <em>Addition</em>}' class.
@@ -342,7 +342,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_ADDITION__ADDITIVE_CHANGES = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 0;
+	int COMPOUND_ADDITION__ADDITIVE_CHANGES = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Addition</em>' class.
@@ -351,16 +351,16 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_ADDITION_FEATURE_COUNT = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 1;
+	int COMPOUND_ADDITION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_ADDITION___GET_NEW_VALUE = EChangePackage.ADDITIVE_ECHANGE___GET_NEW_VALUE;
+	int COMPOUND_ADDITION___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Addition</em>' class.
@@ -369,7 +369,227 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_ADDITION_OPERATION_COUNT = EChangePackage.ADDITIVE_ECHANGE_OPERATION_COUNT + 0;
+	int COMPOUND_ADDITION_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertRootImpl <em>Create And Insert Root</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertRootImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertRoot()
+	 * @generated
+	 */
+	int CREATE_AND_INSERT_ROOT = 6;
+
+	/**
+	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT__CREATE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Insert Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT__INSERT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Create And Insert Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
+
+	/**
+	 * The number of operations of the '<em>Create And Insert Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.RemoveAndDeleteRootImpl <em>Remove And Delete Root</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.RemoveAndDeleteRootImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteRoot()
+	 * @generated
+	 */
+	int REMOVE_AND_DELETE_ROOT = 7;
+
+	/**
+	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT__REMOVE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Delete Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT__DELETE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Remove And Delete Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
+
+	/**
+	 * The number of operations of the '<em>Remove And Delete Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl <em>Create And Insert Non Root</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertNonRoot()
+	 * @generated
+	 */
+	int CREATE_AND_INSERT_NON_ROOT = 8;
+
+	/**
+	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT__CREATE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Insert Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT__INSERT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Create And Insert Non Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
+
+	/**
+	 * The number of operations of the '<em>Create And Insert Non Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.RemoveAndDeleteNonRootImpl <em>Remove And Delete Non Root</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.RemoveAndDeleteNonRootImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteNonRoot()
+	 * @generated
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT = 9;
+
+	/**
+	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT__REMOVE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Delete Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT__DELETE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Remove And Delete Non Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
+
+	/**
+	 * The number of operations of the '<em>Remove And Delete Non Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
 
 	/**
@@ -510,6 +730,16 @@ public interface CompoundPackage extends EPackage {
 	EReference getReplaceInEList_InsertChange();
 
 	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Atomic Changes</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList#getAtomicChanges()
+	 * @generated
+	 */
+	EOperation getReplaceInEList__GetAtomicChanges();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CompoundSubtraction <em>Subtraction</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -531,6 +761,16 @@ public interface CompoundPackage extends EPackage {
 	EReference getCompoundSubtraction_SubtractiveChanges();
 
 	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.CompoundSubtraction#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Atomic Changes</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundSubtraction#getAtomicChanges()
+	 * @generated
+	 */
+	EOperation getCompoundSubtraction__GetAtomicChanges();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CompoundAddition <em>Addition</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -550,6 +790,144 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getCompoundAddition_AdditiveChanges();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.CompoundAddition#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Atomic Changes</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundAddition#getAtomicChanges()
+	 * @generated
+	 */
+	EOperation getCompoundAddition__GetAtomicChanges();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot <em>Create And Insert Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Create And Insert Root</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+	 * @generated
+	 */
+	EClass getCreateAndInsertRoot();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot#getCreateChange <em>Create Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Create Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot#getCreateChange()
+	 * @see #getCreateAndInsertRoot()
+	 * @generated
+	 */
+	EReference getCreateAndInsertRoot_CreateChange();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot#getInsertChange <em>Insert Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Insert Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot#getInsertChange()
+	 * @see #getCreateAndInsertRoot()
+	 * @generated
+	 */
+	EReference getCreateAndInsertRoot_InsertChange();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot <em>Remove And Delete Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Remove And Delete Root</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
+	 * @generated
+	 */
+	EClass getRemoveAndDeleteRoot();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot#getRemoveChange <em>Remove Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Remove Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot#getRemoveChange()
+	 * @see #getRemoveAndDeleteRoot()
+	 * @generated
+	 */
+	EReference getRemoveAndDeleteRoot_RemoveChange();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot#getDeleteChange <em>Delete Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Delete Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot#getDeleteChange()
+	 * @see #getRemoveAndDeleteRoot()
+	 * @generated
+	 */
+	EReference getRemoveAndDeleteRoot_DeleteChange();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot <em>Create And Insert Non Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Create And Insert Non Root</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
+	 * @generated
+	 */
+	EClass getCreateAndInsertNonRoot();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot#getCreateChange <em>Create Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Create Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot#getCreateChange()
+	 * @see #getCreateAndInsertNonRoot()
+	 * @generated
+	 */
+	EReference getCreateAndInsertNonRoot_CreateChange();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot#getInsertChange <em>Insert Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Insert Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot#getInsertChange()
+	 * @see #getCreateAndInsertNonRoot()
+	 * @generated
+	 */
+	EReference getCreateAndInsertNonRoot_InsertChange();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot <em>Remove And Delete Non Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Remove And Delete Non Root</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
+	 * @generated
+	 */
+	EClass getRemoveAndDeleteNonRoot();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot#getRemoveChange <em>Remove Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Remove Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot#getRemoveChange()
+	 * @see #getRemoveAndDeleteNonRoot()
+	 * @generated
+	 */
+	EReference getRemoveAndDeleteNonRoot_RemoveChange();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot#getDeleteChange <em>Delete Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Delete Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot#getDeleteChange()
+	 * @see #getRemoveAndDeleteNonRoot()
+	 * @generated
+	 */
+	EReference getRemoveAndDeleteNonRoot_DeleteChange();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -687,6 +1065,14 @@ public interface CompoundPackage extends EPackage {
 		EReference REPLACE_IN_ELIST__INSERT_CHANGE = eINSTANCE.getReplaceInEList_InsertChange();
 
 		/**
+		 * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = eINSTANCE.getReplaceInEList__GetAtomicChanges();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl <em>Subtraction</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -705,6 +1091,14 @@ public interface CompoundPackage extends EPackage {
 		EReference COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES = eINSTANCE.getCompoundSubtraction_SubtractiveChanges();
 
 		/**
+		 * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES = eINSTANCE.getCompoundSubtraction__GetAtomicChanges();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundAdditionImpl <em>Addition</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -721,6 +1115,118 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMPOUND_ADDITION__ADDITIVE_CHANGES = eINSTANCE.getCompoundAddition_AdditiveChanges();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation COMPOUND_ADDITION___GET_ATOMIC_CHANGES = eINSTANCE.getCompoundAddition__GetAtomicChanges();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertRootImpl <em>Create And Insert Root</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertRootImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertRoot()
+		 * @generated
+		 */
+		EClass CREATE_AND_INSERT_ROOT = eINSTANCE.getCreateAndInsertRoot();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CREATE_AND_INSERT_ROOT__CREATE_CHANGE = eINSTANCE.getCreateAndInsertRoot_CreateChange();
+
+		/**
+		 * The meta object literal for the '<em><b>Insert Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CREATE_AND_INSERT_ROOT__INSERT_CHANGE = eINSTANCE.getCreateAndInsertRoot_InsertChange();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.RemoveAndDeleteRootImpl <em>Remove And Delete Root</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.RemoveAndDeleteRootImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteRoot()
+		 * @generated
+		 */
+		EClass REMOVE_AND_DELETE_ROOT = eINSTANCE.getRemoveAndDeleteRoot();
+
+		/**
+		 * The meta object literal for the '<em><b>Remove Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REMOVE_AND_DELETE_ROOT__REMOVE_CHANGE = eINSTANCE.getRemoveAndDeleteRoot_RemoveChange();
+
+		/**
+		 * The meta object literal for the '<em><b>Delete Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REMOVE_AND_DELETE_ROOT__DELETE_CHANGE = eINSTANCE.getRemoveAndDeleteRoot_DeleteChange();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl <em>Create And Insert Non Root</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertNonRoot()
+		 * @generated
+		 */
+		EClass CREATE_AND_INSERT_NON_ROOT = eINSTANCE.getCreateAndInsertNonRoot();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CREATE_AND_INSERT_NON_ROOT__CREATE_CHANGE = eINSTANCE.getCreateAndInsertNonRoot_CreateChange();
+
+		/**
+		 * The meta object literal for the '<em><b>Insert Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CREATE_AND_INSERT_NON_ROOT__INSERT_CHANGE = eINSTANCE.getCreateAndInsertNonRoot_InsertChange();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.RemoveAndDeleteNonRootImpl <em>Remove And Delete Non Root</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.RemoveAndDeleteNonRootImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteNonRoot()
+		 * @generated
+		 */
+		EClass REMOVE_AND_DELETE_NON_ROOT = eINSTANCE.getRemoveAndDeleteNonRoot();
+
+		/**
+		 * The meta object literal for the '<em><b>Remove Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REMOVE_AND_DELETE_NON_ROOT__REMOVE_CHANGE = eINSTANCE.getRemoveAndDeleteNonRoot_RemoveChange();
+
+		/**
+		 * The meta object literal for the '<em><b>Delete Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REMOVE_AND_DELETE_NON_ROOT__DELETE_CHANGE = eINSTANCE.getRemoveAndDeleteNonRoot_DeleteChange();
 
 	}
 

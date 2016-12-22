@@ -2,8 +2,6 @@
 @GenModel(modelName="Change",prefix="EChange") //@GenModel(prefix="EChange", editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
 package tools.vitruv.framework.change.echange
 
-import org.eclipse.emf.ecore.EObject
-
 abstract class EChange {
 }
 
@@ -16,14 +14,4 @@ abstract class AdditiveEChange<T extends Object> extends AtomicEChange {
 
 abstract class SubtractiveEChange<T extends Object> extends AtomicEChange {
 	op T[1] getOldValue()
-}
-
-abstract class EObjectAddedEChange<T extends EObject> extends AdditiveEChange<T> {
-	refers T[1] newValue
-	boolean[1] isCreate
-}
-
-abstract class EObjectSubtractedEChange<T extends EObject> extends SubtractiveEChange<T> {
-	refers T[1] oldValue
-	boolean[1] isDelete
 }

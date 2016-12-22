@@ -70,6 +70,10 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 			case CompoundPackage.REPLACE_IN_ELIST: return createReplaceInEList();
 			case CompoundPackage.COMPOUND_SUBTRACTION: return createCompoundSubtraction();
 			case CompoundPackage.COMPOUND_ADDITION: return createCompoundAddition();
+			case CompoundPackage.CREATE_AND_INSERT_ROOT: return createCreateAndInsertRoot();
+			case CompoundPackage.REMOVE_AND_DELETE_ROOT: return createRemoveAndDeleteRoot();
+			case CompoundPackage.CREATE_AND_INSERT_NON_ROOT: return createCreateAndInsertNonRoot();
+			case CompoundPackage.REMOVE_AND_DELETE_NON_ROOT: return createRemoveAndDeleteNonRoot();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -123,6 +127,46 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	public <T extends Object> CompoundAddition<T> createCompoundAddition() {
 		CompoundAdditionImpl<T> compoundAddition = new CompoundAdditionImpl<T>();
 		return compoundAddition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRoot() {
+		CreateAndInsertRootImpl<T> createAndInsertRoot = new CreateAndInsertRootImpl<T>();
+		return createAndInsertRoot;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRoot() {
+		RemoveAndDeleteRootImpl<T> removeAndDeleteRoot = new RemoveAndDeleteRootImpl<T>();
+		return removeAndDeleteRoot;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> createCreateAndInsertNonRoot() {
+		CreateAndInsertNonRootImpl<A, T> createAndInsertNonRoot = new CreateAndInsertNonRootImpl<A, T>();
+		return createAndInsertNonRoot;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRoot() {
+		RemoveAndDeleteNonRootImpl<A, T> removeAndDeleteNonRoot = new RemoveAndDeleteNonRootImpl<A, T>();
+		return removeAndDeleteNonRoot;
 	}
 
 	/**

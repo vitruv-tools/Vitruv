@@ -4,7 +4,7 @@ package tools.vitruv.framework.change.echange.feature.reference;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 
 /**
  * <!-- begin-user-doc -->

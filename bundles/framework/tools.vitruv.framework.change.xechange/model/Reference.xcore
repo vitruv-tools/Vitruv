@@ -4,8 +4,8 @@ package tools.vitruv.framework.change.echange.feature.reference
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.framework.change.echange.EObjectAddedEChange
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
 import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange
