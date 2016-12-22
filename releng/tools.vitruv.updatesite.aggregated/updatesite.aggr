@@ -12,6 +12,9 @@
         <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.10.0" categories="//@customCategories[identifier='externals']"/>
         <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.10.0" categories="//@customCategories[identifier='externals']"/>
       </repositories>
+      <repositories location="http://vitruv-tools.github.io/updatesite/nightly/license" mirrorArtifacts="false">
+        <features name="tools.vitruv.license.feature.feature.group" versionRange="1.0.0" categories="//@customCategories[identifier='externals']"/>
+      </repositories>
     </contributions>
   </validationSets>
   <configurations architecture="x86_64"/>
@@ -20,5 +23,5 @@
   <configurations operatingSystem="linux" windowSystem="gtk" architecture="x86_64"/>
   <configurations operatingSystem="macosx" windowSystem="cocoa"/>
   <configurations operatingSystem="macosx" windowSystem="cocoa" architecture="x86_64"/>
-  <customCategories identifier="externals" label="External Dependencies" features="//@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.1 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.2 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.3 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.4"/>
+  <customCategories identifier="externals" label="External Dependencies" features="//@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.1 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.2 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.3 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.4 //@validationSets[label='main']/@contributions[label='externals']/@repositories.1/@features.0"/>
 </aggregator:Aggregation>
