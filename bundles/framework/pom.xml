@@ -27,8 +27,6 @@
 		<module>tools.vitruv.framework.userinteracting</module>
 		<module>tools.vitruv.framework.util</module>
 		<module>tools.vitruv.framework.vsum</module>
-		<module>../commons/edu.kit.ipd.sdq.commons.util.emf</module>
-		<module>../commons/edu.kit.ipd.sdq.commons.util.java</module>
 	</modules>
 
 </project>
