@@ -1,8 +1,6 @@
 package tools.vitruv.framework.change.preparation
 
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.root.InsertRootEObject
-import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
@@ -14,12 +12,11 @@ import org.eclipse.emf.ecore.resource.Resource
 
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
 import static tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory.*
+import static tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory.*
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import java.util.ArrayList
 import tools.vitruv.framework.change.echange.AdditiveEChange
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 /**
  * A utility class providing extension methods for transforming change descriptions to change models.
@@ -30,22 +27,27 @@ package class EMFModelChangeTransformationUtil {
 	private new() {
 	}
 	
-	def static dispatch List<AdditiveEChange<?>> createAdditiveChangesForValue(EObject eObject,  EReference reference) {
-		return createAdditiveEChangeForReferencedObject(eObject, reference)
+	def static List<EChange> createAdditiveCreateChangesForValue(EObject eObject, EReference reference) {
+		return createAdditiveEChangeForReferencedObject(eObject, reference, true)
 	}
 	
-	def static dispatch List<AdditiveEChange<?>> createAdditiveChangesForValue(EObject eObject,  EAttribute attribute) {
+	def static dispatch List<EChange> createAdditiveChangesForValue(EObject eObject, EReference reference) {
+		return createAdditiveEChangeForReferencedObject(eObject, reference, false)
+	}
+	
+	def static dispatch List<AdditiveEChange<?>> createAdditiveChangesForValue(EObject eObject, EAttribute attribute) {
+		// FIXME This is wrong! We only extract the first attribute, not all
 		return #[createAdditiveEChangeForAttributeValue(eObject, attribute)]
 	}
 	
-	def static List<AdditiveEChange<?>> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference) {
-		val result = new ArrayList<AdditiveEChange<?>>(); 
+	def static List<EChange> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference, boolean forceCreate) {
+		val result = new ArrayList<EChange>(); 
 		if (reference.isMany) {
 			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
-				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue);
+				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, true);
 			}
 		} else {
-				result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0));
+				result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), true);
 		}
 		return result;
 		// FIXME MK ChangeBridge
@@ -116,9 +118,13 @@ package class EMFModelChangeTransformationUtil {
 		return getValueList(eObject, attribute) as EList<Object>
 	}
 	
-	def static InsertRootEObject<?> createInsertRootChange(EObject rootToInsert, EObject oldRootContainer, Resource oldRootResource, String resourceURI) {
+	def static EChange createInsertRootChange(EObject rootToInsert, EObject oldRootContainer, Resource oldRootResource, String resourceURI) {
 		val isCreate = isCreate(oldRootContainer, oldRootResource)
-		return createInsertRootChange(rootToInsert, isCreate, resourceURI)
+		if (isCreate) {
+			return createCreateAndInsertRootChange(rootToInsert, resourceURI);
+		} else {
+			return createInsertRootChange(rootToInsert, resourceURI)
+		}
 	}
 	
 	def static boolean isCreate(EObject oldContainer, Resource oldResource) {
@@ -129,30 +135,46 @@ package class EMFModelChangeTransformationUtil {
 		return (newContainer == null || newContainer instanceof ChangeDescription) && newResource == null
 	}
 	
-	def static RemoveRootEObject<?> createRemoveRootChange(EObject rootToRemove, EObject newRootContainer, Resource newRootResource, String resourceURI) {
+	def static EChange createRemoveRootChange(EObject rootToRemove, EObject newRootContainer, Resource newRootResource, String resourceURI) {
 		val isDelete = isDelete(newRootContainer, newRootResource)
-		return createRemoveRootChange(rootToRemove, isDelete, resourceURI)
+		if (isDelete) {
+			return createRemoveAndDeleteRootChange(rootToRemove, resourceURI);
+		} else {
+			return createRemoveRootChange(rootToRemove, resourceURI);
+		}
 	}
 	
-	def static InsertEReference<?,?> createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue) {
+	def static EChange createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
 		val oldContainer = referenceValue.eContainer
 		val oldResource = referenceValue.eResource
-		val isCreate = isContainment && isCreate(oldContainer,oldResource)
-		return createInsertReferenceChange(affectedEObject, affectedReference, index, referenceValue, isCreate)
+		val isCreate = forceCreate || (isContainment && isCreate(oldContainer,oldResource))
+		if (isCreate) {
+			return createCreateAndInsertNonRootChange(affectedEObject, affectedReference, referenceValue, index);
+		} else {
+			return createInsertReferenceChange(affectedEObject, affectedReference, referenceValue, index);
+		}
 	}
 	
 	def static EChange createRemoveReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, EObject newContainer, Resource newResource) {
 		val isContainment = affectedReference.containment
 		val isDelete = isContainment && isDelete(newContainer,newResource)
-		return createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index, isDelete)
+		if (isDelete) {
+			return createRemoveAndDeleteNonRootChange(affectedEObject, affectedReference, referenceValue, index);
+		} else {
+			return createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index);
+		}
 	}
 	
-	def static ReplaceSingleValuedEReference<?,?> createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue) {
+	def static EChange createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
 		val isCreate = newReferenceValue != null && isContainment && isCreate(newReferenceValue.eContainer, newReferenceValue.eResource)
 		val isDelete = oldReferenceValue != null && isContainment && oldReferenceValue.eResource == null //isDelete(container, resource)
-		return createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, isCreate, isDelete)
+		if (forceCreate || (isCreate && isDelete)) {
+			return createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);
+		} else {
+			return createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);
+		}
 	}
 	
 	def static EChange createInsertAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, int index, Object newValue) {
