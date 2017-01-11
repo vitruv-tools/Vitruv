@@ -4,23 +4,22 @@ import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformatio
 import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
-import org.junit.Ignore
 
 class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2ChangeTransformationTest {
 
-	@Ignore
-	@Test
-	def public testUnsetRemoveEAttributeValue() {
-		this.rootElement.multiValuedEAttribute.add(42)
-		// test
-		startRecording
-
-		// unset 
-		this.rootElement.eUnset(this.rootElement.getFeatureByName(MULTI_VALUE_E_ATTRIBUTE_NAME))
-
-		val subtractiveChanges = claimChange(0).assertExplicitUnset.subtractiveChanges
-		subtractiveChanges.assertRemoveEAttribute(this.rootElement, MULTI_VALUE_E_ATTRIBUTE_NAME, 42, 0)
-	}
+//	@Ignore
+//	@Test
+//	def public testUnsetRemoveEAttributeValue() {
+//		this.rootElement.multiValuedEAttribute.add(42)
+//		// test
+//		startRecording
+//
+//		// unset 
+//		this.rootElement.eUnset(this.rootElement.getFeatureByName(MULTI_VALUE_E_ATTRIBUTE_NAME))
+//
+//		val subtractiveChanges = claimChange(0).assertExplicitUnset.subtractiveChanges
+//		subtractiveChanges.assertRemoveEAttribute(this.rootElement, MULTI_VALUE_E_ATTRIBUTE_NAME, 42, 0)
+//	}
 
 	@Test
 	def public testRemoveEAttributeValue() {

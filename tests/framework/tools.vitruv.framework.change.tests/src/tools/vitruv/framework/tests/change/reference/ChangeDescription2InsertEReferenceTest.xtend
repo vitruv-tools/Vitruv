@@ -39,9 +39,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 		// test
 		val nonRoot = createAndAddNonRootToRootMultiReference(expectedIndex)
 		// assert
-		val isContainment = true
-		val isCreate = true
-		assertInsertEReference(nonRoot, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, expectedIndex, isContainment, isCreate)
+		assertCreateAndInsertNonRoot(nonRoot, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, expectedIndex)
 	}
 
 	def private testInsertInEReference(int expectedIndex) {
@@ -52,12 +50,16 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 		this.rootElement.multiValuedNonContainmentEReference.add(expectedIndex, nonRoot)
 		// assert
 		val isContainment = false
-		val isCreate = false
-		assertInsertEReference(nonRoot, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, expectedIndex, isContainment, isCreate)
+		assertInsertEReference(nonRoot, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, expectedIndex, isContainment)
 	}
 	
-	def private void assertInsertEReference(NonRoot nonRoot, String featureName, int expectedIndex, boolean isContainment, boolean isCreate) {
+	def private void assertInsertEReference(NonRoot nonRoot, String featureName, int expectedIndex, boolean isContainment) {
 		claimChange(0).assertInsertEReference(this.rootElement, featureName, nonRoot,
-			expectedIndex, isContainment, isCreate)
+			expectedIndex, isContainment)
+	}
+	
+	def private void assertCreateAndInsertNonRoot(NonRoot nonRoot, String featureName, int expectedIndex) {
+		claimChange(0).assertCreateAndInsertNonRoot(this.rootElement, featureName, nonRoot,
+			expectedIndex)
 	}
 }

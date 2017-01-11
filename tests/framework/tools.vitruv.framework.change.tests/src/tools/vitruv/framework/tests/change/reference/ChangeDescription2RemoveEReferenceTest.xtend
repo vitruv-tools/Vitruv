@@ -26,7 +26,8 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 			val feature = this.rootElement.getFeatureByName(featureName)
 			this.rootElement.eUnset(feature)
 			val unsetChange = claimChange(0).assertExplicitUnset()
-			removeChange = unsetChange.subtractiveChanges?.get(0)
+			// TODO REvert
+//			removeChange = unsetChange.subtractiveChanges?.get(0)
 		} else {
 			if (isContainment) {
 				this.rootElement.multiValuedContainmentEReference.remove(nonRoot)
@@ -36,13 +37,11 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 			removeChange = claimChange(0)
 		}
 		// assert 
-		val isDelete = isContainment
 		if (isContainment) {
-			removeChange.assertRemoveEReference(this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot, 0,
-				isContainment, isDelete)
+			removeChange.assertRemoveAndDeleteNonRoot(this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot, 0)
 		} else {
 			removeChange.assertRemoveEReference(this.rootElement, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot, 0,
-				isContainment, isDelete)
+				isContainment)
 		}
 	}
 	

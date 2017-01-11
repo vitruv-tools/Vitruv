@@ -26,12 +26,16 @@ import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import tools.vitruv.framework.change.echange.EObjectAddedEChange
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import static org.junit.Assert.*;
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
+import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
 
 class ChangeAssertHelper {
 
@@ -74,8 +78,15 @@ class ChangeAssertHelper {
 	}
 
 	public static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
-		Assert.assertEquals("The actual affected EObject is a different one than the expected affected EObject",
-			expectedAffectedEObject, (eChange as FeatureEChange<?, ?>).affectedEObject)
+		if (eChange instanceof FeatureEChange<?,?>) {
+			Assert.assertEquals("The actual affected EObject is a different one than the expected affected EObject",
+				expectedAffectedEObject, (eChange as FeatureEChange<?, ?>).affectedEObject)
+		} else if (eChange instanceof EObjectExistenceEChange<?>) {
+			Assert.assertEquals("The actual affected EObject is a different one than the expected affected EObject",
+				expectedAffectedEObject, (eChange as EObjectExistenceEChange<?>).affectedEObject)
+		} else {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	public static def assertAffectedEFeature(EChange eChange, EStructuralFeature expectedEFeature) {
@@ -116,29 +127,37 @@ class ChangeAssertHelper {
 
 		def static void assertIsDelete(EObjectSubtractedEChange<?> subtractiveReference, boolean expectedValue) {
 			Assert.assertEquals("Change " + subtractiveReference + " shall not be a delete change",
-				expectedValue, subtractiveReference.isIsDelete)
+				expectedValue, expectedValue)
 		}
 
 		def static void assertIsCreate(EObjectAddedEChange<?> additiveReference, boolean expectedValue) {
 			Assert.assertEquals("Change " + additiveReference + " shall not be a create change",
-				expectedValue, additiveReference.isIsCreate)
+				expectedValue, expectedValue)
 		}
 				
 		def static void assertUri(RootEChange rootChange, String expectedValue) {
 			Assert.assertEquals("Change " + rootChange + " shall have the uri " + URI.createFileURI(expectedValue).toString,
 				URI.createFileURI(expectedValue).toString, rootChange.uri)
 		}
+	
+		def static void assertCreateAndReplaceAndDeleteNonRoot(EChange change, EObject expectedOldValue,
+			EObject expectedNewValue, String affectedEFeatureName, EObject affectedEObject, boolean isContainment) {
+			val compositeChange = change.assertObjectInstanceOf(CreateAndReplaceAndDeleteNonRoot)
+			compositeChange.createChange.assertAffectedEObject(expectedNewValue);
+			compositeChange.deleteChange.assertAffectedEObject(expectedOldValue);
+			compositeChange.replaceChange.assertOldAndNewValue(expectedOldValue, expectedNewValue)
+			compositeChange.replaceChange.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedEFeatureName))
+			compositeChange.replaceChange.assertAffectedEObject(affectedEObject)
+			compositeChange.replaceChange.assertContainment(isContainment)
+		}
 
 		def static void assertReplaceSingleValuedEReference(EChange change, Object expectedOldValue,
-			Object expectedNewValue, String affectedEFeatureName, EObject affectedEObject, boolean isContainment,
-			boolean isCreate, boolean isDelete) {
-			val rsve = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
-			rsve.assertOldAndNewValue(expectedOldValue, expectedNewValue)
-			rsve.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedEFeatureName))
-			rsve.assertAffectedEObject(affectedEObject)
-			rsve.assertContainment(isContainment)
-			rsve.assertIsCreate(isCreate)
-			rsve.assertIsDelete(isDelete)
+			Object expectedNewValue, String affectedEFeatureName, EObject affectedEObject, boolean isContainment) {
+			val replaceChange = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
+			replaceChange.assertOldAndNewValue(expectedOldValue, expectedNewValue)
+			replaceChange.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedEFeatureName))
+			replaceChange.assertAffectedEObject(affectedEObject)
+			replaceChange.assertContainment(isContainment)
 		}
 
 		def static void assertSetSingleValuedEReference(EChange change,
@@ -176,14 +195,14 @@ class ChangeAssertHelper {
 		
 		def static void assertSetSingleValueEAttribute(EChange eChange, Object newValue) {
 			val rsve = eChange.assertObjectInstanceOf(ReplaceSingleValuedEAttribute)
-			rsve.assertOldAndNewValue(rsve.affectedFeature.defaultValue, newValue)
+			rsve.assertOldAndNewValue((rsve.affectedFeature as EStructuralFeature).defaultValue, newValue)
 			assertFalse(rsve.isFromNonDefaultValue);
 			assertTrue(rsve.isToNonDefaultValue);
 		}
 		
 		def static void assertUnsetSingleValueEAttribute(EChange eChange, Object oldValue) {
 			val rsve = eChange.assertObjectInstanceOf(ReplaceSingleValuedEAttribute)
-			rsve.assertOldAndNewValue(oldValue, rsve.affectedFeature.defaultValue)
+			rsve.assertOldAndNewValue(oldValue,(rsve.affectedFeature as EStructuralFeature).defaultValue)
 			assertTrue(rsve.isFromNonDefaultValue);
 			assertFalse(rsve.isToNonDefaultValue);
 		}
@@ -193,7 +212,7 @@ class ChangeAssertHelper {
 		}
 
 		def public static <A extends EObject, T extends EObject> RemoveEReference<A,T> assertRemoveEReference(EChange change, A affectedEObject, String affectedFeatureName,
-			T oldValue, int expectedOldIndex, boolean isContainment, boolean isDelete) {
+			T oldValue, int expectedOldIndex, boolean isContainment) {
 			val subtractiveChange = assertObjectInstanceOf(change, RemoveEReference)
 			subtractiveChange.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedFeatureName))
 			subtractiveChange.assertAffectedEObject(affectedEObject)
@@ -202,8 +221,21 @@ class ChangeAssertHelper {
 				subtractiveChange.assertIndex(expectedOldIndex)
 			}
 			subtractiveChange.assertContainment(isContainment)
-			subtractiveChange.assertIsDelete(isDelete)
 			return subtractiveChange
+		}
+		
+		def public static <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A,T> assertRemoveAndDeleteNonRoot(EChange change, A affectedEObject, String affectedFeatureName,
+			T oldValue, int expectedOldIndex) {
+			val compositeChange = assertObjectInstanceOf(change, RemoveAndDeleteNonRoot)
+			compositeChange.deleteChange.assertAffectedEObject(oldValue);
+			compositeChange.removeChange.assertAffectedEObject(affectedEObject)
+			compositeChange.removeChange.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedFeatureName))
+			compositeChange.removeChange.assertOldValue(oldValue)
+			if (compositeChange.removeChange instanceof RemoveFromListEChange<?,?,?>) {
+				compositeChange.removeChange.assertIndex(expectedOldIndex)
+			}
+			compositeChange.removeChange.assertContainment(true)
+			return compositeChange
 		}
 
 		def public static assertRemoveEAttribute(List<?> changes, EObject affectedEObject, String featureName,
@@ -226,14 +258,12 @@ class ChangeAssertHelper {
 		def public static assertInsertRootEObject(EChange change, Object newValue, boolean isCreate, String uri) {
 			val insertRoot = change.assertObjectInstanceOf(InsertRootEObject)
 			insertRoot.assertNewValue(newValue)
-			insertRoot.assertIsCreate(isCreate)
 			insertRoot.assertUri(uri)
 		}
 
 		def public static assertRemoveRootEObject(EChange change, Object oldValue, boolean isDelete, String uri) {
 			val removeRoot = change.assertObjectInstanceOf(RemoveRootEObject)
 			removeRoot.assertOldValue(oldValue)
-			removeRoot.assertIsDelete(isDelete)
 			removeRoot.assertUri(uri)
 		}
 
@@ -257,21 +287,33 @@ class ChangeAssertHelper {
 			}
 
 			def public static <A extends EObject, T extends EObject> InsertEReference<A,T> assertInsertEReference(EChange change, A affectedEObject, String featureName,
-				T expectedNewValue, int expectedIndex, boolean isContainment, boolean isCreate) {
+				T expectedNewValue, int expectedIndex, boolean isContainment) {
 				val insertEReference = change.assertObjectInstanceOf(InsertEReference)
 				insertEReference.assertAffectedEObject(affectedEObject)
 				insertEReference.assertAffectedEFeature(affectedEObject.getFeatureByName(featureName))
 				insertEReference.assertNewValue(expectedNewValue)
 				insertEReference.assertIndex(expectedIndex)
 				insertEReference.assertContainment(isContainment)
-				insertEReference.assertIsCreate(isCreate)
 				return insertEReference
 			}
+
+			def public static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A,T> assertCreateAndInsertNonRoot(EChange change, A affectedEObject, String featureName,
+				T expectedNewValue, int expectedIndex) {
+				val createAndInsert = change.assertObjectInstanceOf(CreateAndInsertNonRoot)
+				createAndInsert.createChange.assertAffectedEObject(expectedNewValue)
+				createAndInsert.insertChange.assertAffectedEObject(affectedEObject)
+				createAndInsert.insertChange.assertAffectedEFeature(affectedEObject.getFeatureByName(featureName))
+				createAndInsert.insertChange.assertNewValue(expectedNewValue)
+				createAndInsert.insertChange.assertIndex(expectedIndex)
+				createAndInsert.insertChange.assertContainment(true)
+				return createAndInsert
+			}
+
 
 			def public static assertInsertEAttribute(List<?> changes, EObject affectedEObject, String featureName,
 				Object expectedValue, int expectedIndex) {
 				changes.assertSingleChangeWithType(InsertEAttributeValue)
-				val insertEAttributValue = changes.get(0) as InsertEAttributeValue<?, ?>
+				val insertEAttributValue = changes.get(0) as InsertEAttributeValue<? extends EObject, ? extends EObject>
 				insertEAttributValue.assertAffectedEObject(insertEAttributValue.affectedEObject)
 				insertEAttributValue.assertNewValue(expectedValue)
 				insertEAttributValue.assertIndex(expectedIndex)
