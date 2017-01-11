@@ -23,6 +23,10 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObje
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import tools.vitruv.framework.change.echange.eobject.EobjectFactory
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 /**
  * Factory class for elements of change models. 
@@ -32,18 +36,16 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
  */
 final class TypeInferringAtomicEChangeFactory {
 	
-	def static <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, boolean isCreate, String resourceURI) {
+	def static <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, String resourceURI) {
 		val c = RootFactory.eINSTANCE.createInsertRootEObject
 		c.newValue = newValue
-		c.isCreate = isCreate
 		setRootChangeFeatures(c, resourceURI)
 		return c
 	}
 	
-	def static <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, boolean isDelete, String resourceURI) {
+	def static <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, String resourceURI) {
 		val c = RootFactory.eINSTANCE.createRemoveRootEObject
 		c.oldValue = oldValue
-		c.isDelete = isDelete
 		setRootChangeFeatures(c, resourceURI)
 		return c
 	}
@@ -52,14 +54,7 @@ final class TypeInferringAtomicEChangeFactory {
 		c.uri = resourceURI
 	}
 	
-	def static <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldObject, boolean isDelete) {
-		val c = RootFactory.eINSTANCE.createRemoveRootEObject
-		tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory.setEObjectSubtractedEChangeFeatures(c,oldObject,isDelete)
-		return c
-	}
-	
-	def private  static <T extends EObject> void setEObjectSubtractedEChangeFeatures(EObjectSubtractedEChange<T> c, T oldEObject, boolean isDelete) {
-		c.isDelete = isDelete
+	def private  static <T extends EObject> void setEObjectSubtractedEChangeFeatures(EObjectSubtractedEChange<T> c, T oldEObject) {
 		c.oldValue = oldEObject
 	}
 	
@@ -111,31 +106,28 @@ final class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> InsertEReference<A,T> createInsertReferenceChange(A affectedEObject, EReference affectedReference, int index, T newValue, boolean isCreate) {
+	def static <A extends EObject, T extends EObject> InsertEReference<A,T> createInsertReferenceChange(A affectedEObject, EReference affectedReference, T newValue, int index) {
 		val c = ReferenceFactory.eINSTANCE.createInsertEReference()
 		setFeatureChangeFeatures(c,affectedEObject,affectedReference)
 		c.newValue = newValue
 		c.index = index
-		c.isCreate = isCreate
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A,T> createReplaceSingleReferenceChange(A affectedEObject, EReference affectedReference, T oldEObject, T newValue, boolean isCreate, boolean isDelete) {
+	def static <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A,T> createReplaceSingleReferenceChange(A affectedEObject, EReference affectedReference, T oldEObject, T newValue) {
 		val c = ReferenceFactory.eINSTANCE.createReplaceSingleValuedEReference
 		setFeatureChangeFeatures(c,affectedEObject,affectedReference)
-		tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory.setEObjectSubtractedEChangeFeatures(c,oldEObject,isDelete)
+		tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory.setEObjectSubtractedEChangeFeatures(c,oldEObject)
 		c.newValue = newValue
-		c.isCreate = isCreate
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> RemoveEReference<A,T> createRemoveReferenceChange(A affectedEObject, EReference affectedReference, T oldEObject, int index, boolean isDelete) {
+	def static <A extends EObject, T extends EObject> RemoveEReference<A,T> createRemoveReferenceChange(A affectedEObject, EReference affectedReference, T oldEObject, int index) {
 		val c = ReferenceFactory.eINSTANCE.createRemoveEReference()
 		setFeatureChangeFeatures(c,affectedEObject,affectedReference)
-		tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory.setEObjectSubtractedEChangeFeatures(c,oldEObject,isDelete)
+		tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory.setEObjectSubtractedEChangeFeatures(c,oldEObject)
 		c.oldValue = oldEObject
 		c.index = index
-		c.isDelete = isDelete
 		return c
 	}
 	
@@ -145,4 +137,17 @@ final class TypeInferringAtomicEChangeFactory {
 		c.newIndicesForElementsAtOldIndices.addAll(newIndicesForElementsAtOldIndices)
 		return c
 	}
+	
+	def static <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject) {
+		val c = EobjectFactory.eINSTANCE.createCreateEObject()
+		c.affectedEObject = affectedEObject
+		return c
+	}
+	
+	def static <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject) {
+		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
+		c.affectedEObject = affectedEObject
+		return c
+	}
+	
 }

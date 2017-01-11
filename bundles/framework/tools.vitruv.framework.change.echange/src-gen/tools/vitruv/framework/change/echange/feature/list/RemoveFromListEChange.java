@@ -4,6 +4,7 @@ package tools.vitruv.framework.change.echange.feature.list;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 /**

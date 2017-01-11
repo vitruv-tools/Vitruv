@@ -2,18 +2,20 @@
  */
 package tools.vitruv.framework.change.echange.root.util;
 
-import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.AtomicEChange;
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.EObjectAddedEChange;
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
-import tools.vitruv.framework.change.echange.SubtractiveEChange;
-import tools.vitruv.framework.change.echange.root.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+
+import tools.vitruv.framework.change.echange.AdditiveEChange;
+import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.SubtractiveEChange;
+
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
+
+import tools.vitruv.framework.change.echange.root.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,48 +31,48 @@ import org.eclipse.emf.ecore.util.Switch;
  * @generated
  */
 public class RootSwitch<T1> extends Switch<T1> {
-    /**
+	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    protected static RootPackage modelPackage;
+	protected static RootPackage modelPackage;
 
-    /**
+	/**
 	 * Creates an instance of the switch.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public RootSwitch() {
+	public RootSwitch() {
 		if (modelPackage == null) {
 			modelPackage = RootPackage.eINSTANCE;
 		}
 	}
 
-    /**
+	/**
 	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param ePackage the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
-    @Override
-    protected boolean isSwitchFor(EPackage ePackage) {
+	@Override
+	protected boolean isSwitchFor(EPackage ePackage) {
 		return ePackage == modelPackage;
 	}
 
-    /**
+	/**
 	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
 	 */
-    @Override
-    protected T1 doSwitch(int classifierID, EObject theEObject) {
+	@Override
+	protected T1 doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case RootPackage.ROOT_ECHANGE: {
 				RootEChange rootEChange = (RootEChange)theEObject;
@@ -106,52 +108,52 @@ public class RootSwitch<T1> extends Switch<T1> {
 		}
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>EChange</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public T1 caseRootEChange(RootEChange object) {
+	public T1 caseRootEChange(RootEChange object) {
 		return null;
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Insert Root EObject</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Insert Root EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <T extends EObject> T1 caseInsertRootEObject(InsertRootEObject<T> object) {
+	public <T extends EObject> T1 caseInsertRootEObject(InsertRootEObject<T> object) {
 		return null;
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Remove Root EObject</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Remove Root EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <T extends EObject> T1 caseRemoveRootEObject(RemoveRootEObject<T> object) {
+	public <T extends EObject> T1 caseRemoveRootEObject(RemoveRootEObject<T> object) {
 		return null;
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -166,7 +168,7 @@ public class RootSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -181,7 +183,7 @@ public class RootSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -196,7 +198,7 @@ public class RootSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EObject Added EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -211,7 +213,7 @@ public class RootSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -226,7 +228,7 @@ public class RootSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EObject Subtracted EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -241,19 +243,19 @@ public class RootSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch, but this is the last case anyway.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch, but this is the last case anyway.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
-    @Override
-    public T1 defaultCase(EObject object) {
+	@Override
+	public T1 defaultCase(EObject object) {
 		return null;
 	}
 

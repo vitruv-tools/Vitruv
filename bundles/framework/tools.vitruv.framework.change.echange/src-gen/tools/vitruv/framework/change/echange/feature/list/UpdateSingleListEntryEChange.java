@@ -24,31 +24,31 @@ import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureECh
  * @generated
  */
 public interface UpdateSingleListEntryEChange<A extends EObject, F extends EStructuralFeature> extends UpdateMultiValuedFeatureEChange<A, F> {
-    /**
+	/**
 	 * Returns the value of the '<em><b>Index</b></em>' attribute.
 	 * The default value is <code>"0"</code>.
 	 * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Index</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Index</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Index</em>' attribute.
 	 * @see #setIndex(int)
 	 * @see tools.vitruv.framework.change.echange.feature.list.ListPackage#getUpdateSingleListEntryEChange_Index()
-	 * @model default="0" required="true"
+	 * @model default="0" unique="false" required="true"
 	 * @generated
 	 */
-    int getIndex();
+	int getIndex();
 
-    /**
+	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange#getIndex <em>Index</em>}' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Index</em>' attribute.
 	 * @see #getIndex()
 	 * @generated
 	 */
-    void setIndex(int value);
+	void setIndex(int value);
 
 } // UpdateSingleListEntryEChange

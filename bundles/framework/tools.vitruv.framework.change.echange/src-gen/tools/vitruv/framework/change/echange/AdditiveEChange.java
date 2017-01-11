@@ -14,12 +14,12 @@ package tools.vitruv.framework.change.echange;
  * @generated
  */
 public interface AdditiveEChange<T extends Object> extends AtomicEChange {
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true"
 	 * @generated
 	 */
-    T getNewValue();
+	T getNewValue();
 
 } // AdditiveEChange

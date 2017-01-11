@@ -15,22 +15,22 @@ import tools.vitruv.framework.change.echange.EChangePackage;
  * @generated
  */
 public abstract class AtomicEChangeImpl extends EChangeImpl implements AtomicEChange {
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    protected AtomicEChangeImpl() {
+	protected AtomicEChangeImpl() {
 		super();
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    @Override
-    protected EClass eStaticClass() {
+	@Override
+	protected EClass eStaticClass() {
 		return EChangePackage.Literals.ATOMIC_ECHANGE;
 	}
 

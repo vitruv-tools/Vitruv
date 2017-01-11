@@ -13,21 +13,21 @@ import org.eclipse.emf.ecore.EFactory;
  * @generated
  */
 public interface ListFactory extends EFactory {
-    /**
+	/**
 	 * The singleton instance of the factory.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    ListFactory eINSTANCE = tools.vitruv.framework.change.echange.feature.list.impl.ListFactoryImpl.init();
+	ListFactory eINSTANCE = tools.vitruv.framework.change.echange.feature.list.impl.ListFactoryImpl.init();
 
-    /**
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the package supported by this factory.
 	 * @generated
 	 */
-    ListPackage getListPackage();
+	ListPackage getListPackage();
 
 } //ListFactory

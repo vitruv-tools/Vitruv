@@ -22,6 +22,7 @@ import tools.vitruv.framework.change.echange.feature.FeaturePackage;
  * <!-- end-user-doc -->
  * @see tools.vitruv.framework.change.echange.feature.single.SingleFactory
  * @model kind="package"
+ *        annotation="http://www.eclipse.org/emf/2002/GenModel modelName='Change' basePackage='tools.vitruv.framework.change.echange.feature'"
  * @generated
  */
 public interface SinglePackage extends EPackage {

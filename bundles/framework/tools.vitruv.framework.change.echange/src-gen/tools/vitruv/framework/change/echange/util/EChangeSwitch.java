@@ -2,12 +2,12 @@
  */
 package tools.vitruv.framework.change.echange.util;
 
-import tools.vitruv.framework.change.echange.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+
+import tools.vitruv.framework.change.echange.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -95,24 +95,6 @@ public class EChangeSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case EChangePackage.EOBJECT_ADDED_ECHANGE: {
-				EObjectAddedEChange<?> eObjectAddedEChange = (EObjectAddedEChange<?>)theEObject;
-				T1 result = caseEObjectAddedEChange(eObjectAddedEChange);
-				if (result == null) result = caseAdditiveEChange(eObjectAddedEChange);
-				if (result == null) result = caseAtomicEChange(eObjectAddedEChange);
-				if (result == null) result = caseEChange(eObjectAddedEChange);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case EChangePackage.EOBJECT_SUBTRACTED_ECHANGE: {
-				EObjectSubtractedEChange<?> eObjectSubtractedEChange = (EObjectSubtractedEChange<?>)theEObject;
-				T1 result = caseEObjectSubtractedEChange(eObjectSubtractedEChange);
-				if (result == null) result = caseSubtractiveEChange(eObjectSubtractedEChange);
-				if (result == null) result = caseAtomicEChange(eObjectSubtractedEChange);
-				if (result == null) result = caseEChange(eObjectSubtractedEChange);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -174,36 +156,6 @@ public class EChangeSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>EObject Added EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>EObject Added EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <T extends EObject> T1 caseEObjectAddedEChange(EObjectAddedEChange<T> object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>EObject Subtracted EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>EObject Subtracted EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <T extends EObject> T1 caseEObjectSubtractedEChange(EObjectSubtractedEChange<T> object) {
 		return null;
 	}
 

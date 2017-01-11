@@ -17,22 +17,22 @@ import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEC
  * @generated
  */
 public abstract class UpdateSingleValuedFeatureEChangeImpl<A extends EObject, F extends EStructuralFeature> extends FeatureEChangeImpl<A, F> implements UpdateSingleValuedFeatureEChange<A, F> {
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    protected UpdateSingleValuedFeatureEChangeImpl() {
+	protected UpdateSingleValuedFeatureEChangeImpl() {
 		super();
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    @Override
-    protected EClass eStaticClass() {
+	@Override
+	protected EClass eStaticClass() {
 		return FeaturePackage.Literals.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE;
 	}
 
