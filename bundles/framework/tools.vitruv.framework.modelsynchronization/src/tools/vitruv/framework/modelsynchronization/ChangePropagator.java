@@ -14,7 +14,7 @@ public interface ChangePropagator {
      */
     List<List<VitruviusChange>> propagateChange(VitruviusChange change);
 
-    void addChangePropagationListener(ChangePropagationListener synchronizationListener);
+    void addChangePropagationListener(ChangePropagationListener propagationListener);
 
-    void removeChangePropagationListener(ChangePropagationListener synchronizationListener);
+    void removeChangePropagationListener(ChangePropagationListener propagationListener);
 }

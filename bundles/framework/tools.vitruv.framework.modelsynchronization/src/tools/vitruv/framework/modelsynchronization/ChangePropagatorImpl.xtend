@@ -44,14 +44,14 @@ class ChangePropagatorImpl implements ChangePropagator {
 		this.blackboardHistory = EvictingQueue.create(BLACKBOARD_HITORY_SIZE)
 	}
 
-	override void addChangePropagationListener(ChangePropagationListener synchronizationListener) {
-		if (synchronizationListener !== null) {
-			this.changePropagationListeners.add(synchronizationListener)
+	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
+		if (propagationListener !== null) {
+			this.changePropagationListeners.add(propagationListener)
 		}
 	}
 
-	override void removeChangePropagationListener(ChangePropagationListener synchronizationListener) {
-		this.changePropagationListeners.remove(synchronizationListener)
+	override void removeChangePropagationListener(ChangePropagationListener propagationListener) {
+		this.changePropagationListeners.remove(propagationListener)
 	}
 
 	override synchronized List<List<VitruviusChange>> propagateChange(VitruviusChange change) {
