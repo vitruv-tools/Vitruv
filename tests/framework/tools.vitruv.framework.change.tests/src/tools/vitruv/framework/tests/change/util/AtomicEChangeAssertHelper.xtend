@@ -94,26 +94,24 @@ class AtomicEChangeAssertHelper {
 	}
 	
 	// FIXME GENERICS
-	def public static <A extends EObject, T extends EObject> InsertEReference<A,T> assertInsertEReference(EChange change, A affectedEObject, 
-			EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex, boolean isContainment) {
+	def public static void assertInsertEReference(EChange change, EObject affectedEObject, EStructuralFeature affectedFeature, 
+			EObject expectedNewValue, int expectedIndex, boolean isContainment) {
 		val insertEReference = change.assertObjectInstanceOf(InsertEReference)
 		insertEReference.assertAffectedEObject(affectedEObject)
 		insertEReference.assertAffectedEFeature(affectedFeature)
 		insertEReference.assertNewValue(expectedNewValue)
 		insertEReference.assertIndex(expectedIndex)
 		insertEReference.assertContainment(isContainment)
-		return insertEReference
 	}
 	
-	def public static <A extends EObject, T extends EObject> RemoveEReference<A,T> assertRemoveEReference(EChange change, A affectedEObject, 
-			EStructuralFeature affectedFeature,	T expectedOldValue, int expectedOldIndex, boolean isContainment) {
+	def public static void assertRemoveEReference(EChange change, EObject affectedEObject, EStructuralFeature affectedFeature,
+			EObject expectedOldValue, int expectedOldIndex, boolean isContainment) {
 		val subtractiveChange = assertObjectInstanceOf(change, RemoveEReference)
 		subtractiveChange.assertAffectedEFeature(affectedFeature)
 		subtractiveChange.assertAffectedEObject(affectedEObject)
 		subtractiveChange.assertOldValue(expectedOldValue)
 		subtractiveChange.assertIndex(expectedOldIndex)
 		subtractiveChange.assertContainment(isContainment)
-		return subtractiveChange
 	}
 			
 }
