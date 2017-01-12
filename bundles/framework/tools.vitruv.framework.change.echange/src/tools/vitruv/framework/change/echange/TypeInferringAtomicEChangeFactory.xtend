@@ -19,18 +19,12 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
 import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.EobjectFactory
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
-import tools.vitruv.framework.change.echange.compound.CompoundFactory
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
-import java.util.ArrayList
 
 /**
  * Factory class for elements of change models. 
@@ -62,21 +56,6 @@ final class TypeInferringAtomicEChangeFactory {
 		c.oldValue = oldEObject
 	}
 	
-	def static <A extends EObject> List<AdditiveAttributeEChange<?, Object>> createAdditiveAttributeChanges(A affectedEObject, EAttribute affectedAttribute) {
-		if (affectedAttribute.many) {
-			val newValues = affectedEObject.getFeatureValues(affectedAttribute)
-			val resultChanges = new ArrayList<AdditiveAttributeEChange<?, Object>>();
-			for (var index = 0; index < newValues.size; index++) {
-				resultChanges += createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValues.get(index));
-			}
-			return resultChanges;
-		} else {
-			val oldValue = affectedAttribute.defaultValue
-			val newValue = affectedEObject.getFeatureValue(affectedAttribute)
-			return #[createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)]
-		}
-	}
-
 	def static <A extends EObject, T extends Object> InsertEAttributeValue<A,T> createInsertAttributeChange(A affectedEObject, EAttribute affectedAttribute, int index, T newValue) {
 		val c = AttributeFactory.eINSTANCE.createInsertEAttributeValue()
 		setFeatureChangeFeatures(c,affectedEObject,affectedAttribute)
@@ -155,14 +134,6 @@ final class TypeInferringAtomicEChangeFactory {
 		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
 		c.affectedEObject = affectedEObject
 		return c
-	}
-	
-	def static <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetChange(List<SubtractiveAttributeEChange<A,T>> changes) {
-		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEFeature();
-		for (change : changes) {
-			c.subtractiveChanges += change;
-		}
-		return c;
 	}
 	
 }

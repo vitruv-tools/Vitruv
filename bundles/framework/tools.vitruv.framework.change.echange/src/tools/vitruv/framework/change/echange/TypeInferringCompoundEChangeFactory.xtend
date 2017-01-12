@@ -9,6 +9,9 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
+import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
+import java.util.List
 
 class TypeInferringCompoundEChangeFactory {
 	def static <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(T affectedEObject, String resourceUri) {
@@ -45,6 +48,14 @@ class TypeInferringCompoundEChangeFactory {
 		c.createChange = createCreateEObjectChange(newValue);
 		c.replaceChange = createReplaceSingleReferenceChange(affectedEObject, reference, oldValue, newValue);
 		return c
+	}
+	
+	def static <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetChange(List<SubtractiveAttributeEChange<A,T>> changes) {
+		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEFeature();
+		for (change : changes) {
+			c.subtractiveChanges += change;
+		}
+		return c;
 	}
 	
 }
