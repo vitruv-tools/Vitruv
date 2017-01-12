@@ -10,15 +10,15 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.Resource
 
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
 import static tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory.*
 import static tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory.*
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import java.util.ArrayList
-import tools.vitruv.framework.change.echange.AdditiveEChange
-import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange
-import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
-import tools.vitruv.framework.change.echange.SubtractiveEChange
+import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange
+import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 
 /**
  * A utility class providing extension methods for transforming change descriptions to change models.
@@ -37,10 +37,25 @@ package class EMFModelChangeTransformationUtil {
 		return createAdditiveEChangeForReferencedObject(eObject, reference, false)
 	}
 	
-	def static dispatch List<AdditiveEChange<?>> createAdditiveChangesForValue(EObject eObject, EAttribute attribute) {
-		// FIXME This is wrong! We only extract the first attribute, not all
-		return #[createAdditiveEChangeForAttributeValue(eObject, attribute)]
+	def static dispatch List<AdditiveAttributeEChange<?,Object>> createAdditiveChangesForValue(EObject eObject, EAttribute attribute) {
+		return createAdditiveEChangeForAttribute(eObject, attribute)
 	}
+	
+	def static <A extends EObject> List<AdditiveAttributeEChange<?, Object>> createAdditiveEChangeForAttribute(A affectedEObject, EAttribute affectedAttribute) {
+		if (affectedAttribute.many) {
+			val newValues = affectedEObject.getFeatureValues(affectedAttribute)
+			val resultChanges = new ArrayList<AdditiveAttributeEChange<?, Object>>();
+			for (var index = 0; index < newValues.size; index++) {
+				resultChanges += TypeInferringAtomicEChangeFactory.createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValues.get(index));
+			}
+			return resultChanges;
+		} else {
+			val oldValue = affectedAttribute.defaultValue
+			val newValue = affectedEObject.getFeatureValue(affectedAttribute)
+			return #[createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)]
+		}
+	}
+	
 	
 	def static List<EChange> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference, boolean forceCreate) {
 		val result = new ArrayList<EChange>(); 
@@ -52,17 +67,6 @@ package class EMFModelChangeTransformationUtil {
 				result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), true);
 		}
 		return result;
-		// FIXME MK ChangeBridge
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	def static AdditiveEChange<?> createAdditiveEChangeForAttributeValue(EObject eObject, EAttribute attribute) {
-		return createAdditiveAttributeChange(eObject, attribute)
-	}
-	
-	def static EChange createSubtractiveEChangeForReferencedObject(EObject parent, EObject child, EReference reference) {
-		// FIXME MK ChangeBridge
-//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
 	def static boolean isRootAfterChange(EObject eObject, EObject newContainer) {
@@ -76,11 +80,6 @@ package class EMFModelChangeTransformationUtil {
 	
 	def private static boolean isRootContainer(EObject container) {
 		return container == null //|| container instanceof ChangeDescription
-	}
-	
-	def static EChange createSubtractiveEChangeForEObject(EObject eObject) {
-		// FIXME MK ChangeBridge
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
 	def static boolean hasNonDefaultValue(EObject eObject) {
@@ -187,16 +186,12 @@ package class EMFModelChangeTransformationUtil {
 		return TypeInferringAtomicEChangeFactory.createRemoveAttributeChange(affectedEObject, affectedAttribute, index, oldValue)
 	}
 	
-	def static UpdateAttributeEChange<?> createReplaceSingleValuedAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
+	def static ReplaceSingleValuedEAttribute<EObject, Object> createReplaceSingleValuedAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
 		return TypeInferringAtomicEChangeFactory.createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)
 	}
 	
-	def static EChange createExplicitUnsetChange(List<? extends SubtractiveReferenceEChange<EObject, ?>> changes) {
-		return TypeInferringAtomicEChangeFactory.createExplicitUnsetChange(changes);
+	def static EChange createExplicitUnsetChange(List<SubtractiveAttributeEChange<EObject, Object>> changes) {
+		return TypeInferringCompoundEChangeFactory.createExplicitUnsetChange(changes);
 	}
 	
-	def static EChange createExplicitUnsetChangeEmpty() {
-		val List<? extends SubtractiveReferenceEChange<EObject, ?>> changes = new ArrayList<SubtractiveReferenceEChange<EObject, ?>>()
-		return TypeInferringAtomicEChangeFactory.createExplicitUnsetChange(changes);
-	}
 }
