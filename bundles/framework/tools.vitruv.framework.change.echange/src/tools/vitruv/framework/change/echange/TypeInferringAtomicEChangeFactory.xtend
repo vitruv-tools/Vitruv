@@ -27,6 +27,8 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.EobjectFactory
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
+import tools.vitruv.framework.change.echange.compound.CompoundFactory
 
 /**
  * Factory class for elements of change models. 
@@ -148,6 +150,14 @@ final class TypeInferringAtomicEChangeFactory {
 		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
 		c.affectedEObject = affectedEObject
 		return c
+	}
+	
+	def static <A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> ExplicitUnsetEFeature<A, F, T, S> createExplicitUnsetChange(List<S> changes) {
+		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEFeature();
+		for (change : changes) {
+			c.subtractiveChanges += change;
+		}
+		return c;
 	}
 	
 }

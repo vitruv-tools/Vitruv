@@ -17,6 +17,8 @@ import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import java.util.ArrayList
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange
+import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
+import tools.vitruv.framework.change.echange.SubtractiveEChange
 
 /**
  * A utility class providing extension methods for transforming change descriptions to change models.
@@ -189,4 +191,12 @@ package class EMFModelChangeTransformationUtil {
 		return TypeInferringAtomicEChangeFactory.createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)
 	}
 	
+	def static EChange createExplicitUnsetChange(List<? extends SubtractiveReferenceEChange<EObject, ?>> changes) {
+		return TypeInferringAtomicEChangeFactory.createExplicitUnsetChange(changes);
+	}
+	
+	def static EChange createExplicitUnsetChangeEmpty() {
+		val List<? extends SubtractiveReferenceEChange<EObject, ?>> changes = new ArrayList<SubtractiveReferenceEChange<EObject, ?>>()
+		return TypeInferringAtomicEChangeFactory.createExplicitUnsetChange(changes);
+	}
 }

@@ -19,6 +19,9 @@ import java.util.Collections
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import org.eclipse.emf.ecore.change.ChangeDescription
+import tools.vitruv.framework.change.echange.SubtractiveEChange
+import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
+import java.util.ArrayList
 
 public class ChangeDescription2EChangesTransformation {
 
@@ -248,6 +251,14 @@ public class ChangeDescription2EChangesTransformation {
 						createChangeForMultiReferenceChange(affectedEObject, affectedReference, index,
 							ChangeKind.REMOVE_LITERAL, #[elementReferencedBeforeChange]))
 				}
+			}
+			if (affectedEObject.eIsSet(affectedReference) && !featureChange.isSet) {
+				val subtractiveChanges = resultChanges.filter(SubtractiveReferenceEChange);
+				val List<SubtractiveReferenceEChange<EObject, ?>> typedChanges = new ArrayList<SubtractiveReferenceEChange<EObject, ?>>();
+				for (change : subtractiveChanges) {
+					typedChanges.add(change);
+				}
+				return #[createExplicitUnsetChange(typedChanges)];
 			}
 			return resultChanges
 		} else {
