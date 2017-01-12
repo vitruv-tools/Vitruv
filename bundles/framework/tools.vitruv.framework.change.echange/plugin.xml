@@ -70,4 +70,12 @@
             genModel="metamodel/Single.xcore"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Attribute -->
+      <package
+            uri="http://tools.vitruv/EChange/Feature/Attribute/1.0"
+            class="tools.vitruv.framework.change.echange.feature.attribute.AttributePackage"
+            genModel="metamodel/Attribute.xcore"/>
+   </extension>
+
 </plugin>

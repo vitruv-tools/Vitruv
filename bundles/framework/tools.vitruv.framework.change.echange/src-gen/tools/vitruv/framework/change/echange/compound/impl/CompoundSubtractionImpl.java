@@ -36,7 +36,7 @@ import tools.vitruv.framework.change.echange.compound.CompoundSubtraction;
  *
  * @generated
  */
-public class CompoundSubtractionImpl<T extends Object> extends CompoundEChangeImpl implements CompoundSubtraction<T> {
+public class CompoundSubtractionImpl<T extends Object, S extends SubtractiveEChange<T>> extends CompoundEChangeImpl implements CompoundSubtraction<T, S> {
 	/**
 	 * The cached value of the '{@link #getSubtractiveChanges() <em>Subtractive Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -45,7 +45,7 @@ public class CompoundSubtractionImpl<T extends Object> extends CompoundEChangeIm
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<SubtractiveEChange<? extends T>> subtractiveChanges;
+	protected EList<S> subtractiveChanges;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -71,9 +71,9 @@ public class CompoundSubtractionImpl<T extends Object> extends CompoundEChangeIm
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<SubtractiveEChange<? extends T>> getSubtractiveChanges() {
+	public EList<S> getSubtractiveChanges() {
 		if (subtractiveChanges == null) {
-			subtractiveChanges = new EObjectContainmentEList<SubtractiveEChange<? extends T>>(SubtractiveEChange.class, this, CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES);
+			subtractiveChanges = new EObjectContainmentEList<S>(SubtractiveEChange.class, this, CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES);
 		}
 		return subtractiveChanges;
 	}
@@ -85,7 +85,7 @@ public class CompoundSubtractionImpl<T extends Object> extends CompoundEChangeIm
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
 		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
-		EList<SubtractiveEChange<? extends T>> _subtractiveChanges = this.getSubtractiveChanges();
+		EList<S> _subtractiveChanges = this.getSubtractiveChanges();
 		result.addAll(_subtractiveChanges);
 		return result;
 	}
@@ -129,7 +129,7 @@ public class CompoundSubtractionImpl<T extends Object> extends CompoundEChangeIm
 		switch (featureID) {
 			case CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES:
 				getSubtractiveChanges().clear();
-				getSubtractiveChanges().addAll((Collection<? extends SubtractiveEChange<? extends T>>)newValue);
+				getSubtractiveChanges().addAll((Collection<? extends S>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

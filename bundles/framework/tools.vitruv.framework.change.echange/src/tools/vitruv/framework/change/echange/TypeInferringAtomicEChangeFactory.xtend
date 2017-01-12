@@ -29,6 +29,8 @@ import tools.vitruv.framework.change.echange.eobject.EobjectFactory
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.compound.CompoundFactory
+import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
+import java.util.ArrayList
 
 /**
  * Factory class for elements of change models. 
@@ -60,15 +62,18 @@ final class TypeInferringAtomicEChangeFactory {
 		c.oldValue = oldEObject
 	}
 	
-	def static <A extends EObject> AdditiveAttributeEChange<?, Object> createAdditiveAttributeChange(A affectedEObject, EAttribute affectedAttribute) {
+	def static <A extends EObject> List<AdditiveAttributeEChange<?, Object>> createAdditiveAttributeChanges(A affectedEObject, EAttribute affectedAttribute) {
 		if (affectedAttribute.many) {
-			val newValue = affectedEObject.getFeatureValues(affectedAttribute)
-			val index = 0 // FIXME MK calculate index!
-			return createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValue)
+			val newValues = affectedEObject.getFeatureValues(affectedAttribute)
+			val resultChanges = new ArrayList<AdditiveAttributeEChange<?, Object>>();
+			for (var index = 0; index < newValues.size; index++) {
+				resultChanges += createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValues.get(index));
+			}
+			return resultChanges;
 		} else {
 			val oldValue = affectedAttribute.defaultValue
 			val newValue = affectedEObject.getFeatureValue(affectedAttribute)
-			return createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)
+			return #[createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)]
 		}
 	}
 
@@ -152,7 +157,7 @@ final class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
-	def static <A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> ExplicitUnsetEFeature<A, F, T, S> createExplicitUnsetChange(List<S> changes) {
+	def static <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetChange(List<SubtractiveAttributeEChange<A,T>> changes) {
 		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEFeature();
 		for (change : changes) {
 			c.subtractiveChanges += change;

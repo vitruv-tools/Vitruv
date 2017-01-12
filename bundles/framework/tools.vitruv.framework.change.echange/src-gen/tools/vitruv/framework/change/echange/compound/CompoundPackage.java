@@ -235,22 +235,13 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES;
 
 	/**
-	 * The feature id for the '<em><b>Feature Change</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE = COMPOUND_SUBTRACTION_FEATURE_COUNT + 0;
-
-	/**
 	 * The number of structural features of the '<em>Explicit Unset EFeature</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 1;
+	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -751,17 +742,6 @@ public interface CompoundPackage extends EPackage {
 	EClass getExplicitUnsetEFeature();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getFeatureChange <em>Feature Change</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Feature Change</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getFeatureChange()
-	 * @see #getExplicitUnsetEFeature()
-	 * @generated
-	 */
-	EReference getExplicitUnsetEFeature_FeatureChange();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList <em>Replace In EList</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1136,14 +1116,6 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EClass EXPLICIT_UNSET_EFEATURE = eINSTANCE.getExplicitUnsetEFeature();
-
-		/**
-		 * The meta object literal for the '<em><b>Feature Change</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference EXPLICIT_UNSET_EFEATURE__FEATURE_CHANGE = eINSTANCE.getExplicitUnsetEFeature_FeatureChange();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.

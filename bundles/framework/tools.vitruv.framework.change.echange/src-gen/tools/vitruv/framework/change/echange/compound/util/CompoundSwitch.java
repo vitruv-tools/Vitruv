@@ -92,7 +92,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				return result;
 			}
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE: {
-				ExplicitUnsetEFeature<?, ?, ?, ?> explicitUnsetEFeature = (ExplicitUnsetEFeature<?, ?, ?, ?>)theEObject;
+				ExplicitUnsetEFeature<?, ?> explicitUnsetEFeature = (ExplicitUnsetEFeature<?, ?>)theEObject;
 				T1 result = caseExplicitUnsetEFeature(explicitUnsetEFeature);
 				if (result == null) result = caseCompoundSubtraction(explicitUnsetEFeature);
 				if (result == null) result = caseCompoundEChange(explicitUnsetEFeature);
@@ -109,7 +109,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				return result;
 			}
 			case CompoundPackage.COMPOUND_SUBTRACTION: {
-				CompoundSubtraction<?> compoundSubtraction = (CompoundSubtraction<?>)theEObject;
+				CompoundSubtraction<?, ?> compoundSubtraction = (CompoundSubtraction<?, ?>)theEObject;
 				T1 result = caseCompoundSubtraction(compoundSubtraction);
 				if (result == null) result = caseCompoundEChange(compoundSubtraction);
 				if (result == null) result = caseEChange(compoundSubtraction);
@@ -117,7 +117,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				return result;
 			}
 			case CompoundPackage.COMPOUND_ADDITION: {
-				CompoundAddition<?> compoundAddition = (CompoundAddition<?>)theEObject;
+				CompoundAddition<?, ?> compoundAddition = (CompoundAddition<?, ?>)theEObject;
 				T1 result = caseCompoundAddition(compoundAddition);
 				if (result == null) result = caseCompoundEChange(compoundAddition);
 				if (result == null) result = caseEChange(compoundAddition);
@@ -209,7 +209,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> T1 caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F, T, S> object) {
+	public <A extends EObject, T extends Object> T1 caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, T> object) {
 		return null;
 	}
 
@@ -239,7 +239,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <T extends Object> T1 caseCompoundSubtraction(CompoundSubtraction<T> object) {
+	public <T extends Object, S extends SubtractiveEChange<T>> T1 caseCompoundSubtraction(CompoundSubtraction<T, S> object) {
 		return null;
 	}
 
@@ -254,7 +254,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <T extends Object> T1 caseCompoundAddition(CompoundAddition<T> object) {
+	public <T extends Object, S extends AdditiveEChange<T>> T1 caseCompoundAddition(CompoundAddition<T, S> object) {
 		return null;
 	}
 

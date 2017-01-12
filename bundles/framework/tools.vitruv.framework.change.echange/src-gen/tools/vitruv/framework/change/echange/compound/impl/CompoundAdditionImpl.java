@@ -36,7 +36,7 @@ import tools.vitruv.framework.change.echange.compound.CompoundPackage;
  *
  * @generated
  */
-public class CompoundAdditionImpl<T extends Object> extends CompoundEChangeImpl implements CompoundAddition<T> {
+public class CompoundAdditionImpl<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChangeImpl implements CompoundAddition<T, S> {
 	/**
 	 * The cached value of the '{@link #getAdditiveChanges() <em>Additive Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -45,7 +45,7 @@ public class CompoundAdditionImpl<T extends Object> extends CompoundEChangeImpl 
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<AdditiveEChange<? extends T>> additiveChanges;
+	protected EList<S> additiveChanges;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -71,9 +71,9 @@ public class CompoundAdditionImpl<T extends Object> extends CompoundEChangeImpl 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<AdditiveEChange<? extends T>> getAdditiveChanges() {
+	public EList<S> getAdditiveChanges() {
 		if (additiveChanges == null) {
-			additiveChanges = new EObjectContainmentEList<AdditiveEChange<? extends T>>(AdditiveEChange.class, this, CompoundPackage.COMPOUND_ADDITION__ADDITIVE_CHANGES);
+			additiveChanges = new EObjectContainmentEList<S>(AdditiveEChange.class, this, CompoundPackage.COMPOUND_ADDITION__ADDITIVE_CHANGES);
 		}
 		return additiveChanges;
 	}
@@ -85,7 +85,7 @@ public class CompoundAdditionImpl<T extends Object> extends CompoundEChangeImpl 
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
 		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
-		EList<AdditiveEChange<? extends T>> _additiveChanges = this.getAdditiveChanges();
+		EList<S> _additiveChanges = this.getAdditiveChanges();
 		result.addAll(_additiveChanges);
 		return result;
 	}
@@ -129,7 +129,7 @@ public class CompoundAdditionImpl<T extends Object> extends CompoundEChangeImpl 
 		switch (featureID) {
 			case CompoundPackage.COMPOUND_ADDITION__ADDITIVE_CHANGES:
 				getAdditiveChanges().clear();
-				getAdditiveChanges().addAll((Collection<? extends AdditiveEChange<? extends T>>)newValue);
+				getAdditiveChanges().addAll((Collection<? extends S>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

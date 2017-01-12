@@ -86,7 +86,7 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 				return createMoveEObjectAdapter();
 			}
 			@Override
-			public <A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F, T, S> object) {
+			public <A extends EObject, T extends Object> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, T> object) {
 				return createExplicitUnsetEFeatureAdapter();
 			}
 			@Override
@@ -94,11 +94,11 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 				return createReplaceInEListAdapter();
 			}
 			@Override
-			public <T extends Object> Adapter caseCompoundSubtraction(CompoundSubtraction<T> object) {
+			public <T extends Object, S extends SubtractiveEChange<T>> Adapter caseCompoundSubtraction(CompoundSubtraction<T, S> object) {
 				return createCompoundSubtractionAdapter();
 			}
 			@Override
-			public <T extends Object> Adapter caseCompoundAddition(CompoundAddition<T> object) {
+			public <T extends Object, S extends AdditiveEChange<T>> Adapter caseCompoundAddition(CompoundAddition<T, S> object) {
 				return createCompoundAdditionAdapter();
 			}
 			@Override

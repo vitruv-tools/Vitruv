@@ -95,8 +95,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public <A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> ExplicitUnsetEFeature<A, F, T, S> createExplicitUnsetEFeature() {
-		ExplicitUnsetEFeatureImpl<A, F, T, S> explicitUnsetEFeature = new ExplicitUnsetEFeatureImpl<A, F, T, S>();
+	public <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetEFeature() {
+		ExplicitUnsetEFeatureImpl<A, T> explicitUnsetEFeature = new ExplicitUnsetEFeatureImpl<A, T>();
 		return explicitUnsetEFeature;
 	}
 
@@ -115,8 +115,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public <T extends Object> CompoundSubtraction<T> createCompoundSubtraction() {
-		CompoundSubtractionImpl<T> compoundSubtraction = new CompoundSubtractionImpl<T>();
+	public <T extends Object, S extends SubtractiveEChange<T>> CompoundSubtraction<T, S> createCompoundSubtraction() {
+		CompoundSubtractionImpl<T, S> compoundSubtraction = new CompoundSubtractionImpl<T, S>();
 		return compoundSubtraction;
 	}
 
@@ -125,8 +125,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public <T extends Object> CompoundAddition<T> createCompoundAddition() {
-		CompoundAdditionImpl<T> compoundAddition = new CompoundAdditionImpl<T>();
+	public <T extends Object, S extends AdditiveEChange<T>> CompoundAddition<T, S> createCompoundAddition() {
+		CompoundAdditionImpl<T, S> compoundAddition = new CompoundAdditionImpl<T, S>();
 		return compoundAddition;
 	}
 

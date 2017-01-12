@@ -47,7 +47,7 @@ public interface CompoundFactory extends EFactory {
 	 * @return a new object of class '<em>Explicit Unset EFeature</em>'.
 	 * @generated
 	 */
-	<A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> ExplicitUnsetEFeature<A, F, T, S> createExplicitUnsetEFeature();
+	<A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetEFeature();
 
 	/**
 	 * Returns a new object of class '<em>Replace In EList</em>'.
@@ -65,7 +65,7 @@ public interface CompoundFactory extends EFactory {
 	 * @return a new object of class '<em>Subtraction</em>'.
 	 * @generated
 	 */
-	<T extends Object> CompoundSubtraction<T> createCompoundSubtraction();
+	<T extends Object, S extends SubtractiveEChange<T>> CompoundSubtraction<T, S> createCompoundSubtraction();
 
 	/**
 	 * Returns a new object of class '<em>Addition</em>'.
@@ -74,7 +74,7 @@ public interface CompoundFactory extends EFactory {
 	 * @return a new object of class '<em>Addition</em>'.
 	 * @generated
 	 */
-	<T extends Object> CompoundAddition<T> createCompoundAddition();
+	<T extends Object, S extends AdditiveEChange<T>> CompoundAddition<T, S> createCompoundAddition();
 
 	/**
 	 * Returns a new object of class '<em>Create And Insert Root</em>'.

@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import org.eclipse.emf.common.util.BasicEList
+import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
 abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
 	op unique AtomicEChange[+] getAtomicChanges()
@@ -47,9 +48,7 @@ class MoveEObject<A extends EObject, B extends EObject, T extends EObject> exten
 	}
 }
 
-class ExplicitUnsetEFeature<A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> extends CompoundSubtraction<T> {
-	contains S[+] featureChange
-}
+class ExplicitUnsetEFeature<A extends EObject, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {}
 
 class ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
 	contains R[1] removeChange
@@ -62,8 +61,8 @@ class ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends 
 	}
 }
 
-class CompoundSubtraction<T extends Object> extends CompoundEChange {
-	contains SubtractiveEChange<? extends T>[+] subtractiveChanges
+class CompoundSubtraction<T extends Object, S extends SubtractiveEChange<T>> extends CompoundEChange {
+	contains S[+] subtractiveChanges
 	op unique AtomicEChange[+] getAtomicChanges() {
 		val result = new BasicEList<AtomicEChange>();
 		result.addAll(subtractiveChanges);
@@ -71,8 +70,8 @@ class CompoundSubtraction<T extends Object> extends CompoundEChange {
 	}
 }
 
-class CompoundAddition<T extends Object> extends CompoundEChange {
-	contains AdditiveEChange<? extends T>[+] additiveChanges
+class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChange {
+	contains S[+] additiveChanges
 	op unique AtomicEChange[+] getAtomicChanges() {
 		val result = new BasicEList<AtomicEChange>();
 		result.addAll(additiveChanges);
