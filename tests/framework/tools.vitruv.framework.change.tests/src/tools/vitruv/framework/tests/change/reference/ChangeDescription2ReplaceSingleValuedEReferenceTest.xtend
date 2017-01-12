@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescription2ChangeTransformationTest {
@@ -94,8 +95,8 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 
 		// assert
 		val changes = getChanges()
-		changes.get(0).assertReplaceSingleValuedEReference(nonRoot, replaceNonRoot,
-			ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE, this.rootElement, false)
+		changes.get(0).assertReplaceSingleValuedEReference(this.rootElement,
+			ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, replaceNonRoot, false)
 	}
 
 	@Test

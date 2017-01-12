@@ -49,7 +49,7 @@ class ChangeDescription2InsertEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.recursiveRoot = recursiveRoot;
 		
 		changes.assertChangeCount(4);
-		changes.claimChange(0).assertReplaceSingleValuedEReference(null, recursiveRoot, ROOT__RECURSIVE_ROOT, this.rootElement, true);
+		changes.claimChange(0).assertReplaceSingleValuedEReference(this.rootElement, ROOT__RECURSIVE_ROOT, null, recursiveRoot, true);
 		changes.claimChange(1).assertReplaceSingleValuedEAttribute(recursiveRoot, IDENTIFIED__ID, null, recursiveRoot.id);
 		changes.claimChange(2).assertInsertEAttribute(recursiveRoot, ROOT__MULTI_VALUED_EATTRIBUTE, 1, 0);
 		changes.claimChange(3).assertInsertEAttribute(recursiveRoot, ROOT__MULTI_VALUED_EATTRIBUTE, 2, 1);

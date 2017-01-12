@@ -4,6 +4,7 @@ import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformatio
 import org.junit.Test
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*;
 import static allElementTypes.AllElementTypesPackage.Literals.*
+import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 
 class ChangeDescription2ReplaceSingleValuedEAttributeTest extends ChangeDescription2ChangeTransformationTest {
 	/**

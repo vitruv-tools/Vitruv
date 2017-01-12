@@ -4,6 +4,7 @@ import allElementTypes.NonRoot
 import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import org.eclipse.emf.ecore.EStructuralFeature
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 

@@ -6,6 +6,7 @@ import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHel
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import allElementTypes.AllElementTypesFactory
 import static allElementTypes.AllElementTypesPackage.Literals.*;
+import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 
 class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTransformationTest {
 
