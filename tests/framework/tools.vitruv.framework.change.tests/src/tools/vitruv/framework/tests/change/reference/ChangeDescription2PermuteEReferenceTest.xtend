@@ -5,6 +5,7 @@ import org.junit.Test
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.feature.reference.PermuteEReferences
 import org.junit.Ignore
+import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTransformationTest{
 	@Ignore
@@ -19,7 +20,7 @@ class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTr
 		
 		val changes = getChanges
 		val expectedList = #[1, 0]
-		changes.assertPermuteListTest(this.rootElement, expectedList, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, PermuteEReferences)
+		changes.claimChange(0).assertPermuteListTest(this.rootElement, expectedList, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, PermuteEReferences)
 	}
 	
 	@Ignore
@@ -35,7 +36,7 @@ class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTr
 		
 		val changes = getChanges
 		val expectedList = #[2, 1, 0]
-		changes.assertPermuteListTest(this.rootElement, expectedList, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, PermuteEReferences)
+		changes.claimChange(0).assertPermuteListTest(this.rootElement, expectedList, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, PermuteEReferences)
 	}
 	
 	@Ignore
@@ -52,7 +53,7 @@ class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTr
 		
 		val changes = getChanges
 		val expectedList = #[1, 0]
-		changes.assertPermuteListTest(this.rootElement, expectedList, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, PermuteEReferences)
+		changes.claimChange(0).assertPermuteListTest(this.rootElement, expectedList, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, PermuteEReferences)
 	}
 	
 	@Ignore
@@ -70,6 +71,6 @@ class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTr
 		
 		val changes = getChanges
 		val expectedList = #[2, 1, 0]
-		changes.assertPermuteListTest(this.rootElement, expectedList, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, PermuteEReferences)
+		changes.claimChange(0).assertPermuteListTest(this.rootElement, expectedList, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, PermuteEReferences)
 	}
 }

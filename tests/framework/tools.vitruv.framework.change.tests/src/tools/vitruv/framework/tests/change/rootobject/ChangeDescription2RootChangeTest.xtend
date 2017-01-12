@@ -52,19 +52,22 @@ class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransform
 	
 		
 	def protected void assertInsertRoot(int index, boolean isCreate, String uri) {
-		claimChange(index).assertInsertRootEObject(this.rootElement, isCreate, uri)
+		if (isCreate) {
+			
+		}
+		changes.claimChange(index).assertInsertRootEObject(this.rootElement, uri)
 	}
 	
 	def protected void assertInsertRoot2(int index, boolean isCreate, String uri) {
-		claimChange(index).assertInsertRootEObject(this.rootElement2, isCreate, uri)
+		changes.claimChange(index).assertInsertRootEObject(this.rootElement2, uri)
 	}
 	
 	def protected void assertRemoveRoot(int index, boolean isDelete, String uri) {
-		claimChange(index).assertRemoveRootEObject(this.rootElement, isDelete, uri)
+		changes.claimChange(index).assertRemoveRootEObject(this.rootElement, uri)
 	}
 	
 	def protected void assertRemoveRoot2(int index, boolean isDelete, String uri) {
-		claimChange(index).assertRemoveRootEObject(this.rootElement2, isDelete, uri)
+		changes.claimChange(index).assertRemoveRootEObject(this.rootElement2, uri)
 	}
 	
 	def protected void insertRootEObjectInResource(Resource resource){

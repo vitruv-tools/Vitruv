@@ -4,6 +4,8 @@ import allElementTypes.NonRoot
 import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import org.eclipse.emf.ecore.EStructuralFeature
+import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenceTest {
 
@@ -39,7 +41,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 		// test
 		val nonRoot = createAndAddNonRootToRootMultiReference(expectedIndex)
 		// assert
-		assertCreateAndInsertNonRoot(nonRoot, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, expectedIndex)
+		assertCreateAndInsertNonRoot(nonRoot, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, expectedIndex)
 	}
 
 	def private testInsertInEReference(int expectedIndex) {
@@ -50,16 +52,24 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 		this.rootElement.multiValuedNonContainmentEReference.add(expectedIndex, nonRoot)
 		// assert
 		val isContainment = false
-		assertInsertEReference(nonRoot, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, expectedIndex, isContainment)
+		assertInsertEReference(nonRoot, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, expectedIndex, isContainment)
 	}
 	
-	def private void assertInsertEReference(NonRoot nonRoot, String featureName, int expectedIndex, boolean isContainment) {
-		claimChange(0).assertInsertEReference(this.rootElement, featureName, nonRoot,
+	def private void assertInsertEReference(NonRoot nonRoot, EStructuralFeature feature, int expectedIndex, boolean isContainment) {
+		if (isContainment) {
+			changes.assertChangeCount(2);
+			changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
+		} else {
+			changes.assertChangeCount(1);
+		}
+		changes.claimChange(0).assertInsertEReference(this.rootElement, feature, nonRoot,
 			expectedIndex, isContainment)
 	}
 	
-	def private void assertCreateAndInsertNonRoot(NonRoot nonRoot, String featureName, int expectedIndex) {
-		claimChange(0).assertCreateAndInsertNonRoot(this.rootElement, featureName, nonRoot,
+	def private void assertCreateAndInsertNonRoot(NonRoot nonRoot, EStructuralFeature feature, int expectedIndex) {
+		changes.assertChangeCount(2);
+		changes.claimChange(0).assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot,
 			expectedIndex)
+		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
 	}
 }
