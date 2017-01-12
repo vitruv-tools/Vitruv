@@ -6,18 +6,26 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedEAttribute"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
         defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedUnsettableEAttribute"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        defaultValueLiteral="0" unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedNonContainmentEReference"
         eType="#//NonRoot"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedContainmentEReference"
         eType="#//NonRoot" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiValuedEAttribute"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiValuedUnsettableEAttribute"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedNonContainmentEReference"
         upperBound="-1" eType="#//NonRoot"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedContainmentEReference"
         upperBound="-1" eType="#//NonRoot" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nonRootObjectContainerHelper"
         lowerBound="1" eType="#//NonRootObjectContainerHelper" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="recursiveRoot" eType="#//Root"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NonRoot" eSuperTypes="#//Identified"/>
   <eClassifiers xsi:type="ecore:EClass" name="NonRootObjectContainerHelper" eSuperTypes="#//Identified">

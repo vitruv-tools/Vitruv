@@ -31,12 +31,15 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedEAttribute <em>Single Valued EAttribute</em>}</li>
+ *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedNonContainmentEReference <em>Single Valued Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedContainmentEReference <em>Single Valued Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedEAttribute <em>Multi Valued EAttribute</em>}</li>
+ *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedUnsettableEAttribute <em>Multi Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedNonContainmentEReference <em>Multi Valued Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedContainmentEReference <em>Multi Valued Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getNonRootObjectContainerHelper <em>Non Root Object Container Helper</em>}</li>
+ *   <li>{@link allElementTypes.impl.RootImpl#getRecursiveRoot <em>Recursive Root</em>}</li>
  * </ul>
  *
  * @generated
@@ -61,6 +64,35 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * @ordered
 	 */
 	protected Integer singleValuedEAttribute = SINGLE_VALUED_EATTRIBUTE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getSingleValuedUnsettableEAttribute() <em>Single Valued Unsettable EAttribute</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSingleValuedUnsettableEAttribute()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Integer SINGLE_VALUED_UNSETTABLE_EATTRIBUTE_EDEFAULT = new Integer(0);
+
+	/**
+	 * The cached value of the '{@link #getSingleValuedUnsettableEAttribute() <em>Single Valued Unsettable EAttribute</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSingleValuedUnsettableEAttribute()
+	 * @generated
+	 * @ordered
+	 */
+	protected Integer singleValuedUnsettableEAttribute = SINGLE_VALUED_UNSETTABLE_EATTRIBUTE_EDEFAULT;
+
+	/**
+	 * This is true if the Single Valued Unsettable EAttribute attribute has been set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean singleValuedUnsettableEAttributeESet;
 
 	/**
 	 * The cached value of the '{@link #getSingleValuedNonContainmentEReference() <em>Single Valued Non Containment EReference</em>}' reference.
@@ -93,6 +125,16 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	protected EList<Integer> multiValuedEAttribute;
 
 	/**
+	 * The cached value of the '{@link #getMultiValuedUnsettableEAttribute() <em>Multi Valued Unsettable EAttribute</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultiValuedUnsettableEAttribute()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Integer> multiValuedUnsettableEAttribute;
+
+	/**
 	 * The cached value of the '{@link #getMultiValuedNonContainmentEReference() <em>Multi Valued Non Containment EReference</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -121,6 +163,16 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * @ordered
 	 */
 	protected NonRootObjectContainerHelper nonRootObjectContainerHelper;
+
+	/**
+	 * The cached value of the '{@link #getRecursiveRoot() <em>Recursive Root</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRecursiveRoot()
+	 * @generated
+	 * @ordered
+	 */
+	protected Root recursiveRoot;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -160,6 +212,52 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		singleValuedEAttribute = newSingleValuedEAttribute;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE, oldSingleValuedEAttribute, singleValuedEAttribute));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Integer getSingleValuedUnsettableEAttribute() {
+		return singleValuedUnsettableEAttribute;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setSingleValuedUnsettableEAttribute(Integer newSingleValuedUnsettableEAttribute) {
+		Integer oldSingleValuedUnsettableEAttribute = singleValuedUnsettableEAttribute;
+		singleValuedUnsettableEAttribute = newSingleValuedUnsettableEAttribute;
+		boolean oldSingleValuedUnsettableEAttributeESet = singleValuedUnsettableEAttributeESet;
+		singleValuedUnsettableEAttributeESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE, oldSingleValuedUnsettableEAttribute, singleValuedUnsettableEAttribute, !oldSingleValuedUnsettableEAttributeESet));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void unsetSingleValuedUnsettableEAttribute() {
+		Integer oldSingleValuedUnsettableEAttribute = singleValuedUnsettableEAttribute;
+		boolean oldSingleValuedUnsettableEAttributeESet = singleValuedUnsettableEAttributeESet;
+		singleValuedUnsettableEAttribute = SINGLE_VALUED_UNSETTABLE_EATTRIBUTE_EDEFAULT;
+		singleValuedUnsettableEAttributeESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE, oldSingleValuedUnsettableEAttribute, SINGLE_VALUED_UNSETTABLE_EATTRIBUTE_EDEFAULT, oldSingleValuedUnsettableEAttributeESet));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isSetSingleValuedUnsettableEAttribute() {
+		return singleValuedUnsettableEAttributeESet;
 	}
 
 	/**
@@ -260,6 +358,36 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Integer> getMultiValuedUnsettableEAttribute() {
+		if (multiValuedUnsettableEAttribute == null) {
+			multiValuedUnsettableEAttribute = new EDataTypeUniqueEList.Unsettable<Integer>(Integer.class, this, AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE);
+		}
+		return multiValuedUnsettableEAttribute;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void unsetMultiValuedUnsettableEAttribute() {
+		if (multiValuedUnsettableEAttribute != null) ((InternalEList.Unsettable<?>)multiValuedUnsettableEAttribute).unset();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isSetMultiValuedUnsettableEAttribute() {
+		return multiValuedUnsettableEAttribute != null && ((InternalEList.Unsettable<?>)multiValuedUnsettableEAttribute).isSet();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<NonRoot> getMultiValuedNonContainmentEReference() {
 		if (multiValuedNonContainmentEReference == null) {
 			multiValuedNonContainmentEReference = new EObjectResolvingEList<NonRoot>(NonRoot.class, this, AllElementTypesPackage.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE);
@@ -327,6 +455,49 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Root getRecursiveRoot() {
+		return recursiveRoot;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetRecursiveRoot(Root newRecursiveRoot, NotificationChain msgs) {
+		Root oldRecursiveRoot = recursiveRoot;
+		recursiveRoot = newRecursiveRoot;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__RECURSIVE_ROOT, oldRecursiveRoot, newRecursiveRoot);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setRecursiveRoot(Root newRecursiveRoot) {
+		if (newRecursiveRoot != recursiveRoot) {
+			NotificationChain msgs = null;
+			if (recursiveRoot != null)
+				msgs = ((InternalEObject)recursiveRoot).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AllElementTypesPackage.ROOT__RECURSIVE_ROOT, null, msgs);
+			if (newRecursiveRoot != null)
+				msgs = ((InternalEObject)newRecursiveRoot).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AllElementTypesPackage.ROOT__RECURSIVE_ROOT, null, msgs);
+			msgs = basicSetRecursiveRoot(newRecursiveRoot, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__RECURSIVE_ROOT, newRecursiveRoot, newRecursiveRoot));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -336,6 +507,8 @@ public class RootImpl extends IdentifiedImpl implements Root {
 				return ((InternalEList<?>)getMultiValuedContainmentEReference()).basicRemove(otherEnd, msgs);
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				return basicSetNonRootObjectContainerHelper(null, msgs);
+			case AllElementTypesPackage.ROOT__RECURSIVE_ROOT:
+				return basicSetRecursiveRoot(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -350,6 +523,8 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		switch (featureID) {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE:
 				return getSingleValuedEAttribute();
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE:
+				return getSingleValuedUnsettableEAttribute();
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
 				if (resolve) return getSingleValuedNonContainmentEReference();
 				return basicGetSingleValuedNonContainmentEReference();
@@ -357,12 +532,16 @@ public class RootImpl extends IdentifiedImpl implements Root {
 				return getSingleValuedContainmentEReference();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_EATTRIBUTE:
 				return getMultiValuedEAttribute();
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE:
+				return getMultiValuedUnsettableEAttribute();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE:
 				return getMultiValuedNonContainmentEReference();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE:
 				return getMultiValuedContainmentEReference();
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				return getNonRootObjectContainerHelper();
+			case AllElementTypesPackage.ROOT__RECURSIVE_ROOT:
+				return getRecursiveRoot();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -379,6 +558,9 @@ public class RootImpl extends IdentifiedImpl implements Root {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE:
 				setSingleValuedEAttribute((Integer)newValue);
 				return;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE:
+				setSingleValuedUnsettableEAttribute((Integer)newValue);
+				return;
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
 				setSingleValuedNonContainmentEReference((NonRoot)newValue);
 				return;
@@ -388,6 +570,10 @@ public class RootImpl extends IdentifiedImpl implements Root {
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_EATTRIBUTE:
 				getMultiValuedEAttribute().clear();
 				getMultiValuedEAttribute().addAll((Collection<? extends Integer>)newValue);
+				return;
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE:
+				getMultiValuedUnsettableEAttribute().clear();
+				getMultiValuedUnsettableEAttribute().addAll((Collection<? extends Integer>)newValue);
 				return;
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE:
 				getMultiValuedNonContainmentEReference().clear();
@@ -399,6 +585,9 @@ public class RootImpl extends IdentifiedImpl implements Root {
 				return;
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				setNonRootObjectContainerHelper((NonRootObjectContainerHelper)newValue);
+				return;
+			case AllElementTypesPackage.ROOT__RECURSIVE_ROOT:
+				setRecursiveRoot((Root)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -415,6 +604,9 @@ public class RootImpl extends IdentifiedImpl implements Root {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE:
 				setSingleValuedEAttribute(SINGLE_VALUED_EATTRIBUTE_EDEFAULT);
 				return;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE:
+				unsetSingleValuedUnsettableEAttribute();
+				return;
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
 				setSingleValuedNonContainmentEReference((NonRoot)null);
 				return;
@@ -424,6 +616,9 @@ public class RootImpl extends IdentifiedImpl implements Root {
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_EATTRIBUTE:
 				getMultiValuedEAttribute().clear();
 				return;
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE:
+				unsetMultiValuedUnsettableEAttribute();
+				return;
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE:
 				getMultiValuedNonContainmentEReference().clear();
 				return;
@@ -432,6 +627,9 @@ public class RootImpl extends IdentifiedImpl implements Root {
 				return;
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				setNonRootObjectContainerHelper((NonRootObjectContainerHelper)null);
+				return;
+			case AllElementTypesPackage.ROOT__RECURSIVE_ROOT:
+				setRecursiveRoot((Root)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -447,18 +645,24 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		switch (featureID) {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE:
 				return SINGLE_VALUED_EATTRIBUTE_EDEFAULT == null ? singleValuedEAttribute != null : !SINGLE_VALUED_EATTRIBUTE_EDEFAULT.equals(singleValuedEAttribute);
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE:
+				return isSetSingleValuedUnsettableEAttribute();
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
 				return singleValuedNonContainmentEReference != null;
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE:
 				return singleValuedContainmentEReference != null;
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_EATTRIBUTE:
 				return multiValuedEAttribute != null && !multiValuedEAttribute.isEmpty();
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE:
+				return isSetMultiValuedUnsettableEAttribute();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE:
 				return multiValuedNonContainmentEReference != null && !multiValuedNonContainmentEReference.isEmpty();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE:
 				return multiValuedContainmentEReference != null && !multiValuedContainmentEReference.isEmpty();
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				return nonRootObjectContainerHelper != null;
+			case AllElementTypesPackage.ROOT__RECURSIVE_ROOT:
+				return recursiveRoot != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -475,8 +679,12 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (singleValuedEAttribute: ");
 		result.append(singleValuedEAttribute);
+		result.append(", singleValuedUnsettableEAttribute: ");
+		if (singleValuedUnsettableEAttributeESet) result.append(singleValuedUnsettableEAttribute); else result.append("<unset>");
 		result.append(", multiValuedEAttribute: ");
 		result.append(multiValuedEAttribute);
+		result.append(", multiValuedUnsettableEAttribute: ");
+		result.append(multiValuedUnsettableEAttribute);
 		result.append(')');
 		return result.toString();
 	}
