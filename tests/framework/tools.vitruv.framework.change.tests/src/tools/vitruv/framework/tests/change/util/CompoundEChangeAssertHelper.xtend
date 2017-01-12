@@ -1,6 +1,7 @@
 package tools.vitruv.framework.tests.change.util
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*;
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*;
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import org.eclipse.emf.ecore.EStructuralFeature

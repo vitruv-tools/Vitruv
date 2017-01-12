@@ -2,9 +2,9 @@ package tools.vitruv.framework.tests.change.attribute
 
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import org.junit.Test
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*;
 import static allElementTypes.AllElementTypesPackage.Literals.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 
 class ChangeDescription2ReplaceSingleValuedEAttributeTest extends ChangeDescription2ChangeTransformationTest {
 	/**

@@ -2,10 +2,10 @@ package tools.vitruv.framework.tests.change.integration
 
 import org.junit.Test
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import allElementTypes.AllElementTypesFactory
 import static allElementTypes.AllElementTypesPackage.Literals.*;
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 
 class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTransformationTest {
@@ -27,12 +27,12 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		
 		// assert
 		changes.assertChangeCount(4)
-		changes.claimChange(0).assertSetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true, true);
-		changes.claimChange(2).assertUnsetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true, true);
-		changes.claimChange(3).assertSetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true, true);
+		changes.claimChange(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true);
+		changes.claimChange(2).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true);
+		changes.claimChange(3).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true);
 	}
 	
 	
@@ -51,8 +51,8 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		// assert
 		changes.assertChangeCount(3);
 		val containerChange = changes.claimChange(0);
-		containerChange.assertSetSingleValuedEReference(nonRootObjectsContainer, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER,
-			rootElement, true, true);
+		containerChange.assertSetSingleValuedEReference(rootElement, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER,
+			nonRootObjectsContainer, true, true);
 		val nonRootChange = changes.claimChange(2);
 		nonRootChange.assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
 			nonRoot, 0);

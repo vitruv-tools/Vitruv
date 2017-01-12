@@ -1,7 +1,7 @@
 package tools.vitruv.framework.tests.change.attribute
 
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*;
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 abstract class ChangeDescription2ChangeEAttributeTest extends ChangeDescription2ChangeTransformationTest {

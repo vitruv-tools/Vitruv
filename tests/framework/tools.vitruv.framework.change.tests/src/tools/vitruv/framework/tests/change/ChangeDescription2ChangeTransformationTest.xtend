@@ -11,6 +11,8 @@ import java.util.Collection
 import org.eclipse.emf.common.notify.Notifier
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
 import tools.vitruv.framework.change.echange.EChange
+import org.junit.Assert
+import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
 
 /** 
  * @author langhamm
@@ -79,6 +81,16 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	
 	public def getRootElement(){
 		return this.rootElement
+	}
+	
+	public static def assertChangeCount(List<?> changes, int expectedCount) {
+		Assert.assertEquals("There were " + changes.size + " changes, although " + expectedCount + " were expected",
+			expectedCount, changes.size
+		);
+	}
+	
+	public static def EChange claimChange(List<EChange> changes, int index) {
+		return changes.claimElementAt(index)
 	}
 	
 	protected  def createAndAddNonRootToFeature(EStructuralFeature eStructuralFeature, boolean shouldStartRecording) {

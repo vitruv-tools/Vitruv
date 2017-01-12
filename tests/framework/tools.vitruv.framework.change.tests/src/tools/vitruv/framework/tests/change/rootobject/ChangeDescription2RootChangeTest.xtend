@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.Before
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import org.junit.After
 import java.io.File
 import allElementTypes.AllElementTypesFactory

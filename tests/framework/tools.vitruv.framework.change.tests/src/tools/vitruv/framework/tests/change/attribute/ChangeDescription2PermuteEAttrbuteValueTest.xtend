@@ -2,10 +2,10 @@ package tools.vitruv.framework.tests.change.attribute
 
 import org.junit.Test
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.feature.attribute.PermuteEAttributeValues
 import org.junit.Ignore
 import static allElementTypes.AllElementTypesPackage.Literals.*;
+import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 
 class ChangeDescription2PermuteEAttrbuteValueTest extends ChangeDescription2ChangeEAttributeTest {
 

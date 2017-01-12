@@ -2,10 +2,10 @@ package tools.vitruv.framework.tests.change.reference
 
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import org.junit.Test
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.feature.reference.PermuteEReferences
 import org.junit.Ignore
 import static allElementTypes.AllElementTypesPackage.Literals.*;
+import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 
 class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTransformationTest{
 	@Ignore

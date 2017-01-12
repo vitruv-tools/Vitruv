@@ -2,6 +2,7 @@ package tools.vitruv.framework.tests.change.compound
 
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import org.junit.Test
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import org.junit.Ignore
 import static allElementTypes.AllElementTypesPackage.Literals.*;

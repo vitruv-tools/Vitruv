@@ -5,7 +5,7 @@ import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformatio
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 
@@ -22,8 +22,8 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 
 		// assert
 		val changes = getChanges()
-		changes.get(0).assertSetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true, true)
+		changes.get(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true)
 	}
 
 	@Test
@@ -51,8 +51,8 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		//test
 		this.rootElement.singleValuedContainmentEReference = null
 		val changes = getChanges()
-		changes.get(0).assertUnsetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true, true)
+		changes.get(0).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true)
 	}
 
 	@Test
@@ -65,8 +65,8 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		
 		// assert
 		val changes = getChanges()
-		changes.get(0).assertUnsetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true, true)
+		changes.get(0).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true)
 	}
 
 	@Test
@@ -79,8 +79,8 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 
 		// assert
 		val changes = getChanges()
-		changes.get(0).assertSetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
-			this.rootElement, false, false)
+		changes.get(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
+			nonRoot, false, false)
 	}
 
 	@Test
@@ -111,10 +111,10 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		
 		// assert
 		val changes = getChanges()
-		changes.get(0).assertUnsetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
-			this.rootElement, false, false)
-		changes.get(1).assertUnsetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true, true)
+		changes.get(0).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
+			nonRoot, false, false)
+		changes.get(1).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true)
 	}
 
 	@Test
@@ -129,8 +129,8 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		
 		// assert
 		val changes = getChanges()
-		changes.get(0).assertUnsetSingleValuedEReference(nonRoot, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
-			this.rootElement, false, false)
+		changes.get(0).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
+			nonRoot, false, false)
 	}
 
 }

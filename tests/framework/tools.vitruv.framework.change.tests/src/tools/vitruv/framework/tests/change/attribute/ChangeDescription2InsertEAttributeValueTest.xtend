@@ -2,7 +2,7 @@ package tools.vitruv.framework.tests.change.attribute
 
 import org.junit.Test
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*;
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 import allElementTypes.AllElementTypesFactory
 
