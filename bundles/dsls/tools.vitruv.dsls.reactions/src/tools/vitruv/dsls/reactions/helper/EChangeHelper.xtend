@@ -16,7 +16,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveRootChange
 import tools.vitruv.dsls.reactions.reactionsLanguage.SingleValuedFeatureReplace
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.ChangePackage
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage
 import tools.vitruv.framework.change.echange.root.RootPackage
@@ -27,6 +26,7 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import static extension tools.vitruv.dsls.reactions.helper.ReactionsLanguageHelper.*;
+import tools.vitruv.framework.change.echange.EChangePackage
 
 final class EChangeHelper {
 	
@@ -89,7 +89,7 @@ final class EChangeHelper {
 	}
 	
 	static def dispatch EClass generateEChange(ModelChange modelChange) {
-		return ChangePackage.Literals.ECHANGE;
+		return EChangePackage.Literals.ECHANGE;
 	}
 	
 	static def dispatch EClass generateEChange(AtomicFeatureChange elementChange) {
@@ -101,7 +101,7 @@ final class EChangeHelper {
 	}
 	
 	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementUpdate, EObject element) {
-		return ChangePackage.Literals.ECHANGE;
+		return EChangePackage.Literals.ECHANGE;
 	}
 
 	private static def dispatch EClass generateEChange(MultiValuedFeaturePermuteChange elementUpdate, EAttribute feature) {
@@ -162,7 +162,7 @@ final class EChangeHelper {
 	}
 	
 	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementChange, EClass element) {
-		return ChangePackage.Literals.ECHANGE;
+		return EChangePackage.Literals.ECHANGE;
 	}
 	
 	public static def String getEChangeFeatureNameOfChangedObject(Trigger change) {
