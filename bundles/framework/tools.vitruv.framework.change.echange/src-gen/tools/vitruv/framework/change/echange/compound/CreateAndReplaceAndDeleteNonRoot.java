@@ -2,7 +2,11 @@
  */
 package tools.vitruv.framework.change.echange.compound;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
+
+import tools.vitruv.framework.change.echange.AtomicEChange;
 
 import tools.vitruv.framework.change.echange.eobject.CreateEObject;
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
@@ -105,5 +109,14 @@ public interface CreateAndReplaceAndDeleteNonRoot<A extends EObject, T extends E
 	 * @generated
 	 */
 	void setDeleteChange(DeleteEObject<T> value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" required="true"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>>();\n<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T> _createChange = this.getCreateChange();\nresult.add(_createChange);\n<%tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference%><A, T> _replaceChange = this.getReplaceChange();\nresult.add(_replaceChange);\n<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T> _deleteChange = this.getDeleteChange();\nresult.add(_deleteChange);\nreturn result;'"
+	 * @generated
+	 */
+	EList<AtomicEChange> getAtomicChanges();
 
 } // CreateAndReplaceAndDeleteNonRoot

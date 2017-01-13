@@ -2,7 +2,11 @@
  */
 package tools.vitruv.framework.change.echange.compound;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
+
+import tools.vitruv.framework.change.echange.AtomicEChange;
 
 import tools.vitruv.framework.change.echange.eobject.CreateEObject;
 
@@ -77,5 +81,14 @@ public interface CreateAndInsertNonRoot<A extends EObject, T extends EObject> ex
 	 * @generated
 	 */
 	void setInsertChange(InsertEReference<A, T> value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" required="true"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>>();\n<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T> _createChange = this.getCreateChange();\nresult.add(_createChange);\n<%tools.vitruv.framework.change.echange.feature.reference.InsertEReference%><A, T> _insertChange = this.getInsertChange();\nresult.add(_insertChange);\nreturn result;'"
+	 * @generated
+	 */
+	EList<AtomicEChange> getAtomicChanges();
 
 } // CreateAndInsertNonRoot

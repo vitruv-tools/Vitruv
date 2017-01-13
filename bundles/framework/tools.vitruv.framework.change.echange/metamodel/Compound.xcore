@@ -48,7 +48,11 @@ class MoveEObject<A extends EObject, B extends EObject, T extends EObject> exten
 	}
 }
 
-class ExplicitUnsetEFeature<A extends EObject, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {}
+class ExplicitUnsetEFeature<A extends EObject, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {
+	op unique AtomicEChange[+] getAtomicChanges() {
+		return subtractiveChanges.map[]
+	}
+}
 
 class ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
 	contains R[1] removeChange
@@ -82,25 +86,56 @@ class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends C
 class CreateAndInsertRoot<T extends EObject> extends CompoundEChange {
 	contains CreateEObject<T>[1] createChange
 	contains InsertRootEObject<T>[1] insertChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList();
+		result.add(createChange);
+		result.add(insertChange);
+		return result;
+	}
 }
 
 class RemoveAndDeleteRoot<T extends EObject> extends CompoundEChange {
 	contains RemoveRootEObject<T>[1] removeChange
 	contains DeleteEObject<T>[1] deleteChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList();
+		result.add(removeChange);
+		result.add(deleteChange);
+		return result;
+	}
 }
 
 class CreateAndInsertNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {
 	contains CreateEObject<T>[1] createChange
 	contains InsertEReference<A, T>[1] insertChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList();
+		result.add(createChange);
+		result.add(insertChange);
+		return result;
+	}
 }
 
 class RemoveAndDeleteNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {
 	contains RemoveEReference<A, T>[1] removeChange
 	contains DeleteEObject<T>[1] deleteChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList();
+		result.add(removeChange);
+		result.add(deleteChange);
+		return result;
+	}
 }
 
 class CreateAndReplaceAndDeleteNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {
 	contains CreateEObject<T>[1] createChange
 	contains ReplaceSingleValuedEReference<A, T>[1] replaceChange
 	contains DeleteEObject<T>[1] deleteChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList();
+		result.add(createChange);
+		result.add(replaceChange);
+		result.add(deleteChange);
+		return result;
+	}
 }

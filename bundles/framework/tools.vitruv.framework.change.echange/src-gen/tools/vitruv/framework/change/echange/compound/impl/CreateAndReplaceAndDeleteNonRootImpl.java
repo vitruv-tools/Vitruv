@@ -2,14 +2,21 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import tools.vitruv.framework.change.echange.AtomicEChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot;
@@ -218,6 +225,22 @@ public class CreateAndReplaceAndDeleteNonRootImpl<A extends EObject, T extends E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<AtomicEChange> getAtomicChanges() {
+		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
+		CreateEObject<T> _createChange = this.getCreateChange();
+		result.add(_createChange);
+		ReplaceSingleValuedEReference<A, T> _replaceChange = this.getReplaceChange();
+		result.add(_replaceChange);
+		DeleteEObject<T> _deleteChange = this.getDeleteChange();
+		result.add(_deleteChange);
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -308,6 +331,20 @@ public class CreateAndReplaceAndDeleteNonRootImpl<A extends EObject, T extends E
 				return deleteChange != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case CompoundPackage.CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES:
+				return getAtomicChanges();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //CreateAndReplaceAndDeleteNonRootImpl
