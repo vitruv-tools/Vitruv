@@ -9,6 +9,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.framework.change.echange.compound.CompoundEChange
 
 abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpecification {
 	private final static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
@@ -31,21 +32,26 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 		this.changeToReactionsMap.addReaction(eventType, reaction);
 	}
 	
-	private def Iterable<IReactionRealization> getRelevantReactionss(EChange change) {
+	private def Iterable<IReactionRealization> getRelevantReactions(EChange change) {
 		return this.changeToReactionsMap.getReactions(change).filter[checkPrecondition(change)];
 	}
 	
 	public override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
-		return !change.relevantReactionss.isEmpty
+		return !change.relevantReactions.isEmpty
 	}
 	
 	public override propagateChange(EChange event, CorrespondenceModel correspondenceModel) {
 		val propagationResult = new ChangePropagationResult();
-		val relevantReactionss = event.relevantReactionss;
+		if (event instanceof CompoundEChange) {
+			for (atomicChange : event.atomicChanges) {
+				propagationResult.integrateResult(propagateChange(atomicChange, correspondenceModel));
+			}
+		}
+		val relevantReactionss = event.relevantReactions;
 		LOGGER.debug("Call relevant reactions");
 		for (reactions : relevantReactionss) {
 			LOGGER.debug(reactions.toString());
-			val currentPropagationResult =reactions.applyEvent(event, correspondenceModel)
+			val currentPropagationResult = reactions.applyEvent(event, correspondenceModel)
 			propagationResult.integrateResult(currentPropagationResult);
 		}
 		return propagationResult;
