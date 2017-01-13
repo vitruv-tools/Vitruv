@@ -42,16 +42,16 @@ class CompoundEChangeAssertHelper {
 			expectedOldValue, expectedNewValue, isContainment)
 	}
 	
-	def public static assertCreateAndInsertRootEObject(EChange change, EObject expectedNewValue, String uri) {
+	def public static void assertCreateAndInsertRootEObject(EChange change, EObject expectedNewValue, String uri) {
 		val compositeChange = change.assertObjectInstanceOf(CreateAndInsertRoot)
 		compositeChange.createChange.assertCreateEObject(expectedNewValue)
 		compositeChange.insertChange.assertInsertRootEObject(expectedNewValue, uri)
 	}
 	
-	def public static assertRemoveAndDeleteRootEObject(EChange change, EObject expectedOldValue, String uri) {
+	def public static void assertRemoveAndDeleteRootEObject(EChange change, EObject expectedOldValue, String uri) {
 		val compositeChange = change.assertObjectInstanceOf(RemoveAndDeleteRoot)
 		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue)
-		compositeChange.removeChange.assertInsertRootEObject(expectedOldValue, uri)
+		compositeChange.removeChange.assertRemoveRootEObject(expectedOldValue, uri)
 	}
 
 	def public static <A extends EObject, T, S extends SubtractiveAttributeEChange<A, T>> ExplicitUnsetEFeature<A, T> assertExplicitUnset(
