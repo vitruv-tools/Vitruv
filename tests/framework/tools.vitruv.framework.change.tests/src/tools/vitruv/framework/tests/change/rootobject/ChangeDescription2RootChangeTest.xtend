@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.Before
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import org.junit.After
 import java.io.File
 import allElementTypes.AllElementTypesFactory
@@ -53,13 +54,18 @@ class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransform
 		
 	def protected void assertInsertRoot(int index, boolean isCreate, String uri) {
 		if (isCreate) {
-			
+			changes.claimChange(index).assertCreateAndInsertRootEObject(this.rootElement, uri);
+		} else {
+			changes.claimChange(index).assertInsertRootEObject(this.rootElement, uri)
 		}
-		changes.claimChange(index).assertInsertRootEObject(this.rootElement, uri)
 	}
 	
 	def protected void assertInsertRoot2(int index, boolean isCreate, String uri) {
-		changes.claimChange(index).assertInsertRootEObject(this.rootElement2, uri)
+		if (isCreate) {
+			changes.claimChange(index).assertCreateAndInsertRootEObject(this.rootElement2, uri);
+		} else {
+			changes.claimChange(index).assertInsertRootEObject(this.rootElement2, uri)
+		}
 	}
 	
 	def protected void assertRemoveRoot(int index, boolean isDelete, String uri) {
