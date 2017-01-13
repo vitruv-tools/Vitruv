@@ -5,6 +5,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
 import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.compound.CompoundFactory;
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot;
+import tools.vitruv.framework.change.echange.eobject.CreateEObject;
+import tools.vitruv.framework.change.echange.eobject.EobjectFactory;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.change.echange.feature.reference.ReferenceFactory;
 
@@ -24,7 +28,7 @@ public abstract class ChangeBuildHelper {
      */
     protected static EChange createSingleAddNonRootEObjectInListChange(final EObject source) {
 
-        final InsertEReference<EObject, EObject> change = ReferenceFactory.eINSTANCE
+        final InsertEReference<EObject, EObject> insertChange = ReferenceFactory.eINSTANCE
                 .createInsertEReference();
         final EObject container = source.eContainer();
 
@@ -33,9 +37,8 @@ public abstract class ChangeBuildHelper {
         // list of all contained elements in the container
         final Object contents = container.eGet(containingReference);
 
-        change.setAffectedEObject(container);
-        change.setIsCreate(true);
-
+        insertChange.setAffectedEObject(container);
+        
         // find index of current element in the container
         int index = -1;
         if (contents instanceof EList) {
@@ -46,11 +49,18 @@ public abstract class ChangeBuildHelper {
             throw new IllegalStateException("ContainingReference must be of type EList");
         }
 
-        change.setAffectedFeature(containingReference);
-        change.setIndex(index);
-        change.setNewValue(source);
+        insertChange.setAffectedFeature(containingReference);
+        insertChange.setIndex(index);
+        insertChange.setNewValue(source);
 
-        return change;
+        final CreateEObject<EObject> createChange = EobjectFactory.eINSTANCE.createCreateEObject();
+        createChange.setAffectedEObject(source);
+
+        final CreateAndInsertNonRoot<EObject, EObject> compositeChange = CompoundFactory.eINSTANCE.createCreateAndInsertNonRoot();
+        compositeChange.setCreateChange(createChange);
+        compositeChange.setInsertChange(insertChange);
+        
+        return compositeChange;
     }
 
 }
