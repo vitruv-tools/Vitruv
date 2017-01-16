@@ -49,7 +49,7 @@ abstract class VitruviusChangePropagationTest extends VitruviusEMFCasestudyTest 
 		EcoreResourceBridge.saveResource(resource);
 		synchronizeFileChange(FileChangeKind.Create, VURI.getInstance(resource));
 		//resource.eAdapters.add(changeRecorder);
-		this.changeRecorder.beginRecording(VURI.getInstance(resource), #[rootElement]);
+		this.changeRecorder.beginRecording(VURI.getInstance(resource), #[resource]);
 	}
 	
 	protected def void deleteAndSychronizeModel(String modelPathInProject) {
