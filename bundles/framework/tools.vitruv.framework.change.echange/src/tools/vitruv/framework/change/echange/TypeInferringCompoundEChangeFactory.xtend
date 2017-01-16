@@ -53,7 +53,7 @@ class TypeInferringCompoundEChangeFactory {
 	def static <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetChange(List<SubtractiveAttributeEChange<A,T>> changes) {
 		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEFeature();
 		for (change : changes) {
-			c.subtractiveChanges += change;
+			c.subtractiveChanges.add(change);
 		}
 		return c;
 	}
