@@ -50,7 +50,7 @@ class MoveEObject<A extends EObject, B extends EObject, T extends EObject> exten
 
 class ExplicitUnsetEFeature<A extends EObject, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {
 	op unique AtomicEChange[+] getAtomicChanges() {
-		return subtractiveChanges.map[]
+		return subtractiveChanges.map[it]
 	}
 }
 

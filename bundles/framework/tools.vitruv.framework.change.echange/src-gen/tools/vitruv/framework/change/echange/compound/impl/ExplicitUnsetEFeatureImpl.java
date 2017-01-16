@@ -74,7 +74,7 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, T extends Object> exte
 		EList<SubtractiveAttributeEChange<A, T>> _subtractiveChanges = this.getSubtractiveChanges();
 		final Function1<SubtractiveAttributeEChange<A, T>, AtomicEChange> _function = new Function1<SubtractiveAttributeEChange<A, T>, AtomicEChange>() {
 			public AtomicEChange apply(final SubtractiveAttributeEChange<A, T> it) {
-				return null;
+				return it;
 			}
 		};
 		return XcoreEListExtensions.<SubtractiveAttributeEChange<A, T>, AtomicEChange>map(_subtractiveChanges, _function);
