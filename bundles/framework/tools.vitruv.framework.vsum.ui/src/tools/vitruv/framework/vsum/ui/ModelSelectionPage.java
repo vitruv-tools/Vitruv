@@ -2,6 +2,9 @@ package tools.vitruv.framework.vsum.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -19,7 +22,6 @@ public class ModelSelectionPage extends WizardPage {
 
   private static final String PAGENAME = "Vitruvius Project";
   private static final String DESCRIPTION = "Create a new Vitruvius Project.";
-  private int numOfChecked;
 
   private Text text1;
 
@@ -29,7 +31,6 @@ public class ModelSelectionPage extends WizardPage {
     super(PAGENAME);
     setTitle(PAGENAME);
     setDescription(DESCRIPTION);
-    numOfChecked = 0;
     // setControl(text1);
 
   }
@@ -56,6 +57,12 @@ public class ModelSelectionPage extends WizardPage {
       System.out.println(projects[i] + " " + i);
     }
     System.out.println(projects);
+    
+    //Versuch mit den Extensionpoints
+    IConfigurationElement[] ice = Platform.getExtensionRegistry().getConfigurationElementsFor("tools.vitruv.framework.vsum.domain");
+    System.out.println(ice.length);
+//    RegistryFactory.getRegistry().get;
+    
     for (IProject project : projects) {
       System.out.println("Loop");
       TreeItem t = new TreeItem(tree, SWT.CHECK);
@@ -69,54 +76,30 @@ public class ModelSelectionPage extends WizardPage {
       public void handleEvent(Event event) {
         if (event.detail == SWT.CHECK) {
           TreeItem item = (TreeItem) event.item;
-          System.out.println(item.getClass());
-          System.out.println(item);
-          System.out.println(item.getParentItem());
           TreeItem parent = item.getParentItem();
           if (item.getChecked()) {
-            // check a project automatically, when one of it's model is checked
+            // check a project automatically, when one of it's models is checked
             if (null != parent) {
               parent.setChecked(true);
-              //TODO schlechte idee. zählt auch, wen schon geckecht
-              numOfChecked++;
             }
-            numOfChecked++;
           } else {
             // all models get deselected, when project is deselected.
             if (null == parent) {
               for (TreeItem child : item.getItems()) {
                 child.setChecked(false);
-                numOfChecked--;
               }
             }
-            numOfChecked--;
           }
-          if(numOfChecked > 0){
-            setPageComplete(true);
-          } else{
-            setPageComplete(false);
+          //only finish if something is checked.
+          boolean finished = false;
+          for(TreeItem treeItem : tree.getItems()){
+            finished = finished || treeItem.getChecked();
           }
+          setPageComplete(finished);
         }
-        System.out.println(numOfChecked);
       }
     });
 
-    // text1.setText("");
-    // text1.addKeyListener(new KeyListener() {
-    //
-    // @Override
-    // public void keyPressed(KeyEvent e) {
-    // // TODO Auto-generated method stub
-    // }
-    //
-    // @Override
-    // public void keyReleased(KeyEvent e) {
-    // if (!text1.getText().isEmpty()) {
-    // setPageComplete(true);
-    // }
-    // }
-    //
-    // });
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
     // text1.setLayoutData(gd);
     Label labelCheck = new Label(container, NONE);
