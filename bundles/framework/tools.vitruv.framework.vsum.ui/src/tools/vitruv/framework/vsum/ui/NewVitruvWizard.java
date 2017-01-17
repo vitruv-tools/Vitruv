@@ -9,7 +9,8 @@ public class NewVitruvWizard extends Wizard implements INewWizard {
   
   private static final String WINDOWTITLE = "New Vitruvius Project";
   protected ProjectNamePage one;
-  protected ModelSelectionPage two;
+  protected DomainSelectionPage two;
+  protected ApplicationSelectionPage three;
 
   public NewVitruvWizard() {
     // TODO Auto-generated constructor stub
@@ -29,9 +30,11 @@ public class NewVitruvWizard extends Wizard implements INewWizard {
   @Override
   public void addPages() {
     one = new ProjectNamePage(this);
-    two = new ModelSelectionPage();
+    two = new DomainSelectionPage();
+    three = new ApplicationSelectionPage();
     addPage(one);
     addPage(two);
+    addPage(three);
   }
   
   @Override

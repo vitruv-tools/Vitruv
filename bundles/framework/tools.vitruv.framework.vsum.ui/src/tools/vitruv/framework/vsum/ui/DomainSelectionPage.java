@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import java.util.ArrayList;
 
-public class ModelSelectionPage extends WizardPage {
+public class DomainSelectionPage extends WizardPage {
 
   private static final String PAGENAME = "Vitruvius Project";
   private static final String DESCRIPTION = "Create a new Vitruvius Project.";
@@ -35,7 +35,7 @@ public class ModelSelectionPage extends WizardPage {
 
   private Composite container;
 
-  protected ModelSelectionPage() {
+  protected DomainSelectionPage() {
     super(PAGENAME);
     setTitle(PAGENAME);
     setDescription(DESCRIPTION);
