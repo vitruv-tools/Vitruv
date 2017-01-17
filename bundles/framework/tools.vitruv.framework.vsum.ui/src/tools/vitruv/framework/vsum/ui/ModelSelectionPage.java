@@ -1,10 +1,16 @@
 package tools.vitruv.framework.vsum.ui;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -17,6 +23,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+
+import java.util.ArrayList;
 
 public class ModelSelectionPage extends WizardPage {
 
@@ -57,21 +65,26 @@ public class ModelSelectionPage extends WizardPage {
       System.out.println(projects[i] + " " + i);
     }
     System.out.println(projects);
-    
-    //Versuch mit den Extensionpoints
-    IConfigurationElement[] ice = Platform.getExtensionRegistry().getConfigurationElementsFor("tools.vitruv.framework.vsum.domain");
-    System.out.println(ice.length);
-//    RegistryFactory.getRegistry().get;
-    
+
+    IExtensionRegistry reg = Platform.getExtensionRegistry();
+    IExtensionPoint ep = reg.getExtensionPoint("tools.vitruv.framework.vsum.domain");
+    IExtension[] extensions = null;
+
+    if (ep != null) {
+      extensions = ep.getExtensions();
+    }
     for (IProject project : projects) {
       System.out.println("Loop");
       TreeItem t = new TreeItem(tree, SWT.CHECK);
       t.setText(project.getName());
-      for (int i = 0; i < 3; i++) {
-        TreeItem childItem = new TreeItem(t, SWT.CHECK);
-        childItem.setText("Model " + i);
+      if (extensions != null) {
+        for (int i = 0; i < extensions.length; i++) {
+          TreeItem childItem = new TreeItem(t, SWT.CHECK);
+          childItem.setText(extensions[i].getLabel());
+        }
       }
     }
+
     tree.addListener(SWT.Selection, new Listener() {
       public void handleEvent(Event event) {
         if (event.detail == SWT.CHECK) {
@@ -90,9 +103,9 @@ public class ModelSelectionPage extends WizardPage {
               }
             }
           }
-          //only finish if something is checked.
+          // only finish if something is checked.
           boolean finished = false;
-          for(TreeItem treeItem : tree.getItems()){
+          for (TreeItem treeItem : tree.getItems()) {
             finished = finished || treeItem.getChecked();
           }
           setPageComplete(finished);
@@ -110,6 +123,8 @@ public class ModelSelectionPage extends WizardPage {
     setControl(container);
     setPageComplete(false);
   }
+
+
 
   public Text getText1() {
     return text1;
