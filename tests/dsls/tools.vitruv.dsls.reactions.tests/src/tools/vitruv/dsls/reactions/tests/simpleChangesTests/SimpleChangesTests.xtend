@@ -44,7 +44,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	protected override initializeTestModel() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(TEST_SOURCE_MODEL_NAME);
-		createAndSychronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root);
+		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root);
 		prepareTestModel();
 		assertModelsEqual();
 	}
@@ -436,7 +436,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	@Test
 	public def void testDeleteEachTestModel() throws Throwable {
 		assertModelExists(TEST_SOURCE_MODEL_NAME.projectModelPath);
-		deleteAndSychronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath);
+		deleteAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath);
 		assertModelNotExists(TEST_SOURCE_MODEL_NAME.projectModelPath);
 		assertModelNotExists(TEST_TARGET_MODEL_NAME.projectModelPath);
 	}
@@ -445,7 +445,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	public def void testCreateFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
-		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
+		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
 		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 	}
 	
@@ -453,10 +453,10 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	public def void testDeleteFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
-		createAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
+		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
 		assertModelExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
-		deleteAndSychronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
+		deleteAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 	}

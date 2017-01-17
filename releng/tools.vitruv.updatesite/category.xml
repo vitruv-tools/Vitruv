@@ -15,9 +15,6 @@
    <feature url="features/tools.vitruv.dsls.feature_0.1.0.qualifier.jar" id="tools.vitruv.dsls.feature" version="0.1.0.qualifier">
       <category name="Vitruv Application Development"/>
    </feature>
-   <feature url="features/tools.vitruv.license.feature_1.0.0.qualifier.jar" id="tools.vitruv.license.feature" version="1.0.0.qualifier">
-      <category name="Vitruv Framework"/>
-   </feature>
    <category-def name="Vitruv Framework" label="Vitruv Framework">
       <description>
          The Vitruv framework, including the essential Core and optional extensions

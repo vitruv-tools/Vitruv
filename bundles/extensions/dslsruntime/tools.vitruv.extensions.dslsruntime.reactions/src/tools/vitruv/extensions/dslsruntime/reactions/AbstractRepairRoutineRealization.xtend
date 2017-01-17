@@ -13,6 +13,7 @@ import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementStatesHandler {
 	private extension val ReactionExecutionState executionState;
@@ -61,7 +62,7 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 	
 	protected abstract def void executeRoutine() throws IOException;
 	
-	public static class UserExecution {
+	public static class UserExecution extends Loggable {
 		protected final UserInteracting userInteracting;
 		protected final ChangePropagationResult transformationResult;
 		protected final CorrespondenceModel correspondenceModel;

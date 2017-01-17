@@ -38,7 +38,7 @@ abstract class VitruviusChangePropagationTest extends VitruviusEMFCasestudyTest 
 	
 	protected abstract def void initializeTestModel();
 
-	protected def void createAndSychronizeModel(String modelPathInProject, EObject rootElement) {
+	protected def void createAndSynchronizeModel(String modelPathInProject, EObject rootElement) {
 		if (modelPathInProject.isNullOrEmpty || rootElement == null) {
 			throw new IllegalArgumentException();
 		}
@@ -49,10 +49,10 @@ abstract class VitruviusChangePropagationTest extends VitruviusEMFCasestudyTest 
 		EcoreResourceBridge.saveResource(resource);
 		synchronizeFileChange(FileChangeKind.Create, VURI.getInstance(resource));
 		//resource.eAdapters.add(changeRecorder);
-		this.changeRecorder.beginRecording(VURI.getInstance(resource), #[rootElement]);
+		this.changeRecorder.beginRecording(VURI.getInstance(resource), #[resource]);
 	}
 	
-	protected def void deleteAndSychronizeModel(String modelPathInProject) {
+	protected def void deleteAndSynchronizeModel(String modelPathInProject) {
 		if (modelPathInProject.isNullOrEmpty) {
 			throw new IllegalArgumentException();
 		}

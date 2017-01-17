@@ -11,7 +11,7 @@ import org.junit.Assert
 class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTransformationTest {
 
 	/**
-	 * Changes that overwrite each other between two synchronization triggers are not recognized by EMF.
+	 * Changes that overwrite each other between two change propagation triggers are not recognized by EMF.
 	 */
 	@Test
 	def public void testOverwritingSequence() {
