@@ -39,8 +39,8 @@ public class NewVitruvWizard extends Wizard implements INewWizard {
   
   @Override
   public boolean performFinish() {
-//    System.out.println(one.getText1());
-//    System.out.println(two.getText1());
+    System.out.println(one.getEnteredName());
+    System.out.println(two.getCheckedDomains());
     return true;
   }
 

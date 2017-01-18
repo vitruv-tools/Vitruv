@@ -17,6 +17,7 @@ public class ProjectNamePage extends WizardPage implements KeyListener {
   private static final String LABELTEXT = "Projektname: ";
   
   private Text text;
+  private String enteredName;
   private Composite container;
 
   protected ProjectNamePage(NewVitruvWizard wizard) {
@@ -33,7 +34,7 @@ public class ProjectNamePage extends WizardPage implements KeyListener {
     layout.numColumns = 2;
     Label l1 = new Label(container, SWT.NONE);
     l1.setText(LABELTEXT);
-    text = new Text(container, SWT.BORDER | SWT.SINGLE); // wtf?
+    text = new Text(container, SWT.BORDER | SWT.SINGLE);
     text.setText("");
     text.addKeyListener(this);
     GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -53,14 +54,19 @@ public class ProjectNamePage extends WizardPage implements KeyListener {
   @Override
   public void keyReleased(KeyEvent e) {
     if(!text.getText().isEmpty()){
+      enteredName = text.getText();
       setPageComplete(true);
     } else {
       setPageComplete(false);
     }
   }
   
-  public String getText(){
-    return text.toString();
+  /**
+   * Returns the name which the user has entered.
+   * @return String representation of the entered name
+   */
+  public String getEnteredName(){
+    return enteredName;
   }
 
 }
