@@ -3,7 +3,6 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.NonRootObjectContainerHelper;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -25,7 +24,7 @@ class HelperReactionForNonRootObjectContainerInitializationReaction extends Abst
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEReference<allElementTypes.Root, allElementTypes.NonRootObjectContainerHelper> typedChange = (ReplaceSingleValuedEReference<allElementTypes.Root, allElementTypes.NonRootObjectContainerHelper>)change;
+    ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> typedChange = (ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerInitializationReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerInitializationReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
@@ -36,16 +35,22 @@ class HelperReactionForNonRootObjectContainerInitializationReaction extends Abst
   }
   
   private boolean checkChangeProperties(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change) {
-    EObject changedElement = change.getAffectedEObject();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+    // Check affected object
+    if (!(change.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    
     // Check feature
     if (!change.getAffectedFeature().getName().equals("nonRootObjectContainerHelper")) {
     	return false;
     }
+    if (change.isFromNonDefaultValue() && !(change.getOldValue() instanceof NonRootObjectContainerHelper)
+    ) {
+    	return false;
+    }
+    if (change.isToNonDefaultValue() && !(change.getNewValue() instanceof NonRootObjectContainerHelper)) {
+    	return false;
+    }
+    
     return true;
   }
   
@@ -53,7 +58,7 @@ class HelperReactionForNonRootObjectContainerInitializationReaction extends Abst
     if (!(change instanceof ReplaceSingleValuedEReference<?, ?>)) {
     	return false;
     }
-    ReplaceSingleValuedEReference typedChange = (ReplaceSingleValuedEReference)change;
+    ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> typedChange = (ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper>)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }

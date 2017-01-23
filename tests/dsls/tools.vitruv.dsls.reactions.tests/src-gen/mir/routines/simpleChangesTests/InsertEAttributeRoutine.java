@@ -22,43 +22,43 @@ public class InsertEAttributeRoutine extends AbstractRepairRoutineRealization {
       super(reactionExecutionState);
     }
     
-    public EObject getCorrepondenceSourceTargetElement(final Root root, final Integer attributeValue) {
-      return root;
+    public EObject getCorrepondenceSourceTargetElement(final Root rootElement, final Integer attributeValue) {
+      return rootElement;
     }
     
-    public EObject getElement1(final Root root, final Integer attributeValue, final Root targetElement) {
+    public EObject getElement1(final Root rootElement, final Integer attributeValue, final Root targetElement) {
       return targetElement;
     }
     
-    public void update0Element(final Root root, final Integer attributeValue, final Root targetElement) {
+    public void update0Element(final Root rootElement, final Integer attributeValue, final Root targetElement) {
       EList<Integer> _multiValuedEAttribute = targetElement.getMultiValuedEAttribute();
       _multiValuedEAttribute.add(attributeValue);
     }
     
-    public void callRoutine1(final Root root, final Integer attributeValue, final Root targetElement, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final Root rootElement, final Integer attributeValue, final Root targetElement, @Extension final RoutinesFacade _routinesFacade) {
       SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertEAttributeValue);
     }
   }
   
-  public InsertEAttributeRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer attributeValue) {
+  public InsertEAttributeRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement, final Integer attributeValue) {
     super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.simpleChangesTests.InsertEAttributeRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    this.root = root;this.attributeValue = attributeValue;
+    this.rootElement = rootElement;this.attributeValue = attributeValue;
   }
   
-  private Root root;
+  private Root rootElement;
   
   private Integer attributeValue;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine InsertEAttributeRoutine with input:");
-    getLogger().debug("   Root: " + this.root);
+    getLogger().debug("   Root: " + this.rootElement);
     getLogger().debug("   Integer: " + this.attributeValue);
     
     Root targetElement = getCorrespondingElement(
-    	userExecution.getCorrepondenceSourceTargetElement(root, attributeValue), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceTargetElement(rootElement, attributeValue), // correspondence source supplier
     	Root.class,
     	(Root _element) -> true, // correspondence precondition checker
     	null);
@@ -66,10 +66,10 @@ public class InsertEAttributeRoutine extends AbstractRepairRoutineRealization {
     	return;
     }
     initializeRetrieveElementState(targetElement);
-    // val updatedElement userExecution.getElement1(root, attributeValue, targetElement);
-    userExecution.update0Element(root, attributeValue, targetElement);
+    // val updatedElement userExecution.getElement1(rootElement, attributeValue, targetElement);
+    userExecution.update0Element(rootElement, attributeValue, targetElement);
     
-    userExecution.callRoutine1(root, attributeValue, targetElement, actionsFacade);
+    userExecution.callRoutine1(rootElement, attributeValue, targetElement, actionsFacade);
     
     postprocessElementStates();
   }

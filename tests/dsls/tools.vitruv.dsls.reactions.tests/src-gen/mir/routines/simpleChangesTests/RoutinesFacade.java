@@ -13,9 +13,9 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     super(reactionExecutionState, calledBy);
   }
   
-  public void replaceSingleValuedEAttribute(final Root root, final Integer value) {
+  public void replaceSingleValuedEAttribute(final Root rootElement, final Integer value) {
     mir.routines.simpleChangesTests.ReplaceSingleValuedEAttributeRoutine effect = new mir.routines.simpleChangesTests.ReplaceSingleValuedEAttributeRoutine(this.executionState, calledBy,
-    	root, value);
+    	rootElement, value);
     effect.applyRoutine();
   }
   
@@ -25,9 +25,9 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     effect.applyRoutine();
   }
   
-  public void insertNonRoot(final Root root, final NonRoot insertedNonRoot) {
+  public void insertNonRoot(final Root rootElement, final NonRoot insertedNonRoot) {
     mir.routines.simpleChangesTests.InsertNonRootRoutine effect = new mir.routines.simpleChangesTests.InsertNonRootRoutine(this.executionState, calledBy,
-    	root, insertedNonRoot);
+    	rootElement, insertedNonRoot);
     effect.applyRoutine();
   }
   
@@ -49,51 +49,51 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     effect.applyRoutine();
   }
   
-  public void replaceSingleValuedNonContainmentReference(final Root root, final NonRoot newReferencedElement) {
+  public void replaceSingleValuedNonContainmentReference(final Root rootElement, final NonRoot newReferencedElement) {
     mir.routines.simpleChangesTests.ReplaceSingleValuedNonContainmentReferenceRoutine effect = new mir.routines.simpleChangesTests.ReplaceSingleValuedNonContainmentReferenceRoutine(this.executionState, calledBy,
-    	root, newReferencedElement);
+    	rootElement, newReferencedElement);
     effect.applyRoutine();
   }
   
-  public void insertEAttribute(final Root root, final Integer attributeValue) {
+  public void insertEAttribute(final Root rootElement, final Integer attributeValue) {
     mir.routines.simpleChangesTests.InsertEAttributeRoutine effect = new mir.routines.simpleChangesTests.InsertEAttributeRoutine(this.executionState, calledBy,
-    	root, attributeValue);
+    	rootElement, attributeValue);
     effect.applyRoutine();
   }
   
-  public void removeEAttribute(final Root root, final Integer removedAttributeValue) {
+  public void removeEAttribute(final Root rootElement, final Integer removedAttributeValue) {
     mir.routines.simpleChangesTests.RemoveEAttributeRoutine effect = new mir.routines.simpleChangesTests.RemoveEAttributeRoutine(this.executionState, calledBy,
-    	root, removedAttributeValue);
+    	rootElement, removedAttributeValue);
     effect.applyRoutine();
   }
   
-  public void insertNonContainmentReference(final Root root, final NonRoot insertedNonRoot) {
+  public void insertNonContainmentReference(final Root rootElement, final NonRoot insertedNonRoot) {
     mir.routines.simpleChangesTests.InsertNonContainmentReferenceRoutine effect = new mir.routines.simpleChangesTests.InsertNonContainmentReferenceRoutine(this.executionState, calledBy,
-    	root, insertedNonRoot);
+    	rootElement, insertedNonRoot);
     effect.applyRoutine();
   }
   
-  public void removeNonContainmentReference(final Root root, final NonRoot removedNonRoot) {
+  public void removeNonContainmentReference(final Root rootElement, final NonRoot removedNonRoot) {
     mir.routines.simpleChangesTests.RemoveNonContainmentReferenceRoutine effect = new mir.routines.simpleChangesTests.RemoveNonContainmentReferenceRoutine(this.executionState, calledBy,
-    	root, removedNonRoot);
+    	rootElement, removedNonRoot);
     effect.applyRoutine();
   }
   
-  public void createRoot(final Root root) {
+  public void createRoot(final Root rootElement) {
     mir.routines.simpleChangesTests.CreateRootRoutine effect = new mir.routines.simpleChangesTests.CreateRootRoutine(this.executionState, calledBy,
-    	root);
+    	rootElement);
     effect.applyRoutine();
   }
   
-  public void deleteRoot(final Root root) {
+  public void deleteRoot(final Root rootElement) {
     mir.routines.simpleChangesTests.DeleteRootRoutine effect = new mir.routines.simpleChangesTests.DeleteRootRoutine(this.executionState, calledBy,
-    	root);
+    	rootElement);
     effect.applyRoutine();
   }
   
-  public void createNonRootObjectContainer(final Root root, final NonRootObjectContainerHelper nonRootObjectContainer) {
+  public void createNonRootObjectContainer(final Root rootElement, final NonRootObjectContainerHelper nonRootObjectContainer) {
     mir.routines.simpleChangesTests.CreateNonRootObjectContainerRoutine effect = new mir.routines.simpleChangesTests.CreateNonRootObjectContainerRoutine(this.executionState, calledBy,
-    	root, nonRootObjectContainer);
+    	rootElement, nonRootObjectContainer);
     effect.applyRoutine();
   }
   

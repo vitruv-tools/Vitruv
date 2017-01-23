@@ -3,7 +3,6 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -20,7 +19,7 @@ class ReplacedSingleValuedNonContainmentEReferenceReaction extends AbstractReact
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEReference<allElementTypes.Root, allElementTypes.NonRoot> typedChange = (ReplaceSingleValuedEReference<allElementTypes.Root, allElementTypes.NonRoot>)change;
+    ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedNonContainmentEReferenceReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedNonContainmentEReferenceReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
@@ -31,16 +30,22 @@ class ReplacedSingleValuedNonContainmentEReferenceReaction extends AbstractReact
   }
   
   private boolean checkChangeProperties(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
-    EObject changedElement = change.getAffectedEObject();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+    // Check affected object
+    if (!(change.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    
     // Check feature
     if (!change.getAffectedFeature().getName().equals("singleValuedNonContainmentEReference")) {
     	return false;
     }
+    if (change.isFromNonDefaultValue() && !(change.getOldValue() instanceof NonRoot)
+    ) {
+    	return false;
+    }
+    if (change.isToNonDefaultValue() && !(change.getNewValue() instanceof NonRoot)) {
+    	return false;
+    }
+    
     return true;
   }
   
@@ -48,7 +53,7 @@ class ReplacedSingleValuedNonContainmentEReferenceReaction extends AbstractReact
     if (!(change instanceof ReplaceSingleValuedEReference<?, ?>)) {
     	return false;
     }
-    ReplaceSingleValuedEReference typedChange = (ReplaceSingleValuedEReference)change;
+    ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }

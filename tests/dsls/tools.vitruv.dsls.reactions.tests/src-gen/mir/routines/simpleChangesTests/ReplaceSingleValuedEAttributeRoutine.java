@@ -22,53 +22,53 @@ public class ReplaceSingleValuedEAttributeRoutine extends AbstractRepairRoutineR
       super(reactionExecutionState);
     }
     
-    public EObject getCorrepondenceSourceTargetElement(final Root root, final Integer value) {
-      return root;
+    public EObject getCorrepondenceSourceTargetElement(final Root rootElement, final Integer value) {
+      return rootElement;
     }
     
-    public EObject getElement1(final Root root, final Integer value, final Root targetElement) {
+    public EObject getElement1(final Root rootElement, final Integer value, final Root targetElement) {
       return targetElement;
     }
     
-    public boolean checkMatcherPrecondition2(final Root root, final Integer value, final Root targetElement) {
+    public boolean checkMatcherPrecondition2(final Root rootElement, final Integer value, final Root targetElement) {
       return (!Objects.equal(value, null));
     }
     
-    public void update0Element(final Root root, final Integer value, final Root targetElement) {
+    public void update0Element(final Root rootElement, final Integer value, final Root targetElement) {
       targetElement.setSingleValuedEAttribute(value);
     }
     
-    public boolean checkMatcherPrecondition1(final Root root, final Integer value) {
-      return (!Objects.equal(root, null));
+    public boolean checkMatcherPrecondition1(final Root rootElement, final Integer value) {
+      return (!Objects.equal(rootElement, null));
     }
     
-    public void callRoutine1(final Root root, final Integer value, final Root targetElement, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final Root rootElement, final Integer value, final Root targetElement, @Extension final RoutinesFacade _routinesFacade) {
       SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedEAttribute);
     }
   }
   
-  public ReplaceSingleValuedEAttributeRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer value) {
+  public ReplaceSingleValuedEAttributeRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement, final Integer value) {
     super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedEAttributeRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    this.root = root;this.value = value;
+    this.rootElement = rootElement;this.value = value;
   }
   
-  private Root root;
+  private Root rootElement;
   
   private Integer value;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ReplaceSingleValuedEAttributeRoutine with input:");
-    getLogger().debug("   Root: " + this.root);
+    getLogger().debug("   Root: " + this.rootElement);
     getLogger().debug("   Integer: " + this.value);
     
-    if (!userExecution.checkMatcherPrecondition1(root, value)) {
+    if (!userExecution.checkMatcherPrecondition1(rootElement, value)) {
     	return;
     }
     Root targetElement = getCorrespondingElement(
-    	userExecution.getCorrepondenceSourceTargetElement(root, value), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceTargetElement(rootElement, value), // correspondence source supplier
     	Root.class,
     	(Root _element) -> true, // correspondence precondition checker
     	null);
@@ -76,13 +76,13 @@ public class ReplaceSingleValuedEAttributeRoutine extends AbstractRepairRoutineR
     	return;
     }
     initializeRetrieveElementState(targetElement);
-    if (!userExecution.checkMatcherPrecondition2(root, value, targetElement)) {
+    if (!userExecution.checkMatcherPrecondition2(rootElement, value, targetElement)) {
     	return;
     }
-    // val updatedElement userExecution.getElement1(root, value, targetElement);
-    userExecution.update0Element(root, value, targetElement);
+    // val updatedElement userExecution.getElement1(rootElement, value, targetElement);
+    userExecution.update0Element(rootElement, value, targetElement);
     
-    userExecution.callRoutine1(root, value, targetElement, actionsFacade);
+    userExecution.callRoutine1(rootElement, value, targetElement, actionsFacade);
     
     postprocessElementStates();
   }

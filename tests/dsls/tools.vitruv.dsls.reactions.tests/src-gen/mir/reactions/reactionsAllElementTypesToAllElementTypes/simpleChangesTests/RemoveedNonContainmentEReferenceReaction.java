@@ -3,7 +3,6 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -20,7 +19,7 @@ class RemoveedNonContainmentEReferenceReaction extends AbstractReactionRealizati
   }
   
   public void executeReaction(final EChange change) {
-    RemoveEReference<allElementTypes.Root, allElementTypes.NonRoot> typedChange = (RemoveEReference<allElementTypes.Root, allElementTypes.NonRoot>)change;
+    RemoveEReference<Root, NonRoot> typedChange = (RemoveEReference<Root, NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemoveedNonContainmentEReferenceReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemoveedNonContainmentEReferenceReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
@@ -31,16 +30,19 @@ class RemoveedNonContainmentEReferenceReaction extends AbstractReactionRealizati
   }
   
   private boolean checkChangeProperties(final RemoveEReference<Root, NonRoot> change) {
-    EObject changedElement = change.getAffectedEObject();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+    // Check affected object
+    if (!(change.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    
     // Check feature
     if (!change.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
     	return false;
     }
+    if (!(change.getOldValue() instanceof NonRoot)
+    ) {
+    	return false;
+    }
+    
     return true;
   }
   
@@ -48,7 +50,7 @@ class RemoveedNonContainmentEReferenceReaction extends AbstractReactionRealizati
     if (!(change instanceof RemoveEReference<?, ?>)) {
     	return false;
     }
-    RemoveEReference typedChange = (RemoveEReference)change;
+    RemoveEReference<Root, NonRoot> typedChange = (RemoveEReference<Root, NonRoot>)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
