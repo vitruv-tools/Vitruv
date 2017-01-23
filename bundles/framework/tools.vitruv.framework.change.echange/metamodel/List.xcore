@@ -17,7 +17,3 @@ abstract class InsertInListEChange<A extends EObject, F extends EStructuralFeatu
 
 abstract class RemoveFromListEChange<A extends EObject, F extends EStructuralFeature, T extends Object> extends UpdateSingleListEntryEChange<A, F>, SubtractiveEChange<T> {
 }
-
-abstract class PermuteListEChange<A extends EObject, F extends EStructuralFeature> extends UpdateMultiValuedFeatureEChange<A, F> {
-	unique int[+] newIndicesForElementsAtOldIndices
-}

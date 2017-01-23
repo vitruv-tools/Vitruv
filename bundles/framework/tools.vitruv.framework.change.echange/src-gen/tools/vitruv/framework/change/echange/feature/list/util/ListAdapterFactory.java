@@ -89,10 +89,6 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
 				return createRemoveFromListEChangeAdapter();
 			}
 			@Override
-			public <A extends EObject, F extends EStructuralFeature> Adapter casePermuteListEChange(PermuteListEChange<A, F> object) {
-				return createPermuteListEChangeAdapter();
-			}
-			@Override
 			public Adapter caseEChange(EChange object) {
 				return createEChangeAdapter();
 			}
@@ -175,20 +171,6 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createRemoveFromListEChangeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.feature.list.PermuteListEChange <em>Permute List EChange</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see tools.vitruv.framework.change.echange.feature.list.PermuteListEChange
-	 * @generated
-	 */
-	public Adapter createPermuteListEChangeAdapter() {
 		return null;
 	}
 

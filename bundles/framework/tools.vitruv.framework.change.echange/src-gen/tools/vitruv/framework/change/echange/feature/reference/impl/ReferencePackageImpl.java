@@ -19,7 +19,6 @@ import tools.vitruv.framework.change.echange.feature.list.ListPackage;
 
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
-import tools.vitruv.framework.change.echange.feature.reference.PermuteEReferences;
 import tools.vitruv.framework.change.echange.feature.reference.ReferenceFactory;
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
@@ -70,13 +69,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * @generated
 	 */
 	private EClass removeEReferenceEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass permuteEReferencesEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -210,15 +202,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getPermuteEReferences() {
-		return permuteEReferencesEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getReplaceSingleValuedEReference() {
 		return replaceSingleValuedEReferenceEClass;
 	}
@@ -261,8 +244,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		insertEReferenceEClass = createEClass(INSERT_EREFERENCE);
 
 		removeEReferenceEClass = createEClass(REMOVE_EREFERENCE);
-
-		permuteEReferencesEClass = createEClass(PERMUTE_EREFERENCES);
 
 		replaceSingleValuedEReferenceEClass = createEClass(REPLACE_SINGLE_VALUED_EREFERENCE);
 	}
@@ -307,7 +288,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		ETypeParameter insertEReferenceEClass_T = addETypeParameter(insertEReferenceEClass, "T");
 		ETypeParameter removeEReferenceEClass_A = addETypeParameter(removeEReferenceEClass, "A");
 		ETypeParameter removeEReferenceEClass_T = addETypeParameter(removeEReferenceEClass, "T");
-		ETypeParameter permuteEReferencesEClass_A = addETypeParameter(permuteEReferencesEClass, "A");
 		ETypeParameter replaceSingleValuedEReferenceEClass_A = addETypeParameter(replaceSingleValuedEReferenceEClass, "A");
 		ETypeParameter replaceSingleValuedEReferenceEClass_T = addETypeParameter(replaceSingleValuedEReferenceEClass, "T");
 
@@ -330,8 +310,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		removeEReferenceEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEObject());
 		removeEReferenceEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		permuteEReferencesEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEObject());
 		replaceSingleValuedEReferenceEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEObject());
@@ -388,16 +366,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		g2 = createEGenericType(removeEReferenceEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeEReferenceEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theListPackage.getPermuteListEChange());
-		g2 = createEGenericType(permuteEReferencesEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theEcorePackage.getEReference());
-		g1.getETypeArguments().add(g2);
-		permuteEReferencesEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateReferenceEChange());
-		g2 = createEGenericType(permuteEReferencesEClass_A);
-		g1.getETypeArguments().add(g2);
-		permuteEReferencesEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getAdditiveReferenceEChange());
 		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -431,8 +399,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		initEClass(insertEReferenceEClass, InsertEReference.class, "InsertEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(removeEReferenceEClass, RemoveEReference.class, "RemoveEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(permuteEReferencesEClass, PermuteEReferences.class, "PermuteEReferences", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(replaceSingleValuedEReferenceEClass, ReplaceSingleValuedEReference.class, "ReplaceSingleValuedEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

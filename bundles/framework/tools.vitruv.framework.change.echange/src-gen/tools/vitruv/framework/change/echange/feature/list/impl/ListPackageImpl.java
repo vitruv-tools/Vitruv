@@ -18,7 +18,6 @@ import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
 import tools.vitruv.framework.change.echange.feature.list.ListFactory;
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
-import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange;
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 
@@ -49,13 +48,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 	 * @generated
 	 */
 	private EClass removeFromListEChangeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass permuteListEChangeEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -162,24 +154,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getPermuteListEChange() {
-		return permuteListEChangeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getPermuteListEChange_NewIndicesForElementsAtOldIndices() {
-		return (EAttribute)permuteListEChangeEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public ListFactory getListFactory() {
 		return (ListFactory)getEFactoryInstance();
 	}
@@ -209,9 +183,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		insertInListEChangeEClass = createEClass(INSERT_IN_LIST_ECHANGE);
 
 		removeFromListEChangeEClass = createEClass(REMOVE_FROM_LIST_ECHANGE);
-
-		permuteListEChangeEClass = createEClass(PERMUTE_LIST_ECHANGE);
-		createEAttribute(permuteListEChangeEClass, PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES);
 	}
 
 	/**
@@ -251,8 +222,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		ETypeParameter removeFromListEChangeEClass_A = addETypeParameter(removeFromListEChangeEClass, "A");
 		ETypeParameter removeFromListEChangeEClass_F = addETypeParameter(removeFromListEChangeEClass, "F");
 		ETypeParameter removeFromListEChangeEClass_T = addETypeParameter(removeFromListEChangeEClass, "T");
-		ETypeParameter permuteListEChangeEClass_A = addETypeParameter(permuteListEChangeEClass, "A");
-		ETypeParameter permuteListEChangeEClass_F = addETypeParameter(permuteListEChangeEClass, "F");
 
 		// Set bounds for type parameters
 		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
@@ -271,10 +240,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		removeFromListEChangeEClass_F.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		removeFromListEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		permuteListEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
-		permuteListEChangeEClass_F.getEBounds().add(g1);
 
 		// Add supertypes to classes
 		g1 = createEGenericType(theFeaturePackage.getUpdateMultiValuedFeatureEChange());
@@ -303,12 +268,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		g2 = createEGenericType(removeFromListEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeFromListEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theFeaturePackage.getUpdateMultiValuedFeatureEChange());
-		g2 = createEGenericType(permuteListEChangeEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(permuteListEChangeEClass_F);
-		g1.getETypeArguments().add(g2);
-		permuteListEChangeEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(updateSingleListEntryEChangeEClass, UpdateSingleListEntryEChange.class, "UpdateSingleListEntryEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -317,9 +276,6 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		initEClass(insertInListEChangeEClass, InsertInListEChange.class, "InsertInListEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(removeFromListEChangeEClass, RemoveFromListEChange.class, "RemoveFromListEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(permuteListEChangeEClass, PermuteListEChange.class, "PermuteListEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPermuteListEChange_NewIndicesForElementsAtOldIndices(), theEcorePackage.getEInt(), "newIndicesForElementsAtOldIndices", null, 1, -1, PermuteListEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

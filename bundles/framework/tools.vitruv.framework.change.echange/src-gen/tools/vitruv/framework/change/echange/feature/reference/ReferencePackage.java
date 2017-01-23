@@ -428,70 +428,6 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.PermuteEReferencesImpl <em>Permute EReferences</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.PermuteEReferencesImpl
-	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getPermuteEReferences()
-	 * @generated
-	 */
-	int PERMUTE_EREFERENCES = 5;
-
-	/**
-	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EREFERENCES__AFFECTED_FEATURE = ListPackage.PERMUTE_LIST_ECHANGE__AFFECTED_FEATURE;
-
-	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EREFERENCES__AFFECTED_EOBJECT = ListPackage.PERMUTE_LIST_ECHANGE__AFFECTED_EOBJECT;
-
-	/**
-	 * The feature id for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EREFERENCES__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = ListPackage.PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES;
-
-	/**
-	 * The number of structural features of the '<em>Permute EReferences</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EREFERENCES_FEATURE_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Is Containment</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EREFERENCES___IS_CONTAINMENT = ListPackage.PERMUTE_LIST_ECHANGE_OPERATION_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Permute EReferences</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EREFERENCES_OPERATION_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -499,7 +435,7 @@ public interface ReferencePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getReplaceSingleValuedEReference()
 	 * @generated
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE = 6;
+	int REPLACE_SINGLE_VALUED_EREFERENCE = 5;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' reference.
@@ -662,16 +598,6 @@ public interface ReferencePackage extends EPackage {
 	EClass getRemoveEReference();
 
 	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.PermuteEReferences <em>Permute EReferences</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Permute EReferences</em>'.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.PermuteEReferences
-	 * @generated
-	 */
-	EClass getPermuteEReferences();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference <em>Replace Single Valued EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -761,16 +687,6 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass REMOVE_EREFERENCE = eINSTANCE.getRemoveEReference();
-
-		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.PermuteEReferencesImpl <em>Permute EReferences</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.feature.reference.impl.PermuteEReferencesImpl
-		 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getPermuteEReferences()
-		 * @generated
-		 */
-		EClass PERMUTE_EREFERENCES = eINSTANCE.getPermuteEReferences();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.

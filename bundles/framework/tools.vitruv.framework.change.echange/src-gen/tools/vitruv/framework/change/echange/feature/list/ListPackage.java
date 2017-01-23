@@ -241,61 +241,6 @@ public interface ListPackage extends EPackage {
 	 */
 	int REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 1;
 
-	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.list.impl.PermuteListEChangeImpl <em>Permute List EChange</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.feature.list.impl.PermuteListEChangeImpl
-	 * @see tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl#getPermuteListEChange()
-	 * @generated
-	 */
-	int PERMUTE_LIST_ECHANGE = 3;
-
-	/**
-	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_LIST_ECHANGE__AFFECTED_FEATURE = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE;
-
-	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_LIST_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
-
-	/**
-	 * The feature id for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Permute List EChange</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_LIST_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Permute List EChange</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_LIST_ECHANGE_OPERATION_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
-
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange <em>Update Single List Entry EChange</em>}'.
@@ -337,27 +282,6 @@ public interface ListPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRemoveFromListEChange();
-
-	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.list.PermuteListEChange <em>Permute List EChange</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Permute List EChange</em>'.
-	 * @see tools.vitruv.framework.change.echange.feature.list.PermuteListEChange
-	 * @generated
-	 */
-	EClass getPermuteListEChange();
-
-	/**
-	 * Returns the meta object for the attribute list '{@link tools.vitruv.framework.change.echange.feature.list.PermuteListEChange#getNewIndicesForElementsAtOldIndices <em>New Indices For Elements At Old Indices</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>New Indices For Elements At Old Indices</em>'.
-	 * @see tools.vitruv.framework.change.echange.feature.list.PermuteListEChange#getNewIndicesForElementsAtOldIndices()
-	 * @see #getPermuteListEChange()
-	 * @generated
-	 */
-	EAttribute getPermuteListEChange_NewIndicesForElementsAtOldIndices();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -419,24 +343,6 @@ public interface ListPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REMOVE_FROM_LIST_ECHANGE = eINSTANCE.getRemoveFromListEChange();
-
-		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.list.impl.PermuteListEChangeImpl <em>Permute List EChange</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.feature.list.impl.PermuteListEChangeImpl
-		 * @see tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl#getPermuteListEChange()
-		 * @generated
-		 */
-		EClass PERMUTE_LIST_ECHANGE = eINSTANCE.getPermuteListEChange();
-
-		/**
-		 * The meta object literal for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = eINSTANCE.getPermuteListEChange_NewIndicesForElementsAtOldIndices();
 
 	}
 

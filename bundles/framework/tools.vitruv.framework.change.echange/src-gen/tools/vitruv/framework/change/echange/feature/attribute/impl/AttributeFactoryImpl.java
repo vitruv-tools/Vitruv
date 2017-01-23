@@ -58,7 +58,6 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
 		switch (eClass.getClassifierID()) {
 			case AttributePackage.INSERT_EATTRIBUTE_VALUE: return createInsertEAttributeValue();
 			case AttributePackage.REMOVE_EATTRIBUTE_VALUE: return createRemoveEAttributeValue();
-			case AttributePackage.PERMUTE_EATTRIBUTE_VALUES: return createPermuteEAttributeValues();
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: return createReplaceSingleValuedEAttribute();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -83,16 +82,6 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
 	public <A extends EObject, T extends Object> RemoveEAttributeValue<A, T> createRemoveEAttributeValue() {
 		RemoveEAttributeValueImpl<A, T> removeEAttributeValue = new RemoveEAttributeValueImpl<A, T>();
 		return removeEAttributeValue;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject> PermuteEAttributeValues<A> createPermuteEAttributeValues() {
-		PermuteEAttributeValuesImpl<A> permuteEAttributeValues = new PermuteEAttributeValuesImpl<A>();
-		return permuteEAttributeValues;
 	}
 
 	/**

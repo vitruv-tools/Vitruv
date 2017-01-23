@@ -58,7 +58,6 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
 		switch (eClass.getClassifierID()) {
 			case ReferencePackage.INSERT_EREFERENCE: return createInsertEReference();
 			case ReferencePackage.REMOVE_EREFERENCE: return createRemoveEReference();
-			case ReferencePackage.PERMUTE_EREFERENCES: return createPermuteEReferences();
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: return createReplaceSingleValuedEReference();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -83,16 +82,6 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
 	public <A extends EObject, T extends EObject> RemoveEReference<A, T> createRemoveEReference() {
 		RemoveEReferenceImpl<A, T> removeEReference = new RemoveEReferenceImpl<A, T>();
 		return removeEReference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject> PermuteEReferences<A> createPermuteEReferences() {
-		PermuteEReferencesImpl<A> permuteEReferences = new PermuteEReferencesImpl<A>();
-		return permuteEReferences;
 	}
 
 	/**

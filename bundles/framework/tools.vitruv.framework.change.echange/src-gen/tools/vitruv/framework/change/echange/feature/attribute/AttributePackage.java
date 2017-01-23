@@ -383,61 +383,6 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.PermuteEAttributeValuesImpl <em>Permute EAttribute Values</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.PermuteEAttributeValuesImpl
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getPermuteEAttributeValues()
-	 * @generated
-	 */
-	int PERMUTE_EATTRIBUTE_VALUES = 5;
-
-	/**
-	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE = ListPackage.PERMUTE_LIST_ECHANGE__AFFECTED_FEATURE;
-
-	/**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT = ListPackage.PERMUTE_LIST_ECHANGE__AFFECTED_EOBJECT;
-
-	/**
-	 * The feature id for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EATTRIBUTE_VALUES__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = ListPackage.PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES;
-
-	/**
-	 * The number of structural features of the '<em>Permute EAttribute Values</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EATTRIBUTE_VALUES_FEATURE_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Permute EAttribute Values</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PERMUTE_EATTRIBUTE_VALUES_OPERATION_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl <em>Replace Single Valued EAttribute</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -445,7 +390,7 @@ public interface AttributePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getReplaceSingleValuedEAttribute()
 	 * @generated
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE = 6;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE = 5;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -611,16 +556,6 @@ public interface AttributePackage extends EPackage {
 	EClass getRemoveEAttributeValue();
 
 	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.attribute.PermuteEAttributeValues <em>Permute EAttribute Values</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Permute EAttribute Values</em>'.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.PermuteEAttributeValues
-	 * @generated
-	 */
-	EClass getPermuteEAttributeValues();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute <em>Replace Single Valued EAttribute</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -718,16 +653,6 @@ public interface AttributePackage extends EPackage {
 		 * @generated
 		 */
 		EClass REMOVE_EATTRIBUTE_VALUE = eINSTANCE.getRemoveEAttributeValue();
-
-		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.PermuteEAttributeValuesImpl <em>Permute EAttribute Values</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.PermuteEAttributeValuesImpl
-		 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getPermuteEAttributeValues()
-		 * @generated
-		 */
-		EClass PERMUTE_EATTRIBUTE_VALUES = eINSTANCE.getPermuteEAttributeValues();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl <em>Replace Single Valued EAttribute</em>}' class.

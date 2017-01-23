@@ -23,7 +23,6 @@ import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureECh
 import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
 
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
-import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange;
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 
@@ -108,10 +107,6 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 				return createRemoveEReferenceAdapter();
 			}
 			@Override
-			public <A extends EObject> Adapter casePermuteEReferences(PermuteEReferences<A> object) {
-				return createPermuteEReferencesAdapter();
-			}
-			@Override
 			public <A extends EObject, T extends EObject> Adapter caseReplaceSingleValuedEReference(ReplaceSingleValuedEReference<A, T> object) {
 				return createReplaceSingleValuedEReferenceAdapter();
 			}
@@ -158,10 +153,6 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public <A extends EObject, F extends EStructuralFeature, T extends Object> Adapter caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
 				return createRemoveFromListEChangeAdapter();
-			}
-			@Override
-			public <A extends EObject, F extends EStructuralFeature> Adapter casePermuteListEChange(PermuteListEChange<A, F> object) {
-				return createPermuteListEChangeAdapter();
 			}
 			@Override
 			public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
@@ -258,20 +249,6 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createRemoveEReferenceAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.feature.reference.PermuteEReferences <em>Permute EReferences</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.PermuteEReferences
-	 * @generated
-	 */
-	public Adapter createPermuteEReferencesAdapter() {
 		return null;
 	}
 
@@ -440,20 +417,6 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createRemoveFromListEChangeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.feature.list.PermuteListEChange <em>Permute List EChange</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see tools.vitruv.framework.change.echange.feature.list.PermuteListEChange
-	 * @generated
-	 */
-	public Adapter createPermuteListEChangeAdapter() {
 		return null;
 	}
 

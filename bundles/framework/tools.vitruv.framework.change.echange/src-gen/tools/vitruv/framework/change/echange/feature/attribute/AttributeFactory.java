@@ -41,15 +41,6 @@ public interface AttributeFactory extends EFactory {
 	<A extends EObject, T extends Object> RemoveEAttributeValue<A, T> createRemoveEAttributeValue();
 
 	/**
-	 * Returns a new object of class '<em>Permute EAttribute Values</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Permute EAttribute Values</em>'.
-	 * @generated
-	 */
-	<A extends EObject> PermuteEAttributeValues<A> createPermuteEAttributeValues();
-
-	/**
 	 * Returns a new object of class '<em>Replace Single Valued EAttribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

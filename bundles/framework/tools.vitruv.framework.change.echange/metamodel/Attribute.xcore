@@ -8,7 +8,6 @@ import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
-import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
 
@@ -27,9 +26,6 @@ class InsertEAttributeValue<A extends EObject, T extends Object> extends InsertI
 }
 
 class RemoveEAttributeValue<A extends EObject, T extends Object> extends RemoveFromListEChange<A, EAttribute, T>, SubtractiveAttributeEChange<A, T> {
-}
-
-class PermuteEAttributeValues<A extends EObject> extends PermuteListEChange<A, EAttribute>, UpdateAttributeEChange<A> {
 }
 
 class ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EAttribute, T> {

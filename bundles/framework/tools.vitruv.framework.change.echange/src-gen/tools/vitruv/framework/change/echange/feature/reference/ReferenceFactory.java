@@ -41,15 +41,6 @@ public interface ReferenceFactory extends EFactory {
 	<A extends EObject, T extends EObject> RemoveEReference<A, T> createRemoveEReference();
 
 	/**
-	 * Returns a new object of class '<em>Permute EReferences</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Permute EReferences</em>'.
-	 * @generated
-	 */
-	<A extends EObject> PermuteEReferences<A> createPermuteEReferences();
-
-	/**
 	 * Returns a new object of class '<em>Replace Single Valued EReference</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

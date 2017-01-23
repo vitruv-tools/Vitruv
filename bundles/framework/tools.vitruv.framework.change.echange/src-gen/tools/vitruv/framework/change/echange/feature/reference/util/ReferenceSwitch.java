@@ -21,7 +21,6 @@ import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureECh
 import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
 
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
-import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange;
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 
@@ -151,18 +150,6 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case ReferencePackage.PERMUTE_EREFERENCES: {
-				PermuteEReferences<?> permuteEReferences = (PermuteEReferences<?>)theEObject;
-				T1 result = casePermuteEReferences(permuteEReferences);
-				if (result == null) result = casePermuteListEChange(permuteEReferences);
-				if (result == null) result = caseUpdateReferenceEChange(permuteEReferences);
-				if (result == null) result = caseUpdateMultiValuedFeatureEChange(permuteEReferences);
-				if (result == null) result = caseFeatureEChange(permuteEReferences);
-				if (result == null) result = caseAtomicEChange(permuteEReferences);
-				if (result == null) result = caseEChange(permuteEReferences);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: {
 				ReplaceSingleValuedEReference<?, ?> replaceSingleValuedEReference = (ReplaceSingleValuedEReference<?, ?>)theEObject;
 				T1 result = caseReplaceSingleValuedEReference(replaceSingleValuedEReference);
@@ -257,21 +244,6 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <A extends EObject, T extends EObject> T1 caseRemoveEReference(RemoveEReference<A, T> object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Permute EReferences</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Permute EReferences</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <A extends EObject> T1 casePermuteEReferences(PermuteEReferences<A> object) {
 		return null;
 	}
 
@@ -452,21 +424,6 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <A extends EObject, F extends EStructuralFeature> T1 casePermuteListEChange(PermuteListEChange<A, F> object) {
 		return null;
 	}
 

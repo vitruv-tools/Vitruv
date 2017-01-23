@@ -19,7 +19,6 @@ import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.AttributeFactory;
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue;
-import tools.vitruv.framework.change.echange.feature.attribute.PermuteEAttributeValues;
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
@@ -70,13 +69,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * @generated
 	 */
 	private EClass removeEAttributeValueEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass permuteEAttributeValuesEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -218,15 +210,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getPermuteEAttributeValues() {
-		return permuteEAttributeValuesEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getReplaceSingleValuedEAttribute() {
 		return replaceSingleValuedEAttributeEClass;
 	}
@@ -271,8 +254,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		removeEAttributeValueEClass = createEClass(REMOVE_EATTRIBUTE_VALUE);
 
-		permuteEAttributeValuesEClass = createEClass(PERMUTE_EATTRIBUTE_VALUES);
-
 		replaceSingleValuedEAttributeEClass = createEClass(REPLACE_SINGLE_VALUED_EATTRIBUTE);
 	}
 
@@ -316,7 +297,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		ETypeParameter insertEAttributeValueEClass_T = addETypeParameter(insertEAttributeValueEClass, "T");
 		ETypeParameter removeEAttributeValueEClass_A = addETypeParameter(removeEAttributeValueEClass, "A");
 		ETypeParameter removeEAttributeValueEClass_T = addETypeParameter(removeEAttributeValueEClass, "T");
-		ETypeParameter permuteEAttributeValuesEClass_A = addETypeParameter(permuteEAttributeValuesEClass, "A");
 		ETypeParameter replaceSingleValuedEAttributeEClass_A = addETypeParameter(replaceSingleValuedEAttributeEClass, "A");
 		ETypeParameter replaceSingleValuedEAttributeEClass_T = addETypeParameter(replaceSingleValuedEAttributeEClass, "T");
 
@@ -339,8 +319,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		removeEAttributeValueEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		removeEAttributeValueEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		permuteEAttributeValuesEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEObject());
 		replaceSingleValuedEAttributeEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
@@ -397,16 +375,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g2 = createEGenericType(removeEAttributeValueEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theListPackage.getPermuteListEChange());
-		g2 = createEGenericType(permuteEAttributeValuesEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theEcorePackage.getEAttribute());
-		g1.getETypeArguments().add(g2);
-		permuteEAttributeValuesEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateAttributeEChange());
-		g2 = createEGenericType(permuteEAttributeValuesEClass_A);
-		g1.getETypeArguments().add(g2);
-		permuteEAttributeValuesEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getAdditiveAttributeEChange());
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -442,8 +410,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		initEClass(insertEAttributeValueEClass, InsertEAttributeValue.class, "InsertEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(removeEAttributeValueEClass, RemoveEAttributeValue.class, "RemoveEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(permuteEAttributeValuesEClass, PermuteEAttributeValues.class, "PermuteEAttributeValues", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(replaceSingleValuedEAttributeEClass, ReplaceSingleValuedEAttribute.class, "ReplaceSingleValuedEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

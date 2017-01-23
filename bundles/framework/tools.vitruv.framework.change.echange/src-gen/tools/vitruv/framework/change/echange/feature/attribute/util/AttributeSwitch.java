@@ -20,7 +20,6 @@ import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEC
 import tools.vitruv.framework.change.echange.feature.attribute.*;
 
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
-import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange;
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 
@@ -144,18 +143,6 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case AttributePackage.PERMUTE_EATTRIBUTE_VALUES: {
-				PermuteEAttributeValues<?> permuteEAttributeValues = (PermuteEAttributeValues<?>)theEObject;
-				T1 result = casePermuteEAttributeValues(permuteEAttributeValues);
-				if (result == null) result = casePermuteListEChange(permuteEAttributeValues);
-				if (result == null) result = caseUpdateAttributeEChange(permuteEAttributeValues);
-				if (result == null) result = caseUpdateMultiValuedFeatureEChange(permuteEAttributeValues);
-				if (result == null) result = caseFeatureEChange(permuteEAttributeValues);
-				if (result == null) result = caseAtomicEChange(permuteEAttributeValues);
-				if (result == null) result = caseEChange(permuteEAttributeValues);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: {
 				ReplaceSingleValuedEAttribute<?, ?> replaceSingleValuedEAttribute = (ReplaceSingleValuedEAttribute<?, ?>)theEObject;
 				T1 result = caseReplaceSingleValuedEAttribute(replaceSingleValuedEAttribute);
@@ -248,21 +235,6 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <A extends EObject, T extends Object> T1 caseRemoveEAttributeValue(RemoveEAttributeValue<A, T> object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Permute EAttribute Values</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Permute EAttribute Values</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <A extends EObject> T1 casePermuteEAttributeValues(PermuteEAttributeValues<A> object) {
 		return null;
 	}
 
@@ -413,21 +385,6 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <A extends EObject, F extends EStructuralFeature> T1 casePermuteListEChange(PermuteListEChange<A, F> object) {
 		return null;
 	}
 
