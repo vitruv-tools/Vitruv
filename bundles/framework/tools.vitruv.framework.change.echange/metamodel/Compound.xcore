@@ -83,9 +83,9 @@ class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends C
 	}
 }
 
-class CreateAndInsertRoot<T extends EObject> extends CompoundEChange {
+abstract class CreateAndInsertEObject<T extends EObject, C extends EObjectAddedEChange<T>> extends CompoundEChange {
 	contains CreateEObject<T>[1] createChange
-	contains InsertRootEObject<T>[1] insertChange
+	contains C[1] insertChange
 	op unique AtomicEChange[+] getAtomicChanges() {
 		val result = new BasicEList();
 		result.add(createChange);
@@ -94,8 +94,8 @@ class CreateAndInsertRoot<T extends EObject> extends CompoundEChange {
 	}
 }
 
-class RemoveAndDeleteRoot<T extends EObject> extends CompoundEChange {
-	contains RemoveRootEObject<T>[1] removeChange
+abstract class RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubtractedEChange<T>> extends CompoundEChange {
+	contains C[1] removeChange
 	contains DeleteEObject<T>[1] deleteChange
 	op unique AtomicEChange[+] getAtomicChanges() {
 		val result = new BasicEList();
@@ -105,27 +105,13 @@ class RemoveAndDeleteRoot<T extends EObject> extends CompoundEChange {
 	}
 }
 
-class CreateAndInsertNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {
-	contains CreateEObject<T>[1] createChange
-	contains InsertEReference<A, T>[1] insertChange
-	op unique AtomicEChange[+] getAtomicChanges() {
-		val result = new BasicEList();
-		result.add(createChange);
-		result.add(insertChange);
-		return result;
-	}
-}
+class CreateAndInsertRoot<T extends EObject> extends CreateAndInsertEObject<T, InsertRootEObject<T>> {}
 
-class RemoveAndDeleteNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {
-	contains RemoveEReference<A, T>[1] removeChange
-	contains DeleteEObject<T>[1] deleteChange
-	op unique AtomicEChange[+] getAtomicChanges() {
-		val result = new BasicEList();
-		result.add(removeChange);
-		result.add(deleteChange);
-		return result;
-	}
-}
+class RemoveAndDeleteRoot<T extends EObject> extends RemoveAndDeleteEObject<T, RemoveRootEObject<T>> {}
+
+class CreateAndInsertNonRoot<A extends EObject, T extends EObject> extends CreateAndInsertEObject<T, InsertEReference<A, T>> {}
+
+class RemoveAndDeleteNonRoot<A extends EObject, T extends EObject> extends RemoveAndDeleteEObject<T, RemoveEReference<A, T>> {}
 
 class CreateAndReplaceAndDeleteNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {
 	contains CreateEObject<T>[1] createChange

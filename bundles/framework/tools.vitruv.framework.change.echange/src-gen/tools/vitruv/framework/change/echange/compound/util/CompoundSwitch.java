@@ -14,6 +14,9 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 import tools.vitruv.framework.change.echange.compound.*;
 
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
+
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
@@ -124,9 +127,26 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CompoundPackage.CREATE_AND_INSERT_EOBJECT: {
+				CreateAndInsertEObject<?, ?> createAndInsertEObject = (CreateAndInsertEObject<?, ?>)theEObject;
+				T1 result = caseCreateAndInsertEObject(createAndInsertEObject);
+				if (result == null) result = caseCompoundEChange(createAndInsertEObject);
+				if (result == null) result = caseEChange(createAndInsertEObject);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CompoundPackage.REMOVE_AND_DELETE_EOBJECT: {
+				RemoveAndDeleteEObject<?, ?> removeAndDeleteEObject = (RemoveAndDeleteEObject<?, ?>)theEObject;
+				T1 result = caseRemoveAndDeleteEObject(removeAndDeleteEObject);
+				if (result == null) result = caseCompoundEChange(removeAndDeleteEObject);
+				if (result == null) result = caseEChange(removeAndDeleteEObject);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CompoundPackage.CREATE_AND_INSERT_ROOT: {
 				CreateAndInsertRoot<?> createAndInsertRoot = (CreateAndInsertRoot<?>)theEObject;
 				T1 result = caseCreateAndInsertRoot(createAndInsertRoot);
+				if (result == null) result = caseCreateAndInsertEObject(createAndInsertRoot);
 				if (result == null) result = caseCompoundEChange(createAndInsertRoot);
 				if (result == null) result = caseEChange(createAndInsertRoot);
 				if (result == null) result = defaultCase(theEObject);
@@ -135,6 +155,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 			case CompoundPackage.REMOVE_AND_DELETE_ROOT: {
 				RemoveAndDeleteRoot<?> removeAndDeleteRoot = (RemoveAndDeleteRoot<?>)theEObject;
 				T1 result = caseRemoveAndDeleteRoot(removeAndDeleteRoot);
+				if (result == null) result = caseRemoveAndDeleteEObject(removeAndDeleteRoot);
 				if (result == null) result = caseCompoundEChange(removeAndDeleteRoot);
 				if (result == null) result = caseEChange(removeAndDeleteRoot);
 				if (result == null) result = defaultCase(theEObject);
@@ -143,6 +164,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 			case CompoundPackage.CREATE_AND_INSERT_NON_ROOT: {
 				CreateAndInsertNonRoot<?, ?> createAndInsertNonRoot = (CreateAndInsertNonRoot<?, ?>)theEObject;
 				T1 result = caseCreateAndInsertNonRoot(createAndInsertNonRoot);
+				if (result == null) result = caseCreateAndInsertEObject(createAndInsertNonRoot);
 				if (result == null) result = caseCompoundEChange(createAndInsertNonRoot);
 				if (result == null) result = caseEChange(createAndInsertNonRoot);
 				if (result == null) result = defaultCase(theEObject);
@@ -151,6 +173,7 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 			case CompoundPackage.REMOVE_AND_DELETE_NON_ROOT: {
 				RemoveAndDeleteNonRoot<?, ?> removeAndDeleteNonRoot = (RemoveAndDeleteNonRoot<?, ?>)theEObject;
 				T1 result = caseRemoveAndDeleteNonRoot(removeAndDeleteNonRoot);
+				if (result == null) result = caseRemoveAndDeleteEObject(removeAndDeleteNonRoot);
 				if (result == null) result = caseCompoundEChange(removeAndDeleteNonRoot);
 				if (result == null) result = caseEChange(removeAndDeleteNonRoot);
 				if (result == null) result = defaultCase(theEObject);
@@ -255,6 +278,36 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <T extends Object, S extends AdditiveEChange<T>> T1 caseCompoundAddition(CompoundAddition<T, S> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Create And Insert EObject</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Create And Insert EObject</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends EObject, C extends EObjectAddedEChange<T>> T1 caseCreateAndInsertEObject(CreateAndInsertEObject<T, C> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Remove And Delete EObject</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Remove And Delete EObject</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <T extends EObject, C extends EObjectSubtractedEChange<T>> T1 caseRemoveAndDeleteEObject(RemoveAndDeleteEObject<T, C> object) {
 		return null;
 	}
 

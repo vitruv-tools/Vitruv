@@ -16,6 +16,9 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 import tools.vitruv.framework.change.echange.compound.*;
 
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
+
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
@@ -100,6 +103,14 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public <T extends Object, S extends AdditiveEChange<T>> Adapter caseCompoundAddition(CompoundAddition<T, S> object) {
 				return createCompoundAdditionAdapter();
+			}
+			@Override
+			public <T extends EObject, C extends EObjectAddedEChange<T>> Adapter caseCreateAndInsertEObject(CreateAndInsertEObject<T, C> object) {
+				return createCreateAndInsertEObjectAdapter();
+			}
+			@Override
+			public <T extends EObject, C extends EObjectSubtractedEChange<T>> Adapter caseRemoveAndDeleteEObject(RemoveAndDeleteEObject<T, C> object) {
+				return createRemoveAndDeleteEObjectAdapter();
 			}
 			@Override
 			public <T extends EObject> Adapter caseCreateAndInsertRoot(CreateAndInsertRoot<T> object) {
@@ -226,6 +237,34 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createCompoundAdditionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject <em>Create And Insert EObject</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
+	 * @generated
+	 */
+	public Adapter createCreateAndInsertEObjectAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.RemoveAndDeleteEObject <em>Remove And Delete EObject</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.RemoveAndDeleteEObject
+	 * @generated
+	 */
+	public Adapter createRemoveAndDeleteEObjectAdapter() {
 		return null;
 	}
 
