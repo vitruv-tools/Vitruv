@@ -114,39 +114,114 @@ public class ReactionsLanguageAdapterFactory extends AdapterFactoryImpl
         return createModelChangeAdapter();
       }
       @Override
-      public Adapter caseConcreteModelElementChange(ConcreteModelElementChange object)
+      public Adapter caseConcreteModelChange(ConcreteModelChange object)
       {
-        return createConcreteModelElementChangeAdapter();
+        return createConcreteModelChangeAdapter();
       }
       @Override
-      public Adapter caseAtomicConcreteModelElementChange(AtomicConcreteModelElementChange object)
+      public Adapter caseModelElementChange(ModelElementChange object)
       {
-        return createAtomicConcreteModelElementChangeAdapter();
+        return createModelElementChangeAdapter();
       }
       @Override
-      public Adapter caseAtomicRootObjectChange(AtomicRootObjectChange object)
+      public Adapter caseModelAttributeChange(ModelAttributeChange object)
       {
-        return createAtomicRootObjectChangeAdapter();
+        return createModelAttributeChangeAdapter();
       }
       @Override
-      public Adapter caseAtomicFeatureChange(AtomicFeatureChange object)
+      public Adapter caseArbitraryModelChange(ArbitraryModelChange object)
       {
-        return createAtomicFeatureChangeAdapter();
+        return createArbitraryModelChangeAdapter();
       }
       @Override
-      public Adapter caseAtomicMultiValuedFeatureChange(AtomicMultiValuedFeatureChange object)
+      public Adapter caseElementExistenceChangeType(ElementExistenceChangeType object)
       {
-        return createAtomicMultiValuedFeatureChangeAdapter();
+        return createElementExistenceChangeTypeAdapter();
       }
       @Override
-      public Adapter caseAtomicSingleValuedFeatureChange(AtomicSingleValuedFeatureChange object)
+      public Adapter caseModelElementUsageChangeType(ModelElementUsageChangeType object)
       {
-        return createAtomicSingleValuedFeatureChangeAdapter();
+        return createModelElementUsageChangeTypeAdapter();
       }
       @Override
-      public Adapter caseArbitraryModelElementChange(ArbitraryModelElementChange object)
+      public Adapter caseElementCreationChangeType(ElementCreationChangeType object)
       {
-        return createArbitraryModelElementChangeAdapter();
+        return createElementCreationChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementDeletionChangeType(ElementDeletionChangeType object)
+      {
+        return createElementDeletionChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementFeatureChangeType(ElementFeatureChangeType object)
+      {
+        return createElementFeatureChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementRootChangeType(ElementRootChangeType object)
+      {
+        return createElementRootChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementInsertionChangeType(ElementInsertionChangeType object)
+      {
+        return createElementInsertionChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementInsertionInListChangeType(ElementInsertionInListChangeType object)
+      {
+        return createElementInsertionInListChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementInsertionAsRootChangeType(ElementInsertionAsRootChangeType object)
+      {
+        return createElementInsertionAsRootChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementRemovalChangeType(ElementRemovalChangeType object)
+      {
+        return createElementRemovalChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementRemovalAsRootChangeType(ElementRemovalAsRootChangeType object)
+      {
+        return createElementRemovalAsRootChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementRemovalFromListChangeType(ElementRemovalFromListChangeType object)
+      {
+        return createElementRemovalFromListChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementReplacementChangeType(ElementReplacementChangeType object)
+      {
+        return createElementReplacementChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementCreationAndInsertionChangeType(ElementCreationAndInsertionChangeType object)
+      {
+        return createElementCreationAndInsertionChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementDeletionAndRemovalChangeType(ElementDeletionAndRemovalChangeType object)
+      {
+        return createElementDeletionAndRemovalChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementDeletionAndCreationAndReplacementChangeType(ElementDeletionAndCreationAndReplacementChangeType object)
+      {
+        return createElementDeletionAndCreationAndReplacementChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementChangeType(ElementChangeType object)
+      {
+        return createElementChangeTypeAdapter();
+      }
+      @Override
+      public Adapter caseElementCompoundChangeType(ElementCompoundChangeType object)
+      {
+        return createElementCompoundChangeTypeAdapter();
       }
       @Override
       public Adapter caseRoutine(Routine object)
@@ -269,34 +344,19 @@ public class ReactionsLanguageAdapterFactory extends AdapterFactoryImpl
         return createReturnStatementAdapter();
       }
       @Override
-      public Adapter caseInsertRootChange(InsertRootChange object)
+      public Adapter caseModelAttributeInsertedChange(ModelAttributeInsertedChange object)
       {
-        return createInsertRootChangeAdapter();
+        return createModelAttributeInsertedChangeAdapter();
       }
       @Override
-      public Adapter caseRemoveRootChange(RemoveRootChange object)
+      public Adapter caseModelAttributeRemovedChange(ModelAttributeRemovedChange object)
       {
-        return createRemoveRootChangeAdapter();
+        return createModelAttributeRemovedChangeAdapter();
       }
       @Override
-      public Adapter caseMultiValuedFeatureInsertChange(MultiValuedFeatureInsertChange object)
+      public Adapter caseModelAttributeReplacedChange(ModelAttributeReplacedChange object)
       {
-        return createMultiValuedFeatureInsertChangeAdapter();
-      }
-      @Override
-      public Adapter caseMultiValuedFeatureRemoveChange(MultiValuedFeatureRemoveChange object)
-      {
-        return createMultiValuedFeatureRemoveChangeAdapter();
-      }
-      @Override
-      public Adapter caseMultiValuedFeaturePermuteChange(MultiValuedFeaturePermuteChange object)
-      {
-        return createMultiValuedFeaturePermuteChangeAdapter();
-      }
-      @Override
-      public Adapter caseSingleValuedFeatureReplace(SingleValuedFeatureReplace object)
-      {
-        return createSingleValuedFeatureReplaceAdapter();
+        return createModelAttributeReplacedChangeAdapter();
       }
       @Override
       public Adapter caseMirBaseFile(MirBaseFile object)
@@ -436,106 +496,331 @@ public class ReactionsLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelElementChange <em>Concrete Model Element Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange <em>Concrete Model Change</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelElementChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
    * @generated
    */
-  public Adapter createConcreteModelElementChangeAdapter()
+  public Adapter createConcreteModelChangeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicConcreteModelElementChange <em>Atomic Concrete Model Element Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange <em>Model Element Change</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicConcreteModelElementChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
    * @generated
    */
-  public Adapter createAtomicConcreteModelElementChangeAdapter()
+  public Adapter createModelElementChangeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicRootObjectChange <em>Atomic Root Object Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange <em>Model Attribute Change</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicRootObjectChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
    * @generated
    */
-  public Adapter createAtomicRootObjectChangeAdapter()
+  public Adapter createModelAttributeChangeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange <em>Atomic Feature Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange <em>Arbitrary Model Change</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange
    * @generated
    */
-  public Adapter createAtomicFeatureChangeAdapter()
+  public Adapter createArbitraryModelChangeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicMultiValuedFeatureChange <em>Atomic Multi Valued Feature Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType <em>Element Existence Change Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicMultiValuedFeatureChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType
    * @generated
    */
-  public Adapter createAtomicMultiValuedFeatureChangeAdapter()
+  public Adapter createElementExistenceChangeTypeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicSingleValuedFeatureChange <em>Atomic Single Valued Feature Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementUsageChangeType <em>Model Element Usage Change Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicSingleValuedFeatureChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementUsageChangeType
    * @generated
    */
-  public Adapter createAtomicSingleValuedFeatureChangeAdapter()
+  public Adapter createModelElementUsageChangeTypeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelElementChange <em>Arbitrary Model Element Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationChangeType <em>Element Creation Change Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelElementChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationChangeType
    * @generated
    */
-  public Adapter createArbitraryModelElementChangeAdapter()
+  public Adapter createElementCreationChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionChangeType <em>Element Deletion Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionChangeType
+   * @generated
+   */
+  public Adapter createElementDeletionChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType <em>Element Feature Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType
+   * @generated
+   */
+  public Adapter createElementFeatureChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType <em>Element Root Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType
+   * @generated
+   */
+  public Adapter createElementRootChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionChangeType <em>Element Insertion Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionChangeType
+   * @generated
+   */
+  public Adapter createElementInsertionChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionInListChangeType <em>Element Insertion In List Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionInListChangeType
+   * @generated
+   */
+  public Adapter createElementInsertionInListChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionAsRootChangeType <em>Element Insertion As Root Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionAsRootChangeType
+   * @generated
+   */
+  public Adapter createElementInsertionAsRootChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalChangeType <em>Element Removal Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalChangeType
+   * @generated
+   */
+  public Adapter createElementRemovalChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalAsRootChangeType <em>Element Removal As Root Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalAsRootChangeType
+   * @generated
+   */
+  public Adapter createElementRemovalAsRootChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalFromListChangeType <em>Element Removal From List Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalFromListChangeType
+   * @generated
+   */
+  public Adapter createElementRemovalFromListChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType <em>Element Replacement Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType
+   * @generated
+   */
+  public Adapter createElementReplacementChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType <em>Element Creation And Insertion Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType
+   * @generated
+   */
+  public Adapter createElementCreationAndInsertionChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType <em>Element Deletion And Removal Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType
+   * @generated
+   */
+  public Adapter createElementDeletionAndRemovalChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType <em>Element Deletion And Creation And Replacement Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType
+   * @generated
+   */
+  public Adapter createElementDeletionAndCreationAndReplacementChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType <em>Element Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
+   * @generated
+   */
+  public Adapter createElementChangeTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementCompoundChangeType <em>Element Compound Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementCompoundChangeType
+   * @generated
+   */
+  public Adapter createElementCompoundChangeTypeAdapter()
   {
     return null;
   }
@@ -901,91 +1186,46 @@ public class ReactionsLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.InsertRootChange <em>Insert Root Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeInsertedChange <em>Model Attribute Inserted Change</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.InsertRootChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeInsertedChange
    * @generated
    */
-  public Adapter createInsertRootChangeAdapter()
+  public Adapter createModelAttributeInsertedChangeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.RemoveRootChange <em>Remove Root Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeRemovedChange <em>Model Attribute Removed Change</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.RemoveRootChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeRemovedChange
    * @generated
    */
-  public Adapter createRemoveRootChangeAdapter()
+  public Adapter createModelAttributeRemovedChangeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureInsertChange <em>Multi Valued Feature Insert Change</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeReplacedChange <em>Model Attribute Replaced Change</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureInsertChange
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeReplacedChange
    * @generated
    */
-  public Adapter createMultiValuedFeatureInsertChangeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureRemoveChange <em>Multi Valued Feature Remove Change</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureRemoveChange
-   * @generated
-   */
-  public Adapter createMultiValuedFeatureRemoveChangeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeaturePermuteChange <em>Multi Valued Feature Permute Change</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeaturePermuteChange
-   * @generated
-   */
-  public Adapter createMultiValuedFeaturePermuteChangeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.SingleValuedFeatureReplace <em>Single Valued Feature Replace</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.SingleValuedFeatureReplace
-   * @generated
-   */
-  public Adapter createSingleValuedFeatureReplaceAdapter()
+  public Adapter createModelAttributeReplacedChangeAdapter()
   {
     return null;
   }

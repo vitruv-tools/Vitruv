@@ -8,7 +8,6 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
-import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelElementChange
 import static extension tools.vitruv.dsls.reactions.helper.EChangeHelper.*;
 import java.util.List
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
@@ -20,6 +19,7 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import static extension tools.vitruv.dsls.reactions.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 
 class ReactionsLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -61,6 +61,11 @@ class ReactionsLanguageParameterGenerator {
 		}
 		return context.toParameter(parameterName, parameterType);
 	}
+
+		
+	protected def generateParameterFromClasses(EObject context, String parameterName, Class<?> parameterClass, List<Class<?>> typeParameterClasses) {
+		return generateParameter(context, parameterName, parameterClass, typeParameterClasses.map[name]);
+	}
 	
 	protected def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
 		if (parameterClass == null) {
@@ -94,11 +99,12 @@ class ReactionsLanguageParameterGenerator {
 	}
 	
 	protected def JvmFormalParameter generateChangeParameter(EObject parameterContext, Trigger trigger) {
-		var List<String> changeTypeParameters = <String>newArrayList;
-		if (trigger instanceof ConcreteModelElementChange) {
-			changeTypeParameters = getGenericTypeParameterFQNsOfChange(trigger)			
+		val changeRepresentation = generateEChange(trigger);
+		var List<Class<?>> changeTypeParameters = <Class<?>>newArrayList;
+		if (trigger instanceof ConcreteModelChange) {
+			changeTypeParameters = changeRepresentation.genericTypeParameters	
 		}
-		val changeParameter = parameterContext.generateParameter(CHANGE_PARAMETER_NAME, trigger.generateEChangeInstanceClass(), changeTypeParameters);
+		val changeParameter = parameterContext.generateParameterFromClasses(CHANGE_PARAMETER_NAME, changeRepresentation.changeType, changeTypeParameters);
 		if (changeParameter != null) {
 			return changeParameter;
 		}

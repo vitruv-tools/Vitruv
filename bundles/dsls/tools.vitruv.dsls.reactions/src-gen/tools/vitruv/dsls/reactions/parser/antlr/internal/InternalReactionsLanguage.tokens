@@ -1,111 +1,116 @@
-'!'=88
-'!='=72
-'!=='=74
-'#'=93
-'%'=87
-'%='=65
-'&&'=70
-'&'=121
-'('=30
-')'=33
-'*'=84
-'**'=85
-'*='=63
-'+'=82
-'++'=89
-'+='=61
-','=32
-'-'=83
-'--'=90
-'-='=62
-'->'=76
-'.'=91
-'..'=78
-'..<'=77
-'/'=86
-'/='=64
-':'=99
-'::'=58
-';'=95
-'<'=66
-'<>'=80
-'='=36
-'=='=71
-'==='=73
-'=>'=79
-'>'=67
-'>='=68
-'?'=120
-'?.'=92
-'?:'=81
-'['=59
-']'=60
-'action'=43
-'add correspondence between'=49
+'!'=93
+'!='=77
+'!=='=79
+'#'=98
+'%'=92
+'%='=70
+'&&'=75
+'&'=126
+'('=36
+')'=39
+'*'=89
+'**'=90
+'*='=68
+'+'=87
+'++'=94
+'+='=66
+','=38
+'-'=88
+'--'=95
+'-='=67
+'->'=81
+'.'=96
+'..'=83
+'..<'=82
+'/'=91
+'/='=69
+':'=104
+'::'=63
+';'=100
+'<'=71
+'<>'=85
+'='=42
+'=='=76
+'==='=78
+'=>'=84
+'>'=72
+'>='=73
+'?'=125
+'?.'=97
+'?:'=86
+'['=64
+']'=65
+'action'=49
+'add correspondence between'=54
 'after'=20
-'and'=45
-'any change'=28
-'as'=56
-'call'=53
-'case'=101
-'catch'=119
-'check'=42
-'corresponding to'=40
-'create'=44
-'default'=100
-'delete'=47
-'do'=104
-'else'=97
+'and'=34
+'any change'=27
+'as'=61
+'attribute'=23
+'call'=58
+'case'=106
+'catch'=124
+'check'=48
+'corresponding to'=46
+'create'=50
+'created'=28
+'default'=105
+'delete'=52
+'deleted'=29
+'do'=109
+'element'=22
+'else'=102
 'execute actions in'=15
-'execute'=52
-'extends'=106
-'extension'=108
-'false'=111
-'finally'=117
-'for'=102
-'if'=96
-'import'=55
+'execute'=57
+'extends'=111
+'extension'=113
+'false'=116
+'finally'=122
+'for'=107
+'if'=101
+'import'=60
 'in reaction to changes in'=14
-'initialize'=46
-'instanceof'=75
+'initialize'=51
+'insert in'=24
+'inserted as root'=31
+'inserted in'=30
+'instanceof'=80
 'invariant'=19
-'list entry created and inserted in'=24
-'list entry deleted and removed in'=25
-'list permuted'=26
-'match'=34
-'new'=110
-'null'=113
-'optional'=38
-'plain'=31
+'match'=40
+'new'=115
+'null'=118
+'optional'=44
+'plain'=37
 'reaction'=16
 'reactions:'=13
-'remove correspondence between'=51
-'require absence of'=39
-'retrieve'=37
-'return'=54
-'root created and inserted'=22
-'root deleted and removed'=23
-'routine'=29
-'static'=107
-'super'=109
-'switch'=98
-'synchronized'=118
-'tag with'=50
-'tagged with'=41
-'throw'=115
-'true'=112
-'try'=116
-'typeof'=114
-'update'=48
-'using qualified names'=57
-'val'=35
-'value replaced for'=27
-'var'=105
-'while'=103
+'remove correspondence between'=56
+'remove from'=25
+'removed as root'=32
+'removed from'=33
+'replaced at'=26
+'require absence of'=45
+'retrieve'=43
+'return'=59
+'routine'=35
+'static'=112
+'super'=114
+'switch'=103
+'synchronized'=123
+'tag with'=55
+'tagged with'=47
+'throw'=120
+'true'=117
+'try'=121
+'typeof'=119
+'update'=53
+'using qualified names'=62
+'val'=41
+'var'=110
+'while'=108
 'with'=21
 '{'=17
-'|'=94
-'||'=69
+'|'=99
+'||'=74
 '}'=18
 RULE_ANY_OTHER=12
 RULE_DECIMAL=9
@@ -138,6 +143,11 @@ T__118=118
 T__119=119
 T__120=120
 T__121=121
+T__122=122
+T__123=123
+T__124=124
+T__125=125
+T__126=126
 T__13=13
 T__14=14
 T__15=15

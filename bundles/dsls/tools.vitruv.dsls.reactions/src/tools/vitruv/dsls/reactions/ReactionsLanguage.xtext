@@ -45,42 +45,83 @@ Trigger:
 	('with' precondition=PreconditionCodeBlock)?;
 
 ModelChange:
-	ConcreteModelElementChange | ArbitraryModelElementChange;
+	ArbitraryModelChange | ConcreteModelChange;
 
-ConcreteModelElementChange returns ConcreteModelElementChange:
-	AtomicConcreteModelElementChange;
+ConcreteModelChange:
+	ModelElementChange | ModelAttributeChange;
 
-AtomicConcreteModelElementChange:
-	AtomicRootObjectChange | AtomicFeatureChange;
+ModelElementChange:
+	'element' (elementType=UnnamedMetaclassReference)? changeType=ElementChangeType;
 
-AtomicRootObjectChange:
-	('root created and inserted' {InsertRootChange} |
-	'root deleted and removed' {RemoveRootChange})
-//	TODO add new change types for root insertions or removals without creation or deletion similar to the following and rename above:
-//	'root inserted' {InsertRootChange} |
-//	'root removed' {RemoveRootChange})
-	changedElement=UnnamedMetaclassReference;
 
-AtomicFeatureChange:
-	(AtomicMultiValuedFeatureChange | AtomicSingleValuedFeatureChange)
-	changedFeature=MetaclassFeatureReference;
+ModelAttributeChange:
+	'attribute' ({ModelAttributeInsertedChange} 'insert in' |
+		{ModelAttributeRemovedChange} 'remove from' |
+		{ModelAttributeReplacedChange} 'replaced at')
+		feature=MetaclassFeatureReference;
 
-AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
-	'list entry created and inserted in' {MultiValuedFeatureInsertChange} |
-	'list entry deleted and removed in' {MultiValuedFeatureRemoveChange} |
-// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
-// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
-// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
-// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
-	'list permuted' {MultiValuedFeaturePermuteChange};
+ArbitraryModelChange:
+	{ArbitraryModelChange} 'any change';
 
-AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
-	//'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-	'value replaced for' {SingleValuedFeatureReplace};
 
-ArbitraryModelElementChange:
-	{ArbitraryModelElementChange} 'any change';
+// *********** Atomic element changes ***********
 
+ElementExistenceChangeType returns ElementExistenceChangeType:
+	ElementCreationChangeType | ElementDeletionChangeType;
+
+ElementUsageChangeType returns ModelElementUsageChangeType:
+	ElementInsertionChangeType | ElementRemovalChangeType | ElementReplacementChangeType;
+
+ElementCreationChangeType returns ElementCreationChangeType:
+	'created' {ElementCreationChangeType};
+
+ElementDeletionChangeType returns ElementDeletionChangeType:
+	'deleted' {ElementDeletionChangeType};
+
+fragment ElementFeatureChangeType:
+	feature=MetaclassFeatureReference;
+
+// This is just for a complete type hierachy
+ElementRootChangeType returns ElementRootChangeType:
+	ElementInsertionAsRootChangeType | ElementRemovalAsRootChangeType;
+
+ElementInsertionChangeType:
+	(ElementInsertionInListChangeType | ElementInsertionAsRootChangeType);
+
+ElementInsertionInListChangeType:
+	'inserted in' ElementFeatureChangeType;
+
+ElementInsertionAsRootChangeType:
+	{ElementInsertionAsRootChangeType} 'inserted as root';
+
+ElementRemovalChangeType:
+	(ElementRemovalAsRootChangeType | ElementRemovalFromListChangeType);
+	
+ElementRemovalAsRootChangeType:
+	{ElementRemovalAsRootChangeType} 'removed as root';
+		
+ElementRemovalFromListChangeType:
+	'removed from' ElementFeatureChangeType;
+
+ElementReplacementChangeType:
+	'replaced at' ElementFeatureChangeType;
+
+// *********** Compound element changes ***********
+
+ElementCreationAndInsertionChangeType:
+	createChange=ElementCreationChangeType 'and' insertChange=ElementInsertionChangeType;
+
+ElementDeletionAndRemovalChangeType:
+	deleteChange=ElementDeletionChangeType 'and' removeChange=ElementRemovalChangeType;
+	
+ElementDeletionAndCreationAndReplacementChangeType:
+	deleteChange=ElementDeletionChangeType 'and' createChange=ElementCreationChangeType 'and' replacedChange=ElementReplacementChangeType;
+
+ElementChangeType returns ElementChangeType:
+	ElementExistenceChangeType | ElementUsageChangeType | ElementCompoundChangeType;
+
+ElementCompoundChangeType returns ElementCompoundChangeType:
+	ElementCreationAndInsertionChangeType | ElementDeletionAndRemovalChangeType | ElementDeletionAndCreationAndReplacementChangeType;
 
 
 // ***************************************

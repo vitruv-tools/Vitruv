@@ -1,9 +1,6 @@
 package tools.vitruv.dsls.reactions.helper
 
-import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
 import org.eclipse.emf.ecore.EClass
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicRootObjectChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
@@ -17,30 +14,6 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 final class ReactionsLanguageHelper {
 	private new() {}
-	
-	public static def dispatch EClass getChangedModelElementClass(Trigger change) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public static def dispatch EClass getChangedModelElementClass(AtomicRootObjectChange change) {
-		return change?.changedElement?.metaclass;
-	}
-	
-	public static def dispatch EClass getChangedModelElementClass(AtomicFeatureChange change) {
-		change?.changedFeature?.metaclass;
-	}
-	
-//	public static def dispatch EPackage getSourceMetamodel(AtomicConcreteModelElementChange change) {
-//		return change.changedModelElementClass?.EPackage;
-//	}
-//	
-//	public static def dispatch EPackage getSourceMetamodel(ArbitraryModelElementChange change) {
-//		change?.changedModel?.model.package;
-//	}
-//
-//	public static def dispatch EPackage getSourceMetamodel(InvariantViolationEvent change) {
-//		throw new UnsupportedOperationException();
-//	}
 	
 	public static def dispatch String getXBlockExpressionText(XExpression expression) '''
 		{

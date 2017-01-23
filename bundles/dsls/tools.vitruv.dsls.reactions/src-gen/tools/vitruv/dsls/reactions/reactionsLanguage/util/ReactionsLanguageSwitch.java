@@ -130,77 +130,203 @@ public class ReactionsLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.CONCRETE_MODEL_ELEMENT_CHANGE:
+      case ReactionsLanguagePackage.CONCRETE_MODEL_CHANGE:
       {
-        ConcreteModelElementChange concreteModelElementChange = (ConcreteModelElementChange)theEObject;
-        T result = caseConcreteModelElementChange(concreteModelElementChange);
-        if (result == null) result = caseModelChange(concreteModelElementChange);
-        if (result == null) result = caseTrigger(concreteModelElementChange);
+        ConcreteModelChange concreteModelChange = (ConcreteModelChange)theEObject;
+        T result = caseConcreteModelChange(concreteModelChange);
+        if (result == null) result = caseModelChange(concreteModelChange);
+        if (result == null) result = caseTrigger(concreteModelChange);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE:
+      case ReactionsLanguagePackage.MODEL_ELEMENT_CHANGE:
       {
-        AtomicConcreteModelElementChange atomicConcreteModelElementChange = (AtomicConcreteModelElementChange)theEObject;
-        T result = caseAtomicConcreteModelElementChange(atomicConcreteModelElementChange);
-        if (result == null) result = caseConcreteModelElementChange(atomicConcreteModelElementChange);
-        if (result == null) result = caseModelChange(atomicConcreteModelElementChange);
-        if (result == null) result = caseTrigger(atomicConcreteModelElementChange);
+        ModelElementChange modelElementChange = (ModelElementChange)theEObject;
+        T result = caseModelElementChange(modelElementChange);
+        if (result == null) result = caseConcreteModelChange(modelElementChange);
+        if (result == null) result = caseModelChange(modelElementChange);
+        if (result == null) result = caseTrigger(modelElementChange);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.ATOMIC_ROOT_OBJECT_CHANGE:
+      case ReactionsLanguagePackage.MODEL_ATTRIBUTE_CHANGE:
       {
-        AtomicRootObjectChange atomicRootObjectChange = (AtomicRootObjectChange)theEObject;
-        T result = caseAtomicRootObjectChange(atomicRootObjectChange);
-        if (result == null) result = caseAtomicConcreteModelElementChange(atomicRootObjectChange);
-        if (result == null) result = caseConcreteModelElementChange(atomicRootObjectChange);
-        if (result == null) result = caseModelChange(atomicRootObjectChange);
-        if (result == null) result = caseTrigger(atomicRootObjectChange);
+        ModelAttributeChange modelAttributeChange = (ModelAttributeChange)theEObject;
+        T result = caseModelAttributeChange(modelAttributeChange);
+        if (result == null) result = caseConcreteModelChange(modelAttributeChange);
+        if (result == null) result = caseModelChange(modelAttributeChange);
+        if (result == null) result = caseTrigger(modelAttributeChange);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.ATOMIC_FEATURE_CHANGE:
+      case ReactionsLanguagePackage.ARBITRARY_MODEL_CHANGE:
       {
-        AtomicFeatureChange atomicFeatureChange = (AtomicFeatureChange)theEObject;
-        T result = caseAtomicFeatureChange(atomicFeatureChange);
-        if (result == null) result = caseAtomicConcreteModelElementChange(atomicFeatureChange);
-        if (result == null) result = caseConcreteModelElementChange(atomicFeatureChange);
-        if (result == null) result = caseModelChange(atomicFeatureChange);
-        if (result == null) result = caseTrigger(atomicFeatureChange);
+        ArbitraryModelChange arbitraryModelChange = (ArbitraryModelChange)theEObject;
+        T result = caseArbitraryModelChange(arbitraryModelChange);
+        if (result == null) result = caseModelChange(arbitraryModelChange);
+        if (result == null) result = caseTrigger(arbitraryModelChange);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.ATOMIC_MULTI_VALUED_FEATURE_CHANGE:
+      case ReactionsLanguagePackage.ELEMENT_EXISTENCE_CHANGE_TYPE:
       {
-        AtomicMultiValuedFeatureChange atomicMultiValuedFeatureChange = (AtomicMultiValuedFeatureChange)theEObject;
-        T result = caseAtomicMultiValuedFeatureChange(atomicMultiValuedFeatureChange);
-        if (result == null) result = caseAtomicFeatureChange(atomicMultiValuedFeatureChange);
-        if (result == null) result = caseAtomicConcreteModelElementChange(atomicMultiValuedFeatureChange);
-        if (result == null) result = caseConcreteModelElementChange(atomicMultiValuedFeatureChange);
-        if (result == null) result = caseModelChange(atomicMultiValuedFeatureChange);
-        if (result == null) result = caseTrigger(atomicMultiValuedFeatureChange);
+        ElementExistenceChangeType elementExistenceChangeType = (ElementExistenceChangeType)theEObject;
+        T result = caseElementExistenceChangeType(elementExistenceChangeType);
+        if (result == null) result = caseElementChangeType(elementExistenceChangeType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.ATOMIC_SINGLE_VALUED_FEATURE_CHANGE:
+      case ReactionsLanguagePackage.MODEL_ELEMENT_USAGE_CHANGE_TYPE:
       {
-        AtomicSingleValuedFeatureChange atomicSingleValuedFeatureChange = (AtomicSingleValuedFeatureChange)theEObject;
-        T result = caseAtomicSingleValuedFeatureChange(atomicSingleValuedFeatureChange);
-        if (result == null) result = caseAtomicFeatureChange(atomicSingleValuedFeatureChange);
-        if (result == null) result = caseAtomicConcreteModelElementChange(atomicSingleValuedFeatureChange);
-        if (result == null) result = caseConcreteModelElementChange(atomicSingleValuedFeatureChange);
-        if (result == null) result = caseModelChange(atomicSingleValuedFeatureChange);
-        if (result == null) result = caseTrigger(atomicSingleValuedFeatureChange);
+        ModelElementUsageChangeType modelElementUsageChangeType = (ModelElementUsageChangeType)theEObject;
+        T result = caseModelElementUsageChangeType(modelElementUsageChangeType);
+        if (result == null) result = caseElementChangeType(modelElementUsageChangeType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.ARBITRARY_MODEL_ELEMENT_CHANGE:
+      case ReactionsLanguagePackage.ELEMENT_CREATION_CHANGE_TYPE:
       {
-        ArbitraryModelElementChange arbitraryModelElementChange = (ArbitraryModelElementChange)theEObject;
-        T result = caseArbitraryModelElementChange(arbitraryModelElementChange);
-        if (result == null) result = caseModelChange(arbitraryModelElementChange);
-        if (result == null) result = caseTrigger(arbitraryModelElementChange);
+        ElementCreationChangeType elementCreationChangeType = (ElementCreationChangeType)theEObject;
+        T result = caseElementCreationChangeType(elementCreationChangeType);
+        if (result == null) result = caseElementExistenceChangeType(elementCreationChangeType);
+        if (result == null) result = caseElementChangeType(elementCreationChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_DELETION_CHANGE_TYPE:
+      {
+        ElementDeletionChangeType elementDeletionChangeType = (ElementDeletionChangeType)theEObject;
+        T result = caseElementDeletionChangeType(elementDeletionChangeType);
+        if (result == null) result = caseElementExistenceChangeType(elementDeletionChangeType);
+        if (result == null) result = caseElementChangeType(elementDeletionChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE:
+      {
+        ElementFeatureChangeType elementFeatureChangeType = (ElementFeatureChangeType)theEObject;
+        T result = caseElementFeatureChangeType(elementFeatureChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_ROOT_CHANGE_TYPE:
+      {
+        ElementRootChangeType elementRootChangeType = (ElementRootChangeType)theEObject;
+        T result = caseElementRootChangeType(elementRootChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_INSERTION_CHANGE_TYPE:
+      {
+        ElementInsertionChangeType elementInsertionChangeType = (ElementInsertionChangeType)theEObject;
+        T result = caseElementInsertionChangeType(elementInsertionChangeType);
+        if (result == null) result = caseModelElementUsageChangeType(elementInsertionChangeType);
+        if (result == null) result = caseElementChangeType(elementInsertionChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE:
+      {
+        ElementInsertionInListChangeType elementInsertionInListChangeType = (ElementInsertionInListChangeType)theEObject;
+        T result = caseElementInsertionInListChangeType(elementInsertionInListChangeType);
+        if (result == null) result = caseElementInsertionChangeType(elementInsertionInListChangeType);
+        if (result == null) result = caseElementFeatureChangeType(elementInsertionInListChangeType);
+        if (result == null) result = caseModelElementUsageChangeType(elementInsertionInListChangeType);
+        if (result == null) result = caseElementChangeType(elementInsertionInListChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_INSERTION_AS_ROOT_CHANGE_TYPE:
+      {
+        ElementInsertionAsRootChangeType elementInsertionAsRootChangeType = (ElementInsertionAsRootChangeType)theEObject;
+        T result = caseElementInsertionAsRootChangeType(elementInsertionAsRootChangeType);
+        if (result == null) result = caseElementRootChangeType(elementInsertionAsRootChangeType);
+        if (result == null) result = caseElementInsertionChangeType(elementInsertionAsRootChangeType);
+        if (result == null) result = caseModelElementUsageChangeType(elementInsertionAsRootChangeType);
+        if (result == null) result = caseElementChangeType(elementInsertionAsRootChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_REMOVAL_CHANGE_TYPE:
+      {
+        ElementRemovalChangeType elementRemovalChangeType = (ElementRemovalChangeType)theEObject;
+        T result = caseElementRemovalChangeType(elementRemovalChangeType);
+        if (result == null) result = caseModelElementUsageChangeType(elementRemovalChangeType);
+        if (result == null) result = caseElementChangeType(elementRemovalChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_REMOVAL_AS_ROOT_CHANGE_TYPE:
+      {
+        ElementRemovalAsRootChangeType elementRemovalAsRootChangeType = (ElementRemovalAsRootChangeType)theEObject;
+        T result = caseElementRemovalAsRootChangeType(elementRemovalAsRootChangeType);
+        if (result == null) result = caseElementRootChangeType(elementRemovalAsRootChangeType);
+        if (result == null) result = caseElementRemovalChangeType(elementRemovalAsRootChangeType);
+        if (result == null) result = caseModelElementUsageChangeType(elementRemovalAsRootChangeType);
+        if (result == null) result = caseElementChangeType(elementRemovalAsRootChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE:
+      {
+        ElementRemovalFromListChangeType elementRemovalFromListChangeType = (ElementRemovalFromListChangeType)theEObject;
+        T result = caseElementRemovalFromListChangeType(elementRemovalFromListChangeType);
+        if (result == null) result = caseElementRemovalChangeType(elementRemovalFromListChangeType);
+        if (result == null) result = caseElementFeatureChangeType(elementRemovalFromListChangeType);
+        if (result == null) result = caseModelElementUsageChangeType(elementRemovalFromListChangeType);
+        if (result == null) result = caseElementChangeType(elementRemovalFromListChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_REPLACEMENT_CHANGE_TYPE:
+      {
+        ElementReplacementChangeType elementReplacementChangeType = (ElementReplacementChangeType)theEObject;
+        T result = caseElementReplacementChangeType(elementReplacementChangeType);
+        if (result == null) result = caseModelElementUsageChangeType(elementReplacementChangeType);
+        if (result == null) result = caseElementFeatureChangeType(elementReplacementChangeType);
+        if (result == null) result = caseElementChangeType(elementReplacementChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE:
+      {
+        ElementCreationAndInsertionChangeType elementCreationAndInsertionChangeType = (ElementCreationAndInsertionChangeType)theEObject;
+        T result = caseElementCreationAndInsertionChangeType(elementCreationAndInsertionChangeType);
+        if (result == null) result = caseElementCompoundChangeType(elementCreationAndInsertionChangeType);
+        if (result == null) result = caseElementChangeType(elementCreationAndInsertionChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE:
+      {
+        ElementDeletionAndRemovalChangeType elementDeletionAndRemovalChangeType = (ElementDeletionAndRemovalChangeType)theEObject;
+        T result = caseElementDeletionAndRemovalChangeType(elementDeletionAndRemovalChangeType);
+        if (result == null) result = caseElementCompoundChangeType(elementDeletionAndRemovalChangeType);
+        if (result == null) result = caseElementChangeType(elementDeletionAndRemovalChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE:
+      {
+        ElementDeletionAndCreationAndReplacementChangeType elementDeletionAndCreationAndReplacementChangeType = (ElementDeletionAndCreationAndReplacementChangeType)theEObject;
+        T result = caseElementDeletionAndCreationAndReplacementChangeType(elementDeletionAndCreationAndReplacementChangeType);
+        if (result == null) result = caseElementCompoundChangeType(elementDeletionAndCreationAndReplacementChangeType);
+        if (result == null) result = caseElementChangeType(elementDeletionAndCreationAndReplacementChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_CHANGE_TYPE:
+      {
+        ElementChangeType elementChangeType = (ElementChangeType)theEObject;
+        T result = caseElementChangeType(elementChangeType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ReactionsLanguagePackage.ELEMENT_COMPOUND_CHANGE_TYPE:
+      {
+        ElementCompoundChangeType elementCompoundChangeType = (ElementCompoundChangeType)theEObject;
+        T result = caseElementCompoundChangeType(elementCompoundChangeType);
+        if (result == null) result = caseElementChangeType(elementCompoundChangeType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -407,79 +533,36 @@ public class ReactionsLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.INSERT_ROOT_CHANGE:
+      case ReactionsLanguagePackage.MODEL_ATTRIBUTE_INSERTED_CHANGE:
       {
-        InsertRootChange insertRootChange = (InsertRootChange)theEObject;
-        T result = caseInsertRootChange(insertRootChange);
-        if (result == null) result = caseAtomicRootObjectChange(insertRootChange);
-        if (result == null) result = caseAtomicConcreteModelElementChange(insertRootChange);
-        if (result == null) result = caseConcreteModelElementChange(insertRootChange);
-        if (result == null) result = caseModelChange(insertRootChange);
-        if (result == null) result = caseTrigger(insertRootChange);
+        ModelAttributeInsertedChange modelAttributeInsertedChange = (ModelAttributeInsertedChange)theEObject;
+        T result = caseModelAttributeInsertedChange(modelAttributeInsertedChange);
+        if (result == null) result = caseModelAttributeChange(modelAttributeInsertedChange);
+        if (result == null) result = caseConcreteModelChange(modelAttributeInsertedChange);
+        if (result == null) result = caseModelChange(modelAttributeInsertedChange);
+        if (result == null) result = caseTrigger(modelAttributeInsertedChange);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.REMOVE_ROOT_CHANGE:
+      case ReactionsLanguagePackage.MODEL_ATTRIBUTE_REMOVED_CHANGE:
       {
-        RemoveRootChange removeRootChange = (RemoveRootChange)theEObject;
-        T result = caseRemoveRootChange(removeRootChange);
-        if (result == null) result = caseAtomicRootObjectChange(removeRootChange);
-        if (result == null) result = caseAtomicConcreteModelElementChange(removeRootChange);
-        if (result == null) result = caseConcreteModelElementChange(removeRootChange);
-        if (result == null) result = caseModelChange(removeRootChange);
-        if (result == null) result = caseTrigger(removeRootChange);
+        ModelAttributeRemovedChange modelAttributeRemovedChange = (ModelAttributeRemovedChange)theEObject;
+        T result = caseModelAttributeRemovedChange(modelAttributeRemovedChange);
+        if (result == null) result = caseModelAttributeChange(modelAttributeRemovedChange);
+        if (result == null) result = caseConcreteModelChange(modelAttributeRemovedChange);
+        if (result == null) result = caseModelChange(modelAttributeRemovedChange);
+        if (result == null) result = caseTrigger(modelAttributeRemovedChange);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.MULTI_VALUED_FEATURE_INSERT_CHANGE:
+      case ReactionsLanguagePackage.MODEL_ATTRIBUTE_REPLACED_CHANGE:
       {
-        MultiValuedFeatureInsertChange multiValuedFeatureInsertChange = (MultiValuedFeatureInsertChange)theEObject;
-        T result = caseMultiValuedFeatureInsertChange(multiValuedFeatureInsertChange);
-        if (result == null) result = caseAtomicMultiValuedFeatureChange(multiValuedFeatureInsertChange);
-        if (result == null) result = caseAtomicFeatureChange(multiValuedFeatureInsertChange);
-        if (result == null) result = caseAtomicConcreteModelElementChange(multiValuedFeatureInsertChange);
-        if (result == null) result = caseConcreteModelElementChange(multiValuedFeatureInsertChange);
-        if (result == null) result = caseModelChange(multiValuedFeatureInsertChange);
-        if (result == null) result = caseTrigger(multiValuedFeatureInsertChange);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ReactionsLanguagePackage.MULTI_VALUED_FEATURE_REMOVE_CHANGE:
-      {
-        MultiValuedFeatureRemoveChange multiValuedFeatureRemoveChange = (MultiValuedFeatureRemoveChange)theEObject;
-        T result = caseMultiValuedFeatureRemoveChange(multiValuedFeatureRemoveChange);
-        if (result == null) result = caseAtomicMultiValuedFeatureChange(multiValuedFeatureRemoveChange);
-        if (result == null) result = caseAtomicFeatureChange(multiValuedFeatureRemoveChange);
-        if (result == null) result = caseAtomicConcreteModelElementChange(multiValuedFeatureRemoveChange);
-        if (result == null) result = caseConcreteModelElementChange(multiValuedFeatureRemoveChange);
-        if (result == null) result = caseModelChange(multiValuedFeatureRemoveChange);
-        if (result == null) result = caseTrigger(multiValuedFeatureRemoveChange);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ReactionsLanguagePackage.MULTI_VALUED_FEATURE_PERMUTE_CHANGE:
-      {
-        MultiValuedFeaturePermuteChange multiValuedFeaturePermuteChange = (MultiValuedFeaturePermuteChange)theEObject;
-        T result = caseMultiValuedFeaturePermuteChange(multiValuedFeaturePermuteChange);
-        if (result == null) result = caseAtomicMultiValuedFeatureChange(multiValuedFeaturePermuteChange);
-        if (result == null) result = caseAtomicFeatureChange(multiValuedFeaturePermuteChange);
-        if (result == null) result = caseAtomicConcreteModelElementChange(multiValuedFeaturePermuteChange);
-        if (result == null) result = caseConcreteModelElementChange(multiValuedFeaturePermuteChange);
-        if (result == null) result = caseModelChange(multiValuedFeaturePermuteChange);
-        if (result == null) result = caseTrigger(multiValuedFeaturePermuteChange);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ReactionsLanguagePackage.SINGLE_VALUED_FEATURE_REPLACE:
-      {
-        SingleValuedFeatureReplace singleValuedFeatureReplace = (SingleValuedFeatureReplace)theEObject;
-        T result = caseSingleValuedFeatureReplace(singleValuedFeatureReplace);
-        if (result == null) result = caseAtomicSingleValuedFeatureChange(singleValuedFeatureReplace);
-        if (result == null) result = caseAtomicFeatureChange(singleValuedFeatureReplace);
-        if (result == null) result = caseAtomicConcreteModelElementChange(singleValuedFeatureReplace);
-        if (result == null) result = caseConcreteModelElementChange(singleValuedFeatureReplace);
-        if (result == null) result = caseModelChange(singleValuedFeatureReplace);
-        if (result == null) result = caseTrigger(singleValuedFeatureReplace);
+        ModelAttributeReplacedChange modelAttributeReplacedChange = (ModelAttributeReplacedChange)theEObject;
+        T result = caseModelAttributeReplacedChange(modelAttributeReplacedChange);
+        if (result == null) result = caseModelAttributeChange(modelAttributeReplacedChange);
+        if (result == null) result = caseConcreteModelChange(modelAttributeReplacedChange);
+        if (result == null) result = caseModelChange(modelAttributeReplacedChange);
+        if (result == null) result = caseTrigger(modelAttributeReplacedChange);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -600,113 +683,353 @@ public class ReactionsLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Concrete Model Element Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Concrete Model Change</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Concrete Model Element Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Concrete Model Change</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseConcreteModelElementChange(ConcreteModelElementChange object)
+  public T caseConcreteModelChange(ConcreteModelChange object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Atomic Concrete Model Element Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Model Element Change</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Atomic Concrete Model Element Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Model Element Change</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseAtomicConcreteModelElementChange(AtomicConcreteModelElementChange object)
+  public T caseModelElementChange(ModelElementChange object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Atomic Root Object Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Model Attribute Change</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Atomic Root Object Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Model Attribute Change</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseAtomicRootObjectChange(AtomicRootObjectChange object)
+  public T caseModelAttributeChange(ModelAttributeChange object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Atomic Feature Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Arbitrary Model Change</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Atomic Feature Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Arbitrary Model Change</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseAtomicFeatureChange(AtomicFeatureChange object)
+  public T caseArbitraryModelChange(ArbitraryModelChange object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Atomic Multi Valued Feature Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Element Existence Change Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Atomic Multi Valued Feature Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Element Existence Change Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseAtomicMultiValuedFeatureChange(AtomicMultiValuedFeatureChange object)
+  public T caseElementExistenceChangeType(ElementExistenceChangeType object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Atomic Single Valued Feature Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Model Element Usage Change Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Atomic Single Valued Feature Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Model Element Usage Change Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseAtomicSingleValuedFeatureChange(AtomicSingleValuedFeatureChange object)
+  public T caseModelElementUsageChangeType(ModelElementUsageChangeType object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Arbitrary Model Element Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Element Creation Change Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Arbitrary Model Element Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Element Creation Change Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseArbitraryModelElementChange(ArbitraryModelElementChange object)
+  public T caseElementCreationChangeType(ElementCreationChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Deletion Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Deletion Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementDeletionChangeType(ElementDeletionChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Feature Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Feature Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementFeatureChangeType(ElementFeatureChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Root Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Root Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementRootChangeType(ElementRootChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Insertion Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Insertion Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementInsertionChangeType(ElementInsertionChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Insertion In List Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Insertion In List Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementInsertionInListChangeType(ElementInsertionInListChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Insertion As Root Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Insertion As Root Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementInsertionAsRootChangeType(ElementInsertionAsRootChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Removal Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Removal Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementRemovalChangeType(ElementRemovalChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Removal As Root Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Removal As Root Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementRemovalAsRootChangeType(ElementRemovalAsRootChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Removal From List Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Removal From List Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementRemovalFromListChangeType(ElementRemovalFromListChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Replacement Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Replacement Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementReplacementChangeType(ElementReplacementChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Creation And Insertion Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Creation And Insertion Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementCreationAndInsertionChangeType(ElementCreationAndInsertionChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Deletion And Removal Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Deletion And Removal Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementDeletionAndRemovalChangeType(ElementDeletionAndRemovalChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Deletion And Creation And Replacement Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Deletion And Creation And Replacement Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementDeletionAndCreationAndReplacementChangeType(ElementDeletionAndCreationAndReplacementChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementChangeType(ElementChangeType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Compound Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Compound Change Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementCompoundChangeType(ElementCompoundChangeType object)
   {
     return null;
   }
@@ -1096,97 +1419,49 @@ public class ReactionsLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Insert Root Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Model Attribute Inserted Change</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Insert Root Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Model Attribute Inserted Change</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseInsertRootChange(InsertRootChange object)
+  public T caseModelAttributeInsertedChange(ModelAttributeInsertedChange object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Remove Root Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Model Attribute Removed Change</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Remove Root Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Model Attribute Removed Change</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseRemoveRootChange(RemoveRootChange object)
+  public T caseModelAttributeRemovedChange(ModelAttributeRemovedChange object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Multi Valued Feature Insert Change</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Model Attribute Replaced Change</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Multi Valued Feature Insert Change</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Model Attribute Replaced Change</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseMultiValuedFeatureInsertChange(MultiValuedFeatureInsertChange object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Multi Valued Feature Remove Change</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Multi Valued Feature Remove Change</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseMultiValuedFeatureRemoveChange(MultiValuedFeatureRemoveChange object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Multi Valued Feature Permute Change</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Multi Valued Feature Permute Change</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseMultiValuedFeaturePermuteChange(MultiValuedFeaturePermuteChange object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Single Valued Feature Replace</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Single Valued Feature Replace</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseSingleValuedFeatureReplace(SingleValuedFeatureReplace object)
+  public T caseModelAttributeReplacedChange(ModelAttributeReplacedChange object)
   {
     return null;
   }

@@ -286,240 +286,561 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	public class ModelChangeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ModelChange");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cConcreteModelElementChangeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cArbitraryModelElementChangeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cArbitraryModelChangeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cConcreteModelChangeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
 		//ModelChange:
-		//	ConcreteModelElementChange | ArbitraryModelElementChange;
+		//	ArbitraryModelChange | ConcreteModelChange;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ConcreteModelElementChange | ArbitraryModelElementChange
+		//ArbitraryModelChange | ConcreteModelChange
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//ConcreteModelElementChange
-		public RuleCall getConcreteModelElementChangeParserRuleCall_0() { return cConcreteModelElementChangeParserRuleCall_0; }
+		//ArbitraryModelChange
+		public RuleCall getArbitraryModelChangeParserRuleCall_0() { return cArbitraryModelChangeParserRuleCall_0; }
 		
-		//ArbitraryModelElementChange
-		public RuleCall getArbitraryModelElementChangeParserRuleCall_1() { return cArbitraryModelElementChangeParserRuleCall_1; }
+		//ConcreteModelChange
+		public RuleCall getConcreteModelChangeParserRuleCall_1() { return cConcreteModelChangeParserRuleCall_1; }
 	}
-	public class ConcreteModelElementChangeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ConcreteModelElementChange");
-		private final RuleCall cAtomicConcreteModelElementChangeParserRuleCall = (RuleCall)rule.eContents().get(1);
-		
-		//ConcreteModelElementChange:
-		//	AtomicConcreteModelElementChange;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//AtomicConcreteModelElementChange
-		public RuleCall getAtomicConcreteModelElementChangeParserRuleCall() { return cAtomicConcreteModelElementChangeParserRuleCall; }
-	}
-	public class AtomicConcreteModelElementChangeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.AtomicConcreteModelElementChange");
+	public class ConcreteModelChangeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ConcreteModelChange");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cAtomicRootObjectChangeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cAtomicFeatureChangeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cModelElementChangeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cModelAttributeChangeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//AtomicConcreteModelElementChange:
-		//	AtomicRootObjectChange | AtomicFeatureChange;
+		//ConcreteModelChange:
+		//	ModelElementChange | ModelAttributeChange;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//AtomicRootObjectChange | AtomicFeatureChange
+		//ModelElementChange | ModelAttributeChange
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//AtomicRootObjectChange
-		public RuleCall getAtomicRootObjectChangeParserRuleCall_0() { return cAtomicRootObjectChangeParserRuleCall_0; }
+		//ModelElementChange
+		public RuleCall getModelElementChangeParserRuleCall_0() { return cModelElementChangeParserRuleCall_0; }
 		
-		//AtomicFeatureChange
-		public RuleCall getAtomicFeatureChangeParserRuleCall_1() { return cAtomicFeatureChangeParserRuleCall_1; }
+		//ModelAttributeChange
+		public RuleCall getModelAttributeChangeParserRuleCall_1() { return cModelAttributeChangeParserRuleCall_1; }
 	}
-	public class AtomicRootObjectChangeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.AtomicRootObjectChange");
+	public class ModelElementChangeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ModelElementChange");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
-		private final Group cGroup_0_0 = (Group)cAlternatives_0.eContents().get(0);
-		private final Keyword cRootCreatedAndInsertedKeyword_0_0_0 = (Keyword)cGroup_0_0.eContents().get(0);
-		private final Action cInsertRootChangeAction_0_0_1 = (Action)cGroup_0_0.eContents().get(1);
-		private final Group cGroup_0_1 = (Group)cAlternatives_0.eContents().get(1);
-		private final Keyword cRootDeletedAndRemovedKeyword_0_1_0 = (Keyword)cGroup_0_1.eContents().get(0);
-		private final Action cRemoveRootChangeAction_0_1_1 = (Action)cGroup_0_1.eContents().get(1);
-		private final Assignment cChangedElementAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cChangedElementUnnamedMetaclassReferenceParserRuleCall_1_0 = (RuleCall)cChangedElementAssignment_1.eContents().get(0);
+		private final Keyword cElementKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cElementTypeAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cElementTypeUnnamedMetaclassReferenceParserRuleCall_1_0 = (RuleCall)cElementTypeAssignment_1.eContents().get(0);
+		private final Assignment cChangeTypeAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cChangeTypeElementChangeTypeParserRuleCall_2_0 = (RuleCall)cChangeTypeAssignment_2.eContents().get(0);
 		
-		//AtomicRootObjectChange:
-		//	('root created and inserted' {InsertRootChange} |
-		//	'root deleted and removed' {RemoveRootChange}) changedElement=UnnamedMetaclassReference;
+		//ModelElementChange:
+		//	'element' elementType=UnnamedMetaclassReference? changeType=ElementChangeType;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//('root created and inserted' {InsertRootChange} | 'root deleted and removed' {RemoveRootChange})
-		//changedElement=UnnamedMetaclassReference
+		//'element' elementType=UnnamedMetaclassReference? changeType=ElementChangeType
 		public Group getGroup() { return cGroup; }
 		
-		//('root created and inserted' {InsertRootChange} | 'root deleted and removed' {RemoveRootChange})
-		public Alternatives getAlternatives_0() { return cAlternatives_0; }
+		//'element'
+		public Keyword getElementKeyword_0() { return cElementKeyword_0; }
 		
-		//'root created and inserted' {InsertRootChange}
-		public Group getGroup_0_0() { return cGroup_0_0; }
-		
-		//'root created and inserted'
-		public Keyword getRootCreatedAndInsertedKeyword_0_0_0() { return cRootCreatedAndInsertedKeyword_0_0_0; }
-		
-		//{InsertRootChange}
-		public Action getInsertRootChangeAction_0_0_1() { return cInsertRootChangeAction_0_0_1; }
-		
-		//'root deleted and removed' {RemoveRootChange}
-		public Group getGroup_0_1() { return cGroup_0_1; }
-		
-		//'root deleted and removed'
-		public Keyword getRootDeletedAndRemovedKeyword_0_1_0() { return cRootDeletedAndRemovedKeyword_0_1_0; }
-		
-		//{RemoveRootChange}
-		public Action getRemoveRootChangeAction_0_1_1() { return cRemoveRootChangeAction_0_1_1; }
-		
-		////	TODO add new change types for root insertions or removals without creation or deletion similar to the following and rename above:
-		////	'root inserted' {InsertRootChange} |
-		////	'root removed' {RemoveRootChange})
-		//changedElement=UnnamedMetaclassReference
-		public Assignment getChangedElementAssignment_1() { return cChangedElementAssignment_1; }
+		//elementType=UnnamedMetaclassReference?
+		public Assignment getElementTypeAssignment_1() { return cElementTypeAssignment_1; }
 		
 		//UnnamedMetaclassReference
-		public RuleCall getChangedElementUnnamedMetaclassReferenceParserRuleCall_1_0() { return cChangedElementUnnamedMetaclassReferenceParserRuleCall_1_0; }
-	}
-	public class AtomicFeatureChangeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.AtomicFeatureChange");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
-		private final RuleCall cAtomicMultiValuedFeatureChangeParserRuleCall_0_0 = (RuleCall)cAlternatives_0.eContents().get(0);
-		private final RuleCall cAtomicSingleValuedFeatureChangeParserRuleCall_0_1 = (RuleCall)cAlternatives_0.eContents().get(1);
-		private final Assignment cChangedFeatureAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0 = (RuleCall)cChangedFeatureAssignment_1.eContents().get(0);
+		public RuleCall getElementTypeUnnamedMetaclassReferenceParserRuleCall_1_0() { return cElementTypeUnnamedMetaclassReferenceParserRuleCall_1_0; }
 		
-		//AtomicFeatureChange:
-		//	(AtomicMultiValuedFeatureChange | AtomicSingleValuedFeatureChange) changedFeature=MetaclassFeatureReference;
+		//changeType=ElementChangeType
+		public Assignment getChangeTypeAssignment_2() { return cChangeTypeAssignment_2; }
+		
+		//ElementChangeType
+		public RuleCall getChangeTypeElementChangeTypeParserRuleCall_2_0() { return cChangeTypeElementChangeTypeParserRuleCall_2_0; }
+	}
+	public class ModelAttributeChangeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ModelAttributeChange");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cAttributeKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cAlternatives_1.eContents().get(0);
+		private final Action cModelAttributeInsertedChangeAction_1_0_0 = (Action)cGroup_1_0.eContents().get(0);
+		private final Keyword cInsertInKeyword_1_0_1 = (Keyword)cGroup_1_0.eContents().get(1);
+		private final Group cGroup_1_1 = (Group)cAlternatives_1.eContents().get(1);
+		private final Action cModelAttributeRemovedChangeAction_1_1_0 = (Action)cGroup_1_1.eContents().get(0);
+		private final Keyword cRemoveFromKeyword_1_1_1 = (Keyword)cGroup_1_1.eContents().get(1);
+		private final Group cGroup_1_2 = (Group)cAlternatives_1.eContents().get(2);
+		private final Action cModelAttributeReplacedChangeAction_1_2_0 = (Action)cGroup_1_2.eContents().get(0);
+		private final Keyword cReplacedAtKeyword_1_2_1 = (Keyword)cGroup_1_2.eContents().get(1);
+		private final Assignment cFeatureAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cFeatureMetaclassFeatureReferenceParserRuleCall_2_0 = (RuleCall)cFeatureAssignment_2.eContents().get(0);
+		
+		//ModelAttributeChange:
+		//	'attribute' ({ModelAttributeInsertedChange} 'insert in' | {ModelAttributeRemovedChange} 'remove from' |
+		//	{ModelAttributeReplacedChange} 'replaced at') feature=MetaclassFeatureReference;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//(AtomicMultiValuedFeatureChange | AtomicSingleValuedFeatureChange) changedFeature=MetaclassFeatureReference
+		//'attribute' ({ModelAttributeInsertedChange} 'insert in' | {ModelAttributeRemovedChange} 'remove from' |
+		//{ModelAttributeReplacedChange} 'replaced at') feature=MetaclassFeatureReference
 		public Group getGroup() { return cGroup; }
 		
-		//(AtomicMultiValuedFeatureChange | AtomicSingleValuedFeatureChange)
-		public Alternatives getAlternatives_0() { return cAlternatives_0; }
+		//'attribute'
+		public Keyword getAttributeKeyword_0() { return cAttributeKeyword_0; }
 		
-		//AtomicMultiValuedFeatureChange
-		public RuleCall getAtomicMultiValuedFeatureChangeParserRuleCall_0_0() { return cAtomicMultiValuedFeatureChangeParserRuleCall_0_0; }
+		//({ModelAttributeInsertedChange} 'insert in' | {ModelAttributeRemovedChange} 'remove from' |
+		//{ModelAttributeReplacedChange} 'replaced at')
+		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
-		//AtomicSingleValuedFeatureChange
-		public RuleCall getAtomicSingleValuedFeatureChangeParserRuleCall_0_1() { return cAtomicSingleValuedFeatureChangeParserRuleCall_0_1; }
+		//{ModelAttributeInsertedChange} 'insert in'
+		public Group getGroup_1_0() { return cGroup_1_0; }
 		
-		//changedFeature=MetaclassFeatureReference
-		public Assignment getChangedFeatureAssignment_1() { return cChangedFeatureAssignment_1; }
+		//{ModelAttributeInsertedChange}
+		public Action getModelAttributeInsertedChangeAction_1_0_0() { return cModelAttributeInsertedChangeAction_1_0_0; }
+		
+		//'insert in'
+		public Keyword getInsertInKeyword_1_0_1() { return cInsertInKeyword_1_0_1; }
+		
+		//{ModelAttributeRemovedChange} 'remove from'
+		public Group getGroup_1_1() { return cGroup_1_1; }
+		
+		//{ModelAttributeRemovedChange}
+		public Action getModelAttributeRemovedChangeAction_1_1_0() { return cModelAttributeRemovedChangeAction_1_1_0; }
+		
+		//'remove from'
+		public Keyword getRemoveFromKeyword_1_1_1() { return cRemoveFromKeyword_1_1_1; }
+		
+		//{ModelAttributeReplacedChange} 'replaced at'
+		public Group getGroup_1_2() { return cGroup_1_2; }
+		
+		//{ModelAttributeReplacedChange}
+		public Action getModelAttributeReplacedChangeAction_1_2_0() { return cModelAttributeReplacedChangeAction_1_2_0; }
+		
+		//'replaced at'
+		public Keyword getReplacedAtKeyword_1_2_1() { return cReplacedAtKeyword_1_2_1; }
+		
+		//feature=MetaclassFeatureReference
+		public Assignment getFeatureAssignment_2() { return cFeatureAssignment_2; }
 		
 		//MetaclassFeatureReference
-		public RuleCall getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0() { return cChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0; }
+		public RuleCall getFeatureMetaclassFeatureReferenceParserRuleCall_2_0() { return cFeatureMetaclassFeatureReferenceParserRuleCall_2_0; }
 	}
-	public class AtomicMultiValuedFeatureChangeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.AtomicMultiValuedFeatureChange");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
-		private final Keyword cListEntryCreatedAndInsertedInKeyword_0_0 = (Keyword)cGroup_0.eContents().get(0);
-		private final Action cMultiValuedFeatureInsertChangeAction_0_1 = (Action)cGroup_0.eContents().get(1);
-		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
-		private final Keyword cListEntryDeletedAndRemovedInKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
-		private final Action cMultiValuedFeatureRemoveChangeAction_1_1 = (Action)cGroup_1.eContents().get(1);
-		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
-		private final Keyword cListPermutedKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Action cMultiValuedFeaturePermuteChangeAction_2_1 = (Action)cGroup_2.eContents().get(1);
-		
-		//AtomicMultiValuedFeatureChange:
-		//	'list entry created and inserted in' {MultiValuedFeatureInsertChange} |
-		//	'list entry deleted and removed in' {MultiValuedFeatureRemoveChange} |
-		//	// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
-		//	// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
-		//	// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
-		//	// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
-		//	'list permuted' {MultiValuedFeaturePermuteChange};
-		@Override public ParserRule getRule() { return rule; }
-		
-		//'list entry created and inserted in' {MultiValuedFeatureInsertChange} | 'list entry deleted and removed in'
-		//{MultiValuedFeatureRemoveChange} | // TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
-		//// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
-		//// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
-		//// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
-		//'list permuted' {MultiValuedFeaturePermuteChange}
-		public Alternatives getAlternatives() { return cAlternatives; }
-		
-		//'list entry created and inserted in' {MultiValuedFeatureInsertChange}
-		public Group getGroup_0() { return cGroup_0; }
-		
-		//'list entry created and inserted in'
-		public Keyword getListEntryCreatedAndInsertedInKeyword_0_0() { return cListEntryCreatedAndInsertedInKeyword_0_0; }
-		
-		//{MultiValuedFeatureInsertChange}
-		public Action getMultiValuedFeatureInsertChangeAction_0_1() { return cMultiValuedFeatureInsertChangeAction_0_1; }
-		
-		//'list entry deleted and removed in' {MultiValuedFeatureRemoveChange}
-		public Group getGroup_1() { return cGroup_1; }
-		
-		//'list entry deleted and removed in'
-		public Keyword getListEntryDeletedAndRemovedInKeyword_1_0() { return cListEntryDeletedAndRemovedInKeyword_1_0; }
-		
-		//{MultiValuedFeatureRemoveChange}
-		public Action getMultiValuedFeatureRemoveChangeAction_1_1() { return cMultiValuedFeatureRemoveChangeAction_1_1; }
-		
-		//// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
-		//// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
-		//// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
-		//// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
-		//'list permuted' {MultiValuedFeaturePermuteChange}
-		public Group getGroup_2() { return cGroup_2; }
-		
-		//// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
-		//// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
-		//// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
-		//// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
-		//'list permuted'
-		public Keyword getListPermutedKeyword_2_0() { return cListPermutedKeyword_2_0; }
-		
-		//{MultiValuedFeaturePermuteChange}
-		public Action getMultiValuedFeaturePermuteChangeAction_2_1() { return cMultiValuedFeaturePermuteChangeAction_2_1; }
-	}
-	public class AtomicSingleValuedFeatureChangeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.AtomicSingleValuedFeatureChange");
+	public class ArbitraryModelChangeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ArbitraryModelChange");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cValueReplacedForKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Action cSingleValuedFeatureReplaceAction_1 = (Action)cGroup.eContents().get(1);
-		
-		//AtomicSingleValuedFeatureChange: //'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-		//	'value replaced for' {SingleValuedFeatureReplace};
-		@Override public ParserRule getRule() { return rule; }
-		
-		////'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-		//'value replaced for' {SingleValuedFeatureReplace}
-		public Group getGroup() { return cGroup; }
-		
-		////'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-		//'value replaced for'
-		public Keyword getValueReplacedForKeyword_0() { return cValueReplacedForKeyword_0; }
-		
-		//{SingleValuedFeatureReplace}
-		public Action getSingleValuedFeatureReplaceAction_1() { return cSingleValuedFeatureReplaceAction_1; }
-	}
-	public class ArbitraryModelElementChangeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ArbitraryModelElementChange");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cArbitraryModelElementChangeAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cArbitraryModelChangeAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cAnyChangeKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
-		//ArbitraryModelElementChange:
-		//	{ArbitraryModelElementChange} 'any change';
+		//ArbitraryModelChange:
+		//	{ArbitraryModelChange} 'any change';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{ArbitraryModelElementChange} 'any change'
+		//{ArbitraryModelChange} 'any change'
 		public Group getGroup() { return cGroup; }
 		
-		//{ArbitraryModelElementChange}
-		public Action getArbitraryModelElementChangeAction_0() { return cArbitraryModelElementChangeAction_0; }
+		//{ArbitraryModelChange}
+		public Action getArbitraryModelChangeAction_0() { return cArbitraryModelChangeAction_0; }
 		
 		//'any change'
 		public Keyword getAnyChangeKeyword_1() { return cAnyChangeKeyword_1; }
+	}
+	public class ElementExistenceChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementExistenceChangeType");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cElementCreationChangeTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cElementDeletionChangeTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//// *********** Atomic element changes ***********
+		//ElementExistenceChangeType:
+		//	ElementCreationChangeType | ElementDeletionChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//ElementCreationChangeType | ElementDeletionChangeType
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//ElementCreationChangeType
+		public RuleCall getElementCreationChangeTypeParserRuleCall_0() { return cElementCreationChangeTypeParserRuleCall_0; }
+		
+		//ElementDeletionChangeType
+		public RuleCall getElementDeletionChangeTypeParserRuleCall_1() { return cElementDeletionChangeTypeParserRuleCall_1; }
+	}
+	public class ElementUsageChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementUsageChangeType");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cElementInsertionChangeTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cElementRemovalChangeTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cElementReplacementChangeTypeParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		
+		//ElementUsageChangeType ModelElementUsageChangeType:
+		//	ElementInsertionChangeType | ElementRemovalChangeType | ElementReplacementChangeType
+		@Override public ParserRule getRule() { return rule; }
+		
+		//ElementInsertionChangeType | ElementRemovalChangeType | ElementReplacementChangeType
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//ElementInsertionChangeType
+		public RuleCall getElementInsertionChangeTypeParserRuleCall_0() { return cElementInsertionChangeTypeParserRuleCall_0; }
+		
+		//ElementRemovalChangeType
+		public RuleCall getElementRemovalChangeTypeParserRuleCall_1() { return cElementRemovalChangeTypeParserRuleCall_1; }
+		
+		//ElementReplacementChangeType
+		public RuleCall getElementReplacementChangeTypeParserRuleCall_2() { return cElementReplacementChangeTypeParserRuleCall_2; }
+	}
+	public class ElementCreationChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementCreationChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cCreatedKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Action cElementCreationChangeTypeAction_1 = (Action)cGroup.eContents().get(1);
+		
+		//ElementCreationChangeType:
+		//	'created' {ElementCreationChangeType};
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'created' {ElementCreationChangeType}
+		public Group getGroup() { return cGroup; }
+		
+		//'created'
+		public Keyword getCreatedKeyword_0() { return cCreatedKeyword_0; }
+		
+		//{ElementCreationChangeType}
+		public Action getElementCreationChangeTypeAction_1() { return cElementCreationChangeTypeAction_1; }
+	}
+	public class ElementDeletionChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementDeletionChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cDeletedKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Action cElementDeletionChangeTypeAction_1 = (Action)cGroup.eContents().get(1);
+		
+		//ElementDeletionChangeType:
+		//	'deleted' {ElementDeletionChangeType};
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'deleted' {ElementDeletionChangeType}
+		public Group getGroup() { return cGroup; }
+		
+		//'deleted'
+		public Keyword getDeletedKeyword_0() { return cDeletedKeyword_0; }
+		
+		//{ElementDeletionChangeType}
+		public Action getElementDeletionChangeTypeAction_1() { return cElementDeletionChangeTypeAction_1; }
+	}
+	public class ElementFeatureChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementFeatureChangeType");
+		private final Assignment cFeatureAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cFeatureMetaclassFeatureReferenceParserRuleCall_0 = (RuleCall)cFeatureAssignment.eContents().get(0);
+		
+		//fragment ElementFeatureChangeType:
+		//	feature=MetaclassFeatureReference;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//feature=MetaclassFeatureReference
+		public Assignment getFeatureAssignment() { return cFeatureAssignment; }
+		
+		//MetaclassFeatureReference
+		public RuleCall getFeatureMetaclassFeatureReferenceParserRuleCall_0() { return cFeatureMetaclassFeatureReferenceParserRuleCall_0; }
+	}
+	public class ElementRootChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementRootChangeType");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cElementInsertionAsRootChangeTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cElementRemovalAsRootChangeTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//// This is just for a complete type hierachy
+		//ElementRootChangeType:
+		//	ElementInsertionAsRootChangeType | ElementRemovalAsRootChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//ElementInsertionAsRootChangeType | ElementRemovalAsRootChangeType
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//ElementInsertionAsRootChangeType
+		public RuleCall getElementInsertionAsRootChangeTypeParserRuleCall_0() { return cElementInsertionAsRootChangeTypeParserRuleCall_0; }
+		
+		//ElementRemovalAsRootChangeType
+		public RuleCall getElementRemovalAsRootChangeTypeParserRuleCall_1() { return cElementRemovalAsRootChangeTypeParserRuleCall_1; }
+	}
+	public class ElementInsertionChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementInsertionChangeType");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cElementInsertionInListChangeTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cElementInsertionAsRootChangeTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//ElementInsertionChangeType:
+		//	ElementInsertionInListChangeType | ElementInsertionAsRootChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//ElementInsertionInListChangeType | ElementInsertionAsRootChangeType
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//ElementInsertionInListChangeType
+		public RuleCall getElementInsertionInListChangeTypeParserRuleCall_0() { return cElementInsertionInListChangeTypeParserRuleCall_0; }
+		
+		//ElementInsertionAsRootChangeType
+		public RuleCall getElementInsertionAsRootChangeTypeParserRuleCall_1() { return cElementInsertionAsRootChangeTypeParserRuleCall_1; }
+	}
+	public class ElementInsertionInListChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementInsertionInListChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cInsertedInKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final RuleCall cElementFeatureChangeTypeParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		
+		//ElementInsertionInListChangeType:
+		//	'inserted in' ElementFeatureChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'inserted in' ElementFeatureChangeType
+		public Group getGroup() { return cGroup; }
+		
+		//'inserted in'
+		public Keyword getInsertedInKeyword_0() { return cInsertedInKeyword_0; }
+		
+		//ElementFeatureChangeType
+		public RuleCall getElementFeatureChangeTypeParserRuleCall_1() { return cElementFeatureChangeTypeParserRuleCall_1; }
+	}
+	public class ElementInsertionAsRootChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementInsertionAsRootChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cElementInsertionAsRootChangeTypeAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cInsertedAsRootKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		//ElementInsertionAsRootChangeType:
+		//	{ElementInsertionAsRootChangeType} 'inserted as root';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{ElementInsertionAsRootChangeType} 'inserted as root'
+		public Group getGroup() { return cGroup; }
+		
+		//{ElementInsertionAsRootChangeType}
+		public Action getElementInsertionAsRootChangeTypeAction_0() { return cElementInsertionAsRootChangeTypeAction_0; }
+		
+		//'inserted as root'
+		public Keyword getInsertedAsRootKeyword_1() { return cInsertedAsRootKeyword_1; }
+	}
+	public class ElementRemovalChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementRemovalChangeType");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cElementRemovalAsRootChangeTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cElementRemovalFromListChangeTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//ElementRemovalChangeType:
+		//	ElementRemovalAsRootChangeType | ElementRemovalFromListChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//ElementRemovalAsRootChangeType | ElementRemovalFromListChangeType
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//ElementRemovalAsRootChangeType
+		public RuleCall getElementRemovalAsRootChangeTypeParserRuleCall_0() { return cElementRemovalAsRootChangeTypeParserRuleCall_0; }
+		
+		//ElementRemovalFromListChangeType
+		public RuleCall getElementRemovalFromListChangeTypeParserRuleCall_1() { return cElementRemovalFromListChangeTypeParserRuleCall_1; }
+	}
+	public class ElementRemovalAsRootChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementRemovalAsRootChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cElementRemovalAsRootChangeTypeAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cRemovedAsRootKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		//ElementRemovalAsRootChangeType:
+		//	{ElementRemovalAsRootChangeType} 'removed as root';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{ElementRemovalAsRootChangeType} 'removed as root'
+		public Group getGroup() { return cGroup; }
+		
+		//{ElementRemovalAsRootChangeType}
+		public Action getElementRemovalAsRootChangeTypeAction_0() { return cElementRemovalAsRootChangeTypeAction_0; }
+		
+		//'removed as root'
+		public Keyword getRemovedAsRootKeyword_1() { return cRemovedAsRootKeyword_1; }
+	}
+	public class ElementRemovalFromListChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementRemovalFromListChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cRemovedFromKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final RuleCall cElementFeatureChangeTypeParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		
+		//ElementRemovalFromListChangeType:
+		//	'removed from' ElementFeatureChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'removed from' ElementFeatureChangeType
+		public Group getGroup() { return cGroup; }
+		
+		//'removed from'
+		public Keyword getRemovedFromKeyword_0() { return cRemovedFromKeyword_0; }
+		
+		//ElementFeatureChangeType
+		public RuleCall getElementFeatureChangeTypeParserRuleCall_1() { return cElementFeatureChangeTypeParserRuleCall_1; }
+	}
+	public class ElementReplacementChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementReplacementChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cReplacedAtKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final RuleCall cElementFeatureChangeTypeParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		
+		//ElementReplacementChangeType:
+		//	'replaced at' ElementFeatureChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'replaced at' ElementFeatureChangeType
+		public Group getGroup() { return cGroup; }
+		
+		//'replaced at'
+		public Keyword getReplacedAtKeyword_0() { return cReplacedAtKeyword_0; }
+		
+		//ElementFeatureChangeType
+		public RuleCall getElementFeatureChangeTypeParserRuleCall_1() { return cElementFeatureChangeTypeParserRuleCall_1; }
+	}
+	public class ElementCreationAndInsertionChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementCreationAndInsertionChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cCreateChangeAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cCreateChangeElementCreationChangeTypeParserRuleCall_0_0 = (RuleCall)cCreateChangeAssignment_0.eContents().get(0);
+		private final Keyword cAndKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cInsertChangeAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cInsertChangeElementInsertionChangeTypeParserRuleCall_2_0 = (RuleCall)cInsertChangeAssignment_2.eContents().get(0);
+		
+		//// *********** Compound element changes ***********
+		//ElementCreationAndInsertionChangeType:
+		//	createChange=ElementCreationChangeType 'and' insertChange=ElementInsertionChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//createChange=ElementCreationChangeType 'and' insertChange=ElementInsertionChangeType
+		public Group getGroup() { return cGroup; }
+		
+		//createChange=ElementCreationChangeType
+		public Assignment getCreateChangeAssignment_0() { return cCreateChangeAssignment_0; }
+		
+		//ElementCreationChangeType
+		public RuleCall getCreateChangeElementCreationChangeTypeParserRuleCall_0_0() { return cCreateChangeElementCreationChangeTypeParserRuleCall_0_0; }
+		
+		//'and'
+		public Keyword getAndKeyword_1() { return cAndKeyword_1; }
+		
+		//insertChange=ElementInsertionChangeType
+		public Assignment getInsertChangeAssignment_2() { return cInsertChangeAssignment_2; }
+		
+		//ElementInsertionChangeType
+		public RuleCall getInsertChangeElementInsertionChangeTypeParserRuleCall_2_0() { return cInsertChangeElementInsertionChangeTypeParserRuleCall_2_0; }
+	}
+	public class ElementDeletionAndRemovalChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementDeletionAndRemovalChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cDeleteChangeAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0 = (RuleCall)cDeleteChangeAssignment_0.eContents().get(0);
+		private final Keyword cAndKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cRemoveChangeAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cRemoveChangeElementRemovalChangeTypeParserRuleCall_2_0 = (RuleCall)cRemoveChangeAssignment_2.eContents().get(0);
+		
+		//ElementDeletionAndRemovalChangeType:
+		//	deleteChange=ElementDeletionChangeType 'and' removeChange=ElementRemovalChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//deleteChange=ElementDeletionChangeType 'and' removeChange=ElementRemovalChangeType
+		public Group getGroup() { return cGroup; }
+		
+		//deleteChange=ElementDeletionChangeType
+		public Assignment getDeleteChangeAssignment_0() { return cDeleteChangeAssignment_0; }
+		
+		//ElementDeletionChangeType
+		public RuleCall getDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0() { return cDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0; }
+		
+		//'and'
+		public Keyword getAndKeyword_1() { return cAndKeyword_1; }
+		
+		//removeChange=ElementRemovalChangeType
+		public Assignment getRemoveChangeAssignment_2() { return cRemoveChangeAssignment_2; }
+		
+		//ElementRemovalChangeType
+		public RuleCall getRemoveChangeElementRemovalChangeTypeParserRuleCall_2_0() { return cRemoveChangeElementRemovalChangeTypeParserRuleCall_2_0; }
+	}
+	public class ElementDeletionAndCreationAndReplacementChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cDeleteChangeAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0 = (RuleCall)cDeleteChangeAssignment_0.eContents().get(0);
+		private final Keyword cAndKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cCreateChangeAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cCreateChangeElementCreationChangeTypeParserRuleCall_2_0 = (RuleCall)cCreateChangeAssignment_2.eContents().get(0);
+		private final Keyword cAndKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cReplacedChangeAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cReplacedChangeElementReplacementChangeTypeParserRuleCall_4_0 = (RuleCall)cReplacedChangeAssignment_4.eContents().get(0);
+		
+		//ElementDeletionAndCreationAndReplacementChangeType:
+		//	deleteChange=ElementDeletionChangeType 'and' createChange=ElementCreationChangeType 'and'
+		//	replacedChange=ElementReplacementChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//deleteChange=ElementDeletionChangeType 'and' createChange=ElementCreationChangeType 'and'
+		//replacedChange=ElementReplacementChangeType
+		public Group getGroup() { return cGroup; }
+		
+		//deleteChange=ElementDeletionChangeType
+		public Assignment getDeleteChangeAssignment_0() { return cDeleteChangeAssignment_0; }
+		
+		//ElementDeletionChangeType
+		public RuleCall getDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0() { return cDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0; }
+		
+		//'and'
+		public Keyword getAndKeyword_1() { return cAndKeyword_1; }
+		
+		//createChange=ElementCreationChangeType
+		public Assignment getCreateChangeAssignment_2() { return cCreateChangeAssignment_2; }
+		
+		//ElementCreationChangeType
+		public RuleCall getCreateChangeElementCreationChangeTypeParserRuleCall_2_0() { return cCreateChangeElementCreationChangeTypeParserRuleCall_2_0; }
+		
+		//'and'
+		public Keyword getAndKeyword_3() { return cAndKeyword_3; }
+		
+		//replacedChange=ElementReplacementChangeType
+		public Assignment getReplacedChangeAssignment_4() { return cReplacedChangeAssignment_4; }
+		
+		//ElementReplacementChangeType
+		public RuleCall getReplacedChangeElementReplacementChangeTypeParserRuleCall_4_0() { return cReplacedChangeElementReplacementChangeTypeParserRuleCall_4_0; }
+	}
+	public class ElementChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementChangeType");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cElementExistenceChangeTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cElementUsageChangeTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cElementCompoundChangeTypeParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		
+		//ElementChangeType:
+		//	ElementExistenceChangeType | ElementUsageChangeType | ElementCompoundChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//ElementExistenceChangeType | ElementUsageChangeType | ElementCompoundChangeType
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//ElementExistenceChangeType
+		public RuleCall getElementExistenceChangeTypeParserRuleCall_0() { return cElementExistenceChangeTypeParserRuleCall_0; }
+		
+		//ElementUsageChangeType
+		public RuleCall getElementUsageChangeTypeParserRuleCall_1() { return cElementUsageChangeTypeParserRuleCall_1; }
+		
+		//ElementCompoundChangeType
+		public RuleCall getElementCompoundChangeTypeParserRuleCall_2() { return cElementCompoundChangeTypeParserRuleCall_2; }
+	}
+	public class ElementCompoundChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementCompoundChangeType");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cElementCreationAndInsertionChangeTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cElementDeletionAndRemovalChangeTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cElementDeletionAndCreationAndReplacementChangeTypeParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		
+		//ElementCompoundChangeType:
+		//	ElementCreationAndInsertionChangeType | ElementDeletionAndRemovalChangeType |
+		//	ElementDeletionAndCreationAndReplacementChangeType;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//ElementCreationAndInsertionChangeType | ElementDeletionAndRemovalChangeType |
+		//ElementDeletionAndCreationAndReplacementChangeType
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//ElementCreationAndInsertionChangeType
+		public RuleCall getElementCreationAndInsertionChangeTypeParserRuleCall_0() { return cElementCreationAndInsertionChangeTypeParserRuleCall_0; }
+		
+		//ElementDeletionAndRemovalChangeType
+		public RuleCall getElementDeletionAndRemovalChangeTypeParserRuleCall_1() { return cElementDeletionAndRemovalChangeTypeParserRuleCall_1; }
+		
+		//ElementDeletionAndCreationAndReplacementChangeType
+		public RuleCall getElementDeletionAndCreationAndReplacementChangeTypeParserRuleCall_2() { return cElementDeletionAndCreationAndReplacementChangeTypeParserRuleCall_2; }
 	}
 	public class RoutineElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.Routine");
@@ -1411,13 +1732,28 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	private final InvariantViolationEventElements pInvariantViolationEvent;
 	private final TriggerElements pTrigger;
 	private final ModelChangeElements pModelChange;
-	private final ConcreteModelElementChangeElements pConcreteModelElementChange;
-	private final AtomicConcreteModelElementChangeElements pAtomicConcreteModelElementChange;
-	private final AtomicRootObjectChangeElements pAtomicRootObjectChange;
-	private final AtomicFeatureChangeElements pAtomicFeatureChange;
-	private final AtomicMultiValuedFeatureChangeElements pAtomicMultiValuedFeatureChange;
-	private final AtomicSingleValuedFeatureChangeElements pAtomicSingleValuedFeatureChange;
-	private final ArbitraryModelElementChangeElements pArbitraryModelElementChange;
+	private final ConcreteModelChangeElements pConcreteModelChange;
+	private final ModelElementChangeElements pModelElementChange;
+	private final ModelAttributeChangeElements pModelAttributeChange;
+	private final ArbitraryModelChangeElements pArbitraryModelChange;
+	private final ElementExistenceChangeTypeElements pElementExistenceChangeType;
+	private final ElementUsageChangeTypeElements pElementUsageChangeType;
+	private final ElementCreationChangeTypeElements pElementCreationChangeType;
+	private final ElementDeletionChangeTypeElements pElementDeletionChangeType;
+	private final ElementFeatureChangeTypeElements pElementFeatureChangeType;
+	private final ElementRootChangeTypeElements pElementRootChangeType;
+	private final ElementInsertionChangeTypeElements pElementInsertionChangeType;
+	private final ElementInsertionInListChangeTypeElements pElementInsertionInListChangeType;
+	private final ElementInsertionAsRootChangeTypeElements pElementInsertionAsRootChangeType;
+	private final ElementRemovalChangeTypeElements pElementRemovalChangeType;
+	private final ElementRemovalAsRootChangeTypeElements pElementRemovalAsRootChangeType;
+	private final ElementRemovalFromListChangeTypeElements pElementRemovalFromListChangeType;
+	private final ElementReplacementChangeTypeElements pElementReplacementChangeType;
+	private final ElementCreationAndInsertionChangeTypeElements pElementCreationAndInsertionChangeType;
+	private final ElementDeletionAndRemovalChangeTypeElements pElementDeletionAndRemovalChangeType;
+	private final ElementDeletionAndCreationAndReplacementChangeTypeElements pElementDeletionAndCreationAndReplacementChangeType;
+	private final ElementChangeTypeElements pElementChangeType;
+	private final ElementCompoundChangeTypeElements pElementCompoundChangeType;
 	private final RoutineElements pRoutine;
 	private final RoutineInputElements pRoutineInput;
 	private final MatcherBlockElements pMatcherBlock;
@@ -1467,13 +1803,28 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		this.pInvariantViolationEvent = new InvariantViolationEventElements();
 		this.pTrigger = new TriggerElements();
 		this.pModelChange = new ModelChangeElements();
-		this.pConcreteModelElementChange = new ConcreteModelElementChangeElements();
-		this.pAtomicConcreteModelElementChange = new AtomicConcreteModelElementChangeElements();
-		this.pAtomicRootObjectChange = new AtomicRootObjectChangeElements();
-		this.pAtomicFeatureChange = new AtomicFeatureChangeElements();
-		this.pAtomicMultiValuedFeatureChange = new AtomicMultiValuedFeatureChangeElements();
-		this.pAtomicSingleValuedFeatureChange = new AtomicSingleValuedFeatureChangeElements();
-		this.pArbitraryModelElementChange = new ArbitraryModelElementChangeElements();
+		this.pConcreteModelChange = new ConcreteModelChangeElements();
+		this.pModelElementChange = new ModelElementChangeElements();
+		this.pModelAttributeChange = new ModelAttributeChangeElements();
+		this.pArbitraryModelChange = new ArbitraryModelChangeElements();
+		this.pElementExistenceChangeType = new ElementExistenceChangeTypeElements();
+		this.pElementUsageChangeType = new ElementUsageChangeTypeElements();
+		this.pElementCreationChangeType = new ElementCreationChangeTypeElements();
+		this.pElementDeletionChangeType = new ElementDeletionChangeTypeElements();
+		this.pElementFeatureChangeType = new ElementFeatureChangeTypeElements();
+		this.pElementRootChangeType = new ElementRootChangeTypeElements();
+		this.pElementInsertionChangeType = new ElementInsertionChangeTypeElements();
+		this.pElementInsertionInListChangeType = new ElementInsertionInListChangeTypeElements();
+		this.pElementInsertionAsRootChangeType = new ElementInsertionAsRootChangeTypeElements();
+		this.pElementRemovalChangeType = new ElementRemovalChangeTypeElements();
+		this.pElementRemovalAsRootChangeType = new ElementRemovalAsRootChangeTypeElements();
+		this.pElementRemovalFromListChangeType = new ElementRemovalFromListChangeTypeElements();
+		this.pElementReplacementChangeType = new ElementReplacementChangeTypeElements();
+		this.pElementCreationAndInsertionChangeType = new ElementCreationAndInsertionChangeTypeElements();
+		this.pElementDeletionAndRemovalChangeType = new ElementDeletionAndRemovalChangeTypeElements();
+		this.pElementDeletionAndCreationAndReplacementChangeType = new ElementDeletionAndCreationAndReplacementChangeTypeElements();
+		this.pElementChangeType = new ElementChangeTypeElements();
+		this.pElementCompoundChangeType = new ElementCompoundChangeTypeElements();
 		this.pRoutine = new RoutineElements();
 		this.pRoutineInput = new RoutineInputElements();
 		this.pMatcherBlock = new MatcherBlockElements();
@@ -1608,7 +1959,7 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	}
 	
 	//ModelChange:
-	//	ConcreteModelElementChange | ArbitraryModelElementChange;
+	//	ArbitraryModelChange | ConcreteModelChange;
 	public ModelChangeElements getModelChangeAccess() {
 		return pModelChange;
 	}
@@ -1617,81 +1968,230 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		return getModelChangeAccess().getRule();
 	}
 	
-	//ConcreteModelElementChange:
-	//	AtomicConcreteModelElementChange;
-	public ConcreteModelElementChangeElements getConcreteModelElementChangeAccess() {
-		return pConcreteModelElementChange;
+	//ConcreteModelChange:
+	//	ModelElementChange | ModelAttributeChange;
+	public ConcreteModelChangeElements getConcreteModelChangeAccess() {
+		return pConcreteModelChange;
 	}
 	
-	public ParserRule getConcreteModelElementChangeRule() {
-		return getConcreteModelElementChangeAccess().getRule();
+	public ParserRule getConcreteModelChangeRule() {
+		return getConcreteModelChangeAccess().getRule();
 	}
 	
-	//AtomicConcreteModelElementChange:
-	//	AtomicRootObjectChange | AtomicFeatureChange;
-	public AtomicConcreteModelElementChangeElements getAtomicConcreteModelElementChangeAccess() {
-		return pAtomicConcreteModelElementChange;
+	//ModelElementChange:
+	//	'element' elementType=UnnamedMetaclassReference? changeType=ElementChangeType;
+	public ModelElementChangeElements getModelElementChangeAccess() {
+		return pModelElementChange;
 	}
 	
-	public ParserRule getAtomicConcreteModelElementChangeRule() {
-		return getAtomicConcreteModelElementChangeAccess().getRule();
+	public ParserRule getModelElementChangeRule() {
+		return getModelElementChangeAccess().getRule();
 	}
 	
-	//AtomicRootObjectChange:
-	//	('root created and inserted' {InsertRootChange} |
-	//	'root deleted and removed' {RemoveRootChange}) changedElement=UnnamedMetaclassReference;
-	public AtomicRootObjectChangeElements getAtomicRootObjectChangeAccess() {
-		return pAtomicRootObjectChange;
+	//ModelAttributeChange:
+	//	'attribute' ({ModelAttributeInsertedChange} 'insert in' | {ModelAttributeRemovedChange} 'remove from' |
+	//	{ModelAttributeReplacedChange} 'replaced at') feature=MetaclassFeatureReference;
+	public ModelAttributeChangeElements getModelAttributeChangeAccess() {
+		return pModelAttributeChange;
 	}
 	
-	public ParserRule getAtomicRootObjectChangeRule() {
-		return getAtomicRootObjectChangeAccess().getRule();
+	public ParserRule getModelAttributeChangeRule() {
+		return getModelAttributeChangeAccess().getRule();
 	}
 	
-	//AtomicFeatureChange:
-	//	(AtomicMultiValuedFeatureChange | AtomicSingleValuedFeatureChange) changedFeature=MetaclassFeatureReference;
-	public AtomicFeatureChangeElements getAtomicFeatureChangeAccess() {
-		return pAtomicFeatureChange;
+	//ArbitraryModelChange:
+	//	{ArbitraryModelChange} 'any change';
+	public ArbitraryModelChangeElements getArbitraryModelChangeAccess() {
+		return pArbitraryModelChange;
 	}
 	
-	public ParserRule getAtomicFeatureChangeRule() {
-		return getAtomicFeatureChangeAccess().getRule();
+	public ParserRule getArbitraryModelChangeRule() {
+		return getArbitraryModelChangeAccess().getRule();
 	}
 	
-	//AtomicMultiValuedFeatureChange:
-	//	'list entry created and inserted in' {MultiValuedFeatureInsertChange} |
-	//	'list entry deleted and removed in' {MultiValuedFeatureRemoveChange} |
-	//	// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
-	//	// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
-	//	// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
-	//	// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
-	//	'list permuted' {MultiValuedFeaturePermuteChange};
-	public AtomicMultiValuedFeatureChangeElements getAtomicMultiValuedFeatureChangeAccess() {
-		return pAtomicMultiValuedFeatureChange;
+	//// *********** Atomic element changes ***********
+	//ElementExistenceChangeType:
+	//	ElementCreationChangeType | ElementDeletionChangeType;
+	public ElementExistenceChangeTypeElements getElementExistenceChangeTypeAccess() {
+		return pElementExistenceChangeType;
 	}
 	
-	public ParserRule getAtomicMultiValuedFeatureChangeRule() {
-		return getAtomicMultiValuedFeatureChangeAccess().getRule();
+	public ParserRule getElementExistenceChangeTypeRule() {
+		return getElementExistenceChangeTypeAccess().getRule();
 	}
 	
-	//AtomicSingleValuedFeatureChange: //'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-	//	'value replaced for' {SingleValuedFeatureReplace};
-	public AtomicSingleValuedFeatureChangeElements getAtomicSingleValuedFeatureChangeAccess() {
-		return pAtomicSingleValuedFeatureChange;
+	//ElementUsageChangeType ModelElementUsageChangeType:
+	//	ElementInsertionChangeType | ElementRemovalChangeType | ElementReplacementChangeType
+	public ElementUsageChangeTypeElements getElementUsageChangeTypeAccess() {
+		return pElementUsageChangeType;
 	}
 	
-	public ParserRule getAtomicSingleValuedFeatureChangeRule() {
-		return getAtomicSingleValuedFeatureChangeAccess().getRule();
+	public ParserRule getElementUsageChangeTypeRule() {
+		return getElementUsageChangeTypeAccess().getRule();
 	}
 	
-	//ArbitraryModelElementChange:
-	//	{ArbitraryModelElementChange} 'any change';
-	public ArbitraryModelElementChangeElements getArbitraryModelElementChangeAccess() {
-		return pArbitraryModelElementChange;
+	//ElementCreationChangeType:
+	//	'created' {ElementCreationChangeType};
+	public ElementCreationChangeTypeElements getElementCreationChangeTypeAccess() {
+		return pElementCreationChangeType;
 	}
 	
-	public ParserRule getArbitraryModelElementChangeRule() {
-		return getArbitraryModelElementChangeAccess().getRule();
+	public ParserRule getElementCreationChangeTypeRule() {
+		return getElementCreationChangeTypeAccess().getRule();
+	}
+	
+	//ElementDeletionChangeType:
+	//	'deleted' {ElementDeletionChangeType};
+	public ElementDeletionChangeTypeElements getElementDeletionChangeTypeAccess() {
+		return pElementDeletionChangeType;
+	}
+	
+	public ParserRule getElementDeletionChangeTypeRule() {
+		return getElementDeletionChangeTypeAccess().getRule();
+	}
+	
+	//fragment ElementFeatureChangeType:
+	//	feature=MetaclassFeatureReference;
+	public ElementFeatureChangeTypeElements getElementFeatureChangeTypeAccess() {
+		return pElementFeatureChangeType;
+	}
+	
+	public ParserRule getElementFeatureChangeTypeRule() {
+		return getElementFeatureChangeTypeAccess().getRule();
+	}
+	
+	//// This is just for a complete type hierachy
+	//ElementRootChangeType:
+	//	ElementInsertionAsRootChangeType | ElementRemovalAsRootChangeType;
+	public ElementRootChangeTypeElements getElementRootChangeTypeAccess() {
+		return pElementRootChangeType;
+	}
+	
+	public ParserRule getElementRootChangeTypeRule() {
+		return getElementRootChangeTypeAccess().getRule();
+	}
+	
+	//ElementInsertionChangeType:
+	//	ElementInsertionInListChangeType | ElementInsertionAsRootChangeType;
+	public ElementInsertionChangeTypeElements getElementInsertionChangeTypeAccess() {
+		return pElementInsertionChangeType;
+	}
+	
+	public ParserRule getElementInsertionChangeTypeRule() {
+		return getElementInsertionChangeTypeAccess().getRule();
+	}
+	
+	//ElementInsertionInListChangeType:
+	//	'inserted in' ElementFeatureChangeType;
+	public ElementInsertionInListChangeTypeElements getElementInsertionInListChangeTypeAccess() {
+		return pElementInsertionInListChangeType;
+	}
+	
+	public ParserRule getElementInsertionInListChangeTypeRule() {
+		return getElementInsertionInListChangeTypeAccess().getRule();
+	}
+	
+	//ElementInsertionAsRootChangeType:
+	//	{ElementInsertionAsRootChangeType} 'inserted as root';
+	public ElementInsertionAsRootChangeTypeElements getElementInsertionAsRootChangeTypeAccess() {
+		return pElementInsertionAsRootChangeType;
+	}
+	
+	public ParserRule getElementInsertionAsRootChangeTypeRule() {
+		return getElementInsertionAsRootChangeTypeAccess().getRule();
+	}
+	
+	//ElementRemovalChangeType:
+	//	ElementRemovalAsRootChangeType | ElementRemovalFromListChangeType;
+	public ElementRemovalChangeTypeElements getElementRemovalChangeTypeAccess() {
+		return pElementRemovalChangeType;
+	}
+	
+	public ParserRule getElementRemovalChangeTypeRule() {
+		return getElementRemovalChangeTypeAccess().getRule();
+	}
+	
+	//ElementRemovalAsRootChangeType:
+	//	{ElementRemovalAsRootChangeType} 'removed as root';
+	public ElementRemovalAsRootChangeTypeElements getElementRemovalAsRootChangeTypeAccess() {
+		return pElementRemovalAsRootChangeType;
+	}
+	
+	public ParserRule getElementRemovalAsRootChangeTypeRule() {
+		return getElementRemovalAsRootChangeTypeAccess().getRule();
+	}
+	
+	//ElementRemovalFromListChangeType:
+	//	'removed from' ElementFeatureChangeType;
+	public ElementRemovalFromListChangeTypeElements getElementRemovalFromListChangeTypeAccess() {
+		return pElementRemovalFromListChangeType;
+	}
+	
+	public ParserRule getElementRemovalFromListChangeTypeRule() {
+		return getElementRemovalFromListChangeTypeAccess().getRule();
+	}
+	
+	//ElementReplacementChangeType:
+	//	'replaced at' ElementFeatureChangeType;
+	public ElementReplacementChangeTypeElements getElementReplacementChangeTypeAccess() {
+		return pElementReplacementChangeType;
+	}
+	
+	public ParserRule getElementReplacementChangeTypeRule() {
+		return getElementReplacementChangeTypeAccess().getRule();
+	}
+	
+	//// *********** Compound element changes ***********
+	//ElementCreationAndInsertionChangeType:
+	//	createChange=ElementCreationChangeType 'and' insertChange=ElementInsertionChangeType;
+	public ElementCreationAndInsertionChangeTypeElements getElementCreationAndInsertionChangeTypeAccess() {
+		return pElementCreationAndInsertionChangeType;
+	}
+	
+	public ParserRule getElementCreationAndInsertionChangeTypeRule() {
+		return getElementCreationAndInsertionChangeTypeAccess().getRule();
+	}
+	
+	//ElementDeletionAndRemovalChangeType:
+	//	deleteChange=ElementDeletionChangeType 'and' removeChange=ElementRemovalChangeType;
+	public ElementDeletionAndRemovalChangeTypeElements getElementDeletionAndRemovalChangeTypeAccess() {
+		return pElementDeletionAndRemovalChangeType;
+	}
+	
+	public ParserRule getElementDeletionAndRemovalChangeTypeRule() {
+		return getElementDeletionAndRemovalChangeTypeAccess().getRule();
+	}
+	
+	//ElementDeletionAndCreationAndReplacementChangeType:
+	//	deleteChange=ElementDeletionChangeType 'and' createChange=ElementCreationChangeType 'and'
+	//	replacedChange=ElementReplacementChangeType;
+	public ElementDeletionAndCreationAndReplacementChangeTypeElements getElementDeletionAndCreationAndReplacementChangeTypeAccess() {
+		return pElementDeletionAndCreationAndReplacementChangeType;
+	}
+	
+	public ParserRule getElementDeletionAndCreationAndReplacementChangeTypeRule() {
+		return getElementDeletionAndCreationAndReplacementChangeTypeAccess().getRule();
+	}
+	
+	//ElementChangeType:
+	//	ElementExistenceChangeType | ElementUsageChangeType | ElementCompoundChangeType;
+	public ElementChangeTypeElements getElementChangeTypeAccess() {
+		return pElementChangeType;
+	}
+	
+	public ParserRule getElementChangeTypeRule() {
+		return getElementChangeTypeAccess().getRule();
+	}
+	
+	//ElementCompoundChangeType:
+	//	ElementCreationAndInsertionChangeType | ElementDeletionAndRemovalChangeType |
+	//	ElementDeletionAndCreationAndReplacementChangeType;
+	public ElementCompoundChangeTypeElements getElementCompoundChangeTypeAccess() {
+		return pElementCompoundChangeType;
+	}
+	
+	public ParserRule getElementCompoundChangeTypeRule() {
+		return getElementCompoundChangeTypeAccess().getRule();
 	}
 	
 	//// ***************************************

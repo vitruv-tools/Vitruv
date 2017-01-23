@@ -7,6 +7,7 @@ import org.eclipse.xtext.xtext.generator.model.project.*
 var rootPath = ".."
 var projectName = "tools.vitruv.dsls.reactions"
 var runtimeProject = "../${projectName}"
+var testProjectPath = "../../../tests/dsls/${projectName}"
 
 Workflow {
 	bean = StandaloneSetup {
@@ -31,7 +32,11 @@ Workflow {
     }
     
     component = DirectoryCleaner {
-    	directory = "${runtimeProject}.tests/src-gen"
+    	directory = "${testProjectPath}.tests/src-gen"
+    }
+    
+    component = DirectoryCleaner {
+    	directory = "${testProjectPath}.ui.tests/src-gen"
     }
     
 	component = postprocessor.ReactionsLanguageExtendedGenerator {
@@ -41,12 +46,14 @@ Workflow {
 				rootPath = rootPath
 				runtimeTest = {
 					enabled = true
+					root = "${testProjectPath}.tests"
 				}
 				eclipsePlugin = {
 					enabled = true
 				}
 				eclipsePluginTest = {
 					enabled = true
+					root = "${testProjectPath}.ui.tests"
 				}
 				createEclipseMetaData = true
 			}
