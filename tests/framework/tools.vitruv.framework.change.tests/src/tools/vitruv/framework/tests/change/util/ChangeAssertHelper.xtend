@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Assert
 
-import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import tools.vitruv.framework.change.echange.root.RootEChange
@@ -81,23 +80,8 @@ class ChangeAssertHelper {
 		eObject.eClass.getEStructuralFeature(name)
 	}
 
-	public static def assertIndices(PermuteListEChange<?, ?> permuteChange, List<Integer> expectedIndices) {
-		Assert.assertEquals("The new indices for elements at old indices is wrong", expectedIndices,
-			permuteChange.newIndicesForElementsAtOldIndices)
-	}
-
 	def public static void assertPermuteAttributeListTest(List<?> changes, EObject rootElement,
 		List<Integer> expectedIndicesForElementsAtOldIndices, EStructuralFeature affectedFeature) {
-	}
-
-	def public static void assertPermuteListTest(EChange change, EObject rootElement,
-		List<Integer> expectedIndicesForElementsAtOldIndices, EStructuralFeature affectedFeature,
-		Class<? extends EChange> changeType) {
-		Assert.assertTrue(PermuteListEChange.isAssignableFrom(changeType))
-		val permuteEAttributeValues = assertObjectInstanceOf(change, PermuteListEChange)
-		permuteEAttributeValues.assertAffectedEObject(rootElement)
-		permuteEAttributeValues.assertAffectedEFeature(affectedFeature)
-		permuteEAttributeValues.assertIndices(expectedIndicesForElementsAtOldIndices)
 	}
 
 	def static void assertContainment(UpdateReferenceEChange<?> updateEReference, boolean expectedValue) {
