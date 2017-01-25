@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tools.vitruv</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -40,7 +40,7 @@
 		<repository>
 			<id>SDQ Commons</id>
 			<layout>p2</layout>
-			<url>http://kit-sdq.github.io/updatesite/release/commons</url>
+			<url>http://kit-sdq.github.io/updatesite/nightly/commons</url>
 		</repository>
 	</repositories>
 
