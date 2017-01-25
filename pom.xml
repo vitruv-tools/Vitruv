@@ -35,7 +35,7 @@
 		<repository>
 			<id>Vitruv License</id>
 			<layout>p2</layout>
-			<url>http://vitruv-tools.github.io/updatesite/nightly/license</url>
+			<url>http://vitruv-tools.github.io/updatesite/release/license</url>
 		</repository>
 		<repository>
 			<id>SDQ Commons</id>

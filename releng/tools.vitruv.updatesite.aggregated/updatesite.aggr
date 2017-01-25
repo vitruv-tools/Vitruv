@@ -12,12 +12,12 @@
         <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.10.0" categories="//@customCategories[identifier='externals']"/>
         <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.10.0" categories="//@customCategories[identifier='externals']"/>
       </repositories>
-      <repositories location="http://vitruv-tools.github.io/updatesite/nightly/license" mirrorArtifacts="false">
-        <features name="tools.vitruv.license.feature.feature.group" versionRange="1.0.0" categories="//@customCategories[identifier='externals']"/>
+      <repositories location="http://vitruv-tools.github.io/updatesite/release/license">
+        <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)" categories="//@customCategories[identifier='externals']"/>
       </repositories>
-      <repositories location="http://kit-sdq.github.io/updatesite/nightly/commons" mirrorArtifacts="false">
-        <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="1.0.0" categories="//@customCategories[identifier='externals']"/>
-        <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="1.0.0" categories="//@customCategories[identifier='externals']"/>
+      <repositories location="http://kit-sdq.github.io/updatesite/nightly/commons">
+        <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="[1.0.0,2.0.0)" categories="//@customCategories[identifier='externals']"/>
+        <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="[1.0.0,2.0.0)" categories="//@customCategories[identifier='externals']"/>
       </repositories>
     </contributions>
   </validationSets>
