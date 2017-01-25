@@ -2,8 +2,13 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -13,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
+import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
@@ -168,6 +174,20 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<AtomicEChange> getAtomicChanges() {
+		final BasicEList<AtomicEChange> list = new BasicEList<AtomicEChange>();
+		R _removeChange = this.getRemoveChange();
+		list.add(_removeChange);
+		I _insertChange = this.getInsertChange();
+		list.add(_insertChange);
+		return list;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -246,6 +266,20 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 				return insertChange != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case CompoundPackage.REPLACE_IN_ELIST___GET_ATOMIC_CHANGES:
+				return getAtomicChanges();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //ReplaceInEListImpl

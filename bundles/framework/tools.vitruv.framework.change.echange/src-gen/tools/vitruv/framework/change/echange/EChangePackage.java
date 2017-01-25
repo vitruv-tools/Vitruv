@@ -2,11 +2,9 @@
  */
 package tools.vitruv.framework.change.echange;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,6 +20,7 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- end-user-doc -->
  * @see tools.vitruv.framework.change.echange.EChangeFactory
  * @model kind="package"
+ *        annotation="http://www.eclipse.org/emf/2002/GenModel modelName='Change' prefix='EChange' basePackage='tools.vitruv.framework.change'"
  * @generated
  */
 public interface EChangePackage extends EPackage {
@@ -187,116 +186,6 @@ public interface EChangePackage extends EPackage {
 	 */
 	int SUBTRACTIVE_ECHANGE_OPERATION_COUNT = ATOMIC_ECHANGE_OPERATION_COUNT + 1;
 
-	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.EObjectAddedEChangeImpl <em>EObject Added EChange</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.impl.EObjectAddedEChangeImpl
-	 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getEObjectAddedEChange()
-	 * @generated
-	 */
-	int EOBJECT_ADDED_ECHANGE = 4;
-
-	/**
-	 * The feature id for the '<em><b>New Value</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_ADDED_ECHANGE__NEW_VALUE = ADDITIVE_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Is Create</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_ADDED_ECHANGE__IS_CREATE = ADDITIVE_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>EObject Added EChange</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_ADDED_ECHANGE_FEATURE_COUNT = ADDITIVE_ECHANGE_FEATURE_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Get New Value</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_ADDED_ECHANGE___GET_NEW_VALUE = ADDITIVE_ECHANGE___GET_NEW_VALUE;
-
-	/**
-	 * The number of operations of the '<em>EObject Added EChange</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_ADDED_ECHANGE_OPERATION_COUNT = ADDITIVE_ECHANGE_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.EObjectSubtractedEChangeImpl <em>EObject Subtracted EChange</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.impl.EObjectSubtractedEChangeImpl
-	 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getEObjectSubtractedEChange()
-	 * @generated
-	 */
-	int EOBJECT_SUBTRACTED_ECHANGE = 5;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Is Delete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>EObject Subtracted EChange</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Get Old Value</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_SUBTRACTED_ECHANGE___GET_OLD_VALUE = SUBTRACTIVE_ECHANGE___GET_OLD_VALUE;
-
-	/**
-	 * The number of operations of the '<em>EObject Subtracted EChange</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_SUBTRACTED_ECHANGE_OPERATION_COUNT = SUBTRACTIVE_ECHANGE_OPERATION_COUNT + 0;
-
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.EChange <em>EChange</em>}'.
@@ -357,70 +246,6 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getSubtractiveEChange__GetOldValue();
-
-	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.EObjectAddedEChange <em>EObject Added EChange</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>EObject Added EChange</em>'.
-	 * @see tools.vitruv.framework.change.echange.EObjectAddedEChange
-	 * @generated
-	 */
-	EClass getEObjectAddedEChange();
-
-	/**
-	 * Returns the meta object for the reference '{@link tools.vitruv.framework.change.echange.EObjectAddedEChange#getNewValue <em>New Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>New Value</em>'.
-	 * @see tools.vitruv.framework.change.echange.EObjectAddedEChange#getNewValue()
-	 * @see #getEObjectAddedEChange()
-	 * @generated
-	 */
-	EReference getEObjectAddedEChange_NewValue();
-
-	/**
-	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.EObjectAddedEChange#isIsCreate <em>Is Create</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Create</em>'.
-	 * @see tools.vitruv.framework.change.echange.EObjectAddedEChange#isIsCreate()
-	 * @see #getEObjectAddedEChange()
-	 * @generated
-	 */
-	EAttribute getEObjectAddedEChange_IsCreate();
-
-	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.EObjectSubtractedEChange <em>EObject Subtracted EChange</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>EObject Subtracted EChange</em>'.
-	 * @see tools.vitruv.framework.change.echange.EObjectSubtractedEChange
-	 * @generated
-	 */
-	EClass getEObjectSubtractedEChange();
-
-	/**
-	 * Returns the meta object for the reference '{@link tools.vitruv.framework.change.echange.EObjectSubtractedEChange#getOldValue <em>Old Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Old Value</em>'.
-	 * @see tools.vitruv.framework.change.echange.EObjectSubtractedEChange#getOldValue()
-	 * @see #getEObjectSubtractedEChange()
-	 * @generated
-	 */
-	EReference getEObjectSubtractedEChange_OldValue();
-
-	/**
-	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.EObjectSubtractedEChange#isIsDelete <em>Is Delete</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Delete</em>'.
-	 * @see tools.vitruv.framework.change.echange.EObjectSubtractedEChange#isIsDelete()
-	 * @see #getEObjectSubtractedEChange()
-	 * @generated
-	 */
-	EAttribute getEObjectSubtractedEChange_IsDelete();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -500,58 +325,6 @@ public interface EChangePackage extends EPackage {
 		 * @generated
 		 */
 		EOperation SUBTRACTIVE_ECHANGE___GET_OLD_VALUE = eINSTANCE.getSubtractiveEChange__GetOldValue();
-
-		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.impl.EObjectAddedEChangeImpl <em>EObject Added EChange</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.impl.EObjectAddedEChangeImpl
-		 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getEObjectAddedEChange()
-		 * @generated
-		 */
-		EClass EOBJECT_ADDED_ECHANGE = eINSTANCE.getEObjectAddedEChange();
-
-		/**
-		 * The meta object literal for the '<em><b>New Value</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference EOBJECT_ADDED_ECHANGE__NEW_VALUE = eINSTANCE.getEObjectAddedEChange_NewValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Is Create</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute EOBJECT_ADDED_ECHANGE__IS_CREATE = eINSTANCE.getEObjectAddedEChange_IsCreate();
-
-		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.impl.EObjectSubtractedEChangeImpl <em>EObject Subtracted EChange</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.impl.EObjectSubtractedEChangeImpl
-		 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getEObjectSubtractedEChange()
-		 * @generated
-		 */
-		EClass EOBJECT_SUBTRACTED_ECHANGE = eINSTANCE.getEObjectSubtractedEChange();
-
-		/**
-		 * The meta object literal for the '<em><b>Old Value</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE = eINSTANCE.getEObjectSubtractedEChange_OldValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Is Delete</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE = eINSTANCE.getEObjectSubtractedEChange_IsDelete();
 
 	}
 

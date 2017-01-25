@@ -2,8 +2,9 @@
  */
 package tools.vitruv.framework.change.echange.root;
 
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
 import org.eclipse.emf.ecore.EObject;
+
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 
 /**
  * <!-- begin-user-doc -->

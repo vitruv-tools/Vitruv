@@ -523,59 +523,34 @@ ruleModelChange returns [EObject current=null]
 }:
 	(
 		{
-			newCompositeNode(grammarAccess.getModelChangeAccess().getConcreteModelElementChangeParserRuleCall_0());
+			newCompositeNode(grammarAccess.getModelChangeAccess().getArbitraryModelChangeParserRuleCall_0());
 		}
-		this_ConcreteModelElementChange_0=ruleConcreteModelElementChange
+		this_ArbitraryModelChange_0=ruleArbitraryModelChange
 		{
-			$current = $this_ConcreteModelElementChange_0.current;
+			$current = $this_ArbitraryModelChange_0.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getModelChangeAccess().getArbitraryModelElementChangeParserRuleCall_1());
+			newCompositeNode(grammarAccess.getModelChangeAccess().getConcreteModelChangeParserRuleCall_1());
 		}
-		this_ArbitraryModelElementChange_1=ruleArbitraryModelElementChange
+		this_ConcreteModelChange_1=ruleConcreteModelChange
 		{
-			$current = $this_ArbitraryModelElementChange_1.current;
+			$current = $this_ConcreteModelChange_1.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
 ;
 
-// Entry rule entryRuleConcreteModelElementChange
-entryRuleConcreteModelElementChange returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getConcreteModelElementChangeRule()); }
-	iv_ruleConcreteModelElementChange=ruleConcreteModelElementChange
-	{ $current=$iv_ruleConcreteModelElementChange.current; }
+// Entry rule entryRuleConcreteModelChange
+entryRuleConcreteModelChange returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getConcreteModelChangeRule()); }
+	iv_ruleConcreteModelChange=ruleConcreteModelChange
+	{ $current=$iv_ruleConcreteModelChange.current; }
 	EOF;
 
-// Rule ConcreteModelElementChange
-ruleConcreteModelElementChange returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	{
-		newCompositeNode(grammarAccess.getConcreteModelElementChangeAccess().getAtomicConcreteModelElementChangeParserRuleCall());
-	}
-	this_AtomicConcreteModelElementChange_0=ruleAtomicConcreteModelElementChange
-	{
-		$current = $this_AtomicConcreteModelElementChange_0.current;
-		afterParserOrEnumRuleCall();
-	}
-;
-
-// Entry rule entryRuleAtomicConcreteModelElementChange
-entryRuleAtomicConcreteModelElementChange returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getAtomicConcreteModelElementChangeRule()); }
-	iv_ruleAtomicConcreteModelElementChange=ruleAtomicConcreteModelElementChange
-	{ $current=$iv_ruleAtomicConcreteModelElementChange.current; }
-	EOF;
-
-// Rule AtomicConcreteModelElementChange
-ruleAtomicConcreteModelElementChange returns [EObject current=null]
+// Rule ConcreteModelChange
+ruleConcreteModelChange returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -584,34 +559,34 @@ ruleAtomicConcreteModelElementChange returns [EObject current=null]
 }:
 	(
 		{
-			newCompositeNode(grammarAccess.getAtomicConcreteModelElementChangeAccess().getAtomicRootObjectChangeParserRuleCall_0());
+			newCompositeNode(grammarAccess.getConcreteModelChangeAccess().getModelElementChangeParserRuleCall_0());
 		}
-		this_AtomicRootObjectChange_0=ruleAtomicRootObjectChange
+		this_ModelElementChange_0=ruleModelElementChange
 		{
-			$current = $this_AtomicRootObjectChange_0.current;
+			$current = $this_ModelElementChange_0.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getAtomicConcreteModelElementChangeAccess().getAtomicFeatureChangeParserRuleCall_1());
+			newCompositeNode(grammarAccess.getConcreteModelChangeAccess().getModelAttributeChangeParserRuleCall_1());
 		}
-		this_AtomicFeatureChange_1=ruleAtomicFeatureChange
+		this_ModelAttributeChange_1=ruleModelAttributeChange
 		{
-			$current = $this_AtomicFeatureChange_1.current;
+			$current = $this_ModelAttributeChange_1.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
 ;
 
-// Entry rule entryRuleAtomicRootObjectChange
-entryRuleAtomicRootObjectChange returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getAtomicRootObjectChangeRule()); }
-	iv_ruleAtomicRootObjectChange=ruleAtomicRootObjectChange
-	{ $current=$iv_ruleAtomicRootObjectChange.current; }
+// Entry rule entryRuleModelElementChange
+entryRuleModelElementChange returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getModelElementChangeRule()); }
+	iv_ruleModelElementChange=ruleModelElementChange
+	{ $current=$iv_ruleModelElementChange.current; }
 	EOF;
 
-// Rule AtomicRootObjectChange
-ruleAtomicRootObjectChange returns [EObject current=null]
+// Rule ModelElementChange
+ruleModelElementChange returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -619,50 +594,44 @@ ruleAtomicRootObjectChange returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		(
-			(
-				otherlv_0='root created and inserted'
-				{
-					newLeafNode(otherlv_0, grammarAccess.getAtomicRootObjectChangeAccess().getRootCreatedAndInsertedKeyword_0_0_0());
-				}
-				(
-					{
-						$current = forceCreateModelElement(
-							grammarAccess.getAtomicRootObjectChangeAccess().getInsertRootChangeAction_0_0_1(),
-							$current);
-					}
-				)
-			)
-			    |
-			(
-				otherlv_2='root deleted and removed'
-				{
-					newLeafNode(otherlv_2, grammarAccess.getAtomicRootObjectChangeAccess().getRootDeletedAndRemovedKeyword_0_1_0());
-				}
-				(
-					{
-						$current = forceCreateModelElement(
-							grammarAccess.getAtomicRootObjectChangeAccess().getRemoveRootChangeAction_0_1_1(),
-							$current);
-					}
-				)
-			)
-		)
+		otherlv_0='element'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getModelElementChangeAccess().getElementKeyword_0());
+		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getAtomicRootObjectChangeAccess().getChangedElementUnnamedMetaclassReferenceParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getModelElementChangeAccess().getElementTypeUnnamedMetaclassReferenceParserRuleCall_1_0());
 				}
-				lv_changedElement_4_0=ruleUnnamedMetaclassReference
+				lv_elementType_1_0=ruleUnnamedMetaclassReference
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getAtomicRootObjectChangeRule());
+						$current = createModelElementForParent(grammarAccess.getModelElementChangeRule());
 					}
 					set(
 						$current,
-						"changedElement",
-						lv_changedElement_4_0,
+						"elementType",
+						lv_elementType_1_0,
 						"tools.vitruv.dsls.mirbase.MirBase.UnnamedMetaclassReference");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)?
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getModelElementChangeAccess().getChangeTypeElementChangeTypeParserRuleCall_2_0());
+				}
+				lv_changeType_2_0=ruleElementChangeType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getModelElementChangeRule());
+					}
+					set(
+						$current,
+						"changeType",
+						lv_changeType_2_0,
+						"tools.vitruv.dsls.reactions.ReactionsLanguage.ElementChangeType");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -670,15 +639,15 @@ ruleAtomicRootObjectChange returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleAtomicFeatureChange
-entryRuleAtomicFeatureChange returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getAtomicFeatureChangeRule()); }
-	iv_ruleAtomicFeatureChange=ruleAtomicFeatureChange
-	{ $current=$iv_ruleAtomicFeatureChange.current; }
+// Entry rule entryRuleModelAttributeChange
+entryRuleModelAttributeChange returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getModelAttributeChangeRule()); }
+	iv_ruleModelAttributeChange=ruleModelAttributeChange
+	{ $current=$iv_ruleModelAttributeChange.current; }
 	EOF;
 
-// Rule AtomicFeatureChange
-ruleAtomicFeatureChange returns [EObject current=null]
+// Rule ModelAttributeChange
+ruleModelAttributeChange returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -686,39 +655,67 @@ ruleAtomicFeatureChange returns [EObject current=null]
 	leaveRule();
 }:
 	(
+		otherlv_0='attribute'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getModelAttributeChangeAccess().getAttributeKeyword_0());
+		}
 		(
-			{
-				newCompositeNode(grammarAccess.getAtomicFeatureChangeAccess().getAtomicMultiValuedFeatureChangeParserRuleCall_0_0());
-			}
-			this_AtomicMultiValuedFeatureChange_0=ruleAtomicMultiValuedFeatureChange
-			{
-				$current = $this_AtomicMultiValuedFeatureChange_0.current;
-				afterParserOrEnumRuleCall();
-			}
+			(
+				(
+					{
+						$current = forceCreateModelElement(
+							grammarAccess.getModelAttributeChangeAccess().getModelAttributeInsertedChangeAction_1_0_0(),
+							$current);
+					}
+				)
+				otherlv_2='insert in'
+				{
+					newLeafNode(otherlv_2, grammarAccess.getModelAttributeChangeAccess().getInsertInKeyword_1_0_1());
+				}
+			)
 			    |
-			{
-				newCompositeNode(grammarAccess.getAtomicFeatureChangeAccess().getAtomicSingleValuedFeatureChangeParserRuleCall_0_1());
-			}
-			this_AtomicSingleValuedFeatureChange_1=ruleAtomicSingleValuedFeatureChange
-			{
-				$current = $this_AtomicSingleValuedFeatureChange_1.current;
-				afterParserOrEnumRuleCall();
-			}
+			(
+				(
+					{
+						$current = forceCreateModelElement(
+							grammarAccess.getModelAttributeChangeAccess().getModelAttributeRemovedChangeAction_1_1_0(),
+							$current);
+					}
+				)
+				otherlv_4='remove from'
+				{
+					newLeafNode(otherlv_4, grammarAccess.getModelAttributeChangeAccess().getRemoveFromKeyword_1_1_1());
+				}
+			)
+			    |
+			(
+				(
+					{
+						$current = forceCreateModelElement(
+							grammarAccess.getModelAttributeChangeAccess().getModelAttributeReplacedChangeAction_1_2_0(),
+							$current);
+					}
+				)
+				otherlv_6='replaced at'
+				{
+					newLeafNode(otherlv_6, grammarAccess.getModelAttributeChangeAccess().getReplacedAtKeyword_1_2_1());
+				}
+			)
 		)
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_2_0());
 				}
-				lv_changedFeature_2_0=ruleMetaclassFeatureReference
+				lv_feature_7_0=ruleMetaclassFeatureReference
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getAtomicFeatureChangeRule());
+						$current = createModelElementForParent(grammarAccess.getModelAttributeChangeRule());
 					}
 					set(
 						$current,
-						"changedFeature",
-						lv_changedFeature_2_0,
+						"feature",
+						lv_feature_7_0,
 						"tools.vitruv.dsls.mirbase.MirBase.MetaclassFeatureReference");
 					afterParserOrEnumRuleCall();
 				}
@@ -727,105 +724,15 @@ ruleAtomicFeatureChange returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleAtomicMultiValuedFeatureChange
-entryRuleAtomicMultiValuedFeatureChange returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getAtomicMultiValuedFeatureChangeRule()); }
-	iv_ruleAtomicMultiValuedFeatureChange=ruleAtomicMultiValuedFeatureChange
-	{ $current=$iv_ruleAtomicMultiValuedFeatureChange.current; }
+// Entry rule entryRuleArbitraryModelChange
+entryRuleArbitraryModelChange returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getArbitraryModelChangeRule()); }
+	iv_ruleArbitraryModelChange=ruleArbitraryModelChange
+	{ $current=$iv_ruleArbitraryModelChange.current; }
 	EOF;
 
-// Rule AtomicMultiValuedFeatureChange
-ruleAtomicMultiValuedFeatureChange returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			otherlv_0='list entry created and inserted in'
-			{
-				newLeafNode(otherlv_0, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getListEntryCreatedAndInsertedInKeyword_0_0());
-			}
-			(
-				{
-					$current = forceCreateModelElement(
-						grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getMultiValuedFeatureInsertChangeAction_0_1(),
-						$current);
-				}
-			)
-		)
-		    |
-		(
-			otherlv_2='list entry deleted and removed in'
-			{
-				newLeafNode(otherlv_2, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getListEntryDeletedAndRemovedInKeyword_1_0());
-			}
-			(
-				{
-					$current = forceCreateModelElement(
-						grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getMultiValuedFeatureRemoveChangeAction_1_1(),
-						$current);
-				}
-			)
-		)
-		    |
-		(
-			otherlv_4='list permuted'
-			{
-				newLeafNode(otherlv_4, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getListPermutedKeyword_2_0());
-			}
-			(
-				{
-					$current = forceCreateModelElement(
-						grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getMultiValuedFeaturePermuteChangeAction_2_1(),
-						$current);
-				}
-			)
-		)
-	)
-;
-
-// Entry rule entryRuleAtomicSingleValuedFeatureChange
-entryRuleAtomicSingleValuedFeatureChange returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getAtomicSingleValuedFeatureChangeRule()); }
-	iv_ruleAtomicSingleValuedFeatureChange=ruleAtomicSingleValuedFeatureChange
-	{ $current=$iv_ruleAtomicSingleValuedFeatureChange.current; }
-	EOF;
-
-// Rule AtomicSingleValuedFeatureChange
-ruleAtomicSingleValuedFeatureChange returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		otherlv_0='value replaced for'
-		{
-			newLeafNode(otherlv_0, grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getValueReplacedForKeyword_0());
-		}
-		(
-			{
-				$current = forceCreateModelElement(
-					grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getSingleValuedFeatureReplaceAction_1(),
-					$current);
-			}
-		)
-	)
-;
-
-// Entry rule entryRuleArbitraryModelElementChange
-entryRuleArbitraryModelElementChange returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getArbitraryModelElementChangeRule()); }
-	iv_ruleArbitraryModelElementChange=ruleArbitraryModelElementChange
-	{ $current=$iv_ruleArbitraryModelElementChange.current; }
-	EOF;
-
-// Rule ArbitraryModelElementChange
-ruleArbitraryModelElementChange returns [EObject current=null]
+// Rule ArbitraryModelChange
+ruleArbitraryModelChange returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -836,13 +743,714 @@ ruleArbitraryModelElementChange returns [EObject current=null]
 		(
 			{
 				$current = forceCreateModelElement(
-					grammarAccess.getArbitraryModelElementChangeAccess().getArbitraryModelElementChangeAction_0(),
+					grammarAccess.getArbitraryModelChangeAccess().getArbitraryModelChangeAction_0(),
 					$current);
 			}
 		)
 		otherlv_1='any change'
 		{
-			newLeafNode(otherlv_1, grammarAccess.getArbitraryModelElementChangeAccess().getAnyChangeKeyword_1());
+			newLeafNode(otherlv_1, grammarAccess.getArbitraryModelChangeAccess().getAnyChangeKeyword_1());
+		}
+	)
+;
+
+// Entry rule entryRuleElementExistenceChangeType
+entryRuleElementExistenceChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementExistenceChangeTypeRule()); }
+	iv_ruleElementExistenceChangeType=ruleElementExistenceChangeType
+	{ $current=$iv_ruleElementExistenceChangeType.current; }
+	EOF;
+
+// Rule ElementExistenceChangeType
+ruleElementExistenceChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getElementExistenceChangeTypeAccess().getElementCreationChangeTypeParserRuleCall_0());
+		}
+		this_ElementCreationChangeType_0=ruleElementCreationChangeType
+		{
+			$current = $this_ElementCreationChangeType_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementExistenceChangeTypeAccess().getElementDeletionChangeTypeParserRuleCall_1());
+		}
+		this_ElementDeletionChangeType_1=ruleElementDeletionChangeType
+		{
+			$current = $this_ElementDeletionChangeType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleElementUsageChangeType
+entryRuleElementUsageChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementUsageChangeTypeRule()); }
+	iv_ruleElementUsageChangeType=ruleElementUsageChangeType
+	{ $current=$iv_ruleElementUsageChangeType.current; }
+	EOF;
+
+// Rule ElementUsageChangeType
+ruleElementUsageChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getElementUsageChangeTypeAccess().getElementInsertionChangeTypeParserRuleCall_0());
+		}
+		this_ElementInsertionChangeType_0=ruleElementInsertionChangeType
+		{
+			$current = $this_ElementInsertionChangeType_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementUsageChangeTypeAccess().getElementRemovalChangeTypeParserRuleCall_1());
+		}
+		this_ElementRemovalChangeType_1=ruleElementRemovalChangeType
+		{
+			$current = $this_ElementRemovalChangeType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementUsageChangeTypeAccess().getElementReplacementChangeTypeParserRuleCall_2());
+		}
+		this_ElementReplacementChangeType_2=ruleElementReplacementChangeType
+		{
+			$current = $this_ElementReplacementChangeType_2.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleElementCreationChangeType
+entryRuleElementCreationChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementCreationChangeTypeRule()); }
+	iv_ruleElementCreationChangeType=ruleElementCreationChangeType
+	{ $current=$iv_ruleElementCreationChangeType.current; }
+	EOF;
+
+// Rule ElementCreationChangeType
+ruleElementCreationChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='created'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getElementCreationChangeTypeAccess().getCreatedKeyword_0());
+		}
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getElementCreationChangeTypeAccess().getElementCreationChangeTypeAction_1(),
+					$current);
+			}
+		)
+	)
+;
+
+// Entry rule entryRuleElementDeletionChangeType
+entryRuleElementDeletionChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementDeletionChangeTypeRule()); }
+	iv_ruleElementDeletionChangeType=ruleElementDeletionChangeType
+	{ $current=$iv_ruleElementDeletionChangeType.current; }
+	EOF;
+
+// Rule ElementDeletionChangeType
+ruleElementDeletionChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='deleted'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getElementDeletionChangeTypeAccess().getDeletedKeyword_0());
+		}
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getElementDeletionChangeTypeAccess().getElementDeletionChangeTypeAction_1(),
+					$current);
+			}
+		)
+	)
+;
+
+
+// Rule ElementFeatureChangeType
+ruleElementFeatureChangeType[EObject in_current]  returns [EObject current=in_current]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				newCompositeNode(grammarAccess.getElementFeatureChangeTypeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_0());
+			}
+			lv_feature_0_0=ruleMetaclassFeatureReference
+			{
+				if ($current==null) {
+					$current = createModelElementForParent(grammarAccess.getElementFeatureChangeTypeRule());
+				}
+				set(
+					$current,
+					"feature",
+					lv_feature_0_0,
+					"tools.vitruv.dsls.mirbase.MirBase.MetaclassFeatureReference");
+				afterParserOrEnumRuleCall();
+			}
+		)
+	)
+;
+
+// Entry rule entryRuleElementInsertionChangeType
+entryRuleElementInsertionChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementInsertionChangeTypeRule()); }
+	iv_ruleElementInsertionChangeType=ruleElementInsertionChangeType
+	{ $current=$iv_ruleElementInsertionChangeType.current; }
+	EOF;
+
+// Rule ElementInsertionChangeType
+ruleElementInsertionChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getElementInsertionChangeTypeAccess().getElementInsertionInListChangeTypeParserRuleCall_0());
+		}
+		this_ElementInsertionInListChangeType_0=ruleElementInsertionInListChangeType
+		{
+			$current = $this_ElementInsertionInListChangeType_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementInsertionChangeTypeAccess().getElementInsertionAsRootChangeTypeParserRuleCall_1());
+		}
+		this_ElementInsertionAsRootChangeType_1=ruleElementInsertionAsRootChangeType
+		{
+			$current = $this_ElementInsertionAsRootChangeType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleElementInsertionInListChangeType
+entryRuleElementInsertionInListChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementInsertionInListChangeTypeRule()); }
+	iv_ruleElementInsertionInListChangeType=ruleElementInsertionInListChangeType
+	{ $current=$iv_ruleElementInsertionInListChangeType.current; }
+	EOF;
+
+// Rule ElementInsertionInListChangeType
+ruleElementInsertionInListChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='inserted in'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getElementInsertionInListChangeTypeAccess().getInsertedInKeyword_0());
+		}
+		{
+			if ($current==null) {
+				$current = createModelElement(grammarAccess.getElementInsertionInListChangeTypeRule());
+			}
+			newCompositeNode(grammarAccess.getElementInsertionInListChangeTypeAccess().getElementFeatureChangeTypeParserRuleCall_1());
+		}
+		this_ElementFeatureChangeType_1=ruleElementFeatureChangeType[$current]
+		{
+			$current = $this_ElementFeatureChangeType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleElementInsertionAsRootChangeType
+entryRuleElementInsertionAsRootChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementInsertionAsRootChangeTypeRule()); }
+	iv_ruleElementInsertionAsRootChangeType=ruleElementInsertionAsRootChangeType
+	{ $current=$iv_ruleElementInsertionAsRootChangeType.current; }
+	EOF;
+
+// Rule ElementInsertionAsRootChangeType
+ruleElementInsertionAsRootChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getElementInsertionAsRootChangeTypeAccess().getElementInsertionAsRootChangeTypeAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='inserted as root'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getElementInsertionAsRootChangeTypeAccess().getInsertedAsRootKeyword_1());
+		}
+	)
+;
+
+// Entry rule entryRuleElementRemovalChangeType
+entryRuleElementRemovalChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementRemovalChangeTypeRule()); }
+	iv_ruleElementRemovalChangeType=ruleElementRemovalChangeType
+	{ $current=$iv_ruleElementRemovalChangeType.current; }
+	EOF;
+
+// Rule ElementRemovalChangeType
+ruleElementRemovalChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getElementRemovalChangeTypeAccess().getElementRemovalAsRootChangeTypeParserRuleCall_0());
+		}
+		this_ElementRemovalAsRootChangeType_0=ruleElementRemovalAsRootChangeType
+		{
+			$current = $this_ElementRemovalAsRootChangeType_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementRemovalChangeTypeAccess().getElementRemovalFromListChangeTypeParserRuleCall_1());
+		}
+		this_ElementRemovalFromListChangeType_1=ruleElementRemovalFromListChangeType
+		{
+			$current = $this_ElementRemovalFromListChangeType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleElementRemovalAsRootChangeType
+entryRuleElementRemovalAsRootChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementRemovalAsRootChangeTypeRule()); }
+	iv_ruleElementRemovalAsRootChangeType=ruleElementRemovalAsRootChangeType
+	{ $current=$iv_ruleElementRemovalAsRootChangeType.current; }
+	EOF;
+
+// Rule ElementRemovalAsRootChangeType
+ruleElementRemovalAsRootChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getElementRemovalAsRootChangeTypeAccess().getElementRemovalAsRootChangeTypeAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='removed as root'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getElementRemovalAsRootChangeTypeAccess().getRemovedAsRootKeyword_1());
+		}
+	)
+;
+
+// Entry rule entryRuleElementRemovalFromListChangeType
+entryRuleElementRemovalFromListChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementRemovalFromListChangeTypeRule()); }
+	iv_ruleElementRemovalFromListChangeType=ruleElementRemovalFromListChangeType
+	{ $current=$iv_ruleElementRemovalFromListChangeType.current; }
+	EOF;
+
+// Rule ElementRemovalFromListChangeType
+ruleElementRemovalFromListChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='removed from'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getElementRemovalFromListChangeTypeAccess().getRemovedFromKeyword_0());
+		}
+		{
+			if ($current==null) {
+				$current = createModelElement(grammarAccess.getElementRemovalFromListChangeTypeRule());
+			}
+			newCompositeNode(grammarAccess.getElementRemovalFromListChangeTypeAccess().getElementFeatureChangeTypeParserRuleCall_1());
+		}
+		this_ElementFeatureChangeType_1=ruleElementFeatureChangeType[$current]
+		{
+			$current = $this_ElementFeatureChangeType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleElementReplacementChangeType
+entryRuleElementReplacementChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementReplacementChangeTypeRule()); }
+	iv_ruleElementReplacementChangeType=ruleElementReplacementChangeType
+	{ $current=$iv_ruleElementReplacementChangeType.current; }
+	EOF;
+
+// Rule ElementReplacementChangeType
+ruleElementReplacementChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='replaced at'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getElementReplacementChangeTypeAccess().getReplacedAtKeyword_0());
+		}
+		{
+			if ($current==null) {
+				$current = createModelElement(grammarAccess.getElementReplacementChangeTypeRule());
+			}
+			newCompositeNode(grammarAccess.getElementReplacementChangeTypeAccess().getElementFeatureChangeTypeParserRuleCall_1());
+		}
+		this_ElementFeatureChangeType_1=ruleElementFeatureChangeType[$current]
+		{
+			$current = $this_ElementFeatureChangeType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleElementCreationAndInsertionChangeType
+entryRuleElementCreationAndInsertionChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementCreationAndInsertionChangeTypeRule()); }
+	iv_ruleElementCreationAndInsertionChangeType=ruleElementCreationAndInsertionChangeType
+	{ $current=$iv_ruleElementCreationAndInsertionChangeType.current; }
+	EOF;
+
+// Rule ElementCreationAndInsertionChangeType
+ruleElementCreationAndInsertionChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getElementCreationAndInsertionChangeTypeAccess().getCreateChangeElementCreationChangeTypeParserRuleCall_0_0());
+				}
+				lv_createChange_0_0=ruleElementCreationChangeType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getElementCreationAndInsertionChangeTypeRule());
+					}
+					set(
+						$current,
+						"createChange",
+						lv_createChange_0_0,
+						"tools.vitruv.dsls.reactions.ReactionsLanguage.ElementCreationChangeType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_1='and'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getElementCreationAndInsertionChangeTypeAccess().getAndKeyword_1());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getElementCreationAndInsertionChangeTypeAccess().getInsertChangeElementInsertionChangeTypeParserRuleCall_2_0());
+				}
+				lv_insertChange_2_0=ruleElementInsertionChangeType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getElementCreationAndInsertionChangeTypeRule());
+					}
+					set(
+						$current,
+						"insertChange",
+						lv_insertChange_2_0,
+						"tools.vitruv.dsls.reactions.ReactionsLanguage.ElementInsertionChangeType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleElementDeletionAndRemovalChangeType
+entryRuleElementDeletionAndRemovalChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementDeletionAndRemovalChangeTypeRule()); }
+	iv_ruleElementDeletionAndRemovalChangeType=ruleElementDeletionAndRemovalChangeType
+	{ $current=$iv_ruleElementDeletionAndRemovalChangeType.current; }
+	EOF;
+
+// Rule ElementDeletionAndRemovalChangeType
+ruleElementDeletionAndRemovalChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getElementDeletionAndRemovalChangeTypeAccess().getDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0());
+				}
+				lv_deleteChange_0_0=ruleElementDeletionChangeType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getElementDeletionAndRemovalChangeTypeRule());
+					}
+					set(
+						$current,
+						"deleteChange",
+						lv_deleteChange_0_0,
+						"tools.vitruv.dsls.reactions.ReactionsLanguage.ElementDeletionChangeType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_1='and'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getElementDeletionAndRemovalChangeTypeAccess().getAndKeyword_1());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getElementDeletionAndRemovalChangeTypeAccess().getRemoveChangeElementRemovalChangeTypeParserRuleCall_2_0());
+				}
+				lv_removeChange_2_0=ruleElementRemovalChangeType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getElementDeletionAndRemovalChangeTypeRule());
+					}
+					set(
+						$current,
+						"removeChange",
+						lv_removeChange_2_0,
+						"tools.vitruv.dsls.reactions.ReactionsLanguage.ElementRemovalChangeType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleElementDeletionAndCreationAndReplacementChangeType
+entryRuleElementDeletionAndCreationAndReplacementChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeRule()); }
+	iv_ruleElementDeletionAndCreationAndReplacementChangeType=ruleElementDeletionAndCreationAndReplacementChangeType
+	{ $current=$iv_ruleElementDeletionAndCreationAndReplacementChangeType.current; }
+	EOF;
+
+// Rule ElementDeletionAndCreationAndReplacementChangeType
+ruleElementDeletionAndCreationAndReplacementChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeAccess().getDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0());
+				}
+				lv_deleteChange_0_0=ruleElementDeletionChangeType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeRule());
+					}
+					set(
+						$current,
+						"deleteChange",
+						lv_deleteChange_0_0,
+						"tools.vitruv.dsls.reactions.ReactionsLanguage.ElementDeletionChangeType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_1='and'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeAccess().getAndKeyword_1());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeAccess().getCreateChangeElementCreationChangeTypeParserRuleCall_2_0());
+				}
+				lv_createChange_2_0=ruleElementCreationChangeType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeRule());
+					}
+					set(
+						$current,
+						"createChange",
+						lv_createChange_2_0,
+						"tools.vitruv.dsls.reactions.ReactionsLanguage.ElementCreationChangeType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_3='and'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeAccess().getAndKeyword_3());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeAccess().getReplacedChangeElementReplacementChangeTypeParserRuleCall_4_0());
+				}
+				lv_replacedChange_4_0=ruleElementReplacementChangeType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeRule());
+					}
+					set(
+						$current,
+						"replacedChange",
+						lv_replacedChange_4_0,
+						"tools.vitruv.dsls.reactions.ReactionsLanguage.ElementReplacementChangeType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleElementChangeType
+entryRuleElementChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementChangeTypeRule()); }
+	iv_ruleElementChangeType=ruleElementChangeType
+	{ $current=$iv_ruleElementChangeType.current; }
+	EOF;
+
+// Rule ElementChangeType
+ruleElementChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getElementChangeTypeAccess().getElementExistenceChangeTypeParserRuleCall_0());
+		}
+		this_ElementExistenceChangeType_0=ruleElementExistenceChangeType
+		{
+			$current = $this_ElementExistenceChangeType_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementChangeTypeAccess().getElementUsageChangeTypeParserRuleCall_1());
+		}
+		this_ElementUsageChangeType_1=ruleElementUsageChangeType
+		{
+			$current = $this_ElementUsageChangeType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementChangeTypeAccess().getElementCompoundChangeTypeParserRuleCall_2());
+		}
+		this_ElementCompoundChangeType_2=ruleElementCompoundChangeType
+		{
+			$current = $this_ElementCompoundChangeType_2.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleElementCompoundChangeType
+entryRuleElementCompoundChangeType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElementCompoundChangeTypeRule()); }
+	iv_ruleElementCompoundChangeType=ruleElementCompoundChangeType
+	{ $current=$iv_ruleElementCompoundChangeType.current; }
+	EOF;
+
+// Rule ElementCompoundChangeType
+ruleElementCompoundChangeType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getElementCompoundChangeTypeAccess().getElementCreationAndInsertionChangeTypeParserRuleCall_0());
+		}
+		this_ElementCreationAndInsertionChangeType_0=ruleElementCreationAndInsertionChangeType
+		{
+			$current = $this_ElementCreationAndInsertionChangeType_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementCompoundChangeTypeAccess().getElementDeletionAndRemovalChangeTypeParserRuleCall_1());
+		}
+		this_ElementDeletionAndRemovalChangeType_1=ruleElementDeletionAndRemovalChangeType
+		{
+			$current = $this_ElementDeletionAndRemovalChangeType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getElementCompoundChangeTypeAccess().getElementDeletionAndCreationAndReplacementChangeTypeParserRuleCall_2());
+		}
+		this_ElementDeletionAndCreationAndReplacementChangeType_2=ruleElementDeletionAndCreationAndReplacementChangeType
+		{
+			$current = $this_ElementDeletionAndCreationAndReplacementChangeType_2.current;
+			afterParserOrEnumRuleCall();
 		}
 	)
 ;

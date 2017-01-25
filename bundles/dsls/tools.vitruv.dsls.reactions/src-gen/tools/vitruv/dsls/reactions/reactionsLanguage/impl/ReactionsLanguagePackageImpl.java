@@ -18,30 +18,44 @@ import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
 
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement;
-import tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelElementChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicConcreteModelElementChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicMultiValuedFeatureChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicRootObjectChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicSingleValuedFeatureChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange;
 import tools.vitruv.dsls.reactions.reactionsLanguage.CodeBlock;
-import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelElementChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange;
 import tools.vitruv.dsls.reactions.reactionsLanguage.CorrespondingObjectCodeBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence;
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement;
 import tools.vitruv.dsls.reactions.reactionsLanguage.DeleteModelElement;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCompoundChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionAsRootChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionInListChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalAsRootChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalFromListChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference;
-import tools.vitruv.dsls.reactions.reactionsLanguage.InsertRootChange;
 import tools.vitruv.dsls.reactions.reactionsLanguage.InvariantViolationEvent;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher;
 import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement;
 import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherStatement;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeInsertedChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeRemovedChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeReplacedChange;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureInsertChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeaturePermuteChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureRemoveChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementUsageChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.PreconditionCodeBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionRoutineCall;
@@ -50,14 +64,12 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment;
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence;
-import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveRootChange;
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReturnStatement;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine;
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement;
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput;
-import tools.vitruv.dsls.reactions.reactionsLanguage.SingleValuedFeatureReplace;
 import tools.vitruv.dsls.reactions.reactionsLanguage.TagCodeBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger;
@@ -125,49 +137,154 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass concreteModelElementChangeEClass = null;
+  private EClass concreteModelChangeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass atomicConcreteModelElementChangeEClass = null;
+  private EClass modelElementChangeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass atomicRootObjectChangeEClass = null;
+  private EClass modelAttributeChangeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass atomicFeatureChangeEClass = null;
+  private EClass arbitraryModelChangeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass atomicMultiValuedFeatureChangeEClass = null;
+  private EClass elementExistenceChangeTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass atomicSingleValuedFeatureChangeEClass = null;
+  private EClass modelElementUsageChangeTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass arbitraryModelElementChangeEClass = null;
+  private EClass elementCreationChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementDeletionChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementFeatureChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementRootChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementInsertionChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementInsertionInListChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementInsertionAsRootChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementRemovalChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementRemovalAsRootChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementRemovalFromListChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementReplacementChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementCreationAndInsertionChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementDeletionAndRemovalChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementDeletionAndCreationAndReplacementChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementChangeTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementCompoundChangeTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -342,42 +459,21 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass insertRootChangeEClass = null;
+  private EClass modelAttributeInsertedChangeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass removeRootChangeEClass = null;
+  private EClass modelAttributeRemovedChangeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass multiValuedFeatureInsertChangeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass multiValuedFeatureRemoveChangeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass multiValuedFeaturePermuteChangeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass singleValuedFeatureReplaceEClass = null;
+  private EClass modelAttributeReplacedChangeEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -662,9 +758,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getConcreteModelElementChange()
+  public EClass getConcreteModelChange()
   {
-    return concreteModelElementChangeEClass;
+    return concreteModelChangeEClass;
   }
 
   /**
@@ -672,9 +768,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAtomicConcreteModelElementChange()
+  public EClass getModelElementChange()
   {
-    return atomicConcreteModelElementChangeEClass;
+    return modelElementChangeEClass;
   }
 
   /**
@@ -682,9 +778,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAtomicRootObjectChange()
+  public EReference getModelElementChange_ElementType()
   {
-    return atomicRootObjectChangeEClass;
+    return (EReference)modelElementChangeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -692,9 +788,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAtomicRootObjectChange_ChangedElement()
+  public EReference getModelElementChange_ChangeType()
   {
-    return (EReference)atomicRootObjectChangeEClass.getEStructuralFeatures().get(0);
+    return (EReference)modelElementChangeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -702,9 +798,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAtomicFeatureChange()
+  public EClass getModelAttributeChange()
   {
-    return atomicFeatureChangeEClass;
+    return modelAttributeChangeEClass;
   }
 
   /**
@@ -712,9 +808,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAtomicFeatureChange_ChangedFeature()
+  public EReference getModelAttributeChange_Feature()
   {
-    return (EReference)atomicFeatureChangeEClass.getEStructuralFeatures().get(0);
+    return (EReference)modelAttributeChangeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -722,9 +818,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAtomicMultiValuedFeatureChange()
+  public EClass getArbitraryModelChange()
   {
-    return atomicMultiValuedFeatureChangeEClass;
+    return arbitraryModelChangeEClass;
   }
 
   /**
@@ -732,9 +828,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAtomicSingleValuedFeatureChange()
+  public EClass getElementExistenceChangeType()
   {
-    return atomicSingleValuedFeatureChangeEClass;
+    return elementExistenceChangeTypeEClass;
   }
 
   /**
@@ -742,9 +838,249 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getArbitraryModelElementChange()
+  public EClass getModelElementUsageChangeType()
   {
-    return arbitraryModelElementChangeEClass;
+    return modelElementUsageChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementCreationChangeType()
+  {
+    return elementCreationChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementDeletionChangeType()
+  {
+    return elementDeletionChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementFeatureChangeType()
+  {
+    return elementFeatureChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementFeatureChangeType_Feature()
+  {
+    return (EReference)elementFeatureChangeTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementRootChangeType()
+  {
+    return elementRootChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementInsertionChangeType()
+  {
+    return elementInsertionChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementInsertionInListChangeType()
+  {
+    return elementInsertionInListChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementInsertionAsRootChangeType()
+  {
+    return elementInsertionAsRootChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementRemovalChangeType()
+  {
+    return elementRemovalChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementRemovalAsRootChangeType()
+  {
+    return elementRemovalAsRootChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementRemovalFromListChangeType()
+  {
+    return elementRemovalFromListChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementReplacementChangeType()
+  {
+    return elementReplacementChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementCreationAndInsertionChangeType()
+  {
+    return elementCreationAndInsertionChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementCreationAndInsertionChangeType_CreateChange()
+  {
+    return (EReference)elementCreationAndInsertionChangeTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementCreationAndInsertionChangeType_InsertChange()
+  {
+    return (EReference)elementCreationAndInsertionChangeTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementDeletionAndRemovalChangeType()
+  {
+    return elementDeletionAndRemovalChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementDeletionAndRemovalChangeType_DeleteChange()
+  {
+    return (EReference)elementDeletionAndRemovalChangeTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementDeletionAndRemovalChangeType_RemoveChange()
+  {
+    return (EReference)elementDeletionAndRemovalChangeTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementDeletionAndCreationAndReplacementChangeType()
+  {
+    return elementDeletionAndCreationAndReplacementChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementDeletionAndCreationAndReplacementChangeType_DeleteChange()
+  {
+    return (EReference)elementDeletionAndCreationAndReplacementChangeTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementDeletionAndCreationAndReplacementChangeType_CreateChange()
+  {
+    return (EReference)elementDeletionAndCreationAndReplacementChangeTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementDeletionAndCreationAndReplacementChangeType_ReplacedChange()
+  {
+    return (EReference)elementDeletionAndCreationAndReplacementChangeTypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementChangeType()
+  {
+    return elementChangeTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementCompoundChangeType()
+  {
+    return elementCompoundChangeTypeEClass;
   }
 
   /**
@@ -1272,9 +1608,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getInsertRootChange()
+  public EClass getModelAttributeInsertedChange()
   {
-    return insertRootChangeEClass;
+    return modelAttributeInsertedChangeEClass;
   }
 
   /**
@@ -1282,9 +1618,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getRemoveRootChange()
+  public EClass getModelAttributeRemovedChange()
   {
-    return removeRootChangeEClass;
+    return modelAttributeRemovedChangeEClass;
   }
 
   /**
@@ -1292,39 +1628,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getMultiValuedFeatureInsertChange()
+  public EClass getModelAttributeReplacedChange()
   {
-    return multiValuedFeatureInsertChangeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getMultiValuedFeatureRemoveChange()
-  {
-    return multiValuedFeatureRemoveChangeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getMultiValuedFeaturePermuteChange()
-  {
-    return multiValuedFeaturePermuteChangeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getSingleValuedFeatureReplace()
-  {
-    return singleValuedFeatureReplaceEClass;
+    return modelAttributeReplacedChangeEClass;
   }
 
   /**
@@ -1385,21 +1691,60 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
 
     modelChangeEClass = createEClass(MODEL_CHANGE);
 
-    concreteModelElementChangeEClass = createEClass(CONCRETE_MODEL_ELEMENT_CHANGE);
+    concreteModelChangeEClass = createEClass(CONCRETE_MODEL_CHANGE);
 
-    atomicConcreteModelElementChangeEClass = createEClass(ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE);
+    modelElementChangeEClass = createEClass(MODEL_ELEMENT_CHANGE);
+    createEReference(modelElementChangeEClass, MODEL_ELEMENT_CHANGE__ELEMENT_TYPE);
+    createEReference(modelElementChangeEClass, MODEL_ELEMENT_CHANGE__CHANGE_TYPE);
 
-    atomicRootObjectChangeEClass = createEClass(ATOMIC_ROOT_OBJECT_CHANGE);
-    createEReference(atomicRootObjectChangeEClass, ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT);
+    modelAttributeChangeEClass = createEClass(MODEL_ATTRIBUTE_CHANGE);
+    createEReference(modelAttributeChangeEClass, MODEL_ATTRIBUTE_CHANGE__FEATURE);
 
-    atomicFeatureChangeEClass = createEClass(ATOMIC_FEATURE_CHANGE);
-    createEReference(atomicFeatureChangeEClass, ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE);
+    arbitraryModelChangeEClass = createEClass(ARBITRARY_MODEL_CHANGE);
 
-    atomicMultiValuedFeatureChangeEClass = createEClass(ATOMIC_MULTI_VALUED_FEATURE_CHANGE);
+    elementExistenceChangeTypeEClass = createEClass(ELEMENT_EXISTENCE_CHANGE_TYPE);
 
-    atomicSingleValuedFeatureChangeEClass = createEClass(ATOMIC_SINGLE_VALUED_FEATURE_CHANGE);
+    modelElementUsageChangeTypeEClass = createEClass(MODEL_ELEMENT_USAGE_CHANGE_TYPE);
 
-    arbitraryModelElementChangeEClass = createEClass(ARBITRARY_MODEL_ELEMENT_CHANGE);
+    elementCreationChangeTypeEClass = createEClass(ELEMENT_CREATION_CHANGE_TYPE);
+
+    elementDeletionChangeTypeEClass = createEClass(ELEMENT_DELETION_CHANGE_TYPE);
+
+    elementFeatureChangeTypeEClass = createEClass(ELEMENT_FEATURE_CHANGE_TYPE);
+    createEReference(elementFeatureChangeTypeEClass, ELEMENT_FEATURE_CHANGE_TYPE__FEATURE);
+
+    elementRootChangeTypeEClass = createEClass(ELEMENT_ROOT_CHANGE_TYPE);
+
+    elementInsertionChangeTypeEClass = createEClass(ELEMENT_INSERTION_CHANGE_TYPE);
+
+    elementInsertionInListChangeTypeEClass = createEClass(ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE);
+
+    elementInsertionAsRootChangeTypeEClass = createEClass(ELEMENT_INSERTION_AS_ROOT_CHANGE_TYPE);
+
+    elementRemovalChangeTypeEClass = createEClass(ELEMENT_REMOVAL_CHANGE_TYPE);
+
+    elementRemovalAsRootChangeTypeEClass = createEClass(ELEMENT_REMOVAL_AS_ROOT_CHANGE_TYPE);
+
+    elementRemovalFromListChangeTypeEClass = createEClass(ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE);
+
+    elementReplacementChangeTypeEClass = createEClass(ELEMENT_REPLACEMENT_CHANGE_TYPE);
+
+    elementCreationAndInsertionChangeTypeEClass = createEClass(ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE);
+    createEReference(elementCreationAndInsertionChangeTypeEClass, ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__CREATE_CHANGE);
+    createEReference(elementCreationAndInsertionChangeTypeEClass, ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__INSERT_CHANGE);
+
+    elementDeletionAndRemovalChangeTypeEClass = createEClass(ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE);
+    createEReference(elementDeletionAndRemovalChangeTypeEClass, ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__DELETE_CHANGE);
+    createEReference(elementDeletionAndRemovalChangeTypeEClass, ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__REMOVE_CHANGE);
+
+    elementDeletionAndCreationAndReplacementChangeTypeEClass = createEClass(ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE);
+    createEReference(elementDeletionAndCreationAndReplacementChangeTypeEClass, ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__DELETE_CHANGE);
+    createEReference(elementDeletionAndCreationAndReplacementChangeTypeEClass, ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__CREATE_CHANGE);
+    createEReference(elementDeletionAndCreationAndReplacementChangeTypeEClass, ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__REPLACED_CHANGE);
+
+    elementChangeTypeEClass = createEClass(ELEMENT_CHANGE_TYPE);
+
+    elementCompoundChangeTypeEClass = createEClass(ELEMENT_COMPOUND_CHANGE_TYPE);
 
     routineEClass = createEClass(ROUTINE);
     createEAttribute(routineEClass, ROUTINE__NAME);
@@ -1477,17 +1822,11 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
     returnStatementEClass = createEClass(RETURN_STATEMENT);
     createEReference(returnStatementEClass, RETURN_STATEMENT__ELEMENT);
 
-    insertRootChangeEClass = createEClass(INSERT_ROOT_CHANGE);
+    modelAttributeInsertedChangeEClass = createEClass(MODEL_ATTRIBUTE_INSERTED_CHANGE);
 
-    removeRootChangeEClass = createEClass(REMOVE_ROOT_CHANGE);
+    modelAttributeRemovedChangeEClass = createEClass(MODEL_ATTRIBUTE_REMOVED_CHANGE);
 
-    multiValuedFeatureInsertChangeEClass = createEClass(MULTI_VALUED_FEATURE_INSERT_CHANGE);
-
-    multiValuedFeatureRemoveChangeEClass = createEClass(MULTI_VALUED_FEATURE_REMOVE_CHANGE);
-
-    multiValuedFeaturePermuteChangeEClass = createEClass(MULTI_VALUED_FEATURE_PERMUTE_CHANGE);
-
-    singleValuedFeatureReplaceEClass = createEClass(SINGLE_VALUED_FEATURE_REPLACE);
+    modelAttributeReplacedChangeEClass = createEClass(MODEL_ATTRIBUTE_REPLACED_CHANGE);
   }
 
   /**
@@ -1529,13 +1868,30 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
     reactionRoutineCallEClass.getESuperTypes().add(this.getCodeBlock());
     invariantViolationEventEClass.getESuperTypes().add(this.getTrigger());
     modelChangeEClass.getESuperTypes().add(this.getTrigger());
-    concreteModelElementChangeEClass.getESuperTypes().add(this.getModelChange());
-    atomicConcreteModelElementChangeEClass.getESuperTypes().add(this.getConcreteModelElementChange());
-    atomicRootObjectChangeEClass.getESuperTypes().add(this.getAtomicConcreteModelElementChange());
-    atomicFeatureChangeEClass.getESuperTypes().add(this.getAtomicConcreteModelElementChange());
-    atomicMultiValuedFeatureChangeEClass.getESuperTypes().add(this.getAtomicFeatureChange());
-    atomicSingleValuedFeatureChangeEClass.getESuperTypes().add(this.getAtomicFeatureChange());
-    arbitraryModelElementChangeEClass.getESuperTypes().add(this.getModelChange());
+    concreteModelChangeEClass.getESuperTypes().add(this.getModelChange());
+    modelElementChangeEClass.getESuperTypes().add(this.getConcreteModelChange());
+    modelAttributeChangeEClass.getESuperTypes().add(this.getConcreteModelChange());
+    arbitraryModelChangeEClass.getESuperTypes().add(this.getModelChange());
+    elementExistenceChangeTypeEClass.getESuperTypes().add(this.getElementChangeType());
+    modelElementUsageChangeTypeEClass.getESuperTypes().add(this.getElementChangeType());
+    elementCreationChangeTypeEClass.getESuperTypes().add(this.getElementExistenceChangeType());
+    elementDeletionChangeTypeEClass.getESuperTypes().add(this.getElementExistenceChangeType());
+    elementInsertionChangeTypeEClass.getESuperTypes().add(this.getModelElementUsageChangeType());
+    elementInsertionInListChangeTypeEClass.getESuperTypes().add(this.getElementInsertionChangeType());
+    elementInsertionInListChangeTypeEClass.getESuperTypes().add(this.getElementFeatureChangeType());
+    elementInsertionAsRootChangeTypeEClass.getESuperTypes().add(this.getElementRootChangeType());
+    elementInsertionAsRootChangeTypeEClass.getESuperTypes().add(this.getElementInsertionChangeType());
+    elementRemovalChangeTypeEClass.getESuperTypes().add(this.getModelElementUsageChangeType());
+    elementRemovalAsRootChangeTypeEClass.getESuperTypes().add(this.getElementRootChangeType());
+    elementRemovalAsRootChangeTypeEClass.getESuperTypes().add(this.getElementRemovalChangeType());
+    elementRemovalFromListChangeTypeEClass.getESuperTypes().add(this.getElementRemovalChangeType());
+    elementRemovalFromListChangeTypeEClass.getESuperTypes().add(this.getElementFeatureChangeType());
+    elementReplacementChangeTypeEClass.getESuperTypes().add(this.getModelElementUsageChangeType());
+    elementReplacementChangeTypeEClass.getESuperTypes().add(this.getElementFeatureChangeType());
+    elementCreationAndInsertionChangeTypeEClass.getESuperTypes().add(this.getElementCompoundChangeType());
+    elementDeletionAndRemovalChangeTypeEClass.getESuperTypes().add(this.getElementCompoundChangeType());
+    elementDeletionAndCreationAndReplacementChangeTypeEClass.getESuperTypes().add(this.getElementCompoundChangeType());
+    elementCompoundChangeTypeEClass.getESuperTypes().add(this.getElementChangeType());
     retrieveModelElementEClass.getESuperTypes().add(this.getMatcherStatement());
     retrieveModelElementEClass.getESuperTypes().add(theMirBasePackage.getMetaclassReference());
     retrieveModelElementEClass.getESuperTypes().add(this.getTaggable());
@@ -1560,12 +1916,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
     preconditionCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
     correspondingObjectCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
     executionCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
-    insertRootChangeEClass.getESuperTypes().add(this.getAtomicRootObjectChange());
-    removeRootChangeEClass.getESuperTypes().add(this.getAtomicRootObjectChange());
-    multiValuedFeatureInsertChangeEClass.getESuperTypes().add(this.getAtomicMultiValuedFeatureChange());
-    multiValuedFeatureRemoveChangeEClass.getESuperTypes().add(this.getAtomicMultiValuedFeatureChange());
-    multiValuedFeaturePermuteChangeEClass.getESuperTypes().add(this.getAtomicMultiValuedFeatureChange());
-    singleValuedFeatureReplaceEClass.getESuperTypes().add(this.getAtomicSingleValuedFeatureChange());
+    modelAttributeInsertedChangeEClass.getESuperTypes().add(this.getModelAttributeChange());
+    modelAttributeRemovedChangeEClass.getESuperTypes().add(this.getModelAttributeChange());
+    modelAttributeReplacedChangeEClass.getESuperTypes().add(this.getModelAttributeChange());
 
     // Initialize classes and features; add operations and parameters
     initEClass(reactionsFileEClass, ReactionsFile.class, "ReactionsFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1596,21 +1949,60 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
 
     initEClass(modelChangeEClass, ModelChange.class, "ModelChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(concreteModelElementChangeEClass, ConcreteModelElementChange.class, "ConcreteModelElementChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(concreteModelChangeEClass, ConcreteModelChange.class, "ConcreteModelChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(atomicConcreteModelElementChangeEClass, AtomicConcreteModelElementChange.class, "AtomicConcreteModelElementChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(modelElementChangeEClass, ModelElementChange.class, "ModelElementChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getModelElementChange_ElementType(), theMirBasePackage.getMetaclassReference(), null, "elementType", null, 0, 1, ModelElementChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getModelElementChange_ChangeType(), this.getElementChangeType(), null, "changeType", null, 0, 1, ModelElementChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(atomicRootObjectChangeEClass, AtomicRootObjectChange.class, "AtomicRootObjectChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAtomicRootObjectChange_ChangedElement(), theMirBasePackage.getMetaclassReference(), null, "changedElement", null, 0, 1, AtomicRootObjectChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(modelAttributeChangeEClass, ModelAttributeChange.class, "ModelAttributeChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getModelAttributeChange_Feature(), theMirBasePackage.getMetaclassFeatureReference(), null, "feature", null, 0, 1, ModelAttributeChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(atomicFeatureChangeEClass, AtomicFeatureChange.class, "AtomicFeatureChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAtomicFeatureChange_ChangedFeature(), theMirBasePackage.getMetaclassFeatureReference(), null, "changedFeature", null, 0, 1, AtomicFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(arbitraryModelChangeEClass, ArbitraryModelChange.class, "ArbitraryModelChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(atomicMultiValuedFeatureChangeEClass, AtomicMultiValuedFeatureChange.class, "AtomicMultiValuedFeatureChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(elementExistenceChangeTypeEClass, ElementExistenceChangeType.class, "ElementExistenceChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(atomicSingleValuedFeatureChangeEClass, AtomicSingleValuedFeatureChange.class, "AtomicSingleValuedFeatureChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(modelElementUsageChangeTypeEClass, ModelElementUsageChangeType.class, "ModelElementUsageChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(arbitraryModelElementChangeEClass, ArbitraryModelElementChange.class, "ArbitraryModelElementChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(elementCreationChangeTypeEClass, ElementCreationChangeType.class, "ElementCreationChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementDeletionChangeTypeEClass, ElementDeletionChangeType.class, "ElementDeletionChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementFeatureChangeTypeEClass, ElementFeatureChangeType.class, "ElementFeatureChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getElementFeatureChangeType_Feature(), theMirBasePackage.getMetaclassFeatureReference(), null, "feature", null, 0, 1, ElementFeatureChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(elementRootChangeTypeEClass, ElementRootChangeType.class, "ElementRootChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementInsertionChangeTypeEClass, ElementInsertionChangeType.class, "ElementInsertionChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementInsertionInListChangeTypeEClass, ElementInsertionInListChangeType.class, "ElementInsertionInListChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementInsertionAsRootChangeTypeEClass, ElementInsertionAsRootChangeType.class, "ElementInsertionAsRootChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementRemovalChangeTypeEClass, ElementRemovalChangeType.class, "ElementRemovalChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementRemovalAsRootChangeTypeEClass, ElementRemovalAsRootChangeType.class, "ElementRemovalAsRootChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementRemovalFromListChangeTypeEClass, ElementRemovalFromListChangeType.class, "ElementRemovalFromListChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementReplacementChangeTypeEClass, ElementReplacementChangeType.class, "ElementReplacementChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementCreationAndInsertionChangeTypeEClass, ElementCreationAndInsertionChangeType.class, "ElementCreationAndInsertionChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getElementCreationAndInsertionChangeType_CreateChange(), this.getElementCreationChangeType(), null, "createChange", null, 0, 1, ElementCreationAndInsertionChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getElementCreationAndInsertionChangeType_InsertChange(), this.getElementInsertionChangeType(), null, "insertChange", null, 0, 1, ElementCreationAndInsertionChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(elementDeletionAndRemovalChangeTypeEClass, ElementDeletionAndRemovalChangeType.class, "ElementDeletionAndRemovalChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getElementDeletionAndRemovalChangeType_DeleteChange(), this.getElementDeletionChangeType(), null, "deleteChange", null, 0, 1, ElementDeletionAndRemovalChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getElementDeletionAndRemovalChangeType_RemoveChange(), this.getElementRemovalChangeType(), null, "removeChange", null, 0, 1, ElementDeletionAndRemovalChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(elementDeletionAndCreationAndReplacementChangeTypeEClass, ElementDeletionAndCreationAndReplacementChangeType.class, "ElementDeletionAndCreationAndReplacementChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getElementDeletionAndCreationAndReplacementChangeType_DeleteChange(), this.getElementDeletionChangeType(), null, "deleteChange", null, 0, 1, ElementDeletionAndCreationAndReplacementChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getElementDeletionAndCreationAndReplacementChangeType_CreateChange(), this.getElementCreationChangeType(), null, "createChange", null, 0, 1, ElementDeletionAndCreationAndReplacementChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getElementDeletionAndCreationAndReplacementChangeType_ReplacedChange(), this.getElementReplacementChangeType(), null, "replacedChange", null, 0, 1, ElementDeletionAndCreationAndReplacementChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(elementChangeTypeEClass, ElementChangeType.class, "ElementChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(elementCompoundChangeTypeEClass, ElementCompoundChangeType.class, "ElementCompoundChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(routineEClass, Routine.class, "Routine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getRoutine_Name(), ecorePackage.getEString(), "name", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1688,17 +2080,11 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
     initEClass(returnStatementEClass, ReturnStatement.class, "ReturnStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getReturnStatement_Element(), this.getExistingElementReference(), null, "element", null, 0, 1, ReturnStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(insertRootChangeEClass, InsertRootChange.class, "InsertRootChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(modelAttributeInsertedChangeEClass, ModelAttributeInsertedChange.class, "ModelAttributeInsertedChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(removeRootChangeEClass, RemoveRootChange.class, "RemoveRootChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(modelAttributeRemovedChangeEClass, ModelAttributeRemovedChange.class, "ModelAttributeRemovedChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(multiValuedFeatureInsertChangeEClass, MultiValuedFeatureInsertChange.class, "MultiValuedFeatureInsertChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(multiValuedFeatureRemoveChangeEClass, MultiValuedFeatureRemoveChange.class, "MultiValuedFeatureRemoveChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(multiValuedFeaturePermuteChangeEClass, MultiValuedFeaturePermuteChange.class, "MultiValuedFeaturePermuteChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(singleValuedFeatureReplaceEClass, SingleValuedFeatureReplace.class, "SingleValuedFeatureReplace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(modelAttributeReplacedChangeEClass, ModelAttributeReplacedChange.class, "ModelAttributeReplacedChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);

@@ -32,7 +32,7 @@ public class ReactionBuilder implements IReactionBuilder {
 	}
 	
 	public override setTrigger(EPackage sourceMetamodel) {
-		val trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelElementChange();
+		val trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelChange();
 		val metamodelImport = generateMetamodelImport(sourceMetamodel);
 		this.reactionsSegment.fromMetamodel = generateMetamodelReference(metamodelImport);
 		this.reaction.trigger = trigger;

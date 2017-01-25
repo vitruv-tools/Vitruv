@@ -25,15 +25,15 @@ public class RemoveNonContainmentReferenceRoutine extends AbstractRepairRoutineR
       super(reactionExecutionState);
     }
     
-    public EObject getCorrepondenceSourceTargetRoot(final Root root, final NonRoot removedNonRoot) {
-      return root;
+    public EObject getCorrepondenceSourceTargetRoot(final Root rootElement, final NonRoot removedNonRoot) {
+      return rootElement;
     }
     
-    public EObject getElement1(final Root root, final NonRoot removedNonRoot, final Root targetRoot) {
+    public EObject getElement1(final Root rootElement, final NonRoot removedNonRoot, final Root targetRoot) {
       return targetRoot;
     }
     
-    public void update0Element(final Root root, final NonRoot removedNonRoot, final Root targetRoot) {
+    public void update0Element(final Root rootElement, final NonRoot removedNonRoot, final Root targetRoot) {
       EList<NonRoot> _multiValuedNonContainmentEReference = targetRoot.getMultiValuedNonContainmentEReference();
       final Predicate<NonRoot> _function = (NonRoot it) -> {
         String _id = it.getId();
@@ -43,30 +43,30 @@ public class RemoveNonContainmentReferenceRoutine extends AbstractRepairRoutineR
       _multiValuedNonContainmentEReference.removeIf(_function);
     }
     
-    public void callRoutine1(final Root root, final NonRoot removedNonRoot, final Root targetRoot, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final Root rootElement, final NonRoot removedNonRoot, final Root targetRoot, @Extension final RoutinesFacade _routinesFacade) {
       SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.RemoveNonContainmentEReference);
     }
   }
   
-  public RemoveNonContainmentReferenceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot removedNonRoot) {
+  public RemoveNonContainmentReferenceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement, final NonRoot removedNonRoot) {
     super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.simpleChangesTests.RemoveNonContainmentReferenceRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    this.root = root;this.removedNonRoot = removedNonRoot;
+    this.rootElement = rootElement;this.removedNonRoot = removedNonRoot;
   }
   
-  private Root root;
+  private Root rootElement;
   
   private NonRoot removedNonRoot;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RemoveNonContainmentReferenceRoutine with input:");
-    getLogger().debug("   Root: " + this.root);
+    getLogger().debug("   Root: " + this.rootElement);
     getLogger().debug("   NonRoot: " + this.removedNonRoot);
     
     Root targetRoot = getCorrespondingElement(
-    	userExecution.getCorrepondenceSourceTargetRoot(root, removedNonRoot), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceTargetRoot(rootElement, removedNonRoot), // correspondence source supplier
     	Root.class,
     	(Root _element) -> true, // correspondence precondition checker
     	null);
@@ -74,10 +74,10 @@ public class RemoveNonContainmentReferenceRoutine extends AbstractRepairRoutineR
     	return;
     }
     initializeRetrieveElementState(targetRoot);
-    // val updatedElement userExecution.getElement1(root, removedNonRoot, targetRoot);
-    userExecution.update0Element(root, removedNonRoot, targetRoot);
+    // val updatedElement userExecution.getElement1(rootElement, removedNonRoot, targetRoot);
+    userExecution.update0Element(rootElement, removedNonRoot, targetRoot);
     
-    userExecution.callRoutine1(root, removedNonRoot, targetRoot, actionsFacade);
+    userExecution.callRoutine1(rootElement, removedNonRoot, targetRoot, actionsFacade);
     
     postprocessElementStates();
   }

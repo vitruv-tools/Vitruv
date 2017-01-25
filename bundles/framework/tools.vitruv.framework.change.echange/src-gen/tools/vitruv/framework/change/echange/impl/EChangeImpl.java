@@ -5,6 +5,7 @@ package tools.vitruv.framework.change.echange.impl;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
 
@@ -16,22 +17,22 @@ import tools.vitruv.framework.change.echange.EChangePackage;
  * @generated
  */
 public abstract class EChangeImpl extends MinimalEObjectImpl.Container implements EChange {
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    protected EChangeImpl() {
+	protected EChangeImpl() {
 		super();
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    @Override
-    protected EClass eStaticClass() {
+	@Override
+	protected EClass eStaticClass() {
 		return EChangePackage.Literals.ECHANGE;
 	}
 

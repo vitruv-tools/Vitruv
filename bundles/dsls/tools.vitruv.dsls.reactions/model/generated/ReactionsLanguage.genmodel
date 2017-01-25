@@ -32,17 +32,45 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//Trigger/precondition"/>
     </genClasses>
     <genClasses ecoreClass="ReactionsLanguage.ecore#//ModelChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//ConcreteModelElementChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//AtomicConcreteModelElementChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//AtomicRootObjectChange">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//AtomicRootObjectChange/changedElement"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ConcreteModelChange"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ModelElementChange">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ModelElementChange/elementType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ModelElementChange/changeType"/>
     </genClasses>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//AtomicFeatureChange">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//AtomicFeatureChange/changedFeature"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ModelAttributeChange">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ModelAttributeChange/feature"/>
     </genClasses>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//AtomicMultiValuedFeatureChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//AtomicSingleValuedFeatureChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//ArbitraryModelElementChange"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ArbitraryModelChange"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementExistenceChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ModelElementUsageChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementCreationChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementDeletionChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementFeatureChangeType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementFeatureChangeType/feature"/>
+    </genClasses>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementRootChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementInsertionChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementInsertionInListChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementInsertionAsRootChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementRemovalChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementRemovalAsRootChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementRemovalFromListChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementReplacementChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementCreationAndInsertionChangeType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementCreationAndInsertionChangeType/createChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementCreationAndInsertionChangeType/insertChange"/>
+    </genClasses>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementDeletionAndRemovalChangeType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementDeletionAndRemovalChangeType/deleteChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementDeletionAndRemovalChangeType/removeChange"/>
+    </genClasses>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementDeletionAndCreationAndReplacementChangeType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementDeletionAndCreationAndReplacementChangeType/deleteChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementDeletionAndCreationAndReplacementChangeType/createChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementDeletionAndCreationAndReplacementChangeType/replacedChange"/>
+    </genClasses>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementChangeType"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementCompoundChangeType"/>
     <genClasses ecoreClass="ReactionsLanguage.ecore#//Routine">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReactionsLanguage.ecore#//Routine/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//Routine/input"/>
@@ -109,11 +137,8 @@
     <genClasses ecoreClass="ReactionsLanguage.ecore#//ReturnStatement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ReturnStatement/element"/>
     </genClasses>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//InsertRootChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//RemoveRootChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//MultiValuedFeatureInsertChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//MultiValuedFeatureRemoveChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//MultiValuedFeaturePermuteChange"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//SingleValuedFeatureReplace"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ModelAttributeInsertedChange"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ModelAttributeRemovedChange"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ModelAttributeReplacedChange"/>
   </genPackages>
 </genmodel:GenModel>

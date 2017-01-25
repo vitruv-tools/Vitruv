@@ -2,7 +2,6 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -19,7 +18,7 @@ class ReplacedSingleValuedEAttributeReaction extends AbstractReactionRealization
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<allElementTypes.Root, java.lang.Integer> typedChange = (ReplaceSingleValuedEAttribute<allElementTypes.Root, java.lang.Integer>)change;
+    ReplaceSingleValuedEAttribute<Root, Integer> typedChange = (ReplaceSingleValuedEAttribute<Root, Integer>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedEAttributeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedEAttributeReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
@@ -30,16 +29,16 @@ class ReplacedSingleValuedEAttributeReaction extends AbstractReactionRealization
   }
   
   private boolean checkChangeProperties(final ReplaceSingleValuedEAttribute<Root, Integer> change) {
-    EObject changedElement = change.getAffectedEObject();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+    // Check affected object
+    if (!(change.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    
+    	
     // Check feature
     if (!change.getAffectedFeature().getName().equals("singleValuedEAttribute")) {
     	return false;
     }
+    
     return true;
   }
   
@@ -47,7 +46,7 @@ class ReplacedSingleValuedEAttributeReaction extends AbstractReactionRealization
     if (!(change instanceof ReplaceSingleValuedEAttribute<?, ?>)) {
     	return false;
     }
-    ReplaceSingleValuedEAttribute typedChange = (ReplaceSingleValuedEAttribute)change;
+    ReplaceSingleValuedEAttribute<Root, Integer> typedChange = (ReplaceSingleValuedEAttribute<Root, Integer>)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }

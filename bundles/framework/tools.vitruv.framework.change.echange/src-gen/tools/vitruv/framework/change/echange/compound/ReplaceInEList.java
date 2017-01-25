@@ -2,10 +2,13 @@
  */
 package tools.vitruv.framework.change.echange.compound;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
+import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
@@ -82,5 +85,14 @@ public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature,
 	 * @generated
 	 */
 	void setInsertChange(I value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" required="true"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> list = new <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>>();\nR _removeChange = this.getRemoveChange();\nlist.add(_removeChange);\nI _insertChange = this.getInsertChange();\nlist.add(_insertChange);\nreturn list;'"
+	 * @generated
+	 */
+	EList<AtomicEChange> getAtomicChanges();
 
 } // ReplaceInEList

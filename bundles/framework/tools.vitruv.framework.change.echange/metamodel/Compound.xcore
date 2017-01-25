@@ -1,0 +1,127 @@
+@Ecore(nsURI="http://tools.vitruv/EChange/Compound/1.0")
+@GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+package tools.vitruv.framework.change.echange.compound
+
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+import tools.vitruv.framework.change.echange.AdditiveEChange
+import tools.vitruv.framework.change.echange.AtomicEChange
+import tools.vitruv.framework.change.echange.SubtractiveEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import org.eclipse.emf.common.util.BasicEList
+import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
+
+abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
+	op unique AtomicEChange[+] getAtomicChanges()
+}
+
+class MoveEObject<A extends EObject, B extends EObject, T extends EObject> extends CompoundEChange {
+	refers UpdateReferenceEChange<A> subtractWhereChange
+	contains EObjectSubtractedEChange<T>[1] subtractWhatChange
+	refers UpdateReferenceEChange<B> addWhereChange
+	contains EObjectAddedEChange<T>[1] addWhatChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val list = new BasicEList<AtomicEChange>();
+		val subWhereChange = getSubtractWhereChange();
+		if (subWhereChange != null) {
+			list.add(subWhereChange);
+		}
+		list.add(getSubtractWhatChange());
+		val addWhereChange = getAddWhereChange();
+		if (addWhereChange != null) {
+		    list.add(addWhereChange);
+		}
+		list.add(getAddWhatChange());
+		return list;
+	}
+}
+
+class ExplicitUnsetEFeature<A extends EObject, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {
+	op unique AtomicEChange[+] getAtomicChanges() {
+		return subtractiveChanges.map[it]
+	}
+}
+
+class ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
+	contains R[1] removeChange
+	contains I[1] insertChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val list = new BasicEList<AtomicEChange>();
+		list.add(getRemoveChange());
+		list.add(getInsertChange());
+		return list;
+	}
+}
+
+class CompoundSubtraction<T extends Object, S extends SubtractiveEChange<T>> extends CompoundEChange {
+	contains S[+] subtractiveChanges
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList<AtomicEChange>();
+		result.addAll(subtractiveChanges);
+		return result;
+	}
+}
+
+class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChange {
+	contains S[+] additiveChanges
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList<AtomicEChange>();
+		result.addAll(additiveChanges);
+		return result;
+	}
+}
+
+abstract class CreateAndInsertEObject<T extends EObject, C extends EObjectAddedEChange<T>> extends CompoundEChange {
+	contains CreateEObject<T>[1] createChange
+	contains C[1] insertChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList();
+		result.add(createChange);
+		result.add(insertChange);
+		return result;
+	}
+}
+
+abstract class RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubtractedEChange<T>> extends CompoundEChange {
+	contains C[1] removeChange
+	contains DeleteEObject<T>[1] deleteChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList();
+		result.add(removeChange);
+		result.add(deleteChange);
+		return result;
+	}
+}
+
+class CreateAndInsertRoot<T extends EObject> extends CreateAndInsertEObject<T, InsertRootEObject<T>> {}
+
+class RemoveAndDeleteRoot<T extends EObject> extends RemoveAndDeleteEObject<T, RemoveRootEObject<T>> {}
+
+class CreateAndInsertNonRoot<A extends EObject, T extends EObject> extends CreateAndInsertEObject<T, InsertEReference<A, T>> {}
+
+class RemoveAndDeleteNonRoot<A extends EObject, T extends EObject> extends RemoveAndDeleteEObject<T, RemoveEReference<A, T>> {}
+
+class CreateAndReplaceAndDeleteNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {
+	contains CreateEObject<T>[1] createChange
+	contains ReplaceSingleValuedEReference<A, T>[1] replaceChange
+	contains DeleteEObject<T>[1] deleteChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val result = new BasicEList();
+		result.add(createChange);
+		result.add(replaceChange);
+		result.add(deleteChange);
+		return result;
+	}
+}

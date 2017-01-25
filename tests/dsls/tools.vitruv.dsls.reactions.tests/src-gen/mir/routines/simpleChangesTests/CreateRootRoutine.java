@@ -21,47 +21,47 @@ public class CreateRootRoutine extends AbstractRepairRoutineRealization {
       super(reactionExecutionState);
     }
     
-    public EObject getElement1(final Root root, final Root newRoot) {
+    public EObject getElement1(final Root rootElement, final Root newRoot) {
       return newRoot;
     }
     
-    public void updateNewRootElement(final Root root, final Root newRoot) {
-      String _id = root.getId();
+    public void updateNewRootElement(final Root rootElement, final Root newRoot) {
+      String _id = rootElement.getId();
       newRoot.setId(_id);
     }
     
-    public EObject getElement2(final Root root, final Root newRoot) {
-      return root;
+    public EObject getElement2(final Root rootElement, final Root newRoot) {
+      return rootElement;
     }
     
-    public void callRoutine1(final Root root, final Root newRoot, @Extension final RoutinesFacade _routinesFacade) {
-      String _id = root.getId();
+    public void callRoutine1(final Root rootElement, final Root newRoot, @Extension final RoutinesFacade _routinesFacade) {
+      String _id = rootElement.getId();
       String _replace = _id.replace("Source", "Target");
       String _plus = ("model/" + _replace);
-      this.persistProjectRelative(root, newRoot, _plus);
+      this.persistProjectRelative(rootElement, newRoot, _plus);
     }
   }
   
-  public CreateRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root root) {
+  public CreateRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement) {
     super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.simpleChangesTests.CreateRootRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    this.root = root;
+    this.rootElement = rootElement;
   }
   
-  private Root root;
+  private Root rootElement;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateRootRoutine with input:");
-    getLogger().debug("   Root: " + this.root);
+    getLogger().debug("   Root: " + this.rootElement);
     
     Root newRoot = AllElementTypesFactoryImpl.eINSTANCE.createRoot();
     initializeCreateElementState(newRoot);
-    userExecution.updateNewRootElement(root, newRoot);
+    userExecution.updateNewRootElement(rootElement, newRoot);
     
-    addCorrespondenceBetween(userExecution.getElement1(root, newRoot), userExecution.getElement2(root, newRoot), "");
+    addCorrespondenceBetween(userExecution.getElement1(rootElement, newRoot), userExecution.getElement2(rootElement, newRoot), "");
     
-    userExecution.callRoutine1(root, newRoot, actionsFacade);
+    userExecution.callRoutine1(rootElement, newRoot, actionsFacade);
     
     postprocessElementStates();
   }

@@ -22,46 +22,46 @@ public class ReplaceSingleValuedNonContainmentReferenceRoutine extends AbstractR
       super(reactionExecutionState);
     }
     
-    public EObject getCorrepondenceSourceTargetElement(final Root root, final NonRoot newReferencedElement, final Root targetContainer) {
+    public EObject getCorrepondenceSourceTargetElement(final Root rootElement, final NonRoot newReferencedElement, final Root targetContainer) {
       return newReferencedElement;
     }
     
-    public EObject getElement1(final Root root, final NonRoot newReferencedElement, final Root targetContainer, final NonRoot targetElement) {
+    public EObject getElement1(final Root rootElement, final NonRoot newReferencedElement, final Root targetContainer, final NonRoot targetElement) {
       return targetContainer;
     }
     
-    public void update0Element(final Root root, final NonRoot newReferencedElement, final Root targetContainer, final NonRoot targetElement) {
+    public void update0Element(final Root rootElement, final NonRoot newReferencedElement, final Root targetContainer, final NonRoot targetElement) {
       targetContainer.setSingleValuedNonContainmentEReference(targetElement);
     }
     
-    public EObject getCorrepondenceSourceTargetContainer(final Root root, final NonRoot newReferencedElement) {
-      return root;
+    public EObject getCorrepondenceSourceTargetContainer(final Root rootElement, final NonRoot newReferencedElement) {
+      return rootElement;
     }
     
-    public void callRoutine1(final Root root, final NonRoot newReferencedElement, final Root targetContainer, final NonRoot targetElement, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final Root rootElement, final NonRoot newReferencedElement, final Root targetContainer, final NonRoot targetElement, @Extension final RoutinesFacade _routinesFacade) {
       SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedNonContainmentEReference);
     }
   }
   
-  public ReplaceSingleValuedNonContainmentReferenceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot newReferencedElement) {
+  public ReplaceSingleValuedNonContainmentReferenceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement, final NonRoot newReferencedElement) {
     super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedNonContainmentReferenceRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    this.root = root;this.newReferencedElement = newReferencedElement;
+    this.rootElement = rootElement;this.newReferencedElement = newReferencedElement;
   }
   
-  private Root root;
+  private Root rootElement;
   
   private NonRoot newReferencedElement;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ReplaceSingleValuedNonContainmentReferenceRoutine with input:");
-    getLogger().debug("   Root: " + this.root);
+    getLogger().debug("   Root: " + this.rootElement);
     getLogger().debug("   NonRoot: " + this.newReferencedElement);
     
     Root targetContainer = getCorrespondingElement(
-    	userExecution.getCorrepondenceSourceTargetContainer(root, newReferencedElement), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceTargetContainer(rootElement, newReferencedElement), // correspondence source supplier
     	Root.class,
     	(Root _element) -> true, // correspondence precondition checker
     	null);
@@ -70,7 +70,7 @@ public class ReplaceSingleValuedNonContainmentReferenceRoutine extends AbstractR
     }
     initializeRetrieveElementState(targetContainer);
     NonRoot targetElement = getCorrespondingElement(
-    	userExecution.getCorrepondenceSourceTargetElement(root, newReferencedElement, targetContainer), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceTargetElement(rootElement, newReferencedElement, targetContainer), // correspondence source supplier
     	NonRoot.class,
     	(NonRoot _element) -> true, // correspondence precondition checker
     	null);
@@ -78,10 +78,10 @@ public class ReplaceSingleValuedNonContainmentReferenceRoutine extends AbstractR
     	return;
     }
     initializeRetrieveElementState(targetElement);
-    // val updatedElement userExecution.getElement1(root, newReferencedElement, targetContainer, targetElement);
-    userExecution.update0Element(root, newReferencedElement, targetContainer, targetElement);
+    // val updatedElement userExecution.getElement1(rootElement, newReferencedElement, targetContainer, targetElement);
+    userExecution.update0Element(rootElement, newReferencedElement, targetContainer, targetElement);
     
-    userExecution.callRoutine1(root, newReferencedElement, targetContainer, targetElement, actionsFacade);
+    userExecution.callRoutine1(rootElement, newReferencedElement, targetContainer, targetElement, actionsFacade);
     
     postprocessElementStates();
   }

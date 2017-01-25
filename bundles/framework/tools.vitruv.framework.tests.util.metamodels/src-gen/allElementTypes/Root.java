@@ -14,12 +14,15 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link allElementTypes.Root#getSingleValuedEAttribute <em>Single Valued EAttribute</em>}</li>
+ *   <li>{@link allElementTypes.Root#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.Root#getSingleValuedNonContainmentEReference <em>Single Valued Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getSingleValuedContainmentEReference <em>Single Valued Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getMultiValuedEAttribute <em>Multi Valued EAttribute</em>}</li>
+ *   <li>{@link allElementTypes.Root#getMultiValuedUnsettableEAttribute <em>Multi Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.Root#getMultiValuedNonContainmentEReference <em>Multi Valued Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getMultiValuedContainmentEReference <em>Multi Valued Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getNonRootObjectContainerHelper <em>Non Root Object Container Helper</em>}</li>
+ *   <li>{@link allElementTypes.Root#getRecursiveRoot <em>Recursive Root</em>}</li>
  * </ul>
  *
  * @see allElementTypes.AllElementTypesPackage#getRoot()
@@ -53,6 +56,60 @@ public interface Root extends Identified {
 	 * @generated
 	 */
 	void setSingleValuedEAttribute(Integer value);
+
+	/**
+	 * Returns the value of the '<em><b>Single Valued Unsettable EAttribute</b></em>' attribute.
+	 * The default value is <code>"0"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Single Valued Unsettable EAttribute</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Single Valued Unsettable EAttribute</em>' attribute.
+	 * @see #isSetSingleValuedUnsettableEAttribute()
+	 * @see #unsetSingleValuedUnsettableEAttribute()
+	 * @see #setSingleValuedUnsettableEAttribute(Integer)
+	 * @see allElementTypes.AllElementTypesPackage#getRoot_SingleValuedUnsettableEAttribute()
+	 * @model default="0" unsettable="true"
+	 * @generated
+	 */
+	Integer getSingleValuedUnsettableEAttribute();
+
+	/**
+	 * Sets the value of the '{@link allElementTypes.Root#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Single Valued Unsettable EAttribute</em>' attribute.
+	 * @see #isSetSingleValuedUnsettableEAttribute()
+	 * @see #unsetSingleValuedUnsettableEAttribute()
+	 * @see #getSingleValuedUnsettableEAttribute()
+	 * @generated
+	 */
+	void setSingleValuedUnsettableEAttribute(Integer value);
+
+	/**
+	 * Unsets the value of the '{@link allElementTypes.Root#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isSetSingleValuedUnsettableEAttribute()
+	 * @see #getSingleValuedUnsettableEAttribute()
+	 * @see #setSingleValuedUnsettableEAttribute(Integer)
+	 * @generated
+	 */
+	void unsetSingleValuedUnsettableEAttribute();
+
+	/**
+	 * Returns whether the value of the '{@link allElementTypes.Root#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}' attribute is set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Single Valued Unsettable EAttribute</em>' attribute is set.
+	 * @see #unsetSingleValuedUnsettableEAttribute()
+	 * @see #getSingleValuedUnsettableEAttribute()
+	 * @see #setSingleValuedUnsettableEAttribute(Integer)
+	 * @generated
+	 */
+	boolean isSetSingleValuedUnsettableEAttribute();
 
 	/**
 	 * Returns the value of the '<em><b>Single Valued Non Containment EReference</b></em>' reference.
@@ -123,6 +180,45 @@ public interface Root extends Identified {
 	EList<Integer> getMultiValuedEAttribute();
 
 	/**
+	 * Returns the value of the '<em><b>Multi Valued Unsettable EAttribute</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.Integer}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Multi Valued Unsettable EAttribute</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multi Valued Unsettable EAttribute</em>' attribute list.
+	 * @see #isSetMultiValuedUnsettableEAttribute()
+	 * @see #unsetMultiValuedUnsettableEAttribute()
+	 * @see allElementTypes.AllElementTypesPackage#getRoot_MultiValuedUnsettableEAttribute()
+	 * @model unsettable="true"
+	 * @generated
+	 */
+	EList<Integer> getMultiValuedUnsettableEAttribute();
+
+	/**
+	 * Unsets the value of the '{@link allElementTypes.Root#getMultiValuedUnsettableEAttribute <em>Multi Valued Unsettable EAttribute</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isSetMultiValuedUnsettableEAttribute()
+	 * @see #getMultiValuedUnsettableEAttribute()
+	 * @generated
+	 */
+	void unsetMultiValuedUnsettableEAttribute();
+
+	/**
+	 * Returns whether the value of the '{@link allElementTypes.Root#getMultiValuedUnsettableEAttribute <em>Multi Valued Unsettable EAttribute</em>}' attribute list is set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Multi Valued Unsettable EAttribute</em>' attribute list is set.
+	 * @see #unsetMultiValuedUnsettableEAttribute()
+	 * @see #getMultiValuedUnsettableEAttribute()
+	 * @generated
+	 */
+	boolean isSetMultiValuedUnsettableEAttribute();
+
+	/**
 	 * Returns the value of the '<em><b>Multi Valued Non Containment EReference</b></em>' reference list.
 	 * The list contents are of type {@link allElementTypes.NonRoot}.
 	 * <!-- begin-user-doc -->
@@ -179,5 +275,31 @@ public interface Root extends Identified {
 	 * @generated
 	 */
 	void setNonRootObjectContainerHelper(NonRootObjectContainerHelper value);
+
+	/**
+	 * Returns the value of the '<em><b>Recursive Root</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Recursive Root</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Recursive Root</em>' containment reference.
+	 * @see #setRecursiveRoot(Root)
+	 * @see allElementTypes.AllElementTypesPackage#getRoot_RecursiveRoot()
+	 * @model containment="true"
+	 * @generated
+	 */
+	Root getRecursiveRoot();
+
+	/**
+	 * Sets the value of the '{@link allElementTypes.Root#getRecursiveRoot <em>Recursive Root</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Recursive Root</em>' containment reference.
+	 * @see #getRecursiveRoot()
+	 * @generated
+	 */
+	void setRecursiveRoot(Root value);
 
 } // Root

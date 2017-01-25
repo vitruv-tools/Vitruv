@@ -1,16 +1,10 @@
 package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
 
 import org.eclipse.xtext.common.types.JvmGenericType
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.JvmOperation
 import static tools.vitruv.dsls.reactions.api.generator.ReactionsLanguageGeneratorConstants.*;
-import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelElementChange
 import static extension tools.vitruv.dsls.reactions.helper.EChangeHelper.*;
-import org.eclipse.xtend2.lib.StringConcatenationClient
-import static extension tools.vitruv.dsls.reactions.helper.EChangeHelper.*;
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange
-import static extension tools.vitruv.dsls.reactions.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.dsls.reactions.reactionsLanguage.PreconditionCodeBlock
 import tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization
@@ -21,10 +15,26 @@ import static tools.vitruv.dsls.reactions.helper.ReactionsLanguageConstants.*;
 import tools.vitruv.dsls.reactions.jvmmodel.classgenerators.UserExecutionClassGenerator.AccessibleElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelChange
+import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
+import tools.vitruv.dsls.reactions.helper.EChangeHelper.ChangeTypeRepresentation
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
+import org.eclipse.xtend2.lib.StringConcatenationClient
+import org.eclipse.emf.ecore.EClass
+import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
+import tools.vitruv.dsls.reactions.helper.EChangeHelper.AtomicChangeTypeRepresentation
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import tools.vitruv.dsls.reactions.helper.EChangeHelper.CompoundChangeTypRepresentation
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteEObject
+import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
 
 class ReactionClassGenerator extends ClassGenerator {
 	protected final Reaction reaction;
-	protected final Class<? extends EChange> change;
+	protected final ChangeTypeRepresentation change;
 	protected final boolean hasPreconditionBlock;
 	private final ClassNameGenerator reactionClassNameGenerator;
 	private final UserExecutionClassGenerator userExecutionClassGenerator;
@@ -37,7 +47,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		}
 		this.reaction = reaction;
 		this.hasPreconditionBlock = reaction.trigger.precondition != null;
-		this.change = reaction.trigger.generateEChangeInstanceClass();
+		this.change = reaction.trigger.generateEChange();
 		this.reactionClassNameGenerator = reaction.reactionClassNameGenerator;
 		this.routinesFacadeClassNameGenerator = reaction.reactionsSegment.routinesFacadeClassNameGenerator;
 		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, reaction, 
@@ -71,7 +81,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		val methodName = "getExpectedChangeType";
 		return getOrGenerateMethod(methodName, typeRef(Class, wildcardExtends(typeRef(EChange)))) [
 			static = true;
-			body = '''return «change».class;'''
+			body = '''return «change.changeType».class;'''
 		];
 	}
 	
@@ -96,7 +106,7 @@ class ReactionClassGenerator extends ClassGenerator {
 			val changeParameter = generateUntypedChangeParameter();
 			parameters += changeParameter;
 			val typedChangeName = "typedChange";
-			val typedChangeString = typedChangeString;
+			val typedChangeString = change.typedChangeTypeRepresentation;
 			body = '''
 				«typedChangeString» «typedChangeName» = («typedChangeString»)«changeParameter.name»;
 				«routinesFacadeClassNameGenerator.qualifiedName» routinesFacade = new «routinesFacadeClassNameGenerator.qualifiedName»(this.executionState, this);
@@ -106,25 +116,20 @@ class ReactionClassGenerator extends ClassGenerator {
 		];
 	}
 			
-	private def StringConcatenationClient getTypedChangeString() '''
-		«val trigger = reaction.trigger
-		»«change»«IF trigger instanceof ConcreteModelElementChange»<«FOR typeParam : getGenericTypeParameterFQNsOfChange(trigger) SEPARATOR ', '»«typeParam»«ENDFOR»>«ENDIF»'''
-		
-		
 	protected def generateMethodCheckPrecondition() {
 		val methodName = PRECONDITION_METHOD_NAME;
 		val preconditionMethods = getPreconditionMethods();
 		// FIXME HK Use method in MM
-		val changeType = if (FeatureEChange.isAssignableFrom(change)) {
-				typeRef(change, wildcard, wildcard);
-			} else if (RootEChange.isAssignableFrom(change)) {
-				typeRef(change, wildcard);
+		val changeType = if (FeatureEChange.isAssignableFrom(change.changeType)) {
+				typeRef(change.changeType, wildcard, wildcard);
+			} else if (RootEChange.isAssignableFrom(change.changeType)) {
+				typeRef(change.changeType, wildcard);
 			} else {
-				typeRef(change);
+				typeRef(change.changeType);
 			}
 		return getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			val changeParameter = generateUntypedChangeParameter(reaction);
-			val typedChangeClass = change;
+			val typedChangeClass = change.typedChangeTypeRepresentation;
 			visibility = JvmVisibility.PUBLIC;
 			parameters += changeParameter
 			body = '''
@@ -155,7 +160,7 @@ class ReactionClassGenerator extends ClassGenerator {
 	
 	protected def Iterable<JvmOperation> getPreconditionMethods() {
 		val methods = <JvmOperation>newArrayList();
-		if (reaction.trigger instanceof ConcreteModelElementChange) {
+		if (reaction.trigger instanceof ConcreteModelChange) {
 			methods += generateMethodCheckChangedObject();
 		}
 		if (hasPreconditionBlock) {
@@ -175,34 +180,96 @@ class ReactionClassGenerator extends ClassGenerator {
 	protected def generateMethodCheckChangedObject() {
 		val methodName = "checkChangeProperties";
 		
-		if (!(reaction.trigger instanceof ConcreteModelElementChange)) {
+		if (!(reaction.trigger instanceof ModelChange)) {
 			throw new IllegalStateException();
 		}
 		
-		val changeEvent = reaction.trigger;
-		val changedElement = reaction.trigger.changedModelElementClass;
+		val changeEvent = reaction.trigger as ModelChange;
 		return getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
 			val changeParameter = generateChangeParameter(reaction.trigger);
 			parameters += changeParameter;
-//			val typedChangeName = "typedChange";
-//			val typedChangeClassGenericString = if (!change.equals(EChange)) "<?>" else ""
 			body = '''
-«««				«change»«typedChangeClassGenericString» «typedChangeName» = («change»«typedChangeClassGenericString»)«changeParameter.name»;
-				«EObject» changedElement = «changeParameter.name».get«changeEvent.EChangeFeatureNameOfChangedObject.toFirstUpper»();
-				// Check model element type
-				if (!(changedElement instanceof «changedElement.instanceClass»)) {
-					return false;
-				}
-				
-				«IF changeEvent instanceof AtomicFeatureChange»
-					// Check feature
-					if (!«changeParameter.name».getAffectedFeature().getName().equals("«changeEvent.changedFeature.feature.name»")) {
-						return false;
-					}
+				«IF changeEvent instanceof ModelElementChange»
+					«generateElementChecks(change, changeEvent.elementType?.metaclass, changeParameter.name)»
+				«ELSEIF changeEvent instanceof ModelAttributeChange»
+					«generateAttributeChecks(changeEvent as ModelAttributeChange, changeParameter.name)»
 				«ENDIF»
+
 				return true;
 			'''
 		];
 	}
+	
+	private def StringConcatenationClient generateAttributeChecks(ModelAttributeChange change, String changeParameterName) '''
+		// Check affected object
+		if (!(«changeParameterName».getAffectedEObject() instanceof «change.feature.metaclass.instanceClass»)) {
+			return false;
+		}
+			
+		// Check feature
+		if (!«changeParameterName».getAffectedFeature().getName().equals("«change.feature.feature.name»")) {
+			return false;
+		}
+	'''
+	
+	private def dispatch StringConcatenationClient generateElementChecks(AtomicChangeTypeRepresentation change, EClass element, String changeParameterName) '''
+		«generateExistenceCheck(change, element, changeParameterName)»
+		«generateUsageCheck(change, element, changeParameterName)»
+	'''
+	
+	private def dispatch StringConcatenationClient generateElementChecks(CompoundChangeTypRepresentation change, EClass element, String changeParameterName) '''
+		«IF CreateAndInsertEObject.isAssignableFrom(change.changeType)»
+			«generateElementChecks(change.existenceChange, element, changeParameterName + ".getCreateChange()")»
+			«generateElementChecks(change.usageChange, element, changeParameterName + ".getInsertChange()")»
+		«ENDIF»
+		«IF RemoveAndDeleteEObject.isAssignableFrom(change.changeType)»
+			«generateElementChecks(change.existenceChange, element, changeParameterName + ".getDeleteChange()")»
+			«generateElementChecks(change.usageChange, element, changeParameterName + ".getRemoveChange()")»
+		«ENDIF»
+		«IF CreateAndReplaceAndDeleteNonRoot.isAssignableFrom(change.changeType)»
+			«generateElementChecks(change.existenceChange, element, changeParameterName + ".getDeleteChange()")»
+			«generateElementChecks(change.existenceChange, element, changeParameterName + ".getCreateChange()")»
+			«generateElementChecks(change.usageChange, element, changeParameterName + ".getReplaceChange()")»
+		«ENDIF»
+	'''
+	
+	private def StringConcatenationClient generateUsageCheck(AtomicChangeTypeRepresentation change, EClass element, String changeParameterName) '''
+		«IF FeatureEChange.isAssignableFrom(change.changeType)»
+			// Check affected object
+			if (!(«changeParameterName».getAffectedEObject() instanceof «change.affectedElementClass»)) {
+				return false;
+			}
+			// Check feature
+			if (!«changeParameterName».getAffectedFeature().getName().equals("«change.affectedFeature.name»")) {
+				return false;
+			}
+		«ENDIF»
+		«generateAdditiveSubtractiveCheck(change, element, changeParameterName)»
+	'''
+	
+	private def StringConcatenationClient generateAdditiveSubtractiveCheck(AtomicChangeTypeRepresentation change, EClass element, String changeParameterName) '''
+		«IF EObjectSubtractedEChange.isAssignableFrom(change.changeType)»
+			if («IF ReplaceSingleValuedFeatureEChange.isAssignableFrom(change.changeType)»«changeParameterName».isFromNonDefaultValue() && «
+				ENDIF»!(«changeParameterName».getOldValue() instanceof «change.affectedValueClass»)
+			) {
+				return false;
+			}
+		«ENDIF»
+		«IF EObjectAddedEChange.isAssignableFrom(change.changeType)»
+			if («IF ReplaceSingleValuedFeatureEChange.isAssignableFrom(change.changeType)»«changeParameterName».isToNonDefaultValue() && «
+				ENDIF»!(«changeParameterName».getNewValue() instanceof «change.affectedValueClass»)) {
+				return false;
+			}
+		«ENDIF»
+	'''
+	
+	private def StringConcatenationClient generateExistenceCheck(AtomicChangeTypeRepresentation change, EClass element, String changeParameterName) '''
+		«IF EObjectExistenceEChange.isAssignableFrom(change.changeType)»
+			if (!(«changeParameterName».getAffectedEObject() instanceof «change.affectedElementClass»)) {
+				return false;
+			}
+		«ENDIF»
+	'''
+	
 }

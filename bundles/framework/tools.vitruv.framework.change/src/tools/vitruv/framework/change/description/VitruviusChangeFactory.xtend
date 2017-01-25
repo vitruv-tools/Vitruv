@@ -11,10 +11,10 @@ import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
 import org.eclipse.emf.ecore.EObject
 import org.apache.log4j.Logger
-import tools.vitruv.framework.change.echange.root.InsertRootEObject
-import tools.vitruv.framework.change.echange.root.RootFactory
-import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -88,16 +88,14 @@ class VitruviusChangeFactory {
                     + ". Propagation of 'root element created' not triggered.");
             return null;
         }
-        val InsertRootEObject<EObject> createRootEObj = RootFactory.eINSTANCE.createInsertRootEObject();
-        createRootEObj.setNewValue(rootElement);
+        val CreateAndInsertRoot<EObject> createRootEObj = TypeInferringCompoundEChangeFactory.createCreateAndInsertRootChange(rootElement, resource.URI.toString);
         return createRootEObj;
 	}
 	
 	private def generateFileDeleteChange(Resource resource) {
 		if (0 < resource.getContents().size()) {
             val EObject rootElement = resource.getContents().get(0);
-            val RemoveRootEObject<EObject> deleteRootObj = RootFactory.eINSTANCE.createRemoveRootEObject();
-            deleteRootObj.setOldValue(rootElement);
+            val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory.createRemoveAndDeleteRootChange(rootElement, resource.URI.toString);
             return deleteRootObj;
         }
         logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");

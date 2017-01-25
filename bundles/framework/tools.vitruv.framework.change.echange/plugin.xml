@@ -7,67 +7,75 @@
 <plugin>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated change -->
+      <!-- @generated EObject -->
       <package
-            uri="http://tools.vitruv/EChange/1.0"
-            class="tools.vitruv.framework.change.echange.EChangePackage"
-            genModel="metamodel/change.genmodel"/>
+            uri="http://tools.vitruv/EChange/EObject/1.0"
+            class="tools.vitruv.framework.change.echange.eobject.EobjectPackage"
+            genModel="metamodel/EObject.xcore"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated change -->
-      <package
-            uri="http://tools.vitruv/EChange/Feature/1.0"
-            class="tools.vitruv.framework.change.echange.feature.FeaturePackage"
-            genModel="metamodel/change.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated change -->
-      <package
-            uri="http://tools.vitruv/EChange/Feature/Single/1.0"
-            class="tools.vitruv.framework.change.echange.feature.single.SinglePackage"
-            genModel="metamodel/change.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated change -->
-      <package
-            uri="http://tools.vitruv/EChange/Feature/List/1.0"
-            class="tools.vitruv.framework.change.echange.feature.list.ListPackage"
-            genModel="metamodel/change.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated change -->
-      <package
-            uri="http://tools.vitruv/EChange/Feature/Attribute/1.0"
-            class="tools.vitruv.framework.change.echange.feature.attribute.AttributePackage"
-            genModel="metamodel/change.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated change -->
-      <package
-            uri="http://tools.vitruv/EChange/Feature/Reference/Containment/1.0"
-            class="tools.vitruv.framework.change.echange.feature.reference.ReferencePackage"
-            genModel="metamodel/change.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated change -->
-      <package
-            uri="http://tools.vitruv/EChange/Root/1.0"
-            class="tools.vitruv.framework.change.echange.root.RootPackage"
-            genModel="metamodel/change.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated change -->
+      <!-- @generated Compound -->
       <package
             uri="http://tools.vitruv/EChange/Compound/1.0"
             class="tools.vitruv.framework.change.echange.compound.CompoundPackage"
-            genModel="metamodel/change.genmodel"/>
+            genModel="metamodel/Compound.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated EChange -->
+      <package
+            uri="http://tools.vitruv/EChange/1.0"
+            class="tools.vitruv.framework.change.echange.EChangePackage"
+            genModel="metamodel/EChange.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Feature -->
+      <package
+            uri="http://tools.vitruv/EChange/Feature/1.0"
+            class="tools.vitruv.framework.change.echange.feature.FeaturePackage"
+            genModel="metamodel/Feature.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated List -->
+      <package
+            uri="http://tools.vitruv/EChange/Feature/List/1.0"
+            class="tools.vitruv.framework.change.echange.feature.list.ListPackage"
+            genModel="metamodel/List.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Reference -->
+      <package
+            uri="http://tools.vitruv/EChange/Feature/Reference/Containment/1.0"
+            class="tools.vitruv.framework.change.echange.feature.reference.ReferencePackage"
+            genModel="metamodel/Reference.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Root -->
+      <package
+            uri="http://tools.vitruv/EChange/Root/1.0"
+            class="tools.vitruv.framework.change.echange.root.RootPackage"
+            genModel="metamodel/Root.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Single -->
+      <package
+            uri="http://tools.vitruv/EChange/Feature/Single/1.0"
+            class="tools.vitruv.framework.change.echange.feature.single.SinglePackage"
+            genModel="metamodel/Single.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Attribute -->
+      <package
+            uri="http://tools.vitruv/EChange/Feature/Attribute/1.0"
+            class="tools.vitruv.framework.change.echange.feature.attribute.AttributePackage"
+            genModel="metamodel/Attribute.xcore"/>
    </extension>
 
 </plugin>

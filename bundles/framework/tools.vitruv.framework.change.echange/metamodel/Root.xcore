@@ -1,0 +1,18 @@
+@Ecore(nsURI="http://tools.vitruv/EChange/Root/1.0")
+@GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+package tools.vitruv.framework.change.echange.root
+
+import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.change.echange.AtomicEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+
+abstract class RootEChange extends AtomicEChange {
+	String[1] uri = ""
+}
+
+class InsertRootEObject<T extends EObject> extends RootEChange, EObjectAddedEChange<T> {
+}
+
+class RemoveRootEObject<T extends EObject> extends RootEChange, EObjectSubtractedEChange<T> {
+}

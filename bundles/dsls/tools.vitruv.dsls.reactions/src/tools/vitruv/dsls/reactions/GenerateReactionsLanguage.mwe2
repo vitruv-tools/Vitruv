@@ -33,7 +33,11 @@ Workflow {
     }
     
     component = DirectoryCleaner {
-    	directory = "../../tests/dsls/${projectName}.tests/src-gen"
+    	directory = "${testProjectPath}.tests/src-gen"
+    }
+    
+    component = DirectoryCleaner {
+    	directory = "${testProjectPath}.ui.tests/src-gen"
     }
     
 	component = postprocessor.ReactionsLanguageExtendedGenerator {
@@ -50,7 +54,7 @@ Workflow {
 				}
 				eclipsePluginTest = {
 					enabled = true
-					root = "${testProjectPath}.tests"
+					root = "${testProjectPath}.ui.tests"
 				}
 				createEclipseMetaData = true
 				
@@ -69,9 +73,6 @@ Workflow {
 			junitSupport = junit.Junit4Fragment2 {
 				generateStub = false
 			}
-	//		formatter={
-	//		    generateStub=true
-	//		}
 		}
 	}
 }

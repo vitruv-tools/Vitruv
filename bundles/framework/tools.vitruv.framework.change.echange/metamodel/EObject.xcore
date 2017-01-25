@@ -1,0 +1,28 @@
+@Ecore(nsURI="http://tools.vitruv/EChange/EObject/1.0")
+@GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+package tools.vitruv.framework.change.echange.eobject
+
+import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.change.echange.AtomicEChange
+import tools.vitruv.framework.change.echange.AdditiveEChange
+import tools.vitruv.framework.change.echange.SubtractiveEChange
+
+abstract class EObjectAddedEChange<T extends EObject> extends AdditiveEChange<T> {
+	refers T[1] newValue
+}
+
+abstract class EObjectSubtractedEChange<T extends EObject> extends SubtractiveEChange<T> {
+	refers T[1] oldValue
+}
+
+abstract class EObjectExistenceEChange<A extends EObject> extends AtomicEChange {
+	refers A[1] affectedEObject
+}
+
+class CreateEObject<A extends EObject> extends EObjectExistenceEChange<A> {
+
+}
+
+class DeleteEObject<A extends EObject> extends EObjectExistenceEChange<A> {
+
+}

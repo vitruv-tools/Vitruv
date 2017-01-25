@@ -6,7 +6,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.Before
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import org.junit.After
 import java.io.File
 import allElementTypes.AllElementTypesFactory
@@ -52,19 +53,35 @@ class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransform
 	
 		
 	def protected void assertInsertRoot(int index, boolean isCreate, String uri) {
-		claimChange(index).assertInsertRootEObject(this.rootElement, isCreate, uri)
+		if (isCreate) {
+			changes.claimChange(index).assertCreateAndInsertRootEObject(this.rootElement, uri);
+		} else {
+			changes.claimChange(index).assertInsertRootEObject(this.rootElement, uri)
+		}
 	}
 	
 	def protected void assertInsertRoot2(int index, boolean isCreate, String uri) {
-		claimChange(index).assertInsertRootEObject(this.rootElement2, isCreate, uri)
+		if (isCreate) {
+			changes.claimChange(index).assertCreateAndInsertRootEObject(this.rootElement2, uri);
+		} else {
+			changes.claimChange(index).assertInsertRootEObject(this.rootElement2, uri)
+		}
 	}
 	
 	def protected void assertRemoveRoot(int index, boolean isDelete, String uri) {
-		claimChange(index).assertRemoveRootEObject(this.rootElement, isDelete, uri)
+		if (isDelete) {
+			changes.claimChange(index).assertRemoveAndDeleteRootEObject(this.rootElement, uri)
+		} else {
+			changes.claimChange(index).assertRemoveRootEObject(this.rootElement, uri)
+		}
 	}
 	
 	def protected void assertRemoveRoot2(int index, boolean isDelete, String uri) {
-		claimChange(index).assertRemoveRootEObject(this.rootElement2, isDelete, uri)
+		if (isDelete) {
+			changes.claimChange(index).assertRemoveAndDeleteRootEObject(this.rootElement2, uri)
+		} else {
+			changes.claimChange(index).assertRemoveRootEObject(this.rootElement2, uri)
+		}
 	}
 	
 	def protected void insertRootEObjectInResource(Resource resource){

@@ -14,39 +14,39 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface RootFactory extends EFactory {
-    /**
+	/**
 	 * The singleton instance of the factory.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    RootFactory eINSTANCE = tools.vitruv.framework.change.echange.root.impl.RootFactoryImpl.init();
+	RootFactory eINSTANCE = tools.vitruv.framework.change.echange.root.impl.RootFactoryImpl.init();
 
-    /**
+	/**
 	 * Returns a new object of class '<em>Insert Root EObject</em>'.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return a new object of class '<em>Insert Root EObject</em>'.
 	 * @generated
 	 */
-    <T extends EObject> InsertRootEObject<T> createInsertRootEObject();
+	<T extends EObject> InsertRootEObject<T> createInsertRootEObject();
 
-    /**
+	/**
 	 * Returns a new object of class '<em>Remove Root EObject</em>'.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return a new object of class '<em>Remove Root EObject</em>'.
 	 * @generated
 	 */
-    <T extends EObject> RemoveRootEObject<T> createRemoveRootEObject();
+	<T extends EObject> RemoveRootEObject<T> createRemoveRootEObject();
 
-    /**
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the package supported by this factory.
 	 * @generated
 	 */
-    RootPackage getRootPackage();
+	RootPackage getRootPackage();
 
 } //RootFactory

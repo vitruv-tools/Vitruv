@@ -19,13 +19,13 @@ import tools.vitruv.framework.change.echange.root.*;
  * @generated
  */
 public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
-    /**
+	/**
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public static RootFactory init() {
+	public static RootFactory init() {
 		try {
 			RootFactory theRootFactory = (RootFactory)EPackage.Registry.INSTANCE.getEFactory(RootPackage.eNS_URI);
 			if (theRootFactory != null) {
@@ -38,23 +38,23 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 		return new RootFactoryImpl();
 	}
 
-    /**
+	/**
 	 * Creates an instance of the factory.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public RootFactoryImpl() {
+	public RootFactoryImpl() {
 		super();
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    @Override
-    public EObject create(EClass eClass) {
+	@Override
+	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case RootPackage.INSERT_ROOT_EOBJECT: return createInsertRootEObject();
 			case RootPackage.REMOVE_ROOT_EOBJECT: return createRemoveRootEObject();
@@ -63,43 +63,43 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 		}
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public <T extends EObject> InsertRootEObject<T> createInsertRootEObject() {
+	public <T extends EObject> InsertRootEObject<T> createInsertRootEObject() {
 		InsertRootEObjectImpl<T> insertRootEObject = new InsertRootEObjectImpl<T>();
 		return insertRootEObject;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public <T extends EObject> RemoveRootEObject<T> createRemoveRootEObject() {
+	public <T extends EObject> RemoveRootEObject<T> createRemoveRootEObject() {
 		RemoveRootEObjectImpl<T> removeRootEObject = new RemoveRootEObjectImpl<T>();
 		return removeRootEObject;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public RootPackage getRootPackage() {
+	public RootPackage getRootPackage() {
 		return (RootPackage)getEPackage();
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @deprecated
 	 * @generated
 	 */
-    @Deprecated
-    public static RootPackage getPackage() {
+	@Deprecated
+	public static RootPackage getPackage() {
 		return RootPackage.eINSTANCE;
 	}
 

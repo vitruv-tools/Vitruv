@@ -2,7 +2,6 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -19,7 +18,7 @@ class RemovedEAttributeValueReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    RemoveEAttributeValue<allElementTypes.Root, java.lang.Integer> typedChange = (RemoveEAttributeValue<allElementTypes.Root, java.lang.Integer>)change;
+    RemoveEAttributeValue<Root, Integer> typedChange = (RemoveEAttributeValue<Root, Integer>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemovedEAttributeValueReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemovedEAttributeValueReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
@@ -30,16 +29,16 @@ class RemovedEAttributeValueReaction extends AbstractReactionRealization {
   }
   
   private boolean checkChangeProperties(final RemoveEAttributeValue<Root, Integer> change) {
-    EObject changedElement = change.getAffectedEObject();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+    // Check affected object
+    if (!(change.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    
+    	
     // Check feature
     if (!change.getAffectedFeature().getName().equals("multiValuedEAttribute")) {
     	return false;
     }
+    
     return true;
   }
   
@@ -47,7 +46,7 @@ class RemovedEAttributeValueReaction extends AbstractReactionRealization {
     if (!(change instanceof RemoveEAttributeValue<?, ?>)) {
     	return false;
     }
-    RemoveEAttributeValue typedChange = (RemoveEAttributeValue)change;
+    RemoveEAttributeValue<Root, Integer> typedChange = (RemoveEAttributeValue<Root, Integer>)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }

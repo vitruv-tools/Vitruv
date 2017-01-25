@@ -1,0 +1,18 @@
+@Ecore(nsURI="http://tools.vitruv/EChange/Feature/1.0")
+@GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+package tools.vitruv.framework.change.echange.feature
+
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+import tools.vitruv.framework.change.echange.AtomicEChange
+
+abstract class FeatureEChange<A extends EObject , F extends EStructuralFeature> extends AtomicEChange {
+	refers F[1] affectedFeature
+	refers A[1] affectedEObject
+}
+
+abstract class UpdateMultiValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange<A, F> {
+}
+
+abstract class UpdateSingleValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange<A, F> {
+}

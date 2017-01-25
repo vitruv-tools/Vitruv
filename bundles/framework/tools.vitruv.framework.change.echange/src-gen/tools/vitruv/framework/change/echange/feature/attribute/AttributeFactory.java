@@ -14,57 +14,48 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface AttributeFactory extends EFactory {
-    /**
+	/**
 	 * The singleton instance of the factory.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    AttributeFactory eINSTANCE = tools.vitruv.framework.change.echange.feature.attribute.impl.AttributeFactoryImpl.init();
+	AttributeFactory eINSTANCE = tools.vitruv.framework.change.echange.feature.attribute.impl.AttributeFactoryImpl.init();
 
-    /**
-	 * Returns a new object of class '<em>Replace Single Valued EAttribute</em>'.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Replace Single Valued EAttribute</em>'.
-	 * @generated
-	 */
-    <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A, T> createReplaceSingleValuedEAttribute();
-
-    /**
+	/**
 	 * Returns a new object of class '<em>Insert EAttribute Value</em>'.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return a new object of class '<em>Insert EAttribute Value</em>'.
 	 * @generated
 	 */
-    <A extends EObject, T extends Object> InsertEAttributeValue<A, T> createInsertEAttributeValue();
+	<A extends EObject, T extends Object> InsertEAttributeValue<A, T> createInsertEAttributeValue();
 
-    /**
+	/**
 	 * Returns a new object of class '<em>Remove EAttribute Value</em>'.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return a new object of class '<em>Remove EAttribute Value</em>'.
 	 * @generated
 	 */
-    <A extends EObject, T extends Object> RemoveEAttributeValue<A, T> createRemoveEAttributeValue();
+	<A extends EObject, T extends Object> RemoveEAttributeValue<A, T> createRemoveEAttributeValue();
 
-    /**
-	 * Returns a new object of class '<em>Permute EAttribute Values</em>'.
+	/**
+	 * Returns a new object of class '<em>Replace Single Valued EAttribute</em>'.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Permute EAttribute Values</em>'.
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Replace Single Valued EAttribute</em>'.
 	 * @generated
 	 */
-    <A extends EObject> PermuteEAttributeValues<A> createPermuteEAttributeValues();
+	<A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A, T> createReplaceSingleValuedEAttribute();
 
-    /**
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the package supported by this factory.
 	 * @generated
 	 */
-    AttributePackage getAttributePackage();
+	AttributePackage getAttributePackage();
 
 } //AttributeFactory

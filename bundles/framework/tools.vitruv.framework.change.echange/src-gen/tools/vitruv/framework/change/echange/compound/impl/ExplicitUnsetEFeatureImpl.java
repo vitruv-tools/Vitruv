@@ -2,154 +2,118 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
-import tools.vitruv.framework.change.echange.SubtractiveEChange;
-import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature;
-import tools.vitruv.framework.change.echange.compound.impl.CompoundEChangeImpl;
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-
-import java.util.Collection;
+import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+
+import org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions;
+
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+
+import tools.vitruv.framework.change.echange.AtomicEChange;
+
+import tools.vitruv.framework.change.echange.compound.CompoundEChange;
+import tools.vitruv.framework.change.echange.compound.CompoundPackage;
+import tools.vitruv.framework.change.echange.compound.CompoundSubtraction;
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature;
+
+import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
 
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Explicit Unset EFeature</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * </p>
- * <ul>
- *   <li>{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl#getSubtractiveChanges <em>Subtractive Changes</em>}</li>
- * </ul>
  *
  * @generated
  */
-public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> extends CompoundEChangeImpl implements ExplicitUnsetEFeature<A, F, T, S> {
-    /**
-	 * The cached value of the '{@link #getSubtractiveChanges() <em>Subtractive Changes</em>}' reference list.
+public class ExplicitUnsetEFeatureImpl<A extends EObject, T extends Object> extends CompoundSubtractionImpl<T, SubtractiveAttributeEChange<A, T>> implements ExplicitUnsetEFeature<A, T> {
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @see #getSubtractiveChanges()
-	 * @generated
-	 * @ordered
-	 */
-    protected EList<S> subtractiveChanges;
-
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    protected ExplicitUnsetEFeatureImpl() {
+	protected ExplicitUnsetEFeatureImpl() {
 		super();
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    @Override
-    protected EClass eStaticClass() {
+	@Override
+	protected EClass eStaticClass() {
 		return CompoundPackage.Literals.EXPLICIT_UNSET_EFEATURE;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific element type known in this context.
 	 * @generated
 	 */
-    public EList<S> getSubtractiveChanges() {
+	@Override
+	public EList<SubtractiveAttributeEChange<A, T>> getSubtractiveChanges() {
 		if (subtractiveChanges == null) {
-			subtractiveChanges = new EObjectResolvingEList.Unsettable<S>(FeatureEChange.class, this, CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES);
+			subtractiveChanges = new EObjectContainmentEList<SubtractiveAttributeEChange<A, T>>(SubtractiveAttributeEChange.class, this, CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES);
 		}
 		return subtractiveChanges;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public void unsetSubtractiveChanges() {
-		if (subtractiveChanges != null) ((InternalEList.Unsettable<?>)subtractiveChanges).unset();
+	public EList<AtomicEChange> getAtomicChanges() {
+		EList<SubtractiveAttributeEChange<A, T>> _subtractiveChanges = this.getSubtractiveChanges();
+		final Function1<SubtractiveAttributeEChange<A, T>, AtomicEChange> _function = new Function1<SubtractiveAttributeEChange<A, T>, AtomicEChange>() {
+			public AtomicEChange apply(final SubtractiveAttributeEChange<A, T> it) {
+				return it;
+			}
+		};
+		return XcoreEListExtensions.<SubtractiveAttributeEChange<A, T>, AtomicEChange>map(_subtractiveChanges, _function);
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public boolean isSetSubtractiveChanges() {
-		return subtractiveChanges != null && ((InternalEList.Unsettable<?>)subtractiveChanges).isSet();
-	}
-
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 */
-    @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES:
-				return getSubtractiveChanges();
+	@Override
+	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+		if (baseClass == CompoundEChange.class) {
+			switch (baseOperationID) {
+				case CompoundPackage.COMPOUND_ECHANGE___GET_ATOMIC_CHANGES: return CompoundPackage.EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
 		}
-		return super.eGet(featureID, resolve, coreType);
+		if (baseClass == CompoundSubtraction.class) {
+			switch (baseOperationID) {
+				case CompoundPackage.COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES: return CompoundPackage.EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		return super.eDerivedOperationID(baseOperationID, baseClass);
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES:
-				getSubtractiveChanges().clear();
-				getSubtractiveChanges().addAll((Collection<? extends S>)newValue);
-				return;
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case CompoundPackage.EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES:
+				return getAtomicChanges();
 		}
-		super.eSet(featureID, newValue);
-	}
-
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 */
-    @Override
-    public void eUnset(int featureID) {
-		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES:
-				unsetSubtractiveChanges();
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 */
-    @Override
-    public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES:
-				return isSetSubtractiveChanges();
-		}
-		return super.eIsSet(featureID);
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //ExplicitUnsetEFeatureImpl

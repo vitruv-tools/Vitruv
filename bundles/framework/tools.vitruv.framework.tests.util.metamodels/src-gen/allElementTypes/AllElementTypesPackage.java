@@ -122,13 +122,22 @@ public interface AllElementTypesPackage extends EPackage {
 	int ROOT__SINGLE_VALUED_EATTRIBUTE = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Single Valued Unsettable EAttribute</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE = IDENTIFIED_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Single Valued Non Containment EReference</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 1;
+	int ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Single Valued Containment EReference</b></em>' containment reference.
@@ -137,7 +146,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 2;
+	int ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Multi Valued EAttribute</b></em>' attribute list.
@@ -146,7 +155,16 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__MULTI_VALUED_EATTRIBUTE = IDENTIFIED_FEATURE_COUNT + 3;
+	int ROOT__MULTI_VALUED_EATTRIBUTE = IDENTIFIED_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Multi Valued Unsettable EAttribute</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE = IDENTIFIED_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Multi Valued Non Containment EReference</b></em>' reference list.
@@ -155,7 +173,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 4;
+	int ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Multi Valued Containment EReference</b></em>' containment reference list.
@@ -164,7 +182,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 5;
+	int ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE = IDENTIFIED_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Non Root Object Container Helper</b></em>' containment reference.
@@ -173,7 +191,16 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER = IDENTIFIED_FEATURE_COUNT + 6;
+	int ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER = IDENTIFIED_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Recursive Root</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT__RECURSIVE_ROOT = IDENTIFIED_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Root</em>' class.
@@ -182,7 +209,7 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 7;
+	int ROOT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Root</em>' class.
@@ -299,6 +326,17 @@ public interface AllElementTypesPackage extends EPackage {
 	EAttribute getRoot_SingleValuedEAttribute();
 
 	/**
+	 * Returns the meta object for the attribute '{@link allElementTypes.Root#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Single Valued Unsettable EAttribute</em>'.
+	 * @see allElementTypes.Root#getSingleValuedUnsettableEAttribute()
+	 * @see #getRoot()
+	 * @generated
+	 */
+	EAttribute getRoot_SingleValuedUnsettableEAttribute();
+
+	/**
 	 * Returns the meta object for the reference '{@link allElementTypes.Root#getSingleValuedNonContainmentEReference <em>Single Valued Non Containment EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -332,6 +370,17 @@ public interface AllElementTypesPackage extends EPackage {
 	EAttribute getRoot_MultiValuedEAttribute();
 
 	/**
+	 * Returns the meta object for the attribute list '{@link allElementTypes.Root#getMultiValuedUnsettableEAttribute <em>Multi Valued Unsettable EAttribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Multi Valued Unsettable EAttribute</em>'.
+	 * @see allElementTypes.Root#getMultiValuedUnsettableEAttribute()
+	 * @see #getRoot()
+	 * @generated
+	 */
+	EAttribute getRoot_MultiValuedUnsettableEAttribute();
+
+	/**
 	 * Returns the meta object for the reference list '{@link allElementTypes.Root#getMultiValuedNonContainmentEReference <em>Multi Valued Non Containment EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -363,6 +412,17 @@ public interface AllElementTypesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getRoot_NonRootObjectContainerHelper();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link allElementTypes.Root#getRecursiveRoot <em>Recursive Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Recursive Root</em>'.
+	 * @see allElementTypes.Root#getRecursiveRoot()
+	 * @see #getRoot()
+	 * @generated
+	 */
+	EReference getRoot_RecursiveRoot();
 
 	/**
 	 * Returns the meta object for class '{@link allElementTypes.NonRoot <em>Non Root</em>}'.
@@ -458,6 +518,14 @@ public interface AllElementTypesPackage extends EPackage {
 		EAttribute ROOT__SINGLE_VALUED_EATTRIBUTE = eINSTANCE.getRoot_SingleValuedEAttribute();
 
 		/**
+		 * The meta object literal for the '<em><b>Single Valued Unsettable EAttribute</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE = eINSTANCE.getRoot_SingleValuedUnsettableEAttribute();
+
+		/**
 		 * The meta object literal for the '<em><b>Single Valued Non Containment EReference</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -482,6 +550,14 @@ public interface AllElementTypesPackage extends EPackage {
 		EAttribute ROOT__MULTI_VALUED_EATTRIBUTE = eINSTANCE.getRoot_MultiValuedEAttribute();
 
 		/**
+		 * The meta object literal for the '<em><b>Multi Valued Unsettable EAttribute</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE = eINSTANCE.getRoot_MultiValuedUnsettableEAttribute();
+
+		/**
 		 * The meta object literal for the '<em><b>Multi Valued Non Containment EReference</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -504,6 +580,14 @@ public interface AllElementTypesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER = eINSTANCE.getRoot_NonRootObjectContainerHelper();
+
+		/**
+		 * The meta object literal for the '<em><b>Recursive Root</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ROOT__RECURSIVE_ROOT = eINSTANCE.getRoot_RecursiveRoot();
 
 		/**
 		 * The meta object literal for the '{@link allElementTypes.impl.NonRootImpl <em>Non Root</em>}' class.

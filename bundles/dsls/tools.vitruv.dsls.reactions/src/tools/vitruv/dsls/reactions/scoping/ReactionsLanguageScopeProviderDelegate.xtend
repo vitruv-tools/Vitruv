@@ -9,8 +9,6 @@ import org.eclipse.xtext.scoping.impl.SimpleScope
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*;
 
 import org.eclipse.emf.ecore.EStructuralFeature
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicMultiValuedFeatureChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicSingleValuedFeatureChange
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 import org.eclipse.emf.ecore.EcorePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
@@ -19,6 +17,9 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType
 
 class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 	override getScope(EObject context, EReference reference) {
@@ -50,9 +51,9 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
 		if (featureReference?.metaclass != null) {
 			val changeType = featureReference.eContainer;
-			val filterFunction = if (changeType instanceof AtomicMultiValuedFeatureChange) {
+			val filterFunction = if (changeType instanceof ElementInsertionChangeType || changeType instanceof ElementRemovalChangeType) {
 				[EStructuralFeature feat | feat.many];
-			} else if (changeType instanceof AtomicSingleValuedFeatureChange) {
+			} else if (changeType instanceof ElementReplacementChangeType) {
 				[EStructuralFeature feat | !feat.many];
 			} else {
 				[EStructuralFeature feat | true];

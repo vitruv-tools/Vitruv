@@ -14,12 +14,12 @@ package tools.vitruv.framework.change.echange;
  * @generated
  */
 public interface SubtractiveEChange<T extends Object> extends AtomicEChange {
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" unique="false" required="true"
 	 * @generated
 	 */
-    T getOldValue();
+	T getOldValue();
 
 } // SubtractiveEChange

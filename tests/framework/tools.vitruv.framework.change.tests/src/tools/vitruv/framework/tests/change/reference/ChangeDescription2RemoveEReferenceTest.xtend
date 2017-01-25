@@ -2,14 +2,14 @@ package tools.vitruv.framework.tests.change.reference
 
 import org.junit.Test
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.EChange
-import org.junit.Ignore
+import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenceTest {
 
-
-	def private void testRemoveEReference(boolean isContainment, boolean isExplicitUnset) {
+	def private void testRemoveEReference(boolean isContainment) {
 		// prepare
 		val nonRoot = createAndSetNonRootToRootSingleReference()
 		// add element to right reference in order to be able to remove it later
@@ -20,59 +20,34 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		}
 		startRecording
 		var EChange removeChange
-		val featureName = if (isContainment) MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME else MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME
 		// test
-		if (isExplicitUnset) { 
-			val feature = this.rootElement.getFeatureByName(featureName)
-			this.rootElement.eUnset(feature)
-			val unsetChange = claimChange(0).assertExplicitUnset()
-			removeChange = unsetChange.subtractiveChanges?.get(0)
-		} else {
-			if (isContainment) {
-				this.rootElement.multiValuedContainmentEReference.remove(nonRoot)
-			} else {
-				this.rootElement.multiValuedNonContainmentEReference.remove(nonRoot)
-			}
-			removeChange = claimChange(0)
-		}
-		// assert 
-		val isDelete = isContainment
 		if (isContainment) {
-			removeChange.assertRemoveEReference(this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot, 0,
-				isContainment, isDelete)
+			this.rootElement.multiValuedContainmentEReference.remove(nonRoot)
 		} else {
-			removeChange.assertRemoveEReference(this.rootElement, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot, 0,
-				isContainment, isDelete)
+			this.rootElement.multiValuedNonContainmentEReference.remove(nonRoot)
+		}
+		
+		// assert 
+		changes.assertChangeCount(1);
+		removeChange = changes.claimChange(0)
+		if (isContainment) {
+			removeChange.assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, 0)
+		} else {
+			removeChange.assertRemoveEReference(this.rootElement, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, 0,
+				isContainment)
 		}
 	}
 	
 	@Test
 	def public void testRemoveNonContainmentEReferenceFromList() {
 		val isContainment = false
-		val isExplicitUnset = false
-		testRemoveEReference(isContainment, isExplicitUnset)
-	}
-	
-	@Ignore
-	@Test
-	def public void testRemoveNonContainmentEReferenceFromListWithExplicitUnset() {
-		val isContainment = false
-		val isExplicitUnset = true
-		testRemoveEReference(isContainment, isExplicitUnset)
+		testRemoveEReference(isContainment)
 	}
 	
 	@Test
 	def public void testRemoveContainmentEReferenceFromList() {
 		val isContainment = true
-		val isExplicitUnset = false
-		testRemoveEReference(isContainment, isExplicitUnset)
+		testRemoveEReference(isContainment)
 	}
 
-	@Ignore
-	@Test
-	def public void testRemoveContainmentEReferenceFromListWithExplicitUnset() {
-		val isContainment = true
-		val isExplicitUnset = true
-		testRemoveEReference(isContainment, isExplicitUnset)
-	}
 }

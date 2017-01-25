@@ -3,7 +3,6 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -20,7 +19,7 @@ class InsertedNonContainmentEReferenceReaction extends AbstractReactionRealizati
   }
   
   public void executeReaction(final EChange change) {
-    InsertEReference<allElementTypes.Root, allElementTypes.NonRoot> typedChange = (InsertEReference<allElementTypes.Root, allElementTypes.NonRoot>)change;
+    InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedNonContainmentEReferenceReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedNonContainmentEReferenceReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
@@ -31,16 +30,18 @@ class InsertedNonContainmentEReferenceReaction extends AbstractReactionRealizati
   }
   
   private boolean checkChangeProperties(final InsertEReference<Root, NonRoot> change) {
-    EObject changedElement = change.getAffectedEObject();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+    // Check affected object
+    if (!(change.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    
     // Check feature
     if (!change.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
     	return false;
     }
+    if (!(change.getNewValue() instanceof NonRoot)) {
+    	return false;
+    }
+    
     return true;
   }
   
@@ -48,7 +49,7 @@ class InsertedNonContainmentEReferenceReaction extends AbstractReactionRealizati
     if (!(change instanceof InsertEReference<?, ?>)) {
     	return false;
     }
-    InsertEReference typedChange = (InsertEReference)change;
+    InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }

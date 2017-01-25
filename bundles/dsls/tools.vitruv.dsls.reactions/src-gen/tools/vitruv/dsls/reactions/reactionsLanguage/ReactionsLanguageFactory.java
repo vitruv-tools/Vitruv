@@ -87,67 +87,202 @@ public interface ReactionsLanguageFactory extends EFactory
   ModelChange createModelChange();
 
   /**
-   * Returns a new object of class '<em>Concrete Model Element Change</em>'.
+   * Returns a new object of class '<em>Concrete Model Change</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Concrete Model Element Change</em>'.
+   * @return a new object of class '<em>Concrete Model Change</em>'.
    * @generated
    */
-  ConcreteModelElementChange createConcreteModelElementChange();
+  ConcreteModelChange createConcreteModelChange();
 
   /**
-   * Returns a new object of class '<em>Atomic Concrete Model Element Change</em>'.
+   * Returns a new object of class '<em>Model Element Change</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Atomic Concrete Model Element Change</em>'.
+   * @return a new object of class '<em>Model Element Change</em>'.
    * @generated
    */
-  AtomicConcreteModelElementChange createAtomicConcreteModelElementChange();
+  ModelElementChange createModelElementChange();
 
   /**
-   * Returns a new object of class '<em>Atomic Root Object Change</em>'.
+   * Returns a new object of class '<em>Model Attribute Change</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Atomic Root Object Change</em>'.
+   * @return a new object of class '<em>Model Attribute Change</em>'.
    * @generated
    */
-  AtomicRootObjectChange createAtomicRootObjectChange();
+  ModelAttributeChange createModelAttributeChange();
 
   /**
-   * Returns a new object of class '<em>Atomic Feature Change</em>'.
+   * Returns a new object of class '<em>Arbitrary Model Change</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Atomic Feature Change</em>'.
+   * @return a new object of class '<em>Arbitrary Model Change</em>'.
    * @generated
    */
-  AtomicFeatureChange createAtomicFeatureChange();
+  ArbitraryModelChange createArbitraryModelChange();
 
   /**
-   * Returns a new object of class '<em>Atomic Multi Valued Feature Change</em>'.
+   * Returns a new object of class '<em>Element Existence Change Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Atomic Multi Valued Feature Change</em>'.
+   * @return a new object of class '<em>Element Existence Change Type</em>'.
    * @generated
    */
-  AtomicMultiValuedFeatureChange createAtomicMultiValuedFeatureChange();
+  ElementExistenceChangeType createElementExistenceChangeType();
 
   /**
-   * Returns a new object of class '<em>Atomic Single Valued Feature Change</em>'.
+   * Returns a new object of class '<em>Model Element Usage Change Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Atomic Single Valued Feature Change</em>'.
+   * @return a new object of class '<em>Model Element Usage Change Type</em>'.
    * @generated
    */
-  AtomicSingleValuedFeatureChange createAtomicSingleValuedFeatureChange();
+  ModelElementUsageChangeType createModelElementUsageChangeType();
 
   /**
-   * Returns a new object of class '<em>Arbitrary Model Element Change</em>'.
+   * Returns a new object of class '<em>Element Creation Change Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Arbitrary Model Element Change</em>'.
+   * @return a new object of class '<em>Element Creation Change Type</em>'.
    * @generated
    */
-  ArbitraryModelElementChange createArbitraryModelElementChange();
+  ElementCreationChangeType createElementCreationChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Deletion Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Deletion Change Type</em>'.
+   * @generated
+   */
+  ElementDeletionChangeType createElementDeletionChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Feature Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Feature Change Type</em>'.
+   * @generated
+   */
+  ElementFeatureChangeType createElementFeatureChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Root Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Root Change Type</em>'.
+   * @generated
+   */
+  ElementRootChangeType createElementRootChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Insertion Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Insertion Change Type</em>'.
+   * @generated
+   */
+  ElementInsertionChangeType createElementInsertionChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Insertion In List Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Insertion In List Change Type</em>'.
+   * @generated
+   */
+  ElementInsertionInListChangeType createElementInsertionInListChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Insertion As Root Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Insertion As Root Change Type</em>'.
+   * @generated
+   */
+  ElementInsertionAsRootChangeType createElementInsertionAsRootChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Removal Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Removal Change Type</em>'.
+   * @generated
+   */
+  ElementRemovalChangeType createElementRemovalChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Removal As Root Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Removal As Root Change Type</em>'.
+   * @generated
+   */
+  ElementRemovalAsRootChangeType createElementRemovalAsRootChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Removal From List Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Removal From List Change Type</em>'.
+   * @generated
+   */
+  ElementRemovalFromListChangeType createElementRemovalFromListChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Replacement Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Replacement Change Type</em>'.
+   * @generated
+   */
+  ElementReplacementChangeType createElementReplacementChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Creation And Insertion Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Creation And Insertion Change Type</em>'.
+   * @generated
+   */
+  ElementCreationAndInsertionChangeType createElementCreationAndInsertionChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Deletion And Removal Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Deletion And Removal Change Type</em>'.
+   * @generated
+   */
+  ElementDeletionAndRemovalChangeType createElementDeletionAndRemovalChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Deletion And Creation And Replacement Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Deletion And Creation And Replacement Change Type</em>'.
+   * @generated
+   */
+  ElementDeletionAndCreationAndReplacementChangeType createElementDeletionAndCreationAndReplacementChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Change Type</em>'.
+   * @generated
+   */
+  ElementChangeType createElementChangeType();
+
+  /**
+   * Returns a new object of class '<em>Element Compound Change Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Compound Change Type</em>'.
+   * @generated
+   */
+  ElementCompoundChangeType createElementCompoundChangeType();
 
   /**
    * Returns a new object of class '<em>Routine</em>'.
@@ -366,58 +501,31 @@ public interface ReactionsLanguageFactory extends EFactory
   ReturnStatement createReturnStatement();
 
   /**
-   * Returns a new object of class '<em>Insert Root Change</em>'.
+   * Returns a new object of class '<em>Model Attribute Inserted Change</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Insert Root Change</em>'.
+   * @return a new object of class '<em>Model Attribute Inserted Change</em>'.
    * @generated
    */
-  InsertRootChange createInsertRootChange();
+  ModelAttributeInsertedChange createModelAttributeInsertedChange();
 
   /**
-   * Returns a new object of class '<em>Remove Root Change</em>'.
+   * Returns a new object of class '<em>Model Attribute Removed Change</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Remove Root Change</em>'.
+   * @return a new object of class '<em>Model Attribute Removed Change</em>'.
    * @generated
    */
-  RemoveRootChange createRemoveRootChange();
+  ModelAttributeRemovedChange createModelAttributeRemovedChange();
 
   /**
-   * Returns a new object of class '<em>Multi Valued Feature Insert Change</em>'.
+   * Returns a new object of class '<em>Model Attribute Replaced Change</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Multi Valued Feature Insert Change</em>'.
+   * @return a new object of class '<em>Model Attribute Replaced Change</em>'.
    * @generated
    */
-  MultiValuedFeatureInsertChange createMultiValuedFeatureInsertChange();
-
-  /**
-   * Returns a new object of class '<em>Multi Valued Feature Remove Change</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Multi Valued Feature Remove Change</em>'.
-   * @generated
-   */
-  MultiValuedFeatureRemoveChange createMultiValuedFeatureRemoveChange();
-
-  /**
-   * Returns a new object of class '<em>Multi Valued Feature Permute Change</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Multi Valued Feature Permute Change</em>'.
-   * @generated
-   */
-  MultiValuedFeaturePermuteChange createMultiValuedFeaturePermuteChange();
-
-  /**
-   * Returns a new object of class '<em>Single Valued Feature Replace</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Single Valued Feature Replace</em>'.
-   * @generated
-   */
-  SingleValuedFeatureReplace createSingleValuedFeatureReplace();
+  ModelAttributeReplacedChange createModelAttributeReplacedChange();
 
   /**
    * Returns the package supported by this factory.

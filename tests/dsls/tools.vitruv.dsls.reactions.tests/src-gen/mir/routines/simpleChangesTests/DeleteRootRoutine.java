@@ -19,30 +19,30 @@ public class DeleteRootRoutine extends AbstractRepairRoutineRealization {
       super(reactionExecutionState);
     }
     
-    public EObject getElement1(final Root root, final Root oldModel) {
+    public EObject getElement1(final Root rootElement, final Root oldModel) {
       return oldModel;
     }
     
-    public EObject getCorrepondenceSourceOldModel(final Root root) {
-      return root;
+    public EObject getCorrepondenceSourceOldModel(final Root rootElement) {
+      return rootElement;
     }
   }
   
-  public DeleteRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root root) {
+  public DeleteRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement) {
     super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.simpleChangesTests.DeleteRootRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    this.root = root;
+    this.rootElement = rootElement;
   }
   
-  private Root root;
+  private Root rootElement;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine DeleteRootRoutine with input:");
-    getLogger().debug("   Root: " + this.root);
+    getLogger().debug("   Root: " + this.rootElement);
     
     Root oldModel = getCorrespondingElement(
-    	userExecution.getCorrepondenceSourceOldModel(root), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceOldModel(rootElement), // correspondence source supplier
     	Root.class,
     	(Root _element) -> true, // correspondence precondition checker
     	null);
@@ -50,7 +50,7 @@ public class DeleteRootRoutine extends AbstractRepairRoutineRealization {
     	return;
     }
     initializeRetrieveElementState(oldModel);
-    deleteObject(userExecution.getElement1(root, oldModel));
+    deleteObject(userExecution.getElement1(rootElement, oldModel));
     
     postprocessElementStates();
   }

@@ -24,56 +24,56 @@ public class InsertNonRootRoutine extends AbstractRepairRoutineRealization {
       super(reactionExecutionState);
     }
     
-    public EObject getCorrepondenceSourceTargetElement(final Root root, final NonRoot insertedNonRoot) {
-      return root;
+    public EObject getCorrepondenceSourceTargetElement(final Root rootElement, final NonRoot insertedNonRoot) {
+      return rootElement;
     }
     
-    public EObject getElement1(final Root root, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
+    public EObject getElement1(final Root rootElement, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
       return targetElement;
     }
     
-    public void update0Element(final Root root, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
+    public void update0Element(final Root rootElement, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
       EList<NonRoot> _multiValuedContainmentEReference = targetElement.getMultiValuedContainmentEReference();
       _multiValuedContainmentEReference.add(newNonRoot);
     }
     
-    public EObject getElement2(final Root root, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
+    public EObject getElement2(final Root rootElement, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
       return newNonRoot;
     }
     
-    public EObject getElement3(final Root root, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
+    public EObject getElement3(final Root rootElement, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
       return insertedNonRoot;
     }
     
-    public void updateNewNonRootElement(final Root root, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
+    public void updateNewNonRootElement(final Root rootElement, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot) {
       String _id = insertedNonRoot.getId();
       newNonRoot.setId(_id);
     }
     
-    public void callRoutine1(final Root root, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final Root rootElement, final NonRoot insertedNonRoot, final Root targetElement, final NonRoot newNonRoot, @Extension final RoutinesFacade _routinesFacade) {
       SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.CreateNonRootEObjectInList);
     }
   }
   
-  public InsertNonRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot insertedNonRoot) {
+  public InsertNonRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement, final NonRoot insertedNonRoot) {
     super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.simpleChangesTests.InsertNonRootRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    this.root = root;this.insertedNonRoot = insertedNonRoot;
+    this.rootElement = rootElement;this.insertedNonRoot = insertedNonRoot;
   }
   
-  private Root root;
+  private Root rootElement;
   
   private NonRoot insertedNonRoot;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine InsertNonRootRoutine with input:");
-    getLogger().debug("   Root: " + this.root);
+    getLogger().debug("   Root: " + this.rootElement);
     getLogger().debug("   NonRoot: " + this.insertedNonRoot);
     
     Root targetElement = getCorrespondingElement(
-    	userExecution.getCorrepondenceSourceTargetElement(root, insertedNonRoot), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceTargetElement(rootElement, insertedNonRoot), // correspondence source supplier
     	Root.class,
     	(Root _element) -> true, // correspondence precondition checker
     	null);
@@ -83,14 +83,14 @@ public class InsertNonRootRoutine extends AbstractRepairRoutineRealization {
     initializeRetrieveElementState(targetElement);
     NonRoot newNonRoot = AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
     initializeCreateElementState(newNonRoot);
-    userExecution.updateNewNonRootElement(root, insertedNonRoot, targetElement, newNonRoot);
+    userExecution.updateNewNonRootElement(rootElement, insertedNonRoot, targetElement, newNonRoot);
     
-    // val updatedElement userExecution.getElement1(root, insertedNonRoot, targetElement, newNonRoot);
-    userExecution.update0Element(root, insertedNonRoot, targetElement, newNonRoot);
+    // val updatedElement userExecution.getElement1(rootElement, insertedNonRoot, targetElement, newNonRoot);
+    userExecution.update0Element(rootElement, insertedNonRoot, targetElement, newNonRoot);
     
-    addCorrespondenceBetween(userExecution.getElement2(root, insertedNonRoot, targetElement, newNonRoot), userExecution.getElement3(root, insertedNonRoot, targetElement, newNonRoot), "");
+    addCorrespondenceBetween(userExecution.getElement2(rootElement, insertedNonRoot, targetElement, newNonRoot), userExecution.getElement3(rootElement, insertedNonRoot, targetElement, newNonRoot), "");
     
-    userExecution.callRoutine1(root, insertedNonRoot, targetElement, newNonRoot, actionsFacade);
+    userExecution.callRoutine1(rootElement, insertedNonRoot, targetElement, newNonRoot, actionsFacade);
     
     postprocessElementStates();
   }

@@ -1,0 +1,32 @@
+@Ecore(nsURI="http://tools.vitruv/EChange/Feature/Reference/Containment/1.0")
+@GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+package tools.vitruv.framework.change.echange.feature.reference
+
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
+
+abstract class UpdateReferenceEChange<A extends EObject> extends FeatureEChange<A, EReference> {
+	@GenModel(body="return getAffectedFeature().isContainment();")
+	op boolean[1] isContainment()
+}
+
+abstract class AdditiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectAddedEChange<T>, UpdateReferenceEChange<A> {
+}
+
+abstract class SubtractiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectSubtractedEChange<T>, UpdateReferenceEChange<A> {
+}
+
+class InsertEReference<A extends EObject, T extends EObject> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {
+}
+
+class RemoveEReference<A extends EObject, T extends EObject> extends RemoveFromListEChange<A, EReference, T>, SubtractiveReferenceEChange<A, T> {
+}
+
+class ReplaceSingleValuedEReference<A extends EObject, T extends EObject> extends AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EReference, T> {
+}

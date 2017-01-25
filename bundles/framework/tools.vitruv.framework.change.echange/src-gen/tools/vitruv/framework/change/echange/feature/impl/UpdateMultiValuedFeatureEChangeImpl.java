@@ -17,22 +17,22 @@ import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureECh
  * @generated
  */
 public abstract class UpdateMultiValuedFeatureEChangeImpl<A extends EObject, F extends EStructuralFeature> extends FeatureEChangeImpl<A, F> implements UpdateMultiValuedFeatureEChange<A, F> {
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    protected UpdateMultiValuedFeatureEChangeImpl() {
+	protected UpdateMultiValuedFeatureEChangeImpl() {
 		super();
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    @Override
-    protected EClass eStaticClass() {
+	@Override
+	protected EClass eStaticClass() {
 		return FeaturePackage.Literals.UPDATE_MULTI_VALUED_FEATURE_ECHANGE;
 	}
 

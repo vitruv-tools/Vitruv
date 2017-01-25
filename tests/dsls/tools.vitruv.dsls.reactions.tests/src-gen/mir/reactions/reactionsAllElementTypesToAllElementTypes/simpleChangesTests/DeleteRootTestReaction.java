@@ -2,13 +2,13 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot;
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
@@ -19,20 +19,22 @@ class DeleteRootTestReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    RemoveRootEObject<allElementTypes.Root> typedChange = (RemoveRootEObject<allElementTypes.Root>)change;
+    RemoveAndDeleteRoot<Root> typedChange = (RemoveAndDeleteRoot<Root>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return RemoveRootEObject.class;
+    return RemoveAndDeleteRoot.class;
   }
   
-  private boolean checkChangeProperties(final RemoveRootEObject<Root> change) {
-    EObject changedElement = change.getOldValue();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+  private boolean checkChangeProperties(final RemoveAndDeleteRoot<Root> change) {
+    if (!(change.getDeleteChange().getAffectedEObject() instanceof Root)) {
+    	return false;
+    }
+    if (!(change.getRemoveChange().getOldValue() instanceof Root)
+    ) {
     	return false;
     }
     
@@ -40,10 +42,10 @@ class DeleteRootTestReaction extends AbstractReactionRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof RemoveRootEObject<?>)) {
+    if (!(change instanceof RemoveAndDeleteRoot)) {
     	return false;
     }
-    RemoveRootEObject typedChange = (RemoveRootEObject)change;
+    RemoveAndDeleteRoot<Root> typedChange = (RemoveAndDeleteRoot<Root>)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -56,8 +58,9 @@ class DeleteRootTestReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final RemoveRootEObject<Root> change, @Extension final RoutinesFacade _routinesFacade) {
-      Root _oldValue = change.getOldValue();
+    public void callRoutine1(final RemoveAndDeleteRoot<Root> change, @Extension final RoutinesFacade _routinesFacade) {
+      RemoveRootEObject<Root> _removeChange = change.getRemoveChange();
+      Root _oldValue = _removeChange.getOldValue();
       _routinesFacade.deleteRoot(_oldValue);
     }
   }
