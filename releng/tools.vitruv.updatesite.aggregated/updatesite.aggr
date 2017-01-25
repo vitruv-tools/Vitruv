@@ -15,7 +15,7 @@
       <repositories location="http://vitruv-tools.github.io/updatesite/release/license">
         <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)" categories="//@customCategories[identifier='externals']"/>
       </repositories>
-      <repositories location="http://kit-sdq.github.io/updatesite/nightly/commons">
+      <repositories location="http://kit-sdq.github.io/updatesite/release/commons">
         <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="[1.0.0,2.0.0)" categories="//@customCategories[identifier='externals']"/>
         <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="[1.0.0,2.0.0)" categories="//@customCategories[identifier='externals']"/>
       </repositories>
