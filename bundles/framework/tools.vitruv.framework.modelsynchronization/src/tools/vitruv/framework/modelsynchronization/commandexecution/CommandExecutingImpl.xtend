@@ -32,6 +32,18 @@ class CommandExecutingImpl implements CommandExecuting {
 			}
 			affectedObjects.addAll(command.getAffectedObjects().filter [ eObj |
 				!(eObj instanceof Correspondence) && !(eObj instanceof Correspondences)])
+//			modelProviding.executeRecordingCommandOnTransactionalDomain(EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
+//				command.undo
+//				for (affectedObject : affectedObjects.filter(EObject)) {
+//					TuidManager.instance.registerObjectUnderModification(affectedObject);
+//				}
+//				command.redo();
+//				for (affectedObject : affectedObjects.filter(EObject)) {
+//					TuidManager.instance.updateTuidsOfRegisteredObjects;
+//					TuidManager.instance.flushRegisteredObjectsUnderModification;
+//				}
+//				return null;
+//			]));
 		}
 		this.executeTransformationResults(transformationResults, affectedObjects.filter(EObject), blackboard)
 		return Collections::emptyList()
