@@ -18,7 +18,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.*
+import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
 
 class ParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";

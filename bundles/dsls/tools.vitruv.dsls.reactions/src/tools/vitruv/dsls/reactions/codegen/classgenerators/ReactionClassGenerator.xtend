@@ -18,9 +18,9 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.*
-import tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.ChangeTypeRepresentation
-import tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.AtomicChangeTypeRepresentation
+import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
+import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentation
+import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.AtomicChangeTypeRepresentation
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 class ReactionClassGenerator extends ClassGenerator {
