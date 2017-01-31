@@ -15,10 +15,10 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackag
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import static extension tools.vitruv.dsls.reactions.helper.ReactionsLanguageHelper.*;
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
-import static extension tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.*
 
 class ParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";

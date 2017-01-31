@@ -22,7 +22,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
-import static extension tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.*
 
 /**
  * Outline structure definition for a reactions file.

@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.helper
+package tools.vitruv.dsls.reactions.codegen.helper
 
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage

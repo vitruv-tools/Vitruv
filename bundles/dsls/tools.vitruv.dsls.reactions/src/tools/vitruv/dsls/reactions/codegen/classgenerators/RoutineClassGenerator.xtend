@@ -8,11 +8,11 @@ import java.io.IOException
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmFormalParameter
 import tools.vitruv.framework.util.bridges.CollectionBridge
-import static extension tools.vitruv.dsls.reactions.helper.ReactionsLanguageHelper.*;
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmConstructor
-import static tools.vitruv.dsls.reactions.helper.ReactionsLanguageConstants.*;
-import tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.ClassNameGenerator
+import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
+import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
 import java.util.List
@@ -30,8 +30,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.DeleteModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.UpdateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
-import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
-import tools.vitruv.dsls.reactions.helper.AccessibleElement
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
+import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 class RoutineClassGenerator extends ClassGenerator {

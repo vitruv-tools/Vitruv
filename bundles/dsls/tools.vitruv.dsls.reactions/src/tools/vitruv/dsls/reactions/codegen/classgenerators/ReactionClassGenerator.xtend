@@ -5,13 +5,13 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.JvmOperation
 import static tools.vitruv.dsls.reactions.api.generator.ReactionsLanguageGeneratorConstants.*;
 import tools.vitruv.dsls.reactions.reactionsLanguage.PreconditionCodeBlock
-import tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.ClassNameGenerator
+import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
-import static tools.vitruv.dsls.reactions.helper.ReactionsLanguageConstants.*;
+import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelChange
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
@@ -21,10 +21,10 @@ import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteEObject
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
-import tools.vitruv.dsls.reactions.helper.AccessibleElement
-import static extension tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.*
-import tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.ChangeTypeRepresentation
-import tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.AtomicChangeTypeRepresentation
+import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.*
+import tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.ChangeTypeRepresentation
+import tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.AtomicChangeTypeRepresentation
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 class ReactionClassGenerator extends ClassGenerator {

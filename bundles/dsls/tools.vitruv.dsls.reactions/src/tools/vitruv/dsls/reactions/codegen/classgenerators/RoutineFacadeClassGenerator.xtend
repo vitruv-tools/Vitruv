@@ -3,13 +3,13 @@ package tools.vitruv.dsls.reactions.codegen.classgenerators
 import java.util.List
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmVisibility
-import static tools.vitruv.dsls.reactions.helper.ReactionsLanguageConstants.*;
-import tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.ClassNameGenerator
+import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
+import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 class RoutineFacadeClassGenerator extends ClassGenerator {

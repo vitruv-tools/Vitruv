@@ -1,9 +1,9 @@
-package tools.vitruv.dsls.reactions.helper
+package tools.vitruv.dsls.reactions.codegen.helper
 
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.Pair
 import org.eclipse.emf.common.util.URI
-import static extension tools.vitruv.dsls.reactions.helper.ReactionsLanguageHelper.*;
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.dsls.reactions.helper.XtendImportHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine

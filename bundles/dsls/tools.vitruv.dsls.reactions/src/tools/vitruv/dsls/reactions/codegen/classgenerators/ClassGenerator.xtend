@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import java.util.HashMap
-import tools.vitruv.dsls.reactions.helper.AccessibleElement
+import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 abstract class ClassGenerator extends TypesBuilderExtensionProvider implements IJvmOperationRegistry {

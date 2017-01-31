@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.helper
+package tools.vitruv.dsls.reactions.codegen.helper
 
 final class ReactionsLanguageConstants {
 	private static val BLACKBOARD_NAME = "blackboard";

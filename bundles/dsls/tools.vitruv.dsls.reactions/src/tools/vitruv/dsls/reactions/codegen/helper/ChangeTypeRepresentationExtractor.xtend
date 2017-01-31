@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.helper
+package tools.vitruv.dsls.reactions.codegen.helper
 
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
@@ -265,8 +265,8 @@ final class ChangeTypeRepresentationExtractor {
 			} else {
 				CompoundPackage.Literals.CREATE_AND_INSERT_NON_ROOT
 			}
-		val existenceChange = tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.createChange, elementClass) as AtomicChangeTypeRepresentation;
-		val usageChange = tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.insertChange, elementClass) as AtomicChangeTypeRepresentation;
+		val existenceChange = ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.createChange, elementClass) as AtomicChangeTypeRepresentation;
+		val usageChange = ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.insertChange, elementClass) as AtomicChangeTypeRepresentation;
 		return new CompoundChangeTypRepresentation(clazz.instanceClass, existenceChange, usageChange);
 	}
 	
@@ -276,15 +276,15 @@ final class ChangeTypeRepresentationExtractor {
 			} else {
 				CompoundPackage.Literals.REMOVE_AND_DELETE_NON_ROOT
 			}
-		val existenceChange = tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.deleteChange, elementClass) as AtomicChangeTypeRepresentation;
-		val usageChange = tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.removeChange, elementClass) as AtomicChangeTypeRepresentation;
+		val existenceChange = ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.deleteChange, elementClass) as AtomicChangeTypeRepresentation;
+		val usageChange = ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.removeChange, elementClass) as AtomicChangeTypeRepresentation;
 		return new CompoundChangeTypRepresentation(clazz.instanceClass, existenceChange, usageChange);
 	}
 
 	private static def dispatch CompoundChangeTypRepresentation generateChangeTypeRepresentation(ElementDeletionAndCreationAndReplacementChangeType modelElementChange, EClass elementClass) {
 		val clazz = CompoundPackage.Literals.CREATE_AND_REPLACE_AND_DELETE_NON_ROOT;
-		val existenceChange = tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.createChange, elementClass) as AtomicChangeTypeRepresentation;
-		val usageChange = tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.replacedChange, elementClass) as AtomicChangeTypeRepresentation;
+		val existenceChange = ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.createChange, elementClass) as AtomicChangeTypeRepresentation;
+		val usageChange = ChangeTypeRepresentationExtractor.generateChangeTypeRepresentation(modelElementChange.replacedChange, elementClass) as AtomicChangeTypeRepresentation;
 		return new CompoundChangeTypRepresentation(clazz.instanceClass, existenceChange, usageChange);
 	}
 	

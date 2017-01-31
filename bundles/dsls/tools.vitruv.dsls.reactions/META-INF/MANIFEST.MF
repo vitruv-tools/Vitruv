@@ -32,6 +32,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.api.generator,
  tools.vitruv.dsls.reactions.helper,
+ tools.vitruv.dsls.reactions.codegen.helper,
  tools.vitruv.dsls.reactions.jvmmodel,
  tools.vitruv.dsls.reactions.parser.antlr,
  tools.vitruv.dsls.reactions.parser.antlr.internal,
