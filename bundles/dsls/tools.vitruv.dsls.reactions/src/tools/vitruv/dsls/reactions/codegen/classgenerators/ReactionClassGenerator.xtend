@@ -18,10 +18,6 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteEObject
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
-import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.*
 import tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.ChangeTypeRepresentation
 import tools.vitruv.dsls.reactions.codegen.helper.ChangeTypeRepresentationExtractor.AtomicChangeTypeRepresentation
@@ -34,11 +30,6 @@ class ReactionClassGenerator extends ClassGenerator {
 	private final ClassNameGenerator reactionClassNameGenerator;
 	private final UserExecutionClassGenerator userExecutionClassGenerator;
 	private final ClassNameGenerator routinesFacadeClassNameGenerator;
-	
-	private static final String affectedEObjectAttribute = "affectedEObject";
-	private static final String affectedFeatureAttribute = "affectedFeature";
-	private static final String oldValueAttribute = "oldValue";
-	private static final String newValueAttribute = "newValue";
 	
 	new(Reaction reaction, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
@@ -97,7 +88,7 @@ class ReactionClassGenerator extends ClassGenerator {
 	 */
 	protected def generateMethodExecuteReaction() {
 		val methodName = "executeReaction";
-		val changeParameterList = generatePropertiesParameterList(change.relevantChangeTypeRepresentation);
+		val changeParameterList = change.relevantChangeTypeRepresentation.generatePropertiesParameterList;
 		val callRoutineMethod = userExecutionClassGenerator.generateMethodCallRoutine(reaction.callRoutine, 
 			changeParameterList, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
@@ -107,8 +98,8 @@ class ReactionClassGenerator extends ClassGenerator {
 			val typedChangeName = "typedChange";
 			val relevantChange = change.relevantChangeTypeRepresentation;
 			body = '''
-				«generateRelevantChangeAssignmentCode(changeParameter.name, true, typedChangeName)»
-				«generatePropertiesAssignmentCode(relevantChange, typedChangeName)»
+				«change.getRelevantChangeAssignmentCode(changeParameter.name, true, typedChangeName)»
+				«relevantChange.generatePropertiesAssignmentCode(typedChangeName)»
 				«routinesFacadeClassNameGenerator.qualifiedName» routinesFacade = new «routinesFacadeClassNameGenerator.qualifiedName»(this.executionState, this);
 				«userExecutionClassGenerator.qualifiedClassName» userExecution = new «userExecutionClassGenerator.qualifiedClassName»(this.executionState, this);
 				userExecution.«callRoutineMethod.simpleName»(«
@@ -117,57 +108,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		];
 	}
 	
-	private def StringConcatenationClient generateRelevantChangeAssignmentCode(String originalChangeVariableName, boolean originalVariableIsUntyped, String relevantChangeVariableName) {
-		val relevantChange = change.relevantChangeTypeRepresentation;
-			val typedChangeString = change.typedChangeTypeRepresentation;
-			val typedRelevantChangeString = relevantChange.typedChangeTypeRepresentation;
-			val isCompoundChange = relevantChange != change;
-			return '''
-				«typedRelevantChangeString» «relevantChangeVariableName» = «
-					»«IF isCompoundChange»(«IF originalVariableIsUntyped»(«typedChangeString»)«ENDIF»«originalChangeVariableName»).«
-					»«IF CreateAndInsertEObject.isAssignableFrom(change.changeType)»getInsertChange()«
-					ELSEIF RemoveAndDeleteEObject.isAssignableFrom(change.changeType)»getRemoveChange()«
-					ELSEIF CreateAndReplaceAndDeleteNonRoot.isAssignableFrom(change.changeType)»getReplaceChange()«ENDIF»;
-				«ELSE»
-					«IF originalVariableIsUntyped»(«typedChangeString»)«ENDIF»«originalChangeVariableName»;
-				«ENDIF»
-				'''
-	}
 	
-	private def Iterable<AccessibleElement> generatePropertiesParameterList(AtomicChangeTypeRepresentation changeType) {
-		val result = <AccessibleElement>newArrayList();
-		if (changeType.affectedElementClass != null) {
-			result.add(new AccessibleElement(affectedEObjectAttribute, typeRef(changeType.affectedElementClass)));
-		}
-		if (changeType.affectedFeature != null) {
-			result.add(new AccessibleElement(affectedFeatureAttribute, typeRef(changeType.affectedFeature.eClass.instanceClass)));
-		}
-		if (changeType.hasOldValue) {
-			result.add(new AccessibleElement(oldValueAttribute, typeRef(changeType.affectedValueClass)));
-		}
-		if (changeType.hasNewValue) {
-			result.add(new AccessibleElement(newValueAttribute, typeRef(changeType.affectedValueClass)));
-		}
-		return result;
-	}
-	
-	private def StringConcatenationClient generatePropertiesAssignmentCode(AtomicChangeTypeRepresentation change, String typedChangeVariableName) {
-		'''
-		«IF change.affectedElementClass != null»
-			«change.affectedElementClass» «affectedEObjectAttribute» = «typedChangeVariableName».get«affectedEObjectAttribute.toFirstUpper»();
-		«ENDIF»
-		«IF change.affectedFeature != null»
-			«change.affectedFeature.eClass.instanceClass» «affectedFeatureAttribute» = «typedChangeVariableName».get«affectedFeatureAttribute.toFirstUpper»();
-		«ENDIF»
-		«IF change.hasOldValue»
-			«change.affectedValueClass» «oldValueAttribute» = «typedChangeVariableName».get«oldValueAttribute.toFirstUpper»();
-		«ENDIF»
-		«IF change.hasNewValue»
-			«change.affectedValueClass» «newValueAttribute» = «typedChangeVariableName».get«newValueAttribute.toFirstUpper»();
-		«ENDIF»
-		'''
-	}
-			
 	protected def generateMethodCheckPrecondition() {
 		val methodName = PRECONDITION_METHOD_NAME;
 		val changePropertiesCheckMethod = generateMethodCheckChangeProperties();
@@ -188,10 +129,10 @@ class ReactionClassGenerator extends ClassGenerator {
 					return false;
 				}
 				«IF hasPreconditionBlock»
-					«generateRelevantChangeAssignmentCode(changeParameter.name, true, typedChangeVariableName)»
-					«generatePropertiesAssignmentCode(relevantChange, typedChangeVariableName)»
+					«change.getRelevantChangeAssignmentCode(changeParameter.name, true, typedChangeVariableName)»
+					«relevantChange.generatePropertiesAssignmentCode(typedChangeVariableName)»
 					if (!«userDefinedPreconditionMethod.simpleName»(«
-						FOR parameter : generatePropertiesParameterList(relevantChange) SEPARATOR ", "»«parameter.name»«ENDFOR»)) {
+						FOR parameter : relevantChange.generatePropertiesParameterList SEPARATOR ", "»«parameter.name»«ENDFOR»)) {
 						return false;
 					}
 				«ENDIF»
@@ -205,7 +146,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		val methodName = USER_DEFINED_TRIGGER_PRECONDITION_METHOD_NAME;
 		return preconditionBlock.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
-			parameters += generateAccessibleElementsParameters(generatePropertiesParameterList(change.relevantChangeTypeRepresentation));
+			parameters += generateAccessibleElementsParameters(change.relevantChangeTypeRepresentation.generatePropertiesParameterList);
 			body = preconditionBlock.code;
 		];		
 	}
@@ -231,7 +172,7 @@ class ReactionClassGenerator extends ClassGenerator {
 			parameters += changeParameter;
 			val relevantChangeParamterName = "relevantChange";
 			body = '''
-				«generateRelevantChangeAssignmentCode(changeParameter.name, true, relevantChangeParamterName)»
+				«change.getRelevantChangeAssignmentCode(changeParameter.name, true, relevantChangeParamterName)»
 				«generateElementChecks(change.relevantChangeTypeRepresentation, relevantChangeParamterName)»
 				return true;
 			'''

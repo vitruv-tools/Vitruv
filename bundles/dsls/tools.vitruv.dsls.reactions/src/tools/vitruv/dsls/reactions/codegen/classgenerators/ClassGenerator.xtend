@@ -14,7 +14,7 @@ abstract class ClassGenerator extends TypesBuilderExtensionProvider implements I
 	private Map<String, JvmOperation> methodMap;
 	
 	protected def generateAccessibleElementsParameters(EObject sourceObject, Iterable<AccessibleElement> accessibleElements) {
-		accessibleElements.map[sourceObject.toParameter(name, type)];
+		accessibleElements.map[sourceObject.toParameter(name, typeRef(fullyQualifiedType))];
 	}
 	
 	public new(TypesBuilderExtensionProvider typesBuilderExtensionProvider) {

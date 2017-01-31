@@ -31,8 +31,15 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationA
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteEObject
+import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
 
 final class ChangeTypeRepresentationExtractor {
+	private static final String affectedEObjectAttribute = "affectedEObject";
+	private static final String affectedFeatureAttribute = "affectedFeature";
+	private static final String oldValueAttribute = "oldValue";
+	private static final String newValueAttribute = "newValue";
 	
 	private static def boolean isPrimitiveType(Class<?> type) {
 		return primitveTypeNamesMap.containsKey(type.name);
@@ -69,6 +76,8 @@ final class ChangeTypeRepresentationExtractor {
 				IF param.isPrimitiveType»«primitveTypeNamesMap.get(param)»«ELSE»«param»«ENDIF»«
 				ENDFOR»'''
 		}	
+		
+		public def StringConcatenationClient getRelevantChangeAssignmentCode(String originalChangeVariableName, boolean isOriginalVariableUntyped, String typedChangeVariableName);
 	}
 	
 	public static class CompoundChangeTypRepresentation extends ChangeTypeRepresentation {
@@ -102,6 +111,16 @@ final class ChangeTypeRepresentationExtractor {
 			return usageChange;
 		}
 		
+		public override StringConcatenationClient getRelevantChangeAssignmentCode(String originalChangeVariableName, boolean isOriginalVariableUntyped, String typedChangeVariableName) {
+			val typedRelevantChangeString = relevantChangeTypeRepresentation.typedChangeTypeRepresentation;
+			return '''
+				«typedRelevantChangeString» «typedChangeVariableName» = «
+					»(«IF isOriginalVariableUntyped»(«typedChangeTypeRepresentation»)«ENDIF»«originalChangeVariableName»).«
+					»«IF CreateAndInsertEObject.isAssignableFrom(changeType)»getInsertChange()«
+					ELSEIF RemoveAndDeleteEObject.isAssignableFrom(changeType)»getRemoveChange()«
+					ELSEIF CreateAndReplaceAndDeleteNonRoot.isAssignableFrom(changeType)»getReplaceChange()«ENDIF»;
+				'''			
+		}
 	}
 	
 	public static class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
@@ -161,6 +180,48 @@ final class ChangeTypeRepresentationExtractor {
 		
 		override getRelevantChangeTypeRepresentation() {
 			return this;
+		}
+		
+		public def Iterable<AccessibleElement> generatePropertiesParameterList() {
+			val result = <AccessibleElement>newArrayList();
+			if (affectedElementClass != null) {
+				result.add(new AccessibleElement(affectedEObjectAttribute, affectedElementClass));
+			}
+			if (affectedFeature != null) {
+				result.add(new AccessibleElement(affectedFeatureAttribute, affectedFeature.eClass.instanceClass));
+			}
+			if (hasOldValue) {
+				result.add(new AccessibleElement(oldValueAttribute, affectedValueClass));
+			}
+			if (hasNewValue) {
+				result.add(new AccessibleElement(newValueAttribute, affectedValueClass));
+			}	
+			return result;
+		}
+		
+		public def StringConcatenationClient generatePropertiesAssignmentCode(String typedChangeVariableName) {
+			'''
+			«IF affectedElementClass != null»
+				«affectedElementClass» «affectedEObjectAttribute» = «typedChangeVariableName».get«affectedEObjectAttribute.toFirstUpper»();
+			«ENDIF»
+			«IF affectedFeature != null»
+				«affectedFeature.eClass.instanceClass» «affectedFeatureAttribute» = «typedChangeVariableName».get«affectedFeatureAttribute.toFirstUpper»();
+			«ENDIF»
+			«IF hasOldValue»
+				«affectedValueClass» «oldValueAttribute» = «typedChangeVariableName».get«oldValueAttribute.toFirstUpper»();
+			«ENDIF»
+			«IF hasNewValue»
+				«affectedValueClass» «newValueAttribute» = «typedChangeVariableName».get«newValueAttribute.toFirstUpper»();
+			«ENDIF»
+			'''
+		}
+		
+		public override StringConcatenationClient getRelevantChangeAssignmentCode(String originalChangeVariableName, boolean isOriginalVariableUntyped, String typedChangeVariableName) {
+			val typedRelevantChangeString = relevantChangeTypeRepresentation.typedChangeTypeRepresentation;
+			return '''
+				«typedRelevantChangeString» «typedChangeVariableName» = «
+					IF isOriginalVariableUntyped»(«typedChangeTypeRepresentation»)«ENDIF»«originalChangeVariableName»;
+				'''
 		}
 		
 	}

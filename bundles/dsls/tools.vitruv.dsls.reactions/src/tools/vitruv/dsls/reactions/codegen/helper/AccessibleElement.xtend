@@ -1,21 +1,24 @@
 package tools.vitruv.dsls.reactions.codegen.helper
 
-import org.eclipse.xtext.common.types.JvmTypeReference
-
 class AccessibleElement {
 	private val String name;
-	private val JvmTypeReference type;
+	private val String fullyQualifiedTypeName;
 	
-	public new(String name, JvmTypeReference type) {
+	public new(String name, String fullyQualifiedTypeName) {
 		this.name = name;
-		this.type = type;
+		this.fullyQualifiedTypeName = fullyQualifiedTypeName;
+	}
+	
+	public new(String name, Class<?> type) {
+		this.name = name;
+		this.fullyQualifiedTypeName = type.name;
 	}
 	
 	public def String getName() {
 		return name;
 	}
 	
-	public def JvmTypeReference getType() {
-		return type;
+	public def String getFullyQualifiedType() {
+		return fullyQualifiedTypeName;
 	}
 }

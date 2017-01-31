@@ -60,7 +60,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		this.javaInputElements = routine.input.javaInputElements;
 		this.elementUpdateCounter = 0;
 		this.currentlyAccessibleElements = new ArrayList();
-		this.currentlyAccessibleElements += routine.generateInputParameters().map[new AccessibleElement(it.name, it.parameterType)];
+		this.currentlyAccessibleElements += routine.generateInputParameters().map[new AccessibleElement(it.name, it.parameterType.qualifiedName)];
 	}
 	
 	private def Iterable<JvmFormalParameter> generateInputParameters(EObject contextObject) {
@@ -68,7 +68,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 	
 	protected def generateCurrentlyAccessibleElementsParameters(EObject sourceObject) {
-		this.currentlyAccessibleElements.map[sourceObject.toParameter(name, type)];
+		this.currentlyAccessibleElements.map[sourceObject.toParameter(name, typeRef(fullyQualifiedType))];
 	}
 	
 	protected def generateMethodParameterCallList(JvmOperation method) {
@@ -128,7 +128,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	
 	
 	private def dispatch StringConcatenationClient createStatements(CreateModelElement createElement) {
-		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, typeRef(createElement.javaClass))
+		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.javaClass)
 		val initializeMethod = if (createElement.initializationBlock != null) 
 			generateUpdateElementMethod(createElement.name, createElement.initializationBlock, currentlyAccessibleElements);
 		val initializeMethodCall = if (initializeMethod != null) initializeMethod.userExecutionMethodCallString;
@@ -165,7 +165,7 @@ class RoutineClassGenerator extends ClassGenerator {
 			«ENDIF»
 		'''	
 		if (!retrieveElement.abscence) {
-			currentlyAccessibleElements += new AccessibleElement(retrieveElement.name, typeRef(retrieveElement.javaClass));
+			currentlyAccessibleElements += new AccessibleElement(retrieveElement.name, retrieveElement.javaClass);
 		}
 		return statements;
 	}
