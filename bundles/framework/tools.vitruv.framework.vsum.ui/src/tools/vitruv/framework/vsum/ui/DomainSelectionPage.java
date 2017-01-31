@@ -28,8 +28,6 @@ public class DomainSelectionPage extends WizardPage {
   private static final String DESCRIPTION = "Create a new Vitruvius Project.";
   private HashMap<IProject, HashSet<IExtension>> map;
 
-  private Text text1;
-
   private Composite container;
 
   protected DomainSelectionPage() {
@@ -37,8 +35,6 @@ public class DomainSelectionPage extends WizardPage {
     setTitle(PAGENAME);
     setDescription(DESCRIPTION);
     map = new HashMap<>();
-    // setControl(text1);
-
   }
 
   @Override
@@ -48,16 +44,14 @@ public class DomainSelectionPage extends WizardPage {
     container.setLayout(layout);
     layout.numColumns = 1;
     Label label1 = new Label(container, SWT.NONE);
-    label1.setText("Say hello to Fred");
-    // text1 = new Text(container, SWT.BORDER | SWT.SINGLE);
+    label1.setText("Select the Project and a required domain.");
 
     IProject projects[] = getProjects();
 
     final Tree tree = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-    System.out.println(projects.length);
     tree.setItemCount(projects.length);
 
-    GridData treeGridData = new GridData(GridData.FILL_HORIZONTAL);
+    GridData treeGridData = new GridData(GridData.FILL_BOTH);
     tree.setLayoutData(treeGridData);
 
     IExtensionRegistry reg = Platform.getExtensionRegistry();
@@ -111,13 +105,6 @@ public class DomainSelectionPage extends WizardPage {
         }
       }
     });
-
-    GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-    // text1.setLayoutData(gd);
-    Label labelCheck = new Label(container, NONE);
-    labelCheck.setText("This is a check");
-    Button b = new Button(container, SWT.CHECK);
-    b.setSelection(true);
 
     setControl(container);
     setPageComplete(false);
