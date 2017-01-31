@@ -7,9 +7,14 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import java.util.HashMap
+import tools.vitruv.dsls.reactions.helper.AccessibleElement
 
 abstract class ClassGenerator extends TypesBuilderExtensionProvider implements IJvmOperationRegistry {
 	private Map<String, JvmOperation> methodMap;
+	
+	protected def generateAccessibleElementsParameters(EObject sourceObject, Iterable<AccessibleElement> accessibleElements) {
+		accessibleElements.map[sourceObject.toParameter(name, type)];
+	}
 	
 	public new(TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		typesBuilderExtensionProvider.copyBuildersTo(this);

@@ -8,7 +8,6 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
-import static extension tools.vitruv.dsls.reactions.helper.EChangeHelper.*;
 import java.util.List
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import org.eclipse.emf.ecore.EClass
@@ -20,6 +19,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import static extension tools.vitruv.dsls.reactions.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
+import static extension tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.*
 
 class ReactionsLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -99,7 +99,7 @@ class ReactionsLanguageParameterGenerator {
 	}
 	
 	protected def JvmFormalParameter generateChangeParameter(EObject parameterContext, Trigger trigger) {
-		val changeRepresentation = generateEChange(trigger);
+		val changeRepresentation = extractChangeTypeRepresentation(trigger);
 		var List<Class<?>> changeTypeParameters = <Class<?>>newArrayList;
 		if (trigger instanceof ConcreteModelChange) {
 			changeTypeParameters = changeRepresentation.genericTypeParameters	

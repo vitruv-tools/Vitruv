@@ -14,6 +14,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallBlock
 import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
+import tools.vitruv.dsls.reactions.helper.AccessibleElement
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;
@@ -23,15 +24,6 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	private var int counterGetRetrieveTagMethods;
 	private var int counterCallRoutineMethods;
 	private var int counterCheckMatcherPreconditionMethods;
-	
-	protected static class AccessibleElement {
-		public val String name;
-		public val JvmTypeReference type;
-		public new(String name, JvmTypeReference type) {
-			this.name = name;
-			this.type = type;
-		}
-	}
 	
 	new(TypesBuilderExtensionProvider typesBuilderExtensionProvider, EObject objectMappedToClass, String qualifiedClassName) {
 		super(typesBuilderExtensionProvider)
@@ -64,10 +56,6 @@ class UserExecutionClassGenerator extends ClassGenerator {
 			]
 			members += generatedMethods;
 		]
-	}
-	
-	protected def generateAccessibleElementsParameters(EObject sourceObject, Iterable<AccessibleElement> accessibleElements) {
-		accessibleElements.map[sourceObject.toParameter(name, type)];
 	}
 
 	protected def JvmOperation generateUpdateElementMethod(String elementName, CodeBlock codeBlock, Iterable<AccessibleElement> accessibleElements) {

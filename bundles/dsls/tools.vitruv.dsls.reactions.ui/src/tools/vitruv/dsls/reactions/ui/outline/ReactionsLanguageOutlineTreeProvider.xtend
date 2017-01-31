@@ -6,7 +6,6 @@ package tools.vitruv.dsls.reactions.ui.outline
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
-import static extension tools.vitruv.dsls.reactions.helper.EChangeHelper.*;
 import tools.vitruv.dsls.reactions.reactionsLanguage.CodeBlock
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
@@ -23,6 +22,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
+import static extension tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.*
 
 /**
  * Outline structure definition for a reactions file.
@@ -153,7 +153,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(ConcreteModelChange event) {
-		return event.generateEChange.changeType?.simpleName;
+		return event.extractChangeTypeRepresentation.changeType?.simpleName;
 	}
 	
 	protected def Object _text(PreconditionCodeBlock preconditionBlock) {

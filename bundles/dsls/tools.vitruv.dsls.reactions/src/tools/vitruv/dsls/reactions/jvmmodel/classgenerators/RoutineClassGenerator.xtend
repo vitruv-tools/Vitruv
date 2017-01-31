@@ -20,7 +20,6 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
 import java.util.ArrayList
-import tools.vitruv.dsls.reactions.jvmmodel.classgenerators.UserExecutionClassGenerator.AccessibleElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherStatement
@@ -32,6 +31,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.UpdateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
+import tools.vitruv.dsls.reactions.helper.AccessibleElement
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -124,6 +124,7 @@ class RoutineClassGenerator extends ClassGenerator {
 				«FOR inputParameter : inputParameters»this.«inputParameter.name» = «inputParameter.name»;«ENDFOR»'''
 		]
 	}
+	
 	
 	private def dispatch StringConcatenationClient createStatements(CreateModelElement createElement) {
 		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, typeRef(createElement.javaClass))
