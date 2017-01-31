@@ -3,6 +3,7 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -20,33 +21,33 @@ class DeletedNonRootEObjectInListReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    RemoveAndDeleteNonRoot<Root, NonRoot> typedChange = (RemoveAndDeleteNonRoot<Root, NonRoot>)change;
+    RemoveEReference<Root, NonRoot> typedChange = ((RemoveAndDeleteNonRoot<Root, NonRoot>)change).getRemoveChange();
+    Root affectedEObject = typedChange.getAffectedEObject();
+    EReference affectedFeature = typedChange.getAffectedFeature();
+    NonRoot oldValue = typedChange.getOldValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeletedNonRootEObjectInListReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeletedNonRootEObjectInListReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return RemoveAndDeleteNonRoot.class;
   }
   
-  private boolean checkChangeProperties(final RemoveAndDeleteNonRoot<Root, NonRoot> change) {
-    if (!(change.getDeleteChange().getAffectedEObject() instanceof NonRoot)) {
-    	return false;
-    }
+  private boolean checkChangeProperties(final EChange change) {
+    RemoveEReference<Root, NonRoot> relevantChange = ((RemoveAndDeleteNonRoot<Root, NonRoot>)change).getRemoveChange();
     // Check affected object
-    if (!(change.getRemoveChange().getAffectedEObject() instanceof Root)) {
+    if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
     // Check feature
-    if (!change.getRemoveChange().getAffectedFeature().getName().equals("multiValuedContainmentEReference")) {
+    if (!relevantChange.getAffectedFeature().getName().equals("multiValuedContainmentEReference")) {
     	return false;
     }
-    if (!(change.getRemoveChange().getOldValue() instanceof NonRoot)
+    if (!(relevantChange.getOldValue() instanceof NonRoot)
     ) {
     	return false;
     }
-    
     return true;
   }
   
@@ -54,8 +55,7 @@ class DeletedNonRootEObjectInListReaction extends AbstractReactionRealization {
     if (!(change instanceof RemoveAndDeleteNonRoot)) {
     	return false;
     }
-    RemoveAndDeleteNonRoot<Root, NonRoot> typedChange = (RemoveAndDeleteNonRoot<Root, NonRoot>)change;
-    if (!checkChangeProperties(typedChange)) {
+    if (!checkChangeProperties(change)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
@@ -67,10 +67,8 @@ class DeletedNonRootEObjectInListReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final RemoveAndDeleteNonRoot<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
-      RemoveEReference<Root, NonRoot> _removeChange = change.getRemoveChange();
-      NonRoot _oldValue = _removeChange.getOldValue();
-      _routinesFacade.removeNonRoot(_oldValue);
+    public void callRoutine1(final Root affectedEObject, final EReference affectedFeature, final NonRoot oldValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.removeNonRoot(oldValue);
     }
   }
 }

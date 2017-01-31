@@ -2,6 +2,7 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -19,35 +20,36 @@ class RemovedEAttributeValueReaction extends AbstractReactionRealization {
   
   public void executeReaction(final EChange change) {
     RemoveEAttributeValue<Root, Integer> typedChange = (RemoveEAttributeValue<Root, Integer>)change;
+    Root affectedEObject = typedChange.getAffectedEObject();
+    EAttribute affectedFeature = typedChange.getAffectedFeature();
+    Integer oldValue = typedChange.getOldValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemovedEAttributeValueReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemovedEAttributeValueReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return RemoveEAttributeValue.class;
   }
   
-  private boolean checkChangeProperties(final RemoveEAttributeValue<Root, Integer> change) {
+  private boolean checkChangeProperties(final EChange change) {
+    RemoveEAttributeValue<Root, Integer> relevantChange = (RemoveEAttributeValue<Root, Integer>)change;
     // Check affected object
-    if (!(change.getAffectedEObject() instanceof Root)) {
+    if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    	
     // Check feature
-    if (!change.getAffectedFeature().getName().equals("multiValuedEAttribute")) {
+    if (!relevantChange.getAffectedFeature().getName().equals("multiValuedEAttribute")) {
     	return false;
     }
-    
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof RemoveEAttributeValue<?, ?>)) {
+    if (!(change instanceof RemoveEAttributeValue)) {
     	return false;
     }
-    RemoveEAttributeValue<Root, Integer> typedChange = (RemoveEAttributeValue<Root, Integer>)change;
-    if (!checkChangeProperties(typedChange)) {
+    if (!checkChangeProperties(change)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
@@ -59,10 +61,8 @@ class RemovedEAttributeValueReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final RemoveEAttributeValue<Root, Integer> change, @Extension final RoutinesFacade _routinesFacade) {
-      Root _affectedEObject = change.getAffectedEObject();
-      Integer _oldValue = change.getOldValue();
-      _routinesFacade.removeEAttribute(_affectedEObject, _oldValue);
+    public void callRoutine1(final Root affectedEObject, final EAttribute affectedFeature, final Integer oldValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.removeEAttribute(affectedEObject, oldValue);
     }
   }
 }

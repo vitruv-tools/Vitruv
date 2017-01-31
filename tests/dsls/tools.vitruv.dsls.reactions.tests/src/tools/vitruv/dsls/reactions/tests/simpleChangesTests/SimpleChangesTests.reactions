@@ -12,7 +12,7 @@ execute actions in minimal
  */
 reaction ReplacedSingleValuedEAttribute {
 	after attribute replaced at minimal::Root[singleValuedEAttribute]
-	call replaceSingleValuedEAttribute(change.affectedEObject, change.newValue)
+	call replaceSingleValuedEAttribute(affectedEObject, newValue)
 }
 
 routine replaceSingleValuedEAttribute(minimal::Root rootElement, Int value) {
@@ -37,7 +37,7 @@ routine replaceSingleValuedEAttribute(minimal::Root rootElement, Int value) {
  */
 reaction ReplacedNonRootId {
 	after attribute replaced at  minimal::NonRoot[id]
-	call replaceNonRootId(change.affectedEObject, change.newValue)
+	call replaceNonRootId(affectedEObject, newValue)
 }
 
 routine replaceNonRootId(minimal::NonRoot nonRoot, String value) {
@@ -56,7 +56,7 @@ routine replaceNonRootId(minimal::NonRoot nonRoot, String value) {
  */
 reaction CreatedNonRootEObjectInList {
 	after element minimal::NonRoot created and inserted in minimal::Root[multiValuedContainmentEReference]
-	call insertNonRoot(change.insertChange.affectedEObject, change.insertChange.newValue)
+	call insertNonRoot(affectedEObject, newValue)
 }
 
 routine insertNonRoot(minimal::Root rootElement, minimal::NonRoot insertedNonRoot) {
@@ -82,7 +82,7 @@ routine insertNonRoot(minimal::Root rootElement, minimal::NonRoot insertedNonRoo
  */
 reaction DeletedNonRootEObjectInList {
 	after element minimal::NonRoot deleted and removed from minimal::Root[multiValuedContainmentEReference]
-	call removeNonRoot(change.removeChange.oldValue)
+	call removeNonRoot(oldValue)
 }
 
 routine removeNonRoot(minimal::NonRoot removedNonRoot) {
@@ -103,11 +103,11 @@ routine removeNonRoot(minimal::NonRoot removedNonRoot) {
 reaction ReplacedNonRootEObjectSingleReaction {
 	after element minimal::NonRoot replaced at minimal::Root[singleValuedContainmentEReference]
 	call {
-		if (change.fromNonDefaultValue) {
-			deleteNonRootEObjectSingle(change.oldValue);
+		if (oldValue != null) {
+			deleteNonRootEObjectSingle(oldValue);
 		}
-		if (change.toNonDefaultValue) {
-			createNonRootEObjectSingle(change.affectedEObject, change.newValue);
+		if (newValue != null) {
+			createNonRootEObjectSingle(affectedEObject, newValue);
 		}
 	} 
 }
@@ -147,7 +147,7 @@ routine createNonRootEObjectSingle(minimal::Root sourceRoot, minimal::NonRoot co
  */
 reaction ReplacedSingleValuedNonContainmentEReference {
 	after element minimal::NonRoot replaced at minimal::Root[singleValuedNonContainmentEReference]
-	call replaceSingleValuedNonContainmentReference(change.affectedEObject, change.newValue)
+	call replaceSingleValuedNonContainmentReference(affectedEObject, newValue)
 }
 
 routine replaceSingleValuedNonContainmentReference(minimal::Root rootElement, minimal::NonRoot newReferencedElement
@@ -171,7 +171,7 @@ routine replaceSingleValuedNonContainmentReference(minimal::Root rootElement, mi
  */
 reaction InsertedEAttributeValue {
 	after attribute insert in minimal::Root[multiValuedEAttribute] 
-	call insertEAttribute(change.affectedEObject, change.newValue)
+	call insertEAttribute(affectedEObject, newValue)
 }
 
 routine insertEAttribute(minimal::Root rootElement, Int attributeValue) {
@@ -193,7 +193,7 @@ routine insertEAttribute(minimal::Root rootElement, Int attributeValue) {
  */
 reaction RemovedEAttributeValue {
 	after attribute remove from minimal::Root[multiValuedEAttribute] 
-	call removeEAttribute(change.affectedEObject, change.oldValue)
+	call removeEAttribute(affectedEObject, oldValue)
 }
 
 routine removeEAttribute(minimal::Root rootElement, Int removedAttributeValue) {
@@ -216,7 +216,7 @@ routine removeEAttribute(minimal::Root rootElement, Int removedAttributeValue) {
  */
 reaction InsertedNonContainmentEReference {
 	after element minimal::NonRoot inserted in minimal::Root[multiValuedNonContainmentEReference] 
-	call insertNonContainmentReference(change.affectedEObject, change.newValue)
+	call insertNonContainmentReference(affectedEObject, newValue)
 }
 
 routine insertNonContainmentReference(minimal::Root rootElement, minimal::NonRoot insertedNonRoot) {
@@ -238,9 +238,9 @@ routine insertNonContainmentReference(minimal::Root rootElement, minimal::NonRoo
 /*
  * RemoveNonContainmentEReference
  */
-reaction RemoveedNonContainmentEReference {
+reaction RemovedNonContainmentEReference {
 	after element minimal::NonRoot removed from minimal::Root[multiValuedNonContainmentEReference] 
-	call removeNonContainmentReference(change.affectedEObject, change.oldValue)
+	call removeNonContainmentReference(affectedEObject, oldValue)
 }
 
 routine removeNonContainmentReference(minimal::Root rootElement, minimal::NonRoot removedNonRoot) {
@@ -283,12 +283,12 @@ routine deleteRoot(minimal::Root rootElement) {
  */
 reaction CreateRootTest {
 	after element minimal::Root created and inserted as root
-	call createRoot(change.insertChange.newValue)
+	call createRoot(newValue)
 }
 
 reaction DeleteRootTest {
 	after element minimal::Root deleted and removed as root
-	call deleteRoot(change.removeChange.oldValue)
+	call deleteRoot(oldValue)
 }
 
 /**
@@ -296,8 +296,8 @@ reaction DeleteRootTest {
  */
 reaction HelperReactionForNonRootObjectContainerInitialization {
 	after element minimal::NonRootObjectContainerHelper replaced at minimal::Root[nonRootObjectContainerHelper]
-		with change.isToNonDefaultValue
-	call createNonRootObjectContainer(change.affectedEObject, change.newValue)
+		with newValue != null
+	call createNonRootObjectContainer(affectedEObject, newValue)
 }
 
 routine createNonRootObjectContainer(minimal::Root rootElement, minimal::NonRootObjectContainerHelper nonRootObjectContainer) {
@@ -320,7 +320,7 @@ routine createNonRootObjectContainer(minimal::Root rootElement, minimal::NonRoot
  */
 reaction HelperReactionForNonRootObjectContainerContentsInitialization {
 	after element minimal::NonRoot created and inserted in minimal::NonRootObjectContainerHelper[nonRootObjectsContainment]
-	call createNonRootInContainer(change.insertChange.affectedEObject, change.insertChange.newValue)
+	call createNonRootInContainer(affectedEObject, newValue)
 }
 
 routine createNonRootInContainer(minimal::NonRootObjectContainerHelper container, minimal::NonRoot insertedNonRoot) {

@@ -19,25 +19,23 @@ class DeleteRootTestReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    RemoveAndDeleteRoot<Root> typedChange = (RemoveAndDeleteRoot<Root>)change;
+    RemoveRootEObject<Root> typedChange = ((RemoveAndDeleteRoot<Root>)change).getRemoveChange();
+    Root oldValue = typedChange.getOldValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(oldValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return RemoveAndDeleteRoot.class;
   }
   
-  private boolean checkChangeProperties(final RemoveAndDeleteRoot<Root> change) {
-    if (!(change.getDeleteChange().getAffectedEObject() instanceof Root)) {
-    	return false;
-    }
-    if (!(change.getRemoveChange().getOldValue() instanceof Root)
+  private boolean checkChangeProperties(final EChange change) {
+    RemoveRootEObject<Root> relevantChange = ((RemoveAndDeleteRoot<Root>)change).getRemoveChange();
+    if (!(relevantChange.getOldValue() instanceof Root)
     ) {
     	return false;
     }
-    
     return true;
   }
   
@@ -45,8 +43,7 @@ class DeleteRootTestReaction extends AbstractReactionRealization {
     if (!(change instanceof RemoveAndDeleteRoot)) {
     	return false;
     }
-    RemoveAndDeleteRoot<Root> typedChange = (RemoveAndDeleteRoot<Root>)change;
-    if (!checkChangeProperties(typedChange)) {
+    if (!checkChangeProperties(change)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
@@ -58,10 +55,8 @@ class DeleteRootTestReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final RemoveAndDeleteRoot<Root> change, @Extension final RoutinesFacade _routinesFacade) {
-      RemoveRootEObject<Root> _removeChange = change.getRemoveChange();
-      Root _oldValue = _removeChange.getOldValue();
-      _routinesFacade.deleteRoot(_oldValue);
+    public void callRoutine1(final Root oldValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.deleteRoot(oldValue);
     }
   }
 }

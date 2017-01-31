@@ -3,6 +3,7 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.NonRoot;
 import allElementTypes.NonRootObjectContainerHelper;
 import mir.routines.simpleChangesTests.RoutinesFacade;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -20,32 +21,32 @@ class HelperReactionForNonRootObjectContainerContentsInitializationReaction exte
   }
   
   public void executeReaction(final EChange change) {
-    CreateAndInsertNonRoot<NonRootObjectContainerHelper, NonRoot> typedChange = (CreateAndInsertNonRoot<NonRootObjectContainerHelper, NonRoot>)change;
+    InsertEReference<NonRootObjectContainerHelper, NonRoot> typedChange = ((CreateAndInsertNonRoot<NonRootObjectContainerHelper, NonRoot>)change).getInsertChange();
+    NonRootObjectContainerHelper affectedEObject = typedChange.getAffectedEObject();
+    EReference affectedFeature = typedChange.getAffectedFeature();
+    NonRoot newValue = typedChange.getNewValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerContentsInitializationReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerContentsInitializationReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(affectedEObject, affectedFeature, newValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return CreateAndInsertNonRoot.class;
   }
   
-  private boolean checkChangeProperties(final CreateAndInsertNonRoot<NonRootObjectContainerHelper, NonRoot> change) {
-    if (!(change.getCreateChange().getAffectedEObject() instanceof NonRoot)) {
-    	return false;
-    }
+  private boolean checkChangeProperties(final EChange change) {
+    InsertEReference<NonRootObjectContainerHelper, NonRoot> relevantChange = ((CreateAndInsertNonRoot<NonRootObjectContainerHelper, NonRoot>)change).getInsertChange();
     // Check affected object
-    if (!(change.getInsertChange().getAffectedEObject() instanceof NonRootObjectContainerHelper)) {
+    if (!(relevantChange.getAffectedEObject() instanceof NonRootObjectContainerHelper)) {
     	return false;
     }
     // Check feature
-    if (!change.getInsertChange().getAffectedFeature().getName().equals("nonRootObjectsContainment")) {
+    if (!relevantChange.getAffectedFeature().getName().equals("nonRootObjectsContainment")) {
     	return false;
     }
-    if (!(change.getInsertChange().getNewValue() instanceof NonRoot)) {
+    if (!(relevantChange.getNewValue() instanceof NonRoot)) {
     	return false;
     }
-    
     return true;
   }
   
@@ -53,8 +54,7 @@ class HelperReactionForNonRootObjectContainerContentsInitializationReaction exte
     if (!(change instanceof CreateAndInsertNonRoot)) {
     	return false;
     }
-    CreateAndInsertNonRoot<NonRootObjectContainerHelper, NonRoot> typedChange = (CreateAndInsertNonRoot<NonRootObjectContainerHelper, NonRoot>)change;
-    if (!checkChangeProperties(typedChange)) {
+    if (!checkChangeProperties(change)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
@@ -66,12 +66,8 @@ class HelperReactionForNonRootObjectContainerContentsInitializationReaction exte
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final CreateAndInsertNonRoot<NonRootObjectContainerHelper, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
-      InsertEReference<NonRootObjectContainerHelper, NonRoot> _insertChange = change.getInsertChange();
-      NonRootObjectContainerHelper _affectedEObject = _insertChange.getAffectedEObject();
-      InsertEReference<NonRootObjectContainerHelper, NonRoot> _insertChange_1 = change.getInsertChange();
-      NonRoot _newValue = _insertChange_1.getNewValue();
-      _routinesFacade.createNonRootInContainer(_affectedEObject, _newValue);
+    public void callRoutine1(final NonRootObjectContainerHelper affectedEObject, final EReference affectedFeature, final NonRoot newValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.createNonRootInContainer(affectedEObject, newValue);
     }
   }
 }

@@ -19,24 +19,22 @@ class CreateRootTestReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    CreateAndInsertRoot<Root> typedChange = (CreateAndInsertRoot<Root>)change;
+    InsertRootEObject<Root> typedChange = ((CreateAndInsertRoot<Root>)change).getInsertChange();
+    Root newValue = typedChange.getNewValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(newValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return CreateAndInsertRoot.class;
   }
   
-  private boolean checkChangeProperties(final CreateAndInsertRoot<Root> change) {
-    if (!(change.getCreateChange().getAffectedEObject() instanceof Root)) {
+  private boolean checkChangeProperties(final EChange change) {
+    InsertRootEObject<Root> relevantChange = ((CreateAndInsertRoot<Root>)change).getInsertChange();
+    if (!(relevantChange.getNewValue() instanceof Root)) {
     	return false;
     }
-    if (!(change.getInsertChange().getNewValue() instanceof Root)) {
-    	return false;
-    }
-    
     return true;
   }
   
@@ -44,8 +42,7 @@ class CreateRootTestReaction extends AbstractReactionRealization {
     if (!(change instanceof CreateAndInsertRoot)) {
     	return false;
     }
-    CreateAndInsertRoot<Root> typedChange = (CreateAndInsertRoot<Root>)change;
-    if (!checkChangeProperties(typedChange)) {
+    if (!checkChangeProperties(change)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
@@ -57,10 +54,8 @@ class CreateRootTestReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final CreateAndInsertRoot<Root> change, @Extension final RoutinesFacade _routinesFacade) {
-      InsertRootEObject<Root> _insertChange = change.getInsertChange();
-      Root _newValue = _insertChange.getNewValue();
-      _routinesFacade.createRoot(_newValue);
+    public void callRoutine1(final Root newValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.createRoot(newValue);
     }
   }
 }

@@ -3,6 +3,7 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -20,41 +21,44 @@ class ReplacedSingleValuedNonContainmentEReferenceReaction extends AbstractReact
   
   public void executeReaction(final EChange change) {
     ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
+    Root affectedEObject = typedChange.getAffectedEObject();
+    EReference affectedFeature = typedChange.getAffectedFeature();
+    NonRoot oldValue = typedChange.getOldValue();
+    NonRoot newValue = typedChange.getNewValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedNonContainmentEReferenceReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedNonContainmentEReferenceReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return ReplaceSingleValuedEReference.class;
   }
   
-  private boolean checkChangeProperties(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
+  private boolean checkChangeProperties(final EChange change) {
+    ReplaceSingleValuedEReference<Root, NonRoot> relevantChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
     // Check affected object
-    if (!(change.getAffectedEObject() instanceof Root)) {
+    if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
     // Check feature
-    if (!change.getAffectedFeature().getName().equals("singleValuedNonContainmentEReference")) {
+    if (!relevantChange.getAffectedFeature().getName().equals("singleValuedNonContainmentEReference")) {
     	return false;
     }
-    if (change.isFromNonDefaultValue() && !(change.getOldValue() instanceof NonRoot)
+    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof NonRoot)
     ) {
     	return false;
     }
-    if (change.isToNonDefaultValue() && !(change.getNewValue() instanceof NonRoot)) {
+    if (relevantChange.isToNonDefaultValue() && !(relevantChange.getNewValue() instanceof NonRoot)) {
     	return false;
     }
-    
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof ReplaceSingleValuedEReference<?, ?>)) {
+    if (!(change instanceof ReplaceSingleValuedEReference)) {
     	return false;
     }
-    ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
-    if (!checkChangeProperties(typedChange)) {
+    if (!checkChangeProperties(change)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
@@ -66,10 +70,8 @@ class ReplacedSingleValuedNonContainmentEReferenceReaction extends AbstractReact
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final ReplaceSingleValuedEReference<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
-      Root _affectedEObject = change.getAffectedEObject();
-      NonRoot _newValue = change.getNewValue();
-      _routinesFacade.replaceSingleValuedNonContainmentReference(_affectedEObject, _newValue);
+    public void callRoutine1(final Root affectedEObject, final EReference affectedFeature, final NonRoot oldValue, final NonRoot newValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.replaceSingleValuedNonContainmentReference(affectedEObject, newValue);
     }
   }
 }

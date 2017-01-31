@@ -3,6 +3,7 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -20,32 +21,32 @@ class CreatedNonRootEObjectInListReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    CreateAndInsertNonRoot<Root, NonRoot> typedChange = (CreateAndInsertNonRoot<Root, NonRoot>)change;
+    InsertEReference<Root, NonRoot> typedChange = ((CreateAndInsertNonRoot<Root, NonRoot>)change).getInsertChange();
+    Root affectedEObject = typedChange.getAffectedEObject();
+    EReference affectedFeature = typedChange.getAffectedFeature();
+    NonRoot newValue = typedChange.getNewValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(affectedEObject, affectedFeature, newValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return CreateAndInsertNonRoot.class;
   }
   
-  private boolean checkChangeProperties(final CreateAndInsertNonRoot<Root, NonRoot> change) {
-    if (!(change.getCreateChange().getAffectedEObject() instanceof NonRoot)) {
-    	return false;
-    }
+  private boolean checkChangeProperties(final EChange change) {
+    InsertEReference<Root, NonRoot> relevantChange = ((CreateAndInsertNonRoot<Root, NonRoot>)change).getInsertChange();
     // Check affected object
-    if (!(change.getInsertChange().getAffectedEObject() instanceof Root)) {
+    if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
     // Check feature
-    if (!change.getInsertChange().getAffectedFeature().getName().equals("multiValuedContainmentEReference")) {
+    if (!relevantChange.getAffectedFeature().getName().equals("multiValuedContainmentEReference")) {
     	return false;
     }
-    if (!(change.getInsertChange().getNewValue() instanceof NonRoot)) {
+    if (!(relevantChange.getNewValue() instanceof NonRoot)) {
     	return false;
     }
-    
     return true;
   }
   
@@ -53,8 +54,7 @@ class CreatedNonRootEObjectInListReaction extends AbstractReactionRealization {
     if (!(change instanceof CreateAndInsertNonRoot)) {
     	return false;
     }
-    CreateAndInsertNonRoot<Root, NonRoot> typedChange = (CreateAndInsertNonRoot<Root, NonRoot>)change;
-    if (!checkChangeProperties(typedChange)) {
+    if (!checkChangeProperties(change)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
@@ -66,12 +66,8 @@ class CreatedNonRootEObjectInListReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final CreateAndInsertNonRoot<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
-      InsertEReference<Root, NonRoot> _insertChange = change.getInsertChange();
-      Root _affectedEObject = _insertChange.getAffectedEObject();
-      InsertEReference<Root, NonRoot> _insertChange_1 = change.getInsertChange();
-      NonRoot _newValue = _insertChange_1.getNewValue();
-      _routinesFacade.insertNonRoot(_affectedEObject, _newValue);
+    public void callRoutine1(final Root affectedEObject, final EReference affectedFeature, final NonRoot newValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.insertNonRoot(affectedEObject, newValue);
     }
   }
 }

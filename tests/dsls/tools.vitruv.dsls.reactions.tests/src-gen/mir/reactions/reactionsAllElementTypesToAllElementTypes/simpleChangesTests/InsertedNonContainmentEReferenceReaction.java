@@ -3,6 +3,7 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -20,37 +21,39 @@ class InsertedNonContainmentEReferenceReaction extends AbstractReactionRealizati
   
   public void executeReaction(final EChange change) {
     InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
+    Root affectedEObject = typedChange.getAffectedEObject();
+    EReference affectedFeature = typedChange.getAffectedFeature();
+    NonRoot newValue = typedChange.getNewValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedNonContainmentEReferenceReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedNonContainmentEReferenceReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(affectedEObject, affectedFeature, newValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return InsertEReference.class;
   }
   
-  private boolean checkChangeProperties(final InsertEReference<Root, NonRoot> change) {
+  private boolean checkChangeProperties(final EChange change) {
+    InsertEReference<Root, NonRoot> relevantChange = (InsertEReference<Root, NonRoot>)change;
     // Check affected object
-    if (!(change.getAffectedEObject() instanceof Root)) {
+    if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
     // Check feature
-    if (!change.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
+    if (!relevantChange.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
     	return false;
     }
-    if (!(change.getNewValue() instanceof NonRoot)) {
+    if (!(relevantChange.getNewValue() instanceof NonRoot)) {
     	return false;
     }
-    
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof InsertEReference<?, ?>)) {
+    if (!(change instanceof InsertEReference)) {
     	return false;
     }
-    InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
-    if (!checkChangeProperties(typedChange)) {
+    if (!checkChangeProperties(change)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
@@ -62,10 +65,8 @@ class InsertedNonContainmentEReferenceReaction extends AbstractReactionRealizati
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final InsertEReference<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
-      Root _affectedEObject = change.getAffectedEObject();
-      NonRoot _newValue = change.getNewValue();
-      _routinesFacade.insertNonContainmentReference(_affectedEObject, _newValue);
+    public void callRoutine1(final Root affectedEObject, final EReference affectedFeature, final NonRoot newValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.insertNonContainmentReference(affectedEObject, newValue);
     }
   }
 }
