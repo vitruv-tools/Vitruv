@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.jvmmodel
+package tools.vitruv.dsls.reactions.codegen.typesbuilder
 
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import org.eclipse.xtext.common.types.JvmVisibility

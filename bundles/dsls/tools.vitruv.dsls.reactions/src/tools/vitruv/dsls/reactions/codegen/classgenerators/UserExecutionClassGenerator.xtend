@@ -1,6 +1,6 @@
-package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
+package tools.vitruv.dsls.reactions.codegen.classgenerators
 
-import tools.vitruv.dsls.reactions.jvmmodel.classgenerators.ClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
@@ -15,6 +15,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.helper.AccessibleElement
+import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;

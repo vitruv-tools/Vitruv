@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
+package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import org.eclipse.emf.ecore.EClass

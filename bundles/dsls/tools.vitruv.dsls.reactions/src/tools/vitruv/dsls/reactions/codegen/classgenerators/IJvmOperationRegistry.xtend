@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
+package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1

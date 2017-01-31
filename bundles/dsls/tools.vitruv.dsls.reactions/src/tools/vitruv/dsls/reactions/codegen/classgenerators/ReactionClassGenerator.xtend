@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
+package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
@@ -25,6 +25,7 @@ import tools.vitruv.dsls.reactions.helper.AccessibleElement
 import static extension tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.*
 import tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.ChangeTypeRepresentation
 import tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.AtomicChangeTypeRepresentation
+import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 class ReactionClassGenerator extends ClassGenerator {
 	protected final Reaction reaction;

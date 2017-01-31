@@ -1,12 +1,13 @@
-package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
+package tools.vitruv.dsls.reactions.codegen.classgenerators
 
-import tools.vitruv.dsls.reactions.jvmmodel.classgenerators.ClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor
 import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
+import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 class ExecutorClassGenerator extends ClassGenerator {
 	private final ReactionsSegment reactionsSegment;

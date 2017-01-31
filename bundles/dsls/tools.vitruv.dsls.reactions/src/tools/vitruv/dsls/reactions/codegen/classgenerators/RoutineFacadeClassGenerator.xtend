@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
+package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import java.util.List
 import org.eclipse.xtext.common.types.JvmOperation
@@ -10,6 +10,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
+import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	private val List<Routine> routines;

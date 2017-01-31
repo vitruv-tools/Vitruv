@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
+package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import org.eclipse.xtext.common.types.JvmGenericType
 import java.util.Map
@@ -8,6 +8,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import java.util.HashMap
 import tools.vitruv.dsls.reactions.helper.AccessibleElement
+import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 abstract class ClassGenerator extends TypesBuilderExtensionProvider implements IJvmOperationRegistry {
 	private Map<String, JvmOperation> methodMap;

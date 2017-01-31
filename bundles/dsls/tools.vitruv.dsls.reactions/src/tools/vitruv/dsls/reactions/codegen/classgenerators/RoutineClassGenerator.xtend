@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
+package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.emf.ecore.EObject
@@ -32,6 +32,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.helper.AccessibleElement
+import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;

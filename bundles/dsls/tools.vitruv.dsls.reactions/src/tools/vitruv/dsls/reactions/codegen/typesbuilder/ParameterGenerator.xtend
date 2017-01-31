@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.jvmmodel.classgenerators
+package tools.vitruv.dsls.reactions.codegen.typesbuilder
 
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import org.eclipse.xtext.common.types.JvmFormalParameter
@@ -12,7 +12,6 @@ import java.util.List
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
-import tools.vitruv.dsls.reactions.jvmmodel.JvmTypesBuilderWithoutAssociations
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
@@ -21,7 +20,7 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 import static extension tools.vitruv.dsls.reactions.helper.ChangeTypeRepresentationExtractor.*
 
-class ReactionsLanguageParameterGenerator {
+class ParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
 	package static val BLACKBOARD_PARAMETER_NAME = "blackboard";
 	package static val TRANSFORMATION_RESULT_PARAMETER_NAME = "transformationResult";
@@ -31,31 +30,31 @@ class ReactionsLanguageParameterGenerator {
 	protected final extension JvmTypeReferenceBuilder _typeReferenceBuilder;
 	protected final extension JvmTypesBuilderWithoutAssociations _typesBuilder;	
 	
-	new (JvmTypeReferenceBuilder typeReferenceBuilder, tools.vitruv.dsls.reactions.jvmmodel.JvmTypesBuilderWithoutAssociations typesBuilder) {
+	new (JvmTypeReferenceBuilder typeReferenceBuilder, JvmTypesBuilderWithoutAssociations typesBuilder) {
 		_typeReferenceBuilder = typeReferenceBuilder;
 		_typesBuilder = typesBuilder;
 	}
 	
-	protected def JvmFormalParameter generateModelElementParameter(EObject parameterContext, MetaclassReference metaclassReference, String elementName) {
+	public def JvmFormalParameter generateModelElementParameter(EObject parameterContext, MetaclassReference metaclassReference, String elementName) {
 		if (metaclassReference?.metaclass != null) {
 			return parameterContext.generateParameter(elementName, metaclassReference.javaClass);
 		}	
 		return null;
 	}
 	
-	protected def JvmFormalParameter generateReactionExecutionStateParameter(EObject parameterContext) {
+	public def JvmFormalParameter generateReactionExecutionStateParameter(EObject parameterContext) {
 		return generateParameter(parameterContext, REACTION_EXECUTION_STATE_PARAMETER_NAME, ReactionExecutionState);
 	}
 	
-	protected def JvmFormalParameter generateTransformationResultParameter(EObject parameterContext) {
+	public def JvmFormalParameter generateTransformationResultParameter(EObject parameterContext) {
 		return generateParameter(parameterContext, TRANSFORMATION_RESULT_PARAMETER_NAME, ChangePropagationResult);
 	}
 	
-	protected def JvmFormalParameter generateUserInteractingParameter(EObject parameterContext) {
+	public def JvmFormalParameter generateUserInteractingParameter(EObject parameterContext) {
 		return generateParameter(parameterContext, USER_INTERACTING_PARAMETER_NAME, UserInteracting);
 	}
 	
-	protected def generateParameter(EObject context, String parameterName, JvmTypeReference parameterType) {
+	public def generateParameter(EObject context, String parameterName, JvmTypeReference parameterType) {
 		if (parameterType == null) {
 			return null;
 		}
@@ -63,11 +62,11 @@ class ReactionsLanguageParameterGenerator {
 	}
 
 		
-	protected def generateParameterFromClasses(EObject context, String parameterName, Class<?> parameterClass, List<Class<?>> typeParameterClasses) {
+	public def generateParameterFromClasses(EObject context, String parameterName, Class<?> parameterClass, List<Class<?>> typeParameterClasses) {
 		return generateParameter(context, parameterName, parameterClass, typeParameterClasses.map[name]);
 	}
 	
-	protected def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
+	public def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
 		if (parameterClass == null) {
 			return null;
 		}
@@ -79,7 +78,7 @@ class ReactionsLanguageParameterGenerator {
 		return context.toParameter(parameterName, changeType);
 	}
 	
-	protected def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
+	public def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
 		return metaclassReferences.map[
 			generateParameter(contextObject, it.name, it.metaclass.mappedInstanceClass)
 		] + javaElements.map[toParameter(contextObject, it.name, it.type)];
@@ -94,11 +93,11 @@ class ReactionsLanguageParameterGenerator {
 		return eClass.instanceClass
 	}
 	
-	protected def JvmFormalParameter generateUntypedChangeParameter(EObject parameterContext) {
+	public def JvmFormalParameter generateUntypedChangeParameter(EObject parameterContext) {
 		return parameterContext.generateParameter(CHANGE_PARAMETER_NAME, EChange);
 	}
 	
-	protected def JvmFormalParameter generateChangeParameter(EObject parameterContext, Trigger trigger) {
+	public def JvmFormalParameter generateChangeParameter(EObject parameterContext, Trigger trigger) {
 		val changeRepresentation = extractChangeTypeRepresentation(trigger);
 		var List<Class<?>> changeTypeParameters = <Class<?>>newArrayList;
 		if (trigger instanceof ConcreteModelChange) {
