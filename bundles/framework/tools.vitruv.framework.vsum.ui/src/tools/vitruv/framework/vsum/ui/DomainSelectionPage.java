@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import java.util.List;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -49,7 +51,6 @@ public class DomainSelectionPage extends WizardPage {
     IProject projects[] = getProjects();
 
     final Tree tree = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-    tree.setItemCount(projects.length);
 
     GridData treeGridData = new GridData(GridData.FILL_BOTH);
     tree.setLayoutData(treeGridData);
