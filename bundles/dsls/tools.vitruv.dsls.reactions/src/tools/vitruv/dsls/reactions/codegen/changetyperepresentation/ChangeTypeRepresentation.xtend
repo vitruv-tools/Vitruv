@@ -4,6 +4,12 @@ import java.util.List
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import java.util.Map
 
+/**
+ * This class is responsible for representing the relevant change information for generating reactions
+ * code, both for atomic (see {@link AtomicChangeTypeRepresentation}) and compound (see {@link CompoundChangeTypeRepresentation})
+ * changes. The information for the changes are extracted by the {@link ChangeTypeRepresentationExtractor} from 
+ * a {@link Trigger} of the reactions language.
+ */
 public abstract class ChangeTypeRepresentation {
 	
 	protected static def boolean isPrimitiveType(Class<?> type) {
@@ -46,9 +52,10 @@ public abstract class ChangeTypeRepresentation {
 	}
 
 	/**
-	 * Returns code for extracting the relevant atomic change, according to {@link getRelevantAtomicChangeTypRepresentation()},
-	 * from an {@link EChange} given in the variable specified by {@link untypedChangeVariableName} and assigning it to the variable with
-	 * the name {@link typedChangeVariableName}.
+	 * Returns code for extracting the relevant atomic change, according to 
+	 * {@link #getRelevantAtomicChangeTypeRepresentation() getRelevantAtomicChangeTypeRepresentation},
+	 * from an {@link tools.vitruv.framework.change.echange.EChange EChange} given in the variable specified by <code>untypedChangeVariableName</code> 
+	 * and assigning it to the variable with the name <code>typedChangeVariableName</code>.
 	 */
 	public def StringConcatenationClient getRelevantChangeAssignmentCode(String untypedChangeVariableName, String typedChangeVariableName);
 }

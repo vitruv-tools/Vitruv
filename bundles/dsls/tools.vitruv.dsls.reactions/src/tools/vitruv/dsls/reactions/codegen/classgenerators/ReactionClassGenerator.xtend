@@ -8,15 +8,12 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.PreconditionCodeBlock
 import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelChange
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentation
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.AtomicChangeTypeRepresentation
@@ -181,31 +178,23 @@ class ReactionClassGenerator extends ClassGenerator {
 	}
 	
 	private def StringConcatenationClient generateElementChecks(AtomicChangeTypeRepresentation change, String changeParameterName) '''
-		«generateUsageCheck(change, changeParameterName)»
-	'''
-	
-	private def StringConcatenationClient generateUsageCheck(AtomicChangeTypeRepresentation change, String changeParameterName) '''
-		«IF FeatureEChange.isAssignableFrom(change.changeType)»
+		«IF relevantAtomicChangeTypeRepresentation.hasAffectedElement»
 			if (!(«changeParameterName».getAffectedEObject() instanceof «change.affectedElementClass»)) {
 				return false;
 			}
-			// Check feature
+		«ENDIF»
+		«IF relevantAtomicChangeTypeRepresentation.hasAffectedFeature»
 			if (!«changeParameterName».getAffectedFeature().getName().equals("«change.affectedFeature.name»")) {
 				return false;
 			}
 		«ENDIF»
-		«generateAdditiveSubtractiveCheck(change, changeParameterName)»
-	'''
-	
-	private def StringConcatenationClient generateAdditiveSubtractiveCheck(AtomicChangeTypeRepresentation change, String changeParameterName) '''
-		«IF EObjectSubtractedEChange.isAssignableFrom(change.changeType)»
+		«IF relevantAtomicChangeTypeRepresentation.hasOldValue»
 			if («IF ReplaceSingleValuedFeatureEChange.isAssignableFrom(change.changeType)»«changeParameterName».isFromNonDefaultValue() && «
-				ENDIF»!(«changeParameterName».getOldValue() instanceof «change.affectedValueClass»)
-			) {
+				ENDIF»!(«changeParameterName».getOldValue() instanceof «change.affectedValueClass»)) {
 				return false;
 			}
 		«ENDIF»
-		«IF EObjectAddedEChange.isAssignableFrom(change.changeType)»
+		«IF relevantAtomicChangeTypeRepresentation.hasNewValue»
 			if («IF ReplaceSingleValuedFeatureEChange.isAssignableFrom(change.changeType)»«changeParameterName».isToNonDefaultValue() && «
 				ENDIF»!(«changeParameterName».getNewValue() instanceof «change.affectedValueClass»)) {
 				return false;

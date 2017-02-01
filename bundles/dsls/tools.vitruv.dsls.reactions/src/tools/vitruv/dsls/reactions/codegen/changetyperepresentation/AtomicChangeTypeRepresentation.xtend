@@ -6,17 +6,17 @@ import java.util.List
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 
 public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
-	private static final String affectedEObjectAttribute = "affectedEObject";
-	private static final String affectedFeatureAttribute = "affectedFeature";
-	private static final String oldValueAttribute = "oldValue";
-	private static final String newValueAttribute = "newValue";
+	public static final String affectedElementAttribute = "affectedEObject";
+	public static final String affectedFeatureAttribute = "affectedFeature";
+	public static final String oldValueAttribute = "oldValue";
+	public static final String newValueAttribute = "newValue";
 
-	protected Class<?> changeType;
-	protected Class<?> affectedElementClass;
-	protected Class<?> affectedValueClass;
-	protected boolean hasOldValue;
-	protected boolean hasNewValue;
-	protected EStructuralFeature affectedFeature;
+	protected final Class<?> changeType;
+	protected final Class<?> affectedElementClass;
+	protected final Class<?> affectedValueClass;
+	protected final boolean hasOldValue;
+	protected final boolean hasNewValue;
+	protected final EStructuralFeature affectedFeature;
 
 	protected new(Class<?> changeType, Class<?> affectedElementClass, Class<?> affectedValueClass, boolean hasOldValue,
 		boolean hasNewValue, EStructuralFeature affectedFeature) {
@@ -44,6 +44,14 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		return affectedFeature;
 	}
 
+	public def boolean hasAffectedElement() {
+		return affectedElementClass != null;
+	}
+	
+	public def boolean hasAffectedFeature() {
+		return affectedFeature != null;
+	}
+	
 	public def boolean hasOldValue() {
 		return hasOldValue;
 	}
@@ -72,7 +80,7 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 	public def Iterable<AccessibleElement> generatePropertiesParameterList() {
 		val result = <AccessibleElement>newArrayList();
 		if (affectedElementClass != null) {
-			result.add(new AccessibleElement(affectedEObjectAttribute, affectedElementClass));
+			result.add(new AccessibleElement(affectedElementAttribute, affectedElementClass));
 		}
 		if (affectedFeature != null) {
 			result.add(new AccessibleElement(affectedFeatureAttribute, affectedFeature.eClass.instanceClass));
@@ -89,7 +97,7 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 	public def StringConcatenationClient generatePropertiesAssignmentCode(String typedChangeVariableName) {
 		'''
 			«IF affectedElementClass != null»
-				«affectedElementClass» «affectedEObjectAttribute» = «typedChangeVariableName».get«affectedEObjectAttribute.toFirstUpper»();
+				«affectedElementClass» «affectedElementAttribute» = «typedChangeVariableName».get«affectedElementAttribute.toFirstUpper»();
 			«ENDIF»
 			«IF affectedFeature != null»
 				«affectedFeature.eClass.instanceClass» «affectedFeatureAttribute» = «typedChangeVariableName».get«affectedFeatureAttribute.toFirstUpper»();
