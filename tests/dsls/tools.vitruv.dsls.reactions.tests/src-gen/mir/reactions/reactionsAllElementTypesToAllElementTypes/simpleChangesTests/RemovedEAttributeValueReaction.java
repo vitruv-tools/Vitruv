@@ -34,12 +34,13 @@ class RemovedEAttributeValueReaction extends AbstractReactionRealization {
   
   private boolean checkChangeProperties(final EChange change) {
     RemoveEAttributeValue<Root, Integer> relevantChange = (RemoveEAttributeValue<Root, Integer>)change;
-    // Check affected object
     if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    // Check feature
     if (!relevantChange.getAffectedFeature().getName().equals("multiValuedEAttribute")) {
+    	return false;
+    }
+    if (!(relevantChange.getOldValue() instanceof Integer)) {
     	return false;
     }
     return true;
@@ -49,10 +50,12 @@ class RemovedEAttributeValueReaction extends AbstractReactionRealization {
     if (!(change instanceof RemoveEAttributeValue)) {
     	return false;
     }
+    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
     if (!checkChangeProperties(change)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
     return true;
   }
   

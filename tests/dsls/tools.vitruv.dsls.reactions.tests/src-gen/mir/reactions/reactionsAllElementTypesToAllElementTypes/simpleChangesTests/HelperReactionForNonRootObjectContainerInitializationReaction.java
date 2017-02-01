@@ -37,16 +37,13 @@ class HelperReactionForNonRootObjectContainerInitializationReaction extends Abst
   
   private boolean checkChangeProperties(final EChange change) {
     ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> relevantChange = (ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper>)change;
-    // Check affected object
     if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    // Check feature
     if (!relevantChange.getAffectedFeature().getName().equals("nonRootObjectContainerHelper")) {
     	return false;
     }
-    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof NonRootObjectContainerHelper)
-    ) {
+    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof NonRootObjectContainerHelper)) {
     	return false;
     }
     if (relevantChange.isToNonDefaultValue() && !(relevantChange.getNewValue() instanceof NonRootObjectContainerHelper)) {
@@ -59,9 +56,11 @@ class HelperReactionForNonRootObjectContainerInitializationReaction extends Abst
     if (!(change instanceof ReplaceSingleValuedEReference)) {
     	return false;
     }
+    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
     if (!checkChangeProperties(change)) {
     	return false;
     }
+    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
     ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> typedChange = (ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper>)change;
     Root affectedEObject = typedChange.getAffectedEObject();
     EReference affectedFeature = typedChange.getAffectedFeature();
@@ -70,7 +69,7 @@ class HelperReactionForNonRootObjectContainerInitializationReaction extends Abst
     if (!checkUserDefinedPrecondition(affectedEObject, affectedFeature, oldValue, newValue)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
     return true;
   }
   

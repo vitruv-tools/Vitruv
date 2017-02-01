@@ -37,16 +37,13 @@ class ReplacedNonRootEObjectSingleReactionReaction extends AbstractReactionReali
   
   private boolean checkChangeProperties(final EChange change) {
     ReplaceSingleValuedEReference<Root, NonRoot> relevantChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
-    // Check affected object
     if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    // Check feature
     if (!relevantChange.getAffectedFeature().getName().equals("singleValuedContainmentEReference")) {
     	return false;
     }
-    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof NonRoot)
-    ) {
+    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof NonRoot)) {
     	return false;
     }
     if (relevantChange.isToNonDefaultValue() && !(relevantChange.getNewValue() instanceof NonRoot)) {
@@ -59,10 +56,12 @@ class ReplacedNonRootEObjectSingleReactionReaction extends AbstractReactionReali
     if (!(change instanceof ReplaceSingleValuedEReference)) {
     	return false;
     }
+    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
     if (!checkChangeProperties(change)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
     return true;
   }
   

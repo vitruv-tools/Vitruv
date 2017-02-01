@@ -36,11 +36,9 @@ class CreatedNonRootEObjectInListReaction extends AbstractReactionRealization {
   
   private boolean checkChangeProperties(final EChange change) {
     InsertEReference<Root, NonRoot> relevantChange = ((CreateAndInsertNonRoot<Root, NonRoot>)change).getInsertChange();
-    // Check affected object
     if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    // Check feature
     if (!relevantChange.getAffectedFeature().getName().equals("multiValuedContainmentEReference")) {
     	return false;
     }
@@ -54,10 +52,12 @@ class CreatedNonRootEObjectInListReaction extends AbstractReactionRealization {
     if (!(change instanceof CreateAndInsertNonRoot)) {
     	return false;
     }
+    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
     if (!checkChangeProperties(change)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
     return true;
   }
   

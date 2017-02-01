@@ -32,8 +32,7 @@ class DeleteRootTestReaction extends AbstractReactionRealization {
   
   private boolean checkChangeProperties(final EChange change) {
     RemoveRootEObject<Root> relevantChange = ((RemoveAndDeleteRoot<Root>)change).getRemoveChange();
-    if (!(relevantChange.getOldValue() instanceof Root)
-    ) {
+    if (!(relevantChange.getOldValue() instanceof Root)) {
     	return false;
     }
     return true;
@@ -43,10 +42,12 @@ class DeleteRootTestReaction extends AbstractReactionRealization {
     if (!(change instanceof RemoveAndDeleteRoot)) {
     	return false;
     }
+    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
     if (!checkChangeProperties(change)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
     return true;
   }
   

@@ -35,11 +35,9 @@ class InsertedNonContainmentEReferenceReaction extends AbstractReactionRealizati
   
   private boolean checkChangeProperties(final EChange change) {
     InsertEReference<Root, NonRoot> relevantChange = (InsertEReference<Root, NonRoot>)change;
-    // Check affected object
     if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    // Check feature
     if (!relevantChange.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
     	return false;
     }
@@ -53,10 +51,12 @@ class InsertedNonContainmentEReferenceReaction extends AbstractReactionRealizati
     if (!(change instanceof InsertEReference)) {
     	return false;
     }
+    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
     if (!checkChangeProperties(change)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
     return true;
   }
   
