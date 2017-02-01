@@ -293,7 +293,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
             public Void call() throws Exception {
                 try {
                     resource.delete(null);
-                    ModelRepositoryImpl.this.modelInstances.remove(modelInstance);
+                    ModelRepositoryImpl.this.modelInstances.remove(vuri);
                 } catch (final IOException e) {
                     logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
                 }
