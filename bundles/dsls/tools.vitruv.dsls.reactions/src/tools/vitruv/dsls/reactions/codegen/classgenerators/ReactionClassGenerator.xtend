@@ -14,7 +14,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelChange
 import org.eclipse.xtend2.lib.StringConcatenationClient
-import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
@@ -25,7 +24,8 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionPro
 
 class ReactionClassGenerator extends ClassGenerator {
 	protected final Reaction reaction;
-	protected final ChangeTypeRepresentation change;
+	protected final ChangeTypeRepresentation changeTypeRepresentation;
+	protected final AtomicChangeTypeRepresentation relevantAtomicChangeTypeRepresentation;
 	protected final boolean hasPreconditionBlock;
 	private final ClassNameGenerator reactionClassNameGenerator;
 	private final UserExecutionClassGenerator userExecutionClassGenerator;
@@ -38,7 +38,8 @@ class ReactionClassGenerator extends ClassGenerator {
 		}
 		this.reaction = reaction;
 		this.hasPreconditionBlock = reaction.trigger.precondition != null;
-		this.change = reaction.trigger.extractChangeTypeRepresentation();
+		this.changeTypeRepresentation = reaction.trigger.extractChangeTypeRepresentation;
+		this.relevantAtomicChangeTypeRepresentation = changeTypeRepresentation.relevantAtomicChangeTypeRepresentation;
 		this.reactionClassNameGenerator = reaction.reactionClassNameGenerator;
 		this.routinesFacadeClassNameGenerator = reaction.reactionsSegment.routinesFacadeClassNameGenerator;
 		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, reaction, 
@@ -72,7 +73,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		val methodName = "getExpectedChangeType";
 		return getOrGenerateMethod(methodName, typeRef(Class, wildcardExtends(typeRef(EChange)))) [
 			static = true;
-			body = '''return «change.changeType».class;'''
+			body = '''return «changeTypeRepresentation.changeType».class;'''
 		];
 	}
 	
@@ -88,7 +89,7 @@ class ReactionClassGenerator extends ClassGenerator {
 	 */
 	protected def generateMethodExecuteReaction() {
 		val methodName = "executeReaction";
-		val changeParameterList = change.relevantChangeTypeRepresentation.generatePropertiesParameterList;
+		val changeParameterList = relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList;
 		val callRoutineMethod = userExecutionClassGenerator.generateMethodCallRoutine(reaction.callRoutine, 
 			changeParameterList, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
@@ -96,10 +97,9 @@ class ReactionClassGenerator extends ClassGenerator {
 			val changeParameter = generateUntypedChangeParameter();
 			parameters += changeParameter;
 			val typedChangeName = "typedChange";
-			val relevantChange = change.relevantChangeTypeRepresentation;
 			body = '''
-				«change.getRelevantChangeAssignmentCode(changeParameter.name, true, typedChangeName)»
-				«relevantChange.generatePropertiesAssignmentCode(typedChangeName)»
+				«changeTypeRepresentation.getRelevantChangeAssignmentCode(changeParameter.name, typedChangeName)»
+				«relevantAtomicChangeTypeRepresentation.generatePropertiesAssignmentCode(typedChangeName)»
 				«routinesFacadeClassNameGenerator.qualifiedName» routinesFacade = new «routinesFacadeClassNameGenerator.qualifiedName»(this.executionState, this);
 				«userExecutionClassGenerator.qualifiedClassName» userExecution = new «userExecutionClassGenerator.qualifiedClassName»(this.executionState, this);
 				userExecution.«callRoutineMethod.simpleName»(«
@@ -120,23 +120,24 @@ class ReactionClassGenerator extends ClassGenerator {
 			visibility = JvmVisibility.PUBLIC;
 			parameters += changeParameter
 			val typedChangeVariableName = "typedChange";
-			val relevantChange = change.relevantChangeTypeRepresentation;
 			body = '''
-				if (!(«changeParameter.name» instanceof «change.changeType»)) {
+				if (!(«changeParameter.name» instanceof «changeTypeRepresentation.changeType»)) {
 					return false;
 				}
+				getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
 				if (!«changePropertiesCheckMethod.simpleName»(«changeParameter.name»)) {
 					return false;
 				}
+				getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
 				«IF hasPreconditionBlock»
-					«change.getRelevantChangeAssignmentCode(changeParameter.name, true, typedChangeVariableName)»
-					«relevantChange.generatePropertiesAssignmentCode(typedChangeVariableName)»
+					«changeTypeRepresentation.getRelevantChangeAssignmentCode(changeParameter.name, typedChangeVariableName)»
+					«relevantAtomicChangeTypeRepresentation.generatePropertiesAssignmentCode(typedChangeVariableName)»
 					if (!«userDefinedPreconditionMethod.simpleName»(«
-						FOR parameter : relevantChange.generatePropertiesParameterList SEPARATOR ", "»«parameter.name»«ENDFOR»)) {
+						FOR parameter : relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList SEPARATOR ", "»«parameter.name»«ENDFOR»)) {
 						return false;
 					}
 				«ENDIF»
-				getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+				getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
 				return true;
 				'''
 		];
@@ -146,7 +147,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		val methodName = USER_DEFINED_TRIGGER_PRECONDITION_METHOD_NAME;
 		return preconditionBlock.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
-			parameters += generateAccessibleElementsParameters(change.relevantChangeTypeRepresentation.generatePropertiesParameterList);
+			parameters += generateAccessibleElementsParameters(relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList);
 			body = preconditionBlock.code;
 		];		
 	}
@@ -172,21 +173,19 @@ class ReactionClassGenerator extends ClassGenerator {
 			parameters += changeParameter;
 			val relevantChangeParamterName = "relevantChange";
 			body = '''
-				«change.getRelevantChangeAssignmentCode(changeParameter.name, true, relevantChangeParamterName)»
-				«generateElementChecks(change.relevantChangeTypeRepresentation, relevantChangeParamterName)»
+				«changeTypeRepresentation.getRelevantChangeAssignmentCode(changeParameter.name, relevantChangeParamterName)»
+				«generateElementChecks(relevantAtomicChangeTypeRepresentation, relevantChangeParamterName)»
 				return true;
 			'''
 		];
 	}
 	
 	private def StringConcatenationClient generateElementChecks(AtomicChangeTypeRepresentation change, String changeParameterName) '''
-		«generateExistenceCheck(change, changeParameterName)»
 		«generateUsageCheck(change, changeParameterName)»
 	'''
 	
 	private def StringConcatenationClient generateUsageCheck(AtomicChangeTypeRepresentation change, String changeParameterName) '''
 		«IF FeatureEChange.isAssignableFrom(change.changeType)»
-			// Check affected object
 			if (!(«changeParameterName».getAffectedEObject() instanceof «change.affectedElementClass»)) {
 				return false;
 			}
@@ -209,14 +208,6 @@ class ReactionClassGenerator extends ClassGenerator {
 		«IF EObjectAddedEChange.isAssignableFrom(change.changeType)»
 			if («IF ReplaceSingleValuedFeatureEChange.isAssignableFrom(change.changeType)»«changeParameterName».isToNonDefaultValue() && «
 				ENDIF»!(«changeParameterName».getNewValue() instanceof «change.affectedValueClass»)) {
-				return false;
-			}
-		«ENDIF»
-	'''
-	
-	private def StringConcatenationClient generateExistenceCheck(AtomicChangeTypeRepresentation change, String changeParameterName) '''
-		«IF EObjectExistenceEChange.isAssignableFrom(change.changeType)»
-			if (!(«changeParameterName».getAffectedEObject() instanceof «change.affectedElementClass»)) {
 				return false;
 			}
 		«ENDIF»

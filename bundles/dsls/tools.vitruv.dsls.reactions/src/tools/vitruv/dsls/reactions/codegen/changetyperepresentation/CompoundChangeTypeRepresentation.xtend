@@ -33,17 +33,16 @@ public class CompoundChangeTypeRepresentation extends ChangeTypeRepresentation {
 		return usageChange;
 	}
 
-	override getRelevantChangeTypeRepresentation() {
+	override getRelevantAtomicChangeTypeRepresentation() {
 		return usageChange;
 	}
 
-	public override StringConcatenationClient getRelevantChangeAssignmentCode(String originalChangeVariableName,
-		boolean isOriginalVariableUntyped, String typedChangeVariableName) {
-		val typedRelevantChangeString = relevantChangeTypeRepresentation.
-			typedChangeTypeRepresentation;
+	public override StringConcatenationClient getRelevantChangeAssignmentCode(String untypedChangeVariableName, 
+		String typedChangeVariableName) {
+		val typedRelevantChangeString = relevantAtomicChangeTypeRepresentation.typedChangeTypeRepresentation;
 		return '''
 			«typedRelevantChangeString» «typedChangeVariableName» = «
-					»(«IF isOriginalVariableUntyped»(«typedChangeTypeRepresentation»)«ENDIF»«originalChangeVariableName»).«
+					»((«typedChangeTypeRepresentation»)«untypedChangeVariableName»).«
 					»«IF CreateAndInsertEObject.isAssignableFrom(changeType)»getInsertChange()«
 					ELSEIF RemoveAndDeleteEObject.isAssignableFrom(changeType)»getRemoveChange()«
 					ELSEIF CreateAndReplaceAndDeleteNonRoot.isAssignableFrom(changeType)»getReplaceChange()«ENDIF»;

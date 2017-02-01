@@ -65,7 +65,7 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 				IF param.isPrimitiveType»«param.getPrimitiveType»«ELSE»«param»«ENDIF»«ENDFOR»'''
 	}
 
-	override getRelevantChangeTypeRepresentation() {
+	override getRelevantAtomicChangeTypeRepresentation() {
 		return this;
 	}
 
@@ -103,12 +103,12 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		'''
 	}
 
-	public override StringConcatenationClient getRelevantChangeAssignmentCode(String originalChangeVariableName,
-		boolean isOriginalVariableUntyped, String typedChangeVariableName) {
-		val typedRelevantChangeString = relevantChangeTypeRepresentation.
+	public override StringConcatenationClient getRelevantChangeAssignmentCode(String untypedChangeVariableName,
+			String typedChangeVariableName) {
+		val typedRelevantChangeString = relevantAtomicChangeTypeRepresentation.
 			typedChangeTypeRepresentation;
 		return '''
-			«typedRelevantChangeString» «typedChangeVariableName» = «IF isOriginalVariableUntyped»(«typedChangeTypeRepresentation»)«ENDIF»«originalChangeVariableName»;
+			«typedRelevantChangeString» «typedChangeVariableName» = («typedChangeTypeRepresentation»)«untypedChangeVariableName»;
 		'''
 	}
 

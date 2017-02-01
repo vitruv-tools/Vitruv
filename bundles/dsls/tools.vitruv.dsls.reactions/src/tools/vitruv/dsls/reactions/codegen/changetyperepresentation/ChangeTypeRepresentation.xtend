@@ -36,15 +36,19 @@ public abstract class ChangeTypeRepresentation {
 
 	/**
 	 * Returns the relevant change type representation that is used by the consistency preservation.
-	 * Is one of the atomic changes if dealing with a compound type representation 
+	 * Is one of the atomic changes if dealing with a compound type representation , or otherwise the change itself
 	 */
-	public def AtomicChangeTypeRepresentation getRelevantChangeTypeRepresentation();
+	public def AtomicChangeTypeRepresentation getRelevantAtomicChangeTypeRepresentation();
 
 	public def StringConcatenationClient getTypedChangeTypeRepresentation() {
 		return '''«changeType»«FOR param : genericTypeParameters BEFORE "<" SEPARATOR ", " AFTER ">"»«
 				IF param.isPrimitiveType»«primitveTypeNamesMap.get(param)»«ELSE»«param»«ENDIF»«ENDFOR»'''
 	}
 
-	public def StringConcatenationClient getRelevantChangeAssignmentCode(String originalChangeVariableName,
-		boolean isOriginalVariableUntyped, String typedChangeVariableName);
+	/**
+	 * Returns code for extracting the relevant atomic change, according to {@link getRelevantAtomicChangeTypRepresentation()},
+	 * from an {@link EChange} given in the variable specified by {@link untypedChangeVariableName} and assigning it to the variable with
+	 * the name {@link typedChangeVariableName}.
+	 */
+	public def StringConcatenationClient getRelevantChangeAssignmentCode(String untypedChangeVariableName, String typedChangeVariableName);
 }
