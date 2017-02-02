@@ -12,24 +12,24 @@ import java.util.Map
  */
 public abstract class ChangeTypeRepresentation {
 	
-	protected static def boolean isPrimitiveType(Class<?> type) {
-		return primitveTypeNamesMap.containsKey(type.name);
-	}
+	protected static def Class<?> mapToNonPrimitiveType(Class<?> potentiallyPrimitiveType) {
+		return 
+			if (primitveToWrapperTypesMap.containsKey(potentiallyPrimitiveType)) 
+				primitveToWrapperTypesMap.get(potentiallyPrimitiveType) 
+			else 
+				potentiallyPrimitiveType;
+	}	
 
-	protected static def String getPrimitiveType(Class<?> type) {
-		return primitveTypeNamesMap.get(type.name);
-	}
-	
-	private static Map<String, String> primitveTypeNamesMap = #{
-		"short" -> Short.name,
-		"int" -> Integer.name,
-		"long" -> Long.name,
-		"double" -> Double.name,
-		"float" -> Float.name,
-		"boolean" -> Boolean.name,
-		"char" -> Character.name,
-		"byte" -> Byte.name,
-		"void" -> Void.name
+	private static Map<Class<?>, Class<?>> primitveToWrapperTypesMap = #{
+		short -> Short,
+		int-> Integer,
+		long -> Long,
+		double -> Double,
+		float -> Float,
+		boolean -> Boolean,
+		char -> Character,
+		byte -> Byte,
+		void -> Void
 	}
 
 	public def Class<?> getChangeType();
@@ -47,8 +47,7 @@ public abstract class ChangeTypeRepresentation {
 	public def AtomicChangeTypeRepresentation getRelevantAtomicChangeTypeRepresentation();
 
 	public def StringConcatenationClient getTypedChangeTypeRepresentation() {
-		return '''«changeType»«FOR param : genericTypeParameters BEFORE "<" SEPARATOR ", " AFTER ">"»«
-				IF param.isPrimitiveType»«primitveTypeNamesMap.get(param)»«ELSE»«param»«ENDIF»«ENDFOR»'''
+		return '''«changeType»«FOR param : genericTypeParameters BEFORE "<" SEPARATOR ", " AFTER ">"»«param»«ENDFOR»'''
 	}
 
 	/**

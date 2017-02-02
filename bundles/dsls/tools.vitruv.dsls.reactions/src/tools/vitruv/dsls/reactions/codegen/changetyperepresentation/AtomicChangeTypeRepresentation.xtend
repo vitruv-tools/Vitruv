@@ -21,8 +21,8 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 	protected new(Class<?> changeType, Class<?> affectedElementClass, Class<?> affectedValueClass, boolean hasOldValue,
 		boolean hasNewValue, EStructuralFeature affectedFeature) {
 		this.changeType = changeType;
-		this.affectedElementClass = affectedElementClass;
-		this.affectedValueClass = affectedValueClass;
+		this.affectedElementClass = affectedElementClass.mapToNonPrimitiveType;
+		this.affectedValueClass = affectedValueClass.mapToNonPrimitiveType;
 		this.affectedFeature = affectedFeature;
 		this.hasOldValue = hasOldValue;
 		this.hasNewValue = hasNewValue;
@@ -66,11 +66,6 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 
 	public override StringConcatenationClient getUntypedChangeTypeRepresentation() {
 		return '''«changeType»'''
-	}
-
-	public override StringConcatenationClient getTypedChangeTypeRepresentation() {
-		return '''«changeType»«FOR param : genericTypeParameters BEFORE "<" SEPARATOR ", " AFTER ">"»«
-				IF param.isPrimitiveType»«param.getPrimitiveType»«ELSE»«param»«ENDIF»«ENDFOR»'''
 	}
 
 	override getRelevantAtomicChangeTypeRepresentation() {
