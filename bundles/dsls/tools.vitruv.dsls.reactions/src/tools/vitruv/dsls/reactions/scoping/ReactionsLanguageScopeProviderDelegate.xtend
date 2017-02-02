@@ -17,9 +17,10 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
+import org.eclipse.emf.ecore.EAttribute
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
 
 class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 	override getScope(EObject context, EReference reference) {
@@ -51,14 +52,20 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
 		if (featureReference?.metaclass != null) {
 			val changeType = featureReference.eContainer;
-			val filterFunction = if (changeType instanceof ElementInsertionChangeType || changeType instanceof ElementRemovalChangeType) {
-				[EStructuralFeature feat | feat.many];
-			} else if (changeType instanceof ElementReplacementChangeType) {
+			val multiplicityFilterFunction = if (changeType instanceof ElementReplacementChangeType) {
 				[EStructuralFeature feat | !feat.many];
 			} else {
 				[EStructuralFeature feat | true];
 			}
-			createScope(IScope.NULLSCOPE, featureReference.metaclass.EAllStructuralFeatures.filter(filterFunction).iterator, [
+			val typeFilterFunction = if (changeType instanceof ModelAttributeChange) {
+				[EStructuralFeature feat | feat instanceof EAttribute];
+			} else if (changeType instanceof ElementChangeType) {
+				[EStructuralFeature feat | feat instanceof EReference];
+			} else {
+				throw new IllegalStateException();
+			}
+			createScope(IScope.NULLSCOPE, featureReference.metaclass.EAllStructuralFeatures.
+				filter(multiplicityFilterFunction).filter(typeFilterFunction).iterator, [
 				EObjectDescription.create(it.name, it)
 			])
 		} else {
