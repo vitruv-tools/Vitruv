@@ -13,6 +13,12 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     super(reactionExecutionState, calledBy);
   }
   
+  public void replaceSingleValuedPrimitiveTypeEAttribute(final Root rootElement, final Integer value) {
+    mir.routines.simpleChangesTests.ReplaceSingleValuedPrimitiveTypeEAttributeRoutine effect = new mir.routines.simpleChangesTests.ReplaceSingleValuedPrimitiveTypeEAttributeRoutine(this.executionState, calledBy,
+    	rootElement, value);
+    effect.applyRoutine();
+  }
+  
   public void replaceSingleValuedEAttribute(final Root rootElement, final Integer value) {
     mir.routines.simpleChangesTests.ReplaceSingleValuedEAttributeRoutine effect = new mir.routines.simpleChangesTests.ReplaceSingleValuedEAttributeRoutine(this.executionState, calledBy,
     	rootElement, value);

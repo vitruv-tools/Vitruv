@@ -198,6 +198,11 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		root.singleValuedEAttribute = value;
 		saveAndSynchronizeChanges(root);
 	}
+	
+	private def void setSingleValuedPrimitiveTypeEAttribute(Root root, Integer value) {
+		root.singleValuedPrimitiveTypeEAttribute = value;
+		saveAndSynchronizeChanges(root);
+	}
 
 	// TODO HK (Change MM) Unset does not produce any change event at the moment
 	//@Test
@@ -229,6 +234,17 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		setSingleValuedEAttribute(rootElement, -1);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.UpdateSingleValuedEAttribute);
+		compareMonitor.assertEqualWithStatic();
+		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
+		assertModelsEqual();
+	}
+	
+	@Test
+	public def void testUpdateSingleValuedPrimitiveTypeEAttribute() {
+		SimpleChangesTestsExecutionMonitor.reinitialize();
+		setSingleValuedPrimitiveTypeEAttribute(rootElement, -1);
+		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
+		compareMonitor.set(ChangeType.UpdateSingleValuedPrimitveTypeEAttribute);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();

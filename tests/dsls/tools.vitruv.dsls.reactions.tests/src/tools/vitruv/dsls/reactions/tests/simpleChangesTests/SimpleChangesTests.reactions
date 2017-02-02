@@ -10,6 +10,28 @@ execute actions in minimal
 /*
  * UpdateSingleValuedEAttribute
  */
+reaction ReplacedSingleValuedPrimitiveTypeEAttribute {
+	after attribute replaced at minimal::Root[singleValuedPrimitiveTypeEAttribute]
+	call replaceSingleValuedPrimitiveTypeEAttribute(affectedEObject, newValue)
+}
+
+routine replaceSingleValuedPrimitiveTypeEAttribute(minimal::Root rootElement, Int value) {
+	match {
+		val targetElement = retrieve minimal::Root corresponding to rootElement
+	}
+	action {
+		update targetElement {
+			targetElement.singleValuedPrimitiveTypeEAttribute = value;
+		}
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedPrimitveTypeEAttribute);
+		}
+	} 
+}
+
+/*
+ * UpdateSingleValuedEAttribute
+ */
 reaction ReplacedSingleValuedEAttribute {
 	after attribute replaced at minimal::Root[singleValuedEAttribute]
 	call replaceSingleValuedEAttribute(affectedEObject, newValue)
