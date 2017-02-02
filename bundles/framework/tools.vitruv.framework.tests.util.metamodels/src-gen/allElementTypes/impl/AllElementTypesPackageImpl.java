@@ -135,7 +135,7 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getRoot_SingleValuedUnsettableEAttribute() {
+	public EAttribute getRoot_SingleValuedPrimitiveTypeEAttribute() {
 		return (EAttribute)rootEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -144,8 +144,8 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoot_SingleValuedNonContainmentEReference() {
-		return (EReference)rootEClass.getEStructuralFeatures().get(2);
+	public EAttribute getRoot_SingleValuedUnsettableEAttribute() {
+		return (EAttribute)rootEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoot_SingleValuedContainmentEReference() {
+	public EReference getRoot_SingleValuedNonContainmentEReference() {
 		return (EReference)rootEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -162,8 +162,8 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getRoot_MultiValuedEAttribute() {
-		return (EAttribute)rootEClass.getEStructuralFeatures().get(4);
+	public EReference getRoot_SingleValuedContainmentEReference() {
+		return (EReference)rootEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getRoot_MultiValuedUnsettableEAttribute() {
+	public EAttribute getRoot_MultiValuedEAttribute() {
 		return (EAttribute)rootEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -180,8 +180,8 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoot_MultiValuedNonContainmentEReference() {
-		return (EReference)rootEClass.getEStructuralFeatures().get(6);
+	public EAttribute getRoot_MultiValuedUnsettableEAttribute() {
+		return (EAttribute)rootEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoot_MultiValuedContainmentEReference() {
+	public EReference getRoot_MultiValuedNonContainmentEReference() {
 		return (EReference)rootEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -198,7 +198,7 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoot_NonRootObjectContainerHelper() {
+	public EReference getRoot_MultiValuedContainmentEReference() {
 		return (EReference)rootEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -207,8 +207,17 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoot_RecursiveRoot() {
+	public EReference getRoot_NonRootObjectContainerHelper() {
 		return (EReference)rootEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRoot_RecursiveRoot() {
+		return (EReference)rootEClass.getEStructuralFeatures().get(10);
 	}
 
 	/**
@@ -286,6 +295,7 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 		// Create classes and their features
 		rootEClass = createEClass(ROOT);
 		createEAttribute(rootEClass, ROOT__SINGLE_VALUED_EATTRIBUTE);
+		createEAttribute(rootEClass, ROOT__SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE);
 		createEAttribute(rootEClass, ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE);
 		createEReference(rootEClass, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE);
 		createEReference(rootEClass, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE);
@@ -340,6 +350,7 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 		// Initialize classes, features, and operations; add parameters
 		initEClass(rootEClass, Root.class, "Root", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRoot_SingleValuedEAttribute(), ecorePackage.getEIntegerObject(), "singleValuedEAttribute", "0", 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRoot_SingleValuedPrimitiveTypeEAttribute(), ecorePackage.getEInt(), "singleValuedPrimitiveTypeEAttribute", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRoot_SingleValuedUnsettableEAttribute(), ecorePackage.getEIntegerObject(), "singleValuedUnsettableEAttribute", "0", 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_SingleValuedNonContainmentEReference(), this.getNonRoot(), null, "singleValuedNonContainmentEReference", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_SingleValuedContainmentEReference(), this.getNonRoot(), null, "singleValuedContainmentEReference", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

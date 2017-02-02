@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedEAttribute <em>Single Valued EAttribute</em>}</li>
+ *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedPrimitiveTypeEAttribute <em>Single Valued Primitive Type EAttribute</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedNonContainmentEReference <em>Single Valued Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedContainmentEReference <em>Single Valued Containment EReference</em>}</li>
@@ -64,6 +65,26 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * @ordered
 	 */
 	protected Integer singleValuedEAttribute = SINGLE_VALUED_EATTRIBUTE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getSingleValuedPrimitiveTypeEAttribute() <em>Single Valued Primitive Type EAttribute</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSingleValuedPrimitiveTypeEAttribute()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getSingleValuedPrimitiveTypeEAttribute() <em>Single Valued Primitive Type EAttribute</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSingleValuedPrimitiveTypeEAttribute()
+	 * @generated
+	 * @ordered
+	 */
+	protected int singleValuedPrimitiveTypeEAttribute = SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getSingleValuedUnsettableEAttribute() <em>Single Valued Unsettable EAttribute</em>}' attribute.
@@ -212,6 +233,27 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		singleValuedEAttribute = newSingleValuedEAttribute;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE, oldSingleValuedEAttribute, singleValuedEAttribute));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getSingleValuedPrimitiveTypeEAttribute() {
+		return singleValuedPrimitiveTypeEAttribute;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setSingleValuedPrimitiveTypeEAttribute(int newSingleValuedPrimitiveTypeEAttribute) {
+		int oldSingleValuedPrimitiveTypeEAttribute = singleValuedPrimitiveTypeEAttribute;
+		singleValuedPrimitiveTypeEAttribute = newSingleValuedPrimitiveTypeEAttribute;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE, oldSingleValuedPrimitiveTypeEAttribute, singleValuedPrimitiveTypeEAttribute));
 	}
 
 	/**
@@ -523,6 +565,8 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		switch (featureID) {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE:
 				return getSingleValuedEAttribute();
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE:
+				return getSingleValuedPrimitiveTypeEAttribute();
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE:
 				return getSingleValuedUnsettableEAttribute();
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
@@ -557,6 +601,9 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		switch (featureID) {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE:
 				setSingleValuedEAttribute((Integer)newValue);
+				return;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE:
+				setSingleValuedPrimitiveTypeEAttribute((Integer)newValue);
 				return;
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE:
 				setSingleValuedUnsettableEAttribute((Integer)newValue);
@@ -604,6 +651,9 @@ public class RootImpl extends IdentifiedImpl implements Root {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE:
 				setSingleValuedEAttribute(SINGLE_VALUED_EATTRIBUTE_EDEFAULT);
 				return;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE:
+				setSingleValuedPrimitiveTypeEAttribute(SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE_EDEFAULT);
+				return;
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE:
 				unsetSingleValuedUnsettableEAttribute();
 				return;
@@ -645,6 +695,8 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		switch (featureID) {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_EATTRIBUTE:
 				return SINGLE_VALUED_EATTRIBUTE_EDEFAULT == null ? singleValuedEAttribute != null : !SINGLE_VALUED_EATTRIBUTE_EDEFAULT.equals(singleValuedEAttribute);
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE:
+				return singleValuedPrimitiveTypeEAttribute != SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE_EDEFAULT;
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE:
 				return isSetSingleValuedUnsettableEAttribute();
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
@@ -679,6 +731,8 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (singleValuedEAttribute: ");
 		result.append(singleValuedEAttribute);
+		result.append(", singleValuedPrimitiveTypeEAttribute: ");
+		result.append(singleValuedPrimitiveTypeEAttribute);
 		result.append(", singleValuedUnsettableEAttribute: ");
 		if (singleValuedUnsettableEAttributeESet) result.append(singleValuedUnsettableEAttribute); else result.append("<unset>");
 		result.append(", multiValuedEAttribute: ");

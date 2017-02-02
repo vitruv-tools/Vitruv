@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link allElementTypes.Root#getSingleValuedEAttribute <em>Single Valued EAttribute</em>}</li>
+ *   <li>{@link allElementTypes.Root#getSingleValuedPrimitiveTypeEAttribute <em>Single Valued Primitive Type EAttribute</em>}</li>
  *   <li>{@link allElementTypes.Root#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.Root#getSingleValuedNonContainmentEReference <em>Single Valued Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getSingleValuedContainmentEReference <em>Single Valued Containment EReference</em>}</li>
@@ -56,6 +57,32 @@ public interface Root extends Identified {
 	 * @generated
 	 */
 	void setSingleValuedEAttribute(Integer value);
+
+	/**
+	 * Returns the value of the '<em><b>Single Valued Primitive Type EAttribute</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Single Valued Primitive Type EAttribute</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Single Valued Primitive Type EAttribute</em>' attribute.
+	 * @see #setSingleValuedPrimitiveTypeEAttribute(int)
+	 * @see allElementTypes.AllElementTypesPackage#getRoot_SingleValuedPrimitiveTypeEAttribute()
+	 * @model
+	 * @generated
+	 */
+	int getSingleValuedPrimitiveTypeEAttribute();
+
+	/**
+	 * Sets the value of the '{@link allElementTypes.Root#getSingleValuedPrimitiveTypeEAttribute <em>Single Valued Primitive Type EAttribute</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Single Valued Primitive Type EAttribute</em>' attribute.
+	 * @see #getSingleValuedPrimitiveTypeEAttribute()
+	 * @generated
+	 */
+	void setSingleValuedPrimitiveTypeEAttribute(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Single Valued Unsettable EAttribute</b></em>' attribute.

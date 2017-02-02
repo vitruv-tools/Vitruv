@@ -6,6 +6,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedEAttribute"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
         defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedPrimitiveTypeEAttribute"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedUnsettableEAttribute"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
         defaultValueLiteral="0" unsettable="true"/>
