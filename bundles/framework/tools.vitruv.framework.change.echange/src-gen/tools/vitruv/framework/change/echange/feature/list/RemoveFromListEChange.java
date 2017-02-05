@@ -14,7 +14,7 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.list.ListPackage#getRemoveFromListEChange()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.list.EObj" FBounds="tools.vitruv.framework.change.echange.feature.list.EFeat" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface RemoveFromListEChange<A extends EObject, F extends EStructuralFeature, T extends Object> extends UpdateSingleListEntryEChange<A, F>, SubtractiveEChange<T> {

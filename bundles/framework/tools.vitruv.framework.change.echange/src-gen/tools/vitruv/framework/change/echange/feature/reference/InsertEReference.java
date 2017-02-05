@@ -14,7 +14,7 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.reference.ReferencePackage#getInsertEReference()
- * @model
+ * @model ABounds="tools.vitruv.framework.change.echange.feature.reference.EObj" TBounds="tools.vitruv.framework.change.echange.feature.reference.EObj"
  * @generated
  */
 public interface InsertEReference<A extends EObject, T extends EObject> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {

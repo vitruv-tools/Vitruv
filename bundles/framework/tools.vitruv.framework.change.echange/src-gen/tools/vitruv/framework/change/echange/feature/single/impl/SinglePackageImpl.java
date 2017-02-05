@@ -3,9 +3,12 @@
 package tools.vitruv.framework.change.echange.feature.single.impl;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -32,6 +35,20 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 	 * @generated
 	 */
 	private EClass replaceSingleValuedFeatureEChangeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eObjEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eFeatEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -129,6 +146,24 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getEObj() {
+		return eObjEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEFeat() {
+		return eFeatEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public SingleFactory getSingleFactory() {
 		return (SingleFactory)getEFactoryInstance();
 	}
@@ -155,6 +190,10 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		replaceSingleValuedFeatureEChangeEClass = createEClass(REPLACE_SINGLE_VALUED_FEATURE_ECHANGE);
 		createEOperation(replaceSingleValuedFeatureEChangeEClass, REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_FROM_NON_DEFAULT_VALUE);
 		createEOperation(replaceSingleValuedFeatureEChangeEClass, REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_TO_NON_DEFAULT_VALUE);
+
+		// Create data types
+		eObjEDataType = createEDataType(EOBJ);
+		eFeatEDataType = createEDataType(EFEAT);
 	}
 
 	/**
@@ -191,9 +230,9 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		ETypeParameter replaceSingleValuedFeatureEChangeEClass_T = addETypeParameter(replaceSingleValuedFeatureEChangeEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
+		EGenericType g1 = createEGenericType(this.getEObj());
 		replaceSingleValuedFeatureEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
+		g1 = createEGenericType(this.getEFeat());
 		replaceSingleValuedFeatureEChangeEClass_F.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		replaceSingleValuedFeatureEChangeEClass_T.getEBounds().add(g1);
@@ -220,6 +259,10 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		initEOperation(getReplaceSingleValuedFeatureEChange__IsFromNonDefaultValue(), theEcorePackage.getEBoolean(), "isFromNonDefaultValue", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getReplaceSingleValuedFeatureEChange__IsToNonDefaultValue(), theEcorePackage.getEBoolean(), "isToNonDefaultValue", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		// Initialize data types
+		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(eFeatEDataType, EStructuralFeature.class, "EFeat", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

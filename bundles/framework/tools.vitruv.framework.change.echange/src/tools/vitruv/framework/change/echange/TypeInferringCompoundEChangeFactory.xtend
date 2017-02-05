@@ -28,25 +28,25 @@ class TypeInferringCompoundEChangeFactory {
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A,T> createCreateAndInsertNonRootChange(A affectedEObject, EReference reference, T newValue, int index) {
+	def static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A,T> createCreateAndInsertNonRootChange(A affectedEObject, EReference reference, T newValue, int index, boolean unresolve) {
 		val c = CompoundFactory.eINSTANCE.createCreateAndInsertNonRoot();
 		c.createChange = createCreateEObjectChange(newValue);
-		c.insertChange = createInsertReferenceChange(affectedEObject, reference, newValue, index);
+		c.insertChange = createInsertReferenceChange(affectedEObject, reference, newValue, index, unresolve);
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A,T> createRemoveAndDeleteNonRootChange(A affectedEObject, EReference reference, T oldValue, int index) {
+	def static <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A,T> createRemoveAndDeleteNonRootChange(A affectedEObject, EReference reference, T oldValue, int index, boolean unresolve) {
 		val c = CompoundFactory.eINSTANCE.createRemoveAndDeleteNonRoot();
 		c.deleteChange = createDeleteEObjectChange(oldValue);
-		c.removeChange = createRemoveReferenceChange(affectedEObject, reference, oldValue, index);
+		c.removeChange = createRemoveReferenceChange(affectedEObject, reference, oldValue, index, unresolve);
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A,T> createCreateAndReplaceAndDeleteNonRootChange(A affectedEObject, EReference reference, T oldValue, T newValue) {
+	def static <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A,T> createCreateAndReplaceAndDeleteNonRootChange(A affectedEObject, EReference reference, T oldValue, T newValue, boolean unresolve) {
 		val c = CompoundFactory.eINSTANCE.createCreateAndReplaceAndDeleteNonRoot();
 		c.deleteChange = createDeleteEObjectChange(oldValue);
 		c.createChange = createCreateEObjectChange(newValue);
-		c.replaceChange = createReplaceSingleReferenceChange(affectedEObject, reference, oldValue, newValue);
+		c.replaceChange = createReplaceSingleReferenceChange(affectedEObject, reference, oldValue, newValue, unresolve);
 		return c
 	}
 	

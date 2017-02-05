@@ -30,7 +30,7 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getReplaceInEList()
- * @model
+ * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" FBounds="tools.vitruv.framework.change.echange.compound.EFeat" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {

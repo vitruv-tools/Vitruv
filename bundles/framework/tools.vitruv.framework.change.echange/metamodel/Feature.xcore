@@ -6,13 +6,16 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.framework.change.echange.AtomicEChange
 
-abstract class FeatureEChange<A extends EObject , F extends EStructuralFeature> extends AtomicEChange {
+type EObj wraps EObject
+type EFeat wraps EStructuralFeature
+
+abstract class FeatureEChange<A extends EObj , F extends EFeat> extends AtomicEChange {
 	refers F[1] affectedFeature
 	refers A[1] affectedEObject
 }
 
-abstract class UpdateMultiValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange<A, F> {
+abstract class UpdateMultiValuedFeatureEChange<A extends EObj , F extends EFeat> extends FeatureEChange<A, F> {
 }
 
-abstract class UpdateSingleValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange<A, F> {
+abstract class UpdateSingleValuedFeatureEChange<A extends EObj , F extends EFeat> extends FeatureEChange<A, F> {
 }

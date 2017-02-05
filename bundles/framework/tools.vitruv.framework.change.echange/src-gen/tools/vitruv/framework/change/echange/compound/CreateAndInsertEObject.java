@@ -25,7 +25,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getCreateAndInsertEObject()
- * @model abstract="true"
+ * @model abstract="true" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface CreateAndInsertEObject<T extends EObject, C extends EObjectAddedEChange<T>> extends CompoundEChange {

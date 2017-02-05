@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getUpdateSingleValuedFeatureEChange()
- * @model abstract="true"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.EObj" FBounds="tools.vitruv.framework.change.echange.feature.EFeat"
  * @generated
  */
 public interface UpdateSingleValuedFeatureEChange<A extends EObject, F extends EStructuralFeature> extends FeatureEChange<A, F> {

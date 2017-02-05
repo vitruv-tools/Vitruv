@@ -13,7 +13,7 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
  *
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getRemoveAndDeleteNonRoot()
- * @model
+ * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface RemoveAndDeleteNonRoot<A extends EObject, T extends EObject> extends RemoveAndDeleteEObject<T, RemoveEReference<A, T>> {

@@ -21,7 +21,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange()
- * @model abstract="true"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.EObj" FBounds="tools.vitruv.framework.change.echange.feature.EFeat"
  * @generated
  */
 public interface FeatureEChange<A extends EObject, F extends EStructuralFeature> extends AtomicEChange {
@@ -36,7 +36,7 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 * @return the value of the '<em>Affected Feature</em>' reference.
 	 * @see #setAffectedFeature(EStructuralFeature)
 	 * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange_AffectedFeature()
-	 * @model required="true"
+	 * @model kind="reference" required="true"
 	 * @generated
 	 */
 	F getAffectedFeature();
@@ -62,7 +62,7 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 * @return the value of the '<em>Affected EObject</em>' reference.
 	 * @see #setAffectedEObject(EObject)
 	 * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange_AffectedEObject()
-	 * @model required="true"
+	 * @model kind="reference" required="true"
 	 * @generated
 	 */
 	A getAffectedEObject();

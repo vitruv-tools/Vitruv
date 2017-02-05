@@ -13,7 +13,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.reference.ReferencePackage#getSubtractiveReferenceEChange()
- * @model abstract="true"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.reference.EObj" TBounds="tools.vitruv.framework.change.echange.feature.reference.EObj"
  * @generated
  */
 public interface SubtractiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectSubtractedEChange<T>, UpdateReferenceEChange<A> {

@@ -2,7 +2,11 @@
  */
 package tools.vitruv.framework.change.echange.impl;
 
+import org.eclipse.emf.common.command.Command;
+
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -10,6 +14,8 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.AtomicEChange;
@@ -52,6 +58,20 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * @generated
 	 */
 	private EClass subtractiveEChangeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType commandEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType resourceSetEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -131,6 +151,60 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getEChange_Resolved() {
+		return (EAttribute)eChangeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getEChange__Resolve__ResourceSet() {
+		return eChangeEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getEChange__GetApplyCommand() {
+		return eChangeEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getEChange__Apply() {
+		return eChangeEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getEChange__GetRevertCommand() {
+		return eChangeEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getEChange__Revert() {
+		return eChangeEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getAtomicEChange() {
 		return atomicEChangeEClass;
 	}
@@ -176,6 +250,24 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getCommand() {
+		return commandEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getResourceSet() {
+		return resourceSetEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EChangeFactory getEChangeFactory() {
 		return (EChangeFactory)getEFactoryInstance();
 	}
@@ -200,6 +292,12 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		// Create classes and their features
 		eChangeEClass = createEClass(ECHANGE);
+		createEAttribute(eChangeEClass, ECHANGE__RESOLVED);
+		createEOperation(eChangeEClass, ECHANGE___RESOLVE__RESOURCESET);
+		createEOperation(eChangeEClass, ECHANGE___GET_APPLY_COMMAND);
+		createEOperation(eChangeEClass, ECHANGE___APPLY);
+		createEOperation(eChangeEClass, ECHANGE___GET_REVERT_COMMAND);
+		createEOperation(eChangeEClass, ECHANGE___REVERT);
 
 		atomicEChangeEClass = createEClass(ATOMIC_ECHANGE);
 
@@ -208,6 +306,10 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		subtractiveEChangeEClass = createEClass(SUBTRACTIVE_ECHANGE);
 		createEOperation(subtractiveEChangeEClass, SUBTRACTIVE_ECHANGE___GET_OLD_VALUE);
+
+		// Create data types
+		commandEDataType = createEDataType(COMMAND);
+		resourceSetEDataType = createEDataType(RESOURCE_SET);
 	}
 
 	/**
@@ -253,12 +355,24 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEChange_Resolved(), theEcorePackage.getEBoolean(), "resolved", null, 0, 1, EChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		EOperation op = initEOperation(getEChange__Resolve__ResourceSet(), this.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getEChange__GetApplyCommand(), this.getCommand(), "getApplyCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getEChange__Apply(), null, "apply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getEChange__GetRevertCommand(), this.getCommand(), "getRevertCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getEChange__Revert(), null, "revert", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(atomicEChangeEClass, AtomicEChange.class, "AtomicEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(additiveEChangeEClass, AdditiveEChange.class, "AdditiveEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		EOperation op = initEOperation(getAdditiveEChange__GetNewValue(), null, "getNewValue", 1, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getAdditiveEChange__GetNewValue(), null, "getNewValue", 1, 1, !IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(additiveEChangeEClass_T);
 		initEOperation(op, g1);
 
@@ -267,6 +381,10 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		op = initEOperation(getSubtractiveEChange__GetOldValue(), null, "getOldValue", 1, 1, !IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(subtractiveEChangeEClass_T);
 		initEOperation(op, g1);
+
+		// Initialize data types
+		initEDataType(commandEDataType, Command.class, "Command", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
