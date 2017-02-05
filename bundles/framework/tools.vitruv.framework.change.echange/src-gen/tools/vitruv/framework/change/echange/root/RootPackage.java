@@ -4,6 +4,7 @@ package tools.vitruv.framework.change.echange.root;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
@@ -69,6 +70,15 @@ public interface RootPackage extends EPackage {
 	int ROOT_ECHANGE = 0;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE__RESOLVED = EChangePackage.ATOMIC_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -85,6 +95,51 @@ public interface RootPackage extends EPackage {
 	 * @ordered
 	 */
 	int ROOT_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___GET_APPLY_COMMAND = EChangePackage.ATOMIC_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___APPLY = EChangePackage.ATOMIC_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___GET_REVERT_COMMAND = EChangePackage.ATOMIC_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___REVERT = EChangePackage.ATOMIC_ECHANGE___REVERT;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -104,6 +159,15 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 */
 	int INSERT_ROOT_EOBJECT = 1;
+
+	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT__RESOLVED = ROOT_ECHANGE__RESOLVED;
 
 	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -131,6 +195,51 @@ public interface RootPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___RESOLVE__RESOURCESET = ROOT_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___GET_APPLY_COMMAND = ROOT_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___APPLY = ROOT_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___GET_REVERT_COMMAND = ROOT_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___REVERT = ROOT_ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -161,6 +270,15 @@ public interface RootPackage extends EPackage {
 	int REMOVE_ROOT_EOBJECT = 2;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT__RESOLVED = ROOT_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Uri</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -188,6 +306,51 @@ public interface RootPackage extends EPackage {
 	int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET = ROOT_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___GET_APPLY_COMMAND = ROOT_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___APPLY = ROOT_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___GET_REVERT_COMMAND = ROOT_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___REVERT = ROOT_ECHANGE___REVERT;
+
+	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -204,6 +367,16 @@ public interface RootPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_ROOT_EOBJECT_OPERATION_COUNT = ROOT_ECHANGE_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '<em>EObj</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @see tools.vitruv.framework.change.echange.root.impl.RootPackageImpl#getEObj()
+	 * @generated
+	 */
+	int EOBJ = 3;
 
 
 	/**
@@ -246,6 +419,17 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRemoveRootEObject();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EObj</em>'.
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
+	 * @generated
+	 */
+	EDataType getEObj();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -307,6 +491,16 @@ public interface RootPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REMOVE_ROOT_EOBJECT = eINSTANCE.getRemoveRootEObject();
+
+		/**
+		 * The meta object literal for the '<em>EObj</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.EObject
+		 * @see tools.vitruv.framework.change.echange.root.impl.RootPackageImpl#getEObj()
+		 * @generated
+		 */
+		EDataType EOBJ = eINSTANCE.getEObj();
 
 	}
 

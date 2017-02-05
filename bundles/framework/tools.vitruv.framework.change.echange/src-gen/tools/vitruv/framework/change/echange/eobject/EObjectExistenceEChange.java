@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange()
- * @model abstract="true"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.eobject.EObj"
  * @generated
  */
 public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChange {
@@ -34,7 +34,7 @@ public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChang
 	 * @return the value of the '<em>Affected EObject</em>' reference.
 	 * @see #setAffectedEObject(EObject)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange_AffectedEObject()
-	 * @model required="true"
+	 * @model kind="reference" required="true"
 	 * @generated
 	 */
 	A getAffectedEObject();

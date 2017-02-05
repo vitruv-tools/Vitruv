@@ -7,12 +7,14 @@ import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 
+type EObj wraps EObject
+
 abstract class RootEChange extends AtomicEChange {
 	String[1] uri = ""
 }
 
-class InsertRootEObject<T extends EObject> extends RootEChange, EObjectAddedEChange<T> {
+class InsertRootEObject<T extends EObj> extends RootEChange, EObjectAddedEChange<T> {
 }
 
-class RemoveRootEObject<T extends EObject> extends RootEChange, EObjectSubtractedEChange<T> {
+class RemoveRootEObject<T extends EObj> extends RootEChange, EObjectSubtractedEChange<T> {
 }

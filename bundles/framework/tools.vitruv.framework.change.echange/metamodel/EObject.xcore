@@ -7,22 +7,24 @@ import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
 
+type EObj wraps EObject
+
 abstract class EObjectAddedEChange<T extends EObject> extends AdditiveEChange<T> {
 	refers T[1] newValue
 }
 
-abstract class EObjectSubtractedEChange<T extends EObject> extends SubtractiveEChange<T> {
+abstract class EObjectSubtractedEChange<T extends EObj> extends SubtractiveEChange<T> {
 	refers T[1] oldValue
 }
 
-abstract class EObjectExistenceEChange<A extends EObject> extends AtomicEChange {
+abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
 	refers A[1] affectedEObject
 }
 
-class CreateEObject<A extends EObject> extends EObjectExistenceEChange<A> {
+class CreateEObject<A extends EObj> extends EObjectExistenceEChange<A> {
 
 }
 
-class DeleteEObject<A extends EObject> extends EObjectExistenceEChange<A> {
+class DeleteEObject<A extends EObj> extends EObjectExistenceEChange<A> {
 
 }

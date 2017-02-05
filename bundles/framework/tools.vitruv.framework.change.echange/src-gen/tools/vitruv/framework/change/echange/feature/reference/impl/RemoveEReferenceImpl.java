@@ -75,7 +75,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@SuppressWarnings("unchecked")
 	public T getOldValue() {
-		if (oldValue != null && oldValue.eIsProxy()) {
+		if (oldValue != null && ((EObject)oldValue).eIsProxy()) {
 			InternalEObject oldOldValue = (InternalEObject)oldValue;
 			oldValue = (T)eResolveProxy(oldOldValue);
 			if (oldValue != oldOldValue) {

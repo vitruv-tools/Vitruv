@@ -20,7 +20,7 @@ import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureECh
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.list.ListPackage#getUpdateSingleListEntryEChange()
- * @model abstract="true"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.list.EObj" FBounds="tools.vitruv.framework.change.echange.feature.list.EFeat"
  * @generated
  */
 public interface UpdateSingleListEntryEChange<A extends EObject, F extends EStructuralFeature> extends UpdateMultiValuedFeatureEChange<A, F> {

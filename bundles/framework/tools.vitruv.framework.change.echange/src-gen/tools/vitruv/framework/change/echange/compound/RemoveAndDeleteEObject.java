@@ -25,7 +25,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getRemoveAndDeleteEObject()
- * @model abstract="true"
+ * @model abstract="true" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubtractedEChange<T>> extends CompoundEChange {

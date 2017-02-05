@@ -3,7 +3,9 @@
 package tools.vitruv.framework.change.echange.eobject.impl;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
@@ -62,6 +64,13 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * @generated
 	 */
 	private EClass deleteEObjectEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eObjEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -204,6 +213,15 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getEObj() {
+		return eObjEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EobjectFactory getEobjectFactory() {
 		return (EobjectFactory)getEFactoryInstance();
 	}
@@ -239,6 +257,9 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		createEObjectEClass = createEClass(CREATE_EOBJECT);
 
 		deleteEObjectEClass = createEClass(DELETE_EOBJECT);
+
+		// Create data types
+		eObjEDataType = createEDataType(EOBJ);
 	}
 
 	/**
@@ -278,13 +299,13 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		// Set bounds for type parameters
 		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
 		eObjectAddedEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		eObjectSubtractedEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		eObjectExistenceEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		createEObjectEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		deleteEObjectEClass_A.getEBounds().add(g1);
 
 		// Add supertypes to classes
@@ -322,6 +343,9 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(deleteEObjectEClass, DeleteEObject.class, "DeleteEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Initialize data types
+		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

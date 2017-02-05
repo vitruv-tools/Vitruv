@@ -3,10 +3,13 @@
 package tools.vitruv.framework.change.echange.compound.impl;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -139,6 +142,20 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * @generated
 	 */
 	private EClass createAndReplaceAndDeleteNonRootEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eObjEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eFeatEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -544,6 +561,24 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getEObj() {
+		return eObjEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEFeat() {
+		return eFeatEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public CompoundFactory getCompoundFactory() {
 		return (CompoundFactory)getEFactoryInstance();
 	}
@@ -616,6 +651,10 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		createEReference(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT__REPLACE_CHANGE);
 		createEReference(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT__DELETE_CHANGE);
 		createEOperation(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES);
+
+		// Create data types
+		eObjEDataType = createEDataType(EOBJ);
+		eFeatEDataType = createEDataType(EFEAT);
 	}
 
 	/**
@@ -643,9 +682,9 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
 		// Obtain other dependent packages
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		ReferencePackage theReferencePackage = (ReferencePackage)EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI);
 		EobjectPackage theEobjectPackage = (EobjectPackage)EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		AttributePackage theAttributePackage = (AttributePackage)EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI);
 		ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
 		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
@@ -680,21 +719,21 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		ETypeParameter createAndReplaceAndDeleteNonRootEClass_T = addETypeParameter(createAndReplaceAndDeleteNonRootEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
+		EGenericType g1 = createEGenericType(this.getEObj());
 		moveEObjectEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		moveEObjectEClass_B.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		moveEObjectEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		explicitUnsetEFeatureEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		explicitUnsetEFeatureEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		replaceInEListEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
+		g1 = createEGenericType(this.getEFeat());
 		replaceInEListEClass_F.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		replaceInEListEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(theListPackage.getRemoveFromListEChange());
 		EGenericType g2 = createEGenericType(replaceInEListEClass_A);
@@ -744,33 +783,33 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		g2 = createEGenericType(compoundAdditionEClass_T);
 		g1.getETypeArguments().add(g2);
 		compoundAdditionEClass_S.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		createAndInsertEObjectEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(theEobjectPackage.getEObjectAddedEChange());
 		g2 = createEGenericType(createAndInsertEObjectEClass_T);
 		g1.getETypeArguments().add(g2);
 		createAndInsertEObjectEClass_C.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeAndDeleteEObjectEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(theEobjectPackage.getEObjectSubtractedEChange());
 		g2 = createEGenericType(removeAndDeleteEObjectEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeAndDeleteEObjectEClass_C.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		createAndInsertRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeAndDeleteRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		createAndInsertNonRootEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		createAndInsertNonRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeAndDeleteNonRootEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeAndDeleteNonRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		createAndReplaceAndDeleteNonRootEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		createAndReplaceAndDeleteNonRootEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
@@ -923,6 +962,10 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		initEReference(getCreateAndReplaceAndDeleteNonRoot_DeleteChange(), g1, null, "deleteChange", null, 1, 1, CreateAndReplaceAndDeleteNonRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
+
+		// Initialize data types
+		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(eFeatEDataType, EStructuralFeature.class, "EFeat", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

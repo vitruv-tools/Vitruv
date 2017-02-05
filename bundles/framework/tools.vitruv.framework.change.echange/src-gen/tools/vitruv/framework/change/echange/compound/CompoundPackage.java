@@ -3,6 +3,7 @@
 package tools.vitruv.framework.change.echange.compound;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -70,6 +71,15 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ECHANGE = 0;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ECHANGE__RESOLVED = EChangePackage.ECHANGE__RESOLVED;
+
+	/**
 	 * The number of structural features of the '<em>EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -77,6 +87,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOUND_ECHANGE_FEATURE_COUNT = EChangePackage.ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ECHANGE___GET_APPLY_COMMAND = EChangePackage.ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ECHANGE___APPLY = EChangePackage.ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ECHANGE___GET_REVERT_COMMAND = EChangePackage.ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ECHANGE___REVERT = EChangePackage.ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -105,6 +160,15 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 */
 	int MOVE_EOBJECT = 1;
+
+	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVE_EOBJECT__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
 
 	/**
 	 * The feature id for the '<em><b>Subtract Where Change</b></em>' reference.
@@ -152,6 +216,51 @@ public interface CompoundPackage extends EPackage {
 	int MOVE_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 4;
 
 	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVE_EOBJECT___RESOLVE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVE_EOBJECT___GET_APPLY_COMMAND = COMPOUND_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVE_EOBJECT___APPLY = COMPOUND_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVE_EOBJECT___GET_REVERT_COMMAND = COMPOUND_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVE_EOBJECT___REVERT = COMPOUND_ECHANGE___REVERT;
+
+	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -180,6 +289,15 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_SUBTRACTION = 4;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -196,6 +314,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOUND_SUBTRACTION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___RESOLVE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___GET_APPLY_COMMAND = COMPOUND_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___APPLY = COMPOUND_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___GET_REVERT_COMMAND = COMPOUND_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___REVERT = COMPOUND_ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -226,6 +389,15 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EFEATURE = 2;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE__RESOLVED = COMPOUND_SUBTRACTION__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -242,6 +414,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___RESOLVE__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___GET_APPLY_COMMAND = COMPOUND_SUBTRACTION___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___APPLY = COMPOUND_SUBTRACTION___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___GET_REVERT_COMMAND = COMPOUND_SUBTRACTION___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___REVERT = COMPOUND_SUBTRACTION___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -272,6 +489,15 @@ public interface CompoundPackage extends EPackage {
 	int REPLACE_IN_ELIST = 3;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -297,6 +523,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_IN_ELIST_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST___RESOLVE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST___GET_APPLY_COMMAND = COMPOUND_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST___APPLY = COMPOUND_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST___GET_REVERT_COMMAND = COMPOUND_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST___REVERT = COMPOUND_ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -327,6 +598,15 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ADDITION = 5;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Additive Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -343,6 +623,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOUND_ADDITION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION___RESOLVE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION___GET_APPLY_COMMAND = COMPOUND_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION___APPLY = COMPOUND_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION___GET_REVERT_COMMAND = COMPOUND_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION___REVERT = COMPOUND_ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -373,6 +698,15 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_EOBJECT = 6;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_EOBJECT__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -398,6 +732,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_EOBJECT___GET_APPLY_COMMAND = COMPOUND_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_EOBJECT___APPLY = COMPOUND_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_EOBJECT___GET_REVERT_COMMAND = COMPOUND_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_EOBJECT___REVERT = COMPOUND_ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -428,6 +807,15 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_EOBJECT = 7;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_EOBJECT__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -453,6 +841,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_EOBJECT___RESOLVE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_EOBJECT___GET_APPLY_COMMAND = COMPOUND_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_EOBJECT___APPLY = COMPOUND_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_EOBJECT___GET_REVERT_COMMAND = COMPOUND_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_EOBJECT___REVERT = COMPOUND_ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -483,6 +916,15 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_ROOT = 8;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT__RESOLVED = CREATE_AND_INSERT_EOBJECT__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -508,6 +950,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_AND_INSERT_ROOT_FEATURE_COUNT = CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT___RESOLVE__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT___GET_APPLY_COMMAND = CREATE_AND_INSERT_EOBJECT___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT___APPLY = CREATE_AND_INSERT_EOBJECT___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT___GET_REVERT_COMMAND = CREATE_AND_INSERT_EOBJECT___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT___REVERT = CREATE_AND_INSERT_EOBJECT___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -538,6 +1025,15 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_ROOT = 9;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT__RESOLVED = REMOVE_AND_DELETE_EOBJECT__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -563,6 +1059,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_AND_DELETE_ROOT_FEATURE_COUNT = REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT___RESOLVE__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT___GET_APPLY_COMMAND = REMOVE_AND_DELETE_EOBJECT___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT___APPLY = REMOVE_AND_DELETE_EOBJECT___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT___GET_REVERT_COMMAND = REMOVE_AND_DELETE_EOBJECT___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT___REVERT = REMOVE_AND_DELETE_EOBJECT___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -593,6 +1134,15 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_NON_ROOT = 10;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT__RESOLVED = CREATE_AND_INSERT_EOBJECT__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -618,6 +1168,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_AND_INSERT_NON_ROOT_FEATURE_COUNT = CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT___RESOLVE__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT___GET_APPLY_COMMAND = CREATE_AND_INSERT_EOBJECT___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT___APPLY = CREATE_AND_INSERT_EOBJECT___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT___GET_REVERT_COMMAND = CREATE_AND_INSERT_EOBJECT___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT___REVERT = CREATE_AND_INSERT_EOBJECT___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -648,6 +1243,15 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_NON_ROOT = 11;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT__RESOLVED = REMOVE_AND_DELETE_EOBJECT__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -673,6 +1277,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_AND_DELETE_NON_ROOT_FEATURE_COUNT = REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT___RESOLVE__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT___GET_APPLY_COMMAND = REMOVE_AND_DELETE_EOBJECT___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT___APPLY = REMOVE_AND_DELETE_EOBJECT___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT___GET_REVERT_COMMAND = REMOVE_AND_DELETE_EOBJECT___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT___REVERT = REMOVE_AND_DELETE_EOBJECT___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -701,6 +1350,15 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 */
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT = 12;
+
+	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -739,6 +1397,51 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_APPLY_COMMAND = COMPOUND_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___APPLY = COMPOUND_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_REVERT_COMMAND = COMPOUND_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___REVERT = COMPOUND_ECHANGE___REVERT;
+
+	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -755,6 +1458,26 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '<em>EObj</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEObj()
+	 * @generated
+	 */
+	int EOBJ = 13;
+
+	/**
+	 * The meta object id for the '<em>EFeat</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.EStructuralFeature
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEFeat()
+	 * @generated
+	 */
+	int EFEAT = 14;
 
 
 	/**
@@ -1143,6 +1866,28 @@ public interface CompoundPackage extends EPackage {
 	EOperation getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges();
 
 	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EObj</em>'.
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
+	 * @generated
+	 */
+	EDataType getEObj();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EStructuralFeature <em>EFeat</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EFeat</em>'.
+	 * @see org.eclipse.emf.ecore.EStructuralFeature
+	 * @model instanceClass="org.eclipse.emf.ecore.EStructuralFeature"
+	 * @generated
+	 */
+	EDataType getEFeat();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1486,6 +2231,26 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES = eINSTANCE.getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges();
+
+		/**
+		 * The meta object literal for the '<em>EObj</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.EObject
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEObj()
+		 * @generated
+		 */
+		EDataType EOBJ = eINSTANCE.getEObj();
+
+		/**
+		 * The meta object literal for the '<em>EFeat</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.EStructuralFeature
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEFeat()
+		 * @generated
+		 */
+		EDataType EFEAT = eINSTANCE.getEFeat();
 
 	}
 

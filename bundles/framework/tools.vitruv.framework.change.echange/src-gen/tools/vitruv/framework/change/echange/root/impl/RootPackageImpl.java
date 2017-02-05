@@ -4,7 +4,9 @@ package tools.vitruv.framework.change.echange.root.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -48,6 +50,13 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * @generated
 	 */
 	private EClass removeRootEObjectEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eObjEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -154,6 +163,15 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getEObj() {
+		return eObjEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public RootFactory getRootFactory() {
 		return (RootFactory)getEFactoryInstance();
 	}
@@ -183,6 +201,9 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		insertRootEObjectEClass = createEClass(INSERT_ROOT_EOBJECT);
 
 		removeRootEObjectEClass = createEClass(REMOVE_ROOT_EOBJECT);
+
+		// Create data types
+		eObjEDataType = createEDataType(EOBJ);
 	}
 
 	/**
@@ -218,9 +239,9 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		ETypeParameter removeRootEObjectEClass_T = addETypeParameter(removeRootEObjectEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
+		EGenericType g1 = createEGenericType(this.getEObj());
 		insertRootEObjectEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeRootEObjectEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
@@ -245,6 +266,9 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		initEClass(insertRootEObjectEClass, InsertRootEObject.class, "InsertRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(removeRootEObjectEClass, RemoveRootEObject.class, "RemoveRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Initialize data types
+		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

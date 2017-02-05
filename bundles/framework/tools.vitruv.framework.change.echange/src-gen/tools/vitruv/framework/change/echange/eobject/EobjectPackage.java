@@ -3,6 +3,7 @@
 package tools.vitruv.framework.change.echange.eobject;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -69,6 +70,15 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_ADDED_ECHANGE = 0;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE__RESOLVED = EChangePackage.ADDITIVE_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>New Value</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -85,6 +95,51 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int EOBJECT_ADDED_ECHANGE_FEATURE_COUNT = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___GET_APPLY_COMMAND = EChangePackage.ADDITIVE_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___APPLY = EChangePackage.ADDITIVE_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___GET_REVERT_COMMAND = EChangePackage.ADDITIVE_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___REVERT = EChangePackage.ADDITIVE_ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -115,6 +170,15 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_SUBTRACTED_ECHANGE = 1;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE__RESOLVED = EChangePackage.SUBTRACTIVE_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -131,6 +195,51 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___GET_APPLY_COMMAND = EChangePackage.SUBTRACTIVE_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___APPLY = EChangePackage.SUBTRACTIVE_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___GET_REVERT_COMMAND = EChangePackage.SUBTRACTIVE_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___REVERT = EChangePackage.SUBTRACTIVE_ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -161,6 +270,15 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_EXISTENCE_ECHANGE = 2;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE__RESOLVED = EChangePackage.ATOMIC_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -177,6 +295,51 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___GET_APPLY_COMMAND = EChangePackage.ATOMIC_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___APPLY = EChangePackage.ATOMIC_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___GET_REVERT_COMMAND = EChangePackage.ATOMIC_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___REVERT = EChangePackage.ATOMIC_ECHANGE___REVERT;
 
 	/**
 	 * The number of operations of the '<em>EObject Existence EChange</em>' class.
@@ -198,6 +361,15 @@ public interface EobjectPackage extends EPackage {
 	int CREATE_EOBJECT = 3;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT__RESOLVED = EOBJECT_EXISTENCE_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -214,6 +386,51 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_EOBJECT_FEATURE_COUNT = EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___RESOLVE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___GET_APPLY_COMMAND = EOBJECT_EXISTENCE_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___APPLY = EOBJECT_EXISTENCE_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___GET_REVERT_COMMAND = EOBJECT_EXISTENCE_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___REVERT = EOBJECT_EXISTENCE_ECHANGE___REVERT;
 
 	/**
 	 * The number of operations of the '<em>Create EObject</em>' class.
@@ -235,6 +452,15 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT = 4;
 
 	/**
+	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT__RESOLVED = EOBJECT_EXISTENCE_ECHANGE__RESOLVED;
+
+	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -253,6 +479,51 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT_FEATURE_COUNT = EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___RESOLVE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___GET_APPLY_COMMAND = EOBJECT_EXISTENCE_ECHANGE___GET_APPLY_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___APPLY = EOBJECT_EXISTENCE_ECHANGE___APPLY;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___GET_REVERT_COMMAND = EOBJECT_EXISTENCE_ECHANGE___GET_REVERT_COMMAND;
+
+	/**
+	 * The operation id for the '<em>Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___REVERT = EOBJECT_EXISTENCE_ECHANGE___REVERT;
+
+	/**
 	 * The number of operations of the '<em>Delete EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -260,6 +531,16 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int DELETE_EOBJECT_OPERATION_COUNT = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '<em>EObj</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getEObj()
+	 * @generated
+	 */
+	int EOBJ = 5;
 
 
 	/**
@@ -344,6 +625,17 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getDeleteEObject();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EObj</em>'.
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
+	 * @generated
+	 */
+	EDataType getEObj();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -441,6 +733,16 @@ public interface EobjectPackage extends EPackage {
 		 * @generated
 		 */
 		EClass DELETE_EOBJECT = eINSTANCE.getDeleteEObject();
+
+		/**
+		 * The meta object literal for the '<em>EObj</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.EObject
+		 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getEObj()
+		 * @generated
+		 */
+		EDataType EOBJ = eINSTANCE.getEObj();
 
 	}
 

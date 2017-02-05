@@ -2,7 +2,35 @@
 @GenModel(modelName="Change",prefix="EChange") //@GenModel(prefix="EChange", editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
 package tools.vitruv.framework.change.echange
 
+import org.eclipse.emf.common.command.Command
+import org.eclipse.emf.ecore.resource.ResourceSet
+
+type Command wraps Command
+type ResourceSet wraps ResourceSet
+
 abstract class EChange {
+	boolean resolved
+	op EChange resolve(ResourceSet resourceSet)
+	
+	op Command getApplyCommand()
+	op void apply() {
+		if (resolved) {
+			val command = getApplyCommand();
+			if (command.canExecute()) {
+				command.execute()
+			}
+		}
+	}
+	
+	op Command getRevertCommand()
+	op void revert() {
+		if (resolved) {
+			val command = getRevertCommand()
+			if (command.canExecute()) {
+				command.execute()
+			}
+		}
+	}
 }
 
 abstract class AtomicEChange extends EChange {

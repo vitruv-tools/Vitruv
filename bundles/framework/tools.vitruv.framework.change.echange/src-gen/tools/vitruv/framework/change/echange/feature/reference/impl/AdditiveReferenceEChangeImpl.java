@@ -84,7 +84,7 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 * @generated
 	 */
 	public EReference getAffectedFeature() {
-		if (affectedFeature != null && affectedFeature.eIsProxy()) {
+		if (affectedFeature != null && ((EObject)affectedFeature).eIsProxy()) {
 			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
 			affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
 			if (affectedFeature != oldAffectedFeature) {
@@ -123,7 +123,7 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 */
 	@SuppressWarnings("unchecked")
 	public A getAffectedEObject() {
-		if (affectedEObject != null && affectedEObject.eIsProxy()) {
+		if (affectedEObject != null && ((EObject)affectedEObject).eIsProxy()) {
 			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
 			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
 			if (affectedEObject != oldAffectedEObject) {

@@ -14,7 +14,7 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getUpdateAttributeEChange()
- * @model abstract="true"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.attribute.EObj"
  * @generated
  */
 public interface UpdateAttributeEChange<A extends EObject> extends FeatureEChange<A, EAttribute> {

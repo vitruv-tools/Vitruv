@@ -91,7 +91,7 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 	 * @generated
 	 */
 	public EAttribute getAffectedFeature() {
-		if (affectedFeature != null && affectedFeature.eIsProxy()) {
+		if (affectedFeature != null && ((EObject)affectedFeature).eIsProxy()) {
 			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
 			affectedFeature = (EAttribute)eResolveProxy(oldAffectedFeature);
 			if (affectedFeature != oldAffectedFeature) {
@@ -130,7 +130,7 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 	 */
 	@SuppressWarnings("unchecked")
 	public A getAffectedEObject() {
-		if (affectedEObject != null && affectedEObject.eIsProxy()) {
+		if (affectedEObject != null && ((EObject)affectedEObject).eIsProxy()) {
 			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
 			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
 			if (affectedEObject != oldAffectedEObject) {

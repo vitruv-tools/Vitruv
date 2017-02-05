@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getDeleteEObject()
- * @model
+ * @model ABounds="tools.vitruv.framework.change.echange.eobject.EObj"
  * @generated
  */
 public interface DeleteEObject<A extends EObject> extends EObjectExistenceEChange<A> {

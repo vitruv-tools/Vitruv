@@ -11,22 +11,24 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
 
+type EObj wraps EObject
+
 abstract class UpdateReferenceEChange<A extends EObject> extends FeatureEChange<A, EReference> {
 	@GenModel(body="return getAffectedFeature().isContainment();")
 	op boolean[1] isContainment()
 }
 
-abstract class AdditiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectAddedEChange<T>, UpdateReferenceEChange<A> {
+abstract class AdditiveReferenceEChange<A extends EObj, T extends EObj> extends EObjectAddedEChange<T>, UpdateReferenceEChange<A> {
 }
 
-abstract class SubtractiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectSubtractedEChange<T>, UpdateReferenceEChange<A> {
+abstract class SubtractiveReferenceEChange<A extends EObj, T extends EObj> extends EObjectSubtractedEChange<T>, UpdateReferenceEChange<A> {
 }
 
-class InsertEReference<A extends EObject, T extends EObject> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {
+class InsertEReference<A extends EObj, T extends EObj> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {
 }
 
-class RemoveEReference<A extends EObject, T extends EObject> extends RemoveFromListEChange<A, EReference, T>, SubtractiveReferenceEChange<A, T> {
+class RemoveEReference<A extends EObj, T extends EObj> extends RemoveFromListEChange<A, EReference, T>, SubtractiveReferenceEChange<A, T> {
 }
 
-class ReplaceSingleValuedEReference<A extends EObject, T extends EObject> extends AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EReference, T> {
+class ReplaceSingleValuedEReference<A extends EObj, T extends EObj> extends AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EReference, T> {
 }

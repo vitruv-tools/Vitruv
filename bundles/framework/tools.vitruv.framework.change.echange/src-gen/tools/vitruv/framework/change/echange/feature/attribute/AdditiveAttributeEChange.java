@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getAdditiveAttributeEChange()
- * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.attribute.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface AdditiveAttributeEChange<A extends EObject, T extends Object> extends AdditiveEChange<T>, UpdateAttributeEChange<A> {

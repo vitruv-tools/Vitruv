@@ -3,6 +3,7 @@
 package tools.vitruv.framework.change.echange.root.impl;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -68,6 +69,36 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public Object createFromString(EDataType eDataType, String initialValue) {
+		switch (eDataType.getClassifierID()) {
+			case RootPackage.EOBJ:
+				return createEObjFromString(eDataType, initialValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String convertToString(EDataType eDataType, Object instanceValue) {
+		switch (eDataType.getClassifierID()) {
+			case RootPackage.EOBJ:
+				return convertEObjToString(eDataType, instanceValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public <T extends EObject> InsertRootEObject<T> createInsertRootEObject() {
 		InsertRootEObjectImpl<T> insertRootEObject = new InsertRootEObjectImpl<T>();
 		return insertRootEObject;
@@ -81,6 +112,24 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 	public <T extends EObject> RemoveRootEObject<T> createRemoveRootEObject() {
 		RemoveRootEObjectImpl<T> removeRootEObject = new RemoveRootEObjectImpl<T>();
 		return removeRootEObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject createEObjFromString(EDataType eDataType, String initialValue) {
+		return (EObject)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

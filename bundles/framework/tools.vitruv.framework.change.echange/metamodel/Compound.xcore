@@ -23,11 +23,14 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import org.eclipse.emf.common.util.BasicEList
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
+type EObj wraps EObject
+type EFeat wraps EStructuralFeature
+
 abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
 	op unique AtomicEChange[+] getAtomicChanges()
 }
 
-class MoveEObject<A extends EObject, B extends EObject, T extends EObject> extends CompoundEChange {
+class MoveEObject<A extends EObj, B extends EObj, T extends EObj> extends CompoundEChange {
 	refers UpdateReferenceEChange<A> subtractWhereChange
 	contains EObjectSubtractedEChange<T>[1] subtractWhatChange
 	refers UpdateReferenceEChange<B> addWhereChange
@@ -48,13 +51,13 @@ class MoveEObject<A extends EObject, B extends EObject, T extends EObject> exten
 	}
 }
 
-class ExplicitUnsetEFeature<A extends EObject, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {
+class ExplicitUnsetEFeature<A extends EObj, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {
 	op unique AtomicEChange[+] getAtomicChanges() {
 		return subtractiveChanges.map[it]
 	}
 }
 
-class ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
+class ReplaceInEList<A extends EObj, F extends EFeat, T extends EObj, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
 	contains R[1] removeChange
 	contains I[1] insertChange
 	op unique AtomicEChange[+] getAtomicChanges() {
@@ -83,7 +86,7 @@ class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends C
 	}
 }
 
-abstract class CreateAndInsertEObject<T extends EObject, C extends EObjectAddedEChange<T>> extends CompoundEChange {
+abstract class CreateAndInsertEObject<T extends EObj, C extends EObjectAddedEChange<T>> extends CompoundEChange {
 	contains CreateEObject<T>[1] createChange
 	contains C[1] insertChange
 	op unique AtomicEChange[+] getAtomicChanges() {
@@ -94,7 +97,7 @@ abstract class CreateAndInsertEObject<T extends EObject, C extends EObjectAddedE
 	}
 }
 
-abstract class RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubtractedEChange<T>> extends CompoundEChange {
+abstract class RemoveAndDeleteEObject<T extends EObj, C extends EObjectSubtractedEChange<T>> extends CompoundEChange {
 	contains C[1] removeChange
 	contains DeleteEObject<T>[1] deleteChange
 	op unique AtomicEChange[+] getAtomicChanges() {
@@ -105,15 +108,15 @@ abstract class RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubtra
 	}
 }
 
-class CreateAndInsertRoot<T extends EObject> extends CreateAndInsertEObject<T, InsertRootEObject<T>> {}
+class CreateAndInsertRoot<T extends EObj> extends CreateAndInsertEObject<T, InsertRootEObject<T>> {}
 
-class RemoveAndDeleteRoot<T extends EObject> extends RemoveAndDeleteEObject<T, RemoveRootEObject<T>> {}
+class RemoveAndDeleteRoot<T extends EObj> extends RemoveAndDeleteEObject<T, RemoveRootEObject<T>> {}
 
-class CreateAndInsertNonRoot<A extends EObject, T extends EObject> extends CreateAndInsertEObject<T, InsertEReference<A, T>> {}
+class CreateAndInsertNonRoot<A extends EObj, T extends EObj> extends CreateAndInsertEObject<T, InsertEReference<A, T>> {}
 
-class RemoveAndDeleteNonRoot<A extends EObject, T extends EObject> extends RemoveAndDeleteEObject<T, RemoveEReference<A, T>> {}
+class RemoveAndDeleteNonRoot<A extends EObj, T extends EObj> extends RemoveAndDeleteEObject<T, RemoveEReference<A, T>> {}
 
-class CreateAndReplaceAndDeleteNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {
+class CreateAndReplaceAndDeleteNonRoot<A extends EObj, T extends EObj> extends CompoundEChange {
 	contains CreateEObject<T>[1] createChange
 	contains ReplaceSingleValuedEReference<A, T>[1] replaceChange
 	contains DeleteEObject<T>[1] deleteChange

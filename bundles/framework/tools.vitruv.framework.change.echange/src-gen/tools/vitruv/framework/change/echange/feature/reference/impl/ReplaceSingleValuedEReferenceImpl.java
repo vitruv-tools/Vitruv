@@ -79,7 +79,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 */
 	@SuppressWarnings("unchecked")
 	public T getOldValue() {
-		if (oldValue != null && oldValue.eIsProxy()) {
+		if (oldValue != null && ((EObject)oldValue).eIsProxy()) {
 			InternalEObject oldOldValue = (InternalEObject)oldValue;
 			oldValue = (T)eResolveProxy(oldOldValue);
 			if (oldValue != oldOldValue) {

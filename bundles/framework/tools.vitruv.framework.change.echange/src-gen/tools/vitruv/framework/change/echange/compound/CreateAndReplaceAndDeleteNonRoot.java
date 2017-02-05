@@ -28,7 +28,7 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getCreateAndReplaceAndDeleteNonRoot()
- * @model
+ * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface CreateAndReplaceAndDeleteNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {

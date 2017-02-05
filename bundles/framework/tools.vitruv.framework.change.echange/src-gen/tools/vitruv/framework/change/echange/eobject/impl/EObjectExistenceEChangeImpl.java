@@ -65,7 +65,7 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 */
 	@SuppressWarnings("unchecked")
 	public A getAffectedEObject() {
-		if (affectedEObject != null && affectedEObject.eIsProxy()) {
+		if (affectedEObject != null && ((EObject)affectedEObject).eIsProxy()) {
 			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
 			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
 			if (affectedEObject != oldAffectedEObject) {

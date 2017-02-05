@@ -13,7 +13,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.reference.ReferencePackage#getAdditiveReferenceEChange()
- * @model abstract="true"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.reference.EObj" TBounds="tools.vitruv.framework.change.echange.feature.reference.EObj"
  * @generated
  */
 public interface AdditiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectAddedEChange<T>, UpdateReferenceEChange<A> {
