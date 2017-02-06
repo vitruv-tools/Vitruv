@@ -30,6 +30,7 @@ import tools.vitruv.framework.change.echange.impl.AdditiveEChangeImpl;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.AdditiveAttributeEChangeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.AdditiveAttributeEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.AdditiveAttributeEChangeImpl#getProxyObject <em>Proxy Object</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.AdditiveAttributeEChangeImpl#getNewValue <em>New Value</em>}</li>
  * </ul>
  *
@@ -55,6 +56,26 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 	 * @ordered
 	 */
 	protected A affectedEObject;
+
+	/**
+	 * The default value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProxyObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final InternalEObject PROXY_OBJECT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProxyObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected InternalEObject proxyObject = PROXY_OBJECT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
@@ -167,6 +188,27 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public InternalEObject getProxyObject() {
+		return proxyObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setProxyObject(InternalEObject newProxyObject) {
+		InternalEObject oldProxyObject = proxyObject;
+		proxyObject = newProxyObject;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT, oldProxyObject, proxyObject));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public T getNewValue() {
 		return newValue;
 	}
@@ -197,6 +239,8 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT:
 				if (resolve) return getAffectedEObject();
 				return basicGetAffectedEObject();
+			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT:
+				return getProxyObject();
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE:
 				return getNewValue();
 		}
@@ -217,6 +261,9 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 				return;
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)newValue);
+				return;
+			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT:
+				setProxyObject((InternalEObject)newValue);
 				return;
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE:
 				setNewValue((T)newValue);
@@ -239,6 +286,9 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)null);
 				return;
+			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT:
+				setProxyObject(PROXY_OBJECT_EDEFAULT);
+				return;
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE:
 				setNewValue((T)null);
 				return;
@@ -258,6 +308,8 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 				return affectedFeature != null;
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT:
 				return affectedEObject != null;
+			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT:
+				return PROXY_OBJECT_EDEFAULT == null ? proxyObject != null : !PROXY_OBJECT_EDEFAULT.equals(proxyObject);
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE:
 				return newValue != null;
 		}
@@ -275,6 +327,7 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 			switch (derivedFeatureID) {
 				case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
 				case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
+				case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT: return FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT;
 				default: return -1;
 			}
 		}
@@ -297,6 +350,7 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 			switch (baseFeatureID) {
 				case FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE: return AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE;
 				case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT: return AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
+				case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT: return AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT;
 				default: return -1;
 			}
 		}
@@ -318,7 +372,9 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (newValue: ");
+		result.append(" (proxyObject: ");
+		result.append(proxyObject);
+		result.append(", newValue: ");
 		result.append(newValue);
 		result.append(')');
 		return result.toString();

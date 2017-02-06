@@ -1,17 +1,20 @@
 @Ecore(nsURI="http://tools.vitruv/EChange/Feature/1.0")
-@GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+@GenModel(modelName="Change", commentFormatting="true", featureMapWrapperInternalInterface="", classNamePattern="") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
 package tools.vitruv.framework.change.echange.feature
 
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.framework.change.echange.AtomicEChange
 
 type EObj wraps EObject
-type EFeat wraps EStructuralFeature
+type EFeat wraps EStructuralFeature 
+type Proxy wraps InternalEObject
 
-abstract class FeatureEChange<A extends EObj , F extends EFeat> extends AtomicEChange {
+abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicEChange {
 	refers F[1] affectedFeature
-	refers A[1] affectedEObject
+	refers A[1] affectedEObject 
+	Proxy proxyObject
 }
 
 abstract class UpdateMultiValuedFeatureEChange<A extends EObj , F extends EFeat> extends FeatureEChange<A, F> {

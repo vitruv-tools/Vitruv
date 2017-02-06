@@ -30,6 +30,7 @@ import tools.vitruv.framework.change.echange.impl.SubtractiveEChangeImpl;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.SubtractiveAttributeEChangeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.SubtractiveAttributeEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.SubtractiveAttributeEChangeImpl#getProxyObject <em>Proxy Object</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.SubtractiveAttributeEChangeImpl#getOldValue <em>Old Value</em>}</li>
  * </ul>
  *
@@ -55,6 +56,26 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 	 * @ordered
 	 */
 	protected A affectedEObject;
+
+	/**
+	 * The default value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProxyObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final InternalEObject PROXY_OBJECT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProxyObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected InternalEObject proxyObject = PROXY_OBJECT_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
@@ -167,6 +188,27 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public InternalEObject getProxyObject() {
+		return proxyObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setProxyObject(InternalEObject newProxyObject) {
+		InternalEObject oldProxyObject = proxyObject;
+		proxyObject = newProxyObject;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT, oldProxyObject, proxyObject));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public T getOldValue() {
 		return oldValue;
 	}
@@ -197,6 +239,8 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT:
 				if (resolve) return getAffectedEObject();
 				return basicGetAffectedEObject();
+			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT:
+				return getProxyObject();
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE:
 				return getOldValue();
 		}
@@ -217,6 +261,9 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 				return;
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)newValue);
+				return;
+			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT:
+				setProxyObject((InternalEObject)newValue);
 				return;
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE:
 				setOldValue((T)newValue);
@@ -239,6 +286,9 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)null);
 				return;
+			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT:
+				setProxyObject(PROXY_OBJECT_EDEFAULT);
+				return;
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE:
 				setOldValue((T)null);
 				return;
@@ -258,6 +308,8 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 				return affectedFeature != null;
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT:
 				return affectedEObject != null;
+			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT:
+				return PROXY_OBJECT_EDEFAULT == null ? proxyObject != null : !PROXY_OBJECT_EDEFAULT.equals(proxyObject);
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE:
 				return oldValue != null;
 		}
@@ -275,6 +327,7 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 			switch (derivedFeatureID) {
 				case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
 				case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
+				case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT: return FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT;
 				default: return -1;
 			}
 		}
@@ -297,6 +350,7 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 			switch (baseFeatureID) {
 				case FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE: return AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE;
 				case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT: return AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
+				case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT: return AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT;
 				default: return -1;
 			}
 		}
@@ -318,7 +372,9 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (oldValue: ");
+		result.append(" (proxyObject: ");
+		result.append(proxyObject);
+		result.append(", oldValue: ");
 		result.append(oldValue);
 		result.append(')');
 		return result.toString();

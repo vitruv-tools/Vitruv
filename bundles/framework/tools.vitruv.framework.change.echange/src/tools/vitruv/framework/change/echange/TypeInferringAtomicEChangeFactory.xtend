@@ -37,13 +37,16 @@ final class TypeInferringAtomicEChangeFactory {
 	
 	private def static <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(FeatureEChange<A,F> c, A affectedEObject, F affectedFeature, boolean unresolve) {
 		if (unresolve) {
-			val proxy = affectedEObject as InternalEObject
-			proxy.eSetProxyURI(EcoreUtil.getURI(proxy))
-			c.affectedEObject.eResource()
+			val proxy = affectedEObject.eClass().getEPackage().getEFactoryInstance().create(affectedEObject.eClass()) as InternalEObject
+			proxy.eSetProxyURI(EcoreUtil.getURI(affectedEObject))
+			c.proxyObject = proxy
+			c.affectedEObject = null
 		} else {
-			c.affectedEObject = affectedEObject
-			c.affectedFeature = affectedFeature			
+			c.proxyObject = null
+			c.affectedEObject = affectedEObject	
+			c.resolved = true		
 		}
+		c.affectedFeature = affectedFeature
 	}
 
 	def static <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, String resourceURI) {

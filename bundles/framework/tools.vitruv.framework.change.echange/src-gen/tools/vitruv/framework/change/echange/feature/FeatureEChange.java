@@ -4,6 +4,7 @@ package tools.vitruv.framework.change.echange.feature;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
 
@@ -18,6 +19,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getProxyObject <em>Proxy Object</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange()
@@ -76,5 +78,31 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 * @generated
 	 */
 	void setAffectedEObject(A value);
+
+	/**
+	 * Returns the value of the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Proxy Object</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Proxy Object</em>' attribute.
+	 * @see #setProxyObject(InternalEObject)
+	 * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange_ProxyObject()
+	 * @model unique="false" dataType="tools.vitruv.framework.change.echange.feature.Proxy"
+	 * @generated
+	 */
+	InternalEObject getProxyObject();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getProxyObject <em>Proxy Object</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Proxy Object</em>' attribute.
+	 * @see #getProxyObject()
+	 * @generated
+	 */
+	void setProxyObject(InternalEObject value);
 
 } // FeatureEChange

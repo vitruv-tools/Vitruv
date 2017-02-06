@@ -13,6 +13,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
@@ -110,13 +111,11 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * @generated
 	 */
 	public EChange resolve(final ResourceSet resourceSet) {
-		if (((!this.isResolved()) && this.getAffectedEObject().eIsProxy())) {
-			A _affectedEObject = this.getAffectedEObject();
-			final EObject resolvedObject = EcoreUtil.resolve(_affectedEObject, resourceSet);
-			boolean _eIsProxy = resolvedObject.eIsProxy();
-			if (_eIsProxy) {
-				return null;
-			}
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			InternalEObject _proxyObject = this.getProxyObject();
+			final EObject resolvedObject = EcoreUtil.resolve(_proxyObject, resourceSet);
 			EAttribute _affectedFeature = this.getAffectedFeature();
 			T _oldValue = this.getOldValue();
 			T _newValue = this.getNewValue();

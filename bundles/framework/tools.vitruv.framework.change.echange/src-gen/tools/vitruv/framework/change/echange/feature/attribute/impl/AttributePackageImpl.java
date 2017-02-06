@@ -229,8 +229,62 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getInsertEAttributeValue__Resolve__ResourceSet() {
+		return insertEAttributeValueEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getInsertEAttributeValue__GetApplyCommand() {
+		return insertEAttributeValueEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getInsertEAttributeValue__GetRevertCommand() {
+		return insertEAttributeValueEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getRemoveEAttributeValue() {
 		return removeEAttributeValueEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRemoveEAttributeValue__Resolve__ResourceSet() {
+		return removeEAttributeValueEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRemoveEAttributeValue__GetApplyCommand() {
+		return removeEAttributeValueEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRemoveEAttributeValue__GetRevertCommand() {
+		return removeEAttributeValueEClass.getEOperations().get(2);
 	}
 
 	/**
@@ -333,8 +387,14 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		createEAttribute(subtractiveAttributeEChangeEClass, SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE);
 
 		insertEAttributeValueEClass = createEClass(INSERT_EATTRIBUTE_VALUE);
+		createEOperation(insertEAttributeValueEClass, INSERT_EATTRIBUTE_VALUE___RESOLVE__RESOURCESET);
+		createEOperation(insertEAttributeValueEClass, INSERT_EATTRIBUTE_VALUE___GET_APPLY_COMMAND);
+		createEOperation(insertEAttributeValueEClass, INSERT_EATTRIBUTE_VALUE___GET_REVERT_COMMAND);
 
 		removeEAttributeValueEClass = createEClass(REMOVE_EATTRIBUTE_VALUE);
+		createEOperation(removeEAttributeValueEClass, REMOVE_EATTRIBUTE_VALUE___RESOLVE__RESOURCESET);
+		createEOperation(removeEAttributeValueEClass, REMOVE_EATTRIBUTE_VALUE___GET_APPLY_COMMAND);
+		createEOperation(removeEAttributeValueEClass, REMOVE_EATTRIBUTE_VALUE___GET_REVERT_COMMAND);
 
 		replaceSingleValuedEAttributeEClass = createEClass(REPLACE_SINGLE_VALUED_EATTRIBUTE);
 		createEOperation(replaceSingleValuedEAttributeEClass, REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE__RESOURCESET);
@@ -499,11 +559,25 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		initEClass(insertEAttributeValueEClass, InsertEAttributeValue.class, "InsertEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		EOperation op = initEOperation(getInsertEAttributeValue__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getInsertEAttributeValue__GetApplyCommand(), this.getCommand(), "getApplyCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getInsertEAttributeValue__GetRevertCommand(), this.getCommand(), "getRevertCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(removeEAttributeValueEClass, RemoveEAttributeValue.class, "RemoveEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		op = initEOperation(getRemoveEAttributeValue__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRemoveEAttributeValue__GetApplyCommand(), this.getCommand(), "getApplyCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRemoveEAttributeValue__GetRevertCommand(), this.getCommand(), "getRevertCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(replaceSingleValuedEAttributeEClass, ReplaceSingleValuedEAttribute.class, "ReplaceSingleValuedEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		EOperation op = initEOperation(getReplaceSingleValuedEAttribute__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getReplaceSingleValuedEAttribute__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getReplaceSingleValuedEAttribute__GetApplyCommand(), this.getCommand(), "getApplyCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);

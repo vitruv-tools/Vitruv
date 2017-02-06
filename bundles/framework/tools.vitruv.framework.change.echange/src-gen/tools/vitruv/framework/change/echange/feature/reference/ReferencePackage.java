@@ -101,6 +101,15 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_REFERENCE_ECHANGE__PROXY_OBJECT = FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT;
+
+	/**
 	 * The number of structural features of the '<em>Update Reference EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -219,13 +228,22 @@ public interface ReferencePackage extends EPackage {
 	int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Additive Reference EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 2;
+	int ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -346,13 +364,22 @@ public interface ReferencePackage extends EPackage {
 	int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_REFERENCE_ECHANGE__PROXY_OBJECT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Subtractive Reference EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 2;
+	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -462,6 +489,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_EREFERENCE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EREFERENCE__PROXY_OBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -598,6 +634,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EREFERENCE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EREFERENCE__PROXY_OBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -743,6 +788,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE__PROXY_OBJECT = ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' reference.
