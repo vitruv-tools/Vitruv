@@ -54,6 +54,10 @@ public interface EChange extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * TEST DOC
+	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
 	 * @generated
 	 */

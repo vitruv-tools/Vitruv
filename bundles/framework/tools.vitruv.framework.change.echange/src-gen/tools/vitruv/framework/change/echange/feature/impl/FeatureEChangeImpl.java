@@ -26,6 +26,7 @@ import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.impl.FeatureEChangeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.impl.FeatureEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.impl.FeatureEChangeImpl#getProxyObject <em>Proxy Object</em>}</li>
  * </ul>
  *
  * @generated
@@ -50,6 +51,26 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * @ordered
 	 */
 	protected A affectedEObject;
+
+	/**
+	 * The default value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProxyObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final InternalEObject PROXY_OBJECT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProxyObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected InternalEObject proxyObject = PROXY_OBJECT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -153,6 +174,27 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public InternalEObject getProxyObject() {
+		return proxyObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setProxyObject(InternalEObject newProxyObject) {
+		InternalEObject oldProxyObject = proxyObject;
+		proxyObject = newProxyObject;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT, oldProxyObject, proxyObject));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -162,6 +204,8 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				if (resolve) return getAffectedEObject();
 				return basicGetAffectedEObject();
+			case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT:
+				return getProxyObject();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -181,6 +225,9 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)newValue);
 				return;
+			case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT:
+				setProxyObject((InternalEObject)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -199,6 +246,9 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)null);
 				return;
+			case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT:
+				setProxyObject(PROXY_OBJECT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -215,8 +265,26 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 				return affectedFeature != null;
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				return affectedEObject != null;
+			case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT:
+				return PROXY_OBJECT_EDEFAULT == null ? proxyObject != null : !PROXY_OBJECT_EDEFAULT.equals(proxyObject);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (proxyObject: ");
+		result.append(proxyObject);
+		result.append(')');
+		return result.toString();
 	}
 
 } //FeatureEChangeImpl

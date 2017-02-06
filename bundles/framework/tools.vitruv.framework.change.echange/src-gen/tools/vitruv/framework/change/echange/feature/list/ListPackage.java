@@ -97,6 +97,15 @@ public interface ListPackage extends EPackage {
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE__PROXY_OBJECT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__PROXY_OBJECT;
+
+	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -204,6 +213,15 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE__PROXY_OBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -322,6 +340,15 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE__PROXY_OBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.

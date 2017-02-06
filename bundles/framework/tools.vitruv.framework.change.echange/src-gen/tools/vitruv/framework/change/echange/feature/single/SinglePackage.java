@@ -97,6 +97,15 @@ public interface SinglePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__PROXY_OBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__PROXY_OBJECT;
+
+	/**
 	 * The number of structural features of the '<em>Replace Single Valued Feature EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

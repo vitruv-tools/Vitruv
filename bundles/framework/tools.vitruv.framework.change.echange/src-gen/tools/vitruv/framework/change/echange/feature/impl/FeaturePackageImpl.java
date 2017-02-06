@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.feature.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
@@ -10,6 +11,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
@@ -62,6 +64,13 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * @generated
 	 */
 	private EDataType eFeatEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType proxyEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -159,6 +168,15 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getFeatureEChange_ProxyObject() {
+		return (EAttribute)featureEChangeEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUpdateMultiValuedFeatureEChange() {
 		return updateMultiValuedFeatureEChangeEClass;
 	}
@@ -195,6 +213,15 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getProxy() {
+		return proxyEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public FeatureFactory getFeatureFactory() {
 		return (FeatureFactory)getEFactoryInstance();
 	}
@@ -221,6 +248,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		featureEChangeEClass = createEClass(FEATURE_ECHANGE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_FEATURE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_EOBJECT);
+		createEAttribute(featureEChangeEClass, FEATURE_ECHANGE__PROXY_OBJECT);
 
 		updateMultiValuedFeatureEChangeEClass = createEClass(UPDATE_MULTI_VALUED_FEATURE_ECHANGE);
 
@@ -229,6 +257,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		// Create data types
 		eObjEDataType = createEDataType(EOBJ);
 		eFeatEDataType = createEDataType(EFEAT);
+		proxyEDataType = createEDataType(PROXY);
 	}
 
 	/**
@@ -300,6 +329,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		initEReference(getFeatureEChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(featureEChangeEClass_A);
 		initEReference(getFeatureEChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getFeatureEChange_ProxyObject(), this.getProxy(), "proxyObject", null, 0, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(updateMultiValuedFeatureEChangeEClass, UpdateMultiValuedFeatureEChange.class, "UpdateMultiValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -308,6 +338,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		// Initialize data types
 		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(eFeatEDataType, EStructuralFeature.class, "EFeat", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(proxyEDataType, InternalEObject.class, "Proxy", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

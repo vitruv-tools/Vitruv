@@ -47,7 +47,9 @@ class MoveEObject<A extends EObj, B extends EObj, T extends EObj> extends Compou
 		    list.add(addWhereChange);
 		}
 		list.add(getAddWhatChange());
+		
 		return list;
+		
 	}
 }
 

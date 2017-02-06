@@ -10,6 +10,10 @@ type ResourceSet wraps ResourceSet
 
 abstract class EChange {
 	boolean resolved
+	
+	/**
+	 * TEST DOC
+	 */
 	op EChange resolve(ResourceSet resourceSet)
 	
 	op Command getApplyCommand()
