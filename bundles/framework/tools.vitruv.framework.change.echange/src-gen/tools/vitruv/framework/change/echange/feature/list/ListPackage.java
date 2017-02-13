@@ -70,15 +70,6 @@ public interface ListPackage extends EPackage {
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE__RESOLVED = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -97,15 +88,6 @@ public interface ListPackage extends EPackage {
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE__PROXY_OBJECT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__PROXY_OBJECT;
-
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -122,15 +104,6 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -169,6 +142,24 @@ public interface ListPackage extends EPackage {
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___REVERT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___REVERT;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
 	 * The number of operations of the '<em>Update Single List Entry EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -186,15 +177,6 @@ public interface ListPackage extends EPackage {
 	 * @generated
 	 */
 	int INSERT_IN_LIST_ECHANGE = 1;
-
-	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_IN_LIST_ECHANGE__RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__RESOLVED;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -215,15 +197,6 @@ public interface ListPackage extends EPackage {
 	int INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_IN_LIST_ECHANGE__PROXY_OBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__PROXY_OBJECT;
-
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -240,15 +213,6 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_IN_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_IN_LIST_ECHANGE___RESOLVE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -287,6 +251,24 @@ public interface ListPackage extends EPackage {
 	int INSERT_IN_LIST_ECHANGE___REVERT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___REVERT;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___IS_RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___RESOLVE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -315,15 +297,6 @@ public interface ListPackage extends EPackage {
 	int REMOVE_FROM_LIST_ECHANGE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_FROM_LIST_ECHANGE__RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -342,15 +315,6 @@ public interface ListPackage extends EPackage {
 	int REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_FROM_LIST_ECHANGE__PROXY_OBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__PROXY_OBJECT;
-
-	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -367,15 +331,6 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_FROM_LIST_ECHANGE___RESOLVE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -412,6 +367,24 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_FROM_LIST_ECHANGE___REVERT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___REVERT;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___RESOLVE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.

@@ -2,7 +2,6 @@
  */
 package tools.vitruv.framework.change.echange;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
@@ -69,22 +68,22 @@ public interface EChangePackage extends EPackage {
 	int ECHANGE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ECHANGE__RESOLVED = 0;
-
-	/**
 	 * The number of structural features of the '<em>EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE_FEATURE_COUNT = 1;
+	int ECHANGE_FEATURE_COUNT = 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ECHANGE___IS_RESOLVED = 0;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -93,7 +92,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE__RESOURCESET = 0;
+	int ECHANGE___RESOLVE__RESOURCESET = 1;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -102,7 +101,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___GET_APPLY_COMMAND = 1;
+	int ECHANGE___GET_APPLY_COMMAND = 2;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -111,7 +110,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___APPLY = 2;
+	int ECHANGE___APPLY = 3;
 
 	/**
 	 * The operation id for the '<em>Get Revert Command</em>' operation.
@@ -120,7 +119,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___GET_REVERT_COMMAND = 3;
+	int ECHANGE___GET_REVERT_COMMAND = 4;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -129,7 +128,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___REVERT = 4;
+	int ECHANGE___REVERT = 5;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -138,7 +137,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE_OPERATION_COUNT = 5;
+	int ECHANGE_OPERATION_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl <em>Atomic EChange</em>}' class.
@@ -151,15 +150,6 @@ public interface EChangePackage extends EPackage {
 	int ATOMIC_ECHANGE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ATOMIC_ECHANGE__RESOLVED = ECHANGE__RESOLVED;
-
-	/**
 	 * The number of structural features of the '<em>Atomic EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -167,6 +157,15 @@ public interface EChangePackage extends EPackage {
 	 * @ordered
 	 */
 	int ATOMIC_ECHANGE_FEATURE_COUNT = ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ATOMIC_ECHANGE___IS_RESOLVED = ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -233,15 +232,6 @@ public interface EChangePackage extends EPackage {
 	int ADDITIVE_ECHANGE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ECHANGE__RESOLVED = ATOMIC_ECHANGE__RESOLVED;
-
-	/**
 	 * The number of structural features of the '<em>Additive EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -249,6 +239,15 @@ public interface EChangePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_ECHANGE_FEATURE_COUNT = ATOMIC_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ECHANGE___IS_RESOLVED = ATOMIC_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -324,15 +323,6 @@ public interface EChangePackage extends EPackage {
 	int SUBTRACTIVE_ECHANGE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ECHANGE__RESOLVED = ATOMIC_ECHANGE__RESOLVED;
-
-	/**
 	 * The number of structural features of the '<em>Subtractive EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -340,6 +330,15 @@ public interface EChangePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_ECHANGE_FEATURE_COUNT = ATOMIC_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ECHANGE___IS_RESOLVED = ATOMIC_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -436,15 +435,14 @@ public interface EChangePackage extends EPackage {
 	EClass getEChange();
 
 	/**
-	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.EChange#isResolved <em>Resolved</em>}'.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#isResolved() <em>Is Resolved</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Resolved</em>'.
+	 * @return the meta object for the '<em>Is Resolved</em>' operation.
 	 * @see tools.vitruv.framework.change.echange.EChange#isResolved()
-	 * @see #getEChange()
 	 * @generated
 	 */
-	EAttribute getEChange_Resolved();
+	EOperation getEChange__IsResolved();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
@@ -602,12 +600,12 @@ public interface EChangePackage extends EPackage {
 		EClass ECHANGE = eINSTANCE.getEChange();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolved</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute ECHANGE__RESOLVED = eINSTANCE.getEChange_Resolved();
+		EOperation ECHANGE___IS_RESOLVED = eINSTANCE.getEChange__IsResolved();
 
 		/**
 		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.

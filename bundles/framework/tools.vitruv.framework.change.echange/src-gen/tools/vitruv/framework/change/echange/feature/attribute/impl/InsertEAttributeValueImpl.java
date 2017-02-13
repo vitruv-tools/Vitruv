@@ -13,13 +13,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
@@ -27,9 +22,6 @@ import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory;
 
 import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange;
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
@@ -100,27 +92,6 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 		newValue = newNewValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE, oldNewValue, newValue));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EChange resolve(final ResourceSet resourceSet) {
-		boolean _isResolved = this.isResolved();
-		boolean _not = (!_isResolved);
-		if (_not) {
-			InternalEObject _proxyObject = this.getProxyObject();
-			final EObject resolvedObject = EcoreUtil.resolve(_proxyObject, resourceSet);
-			EAttribute _affectedFeature = this.getAffectedFeature();
-			int _index = this.getIndex();
-			T _newValue = this.getNewValue();
-			final InsertEAttributeValue<EObject, T> resolvedChange = TypeInferringAtomicEChangeFactory.<EObject, T>createInsertAttributeChange(resolvedObject, _affectedFeature, _index, _newValue, false);
-			resolvedChange.setResolved(true);
-			return resolvedChange;
-		}
-		return this;
 	}
 
 	/**
@@ -261,8 +232,6 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case AttributePackage.INSERT_EATTRIBUTE_VALUE___RESOLVE__RESOURCESET:
-				return resolve((ResourceSet)arguments.get(0));
 			case AttributePackage.INSERT_EATTRIBUTE_VALUE___GET_APPLY_COMMAND:
 				return getApplyCommand();
 			case AttributePackage.INSERT_EATTRIBUTE_VALUE___GET_REVERT_COMMAND:

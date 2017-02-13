@@ -3,18 +3,41 @@
 package tools.vitruv.framework.change.echange.feature
 
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 
 type EObj wraps EObject
 type EFeat wraps EStructuralFeature 
-type Proxy wraps InternalEObject
+type ResourceSet wraps ResourceSet
 
 abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicEChange {
 	refers F[1] affectedFeature
 	refers A[1] affectedEObject 
-	Proxy proxyObject
+	
+	op boolean isResolved() {
+		return affectedEObject != null && !affectedEObject.eIsProxy()
+	}
+	
+	op EChange resolve(ResourceSet resourceSet) {
+		if (affectedEObject == null || affectedFeature == null) {
+			return null
+		}
+		if (!isResolved) {
+			val resolvedChange = super.resolve(resourceSet) as FeatureEChange<A, F>
+			if (resolvedChange == null) {
+				return null
+			}
+			resolvedChange.affectedEObject = EcoreUtil.resolve(affectedEObject, resourceSet) as A;
+			if (resolvedChange.affectedEObject.eIsProxy) {
+				return this
+			}
+			return resolvedChange
+		}
+		return this
+	}
 }
 
 abstract class UpdateMultiValuedFeatureEChange<A extends EObj , F extends EFeat> extends FeatureEChange<A, F> {

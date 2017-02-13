@@ -4,9 +4,11 @@ package tools.vitruv.framework.change.echange.feature;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.EChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,7 +21,6 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getProxyObject <em>Proxy Object</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange()
@@ -80,29 +81,21 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	void setAffectedEObject(A value);
 
 	/**
-	 * Returns the value of the '<em><b>Proxy Object</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Proxy Object</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Proxy Object</em>' attribute.
-	 * @see #setProxyObject(InternalEObject)
-	 * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange_ProxyObject()
-	 * @model unique="false" dataType="tools.vitruv.framework.change.echange.feature.Proxy"
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return ((!<%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null)) && (!this.getAffectedEObject().eIsProxy()));'"
 	 * @generated
 	 */
-	InternalEObject getProxyObject();
+	boolean isResolved();
 
 	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getProxyObject <em>Proxy Object</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Proxy Object</em>' attribute.
-	 * @see #getProxyObject()
+	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.feature.ResourceSet" resourceSetUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='if ((<%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null) || <%com.google.common.base.Objects%>.equal(this.getAffectedFeature(), null)))\n{\n\treturn null;\n}\nboolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolve = super.resolve(resourceSet);\n\tfinal <%tools.vitruv.framework.change.echange.feature.FeatureEChange%><A, F> resolvedChange = ((<%tools.vitruv.framework.change.echange.feature.FeatureEChange%><A, F>) _resolve);\n\tboolean _equals = <%com.google.common.base.Objects%>.equal(resolvedChange, null);\n\tif (_equals)\n\t{\n\t\treturn null;\n\t}\n\tA _affectedEObject = this.getAffectedEObject();\n\t<%org.eclipse.emf.ecore.EObject%> _resolve_1 = <%org.eclipse.emf.ecore.util.EcoreUtil%>.resolve(_affectedEObject, resourceSet);\n\tresolvedChange.setAffectedEObject(((A) _resolve_1));\n\tA _affectedEObject_1 = resolvedChange.getAffectedEObject();\n\tboolean _eIsProxy = _affectedEObject_1.eIsProxy();\n\tif (_eIsProxy)\n\t{\n\t\treturn this;\n\t}\n\treturn resolvedChange;\n}\nreturn this;'"
 	 * @generated
 	 */
-	void setProxyObject(InternalEObject value);
+	EChange resolve(ResourceSet resourceSet);
 
 } // FeatureEChange

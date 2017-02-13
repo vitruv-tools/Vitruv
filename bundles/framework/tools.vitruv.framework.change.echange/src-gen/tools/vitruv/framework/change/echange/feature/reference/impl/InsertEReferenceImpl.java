@@ -2,7 +2,11 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
+import com.google.common.base.Objects;
+
 import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.emf.common.command.Command;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -15,8 +19,25 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
+
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.EChangePackage;
+
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
+import tools.vitruv.framework.change.echange.feature.FeatureEChange;
+import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.feature.list.impl.InsertInListEChangeImpl;
 
@@ -112,8 +133,81 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isResolved() {
+		return ((super.isResolved() && 
+			(!Objects.equal(this.getNewValue(), null))) && (!this.getNewValue().eIsProxy()));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolve(final ResourceSet resourceSet) {
+		T _newValue = this.getNewValue();
+		boolean _equals = Objects.equal(_newValue, null);
+		if (_equals) {
+			return null;
+		}
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			EChange _resolve = super.resolve(resourceSet);
+			final InsertEReference<A, T> resolvedChange = ((InsertEReference<A, T>) _resolve);
+			boolean _equals_1 = Objects.equal(resolvedChange, null);
+			if (_equals_1) {
+				return null;
+			}
+			T _newValue_1 = this.getNewValue();
+			EObject _resolve_1 = EcoreUtil.resolve(_newValue_1, resourceSet);
+			resolvedChange.setNewValue(((T) _resolve_1));
+			T _newValue_2 = resolvedChange.getNewValue();
+			boolean _eIsProxy = _newValue_2.eIsProxy();
+			if (_eIsProxy) {
+				return this;
+			}
+			return resolvedChange;
+		}
+		return this;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Command getApplyCommand() {
+		ComposedAdapterFactory _composedAdapterFactory = new ComposedAdapterFactory();
+		final AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(_composedAdapterFactory, null);
+		A _affectedEObject = this.getAffectedEObject();
+		EReference _affectedFeature = this.getAffectedFeature();
+		T _newValue = this.getNewValue();
+		int _index = this.getIndex();
+		return AddCommand.create(editingDomain, _affectedEObject, _affectedFeature, _newValue, _index);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Command getRevertCommand() {
+		ComposedAdapterFactory _composedAdapterFactory = new ComposedAdapterFactory();
+		final AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(_composedAdapterFactory, null);
+		A _affectedEObject = this.getAffectedEObject();
+		EReference _affectedFeature = this.getAffectedFeature();
+		T _newValue = this.getNewValue();
+		return RemoveCommand.create(editingDomain, _affectedEObject, _affectedFeature, _newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean isContainment() {
-		return getAffectedFeature().isContainment();
+		EReference _affectedFeature = this.getAffectedFeature();
+		return _affectedFeature.isContainment();
 	}
 
 	/**
@@ -183,14 +277,14 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == EObjectAddedEChange.class) {
+		if (baseClass == UpdateReferenceEChange.class) {
 			switch (derivedFeatureID) {
-				case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE: return EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectAddedEChange.class) {
 			switch (derivedFeatureID) {
+				case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE: return EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
 				default: return -1;
 			}
 		}
@@ -209,14 +303,14 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == EObjectAddedEChange.class) {
+		if (baseClass == UpdateReferenceEChange.class) {
 			switch (baseFeatureID) {
-				case EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE: return ReferencePackage.INSERT_EREFERENCE__NEW_VALUE;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectAddedEChange.class) {
 			switch (baseFeatureID) {
+				case EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE: return ReferencePackage.INSERT_EREFERENCE__NEW_VALUE;
 				default: return -1;
 			}
 		}
@@ -235,14 +329,30 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == EObjectAddedEChange.class) {
+		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
-				default: return -1;
+				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.INSERT_EREFERENCE___IS_RESOLVED;
+				case EChangePackage.ECHANGE___RESOLVE__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE__RESOURCESET;
+				case EChangePackage.ECHANGE___GET_APPLY_COMMAND: return ReferencePackage.INSERT_EREFERENCE___GET_APPLY_COMMAND;
+				case EChangePackage.ECHANGE___GET_REVERT_COMMAND: return ReferencePackage.INSERT_EREFERENCE___GET_REVERT_COMMAND;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		if (baseClass == FeatureEChange.class) {
+			switch (baseOperationID) {
+				case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED: return ReferencePackage.INSERT_EREFERENCE___IS_RESOLVED;
+				case FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE__RESOURCESET;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
 		if (baseClass == UpdateReferenceEChange.class) {
 			switch (baseOperationID) {
 				case ReferencePackage.UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT: return ReferencePackage.INSERT_EREFERENCE___IS_CONTAINMENT;
+				default: return -1;
+			}
+		}
+		if (baseClass == EObjectAddedEChange.class) {
+			switch (baseOperationID) {
 				default: return -1;
 			}
 		}
@@ -262,6 +372,14 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
+			case ReferencePackage.INSERT_EREFERENCE___IS_RESOLVED:
+				return isResolved();
+			case ReferencePackage.INSERT_EREFERENCE___RESOLVE__RESOURCESET:
+				return resolve((ResourceSet)arguments.get(0));
+			case ReferencePackage.INSERT_EREFERENCE___GET_APPLY_COMMAND:
+				return getApplyCommand();
+			case ReferencePackage.INSERT_EREFERENCE___GET_REVERT_COMMAND:
+				return getRevertCommand();
 			case ReferencePackage.INSERT_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

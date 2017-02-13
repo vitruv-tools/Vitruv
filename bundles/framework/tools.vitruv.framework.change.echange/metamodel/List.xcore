@@ -8,7 +8,6 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange
 
-// Using EObject / EStructuralFeature directly in generics 
 type EObj wraps EObject
 type EFeat wraps EStructuralFeature
 

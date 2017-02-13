@@ -7,10 +7,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
-import tools.vitruv.framework.change.echange.EChange;
-
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 
 /**
@@ -24,15 +20,6 @@ import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedF
  * @generated
  */
 public interface ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EAttribute, T> {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.feature.attribute.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%org.eclipse.emf.ecore.InternalEObject%> _proxyObject = this.getProxyObject();\n\tfinal <%org.eclipse.emf.ecore.EObject%> resolvedObject = <%org.eclipse.emf.ecore.util.EcoreUtil%>.resolve(_proxyObject, resourceSet);\n\t<%org.eclipse.emf.ecore.EAttribute%> _affectedFeature = this.getAffectedFeature();\n\tT _oldValue = this.getOldValue();\n\tT _newValue = this.getNewValue();\n\tfinal <%tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute%><<%org.eclipse.emf.ecore.EObject%>, T> resolvedChange = <%tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory%>.<<%org.eclipse.emf.ecore.EObject%>, T>createReplaceSingleAttributeChange(resolvedObject, _affectedFeature, _oldValue, _newValue, false);\n\tresolvedChange.setResolved(true);\n\treturn resolvedChange;\n}\nreturn this;'"
-	 * @generated
-	 */
-	EChange resolve(ResourceSet resourceSet);
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

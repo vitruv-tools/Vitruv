@@ -13,12 +13,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * A representation of the model object '<em><b>EChange</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- *   <li>{@link tools.vitruv.framework.change.echange.EChange#isResolved <em>Resolved</em>}</li>
- * </ul>
  *
  * @see tools.vitruv.framework.change.echange.EChangePackage#getEChange()
  * @model abstract="true"
@@ -26,39 +20,33 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  */
 public interface EChange extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Resolved</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Resolved</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Resolved</em>' attribute.
-	 * @see #setResolved(boolean)
-	 * @see tools.vitruv.framework.change.echange.EChangePackage#getEChange_Resolved()
-	 * @model unique="false"
+	 * <!-- begin-model-doc -->
+	 * *
+	 * <!-- end-model-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return true;'"
 	 * @generated
 	 */
 	boolean isResolved();
-
-	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.EChange#isResolved <em>Resolved</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Resolved</em>' attribute.
-	 * @see #isResolved()
-	 * @generated
-	 */
-	void setResolved(boolean value);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * *
-	 * TEST DOC
+	 * Resolves the unresolved proxy EObjects of the change to a given set of resources with concrete EObjects.
+	 * Before the change can be applied or reverted all proxy objects need to be resolved.
+	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
+	 * 			the unresolved should be resolved to.
+	 * @return 	A new resolved change which EObjects references to concrete elements in the
+	 * 			given {@code ResourceSet}. The returned class is the same as the resolved one.
+	 * 			If not all proxy objects could be resolved it returns the original unresolved change.
+	 * 			Returns {@code null} if {@link resourceSet} is {@code null}.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _equals = <%com.google.common.base.Objects%>.equal(resourceSet, null);\nif (_equals)\n{\n\treturn null;\n}\nboolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\treturn <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n}\nreturn this;'"
 	 * @generated
 	 */
 	EChange resolve(ResourceSet resourceSet);
@@ -74,10 +62,11 @@ public interface EChange extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\tfinal <%org.eclipse.emf.common.command.Command%> command = this.getApplyCommand();\n\tboolean _canExecute = command.canExecute();\n\tif (_canExecute)\n\t{\n\t\tcommand.execute();\n\t}\n}'"
+	 * @model unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\tfinal <%org.eclipse.emf.common.command.Command%> command = this.getApplyCommand();\n\tboolean _canExecute = command.canExecute();\n\tif (_canExecute)\n\t{\n\t\tcommand.execute();\n\t\treturn true;\n\t}\n}\nreturn false;'"
 	 * @generated
 	 */
-	void apply();
+	boolean apply();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -90,9 +79,10 @@ public interface EChange extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\tfinal <%org.eclipse.emf.common.command.Command%> command = this.getRevertCommand();\n\tboolean _canExecute = command.canExecute();\n\tif (_canExecute)\n\t{\n\t\tcommand.execute();\n\t}\n}'"
+	 * @model unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\tfinal <%org.eclipse.emf.common.command.Command%> command = this.getRevertCommand();\n\tboolean _canExecute = command.canExecute();\n\tif (_canExecute)\n\t{\n\t\tcommand.execute();\n\t\treturn true;\n\t}\n}\nreturn false;'"
 	 * @generated
 	 */
-	void revert();
+	boolean revert();
 
 } // EChange

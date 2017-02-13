@@ -7,11 +7,12 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.feature.*;
 
@@ -76,8 +77,8 @@ public class FeatureFactoryImpl extends EFactoryImpl implements FeatureFactory {
 				return createEObjFromString(eDataType, initialValue);
 			case FeaturePackage.EFEAT:
 				return createEFeatFromString(eDataType, initialValue);
-			case FeaturePackage.PROXY:
-				return createProxyFromString(eDataType, initialValue);
+			case FeaturePackage.RESOURCE_SET:
+				return createResourceSetFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -95,8 +96,8 @@ public class FeatureFactoryImpl extends EFactoryImpl implements FeatureFactory {
 				return convertEObjToString(eDataType, instanceValue);
 			case FeaturePackage.EFEAT:
 				return convertEFeatToString(eDataType, instanceValue);
-			case FeaturePackage.PROXY:
-				return convertProxyToString(eDataType, instanceValue);
+			case FeaturePackage.RESOURCE_SET:
+				return convertResourceSetToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -143,8 +144,8 @@ public class FeatureFactoryImpl extends EFactoryImpl implements FeatureFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public InternalEObject createProxyFromString(EDataType eDataType, String initialValue) {
-		return (InternalEObject)super.createFromString(eDataType, initialValue);
+	public ResourceSet createResourceSetFromString(EDataType eDataType, String initialValue) {
+		return (ResourceSet)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -152,7 +153,7 @@ public class FeatureFactoryImpl extends EFactoryImpl implements FeatureFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertProxyToString(EDataType eDataType, Object instanceValue) {
+	public String convertResourceSetToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

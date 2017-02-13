@@ -28,6 +28,7 @@ type EFeat wraps EStructuralFeature
 
 abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
 	op unique AtomicEChange[+] getAtomicChanges()
+	
 }
 
 class MoveEObject<A extends EObj, B extends EObj, T extends EObj> extends CompoundEChange {

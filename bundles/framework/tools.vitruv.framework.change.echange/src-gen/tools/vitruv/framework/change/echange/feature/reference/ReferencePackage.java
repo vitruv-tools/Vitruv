@@ -7,8 +7,6 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 
-import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
-
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
@@ -74,15 +72,6 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_REFERENCE_ECHANGE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_REFERENCE_ECHANGE__RESOLVED = FeaturePackage.FEATURE_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -101,15 +90,6 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_REFERENCE_ECHANGE__PROXY_OBJECT = FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT;
-
-	/**
 	 * The number of structural features of the '<em>Update Reference EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -117,15 +97,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT = FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_REFERENCE_ECHANGE___RESOLVE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -164,6 +135,24 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_REFERENCE_ECHANGE___REVERT = FeaturePackage.FEATURE_ECHANGE___REVERT;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_REFERENCE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_REFERENCE_ECHANGE___RESOLVE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -192,31 +181,13 @@ public interface ReferencePackage extends EPackage {
 	int ADDITIVE_REFERENCE_ECHANGE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_REFERENCE_ECHANGE__RESOLVED = EobjectPackage.EOBJECT_ADDED_ECHANGE__RESOLVED;
-
-	/**
-	 * The feature id for the '<em><b>New Value</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE = EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 0;
+	int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = UPDATE_REFERENCE_ECHANGE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -225,16 +196,16 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 1;
+	int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = UPDATE_REFERENCE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * The feature id for the '<em><b>New Value</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 2;
+	int ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Additive Reference EChange</em>' class.
@@ -243,16 +214,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EobjectPackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 3;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_REFERENCE_ECHANGE___RESOLVE__RESOURCESET = EobjectPackage.EOBJECT_ADDED_ECHANGE___RESOLVE__RESOURCESET;
+	int ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -261,7 +223,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE___GET_APPLY_COMMAND = EobjectPackage.EOBJECT_ADDED_ECHANGE___GET_APPLY_COMMAND;
+	int ADDITIVE_REFERENCE_ECHANGE___GET_APPLY_COMMAND = UPDATE_REFERENCE_ECHANGE___GET_APPLY_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -270,7 +232,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE___APPLY = EobjectPackage.EOBJECT_ADDED_ECHANGE___APPLY;
+	int ADDITIVE_REFERENCE_ECHANGE___APPLY = UPDATE_REFERENCE_ECHANGE___APPLY;
 
 	/**
 	 * The operation id for the '<em>Get Revert Command</em>' operation.
@@ -279,7 +241,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE___GET_REVERT_COMMAND = EobjectPackage.EOBJECT_ADDED_ECHANGE___GET_REVERT_COMMAND;
+	int ADDITIVE_REFERENCE_ECHANGE___GET_REVERT_COMMAND = UPDATE_REFERENCE_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -288,16 +250,25 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE___REVERT = EobjectPackage.EOBJECT_ADDED_ECHANGE___REVERT;
+	int ADDITIVE_REFERENCE_ECHANGE___REVERT = UPDATE_REFERENCE_ECHANGE___REVERT;
 
 	/**
-	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * The operation id for the '<em>Is Resolved</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE___GET_NEW_VALUE = EobjectPackage.EOBJECT_ADDED_ECHANGE___GET_NEW_VALUE;
+	int ADDITIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_REFERENCE_ECHANGE___RESOLVE__RESOURCESET = UPDATE_REFERENCE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -306,7 +277,16 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = EobjectPackage.EOBJECT_ADDED_ECHANGE_OPERATION_COUNT + 0;
+	int ADDITIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT;
+
+	/**
+	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_REFERENCE_ECHANGE___GET_NEW_VALUE = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Additive Reference EChange</em>' class.
@@ -315,7 +295,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT = EobjectPackage.EOBJECT_ADDED_ECHANGE_OPERATION_COUNT + 1;
+	int ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.SubtractiveReferenceEChangeImpl <em>Subtractive Reference EChange</em>}' class.
@@ -328,31 +308,13 @@ public interface ReferencePackage extends EPackage {
 	int SUBTRACTIVE_REFERENCE_ECHANGE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__RESOLVED = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__RESOLVED;
-
-	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 0;
+	int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = UPDATE_REFERENCE_ECHANGE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -361,16 +323,16 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 1;
+	int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = UPDATE_REFERENCE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * The feature id for the '<em><b>Old Value</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__PROXY_OBJECT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 2;
+	int SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Subtractive Reference EChange</em>' class.
@@ -379,16 +341,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 3;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___RESOLVE__RESOURCESET = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE___RESOLVE__RESOURCESET;
+	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -397,7 +350,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_APPLY_COMMAND = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE___GET_APPLY_COMMAND;
+	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_APPLY_COMMAND = UPDATE_REFERENCE_ECHANGE___GET_APPLY_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -406,7 +359,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___APPLY = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE___APPLY;
+	int SUBTRACTIVE_REFERENCE_ECHANGE___APPLY = UPDATE_REFERENCE_ECHANGE___APPLY;
 
 	/**
 	 * The operation id for the '<em>Get Revert Command</em>' operation.
@@ -415,7 +368,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_REVERT_COMMAND = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE___GET_REVERT_COMMAND;
+	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_REVERT_COMMAND = UPDATE_REFERENCE_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -424,16 +377,25 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___REVERT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE___REVERT;
+	int SUBTRACTIVE_REFERENCE_ECHANGE___REVERT = UPDATE_REFERENCE_ECHANGE___REVERT;
 
 	/**
-	 * The operation id for the '<em>Get Old Value</em>' operation.
+	 * The operation id for the '<em>Is Resolved</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_OLD_VALUE = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE___GET_OLD_VALUE;
+	int SUBTRACTIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_REFERENCE_ECHANGE___RESOLVE__RESOURCESET = UPDATE_REFERENCE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -442,7 +404,16 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_OPERATION_COUNT + 0;
+	int SUBTRACTIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT;
+
+	/**
+	 * The operation id for the '<em>Get Old Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_OLD_VALUE = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Subtractive Reference EChange</em>' class.
@@ -451,7 +422,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE_OPERATION_COUNT = EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE_OPERATION_COUNT + 1;
+	int SUBTRACTIVE_REFERENCE_ECHANGE_OPERATION_COUNT = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl <em>Insert EReference</em>}' class.
@@ -462,15 +433,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	int INSERT_EREFERENCE = 3;
-
-	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE__RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE__RESOLVED;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -489,15 +451,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_EREFERENCE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT;
-
-	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE__PROXY_OBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -527,24 +480,6 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE___RESOLVE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE___GET_APPLY_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -552,15 +487,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_EREFERENCE___APPLY = ListPackage.INSERT_IN_LIST_ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE___GET_REVERT_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -590,13 +516,49 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE___IS_CONTAINMENT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EREFERENCE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EREFERENCE___RESOLVE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EREFERENCE___GET_APPLY_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EREFERENCE___GET_REVERT_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 4;
+
+	/**
 	 * The number of operations of the '<em>Insert EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
+	int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
@@ -607,15 +569,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	int REMOVE_EREFERENCE = 4;
-
-	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE__RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE__RESOLVED;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -634,15 +587,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EREFERENCE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT;
-
-	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE__PROXY_OBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -672,24 +616,6 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE___RESOLVE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE___GET_APPLY_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -697,15 +623,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EREFERENCE___APPLY = ListPackage.REMOVE_FROM_LIST_ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE___GET_REVERT_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -735,13 +652,49 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE___IS_CONTAINMENT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EREFERENCE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EREFERENCE___RESOLVE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EREFERENCE___GET_APPLY_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EREFERENCE___GET_REVERT_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 4;
+
+	/**
 	 * The number of operations of the '<em>Remove EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
+	int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
@@ -752,24 +705,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	int REPLACE_SINGLE_VALUED_EREFERENCE = 5;
-
-	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE__RESOLVED = ADDITIVE_REFERENCE_ECHANGE__RESOLVED;
-
-	/**
-	 * The feature id for the '<em><b>New Value</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -790,13 +725,13 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
+	 * The feature id for the '<em><b>New Value</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE__PROXY_OBJECT = ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT;
+	int REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' reference.
@@ -817,24 +752,6 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET = ADDITIVE_REFERENCE_ECHANGE___RESOLVE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___GET_APPLY_COMMAND = ADDITIVE_REFERENCE_ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -842,15 +759,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EREFERENCE___APPLY = ADDITIVE_REFERENCE_ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___GET_REVERT_COMMAND = ADDITIVE_REFERENCE_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -862,15 +770,6 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE___REVERT = ADDITIVE_REFERENCE_ECHANGE___REVERT;
 
 	/**
-	 * The operation id for the '<em>Get New Value</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE = ADDITIVE_REFERENCE_ECHANGE___GET_NEW_VALUE;
-
-	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -878,6 +777,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT = ADDITIVE_REFERENCE_ECHANGE___IS_CONTAINMENT;
+
+	/**
+	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE = ADDITIVE_REFERENCE_ECHANGE___GET_NEW_VALUE;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -907,13 +815,49 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_TO_NON_DEFAULT_VALUE = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 4;
+
+	/**
+	 * The operation id for the '<em>Get Apply Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___GET_APPLY_COMMAND = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 5;
+
+	/**
+	 * The operation id for the '<em>Get Revert Command</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___GET_REVERT_COMMAND = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 6;
+
+	/**
 	 * The number of operations of the '<em>Replace Single Valued EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 3;
+	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 7;
 
 	/**
 	 * The meta object id for the '<em>EObj</em>' data type.
@@ -924,6 +868,26 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	int EOBJ = 6;
+
+	/**
+	 * The meta object id for the '<em>Resource Set</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.resource.ResourceSet
+	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getResourceSet()
+	 * @generated
+	 */
+	int RESOURCE_SET = 7;
+
+	/**
+	 * The meta object id for the '<em>Command</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.common.command.Command
+	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getCommand()
+	 * @generated
+	 */
+	int COMMAND = 8;
 
 
 	/**
@@ -977,6 +941,46 @@ public interface ReferencePackage extends EPackage {
 	EClass getInsertEReference();
 
 	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#isResolved() <em>Is Resolved</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Resolved</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#isResolved()
+	 * @generated
+	 */
+	EOperation getInsertEReference__IsResolved();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getInsertEReference__Resolve__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#getApplyCommand() <em>Get Apply Command</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Apply Command</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#getApplyCommand()
+	 * @generated
+	 */
+	EOperation getInsertEReference__GetApplyCommand();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#getRevertCommand() <em>Get Revert Command</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Revert Command</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#getRevertCommand()
+	 * @generated
+	 */
+	EOperation getInsertEReference__GetRevertCommand();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference <em>Remove EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -985,6 +989,46 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRemoveEReference();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#isResolved() <em>Is Resolved</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Resolved</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#isResolved()
+	 * @generated
+	 */
+	EOperation getRemoveEReference__IsResolved();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getRemoveEReference__Resolve__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#getApplyCommand() <em>Get Apply Command</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Apply Command</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#getApplyCommand()
+	 * @generated
+	 */
+	EOperation getRemoveEReference__GetApplyCommand();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#getRevertCommand() <em>Get Revert Command</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Revert Command</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#getRevertCommand()
+	 * @generated
+	 */
+	EOperation getRemoveEReference__GetRevertCommand();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference <em>Replace Single Valued EReference</em>}'.
@@ -997,6 +1041,46 @@ public interface ReferencePackage extends EPackage {
 	EClass getReplaceSingleValuedEReference();
 
 	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#isResolved() <em>Is Resolved</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Is Resolved</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#isResolved()
+	 * @generated
+	 */
+	EOperation getReplaceSingleValuedEReference__IsResolved();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getReplaceSingleValuedEReference__Resolve__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#getApplyCommand() <em>Get Apply Command</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Apply Command</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#getApplyCommand()
+	 * @generated
+	 */
+	EOperation getReplaceSingleValuedEReference__GetApplyCommand();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#getRevertCommand() <em>Get Revert Command</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Revert Command</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#getRevertCommand()
+	 * @generated
+	 */
+	EOperation getReplaceSingleValuedEReference__GetRevertCommand();
+
+	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1006,6 +1090,28 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	EDataType getEObj();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.ResourceSet <em>Resource Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Resource Set</em>'.
+	 * @see org.eclipse.emf.ecore.resource.ResourceSet
+	 * @model instanceClass="org.eclipse.emf.ecore.resource.ResourceSet"
+	 * @generated
+	 */
+	EDataType getResourceSet();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.common.command.Command <em>Command</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Command</em>'.
+	 * @see org.eclipse.emf.common.command.Command
+	 * @model instanceClass="org.eclipse.emf.common.command.Command"
+	 * @generated
+	 */
+	EDataType getCommand();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1079,6 +1185,38 @@ public interface ReferencePackage extends EPackage {
 		EClass INSERT_EREFERENCE = eINSTANCE.getInsertEReference();
 
 		/**
+		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation INSERT_EREFERENCE___IS_RESOLVED = eINSTANCE.getInsertEReference__IsResolved();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation INSERT_EREFERENCE___RESOLVE__RESOURCESET = eINSTANCE.getInsertEReference__Resolve__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation INSERT_EREFERENCE___GET_APPLY_COMMAND = eINSTANCE.getInsertEReference__GetApplyCommand();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Revert Command</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation INSERT_EREFERENCE___GET_REVERT_COMMAND = eINSTANCE.getInsertEReference__GetRevertCommand();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1087,6 +1225,38 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass REMOVE_EREFERENCE = eINSTANCE.getRemoveEReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REMOVE_EREFERENCE___IS_RESOLVED = eINSTANCE.getRemoveEReference__IsResolved();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REMOVE_EREFERENCE___RESOLVE__RESOURCESET = eINSTANCE.getRemoveEReference__Resolve__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REMOVE_EREFERENCE___GET_APPLY_COMMAND = eINSTANCE.getRemoveEReference__GetApplyCommand();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Revert Command</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REMOVE_EREFERENCE___GET_REVERT_COMMAND = eINSTANCE.getRemoveEReference__GetRevertCommand();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
@@ -1099,6 +1269,38 @@ public interface ReferencePackage extends EPackage {
 		EClass REPLACE_SINGLE_VALUED_EREFERENCE = eINSTANCE.getReplaceSingleValuedEReference();
 
 		/**
+		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = eINSTANCE.getReplaceSingleValuedEReference__IsResolved();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET = eINSTANCE.getReplaceSingleValuedEReference__Resolve__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___GET_APPLY_COMMAND = eINSTANCE.getReplaceSingleValuedEReference__GetApplyCommand();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Revert Command</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___GET_REVERT_COMMAND = eINSTANCE.getReplaceSingleValuedEReference__GetRevertCommand();
+
+		/**
 		 * The meta object literal for the '<em>EObj</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1107,6 +1309,26 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EDataType EOBJ = eINSTANCE.getEObj();
+
+		/**
+		 * The meta object literal for the '<em>Resource Set</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.resource.ResourceSet
+		 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getResourceSet()
+		 * @generated
+		 */
+		EDataType RESOURCE_SET = eINSTANCE.getResourceSet();
+
+		/**
+		 * The meta object literal for the '<em>Command</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.common.command.Command
+		 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getCommand()
+		 * @generated
+		 */
+		EDataType COMMAND = eINSTANCE.getCommand();
 
 	}
 

@@ -2,7 +2,13 @@
  */
 package tools.vitruv.framework.change.echange.feature.impl;
 
+import com.google.common.base.Objects;
+
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -10,6 +16,13 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
@@ -26,7 +39,6 @@ import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.impl.FeatureEChangeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.impl.FeatureEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.impl.FeatureEChangeImpl#getProxyObject <em>Proxy Object</em>}</li>
  * </ul>
  *
  * @generated
@@ -51,26 +63,6 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * @ordered
 	 */
 	protected A affectedEObject;
-
-	/**
-	 * The default value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProxyObject()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final InternalEObject PROXY_OBJECT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProxyObject()
-	 * @generated
-	 * @ordered
-	 */
-	protected InternalEObject proxyObject = PROXY_OBJECT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -174,8 +166,8 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public InternalEObject getProxyObject() {
-		return proxyObject;
+	public boolean isResolved() {
+		return ((!Objects.equal(this.getAffectedEObject(), null)) && (!this.getAffectedEObject().eIsProxy()));
 	}
 
 	/**
@@ -183,11 +175,30 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setProxyObject(InternalEObject newProxyObject) {
-		InternalEObject oldProxyObject = proxyObject;
-		proxyObject = newProxyObject;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT, oldProxyObject, proxyObject));
+	public EChange resolve(final ResourceSet resourceSet) {
+		if ((Objects.equal(this.getAffectedEObject(), null) || Objects.equal(this.getAffectedFeature(), null))) {
+			return null;
+		}
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			EChange _resolve = super.resolve(resourceSet);
+			final FeatureEChange<A, F> resolvedChange = ((FeatureEChange<A, F>) _resolve);
+			boolean _equals = Objects.equal(resolvedChange, null);
+			if (_equals) {
+				return null;
+			}
+			A _affectedEObject = this.getAffectedEObject();
+			EObject _resolve_1 = EcoreUtil.resolve(_affectedEObject, resourceSet);
+			resolvedChange.setAffectedEObject(((A) _resolve_1));
+			A _affectedEObject_1 = resolvedChange.getAffectedEObject();
+			boolean _eIsProxy = _affectedEObject_1.eIsProxy();
+			if (_eIsProxy) {
+				return this;
+			}
+			return resolvedChange;
+		}
+		return this;
 	}
 
 	/**
@@ -204,8 +215,6 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				if (resolve) return getAffectedEObject();
 				return basicGetAffectedEObject();
-			case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT:
-				return getProxyObject();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -225,9 +234,6 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)newValue);
 				return;
-			case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT:
-				setProxyObject((InternalEObject)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -246,9 +252,6 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)null);
 				return;
-			case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT:
-				setProxyObject(PROXY_OBJECT_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -265,8 +268,6 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 				return affectedFeature != null;
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				return affectedEObject != null;
-			case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT:
-				return PROXY_OBJECT_EDEFAULT == null ? proxyObject != null : !PROXY_OBJECT_EDEFAULT.equals(proxyObject);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -277,14 +278,31 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * @generated
 	 */
 	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
+	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+		if (baseClass == EChange.class) {
+			switch (baseOperationID) {
+				case EChangePackage.ECHANGE___IS_RESOLVED: return FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
+				case EChangePackage.ECHANGE___RESOLVE__RESOURCESET: return FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		return super.eDerivedOperationID(baseOperationID, baseClass);
+	}
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (proxyObject: ");
-		result.append(proxyObject);
-		result.append(')');
-		return result.toString();
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED:
+				return isResolved();
+			case FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET:
+				return resolve((ResourceSet)arguments.get(0));
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //FeatureEChangeImpl

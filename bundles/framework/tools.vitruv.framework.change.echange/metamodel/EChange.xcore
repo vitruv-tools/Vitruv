@@ -4,36 +4,63 @@ package tools.vitruv.framework.change.echange
 
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 type Command wraps Command
 type ResourceSet wraps ResourceSet
 
 abstract class EChange {
-	boolean resolved
 	
 	/**
-	 * TEST DOC
+	 * 
 	 */
-	op EChange resolve(ResourceSet resourceSet)
+	op boolean isResolved() {
+		return true
+	}
+	
+	
+	/**
+	 * Resolves the unresolved proxy EObjects of the change to a given set of resources with concrete EObjects.
+	 * Before the change can be applied or reverted all proxy objects need to be resolved.
+	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
+	 * 			the unresolved should be resolved to.
+	 * @return 	A new resolved change which EObjects references to concrete elements in the 
+	 * 			given {@code ResourceSet}. The returned class is the same as the resolved one.
+	 * 			If not all proxy objects could be resolved it returns the original unresolved change.
+	 * 			Returns {@code null} if {@link resourceSet} is {@code null}.
+	 */
+	op EChange resolve(ResourceSet resourceSet) {
+		if (resourceSet == null) {
+			return null
+		}
+		if (!isResolved) {
+			return EcoreUtil.copy(this)
+		}
+		return this
+	}
 	
 	op Command getApplyCommand()
-	op void apply() {
+	op boolean apply() {
 		if (resolved) {
 			val command = getApplyCommand();
 			if (command.canExecute()) {
 				command.execute()
+				return true
 			}
 		}
+		return false
 	}
 	
 	op Command getRevertCommand()
-	op void revert() {
+	op boolean revert() {
 		if (resolved) {
 			val command = getRevertCommand()
 			if (command.canExecute()) {
 				command.execute()
+				return true
 			}
 		}
+		return false
 	}
 }
 

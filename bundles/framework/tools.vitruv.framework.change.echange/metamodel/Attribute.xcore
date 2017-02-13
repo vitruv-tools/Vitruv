@@ -3,19 +3,17 @@
 package tools.vitruv.framework.change.echange.feature.attribute
 
 import org.eclipse.emf.common.command.Command
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.emf.edit.command.SetCommand
 import org.eclipse.emf.edit.command.AddCommand
 import org.eclipse.emf.edit.command.RemoveCommand
+import org.eclipse.emf.edit.command.SetCommand
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory
 import tools.vitruv.framework.change.echange.AdditiveEChange
-import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
@@ -28,29 +26,20 @@ type Command wraps Command
 abstract class UpdateAttributeEChange<A extends EObj> extends FeatureEChange<A, EAttribute> {
 }
 
-abstract class AdditiveAttributeEChange<A extends EObj, T extends Object> extends AdditiveEChange<T>, UpdateAttributeEChange<A> {
+abstract class AdditiveAttributeEChange<A extends EObj, T extends Object> extends UpdateAttributeEChange<A>, AdditiveEChange<T> {
 	T[1] newValue
 }
 
-abstract class SubtractiveAttributeEChange<A extends EObj, T extends Object> extends SubtractiveEChange<T>, UpdateAttributeEChange<A> {
+abstract class SubtractiveAttributeEChange<A extends EObj, T extends Object> extends UpdateAttributeEChange<A>, SubtractiveEChange<T> {
 	T[1] oldValue
 }
 
 class InsertEAttributeValue<A extends EObj, T extends Object> extends InsertInListEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T> {
-	op EChange resolve(ResourceSet resourceSet) {
-		if (!resolved) {
-			val resolvedObject = EcoreUtil.resolve(proxyObject, resourceSet)
-			val resolvedChange = TypeInferringAtomicEChangeFactory.createInsertAttributeChange(resolvedObject, affectedFeature, index, newValue, false)
-			resolvedChange.resolved = true
-			return resolvedChange
-		}
-		// Already resolved
-		return this
-	}
 	op Command getApplyCommand() {
 		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null);
 		return AddCommand.create(editingDomain, affectedEObject, affectedFeature, newValue, index);
 	}
+	
 	op Command getRevertCommand() {
 		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null);
 		return RemoveCommand.create(editingDomain, affectedEObject, affectedFeature, newValue);
@@ -58,16 +47,6 @@ class InsertEAttributeValue<A extends EObj, T extends Object> extends InsertInLi
 }
 
 class RemoveEAttributeValue<A extends EObj, T extends Object> extends RemoveFromListEChange<A, EAttribute, T>, SubtractiveAttributeEChange<A, T> {
-		op EChange resolve(ResourceSet resourceSet) {
-		if (!resolved) {
-			val resolvedObject = EcoreUtil.resolve(proxyObject, resourceSet)
-			val resolvedChange = TypeInferringAtomicEChangeFactory.createInsertAttributeChange(resolvedObject, affectedFeature, index, oldValue, false)
-			resolvedChange.resolved = true
-			return resolvedChange
-		}
-		// Already resolved
-		return this
-	}
 	op Command getApplyCommand() {
 		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null);
 		return RemoveCommand.create(editingDomain, affectedEObject, affectedFeature, oldValue);
@@ -79,16 +58,6 @@ class RemoveEAttributeValue<A extends EObj, T extends Object> extends RemoveFrom
 }
 
 class ReplaceSingleValuedEAttribute<A extends EObj, T extends Object> extends AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EAttribute, T> {
-	op EChange resolve(ResourceSet resourceSet) {
-		if (!resolved) {
-			val resolvedObject = EcoreUtil.resolve(proxyObject, resourceSet)
-			val resolvedChange = TypeInferringAtomicEChangeFactory.createReplaceSingleAttributeChange(resolvedObject, affectedFeature, oldValue, newValue, false)
-			resolvedChange.resolved = true
-			return resolvedChange
-		} 
-		// Already resolved
-		return this
-	}
 	op Command getApplyCommand() {
 		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null)
 		return SetCommand.create(editingDomain, affectedEObject, affectedFeature, newValue)
