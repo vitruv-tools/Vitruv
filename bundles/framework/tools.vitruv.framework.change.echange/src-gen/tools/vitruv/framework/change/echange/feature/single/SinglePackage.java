@@ -70,15 +70,6 @@ public interface SinglePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__RESOLVED = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -97,15 +88,6 @@ public interface SinglePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__PROXY_OBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__PROXY_OBJECT;
-
-	/**
 	 * The number of structural features of the '<em>Replace Single Valued Feature EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -113,15 +95,6 @@ public interface SinglePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -158,6 +131,24 @@ public interface SinglePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___REVERT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___REVERT;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.

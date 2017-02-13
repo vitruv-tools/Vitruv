@@ -23,6 +23,8 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.EobjectFactory
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
+import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 
 /**
  * Factory class for elements of change models. 
@@ -35,20 +37,37 @@ final class TypeInferringAtomicEChangeFactory {
 		c.uri = resourceURI
 	}
 	
+	private def static <A extends EObject> A createProxy(A resolvedObject) {
+		val proxy = resolvedObject.eClass().getEPackage().getEFactoryInstance().create(resolvedObject.eClass()) as InternalEObject
+		proxy.eSetProxyURI(EcoreUtil.getURI(resolvedObject))
+		return proxy as A
+	}
+	
 	private def static <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(FeatureEChange<A,F> c, A affectedEObject, F affectedFeature, boolean unresolve) {
-		if (unresolve) {
-			val proxy = affectedEObject.eClass().getEPackage().getEFactoryInstance().create(affectedEObject.eClass()) as InternalEObject
-			proxy.eSetProxyURI(EcoreUtil.getURI(affectedEObject))
-			c.proxyObject = proxy
-			c.affectedEObject = null
+		if (affectedEObject != null && unresolve) {
+			c.affectedEObject = createProxy(affectedEObject)
 		} else {
-			c.proxyObject = null
-			c.affectedEObject = affectedEObject	
-			c.resolved = true		
+			c.affectedEObject = affectedEObject			
 		}
 		c.affectedFeature = affectedFeature
 	}
 
+	private def static <A extends EObject, T extends EObject> void setReferenceChangeNewReference(AdditiveReferenceEChange<A, T> c, T newReferenceValue, boolean unresolve) {
+		if (newReferenceValue != null && unresolve) {
+			c.newValue = createProxy(newReferenceValue)
+		} else {
+			c.newValue = newReferenceValue
+		}
+	}
+	
+	private def static <A extends EObject, T extends EObject> void setReferenceChangeOldReference(SubtractiveReferenceEChange<A, T> c, T oldReferenceValue, boolean unresolve) {
+		if (oldReferenceValue != null && unresolve) {
+			c.oldValue = createProxy(oldReferenceValue)
+		} else {
+			c.oldValue = oldReferenceValue
+		}
+	}
+	
 	def static <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, String resourceURI) {
 		val c = RootFactory.eINSTANCE.createInsertRootEObject
 		c.newValue = newValue
@@ -90,7 +109,7 @@ final class TypeInferringAtomicEChangeFactory {
 	def static <A extends EObject, T extends EObject> InsertEReference<A,T> createInsertReferenceChange(A affectedEObject, EReference affectedReference, T newValue, int index, boolean unresolve) {
 		val c = ReferenceFactory.eINSTANCE.createInsertEReference()
 		setFeatureChangeFeatures(c, affectedEObject, affectedReference, unresolve)
-		c.newValue = newValue
+		setReferenceChangeNewReference(c, newValue, unresolve)
 		c.index = index
 		return c
 	}
@@ -98,15 +117,15 @@ final class TypeInferringAtomicEChangeFactory {
 	def static <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A,T> createReplaceSingleReferenceChange(A affectedEObject, EReference affectedReference, T oldValue, T newValue, boolean unresolve) {
 		val c = ReferenceFactory.eINSTANCE.createReplaceSingleValuedEReference
 		setFeatureChangeFeatures(c, affectedEObject, affectedReference, unresolve)
-		c.oldValue = oldValue
-		c.newValue = newValue
+		setReferenceChangeOldReference(c, oldValue, unresolve)
+		setReferenceChangeNewReference(c, newValue, unresolve)
 		return c
 	}
 	
 	def static <A extends EObject, T extends EObject> RemoveEReference<A,T> createRemoveReferenceChange(A affectedEObject, EReference affectedReference, T oldValue, int index, boolean unresolve) {
 		val c = ReferenceFactory.eINSTANCE.createRemoveEReference()
 		setFeatureChangeFeatures(c, affectedEObject, affectedReference, unresolve)
-		c.oldValue = oldValue
+		setReferenceChangeOldReference(c, oldValue, unresolve)
 		c.index = index
 		return c
 	}

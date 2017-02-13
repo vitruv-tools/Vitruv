@@ -8,8 +8,6 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 
-import tools.vitruv.framework.change.echange.EChangePackage;
-
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
@@ -75,15 +73,6 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_ATTRIBUTE_ECHANGE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE__RESOLVED = FeaturePackage.FEATURE_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -102,15 +91,6 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE__PROXY_OBJECT = FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT;
-
-	/**
 	 * The number of structural features of the '<em>Update Attribute EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -118,15 +98,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -165,6 +136,24 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_ATTRIBUTE_ECHANGE___REVERT = FeaturePackage.FEATURE_ECHANGE___REVERT;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
 	 * The number of operations of the '<em>Update Attribute EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -184,22 +173,13 @@ public interface AttributePackage extends EPackage {
 	int ADDITIVE_ATTRIBUTE_ECHANGE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE__RESOLVED = EChangePackage.ADDITIVE_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 0;
+	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -208,16 +188,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 2;
+	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -226,7 +197,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 3;
+	int ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Additive Attribute EChange</em>' class.
@@ -235,16 +206,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 4;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE__RESOURCESET;
+	int ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -253,7 +215,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND = EChangePackage.ADDITIVE_ECHANGE___GET_APPLY_COMMAND;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND = UPDATE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -262,7 +224,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___APPLY = EChangePackage.ADDITIVE_ECHANGE___APPLY;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___APPLY = UPDATE_ATTRIBUTE_ECHANGE___APPLY;
 
 	/**
 	 * The operation id for the '<em>Get Revert Command</em>' operation.
@@ -271,7 +233,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND = EChangePackage.ADDITIVE_ECHANGE___GET_REVERT_COMMAND;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND = UPDATE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -280,7 +242,25 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___REVERT = EChangePackage.ADDITIVE_ECHANGE___REVERT;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___REVERT = UPDATE_ATTRIBUTE_ECHANGE___REVERT;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -289,7 +269,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_NEW_VALUE = EChangePackage.ADDITIVE_ECHANGE___GET_NEW_VALUE;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_NEW_VALUE = UPDATE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Additive Attribute EChange</em>' class.
@@ -298,7 +278,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT = EChangePackage.ADDITIVE_ECHANGE_OPERATION_COUNT + 0;
+	int ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT = UPDATE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.SubtractiveAttributeEChangeImpl <em>Subtractive Attribute EChange</em>}' class.
@@ -311,22 +291,13 @@ public interface AttributePackage extends EPackage {
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__RESOLVED = EChangePackage.SUBTRACTIVE_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 0;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -335,16 +306,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 2;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -353,7 +315,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 3;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Subtractive Attribute EChange</em>' class.
@@ -362,16 +324,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 4;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE__RESOURCESET;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
@@ -380,7 +333,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND = EChangePackage.SUBTRACTIVE_ECHANGE___GET_APPLY_COMMAND;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND = UPDATE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -389,7 +342,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___APPLY = EChangePackage.SUBTRACTIVE_ECHANGE___APPLY;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___APPLY = UPDATE_ATTRIBUTE_ECHANGE___APPLY;
 
 	/**
 	 * The operation id for the '<em>Get Revert Command</em>' operation.
@@ -398,7 +351,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND = EChangePackage.SUBTRACTIVE_ECHANGE___GET_REVERT_COMMAND;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND = UPDATE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -407,7 +360,25 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___REVERT = EChangePackage.SUBTRACTIVE_ECHANGE___REVERT;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___REVERT = UPDATE_ATTRIBUTE_ECHANGE___REVERT;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -416,7 +387,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_OLD_VALUE = EChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_OLD_VALUE = UPDATE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Subtractive Attribute EChange</em>' class.
@@ -425,7 +396,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_OPERATION_COUNT + 0;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT = UPDATE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.InsertEAttributeValueImpl <em>Insert EAttribute Value</em>}' class.
@@ -436,15 +407,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	int INSERT_EATTRIBUTE_VALUE = 3;
-
-	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE__RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE__RESOLVED;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -463,15 +425,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT;
-
-	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE__PROXY_OBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -519,6 +472,24 @@ public interface AttributePackage extends EPackage {
 	int INSERT_EATTRIBUTE_VALUE___REVERT = ListPackage.INSERT_IN_LIST_ECHANGE___REVERT;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -528,22 +499,13 @@ public interface AttributePackage extends EPackage {
 	int INSERT_EATTRIBUTE_VALUE___GET_NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE___GET_NEW_VALUE;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EATTRIBUTE_VALUE___GET_APPLY_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
+	int INSERT_EATTRIBUTE_VALUE___GET_APPLY_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>Get Revert Command</em>' operation.
@@ -552,7 +514,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EATTRIBUTE_VALUE___GET_REVERT_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
+	int INSERT_EATTRIBUTE_VALUE___GET_REVERT_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Insert EAttribute Value</em>' class.
@@ -561,7 +523,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 3;
+	int INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.RemoveEAttributeValueImpl <em>Remove EAttribute Value</em>}' class.
@@ -572,15 +534,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	int REMOVE_EATTRIBUTE_VALUE = 4;
-
-	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE__RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE__RESOLVED;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -599,15 +552,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT;
-
-	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE__PROXY_OBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -655,6 +599,24 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE___REVERT = ListPackage.REMOVE_FROM_LIST_ECHANGE___REVERT;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -664,22 +626,13 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE___GET_OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE___GET_OLD_VALUE;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EATTRIBUTE_VALUE___GET_APPLY_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
+	int REMOVE_EATTRIBUTE_VALUE___GET_APPLY_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>Get Revert Command</em>' operation.
@@ -688,7 +641,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EATTRIBUTE_VALUE___GET_REVERT_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
+	int REMOVE_EATTRIBUTE_VALUE___GET_REVERT_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Remove EAttribute Value</em>' class.
@@ -697,7 +650,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 3;
+	int REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl <em>Replace Single Valued EAttribute</em>}' class.
@@ -708,15 +661,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE = 5;
-
-	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__RESOLVED = ADDITIVE_ATTRIBUTE_ECHANGE__RESOLVED;
 
 	/**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -735,15 +679,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
-
-	/**
-	 * The feature id for the '<em><b>Proxy Object</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__PROXY_OBJECT = ADDITIVE_ATTRIBUTE_ECHANGE__PROXY_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -791,6 +726,24 @@ public interface AttributePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE___REVERT = ADDITIVE_ATTRIBUTE_ECHANGE___REVERT;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_RESOLVED = ADDITIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE__RESOURCESET = ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -827,22 +780,13 @@ public interface AttributePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE__RESOURCESET = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 3;
-
-	/**
 	 * The operation id for the '<em>Get Apply Command</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_APPLY_COMMAND = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 4;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_APPLY_COMMAND = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Get Revert Command</em>' operation.
@@ -851,7 +795,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_REVERT_COMMAND = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 5;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_REVERT_COMMAND = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Replace Single Valued EAttribute</em>' class.
@@ -860,7 +804,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 6;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 5;
 
 	/**
 	 * The meta object id for the '<em>EObj</em>' data type.
@@ -956,16 +900,6 @@ public interface AttributePackage extends EPackage {
 	EClass getInsertEAttributeValue();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getInsertEAttributeValue__Resolve__ResourceSet();
-
-	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue#getApplyCommand() <em>Get Apply Command</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -996,16 +930,6 @@ public interface AttributePackage extends EPackage {
 	EClass getRemoveEAttributeValue();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getRemoveEAttributeValue__Resolve__ResourceSet();
-
-	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue#getApplyCommand() <em>Get Apply Command</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1034,16 +958,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReplaceSingleValuedEAttribute();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getReplaceSingleValuedEAttribute__Resolve__ResourceSet();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute#getApplyCommand() <em>Get Apply Command</em>}' operation.
@@ -1178,14 +1092,6 @@ public interface AttributePackage extends EPackage {
 		EClass INSERT_EATTRIBUTE_VALUE = eINSTANCE.getInsertEAttributeValue();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation INSERT_EATTRIBUTE_VALUE___RESOLVE__RESOURCESET = eINSTANCE.getInsertEAttributeValue__Resolve__ResourceSet();
-
-		/**
 		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1212,14 +1118,6 @@ public interface AttributePackage extends EPackage {
 		EClass REMOVE_EATTRIBUTE_VALUE = eINSTANCE.getRemoveEAttributeValue();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REMOVE_EATTRIBUTE_VALUE___RESOLVE__RESOURCESET = eINSTANCE.getRemoveEAttributeValue__Resolve__ResourceSet();
-
-		/**
 		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1244,14 +1142,6 @@ public interface AttributePackage extends EPackage {
 		 * @generated
 		 */
 		EClass REPLACE_SINGLE_VALUED_EATTRIBUTE = eINSTANCE.getReplaceSingleValuedEAttribute();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE__RESOURCESET = eINSTANCE.getReplaceSingleValuedEAttribute__Resolve__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.

@@ -22,7 +22,7 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.attribute.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface SubtractiveAttributeEChange<A extends EObject, T extends Object> extends SubtractiveEChange<T>, UpdateAttributeEChange<A> {
+public interface SubtractiveAttributeEChange<A extends EObject, T extends Object> extends UpdateAttributeEChange<A>, SubtractiveEChange<T> {
 	/**
 	 * Returns the value of the '<em><b>Old Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->

@@ -7,10 +7,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
-import tools.vitruv.framework.change.echange.EChange;
-
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
 
 /**
@@ -24,15 +20,6 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
  * @generated
  */
 public interface InsertEAttributeValue<A extends EObject, T extends Object> extends InsertInListEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T> {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.feature.attribute.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%org.eclipse.emf.ecore.InternalEObject%> _proxyObject = this.getProxyObject();\n\tfinal <%org.eclipse.emf.ecore.EObject%> resolvedObject = <%org.eclipse.emf.ecore.util.EcoreUtil%>.resolve(_proxyObject, resourceSet);\n\t<%org.eclipse.emf.ecore.EAttribute%> _affectedFeature = this.getAffectedFeature();\n\tint _index = this.getIndex();\n\tT _newValue = this.getNewValue();\n\tfinal <%tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue%><<%org.eclipse.emf.ecore.EObject%>, T> resolvedChange = <%tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory%>.<<%org.eclipse.emf.ecore.EObject%>, T>createInsertAttributeChange(resolvedObject, _affectedFeature, _index, _newValue, false);\n\tresolvedChange.setResolved(true);\n\treturn resolvedChange;\n}\nreturn this;'"
-	 * @generated
-	 */
-	EChange resolve(ResourceSet resourceSet);
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

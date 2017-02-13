@@ -2,27 +2,21 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.framework.change.echange.eobject.impl.EObjectAddedEChangeImpl;
+import tools.vitruv.framework.change.echange.AdditiveEChange;
 
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange;
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
-import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,53 +26,21 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.AdditiveReferenceEChangeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.AdditiveReferenceEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.AdditiveReferenceEChangeImpl#getProxyObject <em>Proxy Object</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.AdditiveReferenceEChangeImpl#getNewValue <em>New Value</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends EObject> extends EObjectAddedEChangeImpl<T> implements AdditiveReferenceEChange<A, T> {
+public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends EObject> extends UpdateReferenceEChangeImpl<A> implements AdditiveReferenceEChange<A, T> {
 	/**
-	 * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
+	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAffectedFeature()
+	 * @see #getNewValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected EReference affectedFeature;
-
-	/**
-	 * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAffectedEObject()
-	 * @generated
-	 * @ordered
-	 */
-	protected A affectedEObject;
-
-	/**
-	 * The default value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProxyObject()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final InternalEObject PROXY_OBJECT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getProxyObject() <em>Proxy Object</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProxyObject()
-	 * @generated
-	 * @ordered
-	 */
-	protected InternalEObject proxyObject = PROXY_OBJECT_EDEFAULT;
+	protected T newValue;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -104,55 +66,17 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAffectedFeature() {
-		if (affectedFeature != null && ((EObject)affectedFeature).eIsProxy()) {
-			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
-			affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
-			if (affectedFeature != oldAffectedFeature) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
-			}
-		}
-		return affectedFeature;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference basicGetAffectedFeature() {
-		return affectedFeature;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setAffectedFeature(EReference newAffectedFeature) {
-		EReference oldAffectedFeature = affectedFeature;
-		affectedFeature = newAffectedFeature;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@SuppressWarnings("unchecked")
-	public A getAffectedEObject() {
-		if (affectedEObject != null && ((EObject)affectedEObject).eIsProxy()) {
-			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
-			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
-			if (affectedEObject != oldAffectedEObject) {
+	public T getNewValue() {
+		if (newValue != null && newValue.eIsProxy()) {
+			InternalEObject oldNewValue = (InternalEObject)newValue;
+			newValue = (T)eResolveProxy(oldNewValue);
+			if (newValue != oldNewValue) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE, oldNewValue, newValue));
 			}
 		}
-		return affectedEObject;
+		return newValue;
 	}
 
 	/**
@@ -160,8 +84,8 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public A basicGetAffectedEObject() {
-		return affectedEObject;
+	public T basicGetNewValue() {
+		return newValue;
 	}
 
 	/**
@@ -169,41 +93,11 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAffectedEObject(A newAffectedEObject) {
-		A oldAffectedEObject = affectedEObject;
-		affectedEObject = newAffectedEObject;
+	public void setNewValue(T newNewValue) {
+		T oldNewValue = newValue;
+		newValue = newNewValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public InternalEObject getProxyObject() {
-		return proxyObject;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setProxyObject(InternalEObject newProxyObject) {
-		InternalEObject oldProxyObject = proxyObject;
-		proxyObject = newProxyObject;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT, oldProxyObject, proxyObject));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isContainment() {
-		return getAffectedFeature().isContainment();
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE, oldNewValue, newValue));
 	}
 
 	/**
@@ -214,14 +108,9 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE:
-				if (resolve) return getAffectedFeature();
-				return basicGetAffectedFeature();
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT:
-				if (resolve) return getAffectedEObject();
-				return basicGetAffectedEObject();
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT:
-				return getProxyObject();
+			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE:
+				if (resolve) return getNewValue();
+				return basicGetNewValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -235,14 +124,8 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE:
-				setAffectedFeature((EReference)newValue);
-				return;
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT:
-				setAffectedEObject((A)newValue);
-				return;
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT:
-				setProxyObject((InternalEObject)newValue);
+			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE:
+				setNewValue((T)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -256,14 +139,8 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE:
-				setAffectedFeature((EReference)null);
-				return;
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT:
-				setAffectedEObject((A)null);
-				return;
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT:
-				setProxyObject(PROXY_OBJECT_EDEFAULT);
+			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE:
+				setNewValue((T)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -277,12 +154,8 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE:
-				return affectedFeature != null;
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT:
-				return affectedEObject != null;
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT:
-				return PROXY_OBJECT_EDEFAULT == null ? proxyObject != null : !PROXY_OBJECT_EDEFAULT.equals(proxyObject);
+			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE:
+				return newValue != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -294,16 +167,14 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == FeatureEChange.class) {
+		if (baseClass == AdditiveEChange.class) {
 			switch (derivedFeatureID) {
-				case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
-				case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
-				case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT: return FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectAddedEChange.class) {
 			switch (derivedFeatureID) {
+				case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE: return EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
 				default: return -1;
 			}
 		}
@@ -317,71 +188,18 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == FeatureEChange.class) {
+		if (baseClass == AdditiveEChange.class) {
 			switch (baseFeatureID) {
-				case FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE: return ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE;
-				case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT: return ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT;
-				case FeaturePackage.FEATURE_ECHANGE__PROXY_OBJECT: return ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__PROXY_OBJECT;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectAddedEChange.class) {
 			switch (baseFeatureID) {
+				case EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE: return ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE;
 				default: return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == FeatureEChange.class) {
-			switch (baseOperationID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateReferenceEChange.class) {
-			switch (baseOperationID) {
-				case ReferencePackage.UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT: return ReferencePackage.ADDITIVE_REFERENCE_ECHANGE___IS_CONTAINMENT;
-				default: return -1;
-			}
-		}
-		return super.eDerivedOperationID(baseOperationID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE___IS_CONTAINMENT:
-				return isContainment();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (proxyObject: ");
-		result.append(proxyObject);
-		result.append(')');
-		return result.toString();
 	}
 
 } //AdditiveReferenceEChangeImpl

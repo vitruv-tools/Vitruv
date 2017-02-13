@@ -4,7 +4,6 @@ package tools.vitruv.framework.change.echange.impl;
 
 import org.eclipse.emf.common.command.Command;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
@@ -151,16 +150,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getEChange_Resolved() {
-		return (EAttribute)eChangeEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getEChange__Resolve__ResourceSet() {
+	public EOperation getEChange__IsResolved() {
 		return eChangeEClass.getEOperations().get(0);
 	}
 
@@ -169,7 +159,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__GetApplyCommand() {
+	public EOperation getEChange__Resolve__ResourceSet() {
 		return eChangeEClass.getEOperations().get(1);
 	}
 
@@ -178,7 +168,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__Apply() {
+	public EOperation getEChange__GetApplyCommand() {
 		return eChangeEClass.getEOperations().get(2);
 	}
 
@@ -187,7 +177,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__GetRevertCommand() {
+	public EOperation getEChange__Apply() {
 		return eChangeEClass.getEOperations().get(3);
 	}
 
@@ -196,8 +186,17 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__Revert() {
+	public EOperation getEChange__GetRevertCommand() {
 		return eChangeEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getEChange__Revert() {
+		return eChangeEClass.getEOperations().get(5);
 	}
 
 	/**
@@ -292,7 +291,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		// Create classes and their features
 		eChangeEClass = createEClass(ECHANGE);
-		createEAttribute(eChangeEClass, ECHANGE__RESOLVED);
+		createEOperation(eChangeEClass, ECHANGE___IS_RESOLVED);
 		createEOperation(eChangeEClass, ECHANGE___RESOLVE__RESOURCESET);
 		createEOperation(eChangeEClass, ECHANGE___GET_APPLY_COMMAND);
 		createEOperation(eChangeEClass, ECHANGE___APPLY);
@@ -355,18 +354,19 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getEChange_Resolved(), theEcorePackage.getEBoolean(), "resolved", null, 0, 1, EChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		EOperation op = initEOperation(getEChange__Resolve__ResourceSet(), this.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getEChange__GetApplyCommand(), this.getCommand(), "getApplyCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getEChange__Apply(), null, "apply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		initEOperation(getEChange__Apply(), theEcorePackage.getEBoolean(), "apply", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getEChange__GetRevertCommand(), this.getCommand(), "getRevertCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getEChange__Revert(), null, "revert", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		initEOperation(getEChange__Revert(), theEcorePackage.getEBoolean(), "revert", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(atomicEChangeEClass, AtomicEChange.class, "AtomicEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

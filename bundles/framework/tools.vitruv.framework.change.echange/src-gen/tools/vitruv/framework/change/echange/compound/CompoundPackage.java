@@ -71,15 +71,6 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ECHANGE = 0;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ECHANGE__RESOLVED = EChangePackage.ECHANGE__RESOLVED;
-
-	/**
 	 * The number of structural features of the '<em>EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -87,6 +78,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOUND_ECHANGE_FEATURE_COUNT = EChangePackage.ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ECHANGE___IS_RESOLVED = EChangePackage.ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -162,15 +162,6 @@ public interface CompoundPackage extends EPackage {
 	int MOVE_EOBJECT = 1;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Subtract Where Change</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -214,6 +205,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int MOVE_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 4;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVE_EOBJECT___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -289,15 +289,6 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_SUBTRACTION = 4;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -314,6 +305,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOUND_SUBTRACTION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -389,15 +389,6 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EFEATURE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPLICIT_UNSET_EFEATURE__RESOLVED = COMPOUND_SUBTRACTION__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -414,6 +405,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___IS_RESOLVED = COMPOUND_SUBTRACTION___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -489,15 +489,6 @@ public interface CompoundPackage extends EPackage {
 	int REPLACE_IN_ELIST = 3;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_IN_ELIST__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -523,6 +514,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_IN_ELIST_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -598,15 +598,6 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ADDITION = 5;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ADDITION__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Additive Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -623,6 +614,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOUND_ADDITION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -698,15 +698,6 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_EOBJECT = 6;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_EOBJECT__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -732,6 +723,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_EOBJECT___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -807,15 +807,6 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_EOBJECT = 7;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_EOBJECT__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -841,6 +832,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_EOBJECT___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -916,15 +916,6 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_ROOT = 8;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_ROOT__RESOLVED = CREATE_AND_INSERT_EOBJECT__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -950,6 +941,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_AND_INSERT_ROOT_FEATURE_COUNT = CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT___IS_RESOLVED = CREATE_AND_INSERT_EOBJECT___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -1025,15 +1025,6 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_ROOT = 9;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_ROOT__RESOLVED = REMOVE_AND_DELETE_EOBJECT__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1059,6 +1050,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_AND_DELETE_ROOT_FEATURE_COUNT = REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT___IS_RESOLVED = REMOVE_AND_DELETE_EOBJECT___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -1134,15 +1134,6 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_NON_ROOT = 10;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_NON_ROOT__RESOLVED = CREATE_AND_INSERT_EOBJECT__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1168,6 +1159,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_AND_INSERT_NON_ROOT_FEATURE_COUNT = CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT___IS_RESOLVED = CREATE_AND_INSERT_EOBJECT___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -1243,15 +1243,6 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_NON_ROOT = 11;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_NON_ROOT__RESOLVED = REMOVE_AND_DELETE_EOBJECT__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1277,6 +1268,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_AND_DELETE_NON_ROOT_FEATURE_COUNT = REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT___IS_RESOLVED = REMOVE_AND_DELETE_EOBJECT___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -1352,15 +1352,6 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT = 12;
 
 	/**
-	 * The feature id for the '<em><b>Resolved</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT__RESOLVED = COMPOUND_ECHANGE__RESOLVED;
-
-	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1395,6 +1386,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.

@@ -2,20 +2,21 @@
  */
 package tools.vitruv.framework.change.echange.impl;
 
+import com.google.common.base.Objects;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.command.Command;
-
-import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
+
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
@@ -24,36 +25,10 @@ import tools.vitruv.framework.change.echange.EChangePackage;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>EChange</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * </p>
- * <ul>
- *   <li>{@link tools.vitruv.framework.change.echange.impl.EChangeImpl#isResolved <em>Resolved</em>}</li>
- * </ul>
  *
  * @generated
  */
 public abstract class EChangeImpl extends MinimalEObjectImpl.Container implements EChange {
-	/**
-	 * The default value of the '{@link #isResolved() <em>Resolved</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isResolved()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean RESOLVED_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isResolved() <em>Resolved</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isResolved()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean resolved = RESOLVED_EDEFAULT;
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -79,7 +54,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	public boolean isResolved() {
-		return resolved;
+		return true;
 	}
 
 	/**
@@ -87,22 +62,17 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setResolved(boolean newResolved) {
-		boolean oldResolved = resolved;
-		resolved = newResolved;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EChangePackage.ECHANGE__RESOLVED, oldResolved, resolved));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EChange resolve(ResourceSet resourceSet) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+	public EChange resolve(final ResourceSet resourceSet) {
+		boolean _equals = Objects.equal(resourceSet, null);
+		if (_equals) {
+			return null;
+		}
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			return EcoreUtil.<EChange>copy(this);
+		}
+		return this;
 	}
 
 	/**
@@ -121,15 +91,17 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void apply() {
+	public boolean apply() {
 		boolean _isResolved = this.isResolved();
 		if (_isResolved) {
 			final Command command = this.getApplyCommand();
 			boolean _canExecute = command.canExecute();
 			if (_canExecute) {
 				command.execute();
+				return true;
 			}
 		}
+		return false;
 	}
 
 	/**
@@ -148,73 +120,17 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void revert() {
+	public boolean revert() {
 		boolean _isResolved = this.isResolved();
 		if (_isResolved) {
 			final Command command = this.getRevertCommand();
 			boolean _canExecute = command.canExecute();
 			if (_canExecute) {
 				command.execute();
+				return true;
 			}
 		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case EChangePackage.ECHANGE__RESOLVED:
-				return isResolved();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case EChangePackage.ECHANGE__RESOLVED:
-				setResolved((Boolean)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID) {
-		switch (featureID) {
-			case EChangePackage.ECHANGE__RESOLVED:
-				setResolved(RESOLVED_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case EChangePackage.ECHANGE__RESOLVED:
-				return resolved != RESOLVED_EDEFAULT;
-		}
-		return super.eIsSet(featureID);
+		return false;
 	}
 
 	/**
@@ -225,36 +141,20 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
+			case EChangePackage.ECHANGE___IS_RESOLVED:
+				return isResolved();
 			case EChangePackage.ECHANGE___RESOLVE__RESOURCESET:
 				return resolve((ResourceSet)arguments.get(0));
 			case EChangePackage.ECHANGE___GET_APPLY_COMMAND:
 				return getApplyCommand();
 			case EChangePackage.ECHANGE___APPLY:
-				apply();
-				return null;
+				return apply();
 			case EChangePackage.ECHANGE___GET_REVERT_COMMAND:
 				return getRevertCommand();
 			case EChangePackage.ECHANGE___REVERT:
-				revert();
-				return null;
+				return revert();
 		}
 		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (resolved: ");
-		result.append(resolved);
-		result.append(')');
-		return result.toString();
 	}
 
 } //EChangeImpl
