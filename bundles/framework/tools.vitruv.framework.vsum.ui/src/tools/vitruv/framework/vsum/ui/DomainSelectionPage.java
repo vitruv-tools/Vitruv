@@ -2,6 +2,7 @@ package tools.vitruv.framework.vsum.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -29,14 +30,16 @@ public class DomainSelectionPage extends WizardPage {
   private static final String PAGENAME = "Vitruvius Project";
   private static final String DESCRIPTION = "Create a new Vitruvius Project.";
   private HashMap<IProject, HashSet<IExtension>> map;
+  private ApplicationSelectionPage applicationSelectionPage;
 
   private Composite container;
 
-  protected DomainSelectionPage() {
+  protected DomainSelectionPage(ApplicationSelectionPage applicationSelectionPage) {
     super(PAGENAME);
     setTitle(PAGENAME);
     setDescription(DESCRIPTION);
     map = new HashMap<>();
+    this.applicationSelectionPage = applicationSelectionPage;
   }
 
   @Override
@@ -61,6 +64,7 @@ public class DomainSelectionPage extends WizardPage {
     if (ep != null) {
       extensions = ep.getExtensions();
     }
+
     for (IProject project : projects) {
       TreeItem t = new TreeItem(tree, SWT.CHECK);
       t.setText(project.getName());
@@ -103,6 +107,9 @@ public class DomainSelectionPage extends WizardPage {
             finished = finished || treeItem.getChecked();
           }
           setPageComplete(finished);
+          
+          //Pass data to ApplicationSelectionPage
+          applicationSelectionPage.displayCheckedDomains(map);
         }
       }
     });

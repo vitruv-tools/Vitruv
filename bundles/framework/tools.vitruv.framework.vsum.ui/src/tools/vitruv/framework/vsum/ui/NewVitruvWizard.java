@@ -35,8 +35,8 @@ public class NewVitruvWizard extends Wizard implements INewWizard {
   @Override
   public void addPages() {
     one = new ProjectNamePage(this);
-    two = new DomainSelectionPage();
     three = new ApplicationSelectionPage();
+    two = new DomainSelectionPage(three);
     addPage(one);
     addPage(two);
     addPage(three);
@@ -56,5 +56,7 @@ public class NewVitruvWizard extends Wizard implements INewWizard {
     }
     return true;
   }
+  
+  
 
 }
