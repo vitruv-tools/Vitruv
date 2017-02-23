@@ -12,6 +12,8 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
@@ -93,6 +95,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 				return createEObjFromString(eDataType, initialValue);
 			case CompoundPackage.EFEAT:
 				return createEFeatFromString(eDataType, initialValue);
+			case CompoundPackage.RESOURCE_SET:
+				return createResourceSetFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -110,6 +114,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 				return convertEObjToString(eDataType, instanceValue);
 			case CompoundPackage.EFEAT:
 				return convertEFeatToString(eDataType, instanceValue);
+			case CompoundPackage.RESOURCE_SET:
+				return convertResourceSetToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -248,6 +254,24 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * @generated
 	 */
 	public String convertEFeatToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ResourceSet createResourceSetFromString(EDataType eDataType, String initialValue) {
+		return (ResourceSet)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertResourceSetToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

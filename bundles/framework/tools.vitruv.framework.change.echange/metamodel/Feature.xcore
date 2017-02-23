@@ -5,7 +5,7 @@ package tools.vitruv.framework.change.echange.feature
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 
@@ -18,23 +18,20 @@ abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicECh
 	refers A[1] affectedEObject 
 	
 	op boolean isResolved() {
-		return affectedEObject != null && !affectedEObject.eIsProxy()
+		return affectedEObject != null && !affectedEObject.eIsProxy
+			&& affectedFeature != null
 	}
 	
 	op EChange resolve(ResourceSet resourceSet) {
-		if (affectedEObject == null || affectedFeature == null) {
-			return null
-		}
 		if (!isResolved) {
 			val resolvedChange = super.resolve(resourceSet) as FeatureEChange<A, F>
-			if (resolvedChange == null) {
+			if (resolvedChange == null || affectedFeature == null || affectedEObject == null) {
 				return null
 			}
-			resolvedChange.affectedEObject = EcoreUtil.resolve(affectedEObject, resourceSet) as A;
-			if (resolvedChange.affectedEObject.eIsProxy) {
-				return this
+			resolvedChange.affectedEObject = EChangeUtil.resolveProxy(affectedEObject, resourceSet) as A;
+			if (resolvedChange.affectedEObject != null && !resolvedChange.affectedEObject.eIsProxy) {
+				return resolvedChange
 			}
-			return resolvedChange
 		}
 		return this
 	}

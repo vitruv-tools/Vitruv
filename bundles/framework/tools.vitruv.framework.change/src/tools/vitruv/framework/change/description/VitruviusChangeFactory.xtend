@@ -77,6 +77,7 @@ class VitruviusChangeFactory {
 		
 	private def EChange generateFileCreateChange(Resource resource) {
 		var EObject rootElement = null;
+		var index = 0 // TODO Stefan: Added for working EChange implementation + boolean: unresolve
         if (1 == resource.getContents().size()) {
             rootElement = resource.getContents().get(0);
         } else if (1 < resource.getContents().size()) {
@@ -88,14 +89,15 @@ class VitruviusChangeFactory {
                     + ". Propagation of 'root element created' not triggered.");
             return null;
         }
-        val CreateAndInsertRoot<EObject> createRootEObj = TypeInferringCompoundEChangeFactory.createCreateAndInsertRootChange(rootElement, resource.URI.toString);
-        return createRootEObj;
+        val CreateAndInsertRoot<EObject> createRootEObj = TypeInferringCompoundEChangeFactory.createCreateAndInsertRootChange(rootElement, resource.URI.toString, index, true);
+        return createRootEObj; 
 	}
 	
 	private def generateFileDeleteChange(Resource resource) {
 		if (0 < resource.getContents().size()) {
-            val EObject rootElement = resource.getContents().get(0);
-            val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory.createRemoveAndDeleteRootChange(rootElement, resource.URI.toString);
+			val index = 0 // TODO Stefan: Added for working EChange implementation + boolean: unresolve
+            val EObject rootElement = resource.getContents().get(index);
+            val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory.createRemoveAndDeleteRootChange(rootElement, resource.URI.toString, index, true);
             return deleteRootObj;
         }
         logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");

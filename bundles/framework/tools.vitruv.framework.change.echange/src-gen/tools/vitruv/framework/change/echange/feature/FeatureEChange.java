@@ -84,7 +84,7 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return ((!<%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null)) && (!this.getAffectedEObject().eIsProxy()));'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((!<%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null)) && (!this.getAffectedEObject().eIsProxy())) && (!<%com.google.common.base.Objects%>.equal(this.getAffectedFeature(), null)));'"
 	 * @generated
 	 */
 	boolean isResolved();
@@ -93,7 +93,7 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.feature.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='if ((<%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null) || <%com.google.common.base.Objects%>.equal(this.getAffectedFeature(), null)))\n{\n\treturn null;\n}\nboolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolve = super.resolve(resourceSet);\n\tfinal <%tools.vitruv.framework.change.echange.feature.FeatureEChange%><A, F> resolvedChange = ((<%tools.vitruv.framework.change.echange.feature.FeatureEChange%><A, F>) _resolve);\n\tboolean _equals = <%com.google.common.base.Objects%>.equal(resolvedChange, null);\n\tif (_equals)\n\t{\n\t\treturn null;\n\t}\n\tA _affectedEObject = this.getAffectedEObject();\n\t<%org.eclipse.emf.ecore.EObject%> _resolve_1 = <%org.eclipse.emf.ecore.util.EcoreUtil%>.resolve(_affectedEObject, resourceSet);\n\tresolvedChange.setAffectedEObject(((A) _resolve_1));\n\tA _affectedEObject_1 = resolvedChange.getAffectedEObject();\n\tboolean _eIsProxy = _affectedEObject_1.eIsProxy();\n\tif (_eIsProxy)\n\t{\n\t\treturn this;\n\t}\n\treturn resolvedChange;\n}\nreturn this;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolve = super.resolve(resourceSet);\n\tfinal <%tools.vitruv.framework.change.echange.feature.FeatureEChange%><A, F> resolvedChange = ((<%tools.vitruv.framework.change.echange.feature.FeatureEChange%><A, F>) _resolve);\n\tif (((<%com.google.common.base.Objects%>.equal(resolvedChange, null) || <%com.google.common.base.Objects%>.equal(this.getAffectedFeature(), null)) || <%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null)))\n\t{\n\t\treturn null;\n\t}\n\tA _affectedEObject = this.getAffectedEObject();\n\t<%org.eclipse.emf.ecore.EObject%> _resolveProxy = <%tools.vitruv.framework.change.echange.util.EChangeUtil%>.resolveProxy(_affectedEObject, resourceSet);\n\tresolvedChange.setAffectedEObject(((A) _resolveProxy));\n\tif (((!<%com.google.common.base.Objects%>.equal(resolvedChange.getAffectedEObject(), null)) && (!resolvedChange.getAffectedEObject().eIsProxy())))\n\t{\n\t\treturn resolvedChange;\n\t}\n}\nreturn this;'"
 	 * @generated
 	 */
 	EChange resolve(ResourceSet resourceSet);

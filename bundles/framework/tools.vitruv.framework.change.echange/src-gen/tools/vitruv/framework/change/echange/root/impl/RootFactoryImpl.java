@@ -2,6 +2,8 @@
  */
 package tools.vitruv.framework.change.echange.root.impl;
 
+import org.eclipse.emf.common.util.URI;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -10,6 +12,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.root.*;
 
@@ -74,6 +79,12 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 		switch (eDataType.getClassifierID()) {
 			case RootPackage.EOBJ:
 				return createEObjFromString(eDataType, initialValue);
+			case RootPackage.RESOURCE_SET:
+				return createResourceSetFromString(eDataType, initialValue);
+			case RootPackage.RESOURCE:
+				return createResourceFromString(eDataType, initialValue);
+			case RootPackage.URI:
+				return createURIFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -89,6 +100,12 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 		switch (eDataType.getClassifierID()) {
 			case RootPackage.EOBJ:
 				return convertEObjToString(eDataType, instanceValue);
+			case RootPackage.RESOURCE_SET:
+				return convertResourceSetToString(eDataType, instanceValue);
+			case RootPackage.RESOURCE:
+				return convertResourceToString(eDataType, instanceValue);
+			case RootPackage.URI:
+				return convertURIToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -129,6 +146,60 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 	 * @generated
 	 */
 	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ResourceSet createResourceSetFromString(EDataType eDataType, String initialValue) {
+		return (ResourceSet)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertResourceSetToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Resource createResourceFromString(EDataType eDataType, String initialValue) {
+		return (Resource)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertResourceToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public URI createURIFromString(EDataType eDataType, String initialValue) {
+		return (URI)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertURIToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

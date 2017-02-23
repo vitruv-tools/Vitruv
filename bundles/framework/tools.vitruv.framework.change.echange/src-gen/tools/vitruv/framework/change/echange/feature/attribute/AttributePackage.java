@@ -5,12 +5,13 @@ package tools.vitruv.framework.change.echange.feature.attribute;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+
+import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -100,15 +101,6 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND = FeaturePackage.FEATURE_ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -116,15 +108,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_ATTRIBUTE_ECHANGE___APPLY = FeaturePackage.FEATURE_ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND = FeaturePackage.FEATURE_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -209,15 +192,6 @@ public interface AttributePackage extends EPackage {
 	int ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND = UPDATE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -225,15 +199,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_ATTRIBUTE_ECHANGE___APPLY = UPDATE_ATTRIBUTE_ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND = UPDATE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -327,15 +292,6 @@ public interface AttributePackage extends EPackage {
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND = UPDATE_ATTRIBUTE_ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -343,15 +299,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___APPLY = UPDATE_ATTRIBUTE_ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND = UPDATE_ATTRIBUTE_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -499,31 +446,13 @@ public interface AttributePackage extends EPackage {
 	int INSERT_EATTRIBUTE_VALUE___GET_NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE___GET_NEW_VALUE;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___GET_APPLY_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___GET_REVERT_COMMAND = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Insert EAttribute Value</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
+	int INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.RemoveEAttributeValueImpl <em>Remove EAttribute Value</em>}' class.
@@ -626,31 +555,13 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE___GET_OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE___GET_OLD_VALUE;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___GET_APPLY_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___GET_REVERT_COMMAND = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Remove EAttribute Value</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
+	int REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl <em>Replace Single Valued EAttribute</em>}' class.
@@ -669,7 +580,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -678,7 +589,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -687,7 +598,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -696,7 +607,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 0;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Replace Single Valued EAttribute</em>' class.
@@ -705,7 +616,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -714,7 +625,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___APPLY = ADDITIVE_ATTRIBUTE_ECHANGE___APPLY;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___APPLY = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -723,7 +634,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___REVERT = ADDITIVE_ATTRIBUTE_ECHANGE___REVERT;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___REVERT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___REVERT;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -732,7 +643,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_RESOLVED = ADDITIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -741,7 +652,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE__RESOURCESET = ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE__RESOURCESET;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -750,7 +661,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE___GET_NEW_VALUE;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___GET_NEW_VALUE;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -759,7 +670,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 0;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___GET_OLD_VALUE;
 
 	/**
 	 * The operation id for the '<em>Is From Non Default Value</em>' operation.
@@ -768,7 +679,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_FROM_NON_DEFAULT_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 1;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_FROM_NON_DEFAULT_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_FROM_NON_DEFAULT_VALUE;
 
 	/**
 	 * The operation id for the '<em>Is To Non Default Value</em>' operation.
@@ -777,25 +688,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_APPLY_COMMAND = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 3;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_REVERT_COMMAND = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 4;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_TO_NON_DEFAULT_VALUE;
 
 	/**
 	 * The number of operations of the '<em>Replace Single Valued EAttribute</em>' class.
@@ -804,7 +697,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 5;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '<em>EObj</em>' data type.
@@ -900,26 +793,6 @@ public interface AttributePackage extends EPackage {
 	EClass getInsertEAttributeValue();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue#getApplyCommand() <em>Get Apply Command</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Apply Command</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue#getApplyCommand()
-	 * @generated
-	 */
-	EOperation getInsertEAttributeValue__GetApplyCommand();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue#getRevertCommand() <em>Get Revert Command</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Revert Command</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue#getRevertCommand()
-	 * @generated
-	 */
-	EOperation getInsertEAttributeValue__GetRevertCommand();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue <em>Remove EAttribute Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -930,26 +803,6 @@ public interface AttributePackage extends EPackage {
 	EClass getRemoveEAttributeValue();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue#getApplyCommand() <em>Get Apply Command</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Apply Command</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue#getApplyCommand()
-	 * @generated
-	 */
-	EOperation getRemoveEAttributeValue__GetApplyCommand();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue#getRevertCommand() <em>Get Revert Command</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Revert Command</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue#getRevertCommand()
-	 * @generated
-	 */
-	EOperation getRemoveEAttributeValue__GetRevertCommand();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute <em>Replace Single Valued EAttribute</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -958,26 +811,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReplaceSingleValuedEAttribute();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute#getApplyCommand() <em>Get Apply Command</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Apply Command</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute#getApplyCommand()
-	 * @generated
-	 */
-	EOperation getReplaceSingleValuedEAttribute__GetApplyCommand();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute#getRevertCommand() <em>Get Revert Command</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Revert Command</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute#getRevertCommand()
-	 * @generated
-	 */
-	EOperation getReplaceSingleValuedEAttribute__GetRevertCommand();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
@@ -1092,22 +925,6 @@ public interface AttributePackage extends EPackage {
 		EClass INSERT_EATTRIBUTE_VALUE = eINSTANCE.getInsertEAttributeValue();
 
 		/**
-		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation INSERT_EATTRIBUTE_VALUE___GET_APPLY_COMMAND = eINSTANCE.getInsertEAttributeValue__GetApplyCommand();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Revert Command</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation INSERT_EATTRIBUTE_VALUE___GET_REVERT_COMMAND = eINSTANCE.getInsertEAttributeValue__GetRevertCommand();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.RemoveEAttributeValueImpl <em>Remove EAttribute Value</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1118,22 +935,6 @@ public interface AttributePackage extends EPackage {
 		EClass REMOVE_EATTRIBUTE_VALUE = eINSTANCE.getRemoveEAttributeValue();
 
 		/**
-		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REMOVE_EATTRIBUTE_VALUE___GET_APPLY_COMMAND = eINSTANCE.getRemoveEAttributeValue__GetApplyCommand();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Revert Command</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REMOVE_EATTRIBUTE_VALUE___GET_REVERT_COMMAND = eINSTANCE.getRemoveEAttributeValue__GetRevertCommand();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl <em>Replace Single Valued EAttribute</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1142,22 +943,6 @@ public interface AttributePackage extends EPackage {
 		 * @generated
 		 */
 		EClass REPLACE_SINGLE_VALUED_EATTRIBUTE = eINSTANCE.getReplaceSingleValuedEAttribute();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_APPLY_COMMAND = eINSTANCE.getReplaceSingleValuedEAttribute__GetApplyCommand();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Revert Command</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_REVERT_COMMAND = eINSTANCE.getReplaceSingleValuedEAttribute__GetRevertCommand();
 
 		/**
 		 * The meta object literal for the '<em>EObj</em>' data type.

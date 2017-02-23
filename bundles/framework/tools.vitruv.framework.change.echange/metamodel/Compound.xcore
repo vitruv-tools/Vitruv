@@ -4,6 +4,8 @@ package tools.vitruv.framework.change.echange.compound
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
@@ -25,10 +27,10 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
 
 type EObj wraps EObject
 type EFeat wraps EStructuralFeature
+type ResourceSet wraps ResourceSet
 
 abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
 	op unique AtomicEChange[+] getAtomicChanges()
-	
 }
 
 class MoveEObject<A extends EObj, B extends EObj, T extends EObj> extends CompoundEChange {
@@ -97,6 +99,20 @@ abstract class CreateAndInsertEObject<T extends EObj, C extends EObjectAddedECha
 		result.add(createChange);
 		result.add(insertChange);
 		return result;
+	}
+	op boolean isResolved() {
+		return super.isResolved() && createChange.isResolved() && insertChange.isResolved()
+	}
+	op EChange resolve(ResourceSet resourceSet) {
+		if (!isResolved) {
+			val resolvedChange = super.resolve(resourceSet) as CreateAndInsertEObject<T, C>
+			if (resolvedChange == null) {
+				// Resolving the super class attributes failed
+				return null
+			}
+			
+			
+		}
 	}
 }
 

@@ -153,13 +153,13 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: {
 				ReplaceSingleValuedEReference<?, ?> replaceSingleValuedEReference = (ReplaceSingleValuedEReference<?, ?>)theEObject;
 				T1 result = caseReplaceSingleValuedEReference(replaceSingleValuedEReference);
+				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseAdditiveReferenceEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseSubtractiveReferenceEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseUpdateReferenceEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseEObjectAddedEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseEObjectSubtractedEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseFeatureEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEReference);

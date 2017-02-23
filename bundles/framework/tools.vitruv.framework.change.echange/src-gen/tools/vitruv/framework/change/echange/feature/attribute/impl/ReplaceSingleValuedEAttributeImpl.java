@@ -2,13 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.feature.attribute.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
-import org.eclipse.emf.common.command.Command;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -16,24 +10,13 @@ import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.edit.command.SetCommand;
-
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.SubtractiveEChange;
-
-import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
-
+import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange;
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
+import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange;
 
-import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
-import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+import tools.vitruv.framework.change.echange.feature.single.impl.ReplaceSingleValuedFeatureEChangeImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -43,12 +26,23 @@ import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#getNewValue <em>New Value</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#getOldValue <em>Old Value</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Object> extends AdditiveAttributeEChangeImpl<A, T> implements ReplaceSingleValuedEAttribute<A, T> {
+public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Object> extends ReplaceSingleValuedFeatureEChangeImpl<A, EAttribute, T> implements ReplaceSingleValuedEAttribute<A, T> {
+	/**
+	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNewValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T newValue;
+
 	/**
 	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -83,6 +77,27 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public T getNewValue() {
+		return newValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNewValue(T newNewValue) {
+		T oldNewValue = newValue;
+		newValue = newNewValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE, oldNewValue, newValue));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public T getOldValue() {
 		return oldValue;
 	}
@@ -104,55 +119,11 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Command getApplyCommand() {
-		ComposedAdapterFactory _composedAdapterFactory = new ComposedAdapterFactory();
-		final AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(_composedAdapterFactory, null);
-		A _affectedEObject = this.getAffectedEObject();
-		EAttribute _affectedFeature = this.getAffectedFeature();
-		T _newValue = this.getNewValue();
-		return SetCommand.create(editingDomain, _affectedEObject, _affectedFeature, _newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Command getRevertCommand() {
-		ComposedAdapterFactory _composedAdapterFactory = new ComposedAdapterFactory();
-		final AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(_composedAdapterFactory, null);
-		A _affectedEObject = this.getAffectedEObject();
-		EAttribute _affectedFeature = this.getAffectedFeature();
-		T _oldValue = this.getOldValue();
-		return SetCommand.create(editingDomain, _affectedEObject, _affectedFeature, _oldValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isFromNonDefaultValue() {
-		return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isToNonDefaultValue() {
-		return !java.util.Objects.equals(getNewValue(), getAffectedFeature().getDefaultValue());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
+				return getNewValue();
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
 				return getOldValue();
 		}
@@ -168,6 +139,9 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
+				setNewValue((T)newValue);
+				return;
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
 				setOldValue((T)newValue);
 				return;
@@ -183,6 +157,9 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
+				setNewValue((T)null);
+				return;
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
 				setOldValue((T)null);
 				return;
@@ -198,6 +175,8 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
+				return newValue != null;
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
 				return oldValue != null;
 		}
@@ -211,24 +190,20 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == SubtractiveEChange.class) {
+		if (baseClass == UpdateAttributeEChange.class) {
 			switch (derivedFeatureID) {
+				default: return -1;
+			}
+		}
+		if (baseClass == AdditiveAttributeEChange.class) {
+			switch (derivedFeatureID) {
+				case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE: return AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE;
 				default: return -1;
 			}
 		}
 		if (baseClass == SubtractiveAttributeEChange.class) {
 			switch (derivedFeatureID) {
 				case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE: return AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE;
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateSingleValuedFeatureEChange.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == ReplaceSingleValuedFeatureEChange.class) {
-			switch (derivedFeatureID) {
 				default: return -1;
 			}
 		}
@@ -242,24 +217,20 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == SubtractiveEChange.class) {
+		if (baseClass == UpdateAttributeEChange.class) {
 			switch (baseFeatureID) {
+				default: return -1;
+			}
+		}
+		if (baseClass == AdditiveAttributeEChange.class) {
+			switch (baseFeatureID) {
+				case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE;
 				default: return -1;
 			}
 		}
 		if (baseClass == SubtractiveAttributeEChange.class) {
 			switch (baseFeatureID) {
 				case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE;
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateSingleValuedFeatureEChange.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == ReplaceSingleValuedFeatureEChange.class) {
-			switch (baseFeatureID) {
 				default: return -1;
 			}
 		}
@@ -272,71 +243,13 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * @generated
 	 */
 	@Override
-	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == EChange.class) {
-			switch (baseOperationID) {
-				case EChangePackage.ECHANGE___GET_APPLY_COMMAND: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_APPLY_COMMAND;
-				case EChangePackage.ECHANGE___GET_REVERT_COMMAND: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_REVERT_COMMAND;
-				default: return super.eDerivedOperationID(baseOperationID, baseClass);
-			}
-		}
-		if (baseClass == SubtractiveEChange.class) {
-			switch (baseOperationID) {
-				case EChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE;
-				default: return -1;
-			}
-		}
-		if (baseClass == SubtractiveAttributeEChange.class) {
-			switch (baseOperationID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateSingleValuedFeatureEChange.class) {
-			switch (baseOperationID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == ReplaceSingleValuedFeatureEChange.class) {
-			switch (baseOperationID) {
-				case SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_FROM_NON_DEFAULT_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_FROM_NON_DEFAULT_VALUE;
-				case SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_TO_NON_DEFAULT_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE;
-				default: return -1;
-			}
-		}
-		return super.eDerivedOperationID(baseOperationID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_APPLY_COMMAND:
-				return getApplyCommand();
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_REVERT_COMMAND:
-				return getRevertCommand();
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_FROM_NON_DEFAULT_VALUE:
-				return isFromNonDefaultValue();
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE:
-				return isToNonDefaultValue();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (oldValue: ");
+		result.append(" (newValue: ");
+		result.append(newValue);
+		result.append(", oldValue: ");
 		result.append(oldValue);
 		result.append(')');
 		return result.toString();

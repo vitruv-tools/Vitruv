@@ -2,16 +2,12 @@
 @GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
 package tools.vitruv.framework.change.echange.feature.reference
 
+import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.emf.common.command.Command
-import org.eclipse.emf.edit.command.AddCommand
-import org.eclipse.emf.edit.command.RemoveCommand
-import org.eclipse.emf.edit.command.SetCommand
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
@@ -39,103 +35,71 @@ abstract class SubtractiveReferenceEChange<A extends EObj, T extends EObj> exten
 class InsertEReference<A extends EObj, T extends EObj> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {
 	op boolean isResolved() {
 		return super.isResolved() && 
-			newValue != null && !newValue.eIsProxy()
+			(newValue == null || !newValue.eIsProxy())
 	}
 	op EChange resolve(ResourceSet resourceSet) {
-		if (newValue == null) {
-			return null
-		}
 		if (!isResolved) {
 			val resolvedChange = super.resolve(resourceSet) as InsertEReference<A, T>
 			if (resolvedChange == null) {
 				// Resolving of super class attributes failed
 				return null
 			}
-			resolvedChange.newValue = EcoreUtil.resolve(newValue, resourceSet) as T
-			if (resolvedChange.newValue.eIsProxy) {
-				// return original change if couldn't be resolved
-				return this
+					
+			resolvedChange.newValue = EChangeUtil.resolveProxy(newValue, resourceSet) as T				
+
+			if (resolvedChange.newValue == null || !resolvedChange.newValue.eIsProxy) {
+				return resolvedChange
 			} 
-			return resolvedChange
 		} 
 		return this
-	}
-	op Command getApplyCommand() {
-		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null);
-		return AddCommand.create(editingDomain, affectedEObject, affectedFeature, newValue, index);		
-	}
-	op Command getRevertCommand() {
-		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null);
-		return RemoveCommand.create(editingDomain, affectedEObject, affectedFeature, newValue);
 	}
 }
 
 class RemoveEReference<A extends EObj, T extends EObj> extends RemoveFromListEChange<A, EReference, T>, SubtractiveReferenceEChange<A, T> {
 	op boolean isResolved() {
 		return super.isResolved() && 
-			oldValue != null && !oldValue.eIsProxy()
+			(oldValue == null || !oldValue.eIsProxy())
 	}
 	op EChange resolve(ResourceSet resourceSet) {
-		if (oldValue == null) {
-			return null
-		}
 		if (!isResolved) {
 			val resolvedChange = super.resolve(resourceSet) as RemoveEReference<A, T>
 			if (resolvedChange == null) {
 				// Resolving of super class attributes failed
 				return null
 			}
-			resolvedChange.oldValue = EcoreUtil.resolve(oldValue, resourceSet) as T
-			if (resolvedChange.oldValue.eIsProxy) {
-				// return original change if couldn't be resolved
-				return this
+			
+			resolvedChange.oldValue = EChangeUtil.resolveProxy(oldValue, resourceSet) as T				
+			
+			if (resolvedChange.oldValue == null || !resolvedChange.oldValue.eIsProxy) {
+				return resolvedChange
 			}
-			return resolvedChange
 		} 
 		return this
 	}
-	op Command getApplyCommand() {
-		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null);
-		return RemoveCommand.create(editingDomain, affectedEObject, affectedFeature, oldValue);
-	}
-	op Command getRevertCommand() {
-		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null);
-		return AddCommand.create(editingDomain, affectedEObject, affectedFeature, oldValue, index);
-	}
 }
 
-class ReplaceSingleValuedEReference<A extends EObj, T extends EObj> extends AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EReference, T> {
+class ReplaceSingleValuedEReference<A extends EObj, T extends EObj> extends  ReplaceSingleValuedFeatureEChange<A, EReference, T>, AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T> {
 	op boolean isResolved() {
 		return super.isResolved() &&
-			oldValue != null && !oldValue.eIsProxy() &&
-			newValue != null && !newValue.eIsProxy()
+			(oldValue == null || !oldValue.eIsProxy()) &&
+			(newValue == null || !newValue.eIsProxy())
 	}
 	op EChange resolve(ResourceSet resourceSet) {
-		if (oldValue == null || newValue == null) {
-			return null
-		}
 		if (!isResolved) {
 			val resolvedChange = super.resolve(resourceSet) as ReplaceSingleValuedEReference<A, T>
 			if (resolvedChange == null) {
 				// Resolving of super class attributes failed
 				return null
 			}
-			resolvedChange.oldValue = EcoreUtil.resolve(oldValue, resourceSet) as T
-			resolvedChange.newValue = EcoreUtil.resolve(newValue, resourceSet) as T
-			if (resolvedChange.newValue.eIsProxy || resolvedChange.oldValue.eIsProxy) {
-				// return original change if couldn't be resolved
-				return this
+			
+			resolvedChange.oldValue = EChangeUtil.resolveProxy(oldValue, resourceSet) as T
+			resolvedChange.newValue = EChangeUtil.resolveProxy(newValue, resourceSet) as T				
+
+			if ((resolvedChange.newValue == null || !resolvedChange.newValue.eIsProxy)
+				&& (resolvedChange.oldValue == null || !resolvedChange.oldValue.eIsProxy)) {
+				return resolvedChange
 			}
-			return resolvedChange
 		} 
 		return this
-	}
-	op Command getApplyCommand() {
-		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null)
-		return SetCommand.create(editingDomain, affectedEObject, affectedFeature, newValue)
-	}
-	op Command getRevertCommand() {
-		val editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), null)
-		return SetCommand.create(editingDomain, affectedEObject, affectedFeature, oldValue)
 	}
 }

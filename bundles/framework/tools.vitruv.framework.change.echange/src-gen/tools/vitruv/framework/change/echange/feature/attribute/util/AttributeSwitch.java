@@ -146,13 +146,13 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: {
 				ReplaceSingleValuedEAttribute<?, ?> replaceSingleValuedEAttribute = (ReplaceSingleValuedEAttribute<?, ?>)theEObject;
 				T1 result = caseReplaceSingleValuedEAttribute(replaceSingleValuedEAttribute);
+				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseAdditiveAttributeEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseSubtractiveAttributeEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseUpdateAttributeEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseUpdateAttributeEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseFeatureEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseAtomicEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseEChange(replaceSingleValuedEAttribute);

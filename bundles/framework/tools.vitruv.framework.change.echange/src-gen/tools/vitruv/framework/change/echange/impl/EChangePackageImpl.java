@@ -168,7 +168,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__GetApplyCommand() {
+	public EOperation getEChange__Apply() {
 		return eChangeEClass.getEOperations().get(2);
 	}
 
@@ -177,26 +177,8 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__Apply() {
-		return eChangeEClass.getEOperations().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getEChange__GetRevertCommand() {
-		return eChangeEClass.getEOperations().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EOperation getEChange__Revert() {
-		return eChangeEClass.getEOperations().get(5);
+		return eChangeEClass.getEOperations().get(3);
 	}
 
 	/**
@@ -293,9 +275,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		eChangeEClass = createEClass(ECHANGE);
 		createEOperation(eChangeEClass, ECHANGE___IS_RESOLVED);
 		createEOperation(eChangeEClass, ECHANGE___RESOLVE__RESOURCESET);
-		createEOperation(eChangeEClass, ECHANGE___GET_APPLY_COMMAND);
 		createEOperation(eChangeEClass, ECHANGE___APPLY);
-		createEOperation(eChangeEClass, ECHANGE___GET_REVERT_COMMAND);
 		createEOperation(eChangeEClass, ECHANGE___REVERT);
 
 		atomicEChangeEClass = createEClass(ATOMIC_ECHANGE);
@@ -360,11 +340,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		EOperation op = initEOperation(getEChange__Resolve__ResourceSet(), this.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getEChange__GetApplyCommand(), this.getCommand(), "getApplyCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
 		initEOperation(getEChange__Apply(), theEcorePackage.getEBoolean(), "apply", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		initEOperation(getEChange__GetRevertCommand(), this.getCommand(), "getRevertCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getEChange__Revert(), theEcorePackage.getEBoolean(), "revert", 0, 1, !IS_UNIQUE, IS_ORDERED);
 

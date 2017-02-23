@@ -97,15 +97,6 @@ public interface SinglePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___GET_APPLY_COMMAND = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -113,15 +104,6 @@ public interface SinglePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___GET_REVERT_COMMAND = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.

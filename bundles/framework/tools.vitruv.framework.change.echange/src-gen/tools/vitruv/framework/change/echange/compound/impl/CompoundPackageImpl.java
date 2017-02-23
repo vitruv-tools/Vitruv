@@ -15,6 +15,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.compound.CompoundAddition;
@@ -156,6 +158,13 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * @generated
 	 */
 	private EDataType eFeatEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType resourceSetEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -444,6 +453,24 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getCreateAndInsertEObject__IsResolved() {
+		return createAndInsertEObjectEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCreateAndInsertEObject__Resolve__ResourceSet() {
+		return createAndInsertEObjectEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getRemoveAndDeleteEObject() {
 		return removeAndDeleteEObjectEClass;
 	}
@@ -579,6 +606,15 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getResourceSet() {
+		return resourceSetEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public CompoundFactory getCompoundFactory() {
 		return (CompoundFactory)getEFactoryInstance();
 	}
@@ -632,6 +668,8 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		createEReference(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT__CREATE_CHANGE);
 		createEReference(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT__INSERT_CHANGE);
 		createEOperation(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT___GET_ATOMIC_CHANGES);
+		createEOperation(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT___IS_RESOLVED);
+		createEOperation(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET);
 
 		removeAndDeleteEObjectEClass = createEClass(REMOVE_AND_DELETE_EOBJECT);
 		createEReference(removeAndDeleteEObjectEClass, REMOVE_AND_DELETE_EOBJECT__REMOVE_CHANGE);
@@ -655,6 +693,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		// Create data types
 		eObjEDataType = createEDataType(EOBJ);
 		eFeatEDataType = createEDataType(EFEAT);
+		resourceSetEDataType = createEDataType(RESOURCE_SET);
 	}
 
 	/**
@@ -927,6 +966,11 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
 		initEOperation(getCreateAndInsertEObject__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
 
+		initEOperation(getCreateAndInsertEObject__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		EOperation op = initEOperation(getCreateAndInsertEObject__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(removeAndDeleteEObjectEClass, RemoveAndDeleteEObject.class, "RemoveAndDeleteEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(removeAndDeleteEObjectEClass_C);
 		initEReference(getRemoveAndDeleteEObject_RemoveChange(), g1, null, "removeChange", null, 1, 1, RemoveAndDeleteEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -966,6 +1010,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		// Initialize data types
 		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(eFeatEDataType, EStructuralFeature.class, "EFeat", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

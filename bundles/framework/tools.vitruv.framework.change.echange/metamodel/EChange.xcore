@@ -5,19 +5,21 @@ package tools.vitruv.framework.change.echange
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.util.ApplyCommandSwitch
+import tools.vitruv.framework.change.echange.util.RevertCommandSwitch
 
 type Command wraps Command
 type ResourceSet wraps ResourceSet
 
 abstract class EChange {
-	
 	/**
-	 * 
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply or revert the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 */
 	op boolean isResolved() {
 		return true
 	}
-	
 	
 	/**
 	 * Resolves the unresolved proxy EObjects of the change to a given set of resources with concrete EObjects.
@@ -39,11 +41,16 @@ abstract class EChange {
 		return this
 	}
 	
-	op Command getApplyCommand()
+	/**
+	 * Applies the change to the model which the change was resolved to.
+	 * The change must be resolved before it can be applied.
+	 * @return	Returns whether the change was successfully applied. If the 
+	 * 			change was not resolved or could not be applied it returns {@code false}
+	 */
 	op boolean apply() {
-		if (resolved) {
-			val command = getApplyCommand();
-			if (command.canExecute()) {
+		if (isResolved) {
+			val command = (new ApplyCommandSwitch()).doSwitch(this)
+			if (command != null && command.canExecute()) {
 				command.execute()
 				return true
 			}
@@ -51,11 +58,16 @@ abstract class EChange {
 		return false
 	}
 	
-	op Command getRevertCommand()
+	/**
+	 * Reverts the change on the model which the change was resolved to.
+	 * The change must be resolved before it can be reverted.
+	 * @return	Returns whether the change was successfully reverted. If the
+	 * 			change was not resolved or could not be reverted it returns {@code false}
+	 */
 	op boolean revert() {
-		if (resolved) {
-			val command = getRevertCommand()
-			if (command.canExecute()) {
+		if (isResolved) {
+			val command = (new RevertCommandSwitch()).doSwitch(this)
+			if (command != null && command.canExecute()) {
 				command.execute()
 				return true
 			}
