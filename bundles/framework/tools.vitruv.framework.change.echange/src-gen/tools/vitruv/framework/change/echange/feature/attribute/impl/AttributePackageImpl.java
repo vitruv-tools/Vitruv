@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -229,24 +228,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getInsertEAttributeValue__GetApplyCommand() {
-		return insertEAttributeValueEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getInsertEAttributeValue__GetRevertCommand() {
-		return insertEAttributeValueEClass.getEOperations().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getRemoveEAttributeValue() {
 		return removeEAttributeValueEClass;
 	}
@@ -256,44 +237,8 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getRemoveEAttributeValue__GetApplyCommand() {
-		return removeEAttributeValueEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getRemoveEAttributeValue__GetRevertCommand() {
-		return removeEAttributeValueEClass.getEOperations().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getReplaceSingleValuedEAttribute() {
 		return replaceSingleValuedEAttributeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getReplaceSingleValuedEAttribute__GetApplyCommand() {
-		return replaceSingleValuedEAttributeEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getReplaceSingleValuedEAttribute__GetRevertCommand() {
-		return replaceSingleValuedEAttributeEClass.getEOperations().get(1);
 	}
 
 	/**
@@ -360,16 +305,10 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		createEAttribute(subtractiveAttributeEChangeEClass, SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE);
 
 		insertEAttributeValueEClass = createEClass(INSERT_EATTRIBUTE_VALUE);
-		createEOperation(insertEAttributeValueEClass, INSERT_EATTRIBUTE_VALUE___GET_APPLY_COMMAND);
-		createEOperation(insertEAttributeValueEClass, INSERT_EATTRIBUTE_VALUE___GET_REVERT_COMMAND);
 
 		removeEAttributeValueEClass = createEClass(REMOVE_EATTRIBUTE_VALUE);
-		createEOperation(removeEAttributeValueEClass, REMOVE_EATTRIBUTE_VALUE___GET_APPLY_COMMAND);
-		createEOperation(removeEAttributeValueEClass, REMOVE_EATTRIBUTE_VALUE___GET_REVERT_COMMAND);
 
 		replaceSingleValuedEAttributeEClass = createEClass(REPLACE_SINGLE_VALUED_EATTRIBUTE);
-		createEOperation(replaceSingleValuedEAttributeEClass, REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_APPLY_COMMAND);
-		createEOperation(replaceSingleValuedEAttributeEClass, REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_REVERT_COMMAND);
 
 		// Create data types
 		eObjEDataType = createEDataType(EOBJ);
@@ -495,6 +434,14 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g2 = createEGenericType(removeEAttributeValueEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
+		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(theEcorePackage.getEAttribute());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
+		g1.getETypeArguments().add(g2);
+		replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getAdditiveAttributeEChange());
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -503,14 +450,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getSubtractiveAttributeEChange());
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
-		g1.getETypeArguments().add(g2);
-		replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
-		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theEcorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
 		g1.getETypeArguments().add(g2);
@@ -529,21 +468,9 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		initEClass(insertEAttributeValueEClass, InsertEAttributeValue.class, "InsertEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getInsertEAttributeValue__GetApplyCommand(), this.getCommand(), "getApplyCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		initEOperation(getInsertEAttributeValue__GetRevertCommand(), this.getCommand(), "getRevertCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
 		initEClass(removeEAttributeValueEClass, RemoveEAttributeValue.class, "RemoveEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getRemoveEAttributeValue__GetApplyCommand(), this.getCommand(), "getApplyCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		initEOperation(getRemoveEAttributeValue__GetRevertCommand(), this.getCommand(), "getRevertCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
 		initEClass(replaceSingleValuedEAttributeEClass, ReplaceSingleValuedEAttribute.class, "ReplaceSingleValuedEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEOperation(getReplaceSingleValuedEAttribute__GetApplyCommand(), this.getCommand(), "getApplyCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		initEOperation(getReplaceSingleValuedEAttribute__GetRevertCommand(), this.getCommand(), "getRevertCommand", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

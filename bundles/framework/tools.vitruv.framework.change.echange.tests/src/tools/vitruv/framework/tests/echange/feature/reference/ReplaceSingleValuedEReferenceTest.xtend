@@ -1,41 +1,31 @@
 package tools.vitruv.framework.tests.echange.feature.reference
 
-import tools.vitruv.framework.tests.echange.EChangeTest
-import allElementTypes.Root
-import org.eclipse.emf.ecore.EReference
-import org.junit.Before
-import allElementTypes.AllElementTypesPackage
 import allElementTypes.NonRoot
-import allElementTypes.AllElementTypesFactory
+import allElementTypes.Root
+import org.junit.Assert
 import org.junit.Test
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
-import org.junit.Assert
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import org.junit.Before
+import org.eclipse.emf.ecore.EReference
+import allElementTypes.AllElementTypesPackage
 
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEReference} EChange,
  * which replaces the value of a reference with a new one.
  */
-public class ReplaceSingleValuedEReferenceTest extends EChangeTest {
-	protected var Root defaultAffectedEObject = null
+public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {	
+	protected var NonRoot defaultOldValue = null	
 	protected var EReference defaultAffectedFeature = null
-	protected var NonRoot defaultOldValue = null
-	protected var NonRoot defaultNewValue = null
 	
-	protected static val DEFAULT_NEW_NON_ROOT_NAME = "New Non Root Element"
-		
 	/**
-	 * Sets the default object, feature and values for the tests.
+	 * Sets the default affected feature and old value for the tests.
 	 */
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		defaultAffectedEObject = rootObject1
 		defaultAffectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE
 		defaultOldValue = rootObject1.singleValuedNonContainmentEReference
-		defaultNewValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
-		defaultNewValue.id = DEFAULT_NEW_NON_ROOT_NAME
-		resource1.getContents.add(defaultNewValue)
 	}
 	
 	/**
@@ -57,16 +47,6 @@ public class ReplaceSingleValuedEReferenceTest extends EChangeTest {
 		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
 		Assert.assertTrue(resolvedChange.oldValue == defaultOldValue)
 		Assert.assertTrue(resolvedChange.newValue == defaultNewValue)
-	}
-	
-	/**
-	 * Test resolves {@link ReplaceSingleValuedEReference} EChanges with invalid parameters.
-	 */
-	@Test
-	def public void resolveReplaceSingleValuedEReferenceInvalidParametersTest() {
-		// resolving affectedEObject, affectedFeature and with 
-		// invalid parameters and resource set is tested in FeatureEChangeTest
-		// TODO
 	}
 	
 	/**

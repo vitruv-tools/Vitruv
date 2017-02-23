@@ -119,12 +119,12 @@ package class EMFModelChangeTransformationUtil {
 		return getValueList(eObject, attribute) as EList<Object>
 	}
 	
-	def static EChange createInsertRootChange(EObject rootToInsert, EObject oldRootContainer, Resource oldRootResource, String resourceURI) {
+	def static EChange createInsertRootChange(EObject rootToInsert, EObject oldRootContainer, Resource oldRootResource, String resourceURI, int index) {
 		val isCreate = isCreate(oldRootContainer, oldRootResource)
 		if (isCreate) {
-			return createCreateAndInsertRootChange(rootToInsert, resourceURI);
+			return createCreateAndInsertRootChange(rootToInsert, resourceURI, index, true);
 		} else {
-			return createInsertRootChange(rootToInsert, resourceURI)
+			return createInsertRootChange(rootToInsert, resourceURI, index, true)
 		}
 	}
 	
@@ -136,12 +136,12 @@ package class EMFModelChangeTransformationUtil {
 		return (newContainer == null || newContainer instanceof ChangeDescription) && newResource == null
 	}
 	
-	def static EChange createRemoveRootChange(EObject rootToRemove, EObject newRootContainer, Resource newRootResource, String resourceURI) {
+	def static EChange createRemoveRootChange(EObject rootToRemove, EObject newRootContainer, Resource newRootResource, String resourceURI, int index) {
 		val isDelete = isDelete(newRootContainer, newRootResource)
 		if (isDelete) {
-			return createRemoveAndDeleteRootChange(rootToRemove, resourceURI);
+			return createRemoveAndDeleteRootChange(rootToRemove, resourceURI, index, true);
 		} else {
-			return createRemoveRootChange(rootToRemove, resourceURI);
+			return createRemoveRootChange(rootToRemove, resourceURI, index, true);
 		}
 	}
 	

@@ -18,7 +18,7 @@ import org.junit.rules.TemporaryFolder
  * Prepares two temporary model instances of the allelementtypes metamodel which 
  * can be modified by the EChange tests. The model is stored in one temporary file.
  */
- abstract class EChangeTest {
+ public abstract class EChangeTest {
 
  	protected var Root rootObject1 = null
  	protected var Resource resource1 = null

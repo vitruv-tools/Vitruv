@@ -6,8 +6,6 @@ import com.google.common.base.Objects;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.emf.common.command.Command;
-
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
@@ -20,15 +18,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
-
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
-import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.emf.edit.command.RemoveCommand;
-
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
@@ -45,6 +34,8 @@ import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange;
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
+
+import tools.vitruv.framework.change.echange.util.EChangeUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -134,8 +125,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @generated
 	 */
 	public boolean isResolved() {
-		return ((super.isResolved() && 
-			(!Objects.equal(this.getOldValue(), null))) && (!this.getOldValue().eIsProxy()));
+		return (super.isResolved() && (Objects.equal(this.getOldValue(), null) || (!this.getOldValue().eIsProxy())));
 	}
 
 	/**
@@ -144,60 +134,23 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @generated
 	 */
 	public EChange resolve(final ResourceSet resourceSet) {
-		T _oldValue = this.getOldValue();
-		boolean _equals = Objects.equal(_oldValue, null);
-		if (_equals) {
-			return null;
-		}
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
 			EChange _resolve = super.resolve(resourceSet);
 			final RemoveEReference<A, T> resolvedChange = ((RemoveEReference<A, T>) _resolve);
-			boolean _equals_1 = Objects.equal(resolvedChange, null);
-			if (_equals_1) {
+			boolean _equals = Objects.equal(resolvedChange, null);
+			if (_equals) {
 				return null;
 			}
-			T _oldValue_1 = this.getOldValue();
-			EObject _resolve_1 = EcoreUtil.resolve(_oldValue_1, resourceSet);
-			resolvedChange.setOldValue(((T) _resolve_1));
-			T _oldValue_2 = resolvedChange.getOldValue();
-			boolean _eIsProxy = _oldValue_2.eIsProxy();
-			if (_eIsProxy) {
-				return this;
+			T _oldValue = this.getOldValue();
+			EObject _resolveProxy = EChangeUtil.resolveProxy(_oldValue, resourceSet);
+			resolvedChange.setOldValue(((T) _resolveProxy));
+			if ((Objects.equal(resolvedChange.getOldValue(), null) || (!resolvedChange.getOldValue().eIsProxy()))) {
+				return resolvedChange;
 			}
-			return resolvedChange;
 		}
 		return this;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Command getApplyCommand() {
-		ComposedAdapterFactory _composedAdapterFactory = new ComposedAdapterFactory();
-		final AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(_composedAdapterFactory, null);
-		A _affectedEObject = this.getAffectedEObject();
-		EReference _affectedFeature = this.getAffectedFeature();
-		T _oldValue = this.getOldValue();
-		return RemoveCommand.create(editingDomain, _affectedEObject, _affectedFeature, _oldValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Command getRevertCommand() {
-		ComposedAdapterFactory _composedAdapterFactory = new ComposedAdapterFactory();
-		final AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(_composedAdapterFactory, null);
-		A _affectedEObject = this.getAffectedEObject();
-		EReference _affectedFeature = this.getAffectedFeature();
-		T _oldValue = this.getOldValue();
-		int _index = this.getIndex();
-		return AddCommand.create(editingDomain, _affectedEObject, _affectedFeature, _oldValue, _index);
 	}
 
 	/**
@@ -333,8 +286,6 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED;
 				case EChangePackage.ECHANGE___RESOLVE__RESOURCESET: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE__RESOURCESET;
-				case EChangePackage.ECHANGE___GET_APPLY_COMMAND: return ReferencePackage.REMOVE_EREFERENCE___GET_APPLY_COMMAND;
-				case EChangePackage.ECHANGE___GET_REVERT_COMMAND: return ReferencePackage.REMOVE_EREFERENCE___GET_REVERT_COMMAND;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -376,10 +327,6 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 				return isResolved();
 			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE__RESOURCESET:
 				return resolve((ResourceSet)arguments.get(0));
-			case ReferencePackage.REMOVE_EREFERENCE___GET_APPLY_COMMAND:
-				return getApplyCommand();
-			case ReferencePackage.REMOVE_EREFERENCE___GET_REVERT_COMMAND:
-				return getRevertCommand();
 			case ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

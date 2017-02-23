@@ -95,31 +95,13 @@ public interface EChangePackage extends EPackage {
 	int ECHANGE___RESOLVE__RESOURCESET = 1;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ECHANGE___GET_APPLY_COMMAND = 2;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___APPLY = 3;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ECHANGE___GET_REVERT_COMMAND = 4;
+	int ECHANGE___APPLY = 2;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -128,7 +110,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___REVERT = 5;
+	int ECHANGE___REVERT = 3;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -137,7 +119,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE_OPERATION_COUNT = 6;
+	int ECHANGE_OPERATION_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl <em>Atomic EChange</em>}' class.
@@ -177,15 +159,6 @@ public interface EChangePackage extends EPackage {
 	int ATOMIC_ECHANGE___RESOLVE__RESOURCESET = ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ATOMIC_ECHANGE___GET_APPLY_COMMAND = ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -193,15 +166,6 @@ public interface EChangePackage extends EPackage {
 	 * @ordered
 	 */
 	int ATOMIC_ECHANGE___APPLY = ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ATOMIC_ECHANGE___GET_REVERT_COMMAND = ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -259,15 +223,6 @@ public interface EChangePackage extends EPackage {
 	int ADDITIVE_ECHANGE___RESOLVE__RESOURCESET = ATOMIC_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ECHANGE___GET_APPLY_COMMAND = ATOMIC_ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -275,15 +230,6 @@ public interface EChangePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_ECHANGE___APPLY = ATOMIC_ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ECHANGE___GET_REVERT_COMMAND = ATOMIC_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -350,15 +296,6 @@ public interface EChangePackage extends EPackage {
 	int SUBTRACTIVE_ECHANGE___RESOLVE__RESOURCESET = ATOMIC_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Get Apply Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ECHANGE___GET_APPLY_COMMAND = ATOMIC_ECHANGE___GET_APPLY_COMMAND;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -366,15 +303,6 @@ public interface EChangePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_ECHANGE___APPLY = ATOMIC_ECHANGE___APPLY;
-
-	/**
-	 * The operation id for the '<em>Get Revert Command</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ECHANGE___GET_REVERT_COMMAND = ATOMIC_ECHANGE___GET_REVERT_COMMAND;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -455,16 +383,6 @@ public interface EChangePackage extends EPackage {
 	EOperation getEChange__Resolve__ResourceSet();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#getApplyCommand() <em>Get Apply Command</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Apply Command</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.EChange#getApplyCommand()
-	 * @generated
-	 */
-	EOperation getEChange__GetApplyCommand();
-
-	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#apply() <em>Apply</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -473,16 +391,6 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getEChange__Apply();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#getRevertCommand() <em>Get Revert Command</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Revert Command</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.EChange#getRevertCommand()
-	 * @generated
-	 */
-	EOperation getEChange__GetRevertCommand();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#revert() <em>Revert</em>}' operation.
@@ -616,28 +524,12 @@ public interface EChangePackage extends EPackage {
 		EOperation ECHANGE___RESOLVE__RESOURCESET = eINSTANCE.getEChange__Resolve__ResourceSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Get Apply Command</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation ECHANGE___GET_APPLY_COMMAND = eINSTANCE.getEChange__GetApplyCommand();
-
-		/**
 		 * The meta object literal for the '<em><b>Apply</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EOperation ECHANGE___APPLY = eINSTANCE.getEChange__Apply();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Revert Command</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation ECHANGE___GET_REVERT_COMMAND = eINSTANCE.getEChange__GetRevertCommand();
 
 		/**
 		 * The meta object literal for the '<em><b>Revert</b></em>' operation.

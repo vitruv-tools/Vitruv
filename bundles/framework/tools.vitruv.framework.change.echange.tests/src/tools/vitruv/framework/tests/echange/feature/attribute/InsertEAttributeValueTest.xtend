@@ -70,7 +70,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	val EList<Integer> multivaluedAttribute = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
 	 	Assert.assertEquals(multivaluedAttribute.size, 0)
 	 		
-	 	// defaultNewValue2 was added first at index 0 (resolvedChange), then defaultNewValue at index 0 (resolvedChange2)
+	 	// DEFAULT_NEW_VALUE_2 was added first at index 0 (resolvedChange), then DEFAULT_NEW_VALUE at index 0 (resolvedChange2)
 	 	multivaluedAttribute.add(DEFAULT_NEW_VALUE)
 	 	multivaluedAttribute.add(DEFAULT_NEW_VALUE_2)
 	 	
@@ -82,18 +82,17 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	 	<Root, Integer>createInsertAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, false)
 	 	
 	 	Assert.assertEquals(multivaluedAttribute.size, 2) 	
-	 	Assert.assertEquals(multivaluedAttribute.get(0), DEFAULT_NEW_VALUE)
-	 	Assert.assertEquals(multivaluedAttribute.get(1), DEFAULT_NEW_VALUE_2)
+	 	Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)
+	 	Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX + 1), DEFAULT_NEW_VALUE_2)
 	 	
 	 	Assert.assertTrue(resolvedChange2.revert)
 	 	
 	 	Assert.assertEquals(multivaluedAttribute.size, 1)
-	 	Assert.assertEquals(multivaluedAttribute.get(0), DEFAULT_NEW_VALUE_2)
+	 	Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE_2)
 	 	
 	 	Assert.assertTrue(resolvedChange.revert)
 	 	
 	 	Assert.assertEquals(multivaluedAttribute.size, 0)
-	 	// TODO Remove at
 	 }
 	 
 	 /**
@@ -109,8 +108,9 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	val resolvedChange = TypeInferringAtomicEChangeFactory.
 	 	 	<Root, Integer>createInsertAttributeChange(defaultAffectedEObject, defaultAffectedFeature, index, DEFAULT_NEW_VALUE, false)	
 	 	 	
+	 	Assert.assertTrue(resolvedChange.isResolved)
 	 	Assert.assertFalse(resolvedChange.apply)
-	 	//Assert.assertFalse(resolvedChange.revert) TODO 
+	 	Assert.assertFalse(resolvedChange.revert)
 	 }
 	 
 	 /**
@@ -132,11 +132,11 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	Assert.assertFalse(resolvedChange.revert)
 	 }
 	 
-	 	 /**
-	  * Tests a {@link InsertEAttributeValue} EChange with the wrong value type.
+	 /**
+	  * Tests an {@link InsertEAttributeValue} EChange with the wrong value type.
 	  */
 	 @Test
-	 def public void replaceSingleValuedEAttributeInvalidValue() {
+	 def public void insertEAttributeValueInvalidValue() {
 	 	val newValue = "New String Value" // values are String, attribute value type is Integer
 	 	
 	 	// Resolving the change will be tested in EFeatureChange

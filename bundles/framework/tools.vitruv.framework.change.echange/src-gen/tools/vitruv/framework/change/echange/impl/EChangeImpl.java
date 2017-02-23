@@ -21,6 +21,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
 
+import tools.vitruv.framework.change.echange.util.ApplyCommandSwitch;
+import tools.vitruv.framework.change.echange.util.RevertCommandSwitch;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>EChange</b></em>'.
@@ -80,23 +83,12 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Command getApplyCommand() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public boolean apply() {
 		boolean _isResolved = this.isResolved();
 		if (_isResolved) {
-			final Command command = this.getApplyCommand();
-			boolean _canExecute = command.canExecute();
-			if (_canExecute) {
+			ApplyCommandSwitch _applyCommandSwitch = new ApplyCommandSwitch();
+			final Command command = _applyCommandSwitch.doSwitch(this);
+			if (((!Objects.equal(command, null)) && command.canExecute())) {
 				command.execute();
 				return true;
 			}
@@ -109,23 +101,12 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Command getRevertCommand() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public boolean revert() {
 		boolean _isResolved = this.isResolved();
 		if (_isResolved) {
-			final Command command = this.getRevertCommand();
-			boolean _canExecute = command.canExecute();
-			if (_canExecute) {
+			RevertCommandSwitch _revertCommandSwitch = new RevertCommandSwitch();
+			final Command command = _revertCommandSwitch.doSwitch(this);
+			if (((!Objects.equal(command, null)) && command.canExecute())) {
 				command.execute();
 				return true;
 			}
@@ -145,12 +126,8 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 				return isResolved();
 			case EChangePackage.ECHANGE___RESOLVE__RESOURCESET:
 				return resolve((ResourceSet)arguments.get(0));
-			case EChangePackage.ECHANGE___GET_APPLY_COMMAND:
-				return getApplyCommand();
 			case EChangePackage.ECHANGE___APPLY:
 				return apply();
-			case EChangePackage.ECHANGE___GET_REVERT_COMMAND:
-				return getRevertCommand();
 			case EChangePackage.ECHANGE___REVERT:
 				return revert();
 		}

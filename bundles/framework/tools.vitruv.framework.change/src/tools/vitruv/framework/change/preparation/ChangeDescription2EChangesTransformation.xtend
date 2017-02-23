@@ -158,9 +158,10 @@ public class ChangeDescription2EChangesTransformation {
 		for (rootToAdd : listChange.referenceValues) {
 			var oldRootContainer = rootToAdd.eContainer
 			var oldRootResource = rootToAdd.eResource
+			var index = listChange.index
 			eChanges.add(
 				EMFModelChangeTransformationUtil.createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource,
-					resourceURI))
+					resourceURI, index)) // TODO Stefan: Added for working EChange implementation
 		}
 	}
 
@@ -174,7 +175,7 @@ public class ChangeDescription2EChangesTransformation {
 		var newRootResource = null//changeDescription.getNewResource(rootToRemove)
 		eChanges.add(
 			EMFModelChangeTransformationUtil.createRemoveRootChange(rootToRemove, newRootContainer, newRootResource,
-				resourceURI))
+				resourceURI, rootElementListIndex)) // TODO Stefan: Added index for working EChange implementation
 	}
 
 	def private void recursivelyAddChangesForNonDefaultValues(EObject eObject) {

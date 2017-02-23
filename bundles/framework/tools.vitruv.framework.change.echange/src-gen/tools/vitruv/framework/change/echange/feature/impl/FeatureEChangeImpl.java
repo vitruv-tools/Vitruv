@@ -19,8 +19,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
 
@@ -28,6 +26,8 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
+
+import tools.vitruv.framework.change.echange.util.EChangeUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -167,7 +167,7 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * @generated
 	 */
 	public boolean isResolved() {
-		return ((!Objects.equal(this.getAffectedEObject(), null)) && (!this.getAffectedEObject().eIsProxy()));
+		return (((!Objects.equal(this.getAffectedEObject(), null)) && (!this.getAffectedEObject().eIsProxy())) && (!Objects.equal(this.getAffectedFeature(), null)));
 	}
 
 	/**
@@ -176,27 +176,20 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * @generated
 	 */
 	public EChange resolve(final ResourceSet resourceSet) {
-		if ((Objects.equal(this.getAffectedEObject(), null) || Objects.equal(this.getAffectedFeature(), null))) {
-			return null;
-		}
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
 			EChange _resolve = super.resolve(resourceSet);
 			final FeatureEChange<A, F> resolvedChange = ((FeatureEChange<A, F>) _resolve);
-			boolean _equals = Objects.equal(resolvedChange, null);
-			if (_equals) {
+			if (((Objects.equal(resolvedChange, null) || Objects.equal(this.getAffectedFeature(), null)) || Objects.equal(this.getAffectedEObject(), null))) {
 				return null;
 			}
 			A _affectedEObject = this.getAffectedEObject();
-			EObject _resolve_1 = EcoreUtil.resolve(_affectedEObject, resourceSet);
-			resolvedChange.setAffectedEObject(((A) _resolve_1));
-			A _affectedEObject_1 = resolvedChange.getAffectedEObject();
-			boolean _eIsProxy = _affectedEObject_1.eIsProxy();
-			if (_eIsProxy) {
-				return this;
+			EObject _resolveProxy = EChangeUtil.resolveProxy(_affectedEObject, resourceSet);
+			resolvedChange.setAffectedEObject(((A) _resolveProxy));
+			if (((!Objects.equal(resolvedChange.getAffectedEObject(), null)) && (!resolvedChange.getAffectedEObject().eIsProxy()))) {
+				return resolvedChange;
 			}
-			return resolvedChange;
 		}
 		return this;
 	}

@@ -4,6 +4,8 @@ package tools.vitruv.framework.change.echange.feature.single.impl;
 
 import java.lang.reflect.InvocationTargetException;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -52,7 +54,11 @@ public abstract class ReplaceSingleValuedFeatureEChangeImpl<A extends EObject, F
 	 * @generated
 	 */
 	public boolean isFromNonDefaultValue() {
-		return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());
+		T _oldValue = this.getOldValue();
+		F _affectedFeature = this.getAffectedFeature();
+		Object _defaultValue = _affectedFeature.getDefaultValue();
+		boolean _equals = Objects.equals(_oldValue, _defaultValue);
+		return (!_equals);
 	}
 
 	/**
@@ -61,7 +67,11 @@ public abstract class ReplaceSingleValuedFeatureEChangeImpl<A extends EObject, F
 	 * @generated
 	 */
 	public boolean isToNonDefaultValue() {
-		return !java.util.Objects.equals(getNewValue(), getAffectedFeature().getDefaultValue());
+		T _newValue = this.getNewValue();
+		F _affectedFeature = this.getAffectedFeature();
+		Object _defaultValue = _affectedFeature.getDefaultValue();
+		boolean _equals = Objects.equals(_newValue, _defaultValue);
+		return (!_equals);
 	}
 
 	/**

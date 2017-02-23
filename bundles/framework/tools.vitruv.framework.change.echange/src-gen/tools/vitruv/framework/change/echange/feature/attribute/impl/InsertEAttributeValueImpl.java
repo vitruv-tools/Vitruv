@@ -2,26 +2,13 @@
  */
 package tools.vitruv.framework.change.echange.feature.attribute.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
-import org.eclipse.emf.common.command.Command;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.emf.edit.command.RemoveCommand;
-
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 
 import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange;
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
@@ -92,35 +79,6 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 		newValue = newNewValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE, oldNewValue, newValue));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Command getApplyCommand() {
-		ComposedAdapterFactory _composedAdapterFactory = new ComposedAdapterFactory();
-		final AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(_composedAdapterFactory, null);
-		A _affectedEObject = this.getAffectedEObject();
-		EAttribute _affectedFeature = this.getAffectedFeature();
-		T _newValue = this.getNewValue();
-		int _index = this.getIndex();
-		return AddCommand.create(editingDomain, _affectedEObject, _affectedFeature, _newValue, _index);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Command getRevertCommand() {
-		ComposedAdapterFactory _composedAdapterFactory = new ComposedAdapterFactory();
-		final AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(_composedAdapterFactory, null);
-		A _affectedEObject = this.getAffectedEObject();
-		EAttribute _affectedFeature = this.getAffectedFeature();
-		T _newValue = this.getNewValue();
-		return RemoveCommand.create(editingDomain, _affectedEObject, _affectedFeature, _newValue);
 	}
 
 	/**
@@ -222,22 +180,6 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case AttributePackage.INSERT_EATTRIBUTE_VALUE___GET_APPLY_COMMAND:
-				return getApplyCommand();
-			case AttributePackage.INSERT_EATTRIBUTE_VALUE___GET_REVERT_COMMAND:
-				return getRevertCommand();
-		}
-		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

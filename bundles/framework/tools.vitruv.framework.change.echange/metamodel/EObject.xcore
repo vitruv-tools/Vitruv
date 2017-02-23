@@ -3,11 +3,15 @@
 package tools.vitruv.framework.change.echange.eobject
 
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.echange.util.EChangeUtil
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
 
 type EObj wraps EObject
+type ResourceSet wraps ResourceSet
 
 abstract class EObjectAddedEChange<T extends EObject> extends AdditiveEChange<T> {
 	refers T[1] newValue
@@ -19,6 +23,36 @@ abstract class EObjectSubtractedEChange<T extends EObj> extends SubtractiveEChan
 
 abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
 	refers A[1] affectedEObject
+	
+	op boolean isResolved() {
+		return affectedEObject != null && !affectedEObject.eIsProxy()
+	}
+	op EChange resolve(ResourceSet resourceSet) {
+		this.resolve(resourceSet, null)
+	}
+	op EChange resolve(ResourceSet resourceSet, A resolvedObject) {
+		if (!isResolved) {
+			val resolvedChange = super.resolve(resourceSet) as EObjectExistenceEChange<A>
+			if (resolvedChange == null) {
+				// resolving the super class attributes failed
+				return null
+			}
+			
+			// Resolve the affected object
+			if (affectedEObject == null) {
+				// In given resource set
+				resolvedChange.affectedEObject = EChangeUtil.resolveProxy(affectedEObject, resourceSet) as A
+			} else {
+				// manually
+				resolvedChange.affectedEObject = resolvedObject
+			}
+			
+			if (resolvedChange.affectedEObject != null && !resolvedChange.affectedEObject.eIsProxy) {
+				return resolvedChange
+			}
+		}
+		return this
+	}
 }
 
 class CreateEObject<A extends EObj> extends EObjectExistenceEChange<A> {
@@ -26,5 +60,5 @@ class CreateEObject<A extends EObj> extends EObjectExistenceEChange<A> {
 }
 
 class DeleteEObject<A extends EObj> extends EObjectExistenceEChange<A> {
-
+	
 }

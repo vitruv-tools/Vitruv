@@ -2,6 +2,8 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
+import com.google.common.base.Objects;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -16,8 +18,13 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.framework.change.echange.AtomicEChange;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
+import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.EChangePackage;
+
+import tools.vitruv.framework.change.echange.compound.CompoundEChange;
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject;
 
@@ -183,6 +190,34 @@ public abstract class CreateAndInsertEObjectImpl<T extends EObject, C extends EO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isResolved() {
+		return ((super.isResolved() && this.getCreateChange().isResolved()) && this.getInsertChange().isResolved());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolve(final ResourceSet resourceSet) {
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			EChange _resolve = super.resolve(resourceSet);
+			final CreateAndInsertEObject<T, C> resolvedChange = ((CreateAndInsertEObject<T, C>) _resolve);
+			boolean _equals = Objects.equal(resolvedChange, null);
+			if (_equals) {
+				return null;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -269,10 +304,37 @@ public abstract class CreateAndInsertEObjectImpl<T extends EObject, C extends EO
 	 * @generated
 	 */
 	@Override
+	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+		if (baseClass == EChange.class) {
+			switch (baseOperationID) {
+				case EChangePackage.ECHANGE___IS_RESOLVED: return CompoundPackage.CREATE_AND_INSERT_EOBJECT___IS_RESOLVED;
+				case EChangePackage.ECHANGE___RESOLVE__RESOURCESET: return CompoundPackage.CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		if (baseClass == CompoundEChange.class) {
+			switch (baseOperationID) {
+				case CompoundPackage.COMPOUND_ECHANGE___GET_ATOMIC_CHANGES: return CompoundPackage.CREATE_AND_INSERT_EOBJECT___GET_ATOMIC_CHANGES;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		return super.eDerivedOperationID(baseOperationID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
 			case CompoundPackage.CREATE_AND_INSERT_EOBJECT___GET_ATOMIC_CHANGES:
 				return getAtomicChanges();
+			case CompoundPackage.CREATE_AND_INSERT_EOBJECT___IS_RESOLVED:
+				return isResolved();
+			case CompoundPackage.CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET:
+				return resolve((ResourceSet)arguments.get(0));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

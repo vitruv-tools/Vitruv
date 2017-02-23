@@ -25,7 +25,7 @@ public interface ReplaceSingleValuedFeatureEChange<A extends EObject, F extends 
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='T _oldValue = this.getOldValue();\nF _affectedFeature = this.getAffectedFeature();\n<%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();\nboolean _equals = <%java.util.Objects%>.equals(_oldValue, _defaultValue);\nreturn (!_equals);'"
 	 * @generated
 	 */
 	boolean isFromNonDefaultValue();
@@ -34,7 +34,7 @@ public interface ReplaceSingleValuedFeatureEChange<A extends EObject, F extends 
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return !java.util.Objects.equals(getNewValue(), getAffectedFeature().getDefaultValue());'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='T _newValue = this.getNewValue();\nF _affectedFeature = this.getAffectedFeature();\n<%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();\nboolean _equals = <%java.util.Objects%>.equals(_newValue, _defaultValue);\nreturn (!_equals);'"
 	 * @generated
 	 */
 	boolean isToNonDefaultValue();

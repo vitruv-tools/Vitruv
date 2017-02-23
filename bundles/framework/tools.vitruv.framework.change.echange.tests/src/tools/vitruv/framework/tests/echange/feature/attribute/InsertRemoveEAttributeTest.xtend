@@ -7,9 +7,9 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 import allElementTypes.AllElementTypesPackage
 
 /**
- * 
+ * Abstract class which is used by insert and remove attribute test classes.
  */
-public class InsertRemoveEAttributeTest extends EChangeTest {
+public abstract class InsertRemoveEAttributeTest extends EChangeTest {
 	protected var Root defaultAffectedEObject = null
 	protected var EAttribute defaultAffectedFeature = null
 	

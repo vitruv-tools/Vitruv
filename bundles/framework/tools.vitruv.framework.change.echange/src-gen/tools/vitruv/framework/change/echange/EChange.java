@@ -2,8 +2,6 @@
  */
 package tools.vitruv.framework.change.echange;
 
-import org.eclipse.emf.common.command.Command;
-
 import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -24,6 +22,9 @@ public interface EChange extends EObject {
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * *
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply or revert the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return true;'"
@@ -54,16 +55,15 @@ public interface EChange extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="tools.vitruv.framework.change.echange.Command" unique="false"
-	 * @generated
-	 */
-	Command getApplyCommand();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * Applies the change to the model which the change was resolved to.
+	 * The change must be resolved before it can be applied.
+	 * @return	Returns whether the change was successfully applied. If the
+	 * 			change was not resolved or could not be applied it returns {@code false}
+	 * <!-- end-model-doc -->
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\tfinal <%org.eclipse.emf.common.command.Command%> command = this.getApplyCommand();\n\tboolean _canExecute = command.canExecute();\n\tif (_canExecute)\n\t{\n\t\tcommand.execute();\n\t\treturn true;\n\t}\n}\nreturn false;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\t<%tools.vitruv.framework.change.echange.util.ApplyCommandSwitch%> _applyCommandSwitch = new <%tools.vitruv.framework.change.echange.util.ApplyCommandSwitch%>();\n\tfinal <%org.eclipse.emf.common.command.Command%> command = _applyCommandSwitch.doSwitch(this);\n\tif (((!<%com.google.common.base.Objects%>.equal(command, null)) && command.canExecute()))\n\t{\n\t\tcommand.execute();\n\t\treturn true;\n\t}\n}\nreturn false;'"
 	 * @generated
 	 */
 	boolean apply();
@@ -71,16 +71,15 @@ public interface EChange extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="tools.vitruv.framework.change.echange.Command" unique="false"
-	 * @generated
-	 */
-	Command getRevertCommand();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * Reverts the change on the model which the change was resolved to.
+	 * The change must be resolved before it can be reverted.
+	 * @return	Returns whether the change was successfully reverted. If the
+	 * 			change was not resolved or could not be reverted it returns {@code false}
+	 * <!-- end-model-doc -->
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\tfinal <%org.eclipse.emf.common.command.Command%> command = this.getRevertCommand();\n\tboolean _canExecute = command.canExecute();\n\tif (_canExecute)\n\t{\n\t\tcommand.execute();\n\t\treturn true;\n\t}\n}\nreturn false;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\t<%tools.vitruv.framework.change.echange.util.RevertCommandSwitch%> _revertCommandSwitch = new <%tools.vitruv.framework.change.echange.util.RevertCommandSwitch%>();\n\tfinal <%org.eclipse.emf.common.command.Command%> command = _revertCommandSwitch.doSwitch(this);\n\tif (((!<%com.google.common.base.Objects%>.equal(command, null)) && command.canExecute()))\n\t{\n\t\tcommand.execute();\n\t\treturn true;\n\t}\n}\nreturn false;'"
 	 * @generated
 	 */
 	boolean revert();
