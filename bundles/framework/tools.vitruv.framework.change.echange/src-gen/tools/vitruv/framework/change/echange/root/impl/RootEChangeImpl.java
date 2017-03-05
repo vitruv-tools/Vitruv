@@ -2,8 +2,13 @@
  */
 package tools.vitruv.framework.change.echange.root.impl;
 
+import com.google.common.base.Objects;
+
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 
 import org.eclipse.emf.ecore.EClass;
@@ -11,6 +16,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
 
@@ -180,6 +189,42 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isResolved() {
+		return (super.isResolved() && (!Objects.equal(this.getResource(), null)));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolve(final ResourceSet resourceSet) {
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			EChange _resolve = super.resolve(resourceSet);
+			final RootEChange resolvedChange = ((RootEChange) _resolve);
+			boolean _equals = Objects.equal(resolvedChange, null);
+			if (_equals) {
+				return null;
+			}
+			URI _uri = this.getUri();
+			Resource _resource = resourceSet.getResource(_uri, false);
+			resolvedChange.setResource(_resource);
+			Resource _resource_1 = resolvedChange.getResource();
+			boolean _notEquals = (!Objects.equal(_resource_1, null));
+			if (_notEquals) {
+				return resolvedChange;
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -251,6 +296,39 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 				return index != INDEX_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+		if (baseClass == EChange.class) {
+			switch (baseOperationID) {
+				case EChangePackage.ECHANGE___IS_RESOLVED: return RootPackage.ROOT_ECHANGE___IS_RESOLVED;
+				case EChangePackage.ECHANGE___RESOLVE__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE__RESOURCESET;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		return super.eDerivedOperationID(baseOperationID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case RootPackage.ROOT_ECHANGE___IS_RESOLVED:
+				return isResolved();
+			case RootPackage.ROOT_ECHANGE___RESOLVE__RESOURCESET:
+				return resolve((ResourceSet)arguments.get(0));
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

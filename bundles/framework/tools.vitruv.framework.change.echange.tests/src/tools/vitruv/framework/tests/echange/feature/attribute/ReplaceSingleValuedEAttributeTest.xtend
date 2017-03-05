@@ -45,11 +45,12 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
  		
  		Assert.assertTrue(resolvedChange.isResolved)
  		Assert.assertTrue(unresolvedChange != resolvedChange)
- 		Assert.assertEquals(unresolvedChange.getClass,resolvedChange.getClass)
+ 		Assert.assertEquals(unresolvedChange.getClass, resolvedChange.getClass)
 	}
 	
 	/**
-	 * Tests replacing a single value in the root element.
+	 * Tests a {@link ReplaceSingleValuedEAttribute} EChange
+	 * by replacing a single value in the root element.
 	 */
 	 @Test
 	 def public void replaceSingleValuedEAttributeApplyTest() {

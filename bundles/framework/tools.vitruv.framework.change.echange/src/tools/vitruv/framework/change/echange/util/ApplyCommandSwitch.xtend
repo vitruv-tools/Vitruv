@@ -2,7 +2,6 @@ package tools.vitruv.framework.change.echange.util;
 
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.eobject.util.EObjectApplyCommandSwitch
 import tools.vitruv.framework.change.echange.feature.util.FeatureApplyCommandSwitch
@@ -21,8 +20,5 @@ public class ApplyCommandSwitch extends EChangeSwitch<Command>{
 			result = (new EObjectApplyCommandSwitch()).doSwitch(object)
 		}
 		return result		
-	}
-	def public Command caseAdditiveEChange(AdditiveEChange object) {
-
 	}
 }

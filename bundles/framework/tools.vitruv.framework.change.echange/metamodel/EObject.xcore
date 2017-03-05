@@ -3,17 +3,21 @@
 package tools.vitruv.framework.change.echange.eobject
 
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.change.echange.util.EChangeUtil
+import org.eclipse.emf.ecore.InternalEObject
+import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
+import tools.vitruv.framework.change.echange.util.StagingArea
 
 type EObj wraps EObject
 type ResourceSet wraps ResourceSet
+type Resource wraps Resource
 
-abstract class EObjectAddedEChange<T extends EObject> extends AdditiveEChange<T> {
+abstract class EObjectAddedEChange<T extends EObj> extends AdditiveEChange<T> {
 	refers T[1] newValue
 }
 
@@ -23,15 +27,14 @@ abstract class EObjectSubtractedEChange<T extends EObj> extends SubtractiveEChan
 
 abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
 	refers A[1] affectedEObject
+	Resource stagingArea
 	
 	op boolean isResolved() {
-		return affectedEObject != null && !affectedEObject.eIsProxy()
+		return super.isResolved() && affectedEObject != null && !affectedEObject.eIsProxy()
+			&& stagingArea != null
 	}
 	op EChange resolve(ResourceSet resourceSet) {
-		this.resolve(resourceSet, null)
-	}
-	op EChange resolve(ResourceSet resourceSet, A resolvedObject) {
-		if (!isResolved) {
+		if (affectedEObject != null && !isResolved) {
 			val resolvedChange = super.resolve(resourceSet) as EObjectExistenceEChange<A>
 			if (resolvedChange == null) {
 				// resolving the super class attributes failed
@@ -39,15 +42,18 @@ abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
 			}
 			
 			// Resolve the affected object
-			if (affectedEObject == null) {
-				// In given resource set
-				resolvedChange.affectedEObject = EChangeUtil.resolveProxy(affectedEObject, resourceSet) as A
+			resolvedChange.stagingArea = StagingArea.getStagingArea(resourceSet)
+			if (!resolvedChange.stagingArea.contents.empty) {
+				// Object still exists
+				resolvedChange.affectedEObject = resolvedChange.stagingArea.contents.get(0) as A
 			} else {
-				// manually
-				resolvedChange.affectedEObject = resolvedObject
+				// Create new one
+				resolvedChange.affectedEObject = EcoreUtil.copy(affectedEObject)
+				(resolvedChange.affectedEObject as InternalEObject).eSetProxyURI(null)
 			}
 			
-			if (resolvedChange.affectedEObject != null && !resolvedChange.affectedEObject.eIsProxy) {
+			if (resolvedChange.affectedEObject != null && !resolvedChange.affectedEObject.eIsProxy
+				&& resolvedChange.stagingArea != null) {
 				return resolvedChange
 			}
 		}

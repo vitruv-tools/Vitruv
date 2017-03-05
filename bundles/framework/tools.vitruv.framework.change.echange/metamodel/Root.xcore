@@ -2,15 +2,16 @@
 @GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
 package tools.vitruv.framework.change.echange.root
 
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.change.echange.util.EChangeUtil
-import tools.vitruv.framework.change.echange.EChange
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.AtomicEChange
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.util.StagingArea
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 type EObj wraps EObject
 type ResourceSet wraps ResourceSet
@@ -18,19 +19,36 @@ type Resource wraps Resource
 type URI wraps URI
 
 abstract class RootEChange extends AtomicEChange {
-	URI uri // TODO Stefan
-	Resource resource // TODO Stefan
+	URI uri
+	Resource resource
 	int index
+	op boolean isResolved() {
+		return super.isResolved && resource != null
+	}
+	op EChange resolve(ResourceSet resourceSet) {
+		if (!isResolved) {
+			val resolvedChange = super.resolve(resourceSet) as RootEChange
+			if (resolvedChange == null) {
+				// Resolving the super class attributes failed
+				return null
+			}
+			
+			// Get resource where the root object will be inserted / removed.
+			resolvedChange.resource = resourceSet.getResource(uri, false)
+			
+			if (resolvedChange.resource != null) {
+				return resolvedChange
+			}
+		}
+		return this
+	}
 }
 
 class InsertRootEObject<T extends EObj> extends RootEChange, EObjectAddedEChange<T> {
 	op boolean isResolved() {
-		return !newValue.eIsProxy() && resource != null
+		return super.isResolved && !newValue.eIsProxy
 	}
 	op EChange resolve(ResourceSet resourceSet) {
-		return this.resolve(resourceSet, null)
-	}
-	op EChange resolve(ResourceSet resourceSet, T newRootObject) {
 		if (!isResolved) {
 			val resolvedChange = super.resolve(resourceSet) as InsertRootEObject<T>
 			if (resolvedChange == null) {
@@ -39,18 +57,16 @@ class InsertRootEObject<T extends EObj> extends RootEChange, EObjectAddedEChange
 			}
 			
 			// Resolve the root object
-			if (newRootObject == null) {
-				// In given resource set
-				resolvedChange.newValue = EChangeUtil.resolveProxy(newValue, resourceSet) as T
+			val stagingArea = StagingArea.getStagingArea(resourceSet)
+			if (!stagingArea.contents.empty) {
+				// Root object was created and is in the staging area (=> change can be applied)
+				resolvedChange.newValue = stagingArea.contents.get(0) as T
 			} else {
-				// manually
-				resolvedChange.newValue = newRootObject
+				// Root object was already inserted (=> change can be reverted)
+				resolvedChange.newValue = EChangeUtil.resolveProxy(newValue, resourceSet) as T
 			}
-			
-			resolvedChange.resource = resourceSet.getResource(uri, false)
-			
-			if (resolvedChange.newValue != null && !resolvedChange.newValue.eIsProxy 
-				&& resolvedChange.resource != null) {
+	
+			if (resolvedChange.newValue != null && !resolvedChange.newValue.eIsProxy) {
 				return resolvedChange
 			}
 		}
@@ -60,12 +76,9 @@ class InsertRootEObject<T extends EObj> extends RootEChange, EObjectAddedEChange
 
 class RemoveRootEObject<T extends EObj> extends RootEChange, EObjectSubtractedEChange<T> {
 	op boolean isResolved() {
-		return !oldValue.eIsProxy()
+		return super.isResolved && !oldValue.eIsProxy()
 	}
 	op EChange resolve(ResourceSet resourceSet) {
-		return this.resolve(resourceSet, null)
-	}
-	op EChange resolve(ResourceSet resourceSet, T oldRootObject) {
 		if (!isResolved) {
 			val resolvedChange = super.resolve(resourceSet) as RemoveRootEObject<T>
 			if (resolvedChange == null) {
@@ -74,19 +87,16 @@ class RemoveRootEObject<T extends EObj> extends RootEChange, EObjectSubtractedEC
 			}
 			
 			// Resolve the root object
-			if (oldRootObject == null) {
-				// In given resource set
-				resolvedChange.oldValue = EChangeUtil.resolveProxy(oldValue, resourceSet) as T
+			val stagingArea = StagingArea.getStagingArea(resourceSet) 
+			if (!stagingArea.contents.empty) {
+				// Root object was removed and is in the staging area (=> change can be reverted)
+				resolvedChange.oldValue = stagingArea.contents.get(0) as T
 			} else  {
-				// manually
-				resolvedChange.oldValue = oldRootObject
+				// Root object is still in resource (=> change can be applied)
+				resolvedChange.oldValue = EChangeUtil.resolveProxy(oldValue, resourceSet) as T
 			}
 					
-			// Get resource where the root object will be removed 
-			resolvedChange.resource = resourceSet.getResource(uri, false)
-			
-			if (resolvedChange.oldValue != null && !resolvedChange.oldValue.eIsProxy
-				&& resolvedChange.resource != null) {
+			if (resolvedChange.oldValue != null && !resolvedChange.oldValue.eIsProxy) {
 				return resolvedChange
 			}
 		}
