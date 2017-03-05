@@ -12,6 +12,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.util.StagingArea
 
 /**
@@ -95,11 +96,13 @@ import tools.vitruv.framework.change.echange.util.StagingArea
  	}
  	
  	/**
- 	 * Clears the staging areas of the resource sets.
+ 	 * Clears the staging areas of the resource sets
+ 	 * and the object in progress.
  	 */
  	@After
  	def void afterTest() {
 		stagingArea1.contents.clear
 		stagingArea2.contents.clear
+		EChangeUtil.objectInProgress = null
  	}
  }

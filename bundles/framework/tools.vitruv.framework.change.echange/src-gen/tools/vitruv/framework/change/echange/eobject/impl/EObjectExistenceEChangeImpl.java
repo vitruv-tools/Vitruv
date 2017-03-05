@@ -29,6 +29,7 @@ import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
 
+import tools.vitruv.framework.change.echange.util.EChangeUtil;
 import tools.vitruv.framework.change.echange.util.StagingArea;
 
 /**
@@ -169,34 +170,34 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet) {
+	public EChange resolve(final ResourceSet resourceSet, final boolean newObject) {
 		if (((!Objects.equal(this.getAffectedEObject(), null)) && (!this.isResolved()))) {
-			EChange _resolve = super.resolve(resourceSet);
-			final EObjectExistenceEChange<A> resolvedChange = ((EObjectExistenceEChange<A>) _resolve);
+			EChange _resolveApply = super.resolveApply(resourceSet);
+			final EObjectExistenceEChange<A> resolvedChange = ((EObjectExistenceEChange<A>) _resolveApply);
 			boolean _equals = Objects.equal(resolvedChange, null);
 			if (_equals) {
 				return null;
 			}
-			Resource _stagingArea = StagingArea.getStagingArea(resourceSet);
-			resolvedChange.setStagingArea(_stagingArea);
-			Resource _stagingArea_1 = resolvedChange.getStagingArea();
-			EList<EObject> _contents = _stagingArea_1.getContents();
-			boolean _isEmpty = _contents.isEmpty();
-			boolean _not = (!_isEmpty);
-			if (_not) {
-				Resource _stagingArea_2 = resolvedChange.getStagingArea();
-				EList<EObject> _contents_1 = _stagingArea_2.getContents();
-				EObject _get = _contents_1.get(0);
-				resolvedChange.setAffectedEObject(((A) _get));
-			}
-			else {
+			if (newObject) {
 				A _affectedEObject = this.getAffectedEObject();
 				A _copy = EcoreUtil.<A>copy(_affectedEObject);
 				resolvedChange.setAffectedEObject(_copy);
 				A _affectedEObject_1 = resolvedChange.getAffectedEObject();
 				((InternalEObject) _affectedEObject_1).eSetProxyURI(null);
 			}
+			else {
+				resolvedChange.setAffectedEObject(((A) EChangeUtil.objectInProgress));
+			}
+			Resource _stagingArea = StagingArea.getStagingArea(resourceSet);
+			resolvedChange.setStagingArea(_stagingArea);
 			if ((((!Objects.equal(resolvedChange.getAffectedEObject(), null)) && (!resolvedChange.getAffectedEObject().eIsProxy())) && (!Objects.equal(resolvedChange.getStagingArea(), null)))) {
+				if (newObject) {
+					A _affectedEObject_2 = resolvedChange.getAffectedEObject();
+					EChangeUtil.objectInProgress = _affectedEObject_2;
+				}
+				else {
+					EChangeUtil.objectInProgress = null;
+				}
 				return resolvedChange;
 			}
 		}
@@ -283,7 +284,6 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE__RESOURCESET: return EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -300,8 +300,8 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 		switch (operationID) {
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET:
-				return resolve((ResourceSet)arguments.get(0));
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN:
+				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

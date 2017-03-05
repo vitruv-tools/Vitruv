@@ -22,9 +22,9 @@ abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicECh
 			&& affectedFeature != null
 	}
 	
-	op EChange resolve(ResourceSet resourceSet) {
+	op EChange resolveApply(ResourceSet resourceSet) {
 		if (!isResolved) {
-			val resolvedChange = super.resolve(resourceSet) as FeatureEChange<A, F>
+			val resolvedChange = super.resolveApply(resourceSet) as FeatureEChange<A, F>
 			if (resolvedChange == null || affectedFeature == null || affectedEObject == null) {
 				return null
 			}

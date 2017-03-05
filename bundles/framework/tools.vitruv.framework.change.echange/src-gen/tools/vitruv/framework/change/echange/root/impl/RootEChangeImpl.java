@@ -198,12 +198,30 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet) {
+	public EChange resolveApply(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolveRevert(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, false);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolve(final ResourceSet resourceSet, final boolean applicableChange) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			EChange _resolve = super.resolve(resourceSet);
-			final RootEChange resolvedChange = ((RootEChange) _resolve);
+			EChange _resolveApply = super.resolveApply(resourceSet);
+			final RootEChange resolvedChange = ((RootEChange) _resolveApply);
 			boolean _equals = Objects.equal(resolvedChange, null);
 			if (_equals) {
 				return null;
@@ -308,7 +326,8 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return RootPackage.ROOT_ECHANGE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -325,8 +344,12 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		switch (operationID) {
 			case RootPackage.ROOT_ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case RootPackage.ROOT_ECHANGE___RESOLVE__RESOURCESET:
-				return resolve((ResourceSet)arguments.get(0));
+			case RootPackage.ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET:
+				return resolveApply((ResourceSet)arguments.get(0));
+			case RootPackage.ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET:
+				return resolveRevert((ResourceSet)arguments.get(0));
+			case RootPackage.ROOT_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN:
+				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

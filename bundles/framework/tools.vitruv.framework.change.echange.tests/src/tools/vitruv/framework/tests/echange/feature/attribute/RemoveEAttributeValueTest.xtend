@@ -36,7 +36,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
  			<Root, Integer>createInsertAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, true)
  		
  		// Resolving the change will be tested in EFeatureChange	
- 		val resolvedChange = unresolvedChange.resolve(resourceSet1)
+ 		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
  		
  		Assert.assertTrue(resolvedChange.isResolved)
  		Assert.assertTrue(unresolvedChange != resolvedChange)

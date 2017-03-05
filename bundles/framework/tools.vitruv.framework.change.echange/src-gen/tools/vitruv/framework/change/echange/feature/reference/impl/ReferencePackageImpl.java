@@ -231,7 +231,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getInsertEReference__Resolve__ResourceSet() {
+	public EOperation getInsertEReference__ResolveApply__ResourceSet() {
 		return insertEReferenceEClass.getEOperations().get(1);
 	}
 
@@ -258,7 +258,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getRemoveEReference__Resolve__ResourceSet() {
+	public EOperation getRemoveEReference__ResolveApply__ResourceSet() {
 		return removeEReferenceEClass.getEOperations().get(1);
 	}
 
@@ -285,7 +285,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getReplaceSingleValuedEReference__Resolve__ResourceSet() {
+	public EOperation getReplaceSingleValuedEReference__ResolveApply__ResourceSet() {
 		return replaceSingleValuedEReferenceEClass.getEOperations().get(1);
 	}
 
@@ -353,15 +353,15 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
 		insertEReferenceEClass = createEClass(INSERT_EREFERENCE);
 		createEOperation(insertEReferenceEClass, INSERT_EREFERENCE___IS_RESOLVED);
-		createEOperation(insertEReferenceEClass, INSERT_EREFERENCE___RESOLVE__RESOURCESET);
+		createEOperation(insertEReferenceEClass, INSERT_EREFERENCE___RESOLVE_APPLY__RESOURCESET);
 
 		removeEReferenceEClass = createEClass(REMOVE_EREFERENCE);
 		createEOperation(removeEReferenceEClass, REMOVE_EREFERENCE___IS_RESOLVED);
-		createEOperation(removeEReferenceEClass, REMOVE_EREFERENCE___RESOLVE__RESOURCESET);
+		createEOperation(removeEReferenceEClass, REMOVE_EREFERENCE___RESOLVE_APPLY__RESOURCESET);
 
 		replaceSingleValuedEReferenceEClass = createEClass(REPLACE_SINGLE_VALUED_EREFERENCE);
 		createEOperation(replaceSingleValuedEReferenceEClass, REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED);
-		createEOperation(replaceSingleValuedEReferenceEClass, REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET);
+		createEOperation(replaceSingleValuedEReferenceEClass, REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_APPLY__RESOURCESET);
 
 		// Create data types
 		eObjEDataType = createEDataType(EOBJ);
@@ -522,21 +522,21 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
 		initEOperation(getInsertEReference__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getInsertEReference__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getInsertEReference__ResolveApply__ResourceSet(), theEChangePackage.getEChange(), "resolveApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(removeEReferenceEClass, RemoveEReference.class, "RemoveEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getRemoveEReference__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getRemoveEReference__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getRemoveEReference__ResolveApply__ResourceSet(), theEChangePackage.getEChange(), "resolveApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(replaceSingleValuedEReferenceEClass, ReplaceSingleValuedEReference.class, "ReplaceSingleValuedEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getReplaceSingleValuedEReference__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getReplaceSingleValuedEReference__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getReplaceSingleValuedEReference__ResolveApply__ResourceSet(), theEChangePackage.getEChange(), "resolveApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		// Initialize data types

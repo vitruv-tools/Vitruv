@@ -23,6 +23,8 @@ abstract class EChange {
 	
 	/**
 	 * Resolves the unresolved proxy EObjects of the change to a given set of resources with concrete EObjects.
+	 * The model has to be in state before the change will applied. If the model is in state after the
+	 * change and it will be reverted, {@link resolveRevert} has to be called instead.
 	 * Before the change can be applied or reverted all proxy objects need to be resolved.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
@@ -31,7 +33,7 @@ abstract class EChange {
 	 * 			If not all proxy objects could be resolved it returns the original unresolved change.
 	 * 			Returns {@code null} if {@link resourceSet} is {@code null}.
 	 */
-	op EChange resolve(ResourceSet resourceSet) {
+	op EChange resolveApply(ResourceSet resourceSet) {
 		if (resourceSet == null) {
 			return null
 		}
@@ -39,6 +41,10 @@ abstract class EChange {
 			return EcoreUtil.copy(this)
 		}
 		return this
+	}
+	
+	op EChange resolveRevert(ResourceSet resourceSet) {
+		resolveApply(resourceSet)
 	}
 	
 	/**

@@ -5,6 +5,7 @@ import org.junit.Assert
 import org.junit.Test
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 /**
  * Test class for the concrete {@link InsertRootEObject} EChange,
@@ -35,14 +36,16 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		Assert.assertNull(unresolvedChange.resource)
 		Assert.assertTrue(unresolvedChange.newValue != newRootObject)
 		Assert.assertFalse(resourceContent.contains(newRootObject))
+		Assert.assertTrue(EChangeUtil.objectInProgress == newRootObject)
 		
 		// resolve
-		var resolvedChange = unresolvedChange.resolve(resourceSet1) as InsertRootEObject<Root>
+		var resolvedChange = unresolvedChange.resolveApply(resourceSet1) as InsertRootEObject<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertNotNull(resolvedChange.resource)
 		Assert.assertTrue(resolvedChange.resource.resourceSet == resourceSet1)
 		Assert.assertTrue(resolvedChange.newValue == newRootObject)
+		Assert.assertNull(EChangeUtil.objectInProgress)
 	}
 	
 	/**
@@ -60,15 +63,17 @@ class InsertRootEObjectTest extends RootEChangeTest {
 			
 		Assert.assertFalse(unresolvedChange.isResolved)
 		Assert.assertNull(unresolvedChange.resource)
-		Assert.assertTrue(unresolvedChange.newValue != newRootObject)		
+		Assert.assertTrue(unresolvedChange.newValue != newRootObject)	
+		Assert.assertNull(EChangeUtil.objectInProgress)	
 		
 		// Resolve
-		var resolvedChange = unresolvedChange.resolve(resourceSet1) as InsertRootEObject<Root>
+		var resolvedChange = unresolvedChange.resolveRevert(resourceSet1) as InsertRootEObject<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertNotNull(resolvedChange.resource)
 		Assert.assertTrue(resolvedChange.resource.resourceSet == resourceSet1)
 		Assert.assertTrue(resolvedChange.newValue == newRootObject)
+		Assert.assertTrue(EChangeUtil.objectInProgress == resolvedChange.newValue)
 	}
 	
 	/**
@@ -82,7 +87,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)
 			
-		val resolvedChange = unresolvedChange.resolve(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
@@ -110,13 +115,15 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		Assert.assertTrue(unresolvedChange.newValue != newRootObject)
 		Assert.assertFalse(resourceContent.contains(newRootObject))	
 		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertNull(EChangeUtil.objectInProgress)
 		
 		// resolve
-		var resolvedChange = unresolvedChange.resolve(resourceSet1) as InsertRootEObject<Root>
+		var resolvedChange = unresolvedChange.resolveApply(resourceSet1) as InsertRootEObject<Root>
 		
 		Assert.assertFalse(resolvedChange.isResolved)
 		Assert.assertNull(resolvedChange.resource)
 		Assert.assertFalse(resolvedChange.newValue == newRootObject)
+		Assert.assertNull(EChangeUtil.objectInProgress)		
 	 }
 	
 	/**
@@ -132,7 +139,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		// Insert first root element
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			resolve(resourceSet1) as InsertRootEObject<Root>
+			resolveApply(resourceSet1) as InsertRootEObject<Root>
 			
 		Assert.assertTrue(resolvedChange.apply)
 		
@@ -147,7 +154,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		// Insert second root element
 		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
 			<Root>createInsertRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			resolve(resourceSet1) as InsertRootEObject<Root>
+			resolveApply(resourceSet1) as InsertRootEObject<Root>
 			
 		Assert.assertTrue(resolvedChange2.apply)
 		
@@ -167,7 +174,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		prepareStagingArea(newRootObject)
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			resolve(resourceSet1) as InsertRootEObject<Root>	
+			resolveApply(resourceSet1) as InsertRootEObject<Root>	
 
 		Assert.assertTrue(resolvedChange.apply)
 			
@@ -175,7 +182,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		prepareStagingArea(newRootObject2)
 		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
 			<Root>createInsertRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			resolve(resourceSet1) as InsertRootEObject<Root>
+			resolveApply(resourceSet1) as InsertRootEObject<Root>
 		
 		Assert.assertTrue(resolvedChange2.apply)
 		
@@ -220,7 +227,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createInsertRootChange(newRootObject, fileUri.toString, index, true).
-			resolve(resourceSet1) as InsertRootEObject<Root>	
+			resolveApply(resourceSet1) as InsertRootEObject<Root>	
 			
 		Assert.assertTrue(resolvedChange.isResolved)			
 		Assert.assertTrue(resolvedChange.resource.resourceSet == resourceSet1)

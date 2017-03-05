@@ -6,6 +6,7 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 /**
  * Test class for the abstract class {@link EObjectExistenceEChange} EChange,
@@ -17,20 +18,22 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * a new object which was not created yet. So the staging area will be filled.
 	 */
 	@Test
-	def public void resovlveEObjectExistenceEChangeTest() {
+	def public void resovlveEObjectExistenceEChangeTest() {		
 		// The concrete change type CreateEObject will be used for the tests.
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createCreateEObjectChange(defaultCreatedObject, true)
 			
 		Assert.assertFalse(unresolvedChange.isResolved)
 		Assert.assertTrue(defaultCreatedObject != unresolvedChange.affectedEObject)
+		Assert.assertNull(EChangeUtil.objectInProgress)
 		
-		val resolvedChange = unresolvedChange.resolve(resourceSet1) as CreateEObject<Root>
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as CreateEObject<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
 		Assert.assertTrue(resolvedChange.stagingArea == stagingArea1)
 		Assert.assertTrue(defaultCreatedObject != resolvedChange.affectedEObject)
+		Assert.assertTrue(EChangeUtil.objectInProgress == resolvedChange.affectedEObject)
 	}
 	
 	/**
@@ -48,13 +51,15 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 			
 		Assert.assertFalse(unresolvedChange.isResolved)
 		Assert.assertTrue(defaultCreatedObject != unresolvedChange.affectedEObject)
-		
-		val resolvedChange = unresolvedChange.resolve(resourceSet1) as CreateEObject<Root>
+		Assert.assertTrue(EChangeUtil.objectInProgress == defaultCreatedObject)
+				
+		val resolvedChange = unresolvedChange.resolveRevert(resourceSet1) as CreateEObject<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
 		Assert.assertTrue(resolvedChange.stagingArea == stagingArea1)
 		Assert.assertTrue(defaultCreatedObject == resolvedChange.affectedEObject)
+		Assert.assertNull(EChangeUtil.objectInProgress)
 	}
 	
 	/**
@@ -69,7 +74,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 			
 		Assert.assertFalse(unresolvedChange.isResolved)
 		
-		val resolvedChange = unresolvedChange.resolve(resourceSet1) as CreateEObject<Root>
+		val resolvedChange = unresolvedChange.resolveRevert(resourceSet1) as CreateEObject<Root>
 		
 		Assert.assertFalse(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange == resolvedChange)

@@ -41,7 +41,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
  			<Root, String>createReplaceSingleAttributeChange(defaultAffectedEObject, defaultAffectedFeature, null, null, true)
  		
- 		val resolvedChange = unresolvedChange.resolve(resourceSet1)
+ 		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
  		
  		Assert.assertTrue(resolvedChange.isResolved)
  		Assert.assertTrue(unresolvedChange != resolvedChange)

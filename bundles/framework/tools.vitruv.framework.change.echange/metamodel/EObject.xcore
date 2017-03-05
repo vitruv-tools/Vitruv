@@ -11,6 +11,7 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.util.StagingArea
 
 type EObj wraps EObject
@@ -33,27 +34,37 @@ abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
 		return super.isResolved() && affectedEObject != null && !affectedEObject.eIsProxy()
 			&& stagingArea != null
 	}
-	op EChange resolve(ResourceSet resourceSet) {
+	op EChange resolve(ResourceSet resourceSet, boolean newObject) {
 		if (affectedEObject != null && !isResolved) {
-			val resolvedChange = super.resolve(resourceSet) as EObjectExistenceEChange<A>
+			val resolvedChange = super.resolveApply(resourceSet) as EObjectExistenceEChange<A>
 			if (resolvedChange == null) {
 				// resolving the super class attributes failed
 				return null
 			}
 			
 			// Resolve the affected object
-			resolvedChange.stagingArea = StagingArea.getStagingArea(resourceSet)
-			if (!resolvedChange.stagingArea.contents.empty) {
-				// Object still exists
-				resolvedChange.affectedEObject = resolvedChange.stagingArea.contents.get(0) as A
-			} else {
+			if (newObject) {
 				// Create new one
 				resolvedChange.affectedEObject = EcoreUtil.copy(affectedEObject)
-				(resolvedChange.affectedEObject as InternalEObject).eSetProxyURI(null)
+				(resolvedChange.affectedEObject as InternalEObject).eSetProxyURI(null)		
+			} else {
+				// Object still exists
+				resolvedChange.affectedEObject = EChangeUtil.objectInProgress as A
 			}
+			
+			// Get the staging area where the created object will placed in.
+			resolvedChange.stagingArea = StagingArea.getStagingArea(resourceSet)
 			
 			if (resolvedChange.affectedEObject != null && !resolvedChange.affectedEObject.eIsProxy
 				&& resolvedChange.stagingArea != null) {
+				if (newObject) {
+					// Set object in progress, so other changes which will be resolved 
+					// has access to the created object.
+					EChangeUtil.objectInProgress = resolvedChange.affectedEObject
+				} else {
+					// Object will be deleted
+					EChangeUtil.objectInProgress = null
+				}
 				return resolvedChange
 			}
 		}
@@ -62,9 +73,19 @@ abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
 }
 
 class CreateEObject<A extends EObj> extends EObjectExistenceEChange<A> {
-
+	op EChange resolveApply(ResourceSet resourceSet) {
+		resolve(resourceSet, true)
+	}
+	op EChange resolveRevert(ResourceSet resourceSet) {
+		resolve(resourceSet, false)
+	}
 }
 
 class DeleteEObject<A extends EObj> extends EObjectExistenceEChange<A> {
-	
+	op EChange resolveApply(ResourceSet resourceSet) {
+		resolve(resourceSet, false)
+	}
+	op EChange resolveRevert(ResourceSet resourceSet) {
+		resolve(resourceSet, true)
+	}	
 }

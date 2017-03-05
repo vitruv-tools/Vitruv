@@ -86,13 +86,22 @@ public interface EChangePackage extends EPackage {
 	int ECHANGE___IS_RESOLVED = 0;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE__RESOURCESET = 1;
+	int ECHANGE___RESOLVE_APPLY__RESOURCESET = 1;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ECHANGE___RESOLVE_REVERT__RESOURCESET = 2;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -101,7 +110,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___APPLY = 2;
+	int ECHANGE___APPLY = 3;
 
 	/**
 	 * The operation id for the '<em>Revert</em>' operation.
@@ -110,7 +119,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___REVERT = 3;
+	int ECHANGE___REVERT = 4;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -119,7 +128,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE_OPERATION_COUNT = 4;
+	int ECHANGE_OPERATION_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl <em>Atomic EChange</em>}' class.
@@ -150,13 +159,22 @@ public interface EChangePackage extends EPackage {
 	int ATOMIC_ECHANGE___IS_RESOLVED = ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ATOMIC_ECHANGE___RESOLVE__RESOURCESET = ECHANGE___RESOLVE__RESOURCESET;
+	int ATOMIC_ECHANGE___RESOLVE_APPLY__RESOURCESET = ECHANGE___RESOLVE_APPLY__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ATOMIC_ECHANGE___RESOLVE_REVERT__RESOURCESET = ECHANGE___RESOLVE_REVERT__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -214,13 +232,22 @@ public interface EChangePackage extends EPackage {
 	int ADDITIVE_ECHANGE___IS_RESOLVED = ATOMIC_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE___RESOLVE__RESOURCESET = ATOMIC_ECHANGE___RESOLVE__RESOURCESET;
+	int ADDITIVE_ECHANGE___RESOLVE_APPLY__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ECHANGE___RESOLVE_REVERT__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_REVERT__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -287,13 +314,22 @@ public interface EChangePackage extends EPackage {
 	int SUBTRACTIVE_ECHANGE___IS_RESOLVED = ATOMIC_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE___RESOLVE__RESOURCESET = ATOMIC_ECHANGE___RESOLVE__RESOURCESET;
+	int SUBTRACTIVE_ECHANGE___RESOLVE_APPLY__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ECHANGE___RESOLVE_REVERT__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_REVERT__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -373,14 +409,24 @@ public interface EChangePackage extends EPackage {
 	EOperation getEChange__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Apply</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.EChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve Apply</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getEChange__Resolve__ResourceSet();
+	EOperation getEChange__ResolveApply__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getEChange__ResolveRevert__ResourceSet();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#apply() <em>Apply</em>}' operation.
@@ -516,12 +562,20 @@ public interface EChangePackage extends EPackage {
 		EOperation ECHANGE___IS_RESOLVED = eINSTANCE.getEChange__IsResolved();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve Apply</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___RESOLVE__RESOURCESET = eINSTANCE.getEChange__Resolve__ResourceSet();
+		EOperation ECHANGE___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getEChange__ResolveApply__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ECHANGE___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getEChange__ResolveRevert__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em><b>Apply</b></em>' operation.

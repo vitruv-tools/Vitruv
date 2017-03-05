@@ -46,7 +46,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)
 		Assert.assertTrue(unresolvedChange.oldValue != defaultNewValue)
 		
-		val resolvedChange = unresolvedChange.resolve(resourceSet1) as RemoveEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as RemoveEReference<Root, NonRoot>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
@@ -62,7 +62,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createRemoveReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)
 			
-		val resolvedChange = unresolvedChange.resolve(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)

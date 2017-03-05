@@ -65,7 +65,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet) {
+	public EChange resolveApply(final ResourceSet resourceSet) {
 		boolean _equals = Objects.equal(resourceSet, null);
 		if (_equals) {
 			return null;
@@ -76,6 +76,15 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 			return EcoreUtil.<EChange>copy(this);
 		}
 		return this;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolveRevert(final ResourceSet resourceSet) {
+		return this.resolveApply(resourceSet);
 	}
 
 	/**
@@ -124,8 +133,10 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 		switch (operationID) {
 			case EChangePackage.ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case EChangePackage.ECHANGE___RESOLVE__RESOURCESET:
-				return resolve((ResourceSet)arguments.get(0));
+			case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET:
+				return resolveApply((ResourceSet)arguments.get(0));
+			case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET:
+				return resolveRevert((ResourceSet)arguments.get(0));
 			case EChangePackage.ECHANGE___APPLY:
 				return apply();
 			case EChangePackage.ECHANGE___REVERT:

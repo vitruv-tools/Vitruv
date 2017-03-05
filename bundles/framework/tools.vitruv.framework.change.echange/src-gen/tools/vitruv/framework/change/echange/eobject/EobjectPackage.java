@@ -99,13 +99,22 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_ADDED_ECHANGE___IS_RESOLVED = EChangePackage.ADDITIVE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_ADDED_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE__RESOURCESET;
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_APPLY__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_REVERT__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_REVERT__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -181,13 +190,22 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_SUBTRACTED_ECHANGE___IS_RESOLVED = EChangePackage.SUBTRACTIVE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE__RESOURCESET;
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_APPLY__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_REVERT__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_REVERT__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -263,6 +281,24 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_APPLY__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_REVERT__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -296,7 +332,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>EObject Existence EChange</em>' class.
@@ -378,7 +414,25 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_EOBJECT___RESOLVE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET;
+	int CREATE_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN;
+
+	/**
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___RESOLVE_APPLY__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___RESOLVE_REVERT__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Create EObject</em>' class.
@@ -387,7 +441,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_EOBJECT_OPERATION_COUNT = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
+	int CREATE_EOBJECT_OPERATION_COUNT = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.eobject.impl.DeleteEObjectImpl <em>Delete EObject</em>}' class.
@@ -460,7 +514,25 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DELETE_EOBJECT___RESOLVE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET;
+	int DELETE_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN;
+
+	/**
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___RESOLVE_APPLY__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___RESOLVE_REVERT__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Delete EObject</em>' class.
@@ -469,7 +541,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DELETE_EOBJECT_OPERATION_COUNT = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
+	int DELETE_EOBJECT_OPERATION_COUNT = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '<em>EObj</em>' data type.
@@ -587,14 +659,14 @@ public interface EobjectPackage extends EPackage {
 	EOperation getEObjectExistenceEChange__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @see tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
 	 * @generated
 	 */
-	EOperation getEObjectExistenceEChange__Resolve__ResourceSet();
+	EOperation getEObjectExistenceEChange__Resolve__ResourceSet_boolean();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject <em>Create EObject</em>}'.
@@ -607,6 +679,26 @@ public interface EobjectPackage extends EPackage {
 	EClass getCreateEObject();
 
 	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Apply</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Apply</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getCreateEObject__ResolveApply__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getCreateEObject__ResolveRevert__ResourceSet();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.eobject.DeleteEObject <em>Delete EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -615,6 +707,26 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getDeleteEObject();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Apply</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Apply</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getDeleteEObject__ResolveApply__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getDeleteEObject__ResolveRevert__ResourceSet();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
@@ -748,7 +860,7 @@ public interface EobjectPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET = eINSTANCE.getEObjectExistenceEChange__Resolve__ResourceSet();
+		EOperation EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getEObjectExistenceEChange__Resolve__ResourceSet_boolean();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.eobject.impl.CreateEObjectImpl <em>Create EObject</em>}' class.
@@ -761,6 +873,22 @@ public interface EobjectPackage extends EPackage {
 		EClass CREATE_EOBJECT = eINSTANCE.getCreateEObject();
 
 		/**
+		 * The meta object literal for the '<em><b>Resolve Apply</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CREATE_EOBJECT___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getCreateEObject__ResolveApply__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CREATE_EOBJECT___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getCreateEObject__ResolveRevert__ResourceSet();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.eobject.impl.DeleteEObjectImpl <em>Delete EObject</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -769,6 +897,22 @@ public interface EobjectPackage extends EPackage {
 		 * @generated
 		 */
 		EClass DELETE_EOBJECT = eINSTANCE.getDeleteEObject();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve Apply</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation DELETE_EOBJECT___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getDeleteEObject__ResolveApply__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation DELETE_EOBJECT___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getDeleteEObject__ResolveRevert__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em>EObj</em>' data type.

@@ -255,6 +255,60 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getCompoundEChange__IsResolved() {
+		return compoundEChangeEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCompoundEChange__ResolveApply__ResourceSet() {
+		return compoundEChangeEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCompoundEChange__ResolveRevert__ResourceSet() {
+		return compoundEChangeEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCompoundEChange__Resolve__ResourceSet_boolean() {
+		return compoundEChangeEClass.getEOperations().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCompoundEChange__Apply() {
+		return compoundEChangeEClass.getEOperations().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCompoundEChange__Revert() {
+		return compoundEChangeEClass.getEOperations().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getMoveEObject() {
 		return moveEObjectEClass;
 	}
@@ -462,15 +516,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getCreateAndInsertEObject__Resolve__ResourceSet() {
-		return createAndInsertEObjectEClass.getEOperations().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getRemoveAndDeleteEObject() {
 		return removeAndDeleteEObjectEClass;
 	}
@@ -640,6 +685,12 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		// Create classes and their features
 		compoundEChangeEClass = createEClass(COMPOUND_ECHANGE);
 		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___GET_ATOMIC_CHANGES);
+		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___IS_RESOLVED);
+		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_APPLY__RESOURCESET);
+		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_REVERT__RESOURCESET);
+		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN);
+		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___APPLY);
+		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___REVERT);
 
 		moveEObjectEClass = createEClass(MOVE_EOBJECT);
 		createEReference(moveEObjectEClass, MOVE_EOBJECT__SUBTRACT_WHERE_CHANGE);
@@ -669,7 +720,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		createEReference(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT__INSERT_CHANGE);
 		createEOperation(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT___GET_ATOMIC_CHANGES);
 		createEOperation(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT___IS_RESOLVED);
-		createEOperation(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET);
 
 		removeAndDeleteEObjectEClass = createEClass(REMOVE_AND_DELETE_EOBJECT);
 		createEReference(removeAndDeleteEObjectEClass, REMOVE_AND_DELETE_EOBJECT__REMOVE_CHANGE);
@@ -721,9 +771,9 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
 		// Obtain other dependent packages
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		ReferencePackage theReferencePackage = (ReferencePackage)EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI);
 		EobjectPackage theEobjectPackage = (EobjectPackage)EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI);
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		AttributePackage theAttributePackage = (AttributePackage)EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI);
 		ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
 		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
@@ -912,6 +962,22 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
 		initEOperation(getCompoundEChange__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
 
+		initEOperation(getCompoundEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		EOperation op = initEOperation(getCompoundEChange__ResolveApply__ResourceSet(), theEChangePackage.getEChange(), "resolveApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getCompoundEChange__ResolveRevert__ResourceSet(), theEChangePackage.getEChange(), "resolveRevert", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getCompoundEChange__Resolve__ResourceSet_boolean(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEBoolean(), "applyChange", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getCompoundEChange__Apply(), theEcorePackage.getEBoolean(), "apply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getCompoundEChange__Revert(), theEcorePackage.getEBoolean(), "revert", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(moveEObjectEClass, MoveEObject.class, "MoveEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(theReferencePackage.getUpdateReferenceEChange());
 		g2 = createEGenericType(moveEObjectEClass_A);
@@ -967,9 +1033,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		initEOperation(getCreateAndInsertEObject__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getCreateAndInsertEObject__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		EOperation op = initEOperation(getCreateAndInsertEObject__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(removeAndDeleteEObjectEClass, RemoveAndDeleteEObject.class, "RemoveAndDeleteEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(removeAndDeleteEObjectEClass_C);

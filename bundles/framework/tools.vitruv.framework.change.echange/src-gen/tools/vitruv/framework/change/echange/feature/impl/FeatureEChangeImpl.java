@@ -175,12 +175,12 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet) {
+	public EChange resolveApply(final ResourceSet resourceSet) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			EChange _resolve = super.resolve(resourceSet);
-			final FeatureEChange<A, F> resolvedChange = ((FeatureEChange<A, F>) _resolve);
+			EChange _resolveApply = super.resolveApply(resourceSet);
+			final FeatureEChange<A, F> resolvedChange = ((FeatureEChange<A, F>) _resolveApply);
 			if (((Objects.equal(resolvedChange, null) || Objects.equal(this.getAffectedFeature(), null)) || Objects.equal(this.getAffectedEObject(), null))) {
 				return null;
 			}
@@ -275,7 +275,7 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE__RESOURCESET: return FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return FeaturePackage.FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -292,8 +292,8 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 		switch (operationID) {
 			case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET:
-				return resolve((ResourceSet)arguments.get(0));
+			case FeaturePackage.FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET:
+				return resolveApply((ResourceSet)arguments.get(0));
 		}
 		return super.eInvoke(operationID, arguments);
 	}
