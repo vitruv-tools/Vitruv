@@ -98,6 +98,15 @@ public interface FeaturePackage extends EPackage {
 	int FEATURE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FEATURE_ECHANGE___RESOLVE_REVERT__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -125,13 +134,13 @@ public interface FeaturePackage extends EPackage {
 	int FEATURE_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
+	int FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -180,6 +189,15 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_REVERT__RESOURCESET = FEATURE_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -207,13 +225,13 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET = FEATURE_ECHANGE___RESOLVE__RESOURCESET;
+	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET = FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET;
 
 	/**
 	 * The number of operations of the '<em>Update Multi Valued Feature EChange</em>' class.
@@ -262,6 +280,15 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_REVERT__RESOURCESET = FEATURE_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -289,13 +316,13 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET = FEATURE_ECHANGE___RESOLVE__RESOURCESET;
+	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET = FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET;
 
 	/**
 	 * The number of operations of the '<em>Update Single Valued Feature EChange</em>' class.
@@ -380,14 +407,14 @@ public interface FeaturePackage extends EPackage {
 	EOperation getFeatureEChange__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Apply</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.FeatureEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve Apply</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.FeatureEChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getFeatureEChange__Resolve__ResourceSet();
+	EOperation getFeatureEChange__ResolveApply__ResourceSet();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange <em>Update Multi Valued Feature EChange</em>}'.
@@ -500,12 +527,12 @@ public interface FeaturePackage extends EPackage {
 		EOperation FEATURE_ECHANGE___IS_RESOLVED = eINSTANCE.getFeatureEChange__IsResolved();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve Apply</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation FEATURE_ECHANGE___RESOLVE__RESOURCESET = eINSTANCE.getFeatureEChange__Resolve__ResourceSet();
+		EOperation FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getFeatureEChange__ResolveApply__ResourceSet();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.impl.UpdateMultiValuedFeatureEChangeImpl <em>Update Multi Valued Feature EChange</em>}' class.

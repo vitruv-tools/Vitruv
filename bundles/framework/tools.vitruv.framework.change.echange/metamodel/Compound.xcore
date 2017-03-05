@@ -31,6 +31,42 @@ type ResourceSet wraps ResourceSet
 
 abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
 	op unique AtomicEChange[+] getAtomicChanges()
+	op boolean isResolved() {
+		for (AtomicEChange change : getAtomicChanges()) {
+			if (!change.isResolved()) {
+				return false
+			}
+		}
+		return super.isResolved()
+	}
+	op EChange resolveApply(ResourceSet resourceSet) {
+		resolve(resourceSet, true)
+	}
+	op EChange resolveRevert(ResourceSet resourceSet) {
+		resolve(resourceSet, false)
+	}
+	op EChange resolve(ResourceSet resourceSet, boolean applyChange) {
+		if (!isResolved()) {
+			val resolvedChange = super.resolveApply(resourceSet) as CompoundEChange
+			if (resolvedChange == null) {
+				// resolving the super class attributes failed
+				return null
+			}
+			
+			
+			
+		}
+		return this
+	}
+	op boolean apply() {
+		
+		return false
+	}
+	op boolean revert() {
+		
+		
+		return false
+	}
 }
 
 class MoveEObject<A extends EObj, B extends EObj, T extends EObj> extends CompoundEChange {
@@ -102,17 +138,6 @@ abstract class CreateAndInsertEObject<T extends EObj, C extends EObjectAddedECha
 	}
 	op boolean isResolved() {
 		return super.isResolved() && createChange.isResolved() && insertChange.isResolved()
-	}
-	op EChange resolve(ResourceSet resourceSet) {
-		if (!isResolved) {
-			val resolvedChange = super.resolve(resourceSet) as CreateAndInsertEObject<T, C>
-			if (resolvedChange == null) {
-				// Resolving the super class attributes failed
-				return null
-			}
-			
-			
-		}
 	}
 }
 

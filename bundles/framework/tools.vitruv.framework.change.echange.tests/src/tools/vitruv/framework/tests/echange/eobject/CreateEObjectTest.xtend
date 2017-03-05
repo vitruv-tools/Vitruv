@@ -20,7 +20,7 @@ class CreateEObjectTest extends EObjectTest {
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createCreateEObjectChange(defaultCreatedObject, true)
 			
-		val resolvedChange = unresolvedChange.resolve(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
@@ -38,7 +38,7 @@ class CreateEObjectTest extends EObjectTest {
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createCreateEObjectChange(defaultCreatedObject, true).
-			resolve(resourceSet1)
+			resolveApply(resourceSet1)
 			
 		Assert.assertTrue(resolvedChange.apply)
 		Assert.assertFalse(stagingArea1.contents.empty)
@@ -55,7 +55,7 @@ class CreateEObjectTest extends EObjectTest {
 		
 		val resolvedChange2	= TypeInferringAtomicEChangeFactory.
 			<Root>createCreateEObjectChange(defaultCreatedObject2, true).
-			resolve(resourceSet1)	
+			resolveApply(resourceSet1)	
 		
 		Assert.assertTrue(resolvedChange2.apply)
 		Assert.assertFalse(stagingArea1.contents.empty)
@@ -79,7 +79,7 @@ class CreateEObjectTest extends EObjectTest {
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createCreateEObjectChange(defaultCreatedObject, true).
-			resolve(resourceSet1)
+			resolveRevert(resourceSet1)
 			
 		Assert.assertTrue(resolvedChange.revert)
 		

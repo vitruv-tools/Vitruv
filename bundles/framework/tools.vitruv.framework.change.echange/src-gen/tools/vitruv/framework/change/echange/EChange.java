@@ -38,6 +38,8 @@ public interface EChange extends EObject {
 	 * <!-- begin-model-doc -->
 	 * *
 	 * Resolves the unresolved proxy EObjects of the change to a given set of resources with concrete EObjects.
+	 * The model has to be in state before the change will applied. If the model is in state after the
+	 * change and it will be reverted, {@link resolveRevert} has to be called instead.
 	 * Before the change can be applied or reverted all proxy objects need to be resolved.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
@@ -50,7 +52,16 @@ public interface EChange extends EObject {
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _equals = <%com.google.common.base.Objects%>.equal(resourceSet, null);\nif (_equals)\n{\n\treturn null;\n}\nboolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\treturn <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n}\nreturn this;'"
 	 * @generated
 	 */
-	EChange resolve(ResourceSet resourceSet);
+	EChange resolveApply(ResourceSet resourceSet);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolveApply(resourceSet);'"
+	 * @generated
+	 */
+	EChange resolveRevert(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->

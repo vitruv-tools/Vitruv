@@ -134,13 +134,31 @@ public interface RootPackage extends EPackage {
 	int ROOT_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 2;
+
+	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
+	int ROOT_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -149,7 +167,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 2;
+	int ROOT_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.root.impl.InsertRootEObjectImpl <em>Insert Root EObject</em>}' class.
@@ -225,6 +243,24 @@ public interface RootPackage extends EPackage {
 	int INSERT_ROOT_EOBJECT___REVERT = ROOT_ECHANGE___REVERT;
 
 	/**
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___RESOLVE_APPLY__RESOURCESET = ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___RESOLVE_REVERT__RESOURCESET = ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -249,7 +285,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT___RESOLVE__RESOURCESET = ROOT_ECHANGE_OPERATION_COUNT + 2;
+	int INSERT_ROOT_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN = ROOT_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Insert Root EObject</em>' class.
@@ -334,6 +370,24 @@ public interface RootPackage extends EPackage {
 	int REMOVE_ROOT_EOBJECT___REVERT = ROOT_ECHANGE___REVERT;
 
 	/**
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___RESOLVE_APPLY__RESOURCESET = ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___RESOLVE_REVERT__RESOURCESET = ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -358,7 +412,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET = ROOT_ECHANGE_OPERATION_COUNT + 2;
+	int REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN = ROOT_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Remove Root EObject</em>' class.
@@ -464,14 +518,34 @@ public interface RootPackage extends EPackage {
 	EOperation getRootEChange__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Apply</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Apply</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.root.RootEChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getRootEChange__ResolveApply__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.root.RootEChange#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getRootEChange__ResolveRevert__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.root.RootEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @see tools.vitruv.framework.change.echange.root.RootEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
 	 * @generated
 	 */
-	EOperation getRootEChange__Resolve__ResourceSet();
+	EOperation getRootEChange__Resolve__ResourceSet_boolean();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.root.InsertRootEObject <em>Insert Root EObject</em>}'.
@@ -494,14 +568,14 @@ public interface RootPackage extends EPackage {
 	EOperation getInsertRootEObject__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.InsertRootEObject#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.InsertRootEObject#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.root.InsertRootEObject#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @see tools.vitruv.framework.change.echange.root.InsertRootEObject#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
 	 * @generated
 	 */
-	EOperation getInsertRootEObject__Resolve__ResourceSet();
+	EOperation getInsertRootEObject__Resolve__ResourceSet_boolean();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.root.RemoveRootEObject <em>Remove Root EObject</em>}'.
@@ -524,14 +598,14 @@ public interface RootPackage extends EPackage {
 	EOperation getRemoveRootEObject__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RemoveRootEObject#resolve(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RemoveRootEObject#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.root.RemoveRootEObject#resolve(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @see tools.vitruv.framework.change.echange.root.RemoveRootEObject#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
 	 * @generated
 	 */
-	EOperation getRemoveRootEObject__Resolve__ResourceSet();
+	EOperation getRemoveRootEObject__Resolve__ResourceSet_boolean();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
@@ -643,12 +717,28 @@ public interface RootPackage extends EPackage {
 		EOperation ROOT_ECHANGE___IS_RESOLVED = eINSTANCE.getRootEChange__IsResolved();
 
 		/**
+		 * The meta object literal for the '<em><b>Resolve Apply</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getRootEChange__ResolveApply__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getRootEChange__ResolveRevert__ResourceSet();
+
+		/**
 		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ROOT_ECHANGE___RESOLVE__RESOURCESET = eINSTANCE.getRootEChange__Resolve__ResourceSet();
+		EOperation ROOT_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getRootEChange__Resolve__ResourceSet_boolean();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.root.impl.InsertRootEObjectImpl <em>Insert Root EObject</em>}' class.
@@ -674,7 +764,7 @@ public interface RootPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation INSERT_ROOT_EOBJECT___RESOLVE__RESOURCESET = eINSTANCE.getInsertRootEObject__Resolve__ResourceSet();
+		EOperation INSERT_ROOT_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getInsertRootEObject__Resolve__ResourceSet_boolean();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.root.impl.RemoveRootEObjectImpl <em>Remove Root EObject</em>}' class.
@@ -700,7 +790,7 @@ public interface RootPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET = eINSTANCE.getRemoveRootEObject__Resolve__ResourceSet();
+		EOperation REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getRemoveRootEObject__Resolve__ResourceSet_boolean();
 
 		/**
 		 * The meta object literal for the '<em>EObj</em>' data type.

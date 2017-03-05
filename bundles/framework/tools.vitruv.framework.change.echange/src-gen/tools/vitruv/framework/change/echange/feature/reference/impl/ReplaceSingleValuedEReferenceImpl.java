@@ -100,7 +100,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 */
 	@SuppressWarnings("unchecked")
 	public T getNewValue() {
-		if (newValue != null && newValue.eIsProxy()) {
+		if (newValue != null && ((EObject)newValue).eIsProxy()) {
 			InternalEObject oldNewValue = (InternalEObject)newValue;
 			newValue = (T)eResolveProxy(oldNewValue);
 			if (newValue != oldNewValue) {
@@ -185,12 +185,12 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet) {
+	public EChange resolveApply(final ResourceSet resourceSet) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			EChange _resolve = super.resolve(resourceSet);
-			final ReplaceSingleValuedEReference<A, T> resolvedChange = ((ReplaceSingleValuedEReference<A, T>) _resolve);
+			EChange _resolveApply = super.resolveApply(resourceSet);
+			final ReplaceSingleValuedEReference<A, T> resolvedChange = ((ReplaceSingleValuedEReference<A, T>) _resolveApply);
 			boolean _equals = Objects.equal(resolvedChange, null);
 			if (_equals) {
 				return null;
@@ -373,14 +373,14 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE__RESOURCESET: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_APPLY__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
 		if (baseClass == FeatureEChange.class) {
 			switch (baseOperationID) {
 				case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED;
-				case FeaturePackage.FEATURE_ECHANGE___RESOLVE__RESOURCESET: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET;
+				case FeaturePackage.FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_APPLY__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -423,8 +423,8 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		switch (operationID) {
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED:
 				return isResolved();
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET:
-				return resolve((ResourceSet)arguments.get(0));
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_APPLY__RESOURCESET:
+				return resolveApply((ResourceSet)arguments.get(0));
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

@@ -97,6 +97,15 @@ public interface SinglePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_REVERT__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -124,13 +133,13 @@ public interface SinglePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
+	 * The operation id for the '<em>Resolve Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE__RESOURCESET;
+	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.

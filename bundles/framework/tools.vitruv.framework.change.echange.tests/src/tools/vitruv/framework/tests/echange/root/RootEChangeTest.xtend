@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject
 import org.junit.After
 import org.junit.Before
 import tools.vitruv.framework.tests.echange.EChangeTest
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 /**
  * Abstract class which is extended by the Root EChange test classes.
@@ -29,14 +30,16 @@ public abstract class RootEChangeTest extends EChangeTest {
 	}
 	
 	/**
-	 * Prepares the staging area for a test. Inserts a new element
-	 * to the staging area which will be used in the test.
+	 * Prepares the staging area and the object which is in progress
+	 * for a test. Inserts a new element to the staging area which will 
+	 * be used in the test.
 	 * @param object The EObject which will be inserted in the staging area. 
 	 * 		Clears and sets the 0th element.
 	 */
 	protected def void prepareStagingArea(EObject object) {
 		stagingArea1.contents.clear
 		stagingArea1.contents.add(object)
+		EChangeUtil.objectInProgress = object
 	}
 	
 	/**
@@ -47,5 +50,6 @@ public abstract class RootEChangeTest extends EChangeTest {
 	 */
 	protected def void prepareResource(EObject object, int index) {
 		resourceContent.add(index, object)
+		EChangeUtil.objectInProgress = null
 	}
 }

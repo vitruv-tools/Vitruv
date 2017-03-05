@@ -68,7 +68,7 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 */
 	@SuppressWarnings("unchecked")
 	public T getNewValue() {
-		if (newValue != null && newValue.eIsProxy()) {
+		if (newValue != null && ((EObject)newValue).eIsProxy()) {
 			InternalEObject oldNewValue = (InternalEObject)newValue;
 			newValue = (T)eResolveProxy(oldNewValue);
 			if (newValue != oldNewValue) {

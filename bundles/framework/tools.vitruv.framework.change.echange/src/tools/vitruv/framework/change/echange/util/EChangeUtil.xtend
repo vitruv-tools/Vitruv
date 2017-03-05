@@ -40,4 +40,6 @@ class EChangeUtil {
 		}
 		return ed
 	}
+	
+	public static EObject objectInProgress = null
 }

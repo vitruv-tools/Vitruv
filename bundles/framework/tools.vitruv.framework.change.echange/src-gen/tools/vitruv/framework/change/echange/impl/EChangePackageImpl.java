@@ -159,7 +159,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__Resolve__ResourceSet() {
+	public EOperation getEChange__ResolveApply__ResourceSet() {
 		return eChangeEClass.getEOperations().get(1);
 	}
 
@@ -168,7 +168,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__Apply() {
+	public EOperation getEChange__ResolveRevert__ResourceSet() {
 		return eChangeEClass.getEOperations().get(2);
 	}
 
@@ -177,8 +177,17 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__Revert() {
+	public EOperation getEChange__Apply() {
 		return eChangeEClass.getEOperations().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getEChange__Revert() {
+		return eChangeEClass.getEOperations().get(4);
 	}
 
 	/**
@@ -274,7 +283,8 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		// Create classes and their features
 		eChangeEClass = createEClass(ECHANGE);
 		createEOperation(eChangeEClass, ECHANGE___IS_RESOLVED);
-		createEOperation(eChangeEClass, ECHANGE___RESOLVE__RESOURCESET);
+		createEOperation(eChangeEClass, ECHANGE___RESOLVE_APPLY__RESOURCESET);
+		createEOperation(eChangeEClass, ECHANGE___RESOLVE_REVERT__RESOURCESET);
 		createEOperation(eChangeEClass, ECHANGE___APPLY);
 		createEOperation(eChangeEClass, ECHANGE___REVERT);
 
@@ -337,7 +347,10 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		initEOperation(getEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getEChange__Resolve__ResourceSet(), this.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getEChange__ResolveApply__ResourceSet(), this.getEChange(), "resolveApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getEChange__ResolveRevert__ResourceSet(), this.getEChange(), "resolveRevert", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getEChange__Apply(), theEcorePackage.getEBoolean(), "apply", 0, 1, !IS_UNIQUE, IS_ORDERED);

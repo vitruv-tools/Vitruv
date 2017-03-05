@@ -41,7 +41,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertTrue(unresolvedChange.oldValue != defaultOldValue)
 		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)
 		
-		val resolvedChange = unresolvedChange.resolve(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
@@ -58,7 +58,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true)	
 			
-		val resolvedChange = unresolvedChange.resolve(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)

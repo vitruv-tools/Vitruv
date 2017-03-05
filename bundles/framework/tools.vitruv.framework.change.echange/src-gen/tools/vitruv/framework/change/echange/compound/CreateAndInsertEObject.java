@@ -6,10 +6,7 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.AtomicEChange;
-import tools.vitruv.framework.change.echange.EChange;
 
 import tools.vitruv.framework.change.echange.eobject.CreateEObject;
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
@@ -101,14 +98,5 @@ public interface CreateAndInsertEObject<T extends EObject, C extends EObjectAdde
 	 * @generated
 	 */
 	boolean isResolved();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolve = super.resolve(resourceSet);\n\tfinal <%tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject%><T, C> resolvedChange = ((<%tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject%><T, C>) _resolve);\n\tboolean _equals = <%com.google.common.base.Objects%>.equal(resolvedChange, null);\n\tif (_equals)\n\t{\n\t\treturn null;\n\t}\n}\nreturn null;'"
-	 * @generated
-	 */
-	EChange resolve(ResourceSet resourceSet);
 
 } // CreateAndInsertEObject

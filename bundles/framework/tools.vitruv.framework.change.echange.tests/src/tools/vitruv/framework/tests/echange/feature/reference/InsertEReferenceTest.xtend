@@ -42,7 +42,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)
 		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)
 		
-		val resolvedChange = unresolvedChange.resolve(resourceSet1) as InsertEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as InsertEReference<Root, NonRoot>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
@@ -58,7 +58,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)	
 			
-		val resolvedChange = unresolvedChange.resolve(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)

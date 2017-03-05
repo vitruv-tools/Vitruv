@@ -46,7 +46,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  		Assert.assertFalse(unresolvedChange.isResolved())
  		Assert.assertTrue(rootObject1 != unresolvedChange.affectedEObject)
  		
- 		val resolvedChange = unresolvedChange.resolve(resourceSet1) as FeatureEChange<Root, EAttribute>
+ 		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as FeatureEChange<Root, EAttribute>
  		
  		Assert.assertFalse(unresolvedChange.isResolved())
  		Assert.assertTrue(rootObject1 != unresolvedChange.affectedEObject)
@@ -74,7 +74,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  		Assert.assertTrue(rootObject1 != unresolvedChange.affectedEObject)
  		Assert.assertTrue(rootObject2 != unresolvedChange.affectedEObject)
  		
- 		val resolvedChange = unresolvedChange.resolve(resourceSet2) as FeatureEChange<Root, EAttribute>
+ 		val resolvedChange = unresolvedChange.resolveApply(resourceSet2) as FeatureEChange<Root, EAttribute>
  		
  		Assert.assertTrue(resolvedChange.isResolved)
  		Assert.assertTrue(rootObject1 != resolvedChange.affectedEObject)
@@ -102,7 +102,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 			
 		Assert.assertFalse(unresolvedChange.isResolved)
 		
-		val resolvedChange = unresolvedChange.resolve(resourceSet2)
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet2)
 		
 		Assert.assertFalse(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange == resolvedChange)
@@ -119,7 +119,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 			
 		Assert.assertTrue(resolvedChange.isResolved)
 		
-		val resolvedChange2 = resolvedChange.resolve(resourceSet1)
+		val resolvedChange2 = resolvedChange.resolveApply(resourceSet1)
 		
 		Assert.assertTrue(resolvedChange2.isResolved)
 		Assert.assertTrue(resolvedChange == resolvedChange2)
@@ -139,7 +139,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  		Assert.assertNull(unresolvedChange.getAffectedEObject)
  		Assert.assertFalse(unresolvedChange.isResolved)
  					
- 		val resolvedChange = unresolvedChange.resolve(resourceSet1) as FeatureEChange<Root, EAttribute>
+ 		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as FeatureEChange<Root, EAttribute>
 
 		Assert.assertNull(resolvedChange)			
  	}
@@ -158,7 +158,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  		Assert.assertNull(unresolvedChange.getAffectedFeature)
  		Assert.assertFalse(unresolvedChange.isResolved)
  		
- 		val resolvedChange = unresolvedChange.resolve(resourceSet1) as FeatureEChange<Root, EAttribute>
+ 		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as FeatureEChange<Root, EAttribute>
  		
  		Assert.assertNull(resolvedChange)
  	 }
@@ -174,7 +174,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  	  		
  	  	Assert.assertFalse(unresolvedChange.isResolved)
  	  	
- 	  	val resolvedChange = unresolvedChange.resolve(null) as FeatureEChange<Root, EAttribute>
+ 	  	val resolvedChange = unresolvedChange.resolveApply(null) as FeatureEChange<Root, EAttribute>
  	  	
  	  	Assert.assertNull(resolvedChange)
  	  }

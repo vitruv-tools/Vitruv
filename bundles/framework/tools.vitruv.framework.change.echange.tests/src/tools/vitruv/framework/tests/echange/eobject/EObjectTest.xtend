@@ -4,6 +4,7 @@ import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import org.eclipse.emf.ecore.EObject
 import org.junit.Before
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 /**
@@ -30,13 +31,14 @@ public abstract class EObjectTest extends EChangeTest {
 	}
 	
 	/**
-	 * Prepares the staging area for a test. Inserts a new element
-	 * to the staging area which will be used in the test.
+	 * Prepares the staging area and object in progrss for a test. 
+	 * Inserts a new element to the staging area which will be used in the test.
 	 * @param object The EObject which will be inserted in the staging area. 
 	 * 		Clears and sets the 0th element.
 	 */	
 	protected def void prepareStagingArea(EObject object) {
 		stagingArea1.contents.clear
 		stagingArea1.contents.add(object)
+		EChangeUtil.objectInProgress = object
 	}
 }

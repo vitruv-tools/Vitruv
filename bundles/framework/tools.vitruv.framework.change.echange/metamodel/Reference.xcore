@@ -36,9 +36,9 @@ class InsertEReference<A extends EObj, T extends EObj> extends InsertInListEChan
 		return super.isResolved() && 
 			(newValue == null || !newValue.eIsProxy())
 	}
-	op EChange resolve(ResourceSet resourceSet) {
+	op EChange resolveApply(ResourceSet resourceSet) {
 		if (!isResolved) {
-			val resolvedChange = super.resolve(resourceSet) as InsertEReference<A, T>
+			val resolvedChange = super.resolveApply(resourceSet) as InsertEReference<A, T>
 			if (resolvedChange == null) {
 				// Resolving of super class attributes failed
 				return null
@@ -59,9 +59,9 @@ class RemoveEReference<A extends EObj, T extends EObj> extends RemoveFromListECh
 		return super.isResolved() && 
 			(oldValue == null || !oldValue.eIsProxy())
 	}
-	op EChange resolve(ResourceSet resourceSet) {
+	op EChange resolveApply(ResourceSet resourceSet) {
 		if (!isResolved) {
-			val resolvedChange = super.resolve(resourceSet) as RemoveEReference<A, T>
+			val resolvedChange = super.resolveApply(resourceSet) as RemoveEReference<A, T>
 			if (resolvedChange == null) {
 				// Resolving of super class attributes failed
 				return null
@@ -83,9 +83,9 @@ class ReplaceSingleValuedEReference<A extends EObj, T extends EObj> extends  Rep
 			(oldValue == null || !oldValue.eIsProxy()) &&
 			(newValue == null || !newValue.eIsProxy())
 	}
-	op EChange resolve(ResourceSet resourceSet) {
+	op EChange resolveApply(ResourceSet resourceSet) {
 		if (!isResolved) {
-			val resolvedChange = super.resolve(resourceSet) as ReplaceSingleValuedEReference<A, T>
+			val resolvedChange = super.resolveApply(resourceSet) as ReplaceSingleValuedEReference<A, T>
 			if (resolvedChange == null) {
 				// Resolving of super class attributes failed
 				return null

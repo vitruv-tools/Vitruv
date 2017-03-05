@@ -16,11 +16,13 @@ class DeleteEObjectTest extends EObjectTest {
 	 * the same class.
 	 */
 	@Test
-	def public void resolveToCorrekctType() {
+	def public void resolveToCorrectType() {
+		prepareStagingArea(defaultCreatedObject)
+		
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject, true)
 			
-		val resolvedChange = unresolvedChange.resolve(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
@@ -40,7 +42,7 @@ class DeleteEObjectTest extends EObjectTest {
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject, true).
-			resolve(resourceSet1)
+			resolveApply(resourceSet1)
 			
 		Assert.assertTrue(resolvedChange.apply)
 		Assert.assertTrue(stagingArea1.contents.empty)
@@ -52,7 +54,7 @@ class DeleteEObjectTest extends EObjectTest {
 		
 		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject2, true).
-			resolve(resourceSet1)
+			resolveApply(resourceSet1)
 			
 		Assert.assertTrue(resolvedChange2.apply)
 		Assert.assertTrue(stagingArea1.contents.empty)
@@ -69,7 +71,7 @@ class DeleteEObjectTest extends EObjectTest {
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject, true).
-			resolve(resourceSet1)
+			resolveRevert(resourceSet1)
 			
 		Assert.assertTrue(resolvedChange.revert)
 		Assert.assertFalse(stagingArea1.contents.empty)
@@ -86,7 +88,7 @@ class DeleteEObjectTest extends EObjectTest {
 		
 		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject2, true).
-			resolve(resourceSet1)	
+			resolveRevert(resourceSet1)	
 			
 		Assert.assertTrue(resolvedChange2.revert)
 		Assert.assertFalse(stagingArea1.contents.empty)		
