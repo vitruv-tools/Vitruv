@@ -9,7 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -28,9 +27,11 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject;
+import tools.vitruv.framework.change.echange.root.RootEChange;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 
 import tools.vitruv.framework.change.echange.util.EChangeUtil;
+import tools.vitruv.framework.change.echange.util.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -120,9 +121,7 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 * @generated
 	 */
 	public boolean isResolved() {
-		T _oldValue = this.getOldValue();
-		boolean _eIsProxy = _oldValue.eIsProxy();
-		return (!_eIsProxy);
+		return (super.isResolved() && (!this.getOldValue().eIsProxy()));
 	}
 
 	/**
@@ -131,15 +130,6 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 * @generated
 	 */
 	public EChange resolve(final ResourceSet resourceSet) {
-		return this.resolve(resourceSet, null);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EChange resolve(final ResourceSet resourceSet, final T oldRootObject) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
@@ -149,19 +139,21 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 			if (_equals) {
 				return null;
 			}
-			boolean _equals_1 = Objects.equal(oldRootObject, null);
-			if (_equals_1) {
+			final Resource stagingArea = StagingArea.getStagingArea(resourceSet);
+			EList<EObject> _contents = stagingArea.getContents();
+			boolean _isEmpty = _contents.isEmpty();
+			boolean _not_1 = (!_isEmpty);
+			if (_not_1) {
+				EList<EObject> _contents_1 = stagingArea.getContents();
+				EObject _get = _contents_1.get(0);
+				resolvedChange.setOldValue(((T) _get));
+			}
+			else {
 				T _oldValue = this.getOldValue();
 				EObject _resolveProxy = EChangeUtil.resolveProxy(_oldValue, resourceSet);
 				resolvedChange.setOldValue(((T) _resolveProxy));
 			}
-			else {
-				resolvedChange.setOldValue(oldRootObject);
-			}
-			URI _uri = this.getUri();
-			Resource _resource = resourceSet.getResource(_uri, false);
-			resolvedChange.setResource(_resource);
-			if ((((!Objects.equal(resolvedChange.getOldValue(), null)) && (!resolvedChange.getOldValue().eIsProxy())) && (!Objects.equal(resolvedChange.getResource(), null)))) {
+			if (((!Objects.equal(resolvedChange.getOldValue(), null)) && (!resolvedChange.getOldValue().eIsProxy()))) {
 				return resolvedChange;
 			}
 		}
@@ -284,6 +276,13 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
+		if (baseClass == RootEChange.class) {
+			switch (baseOperationID) {
+				case RootPackage.ROOT_ECHANGE___IS_RESOLVED: return RootPackage.REMOVE_ROOT_EOBJECT___IS_RESOLVED;
+				case RootPackage.ROOT_ECHANGE___RESOLVE__RESOURCESET: return RootPackage.REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
 		if (baseClass == SubtractiveEChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE: return RootPackage.REMOVE_ROOT_EOBJECT___GET_OLD_VALUE;
@@ -304,15 +303,12 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 * @generated
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
 			case RootPackage.REMOVE_ROOT_EOBJECT___IS_RESOLVED:
 				return isResolved();
 			case RootPackage.REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET:
 				return resolve((ResourceSet)arguments.get(0));
-			case RootPackage.REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET_EOBJECT:
-				return resolve((ResourceSet)arguments.get(0), (T)arguments.get(1));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

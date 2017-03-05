@@ -12,6 +12,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import tools.vitruv.framework.change.echange.util.StagingArea
 
 /**
  * Default class for testing EChange changes.
@@ -22,16 +23,22 @@ import org.junit.rules.TemporaryFolder
 
  	protected var Root rootObject1 = null
  	protected var Resource resource1 = null
+ 	protected var Resource stagingArea1 = null
  	protected var ResourceSet resourceSet1 = null
  	
  	protected var Root rootObject2 = null
  	protected var Resource resource2 = null
+ 	protected var Resource stagingArea2 = null
  	protected var ResourceSet resourceSet2 = null
  	
  	protected URI fileUri = null
+ 	protected URI stagingResourceName = null
  	
  	protected static val METAMODEL = "allelementtypes"
  	protected static val MODEL_FILE_NAME = "model"
+ 	
+ 	protected static val STAGING_AREA_EXTENSION = "staging"
+ 	protected static val STAGING_AREA_FILE_NAME = "stagingArea"
  	
  	protected static val DEFAULT_ROOT_NAME = "Root Element"
  	protected static val DEFAULT_NON_ROOT_NAME = "Non Root Element"
@@ -49,13 +56,15 @@ import org.junit.rules.TemporaryFolder
 	 */
  	@Before
  	def void beforeTest() {
- 		// Setup File
+ 		// Setup Files
  		var modelFile = testFolder.newFile(MODEL_FILE_NAME + "." + METAMODEL)
 		fileUri = URI.createFileURI(modelFile.getAbsolutePath())
+		stagingResourceName = URI.createFileURI(StagingArea.DEFAULT_RESOURCE_NAME)
  		
  		// Create model
  		resourceSet1 = new ResourceSetImpl()
  		resourceSet1.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
+ 		resourceSet1.getResourceFactoryRegistry().getExtensionToFactoryMap().put(StagingArea.DEFAULT_RESOURCE_EXTENSION, new XMIResourceFactoryImpl())
  		resource1 = resourceSet1.createResource(fileUri)
  		
  		rootObject1 = AllElementTypesFactory.eINSTANCE.createRoot()
@@ -71,15 +80,26 @@ import org.junit.rules.TemporaryFolder
  		
  		resource1.save(null)
  		
+ 		// Create staging area for resource set 1
+ 		stagingArea1 = resourceSet1.createResource(stagingResourceName)
+ 		
  		// Load model in second resource
  		resourceSet2 = new ResourceSetImpl()
  		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
+ 		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(StagingArea.DEFAULT_RESOURCE_EXTENSION, new XMIResourceFactoryImpl())
  		resource2 = resourceSet2.getResource(fileUri, true)
  		rootObject2 = resource2.getEObject(EcoreUtil.getURI(rootObject1).fragment()) as Root
+ 		
+ 		// Create staging area for resource set 2
+ 		stagingArea2 = resourceSet2.createResource(stagingResourceName)
  	}
  	
+ 	/**
+ 	 * Clears the staging areas of the resource sets.
+ 	 */
  	@After
  	def void afterTest() {
- 		
+		stagingArea1.contents.clear
+		stagingArea2.contents.clear
  	}
  }

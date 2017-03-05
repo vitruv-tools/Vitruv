@@ -1,17 +1,17 @@
 package tools.vitruv.framework.tests.change.rootobject
 
-import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
+import allElementTypes.AllElementTypesFactory
+import allElementTypes.Root
+import java.io.File
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.junit.After
 import org.junit.Before
+import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
-import org.junit.After
-import java.io.File
-import allElementTypes.AllElementTypesFactory
-import allElementTypes.Root
 
 class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransformationTest{
 	var Root rootElement2;

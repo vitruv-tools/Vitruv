@@ -188,6 +188,24 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getRootEChange__IsResolved() {
+		return rootEChangeEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRootEChange__Resolve__ResourceSet() {
+		return rootEChangeEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getInsertRootEObject() {
 		return insertRootEObjectEClass;
 	}
@@ -215,15 +233,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getInsertRootEObject__Resolve__ResourceSet_EObject() {
-		return insertRootEObjectEClass.getEOperations().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getRemoveRootEObject() {
 		return removeRootEObjectEClass;
 	}
@@ -244,15 +253,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 */
 	public EOperation getRemoveRootEObject__Resolve__ResourceSet() {
 		return removeRootEObjectEClass.getEOperations().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getRemoveRootEObject__Resolve__ResourceSet_EObject() {
-		return removeRootEObjectEClass.getEOperations().get(2);
 	}
 
 	/**
@@ -323,16 +323,16 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__URI);
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__RESOURCE);
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__INDEX);
+		createEOperation(rootEChangeEClass, ROOT_ECHANGE___IS_RESOLVED);
+		createEOperation(rootEChangeEClass, ROOT_ECHANGE___RESOLVE__RESOURCESET);
 
 		insertRootEObjectEClass = createEClass(INSERT_ROOT_EOBJECT);
 		createEOperation(insertRootEObjectEClass, INSERT_ROOT_EOBJECT___IS_RESOLVED);
 		createEOperation(insertRootEObjectEClass, INSERT_ROOT_EOBJECT___RESOLVE__RESOURCESET);
-		createEOperation(insertRootEObjectEClass, INSERT_ROOT_EOBJECT___RESOLVE__RESOURCESET_EOBJECT);
 
 		removeRootEObjectEClass = createEClass(REMOVE_ROOT_EOBJECT);
 		createEOperation(removeRootEObjectEClass, REMOVE_ROOT_EOBJECT___IS_RESOLVED);
 		createEOperation(removeRootEObjectEClass, REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET);
-		createEOperation(removeRootEObjectEClass, REMOVE_ROOT_EOBJECT___RESOLVE__RESOURCESET_EOBJECT);
 
 		// Create data types
 		eObjEDataType = createEDataType(EOBJ);
@@ -400,17 +400,17 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		initEAttribute(getRootEChange_Resource(), this.getResource(), "resource", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRootEChange_Index(), theEcorePackage.getEInt(), "index", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEOperation(getRootEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		EOperation op = initEOperation(getRootEChange__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(insertRootEObjectEClass, InsertRootEObject.class, "InsertRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getInsertRootEObject__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getInsertRootEObject__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getInsertRootEObject__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		op = initEOperation(getInsertRootEObject__Resolve__ResourceSet_EObject(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(insertRootEObjectEClass_T);
-		addEParameter(op, g1, "newRootObject", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(removeRootEObjectEClass, RemoveRootEObject.class, "RemoveRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -418,11 +418,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 
 		op = initEOperation(getRemoveRootEObject__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		op = initEOperation(getRemoveRootEObject__Resolve__ResourceSet_EObject(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(removeRootEObjectEClass_T);
-		addEParameter(op, g1, "oldRootObject", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

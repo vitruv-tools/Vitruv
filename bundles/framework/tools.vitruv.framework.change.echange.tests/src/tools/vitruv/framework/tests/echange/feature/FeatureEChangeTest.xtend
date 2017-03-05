@@ -132,6 +132,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  	def public void resolveEFeatureAffectedObjectNull() {
  		val affectedEObject = null
  		
+ 		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
  		val unresolvedChange = TypeInferringAtomicEChangeFactory.
  			<Root, String>createReplaceSingleAttributeChange(affectedEObject, defaultAffectedFeature, null, null, true)
  			
@@ -150,6 +151,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  	 def public void resolveEFeatureAffectedFeatureNull() {
  	 	val EAttribute affectedFeature = null
  	 	
+ 	 	// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
  		val unresolvedChange = TypeInferringAtomicEChangeFactory.
  			<Root, String>createReplaceSingleAttributeChange(defaultAffectedEObject, affectedFeature, null, null, true)
  			
@@ -166,7 +168,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  	  */
  	  @Test
  	  def public void resolveEFeatureResourceSetNull() {
- 	  	
+ 	  	// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
  	  	val unresolvedChange = TypeInferringAtomicEChangeFactory.
  	  		<Root, String>createReplaceSingleAttributeChange(defaultAffectedEObject, defaultAffectedFeature, null, null, true)
  	  		

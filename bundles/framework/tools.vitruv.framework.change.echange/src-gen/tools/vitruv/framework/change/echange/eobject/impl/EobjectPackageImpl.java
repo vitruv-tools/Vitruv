@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.eobject.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
@@ -14,6 +15,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
@@ -81,6 +83,13 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * @generated
 	 */
 	private EDataType resourceSetEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType resourceEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -205,6 +214,15 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getEObjectExistenceEChange_StagingArea() {
+		return (EAttribute)eObjectExistenceEChangeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getEObjectExistenceEChange__IsResolved() {
 		return eObjectExistenceEChangeEClass.getEOperations().get(0);
 	}
@@ -216,15 +234,6 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 */
 	public EOperation getEObjectExistenceEChange__Resolve__ResourceSet() {
 		return eObjectExistenceEChangeEClass.getEOperations().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getEObjectExistenceEChange__Resolve__ResourceSet_EObject() {
-		return eObjectExistenceEChangeEClass.getEOperations().get(2);
 	}
 
 	/**
@@ -268,6 +277,15 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getResource() {
+		return resourceEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EobjectFactory getEobjectFactory() {
 		return (EobjectFactory)getEFactoryInstance();
 	}
@@ -299,9 +317,9 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 
 		eObjectExistenceEChangeEClass = createEClass(EOBJECT_EXISTENCE_ECHANGE);
 		createEReference(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT);
+		createEAttribute(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA);
 		createEOperation(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED);
 		createEOperation(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET);
-		createEOperation(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_EOBJECT);
 
 		createEObjectEClass = createEClass(CREATE_EOBJECT);
 
@@ -310,6 +328,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		// Create data types
 		eObjEDataType = createEDataType(EOBJ);
 		resourceSetEDataType = createEDataType(RESOURCE_SET);
+		resourceEDataType = createEDataType(RESOURCE);
 	}
 
 	/**
@@ -336,8 +355,8 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
 		// Create type parameters
 		ETypeParameter eObjectAddedEChangeEClass_T = addETypeParameter(eObjectAddedEChangeEClass, "T");
@@ -347,7 +366,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		ETypeParameter deleteEObjectEClass_A = addETypeParameter(deleteEObjectEClass, "A");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
+		EGenericType g1 = createEGenericType(this.getEObj());
 		eObjectAddedEChangeEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(this.getEObj());
 		eObjectSubtractedEChangeEClass_T.getEBounds().add(g1);
@@ -389,16 +408,12 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		initEClass(eObjectExistenceEChangeEClass, EObjectExistenceEChange.class, "EObjectExistenceEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(eObjectExistenceEChangeEClass_A);
 		initEReference(getEObjectExistenceEChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, EObjectExistenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEObjectExistenceEChange_StagingArea(), this.getResource(), "stagingArea", null, 0, 1, EObjectExistenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getEObjectExistenceEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		EOperation op = initEOperation(getEObjectExistenceEChange__Resolve__ResourceSet(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		op = initEOperation(getEObjectExistenceEChange__Resolve__ResourceSet_EObject(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(eObjectExistenceEChangeEClass_A);
-		addEParameter(op, g1, "resolvedObject", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -407,6 +422,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		// Initialize data types
 		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(resourceEDataType, Resource.class, "Resource", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

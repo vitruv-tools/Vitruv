@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.eobject;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
@@ -244,13 +245,22 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Staging Area</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>EObject Existence EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -289,22 +299,13 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_EOBJECT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 2;
-
-	/**
 	 * The number of operations of the '<em>EObject Existence EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 3;
+	int EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.eobject.impl.CreateEObjectImpl <em>Create EObject</em>}' class.
@@ -324,6 +325,15 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_EOBJECT__AFFECTED_EOBJECT = EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Staging Area</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT__STAGING_AREA = EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA;
 
 	/**
 	 * The number of structural features of the '<em>Create EObject</em>' class.
@@ -371,15 +381,6 @@ public interface EobjectPackage extends EPackage {
 	int CREATE_EOBJECT___RESOLVE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_EOBJECT___RESOLVE__RESOURCESET_EOBJECT = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_EOBJECT;
-
-	/**
 	 * The number of operations of the '<em>Create EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -406,6 +407,15 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int DELETE_EOBJECT__AFFECTED_EOBJECT = EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Staging Area</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT__STAGING_AREA = EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA;
 
 	/**
 	 * The number of structural features of the '<em>Delete EObject</em>' class.
@@ -453,15 +463,6 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT___RESOLVE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DELETE_EOBJECT___RESOLVE__RESOURCESET_EOBJECT = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_EOBJECT;
-
-	/**
 	 * The number of operations of the '<em>Delete EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -489,6 +490,16 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 */
 	int RESOURCE_SET = 6;
+
+	/**
+	 * The meta object id for the '<em>Resource</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.resource.Resource
+	 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getResource()
+	 * @generated
+	 */
+	int RESOURCE = 7;
 
 
 	/**
@@ -555,6 +566,17 @@ public interface EobjectPackage extends EPackage {
 	EReference getEObjectExistenceEChange_AffectedEObject();
 
 	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getStagingArea <em>Staging Area</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Staging Area</em>'.
+	 * @see tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getStagingArea()
+	 * @see #getEObjectExistenceEChange()
+	 * @generated
+	 */
+	EAttribute getEObjectExistenceEChange_StagingArea();
+
+	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#isResolved() <em>Is Resolved</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -573,16 +595,6 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getEObjectExistenceEChange__Resolve__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet, org.eclipse.emf.ecore.EObject) <em>Resolve</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet, org.eclipse.emf.ecore.EObject)
-	 * @generated
-	 */
-	EOperation getEObjectExistenceEChange__Resolve__ResourceSet_EObject();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject <em>Create EObject</em>}'.
@@ -625,6 +637,17 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 */
 	EDataType getResourceSet();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.Resource <em>Resource</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Resource</em>'.
+	 * @see org.eclipse.emf.ecore.resource.Resource
+	 * @model instanceClass="org.eclipse.emf.ecore.resource.Resource"
+	 * @generated
+	 */
+	EDataType getResource();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -704,6 +727,14 @@ public interface EobjectPackage extends EPackage {
 		EReference EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT = eINSTANCE.getEObjectExistenceEChange_AffectedEObject();
 
 		/**
+		 * The meta object literal for the '<em><b>Staging Area</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA = eINSTANCE.getEObjectExistenceEChange_StagingArea();
+
+		/**
 		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -718,14 +749,6 @@ public interface EobjectPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET = eINSTANCE.getEObjectExistenceEChange__Resolve__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_EOBJECT = eINSTANCE.getEObjectExistenceEChange__Resolve__ResourceSet_EObject();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.eobject.impl.CreateEObjectImpl <em>Create EObject</em>}' class.
@@ -766,6 +789,16 @@ public interface EobjectPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType RESOURCE_SET = eINSTANCE.getResourceSet();
+
+		/**
+		 * The meta object literal for the '<em>Resource</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.resource.Resource
+		 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getResource()
+		 * @generated
+		 */
+		EDataType RESOURCE = eINSTANCE.getResource();
 
 	}
 
