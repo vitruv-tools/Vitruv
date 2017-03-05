@@ -2,10 +2,14 @@
  */
 package uml_mockup.impl;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import uml_mockup.UAttribute;
 import uml_mockup.UClass;
 import uml_mockup.UNamedElement;
 import uml_mockup.Uml_mockupPackage;
@@ -20,6 +24,7 @@ import uml_mockup.Uml_mockupPackage;
  * <ul>
  *   <li>{@link uml_mockup.impl.UClassImpl#getName <em>Name</em>}</li>
  *   <li>{@link uml_mockup.impl.UClassImpl#getClassCount <em>Class Count</em>}</li>
+ *   <li>{@link uml_mockup.impl.UClassImpl#getAttributes <em>Attributes</em>}</li>
  * </ul>
  *
  * @generated
@@ -62,6 +67,16 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 	 * @ordered
 	 */
 	protected int classCount = CLASS_COUNT_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<UAttribute> attributes;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -129,6 +144,18 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<UAttribute> getAttributes() {
+		if (attributes == null) {
+			attributes = new EObjectResolvingEList<UAttribute>(UAttribute.class, this, Uml_mockupPackage.UCLASS__ATTRIBUTES);
+		}
+		return attributes;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -136,6 +163,8 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 				return getName();
 			case Uml_mockupPackage.UCLASS__CLASS_COUNT:
 				return getClassCount();
+			case Uml_mockupPackage.UCLASS__ATTRIBUTES:
+				return getAttributes();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -145,6 +174,7 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -153,6 +183,10 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 				return;
 			case Uml_mockupPackage.UCLASS__CLASS_COUNT:
 				setClassCount((Integer)newValue);
+				return;
+			case Uml_mockupPackage.UCLASS__ATTRIBUTES:
+				getAttributes().clear();
+				getAttributes().addAll((Collection<? extends UAttribute>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -172,6 +206,9 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 			case Uml_mockupPackage.UCLASS__CLASS_COUNT:
 				setClassCount(CLASS_COUNT_EDEFAULT);
 				return;
+			case Uml_mockupPackage.UCLASS__ATTRIBUTES:
+				getAttributes().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -188,6 +225,8 @@ public class UClassImpl extends IdentifiedImpl implements UClass {
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case Uml_mockupPackage.UCLASS__CLASS_COUNT:
 				return classCount != CLASS_COUNT_EDEFAULT;
+			case Uml_mockupPackage.UCLASS__ATTRIBUTES:
+				return attributes != null && !attributes.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

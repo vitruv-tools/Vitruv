@@ -2,6 +2,8 @@
  */
 package uml_mockup;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -13,6 +15,7 @@ package uml_mockup;
  * </p>
  * <ul>
  *   <li>{@link uml_mockup.UClass#getClassCount <em>Class Count</em>}</li>
+ *   <li>{@link uml_mockup.UClass#getAttributes <em>Attributes</em>}</li>
  * </ul>
  *
  * @see uml_mockup.Uml_mockupPackage#getUClass()
@@ -46,4 +49,20 @@ public interface UClass extends Identified, UNamedElement {
 	 * @generated
 	 */
 	void setClassCount(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Attributes</b></em>' reference list.
+	 * The list contents are of type {@link uml_mockup.UAttribute}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attributes</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attributes</em>' reference list.
+	 * @see uml_mockup.Uml_mockupPackage#getUClass_Attributes()
+	 * @model
+	 * @generated
+	 */
+	EList<UAttribute> getAttributes();
 } // UClass

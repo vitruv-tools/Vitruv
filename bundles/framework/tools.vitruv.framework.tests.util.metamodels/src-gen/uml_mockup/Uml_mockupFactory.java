@@ -58,6 +58,15 @@ public interface Uml_mockupFactory extends EFactory {
 	UMethod createUMethod();
 
 	/**
+	 * Returns a new object of class '<em>UAttribute</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>UAttribute</em>'.
+	 * @generated
+	 */
+	UAttribute createUAttribute();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

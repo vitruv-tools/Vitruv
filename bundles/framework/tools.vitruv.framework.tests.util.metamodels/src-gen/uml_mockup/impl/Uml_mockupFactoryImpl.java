@@ -60,6 +60,7 @@ public class Uml_mockupFactoryImpl extends EFactoryImpl implements Uml_mockupFac
 			case Uml_mockupPackage.UINTERFACE: return createUInterface();
 			case Uml_mockupPackage.UCLASS: return createUClass();
 			case Uml_mockupPackage.UMETHOD: return createUMethod();
+			case Uml_mockupPackage.UATTRIBUTE: return createUAttribute();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -103,6 +104,16 @@ public class Uml_mockupFactoryImpl extends EFactoryImpl implements Uml_mockupFac
 	public UMethod createUMethod() {
 		UMethodImpl uMethod = new UMethodImpl();
 		return uMethod;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public UAttribute createUAttribute() {
+		UAttributeImpl uAttribute = new UAttributeImpl();
+		return uAttribute;
 	}
 
 	/**
