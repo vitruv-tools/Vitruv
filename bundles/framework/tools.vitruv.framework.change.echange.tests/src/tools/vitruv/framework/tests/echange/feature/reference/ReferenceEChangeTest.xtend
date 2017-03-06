@@ -28,6 +28,5 @@ public abstract class ReferenceEChangeTest extends EChangeTest {
 		defaultNewValue.id = DEFAULT_NEW_NON_ROOT_NAME
 		defaultNewValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot()
 		defaultNewValue2.id = DEFAULT_NEW_NON_ROOT_NAME_2
-		resource1.getContents.add(defaultNewValue)
 	}
 }

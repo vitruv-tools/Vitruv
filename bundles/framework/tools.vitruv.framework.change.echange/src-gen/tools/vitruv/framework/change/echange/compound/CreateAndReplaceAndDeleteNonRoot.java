@@ -6,6 +6,8 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 import tools.vitruv.framework.change.echange.AtomicEChange;
 
 import tools.vitruv.framework.change.echange.eobject.CreateEObject;
@@ -118,5 +120,14 @@ public interface CreateAndReplaceAndDeleteNonRoot<A extends EObject, T extends E
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false" applyChangeUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='if (applyChange)\n{\n\t<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T> _createChange = this.getCreateChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply = _createChange.resolveApply(resourceSet);\n\tthis.setCreateChange(((<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T>) _resolveApply));\n\t<%tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference%><A, T> _replaceChange = this.getReplaceChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply_1 = _replaceChange.resolveApply(resourceSet);\n\tthis.setReplaceChange(((<%tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference%><A, T>) _resolveApply_1));\n\t<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T> _deleteChange = this.getDeleteChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply_2 = _deleteChange.resolveApply(resourceSet);\n\tthis.setDeleteChange(((<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T>) _resolveApply_2));\n}\nelse\n{\n\t<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T> _deleteChange_1 = this.getDeleteChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveRevert = _deleteChange_1.resolveRevert(resourceSet);\n\tthis.setDeleteChange(((<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T>) _resolveRevert));\n\t<%tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference%><A, T> _replaceChange_1 = this.getReplaceChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveRevert_1 = _replaceChange_1.resolveRevert(resourceSet);\n\tthis.setReplaceChange(((<%tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference%><A, T>) _resolveRevert_1));\n\t<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T> _createChange_1 = this.getCreateChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveRevert_2 = _createChange_1.resolveRevert(resourceSet);\n\tthis.setCreateChange(((<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T>) _resolveRevert_2));\n}'"
+	 * @generated
+	 */
+	void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange);
 
 } // CreateAndReplaceAndDeleteNonRoot

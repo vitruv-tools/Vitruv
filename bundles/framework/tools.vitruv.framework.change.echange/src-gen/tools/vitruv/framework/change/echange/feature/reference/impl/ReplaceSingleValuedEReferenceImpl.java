@@ -186,6 +186,24 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * @generated
 	 */
 	public EChange resolveApply(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolveRevert(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, false);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolve(final ResourceSet resourceSet, final boolean applyChange) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
@@ -195,13 +213,41 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 			if (_equals) {
 				return null;
 			}
-			T _oldValue = this.getOldValue();
-			EObject _resolveProxy = EChangeUtil.resolveProxy(_oldValue, resourceSet);
-			resolvedChange.setOldValue(((T) _resolveProxy));
-			T _newValue = this.getNewValue();
-			EObject _resolveProxy_1 = EChangeUtil.resolveProxy(_newValue, resourceSet);
-			resolvedChange.setNewValue(((T) _resolveProxy_1));
+			boolean _isContainment = this.isContainment();
+			if (_isContainment) {
+				if (applyChange) {
+					resolvedChange.setNewValue(((T) EChangeUtil.objectInProgress));
+					T _oldValue = this.getOldValue();
+					EObject _resolveProxy = EChangeUtil.resolveProxy(_oldValue, resourceSet);
+					resolvedChange.setOldValue(((T) _resolveProxy));
+				}
+				else {
+					T _newValue = this.getNewValue();
+					EObject _resolveProxy_1 = EChangeUtil.resolveProxy(_newValue, resourceSet);
+					resolvedChange.setNewValue(((T) _resolveProxy_1));
+					resolvedChange.setOldValue(((T) EChangeUtil.objectInProgress));
+				}
+			}
+			else {
+				T _oldValue_1 = this.getOldValue();
+				EObject _resolveProxy_2 = EChangeUtil.resolveProxy(_oldValue_1, resourceSet);
+				resolvedChange.setOldValue(((T) _resolveProxy_2));
+				T _newValue_1 = this.getNewValue();
+				EObject _resolveProxy_3 = EChangeUtil.resolveProxy(_newValue_1, resourceSet);
+				resolvedChange.setNewValue(((T) _resolveProxy_3));
+			}
 			if (((Objects.equal(resolvedChange.getNewValue(), null) || (!resolvedChange.getNewValue().eIsProxy())) && (Objects.equal(resolvedChange.getOldValue(), null) || (!resolvedChange.getOldValue().eIsProxy())))) {
+				boolean _isContainment_1 = this.isContainment();
+				if (_isContainment_1) {
+					if (applyChange) {
+						T _oldValue_2 = resolvedChange.getOldValue();
+						EChangeUtil.objectInProgress = _oldValue_2;
+					}
+					else {
+						T _newValue_2 = resolvedChange.getNewValue();
+						EChangeUtil.objectInProgress = _newValue_2;
+					}
+				}
 				return resolvedChange;
 			}
 		}
@@ -374,6 +420,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED;
 				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_APPLY__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_REVERT__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -425,6 +472,10 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 				return isResolved();
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_APPLY__RESOURCESET:
 				return resolveApply((ResourceSet)arguments.get(0));
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_REVERT__RESOURCESET:
+				return resolveRevert((ResourceSet)arguments.get(0));
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN:
+				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

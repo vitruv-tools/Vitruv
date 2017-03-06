@@ -134,6 +134,24 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @generated
 	 */
 	public EChange resolveApply(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolveRevert(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, false);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolve(final ResourceSet resourceSet, final boolean applyChange) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
@@ -143,10 +161,22 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 			if (_equals) {
 				return null;
 			}
-			T _oldValue = this.getOldValue();
-			EObject _resolveProxy = EChangeUtil.resolveProxy(_oldValue, resourceSet);
-			resolvedChange.setOldValue(((T) _resolveProxy));
+			if (((!applyChange) && this.isContainment())) {
+				resolvedChange.setOldValue(((T) EChangeUtil.objectInProgress));
+			}
+			else {
+				T _oldValue = this.getOldValue();
+				EObject _resolveProxy = EChangeUtil.resolveProxy(_oldValue, resourceSet);
+				resolvedChange.setOldValue(((T) _resolveProxy));
+			}
 			if ((Objects.equal(resolvedChange.getOldValue(), null) || (!resolvedChange.getOldValue().eIsProxy()))) {
+				if (((!applyChange) && this.isContainment())) {
+					EChangeUtil.objectInProgress = null;
+				}
+				else {
+					T _oldValue_1 = resolvedChange.getOldValue();
+					EChangeUtil.objectInProgress = _oldValue_1;
+				}
 				return resolvedChange;
 			}
 		}
@@ -286,6 +316,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED;
 				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE_APPLY__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE_REVERT__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -327,6 +358,10 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 				return isResolved();
 			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE_APPLY__RESOURCESET:
 				return resolveApply((ResourceSet)arguments.get(0));
+			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE_REVERT__RESOURCESET:
+				return resolveRevert((ResourceSet)arguments.get(0));
+			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN:
+				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 			case ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

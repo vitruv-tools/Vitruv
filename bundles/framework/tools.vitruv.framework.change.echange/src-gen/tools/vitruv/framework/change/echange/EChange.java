@@ -74,7 +74,7 @@ public interface EChange extends EObject {
 	 * 			change was not resolved or could not be applied it returns {@code false}
 	 * <!-- end-model-doc -->
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\t<%tools.vitruv.framework.change.echange.util.ApplyCommandSwitch%> _applyCommandSwitch = new <%tools.vitruv.framework.change.echange.util.ApplyCommandSwitch%>();\n\tfinal <%org.eclipse.emf.common.command.Command%> command = _applyCommandSwitch.doSwitch(this);\n\tif (((!<%com.google.common.base.Objects%>.equal(command, null)) && command.canExecute()))\n\t{\n\t\tcommand.execute();\n\t\treturn true;\n\t}\n}\nreturn false;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\t<%tools.vitruv.framework.change.echange.util.ApplyCommandSwitch%> _applyCommandSwitch = new <%tools.vitruv.framework.change.echange.util.ApplyCommandSwitch%>();\n\tfinal <%java.util.List%><<%org.eclipse.emf.common.command.Command%>> commands = _applyCommandSwitch.doSwitch(this);\n\tboolean _notEquals = (!<%com.google.common.base.Objects%>.equal(commands, null));\n\tif (_notEquals)\n\t{\n\t\tfor (final <%org.eclipse.emf.common.command.Command%> c : commands)\n\t\t{\n\t\t\tboolean _canExecute = c.canExecute();\n\t\t\tif (_canExecute)\n\t\t\t{\n\t\t\t\tc.execute();\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\treturn false;\n\t\t\t}\n\t\t}\n\t\treturn true;\n\t}\n}\nreturn false;'"
 	 * @generated
 	 */
 	boolean apply();
@@ -90,7 +90,7 @@ public interface EChange extends EObject {
 	 * 			change was not resolved or could not be reverted it returns {@code false}
 	 * <!-- end-model-doc -->
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\t<%tools.vitruv.framework.change.echange.util.RevertCommandSwitch%> _revertCommandSwitch = new <%tools.vitruv.framework.change.echange.util.RevertCommandSwitch%>();\n\tfinal <%org.eclipse.emf.common.command.Command%> command = _revertCommandSwitch.doSwitch(this);\n\tif (((!<%com.google.common.base.Objects%>.equal(command, null)) && command.canExecute()))\n\t{\n\t\tcommand.execute();\n\t\treturn true;\n\t}\n}\nreturn false;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\t<%tools.vitruv.framework.change.echange.util.RevertCommandSwitch%> _revertCommandSwitch = new <%tools.vitruv.framework.change.echange.util.RevertCommandSwitch%>();\n\tfinal <%java.util.List%><<%org.eclipse.emf.common.command.Command%>> commands = _revertCommandSwitch.doSwitch(this);\n\tboolean _notEquals = (!<%com.google.common.base.Objects%>.equal(commands, null));\n\tif (_notEquals)\n\t{\n\t\tfor (final <%org.eclipse.emf.common.command.Command%> c : commands)\n\t\t{\n\t\t\tboolean _canExecute = c.canExecute();\n\t\t\tif (_canExecute)\n\t\t\t{\n\t\t\t\tc.execute();\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\treturn false;\n\t\t\t}\n\t\t}\n\t\treturn true;\n\t}\n}\nreturn false;'"
 	 * @generated
 	 */
 	boolean revert();

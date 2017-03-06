@@ -4,10 +4,11 @@ import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
-import org.junit.After
 import org.junit.Before
-import tools.vitruv.framework.tests.echange.EChangeTest
 import tools.vitruv.framework.change.echange.util.EChangeUtil
+import tools.vitruv.framework.tests.echange.EChangeTest
+
+import static tools.vitruv.framework.change.echange.util.EChangeUtil.*
 
 /**
  * Abstract class which is extended by the Root EChange test classes.

@@ -455,15 +455,6 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE___RESOLVE_REVERT__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_REVERT__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -518,13 +509,31 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE___RESOLVE_APPLY__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EREFERENCE___RESOLVE_REVERT__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 4;
+
+	/**
 	 * The number of operations of the '<em>Insert EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 3;
+	int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
@@ -582,15 +591,6 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE___RESOLVE_REVERT__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_REVERT__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -645,13 +645,31 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE___RESOLVE_APPLY__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EREFERENCE___RESOLVE_REVERT__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 4;
+
+	/**
 	 * The number of operations of the '<em>Remove EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 3;
+	int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
@@ -707,15 +725,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_REVERT__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_REVERT__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Apply</em>' operation.
@@ -799,13 +808,31 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_APPLY__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_REVERT__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Resolve</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 4;
+
+	/**
 	 * The number of operations of the '<em>Replace Single Valued EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 3;
+	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 5;
 
 	/**
 	 * The meta object id for the '<em>EObj</em>' data type.
@@ -909,6 +936,26 @@ public interface ReferencePackage extends EPackage {
 	EOperation getInsertEReference__ResolveApply__ResourceSet();
 
 	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getInsertEReference__ResolveRevert__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
+	 * @generated
+	 */
+	EOperation getInsertEReference__Resolve__ResourceSet_boolean();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference <em>Remove EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -939,6 +986,26 @@ public interface ReferencePackage extends EPackage {
 	EOperation getRemoveEReference__ResolveApply__ResourceSet();
 
 	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getRemoveEReference__ResolveRevert__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
+	 * @generated
+	 */
+	EOperation getRemoveEReference__Resolve__ResourceSet_boolean();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference <em>Replace Single Valued EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -967,6 +1034,26 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getReplaceSingleValuedEReference__ResolveApply__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getReplaceSingleValuedEReference__ResolveRevert__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
+	 * @generated
+	 */
+	EOperation getReplaceSingleValuedEReference__Resolve__ResourceSet_boolean();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
@@ -1089,6 +1176,22 @@ public interface ReferencePackage extends EPackage {
 		EOperation INSERT_EREFERENCE___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getInsertEReference__ResolveApply__ResourceSet();
 
 		/**
+		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation INSERT_EREFERENCE___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getInsertEReference__ResolveRevert__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation INSERT_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getInsertEReference__Resolve__ResourceSet_boolean();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1115,6 +1218,22 @@ public interface ReferencePackage extends EPackage {
 		EOperation REMOVE_EREFERENCE___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getRemoveEReference__ResolveApply__ResourceSet();
 
 		/**
+		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REMOVE_EREFERENCE___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getRemoveEReference__ResolveRevert__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REMOVE_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getRemoveEReference__Resolve__ResourceSet_boolean();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1139,6 +1258,22 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getReplaceSingleValuedEReference__ResolveApply__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getReplaceSingleValuedEReference__ResolveRevert__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getReplaceSingleValuedEReference__Resolve__ResourceSet_boolean();
 
 		/**
 		 * The meta object literal for the '<em>EObj</em>' data type.

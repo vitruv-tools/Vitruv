@@ -109,6 +109,16 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 			if (_equals) {
 				return null;
 			}
+			resolvedChange.resolveAtomicChanges(resourceSet, applyChange);
+			EList<AtomicEChange> _atomicChanges = resolvedChange.getAtomicChanges();
+			for (final AtomicEChange change : _atomicChanges) {
+				boolean _isResolved_1 = change.isResolved();
+				boolean _not_1 = (!_isResolved_1);
+				if (_not_1) {
+					return this;
+				}
+			}
+			return resolvedChange;
 		}
 		return this;
 	}
@@ -118,17 +128,10 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean apply() {
-		return false;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean revert() {
-		return false;
+	public void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -143,8 +146,6 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 				case EChangePackage.ECHANGE___IS_RESOLVED: return CompoundPackage.COMPOUND_ECHANGE___IS_RESOLVED;
 				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_APPLY__RESOURCESET;
 				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_REVERT__RESOURCESET;
-				case EChangePackage.ECHANGE___APPLY: return CompoundPackage.COMPOUND_ECHANGE___APPLY;
-				case EChangePackage.ECHANGE___REVERT: return CompoundPackage.COMPOUND_ECHANGE___REVERT;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -169,10 +170,9 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 				return resolveRevert((ResourceSet)arguments.get(0));
 			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN:
 				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
-			case CompoundPackage.COMPOUND_ECHANGE___APPLY:
-				return apply();
-			case CompoundPackage.COMPOUND_ECHANGE___REVERT:
-				return revert();
+			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_ATOMIC_CHANGES__RESOURCESET_BOOLEAN:
+				resolveAtomicChanges((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
+				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

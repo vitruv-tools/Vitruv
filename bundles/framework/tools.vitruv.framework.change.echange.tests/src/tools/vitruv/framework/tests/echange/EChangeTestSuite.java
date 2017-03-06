@@ -4,6 +4,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import tools.vitruv.framework.tests.echange.compound.CreateAndInsertNonRootTest;
+import tools.vitruv.framework.tests.echange.compound.CreateAndInsertRootTest;
+import tools.vitruv.framework.tests.echange.compound.RemoveAndDeleteNonRootTest;
+import tools.vitruv.framework.tests.echange.compound.RemoveAndDeleteRootTest;
 import tools.vitruv.framework.tests.echange.eobject.CreateEObjectTest;
 import tools.vitruv.framework.tests.echange.eobject.DeleteEObjectTest;
 import tools.vitruv.framework.tests.echange.eobject.EObjectExistenceEChangeTest;
@@ -30,7 +34,11 @@ import tools.vitruv.framework.tests.echange.root.RemoveRootEObjectTest;
 	RemoveRootEObjectTest.class, 
 	EObjectExistenceEChangeTest.class,
 	CreateEObjectTest.class,
-	DeleteEObjectTest.class})
+	DeleteEObjectTest.class,
+	CreateAndInsertRootTest.class,
+	RemoveAndDeleteRootTest.class,
+	CreateAndInsertNonRootTest.class,
+	RemoveAndDeleteNonRootTest.class})
 
 public class EChangeTestSuite {
 

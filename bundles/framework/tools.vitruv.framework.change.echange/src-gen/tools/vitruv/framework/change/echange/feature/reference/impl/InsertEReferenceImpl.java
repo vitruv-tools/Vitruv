@@ -134,6 +134,24 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @generated
 	 */
 	public EChange resolveApply(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolveRevert(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, false);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolve(final ResourceSet resourceSet, final boolean applyChange) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
@@ -143,10 +161,22 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 			if (_equals) {
 				return null;
 			}
-			T _newValue = this.getNewValue();
-			EObject _resolveProxy = EChangeUtil.resolveProxy(_newValue, resourceSet);
-			resolvedChange.setNewValue(((T) _resolveProxy));
+			if ((applyChange && this.isContainment())) {
+				resolvedChange.setNewValue(((T) EChangeUtil.objectInProgress));
+			}
+			else {
+				T _newValue = this.getNewValue();
+				EObject _resolveProxy = EChangeUtil.resolveProxy(_newValue, resourceSet);
+				resolvedChange.setNewValue(((T) _resolveProxy));
+			}
 			if ((Objects.equal(resolvedChange.getNewValue(), null) || (!resolvedChange.getNewValue().eIsProxy()))) {
+				if ((applyChange && this.isContainment())) {
+					EChangeUtil.objectInProgress = null;
+				}
+				else {
+					T _newValue_1 = resolvedChange.getNewValue();
+					EChangeUtil.objectInProgress = _newValue_1;
+				}
 				return resolvedChange;
 			}
 		}
@@ -286,6 +316,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.INSERT_EREFERENCE___IS_RESOLVED;
 				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE_APPLY__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE_REVERT__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -327,6 +358,10 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 				return isResolved();
 			case ReferencePackage.INSERT_EREFERENCE___RESOLVE_APPLY__RESOURCESET:
 				return resolveApply((ResourceSet)arguments.get(0));
+			case ReferencePackage.INSERT_EREFERENCE___RESOLVE_REVERT__RESOURCESET:
+				return resolveRevert((ResourceSet)arguments.get(0));
+			case ReferencePackage.INSERT_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN:
+				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 			case ReferencePackage.INSERT_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}
