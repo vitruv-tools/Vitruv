@@ -7,6 +7,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
@@ -94,5 +96,14 @@ public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature,
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false" applyChangeUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body=''"
+	 * @generated
+	 */
+	void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange);
 
 } // ReplaceInEList

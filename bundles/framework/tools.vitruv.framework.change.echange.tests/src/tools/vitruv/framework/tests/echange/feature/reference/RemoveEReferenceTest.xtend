@@ -11,14 +11,14 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import allElementTypes.AllElementTypesFactory
-
+// TODO Stefan: incomplete
 /**
  * Test class for the concrete {@link RemoveEReference} EChange, 
  * which removes a reference from a multivalued attribute.
  */
 public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	protected var EReference defaultAffectedFeature = null
-	
+	protected var EList<NonRoot> referenceContent = null
 	protected static val DEFAULT_INDEX = 0
 	
 	/**
@@ -29,16 +29,30 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	override public void beforeTest() {
 		super.beforeTest()
 		defaultAffectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE;
-		val EList<NonRoot> multivaluedReference = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<NonRoot>
-		multivaluedReference.add(defaultNewValue)
-		multivaluedReference.add(defaultNewValue2)
+		referenceContent = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<NonRoot>
+	}
+	
+	def private void prepareReference() {
+		referenceContent.add(defaultNewValue)
+		referenceContent.add(defaultNewValue2)
+	}
+	
+	def private void prepareResource() {
+		resource1.contents.add(defaultNewValue)
+		resource1.contents.add(defaultNewValue2)
 	}
 	
 	/**
 	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
+	 * The resource that will be removed is in a non containment reference,
+	 * so the object needs to be in the resource.
 	 */
 	@Test
 	def public void resolveRemoveEReferenceTest() {
+		// Non containment reference => object needs to be in resource
+		prepareReference
+		prepareResource
+		
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createRemoveReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)
 		
@@ -54,11 +68,24 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	}
 	
 	/**
+	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
+	 * The resource that will be removed is in a containment reference,
+	 * so the object is not in the resource.
+	 */
+	@Test
+	def public void resolveRemoveEReferenceTest2() {
+		Assert.assertFalse(true)
+	}
+	
+	/**
 	 * Tests whether resolving the {@link RemoveEReference} EChange
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrektType() {
+	def public void resolveToCorrectType() {
+		// Non containment reference => object needs to be in resource
+		resource1.contents.add(defaultNewValue)
+		
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createRemoveReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)
 			
@@ -70,56 +97,62 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	}
 	
 	/**
-	 * Tests removing inserted values in a multivalued reference.
+	 * Tests removing inserted values in a multivalued reference. 
+	 * The reference is a non containment reference, so the values has
+	 * to be in the resource.
 	 */
 	@Test
 	def public void removeEReferenceApplyTest() {
-		val EList<NonRoot> multivaluedReference = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<NonRoot>
+		prepareReference
+		prepareResource
 		
-		Assert.assertEquals(multivaluedReference.size, 2)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX) == defaultNewValue)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX + 1) == defaultNewValue2)
+		Assert.assertEquals(referenceContent.size, 2)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == defaultNewValue2)
 		
 		// Remove first reference at index 0
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createRemoveReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, false)
 			
 		Assert.assertTrue(resolvedChange.apply)
-		Assert.assertEquals(multivaluedReference.size, 1)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX) == defaultNewValue2)
+		Assert.assertEquals(referenceContent.size, 1)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue2)
 		
 		// Remove second reference at index 0
 		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createRemoveReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue2, DEFAULT_INDEX, false)
 			
 		Assert.assertTrue(resolvedChange2.apply)
-		Assert.assertEquals(multivaluedReference.size, 0)
+		Assert.assertEquals(referenceContent.size, 0)
 	}
 	
 	/**
-	 * Reverts a {@link RemoveEReference} EChange.
+	 * Reverts a {@link RemoveEReference} EChange. The reference is
+	 * a non containment reference so the values has to be in 
+	 * the resource.
 	 */
 	@Test
 	def public void removeEReferenceRevertTest() {
-		val EList<NonRoot> multivaluedReference = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<NonRoot>
+		prepareReference
+		prepareResource 
 
-		Assert.assertEquals(multivaluedReference.size, 2)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX) == defaultNewValue)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX + 1) == defaultNewValue2)
+		Assert.assertEquals(referenceContent.size, 2)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == defaultNewValue2)
 
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createRemoveReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, false)
 		
 		// apply
 		Assert.assertTrue(resolvedChange.apply)
-		Assert.assertEquals(multivaluedReference.size, 1)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX) == defaultNewValue2)
+		Assert.assertEquals(referenceContent.size, 1)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue2)
 		
 		// revert
 		Assert.assertTrue(resolvedChange.revert)
-		Assert.assertEquals(multivaluedReference.size, 2)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX) == defaultNewValue)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX + 1) == defaultNewValue2)
+		Assert.assertEquals(referenceContent.size, 2)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == defaultNewValue2)
 	}
 	
 	/**
@@ -127,10 +160,13 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void removeEReferenceInvalidIndexTest() {
+		prepareReference
+		prepareResource
+
 		val index = 5; // Valid index is 0 or 1
-		val EList<NonRoot> multivaluedReference = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<NonRoot>
-		Assert.assertEquals(multivaluedReference.size, 2)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX) == defaultNewValue)
+
+		Assert.assertEquals(referenceContent.size, 2)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue)
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createRemoveReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, index, false)
@@ -163,11 +199,13 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void removeEReferenceInvalidValue() {
-		val newValue = AllElementTypesFactory.eINSTANCE.createRoot() // value is Root, reference value is NonRoot
-		val EList<NonRoot> multivaluedReference = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<NonRoot>
+		prepareReference
+		prepareResource
 		
-		Assert.assertEquals(multivaluedReference.size, 2)
-		Assert.assertTrue(multivaluedReference.get(DEFAULT_INDEX) == defaultNewValue)
+		val newValue = AllElementTypesFactory.eINSTANCE.createRoot() // value is Root, reference value is NonRoot
+		
+		Assert.assertEquals(referenceContent.size, 2)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue)
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, Root>createRemoveReferenceChange(defaultAffectedEObject, defaultAffectedFeature, newValue, DEFAULT_INDEX, false)

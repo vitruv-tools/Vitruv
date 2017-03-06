@@ -9,7 +9,7 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import org.junit.Before
 import org.eclipse.emf.ecore.EReference
 import allElementTypes.AllElementTypesPackage
-
+// TODO Stefan: incomplete
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEReference} EChange,
  * which replaces the value of a reference with a new one.
@@ -28,11 +28,20 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		defaultOldValue = rootObject1.singleValuedNonContainmentEReference
 	}
 	
+	
+	def private void prepareResource() {
+		resource1.contents.add(defaultNewValue)
+	}
+	
 	/**
 	 * Test resolves a {@link ReplaceSingleValuedEReference} EChange with correct parameters.
+	 * The reference is a non containment reference so the new object is in
+	 * the resource.
 	 */
 	@Test
 	def public void resolveReplaceSingleValuedEReferenceTest() {
+		prepareResource
+		
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true)
 			
@@ -50,11 +59,22 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	}
 	
 	/**
+	 * Test resolves a {@link ReplaceSingleValuedEReference} EChange with correct parameters.
+	 * The reference is a containment reference, so the new object is in the staging area
+	 */
+	@Test
+	def public void resolveReplaceSingleValuedEReferenceTest2() {
+		Assert.assertTrue(false)
+	}
+	
+	/**
 	 * Tests whether resolving the {@link ReplaceSingleValuedEReference} EChange
 	 * returns the same class.
 	 */
 	@Test
 	def public void resolveToCorrectType() {
+		prepareResource
+		
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true)	
 			

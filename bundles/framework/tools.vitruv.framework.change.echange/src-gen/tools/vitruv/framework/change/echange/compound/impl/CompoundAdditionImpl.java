@@ -14,11 +14,14 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.EChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundAddition;
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
@@ -88,6 +91,32 @@ public class CompoundAdditionImpl<T extends Object, S extends AdditiveEChange<T>
 		EList<S> _additiveChanges = this.getAdditiveChanges();
 		result.addAll(_additiveChanges);
 		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void resolveAtomicChanges(final ResourceSet resourceSet, final boolean applyChange) {
+		if (applyChange) {
+			for (int i = 0; (i < this.getAdditiveChanges().size()); i++) {
+				EList<S> _additiveChanges = this.getAdditiveChanges();
+				EList<S> _additiveChanges_1 = this.getAdditiveChanges();
+				S _get = _additiveChanges_1.get(i);
+				EChange _resolveApply = _get.resolveApply(resourceSet);
+				_additiveChanges.set(i, ((S) _resolveApply));
+			}
+		}
+		else {
+			for (int i = (this.getAdditiveChanges().size() - 1); (i >= 0); i--) {
+				EList<S> _additiveChanges = this.getAdditiveChanges();
+				EList<S> _additiveChanges_1 = this.getAdditiveChanges();
+				S _get = _additiveChanges_1.get(i);
+				EChange _resolveRevert = _get.resolveRevert(resourceSet);
+				_additiveChanges.set(i, ((S) _resolveRevert));
+			}
+		}
 	}
 
 	/**
@@ -174,6 +203,9 @@ public class CompoundAdditionImpl<T extends Object, S extends AdditiveEChange<T>
 		switch (operationID) {
 			case CompoundPackage.COMPOUND_ADDITION___GET_ATOMIC_CHANGES:
 				return getAtomicChanges();
+			case CompoundPackage.COMPOUND_ADDITION___RESOLVE_ATOMIC_CHANGES__RESOURCESET_BOOLEAN:
+				resolveAtomicChanges((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
+				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

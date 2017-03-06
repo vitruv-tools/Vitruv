@@ -6,6 +6,8 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
 import tools.vitruv.framework.change.echange.AtomicEChange;
 
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
@@ -89,5 +91,14 @@ public interface RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubt
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false" applyChangeUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='if (applyChange)\n{\n\tC _removeChange = this.getRemoveChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply = _removeChange.resolveApply(resourceSet);\n\tthis.setRemoveChange(((C) _resolveApply));\n\t<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T> _deleteChange = this.getDeleteChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply_1 = _deleteChange.resolveApply(resourceSet);\n\tthis.setDeleteChange(((<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T>) _resolveApply_1));\n}\nelse\n{\n\t<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T> _deleteChange_1 = this.getDeleteChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveRevert = _deleteChange_1.resolveRevert(resourceSet);\n\tthis.setDeleteChange(((<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T>) _resolveRevert));\n\tC _removeChange_1 = this.getRemoveChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveRevert_1 = _removeChange_1.resolveRevert(resourceSet);\n\tthis.setRemoveChange(((C) _resolveRevert_1));\n}'"
+	 * @generated
+	 */
+	void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange);
 
 } // RemoveAndDeleteEObject

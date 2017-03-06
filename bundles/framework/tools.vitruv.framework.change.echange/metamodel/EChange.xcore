@@ -55,9 +55,15 @@ abstract class EChange {
 	 */
 	op boolean apply() {
 		if (isResolved) {
-			val command = (new ApplyCommandSwitch()).doSwitch(this)
-			if (command != null && command.canExecute()) {
-				command.execute()
+			val commands = (new ApplyCommandSwitch()).doSwitch(this)
+			if (commands != null) {
+				for (Command c : commands) {
+					if (c.canExecute()) {
+						c.execute()
+					} else {
+						return false
+					}
+				}
 				return true
 			}
 		}
@@ -72,9 +78,15 @@ abstract class EChange {
 	 */
 	op boolean revert() {
 		if (isResolved) {
-			val command = (new RevertCommandSwitch()).doSwitch(this)
-			if (command != null && command.canExecute()) {
-				command.execute()
+			val commands = (new RevertCommandSwitch()).doSwitch(this)
+			if (commands != null) {
+				for (Command c : commands) {
+					if (c.canExecute()) {
+						c.execute()
+					} else {
+						return false
+					}
+				}
 				return true
 			}
 		}

@@ -6,6 +6,8 @@ import com.google.common.base.Objects;
 
 import java.lang.reflect.InvocationTargetException;
 
+import java.util.List;
+
 import org.eclipse.emf.common.command.Command;
 
 import org.eclipse.emf.common.util.EList;
@@ -96,9 +98,18 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 		boolean _isResolved = this.isResolved();
 		if (_isResolved) {
 			ApplyCommandSwitch _applyCommandSwitch = new ApplyCommandSwitch();
-			final Command command = _applyCommandSwitch.doSwitch(this);
-			if (((!Objects.equal(command, null)) && command.canExecute())) {
-				command.execute();
+			final List<Command> commands = _applyCommandSwitch.doSwitch(this);
+			boolean _notEquals = (!Objects.equal(commands, null));
+			if (_notEquals) {
+				for (final Command c : commands) {
+					boolean _canExecute = c.canExecute();
+					if (_canExecute) {
+						c.execute();
+					}
+					else {
+						return false;
+					}
+				}
 				return true;
 			}
 		}
@@ -114,9 +125,18 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 		boolean _isResolved = this.isResolved();
 		if (_isResolved) {
 			RevertCommandSwitch _revertCommandSwitch = new RevertCommandSwitch();
-			final Command command = _revertCommandSwitch.doSwitch(this);
-			if (((!Objects.equal(command, null)) && command.canExecute())) {
-				command.execute();
+			final List<Command> commands = _revertCommandSwitch.doSwitch(this);
+			boolean _notEquals = (!Objects.equal(commands, null));
+			if (_notEquals) {
+				for (final Command c : commands) {
+					boolean _canExecute = c.canExecute();
+					if (_canExecute) {
+						c.execute();
+					}
+					else {
+						return false;
+					}
+				}
 				return true;
 			}
 		}

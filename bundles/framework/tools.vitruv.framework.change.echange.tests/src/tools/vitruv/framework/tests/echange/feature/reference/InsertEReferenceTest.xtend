@@ -5,6 +5,7 @@ import allElementTypes.AllElementTypesPackage
 import allElementTypes.NonRoot
 import allElementTypes.Root
 import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.junit.Assert
 import org.junit.Before
@@ -18,6 +19,7 @@ import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
  */
 public class InsertEReferenceTest extends ReferenceEChangeTest {
 	protected var EReference defaultAffectedFeature = null
+	protected var EList<EObject> resourceContent = null;
 	
 	protected static val Integer DEFAULT_INDEX = 0
 	
@@ -28,6 +30,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	override public void beforeTest() {
 		super.beforeTest()
 		defaultAffectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE
+		resourceContent = resource1.contents
 	}
 	
 	/**
@@ -35,6 +38,8 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveInsertEReferenceTest() {
+		resourceContent.add(defaultNewValue)
+		
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)
 			
@@ -50,11 +55,21 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	}
 	
 	/**
+	 * 
+	 */
+	@Test
+	def public void resolveInsertEReferenceTest2() {
+		Assert.assertTrue(false)
+	}
+	
+	/**
 	 * Tests whether resolving the {@link InsertEReference} EChange
 	 * returns the same class.
 	 */
 	@Test
 	def public void resolveToCorrectType() {
+		resourceContent.add(defaultNewValue)
+		
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)	
 			
@@ -96,6 +111,14 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	}
 	
 	/**
+	 * 
+	 */
+	@Test
+	def public void insertEReferenceApplyTest2() {
+		Assert.assertTrue(false)
+	}
+	
+	/**
 	 * Reverts two {@link InsertEReference} EChanges.
 	 */
 	@Test
@@ -125,6 +148,14 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertTrue(resolvedChange.revert)
 		
 		Assert.assertEquals(multivaluedReference.size, 0)
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	def public void insertEReferenceRevertTest2() {
+		Assert.assertTrue(false)
 	}
 	
 	/**
