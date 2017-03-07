@@ -58,13 +58,4 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
                 "None of '" + String.join("', '", this.attributeNames) + "' found for eObject '" + obj + "'");
     }
 
-    @Override
-    public boolean hasTUID(final EObject eObject) {
-        for (String attributeName : this.attributeNames) {
-            if (eObject.eClass().getEStructuralFeature(attributeName) != null) {
-            	return true;
-            }
-        }
-        return false;
-    }
 }

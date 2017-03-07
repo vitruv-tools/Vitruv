@@ -61,7 +61,7 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
             final String expectedTUID, final String... attributeNames) {
         TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new AttributeTUIDCalculatorAndResolver(tuidPrefix,
                 attributeNames);
-        boolean hasTUID = defaultTUIDCalculatorAndResolver.hasTUID(eObject);
+        boolean hasTUID = defaultTUIDCalculatorAndResolver.calculateTUIDFromEObject(eObject) != null;
         assertTrue("TUID Calculator is not able to calculate TUID for EObject " + eObject, hasTUID);
         String calculatedTuid = defaultTUIDCalculatorAndResolver.calculateTUIDFromEObject(eObject);
         // Calculated TUID contains more than just the UUID itself. It also contains the resource

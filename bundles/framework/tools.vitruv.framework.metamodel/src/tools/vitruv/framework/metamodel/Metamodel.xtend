@@ -66,7 +66,7 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	}
 
 	def boolean hasTUID(EObject eObject) {
-		return tuidCalculatorAndResolver.hasTUID(eObject);
+		return true;
 	}
 
 	def String calculateTUIDFromEObject(EObject eObject) {

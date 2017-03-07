@@ -6,8 +6,6 @@ import org.eclipse.emf.ecore.EObject;
 
 public interface TUIDCalculatorAndResolver {
 
-    boolean hasTUID(EObject eObject);
-
     String calculateTUIDFromEObject(EObject eObject);
 
     /**
