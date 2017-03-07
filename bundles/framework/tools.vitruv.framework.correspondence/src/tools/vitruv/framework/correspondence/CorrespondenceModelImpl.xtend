@@ -144,7 +144,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	override Correspondence claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
 		 val correspondences = getCorrespondences(aEObjects)
 		 for (Correspondence correspondence : correspondences) {
-		 	val correspondingBs = correspondence.bs
+		 	val correspondingBs = if (correspondence.^as.containsAll(aEObjects)) correspondence.bs else correspondence.^as
 		 	if (correspondingBs != null && correspondingBs.equals(bEObjects)) {
 		 		return correspondence;
 		 	}
