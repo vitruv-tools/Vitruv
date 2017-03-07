@@ -61,14 +61,8 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
     @Override
     public boolean hasTUID(final EObject eObject) {
         for (String attributeName : this.attributeNames) {
-            final String attributeValue = EcoreBridge.getStringValueOfAttribute(eObject, attributeName);
-            if (null != attributeValue) {
-                return true;
-            }else {
-            	EStructuralFeature idFeature = eObject.eClass().getEStructuralFeature(attributeName);
-            	if (idFeature != null) {
-            		return true;
-            	}
+            if (eObject.eClass().getEStructuralFeature(attributeName) != null) {
+            	return true;
             }
         }
         return false;
