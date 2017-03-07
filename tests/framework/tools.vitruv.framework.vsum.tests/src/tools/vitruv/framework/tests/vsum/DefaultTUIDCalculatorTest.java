@@ -19,7 +19,6 @@ import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
-import uml_mockup.UPackage;
 
 public class DefaultTUIDCalculatorTest extends VSUMTest {
     @Test
@@ -76,13 +75,6 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
                 tuidString);
         assertNotNull(resolvedEObject);
         return resolvedEObject;
-    }
-
-    private UPackage getUmlRootPackage(final InternalVirtualModel vsum) {
-        final VURI umlModelURI = VURI.getInstance(getDefaultUMLInstanceURI());
-        final ModelInstance umlModel = vsum.getModelInstance(umlModelURI);
-        UPackage umlRoot = (UPackage) umlModel.getFirstRootEObject();
-        return umlRoot;
     }
 
 }
