@@ -40,7 +40,7 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
     public void testTUIDCalculationAndResolutionForUnsettedElement() {
         // create UML class with empty Property
         Property umlProperty = createUmlModelWithProperty();
-        String expectedTUID = "name=unset";
+        String expectedTUID = "name";
         String umlPrefix = umlProperty.eClass().getEPackage().getNsPrefix();
         EObject resolvedEObject = testTUIDCalculator(umlPrefix, umlProperty.getClass_().getPackage(), umlProperty,
                 expectedTUID, "name");
