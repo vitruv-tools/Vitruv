@@ -49,7 +49,7 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
             }else {
             	EStructuralFeature idFeature = obj.eClass().getEStructuralFeature(attributeName);
             	if (idFeature != null && !obj.eIsSet(idFeature)) {
-            		return attributeName + "=" + "unset" + " , Type: " + obj.eClass().getName();
+            		return attributeName;
             	}
             }
         }
