@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -86,17 +85,15 @@ public class TestUserInteractor implements UserInteracting {
         this.simulateUserThinktime();
 
         int currentSelection;
-        String randomly = "";
         if (!this.concurrentIntLinkedQueue.isEmpty()) {
             currentSelection = this.concurrentIntLinkedQueue.poll();
             if (currentSelection >= maxLength) {
                 logger.warn("currentSelection>maxLength - could lead to array out of bounds exception later on.");
             }
         } else {
-            currentSelection = this.random.nextInt(maxLength);
-            randomly = " randomly";
+            throw new IllegalStateException("No user interaction integer selection specified");
         }
-        logger.info(TestUserInteractor.class.getSimpleName() + randomly + " selected " + currentSelection);
+        logger.info(TestUserInteractor.class.getSimpleName() + " selected " + currentSelection);
         return currentSelection;
     }
 
@@ -115,21 +112,13 @@ public class TestUserInteractor implements UserInteracting {
     public String getTextInput(final String msg) {
         this.simulateUserThinktime();
         String text = "";
-        String randomlyInfo = "";
         if (!this.concurrentStringLinkedQueue.isEmpty()) {
             text = this.concurrentStringLinkedQueue.poll();
         } else {
-            text = this.getRandomText();
-            randomlyInfo = "randomly";
+        	throw new IllegalStateException("No user interaction integer selection specified");
         }
-        logger.info(TestUserInteractor.class.getSimpleName() + randomlyInfo + " selecteded " + text);
+        logger.info(TestUserInteractor.class.getSimpleName() + " selecteded " + text);
         return text;
-    }
-
-    private String getRandomText() {
-        final int length = this.random.nextInt(16) + 1;
-        return RandomStringUtils.random(length, true, true);
-
     }
 
 	@Override
