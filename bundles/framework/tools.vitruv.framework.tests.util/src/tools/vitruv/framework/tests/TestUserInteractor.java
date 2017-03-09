@@ -96,7 +96,7 @@ public class TestUserInteractor implements UserInteracting {
             currentSelection = this.random.nextInt(maxLength);
             randomly = " randomly";
         }
-        logger.info(TestUserInteractor.class.getSimpleName() + randomly + " selecteded " + currentSelection);
+        logger.info(TestUserInteractor.class.getSimpleName() + randomly + " selected " + currentSelection);
         return currentSelection;
     }
 
