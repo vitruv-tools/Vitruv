@@ -78,9 +78,8 @@ public class CreateNonRootEObjectSingleRoutine extends AbstractRepairRoutineReal
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     NonRoot newNonRoot = AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
-    initializeCreateElementState(newNonRoot);
     userExecution.updateNewNonRootElement(sourceRoot, containedObject, targetElement, newNonRoot);
     
     // val updatedElement userExecution.getElement1(sourceRoot, containedObject, targetElement, newNonRoot);
@@ -90,6 +89,6 @@ public class CreateNonRootEObjectSingleRoutine extends AbstractRepairRoutineReal
     
     userExecution.callRoutine1(sourceRoot, containedObject, targetElement, newNonRoot, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

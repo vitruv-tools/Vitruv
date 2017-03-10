@@ -78,12 +78,12 @@ public class InsertNonContainmentReferenceRoutine extends AbstractRepairRoutineR
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     // val updatedElement userExecution.getElement1(rootElement, insertedNonRoot, targetElement);
     userExecution.update0Element(rootElement, insertedNonRoot, targetElement);
     
     userExecution.callRoutine1(rootElement, insertedNonRoot, targetElement, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

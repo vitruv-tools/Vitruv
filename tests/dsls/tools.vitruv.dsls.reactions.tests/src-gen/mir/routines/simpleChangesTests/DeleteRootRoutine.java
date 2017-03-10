@@ -49,9 +49,9 @@ public class DeleteRootRoutine extends AbstractRepairRoutineRealization {
     if (oldModel == null) {
     	return;
     }
-    initializeRetrieveElementState(oldModel);
+    registerObjectUnderModification(oldModel);
     deleteObject(userExecution.getElement1(rootElement, oldModel));
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

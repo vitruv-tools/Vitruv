@@ -56,13 +56,12 @@ public class CreateRootRoutine extends AbstractRepairRoutineRealization {
     getLogger().debug("   Root: " + this.rootElement);
     
     Root newRoot = AllElementTypesFactoryImpl.eINSTANCE.createRoot();
-    initializeCreateElementState(newRoot);
     userExecution.updateNewRootElement(rootElement, newRoot);
     
     addCorrespondenceBetween(userExecution.getElement1(rootElement, newRoot), userExecution.getElement2(rootElement, newRoot), "");
     
     userExecution.callRoutine1(rootElement, newRoot, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

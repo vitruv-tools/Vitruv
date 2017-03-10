@@ -56,10 +56,10 @@ public class ReplaceNonRootIdRoutine extends AbstractRepairRoutineRealization {
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     // val updatedElement userExecution.getElement1(nonRoot, value, targetElement);
     userExecution.update0Element(nonRoot, value, targetElement);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

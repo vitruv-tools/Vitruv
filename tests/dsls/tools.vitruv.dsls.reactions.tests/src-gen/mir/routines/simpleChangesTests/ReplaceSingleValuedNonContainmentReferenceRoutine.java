@@ -68,7 +68,7 @@ public class ReplaceSingleValuedNonContainmentReferenceRoutine extends AbstractR
     if (targetContainer == null) {
     	return;
     }
-    initializeRetrieveElementState(targetContainer);
+    registerObjectUnderModification(targetContainer);
     NonRoot targetElement = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceTargetElement(rootElement, newReferencedElement, targetContainer), // correspondence source supplier
     	NonRoot.class,
@@ -77,12 +77,12 @@ public class ReplaceSingleValuedNonContainmentReferenceRoutine extends AbstractR
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     // val updatedElement userExecution.getElement1(rootElement, newReferencedElement, targetContainer, targetElement);
     userExecution.update0Element(rootElement, newReferencedElement, targetContainer, targetElement);
     
     userExecution.callRoutine1(rootElement, newReferencedElement, targetContainer, targetElement, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

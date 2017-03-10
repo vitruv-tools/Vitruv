@@ -72,12 +72,12 @@ public class RemoveEAttributeRoutine extends AbstractRepairRoutineRealization {
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     // val updatedElement userExecution.getElement1(rootElement, removedAttributeValue, targetElement);
     userExecution.update0Element(rootElement, removedAttributeValue, targetElement);
     
     userExecution.callRoutine1(rootElement, removedAttributeValue, targetElement, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

@@ -75,7 +75,7 @@ public class ReplaceSingleValuedEAttributeRoutine extends AbstractRepairRoutineR
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     if (!userExecution.checkMatcherPrecondition2(rootElement, value, targetElement)) {
     	return;
     }
@@ -84,6 +84,6 @@ public class ReplaceSingleValuedEAttributeRoutine extends AbstractRepairRoutineR
     
     userExecution.callRoutine1(rootElement, value, targetElement, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

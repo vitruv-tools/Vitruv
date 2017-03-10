@@ -71,9 +71,8 @@ public class CreateNonRootObjectContainerRoutine extends AbstractRepairRoutineRe
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     NonRootObjectContainerHelper newNonRootContainer = AllElementTypesFactoryImpl.eINSTANCE.createNonRootObjectContainerHelper();
-    initializeCreateElementState(newNonRootContainer);
     userExecution.updateNewNonRootContainerElement(rootElement, nonRootObjectContainer, targetElement, newNonRootContainer);
     
     // val updatedElement userExecution.getElement1(rootElement, nonRootObjectContainer, targetElement, newNonRootContainer);
@@ -81,6 +80,6 @@ public class CreateNonRootObjectContainerRoutine extends AbstractRepairRoutineRe
     
     addCorrespondenceBetween(userExecution.getElement2(rootElement, nonRootObjectContainer, targetElement, newNonRootContainer), userExecution.getElement3(rootElement, nonRootObjectContainer, targetElement, newNonRootContainer), "");
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

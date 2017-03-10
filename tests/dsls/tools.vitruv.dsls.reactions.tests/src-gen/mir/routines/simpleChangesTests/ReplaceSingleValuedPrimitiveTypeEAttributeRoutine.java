@@ -63,12 +63,12 @@ public class ReplaceSingleValuedPrimitiveTypeEAttributeRoutine extends AbstractR
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     // val updatedElement userExecution.getElement1(rootElement, value, targetElement);
     userExecution.update0Element(rootElement, value, targetElement);
     
     userExecution.callRoutine1(rootElement, value, targetElement, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

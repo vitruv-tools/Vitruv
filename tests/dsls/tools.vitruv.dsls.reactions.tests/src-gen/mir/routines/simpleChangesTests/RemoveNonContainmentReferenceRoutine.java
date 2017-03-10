@@ -73,12 +73,12 @@ public class RemoveNonContainmentReferenceRoutine extends AbstractRepairRoutineR
     if (targetRoot == null) {
     	return;
     }
-    initializeRetrieveElementState(targetRoot);
+    registerObjectUnderModification(targetRoot);
     // val updatedElement userExecution.getElement1(rootElement, removedNonRoot, targetRoot);
     userExecution.update0Element(rootElement, removedNonRoot, targetRoot);
     
     userExecution.callRoutine1(rootElement, removedNonRoot, targetRoot, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

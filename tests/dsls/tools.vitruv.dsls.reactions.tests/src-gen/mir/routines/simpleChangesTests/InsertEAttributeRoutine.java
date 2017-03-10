@@ -65,12 +65,12 @@ public class InsertEAttributeRoutine extends AbstractRepairRoutineRealization {
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     // val updatedElement userExecution.getElement1(rootElement, attributeValue, targetElement);
     userExecution.update0Element(rootElement, attributeValue, targetElement);
     
     userExecution.callRoutine1(rootElement, attributeValue, targetElement, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }
