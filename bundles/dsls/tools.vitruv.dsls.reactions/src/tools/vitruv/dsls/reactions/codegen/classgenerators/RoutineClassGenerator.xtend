@@ -151,7 +151,7 @@ class RoutineClassGenerator extends ClassGenerator {
 						return;
 					}
 				«ENDIF»
-				initializeRetrieveElementState(«retrieveElement.name»);
+				registerObjectUnderModification(«retrieveElement.name»);
 			«ELSEIF retrieveElement.abscence»
 				if («retrieveStatement» != null) {
 					return;
@@ -160,7 +160,7 @@ class RoutineClassGenerator extends ClassGenerator {
 				if («retrieveStatement» == null) {
 					return;
 				} else {
-					initializeRetrieveElementState(«retrieveStatement»);
+					registerObjectUnderModification(«retrieveStatement»);
 				}
 			«ENDIF»
 		'''	
@@ -253,7 +253,7 @@ class RoutineClassGenerator extends ClassGenerator {
 					«effectStatementsMap.get(effectStatement)»
 					
 				«ENDFOR»
-				postprocessElementStates();
+				postprocessElements();
 				'''
 		];	
 	}
@@ -295,8 +295,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		val affectedElementClass = elementCreate.metaclass;
 		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
 		return '''
-			«affectedElementClass.javaClass» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
-			initializeCreateElementState(«elementCreate.name»);'''
+			«affectedElementClass.javaClass» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();'''
 	}
 	
 }
