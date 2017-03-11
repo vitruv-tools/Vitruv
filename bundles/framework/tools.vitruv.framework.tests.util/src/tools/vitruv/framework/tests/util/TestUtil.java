@@ -236,10 +236,13 @@ public final class TestUtil {
      * init logger for test purposes
      */
     public static void initializeLogger() {
-        if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
-            Logger.getRootLogger().addAppender(new ConsoleAppender());
-            Logger.getRootLogger().setLevel(Level.ALL);
-        }
+    	String outputLevelProperty = System.getProperty("outputLevel");
+    	if (outputLevelProperty != null) {
+    		if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
+                Logger.getRootLogger().addAppender(new ConsoleAppender());
+            }
+            Logger.getRootLogger().setLevel(Level.toLevel(outputLevelProperty));
+    	}
     }
 
     public static void waitForSynchronization(final int waitingTimeForSynchronization) {
