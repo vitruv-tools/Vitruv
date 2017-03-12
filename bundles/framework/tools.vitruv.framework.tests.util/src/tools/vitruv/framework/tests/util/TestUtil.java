@@ -236,12 +236,15 @@ public final class TestUtil {
      * init logger for test purposes
      */
     public static void initializeLogger() {
-    	String outputLevelProperty = System.getProperty("outputLevel");
+    	Logger.getRootLogger().setLevel(Level.OFF);
+    	String outputLevelProperty = System.getProperty("logOutputLevel");
     	if (outputLevelProperty != null) {
     		if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
                 Logger.getRootLogger().addAppender(new ConsoleAppender());
             }
             Logger.getRootLogger().setLevel(Level.toLevel(outputLevelProperty));
+    	} else {
+    		Logger.getRootLogger().setLevel(Level.OFF);
     	}
     }
 
