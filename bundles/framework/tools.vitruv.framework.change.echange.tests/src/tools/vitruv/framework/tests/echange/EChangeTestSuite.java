@@ -4,10 +4,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import tools.vitruv.framework.tests.echange.compound.CompoundAdditionTest;
+import tools.vitruv.framework.tests.echange.compound.CompoundSubtractionTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndInsertNonRootTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndInsertRootTest;
+import tools.vitruv.framework.tests.echange.compound.CreateAndReplaceAndDeleteNonRootTest;
+import tools.vitruv.framework.tests.echange.compound.ExplicitUnsetEFeatureTest;
 import tools.vitruv.framework.tests.echange.compound.RemoveAndDeleteNonRootTest;
 import tools.vitruv.framework.tests.echange.compound.RemoveAndDeleteRootTest;
+import tools.vitruv.framework.tests.echange.compound.ReplaceInEListTest;
 import tools.vitruv.framework.tests.echange.eobject.CreateEObjectTest;
 import tools.vitruv.framework.tests.echange.eobject.DeleteEObjectTest;
 import tools.vitruv.framework.tests.echange.eobject.EObjectExistenceEChangeTest;
@@ -35,10 +40,15 @@ import tools.vitruv.framework.tests.echange.root.RemoveRootEObjectTest;
 	EObjectExistenceEChangeTest.class,
 	CreateEObjectTest.class,
 	DeleteEObjectTest.class,
+	ExplicitUnsetEFeatureTest.class,
+	ReplaceInEListTest.class,
+	CompoundSubtractionTest.class,
+	CompoundAdditionTest.class,
 	CreateAndInsertRootTest.class,
 	RemoveAndDeleteRootTest.class,
 	CreateAndInsertNonRootTest.class,
-	RemoveAndDeleteNonRootTest.class})
+	RemoveAndDeleteNonRootTest.class,
+	CreateAndReplaceAndDeleteNonRootTest.class})
 
 public class EChangeTestSuite {
 

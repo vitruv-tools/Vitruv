@@ -107,22 +107,58 @@ public interface RootPackage extends EPackage {
 	int ROOT_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE___APPLY = EChangePackage.ATOMIC_ECHANGE___APPLY;
+	int ROOT_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE___REVERT = EChangePackage.ATOMIC_ECHANGE___REVERT;
+	int ROOT_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___APPLY_FORWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___APPLY_BACKWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -134,22 +170,22 @@ public interface RootPackage extends EPackage {
 	int ROOT_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
+	int ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 2;
+	int ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Resolve</em>' operation.
@@ -225,40 +261,76 @@ public interface RootPackage extends EPackage {
 	int INSERT_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT___APPLY = ROOT_ECHANGE___APPLY;
+	int INSERT_ROOT_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ROOT_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT___REVERT = ROOT_ECHANGE___REVERT;
+	int INSERT_ROOT_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET = ROOT_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT___RESOLVE_APPLY__RESOURCESET = ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+	int INSERT_ROOT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT___RESOLVE_REVERT__RESOURCESET = ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+	int INSERT_ROOT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___APPLY_FORWARD = ROOT_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___APPLY_BACKWARD = ROOT_ECHANGE___APPLY_BACKWARD;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___RESOLVE_BEFORE__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___RESOLVE_AFTER__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -352,40 +424,76 @@ public interface RootPackage extends EPackage {
 	int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT___APPLY = ROOT_ECHANGE___APPLY;
+	int REMOVE_ROOT_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ROOT_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT___REVERT = ROOT_ECHANGE___REVERT;
+	int REMOVE_ROOT_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET = ROOT_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT___RESOLVE_APPLY__RESOURCESET = ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+	int REMOVE_ROOT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT___RESOLVE_REVERT__RESOURCESET = ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+	int REMOVE_ROOT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___APPLY_FORWARD = ROOT_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___APPLY_BACKWARD = ROOT_ECHANGE___APPLY_BACKWARD;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___RESOLVE_BEFORE__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___RESOLVE_AFTER__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -518,24 +626,24 @@ public interface RootPackage extends EPackage {
 	EOperation getRootEChange__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Apply</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Apply</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.root.RootEChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve Before</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.root.RootEChange#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getRootEChange__ResolveApply__ResourceSet();
+	EOperation getRootEChange__ResolveBefore__ResourceSet();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.root.RootEChange#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve After</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.root.RootEChange#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getRootEChange__ResolveRevert__ResourceSet();
+	EOperation getRootEChange__ResolveAfter__ResourceSet();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
@@ -717,20 +825,20 @@ public interface RootPackage extends EPackage {
 		EOperation ROOT_ECHANGE___IS_RESOLVED = eINSTANCE.getRootEChange__IsResolved();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Apply</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve Before</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getRootEChange__ResolveApply__ResourceSet();
+		EOperation ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getRootEChange__ResolveBefore__ResourceSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve After</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getRootEChange__ResolveRevert__ResourceSet();
+		EOperation ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getRootEChange__ResolveAfter__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.

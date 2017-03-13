@@ -6,8 +6,6 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.AtomicEChange;
 
 import tools.vitruv.framework.change.echange.eobject.CreateEObject;
@@ -91,14 +89,5 @@ public interface CreateAndInsertEObject<T extends EObject, C extends EObjectAdde
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false" applyChangeUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='if (applyChange)\n{\n\t<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T> _createChange = this.getCreateChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply = _createChange.resolveApply(resourceSet);\n\tthis.setCreateChange(((<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T>) _resolveApply));\n\tC _insertChange = this.getInsertChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply_1 = _insertChange.resolveApply(resourceSet);\n\tthis.setInsertChange(((C) _resolveApply_1));\n}\nelse\n{\n\tC _insertChange_1 = this.getInsertChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveRevert = _insertChange_1.resolveRevert(resourceSet);\n\tthis.setInsertChange(((C) _resolveRevert));\n\t<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T> _createChange_1 = this.getCreateChange();\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveRevert_1 = _createChange_1.resolveRevert(resourceSet);\n\tthis.setCreateChange(((<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T>) _resolveRevert_1));\n}'"
-	 * @generated
-	 */
-	void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange);
 
 } // CreateAndInsertEObject

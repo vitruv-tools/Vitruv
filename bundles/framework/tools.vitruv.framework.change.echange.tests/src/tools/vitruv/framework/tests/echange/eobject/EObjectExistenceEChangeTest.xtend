@@ -25,15 +25,15 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 			
 		Assert.assertFalse(unresolvedChange.isResolved)
 		Assert.assertTrue(defaultCreatedObject != unresolvedChange.affectedEObject)
-		Assert.assertNull(EChangeUtil.objectInProgress)
+		Assert.assertTrue(stagingArea1.contents.empty) // Staging area is unaffected while resolving the change
 		
-		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as CreateEObject<Root>
+		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as CreateEObject<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
 		Assert.assertTrue(resolvedChange.stagingArea == stagingArea1)
 		Assert.assertTrue(defaultCreatedObject != resolvedChange.affectedEObject)
-		Assert.assertTrue(EChangeUtil.objectInProgress == resolvedChange.affectedEObject)
+		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
 	/**
@@ -51,15 +51,18 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 			
 		Assert.assertFalse(unresolvedChange.isResolved)
 		Assert.assertTrue(defaultCreatedObject != unresolvedChange.affectedEObject)
-		Assert.assertTrue(EChangeUtil.objectInProgress == defaultCreatedObject)
+		// Staging area is unaffected while resolving the change
+		Assert.assertFalse(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea1.contents.get(0) == defaultCreatedObject)
 				
-		val resolvedChange = unresolvedChange.resolveRevert(resourceSet1) as CreateEObject<Root>
+		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as CreateEObject<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
 		Assert.assertTrue(resolvedChange.stagingArea == stagingArea1)
 		Assert.assertTrue(defaultCreatedObject == resolvedChange.affectedEObject)
-		Assert.assertNull(EChangeUtil.objectInProgress)
+		Assert.assertFalse(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea1.contents.get(0) == defaultCreatedObject)
 	}
 	
 	/**
@@ -74,7 +77,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 			
 		Assert.assertFalse(unresolvedChange.isResolved)
 		
-		val resolvedChange = unresolvedChange.resolveRevert(resourceSet1) as CreateEObject<Root>
+		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as CreateEObject<Root>
 		
 		Assert.assertFalse(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange == resolvedChange)

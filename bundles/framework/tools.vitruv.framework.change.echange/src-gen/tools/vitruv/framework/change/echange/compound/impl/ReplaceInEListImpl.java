@@ -17,8 +17,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
@@ -45,7 +43,7 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
  *
  * @generated
  */
-public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChangeImpl implements ReplaceInEList<A, F, T, R, I> {
+public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature, T extends Object, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChangeImpl implements ReplaceInEList<A, F, T, R, I> {
 	/**
 	 * The cached value of the '{@link #getRemoveChange() <em>Remove Change</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -190,15 +188,6 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void resolveAtomicChanges(final ResourceSet resourceSet, final boolean applyChange) {
-		
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -289,9 +278,6 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 		switch (operationID) {
 			case CompoundPackage.REPLACE_IN_ELIST___GET_ATOMIC_CHANGES:
 				return getAtomicChanges();
-			case CompoundPackage.REPLACE_IN_ELIST___RESOLVE_ATOMIC_CHANGES__RESOURCESET_BOOLEAN:
-				resolveAtomicChanges((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
-				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

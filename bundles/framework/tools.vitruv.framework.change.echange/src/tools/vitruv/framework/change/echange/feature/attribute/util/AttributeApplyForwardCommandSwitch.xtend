@@ -11,7 +11,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.util.command.RemoveAtCommand
 
-public class AttributeApplyCommandSwitch extends AttributeSwitch<List<Command>> {
+public class AttributeApplyForwardCommandSwitch extends AttributeSwitch<List<Command>> {
 	override public List<Command> caseInsertEAttributeValue(InsertEAttributeValue object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
 		val commands = new ArrayList<Command>

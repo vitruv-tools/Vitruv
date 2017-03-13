@@ -49,7 +49,7 @@ public class CreateEObjectImpl<A extends EObject> extends EObjectExistenceEChang
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveApply(final ResourceSet resourceSet) {
+	public boolean resolveBefore(final ResourceSet resourceSet) {
 		return this.resolve(resourceSet, true);
 	}
 
@@ -58,7 +58,7 @@ public class CreateEObjectImpl<A extends EObject> extends EObjectExistenceEChang
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveRevert(final ResourceSet resourceSet) {
+	public boolean resolveAfter(final ResourceSet resourceSet) {
 		return this.resolve(resourceSet, false);
 	}
 
@@ -71,8 +71,8 @@ public class CreateEObjectImpl<A extends EObject> extends EObjectExistenceEChang
 	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
-				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return EobjectPackage.CREATE_EOBJECT___RESOLVE_APPLY__RESOURCESET;
-				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return EobjectPackage.CREATE_EOBJECT___RESOLVE_REVERT__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET: return EobjectPackage.CREATE_EOBJECT___RESOLVE_BEFORE__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET: return EobjectPackage.CREATE_EOBJECT___RESOLVE_AFTER__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -87,10 +87,10 @@ public class CreateEObjectImpl<A extends EObject> extends EObjectExistenceEChang
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case EobjectPackage.CREATE_EOBJECT___RESOLVE_APPLY__RESOURCESET:
-				return resolveApply((ResourceSet)arguments.get(0));
-			case EobjectPackage.CREATE_EOBJECT___RESOLVE_REVERT__RESOURCESET:
-				return resolveRevert((ResourceSet)arguments.get(0));
+			case EobjectPackage.CREATE_EOBJECT___RESOLVE_BEFORE__RESOURCESET:
+				return resolveBefore((ResourceSet)arguments.get(0));
+			case EobjectPackage.CREATE_EOBJECT___RESOLVE_AFTER__RESOURCESET:
+				return resolveAfter((ResourceSet)arguments.get(0));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

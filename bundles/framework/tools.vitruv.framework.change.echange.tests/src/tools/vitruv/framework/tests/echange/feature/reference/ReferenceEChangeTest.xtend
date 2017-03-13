@@ -3,6 +3,7 @@ package tools.vitruv.framework.tests.echange.feature.reference
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.NonRoot
 import allElementTypes.Root
+import org.eclipse.emf.ecore.EObject
 import org.junit.Before
 import tools.vitruv.framework.tests.echange.EChangeTest
 
@@ -28,5 +29,23 @@ public abstract class ReferenceEChangeTest extends EChangeTest {
 		defaultNewValue.id = DEFAULT_NEW_NON_ROOT_NAME
 		defaultNewValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot()
 		defaultNewValue2.id = DEFAULT_NEW_NON_ROOT_NAME_2
+	}
+	
+	/**
+	 * Prepares the resource and adds the new values.
+	 */
+	def protected void prepareResource() {
+		resource1.contents.add(defaultNewValue)
+		resource1.contents.add(defaultNewValue2)
+	}
+	
+	/**
+	 * Prepares the staging area for the tests and places
+	 * a new object in it. Clears the old value.
+	 * @param 	object The new object.
+	 */
+	def protected void prepareStagingArea(EObject object) {
+		stagingArea1.contents.clear
+		stagingArea1.contents.add(object)
 	}
 }

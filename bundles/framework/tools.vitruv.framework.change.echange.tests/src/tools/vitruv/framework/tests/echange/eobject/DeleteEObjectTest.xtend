@@ -22,11 +22,9 @@ class DeleteEObjectTest extends EObjectTest {
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject, true)
 			
-		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
+		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
 		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)
-		Assert.assertEquals(unresolvedChange.getClass, resolvedChange.getClass)
+		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
 	}
 	
 	/**
@@ -34,7 +32,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 * created EObject from the staging area.
 	 */
 	@Test
-	def public void deleteEObjectApplyTest() {
+	def public void deleteEObjectApplyForwardTest() {
 		// Fill staging area
 		prepareStagingArea(defaultCreatedObject)
 		
@@ -42,9 +40,9 @@ class DeleteEObjectTest extends EObjectTest {
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject, true).
-			resolveApply(resourceSet1)
+			copyAndResolveBefore(resourceSet1)
 			
-		Assert.assertTrue(resolvedChange.apply)
+		Assert.assertTrue(resolvedChange.applyForward)
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
 		// Now another change would remove a object and put it in the staging area
@@ -54,9 +52,9 @@ class DeleteEObjectTest extends EObjectTest {
 		
 		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject2, true).
-			resolveApply(resourceSet1)
+			copyAndResolveBefore(resourceSet1)
 			
-		Assert.assertTrue(resolvedChange2.apply)
+		Assert.assertTrue(resolvedChange2.applyForward)
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
@@ -65,15 +63,15 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Adds a deleted object to the staging area again.
 	 */
 	@Test
-	def public void deleteEObjectRevertTest() {
+	def public void deleteEObjectApplyBackwardTest() {
 		// Staging area is empty
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject, true).
-			resolveRevert(resourceSet1)
+			copyAndResolveAfter(resourceSet1)
 			
-		Assert.assertTrue(resolvedChange.revert)
+		Assert.assertTrue(resolvedChange.applyBackward)
 		Assert.assertFalse(stagingArea1.contents.empty)
 		// Staging area contains copy
 		Assert.assertFalse(stagingArea1.contents.contains(defaultCreatedObject))
@@ -88,9 +86,9 @@ class DeleteEObjectTest extends EObjectTest {
 		
 		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
 			<Root>createDeleteEObjectChange(defaultCreatedObject2, true).
-			resolveRevert(resourceSet1)	
+			copyAndResolveAfter(resourceSet1)	
 			
-		Assert.assertTrue(resolvedChange2.revert)
+		Assert.assertTrue(resolvedChange2.applyBackward)
 		Assert.assertFalse(stagingArea1.contents.empty)		
 		// Staging area contains copy			
 		Assert.assertFalse(stagingArea1.contents.contains(defaultCreatedObject2))

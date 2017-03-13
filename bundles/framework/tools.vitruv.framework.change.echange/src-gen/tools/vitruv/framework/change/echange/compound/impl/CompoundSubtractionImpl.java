@@ -14,13 +14,10 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
-import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
@@ -91,32 +88,6 @@ public class CompoundSubtractionImpl<T extends Object, S extends SubtractiveECha
 		EList<S> _subtractiveChanges = this.getSubtractiveChanges();
 		result.addAll(_subtractiveChanges);
 		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void resolveAtomicChanges(final ResourceSet resourceSet, final boolean applyChange) {
-		if (applyChange) {
-			for (int i = 0; (i < this.getSubtractiveChanges().size()); i++) {
-				EList<S> _subtractiveChanges = this.getSubtractiveChanges();
-				EList<S> _subtractiveChanges_1 = this.getSubtractiveChanges();
-				S _get = _subtractiveChanges_1.get(i);
-				EChange _resolveApply = _get.resolveApply(resourceSet);
-				_subtractiveChanges.set(i, ((S) _resolveApply));
-			}
-		}
-		else {
-			for (int i = (this.getSubtractiveChanges().size() - 1); (i >= 0); i--) {
-				EList<S> _subtractiveChanges = this.getSubtractiveChanges();
-				EList<S> _subtractiveChanges_1 = this.getSubtractiveChanges();
-				S _get = _subtractiveChanges_1.get(i);
-				EChange _resolveRevert = _get.resolveRevert(resourceSet);
-				_subtractiveChanges.set(i, ((S) _resolveRevert));
-			}
-		}
 	}
 
 	/**
@@ -203,9 +174,6 @@ public class CompoundSubtractionImpl<T extends Object, S extends SubtractiveECha
 		switch (operationID) {
 			case CompoundPackage.COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES:
 				return getAtomicChanges();
-			case CompoundPackage.COMPOUND_SUBTRACTION___RESOLVE_ATOMIC_CHANGES__RESOURCESET_BOOLEAN:
-				resolveAtomicChanges((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
-				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

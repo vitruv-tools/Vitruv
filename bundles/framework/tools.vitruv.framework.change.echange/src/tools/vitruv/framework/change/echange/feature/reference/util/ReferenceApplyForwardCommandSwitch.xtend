@@ -13,7 +13,7 @@ import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.util.StagingArea
 import tools.vitruv.framework.util.command.RemoveAtCommand
 
-public class ReferenceApplyCommandSwitch extends ReferenceSwitch<List<Command>> {
+public class ReferenceApplyForwardCommandSwitch extends ReferenceSwitch<List<Command>> {
 	override public List<Command> caseInsertEReference(InsertEReference object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
 		val commands = new ArrayList<Command>
@@ -46,11 +46,11 @@ public class ReferenceApplyCommandSwitch extends ReferenceSwitch<List<Command>> 
 		val commands = new ArrayList<Command>
 
 		if (object.containment) {
-			commands.add(new RemoveCommand(editingDomain, stagingArea.contents, object.oldValue))
+			commands.add(new RemoveCommand(editingDomain, stagingArea.contents, object.newValue))
 		}
 		commands.add(SetCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.newValue))
 		if (object.containment) {
-			commands.add(new AddCommand(editingDomain, stagingArea.contents, object.newValue))
+			commands.add(new AddCommand(editingDomain, stagingArea.contents, object.oldValue))
 		}
 		
 		return commands

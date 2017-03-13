@@ -40,7 +40,6 @@ public abstract class RootEChangeTest extends EChangeTest {
 	protected def void prepareStagingArea(EObject object) {
 		stagingArea1.contents.clear
 		stagingArea1.contents.add(object)
-		EChangeUtil.objectInProgress = object
 	}
 	
 	/**
@@ -51,6 +50,5 @@ public abstract class RootEChangeTest extends EChangeTest {
 	 */
 	protected def void prepareResource(EObject object, int index) {
 		resourceContent.add(index, object)
-		EChangeUtil.objectInProgress = null
 	}
 }

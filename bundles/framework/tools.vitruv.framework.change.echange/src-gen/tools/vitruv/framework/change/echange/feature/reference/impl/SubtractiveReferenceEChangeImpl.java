@@ -2,13 +2,20 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
@@ -17,6 +24,9 @@ import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange;
+
+import tools.vitruv.framework.change.echange.util.EChangeUtil;
+import tools.vitruv.framework.change.echange.util.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -98,6 +108,24 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 		oldValue = newOldValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE, oldOldValue, oldValue));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject resolveOldValue(final ResourceSet resourceSet, final boolean resolveBefore) {
+		if (((!resolveBefore) && this.isContainment())) {
+			final Resource stagingArea = StagingArea.getStagingArea(resourceSet);
+			EList<EObject> _contents = stagingArea.getContents();
+			return _contents.get(0);
+		}
+		else {
+			T _oldValue = this.getOldValue();
+			EObject _resolveProxy = EChangeUtil.resolveProxy(_oldValue, resourceSet);
+			return ((T) _resolveProxy);
+		}
 	}
 
 	/**
@@ -200,6 +228,20 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE___RESOLVE_OLD_VALUE__RESOURCESET_BOOLEAN:
+				return resolveOldValue((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //SubtractiveReferenceEChangeImpl

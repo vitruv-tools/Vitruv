@@ -7,8 +7,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
@@ -32,10 +30,10 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getReplaceInEList()
- * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" FBounds="tools.vitruv.framework.change.echange.compound.EFeat" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
+ * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" FBounds="tools.vitruv.framework.change.echange.compound.EFeat" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
+public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends Object, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
 	/**
 	 * Returns the value of the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -96,14 +94,5 @@ public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature,
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false" applyChangeUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body=''"
-	 * @generated
-	 */
-	void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange);
 
 } // ReplaceInEList

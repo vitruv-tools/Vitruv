@@ -250,7 +250,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getCreateEObject__ResolveApply__ResourceSet() {
+	public EOperation getCreateEObject__ResolveBefore__ResourceSet() {
 		return createEObjectEClass.getEOperations().get(0);
 	}
 
@@ -259,7 +259,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getCreateEObject__ResolveRevert__ResourceSet() {
+	public EOperation getCreateEObject__ResolveAfter__ResourceSet() {
 		return createEObjectEClass.getEOperations().get(1);
 	}
 
@@ -277,7 +277,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getDeleteEObject__ResolveApply__ResourceSet() {
+	public EOperation getDeleteEObject__ResolveBefore__ResourceSet() {
 		return deleteEObjectEClass.getEOperations().get(0);
 	}
 
@@ -286,7 +286,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getDeleteEObject__ResolveRevert__ResourceSet() {
+	public EOperation getDeleteEObject__ResolveAfter__ResourceSet() {
 		return deleteEObjectEClass.getEOperations().get(1);
 	}
 
@@ -358,12 +358,12 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		createEOperation(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN);
 
 		createEObjectEClass = createEClass(CREATE_EOBJECT);
-		createEOperation(createEObjectEClass, CREATE_EOBJECT___RESOLVE_APPLY__RESOURCESET);
-		createEOperation(createEObjectEClass, CREATE_EOBJECT___RESOLVE_REVERT__RESOURCESET);
+		createEOperation(createEObjectEClass, CREATE_EOBJECT___RESOLVE_BEFORE__RESOURCESET);
+		createEOperation(createEObjectEClass, CREATE_EOBJECT___RESOLVE_AFTER__RESOURCESET);
 
 		deleteEObjectEClass = createEClass(DELETE_EOBJECT);
-		createEOperation(deleteEObjectEClass, DELETE_EOBJECT___RESOLVE_APPLY__RESOURCESET);
-		createEOperation(deleteEObjectEClass, DELETE_EOBJECT___RESOLVE_REVERT__RESOURCESET);
+		createEOperation(deleteEObjectEClass, DELETE_EOBJECT___RESOLVE_BEFORE__RESOURCESET);
+		createEOperation(deleteEObjectEClass, DELETE_EOBJECT___RESOLVE_AFTER__RESOURCESET);
 
 		// Create data types
 		eObjEDataType = createEDataType(EOBJ);
@@ -452,24 +452,24 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 
 		initEOperation(getEObjectExistenceEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getEObjectExistenceEChange__Resolve__ResourceSet_boolean(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getEObjectExistenceEChange__Resolve__ResourceSet_boolean(), theEcorePackage.getEBoolean(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEBoolean(), "newObject", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		op = initEOperation(getCreateEObject__ResolveApply__ResourceSet(), theEChangePackage.getEChange(), "resolveApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getCreateEObject__ResolveBefore__ResourceSet(), theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getCreateEObject__ResolveRevert__ResourceSet(), theEChangePackage.getEChange(), "resolveRevert", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getCreateEObject__ResolveAfter__ResourceSet(), theEcorePackage.getEBoolean(), "resolveAfter", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(deleteEObjectEClass, DeleteEObject.class, "DeleteEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		op = initEOperation(getDeleteEObject__ResolveApply__ResourceSet(), theEChangePackage.getEChange(), "resolveApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getDeleteEObject__ResolveBefore__ResourceSet(), theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getDeleteEObject__ResolveRevert__ResourceSet(), theEChangePackage.getEChange(), "resolveRevert", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getDeleteEObject__ResolveAfter__ResourceSet(), theEcorePackage.getEBoolean(), "resolveAfter", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		// Initialize data types

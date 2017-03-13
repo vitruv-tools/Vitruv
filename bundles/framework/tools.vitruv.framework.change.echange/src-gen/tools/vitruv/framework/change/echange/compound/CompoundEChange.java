@@ -41,45 +41,45 @@ public interface CompoundEChange extends EChange {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, true);'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, true, true);'"
 	 * @generated
 	 */
-	EChange resolveApply(ResourceSet resourceSet);
+	boolean resolveBefore(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, false);'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, false, true);'"
 	 * @generated
 	 */
-	EChange resolveRevert(ResourceSet resourceSet);
+	boolean resolveAfter(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false" applyChangeUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply = super.resolveApply(resourceSet);\n\tfinal <%tools.vitruv.framework.change.echange.compound.CompoundEChange%> resolvedChange = ((<%tools.vitruv.framework.change.echange.compound.CompoundEChange%>) _resolveApply);\n\tboolean _equals = <%com.google.common.base.Objects%>.equal(resolvedChange, null);\n\tif (_equals)\n\t{\n\t\treturn null;\n\t}\n\tresolvedChange.resolveAtomicChanges(resourceSet, applyChange);\n\t<%org.eclipse.emf.common.util.EList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> _atomicChanges = resolvedChange.getAtomicChanges();\n\tfor (final <%tools.vitruv.framework.change.echange.AtomicEChange%> change : _atomicChanges)\n\t{\n\t\tboolean _isResolved_1 = change.isResolved();\n\t\tboolean _not_1 = (!_isResolved_1);\n\t\tif (_not_1)\n\t\t{\n\t\t\treturn this;\n\t\t}\n\t}\n\treturn resolvedChange;\n}\nreturn this;'"
+	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, true, false);'"
 	 * @generated
 	 */
-	EChange resolve(ResourceSet resourceSet, boolean applyChange);
+	boolean resolveBeforeAndApply(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * *
-	 * Resolves all atomic changes in the compound change
-	 * in the correct order.
-	 * @param resourceSet The resource set which the proxy elements will be resolved to.
-	 * @param applyChange Indicates whether the change will be applied or reverted
-	 * 		after resolving. The changes needs to be resolved from the first to the last change.
-	 * 		If {@code applyChange} is {@code false} the changes needs to be resolved
-	 * 		from the last change to the first change.
-	 * <!-- end-model-doc -->
-	 * @model resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false" applyChangeUnique="false"
+	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, false, false);'"
 	 * @generated
 	 */
-	void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange);
+	boolean resolveAfterAndApply(ResourceSet resourceSet);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false" resolveBeforeUnique="false" revertAfterResolvingUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tboolean _resolveBefore = super.resolveBefore(resourceSet);\n\tboolean _not_1 = (!_resolveBefore);\n\tif (_not_1)\n\t{\n\t\treturn false;\n\t}\n\tfinal <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.EChange%>> changesMade = new <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.EChange%>>();\n\tif (resolveBefore)\n\t{\n\t\t<%org.eclipse.emf.common.util.EList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> _atomicChanges = this.getAtomicChanges();\n\t\tfor (final <%tools.vitruv.framework.change.echange.EChange%> change : _atomicChanges)\n\t\t{\n\t\t\tboolean _resolveBeforeAndApplyForward = change.resolveBeforeAndApplyForward(resourceSet);\n\t\t\tboolean _not_2 = (!_resolveBeforeAndApplyForward);\n\t\t\tif (_not_2)\n\t\t\t{\n\t\t\t\t<%org.eclipse.emf.common.util.EList%><<%tools.vitruv.framework.change.echange.EChange%>> _reverse = <%org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions%>.<<%tools.vitruv.framework.change.echange.EChange%>>reverse(changesMade);\n\t\t\t\tfor (final <%tools.vitruv.framework.change.echange.EChange%> changed : _reverse)\n\t\t\t\t{\n\t\t\t\t\tchanged.applyBackward();\n\t\t\t\t}\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tchangesMade.add(change);\n\t\t\t}\n\t\t}\n\t}\n\telse\n\t{\n\t\t<%org.eclipse.emf.common.util.EList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> _atomicChanges_1 = this.getAtomicChanges();\n\t\t<%org.eclipse.emf.common.util.EList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> _reverse_1 = <%org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions%>.<<%tools.vitruv.framework.change.echange.AtomicEChange%>>reverse(_atomicChanges_1);\n\t\tfor (final <%tools.vitruv.framework.change.echange.EChange%> change_1 : _reverse_1)\n\t\t{\n\t\t\tboolean _resolveAfterAndApplyBackward = change_1.resolveAfterAndApplyBackward(resourceSet);\n\t\t\tboolean _not_3 = (!_resolveAfterAndApplyBackward);\n\t\t\tif (_not_3)\n\t\t\t{\n\t\t\t\t<%org.eclipse.emf.common.util.EList%><<%tools.vitruv.framework.change.echange.EChange%>> _reverse_2 = <%org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions%>.<<%tools.vitruv.framework.change.echange.EChange%>>reverse(changesMade);\n\t\t\t\tfor (final <%tools.vitruv.framework.change.echange.EChange%> changed_1 : _reverse_2)\n\t\t\t\t{\n\t\t\t\t\tchanged_1.applyForward();\n\t\t\t\t}\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tchangesMade.add(change_1);\n\t\t\t}\n\t\t}\n\t}\n\tif (revertAfterResolving)\n\t{\n\t\tif (resolveBefore)\n\t\t{\n\t\t\tthis.applyBackward();\n\t\t}\n\t\telse\n\t\t{\n\t\t\tthis.applyForward();\n\t\t}\n\t}\n}\nreturn true;'"
+	 * @generated
+	 */
+	boolean resolve(ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving);
 
 } // CompoundEChange

@@ -21,7 +21,7 @@ class EChangeUtil {
 	 * @return The resolved EObject. If resolving the proxy fails, the proxy object itself.
 	 */
 	public static def resolveProxy(EObject proxy, ResourceSet resourceSet) {
-		if (proxy != null) {
+		if (proxy != null && resourceSet != null) {
 			return EcoreUtil.resolve(proxy, resourceSet)
 		}
 		return proxy
@@ -40,6 +40,4 @@ class EChangeUtil {
 		}
 		return ed
 	}
-	
-	public static EObject objectInProgress = null
 }

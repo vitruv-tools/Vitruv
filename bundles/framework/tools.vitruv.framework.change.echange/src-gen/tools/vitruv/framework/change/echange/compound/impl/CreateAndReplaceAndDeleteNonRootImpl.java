@@ -16,10 +16,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.AtomicEChange;
-import tools.vitruv.framework.change.echange.EChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot;
@@ -244,36 +241,6 @@ public class CreateAndReplaceAndDeleteNonRootImpl<A extends EObject, T extends E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void resolveAtomicChanges(final ResourceSet resourceSet, final boolean applyChange) {
-		if (applyChange) {
-			CreateEObject<T> _createChange = this.getCreateChange();
-			EChange _resolveApply = _createChange.resolveApply(resourceSet);
-			this.setCreateChange(((CreateEObject<T>) _resolveApply));
-			ReplaceSingleValuedEReference<A, T> _replaceChange = this.getReplaceChange();
-			EChange _resolveApply_1 = _replaceChange.resolveApply(resourceSet);
-			this.setReplaceChange(((ReplaceSingleValuedEReference<A, T>) _resolveApply_1));
-			DeleteEObject<T> _deleteChange = this.getDeleteChange();
-			EChange _resolveApply_2 = _deleteChange.resolveApply(resourceSet);
-			this.setDeleteChange(((DeleteEObject<T>) _resolveApply_2));
-		}
-		else {
-			DeleteEObject<T> _deleteChange_1 = this.getDeleteChange();
-			EChange _resolveRevert = _deleteChange_1.resolveRevert(resourceSet);
-			this.setDeleteChange(((DeleteEObject<T>) _resolveRevert));
-			ReplaceSingleValuedEReference<A, T> _replaceChange_1 = this.getReplaceChange();
-			EChange _resolveRevert_1 = _replaceChange_1.resolveRevert(resourceSet);
-			this.setReplaceChange(((ReplaceSingleValuedEReference<A, T>) _resolveRevert_1));
-			CreateEObject<T> _createChange_1 = this.getCreateChange();
-			EChange _resolveRevert_2 = _createChange_1.resolveRevert(resourceSet);
-			this.setCreateChange(((CreateEObject<T>) _resolveRevert_2));
-		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -376,9 +343,6 @@ public class CreateAndReplaceAndDeleteNonRootImpl<A extends EObject, T extends E
 		switch (operationID) {
 			case CompoundPackage.CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES:
 				return getAtomicChanges();
-			case CompoundPackage.CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_ATOMIC_CHANGES__RESOURCESET_BOOLEAN:
-				resolveAtomicChanges((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
-				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

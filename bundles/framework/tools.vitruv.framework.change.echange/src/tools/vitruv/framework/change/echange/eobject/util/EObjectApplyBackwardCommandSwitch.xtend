@@ -9,7 +9,7 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.util.EChangeUtil
 
-class EObjectRevertCommandSwitch extends EobjectSwitch<List<Command>> {
+class EObjectApplyBackwardCommandSwitch extends EobjectSwitch<List<Command>> {
 	override public List<Command> caseCreateEObject(CreateEObject object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
 		val commands = new ArrayList<Command>

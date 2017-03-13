@@ -43,12 +43,12 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	
 	/**
 	 * Resolves the {@link RemoveAndDeleteRoot} EChange. The model is in state
-	 * before the change is applied, so the staging area and object in progress 
-	 * are empty, and the root object is in the resource.
+	 * before the change is applied, so the staging area is empty and the root 
+	 * object is in the resource.
 	 */
 	@Test
 	def public void resolveRemoveAndDeleteRootTest() {
-		Assert.assertNull(EChangeUtil.objectInProgress)
+		val size = resourceContent.size
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
 		val unresolvedChange = TypeInferringCompoundEChangeFactory.
@@ -60,7 +60,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertTrue(unresolvedChange.deleteChange.affectedEObject != 
 			unresolvedChange.removeChange.oldValue)			
 		
-		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as RemoveAndDeleteRoot<Root>
+		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as RemoveAndDeleteRoot<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
@@ -68,8 +68,9 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 			== resolvedChange.removeChange.oldValue)
 		Assert.assertTrue(resolvedChange.deleteChange.affectedEObject 
 			== newRootObject)
-		
-		Assert.assertNull(EChangeUtil.objectInProgress)
+			
+		// Resolving applies all changes and reverts them, so the model should be unaffected.		
+		Assert.assertEquals(resourceContent.size, size)
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
@@ -80,14 +81,11 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 */
 	@Test
 	def public void resolveRemoveAndDeleteRootTest2() {
-		Assert.assertNull(EChangeUtil.objectInProgress)
+		val size = resourceContent.size
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
 		val unresolvedChange = TypeInferringCompoundEChangeFactory.
-			<Root>createRemoveAndDeleteRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)
-			
-		resourceContent.remove(newRootObject)
-		resourceContent.remove(newRootObject2)	
+			<Root>createRemoveAndDeleteRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)	
 		
 		Assert.assertFalse(unresolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange.deleteChange.affectedEObject != newRootObject)
@@ -95,7 +93,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertTrue(unresolvedChange.deleteChange.affectedEObject != 
 			unresolvedChange.removeChange.oldValue)
 			
-		val resolvedChange = unresolvedChange.resolveRevert(resourceSet1) as RemoveAndDeleteRoot<Root>
+		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as RemoveAndDeleteRoot<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		// New object is copy
@@ -105,8 +103,23 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertEquals(DEFAULT_CREATED_OBJECT_1_INTEGER_VALUE,
 			resolvedChange.deleteChange.affectedEObject.singleValuedEAttribute)
 			
-		Assert.assertNull(EChangeUtil.objectInProgress)
+		// Resolving applies all changes and reverts them, so the model should be unaffected.			
+		Assert.assertEquals(resourceContent.size, size)
 		Assert.assertTrue(stagingArea1.contents.empty)		
+	}
+	
+	/**
+	 * Tests whether resolving the {@link RemoveAndDeleteRoot} EChange
+	 * returns the same class.
+	 */
+	@Test
+	def public void resolveToCorrectType() {
+		val unresolvedChange = TypeInferringCompoundEChangeFactory.
+			<Root>createRemoveAndDeleteRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)	
+				
+		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as RemoveAndDeleteRoot<Root>
+	
+		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
 	}
 	
 	/**
@@ -115,34 +128,31 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 */
 	@Test
 	def public void removeAndDeleteRootApplyTest() {
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)	
 		val oldSize = resourceContent.size	
 		
 		// Create change 1
 		val resolvedChange = TypeInferringCompoundEChangeFactory.
 			<Root>createRemoveAndDeleteRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			resolveApply(resourceSet1)
+			copyAndResolveBefore(resourceSet1)
 			
 		// Apply 1
-		Assert.assertTrue(resolvedChange.apply)
+		Assert.assertTrue(resolvedChange.applyForward)
 		
 		Assert.assertEquals(resourceContent.size, oldSize - 1)
 		Assert.assertFalse(resourceContent.contains(newRootObject))
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
 		// Create change 2
 		val resolvedChange2 = TypeInferringCompoundEChangeFactory.
 			<Root>createRemoveAndDeleteRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			resolveApply(resourceSet1)
+			copyAndResolveBefore(resourceSet1)
 			
 		// Apply 2
-		Assert.assertTrue(resolvedChange2.apply)
+		Assert.assertTrue(resolvedChange2.applyForward)
 		
 		Assert.assertEquals(resourceContent.size, oldSize - 2)
 		Assert.assertFalse(resourceContent.contains(newRootObject2))
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
@@ -152,7 +162,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 */
 	@Test
 	def public void removeAndDeleteRootRevertTest() {
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)
 		val oldSize = resourceContent.size	
 		val index1 = resourceContent.indexOf(newRootObject)
@@ -161,39 +170,36 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		// Create change 1
 		val resolvedChange = TypeInferringCompoundEChangeFactory.
 			<Root>createRemoveAndDeleteRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			resolveApply(resourceSet1)
+			copyAndResolveBefore(resourceSet1)
 			
 		// Apply 1
-		Assert.assertTrue(resolvedChange.apply)	
+		Assert.assertTrue(resolvedChange.applyForward)	
 		
 		// Create change 2
 		val resolvedChange2 = TypeInferringCompoundEChangeFactory.
 			<Root>createRemoveAndDeleteRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			resolveApply(resourceSet1)
+			copyAndResolveBefore(resourceSet1)
 			
 		// Apply 2
-		Assert.assertTrue(resolvedChange2.apply)	
+		Assert.assertTrue(resolvedChange2.applyForward)	
 		
 		Assert.assertEquals(resourceContent.size, oldSize - 2)
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)	
 		
 		// Revert 2
-		Assert.assertTrue(resolvedChange2.revert)
+		Assert.assertTrue(resolvedChange2.applyBackward)
 
 		Assert.assertEquals(resourceContent.size, oldSize - 1)
 		Assert.assertTrue(resourceContent.contains(newRootObject2))
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)	
 			
 		// Revert 1
-		Assert.assertTrue(resolvedChange.revert)
+		Assert.assertTrue(resolvedChange.applyBackward)
 		
 		Assert.assertEquals(resourceContent.size, oldSize)
 		Assert.assertTrue(resourceContent.contains(newRootObject))
 		Assert.assertEquals(resourceContent.indexOf(newRootObject), index1)
 		Assert.assertEquals(resourceContent.indexOf(newRootObject2), index2)
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)	
 	}
 }

@@ -29,7 +29,6 @@ import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
 
-import tools.vitruv.framework.change.echange.util.EChangeUtil;
 import tools.vitruv.framework.change.echange.util.StagingArea;
 
 /**
@@ -170,38 +169,35 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet, final boolean newObject) {
-		if (((!Objects.equal(this.getAffectedEObject(), null)) && (!this.isResolved()))) {
-			EChange _resolveApply = super.resolveApply(resourceSet);
-			final EObjectExistenceEChange<A> resolvedChange = ((EObjectExistenceEChange<A>) _resolveApply);
-			boolean _equals = Objects.equal(resolvedChange, null);
+	public boolean resolve(final ResourceSet resourceSet, final boolean newObject) {
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			A _affectedEObject = this.getAffectedEObject();
+			boolean _equals = Objects.equal(_affectedEObject, null);
 			if (_equals) {
-				return null;
+				return false;
 			}
+			final Resource resolvedStagingArea = StagingArea.getStagingArea(resourceSet);
+			A resolvedAffectedEObject = null;
 			if (newObject) {
-				A _affectedEObject = this.getAffectedEObject();
-				A _copy = EcoreUtil.<A>copy(_affectedEObject);
-				resolvedChange.setAffectedEObject(_copy);
-				A _affectedEObject_1 = resolvedChange.getAffectedEObject();
-				((InternalEObject) _affectedEObject_1).eSetProxyURI(null);
+				A _affectedEObject_1 = this.getAffectedEObject();
+				A _copy = EcoreUtil.<A>copy(_affectedEObject_1);
+				resolvedAffectedEObject = _copy;
+				((InternalEObject) resolvedAffectedEObject).eSetProxyURI(null);
 			}
 			else {
-				resolvedChange.setAffectedEObject(((A) EChangeUtil.objectInProgress));
+				EList<EObject> _contents = resolvedStagingArea.getContents();
+				EObject _get = _contents.get(0);
+				resolvedAffectedEObject = ((A) _get);
 			}
-			Resource _stagingArea = StagingArea.getStagingArea(resourceSet);
-			resolvedChange.setStagingArea(_stagingArea);
-			if ((((!Objects.equal(resolvedChange.getAffectedEObject(), null)) && (!resolvedChange.getAffectedEObject().eIsProxy())) && (!Objects.equal(resolvedChange.getStagingArea(), null)))) {
-				if (newObject) {
-					A _affectedEObject_2 = resolvedChange.getAffectedEObject();
-					EChangeUtil.objectInProgress = _affectedEObject_2;
-				}
-				else {
-					EChangeUtil.objectInProgress = null;
-				}
-				return resolvedChange;
+			if (((Objects.equal(resolvedAffectedEObject, null) || resolvedAffectedEObject.eIsProxy()) || (Objects.equal(resolvedStagingArea, null) && (!super.resolveBefore(resourceSet))))) {
+				return false;
 			}
+			this.setAffectedEObject(resolvedAffectedEObject);
+			this.setStagingArea(resolvedStagingArea);
 		}
-		return this;
+		return true;
 	}
 
 	/**

@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.util.EChangeUtil
-import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.util.StagingArea
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
@@ -26,9 +26,31 @@ abstract class UpdateReferenceEChange<A extends EObject> extends FeatureEChange<
 }
 
 abstract class AdditiveReferenceEChange<A extends EObj, T extends EObj> extends UpdateReferenceEChange<A>, EObjectAddedEChange<T> {
+	op EObject resolveNewValue(ResourceSet resourceSet, boolean resolveBefore) {
+		if (resolveBefore && containment) {
+			// Apply change => object is root or in staging area
+			// Containment => object is in staging area
+			val stagingArea = StagingArea.getStagingArea(resourceSet)
+			return stagingArea.contents.get(0)
+		} else {
+			// Revert change => object is in containment reference or root
+			return EChangeUtil.resolveProxy(newValue, resourceSet)
+		}
+	}
 }
 
 abstract class SubtractiveReferenceEChange<A extends EObj, T extends EObj> extends UpdateReferenceEChange<A>, EObjectSubtractedEChange<T> {
+	op EObject resolveOldValue(ResourceSet resourceSet, boolean resolveBefore) {
+		if (!resolveBefore && containment) {
+			// Revert change => object is root or in staging area
+			// Containment => object is in staging area
+			val stagingArea = StagingArea.getStagingArea(resourceSet)
+			return stagingArea.contents.get(0)					
+		} else {
+			// Apply change => object is in containment reference or root
+			return EChangeUtil.resolveProxy(oldValue, resourceSet) as T					
+		}
+	}
 }
 
 class InsertEReference<A extends EObj, T extends EObj> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {
@@ -36,39 +58,24 @@ class InsertEReference<A extends EObj, T extends EObj> extends InsertInListEChan
 		return super.isResolved() && 
 			(newValue == null || !newValue.eIsProxy())
 	}
-	op EChange resolveApply(ResourceSet resourceSet) {
-		resolve(resourceSet, true)
+	op boolean resolveBefore(ResourceSet resourceSet) {
+		return resolve(resourceSet, true)
 	}
-	op EChange resolveRevert(ResourceSet resourceSet) {
-		resolve(resourceSet, false)
+	op boolean resolveAfter(ResourceSet resourceSet) {
+		return resolve(resourceSet, false)
 	}
-	op EChange resolve(ResourceSet resourceSet, boolean applyChange) {
-		if (!isResolved) {
-			val resolvedChange = super.resolveApply(resourceSet) as InsertEReference<A, T>
-			if (resolvedChange == null) {
-				// Resolving of super class attributes failed
-				return null
-			}
-				
-			if (applyChange && containment) {
-				// Apply change => object is root or is in staging area
-				// Containment => object is in staging area
-				resolvedChange.newValue = EChangeUtil.objectInProgress as T
-			} else {
-				// New value is already in resource. 
-				resolvedChange.newValue = EChangeUtil.resolveProxy(newValue, resourceSet) as T		
-			}
+	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore) {
+		if (!isResolved) {	
+			val resolvedNewValue = resolveNewValue(resourceSet, resolveBefore)
 			
-			if (resolvedChange.newValue == null || !resolvedChange.newValue.eIsProxy) {
-				if (applyChange && containment) {
-					EChangeUtil.objectInProgress = null
-				} else {
-					EChangeUtil.objectInProgress = resolvedChange.newValue
-				}
-				return resolvedChange
+			if (resolvedNewValue == null || resolvedNewValue.eIsProxy
+				|| !super.resolveBefore(resourceSet)) {
+				return false
 			} 
+			
+			newValue = resolvedNewValue as T
 		} 
-		return this
+		return true
 	}
 }
 
@@ -77,39 +84,24 @@ class RemoveEReference<A extends EObj, T extends EObj> extends RemoveFromListECh
 		return super.isResolved() && 
 			(oldValue == null || !oldValue.eIsProxy())
 	}
-	op EChange resolveApply(ResourceSet resourceSet) {
-		resolve(resourceSet, true)
+	op boolean resolveBefore(ResourceSet resourceSet) {
+		return resolve(resourceSet, true)
 	}
-	op EChange resolveRevert(ResourceSet resourceSet) {
-		resolve(resourceSet, false)
+	op boolean resolveAfter(ResourceSet resourceSet) {
+		return resolve(resourceSet, false)
 	}
-	op EChange resolve(ResourceSet resourceSet, boolean applyChange) {
+	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore) {
 		if (!isResolved) {
-			val resolvedChange = super.resolveApply(resourceSet) as RemoveEReference<A, T>
-			if (resolvedChange == null) {
-				// Resolving of super class attributes failed
-				return null
+			val resolvedOldValue = resolveOldValue(resourceSet, resolveBefore)
+			
+			if (resolvedOldValue == null || resolvedOldValue.eIsProxy
+				|| !super.resolveBefore(resourceSet)) {
+				return false
 			}
 			
-			if (!applyChange && containment) {
-				// Revert change => object is root or in staging area
-				// Containment => object is in staging area
-				resolvedChange.oldValue = EChangeUtil.objectInProgress as T					
-			} else {
-				// Old value is in resource
-				resolvedChange.oldValue = EChangeUtil.resolveProxy(oldValue, resourceSet) as T	
-			}	
-			
-			if (resolvedChange.oldValue == null || !resolvedChange.oldValue.eIsProxy) {
-				if (!applyChange && containment) {
-					EChangeUtil.objectInProgress = null					
-				} else {
-					EChangeUtil.objectInProgress = resolvedChange.oldValue
-				}
-				return resolvedChange
-			}
+			oldValue = resolvedOldValue as T
 		} 
-		return this
+		return true
 	}
 }
 
@@ -119,45 +111,36 @@ class ReplaceSingleValuedEReference<A extends EObj, T extends EObj> extends  Rep
 			(oldValue == null || !oldValue.eIsProxy()) &&
 			(newValue == null || !newValue.eIsProxy())
 	}
-	op EChange resolveApply(ResourceSet resourceSet) {
-		resolve(resourceSet, true)
+	op boolean resolveBefore(ResourceSet resourceSet) {
+		return resolve(resourceSet, true)
 	}
-	op EChange resolveRevert(ResourceSet resourceSet) {
-		resolve(resourceSet, false)
+	op boolean resolveAfter(ResourceSet resourceSet) {
+		return resolve(resourceSet, false)
 	}
-	op EChange resolve(ResourceSet resourceSet, boolean applyChange) {
-		if (!isResolved) {
-			val resolvedChange = super.resolveApply(resourceSet) as ReplaceSingleValuedEReference<A, T>
-			if (resolvedChange == null) {
-				// Resolving of super class attributes failed
-				return null
+	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore) {
+		if (!isResolved) {		
+			// Assumption: Change was recorded in the state before. 
+			// New value hast staging area URI, old value has containment URI.
+			// Problem: Resolving after the change would resolve newValue = oldValue = value in staging area.
+			// => The new value in the state after can be resolved by the URI of the old value 
+			// in state before.	
+			var EObject resolvedNewValue
+			if (containment) {
+				resolvedNewValue = resolveOldValue(resourceSet, !resolveBefore)
+			} else {
+				resolvedNewValue = resolveNewValue(resourceSet, resolveBefore)
+			}
+			val resolvedOldValue = resolveOldValue(resourceSet, resolveBefore)			
+
+			if (resolvedNewValue == null || resolvedNewValue.eIsProxy
+				|| resolvedOldValue == null || resolvedOldValue.eIsProxy
+				|| !super.resolveBefore(resourceSet)) {
+				return false
 			}
 			
-			if (containment) {
-				if (applyChange) {
-					resolvedChange.newValue = EChangeUtil.objectInProgress as T
-					resolvedChange.oldValue = EChangeUtil.resolveProxy(oldValue, resourceSet) as T
-				} else {
-					resolvedChange.newValue = EChangeUtil.resolveProxy(newValue, resourceSet) as T
-					resolvedChange.oldValue = EChangeUtil.objectInProgress as T
-				}
-			} else {
-				resolvedChange.oldValue = EChangeUtil.resolveProxy(oldValue, resourceSet) as T
-				resolvedChange.newValue = EChangeUtil.resolveProxy(newValue, resourceSet) as T					
-			}				
-
-			if ((resolvedChange.newValue == null || !resolvedChange.newValue.eIsProxy)
-				&& (resolvedChange.oldValue == null || !resolvedChange.oldValue.eIsProxy)) {
-				if (containment) {
-					if (applyChange) {
-						EChangeUtil.objectInProgress = resolvedChange.oldValue
-					} else {
-						EChangeUtil.objectInProgress = resolvedChange.newValue
-					}
-				} 
-				return resolvedChange
-			}
+			newValue = resolvedNewValue as T
+			oldValue = resolvedOldValue as T
 		} 
-		return this
+		return true
 	}
 }

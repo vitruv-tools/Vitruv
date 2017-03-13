@@ -16,10 +16,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.AtomicEChange;
-import tools.vitruv.framework.change.echange.EChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject;
@@ -186,30 +183,6 @@ public abstract class CreateAndInsertEObjectImpl<T extends EObject, C extends EO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void resolveAtomicChanges(final ResourceSet resourceSet, final boolean applyChange) {
-		if (applyChange) {
-			CreateEObject<T> _createChange = this.getCreateChange();
-			EChange _resolveApply = _createChange.resolveApply(resourceSet);
-			this.setCreateChange(((CreateEObject<T>) _resolveApply));
-			C _insertChange = this.getInsertChange();
-			EChange _resolveApply_1 = _insertChange.resolveApply(resourceSet);
-			this.setInsertChange(((C) _resolveApply_1));
-		}
-		else {
-			C _insertChange_1 = this.getInsertChange();
-			EChange _resolveRevert = _insertChange_1.resolveRevert(resourceSet);
-			this.setInsertChange(((C) _resolveRevert));
-			CreateEObject<T> _createChange_1 = this.getCreateChange();
-			EChange _resolveRevert_1 = _createChange_1.resolveRevert(resourceSet);
-			this.setCreateChange(((CreateEObject<T>) _resolveRevert_1));
-		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -300,9 +273,6 @@ public abstract class CreateAndInsertEObjectImpl<T extends EObject, C extends EO
 		switch (operationID) {
 			case CompoundPackage.CREATE_AND_INSERT_EOBJECT___GET_ATOMIC_CHANGES:
 				return getAtomicChanges();
-			case CompoundPackage.CREATE_AND_INSERT_EOBJECT___RESOLVE_ATOMIC_CHANGES__RESOURCESET_BOOLEAN:
-				resolveAtomicChanges((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
-				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

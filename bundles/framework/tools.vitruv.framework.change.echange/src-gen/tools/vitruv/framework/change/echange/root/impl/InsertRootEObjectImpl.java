@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
@@ -30,6 +31,7 @@ import tools.vitruv.framework.change.echange.root.RootEChange;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 
 import tools.vitruv.framework.change.echange.util.EChangeUtil;
+import tools.vitruv.framework.change.echange.util.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -119,7 +121,7 @@ public class InsertRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 * @generated
 	 */
 	public boolean isResolved() {
-		return (super.isResolved() && (!this.getNewValue().eIsProxy()));
+		return ((super.isResolved() && (!Objects.equal(this.getNewValue(), null))) && (!this.getNewValue().eIsProxy()));
 	}
 
 	/**
@@ -127,36 +129,36 @@ public class InsertRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet, final boolean applyChange) {
+	public boolean resolve(final ResourceSet resourceSet, final boolean resolveBefore) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			EChange _resolve = super.resolve(resourceSet, applyChange);
-			final InsertRootEObject<T> resolvedChange = ((InsertRootEObject<T>) _resolve);
-			boolean _equals = Objects.equal(resolvedChange, null);
-			if (_equals) {
-				return null;
-			}
-			if (applyChange) {
-				resolvedChange.setNewValue(((T) EChangeUtil.objectInProgress));
+			T resolvedNewValue = null;
+			if (resolveBefore) {
+				Resource stagingArea = StagingArea.getStagingArea(resourceSet);
+				EList<EObject> _contents = stagingArea.getContents();
+				boolean _isEmpty = _contents.isEmpty();
+				boolean _not_1 = (!_isEmpty);
+				if (_not_1) {
+					EList<EObject> _contents_1 = stagingArea.getContents();
+					EObject _get = _contents_1.get(0);
+					resolvedNewValue = ((T) _get);
+				}
+				else {
+					return false;
+				}
 			}
 			else {
 				T _newValue = this.getNewValue();
 				EObject _resolveProxy = EChangeUtil.resolveProxy(_newValue, resourceSet);
-				resolvedChange.setNewValue(((T) _resolveProxy));
+				resolvedNewValue = ((T) _resolveProxy);
 			}
-			if (((!Objects.equal(resolvedChange.getNewValue(), null)) && (!resolvedChange.getNewValue().eIsProxy()))) {
-				if (applyChange) {
-					EChangeUtil.objectInProgress = null;
-				}
-				else {
-					T _newValue_1 = resolvedChange.getNewValue();
-					EChangeUtil.objectInProgress = _newValue_1;
-				}
-				return resolvedChange;
+			if (((Objects.equal(resolvedNewValue, null) || resolvedNewValue.eIsProxy()) || (!super.resolve(resourceSet, resolveBefore)))) {
+				return false;
 			}
+			this.setNewValue(resolvedNewValue);
 		}
-		return this;
+		return true;
 	}
 
 	/**
