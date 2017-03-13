@@ -26,7 +26,7 @@ import tools.vitruv.framework.util.VitruviusConstants;
 public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> extends TUIDCalculatorAndResolverBase {
 
     private static final Logger LOGGER = Logger.getLogger(HierarchicalTUIDCalculatorAndResolver.class);
-    protected static final String SUBDIVIDER = "-_-";
+    public static final String SUBDIVIDER = "-_-";
 
     public HierarchicalTUIDCalculatorAndResolver(final String tuidPrefix) {
         super(tuidPrefix);

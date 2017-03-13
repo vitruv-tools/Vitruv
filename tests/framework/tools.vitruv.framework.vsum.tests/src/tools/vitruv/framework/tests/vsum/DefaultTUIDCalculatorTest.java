@@ -14,6 +14,7 @@ import org.junit.Test;
 import pcm_mockup.Component;
 import pcm_mockup.Repository;
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
+import tools.vitruv.framework.tuid.HierarchicalTUIDCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
@@ -27,7 +28,8 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
         VURI model1URI = VURI.getInstance(getDefaultPCMInstanceURI());
         ModelInstance model1 = vsum.getModelInstance(model1URI);
         Repository pcmRoot = (Repository) model1.getResource().getContents().get(0);
-        String expectedTUID = pcmRoot.getId();
+        String expectedTUID = "<root>" + HierarchicalTUIDCalculatorAndResolver.SUBDIVIDER + pcmRoot.eClass().getName()
+                + HierarchicalTUIDCalculatorAndResolver.SUBDIVIDER + "id=" + pcmRoot.getId();
         EObject resolvedEObject = testTUIDCalculator(PCM_MM_URI, pcmRoot, pcmRoot, expectedTUID, "id");
         assertEquals(resolvedEObject, pcmRoot);
         Component pcmComponent = (Component) pcmRoot.eContents().get(1);
@@ -39,6 +41,7 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
     @Test
     public void testTUIDCalculationAndResolutionForUnsettedElement() {
         // create UML class with empty Property
+        // TODO ML: use mockup UML metamodel instead of real UML metamodel
         Property umlProperty = createUmlModelWithProperty();
         String expectedTUID = "name";
         String umlPrefix = umlProperty.eClass().getEPackage().getNsPrefix();
