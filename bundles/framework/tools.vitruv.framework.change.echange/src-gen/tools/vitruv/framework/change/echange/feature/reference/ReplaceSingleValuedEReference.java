@@ -4,6 +4,7 @@ package tools.vitruv.framework.change.echange.feature.reference;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 
 /**

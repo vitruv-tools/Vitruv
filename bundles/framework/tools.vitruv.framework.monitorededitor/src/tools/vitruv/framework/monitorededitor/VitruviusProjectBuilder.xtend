@@ -10,6 +10,7 @@ import org.eclipse.core.resources.IProject
 import java.util.Map
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.CoreException
+import java.util.Collection
 
 abstract class VitruviusProjectBuilder extends IncrementalProjectBuilder {
 	private static final Logger logger = Logger.getLogger(VitruviusProjectBuilder.getSimpleName())
@@ -30,8 +31,8 @@ abstract class VitruviusProjectBuilder extends IncrementalProjectBuilder {
 		val virtualModelName = getCommand().getArguments().get(ARGUMENT_VMODEL_NAME);
 		this.virtualModel = VirtualModelManager.getInstance().getVirtualModel(virtualModelName);
 
-		for (String fileExtension : getCommand().getArguments().get(ARGUMENT_FILE_EXTENSIONS).split(",")) {
-			monitoredFileTypes.add(fileExtension) 
+		for (String fileExtension : getCommand().getArguments().get(ARGUMENT_FILE_EXTENSIONS).split(",").map[trim].filter[!nullOrEmpty]) {
+			monitoredFileTypes.add(fileExtension)
 		}
 		
 		initialized = true
@@ -48,6 +49,10 @@ abstract class VitruviusProjectBuilder extends IncrementalProjectBuilder {
 	
 	protected def VirtualModel getVirtualModel() {
 		return virtualModel;
+	}
+	
+	protected def Collection<String> getMonitoredFileTypes() {
+		return monitoredFileTypes;
 	}
 	
 	protected abstract def void startMonitoring();

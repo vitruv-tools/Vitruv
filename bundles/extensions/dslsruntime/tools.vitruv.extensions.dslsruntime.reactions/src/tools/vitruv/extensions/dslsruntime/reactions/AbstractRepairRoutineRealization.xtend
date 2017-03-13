@@ -7,24 +7,24 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.extensions.dslsruntime.reactions.effects.ReactionElementStatesHandlerImpl
 import java.util.function.Function
 import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
+import tools.vitruv.extensions.dslsruntime.reactions.effects.ReactionElementsHandlerImpl
 
-abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementStatesHandler {
+abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
 	private extension val ReactionExecutionState executionState;
 	
 	@Delegate
-	private val ReactionElementStatesHandler _reactionElementStatesHandler;
+	private val ReactionElementsHandler _reactionElementsHandler;
 	
 	public new(ReactionExecutionState executionState, CallHierarchyHaving calledBy) {
 		super(calledBy);
 		this.executionState = executionState;
-		this._reactionElementStatesHandler = new ReactionElementStatesHandlerImpl(correspondenceModel, transformationResult);
+		this._reactionElementsHandler = new ReactionElementsHandlerImpl(correspondenceModel, transformationResult);
 	}
 	
 	protected def ReactionExecutionState getExecutionState() {

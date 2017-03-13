@@ -68,20 +68,30 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 import tools.vitruv.dsls.mirbase.serializer.MirBaseSemanticSequencer;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement;
-import tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelElementChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange;
 import tools.vitruv.dsls.reactions.reactionsLanguage.CorrespondingObjectCodeBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence;
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement;
 import tools.vitruv.dsls.reactions.reactionsLanguage.DeleteModelElement;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionAsRootChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionInListChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalAsRootChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalFromListChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference;
-import tools.vitruv.dsls.reactions.reactionsLanguage.InsertRootChange;
 import tools.vitruv.dsls.reactions.reactionsLanguage.InvariantViolationEvent;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher;
 import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement;
-import tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureInsertChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeaturePermuteChange;
-import tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureRemoveChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeInsertedChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeRemovedChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeReplacedChange;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange;
 import tools.vitruv.dsls.reactions.reactionsLanguage.PreconditionCodeBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionRoutineCall;
@@ -89,13 +99,11 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment;
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence;
-import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveRootChange;
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReturnStatement;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine;
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement;
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput;
-import tools.vitruv.dsls.reactions.reactionsLanguage.SingleValuedFeatureReplace;
 import tools.vitruv.dsls.reactions.reactionsLanguage.TagCodeBlock;
 import tools.vitruv.dsls.reactions.reactionsLanguage.UpdateModelElement;
 import tools.vitruv.dsls.reactions.services.ReactionsLanguageGrammarAccess;
@@ -151,14 +159,14 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 			case ReactionsLanguagePackage.ACTION_STATEMENT:
 				sequence_CodeBlock(context, (ActionStatement) semanticObject); 
 				return; 
-			case ReactionsLanguagePackage.ARBITRARY_MODEL_ELEMENT_CHANGE:
+			case ReactionsLanguagePackage.ARBITRARY_MODEL_CHANGE:
 				if (rule == grammarAccess.getModelChangeRule()
-						|| rule == grammarAccess.getArbitraryModelElementChangeRule()) {
-					sequence_ArbitraryModelElementChange(context, (ArbitraryModelElementChange) semanticObject); 
+						|| rule == grammarAccess.getArbitraryModelChangeRule()) {
+					sequence_ArbitraryModelChange(context, (ArbitraryModelChange) semanticObject); 
 					return; 
 				}
 				else if (rule == grammarAccess.getTriggerRule()) {
-					sequence_ArbitraryModelElementChange_Trigger(context, (ArbitraryModelElementChange) semanticObject); 
+					sequence_ArbitraryModelChange_Trigger(context, (ArbitraryModelChange) semanticObject); 
 					return; 
 				}
 				else break;
@@ -174,25 +182,42 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 			case ReactionsLanguagePackage.DELETE_MODEL_ELEMENT:
 				sequence_DeleteModelElementStatement(context, (DeleteModelElement) semanticObject); 
 				return; 
+			case ReactionsLanguagePackage.ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE:
+				sequence_ElementCreationAndInsertionChangeType(context, (ElementCreationAndInsertionChangeType) semanticObject); 
+				return; 
+			case ReactionsLanguagePackage.ELEMENT_CREATION_CHANGE_TYPE:
+				sequence_ElementCreationChangeType(context, (ElementCreationChangeType) semanticObject); 
+				return; 
+			case ReactionsLanguagePackage.ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE:
+				sequence_ElementDeletionAndCreationAndReplacementChangeType(context, (ElementDeletionAndCreationAndReplacementChangeType) semanticObject); 
+				return; 
+			case ReactionsLanguagePackage.ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE:
+				sequence_ElementDeletionAndRemovalChangeType(context, (ElementDeletionAndRemovalChangeType) semanticObject); 
+				return; 
+			case ReactionsLanguagePackage.ELEMENT_DELETION_CHANGE_TYPE:
+				sequence_ElementDeletionChangeType(context, (ElementDeletionChangeType) semanticObject); 
+				return; 
+			case ReactionsLanguagePackage.ELEMENT_INSERTION_AS_ROOT_CHANGE_TYPE:
+				sequence_ElementInsertionAsRootChangeType(context, (ElementInsertionAsRootChangeType) semanticObject); 
+				return; 
+			case ReactionsLanguagePackage.ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE:
+				sequence_ElementFeatureChangeType(context, (ElementInsertionInListChangeType) semanticObject); 
+				return; 
+			case ReactionsLanguagePackage.ELEMENT_REMOVAL_AS_ROOT_CHANGE_TYPE:
+				sequence_ElementRemovalAsRootChangeType(context, (ElementRemovalAsRootChangeType) semanticObject); 
+				return; 
+			case ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE:
+				sequence_ElementFeatureChangeType(context, (ElementRemovalFromListChangeType) semanticObject); 
+				return; 
+			case ReactionsLanguagePackage.ELEMENT_REPLACEMENT_CHANGE_TYPE:
+				sequence_ElementFeatureChangeType(context, (ElementReplacementChangeType) semanticObject); 
+				return; 
 			case ReactionsLanguagePackage.EXECUTION_CODE_BLOCK:
 				sequence_CodeBlock_ExecutionCodeBlock(context, (ExecutionCodeBlock) semanticObject); 
 				return; 
 			case ReactionsLanguagePackage.EXISTING_ELEMENT_REFERENCE:
 				sequence_CodeBlock(context, (ExistingElementReference) semanticObject); 
 				return; 
-			case ReactionsLanguagePackage.INSERT_ROOT_CHANGE:
-				if (rule == grammarAccess.getModelChangeRule()
-						|| rule == grammarAccess.getConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicRootObjectChangeRule()) {
-					sequence_AtomicRootObjectChange(context, (InsertRootChange) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getTriggerRule()) {
-					sequence_AtomicRootObjectChange_Trigger(context, (InsertRootChange) semanticObject); 
-					return; 
-				}
-				else break;
 			case ReactionsLanguagePackage.INVARIANT_VIOLATION_EVENT:
 				if (rule == grammarAccess.getInvariantViolationEventRule()) {
 					sequence_InvariantViolationEvent(context, (InvariantViolationEvent) semanticObject); 
@@ -209,54 +234,51 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 			case ReactionsLanguagePackage.MATCHER_CHECK_STATEMENT:
 				sequence_CodeBlock_MatcherCheckStatement(context, (MatcherCheckStatement) semanticObject); 
 				return; 
-			case ReactionsLanguagePackage.MULTI_VALUED_FEATURE_INSERT_CHANGE:
+			case ReactionsLanguagePackage.MODEL_ATTRIBUTE_INSERTED_CHANGE:
 				if (rule == grammarAccess.getModelChangeRule()
-						|| rule == grammarAccess.getConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicFeatureChangeRule()) {
-					sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange(context, (MultiValuedFeatureInsertChange) semanticObject); 
+						|| rule == grammarAccess.getConcreteModelChangeRule()
+						|| rule == grammarAccess.getModelAttributeChangeRule()) {
+					sequence_ModelAttributeChange(context, (ModelAttributeInsertedChange) semanticObject); 
 					return; 
 				}
 				else if (rule == grammarAccess.getTriggerRule()) {
-					sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange_Trigger(context, (MultiValuedFeatureInsertChange) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getAtomicMultiValuedFeatureChangeRule()) {
-					sequence_AtomicMultiValuedFeatureChange(context, (MultiValuedFeatureInsertChange) semanticObject); 
+					sequence_ModelAttributeChange_Trigger(context, (ModelAttributeInsertedChange) semanticObject); 
 					return; 
 				}
 				else break;
-			case ReactionsLanguagePackage.MULTI_VALUED_FEATURE_PERMUTE_CHANGE:
+			case ReactionsLanguagePackage.MODEL_ATTRIBUTE_REMOVED_CHANGE:
 				if (rule == grammarAccess.getModelChangeRule()
-						|| rule == grammarAccess.getConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicFeatureChangeRule()) {
-					sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange(context, (MultiValuedFeaturePermuteChange) semanticObject); 
+						|| rule == grammarAccess.getConcreteModelChangeRule()
+						|| rule == grammarAccess.getModelAttributeChangeRule()) {
+					sequence_ModelAttributeChange(context, (ModelAttributeRemovedChange) semanticObject); 
 					return; 
 				}
 				else if (rule == grammarAccess.getTriggerRule()) {
-					sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange_Trigger(context, (MultiValuedFeaturePermuteChange) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getAtomicMultiValuedFeatureChangeRule()) {
-					sequence_AtomicMultiValuedFeatureChange(context, (MultiValuedFeaturePermuteChange) semanticObject); 
+					sequence_ModelAttributeChange_Trigger(context, (ModelAttributeRemovedChange) semanticObject); 
 					return; 
 				}
 				else break;
-			case ReactionsLanguagePackage.MULTI_VALUED_FEATURE_REMOVE_CHANGE:
+			case ReactionsLanguagePackage.MODEL_ATTRIBUTE_REPLACED_CHANGE:
 				if (rule == grammarAccess.getModelChangeRule()
-						|| rule == grammarAccess.getConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicFeatureChangeRule()) {
-					sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange(context, (MultiValuedFeatureRemoveChange) semanticObject); 
+						|| rule == grammarAccess.getConcreteModelChangeRule()
+						|| rule == grammarAccess.getModelAttributeChangeRule()) {
+					sequence_ModelAttributeChange(context, (ModelAttributeReplacedChange) semanticObject); 
 					return; 
 				}
 				else if (rule == grammarAccess.getTriggerRule()) {
-					sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange_Trigger(context, (MultiValuedFeatureRemoveChange) semanticObject); 
+					sequence_ModelAttributeChange_Trigger(context, (ModelAttributeReplacedChange) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getAtomicMultiValuedFeatureChangeRule()) {
-					sequence_AtomicMultiValuedFeatureChange(context, (MultiValuedFeatureRemoveChange) semanticObject); 
+				else break;
+			case ReactionsLanguagePackage.MODEL_ELEMENT_CHANGE:
+				if (rule == grammarAccess.getModelChangeRule()
+						|| rule == grammarAccess.getConcreteModelChangeRule()
+						|| rule == grammarAccess.getModelElementChangeRule()) {
+					sequence_ModelElementChange(context, (ModelElementChange) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getTriggerRule()) {
+					sequence_ModelElementChange_Trigger(context, (ModelElementChange) semanticObject); 
 					return; 
 				}
 				else break;
@@ -278,19 +300,6 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 			case ReactionsLanguagePackage.REMOVE_CORRESPONDENCE:
 				sequence_RemoveCorrespondenceStatement(context, (RemoveCorrespondence) semanticObject); 
 				return; 
-			case ReactionsLanguagePackage.REMOVE_ROOT_CHANGE:
-				if (rule == grammarAccess.getModelChangeRule()
-						|| rule == grammarAccess.getConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicRootObjectChangeRule()) {
-					sequence_AtomicRootObjectChange(context, (RemoveRootChange) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getTriggerRule()) {
-					sequence_AtomicRootObjectChange_Trigger(context, (RemoveRootChange) semanticObject); 
-					return; 
-				}
-				else break;
 			case ReactionsLanguagePackage.RETRIEVE_MODEL_ELEMENT:
 				sequence_MetaclassReference_RetrieveModelElementStatement_Taggable(context, (RetrieveModelElement) semanticObject); 
 				return; 
@@ -306,23 +315,6 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 			case ReactionsLanguagePackage.ROUTINE_INPUT:
 				sequence_RoutineInput(context, (RoutineInput) semanticObject); 
 				return; 
-			case ReactionsLanguagePackage.SINGLE_VALUED_FEATURE_REPLACE:
-				if (rule == grammarAccess.getModelChangeRule()
-						|| rule == grammarAccess.getConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicConcreteModelElementChangeRule()
-						|| rule == grammarAccess.getAtomicFeatureChangeRule()) {
-					sequence_AtomicFeatureChange_AtomicSingleValuedFeatureChange(context, (SingleValuedFeatureReplace) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getTriggerRule()) {
-					sequence_AtomicFeatureChange_AtomicSingleValuedFeatureChange_Trigger(context, (SingleValuedFeatureReplace) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getAtomicSingleValuedFeatureChangeRule()) {
-					sequence_AtomicSingleValuedFeatureChange(context, (SingleValuedFeatureReplace) semanticObject); 
-					return; 
-				}
-				else break;
 			case ReactionsLanguagePackage.TAG_CODE_BLOCK:
 				sequence_CodeBlock_TagCodeBlock(context, (TagCodeBlock) semanticObject); 
 				return; 
@@ -587,271 +579,25 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 	
 	/**
 	 * Contexts:
-	 *     ModelChange returns ArbitraryModelElementChange
-	 *     ArbitraryModelElementChange returns ArbitraryModelElementChange
+	 *     ModelChange returns ArbitraryModelChange
+	 *     ArbitraryModelChange returns ArbitraryModelChange
 	 *
 	 * Constraint:
-	 *     {ArbitraryModelElementChange}
+	 *     {ArbitraryModelChange}
 	 */
-	protected void sequence_ArbitraryModelElementChange(ISerializationContext context, ArbitraryModelElementChange semanticObject) {
+	protected void sequence_ArbitraryModelChange(ISerializationContext context, ArbitraryModelChange semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     Trigger returns ArbitraryModelElementChange
+	 *     Trigger returns ArbitraryModelChange
 	 *
 	 * Constraint:
 	 *     precondition=PreconditionCodeBlock?
 	 */
-	protected void sequence_ArbitraryModelElementChange_Trigger(ISerializationContext context, ArbitraryModelElementChange semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ModelChange returns MultiValuedFeatureInsertChange
-	 *     ConcreteModelElementChange returns MultiValuedFeatureInsertChange
-	 *     AtomicConcreteModelElementChange returns MultiValuedFeatureInsertChange
-	 *     AtomicFeatureChange returns MultiValuedFeatureInsertChange
-	 *
-	 * Constraint:
-	 *     changedFeature=MetaclassFeatureReference
-	 */
-	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange(ISerializationContext context, MultiValuedFeatureInsertChange semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getChangedFeature());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ModelChange returns MultiValuedFeaturePermuteChange
-	 *     ConcreteModelElementChange returns MultiValuedFeaturePermuteChange
-	 *     AtomicConcreteModelElementChange returns MultiValuedFeaturePermuteChange
-	 *     AtomicFeatureChange returns MultiValuedFeaturePermuteChange
-	 *
-	 * Constraint:
-	 *     changedFeature=MetaclassFeatureReference
-	 */
-	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange(ISerializationContext context, MultiValuedFeaturePermuteChange semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getChangedFeature());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ModelChange returns MultiValuedFeatureRemoveChange
-	 *     ConcreteModelElementChange returns MultiValuedFeatureRemoveChange
-	 *     AtomicConcreteModelElementChange returns MultiValuedFeatureRemoveChange
-	 *     AtomicFeatureChange returns MultiValuedFeatureRemoveChange
-	 *
-	 * Constraint:
-	 *     changedFeature=MetaclassFeatureReference
-	 */
-	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange(ISerializationContext context, MultiValuedFeatureRemoveChange semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getChangedFeature());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Trigger returns MultiValuedFeatureInsertChange
-	 *
-	 * Constraint:
-	 *     (changedFeature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
-	 */
-	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange_Trigger(ISerializationContext context, MultiValuedFeatureInsertChange semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Trigger returns MultiValuedFeaturePermuteChange
-	 *
-	 * Constraint:
-	 *     (changedFeature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
-	 */
-	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange_Trigger(ISerializationContext context, MultiValuedFeaturePermuteChange semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Trigger returns MultiValuedFeatureRemoveChange
-	 *
-	 * Constraint:
-	 *     (changedFeature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
-	 */
-	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange_Trigger(ISerializationContext context, MultiValuedFeatureRemoveChange semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ModelChange returns SingleValuedFeatureReplace
-	 *     ConcreteModelElementChange returns SingleValuedFeatureReplace
-	 *     AtomicConcreteModelElementChange returns SingleValuedFeatureReplace
-	 *     AtomicFeatureChange returns SingleValuedFeatureReplace
-	 *
-	 * Constraint:
-	 *     changedFeature=MetaclassFeatureReference
-	 */
-	protected void sequence_AtomicFeatureChange_AtomicSingleValuedFeatureChange(ISerializationContext context, SingleValuedFeatureReplace semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getChangedFeature());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Trigger returns SingleValuedFeatureReplace
-	 *
-	 * Constraint:
-	 *     (changedFeature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
-	 */
-	protected void sequence_AtomicFeatureChange_AtomicSingleValuedFeatureChange_Trigger(ISerializationContext context, SingleValuedFeatureReplace semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     AtomicMultiValuedFeatureChange returns MultiValuedFeatureInsertChange
-	 *
-	 * Constraint:
-	 *     {MultiValuedFeatureInsertChange}
-	 */
-	protected void sequence_AtomicMultiValuedFeatureChange(ISerializationContext context, MultiValuedFeatureInsertChange semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     AtomicMultiValuedFeatureChange returns MultiValuedFeaturePermuteChange
-	 *
-	 * Constraint:
-	 *     {MultiValuedFeaturePermuteChange}
-	 */
-	protected void sequence_AtomicMultiValuedFeatureChange(ISerializationContext context, MultiValuedFeaturePermuteChange semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     AtomicMultiValuedFeatureChange returns MultiValuedFeatureRemoveChange
-	 *
-	 * Constraint:
-	 *     {MultiValuedFeatureRemoveChange}
-	 */
-	protected void sequence_AtomicMultiValuedFeatureChange(ISerializationContext context, MultiValuedFeatureRemoveChange semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ModelChange returns InsertRootChange
-	 *     ConcreteModelElementChange returns InsertRootChange
-	 *     AtomicConcreteModelElementChange returns InsertRootChange
-	 *     AtomicRootObjectChange returns InsertRootChange
-	 *
-	 * Constraint:
-	 *     changedElement=UnnamedMetaclassReference
-	 */
-	protected void sequence_AtomicRootObjectChange(ISerializationContext context, InsertRootChange semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicRootObjectChangeAccess().getChangedElementUnnamedMetaclassReferenceParserRuleCall_1_0(), semanticObject.getChangedElement());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ModelChange returns RemoveRootChange
-	 *     ConcreteModelElementChange returns RemoveRootChange
-	 *     AtomicConcreteModelElementChange returns RemoveRootChange
-	 *     AtomicRootObjectChange returns RemoveRootChange
-	 *
-	 * Constraint:
-	 *     changedElement=UnnamedMetaclassReference
-	 */
-	protected void sequence_AtomicRootObjectChange(ISerializationContext context, RemoveRootChange semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicRootObjectChangeAccess().getChangedElementUnnamedMetaclassReferenceParserRuleCall_1_0(), semanticObject.getChangedElement());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Trigger returns InsertRootChange
-	 *
-	 * Constraint:
-	 *     (changedElement=UnnamedMetaclassReference precondition=PreconditionCodeBlock?)
-	 */
-	protected void sequence_AtomicRootObjectChange_Trigger(ISerializationContext context, InsertRootChange semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Trigger returns RemoveRootChange
-	 *
-	 * Constraint:
-	 *     (changedElement=UnnamedMetaclassReference precondition=PreconditionCodeBlock?)
-	 */
-	protected void sequence_AtomicRootObjectChange_Trigger(ISerializationContext context, RemoveRootChange semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     AtomicSingleValuedFeatureChange returns SingleValuedFeatureReplace
-	 *
-	 * Constraint:
-	 *     {SingleValuedFeatureReplace}
-	 */
-	protected void sequence_AtomicSingleValuedFeatureChange(ISerializationContext context, SingleValuedFeatureReplace semanticObject) {
+	protected void sequence_ArbitraryModelChange_Trigger(ISerializationContext context, ArbitraryModelChange semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1055,6 +801,200 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 	
 	/**
 	 * Contexts:
+	 *     ElementCreationAndInsertionChangeType returns ElementCreationAndInsertionChangeType
+	 *     ElementChangeType returns ElementCreationAndInsertionChangeType
+	 *     ElementCompoundChangeType returns ElementCreationAndInsertionChangeType
+	 *
+	 * Constraint:
+	 *     (createChange=ElementCreationChangeType insertChange=ElementInsertionChangeType)
+	 */
+	protected void sequence_ElementCreationAndInsertionChangeType(ISerializationContext context, ElementCreationAndInsertionChangeType semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__CREATE_CHANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__CREATE_CHANGE));
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__INSERT_CHANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__INSERT_CHANGE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getElementCreationAndInsertionChangeTypeAccess().getCreateChangeElementCreationChangeTypeParserRuleCall_0_0(), semanticObject.getCreateChange());
+		feeder.accept(grammarAccess.getElementCreationAndInsertionChangeTypeAccess().getInsertChangeElementInsertionChangeTypeParserRuleCall_2_0(), semanticObject.getInsertChange());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElementExistenceChangeType returns ElementCreationChangeType
+	 *     ElementCreationChangeType returns ElementCreationChangeType
+	 *     ElementChangeType returns ElementCreationChangeType
+	 *
+	 * Constraint:
+	 *     {ElementCreationChangeType}
+	 */
+	protected void sequence_ElementCreationChangeType(ISerializationContext context, ElementCreationChangeType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElementDeletionAndCreationAndReplacementChangeType returns ElementDeletionAndCreationAndReplacementChangeType
+	 *     ElementChangeType returns ElementDeletionAndCreationAndReplacementChangeType
+	 *     ElementCompoundChangeType returns ElementDeletionAndCreationAndReplacementChangeType
+	 *
+	 * Constraint:
+	 *     (deleteChange=ElementDeletionChangeType createChange=ElementCreationChangeType replacedChange=ElementReplacementChangeType)
+	 */
+	protected void sequence_ElementDeletionAndCreationAndReplacementChangeType(ISerializationContext context, ElementDeletionAndCreationAndReplacementChangeType semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__DELETE_CHANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__DELETE_CHANGE));
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__CREATE_CHANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__CREATE_CHANGE));
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__REPLACED_CHANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__REPLACED_CHANGE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeAccess().getDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0(), semanticObject.getDeleteChange());
+		feeder.accept(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeAccess().getCreateChangeElementCreationChangeTypeParserRuleCall_2_0(), semanticObject.getCreateChange());
+		feeder.accept(grammarAccess.getElementDeletionAndCreationAndReplacementChangeTypeAccess().getReplacedChangeElementReplacementChangeTypeParserRuleCall_4_0(), semanticObject.getReplacedChange());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElementDeletionAndRemovalChangeType returns ElementDeletionAndRemovalChangeType
+	 *     ElementChangeType returns ElementDeletionAndRemovalChangeType
+	 *     ElementCompoundChangeType returns ElementDeletionAndRemovalChangeType
+	 *
+	 * Constraint:
+	 *     (deleteChange=ElementDeletionChangeType removeChange=ElementRemovalChangeType)
+	 */
+	protected void sequence_ElementDeletionAndRemovalChangeType(ISerializationContext context, ElementDeletionAndRemovalChangeType semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__DELETE_CHANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__DELETE_CHANGE));
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__REMOVE_CHANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__REMOVE_CHANGE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getElementDeletionAndRemovalChangeTypeAccess().getDeleteChangeElementDeletionChangeTypeParserRuleCall_0_0(), semanticObject.getDeleteChange());
+		feeder.accept(grammarAccess.getElementDeletionAndRemovalChangeTypeAccess().getRemoveChangeElementRemovalChangeTypeParserRuleCall_2_0(), semanticObject.getRemoveChange());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElementExistenceChangeType returns ElementDeletionChangeType
+	 *     ElementDeletionChangeType returns ElementDeletionChangeType
+	 *     ElementChangeType returns ElementDeletionChangeType
+	 *
+	 * Constraint:
+	 *     {ElementDeletionChangeType}
+	 */
+	protected void sequence_ElementDeletionChangeType(ISerializationContext context, ElementDeletionChangeType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElementUsageChangeType returns ElementInsertionInListChangeType
+	 *     ElementInsertionChangeType returns ElementInsertionInListChangeType
+	 *     ElementInsertionInListChangeType returns ElementInsertionInListChangeType
+	 *     ElementChangeType returns ElementInsertionInListChangeType
+	 *
+	 * Constraint:
+	 *     feature=MetaclassFeatureReference
+	 */
+	protected void sequence_ElementFeatureChangeType(ISerializationContext context, ElementInsertionInListChangeType semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getElementFeatureChangeTypeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_0(), semanticObject.getFeature());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElementUsageChangeType returns ElementRemovalFromListChangeType
+	 *     ElementRemovalChangeType returns ElementRemovalFromListChangeType
+	 *     ElementRemovalFromListChangeType returns ElementRemovalFromListChangeType
+	 *     ElementChangeType returns ElementRemovalFromListChangeType
+	 *
+	 * Constraint:
+	 *     feature=MetaclassFeatureReference
+	 */
+	protected void sequence_ElementFeatureChangeType(ISerializationContext context, ElementRemovalFromListChangeType semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getElementFeatureChangeTypeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_0(), semanticObject.getFeature());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElementUsageChangeType returns ElementReplacementChangeType
+	 *     ElementReplacementChangeType returns ElementReplacementChangeType
+	 *     ElementChangeType returns ElementReplacementChangeType
+	 *
+	 * Constraint:
+	 *     feature=MetaclassFeatureReference
+	 */
+	protected void sequence_ElementFeatureChangeType(ISerializationContext context, ElementReplacementChangeType semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getElementFeatureChangeTypeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_0(), semanticObject.getFeature());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElementUsageChangeType returns ElementInsertionAsRootChangeType
+	 *     ElementRootChangeType returns ElementInsertionAsRootChangeType
+	 *     ElementInsertionChangeType returns ElementInsertionAsRootChangeType
+	 *     ElementInsertionAsRootChangeType returns ElementInsertionAsRootChangeType
+	 *     ElementChangeType returns ElementInsertionAsRootChangeType
+	 *
+	 * Constraint:
+	 *     {ElementInsertionAsRootChangeType}
+	 */
+	protected void sequence_ElementInsertionAsRootChangeType(ISerializationContext context, ElementInsertionAsRootChangeType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElementUsageChangeType returns ElementRemovalAsRootChangeType
+	 *     ElementRootChangeType returns ElementRemovalAsRootChangeType
+	 *     ElementRemovalChangeType returns ElementRemovalAsRootChangeType
+	 *     ElementRemovalAsRootChangeType returns ElementRemovalAsRootChangeType
+	 *     ElementChangeType returns ElementRemovalAsRootChangeType
+	 *
+	 * Constraint:
+	 *     {ElementRemovalAsRootChangeType}
+	 */
+	protected void sequence_ElementRemovalAsRootChangeType(ISerializationContext context, ElementRemovalAsRootChangeType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     InvariantViolationEvent returns InvariantViolationEvent
 	 *
 	 * Constraint:
@@ -1123,6 +1063,128 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 	 *     (namespaceImports=XImportSection? metamodelImports+=MetamodelImport* reactionsSegments+=ReactionsSegment+)
 	 */
 	protected void sequence_MirBaseFile_ReactionsFile(ISerializationContext context, ReactionsFile semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ModelChange returns ModelAttributeInsertedChange
+	 *     ConcreteModelChange returns ModelAttributeInsertedChange
+	 *     ModelAttributeChange returns ModelAttributeInsertedChange
+	 *
+	 * Constraint:
+	 *     feature=MetaclassFeatureReference
+	 */
+	protected void sequence_ModelAttributeChange(ISerializationContext context, ModelAttributeInsertedChange semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.MODEL_ATTRIBUTE_CHANGE__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.MODEL_ATTRIBUTE_CHANGE__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_2_0(), semanticObject.getFeature());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ModelChange returns ModelAttributeRemovedChange
+	 *     ConcreteModelChange returns ModelAttributeRemovedChange
+	 *     ModelAttributeChange returns ModelAttributeRemovedChange
+	 *
+	 * Constraint:
+	 *     feature=MetaclassFeatureReference
+	 */
+	protected void sequence_ModelAttributeChange(ISerializationContext context, ModelAttributeRemovedChange semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.MODEL_ATTRIBUTE_CHANGE__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.MODEL_ATTRIBUTE_CHANGE__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_2_0(), semanticObject.getFeature());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ModelChange returns ModelAttributeReplacedChange
+	 *     ConcreteModelChange returns ModelAttributeReplacedChange
+	 *     ModelAttributeChange returns ModelAttributeReplacedChange
+	 *
+	 * Constraint:
+	 *     feature=MetaclassFeatureReference
+	 */
+	protected void sequence_ModelAttributeChange(ISerializationContext context, ModelAttributeReplacedChange semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.MODEL_ATTRIBUTE_CHANGE__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.MODEL_ATTRIBUTE_CHANGE__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_2_0(), semanticObject.getFeature());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Trigger returns ModelAttributeInsertedChange
+	 *
+	 * Constraint:
+	 *     (feature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
+	 */
+	protected void sequence_ModelAttributeChange_Trigger(ISerializationContext context, ModelAttributeInsertedChange semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Trigger returns ModelAttributeRemovedChange
+	 *
+	 * Constraint:
+	 *     (feature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
+	 */
+	protected void sequence_ModelAttributeChange_Trigger(ISerializationContext context, ModelAttributeRemovedChange semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Trigger returns ModelAttributeReplacedChange
+	 *
+	 * Constraint:
+	 *     (feature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
+	 */
+	protected void sequence_ModelAttributeChange_Trigger(ISerializationContext context, ModelAttributeReplacedChange semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ModelChange returns ModelElementChange
+	 *     ConcreteModelChange returns ModelElementChange
+	 *     ModelElementChange returns ModelElementChange
+	 *
+	 * Constraint:
+	 *     (elementType=UnnamedMetaclassReference? changeType=ElementChangeType)
+	 */
+	protected void sequence_ModelElementChange(ISerializationContext context, ModelElementChange semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     Trigger returns ModelElementChange
+	 *
+	 * Constraint:
+	 *     (elementType=UnnamedMetaclassReference? changeType=ElementChangeType precondition=PreconditionCodeBlock?)
+	 */
+	protected void sequence_ModelElementChange_Trigger(ISerializationContext context, ModelElementChange semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

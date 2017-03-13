@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated uml_mockup -->
       <package
-            uri="http://tools.vitruv.tests.metamodels.uml_mockup"
+            uri="http://tools.vitruv.framework.tests.util.metamodels"
             class="uml_mockup.Uml_mockupPackage"
             genModel="metamodels/uml_mockup.genmodel"/>
    </extension>

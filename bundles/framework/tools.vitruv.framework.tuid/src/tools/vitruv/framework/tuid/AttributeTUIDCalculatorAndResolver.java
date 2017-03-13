@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.framework.util.bridges.EcoreBridge;
 
@@ -45,6 +46,11 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
             final String attributeValue = EcoreBridge.getStringValueOfAttribute(obj, attributeName);
             if (null != attributeValue) {
                 return attributeName + "=" + attributeValue;
+            }else {
+            	EStructuralFeature idFeature = obj.eClass().getEStructuralFeature(attributeName);
+            	if (idFeature != null && !obj.eIsSet(idFeature)) {
+            		return attributeName;
+            	}
             }
         }
 
@@ -52,14 +58,4 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
                 "None of '" + String.join("', '", this.attributeNames) + "' found for eObject '" + obj + "'");
     }
 
-    @Override
-    public boolean hasTUID(final EObject eObject) {
-        for (String attributeName : this.attributeNames) {
-            final String attributeValue = EcoreBridge.getStringValueOfAttribute(eObject, attributeName);
-            if (null != attributeValue) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

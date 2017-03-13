@@ -15,7 +15,6 @@ import java.io.File
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static org.junit.Assert.*;
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind
 
 /**
  * This is the test class to be extended by tests for applications.
@@ -45,11 +44,10 @@ abstract class VitruviusChangePropagationTest extends VitruviusEMFCasestudyTest 
 		val resource = this.resourceSet.createResource(
 			URI.createPlatformResourceURI(modelPathInProject.platformModelPath, true)
 		);
-		resource.contents.add(rootElement);
 		EcoreResourceBridge.saveResource(resource);
-		synchronizeFileChange(FileChangeKind.Create, VURI.getInstance(resource));
-		//resource.eAdapters.add(changeRecorder);
 		this.changeRecorder.beginRecording(VURI.getInstance(resource), #[resource]);
+		resource.contents.add(rootElement);
+		saveAndSynchronizeChanges(rootElement);
 	}
 	
 	protected def void deleteAndSynchronizeModel(String modelPathInProject) {
@@ -59,8 +57,9 @@ abstract class VitruviusChangePropagationTest extends VitruviusEMFCasestudyTest 
 		val resource = this.resourceSet.getResource(
 			URI.createPlatformResourceURI(modelPathInProject.platformModelPath, true), true
 		);
+		val vuri = VURI.getInstance(resource);
 		resource.delete(Collections.EMPTY_MAP);
-		synchronizeFileChange(FileChangeKind.Delete, VURI.getInstance(resource));
+		triggerSynchronization(vuri);
 	}
 	
 	protected def String getPlatformModelPath(String modelPathInProject) {

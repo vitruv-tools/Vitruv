@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import uml_mockup.Identified;
+import uml_mockup.UAttribute;
 import uml_mockup.UClass;
 import uml_mockup.UInterface;
 import uml_mockup.UMethod;
@@ -66,6 +67,13 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 	 * @generated
 	 */
 	private EClass uMethodEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass uAttributeEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -214,6 +222,15 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getUClass_Attributes() {
+		return (EReference)uClassEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUNamedElement() {
 		return uNamedElementEClass;
 	}
@@ -234,6 +251,24 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 	 */
 	public EClass getUMethod() {
 		return uMethodEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getUAttribute() {
+		return uAttributeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getUAttribute_AttributeName() {
+		return (EAttribute)uAttributeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -276,11 +311,15 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 
 		uClassEClass = createEClass(UCLASS);
 		createEAttribute(uClassEClass, UCLASS__CLASS_COUNT);
+		createEReference(uClassEClass, UCLASS__ATTRIBUTES);
 
 		uNamedElementEClass = createEClass(UNAMED_ELEMENT);
 		createEAttribute(uNamedElementEClass, UNAMED_ELEMENT__NAME);
 
 		uMethodEClass = createEClass(UMETHOD);
+
+		uAttributeEClass = createEClass(UATTRIBUTE);
+		createEAttribute(uAttributeEClass, UATTRIBUTE__ATTRIBUTE_NAME);
 	}
 
 	/**
@@ -333,11 +372,15 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 
 		initEClass(uClassEClass, UClass.class, "UClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUClass_ClassCount(), ecorePackage.getEInt(), "classCount", null, 1, 1, UClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getUClass_Attributes(), this.getUAttribute(), null, "attributes", null, 0, -1, UClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(uNamedElementEClass, UNamedElement.class, "UNamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUNamedElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, UNamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(uMethodEClass, UMethod.class, "UMethod", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(uAttributeEClass, UAttribute.class, "UAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getUAttribute_AttributeName(), ecorePackage.getEString(), "attributeName", "", 0, 1, UAttribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

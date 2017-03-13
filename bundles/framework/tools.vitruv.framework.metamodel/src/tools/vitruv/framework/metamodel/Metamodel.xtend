@@ -65,10 +65,6 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		return new ArrayList<String>(this.fileExtensions);
 	}
 
-	def boolean hasTUID(EObject eObject) {
-		return tuidCalculatorAndResolver.hasTUID(eObject);
-	}
-
 	def String calculateTUIDFromEObject(EObject eObject) {
 		return this.tuidCalculatorAndResolver.calculateTUIDFromEObject(eObject)
 	}
@@ -135,7 +131,7 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	}
 
 	override canCalculateTuid(EObject object) {
-		return hasMetaclassInstances(#[object]) && hasTUID(object);
+		return hasMetaclassInstances(#[object]);
 	}
 
 	override calculateTuid(EObject object) {

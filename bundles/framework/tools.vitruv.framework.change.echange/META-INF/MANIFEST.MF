@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.framework.change.echange;singleton:=true
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 0.2.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -11,6 +11,9 @@ Export-Package: tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.echange.compound,
  tools.vitruv.framework.change.echange.compound.impl,
  tools.vitruv.framework.change.echange.compound.util,
+ tools.vitruv.framework.change.echange.eobject,
+ tools.vitruv.framework.change.echange.eobject.impl,
+ tools.vitruv.framework.change.echange.eobject.util,
  tools.vitruv.framework.change.echange.feature,
  tools.vitruv.framework.change.echange.feature.attribute,
  tools.vitruv.framework.change.echange.feature.attribute.impl,
@@ -37,6 +40,8 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib.macro,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- edu.kit.ipd.sdq.commons.util.emf
+ edu.kit.ipd.sdq.commons.util.emf,
+ org.eclipse.emf.ecore.xcore.lib,
+ tools.vitruv.framework.change.echange;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 

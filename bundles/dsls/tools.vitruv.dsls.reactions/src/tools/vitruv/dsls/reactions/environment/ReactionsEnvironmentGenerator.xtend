@@ -18,14 +18,14 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import java.io.File
 import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.resource.DerivedStateAwareResource
-import static extension tools.vitruv.dsls.reactions.helper.ReactionsLanguageHelper.*;
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.userinteraction.impl.UserInteractor
 import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.api.generator.IReactionsEnvironmentGenerator
 
 class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {

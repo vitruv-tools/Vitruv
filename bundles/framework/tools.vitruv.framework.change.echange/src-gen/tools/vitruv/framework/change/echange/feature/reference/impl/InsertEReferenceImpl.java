@@ -15,8 +15,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.EObjectAddedEChange;
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.feature.list.impl.InsertInListEChangeImpl;
 
@@ -34,7 +34,6 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl#getNewValue <em>New Value</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl#isIsCreate <em>Is Create</em>}</li>
  * </ul>
  *
  * @generated
@@ -49,26 +48,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @ordered
 	 */
 	protected T newValue;
-
-	/**
-	 * The default value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsCreate()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean IS_CREATE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsCreate()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean isCreate = IS_CREATE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -133,27 +112,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isIsCreate() {
-		return isCreate;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setIsCreate(boolean newIsCreate) {
-		boolean oldIsCreate = isCreate;
-		isCreate = newIsCreate;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.INSERT_EREFERENCE__IS_CREATE, oldIsCreate, isCreate));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public boolean isContainment() {
 		return getAffectedFeature().isContainment();
 	}
@@ -169,8 +127,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 			case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE:
 				if (resolve) return getNewValue();
 				return basicGetNewValue();
-			case ReferencePackage.INSERT_EREFERENCE__IS_CREATE:
-				return isIsCreate();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -187,9 +143,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 			case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE:
 				setNewValue((T)newValue);
 				return;
-			case ReferencePackage.INSERT_EREFERENCE__IS_CREATE:
-				setIsCreate((Boolean)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -205,9 +158,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 			case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE:
 				setNewValue((T)null);
 				return;
-			case ReferencePackage.INSERT_EREFERENCE__IS_CREATE:
-				setIsCreate(IS_CREATE_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -222,8 +172,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 		switch (featureID) {
 			case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE:
 				return newValue != null;
-			case ReferencePackage.INSERT_EREFERENCE__IS_CREATE:
-				return isCreate != IS_CREATE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -237,8 +185,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == EObjectAddedEChange.class) {
 			switch (derivedFeatureID) {
-				case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE: return EChangePackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
-				case ReferencePackage.INSERT_EREFERENCE__IS_CREATE: return EChangePackage.EOBJECT_ADDED_ECHANGE__IS_CREATE;
+				case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE: return EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
 				default: return -1;
 			}
 		}
@@ -264,8 +211,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == EObjectAddedEChange.class) {
 			switch (baseFeatureID) {
-				case EChangePackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE: return ReferencePackage.INSERT_EREFERENCE__NEW_VALUE;
-				case EChangePackage.EOBJECT_ADDED_ECHANGE__IS_CREATE: return ReferencePackage.INSERT_EREFERENCE__IS_CREATE;
+				case EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE: return ReferencePackage.INSERT_EREFERENCE__NEW_VALUE;
 				default: return -1;
 			}
 		}
@@ -320,22 +266,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 				return isContainment();
 		}
 		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (isCreate: ");
-		result.append(isCreate);
-		result.append(')');
-		return result.toString();
 	}
 
 } //InsertEReferenceImpl

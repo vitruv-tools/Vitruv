@@ -2,11 +2,11 @@ package tools.vitruv.framework.tests.change.integration
 
 import org.junit.Test
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import allElementTypes.AllElementTypesFactory
-import allElementTypes.AllElementTypesPackage
-import org.junit.Assert
+import static allElementTypes.AllElementTypesPackage.Literals.*;
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 
 class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTransformationTest {
 
@@ -26,14 +26,13 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		//this.rootElement.singleValuedContainmentEReference = null;
 		
 		// assert
-		val changes = getChanges();
-		Assert.assertEquals(4, getChanges().size);
-		changes.get(0).assertSetSingleValuedEReference(nonRoot, AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE.name,
-			this.rootElement, true, true);
-		changes.get(2).assertUnsetSingleValuedEReference(nonRoot, AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE.name,
-			this.rootElement, true, true);
-		changes.get(3).assertSetSingleValuedEReference(nonRoot, AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE.name,
-			this.rootElement, true, true);
+		changes.assertChangeCount(4)
+		changes.claimChange(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true);
+		changes.claimChange(2).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true);
+		changes.claimChange(3).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true);
 	}
 	
 	
@@ -50,13 +49,13 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		this.rootElement.nonRootObjectContainerHelper = nonRootObjectsContainer;
 				
 		// assert
-		Assert.assertEquals(4, getChanges().size);
-		val containerChange = claimChange(0);
-		containerChange.assertSetSingleValuedEReference(nonRootObjectsContainer, AllElementTypesPackage.Literals.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER.name,
-			rootElement, true, true);
-		val nonRootChange = claimChange(2);
-		nonRootChange.assertInsertEReference(nonRootObjectsContainer, AllElementTypesPackage.Literals.NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT.name,
-			nonRoot, 0, true, true);
+		changes.assertChangeCount(3);
+		val containerChange = changes.claimChange(0);
+		containerChange.assertSetSingleValuedEReference(rootElement, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER,
+			nonRootObjectsContainer, true, true);
+		val nonRootChange = changes.claimChange(2);
+		nonRootChange.assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
+			nonRoot, 0);
 		
 	}
 	

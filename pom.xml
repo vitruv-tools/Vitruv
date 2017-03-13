@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tools.vitruv</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -28,14 +28,19 @@
 	<repositories>
 		<!-- If you adjust a repository here, please also adjust the repository in the b3 aggregator. -->
 		<repository>
-			<id>Eclipse</id>
+			<id>Eclipse Neon</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/neon</url>
 		</repository>
 		<repository>
+			<id>Xtext</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.11.0</url>
+		</repository>
+		<repository>
 			<id>Vitruv License</id>
 			<layout>p2</layout>
-			<url>http://vitruv-tools.github.io/updatesite/nightly/license</url>
+			<url>http://vitruv-tools.github.io/updatesite/release/license</url>
 		</repository>
 		<repository>
 			<id>SDQ Commons</id>

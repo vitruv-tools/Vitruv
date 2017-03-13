@@ -42,6 +42,7 @@ class AtomicEMFChangeRecorder {
 			result.applyForward();
 			return result;
 		}
+		changeDescription.applyAndReverse()
 		return null;
 	}
 	

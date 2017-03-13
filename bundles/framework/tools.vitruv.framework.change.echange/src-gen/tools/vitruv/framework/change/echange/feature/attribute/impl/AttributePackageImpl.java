@@ -2,37 +2,31 @@
  */
 package tools.vitruv.framework.change.echange.feature.attribute.impl;
 
-import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
-import tools.vitruv.framework.change.echange.feature.FeaturePackage;
-import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange;
-import tools.vitruv.framework.change.echange.feature.attribute.AttributeFactory;
-import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
-import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue;
-import tools.vitruv.framework.change.echange.feature.attribute.PermuteEAttributeValues;
-import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue;
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
-import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange;
-import tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl;
-import tools.vitruv.framework.change.echange.feature.list.ListPackage;
-import tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl;
-import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
-import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
-import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
-import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
-import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
-import tools.vitruv.framework.change.echange.root.RootPackage;
-import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.ETypeParameter;
+import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import tools.vitruv.framework.change.echange.EChangePackage;
+
+import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+
+import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange;
+import tools.vitruv.framework.change.echange.feature.attribute.AttributeFactory;
+import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
+import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue;
+import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue;
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
+import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
+import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange;
+
+import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+
+import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,56 +35,49 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * @generated
  */
 public class AttributePackageImpl extends EPackageImpl implements AttributePackage {
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    private EClass updateAttributeEChangeEClass = null;
+	private EClass updateAttributeEChangeEClass = null;
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    private EClass additiveAttributeEChangeEClass = null;
+	private EClass additiveAttributeEChangeEClass = null;
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    private EClass subtractiveAttributeEChangeEClass = null;
+	private EClass subtractiveAttributeEChangeEClass = null;
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    private EClass replaceSingleValuedEAttributeEClass = null;
+	private EClass insertEAttributeValueEClass = null;
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    private EClass insertEAttributeValueEClass = null;
+	private EClass removeEAttributeValueEClass = null;
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    private EClass removeEAttributeValueEClass = null;
+	private EClass replaceSingleValuedEAttributeEClass = null;
 
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 */
-    private EClass permuteEAttributeValuesEClass = null;
-
-    /**
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -99,36 +86,36 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * initialization of the package, or returns the registered package,
 	 * if one already exists.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#eNS_URI
 	 * @see #init()
 	 * @generated
 	 */
-    private AttributePackageImpl() {
+	private AttributePackageImpl() {
 		super(eNS_URI, AttributeFactory.eINSTANCE);
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    private static boolean isInited = false;
+	private static boolean isInited = false;
 
-    /**
+	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
 	 * 
 	 * <p>This method is used to initialize {@link AttributePackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
 	 * @generated
 	 */
-    public static AttributePackage init() {
+	public static AttributePackage init() {
 		if (isInited) return (AttributePackage)EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI);
 
 		// Obtain or create and register package
@@ -136,34 +123,15 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		isInited = true;
 
-		// Obtain or create and register interdependencies
-		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
-		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
-		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
-		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
-		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
-		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
-		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
+		// Initialize simple dependencies
+		ListPackage.eINSTANCE.eClass();
+		SinglePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theAttributePackage.createPackageContents();
-		theEChangePackage.createPackageContents();
-		theFeaturePackage.createPackageContents();
-		theSinglePackage.createPackageContents();
-		theListPackage.createPackageContents();
-		theReferencePackage.createPackageContents();
-		theRootPackage.createPackageContents();
-		theCompoundPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theAttributePackage.initializePackageContents();
-		theEChangePackage.initializePackageContents();
-		theFeaturePackage.initializePackageContents();
-		theSinglePackage.initializePackageContents();
-		theListPackage.initializePackageContents();
-		theReferencePackage.initializePackageContents();
-		theRootPackage.initializePackageContents();
-		theCompoundPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theAttributePackage.freeze();
@@ -174,111 +142,102 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		return theAttributePackage;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public EClass getUpdateAttributeEChange() {
+	public EClass getUpdateAttributeEChange() {
 		return updateAttributeEChangeEClass;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public EClass getAdditiveAttributeEChange() {
+	public EClass getAdditiveAttributeEChange() {
 		return additiveAttributeEChangeEClass;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public EAttribute getAdditiveAttributeEChange_NewValue() {
+	public EAttribute getAdditiveAttributeEChange_NewValue() {
 		return (EAttribute)additiveAttributeEChangeEClass.getEStructuralFeatures().get(0);
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public EClass getSubtractiveAttributeEChange() {
+	public EClass getSubtractiveAttributeEChange() {
 		return subtractiveAttributeEChangeEClass;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public EAttribute getSubtractiveAttributeEChange_OldValue() {
+	public EAttribute getSubtractiveAttributeEChange_OldValue() {
 		return (EAttribute)subtractiveAttributeEChangeEClass.getEStructuralFeatures().get(0);
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public EClass getReplaceSingleValuedEAttribute() {
-		return replaceSingleValuedEAttributeEClass;
-	}
-
-    /**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 */
-    public EClass getInsertEAttributeValue() {
+	public EClass getInsertEAttributeValue() {
 		return insertEAttributeValueEClass;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public EClass getRemoveEAttributeValue() {
+	public EClass getRemoveEAttributeValue() {
 		return removeEAttributeValueEClass;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public EClass getPermuteEAttributeValues() {
-		return permuteEAttributeValuesEClass;
+	public EClass getReplaceSingleValuedEAttribute() {
+		return replaceSingleValuedEAttributeEClass;
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public AttributeFactory getAttributeFactory() {
+	public AttributeFactory getAttributeFactory() {
 		return (AttributeFactory)getEFactoryInstance();
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    private boolean isCreated = false;
+	private boolean isCreated = false;
 
-    /**
+	/**
 	 * Creates the meta-model objects for the package.  This method is
 	 * guarded to have no affect on any invocation but its first.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public void createPackageContents() {
+	public void createPackageContents() {
 		if (isCreated) return;
 		isCreated = true;
 
@@ -295,26 +254,24 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		removeEAttributeValueEClass = createEClass(REMOVE_EATTRIBUTE_VALUE);
 
-		permuteEAttributeValuesEClass = createEClass(PERMUTE_EATTRIBUTE_VALUES);
-
 		replaceSingleValuedEAttributeEClass = createEClass(REPLACE_SINGLE_VALUED_EATTRIBUTE);
 	}
 
-    /**
+	/**
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    private boolean isInitialized = false;
+	private boolean isInitialized = false;
 
-    /**
+	/**
 	 * Complete the initialization of the package and its meta-model.  This
 	 * method is guarded to have no affect on any invocation but its first.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public void initializePackageContents() {
+	public void initializePackageContents() {
 		if (isInitialized) return;
 		isInitialized = true;
 
@@ -324,6 +281,7 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
 		ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
@@ -339,41 +297,38 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		ETypeParameter insertEAttributeValueEClass_T = addETypeParameter(insertEAttributeValueEClass, "T");
 		ETypeParameter removeEAttributeValueEClass_A = addETypeParameter(removeEAttributeValueEClass, "A");
 		ETypeParameter removeEAttributeValueEClass_T = addETypeParameter(removeEAttributeValueEClass, "T");
-		ETypeParameter permuteEAttributeValuesEClass_A = addETypeParameter(permuteEAttributeValuesEClass, "A");
 		ETypeParameter replaceSingleValuedEAttributeEClass_A = addETypeParameter(replaceSingleValuedEAttributeEClass, "A");
 		ETypeParameter replaceSingleValuedEAttributeEClass_T = addETypeParameter(replaceSingleValuedEAttributeEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(ecorePackage.getEObject());
+		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
 		updateAttributeEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
+		g1 = createEGenericType(theEcorePackage.getEObject());
 		additiveAttributeEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEJavaObject());
+		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		additiveAttributeEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
+		g1 = createEGenericType(theEcorePackage.getEObject());
 		subtractiveAttributeEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEJavaObject());
+		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		subtractiveAttributeEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
+		g1 = createEGenericType(theEcorePackage.getEObject());
 		insertEAttributeValueEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEJavaObject());
+		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		insertEAttributeValueEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
+		g1 = createEGenericType(theEcorePackage.getEObject());
 		removeEAttributeValueEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEJavaObject());
+		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		removeEAttributeValueEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
-		permuteEAttributeValuesEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEObject());
+		g1 = createEGenericType(theEcorePackage.getEObject());
 		replaceSingleValuedEAttributeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(ecorePackage.getEJavaObject());
+		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		replaceSingleValuedEAttributeEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
 		g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
 		EGenericType g2 = createEGenericType(updateAttributeEChangeEClass_A);
 		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(ecorePackage.getEAttribute());
+		g2 = createEGenericType(theEcorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		updateAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theEChangePackage.getAdditiveEChange());
@@ -395,7 +350,7 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g1 = createEGenericType(theListPackage.getInsertInListEChange());
 		g2 = createEGenericType(insertEAttributeValueEClass_A);
 		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(ecorePackage.getEAttribute());
+		g2 = createEGenericType(theEcorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(insertEAttributeValueEClass_T);
 		g1.getETypeArguments().add(g2);
@@ -409,7 +364,7 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g1 = createEGenericType(theListPackage.getRemoveFromListEChange());
 		g2 = createEGenericType(removeEAttributeValueEClass_A);
 		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(ecorePackage.getEAttribute());
+		g2 = createEGenericType(theEcorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(removeEAttributeValueEClass_T);
 		g1.getETypeArguments().add(g2);
@@ -420,16 +375,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g2 = createEGenericType(removeEAttributeValueEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theListPackage.getPermuteListEChange());
-		g2 = createEGenericType(permuteEAttributeValuesEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(ecorePackage.getEAttribute());
-		g1.getETypeArguments().add(g2);
-		permuteEAttributeValuesEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateAttributeEChange());
-		g2 = createEGenericType(permuteEAttributeValuesEClass_A);
-		g1.getETypeArguments().add(g2);
-		permuteEAttributeValuesEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getAdditiveAttributeEChange());
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -445,7 +390,7 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
 		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(ecorePackage.getEAttribute());
+		g2 = createEGenericType(theEcorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
 		g1.getETypeArguments().add(g2);
@@ -456,19 +401,20 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		initEClass(additiveAttributeEChangeEClass, AdditiveAttributeEChange.class, "AdditiveAttributeEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(additiveAttributeEChangeEClass_T);
-		initEAttribute(getAdditiveAttributeEChange_NewValue(), g1, "newValue", null, 1, 1, AdditiveAttributeEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAdditiveAttributeEChange_NewValue(), g1, "newValue", null, 1, 1, AdditiveAttributeEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(subtractiveAttributeEChangeEClass, SubtractiveAttributeEChange.class, "SubtractiveAttributeEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(subtractiveAttributeEChangeEClass_T);
-		initEAttribute(getSubtractiveAttributeEChange_OldValue(), g1, "oldValue", null, 1, 1, SubtractiveAttributeEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSubtractiveAttributeEChange_OldValue(), g1, "oldValue", null, 1, 1, SubtractiveAttributeEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(insertEAttributeValueEClass, InsertEAttributeValue.class, "InsertEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(removeEAttributeValueEClass, RemoveEAttributeValue.class, "RemoveEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(permuteEAttributeValuesEClass, PermuteEAttributeValues.class, "PermuteEAttributeValues", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
 		initEClass(replaceSingleValuedEAttributeEClass, ReplaceSingleValuedEAttribute.class, "ReplaceSingleValuedEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Create resource
+		createResource(eNS_URI);
 	}
 
 } //AttributePackageImpl

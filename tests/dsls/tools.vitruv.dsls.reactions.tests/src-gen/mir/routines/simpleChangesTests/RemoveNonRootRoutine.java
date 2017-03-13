@@ -56,11 +56,11 @@ public class RemoveNonRootRoutine extends AbstractRepairRoutineRealization {
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     userExecution.callRoutine1(removedNonRoot, targetElement, actionsFacade);
     
     deleteObject(userExecution.getElement1(removedNonRoot, targetElement));
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

@@ -72,13 +72,28 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
       case ReactionsLanguagePackage.INVARIANT_VIOLATION_EVENT: return createInvariantViolationEvent();
       case ReactionsLanguagePackage.TRIGGER: return createTrigger();
       case ReactionsLanguagePackage.MODEL_CHANGE: return createModelChange();
-      case ReactionsLanguagePackage.CONCRETE_MODEL_ELEMENT_CHANGE: return createConcreteModelElementChange();
-      case ReactionsLanguagePackage.ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE: return createAtomicConcreteModelElementChange();
-      case ReactionsLanguagePackage.ATOMIC_ROOT_OBJECT_CHANGE: return createAtomicRootObjectChange();
-      case ReactionsLanguagePackage.ATOMIC_FEATURE_CHANGE: return createAtomicFeatureChange();
-      case ReactionsLanguagePackage.ATOMIC_MULTI_VALUED_FEATURE_CHANGE: return createAtomicMultiValuedFeatureChange();
-      case ReactionsLanguagePackage.ATOMIC_SINGLE_VALUED_FEATURE_CHANGE: return createAtomicSingleValuedFeatureChange();
-      case ReactionsLanguagePackage.ARBITRARY_MODEL_ELEMENT_CHANGE: return createArbitraryModelElementChange();
+      case ReactionsLanguagePackage.CONCRETE_MODEL_CHANGE: return createConcreteModelChange();
+      case ReactionsLanguagePackage.MODEL_ELEMENT_CHANGE: return createModelElementChange();
+      case ReactionsLanguagePackage.MODEL_ATTRIBUTE_CHANGE: return createModelAttributeChange();
+      case ReactionsLanguagePackage.ARBITRARY_MODEL_CHANGE: return createArbitraryModelChange();
+      case ReactionsLanguagePackage.ELEMENT_EXISTENCE_CHANGE_TYPE: return createElementExistenceChangeType();
+      case ReactionsLanguagePackage.MODEL_ELEMENT_USAGE_CHANGE_TYPE: return createModelElementUsageChangeType();
+      case ReactionsLanguagePackage.ELEMENT_CREATION_CHANGE_TYPE: return createElementCreationChangeType();
+      case ReactionsLanguagePackage.ELEMENT_DELETION_CHANGE_TYPE: return createElementDeletionChangeType();
+      case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE: return createElementFeatureChangeType();
+      case ReactionsLanguagePackage.ELEMENT_ROOT_CHANGE_TYPE: return createElementRootChangeType();
+      case ReactionsLanguagePackage.ELEMENT_INSERTION_CHANGE_TYPE: return createElementInsertionChangeType();
+      case ReactionsLanguagePackage.ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE: return createElementInsertionInListChangeType();
+      case ReactionsLanguagePackage.ELEMENT_INSERTION_AS_ROOT_CHANGE_TYPE: return createElementInsertionAsRootChangeType();
+      case ReactionsLanguagePackage.ELEMENT_REMOVAL_CHANGE_TYPE: return createElementRemovalChangeType();
+      case ReactionsLanguagePackage.ELEMENT_REMOVAL_AS_ROOT_CHANGE_TYPE: return createElementRemovalAsRootChangeType();
+      case ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE: return createElementRemovalFromListChangeType();
+      case ReactionsLanguagePackage.ELEMENT_REPLACEMENT_CHANGE_TYPE: return createElementReplacementChangeType();
+      case ReactionsLanguagePackage.ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE: return createElementCreationAndInsertionChangeType();
+      case ReactionsLanguagePackage.ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE: return createElementDeletionAndRemovalChangeType();
+      case ReactionsLanguagePackage.ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE: return createElementDeletionAndCreationAndReplacementChangeType();
+      case ReactionsLanguagePackage.ELEMENT_CHANGE_TYPE: return createElementChangeType();
+      case ReactionsLanguagePackage.ELEMENT_COMPOUND_CHANGE_TYPE: return createElementCompoundChangeType();
       case ReactionsLanguagePackage.ROUTINE: return createRoutine();
       case ReactionsLanguagePackage.ROUTINE_INPUT: return createRoutineInput();
       case ReactionsLanguagePackage.MATCHER: return createMatcher();
@@ -103,12 +118,9 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
       case ReactionsLanguagePackage.CORRESPONDING_OBJECT_CODE_BLOCK: return createCorrespondingObjectCodeBlock();
       case ReactionsLanguagePackage.EXECUTION_CODE_BLOCK: return createExecutionCodeBlock();
       case ReactionsLanguagePackage.RETURN_STATEMENT: return createReturnStatement();
-      case ReactionsLanguagePackage.INSERT_ROOT_CHANGE: return createInsertRootChange();
-      case ReactionsLanguagePackage.REMOVE_ROOT_CHANGE: return createRemoveRootChange();
-      case ReactionsLanguagePackage.MULTI_VALUED_FEATURE_INSERT_CHANGE: return createMultiValuedFeatureInsertChange();
-      case ReactionsLanguagePackage.MULTI_VALUED_FEATURE_REMOVE_CHANGE: return createMultiValuedFeatureRemoveChange();
-      case ReactionsLanguagePackage.MULTI_VALUED_FEATURE_PERMUTE_CHANGE: return createMultiValuedFeaturePermuteChange();
-      case ReactionsLanguagePackage.SINGLE_VALUED_FEATURE_REPLACE: return createSingleValuedFeatureReplace();
+      case ReactionsLanguagePackage.MODEL_ATTRIBUTE_INSERTED_CHANGE: return createModelAttributeInsertedChange();
+      case ReactionsLanguagePackage.MODEL_ATTRIBUTE_REMOVED_CHANGE: return createModelAttributeRemovedChange();
+      case ReactionsLanguagePackage.MODEL_ATTRIBUTE_REPLACED_CHANGE: return createModelAttributeReplacedChange();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -196,10 +208,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public ConcreteModelElementChange createConcreteModelElementChange()
+  public ConcreteModelChange createConcreteModelChange()
   {
-    ConcreteModelElementChangeImpl concreteModelElementChange = new ConcreteModelElementChangeImpl();
-    return concreteModelElementChange;
+    ConcreteModelChangeImpl concreteModelChange = new ConcreteModelChangeImpl();
+    return concreteModelChange;
   }
 
   /**
@@ -207,10 +219,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public AtomicConcreteModelElementChange createAtomicConcreteModelElementChange()
+  public ModelElementChange createModelElementChange()
   {
-    AtomicConcreteModelElementChangeImpl atomicConcreteModelElementChange = new AtomicConcreteModelElementChangeImpl();
-    return atomicConcreteModelElementChange;
+    ModelElementChangeImpl modelElementChange = new ModelElementChangeImpl();
+    return modelElementChange;
   }
 
   /**
@@ -218,10 +230,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public AtomicRootObjectChange createAtomicRootObjectChange()
+  public ModelAttributeChange createModelAttributeChange()
   {
-    AtomicRootObjectChangeImpl atomicRootObjectChange = new AtomicRootObjectChangeImpl();
-    return atomicRootObjectChange;
+    ModelAttributeChangeImpl modelAttributeChange = new ModelAttributeChangeImpl();
+    return modelAttributeChange;
   }
 
   /**
@@ -229,10 +241,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public AtomicFeatureChange createAtomicFeatureChange()
+  public ArbitraryModelChange createArbitraryModelChange()
   {
-    AtomicFeatureChangeImpl atomicFeatureChange = new AtomicFeatureChangeImpl();
-    return atomicFeatureChange;
+    ArbitraryModelChangeImpl arbitraryModelChange = new ArbitraryModelChangeImpl();
+    return arbitraryModelChange;
   }
 
   /**
@@ -240,10 +252,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public AtomicMultiValuedFeatureChange createAtomicMultiValuedFeatureChange()
+  public ElementExistenceChangeType createElementExistenceChangeType()
   {
-    AtomicMultiValuedFeatureChangeImpl atomicMultiValuedFeatureChange = new AtomicMultiValuedFeatureChangeImpl();
-    return atomicMultiValuedFeatureChange;
+    ElementExistenceChangeTypeImpl elementExistenceChangeType = new ElementExistenceChangeTypeImpl();
+    return elementExistenceChangeType;
   }
 
   /**
@@ -251,10 +263,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public AtomicSingleValuedFeatureChange createAtomicSingleValuedFeatureChange()
+  public ModelElementUsageChangeType createModelElementUsageChangeType()
   {
-    AtomicSingleValuedFeatureChangeImpl atomicSingleValuedFeatureChange = new AtomicSingleValuedFeatureChangeImpl();
-    return atomicSingleValuedFeatureChange;
+    ModelElementUsageChangeTypeImpl modelElementUsageChangeType = new ModelElementUsageChangeTypeImpl();
+    return modelElementUsageChangeType;
   }
 
   /**
@@ -262,10 +274,175 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public ArbitraryModelElementChange createArbitraryModelElementChange()
+  public ElementCreationChangeType createElementCreationChangeType()
   {
-    ArbitraryModelElementChangeImpl arbitraryModelElementChange = new ArbitraryModelElementChangeImpl();
-    return arbitraryModelElementChange;
+    ElementCreationChangeTypeImpl elementCreationChangeType = new ElementCreationChangeTypeImpl();
+    return elementCreationChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementDeletionChangeType createElementDeletionChangeType()
+  {
+    ElementDeletionChangeTypeImpl elementDeletionChangeType = new ElementDeletionChangeTypeImpl();
+    return elementDeletionChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementFeatureChangeType createElementFeatureChangeType()
+  {
+    ElementFeatureChangeTypeImpl elementFeatureChangeType = new ElementFeatureChangeTypeImpl();
+    return elementFeatureChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementRootChangeType createElementRootChangeType()
+  {
+    ElementRootChangeTypeImpl elementRootChangeType = new ElementRootChangeTypeImpl();
+    return elementRootChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementInsertionChangeType createElementInsertionChangeType()
+  {
+    ElementInsertionChangeTypeImpl elementInsertionChangeType = new ElementInsertionChangeTypeImpl();
+    return elementInsertionChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementInsertionInListChangeType createElementInsertionInListChangeType()
+  {
+    ElementInsertionInListChangeTypeImpl elementInsertionInListChangeType = new ElementInsertionInListChangeTypeImpl();
+    return elementInsertionInListChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementInsertionAsRootChangeType createElementInsertionAsRootChangeType()
+  {
+    ElementInsertionAsRootChangeTypeImpl elementInsertionAsRootChangeType = new ElementInsertionAsRootChangeTypeImpl();
+    return elementInsertionAsRootChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementRemovalChangeType createElementRemovalChangeType()
+  {
+    ElementRemovalChangeTypeImpl elementRemovalChangeType = new ElementRemovalChangeTypeImpl();
+    return elementRemovalChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementRemovalAsRootChangeType createElementRemovalAsRootChangeType()
+  {
+    ElementRemovalAsRootChangeTypeImpl elementRemovalAsRootChangeType = new ElementRemovalAsRootChangeTypeImpl();
+    return elementRemovalAsRootChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementRemovalFromListChangeType createElementRemovalFromListChangeType()
+  {
+    ElementRemovalFromListChangeTypeImpl elementRemovalFromListChangeType = new ElementRemovalFromListChangeTypeImpl();
+    return elementRemovalFromListChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementReplacementChangeType createElementReplacementChangeType()
+  {
+    ElementReplacementChangeTypeImpl elementReplacementChangeType = new ElementReplacementChangeTypeImpl();
+    return elementReplacementChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementCreationAndInsertionChangeType createElementCreationAndInsertionChangeType()
+  {
+    ElementCreationAndInsertionChangeTypeImpl elementCreationAndInsertionChangeType = new ElementCreationAndInsertionChangeTypeImpl();
+    return elementCreationAndInsertionChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementDeletionAndRemovalChangeType createElementDeletionAndRemovalChangeType()
+  {
+    ElementDeletionAndRemovalChangeTypeImpl elementDeletionAndRemovalChangeType = new ElementDeletionAndRemovalChangeTypeImpl();
+    return elementDeletionAndRemovalChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementDeletionAndCreationAndReplacementChangeType createElementDeletionAndCreationAndReplacementChangeType()
+  {
+    ElementDeletionAndCreationAndReplacementChangeTypeImpl elementDeletionAndCreationAndReplacementChangeType = new ElementDeletionAndCreationAndReplacementChangeTypeImpl();
+    return elementDeletionAndCreationAndReplacementChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementChangeType createElementChangeType()
+  {
+    ElementChangeTypeImpl elementChangeType = new ElementChangeTypeImpl();
+    return elementChangeType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementCompoundChangeType createElementCompoundChangeType()
+  {
+    ElementCompoundChangeTypeImpl elementCompoundChangeType = new ElementCompoundChangeTypeImpl();
+    return elementCompoundChangeType;
   }
 
   /**
@@ -537,10 +714,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public InsertRootChange createInsertRootChange()
+  public ModelAttributeInsertedChange createModelAttributeInsertedChange()
   {
-    InsertRootChangeImpl insertRootChange = new InsertRootChangeImpl();
-    return insertRootChange;
+    ModelAttributeInsertedChangeImpl modelAttributeInsertedChange = new ModelAttributeInsertedChangeImpl();
+    return modelAttributeInsertedChange;
   }
 
   /**
@@ -548,10 +725,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public RemoveRootChange createRemoveRootChange()
+  public ModelAttributeRemovedChange createModelAttributeRemovedChange()
   {
-    RemoveRootChangeImpl removeRootChange = new RemoveRootChangeImpl();
-    return removeRootChange;
+    ModelAttributeRemovedChangeImpl modelAttributeRemovedChange = new ModelAttributeRemovedChangeImpl();
+    return modelAttributeRemovedChange;
   }
 
   /**
@@ -559,43 +736,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public MultiValuedFeatureInsertChange createMultiValuedFeatureInsertChange()
+  public ModelAttributeReplacedChange createModelAttributeReplacedChange()
   {
-    MultiValuedFeatureInsertChangeImpl multiValuedFeatureInsertChange = new MultiValuedFeatureInsertChangeImpl();
-    return multiValuedFeatureInsertChange;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public MultiValuedFeatureRemoveChange createMultiValuedFeatureRemoveChange()
-  {
-    MultiValuedFeatureRemoveChangeImpl multiValuedFeatureRemoveChange = new MultiValuedFeatureRemoveChangeImpl();
-    return multiValuedFeatureRemoveChange;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public MultiValuedFeaturePermuteChange createMultiValuedFeaturePermuteChange()
-  {
-    MultiValuedFeaturePermuteChangeImpl multiValuedFeaturePermuteChange = new MultiValuedFeaturePermuteChangeImpl();
-    return multiValuedFeaturePermuteChange;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public SingleValuedFeatureReplace createSingleValuedFeatureReplace()
-  {
-    SingleValuedFeatureReplaceImpl singleValuedFeatureReplace = new SingleValuedFeatureReplaceImpl();
-    return singleValuedFeatureReplace;
+    ModelAttributeReplacedChangeImpl modelAttributeReplacedChange = new ModelAttributeReplacedChangeImpl();
+    return modelAttributeReplacedChange;
   }
 
   /**

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius DSLs Mapping Language UI
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 0.2.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.mapping.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: tools.vitruv.dsls.mapping;visibility:=reexport,

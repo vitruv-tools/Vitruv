@@ -241,7 +241,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getCodeBlock()
    * @generated
    */
-  int CODE_BLOCK = 28;
+  int CODE_BLOCK = 43;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -269,7 +269,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getRoutineCallBlock()
    * @generated
    */
-  int ROUTINE_CALL_BLOCK = 30;
+  int ROUTINE_CALL_BLOCK = 45;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -429,14 +429,14 @@ public interface ReactionsLanguagePackage extends EPackage
   int MODEL_CHANGE_FEATURE_COUNT = TRIGGER_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ConcreteModelElementChangeImpl <em>Concrete Model Element Change</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ConcreteModelChangeImpl <em>Concrete Model Change</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ConcreteModelElementChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getConcreteModelElementChange()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ConcreteModelChangeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getConcreteModelChange()
    * @generated
    */
-  int CONCRETE_MODEL_ELEMENT_CHANGE = 7;
+  int CONCRETE_MODEL_CHANGE = 7;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -445,26 +445,26 @@ public interface ReactionsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int CONCRETE_MODEL_ELEMENT_CHANGE__PRECONDITION = MODEL_CHANGE__PRECONDITION;
+  int CONCRETE_MODEL_CHANGE__PRECONDITION = MODEL_CHANGE__PRECONDITION;
 
   /**
-   * The number of structural features of the '<em>Concrete Model Element Change</em>' class.
+   * The number of structural features of the '<em>Concrete Model Change</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CONCRETE_MODEL_ELEMENT_CHANGE_FEATURE_COUNT = MODEL_CHANGE_FEATURE_COUNT + 0;
+  int CONCRETE_MODEL_CHANGE_FEATURE_COUNT = MODEL_CHANGE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicConcreteModelElementChangeImpl <em>Atomic Concrete Model Element Change</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelElementChangeImpl <em>Model Element Change</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicConcreteModelElementChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicConcreteModelElementChange()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelElementChangeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelElementChange()
    * @generated
    */
-  int ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE = 8;
+  int MODEL_ELEMENT_CHANGE = 8;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -473,26 +473,44 @@ public interface ReactionsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE__PRECONDITION = CONCRETE_MODEL_ELEMENT_CHANGE__PRECONDITION;
+  int MODEL_ELEMENT_CHANGE__PRECONDITION = CONCRETE_MODEL_CHANGE__PRECONDITION;
 
   /**
-   * The number of structural features of the '<em>Atomic Concrete Model Element Change</em>' class.
+   * The feature id for the '<em><b>Element Type</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE_FEATURE_COUNT = CONCRETE_MODEL_ELEMENT_CHANGE_FEATURE_COUNT + 0;
+  int MODEL_ELEMENT_CHANGE__ELEMENT_TYPE = CONCRETE_MODEL_CHANGE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicRootObjectChangeImpl <em>Atomic Root Object Change</em>}' class.
+   * The feature id for the '<em><b>Change Type</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicRootObjectChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicRootObjectChange()
+   * @generated
+   * @ordered
+   */
+  int MODEL_ELEMENT_CHANGE__CHANGE_TYPE = CONCRETE_MODEL_CHANGE_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Model Element Change</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MODEL_ELEMENT_CHANGE_FEATURE_COUNT = CONCRETE_MODEL_CHANGE_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeChangeImpl <em>Model Attribute Change</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeChangeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelAttributeChange()
    * @generated
    */
-  int ATOMIC_ROOT_OBJECT_CHANGE = 9;
+  int MODEL_ATTRIBUTE_CHANGE = 9;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -501,35 +519,35 @@ public interface ReactionsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int ATOMIC_ROOT_OBJECT_CHANGE__PRECONDITION = ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE__PRECONDITION;
+  int MODEL_ATTRIBUTE_CHANGE__PRECONDITION = CONCRETE_MODEL_CHANGE__PRECONDITION;
 
   /**
-   * The feature id for the '<em><b>Changed Element</b></em>' containment reference.
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT = ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE_FEATURE_COUNT + 0;
+  int MODEL_ATTRIBUTE_CHANGE__FEATURE = CONCRETE_MODEL_CHANGE_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the '<em>Atomic Root Object Change</em>' class.
+   * The number of structural features of the '<em>Model Attribute Change</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ATOMIC_ROOT_OBJECT_CHANGE_FEATURE_COUNT = ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE_FEATURE_COUNT + 1;
+  int MODEL_ATTRIBUTE_CHANGE_FEATURE_COUNT = CONCRETE_MODEL_CHANGE_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicFeatureChangeImpl <em>Atomic Feature Change</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ArbitraryModelChangeImpl <em>Arbitrary Model Change</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicFeatureChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicFeatureChange()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ArbitraryModelChangeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getArbitraryModelChange()
    * @generated
    */
-  int ATOMIC_FEATURE_CHANGE = 10;
+  int ARBITRARY_MODEL_CHANGE = 10;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -538,127 +556,457 @@ public interface ReactionsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int ATOMIC_FEATURE_CHANGE__PRECONDITION = ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE__PRECONDITION;
+  int ARBITRARY_MODEL_CHANGE__PRECONDITION = MODEL_CHANGE__PRECONDITION;
 
   /**
-   * The feature id for the '<em><b>Changed Feature</b></em>' containment reference.
+   * The number of structural features of the '<em>Arbitrary Model Change</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE = ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE_FEATURE_COUNT + 0;
+  int ARBITRARY_MODEL_CHANGE_FEATURE_COUNT = MODEL_CHANGE_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the '<em>Atomic Feature Change</em>' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementChangeTypeImpl <em>Element Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementChangeType()
+   * @generated
+   */
+  int ELEMENT_CHANGE_TYPE = 27;
+
+  /**
+   * The number of structural features of the '<em>Element Change Type</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ATOMIC_FEATURE_CHANGE_FEATURE_COUNT = ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE_FEATURE_COUNT + 1;
+  int ELEMENT_CHANGE_TYPE_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicMultiValuedFeatureChangeImpl <em>Atomic Multi Valued Feature Change</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementExistenceChangeTypeImpl <em>Element Existence Change Type</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicMultiValuedFeatureChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicMultiValuedFeatureChange()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementExistenceChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementExistenceChangeType()
    * @generated
    */
-  int ATOMIC_MULTI_VALUED_FEATURE_CHANGE = 11;
+  int ELEMENT_EXISTENCE_CHANGE_TYPE = 11;
 
   /**
-   * The feature id for the '<em><b>Precondition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ATOMIC_MULTI_VALUED_FEATURE_CHANGE__PRECONDITION = ATOMIC_FEATURE_CHANGE__PRECONDITION;
-
-  /**
-   * The feature id for the '<em><b>Changed Feature</b></em>' containment reference.
+   * The number of structural features of the '<em>Element Existence Change Type</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ATOMIC_MULTI_VALUED_FEATURE_CHANGE__CHANGED_FEATURE = ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE;
+  int ELEMENT_EXISTENCE_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_CHANGE_TYPE_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the '<em>Atomic Multi Valued Feature Change</em>' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelElementUsageChangeTypeImpl <em>Model Element Usage Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelElementUsageChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelElementUsageChangeType()
+   * @generated
+   */
+  int MODEL_ELEMENT_USAGE_CHANGE_TYPE = 12;
+
+  /**
+   * The number of structural features of the '<em>Model Element Usage Change Type</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ATOMIC_MULTI_VALUED_FEATURE_CHANGE_FEATURE_COUNT = ATOMIC_FEATURE_CHANGE_FEATURE_COUNT + 0;
+  int MODEL_ELEMENT_USAGE_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_CHANGE_TYPE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicSingleValuedFeatureChangeImpl <em>Atomic Single Valued Feature Change</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCreationChangeTypeImpl <em>Element Creation Change Type</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicSingleValuedFeatureChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicSingleValuedFeatureChange()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCreationChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementCreationChangeType()
    * @generated
    */
-  int ATOMIC_SINGLE_VALUED_FEATURE_CHANGE = 12;
+  int ELEMENT_CREATION_CHANGE_TYPE = 13;
 
   /**
-   * The feature id for the '<em><b>Precondition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ATOMIC_SINGLE_VALUED_FEATURE_CHANGE__PRECONDITION = ATOMIC_FEATURE_CHANGE__PRECONDITION;
-
-  /**
-   * The feature id for the '<em><b>Changed Feature</b></em>' containment reference.
+   * The number of structural features of the '<em>Element Creation Change Type</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ATOMIC_SINGLE_VALUED_FEATURE_CHANGE__CHANGED_FEATURE = ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE;
+  int ELEMENT_CREATION_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_EXISTENCE_CHANGE_TYPE_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the '<em>Atomic Single Valued Feature Change</em>' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionChangeTypeImpl <em>Element Deletion Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementDeletionChangeType()
+   * @generated
+   */
+  int ELEMENT_DELETION_CHANGE_TYPE = 14;
+
+  /**
+   * The number of structural features of the '<em>Element Deletion Change Type</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ATOMIC_SINGLE_VALUED_FEATURE_CHANGE_FEATURE_COUNT = ATOMIC_FEATURE_CHANGE_FEATURE_COUNT + 0;
+  int ELEMENT_DELETION_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_EXISTENCE_CHANGE_TYPE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ArbitraryModelElementChangeImpl <em>Arbitrary Model Element Change</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementFeatureChangeTypeImpl <em>Element Feature Change Type</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ArbitraryModelElementChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getArbitraryModelElementChange()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementFeatureChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementFeatureChangeType()
    * @generated
    */
-  int ARBITRARY_MODEL_ELEMENT_CHANGE = 13;
+  int ELEMENT_FEATURE_CHANGE_TYPE = 15;
 
   /**
-   * The feature id for the '<em><b>Precondition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ARBITRARY_MODEL_ELEMENT_CHANGE__PRECONDITION = MODEL_CHANGE__PRECONDITION;
-
-  /**
-   * The number of structural features of the '<em>Arbitrary Model Element Change</em>' class.
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ARBITRARY_MODEL_ELEMENT_CHANGE_FEATURE_COUNT = MODEL_CHANGE_FEATURE_COUNT + 0;
+  int ELEMENT_FEATURE_CHANGE_TYPE__FEATURE = 0;
+
+  /**
+   * The number of structural features of the '<em>Element Feature Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_FEATURE_CHANGE_TYPE_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRootChangeTypeImpl <em>Element Root Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRootChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementRootChangeType()
+   * @generated
+   */
+  int ELEMENT_ROOT_CHANGE_TYPE = 16;
+
+  /**
+   * The number of structural features of the '<em>Element Root Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_ROOT_CHANGE_TYPE_FEATURE_COUNT = 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionChangeTypeImpl <em>Element Insertion Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementInsertionChangeType()
+   * @generated
+   */
+  int ELEMENT_INSERTION_CHANGE_TYPE = 17;
+
+  /**
+   * The number of structural features of the '<em>Element Insertion Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_INSERTION_CHANGE_TYPE_FEATURE_COUNT = MODEL_ELEMENT_USAGE_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionInListChangeTypeImpl <em>Element Insertion In List Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionInListChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementInsertionInListChangeType()
+   * @generated
+   */
+  int ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE = 18;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE__FEATURE = ELEMENT_INSERTION_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Element Insertion In List Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_INSERTION_CHANGE_TYPE_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionAsRootChangeTypeImpl <em>Element Insertion As Root Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionAsRootChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementInsertionAsRootChangeType()
+   * @generated
+   */
+  int ELEMENT_INSERTION_AS_ROOT_CHANGE_TYPE = 19;
+
+  /**
+   * The number of structural features of the '<em>Element Insertion As Root Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_INSERTION_AS_ROOT_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_ROOT_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalChangeTypeImpl <em>Element Removal Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementRemovalChangeType()
+   * @generated
+   */
+  int ELEMENT_REMOVAL_CHANGE_TYPE = 20;
+
+  /**
+   * The number of structural features of the '<em>Element Removal Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_REMOVAL_CHANGE_TYPE_FEATURE_COUNT = MODEL_ELEMENT_USAGE_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalAsRootChangeTypeImpl <em>Element Removal As Root Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalAsRootChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementRemovalAsRootChangeType()
+   * @generated
+   */
+  int ELEMENT_REMOVAL_AS_ROOT_CHANGE_TYPE = 21;
+
+  /**
+   * The number of structural features of the '<em>Element Removal As Root Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_REMOVAL_AS_ROOT_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_ROOT_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalFromListChangeTypeImpl <em>Element Removal From List Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalFromListChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementRemovalFromListChangeType()
+   * @generated
+   */
+  int ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE = 22;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE__FEATURE = ELEMENT_REMOVAL_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Element Removal From List Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_REMOVAL_CHANGE_TYPE_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementReplacementChangeTypeImpl <em>Element Replacement Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementReplacementChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementReplacementChangeType()
+   * @generated
+   */
+  int ELEMENT_REPLACEMENT_CHANGE_TYPE = 23;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_REPLACEMENT_CHANGE_TYPE__FEATURE = MODEL_ELEMENT_USAGE_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Element Replacement Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_REPLACEMENT_CHANGE_TYPE_FEATURE_COUNT = MODEL_ELEMENT_USAGE_CHANGE_TYPE_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCompoundChangeTypeImpl <em>Element Compound Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCompoundChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementCompoundChangeType()
+   * @generated
+   */
+  int ELEMENT_COMPOUND_CHANGE_TYPE = 28;
+
+  /**
+   * The number of structural features of the '<em>Element Compound Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCreationAndInsertionChangeTypeImpl <em>Element Creation And Insertion Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCreationAndInsertionChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementCreationAndInsertionChangeType()
+   * @generated
+   */
+  int ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE = 24;
+
+  /**
+   * The feature id for the '<em><b>Create Change</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__CREATE_CHANGE = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Insert Change</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__INSERT_CHANGE = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Element Creation And Insertion Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionAndRemovalChangeTypeImpl <em>Element Deletion And Removal Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionAndRemovalChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementDeletionAndRemovalChangeType()
+   * @generated
+   */
+  int ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE = 25;
+
+  /**
+   * The feature id for the '<em><b>Delete Change</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__DELETE_CHANGE = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__REMOVE_CHANGE = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Element Deletion And Removal Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionAndCreationAndReplacementChangeTypeImpl <em>Element Deletion And Creation And Replacement Change Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionAndCreationAndReplacementChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementDeletionAndCreationAndReplacementChangeType()
+   * @generated
+   */
+  int ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE = 26;
+
+  /**
+   * The feature id for the '<em><b>Delete Change</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__DELETE_CHANGE = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Create Change</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__CREATE_CHANGE = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Replaced Change</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__REPLACED_CHANGE = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Element Deletion And Creation And Replacement Change Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_COMPOUND_CHANGE_TYPE_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.RoutineImpl <em>Routine</em>}' class.
@@ -668,7 +1016,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getRoutine()
    * @generated
    */
-  int ROUTINE = 14;
+  int ROUTINE = 29;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -741,7 +1089,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getRoutineInput()
    * @generated
    */
-  int ROUTINE_INPUT = 15;
+  int ROUTINE_INPUT = 30;
 
   /**
    * The feature id for the '<em><b>Model Input Elements</b></em>' containment reference list.
@@ -778,7 +1126,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getMatcher()
    * @generated
    */
-  int MATCHER = 16;
+  int MATCHER = 31;
 
   /**
    * The feature id for the '<em><b>Matcher Statements</b></em>' containment reference list.
@@ -806,7 +1154,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getMatcherStatement()
    * @generated
    */
-  int MATCHER_STATEMENT = 17;
+  int MATCHER_STATEMENT = 32;
 
   /**
    * The number of structural features of the '<em>Matcher Statement</em>' class.
@@ -825,7 +1173,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getRetrieveModelElement()
    * @generated
    */
-  int RETRIEVE_MODEL_ELEMENT = 18;
+  int RETRIEVE_MODEL_ELEMENT = 33;
 
   /**
    * The feature id for the '<em><b>Metamodel</b></em>' reference.
@@ -916,7 +1264,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getMatcherCheckStatement()
    * @generated
    */
-  int MATCHER_CHECK_STATEMENT = 19;
+  int MATCHER_CHECK_STATEMENT = 34;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -944,7 +1292,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAction()
    * @generated
    */
-  int ACTION = 20;
+  int ACTION = 35;
 
   /**
    * The feature id for the '<em><b>Action Statements</b></em>' containment reference list.
@@ -972,7 +1320,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getRoutineCallStatement()
    * @generated
    */
-  int ROUTINE_CALL_STATEMENT = 21;
+  int ROUTINE_CALL_STATEMENT = 36;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1009,7 +1357,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getExecuteActionBlock()
    * @generated
    */
-  int EXECUTE_ACTION_BLOCK = 29;
+  int EXECUTE_ACTION_BLOCK = 44;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1037,7 +1385,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getActionStatement()
    * @generated
    */
-  int ACTION_STATEMENT = 22;
+  int ACTION_STATEMENT = 37;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1065,7 +1413,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getCreateModelElement()
    * @generated
    */
-  int CREATE_MODEL_ELEMENT = 23;
+  int CREATE_MODEL_ELEMENT = 38;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1129,7 +1477,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getDeleteModelElement()
    * @generated
    */
-  int DELETE_MODEL_ELEMENT = 24;
+  int DELETE_MODEL_ELEMENT = 39;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1166,7 +1514,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getUpdateModelElement()
    * @generated
    */
-  int UPDATE_MODEL_ELEMENT = 25;
+  int UPDATE_MODEL_ELEMENT = 40;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1212,7 +1560,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getCreateCorrespondence()
    * @generated
    */
-  int CREATE_CORRESPONDENCE = 26;
+  int CREATE_CORRESPONDENCE = 41;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1267,7 +1615,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getRemoveCorrespondence()
    * @generated
    */
-  int REMOVE_CORRESPONDENCE = 27;
+  int REMOVE_CORRESPONDENCE = 42;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1313,7 +1661,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getTaggable()
    * @generated
    */
-  int TAGGABLE = 31;
+  int TAGGABLE = 46;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1341,7 +1689,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getExistingElementReference()
    * @generated
    */
-  int EXISTING_ELEMENT_REFERENCE = 32;
+  int EXISTING_ELEMENT_REFERENCE = 47;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1369,7 +1717,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getTagCodeBlock()
    * @generated
    */
-  int TAG_CODE_BLOCK = 33;
+  int TAG_CODE_BLOCK = 48;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1397,7 +1745,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getPreconditionCodeBlock()
    * @generated
    */
-  int PRECONDITION_CODE_BLOCK = 34;
+  int PRECONDITION_CODE_BLOCK = 49;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1425,7 +1773,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getCorrespondingObjectCodeBlock()
    * @generated
    */
-  int CORRESPONDING_OBJECT_CODE_BLOCK = 35;
+  int CORRESPONDING_OBJECT_CODE_BLOCK = 50;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1453,7 +1801,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getExecutionCodeBlock()
    * @generated
    */
-  int EXECUTION_CODE_BLOCK = 36;
+  int EXECUTION_CODE_BLOCK = 51;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1481,7 +1829,7 @@ public interface ReactionsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getReturnStatement()
    * @generated
    */
-  int RETURN_STATEMENT = 37;
+  int RETURN_STATEMENT = 52;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' containment reference.
@@ -1502,14 +1850,14 @@ public interface ReactionsLanguagePackage extends EPackage
   int RETURN_STATEMENT_FEATURE_COUNT = 1;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.InsertRootChangeImpl <em>Insert Root Change</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeInsertedChangeImpl <em>Model Attribute Inserted Change</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.InsertRootChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getInsertRootChange()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeInsertedChangeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelAttributeInsertedChange()
    * @generated
    */
-  int INSERT_ROOT_CHANGE = 38;
+  int MODEL_ATTRIBUTE_INSERTED_CHANGE = 53;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1518,35 +1866,35 @@ public interface ReactionsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int INSERT_ROOT_CHANGE__PRECONDITION = ATOMIC_ROOT_OBJECT_CHANGE__PRECONDITION;
+  int MODEL_ATTRIBUTE_INSERTED_CHANGE__PRECONDITION = MODEL_ATTRIBUTE_CHANGE__PRECONDITION;
 
   /**
-   * The feature id for the '<em><b>Changed Element</b></em>' containment reference.
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int INSERT_ROOT_CHANGE__CHANGED_ELEMENT = ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT;
+  int MODEL_ATTRIBUTE_INSERTED_CHANGE__FEATURE = MODEL_ATTRIBUTE_CHANGE__FEATURE;
 
   /**
-   * The number of structural features of the '<em>Insert Root Change</em>' class.
+   * The number of structural features of the '<em>Model Attribute Inserted Change</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int INSERT_ROOT_CHANGE_FEATURE_COUNT = ATOMIC_ROOT_OBJECT_CHANGE_FEATURE_COUNT + 0;
+  int MODEL_ATTRIBUTE_INSERTED_CHANGE_FEATURE_COUNT = MODEL_ATTRIBUTE_CHANGE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.RemoveRootChangeImpl <em>Remove Root Change</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeRemovedChangeImpl <em>Model Attribute Removed Change</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.RemoveRootChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getRemoveRootChange()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeRemovedChangeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelAttributeRemovedChange()
    * @generated
    */
-  int REMOVE_ROOT_CHANGE = 39;
+  int MODEL_ATTRIBUTE_REMOVED_CHANGE = 54;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1555,35 +1903,35 @@ public interface ReactionsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int REMOVE_ROOT_CHANGE__PRECONDITION = ATOMIC_ROOT_OBJECT_CHANGE__PRECONDITION;
+  int MODEL_ATTRIBUTE_REMOVED_CHANGE__PRECONDITION = MODEL_ATTRIBUTE_CHANGE__PRECONDITION;
 
   /**
-   * The feature id for the '<em><b>Changed Element</b></em>' containment reference.
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int REMOVE_ROOT_CHANGE__CHANGED_ELEMENT = ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT;
+  int MODEL_ATTRIBUTE_REMOVED_CHANGE__FEATURE = MODEL_ATTRIBUTE_CHANGE__FEATURE;
 
   /**
-   * The number of structural features of the '<em>Remove Root Change</em>' class.
+   * The number of structural features of the '<em>Model Attribute Removed Change</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int REMOVE_ROOT_CHANGE_FEATURE_COUNT = ATOMIC_ROOT_OBJECT_CHANGE_FEATURE_COUNT + 0;
+  int MODEL_ATTRIBUTE_REMOVED_CHANGE_FEATURE_COUNT = MODEL_ATTRIBUTE_CHANGE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeatureInsertChangeImpl <em>Multi Valued Feature Insert Change</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeReplacedChangeImpl <em>Model Attribute Replaced Change</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeatureInsertChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getMultiValuedFeatureInsertChange()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeReplacedChangeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelAttributeReplacedChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_INSERT_CHANGE = 40;
+  int MODEL_ATTRIBUTE_REPLACED_CHANGE = 55;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1592,136 +1940,25 @@ public interface ReactionsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MULTI_VALUED_FEATURE_INSERT_CHANGE__PRECONDITION = ATOMIC_MULTI_VALUED_FEATURE_CHANGE__PRECONDITION;
+  int MODEL_ATTRIBUTE_REPLACED_CHANGE__PRECONDITION = MODEL_ATTRIBUTE_CHANGE__PRECONDITION;
 
   /**
-   * The feature id for the '<em><b>Changed Feature</b></em>' containment reference.
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MULTI_VALUED_FEATURE_INSERT_CHANGE__CHANGED_FEATURE = ATOMIC_MULTI_VALUED_FEATURE_CHANGE__CHANGED_FEATURE;
+  int MODEL_ATTRIBUTE_REPLACED_CHANGE__FEATURE = MODEL_ATTRIBUTE_CHANGE__FEATURE;
 
   /**
-   * The number of structural features of the '<em>Multi Valued Feature Insert Change</em>' class.
+   * The number of structural features of the '<em>Model Attribute Replaced Change</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MULTI_VALUED_FEATURE_INSERT_CHANGE_FEATURE_COUNT = ATOMIC_MULTI_VALUED_FEATURE_CHANGE_FEATURE_COUNT + 0;
-
-  /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeatureRemoveChangeImpl <em>Multi Valued Feature Remove Change</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeatureRemoveChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getMultiValuedFeatureRemoveChange()
-   * @generated
-   */
-  int MULTI_VALUED_FEATURE_REMOVE_CHANGE = 41;
-
-  /**
-   * The feature id for the '<em><b>Precondition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MULTI_VALUED_FEATURE_REMOVE_CHANGE__PRECONDITION = ATOMIC_MULTI_VALUED_FEATURE_CHANGE__PRECONDITION;
-
-  /**
-   * The feature id for the '<em><b>Changed Feature</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MULTI_VALUED_FEATURE_REMOVE_CHANGE__CHANGED_FEATURE = ATOMIC_MULTI_VALUED_FEATURE_CHANGE__CHANGED_FEATURE;
-
-  /**
-   * The number of structural features of the '<em>Multi Valued Feature Remove Change</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MULTI_VALUED_FEATURE_REMOVE_CHANGE_FEATURE_COUNT = ATOMIC_MULTI_VALUED_FEATURE_CHANGE_FEATURE_COUNT + 0;
-
-  /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeaturePermuteChangeImpl <em>Multi Valued Feature Permute Change</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeaturePermuteChangeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getMultiValuedFeaturePermuteChange()
-   * @generated
-   */
-  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE = 42;
-
-  /**
-   * The feature id for the '<em><b>Precondition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE__PRECONDITION = ATOMIC_MULTI_VALUED_FEATURE_CHANGE__PRECONDITION;
-
-  /**
-   * The feature id for the '<em><b>Changed Feature</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE__CHANGED_FEATURE = ATOMIC_MULTI_VALUED_FEATURE_CHANGE__CHANGED_FEATURE;
-
-  /**
-   * The number of structural features of the '<em>Multi Valued Feature Permute Change</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE_FEATURE_COUNT = ATOMIC_MULTI_VALUED_FEATURE_CHANGE_FEATURE_COUNT + 0;
-
-  /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.SingleValuedFeatureReplaceImpl <em>Single Valued Feature Replace</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.SingleValuedFeatureReplaceImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getSingleValuedFeatureReplace()
-   * @generated
-   */
-  int SINGLE_VALUED_FEATURE_REPLACE = 43;
-
-  /**
-   * The feature id for the '<em><b>Precondition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUED_FEATURE_REPLACE__PRECONDITION = ATOMIC_SINGLE_VALUED_FEATURE_CHANGE__PRECONDITION;
-
-  /**
-   * The feature id for the '<em><b>Changed Feature</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUED_FEATURE_REPLACE__CHANGED_FEATURE = ATOMIC_SINGLE_VALUED_FEATURE_CHANGE__CHANGED_FEATURE;
-
-  /**
-   * The number of structural features of the '<em>Single Valued Feature Replace</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUED_FEATURE_REPLACE_FEATURE_COUNT = ATOMIC_SINGLE_VALUED_FEATURE_CHANGE_FEATURE_COUNT + 0;
+  int MODEL_ATTRIBUTE_REPLACED_CHANGE_FEATURE_COUNT = MODEL_ATTRIBUTE_CHANGE_FEATURE_COUNT + 0;
 
 
   /**
@@ -1949,96 +2186,345 @@ public interface ReactionsLanguagePackage extends EPackage
   EClass getModelChange();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelElementChange <em>Concrete Model Element Change</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange <em>Concrete Model Change</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Concrete Model Element Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelElementChange
+   * @return the meta object for class '<em>Concrete Model Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
    * @generated
    */
-  EClass getConcreteModelElementChange();
+  EClass getConcreteModelChange();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicConcreteModelElementChange <em>Atomic Concrete Model Element Change</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange <em>Model Element Change</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Atomic Concrete Model Element Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicConcreteModelElementChange
+   * @return the meta object for class '<em>Model Element Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
    * @generated
    */
-  EClass getAtomicConcreteModelElementChange();
+  EClass getModelElementChange();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicRootObjectChange <em>Atomic Root Object Change</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange#getElementType <em>Element Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Atomic Root Object Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicRootObjectChange
+   * @return the meta object for the containment reference '<em>Element Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange#getElementType()
+   * @see #getModelElementChange()
    * @generated
    */
-  EClass getAtomicRootObjectChange();
+  EReference getModelElementChange_ElementType();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicRootObjectChange#getChangedElement <em>Changed Element</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange#getChangeType <em>Change Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Changed Element</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicRootObjectChange#getChangedElement()
-   * @see #getAtomicRootObjectChange()
+   * @return the meta object for the containment reference '<em>Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange#getChangeType()
+   * @see #getModelElementChange()
    * @generated
    */
-  EReference getAtomicRootObjectChange_ChangedElement();
+  EReference getModelElementChange_ChangeType();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange <em>Atomic Feature Change</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange <em>Model Attribute Change</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Atomic Feature Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange
+   * @return the meta object for class '<em>Model Attribute Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
    * @generated
    */
-  EClass getAtomicFeatureChange();
+  EClass getModelAttributeChange();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange#getChangedFeature <em>Changed Feature</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange#getFeature <em>Feature</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Changed Feature</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange#getChangedFeature()
-   * @see #getAtomicFeatureChange()
+   * @return the meta object for the containment reference '<em>Feature</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange#getFeature()
+   * @see #getModelAttributeChange()
    * @generated
    */
-  EReference getAtomicFeatureChange_ChangedFeature();
+  EReference getModelAttributeChange_Feature();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicMultiValuedFeatureChange <em>Atomic Multi Valued Feature Change</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange <em>Arbitrary Model Change</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Atomic Multi Valued Feature Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicMultiValuedFeatureChange
+   * @return the meta object for class '<em>Arbitrary Model Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange
    * @generated
    */
-  EClass getAtomicMultiValuedFeatureChange();
+  EClass getArbitraryModelChange();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.AtomicSingleValuedFeatureChange <em>Atomic Single Valued Feature Change</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType <em>Element Existence Change Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Atomic Single Valued Feature Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.AtomicSingleValuedFeatureChange
+   * @return the meta object for class '<em>Element Existence Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType
    * @generated
    */
-  EClass getAtomicSingleValuedFeatureChange();
+  EClass getElementExistenceChangeType();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelElementChange <em>Arbitrary Model Element Change</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementUsageChangeType <em>Model Element Usage Change Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Arbitrary Model Element Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelElementChange
+   * @return the meta object for class '<em>Model Element Usage Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementUsageChangeType
    * @generated
    */
-  EClass getArbitraryModelElementChange();
+  EClass getModelElementUsageChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationChangeType <em>Element Creation Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Creation Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationChangeType
+   * @generated
+   */
+  EClass getElementCreationChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionChangeType <em>Element Deletion Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Deletion Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionChangeType
+   * @generated
+   */
+  EClass getElementDeletionChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType <em>Element Feature Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Feature Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType
+   * @generated
+   */
+  EClass getElementFeatureChangeType();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType#getFeature <em>Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Feature</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType#getFeature()
+   * @see #getElementFeatureChangeType()
+   * @generated
+   */
+  EReference getElementFeatureChangeType_Feature();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType <em>Element Root Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Root Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType
+   * @generated
+   */
+  EClass getElementRootChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionChangeType <em>Element Insertion Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Insertion Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionChangeType
+   * @generated
+   */
+  EClass getElementInsertionChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionInListChangeType <em>Element Insertion In List Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Insertion In List Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionInListChangeType
+   * @generated
+   */
+  EClass getElementInsertionInListChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionAsRootChangeType <em>Element Insertion As Root Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Insertion As Root Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionAsRootChangeType
+   * @generated
+   */
+  EClass getElementInsertionAsRootChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalChangeType <em>Element Removal Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Removal Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalChangeType
+   * @generated
+   */
+  EClass getElementRemovalChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalAsRootChangeType <em>Element Removal As Root Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Removal As Root Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalAsRootChangeType
+   * @generated
+   */
+  EClass getElementRemovalAsRootChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalFromListChangeType <em>Element Removal From List Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Removal From List Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalFromListChangeType
+   * @generated
+   */
+  EClass getElementRemovalFromListChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType <em>Element Replacement Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Replacement Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType
+   * @generated
+   */
+  EClass getElementReplacementChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType <em>Element Creation And Insertion Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Creation And Insertion Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType
+   * @generated
+   */
+  EClass getElementCreationAndInsertionChangeType();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType#getCreateChange <em>Create Change</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Create Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType#getCreateChange()
+   * @see #getElementCreationAndInsertionChangeType()
+   * @generated
+   */
+  EReference getElementCreationAndInsertionChangeType_CreateChange();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType#getInsertChange <em>Insert Change</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Insert Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType#getInsertChange()
+   * @see #getElementCreationAndInsertionChangeType()
+   * @generated
+   */
+  EReference getElementCreationAndInsertionChangeType_InsertChange();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType <em>Element Deletion And Removal Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Deletion And Removal Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType
+   * @generated
+   */
+  EClass getElementDeletionAndRemovalChangeType();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType#getDeleteChange <em>Delete Change</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Delete Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType#getDeleteChange()
+   * @see #getElementDeletionAndRemovalChangeType()
+   * @generated
+   */
+  EReference getElementDeletionAndRemovalChangeType_DeleteChange();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType#getRemoveChange <em>Remove Change</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Remove Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType#getRemoveChange()
+   * @see #getElementDeletionAndRemovalChangeType()
+   * @generated
+   */
+  EReference getElementDeletionAndRemovalChangeType_RemoveChange();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType <em>Element Deletion And Creation And Replacement Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Deletion And Creation And Replacement Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType
+   * @generated
+   */
+  EClass getElementDeletionAndCreationAndReplacementChangeType();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType#getDeleteChange <em>Delete Change</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Delete Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType#getDeleteChange()
+   * @see #getElementDeletionAndCreationAndReplacementChangeType()
+   * @generated
+   */
+  EReference getElementDeletionAndCreationAndReplacementChangeType_DeleteChange();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType#getCreateChange <em>Create Change</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Create Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType#getCreateChange()
+   * @see #getElementDeletionAndCreationAndReplacementChangeType()
+   * @generated
+   */
+  EReference getElementDeletionAndCreationAndReplacementChangeType_CreateChange();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType#getReplacedChange <em>Replaced Change</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Replaced Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType#getReplacedChange()
+   * @see #getElementDeletionAndCreationAndReplacementChangeType()
+   * @generated
+   */
+  EReference getElementDeletionAndCreationAndReplacementChangeType_ReplacedChange();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType <em>Element Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
+   * @generated
+   */
+  EClass getElementChangeType();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementCompoundChangeType <em>Element Compound Change Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Compound Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementCompoundChangeType
+   * @generated
+   */
+  EClass getElementCompoundChangeType();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Routine <em>Routine</em>}'.
@@ -2589,64 +3075,34 @@ public interface ReactionsLanguagePackage extends EPackage
   EReference getReturnStatement_Element();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.InsertRootChange <em>Insert Root Change</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeInsertedChange <em>Model Attribute Inserted Change</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Insert Root Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.InsertRootChange
+   * @return the meta object for class '<em>Model Attribute Inserted Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeInsertedChange
    * @generated
    */
-  EClass getInsertRootChange();
+  EClass getModelAttributeInsertedChange();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.RemoveRootChange <em>Remove Root Change</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeRemovedChange <em>Model Attribute Removed Change</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Remove Root Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.RemoveRootChange
+   * @return the meta object for class '<em>Model Attribute Removed Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeRemovedChange
    * @generated
    */
-  EClass getRemoveRootChange();
+  EClass getModelAttributeRemovedChange();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureInsertChange <em>Multi Valued Feature Insert Change</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeReplacedChange <em>Model Attribute Replaced Change</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Multi Valued Feature Insert Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureInsertChange
+   * @return the meta object for class '<em>Model Attribute Replaced Change</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeReplacedChange
    * @generated
    */
-  EClass getMultiValuedFeatureInsertChange();
-
-  /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureRemoveChange <em>Multi Valued Feature Remove Change</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Multi Valued Feature Remove Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeatureRemoveChange
-   * @generated
-   */
-  EClass getMultiValuedFeatureRemoveChange();
-
-  /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeaturePermuteChange <em>Multi Valued Feature Permute Change</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Multi Valued Feature Permute Change</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.MultiValuedFeaturePermuteChange
-   * @generated
-   */
-  EClass getMultiValuedFeaturePermuteChange();
-
-  /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.SingleValuedFeatureReplace <em>Single Valued Feature Replace</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Single Valued Feature Replace</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.SingleValuedFeatureReplace
-   * @generated
-   */
-  EClass getSingleValuedFeatureReplace();
+  EClass getModelAttributeReplacedChange();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -2854,90 +3310,312 @@ public interface ReactionsLanguagePackage extends EPackage
     EClass MODEL_CHANGE = eINSTANCE.getModelChange();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ConcreteModelElementChangeImpl <em>Concrete Model Element Change</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ConcreteModelChangeImpl <em>Concrete Model Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ConcreteModelElementChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getConcreteModelElementChange()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ConcreteModelChangeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getConcreteModelChange()
      * @generated
      */
-    EClass CONCRETE_MODEL_ELEMENT_CHANGE = eINSTANCE.getConcreteModelElementChange();
+    EClass CONCRETE_MODEL_CHANGE = eINSTANCE.getConcreteModelChange();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicConcreteModelElementChangeImpl <em>Atomic Concrete Model Element Change</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelElementChangeImpl <em>Model Element Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicConcreteModelElementChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicConcreteModelElementChange()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelElementChangeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelElementChange()
      * @generated
      */
-    EClass ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE = eINSTANCE.getAtomicConcreteModelElementChange();
+    EClass MODEL_ELEMENT_CHANGE = eINSTANCE.getModelElementChange();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicRootObjectChangeImpl <em>Atomic Root Object Change</em>}' class.
+     * The meta object literal for the '<em><b>Element Type</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicRootObjectChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicRootObjectChange()
      * @generated
      */
-    EClass ATOMIC_ROOT_OBJECT_CHANGE = eINSTANCE.getAtomicRootObjectChange();
+    EReference MODEL_ELEMENT_CHANGE__ELEMENT_TYPE = eINSTANCE.getModelElementChange_ElementType();
 
     /**
-     * The meta object literal for the '<em><b>Changed Element</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Change Type</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT = eINSTANCE.getAtomicRootObjectChange_ChangedElement();
+    EReference MODEL_ELEMENT_CHANGE__CHANGE_TYPE = eINSTANCE.getModelElementChange_ChangeType();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicFeatureChangeImpl <em>Atomic Feature Change</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeChangeImpl <em>Model Attribute Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicFeatureChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicFeatureChange()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeChangeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelAttributeChange()
      * @generated
      */
-    EClass ATOMIC_FEATURE_CHANGE = eINSTANCE.getAtomicFeatureChange();
+    EClass MODEL_ATTRIBUTE_CHANGE = eINSTANCE.getModelAttributeChange();
 
     /**
-     * The meta object literal for the '<em><b>Changed Feature</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Feature</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE = eINSTANCE.getAtomicFeatureChange_ChangedFeature();
+    EReference MODEL_ATTRIBUTE_CHANGE__FEATURE = eINSTANCE.getModelAttributeChange_Feature();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicMultiValuedFeatureChangeImpl <em>Atomic Multi Valued Feature Change</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ArbitraryModelChangeImpl <em>Arbitrary Model Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicMultiValuedFeatureChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicMultiValuedFeatureChange()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ArbitraryModelChangeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getArbitraryModelChange()
      * @generated
      */
-    EClass ATOMIC_MULTI_VALUED_FEATURE_CHANGE = eINSTANCE.getAtomicMultiValuedFeatureChange();
+    EClass ARBITRARY_MODEL_CHANGE = eINSTANCE.getArbitraryModelChange();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicSingleValuedFeatureChangeImpl <em>Atomic Single Valued Feature Change</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementExistenceChangeTypeImpl <em>Element Existence Change Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.AtomicSingleValuedFeatureChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getAtomicSingleValuedFeatureChange()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementExistenceChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementExistenceChangeType()
      * @generated
      */
-    EClass ATOMIC_SINGLE_VALUED_FEATURE_CHANGE = eINSTANCE.getAtomicSingleValuedFeatureChange();
+    EClass ELEMENT_EXISTENCE_CHANGE_TYPE = eINSTANCE.getElementExistenceChangeType();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ArbitraryModelElementChangeImpl <em>Arbitrary Model Element Change</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelElementUsageChangeTypeImpl <em>Model Element Usage Change Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ArbitraryModelElementChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getArbitraryModelElementChange()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelElementUsageChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelElementUsageChangeType()
      * @generated
      */
-    EClass ARBITRARY_MODEL_ELEMENT_CHANGE = eINSTANCE.getArbitraryModelElementChange();
+    EClass MODEL_ELEMENT_USAGE_CHANGE_TYPE = eINSTANCE.getModelElementUsageChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCreationChangeTypeImpl <em>Element Creation Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCreationChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementCreationChangeType()
+     * @generated
+     */
+    EClass ELEMENT_CREATION_CHANGE_TYPE = eINSTANCE.getElementCreationChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionChangeTypeImpl <em>Element Deletion Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementDeletionChangeType()
+     * @generated
+     */
+    EClass ELEMENT_DELETION_CHANGE_TYPE = eINSTANCE.getElementDeletionChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementFeatureChangeTypeImpl <em>Element Feature Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementFeatureChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementFeatureChangeType()
+     * @generated
+     */
+    EClass ELEMENT_FEATURE_CHANGE_TYPE = eINSTANCE.getElementFeatureChangeType();
+
+    /**
+     * The meta object literal for the '<em><b>Feature</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ELEMENT_FEATURE_CHANGE_TYPE__FEATURE = eINSTANCE.getElementFeatureChangeType_Feature();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRootChangeTypeImpl <em>Element Root Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRootChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementRootChangeType()
+     * @generated
+     */
+    EClass ELEMENT_ROOT_CHANGE_TYPE = eINSTANCE.getElementRootChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionChangeTypeImpl <em>Element Insertion Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementInsertionChangeType()
+     * @generated
+     */
+    EClass ELEMENT_INSERTION_CHANGE_TYPE = eINSTANCE.getElementInsertionChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionInListChangeTypeImpl <em>Element Insertion In List Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionInListChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementInsertionInListChangeType()
+     * @generated
+     */
+    EClass ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE = eINSTANCE.getElementInsertionInListChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionAsRootChangeTypeImpl <em>Element Insertion As Root Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementInsertionAsRootChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementInsertionAsRootChangeType()
+     * @generated
+     */
+    EClass ELEMENT_INSERTION_AS_ROOT_CHANGE_TYPE = eINSTANCE.getElementInsertionAsRootChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalChangeTypeImpl <em>Element Removal Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementRemovalChangeType()
+     * @generated
+     */
+    EClass ELEMENT_REMOVAL_CHANGE_TYPE = eINSTANCE.getElementRemovalChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalAsRootChangeTypeImpl <em>Element Removal As Root Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalAsRootChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementRemovalAsRootChangeType()
+     * @generated
+     */
+    EClass ELEMENT_REMOVAL_AS_ROOT_CHANGE_TYPE = eINSTANCE.getElementRemovalAsRootChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalFromListChangeTypeImpl <em>Element Removal From List Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRemovalFromListChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementRemovalFromListChangeType()
+     * @generated
+     */
+    EClass ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE = eINSTANCE.getElementRemovalFromListChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementReplacementChangeTypeImpl <em>Element Replacement Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementReplacementChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementReplacementChangeType()
+     * @generated
+     */
+    EClass ELEMENT_REPLACEMENT_CHANGE_TYPE = eINSTANCE.getElementReplacementChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCreationAndInsertionChangeTypeImpl <em>Element Creation And Insertion Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCreationAndInsertionChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementCreationAndInsertionChangeType()
+     * @generated
+     */
+    EClass ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE = eINSTANCE.getElementCreationAndInsertionChangeType();
+
+    /**
+     * The meta object literal for the '<em><b>Create Change</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__CREATE_CHANGE = eINSTANCE.getElementCreationAndInsertionChangeType_CreateChange();
+
+    /**
+     * The meta object literal for the '<em><b>Insert Change</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ELEMENT_CREATION_AND_INSERTION_CHANGE_TYPE__INSERT_CHANGE = eINSTANCE.getElementCreationAndInsertionChangeType_InsertChange();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionAndRemovalChangeTypeImpl <em>Element Deletion And Removal Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionAndRemovalChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementDeletionAndRemovalChangeType()
+     * @generated
+     */
+    EClass ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE = eINSTANCE.getElementDeletionAndRemovalChangeType();
+
+    /**
+     * The meta object literal for the '<em><b>Delete Change</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__DELETE_CHANGE = eINSTANCE.getElementDeletionAndRemovalChangeType_DeleteChange();
+
+    /**
+     * The meta object literal for the '<em><b>Remove Change</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ELEMENT_DELETION_AND_REMOVAL_CHANGE_TYPE__REMOVE_CHANGE = eINSTANCE.getElementDeletionAndRemovalChangeType_RemoveChange();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionAndCreationAndReplacementChangeTypeImpl <em>Element Deletion And Creation And Replacement Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementDeletionAndCreationAndReplacementChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementDeletionAndCreationAndReplacementChangeType()
+     * @generated
+     */
+    EClass ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE = eINSTANCE.getElementDeletionAndCreationAndReplacementChangeType();
+
+    /**
+     * The meta object literal for the '<em><b>Delete Change</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__DELETE_CHANGE = eINSTANCE.getElementDeletionAndCreationAndReplacementChangeType_DeleteChange();
+
+    /**
+     * The meta object literal for the '<em><b>Create Change</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__CREATE_CHANGE = eINSTANCE.getElementDeletionAndCreationAndReplacementChangeType_CreateChange();
+
+    /**
+     * The meta object literal for the '<em><b>Replaced Change</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ELEMENT_DELETION_AND_CREATION_AND_REPLACEMENT_CHANGE_TYPE__REPLACED_CHANGE = eINSTANCE.getElementDeletionAndCreationAndReplacementChangeType_ReplacedChange();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementChangeTypeImpl <em>Element Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementChangeType()
+     * @generated
+     */
+    EClass ELEMENT_CHANGE_TYPE = eINSTANCE.getElementChangeType();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCompoundChangeTypeImpl <em>Element Compound Change Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementCompoundChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementCompoundChangeType()
+     * @generated
+     */
+    EClass ELEMENT_COMPOUND_CHANGE_TYPE = eINSTANCE.getElementCompoundChangeType();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.RoutineImpl <em>Routine</em>}' class.
@@ -3404,64 +4082,34 @@ public interface ReactionsLanguagePackage extends EPackage
     EReference RETURN_STATEMENT__ELEMENT = eINSTANCE.getReturnStatement_Element();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.InsertRootChangeImpl <em>Insert Root Change</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeInsertedChangeImpl <em>Model Attribute Inserted Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.InsertRootChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getInsertRootChange()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeInsertedChangeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelAttributeInsertedChange()
      * @generated
      */
-    EClass INSERT_ROOT_CHANGE = eINSTANCE.getInsertRootChange();
+    EClass MODEL_ATTRIBUTE_INSERTED_CHANGE = eINSTANCE.getModelAttributeInsertedChange();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.RemoveRootChangeImpl <em>Remove Root Change</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeRemovedChangeImpl <em>Model Attribute Removed Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.RemoveRootChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getRemoveRootChange()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeRemovedChangeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelAttributeRemovedChange()
      * @generated
      */
-    EClass REMOVE_ROOT_CHANGE = eINSTANCE.getRemoveRootChange();
+    EClass MODEL_ATTRIBUTE_REMOVED_CHANGE = eINSTANCE.getModelAttributeRemovedChange();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeatureInsertChangeImpl <em>Multi Valued Feature Insert Change</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeReplacedChangeImpl <em>Model Attribute Replaced Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeatureInsertChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getMultiValuedFeatureInsertChange()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ModelAttributeReplacedChangeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getModelAttributeReplacedChange()
      * @generated
      */
-    EClass MULTI_VALUED_FEATURE_INSERT_CHANGE = eINSTANCE.getMultiValuedFeatureInsertChange();
-
-    /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeatureRemoveChangeImpl <em>Multi Valued Feature Remove Change</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeatureRemoveChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getMultiValuedFeatureRemoveChange()
-     * @generated
-     */
-    EClass MULTI_VALUED_FEATURE_REMOVE_CHANGE = eINSTANCE.getMultiValuedFeatureRemoveChange();
-
-    /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeaturePermuteChangeImpl <em>Multi Valued Feature Permute Change</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.MultiValuedFeaturePermuteChangeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getMultiValuedFeaturePermuteChange()
-     * @generated
-     */
-    EClass MULTI_VALUED_FEATURE_PERMUTE_CHANGE = eINSTANCE.getMultiValuedFeaturePermuteChange();
-
-    /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.SingleValuedFeatureReplaceImpl <em>Single Valued Feature Replace</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.SingleValuedFeatureReplaceImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getSingleValuedFeatureReplace()
-     * @generated
-     */
-    EClass SINGLE_VALUED_FEATURE_REPLACE = eINSTANCE.getSingleValuedFeatureReplace();
+    EClass MODEL_ATTRIBUTE_REPLACED_CHANGE = eINSTANCE.getModelAttributeReplacedChange();
 
   }
 

@@ -92,6 +92,10 @@ public class Uml_mockupAdapterFactory extends AdapterFactoryImpl {
 				return createUMethodAdapter();
 			}
 			@Override
+			public Adapter caseUAttribute(UAttribute object) {
+				return createUAttributeAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -192,6 +196,20 @@ public class Uml_mockupAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createUMethodAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uml_mockup.UAttribute <em>UAttribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uml_mockup.UAttribute
+	 * @generated
+	 */
+	public Adapter createUAttributeAdapter() {
 		return null;
 	}
 

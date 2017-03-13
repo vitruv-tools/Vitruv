@@ -1,0 +1,32 @@
+@Ecore(nsURI="http://tools.vitruv/EChange/Feature/Attribute/1.0")
+@GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+package tools.vitruv.framework.change.echange.feature.attribute
+
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.change.echange.AdditiveEChange
+import tools.vitruv.framework.change.echange.SubtractiveEChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
+
+abstract class UpdateAttributeEChange<A extends EObject> extends FeatureEChange<A, EAttribute> {
+}
+
+abstract class AdditiveAttributeEChange<A extends EObject, T extends Object> extends AdditiveEChange<T>, UpdateAttributeEChange<A> {
+	T[1] newValue
+}
+
+abstract class SubtractiveAttributeEChange<A extends EObject, T extends Object> extends SubtractiveEChange<T>, UpdateAttributeEChange<A> {
+	T[1] oldValue
+}
+
+class InsertEAttributeValue<A extends EObject, T extends Object> extends InsertInListEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T> {
+}
+
+class RemoveEAttributeValue<A extends EObject, T extends Object> extends RemoveFromListEChange<A, EAttribute, T>, SubtractiveAttributeEChange<A, T> {
+}
+
+class ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EAttribute, T> {
+}

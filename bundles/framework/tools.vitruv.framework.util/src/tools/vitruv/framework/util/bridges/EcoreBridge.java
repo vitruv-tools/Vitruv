@@ -24,7 +24,6 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -586,15 +585,11 @@ public final class EcoreBridge {
 		EStructuralFeature idFeature = eObject.eClass().getEStructuralFeature(featureName);
 		if (idFeature != null && idFeature instanceof EAttribute) {
 			EAttribute idAttribute = (EAttribute) idFeature;
-			EDataType eAttributeType = idAttribute.getEAttributeType();
 
-			if (eAttributeType.getInstanceClassName().equals(String.class.getName())) {
-				return (String) eObject.eGet(idFeature);
-			}
-
-			if (eAttributeType.getInstanceClassName().equals("int")) {
+			if (eObject.eIsSet(idAttribute)) {
 				return String.valueOf(eObject.eGet(idFeature));
 			}
+			
 		}
 		return null;
 	}

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.tests.metamodels/src-gen"
-    modelPluginID="tools.vitruv.tests.metamodels" modelName="AllElementTypes"
-    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.framework.tests.util.metamodels/src-gen"
+    editDirectory="/tools.vitruv.framework.tests.util.metamodels.edit/src" modelPluginID="tools.vitruv.framework.tests.util.metamodels"
+    modelName="AllElementTypes" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
   <foreignModel>allElementTypes.ecore</foreignModel>
   <genPackages prefix="AllElementTypes" disposableProviderFactory="true" ecorePackage="allElementTypes.ecore#/">
     <genClasses ecoreClass="allElementTypes.ecore#//Root">
@@ -14,8 +15,6 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/multiValuedNonContainmentEReference"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/multiValuedContainmentEReference"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypes.ecore#//Root/nonRootObjectContainerHelper"/>
-      <genOperations ecoreOperation="allElementTypes.ecore#//Root/singleValuedOperation"/>
-      <genOperations ecoreOperation="allElementTypes.ecore#//Root/multiValuedOperation"/>
     </genClasses>
     <genClasses ecoreClass="allElementTypes.ecore#//NonRoot"/>
     <genClasses ecoreClass="allElementTypes.ecore#//NonRootObjectContainerHelper">

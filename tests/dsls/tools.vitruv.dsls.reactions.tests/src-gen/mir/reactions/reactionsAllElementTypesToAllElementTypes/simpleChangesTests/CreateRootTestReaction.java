@@ -2,13 +2,13 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot;
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
@@ -19,35 +19,35 @@ class CreateRootTestReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    InsertRootEObject<allElementTypes.Root> typedChange = (InsertRootEObject<allElementTypes.Root>)change;
+    InsertRootEObject<Root> typedChange = ((CreateAndInsertRoot<Root>)change).getInsertChange();
+    Root newValue = typedChange.getNewValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(newValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return InsertRootEObject.class;
+    return CreateAndInsertRoot.class;
   }
   
-  private boolean checkChangeProperties(final InsertRootEObject<Root> change) {
-    EObject changedElement = change.getNewValue();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+  private boolean checkChangeProperties(final EChange change) {
+    InsertRootEObject<Root> relevantChange = ((CreateAndInsertRoot<Root>)change).getInsertChange();
+    if (!(relevantChange.getNewValue() instanceof Root)) {
     	return false;
     }
-    
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof InsertRootEObject<?>)) {
+    if (!(change instanceof CreateAndInsertRoot)) {
     	return false;
     }
-    InsertRootEObject typedChange = (InsertRootEObject)change;
-    if (!checkChangeProperties(typedChange)) {
+    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
+    if (!checkChangeProperties(change)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
     return true;
   }
   
@@ -56,9 +56,8 @@ class CreateRootTestReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final InsertRootEObject<Root> change, @Extension final RoutinesFacade _routinesFacade) {
-      Root _newValue = change.getNewValue();
-      _routinesFacade.createRoot(_newValue);
+    public void callRoutine1(final Root newValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.createRoot(newValue);
     }
   }
 }

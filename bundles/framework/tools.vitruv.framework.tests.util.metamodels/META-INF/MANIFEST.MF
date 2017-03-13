@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Extension Test Metamodels
+Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.framework.tests.util.metamodels;singleton:=true
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 0.2.0.qualifier
+Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: uml_mockup,
  uml_mockup.impl,
@@ -29,6 +30,7 @@ Export-Package: uml_mockup,
  allElementTypes2.impl,
  allElementTypes2.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore
+ org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: vitruv.tools
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin

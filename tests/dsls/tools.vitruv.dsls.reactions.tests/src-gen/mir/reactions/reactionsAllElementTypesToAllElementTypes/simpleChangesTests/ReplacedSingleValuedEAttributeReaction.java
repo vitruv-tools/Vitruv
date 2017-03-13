@@ -2,7 +2,7 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -19,39 +19,47 @@ class ReplacedSingleValuedEAttributeReaction extends AbstractReactionRealization
   }
   
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<allElementTypes.Root, java.lang.Integer> typedChange = (ReplaceSingleValuedEAttribute<allElementTypes.Root, java.lang.Integer>)change;
+    ReplaceSingleValuedEAttribute<Root, Integer> typedChange = (ReplaceSingleValuedEAttribute<Root, Integer>)change;
+    Root affectedEObject = typedChange.getAffectedEObject();
+    EAttribute affectedFeature = typedChange.getAffectedFeature();
+    Integer oldValue = typedChange.getOldValue();
+    Integer newValue = typedChange.getNewValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedEAttributeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedEAttributeReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return ReplaceSingleValuedEAttribute.class;
   }
   
-  private boolean checkChangeProperties(final ReplaceSingleValuedEAttribute<Root, Integer> change) {
-    EObject changedElement = change.getAffectedEObject();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+  private boolean checkChangeProperties(final EChange change) {
+    ReplaceSingleValuedEAttribute<Root, Integer> relevantChange = (ReplaceSingleValuedEAttribute<Root, Integer>)change;
+    if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    
-    // Check feature
-    if (!change.getAffectedFeature().getName().equals("singleValuedEAttribute")) {
+    if (!relevantChange.getAffectedFeature().getName().equals("singleValuedEAttribute")) {
+    	return false;
+    }
+    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof Integer)) {
+    	return false;
+    }
+    if (relevantChange.isToNonDefaultValue() && !(relevantChange.getNewValue() instanceof Integer)) {
     	return false;
     }
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof ReplaceSingleValuedEAttribute<?, ?>)) {
+    if (!(change instanceof ReplaceSingleValuedEAttribute)) {
     	return false;
     }
-    ReplaceSingleValuedEAttribute typedChange = (ReplaceSingleValuedEAttribute)change;
-    if (!checkChangeProperties(typedChange)) {
+    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
+    if (!checkChangeProperties(change)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
     return true;
   }
   
@@ -60,10 +68,8 @@ class ReplacedSingleValuedEAttributeReaction extends AbstractReactionRealization
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final ReplaceSingleValuedEAttribute<Root, Integer> change, @Extension final RoutinesFacade _routinesFacade) {
-      Root _affectedEObject = change.getAffectedEObject();
-      Integer _newValue = change.getNewValue();
-      _routinesFacade.replaceSingleValuedEAttribute(_affectedEObject, _newValue);
+    public void callRoutine1(final Root affectedEObject, final EAttribute affectedFeature, final Integer oldValue, final Integer newValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.replaceSingleValuedEAttribute(affectedEObject, newValue);
     }
   }
 }

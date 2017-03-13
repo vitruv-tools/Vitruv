@@ -2,11 +2,14 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
+import com.google.common.base.Objects;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -16,11 +19,12 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
-import tools.vitruv.framework.change.echange.EObjectAddedEChange;
-import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
 import tools.vitruv.framework.change.echange.compound.MoveEObject;
+
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 
@@ -270,17 +274,21 @@ public class MoveEObjectImpl<A extends EObject, B extends EObject, T extends EOb
 	 * @generated
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
-		org.eclipse.emf.common.util.BasicEList<AtomicEChange> list = new org.eclipse.emf.common.util.BasicEList<AtomicEChange>();
-		UpdateReferenceEChange<A> subWhereChange = getSubtractWhereChange();
-		if (subWhereChange != null) {
-		    list.add(subWhereChange);
+		final BasicEList<AtomicEChange> list = new BasicEList<AtomicEChange>();
+		final UpdateReferenceEChange<A> subWhereChange = this.getSubtractWhereChange();
+		boolean _notEquals = (!Objects.equal(subWhereChange, null));
+		if (_notEquals) {
+			list.add(subWhereChange);
 		}
-		list.add(getSubtractWhatChange());
-		UpdateReferenceEChange<B> addWhereChange = getAddWhereChange();
-		if (addWhereChange != null) {
-		    list.add(addWhereChange);
+		EObjectSubtractedEChange<T> _subtractWhatChange = this.getSubtractWhatChange();
+		list.add(_subtractWhatChange);
+		final UpdateReferenceEChange<B> addWhereChange = this.getAddWhereChange();
+		boolean _notEquals_1 = (!Objects.equal(addWhereChange, null));
+		if (_notEquals_1) {
+			list.add(addWhereChange);
 		}
-		list.add(getAddWhatChange());
+		EObjectAddedEChange<T> _addWhatChange = this.getAddWhatChange();
+		list.add(_addWhatChange);
 		return list;
 	}
 

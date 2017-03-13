@@ -2,7 +2,7 @@
 <feature
       id="tools.vitruv.dsls.feature"
       label="%featureName"
-      version="0.1.0.qualifier"
+      version="0.2.0.qualifier"
       provider-name="%providerName"	  
       license-feature="tools.vitruv.license.feature"
 	  license-feature-version="1.0.0">

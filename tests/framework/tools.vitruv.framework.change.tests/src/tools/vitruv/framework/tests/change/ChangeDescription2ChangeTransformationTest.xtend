@@ -7,11 +7,12 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.junit.After
 import org.junit.Before
 
-import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
 import java.util.Collection
 import org.eclipse.emf.common.notify.Notifier
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
 import tools.vitruv.framework.change.echange.EChange
+import org.junit.Assert
+import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
 
 /** 
  * @author langhamm
@@ -19,11 +20,11 @@ import tools.vitruv.framework.change.echange.EChange
 abstract class ChangeDescription2ChangeTransformationTest {
 	var protected AtomicEMFChangeRecorder changeRecorder
 	var protected Root rootElement
-	var protected List<EChange> changes
+	var private List<EChange> changes
 
 	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
 	public static val SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "singleValuedNonContainmentEReference"
-	public static val SINGE_VALUE_E_ATTRIBUTE_NAME = "singleValuedEAttribute"
+	public static val SINGLE_VALUED_E_ATTRIBUTE_NAME = "singleValuedEAttribute"
 	public static val MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME =  "multiValuedContainmentEReference"
 	public static val MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference"
 	public static val MULTI_VALUE_E_ATTRIBUTE_NAME = "multiValuedEAttribute"
@@ -46,15 +47,11 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		this.changeRecorder.dispose()
 	}
 	
-	public def List<EChange> getChanges() {
+	protected def List<EChange> getChanges() {
 		if (this.changes == null) {
 			this.changes = endRecording()
 		}
 		return this.changes
-	}
-	
-	public def EChange claimChange(int index) {
-		return getChanges().claimElementAt(index)
 	}
 	
 	public def List<EChange> endRecording() {
@@ -84,6 +81,16 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	
 	public def getRootElement(){
 		return this.rootElement
+	}
+	
+	public static def assertChangeCount(List<?> changes, int expectedCount) {
+		Assert.assertEquals("There were " + changes.size + " changes, although " + expectedCount + " were expected",
+			expectedCount, changes.size
+		);
+	}
+	
+	public static def EChange claimChange(List<EChange> changes, int index) {
+		return changes.claimElementAt(index)
 	}
 	
 	protected  def createAndAddNonRootToFeature(EStructuralFeature eStructuralFeature, boolean shouldStartRecording) {

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 0.2.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -32,6 +32,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.api.generator,
  tools.vitruv.dsls.reactions.helper,
+ tools.vitruv.dsls.reactions.codegen.changetyperepresentation,
  tools.vitruv.dsls.reactions.jvmmodel,
  tools.vitruv.dsls.reactions.parser.antlr,
  tools.vitruv.dsls.reactions.parser.antlr.internal,
@@ -44,6 +45,7 @@ Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.scoping,
  tools.vitruv.dsls.reactions.serializer,
  tools.vitruv.dsls.reactions.services,
- tools.vitruv.dsls.reactions.validation
+ tools.vitruv.dsls.reactions.validation,
+ tools.vitruv.dsls.reactions.jvmmodel
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.builder

@@ -12,7 +12,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import static extension tools.vitruv.dsls.reactions.helper.ClassNamesGenerators.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 
 /**
  * This class contains custom validation rules. 

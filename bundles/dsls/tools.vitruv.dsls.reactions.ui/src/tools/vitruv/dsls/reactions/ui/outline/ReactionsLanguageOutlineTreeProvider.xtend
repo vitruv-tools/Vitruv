@@ -6,13 +6,9 @@ package tools.vitruv.dsls.reactions.ui.outline
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
-import static extension tools.vitruv.dsls.reactions.helper.EChangeHelper.*;
 import tools.vitruv.dsls.reactions.reactionsLanguage.CodeBlock
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
-import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelElementChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicFeatureChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.AtomicRootObjectChange
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.PreconditionCodeBlock
@@ -25,6 +21,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
+import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
 
 /**
  * Outline structure definition for a reactions file.
@@ -89,22 +87,23 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		createEObjectNode(parentNode, trigger);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, AtomicFeatureChange event) {
-		createEObjectNode(parentNode, event);
-		if (event.changedFeature != null) {
-			createEObjectNode(parentNode, event.changedFeature.metaclass);
-			if (event.changedFeature.feature != null) {
-				createEObjectNode(parentNode, event.changedFeature.feature);
-			}
-		}
-	}
-	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, AtomicRootObjectChange event) {
-		createEObjectNode(parentNode, event);
-		if (event.changedElement != null) {
-			createEObjectNode(parentNode, event.changedElement.metaclass);
-		}
-	}
+//	protected def void _createChildren(EStructuralFeatureNode parentNode, ModelElementChange event) {
+//		createEObjectNode(parentNode, event);
+//		val changeType = event.changeType;
+//		switch (changeType) {
+//			ElementFeatureChangeType:
+//				if (changeType.feature != null) {
+//					createEObjectNode(parentNode, changeType.feature.metaclass);
+//					if (changeType.feature.feature != null) {
+//						createEObjectNode(parentNode, changeType.feature.feature);
+//					}
+//				}
+//			ElementRootChangeType:
+//				if (event.elementType != null) {
+//					createEObjectNode(parentNode, event.elementType.metaclass);
+//				}
+//		}
+//	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Routine routine) {
 		if (routine.matcher != null) {
@@ -153,20 +152,8 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "There is no outline for this trigger";
 	}
 	
-	protected def Object _text(AtomicFeatureChange event) {
-		if (event.changedFeature?.metaclass != null) {
-			return event.generateEChange()?.name;
-		} else {
-			return "No changed element specified"
-		}
-	}
-	
-	protected def Object _text(AtomicRootObjectChange event) {
-		if (event.changedElement?.metaclass != null) {
-			return event.generateEChange()?.name;
-		} else {
-			return "No changed element specified"
-		}
+	protected def Object _text(ConcreteModelChange event) {
+		return event.extractChangeTypeRepresentation.changeType?.simpleName;
 	}
 	
 	protected def Object _text(PreconditionCodeBlock preconditionBlock) {
@@ -176,10 +163,6 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def Object _text(CodeBlock codeBlock) {
 		return "execution Block"
 	}
-	
-//	protected def Object _text(CorrespondingModelElementCreate elementCreate) {
-//		"Create element: " + elementCreate.elementText;
-//	}
 	
 	protected def Object _text(RetrieveModelElement elementRetrieve) {
 		"retrieve element: " + elementRetrieve.elementText;
@@ -213,7 +196,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(ConcreteModelElementChange event) {
+	protected def boolean _isLeaf(ConcreteModelChange event) {
 		return true;
 	}
 	

@@ -6,14 +6,15 @@ package tools.vitruv.dsls.reactions.jvmmodel
 import com.google.inject.Inject
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-import tools.vitruv.dsls.reactions.jvmmodel.classgenerators.TypesBuilderExtensionProvider
-import tools.vitruv.dsls.reactions.jvmmodel.classgenerators.ExecutorClassGenerator
-import tools.vitruv.dsls.reactions.jvmmodel.classgenerators.RoutineFacadeClassGenerator
-import tools.vitruv.dsls.reactions.jvmmodel.classgenerators.RoutineClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.ExecutorClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineFacadeClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineClassGenerator
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import tools.vitruv.dsls.reactions.jvmmodel.classgenerators.ReactionClassGenerator
+import tools.vitruv.dsls.reactions.codegen.typesbuilder.JvmTypesBuilderWithoutAssociations
+import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
+import tools.vitruv.dsls.reactions.codegen.classgenerators.ReactionClassGenerator
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 

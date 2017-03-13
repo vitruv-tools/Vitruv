@@ -2,25 +2,28 @@
  */
 package tools.vitruv.framework.change.echange.feature.attribute.util;
 
-import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.AtomicEChange;
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.SubtractiveEChange;
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange;
-import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
-import tools.vitruv.framework.change.echange.feature.attribute.*;
-import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
-import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange;
-import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
-import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
-
-import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.ecore.util.Switch;
+
+import tools.vitruv.framework.change.echange.AdditiveEChange;
+import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.SubtractiveEChange;
+
+import tools.vitruv.framework.change.echange.feature.FeatureEChange;
+import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange;
+import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
+
+import tools.vitruv.framework.change.echange.feature.attribute.*;
+
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
+import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
+
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,48 +39,48 @@ import org.eclipse.emf.ecore.util.Switch;
  * @generated
  */
 public class AttributeSwitch<T1> extends Switch<T1> {
-    /**
+	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    protected static AttributePackage modelPackage;
+	protected static AttributePackage modelPackage;
 
-    /**
+	/**
 	 * Creates an instance of the switch.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-    public AttributeSwitch() {
+	public AttributeSwitch() {
 		if (modelPackage == null) {
 			modelPackage = AttributePackage.eINSTANCE;
 		}
 	}
 
-    /**
+	/**
 	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param ePackage the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
-    @Override
-    protected boolean isSwitchFor(EPackage ePackage) {
+	@Override
+	protected boolean isSwitchFor(EPackage ePackage) {
 		return ePackage == modelPackage;
 	}
 
-    /**
+	/**
 	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
 	 */
-    @Override
-    protected T1 doSwitch(int classifierID, EObject theEObject) {
+	@Override
+	protected T1 doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case AttributePackage.UPDATE_ATTRIBUTE_ECHANGE: {
 				UpdateAttributeEChange<?> updateAttributeEChange = (UpdateAttributeEChange<?>)theEObject;
@@ -140,18 +143,6 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case AttributePackage.PERMUTE_EATTRIBUTE_VALUES: {
-				PermuteEAttributeValues<?> permuteEAttributeValues = (PermuteEAttributeValues<?>)theEObject;
-				T1 result = casePermuteEAttributeValues(permuteEAttributeValues);
-				if (result == null) result = casePermuteListEChange(permuteEAttributeValues);
-				if (result == null) result = caseUpdateAttributeEChange(permuteEAttributeValues);
-				if (result == null) result = caseUpdateMultiValuedFeatureEChange(permuteEAttributeValues);
-				if (result == null) result = caseFeatureEChange(permuteEAttributeValues);
-				if (result == null) result = caseAtomicEChange(permuteEAttributeValues);
-				if (result == null) result = caseEChange(permuteEAttributeValues);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: {
 				ReplaceSingleValuedEAttribute<?, ?> replaceSingleValuedEAttribute = (ReplaceSingleValuedEAttribute<?, ?>)theEObject;
 				T1 result = caseReplaceSingleValuedEAttribute(replaceSingleValuedEAttribute);
@@ -172,112 +163,97 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 		}
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Update Attribute EChange</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Update Attribute EChange</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject> T1 caseUpdateAttributeEChange(UpdateAttributeEChange<A> object) {
+	public <A extends EObject> T1 caseUpdateAttributeEChange(UpdateAttributeEChange<A> object) {
 		return null;
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Additive Attribute EChange</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Additive Attribute EChange</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, T extends Object> T1 caseAdditiveAttributeEChange(AdditiveAttributeEChange<A, T> object) {
+	public <A extends EObject, T extends Object> T1 caseAdditiveAttributeEChange(AdditiveAttributeEChange<A, T> object) {
 		return null;
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Subtractive Attribute EChange</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Subtractive Attribute EChange</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, T extends Object> T1 caseSubtractiveAttributeEChange(SubtractiveAttributeEChange<A, T> object) {
+	public <A extends EObject, T extends Object> T1 caseSubtractiveAttributeEChange(SubtractiveAttributeEChange<A, T> object) {
 		return null;
 	}
 
-    /**
-	 * Returns the result of interpreting the object as an instance of '<em>Replace Single Valued EAttribute</em>'.
-	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Replace Single Valued EAttribute</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-    public <A extends EObject, T extends Object> T1 caseReplaceSingleValuedEAttribute(ReplaceSingleValuedEAttribute<A, T> object) {
-		return null;
-	}
-
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Insert EAttribute Value</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Insert EAttribute Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, T extends Object> T1 caseInsertEAttributeValue(InsertEAttributeValue<A, T> object) {
+	public <A extends EObject, T extends Object> T1 caseInsertEAttributeValue(InsertEAttributeValue<A, T> object) {
 		return null;
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Remove EAttribute Value</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Remove EAttribute Value</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, T extends Object> T1 caseRemoveEAttributeValue(RemoveEAttributeValue<A, T> object) {
+	public <A extends EObject, T extends Object> T1 caseRemoveEAttributeValue(RemoveEAttributeValue<A, T> object) {
 		return null;
 	}
 
-    /**
-	 * Returns the result of interpreting the object as an instance of '<em>Permute EAttribute Values</em>'.
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Replace Single Valued EAttribute</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Permute EAttribute Values</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Replace Single Valued EAttribute</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject> T1 casePermuteEAttributeValues(PermuteEAttributeValues<A> object) {
+	public <A extends EObject, T extends Object> T1 caseReplaceSingleValuedEAttribute(ReplaceSingleValuedEAttribute<A, T> object) {
 		return null;
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -292,7 +268,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -307,22 +283,22 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>EChange</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseFeatureEChange(FeatureEChange<A, F> object) {
+	public <A extends EObject, F extends EStructuralFeature> T1 caseFeatureEChange(FeatureEChange<A, F> object) {
 		return null;
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Additive EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -337,7 +313,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -352,22 +328,82 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Update Single List Entry EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Update Single List Entry EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange<A, F> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Insert In List EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Insert In List EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseInsertInListEChange(InsertInListEChange<A, F, T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Remove From List EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Remove From List EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Update Single Valued Feature EChange</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Update Single Valued Feature EChange</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
+	public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
 		return null;
 	}
 
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Replace Single Valued Feature EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -382,94 +418,19 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 		return null;
 	}
 
-				/**
-	 * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
-	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
-		return null;
-	}
-
-    /**
-	 * Returns the result of interpreting the object as an instance of '<em>Update Single List Entry EChange</em>'.
-	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Update Single List Entry EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange<A, F> object) {
-		return null;
-	}
-
-    /**
-	 * Returns the result of interpreting the object as an instance of '<em>Insert In List EChange</em>'.
-	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Insert In List EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-    public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseInsertInListEChange(InsertInListEChange<A, F, T> object) {
-		return null;
-	}
-
-    /**
-	 * Returns the result of interpreting the object as an instance of '<em>Remove From List EChange</em>'.
-	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Remove From List EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-    public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
-		return null;
-	}
-
-    /**
-	 * Returns the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
-	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-    public <A extends EObject, F extends EStructuralFeature> T1 casePermuteListEChange(PermuteListEChange<A, F> object) {
-		return null;
-	}
-
-    /**
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch, but this is the last case anyway.
-     * <!-- end-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch, but this is the last case anyway.
+	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
-    @Override
-    public T1 defaultCase(EObject object) {
+	@Override
+	public T1 defaultCase(EObject object) {
 		return null;
 	}
 

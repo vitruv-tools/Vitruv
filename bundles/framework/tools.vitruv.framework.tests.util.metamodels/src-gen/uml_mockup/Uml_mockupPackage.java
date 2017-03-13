@@ -38,7 +38,7 @@ public interface Uml_mockupPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://tools.vitruv.tests.metamodels.uml_mockup";
+	String eNS_URI = "http://tools.vitruv.framework.tests.util.metamodels";
 
 	/**
 	 * The package namespace name.
@@ -250,13 +250,22 @@ public interface Uml_mockupPackage extends EPackage {
 	int UCLASS__CLASS_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UCLASS__ATTRIBUTES = IDENTIFIED_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>UClass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int UCLASS_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 2;
+	int UCLASS_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>UClass</em>' class.
@@ -351,6 +360,44 @@ public interface Uml_mockupPackage extends EPackage {
 	 * @ordered
 	 */
 	int UMETHOD_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link uml_mockup.impl.UAttributeImpl <em>UAttribute</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uml_mockup.impl.UAttributeImpl
+	 * @see uml_mockup.impl.Uml_mockupPackageImpl#getUAttribute()
+	 * @generated
+	 */
+	int UATTRIBUTE = 6;
+
+	/**
+	 * The feature id for the '<em><b>Attribute Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UATTRIBUTE__ATTRIBUTE_NAME = 0;
+
+	/**
+	 * The number of structural features of the '<em>UAttribute</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UATTRIBUTE_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>UAttribute</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UATTRIBUTE_OPERATION_COUNT = 0;
 
 
 	/**
@@ -449,6 +496,17 @@ public interface Uml_mockupPackage extends EPackage {
 	EAttribute getUClass_ClassCount();
 
 	/**
+	 * Returns the meta object for the reference list '{@link uml_mockup.UClass#getAttributes <em>Attributes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Attributes</em>'.
+	 * @see uml_mockup.UClass#getAttributes()
+	 * @see #getUClass()
+	 * @generated
+	 */
+	EReference getUClass_Attributes();
+
+	/**
 	 * Returns the meta object for class '{@link uml_mockup.UNamedElement <em>UNamed Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -478,6 +536,27 @@ public interface Uml_mockupPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getUMethod();
+
+	/**
+	 * Returns the meta object for class '{@link uml_mockup.UAttribute <em>UAttribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>UAttribute</em>'.
+	 * @see uml_mockup.UAttribute
+	 * @generated
+	 */
+	EClass getUAttribute();
+
+	/**
+	 * Returns the meta object for the attribute '{@link uml_mockup.UAttribute#getAttributeName <em>Attribute Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Attribute Name</em>'.
+	 * @see uml_mockup.UAttribute#getAttributeName()
+	 * @see #getUAttribute()
+	 * @generated
+	 */
+	EAttribute getUAttribute_AttributeName();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -583,6 +662,14 @@ public interface Uml_mockupPackage extends EPackage {
 		EAttribute UCLASS__CLASS_COUNT = eINSTANCE.getUClass_ClassCount();
 
 		/**
+		 * The meta object literal for the '<em><b>Attributes</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference UCLASS__ATTRIBUTES = eINSTANCE.getUClass_Attributes();
+
+		/**
 		 * The meta object literal for the '{@link uml_mockup.impl.UNamedElementImpl <em>UNamed Element</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -609,6 +696,24 @@ public interface Uml_mockupPackage extends EPackage {
 		 * @generated
 		 */
 		EClass UMETHOD = eINSTANCE.getUMethod();
+
+		/**
+		 * The meta object literal for the '{@link uml_mockup.impl.UAttributeImpl <em>UAttribute</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uml_mockup.impl.UAttributeImpl
+		 * @see uml_mockup.impl.Uml_mockupPackageImpl#getUAttribute()
+		 * @generated
+		 */
+		EClass UATTRIBUTE = eINSTANCE.getUAttribute();
+
+		/**
+		 * The meta object literal for the '<em><b>Attribute Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute UATTRIBUTE__ATTRIBUTE_NAME = eINSTANCE.getUAttribute_AttributeName();
 
 	}
 

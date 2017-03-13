@@ -2,7 +2,7 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -19,39 +19,43 @@ class InsertedEAttributeValueReaction extends AbstractReactionRealization {
   }
   
   public void executeReaction(final EChange change) {
-    InsertEAttributeValue<allElementTypes.Root, java.lang.Integer> typedChange = (InsertEAttributeValue<allElementTypes.Root, java.lang.Integer>)change;
+    InsertEAttributeValue<Root, Integer> typedChange = (InsertEAttributeValue<Root, Integer>)change;
+    Root affectedEObject = typedChange.getAffectedEObject();
+    EAttribute affectedFeature = typedChange.getAffectedFeature();
+    Integer newValue = typedChange.getNewValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedEAttributeValueReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedEAttributeValueReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(affectedEObject, affectedFeature, newValue, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return InsertEAttributeValue.class;
   }
   
-  private boolean checkChangeProperties(final InsertEAttributeValue<Root, Integer> change) {
-    EObject changedElement = change.getAffectedEObject();
-    // Check model element type
-    if (!(changedElement instanceof Root)) {
+  private boolean checkChangeProperties(final EChange change) {
+    InsertEAttributeValue<Root, Integer> relevantChange = (InsertEAttributeValue<Root, Integer>)change;
+    if (!(relevantChange.getAffectedEObject() instanceof Root)) {
     	return false;
     }
-    
-    // Check feature
-    if (!change.getAffectedFeature().getName().equals("multiValuedEAttribute")) {
+    if (!relevantChange.getAffectedFeature().getName().equals("multiValuedEAttribute")) {
+    	return false;
+    }
+    if (!(relevantChange.getNewValue() instanceof Integer)) {
     	return false;
     }
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof InsertEAttributeValue<?, ?>)) {
+    if (!(change instanceof InsertEAttributeValue)) {
     	return false;
     }
-    InsertEAttributeValue typedChange = (InsertEAttributeValue)change;
-    if (!checkChangeProperties(typedChange)) {
+    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
+    if (!checkChangeProperties(change)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
+    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
     return true;
   }
   
@@ -60,10 +64,8 @@ class InsertedEAttributeValueReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final InsertEAttributeValue<Root, Integer> change, @Extension final RoutinesFacade _routinesFacade) {
-      Root _affectedEObject = change.getAffectedEObject();
-      Integer _newValue = change.getNewValue();
-      _routinesFacade.insertEAttribute(_affectedEObject, _newValue);
+    public void callRoutine1(final Root affectedEObject, final EAttribute affectedFeature, final Integer newValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.insertEAttribute(affectedEObject, newValue);
     }
   }
 }

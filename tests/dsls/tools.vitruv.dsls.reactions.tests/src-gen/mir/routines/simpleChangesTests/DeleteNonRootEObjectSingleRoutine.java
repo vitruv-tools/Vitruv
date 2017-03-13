@@ -56,11 +56,11 @@ public class DeleteNonRootEObjectSingleRoutine extends AbstractRepairRoutineReal
     if (targetElement == null) {
     	return;
     }
-    initializeRetrieveElementState(targetElement);
+    registerObjectUnderModification(targetElement);
     deleteObject(userExecution.getElement1(containedObject, targetElement));
     
     userExecution.callRoutine1(containedObject, targetElement, actionsFacade);
     
-    postprocessElementStates();
+    postprocessElements();
   }
 }

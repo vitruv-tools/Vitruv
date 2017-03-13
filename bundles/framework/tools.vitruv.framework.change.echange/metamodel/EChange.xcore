@@ -1,0 +1,17 @@
+@Ecore(nsURI="http://tools.vitruv/EChange/1.0")
+@GenModel(modelName="Change",prefix="EChange") //@GenModel(prefix="EChange", editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+package tools.vitruv.framework.change.echange
+
+abstract class EChange {
+}
+
+abstract class AtomicEChange extends EChange {
+}
+
+abstract class AdditiveEChange<T extends Object> extends AtomicEChange {
+	op T[1] getNewValue()
+}
+
+abstract class SubtractiveEChange<T extends Object> extends AtomicEChange {
+	op T[1] getOldValue()
+}
