@@ -197,7 +197,7 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getRootEChange__ResolveApply__ResourceSet() {
+	public EOperation getRootEChange__ResolveBefore__ResourceSet() {
 		return rootEChangeEClass.getEOperations().get(1);
 	}
 
@@ -206,7 +206,7 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getRootEChange__ResolveRevert__ResourceSet() {
+	public EOperation getRootEChange__ResolveAfter__ResourceSet() {
 		return rootEChangeEClass.getEOperations().get(2);
 	}
 
@@ -342,8 +342,8 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__RESOURCE);
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__INDEX);
 		createEOperation(rootEChangeEClass, ROOT_ECHANGE___IS_RESOLVED);
-		createEOperation(rootEChangeEClass, ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET);
-		createEOperation(rootEChangeEClass, ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET);
+		createEOperation(rootEChangeEClass, ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET);
+		createEOperation(rootEChangeEClass, ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET);
 		createEOperation(rootEChangeEClass, ROOT_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN);
 
 		insertRootEObjectEClass = createEClass(INSERT_ROOT_EOBJECT);
@@ -422,31 +422,31 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 
 		initEOperation(getRootEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getRootEChange__ResolveApply__ResourceSet(), theEChangePackage.getEChange(), "resolveApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getRootEChange__ResolveBefore__ResourceSet(), theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getRootEChange__ResolveRevert__ResourceSet(), theEChangePackage.getEChange(), "resolveRevert", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getRootEChange__ResolveAfter__ResourceSet(), theEcorePackage.getEBoolean(), "resolveAfter", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getRootEChange__Resolve__ResourceSet_boolean(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getRootEChange__Resolve__ResourceSet_boolean(), theEcorePackage.getEBoolean(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEBoolean(), "applicableChange", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(insertRootEObjectEClass, InsertRootEObject.class, "InsertRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getInsertRootEObject__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getInsertRootEObject__Resolve__ResourceSet_boolean(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getInsertRootEObject__Resolve__ResourceSet_boolean(), theEcorePackage.getEBoolean(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEBoolean(), "applyChange", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(removeRootEObjectEClass, RemoveRootEObject.class, "RemoveRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getRemoveRootEObject__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getRemoveRootEObject__Resolve__ResourceSet_boolean(), theEChangePackage.getEChange(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getRemoveRootEObject__Resolve__ResourceSet_boolean(), theEcorePackage.getEBoolean(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEBoolean(), "applyChange", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

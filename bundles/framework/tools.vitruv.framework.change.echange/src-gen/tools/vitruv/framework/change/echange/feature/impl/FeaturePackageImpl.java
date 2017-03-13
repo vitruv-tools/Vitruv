@@ -179,7 +179,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getFeatureEChange__ResolveApply__ResourceSet() {
+	public EOperation getFeatureEChange__ResolveBefore__ResourceSet() {
 		return featureEChangeEClass.getEOperations().get(1);
 	}
 
@@ -260,7 +260,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_FEATURE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_EOBJECT);
 		createEOperation(featureEChangeEClass, FEATURE_ECHANGE___IS_RESOLVED);
-		createEOperation(featureEChangeEClass, FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET);
+		createEOperation(featureEChangeEClass, FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET);
 
 		updateMultiValuedFeatureEChangeEClass = createEClass(UPDATE_MULTI_VALUED_FEATURE_ECHANGE);
 
@@ -345,7 +345,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 
 		initEOperation(getFeatureEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getFeatureEChange__ResolveApply__ResourceSet(), theEChangePackage.getEChange(), "resolveApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getFeatureEChange__ResolveBefore__ResourceSet(), theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(updateMultiValuedFeatureEChangeEClass, UpdateMultiValuedFeatureEChange.class, "UpdateMultiValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

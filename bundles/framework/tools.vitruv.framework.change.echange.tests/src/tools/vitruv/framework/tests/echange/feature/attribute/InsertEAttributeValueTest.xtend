@@ -24,18 +24,17 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	val unresolvedChange = TypeInferringAtomicEChangeFactory.
  			<Root, Integer>createInsertAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, true)
  			
- 		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
+ 		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
  		
- 		Assert.assertTrue(resolvedChange.isResolved)
- 		Assert.assertTrue(unresolvedChange != resolvedChange)
- 		Assert.assertEquals(unresolvedChange.getClass(), resolvedChange.getClass())
+		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
 	 }
 	 
 	 /**
-	  * Tests inserting a new values in a multivalued attribute.
+	  * Tests applying two {@link InsertEAttributeValue} EChanges forward by 
+	  * inserting new values in a multivalued attribute.
 	  */
 	 @Test
-	 def public void insertEAttributeValueApplyTest() {
+	 def public void insertEAttributeValueApplyForwardTest() {
 	 	val EList<Integer> multivaluedAttribute = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
 
 	 	// Resolving the change will be tested in EFeatureChange
@@ -45,7 +44,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	    Assert.assertEquals(multivaluedAttribute.size, 0)
 	 	
 	 	// Insert first value
-	 	Assert.assertTrue(resolvedChange.apply)
+	 	Assert.assertTrue(resolvedChange.applyForward)
 	 	
 	 	Assert.assertEquals(multivaluedAttribute.size, 1)
 	 	Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)
@@ -55,7 +54,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	 	<Root, Integer>createInsertAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE_2, false)
 	 	
 	 	// Insert second value before first value (at index 0)
-	 	Assert.assertTrue(resolvedChange2.apply)
+	 	Assert.assertTrue(resolvedChange2.applyForward)
 	 	
 	 	Assert.assertEquals(multivaluedAttribute.size, 2)
 	 	Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE_2)
@@ -63,10 +62,10 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 }
 	 
 	 /**
-	  * Reverts two {@link InsertEAttributeValue} EChanges.
+	  * Applies two {@link InsertEAttributeValue} EChanges backward.
 	  */
 	 @Test
-	 def public void insertEAttributeValueRevertTest() {
+	 def public void insertEAttributeValueApplyBackwardTest() {
 	 	val EList<Integer> multivaluedAttribute = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
 	 	Assert.assertEquals(multivaluedAttribute.size, 0)
 	 		
@@ -85,12 +84,12 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)
 	 	Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX + 1), DEFAULT_NEW_VALUE_2)
 	 	
-	 	Assert.assertTrue(resolvedChange2.revert)
+	 	Assert.assertTrue(resolvedChange2.applyBackward)
 	 	
 	 	Assert.assertEquals(multivaluedAttribute.size, 1)
 	 	Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE_2)
 	 	
-	 	Assert.assertTrue(resolvedChange.revert)
+	 	Assert.assertTrue(resolvedChange.applyBackward)
 	 	
 	 	Assert.assertEquals(multivaluedAttribute.size, 0)
 	 }
@@ -109,12 +108,12 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	 	<Root, Integer>createInsertAttributeChange(defaultAffectedEObject, defaultAffectedFeature, index, DEFAULT_NEW_VALUE, false)	
 	 	 	
 	 	Assert.assertTrue(resolvedChange.isResolved)
-	 	Assert.assertFalse(resolvedChange.apply)
-	 	Assert.assertFalse(resolvedChange.revert)
+	 	Assert.assertFalse(resolvedChange.applyForward)
+	 	Assert.assertFalse(resolvedChange.applyBackward)
 	 }
 	 
 	 /**
-	  * Tests an affected object which has no such attribute.
+	  * Tests an {@link InsertEAttributeValue} with an affected object which has no such attribute.
 	  */
 	 @Test
 	 def public void insertEAttributeValueInvalidAttribute() {
@@ -128,8 +127,8 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	// NonRoot has no such feature
 	 	Assert.assertTrue(affectedEObject.eClass.getFeatureID(affectedFeature) == -1)	
 	 	
-	 	Assert.assertFalse(resolvedChange.apply)
-	 	Assert.assertFalse(resolvedChange.revert)
+	 	Assert.assertFalse(resolvedChange.applyForward)
+	 	Assert.assertFalse(resolvedChange.applyBackward)
 	 }
 	 
 	 /**
@@ -146,7 +145,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	// Type of attribute is Integer not String
 	 	Assert.assertTrue(defaultAffectedFeature.EAttributeType.name == "EIntegerObject")
 	 	
-	 	Assert.assertFalse(resolvedChange.apply)	 	
-	 	Assert.assertFalse(resolvedChange.revert)
+	 	Assert.assertFalse(resolvedChange.applyForward)	 	
+	 	Assert.assertFalse(resolvedChange.applyBackward)
 	 }
 }

@@ -86,40 +86,76 @@ public interface EChangePackage extends EPackage {
 	int ECHANGE___IS_RESOLVED = 0;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE_APPLY__RESOURCESET = 1;
+	int ECHANGE___RESOLVE_BEFORE__RESOURCESET = 1;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE_REVERT__RESOURCESET = 2;
+	int ECHANGE___RESOLVE_AFTER__RESOURCESET = 2;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___APPLY = 3;
+	int ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = 3;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___REVERT = 4;
+	int ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = 4;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = 5;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = 6;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ECHANGE___APPLY_FORWARD = 7;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ECHANGE___APPLY_BACKWARD = 8;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -128,7 +164,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE_OPERATION_COUNT = 5;
+	int ECHANGE_OPERATION_COUNT = 9;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl <em>Atomic EChange</em>}' class.
@@ -159,40 +195,76 @@ public interface EChangePackage extends EPackage {
 	int ATOMIC_ECHANGE___IS_RESOLVED = ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ATOMIC_ECHANGE___RESOLVE_APPLY__RESOURCESET = ECHANGE___RESOLVE_APPLY__RESOURCESET;
+	int ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET = ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ATOMIC_ECHANGE___RESOLVE_REVERT__RESOURCESET = ECHANGE___RESOLVE_REVERT__RESOURCESET;
+	int ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET = ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ATOMIC_ECHANGE___APPLY = ECHANGE___APPLY;
+	int ATOMIC_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ATOMIC_ECHANGE___REVERT = ECHANGE___REVERT;
+	int ATOMIC_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ATOMIC_ECHANGE___APPLY_FORWARD = ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ATOMIC_ECHANGE___APPLY_BACKWARD = ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The number of operations of the '<em>Atomic EChange</em>' class.
@@ -232,40 +304,76 @@ public interface EChangePackage extends EPackage {
 	int ADDITIVE_ECHANGE___IS_RESOLVED = ATOMIC_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE___RESOLVE_APPLY__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+	int ADDITIVE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE___RESOLVE_REVERT__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+	int ADDITIVE_ECHANGE___RESOLVE_AFTER__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE___APPLY = ATOMIC_ECHANGE___APPLY;
+	int ADDITIVE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ATOMIC_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE___REVERT = ATOMIC_ECHANGE___REVERT;
+	int ADDITIVE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ATOMIC_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ECHANGE___APPLY_FORWARD = ATOMIC_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ECHANGE___APPLY_BACKWARD = ATOMIC_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -314,40 +422,76 @@ public interface EChangePackage extends EPackage {
 	int SUBTRACTIVE_ECHANGE___IS_RESOLVED = ATOMIC_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE___RESOLVE_APPLY__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+	int SUBTRACTIVE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE___RESOLVE_REVERT__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+	int SUBTRACTIVE_ECHANGE___RESOLVE_AFTER__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE___APPLY = ATOMIC_ECHANGE___APPLY;
+	int SUBTRACTIVE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ATOMIC_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE___REVERT = ATOMIC_ECHANGE___REVERT;
+	int SUBTRACTIVE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ATOMIC_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ECHANGE___APPLY_FORWARD = ATOMIC_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ECHANGE___APPLY_BACKWARD = ATOMIC_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -409,44 +553,84 @@ public interface EChangePackage extends EPackage {
 	EOperation getEChange__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Apply</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Apply</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.EChange#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve Before</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getEChange__ResolveApply__ResourceSet();
+	EOperation getEChange__ResolveBefore__ResourceSet();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.EChange#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve After</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getEChange__ResolveRevert__ResourceSet();
+	EOperation getEChange__ResolveAfter__ResourceSet();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#apply() <em>Apply</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#copyAndResolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Copy And Resolve Before</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Apply</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.EChange#apply()
+	 * @return the meta object for the '<em>Copy And Resolve Before</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#copyAndResolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getEChange__Apply();
+	EOperation getEChange__CopyAndResolveBefore__ResourceSet();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#revert() <em>Revert</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#copyAndResolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Copy And Resolve After</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Revert</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.EChange#revert()
+	 * @return the meta object for the '<em>Copy And Resolve After</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#copyAndResolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getEChange__Revert();
+	EOperation getEChange__CopyAndResolveAfter__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveBeforeAndApplyForward(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before And Apply Forward</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#resolveBeforeAndApplyForward(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getEChange__ResolveBeforeAndApplyForward__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveAfterAndApplyBackward(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After And Apply Backward</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#resolveAfterAndApplyBackward(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @generated
+	 */
+	EOperation getEChange__ResolveAfterAndApplyBackward__ResourceSet();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#applyForward() <em>Apply Forward</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Apply Forward</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#applyForward()
+	 * @generated
+	 */
+	EOperation getEChange__ApplyForward();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#applyBackward() <em>Apply Backward</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Apply Backward</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.EChange#applyBackward()
+	 * @generated
+	 */
+	EOperation getEChange__ApplyBackward();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.AtomicEChange <em>Atomic EChange</em>}'.
@@ -562,36 +746,68 @@ public interface EChangePackage extends EPackage {
 		EOperation ECHANGE___IS_RESOLVED = eINSTANCE.getEChange__IsResolved();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Apply</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve Before</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getEChange__ResolveApply__ResourceSet();
+		EOperation ECHANGE___RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getEChange__ResolveBefore__ResourceSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve After</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getEChange__ResolveRevert__ResourceSet();
+		EOperation ECHANGE___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getEChange__ResolveAfter__ResourceSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Apply</b></em>' operation.
+		 * The meta object literal for the '<em><b>Copy And Resolve Before</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___APPLY = eINSTANCE.getEChange__Apply();
+		EOperation ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getEChange__CopyAndResolveBefore__ResourceSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Revert</b></em>' operation.
+		 * The meta object literal for the '<em><b>Copy And Resolve After</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___REVERT = eINSTANCE.getEChange__Revert();
+		EOperation ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = eINSTANCE.getEChange__CopyAndResolveAfter__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve Before And Apply Forward</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = eINSTANCE.getEChange__ResolveBeforeAndApplyForward__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Resolve After And Apply Backward</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = eINSTANCE.getEChange__ResolveAfterAndApplyBackward__ResourceSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Apply Forward</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ECHANGE___APPLY_FORWARD = eINSTANCE.getEChange__ApplyForward();
+
+		/**
+		 * The meta object literal for the '<em><b>Apply Backward</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ECHANGE___APPLY_BACKWARD = eINSTANCE.getEChange__ApplyBackward();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl <em>Atomic EChange</em>}' class.

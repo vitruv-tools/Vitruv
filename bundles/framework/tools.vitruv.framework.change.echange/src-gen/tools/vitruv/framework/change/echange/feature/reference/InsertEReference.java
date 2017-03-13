@@ -7,8 +7,6 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
-import tools.vitruv.framework.change.echange.EChange;
-
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
 
 /**
@@ -38,7 +36,7 @@ public interface InsertEReference<A extends EObject, T extends EObject> extends 
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, true);'"
 	 * @generated
 	 */
-	EChange resolveApply(ResourceSet resourceSet);
+	boolean resolveBefore(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -47,15 +45,15 @@ public interface InsertEReference<A extends EObject, T extends EObject> extends 
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, false);'"
 	 * @generated
 	 */
-	EChange resolveRevert(ResourceSet resourceSet);
+	boolean resolveAfter(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.feature.reference.ResourceSet" resourceSetUnique="false" applyChangeUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply = super.resolveApply(resourceSet);\n\tfinal <%tools.vitruv.framework.change.echange.feature.reference.InsertEReference%><A, T> resolvedChange = ((<%tools.vitruv.framework.change.echange.feature.reference.InsertEReference%><A, T>) _resolveApply);\n\tboolean _equals = <%com.google.common.base.Objects%>.equal(resolvedChange, null);\n\tif (_equals)\n\t{\n\t\treturn null;\n\t}\n\tif ((applyChange && this.isContainment()))\n\t{\n\t\tresolvedChange.setNewValue(((T) <%tools.vitruv.framework.change.echange.util.EChangeUtil%>.objectInProgress));\n\t}\n\telse\n\t{\n\t\tT _newValue = this.getNewValue();\n\t\t<%org.eclipse.emf.ecore.EObject%> _resolveProxy = <%tools.vitruv.framework.change.echange.util.EChangeUtil%>.resolveProxy(_newValue, resourceSet);\n\t\tresolvedChange.setNewValue(((T) _resolveProxy));\n\t}\n\tif ((<%com.google.common.base.Objects%>.equal(resolvedChange.getNewValue(), null) || (!resolvedChange.getNewValue().eIsProxy())))\n\t{\n\t\tif ((applyChange && this.isContainment()))\n\t\t{\n\t\t\t<%tools.vitruv.framework.change.echange.util.EChangeUtil%>.objectInProgress = null;\n\t\t}\n\t\telse\n\t\t{\n\t\t\tT _newValue_1 = resolvedChange.getNewValue();\n\t\t\t<%tools.vitruv.framework.change.echange.util.EChangeUtil%>.objectInProgress = _newValue_1;\n\t\t}\n\t\treturn resolvedChange;\n\t}\n}\nreturn this;'"
+	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.feature.reference.ResourceSet" resourceSetUnique="false" resolveBeforeUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%org.eclipse.emf.ecore.EObject%> resolvedNewValue = this.resolveNewValue(resourceSet, resolveBefore);\n\tif (((<%com.google.common.base.Objects%>.equal(resolvedNewValue, null) || resolvedNewValue.eIsProxy()) || (!super.resolveBefore(resourceSet))))\n\t{\n\t\treturn false;\n\t}\n\tthis.setNewValue(((T) resolvedNewValue));\n}\nreturn true;'"
 	 * @generated
 	 */
-	EChange resolve(ResourceSet resourceSet, boolean applyChange);
+	boolean resolve(ResourceSet resourceSet, boolean resolveBefore);
 
 } // InsertEReference

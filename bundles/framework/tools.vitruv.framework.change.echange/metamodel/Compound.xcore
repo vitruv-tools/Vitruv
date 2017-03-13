@@ -3,6 +3,7 @@
 package tools.vitruv.framework.change.echange.compound
 
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.EChange
@@ -31,6 +32,7 @@ type ResourceSet wraps ResourceSet
 
 abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
 	op unique AtomicEChange[+] getAtomicChanges()
+	
 	op boolean isResolved() {
 		for (AtomicEChange change : getAtomicChanges()) {
 			if (!change.isResolved()) {
@@ -39,42 +41,67 @@ abstract class CompoundEChange extends tools.vitruv.framework.change.echange.ECh
 		}
 		return super.isResolved()
 	}
-	op EChange resolveApply(ResourceSet resourceSet) {
-		resolve(resourceSet, true)
-	}
-	op EChange resolveRevert(ResourceSet resourceSet) {
-		resolve(resourceSet, false)
-	}
-	op EChange resolve(ResourceSet resourceSet, boolean applyChange) {
-		if (!isResolved) {
-			val resolvedChange = super.resolveApply(resourceSet) as CompoundEChange
-			if (resolvedChange == null) {
-				// resolving the super class attributes failed
-				return null				
-			}
-			
-			resolvedChange.resolveAtomicChanges(resourceSet, applyChange)
-			
-			for (AtomicEChange change : resolvedChange.atomicChanges) {
-				if (!change.isResolved) {
-					return this
-				}
-			}
-			return resolvedChange
-		}
-		return this
+	
+	op boolean resolveBefore(ResourceSet resourceSet) {
+		return resolve(resourceSet, true, true)
 	}
 	
-	/**
-	 * Resolves all atomic changes in the compound change
-	 * in the correct order.
-	 * @param resourceSet The resource set which the proxy elements will be resolved to.
-	 * @param applyChange Indicates whether the change will be applied or reverted
-	 * 		after resolving. The changes needs to be resolved from the first to the last change.
-	 * 		If {@code applyChange} is {@code false} the changes needs to be resolved
-	 * 		from the last change to the first change.
-	 */
-	op void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange)
+	op boolean resolveAfter(ResourceSet resourceSet) {
+		return resolve(resourceSet, false, true)
+	}
+	
+	op boolean resolveBeforeAndApply(ResourceSet resourceSet) {
+		return resolve(resourceSet, true, false)
+	}
+	
+	op boolean resolveAfterAndApply(ResourceSet resourceSet) {
+		return resolve(resourceSet, false, false)		
+	}
+	
+	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
+		if (!isResolved) {
+			if (!super.resolveBefore(resourceSet)) {
+				return false
+			}
+			
+			val changesMade = new BasicEList<EChange>
+			if (resolveBefore) {
+				for (EChange change : atomicChanges) {
+					if (!change.resolveBeforeAndApplyForward(resourceSet)) {
+						// Error resolving or applying forward => revert
+						for (EChange changed : changesMade.reverse) {
+							changed.applyBackward
+						}
+						return false
+					} else {
+						changesMade.add(change)
+					}
+				}
+			} else {
+				for (EChange change : atomicChanges.reverse) {
+					if (!change.resolveAfterAndApplyBackward(resourceSet)) {
+						// Error resolving or applying backward => revert
+						for (EChange changed : changesMade.reverse) {
+							changed.applyForward
+						}
+						return false
+					} else {
+						changesMade.add(change)
+					}
+				}
+			}
+			
+			// Revert all changes which were made resolving the compound change.
+			if (revertAfterResolving) {
+				if (resolveBefore) {
+					applyBackward
+				} else {
+					applyForward
+				}
+			}
+		}
+		return true
+	}
 }
 
 class MoveEObject<A extends EObj, B extends EObj, T extends EObj> extends CompoundEChange {
@@ -106,7 +133,7 @@ class ExplicitUnsetEFeature<A extends EObj, T extends Object> extends CompoundSu
 	}
 }
 
-class ReplaceInEList<A extends EObj, F extends EFeat, T extends EObj, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
+class ReplaceInEList<A extends EObj, F extends EFeat, T extends Object, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
 	contains R[1] removeChange
 	contains I[1] insertChange
 	op unique AtomicEChange[+] getAtomicChanges() {
@@ -114,9 +141,6 @@ class ReplaceInEList<A extends EObj, F extends EFeat, T extends EObj, R extends 
 		list.add(getRemoveChange());
 		list.add(getInsertChange());
 		return list;
-	}
-	op void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange) {
-
 	}
 }
 
@@ -127,17 +151,6 @@ class CompoundSubtraction<T extends Object, S extends SubtractiveEChange<T>> ext
 		result.addAll(subtractiveChanges);
 		return result;
 	}
-	op void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange) {
-		if (applyChange) {
-			for (var i = 0; i < subtractiveChanges.size; i++) {
-				subtractiveChanges.set(i, subtractiveChanges.get(i).resolveApply(resourceSet) as S)
-			}
-		} else {
-			for (var i = subtractiveChanges.size - 1; i >= 0; i--) {
-				subtractiveChanges.set(i, subtractiveChanges.get(i).resolveRevert(resourceSet) as S)				
-			}
-		}
-	}
 }
 
 class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChange {
@@ -146,17 +159,6 @@ class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends C
 		val result = new BasicEList<AtomicEChange>();
 		result.addAll(additiveChanges);
 		return result;
-	}
-	op void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange) {
-		if (applyChange) {
-			for (var i = 0; i < additiveChanges.size; i++) {
-				additiveChanges.set(i, additiveChanges.get(i).resolveApply(resourceSet) as S)
-			}
-		} else {
-			for (var i = additiveChanges.size - 1; i >= 0; i--) {
-				additiveChanges.set(i, additiveChanges.get(i).resolveRevert(resourceSet) as S)				
-			}
-		}
 	}
 }
 
@@ -169,15 +171,6 @@ abstract class CreateAndInsertEObject<T extends EObj, C extends EObjectAddedECha
 		result.add(insertChange);
 		return result;
 	}
-	op void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange) {
-		if (applyChange) {
-			createChange = createChange.resolveApply(resourceSet) as CreateEObject<T>
-			insertChange = insertChange.resolveApply(resourceSet) as C
-		} else {
-			insertChange = insertChange.resolveRevert(resourceSet) as C
-			createChange = createChange.resolveRevert(resourceSet) as CreateEObject<T>
-		}
-	}
 }
 
 abstract class RemoveAndDeleteEObject<T extends EObj, C extends EObjectSubtractedEChange<T>> extends CompoundEChange {
@@ -188,15 +181,6 @@ abstract class RemoveAndDeleteEObject<T extends EObj, C extends EObjectSubtracte
 		result.add(removeChange);
 		result.add(deleteChange);
 		return result;
-	}
-	op void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange) {
-		if (applyChange) {
-			removeChange = removeChange.resolveApply(resourceSet) as C
-			deleteChange = deleteChange.resolveApply(resourceSet) as DeleteEObject<T>
-		} else {
-			deleteChange = deleteChange.resolveRevert(resourceSet) as DeleteEObject<T>
-			removeChange = removeChange.resolveRevert(resourceSet) as C
-		}
 	}
 }
 
@@ -218,16 +202,5 @@ class CreateAndReplaceAndDeleteNonRoot<A extends EObj, T extends EObj> extends C
 		result.add(replaceChange);
 		result.add(deleteChange);
 		return result;
-	}
-	op void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange) {
-		if (applyChange) {
-			createChange = createChange.resolveApply(resourceSet) as CreateEObject<T>
-			replaceChange = replaceChange.resolveApply(resourceSet) as ReplaceSingleValuedEReference<A, T>
-			deleteChange = deleteChange.resolveApply(resourceSet) as DeleteEObject<T>
-		} else {
-			deleteChange = deleteChange.resolveRevert(resourceSet) as DeleteEObject<T>	
-			replaceChange = replaceChange.resolveRevert(resourceSet) as ReplaceSingleValuedEReference<A, T>
-			createChange = createChange.resolveRevert(resourceSet) as CreateEObject<T>
-		}
 	}
 }

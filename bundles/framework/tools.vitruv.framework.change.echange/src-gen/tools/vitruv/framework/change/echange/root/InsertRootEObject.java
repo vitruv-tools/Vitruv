@@ -6,8 +6,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
-import tools.vitruv.framework.change.echange.EChange;
-
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 
 /**
@@ -25,7 +23,7 @@ public interface InsertRootEObject<T extends EObject> extends RootEChange, EObje
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (super.isResolved() && (!this.getNewValue().eIsProxy()));'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return ((super.isResolved() && (!<%com.google.common.base.Objects%>.equal(this.getNewValue(), null))) && (!this.getNewValue().eIsProxy()));'"
 	 * @generated
 	 */
 	boolean isResolved();
@@ -33,10 +31,10 @@ public interface InsertRootEObject<T extends EObject> extends RootEChange, EObje
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.root.ResourceSet" resourceSetUnique="false" applyChangeUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolve = super.resolve(resourceSet, applyChange);\n\tfinal <%tools.vitruv.framework.change.echange.root.InsertRootEObject%><T> resolvedChange = ((<%tools.vitruv.framework.change.echange.root.InsertRootEObject%><T>) _resolve);\n\tboolean _equals = <%com.google.common.base.Objects%>.equal(resolvedChange, null);\n\tif (_equals)\n\t{\n\t\treturn null;\n\t}\n\tif (applyChange)\n\t{\n\t\tresolvedChange.setNewValue(((T) <%tools.vitruv.framework.change.echange.util.EChangeUtil%>.objectInProgress));\n\t}\n\telse\n\t{\n\t\tT _newValue = this.getNewValue();\n\t\t<%org.eclipse.emf.ecore.EObject%> _resolveProxy = <%tools.vitruv.framework.change.echange.util.EChangeUtil%>.resolveProxy(_newValue, resourceSet);\n\t\tresolvedChange.setNewValue(((T) _resolveProxy));\n\t}\n\tif (((!<%com.google.common.base.Objects%>.equal(resolvedChange.getNewValue(), null)) && (!resolvedChange.getNewValue().eIsProxy())))\n\t{\n\t\tif (applyChange)\n\t\t{\n\t\t\t<%tools.vitruv.framework.change.echange.util.EChangeUtil%>.objectInProgress = null;\n\t\t}\n\t\telse\n\t\t{\n\t\t\tT _newValue_1 = resolvedChange.getNewValue();\n\t\t\t<%tools.vitruv.framework.change.echange.util.EChangeUtil%>.objectInProgress = _newValue_1;\n\t\t}\n\t\treturn resolvedChange;\n\t}\n}\nreturn this;'"
+	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.root.ResourceSet" resourceSetUnique="false" resolveBeforeUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tT resolvedNewValue = null;\n\tif (resolveBefore)\n\t{\n\t\t<%org.eclipse.emf.ecore.resource.Resource%> stagingArea = <%tools.vitruv.framework.change.echange.util.StagingArea%>.getStagingArea(resourceSet);\n\t\t<%org.eclipse.emf.common.util.EList%><<%org.eclipse.emf.ecore.EObject%>> _contents = stagingArea.getContents();\n\t\tboolean _isEmpty = _contents.isEmpty();\n\t\tboolean _not_1 = (!_isEmpty);\n\t\tif (_not_1)\n\t\t{\n\t\t\t<%org.eclipse.emf.common.util.EList%><<%org.eclipse.emf.ecore.EObject%>> _contents_1 = stagingArea.getContents();\n\t\t\t<%org.eclipse.emf.ecore.EObject%> _get = _contents_1.get(0);\n\t\t\tresolvedNewValue = ((T) _get);\n\t\t}\n\t\telse\n\t\t{\n\t\t\treturn false;\n\t\t}\n\t}\n\telse\n\t{\n\t\tT _newValue = this.getNewValue();\n\t\t<%org.eclipse.emf.ecore.EObject%> _resolveProxy = <%tools.vitruv.framework.change.echange.util.EChangeUtil%>.resolveProxy(_newValue, resourceSet);\n\t\tresolvedNewValue = ((T) _resolveProxy);\n\t}\n\tif (((<%com.google.common.base.Objects%>.equal(resolvedNewValue, null) || resolvedNewValue.eIsProxy()) || (!super.resolve(resourceSet, resolveBefore))))\n\t{\n\t\treturn false;\n\t}\n\tthis.setNewValue(resolvedNewValue);\n}\nreturn true;'"
 	 * @generated
 	 */
-	EChange resolve(ResourceSet resourceSet, boolean applyChange);
+	boolean resolve(ResourceSet resourceSet, boolean resolveBefore);
 
 } // InsertRootEObject

@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.EChange;
@@ -36,6 +37,7 @@ import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 
 import tools.vitruv.framework.change.echange.util.EChangeUtil;
+import tools.vitruv.framework.change.echange.util.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -133,7 +135,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveApply(final ResourceSet resourceSet) {
+	public boolean resolveBefore(final ResourceSet resourceSet) {
 		return this.resolve(resourceSet, true);
 	}
 
@@ -142,7 +144,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveRevert(final ResourceSet resourceSet) {
+	public boolean resolveAfter(final ResourceSet resourceSet) {
 		return this.resolve(resourceSet, false);
 	}
 
@@ -151,36 +153,34 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet, final boolean applyChange) {
+	public boolean resolve(final ResourceSet resourceSet, final boolean resolveBefore) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			EChange _resolveApply = super.resolveApply(resourceSet);
-			final InsertEReference<A, T> resolvedChange = ((InsertEReference<A, T>) _resolveApply);
-			boolean _equals = Objects.equal(resolvedChange, null);
-			if (_equals) {
-				return null;
+			final EObject resolvedNewValue = this.resolveNewValue(resourceSet, resolveBefore);
+			if (((Objects.equal(resolvedNewValue, null) || resolvedNewValue.eIsProxy()) || (!super.resolveBefore(resourceSet)))) {
+				return false;
 			}
-			if ((applyChange && this.isContainment())) {
-				resolvedChange.setNewValue(((T) EChangeUtil.objectInProgress));
-			}
-			else {
-				T _newValue = this.getNewValue();
-				EObject _resolveProxy = EChangeUtil.resolveProxy(_newValue, resourceSet);
-				resolvedChange.setNewValue(((T) _resolveProxy));
-			}
-			if ((Objects.equal(resolvedChange.getNewValue(), null) || (!resolvedChange.getNewValue().eIsProxy()))) {
-				if ((applyChange && this.isContainment())) {
-					EChangeUtil.objectInProgress = null;
-				}
-				else {
-					T _newValue_1 = resolvedChange.getNewValue();
-					EChangeUtil.objectInProgress = _newValue_1;
-				}
-				return resolvedChange;
-			}
+			this.setNewValue(((T) resolvedNewValue));
 		}
-		return this;
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject resolveNewValue(final ResourceSet resourceSet, final boolean resolveBefore) {
+		if ((resolveBefore && this.isContainment())) {
+			final Resource stagingArea = StagingArea.getStagingArea(resourceSet);
+			EList<EObject> _contents = stagingArea.getContents();
+			return _contents.get(0);
+		}
+		else {
+			T _newValue = this.getNewValue();
+			return EChangeUtil.resolveProxy(_newValue, resourceSet);
+		}
 	}
 
 	/**
@@ -315,15 +315,15 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.INSERT_EREFERENCE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE_APPLY__RESOURCESET;
-				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE_REVERT__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE_BEFORE__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE_AFTER__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
 		if (baseClass == FeatureEChange.class) {
 			switch (baseOperationID) {
 				case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED: return ReferencePackage.INSERT_EREFERENCE___IS_RESOLVED;
-				case FeaturePackage.FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE_APPLY__RESOURCESET;
+				case FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET: return ReferencePackage.INSERT_EREFERENCE___RESOLVE_BEFORE__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -340,6 +340,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 		}
 		if (baseClass == AdditiveReferenceEChange.class) {
 			switch (baseOperationID) {
+				case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE___RESOLVE_NEW_VALUE__RESOURCESET_BOOLEAN: return ReferencePackage.INSERT_EREFERENCE___RESOLVE_NEW_VALUE__RESOURCESET_BOOLEAN;
 				default: return -1;
 			}
 		}
@@ -356,12 +357,14 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 		switch (operationID) {
 			case ReferencePackage.INSERT_EREFERENCE___IS_RESOLVED:
 				return isResolved();
-			case ReferencePackage.INSERT_EREFERENCE___RESOLVE_APPLY__RESOURCESET:
-				return resolveApply((ResourceSet)arguments.get(0));
-			case ReferencePackage.INSERT_EREFERENCE___RESOLVE_REVERT__RESOURCESET:
-				return resolveRevert((ResourceSet)arguments.get(0));
+			case ReferencePackage.INSERT_EREFERENCE___RESOLVE_BEFORE__RESOURCESET:
+				return resolveBefore((ResourceSet)arguments.get(0));
+			case ReferencePackage.INSERT_EREFERENCE___RESOLVE_AFTER__RESOURCESET:
+				return resolveAfter((ResourceSet)arguments.get(0));
 			case ReferencePackage.INSERT_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN:
 				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
+			case ReferencePackage.INSERT_EREFERENCE___RESOLVE_NEW_VALUE__RESOURCESET_BOOLEAN:
+				return resolveNewValue((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 			case ReferencePackage.INSERT_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

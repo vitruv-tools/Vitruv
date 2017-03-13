@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.EChange;
@@ -36,6 +37,7 @@ import tools.vitruv.framework.change.echange.feature.reference.SubtractiveRefere
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 
 import tools.vitruv.framework.change.echange.util.EChangeUtil;
+import tools.vitruv.framework.change.echange.util.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -133,7 +135,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveApply(final ResourceSet resourceSet) {
+	public boolean resolveBefore(final ResourceSet resourceSet) {
 		return this.resolve(resourceSet, true);
 	}
 
@@ -142,7 +144,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveRevert(final ResourceSet resourceSet) {
+	public boolean resolveAfter(final ResourceSet resourceSet) {
 		return this.resolve(resourceSet, false);
 	}
 
@@ -151,36 +153,35 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet, final boolean applyChange) {
+	public boolean resolve(final ResourceSet resourceSet, final boolean resolveBefore) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			EChange _resolveApply = super.resolveApply(resourceSet);
-			final RemoveEReference<A, T> resolvedChange = ((RemoveEReference<A, T>) _resolveApply);
-			boolean _equals = Objects.equal(resolvedChange, null);
-			if (_equals) {
-				return null;
+			final EObject resolvedOldValue = this.resolveOldValue(resourceSet, resolveBefore);
+			if (((Objects.equal(resolvedOldValue, null) || resolvedOldValue.eIsProxy()) || (!super.resolveBefore(resourceSet)))) {
+				return false;
 			}
-			if (((!applyChange) && this.isContainment())) {
-				resolvedChange.setOldValue(((T) EChangeUtil.objectInProgress));
-			}
-			else {
-				T _oldValue = this.getOldValue();
-				EObject _resolveProxy = EChangeUtil.resolveProxy(_oldValue, resourceSet);
-				resolvedChange.setOldValue(((T) _resolveProxy));
-			}
-			if ((Objects.equal(resolvedChange.getOldValue(), null) || (!resolvedChange.getOldValue().eIsProxy()))) {
-				if (((!applyChange) && this.isContainment())) {
-					EChangeUtil.objectInProgress = null;
-				}
-				else {
-					T _oldValue_1 = resolvedChange.getOldValue();
-					EChangeUtil.objectInProgress = _oldValue_1;
-				}
-				return resolvedChange;
-			}
+			this.setOldValue(((T) resolvedOldValue));
 		}
-		return this;
+		return true;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject resolveOldValue(final ResourceSet resourceSet, final boolean resolveBefore) {
+		if (((!resolveBefore) && this.isContainment())) {
+			final Resource stagingArea = StagingArea.getStagingArea(resourceSet);
+			EList<EObject> _contents = stagingArea.getContents();
+			return _contents.get(0);
+		}
+		else {
+			T _oldValue = this.getOldValue();
+			EObject _resolveProxy = EChangeUtil.resolveProxy(_oldValue, resourceSet);
+			return ((T) _resolveProxy);
+		}
 	}
 
 	/**
@@ -315,15 +316,15 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE_APPLY__RESOURCESET;
-				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE_REVERT__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE_BEFORE__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE_AFTER__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
 		if (baseClass == FeatureEChange.class) {
 			switch (baseOperationID) {
 				case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED: return ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED;
-				case FeaturePackage.FEATURE_ECHANGE___RESOLVE_APPLY__RESOURCESET: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE_APPLY__RESOURCESET;
+				case FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE_BEFORE__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -340,6 +341,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 		}
 		if (baseClass == SubtractiveReferenceEChange.class) {
 			switch (baseOperationID) {
+				case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE___RESOLVE_OLD_VALUE__RESOURCESET_BOOLEAN: return ReferencePackage.REMOVE_EREFERENCE___RESOLVE_OLD_VALUE__RESOURCESET_BOOLEAN;
 				default: return -1;
 			}
 		}
@@ -356,12 +358,14 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 		switch (operationID) {
 			case ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED:
 				return isResolved();
-			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE_APPLY__RESOURCESET:
-				return resolveApply((ResourceSet)arguments.get(0));
-			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE_REVERT__RESOURCESET:
-				return resolveRevert((ResourceSet)arguments.get(0));
+			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE_BEFORE__RESOURCESET:
+				return resolveBefore((ResourceSet)arguments.get(0));
+			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE_AFTER__RESOURCESET:
+				return resolveAfter((ResourceSet)arguments.get(0));
 			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN:
 				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
+			case ReferencePackage.REMOVE_EREFERENCE___RESOLVE_OLD_VALUE__RESOURCESET_BOOLEAN:
+				return resolveOldValue((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 			case ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

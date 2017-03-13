@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.util.EChangeUtil
-import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 
 type EObj wraps EObject
@@ -18,22 +17,23 @@ abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicECh
 	refers A[1] affectedEObject 
 	
 	op boolean isResolved() {
-		return affectedEObject != null && !affectedEObject.eIsProxy
-			&& affectedFeature != null
+		return super.isResolved && affectedEObject != null 
+		&& !affectedEObject.eIsProxy && affectedFeature != null
 	}
 	
-	op EChange resolveApply(ResourceSet resourceSet) {
-		if (!isResolved) {
-			val resolvedChange = super.resolveApply(resourceSet) as FeatureEChange<A, F>
-			if (resolvedChange == null || affectedFeature == null || affectedEObject == null) {
-				return null
+	op boolean resolveBefore(ResourceSet resourceSet) {
+		if (!isResolved) {		
+			var resolvedAffectedEObject = EChangeUtil.resolveProxy(affectedEObject, resourceSet) as A
+			// Don't change the references before everything (current and super class proxies) 
+			// was successfully resolved.
+			if (affectedFeature == null || resolvedAffectedEObject == null 
+				|| resolvedAffectedEObject.eIsProxy || !super.resolveBefore(resourceSet)) {
+				return false
 			}
-			resolvedChange.affectedEObject = EChangeUtil.resolveProxy(affectedEObject, resourceSet) as A;
-			if (resolvedChange.affectedEObject != null && !resolvedChange.affectedEObject.eIsProxy) {
-				return resolvedChange
-			}
+
+			affectedEObject = resolvedAffectedEObject
 		}
-		return this
+		return true
 	}
 }
 

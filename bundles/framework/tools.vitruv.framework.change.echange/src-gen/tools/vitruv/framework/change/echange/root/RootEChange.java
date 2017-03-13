@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
-import tools.vitruv.framework.change.echange.EChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -123,7 +122,7 @@ public interface RootEChange extends AtomicEChange {
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, true);'"
 	 * @generated
 	 */
-	EChange resolveApply(ResourceSet resourceSet);
+	boolean resolveBefore(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -132,15 +131,15 @@ public interface RootEChange extends AtomicEChange {
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, false);'"
 	 * @generated
 	 */
-	EChange resolveRevert(ResourceSet resourceSet);
+	boolean resolveAfter(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.root.ResourceSet" resourceSetUnique="false" applicableChangeUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%tools.vitruv.framework.change.echange.EChange%> _resolveApply = super.resolveApply(resourceSet);\n\tfinal <%tools.vitruv.framework.change.echange.root.RootEChange%> resolvedChange = ((<%tools.vitruv.framework.change.echange.root.RootEChange%>) _resolveApply);\n\tboolean _equals = <%com.google.common.base.Objects%>.equal(resolvedChange, null);\n\tif (_equals)\n\t{\n\t\treturn null;\n\t}\n\t<%org.eclipse.emf.common.util.URI%> _uri = this.getUri();\n\t<%org.eclipse.emf.ecore.resource.Resource%> _resource = resourceSet.getResource(_uri, false);\n\tresolvedChange.setResource(_resource);\n\t<%org.eclipse.emf.ecore.resource.Resource%> _resource_1 = resolvedChange.getResource();\n\tboolean _notEquals = (!<%com.google.common.base.Objects%>.equal(_resource_1, null));\n\tif (_notEquals)\n\t{\n\t\treturn resolvedChange;\n\t}\n}\nreturn this;'"
+	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.root.ResourceSet" resourceSetUnique="false" resolveBeforeUnique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%org.eclipse.emf.common.util.URI%> _uri = this.getUri();\n\tfinal <%org.eclipse.emf.ecore.resource.Resource%> resolvedResource = resourceSet.getResource(_uri, false);\n\tif ((<%com.google.common.base.Objects%>.equal(resolvedResource, null) || (!super.resolveBefore(resourceSet))))\n\t{\n\t\treturn false;\n\t}\n\tthis.setResource(resolvedResource);\n}\nreturn true;'"
 	 * @generated
 	 */
-	EChange resolve(ResourceSet resourceSet, boolean applicableChange);
+	boolean resolve(ResourceSet resourceSet, boolean resolveBefore);
 
 } // RootEChange

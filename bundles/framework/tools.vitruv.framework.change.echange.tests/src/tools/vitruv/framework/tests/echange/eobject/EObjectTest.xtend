@@ -39,6 +39,5 @@ public abstract class EObjectTest extends EChangeTest {
 	protected def void prepareStagingArea(EObject object) {
 		stagingArea1.contents.clear
 		stagingArea1.contents.add(object)
-		EChangeUtil.objectInProgress = object
 	}
 }

@@ -198,7 +198,7 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveApply(final ResourceSet resourceSet) {
+	public boolean resolveBefore(final ResourceSet resourceSet) {
 		return this.resolve(resourceSet, true);
 	}
 
@@ -207,7 +207,7 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveRevert(final ResourceSet resourceSet) {
+	public boolean resolveAfter(final ResourceSet resourceSet) {
 		return this.resolve(resourceSet, false);
 	}
 
@@ -216,26 +216,18 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet, final boolean applicableChange) {
+	public boolean resolve(final ResourceSet resourceSet, final boolean resolveBefore) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			EChange _resolveApply = super.resolveApply(resourceSet);
-			final RootEChange resolvedChange = ((RootEChange) _resolveApply);
-			boolean _equals = Objects.equal(resolvedChange, null);
-			if (_equals) {
-				return null;
-			}
 			URI _uri = this.getUri();
-			Resource _resource = resourceSet.getResource(_uri, false);
-			resolvedChange.setResource(_resource);
-			Resource _resource_1 = resolvedChange.getResource();
-			boolean _notEquals = (!Objects.equal(_resource_1, null));
-			if (_notEquals) {
-				return resolvedChange;
+			final Resource resolvedResource = resourceSet.getResource(_uri, false);
+			if ((Objects.equal(resolvedResource, null) || (!super.resolveBefore(resourceSet)))) {
+				return false;
 			}
+			this.setResource(resolvedResource);
 		}
-		return this;
+		return true;
 	}
 
 	/**
@@ -326,8 +318,8 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return RootPackage.ROOT_ECHANGE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET;
-				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -344,10 +336,10 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		switch (operationID) {
 			case RootPackage.ROOT_ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case RootPackage.ROOT_ECHANGE___RESOLVE_APPLY__RESOURCESET:
-				return resolveApply((ResourceSet)arguments.get(0));
-			case RootPackage.ROOT_ECHANGE___RESOLVE_REVERT__RESOURCESET:
-				return resolveRevert((ResourceSet)arguments.get(0));
+			case RootPackage.ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET:
+				return resolveBefore((ResourceSet)arguments.get(0));
+			case RootPackage.ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET:
+				return resolveAfter((ResourceSet)arguments.get(0));
 			case RootPackage.ROOT_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN:
 				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 		}

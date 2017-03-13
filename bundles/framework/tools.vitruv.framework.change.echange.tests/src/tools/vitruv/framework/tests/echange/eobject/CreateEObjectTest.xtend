@@ -20,27 +20,25 @@ class CreateEObjectTest extends EObjectTest {
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createCreateEObjectChange(defaultCreatedObject, true)
 			
-		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
+		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
 		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)
-		Assert.assertEquals(unresolvedChange.getClass, resolvedChange.getClass)
+		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
 	}
 	
 	/**
-	 * Tests a {@link CreateEObject} EChange by creating a
+	 * Tests applying a {@link CreateEObject} EChange forward by creating a
 	 * new EObject and putting it in the staging area.
 	 */
 	@Test
-	def public void createEObjectApplyTest() {
+	def public void createEObjectApplyForwardTest() {
 		// Staging area is empty
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createCreateEObjectChange(defaultCreatedObject, true).
-			resolveApply(resourceSet1)
+			copyAndResolveBefore(resourceSet1)
 			
-		Assert.assertTrue(resolvedChange.apply)
+		Assert.assertTrue(resolvedChange.applyForward)
 		Assert.assertFalse(stagingArea1.contents.empty)
 		// Staging area contains copy
 		Assert.assertFalse(stagingArea1.contents.contains(defaultCreatedObject))
@@ -55,9 +53,9 @@ class CreateEObjectTest extends EObjectTest {
 		
 		val resolvedChange2	= TypeInferringAtomicEChangeFactory.
 			<Root>createCreateEObjectChange(defaultCreatedObject2, true).
-			resolveApply(resourceSet1)	
+			copyAndResolveBefore(resourceSet1)	
 		
-		Assert.assertTrue(resolvedChange2.apply)
+		Assert.assertTrue(resolvedChange2.applyForward)
 		Assert.assertFalse(stagingArea1.contents.empty)
 		// Staging area contains copy
 		Assert.assertFalse(stagingArea1.contents.contains(defaultCreatedObject2))
@@ -66,11 +64,11 @@ class CreateEObjectTest extends EObjectTest {
 	}
 	
 	/**
-	 * Tests a {@link CreateEObject} EChange by reverting it.
-	 * Removes a newly created object from the staging area.
+	 * Tests applying a {@link CreateEObject} EChange backward 
+	 * by removing a newly created object from the staging area.
 	 */
 	@Test
-	def public void createEObjectRevertTest() {
+	def public void createEObjectApplyBackwardTest() {
 		// Put object in the staging area. State after applying the change.
 		prepareStagingArea(defaultCreatedObject)
 		
@@ -79,9 +77,9 @@ class CreateEObjectTest extends EObjectTest {
 		
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root>createCreateEObjectChange(defaultCreatedObject, true).
-			resolveRevert(resourceSet1)
+			copyAndResolveAfter(resourceSet1)
 			
-		Assert.assertTrue(resolvedChange.revert)
+		Assert.assertTrue(resolvedChange.applyBackward)
 		
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}

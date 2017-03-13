@@ -2,15 +2,16 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
-import com.google.common.base.Objects;
-
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
+
+import org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
@@ -81,8 +82,8 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveApply(final ResourceSet resourceSet) {
-		return this.resolve(resourceSet, true);
+	public boolean resolveBefore(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, true, true);
 	}
 
 	/**
@@ -90,8 +91,8 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolveRevert(final ResourceSet resourceSet) {
-		return this.resolve(resourceSet, false);
+	public boolean resolveAfter(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, false, true);
 	}
 
 	/**
@@ -99,39 +100,79 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange resolve(final ResourceSet resourceSet, final boolean applyChange) {
+	public boolean resolveBeforeAndApply(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, true, false);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean resolveAfterAndApply(final ResourceSet resourceSet) {
+		return this.resolve(resourceSet, false, false);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean resolve(final ResourceSet resourceSet, final boolean resolveBefore, final boolean revertAfterResolving) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			EChange _resolveApply = super.resolveApply(resourceSet);
-			final CompoundEChange resolvedChange = ((CompoundEChange) _resolveApply);
-			boolean _equals = Objects.equal(resolvedChange, null);
-			if (_equals) {
-				return null;
+			boolean _resolveBefore = super.resolveBefore(resourceSet);
+			boolean _not_1 = (!_resolveBefore);
+			if (_not_1) {
+				return false;
 			}
-			resolvedChange.resolveAtomicChanges(resourceSet, applyChange);
-			EList<AtomicEChange> _atomicChanges = resolvedChange.getAtomicChanges();
-			for (final AtomicEChange change : _atomicChanges) {
-				boolean _isResolved_1 = change.isResolved();
-				boolean _not_1 = (!_isResolved_1);
-				if (_not_1) {
-					return this;
+			final BasicEList<EChange> changesMade = new BasicEList<EChange>();
+			if (resolveBefore) {
+				EList<AtomicEChange> _atomicChanges = this.getAtomicChanges();
+				for (final EChange change : _atomicChanges) {
+					boolean _resolveBeforeAndApplyForward = change.resolveBeforeAndApplyForward(resourceSet);
+					boolean _not_2 = (!_resolveBeforeAndApplyForward);
+					if (_not_2) {
+						EList<EChange> _reverse = XcoreEListExtensions.<EChange>reverse(changesMade);
+						for (final EChange changed : _reverse) {
+							changed.applyBackward();
+						}
+						return false;
+					}
+					else {
+						changesMade.add(change);
+					}
 				}
 			}
-			return resolvedChange;
+			else {
+				EList<AtomicEChange> _atomicChanges_1 = this.getAtomicChanges();
+				EList<AtomicEChange> _reverse_1 = XcoreEListExtensions.<AtomicEChange>reverse(_atomicChanges_1);
+				for (final EChange change_1 : _reverse_1) {
+					boolean _resolveAfterAndApplyBackward = change_1.resolveAfterAndApplyBackward(resourceSet);
+					boolean _not_3 = (!_resolveAfterAndApplyBackward);
+					if (_not_3) {
+						EList<EChange> _reverse_2 = XcoreEListExtensions.<EChange>reverse(changesMade);
+						for (final EChange changed_1 : _reverse_2) {
+							changed_1.applyForward();
+						}
+						return false;
+					}
+					else {
+						changesMade.add(change_1);
+					}
+				}
+			}
+			if (revertAfterResolving) {
+				if (resolveBefore) {
+					this.applyBackward();
+				}
+				else {
+					this.applyForward();
+				}
+			}
 		}
-		return this;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void resolveAtomicChanges(ResourceSet resourceSet, boolean applyChange) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		return true;
 	}
 
 	/**
@@ -144,8 +185,8 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return CompoundPackage.COMPOUND_ECHANGE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE_APPLY__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_APPLY__RESOURCESET;
-				case EChangePackage.ECHANGE___RESOLVE_REVERT__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -164,15 +205,16 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 				return getAtomicChanges();
 			case CompoundPackage.COMPOUND_ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_APPLY__RESOURCESET:
-				return resolveApply((ResourceSet)arguments.get(0));
-			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_REVERT__RESOURCESET:
-				return resolveRevert((ResourceSet)arguments.get(0));
-			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN:
-				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
-			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_ATOMIC_CHANGES__RESOURCESET_BOOLEAN:
-				resolveAtomicChanges((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
-				return null;
+			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET:
+				return resolveBefore((ResourceSet)arguments.get(0));
+			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET:
+				return resolveAfter((ResourceSet)arguments.get(0));
+			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET:
+				return resolveBeforeAndApply((ResourceSet)arguments.get(0));
+			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET:
+				return resolveAfterAndApply((ResourceSet)arguments.get(0));
+			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN:
+				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1), (Boolean)arguments.get(2));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

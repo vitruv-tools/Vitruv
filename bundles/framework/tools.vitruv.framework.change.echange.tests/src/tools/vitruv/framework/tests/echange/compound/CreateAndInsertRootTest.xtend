@@ -46,8 +46,8 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 */
 	@Test
 	def public void resolveCreateAndInsertRootTest() {
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)
+		val size = resourceContent.size
 		
 		val unresolvedChange = TypeInferringCompoundEChangeFactory.
 			<Root>createCreateAndInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)	
@@ -58,7 +58,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 		Assert.assertTrue(unresolvedChange.createChange.affectedEObject != 
 			unresolvedChange.insertChange.newValue)
 
-		val resolvedChange = unresolvedChange.resolveApply(resourceSet1) as CreateAndInsertRoot<Root>
+		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as CreateAndInsertRoot<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
@@ -68,9 +68,8 @@ class CreateAndInsertRootTest extends EChangeTest {
 			resolvedChange.insertChange.newValue)
 		Assert.assertTrue(resolvedChange.createChange.affectedEObject != newRootObject)
 			
-		// The Object in progress must be empty because create fills it and insert takes it.
-		Assert.assertNull(EChangeUtil.objectInProgress)
-		// The staging area should be unaffected because no change was applied
+		// Resolving applies all changes and reverts them, so the model should be unaffected.
+		Assert.assertEquals(resourceContent.size, size)
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
@@ -81,10 +80,9 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 */
 	@Test
 	def public void resolveCreateAndInsertRootTest2() {	
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)
-		
 		resourceContent.add(DEFAULT_INDEX, newRootObject)
+		val size = resourceContent.size
 		
 		val unresolvedChange = TypeInferringCompoundEChangeFactory.
 			<Root>createCreateAndInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)
@@ -95,7 +93,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 		Assert.assertTrue(unresolvedChange.createChange.affectedEObject != 
 			unresolvedChange.insertChange.newValue)
 			
-		val resolvedChange = unresolvedChange.resolveRevert(resourceSet1) as CreateAndInsertRoot<Root>
+		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as CreateAndInsertRoot<Root>
 		
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertTrue(unresolvedChange != resolvedChange)
@@ -105,10 +103,8 @@ class CreateAndInsertRootTest extends EChangeTest {
 			resolvedChange.insertChange.newValue)
 		Assert.assertTrue(resolvedChange.createChange.affectedEObject == newRootObject)
 		
-		// The Object in progress must be empty because reverting the insert change fills it 
-		// and reverting the create change takes it.
-		Assert.assertNull(EChangeUtil.objectInProgress)
-		// The staging area should be unaffected because no change was applied
+		// Resolving applies all changes and reverts them, so the model should be unaffected.
+		Assert.assertEquals(resourceContent.size, size)
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
@@ -121,98 +117,89 @@ class CreateAndInsertRootTest extends EChangeTest {
 		val unresolvedChange = TypeInferringCompoundEChangeFactory.
 			<Root>createCreateAndInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)
 			
-		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
+		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
 		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)
-		Assert.assertEquals(unresolvedChange.getClass, resolvedChange.getClass)
+		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
 	}
 	
 	/**
-	 * Tests the {@link CreateAndInsertRoot} EChange by creating and inserting
-	 * a new root object.
+	 * Tests applying the {@link CreateAndInsertRoot} EChange forward
+	 * by creating and inserting a new root object.
 	 */
 	@Test
-	def public void createAndInsertRootApplyTest() {
-		Assert.assertNull(EChangeUtil.objectInProgress)
+	def public void createAndInsertRootApplyForwardTest() {
 		Assert.assertTrue(stagingArea1.contents.empty)
 		val oldSize = resourceContent.size
 		
 		// Create change 1
 		val resolvedChange = TypeInferringCompoundEChangeFactory.
 			<Root>createCreateAndInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			resolveApply(resourceSet1) as CreateAndInsertRoot<Root>
+			copyAndResolveBefore(resourceSet1) as CreateAndInsertRoot<Root>
 			
 		// Apply 1
-		Assert.assertTrue(resolvedChange.apply)
+		Assert.assertTrue(resolvedChange.applyForward)
 	
 		Assert.assertEquals(resourceContent.size, oldSize + 1)
 		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
 		// Create change 2
 		val resolvedChange2 = TypeInferringCompoundEChangeFactory.
 			<Root>createCreateAndInsertRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			resolveApply(resourceSet1) as CreateAndInsertRoot<Root>
+			copyAndResolveBefore(resourceSet1) as CreateAndInsertRoot<Root>
 			
 		// Apply 2
-		Assert.assertTrue(resolvedChange2.apply)
+		Assert.assertTrue(resolvedChange2.applyForward)
 		
 		Assert.assertEquals(resourceContent.size, oldSize + 2)
 		Assert.assertTrue(resourceContent.contains(resolvedChange2.createChange.affectedEObject))
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
 	/**
-	 * Tests the {@link CreateAndInsertRoot} EChange by reverting the change.
-	 * It removes and deletes a root object. 
+	 * Tests applying the {@link CreateAndInsertRoot} EChange backward 
+	 * by reverting the change. It removes and deletes a root object. 
 	 */
 	@Test
-	def public void createAndInsertRootRevertTest() {
-		Assert.assertNull(EChangeUtil.objectInProgress)
+	def public void createAndInsertRootApplyBackwardTest() {
 		Assert.assertTrue(stagingArea1.contents.empty)
 		val oldSize = resourceContent.size
 		
 		// Create Change 1
 		val resolvedChange = TypeInferringCompoundEChangeFactory.
 			<Root>createCreateAndInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			resolveApply(resourceSet1) as CreateAndInsertRoot<Root>
+			copyAndResolveBefore(resourceSet1) as CreateAndInsertRoot<Root>
 			
-		// Apply 1
-		Assert.assertTrue(resolvedChange.apply)
+		// Apply forward 1
+		Assert.assertTrue(resolvedChange.applyForward)
 
 		// Create Change 2
 		val resolvedChange2 = TypeInferringCompoundEChangeFactory.
 			<Root>createCreateAndInsertRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			resolveApply(resourceSet1) as CreateAndInsertRoot<Root>
+			copyAndResolveBefore(resourceSet1) as CreateAndInsertRoot<Root>
 			
-		// Apply 2
-		Assert.assertTrue(resolvedChange2.apply)
+		// Apply forward 2
+		Assert.assertTrue(resolvedChange2.applyForward)
 		
 		Assert.assertEquals(resourceContent.size, oldSize + 2)
 		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))		
 		Assert.assertTrue(resourceContent.contains(resolvedChange2.createChange.affectedEObject))	
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)	
 		
-		// Revert 2
-		Assert.assertTrue(resolvedChange2.revert)
+		// Apply backward 2
+		Assert.assertTrue(resolvedChange2.applyBackward)
 		
 		Assert.assertEquals(resourceContent.size, oldSize + 1)
 		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
 		Assert.assertFalse(resourceContent.contains(resolvedChange2.createChange.affectedEObject))		
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)	
 		
-		// Revert 1
-		Assert.assertTrue(resolvedChange.revert)
+		// Apply backward 1
+		Assert.assertTrue(resolvedChange.applyBackward)
 		
 		Assert.assertEquals(resourceContent.size, oldSize)
 		Assert.assertFalse(resourceContent.contains(resolvedChange.createChange.affectedEObject))
 		Assert.assertFalse(resourceContent.contains(resolvedChange2.createChange.affectedEObject))		
-		Assert.assertNull(EChangeUtil.objectInProgress)
 		Assert.assertTrue(stagingArea1.contents.empty)	
 	}
 }

@@ -2,13 +2,20 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 
@@ -17,6 +24,9 @@ import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange;
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
+
+import tools.vitruv.framework.change.echange.util.EChangeUtil;
+import tools.vitruv.framework.change.echange.util.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -98,6 +108,23 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 		newValue = newNewValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE, oldNewValue, newValue));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject resolveNewValue(final ResourceSet resourceSet, final boolean resolveBefore) {
+		if ((resolveBefore && this.isContainment())) {
+			final Resource stagingArea = StagingArea.getStagingArea(resourceSet);
+			EList<EObject> _contents = stagingArea.getContents();
+			return _contents.get(0);
+		}
+		else {
+			T _newValue = this.getNewValue();
+			return EChangeUtil.resolveProxy(_newValue, resourceSet);
+		}
 	}
 
 	/**
@@ -200,6 +227,20 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE___RESOLVE_NEW_VALUE__RESOURCESET_BOOLEAN:
+				return resolveNewValue((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //AdditiveReferenceEChangeImpl

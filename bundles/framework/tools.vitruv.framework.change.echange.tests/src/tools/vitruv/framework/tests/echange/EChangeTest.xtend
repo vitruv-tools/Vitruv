@@ -12,8 +12,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-import tools.vitruv.framework.change.echange.util.EChangeUtil
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.util.StagingArea
+import org.junit.Assert
 
 /**
  * Default class for testing EChange changes.
@@ -103,6 +104,15 @@ import tools.vitruv.framework.change.echange.util.StagingArea
  	def void afterTest() {
 		stagingArea1.contents.clear
 		stagingArea2.contents.clear
-		EChangeUtil.objectInProgress = null
+ 	}
+ 	
+ 	/**
+ 	 * Tests whether a unresolved change and a resolved change are the same class.
+ 	 */
+ 	def protected void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange) {
+ 		Assert.assertFalse(unresolvedChange.isResolved)
+ 		Assert.assertTrue(resolvedChange.isResolved)
+ 		Assert.assertFalse(unresolvedChange == resolvedChange)
+ 		Assert.assertEquals(unresolvedChange.getClass, resolvedChange.getClass)
  	}
  }

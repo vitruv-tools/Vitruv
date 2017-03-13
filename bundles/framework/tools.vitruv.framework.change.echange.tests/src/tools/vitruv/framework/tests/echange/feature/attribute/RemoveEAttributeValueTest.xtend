@@ -36,18 +36,17 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
  			<Root, Integer>createInsertAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, true)
  		
  		// Resolving the change will be tested in EFeatureChange	
- 		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
+ 		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
  		
- 		Assert.assertTrue(resolvedChange.isResolved)
- 		Assert.assertTrue(unresolvedChange != resolvedChange)
- 		Assert.assertEquals(unresolvedChange.getClass(), resolvedChange.getClass())
+ 		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
 	}
 	
 	/**
-	 * Tests removing two values from an multivalued attribute.
+	 * Tests applying the {@link RemoveEAttributeValue} EChange forward
+	 * by removing two values from an multivalued attribute.
 	 */
 	@Test
-	def public void removeEAttributeValueApplyTest() {
+	def public void removeEAttributeValueApplyForwardTest() {
 		val EList<Integer> multivaluedAttribute = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
 		
 		Assert.assertEquals(multivaluedAttribute.size, 2)
@@ -58,7 +57,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, Integer>createRemoveAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, false)
 			
-		Assert.assertTrue(resolvedChange.apply)
+		Assert.assertTrue(resolvedChange.applyForward)
 		Assert.assertEquals(multivaluedAttribute.size, 1)
 		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE_2)
 		
@@ -66,15 +65,16 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
 			<Root, Integer>createRemoveAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE_2, false)
 			
-		Assert.assertTrue(resolvedChange2.apply)
+		Assert.assertTrue(resolvedChange2.applyForward)
 		Assert.assertEquals(multivaluedAttribute.size, 0)
 	}
 	
 	/**
-	 * Revert a {@link RemoveEAttributeValue} EChange.
+	 * Tests applying the {@link RemoveEAttributeValue} EChange backward
+	 * by inserting two removed values from an multivalued attribute.
 	 */
 	@Test
-	def public void removeEAttributeValueRevertTest() {
+	def public void removeEAttributeValueApplyBackwardTest() {
 		val EList<Integer> multivaluedAttribute = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
 		
 		Assert.assertEquals(multivaluedAttribute.size, 2)
@@ -85,11 +85,11 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, Integer>createRemoveAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, false)
 			
-		Assert.assertTrue(resolvedChange.apply)
+		Assert.assertTrue(resolvedChange.applyForward)
 		Assert.assertEquals(multivaluedAttribute.size, 1)
 		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE_2)
 		
-		Assert.assertTrue(resolvedChange.revert)
+		Assert.assertTrue(resolvedChange.applyBackward)
 		Assert.assertEquals(multivaluedAttribute.size, 2)
 		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)
 		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX + 1), DEFAULT_NEW_VALUE_2)
@@ -108,8 +108,8 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		val resolvedChange = TypeInferringAtomicEChangeFactory.
 			<Root, Integer>createRemoveAttributeChange(defaultAffectedEObject, defaultAffectedFeature, index, DEFAULT_NEW_VALUE, false)		
 	
-		Assert.assertFalse(resolvedChange.apply)
-		Assert.assertFalse(resolvedChange.revert)
+		Assert.assertFalse(resolvedChange.applyForward)
+		Assert.assertFalse(resolvedChange.applyBackward)
 	}
 	
 	/**
@@ -126,8 +126,8 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// NonRoot has no such feature
 	 	Assert.assertTrue(affectedEObject.eClass.getFeatureID(defaultAffectedFeature) == -1)	
 	 	
-	 	Assert.assertFalse(resolvedChange.apply)
-	 	Assert.assertFalse(resolvedChange.revert)
+	 	Assert.assertFalse(resolvedChange.applyForward)
+	 	Assert.assertFalse(resolvedChange.applyBackward)
 	}
 	
 	/**
@@ -144,7 +144,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Type of attribute is Integer not String
 	 	Assert.assertTrue(defaultAffectedFeature.EAttributeType.name == "EIntegerObject")
 	 	
-	 	Assert.assertFalse(resolvedChange.apply)	 	
-	 	Assert.assertFalse(resolvedChange.revert)
+	 	Assert.assertFalse(resolvedChange.applyForward)	 	
+	 	Assert.assertFalse(resolvedChange.applyBackward)
 	}
 }

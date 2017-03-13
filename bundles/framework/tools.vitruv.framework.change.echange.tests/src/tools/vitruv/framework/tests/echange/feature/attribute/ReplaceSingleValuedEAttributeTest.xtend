@@ -41,19 +41,17 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
  			<Root, String>createReplaceSingleAttributeChange(defaultAffectedEObject, defaultAffectedFeature, null, null, true)
  		
- 		val resolvedChange = unresolvedChange.resolveApply(resourceSet1)
+ 		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
  		
- 		Assert.assertTrue(resolvedChange.isResolved)
- 		Assert.assertTrue(unresolvedChange != resolvedChange)
- 		Assert.assertEquals(unresolvedChange.getClass, resolvedChange.getClass)
+		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
 	}
 	
 	/**
-	 * Tests a {@link ReplaceSingleValuedEAttribute} EChange
-	 * by replacing a single value in the root element.
+	 * Tests applying a {@link ReplaceSingleValuedEAttribute} EChange forward
+	 * by replacing a single value in a root element with a new value.
 	 */
 	 @Test
-	 def public void replaceSingleValuedEAttributeApplyTest() {
+	 def public void replaceSingleValuedEAttributeApplyForwardTest() {
 	 	
 	 	// Resolving the change will be tested in EFeatureChange
 	 	val resolvedChange = TypeInferringAtomicEChangeFactory.
@@ -63,17 +61,18 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	Assert.assertEquals(defaultAffectedEObject.id, defaultOldValue)
 	 	Assert.assertNotEquals(defaultAffectedEObject.id, defaultNewValue)
 	 	
-	 	Assert.assertTrue(resolvedChange.apply)
+	 	Assert.assertTrue(resolvedChange.applyForward)
 	 	
 	 	Assert.assertNotEquals(defaultAffectedEObject.id, defaultOldValue)
 	 	Assert.assertEquals(defaultAffectedEObject.id, defaultNewValue)
 	 }
 	 
 	 /**
-	  * Reverts a {@link ReplaceSingleValuedEAttribute} EChange.
+	  * Tests applying a {@link ReplaceSingleValuedEAttribute} EChange backward
+	  * by replacing a single value in a root element with the old value.
 	  */
 	 @Test
-	 def public void replaceSingleValuedEAttributeRevertTest() {
+	 def public void replaceSingleValuedEAttributeApplyBackwardTest() {
 	 	defaultAffectedEObject.eSet(defaultAffectedFeature, defaultNewValue)
 	 	
 	 		 	// Resolving the change will be tested in EFeatureChange
@@ -84,7 +83,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	Assert.assertNotEquals(defaultAffectedEObject.id, defaultOldValue)
 	 	Assert.assertEquals(defaultAffectedEObject.id, defaultNewValue)
 	 	
-	 	Assert.assertTrue(resolvedChange.revert)
+	 	Assert.assertTrue(resolvedChange.applyBackward)
 	 	
 	 	Assert.assertEquals(defaultAffectedEObject.id, defaultOldValue)
 	 	Assert.assertNotEquals(defaultAffectedEObject.id, defaultNewValue)
@@ -107,8 +106,8 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	// NonRoot has no such feature
 	 	Assert.assertTrue(affectedEObject.eClass.getFeatureID(affectedFeature) == -1)	
 	 	
-	 	Assert.assertFalse(resolvedChange.apply)
-	 	Assert.assertFalse(resolvedChange.revert)
+	 	Assert.assertFalse(resolvedChange.applyForward)
+	 	Assert.assertFalse(resolvedChange.applyBackward)
 	 }
 	 
 	 /**
@@ -126,7 +125,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	// Type of attribute is String not Integer
 	 	Assert.assertTrue(defaultAffectedFeature.EAttributeType.name == "EString")
 	 	
-	 	Assert.assertFalse(resolvedChange.apply)
-	 	Assert.assertFalse(resolvedChange.revert)
+	 	Assert.assertFalse(resolvedChange.applyForward)
+	 	Assert.assertFalse(resolvedChange.applyBackward)
 	 }
 }

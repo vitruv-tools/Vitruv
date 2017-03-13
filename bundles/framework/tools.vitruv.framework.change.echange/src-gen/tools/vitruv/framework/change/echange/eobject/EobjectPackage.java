@@ -99,40 +99,76 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_ADDED_ECHANGE___IS_RESOLVED = EChangePackage.ADDITIVE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_ADDED_ECHANGE___RESOLVE_APPLY__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_ADDED_ECHANGE___RESOLVE_REVERT__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_ADDED_ECHANGE___APPLY = EChangePackage.ADDITIVE_ECHANGE___APPLY;
+	int EOBJECT_ADDED_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_ADDED_ECHANGE___REVERT = EChangePackage.ADDITIVE_ECHANGE___REVERT;
+	int EOBJECT_ADDED_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___APPLY_FORWARD = EChangePackage.ADDITIVE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___APPLY_BACKWARD = EChangePackage.ADDITIVE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -190,40 +226,76 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_SUBTRACTED_ECHANGE___IS_RESOLVED = EChangePackage.SUBTRACTIVE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_APPLY__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_REVERT__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_SUBTRACTED_ECHANGE___APPLY = EChangePackage.SUBTRACTIVE_ECHANGE___APPLY;
+	int EOBJECT_SUBTRACTED_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_SUBTRACTED_ECHANGE___REVERT = EChangePackage.SUBTRACTIVE_ECHANGE___REVERT;
+	int EOBJECT_SUBTRACTED_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___APPLY_FORWARD = EChangePackage.SUBTRACTIVE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___APPLY_BACKWARD = EChangePackage.SUBTRACTIVE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -281,40 +353,76 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_APPLY__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_APPLY__RESOURCESET;
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_REVERT__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_REVERT__RESOURCESET;
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE___APPLY = EChangePackage.ATOMIC_ECHANGE___APPLY;
+	int EOBJECT_EXISTENCE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE___REVERT = EChangePackage.ATOMIC_ECHANGE___REVERT;
+	int EOBJECT_EXISTENCE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___APPLY_FORWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___APPLY_BACKWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -381,22 +489,58 @@ public interface EobjectPackage extends EPackage {
 	int CREATE_EOBJECT_FEATURE_COUNT = EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_EOBJECT___APPLY = EOBJECT_EXISTENCE_ECHANGE___APPLY;
+	int CREATE_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_EOBJECT___REVERT = EOBJECT_EXISTENCE_ECHANGE___REVERT;
+	int CREATE_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___APPLY_FORWARD = EOBJECT_EXISTENCE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___APPLY_BACKWARD = EOBJECT_EXISTENCE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -417,22 +561,22 @@ public interface EobjectPackage extends EPackage {
 	int CREATE_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_EOBJECT___RESOLVE_APPLY__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
+	int CREATE_EOBJECT___RESOLVE_BEFORE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_EOBJECT___RESOLVE_REVERT__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 1;
+	int CREATE_EOBJECT___RESOLVE_AFTER__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Create EObject</em>' class.
@@ -481,22 +625,58 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT_FEATURE_COUNT = EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Apply</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DELETE_EOBJECT___APPLY = EOBJECT_EXISTENCE_ECHANGE___APPLY;
+	int DELETE_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Revert</em>' operation.
+	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DELETE_EOBJECT___REVERT = EOBJECT_EXISTENCE_ECHANGE___REVERT;
+	int DELETE_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___APPLY_FORWARD = EOBJECT_EXISTENCE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___APPLY_BACKWARD = EOBJECT_EXISTENCE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -517,22 +697,22 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN = EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN;
 
 	/**
-	 * The operation id for the '<em>Resolve Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DELETE_EOBJECT___RESOLVE_APPLY__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
+	int DELETE_EOBJECT___RESOLVE_BEFORE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve Revert</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DELETE_EOBJECT___RESOLVE_REVERT__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 1;
+	int DELETE_EOBJECT___RESOLVE_AFTER__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Delete EObject</em>' class.
@@ -679,24 +859,24 @@ public interface EobjectPackage extends EPackage {
 	EClass getCreateEObject();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Apply</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Apply</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve Before</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getCreateEObject__ResolveApply__ResourceSet();
+	EOperation getCreateEObject__ResolveBefore__ResourceSet();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve After</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.eobject.CreateEObject#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getCreateEObject__ResolveRevert__ResourceSet();
+	EOperation getCreateEObject__ResolveAfter__ResourceSet();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.eobject.DeleteEObject <em>Delete EObject</em>}'.
@@ -709,24 +889,24 @@ public interface EobjectPackage extends EPackage {
 	EClass getDeleteEObject();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Apply</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Apply</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveApply(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve Before</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getDeleteEObject__ResolveApply__ResourceSet();
+	EOperation getDeleteEObject__ResolveBefore__ResourceSet();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Revert</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Revert</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveRevert(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve After</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.eobject.DeleteEObject#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getDeleteEObject__ResolveRevert__ResourceSet();
+	EOperation getDeleteEObject__ResolveAfter__ResourceSet();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
@@ -873,20 +1053,20 @@ public interface EobjectPackage extends EPackage {
 		EClass CREATE_EOBJECT = eINSTANCE.getCreateEObject();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Apply</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve Before</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation CREATE_EOBJECT___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getCreateEObject__ResolveApply__ResourceSet();
+		EOperation CREATE_EOBJECT___RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getCreateEObject__ResolveBefore__ResourceSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve After</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation CREATE_EOBJECT___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getCreateEObject__ResolveRevert__ResourceSet();
+		EOperation CREATE_EOBJECT___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getCreateEObject__ResolveAfter__ResourceSet();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.eobject.impl.DeleteEObjectImpl <em>Delete EObject</em>}' class.
@@ -899,20 +1079,20 @@ public interface EobjectPackage extends EPackage {
 		EClass DELETE_EOBJECT = eINSTANCE.getDeleteEObject();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Apply</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve Before</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation DELETE_EOBJECT___RESOLVE_APPLY__RESOURCESET = eINSTANCE.getDeleteEObject__ResolveApply__ResourceSet();
+		EOperation DELETE_EOBJECT___RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getDeleteEObject__ResolveBefore__ResourceSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Revert</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve After</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation DELETE_EOBJECT___RESOLVE_REVERT__RESOURCESET = eINSTANCE.getDeleteEObject__ResolveRevert__ResourceSet();
+		EOperation DELETE_EOBJECT___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getDeleteEObject__ResolveAfter__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em>EObj</em>' data type.

@@ -15,6 +15,7 @@ public abstract class InsertRemoveEAttributeTest extends EChangeTest {
 	
 	protected static val Integer DEFAULT_NEW_VALUE = 111
 	protected static val Integer DEFAULT_NEW_VALUE_2 = 222
+	protected static val Integer DEFAULT_NEW_VALUE_3 = 333
 	protected static val Integer DEFAULT_INDEX = 0
 	
 	/**
