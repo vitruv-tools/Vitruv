@@ -1,0 +1,5 @@
+package tools.vitruv.applications.familiespersons.persons2families
+
+class PersonsToFamiliesChangePropagationSpecification extends AbstractChangePropagationSpecificationPersonsToFamilies{
+	
+}
