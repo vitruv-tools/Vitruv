@@ -109,18 +109,16 @@ final class ChangeTypeRepresentationExtractor {
 	
 	private static def dispatch AtomicChangeTypeRepresentation generateChangeTypeRepresentation(ElementExistenceChangeType modelElementChange, EClass elementClass) {
 		var EClass clazz = null;
-		var hasNewValue = false;
 		switch (modelElementChange) {
 			ElementCreationChangeType: {
 				clazz = EobjectPackage.Literals.CREATE_EOBJECT
-				hasNewValue = true;
 			}
 			ElementDeletionChangeType:
 				clazz = EobjectPackage.Literals.DELETE_EOBJECT
 		}
 		val affectedEObject = if (elementClass != null) elementClass.instanceClass else EObject;
 		val affectedValue = null; 
-		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, !hasNewValue, hasNewValue, null);
+		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, false, false, null);
 	}
 	
 	private static def dispatch CompoundChangeTypeRepresentation generateChangeTypeRepresentation(ElementCreationAndInsertionChangeType modelElementChange, EClass elementClass) {
