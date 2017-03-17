@@ -71,7 +71,7 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 
 
 	@Test
-	def public testUnsetRemoveEAttributeValue() {
+	def public testUnsetEAttributeValue() {
 		this.rootElement.multiValuedUnsettableEAttribute.add(42)
 		// test
 		startRecording
@@ -83,6 +83,23 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		val subtractiveChanges = changes.claimChange(0).assertExplicitUnset.subtractiveChanges
 		subtractiveChanges.assertChangeCount(1);
 		subtractiveChanges.get(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+	}
+	
+	@Test
+	def public testUnsetEAttributeValuesWithSeveralValues() {
+		this.rootElement.multiValuedUnsettableEAttribute.add(42)
+		this.rootElement.multiValuedUnsettableEAttribute.add(22)
+		// test
+		startRecording
+
+		// unset 
+		this.rootElement.eUnset(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
+
+		changes.assertChangeCount(1);
+		val subtractiveChanges = changes.claimChange(0).assertExplicitUnset.subtractiveChanges
+		subtractiveChanges.assertChangeCount(2);
+		subtractiveChanges.get(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		subtractiveChanges.get(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
 	}
 	
 }
