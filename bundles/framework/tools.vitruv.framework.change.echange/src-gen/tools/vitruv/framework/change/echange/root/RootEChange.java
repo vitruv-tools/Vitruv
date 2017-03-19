@@ -2,10 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.root;
 
-import org.eclipse.emf.common.util.URI;
-
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
 
@@ -37,12 +34,12 @@ public interface RootEChange extends AtomicEChange {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Uri</em>' attribute.
-	 * @see #setUri(URI)
+	 * @see #setUri(String)
 	 * @see tools.vitruv.framework.change.echange.root.RootPackage#getRootEChange_Uri()
-	 * @model unique="false" dataType="tools.vitruv.framework.change.echange.root.URI"
+	 * @model unique="false"
 	 * @generated
 	 */
-	URI getUri();
+	String getUri();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.root.RootEChange#getUri <em>Uri</em>}' attribute.
@@ -52,7 +49,7 @@ public interface RootEChange extends AtomicEChange {
 	 * @see #getUri()
 	 * @generated
 	 */
-	void setUri(URI value);
+	void setUri(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Resource</b></em>' attribute.
@@ -114,32 +111,5 @@ public interface RootEChange extends AtomicEChange {
 	 * @generated
 	 */
 	boolean isResolved();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.root.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, true);'"
-	 * @generated
-	 */
-	boolean resolveBefore(ResourceSet resourceSet);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.root.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolve(resourceSet, false);'"
-	 * @generated
-	 */
-	boolean resolveAfter(ResourceSet resourceSet);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.root.ResourceSet" resourceSetUnique="false" resolveBeforeUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\t<%org.eclipse.emf.common.util.URI%> _uri = this.getUri();\n\tfinal <%org.eclipse.emf.ecore.resource.Resource%> resolvedResource = resourceSet.getResource(_uri, false);\n\tif ((<%com.google.common.base.Objects%>.equal(resolvedResource, null) || (!super.resolveBefore(resourceSet))))\n\t{\n\t\treturn false;\n\t}\n\tthis.setResource(resolvedResource);\n}\nreturn true;'"
-	 * @generated
-	 */
-	boolean resolve(ResourceSet resourceSet, boolean resolveBefore);
 
 } // RootEChange

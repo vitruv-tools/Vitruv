@@ -98,6 +98,15 @@ public interface FeaturePackage extends EPackage {
 	int FEATURE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -105,24 +114,6 @@ public interface FeaturePackage extends EPackage {
 	 * @ordered
 	 */
 	int FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -170,22 +161,13 @@ public interface FeaturePackage extends EPackage {
 	int FEATURE_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 2;
+	int FEATURE_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.impl.UpdateMultiValuedFeatureEChangeImpl <em>Update Multi Valued Feature EChange</em>}' class.
@@ -225,6 +207,15 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -232,24 +223,6 @@ public interface FeaturePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -295,15 +268,6 @@ public interface FeaturePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The number of operations of the '<em>Update Multi Valued Feature EChange</em>' class.
@@ -352,6 +316,15 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -359,24 +332,6 @@ public interface FeaturePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -424,15 +379,6 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
 	 * The number of operations of the '<em>Update Single Valued Feature EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -460,16 +406,6 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 */
 	int EFEAT = 4;
-
-	/**
-	 * The meta object id for the '<em>Resource Set</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @see tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl#getResourceSet()
-	 * @generated
-	 */
-	int RESOURCE_SET = 5;
 
 
 	/**
@@ -515,16 +451,6 @@ public interface FeaturePackage extends EPackage {
 	EOperation getFeatureEChange__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Before</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.FeatureEChange#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getFeatureEChange__ResolveBefore__ResourceSet();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange <em>Update Multi Valued Feature EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -565,17 +491,6 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 */
 	EDataType getEFeat();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.ResourceSet <em>Resource Set</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Resource Set</em>'.
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @model instanceClass="org.eclipse.emf.ecore.resource.ResourceSet"
-	 * @generated
-	 */
-	EDataType getResourceSet();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -635,14 +550,6 @@ public interface FeaturePackage extends EPackage {
 		EOperation FEATURE_ECHANGE___IS_RESOLVED = eINSTANCE.getFeatureEChange__IsResolved();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Before</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getFeatureEChange__ResolveBefore__ResourceSet();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.impl.UpdateMultiValuedFeatureEChangeImpl <em>Update Multi Valued Feature EChange</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -681,16 +588,6 @@ public interface FeaturePackage extends EPackage {
 		 * @generated
 		 */
 		EDataType EFEAT = eINSTANCE.getEFeat();
-
-		/**
-		 * The meta object literal for the '<em>Resource Set</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.resource.ResourceSet
-		 * @see tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl#getResourceSet()
-		 * @generated
-		 */
-		EDataType RESOURCE_SET = eINSTANCE.getResourceSet();
 
 	}
 

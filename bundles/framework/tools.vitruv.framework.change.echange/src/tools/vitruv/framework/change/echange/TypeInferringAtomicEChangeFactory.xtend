@@ -1,12 +1,9 @@
 package tools.vitruv.framework.change.echange
 
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.InternalEObject
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
@@ -33,122 +30,100 @@ import tools.vitruv.framework.change.echange.root.RootFactory
  * 
  * Can be used by any transformation that creates change models.
  */
-final class TypeInferringAtomicEChangeFactory {
-	def private static setRootChangeFeatures(RootEChange c, String resourceURI, int index) {
-		c.uri = URI.createURI(resourceURI)
+class TypeInferringAtomicEChangeFactory {
+	def private setRootChangeFeatures(RootEChange c, String resourceURI, int index) {
+		c.uri = resourceURI
 		c.index = index
 	}
 	
-	private def static <A extends EObject> A createProxy(A resolvedObject) {
-		val proxy = EcoreUtil.copy(resolvedObject) as InternalEObject
-		proxy.eSetProxyURI(EcoreUtil.getURI(resolvedObject))
-		return proxy as A
-	}
-	
-	private def static <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(FeatureEChange<A,F> c, A affectedEObject, F affectedFeature, boolean unresolve) {
-		if (affectedEObject != null && unresolve) {
-			c.affectedEObject = createProxy(affectedEObject)
-		} else {
-			c.affectedEObject = affectedEObject			
-		}
+	def protected <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(FeatureEChange<A,F> c, A affectedEObject, F affectedFeature) {
+		c.affectedEObject = affectedEObject	
 		c.affectedFeature = affectedFeature
 	}
 
-	private def static <T extends EObject> void setNewValue(EObjectAddedEChange<T> c, T newReferenceValue, boolean unresolve) {
-		if (newReferenceValue != null && unresolve) {
-			c.newValue = createProxy(newReferenceValue)
-		} else {
-			c.newValue = newReferenceValue
-		}
-	}
+	def protected <T extends EObject> void setNewValue(EObjectAddedEChange<T> c, T newReferenceValue) {
+		c.newValue = newReferenceValue
+	}	
 	
-	private def static <T extends EObject> void setOldValue(EObjectSubtractedEChange<T> c, T oldReferenceValue, boolean unresolve) {
-		if (oldReferenceValue != null && unresolve) {
-			c.oldValue = createProxy(oldReferenceValue)
-		} else {
-			c.oldValue = oldReferenceValue
-		}
-	}
+	def protected <T extends EObject> void setOldValue(EObjectSubtractedEChange<T> c, T oldReferenceValue) {
+		c.oldValue = oldReferenceValue
+	}	
 	
-	private def static <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> c, A affectedEObject, boolean unresolve) {
-		if (affectedEObject != null && unresolve) {
-			c.affectedEObject = createProxy(affectedEObject)
-		} else {
-			c.affectedEObject = affectedEObject;
-		}
-	}
+	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> c, A affectedEObject) {
+		c.affectedEObject = affectedEObject;
+	}	
 	
-	def static <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, String resourceURI, int index, boolean unresolve) {
+	def <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, String resourceURI, int index) {
 		val c = RootFactory.eINSTANCE.createInsertRootEObject
-		setNewValue(c, newValue, unresolve)
+		setNewValue(c, newValue)
 		setRootChangeFeatures(c, resourceURI, index)
 		return c
 	}
 	
-	def static <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, String resourceURI, int index, boolean unresolve) {
+	def <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, String resourceURI, int index) {
 		val c = RootFactory.eINSTANCE.createRemoveRootEObject
-		setOldValue(c, oldValue, unresolve)
+		setOldValue(c, oldValue)
 		setRootChangeFeatures(c, resourceURI, index)
 		return c
 	}
 
-	def static <A extends EObject, T extends Object> InsertEAttributeValue<A,T> createInsertAttributeChange(A affectedEObject, EAttribute affectedAttribute, int index, T newValue, boolean unresolve) {
+	def <A extends EObject, T extends Object> InsertEAttributeValue<A,T> createInsertAttributeChange(A affectedEObject, EAttribute affectedAttribute, int index, T newValue) {
 		val c = AttributeFactory.eINSTANCE.createInsertEAttributeValue()
-		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute, unresolve)
+		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
 		c.newValue = newValue
 		c.index = index
 		return c
 	}
 	
-	def static <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A,T> createReplaceSingleAttributeChange(A affectedEObject, EAttribute affectedAttribute, T oldValue, T newValue, boolean unresolve) {
+	def <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A,T> createReplaceSingleAttributeChange(A affectedEObject, EAttribute affectedAttribute, T oldValue, T newValue) {
 		val c = AttributeFactory.eINSTANCE.createReplaceSingleValuedEAttribute
-		setFeatureChangeFeatures(c,affectedEObject,affectedAttribute, unresolve)
+		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
 		c.oldValue = oldValue
 		c.newValue = newValue
 		return c
 	}
 	
-	def static <A extends EObject, T extends Object> RemoveEAttributeValue<A,T> createRemoveAttributeChange(A affectedEObject, EAttribute affectedAttribute, int index, T oldValue, boolean unresolve) {
+	def <A extends EObject, T extends Object> RemoveEAttributeValue<A,T> createRemoveAttributeChange(A affectedEObject, EAttribute affectedAttribute, int index, T oldValue) {
 		val c = AttributeFactory.eINSTANCE.createRemoveEAttributeValue()
-		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute, unresolve)
+		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
 		c.oldValue = oldValue
 		c.index = index
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> InsertEReference<A,T> createInsertReferenceChange(A affectedEObject, EReference affectedReference, T newValue, int index, boolean unresolve) {
+	def <A extends EObject, T extends EObject> InsertEReference<A,T> createInsertReferenceChange(A affectedEObject, EReference affectedReference, T newValue, int index) {
 		val c = ReferenceFactory.eINSTANCE.createInsertEReference()
-		setFeatureChangeFeatures(c, affectedEObject, affectedReference, unresolve)
-		setNewValue(c, newValue, unresolve)
+		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
+		setNewValue(c, newValue)
 		c.index = index
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A,T> createReplaceSingleReferenceChange(A affectedEObject, EReference affectedReference, T oldValue, T newValue, boolean unresolve) {
+	def <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A,T> createReplaceSingleReferenceChange(A affectedEObject, EReference affectedReference, T oldValue, T newValue) {
 		val c = ReferenceFactory.eINSTANCE.createReplaceSingleValuedEReference
-		setFeatureChangeFeatures(c, affectedEObject, affectedReference, unresolve)
-		setOldValue(c, oldValue, unresolve)
-		setNewValue(c, newValue, unresolve)
+		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
+		setOldValue(c, oldValue)
+		setNewValue(c, newValue)
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> RemoveEReference<A,T> createRemoveReferenceChange(A affectedEObject, EReference affectedReference, T oldValue, int index, boolean unresolve) {
+	def <A extends EObject, T extends EObject> RemoveEReference<A,T> createRemoveReferenceChange(A affectedEObject, EReference affectedReference, T oldValue, int index) {
 		val c = ReferenceFactory.eINSTANCE.createRemoveEReference()
-		setFeatureChangeFeatures(c, affectedEObject, affectedReference, unresolve)
-		setOldValue(c, oldValue, unresolve)
+		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
+		setOldValue(c, oldValue)
 		c.index = index
 		return c
 	}
 	
-	def static <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject, boolean unresolve) {
+	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject) {
 		val c = EobjectFactory.eINSTANCE.createCreateEObject()
-		setEObjectExistenceChange(c, affectedEObject, unresolve)
+		setEObjectExistenceChange(c, affectedEObject)
 		return c
 	}
 	
-	def static <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject, boolean unresolve) {
+	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject) {
 		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
-		setEObjectExistenceChange(c, affectedEObject, unresolve)
+		setEObjectExistenceChange(c, affectedEObject)
 		return c
 	}
 	

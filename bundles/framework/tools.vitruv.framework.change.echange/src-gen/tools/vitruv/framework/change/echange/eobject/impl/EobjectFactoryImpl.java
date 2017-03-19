@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.eobject.*;
 
@@ -77,8 +76,6 @@ public class EobjectFactoryImpl extends EFactoryImpl implements EobjectFactory {
 		switch (eDataType.getClassifierID()) {
 			case EobjectPackage.EOBJ:
 				return createEObjFromString(eDataType, initialValue);
-			case EobjectPackage.RESOURCE_SET:
-				return createResourceSetFromString(eDataType, initialValue);
 			case EobjectPackage.RESOURCE:
 				return createResourceFromString(eDataType, initialValue);
 			default:
@@ -96,8 +93,6 @@ public class EobjectFactoryImpl extends EFactoryImpl implements EobjectFactory {
 		switch (eDataType.getClassifierID()) {
 			case EobjectPackage.EOBJ:
 				return convertEObjToString(eDataType, instanceValue);
-			case EobjectPackage.RESOURCE_SET:
-				return convertResourceSetToString(eDataType, instanceValue);
 			case EobjectPackage.RESOURCE:
 				return convertResourceToString(eDataType, instanceValue);
 			default:
@@ -140,24 +135,6 @@ public class EobjectFactoryImpl extends EFactoryImpl implements EobjectFactory {
 	 * @generated
 	 */
 	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ResourceSet createResourceSetFromString(EDataType eDataType, String initialValue) {
-		return (ResourceSet)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertResourceSetToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

@@ -44,7 +44,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 		this.testUserInteractor = new TestUserInteractor();
 		this.getVirtualModel().setUserInteractor(this.testUserInteractor);
 		this.resourceSet = new ResourceSetImpl();
-		this.changeRecorder = new AtomicEMFChangeRecorder();
+		this.changeRecorder = new AtomicEMFChangeRecorder(false);
 	}
 
 	protected abstract List<Metamodel> createMetamodels();
@@ -75,7 +75,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
 		Resource modelResource = this.getVirtualModel().getModelInstance(vuri).getResource();
 		final ConcreteChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind,
-				modelResource);
+				modelResource, false);
 		this.getVirtualModel().propagateChange(fileChange);
 	}
 

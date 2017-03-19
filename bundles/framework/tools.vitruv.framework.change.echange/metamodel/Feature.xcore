@@ -4,36 +4,23 @@ package tools.vitruv.framework.change.echange.feature
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.AtomicEChange
 
 type EObj wraps EObject
 type EFeat wraps EStructuralFeature 
-type ResourceSet wraps ResourceSet
 
 abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicEChange {
 	refers F[1] affectedFeature
 	refers A[1] affectedEObject 
-	
+
+	/**
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 */
 	op boolean isResolved() {
 		return super.isResolved && affectedEObject != null 
 		&& !affectedEObject.eIsProxy && affectedFeature != null
-	}
-	
-	op boolean resolveBefore(ResourceSet resourceSet) {
-		if (!isResolved) {		
-			var resolvedAffectedEObject = EChangeUtil.resolveProxy(affectedEObject, resourceSet) as A
-			// Don't change the references before everything (current and super class proxies) 
-			// was successfully resolved.
-			if (affectedFeature == null || resolvedAffectedEObject == null 
-				|| resolvedAffectedEObject.eIsProxy || !super.resolveBefore(resourceSet)) {
-				return false
-			}
-
-			affectedEObject = resolvedAffectedEObject
-		}
-		return true
 	}
 }
 

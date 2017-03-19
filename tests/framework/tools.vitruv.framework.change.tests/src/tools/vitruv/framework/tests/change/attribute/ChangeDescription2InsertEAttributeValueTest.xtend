@@ -1,10 +1,11 @@
 package tools.vitruv.framework.tests.change.attribute
 
+import allElementTypes.AllElementTypesFactory
 import org.junit.Test
 
+import static allElementTypes.AllElementTypesPackage.Literals.*
+
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
-import static allElementTypes.AllElementTypesPackage.Literals.*;
-import allElementTypes.AllElementTypesFactory
 
 class ChangeDescription2InsertEAttributeValueTest extends ChangeDescription2ChangeEAttributeTest {
 	@Test
@@ -44,7 +45,7 @@ class ChangeDescription2InsertEAttributeValueTest extends ChangeDescription2Chan
 	def public testTreeInsertMultiValuedEAttribute() {
 		val recursiveRoot = AllElementTypesFactory.eINSTANCE.createRoot();
 		recursiveRoot.multiValuedEAttribute += 1;
-		recursiveRoot.multiValuedEAttribute += 2;
+		recursiveRoot.multiValuedEAttribute += 2;	
 		startRecording();
 		this.rootElement.recursiveRoot = recursiveRoot;
 		

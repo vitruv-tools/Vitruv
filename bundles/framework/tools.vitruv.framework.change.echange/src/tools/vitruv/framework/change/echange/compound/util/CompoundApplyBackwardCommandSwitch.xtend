@@ -7,7 +7,15 @@ import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch
 
+/**
+ * Switch to create commands for all EChange classes of the compound package.
+ * The commands applies the EChanges backward.
+ */
 class CompoundApplyBackwardCommandSwitch extends CompoundSwitch<List<Command>> {
+	/**
+	 * Create commands to apply a compound change backward.
+	 * @param object The change which commands should be created.
+	 */
 	def public List<Command> caseCompoundEChange(CompoundEChange object) {
 		val commands = new ArrayList<Command>
 		for (AtomicEChange change : object.atomicChanges.reverse) {

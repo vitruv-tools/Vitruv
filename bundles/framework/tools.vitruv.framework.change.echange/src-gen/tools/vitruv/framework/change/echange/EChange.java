@@ -37,78 +37,44 @@ public interface EChange extends EObject {
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * *
-	 * Resolves the unresolved proxy EObjects of the change to a given set of resources with concrete EObjects.
-	 * The model has to be in the state before the change will applied forward. If the model is in state after the
+	 * Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set of
+	 * resources with concrete EObjects.
+	 * The model has to be in the state before the change is applied forward. If the model is in state after the
 	 * change and it will be applied backward, {@link resolveAfter} has to be called instead.
 	 * Before the change can be applied all proxy objects need to be resolved.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
-	 * @return 	{@code true} if the change was successfully resolved.
-	 * 			Returns {@code false} if the change could not be resolved or the resource set was {@code null}.
+	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
+	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
+	 * 			the original change.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _equals = <%com.google.common.base.Objects%>.equal(resourceSet, null);\nif (_equals)\n{\n\treturn false;\n}\nreturn true;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.EChangeResolver%>.resolve(change, resourceSet, true);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
 	 * @generated
 	 */
-	boolean resolveBefore(ResourceSet resourceSet);
+	EChange resolveBefore(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * *
-	 * Resolves the unresolved proxy EObjects of the change to a given set of resources with concrete EObjects.
-	 * The model has to be in the state after the change is applied forward. If the model is in state before
+	 * Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set
+	 * of resources with concrete EObjects.
+	 * The model has to be in the state after the change is applied backward. If the model is in state before
 	 * the change and it will be applied forward, {@link resolveBefore} has to be called instead.
 	 * Before the change can be applied all proxy objects need to be resolved.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
-	 * @return 	{@code true} if the change was successfully resolved.
-	 * 			Returns {@code false} if the change could not be resolved or the resource set was {@code null}.
+	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
+	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
+	 * 			the original change.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return this.resolveBefore(resourceSet);'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.EChangeResolver%>.resolve(change, resourceSet, false);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
 	 * @generated
 	 */
-	boolean resolveAfter(ResourceSet resourceSet);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * *
-	 * Resolves the change like {@link resolveBefore}, but creates a copy of the change and resolves that
-	 * one instead.
-	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
-	 * 			the unresolved should be resolved to.
-	 * @return 	Returns the resolved copy of the original change if the change was successfully resolved.
-	 * 			If the change could not be resolved successfully, was already resolved or the resource set
-	 * 			is null it returns the original change.
-	 * <!-- end-model-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolveBefore = resolvedChange.resolveBefore(resourceSet);\n\tif (_resolveBefore)\n\t{\n\t\treturn resolvedChange;\n\t}\n}\nreturn this;'"
-	 * @generated
-	 */
-	EChange copyAndResolveBefore(ResourceSet resourceSet);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * *
-	 * Resolves the change like {@link resolveAfter}, but creates a copy of the change and resolves that
-	 * one instead.
-	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
-	 * 			the unresolved should be resolved to.
-	 * @return 	Returns the resolved copy of the original change if the change was successfully resolved.
-	 * 			If the change could not be resolved successfully, was already resolved or the resource set
-	 * 			is null it returns the original change.
-	 * <!-- end-model-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolveAfter = resolvedChange.resolveAfter(resourceSet);\n\tif (_resolveAfter)\n\t{\n\t\treturn resolvedChange;\n\t}\n}\nreturn this;'"
-	 * @generated
-	 */
-	EChange copyAndResolveAfter(ResourceSet resourceSet);
+	EChange resolveAfter(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -116,17 +82,19 @@ public interface EChange extends EObject {
 	 * <!-- begin-model-doc -->
 	 * *
 	 * Resolves the change like {@link resolveBefore}, but also applies the change forward.
+	 * If the change was already resolved, it returns the original change and applies it forward.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
-	 * @return 	{@code true} if the change was successfully resolved and applied forward.
-	 * 			Returns {@code false} if the change could not be resolved / applied or the resource set was
-	 * 			{@code null}.
+	 * @return 	Returns the resolved change if the change could be applied forward. The returned change
+	 * 			is a copy of the change or, if the change was already resolved, the original change.
+	 * 			If the change could not be resolved and / or applied or the
+	 * 			resource set is {@code null}, it returns {@code null}
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _resolveBefore = this.resolveBefore(resourceSet);\nif (_resolveBefore)\n{\n\treturn this.applyForward();\n}\nreturn false;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveBefore(resourceSet);\n\tif (((!<%com.google.common.base.Objects%>.equal(resolvedChange, null)) && resolvedChange.applyForward()))\n\t{\n\t\treturn resolvedChange;\n\t}\n}\nelse\n{\n\tboolean _applyForward = this.applyForward();\n\tif (_applyForward)\n\t{\n\t\treturn this;\n\t}\n}\nreturn null;'"
 	 * @generated
 	 */
-	boolean resolveBeforeAndApplyForward(ResourceSet resourceSet);
+	EChange resolveBeforeAndApplyForward(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -134,17 +102,19 @@ public interface EChange extends EObject {
 	 * <!-- begin-model-doc -->
 	 * *
 	 * Resolves the change like {@link resolveAfter}, but also applies the change backward.
+	 * If the change was already resolved, it returns the original change and applies it backward.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
-	 * @return 	{@code true} if the change was successfully resolved and applied backward.
-	 * 			Returns {@code false} if the change could not be resolved / applied or the resource set was
-	 * 			{@code null}.
+	 * @return 	Returns the resolved change if the change could be applied backward. The returned change
+	 * 			is a copy of the change or, if the change was already resolved, the original change.
+	 * 			If the change could not be resolved and / or applied or the resource set is {@code null},
+	 * 			it returns {@code null}
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _resolveAfter = this.resolveAfter(resourceSet);\nif (_resolveAfter)\n{\n\treturn this.applyBackward();\n}\nreturn false;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveAfter(resourceSet);\n\tif (((!<%com.google.common.base.Objects%>.equal(resolvedChange, null)) && resolvedChange.applyBackward()))\n\t{\n\t\treturn resolvedChange;\n\t}\n}\nelse\n{\n\tboolean _applyBackward = this.applyBackward();\n\tif (_applyBackward)\n\t{\n\t\treturn this;\n\t}\n}\nreturn null;'"
 	 * @generated
 	 */
-	boolean resolveAfterAndApplyBackward(ResourceSet resourceSet);
+	EChange resolveAfterAndApplyBackward(ResourceSet resourceSet);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -153,7 +123,7 @@ public interface EChange extends EObject {
 	 * *
 	 * Applies the change to the model which the change was resolved to.
 	 * The change must be resolved before it can be applied.
-	 * @return	Returns whether the change was successfully applied. If the
+	 * @return	Returns whether the change was successfully applied forward. If the
 	 * 			change was not resolved or could not be applied it returns {@code false}
 	 * <!-- end-model-doc -->
 	 * @model unique="false"
@@ -169,7 +139,7 @@ public interface EChange extends EObject {
 	 * *
 	 * Reverts the change on the model which the change was resolved to.
 	 * The change must be resolved before it can be reverted.
-	 * @return	Returns whether the change was successfully reverted. If the
+	 * @return	Returns whether the change was successfully applied backward. If the
 	 * 			change was not resolved or could not be reverted it returns {@code false}
 	 * <!-- end-model-doc -->
 	 * @model unique="false"

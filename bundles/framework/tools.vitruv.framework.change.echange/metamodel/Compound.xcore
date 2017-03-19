@@ -3,9 +3,11 @@
 package tools.vitruv.framework.change.echange.compound
 
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.common.util.BasicEList
+import tools.vitruv.framework.change.echange.EChangeResolver
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.AtomicEChange
@@ -23,7 +25,6 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import org.eclipse.emf.common.util.BasicEList
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
 type EObj wraps EObject
@@ -32,7 +33,12 @@ type ResourceSet wraps ResourceSet
 
 abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
 	op unique AtomicEChange[+] getAtomicChanges()
-	
+
+	/**
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 */	
 	op boolean isResolved() {
 		for (AtomicEChange change : getAtomicChanges()) {
 			if (!change.isResolved()) {
@@ -40,67 +46,100 @@ abstract class CompoundEChange extends tools.vitruv.framework.change.echange.ECh
 			}
 		}
 		return super.isResolved()
-	}
-	
-	op boolean resolveBefore(ResourceSet resourceSet) {
-		return resolve(resourceSet, true, true)
-	}
-	
-	op boolean resolveAfter(ResourceSet resourceSet) {
-		return resolve(resourceSet, false, true)
-	}
-	
-	op boolean resolveBeforeAndApply(ResourceSet resourceSet) {
-		return resolve(resourceSet, true, false)
-	}
-	
-	op boolean resolveAfterAndApply(ResourceSet resourceSet) {
-		return resolve(resourceSet, false, false)		
-	}
-	
-	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
+	}	
+
+	/**
+	 * Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set of 
+	 * resources with concrete EObjects.
+	 * The model has to be in the state before the change is applied forward. If the model is in state after the
+	 * change and it will be applied backward, {@link resolveAfter} has to be called instead.
+	 * Before the change can be applied all proxy objects need to be resolved.
+	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
+	 * 			the unresolved should be resolved to.
+	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
+	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
+	 * 			the original change.
+	 */
+	op EChange resolveBefore(ResourceSet resourceSet) {
 		if (!isResolved) {
-			if (!super.resolveBefore(resourceSet)) {
-				return false
+			val change = EcoreUtil.copy(this)
+			if (EChangeResolver.resolveCompoundEChange(change, resourceSet, true, true)) {
+				return change
 			}
-			
-			val changesMade = new BasicEList<EChange>
-			if (resolveBefore) {
-				for (EChange change : atomicChanges) {
-					if (!change.resolveBeforeAndApplyForward(resourceSet)) {
-						// Error resolving or applying forward => revert
-						for (EChange changed : changesMade.reverse) {
-							changed.applyBackward
-						}
-						return false
-					} else {
-						changesMade.add(change)
-					}
-				}
-			} else {
-				for (EChange change : atomicChanges.reverse) {
-					if (!change.resolveAfterAndApplyBackward(resourceSet)) {
-						// Error resolving or applying backward => revert
-						for (EChange changed : changesMade.reverse) {
-							changed.applyForward
-						}
-						return false
-					} else {
-						changesMade.add(change)
-					}
-				}
+			return null		
+		}
+		return this
+	}
+	
+	/**
+	 * Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set 
+	 * of resources with concrete EObjects.
+	 * The model has to be in the state after the change is applied backward. If the model is in state before
+	 * the change and it will be applied forward, {@link resolveBefore} has to be called instead.
+	 * Before the change can be applied all proxy objects need to be resolved.
+	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
+	 * 			the unresolved should be resolved to.
+	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
+	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
+	 * 			the original change.
+	 */
+	op EChange resolveAfter(ResourceSet resourceSet) {
+		if (!isResolved) {
+			val change = EcoreUtil.copy(this)
+			if (EChangeResolver.resolveCompoundEChange(change, resourceSet, false, true)) {
+				return change
 			}
-			
-			// Revert all changes which were made resolving the compound change.
-			if (revertAfterResolving) {
-				if (resolveBefore) {
-					applyBackward
-				} else {
-					applyForward
-				}
+			return null			
+		}
+		return this
+	}	
+	
+	/**
+	 * Resolves the compound change like {@link resolveBefore}, but also applies the change forward.
+	 * If the change was already resolved, it returns the original change and applies it forward.
+	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
+	 * 			the unresolved should be resolved to.
+	 * @return 	Returns the resolved change if the change could be applied forward. The returned change
+	 * 			is a copy of the change or, if the change was already resolved, the original change. 
+	 * 			If the change could not be resolved and / or applied or the 
+	 * 			resource set is {@code null}, it returns {@code null}
+	 */
+	op EChange resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+		if (!isResolved) {
+			val change = EcoreUtil.copy(this)
+			if (EChangeResolver.resolveCompoundEChange(change, resourceSet, true, false)) {
+				return change
+			}		
+		} else {
+			if (applyForward) {
+				return this
 			}
 		}
-		return true
+		return null
+	}
+
+	/**
+	 * Resolves the compound change like {@link resolveAfter}, but also applies the change backward.
+	 * If the change was already resolved, it returns the original change and applies it backward.
+	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
+	 * 			the unresolved should be resolved to.
+	 * @return 	Returns the resolved change if the change could be applied backward. The returned change
+	 * 			is a copy of the change or, if the change was already resolved, the original change. 
+	 * 			If the change could not be resolved and / or applied or the resource set is {@code null}, 
+	 * 			it returns {@code null}
+	 */	
+	op EChange resolveAfterAndApplyBackward(ResourceSet resourceSet) {
+		if (!isResolved) {
+			val change = EcoreUtil.copy(this)
+			if (EChangeResolver.resolveCompoundEChange(change, resourceSet, false, false)) {
+				return change
+			}	
+		} else {
+			if (applyBackward) {
+				return this				
+			}
+		}
+		return null
 	}
 }
 

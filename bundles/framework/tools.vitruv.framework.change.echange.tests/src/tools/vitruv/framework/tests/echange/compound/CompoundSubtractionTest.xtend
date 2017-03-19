@@ -4,14 +4,12 @@ import allElementTypes.Root
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.common.util.EList
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CompoundSubtraction
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 import tools.vitruv.framework.tests.echange.feature.attribute.InsertRemoveEAttributeTest
-import org.junit.Assert
-import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 
 /**
  * Test class for the concrete {@link CompoundSubtraction} EChange,
@@ -24,36 +22,92 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 	
 	/**
 	 * Calls setup of super class and sets list of the affected feature
-	 * for the tests.
+	 * for the tests and sets state before.
 	 */
 	@Before
 	override public void beforeTest() {
 		super.beforeTest
-		attributeContent = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
+		attributeContent = affectedEObject.eGet(affectedFeature) as EList<Integer>
+		prepareStateBefore
 	}
 
+	/**
+	 * Sets the state before the change.
+	 */
+	def private void prepareStateBefore() {
+		attributeContent.add(NEW_VALUE)
+		attributeContent.add(NEW_VALUE_2)
+		attributeContent.add(NEW_VALUE_3)
+	}
+	
+	/**
+	 * Sets the state after the change.
+	 */
+	def private void prepareStateAfter() {
+		attributeContent.clear
+	}
+	
+	/**
+	 * Model is in state before the change.
+	 */
+	def private void assertIsStateBefore() {
+		Assert.assertEquals(attributeContent.size, 3)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), NEW_VALUE_2)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 2), NEW_VALUE_3)
+	}
+	
+	/**
+	 * Model is in state after the change.
+	 */
+	def private void assertIsStateAfter() {
+		Assert.assertTrue(attributeContent.empty)
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>> change, 
+		Root affectedObject) {
+		Assert.assertFalse(change.isResolved)
+		for (c : change.subtractiveChanges) {
+			Assert.assertFalse(c.isResolved)
+			Assert.assertFalse(c.affectedEObject == affectedObject)
+		}
+	}
+	
+	/**
+	 * Change is resolved with state before change.
+	 */
+	def private static void assertIsResolved(CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>> change, 
+		Root affectedObject) {
+		Assert.assertTrue(change.isResolved)
+		for (c : change.subtractiveChanges) {
+			Assert.assertTrue(c.affectedEObject == affectedObject)
+		}
+	}	
+	
 	/**
 	 * Creates the atomic changes for the compound change in the tests.
 	 */
 	def private List<RemoveEAttributeValue<Root, Integer>> getSubtractiveChanges() {
 		var List<RemoveEAttributeValue<Root, Integer>> changes = new ArrayList<RemoveEAttributeValue<Root, Integer>>()
-		changes.add(TypeInferringAtomicEChangeFactory.<Root, Integer>createRemoveAttributeChange(
-			defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX + 2, DEFAULT_NEW_VALUE_3, true))
-		changes.add(TypeInferringAtomicEChangeFactory.<Root, Integer>createRemoveAttributeChange(
-			defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX + 1, DEFAULT_NEW_VALUE_2, true))
-		changes.add(TypeInferringAtomicEChangeFactory.<Root, Integer>createRemoveAttributeChange(
-			defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, true))		
+		changes.add(atomicFactory.<Root, Integer>createRemoveAttributeChange(
+			affectedEObject, affectedFeature, DEFAULT_INDEX + 2, NEW_VALUE_3))
+		changes.add(atomicFactory.<Root, Integer>createRemoveAttributeChange(
+			affectedEObject, affectedFeature, DEFAULT_INDEX + 1, NEW_VALUE_2))
+		changes.add(atomicFactory.<Root, Integer>createRemoveAttributeChange(
+			affectedEObject, affectedFeature, DEFAULT_INDEX, NEW_VALUE))		
 		return changes
-	}
+	}	
 	
 	/**
-	 * Fills the attribute of the tests with values.
+	 * Creates new unresolved change.
 	 */
-	def private void prepareAttribute() {
-		attributeContent.add(DEFAULT_NEW_VALUE)
-		attributeContent.add(DEFAULT_NEW_VALUE_2)
-		attributeContent.add(DEFAULT_NEW_VALUE_3)
-	}
+	def private CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>> createUnresolvedChange() {
+		return compoundFactory.<Integer, RemoveEAttributeValue<Root, Integer>>
+			createCompoundSubtractionChange(getSubtractiveChanges())
+	}	
 	
 	/**
 	 * Resolves a {@link CompoundSubtraction} EChange. The model is in the state
@@ -61,34 +115,20 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void resolveCompoundSubtractionTest() {
-		// Set state before change
-		prepareAttribute
-		val oldSize = attributeContent.size
-		Assert.assertFalse(attributeContent.empty)
+		// State before
+		assertIsStateBefore
 		
 		// Create change
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.<Integer, RemoveEAttributeValue<Root, Integer>>
-			createCompoundSubtractionChange(getSubtractiveChanges())
+		val unresolvedChange = createUnresolvedChange()
+		unresolvedChange.assertIsNotResolved(affectedEObject)	
 			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		for (change : unresolvedChange.atomicChanges) {
-			val c = change as RemoveEAttributeValue<Root, Integer>
-			Assert.assertTrue(c.affectedEObject != defaultAffectedEObject)
-		}
-		
 		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
 			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
-			
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)
-		for (change : resolvedChange.atomicChanges) {
-			val c = change as RemoveEAttributeValue<Root, Integer>
-			Assert.assertTrue(c.affectedEObject == defaultAffectedEObject)
-		}	
+		resolvedChange.assertIsResolved(affectedEObject)
 
 		// Resolving applies all changes and reverts them, so the model should be unaffected.	
-		Assert.assertEquals(attributeContent.size, oldSize)
+		assertIsStateBefore
 	}
 	
 	/**
@@ -97,38 +137,24 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void resolveCompoundSubtractionTest2() {
-		// Set state before change
-		prepareAttribute
-		Assert.assertFalse(attributeContent.empty)
+		// State before
+		assertIsStateBefore
 		
 		// Create change
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.<Integer, RemoveEAttributeValue<Root, Integer>>
-			createCompoundSubtractionChange(getSubtractiveChanges())	
+		val unresolvedChange = createUnresolvedChange()
+		unresolvedChange.assertIsNotResolved(affectedEObject)	
 			
 		// Set state after change
-		attributeContent.clear	
-		val oldSize = attributeContent.size
-		Assert.assertTrue(attributeContent.empty)
-		
-		Assert.assertFalse(unresolvedChange.isResolved)
-		for (change : unresolvedChange.atomicChanges) {
-			val c = change as RemoveEAttributeValue<Root, Integer>
-			Assert.assertTrue(c.affectedEObject != defaultAffectedEObject)
-		}
+		prepareStateAfter
+		assertIsStateAfter
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
 			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
-			
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)
-		for (change : resolvedChange.atomicChanges) {
-			val c = change as RemoveEAttributeValue<Root, Integer>
-			Assert.assertTrue(c.affectedEObject == defaultAffectedEObject)
-		}	
+		resolvedChange.assertIsResolved(affectedEObject)
 
 		// Resolving applies all changes and reverts them, so the model should be unaffected.	
-		Assert.assertEquals(attributeContent.size, oldSize)
+		assertIsStateAfter
 	} 
 	
 	/**
@@ -137,18 +163,13 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void resolveToCorrectType() {
-		// Set state before change
-		prepareAttribute
-		
 		// Create change
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.<Integer, RemoveEAttributeValue<Root, Integer>>
-			createCompoundSubtractionChange(getSubtractiveChanges())	
-			
+		val unresolvedChange = createUnresolvedChange()
+		
 		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
 			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
-			
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)					
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)					
 	}
 	
 	/**
@@ -156,17 +177,18 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void compoundSubtractionApplyForwardTest() {
-		// Set state before
-		prepareAttribute
-		val oldSize = attributeContent.size
+		// State before
+		assertIsStateBefore
 		
 		// Create change
-		val resolvedChange = TypeInferringCompoundEChangeFactory.<Integer, RemoveEAttributeValue<Root, Integer>>
-			createCompoundSubtractionChange(getSubtractiveChanges()).copyAndResolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1) 
+			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
 			
 		// Apply forward
 		Assert.assertTrue(resolvedChange.applyForward)
-		Assert.assertEquals(attributeContent.size, oldSize - 3)
+		
+		// State after
+		assertIsStateAfter
 	}
 	
 	/**
@@ -174,28 +196,21 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void compoundSubtractionApplyBackwardTest() {
-		// Set state before
-		prepareAttribute	
+		// State before
+		assertIsStateBefore
 		
 		// Create change
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.<Integer, RemoveEAttributeValue<Root, Integer>>
-			createCompoundSubtractionChange(getSubtractiveChanges())
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1) 
+			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
 			
 		// Set state after change
-		attributeContent.clear	
-		val oldSize = attributeContent.size
-		Assert.assertTrue(attributeContent.empty)
-		
-		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) 
-			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
+		prepareStateAfter
+		assertIsStateAfter
 			
 		// Apply backward
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
-		Assert.assertEquals(attributeContent.size, oldSize + 3)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), DEFAULT_NEW_VALUE_2)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 2), DEFAULT_NEW_VALUE_3)						
+		// State before
+		assertIsStateBefore						
 	}
 }

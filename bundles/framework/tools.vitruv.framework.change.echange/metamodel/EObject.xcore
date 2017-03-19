@@ -4,16 +4,11 @@ package tools.vitruv.framework.change.echange.eobject
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.InternalEObject
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
-import tools.vitruv.framework.change.echange.util.StagingArea
 
 type EObj wraps EObject
-type ResourceSet wraps ResourceSet
 type Resource wraps Resource
 
 abstract class EObjectAddedEChange<T extends EObj> extends AdditiveEChange<T> {
@@ -28,55 +23,21 @@ abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
 	refers A[1] affectedEObject
 	Resource stagingArea
 	
+	/**
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 */
 	op boolean isResolved() {
 		return super.isResolved() && affectedEObject != null && !affectedEObject.eIsProxy()
 			&& stagingArea != null
 	}
-	op boolean resolve(ResourceSet resourceSet, boolean newObject) {
-		if (!isResolved) {
-			if (affectedEObject == null) {
-				return false
-			}
-			// Get the staging area where the created object will placed in.
-			val resolvedStagingArea = StagingArea.getStagingArea(resourceSet)
-
-			var A resolvedAffectedEObject
-			// Resolve the affected object
-			if (newObject) {
-				// Create new one
-				resolvedAffectedEObject = EcoreUtil.copy(affectedEObject)
-				(resolvedAffectedEObject as InternalEObject).eSetProxyURI(null)		
-			} else {
-				// Object still exists
-				resolvedAffectedEObject = resolvedStagingArea.contents.get(0) as A
-			}
-			
-			if (resolvedAffectedEObject == null || resolvedAffectedEObject.eIsProxy
-				|| resolvedStagingArea == null && !super.resolveBefore(resourceSet)) {
-				return false
-			}
-			
-			affectedEObject = resolvedAffectedEObject
-			stagingArea = resolvedStagingArea
-		}
-		return true
-	}
 }
 
 class CreateEObject<A extends EObj> extends EObjectExistenceEChange<A> {
-	op boolean resolveBefore(ResourceSet resourceSet) {
-		return resolve(resourceSet, true)
-	}
-	op boolean resolveAfter(ResourceSet resourceSet) {
-		return resolve(resourceSet, false)
-	}
+
 }
 
 class DeleteEObject<A extends EObj> extends EObjectExistenceEChange<A> {
-	op boolean resolveBefore(ResourceSet resourceSet) {
-		return resolve(resourceSet, false)
-	}
-	op boolean resolveAfter(ResourceSet resourceSet) {
-		return resolve(resourceSet, true)
-	}	
+
 }

@@ -101,6 +101,15 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -108,24 +117,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -171,15 +162,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The number of operations of the '<em>Update Attribute EChange</em>' class.
@@ -237,6 +219,15 @@ public interface AttributePackage extends EPackage {
 	int ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -244,24 +235,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -307,15 +280,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -382,6 +346,15 @@ public interface AttributePackage extends EPackage {
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -389,24 +362,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -452,15 +407,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -536,6 +482,15 @@ public interface AttributePackage extends EPackage {
 	int INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -543,24 +498,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_EATTRIBUTE_VALUE___RESOLVE_AFTER__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -606,15 +543,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -690,6 +618,15 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -697,24 +634,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_AFTER__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -760,15 +679,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -844,6 +754,15 @@ public interface AttributePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -851,24 +770,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_AFTER__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___COPY_AND_RESOLVE_AFTER__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -914,15 +815,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -978,26 +870,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	int EOBJ = 6;
-
-	/**
-	 * The meta object id for the '<em>Resource Set</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getResourceSet()
-	 * @generated
-	 */
-	int RESOURCE_SET = 7;
-
-	/**
-	 * The meta object id for the '<em>Command</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.command.Command
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getCommand()
-	 * @generated
-	 */
-	int COMMAND = 8;
 
 
 	/**
@@ -1092,28 +964,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	EDataType getEObj();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.ResourceSet <em>Resource Set</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Resource Set</em>'.
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @model instanceClass="org.eclipse.emf.ecore.resource.ResourceSet"
-	 * @generated
-	 */
-	EDataType getResourceSet();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.command.Command <em>Command</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Command</em>'.
-	 * @see org.eclipse.emf.common.command.Command
-	 * @model instanceClass="org.eclipse.emf.common.command.Command"
-	 * @generated
-	 */
-	EDataType getCommand();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1223,26 +1073,6 @@ public interface AttributePackage extends EPackage {
 		 * @generated
 		 */
 		EDataType EOBJ = eINSTANCE.getEObj();
-
-		/**
-		 * The meta object literal for the '<em>Resource Set</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.resource.ResourceSet
-		 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getResourceSet()
-		 * @generated
-		 */
-		EDataType RESOURCE_SET = eINSTANCE.getResourceSet();
-
-		/**
-		 * The meta object literal for the '<em>Command</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.command.Command
-		 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getCommand()
-		 * @generated
-		 */
-		EDataType COMMAND = eINSTANCE.getCommand();
 
 	}
 

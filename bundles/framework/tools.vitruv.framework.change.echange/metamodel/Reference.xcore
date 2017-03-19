@@ -6,8 +6,6 @@ import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.change.echange.util.EChangeUtil
-import tools.vitruv.framework.change.echange.util.StagingArea
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
@@ -26,121 +24,46 @@ abstract class UpdateReferenceEChange<A extends EObject> extends FeatureEChange<
 }
 
 abstract class AdditiveReferenceEChange<A extends EObj, T extends EObj> extends UpdateReferenceEChange<A>, EObjectAddedEChange<T> {
-	op EObject resolveNewValue(ResourceSet resourceSet, boolean resolveBefore) {
-		if (resolveBefore && containment) {
-			// Apply change => object is root or in staging area
-			// Containment => object is in staging area
-			val stagingArea = StagingArea.getStagingArea(resourceSet)
-			return stagingArea.contents.get(0)
-		} else {
-			// Revert change => object is in containment reference or root
-			return EChangeUtil.resolveProxy(newValue, resourceSet)
-		}
-	}
+
 }
 
 abstract class SubtractiveReferenceEChange<A extends EObj, T extends EObj> extends UpdateReferenceEChange<A>, EObjectSubtractedEChange<T> {
-	op EObject resolveOldValue(ResourceSet resourceSet, boolean resolveBefore) {
-		if (!resolveBefore && containment) {
-			// Revert change => object is root or in staging area
-			// Containment => object is in staging area
-			val stagingArea = StagingArea.getStagingArea(resourceSet)
-			return stagingArea.contents.get(0)					
-		} else {
-			// Apply change => object is in containment reference or root
-			return EChangeUtil.resolveProxy(oldValue, resourceSet) as T					
-		}
-	}
+
 }
 
 class InsertEReference<A extends EObj, T extends EObj> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {
+	/**
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 */
 	op boolean isResolved() {
 		return super.isResolved() && 
 			(newValue == null || !newValue.eIsProxy())
-	}
-	op boolean resolveBefore(ResourceSet resourceSet) {
-		return resolve(resourceSet, true)
-	}
-	op boolean resolveAfter(ResourceSet resourceSet) {
-		return resolve(resourceSet, false)
-	}
-	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore) {
-		if (!isResolved) {	
-			val resolvedNewValue = resolveNewValue(resourceSet, resolveBefore)
-			
-			if (resolvedNewValue == null || resolvedNewValue.eIsProxy
-				|| !super.resolveBefore(resourceSet)) {
-				return false
-			} 
-			
-			newValue = resolvedNewValue as T
-		} 
-		return true
 	}
 }
 
 class RemoveEReference<A extends EObj, T extends EObj> extends RemoveFromListEChange<A, EReference, T>, SubtractiveReferenceEChange<A, T> {
+	/**
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 */
 	op boolean isResolved() {
 		return super.isResolved() && 
 			(oldValue == null || !oldValue.eIsProxy())
 	}
-	op boolean resolveBefore(ResourceSet resourceSet) {
-		return resolve(resourceSet, true)
-	}
-	op boolean resolveAfter(ResourceSet resourceSet) {
-		return resolve(resourceSet, false)
-	}
-	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore) {
-		if (!isResolved) {
-			val resolvedOldValue = resolveOldValue(resourceSet, resolveBefore)
-			
-			if (resolvedOldValue == null || resolvedOldValue.eIsProxy
-				|| !super.resolveBefore(resourceSet)) {
-				return false
-			}
-			
-			oldValue = resolvedOldValue as T
-		} 
-		return true
-	}
 }
 
 class ReplaceSingleValuedEReference<A extends EObj, T extends EObj> extends  ReplaceSingleValuedFeatureEChange<A, EReference, T>, AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T> {
+	/**
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 */
 	op boolean isResolved() {
 		return super.isResolved() &&
 			(oldValue == null || !oldValue.eIsProxy()) &&
 			(newValue == null || !newValue.eIsProxy())
-	}
-	op boolean resolveBefore(ResourceSet resourceSet) {
-		return resolve(resourceSet, true)
-	}
-	op boolean resolveAfter(ResourceSet resourceSet) {
-		return resolve(resourceSet, false)
-	}
-	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore) {
-		if (!isResolved) {		
-			// Assumption: Change was recorded in the state before. 
-			// New value hast staging area URI, old value has containment URI.
-			// Problem: Resolving after the change would resolve newValue = oldValue = value in staging area.
-			// => The new value in the state after can be resolved by the URI of the old value 
-			// in state before.	
-			var EObject resolvedNewValue
-			if (containment) {
-				resolvedNewValue = resolveOldValue(resourceSet, !resolveBefore)
-			} else {
-				resolvedNewValue = resolveNewValue(resourceSet, resolveBefore)
-			}
-			val resolvedOldValue = resolveOldValue(resourceSet, resolveBefore)			
-
-			if (resolvedNewValue == null || resolvedNewValue.eIsProxy
-				|| resolvedOldValue == null || resolvedOldValue.eIsProxy
-				|| !super.resolveBefore(resourceSet)) {
-				return false
-			}
-			
-			newValue = resolvedNewValue as T
-			oldValue = resolvedOldValue as T
-		} 
-		return true
 	}
 }

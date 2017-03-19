@@ -1,29 +1,32 @@
 package tools.vitruv.framework.tests.echange.feature.attribute
 
+import allElementTypes.AllElementTypesFactory
 import allElementTypes.NonRoot
 import allElementTypes.Root
-import org.eclipse.emf.common.util.EList
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 
 /**
  * Test class for the concrete {@link RemoveEAttributeValue} EChange,
  * which removes a value in a multivalued attribute.
  */
-public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
+public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {	
 	/**
-	 * Inserts values in the default feature 
-	 * so they can be removed by the tests.
+	 * Prepares the affected attribute for the tests.
 	 */
-	@Before
-	override public void beforeTest() {
-		super.beforeTest()
-		val EList<Integer> multivaluedAttribute = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
-		multivaluedAttribute.add(DEFAULT_NEW_VALUE);
-		multivaluedAttribute.add(DEFAULT_NEW_VALUE_2);
+	def private void prepareAttribute() {
+		attributeContent.add(NEW_VALUE)
+		attributeContent.add(NEW_VALUE_2)
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private RemoveEAttributeValue<Root, Integer> createUnresolvedChange(int newValue) {
+		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
+		return atomicFactory.<Root, Integer>createRemoveAttributeChange
+		(affectedEObject, affectedFeature, index, newValue)	
 	}
 	
 	/**
@@ -32,13 +35,12 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void resolveToCorrectType() {
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
- 			<Root, Integer>createInsertAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, true)
- 		
- 		// Resolving the change will be tested in EFeatureChange	
- 		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
- 		
- 		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
+		// Create change
+		val unresolvedChange = createUnresolvedChange(NEW_VALUE)
+		
+		// Resolve		
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
 	/**
@@ -47,26 +49,30 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void removeEAttributeValueApplyForwardTest() {
-		val EList<Integer> multivaluedAttribute = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
+		// Set state before
+		prepareAttribute
+		val  oldSize = attributeContent.size
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), NEW_VALUE_2)
 		
-		Assert.assertEquals(multivaluedAttribute.size, 2)
-		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)
-		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX + 1), DEFAULT_NEW_VALUE_2)
-		
-		// Resolving the change will be tested in EFeatureChange
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, Integer>createRemoveAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, false)
+		// Create change and resolve
+		val resolvedChange = createUnresolvedChange(NEW_VALUE).resolveBefore(resourceSet1)
+			as RemoveEAttributeValue<Root, String>
 			
+		// Apply forward
 		Assert.assertTrue(resolvedChange.applyForward)
-		Assert.assertEquals(multivaluedAttribute.size, 1)
-		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE_2)
-		
-		// Resolving the change will be tested in EFeatureChange
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-			<Root, Integer>createRemoveAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE_2, false)
 			
+		Assert.assertEquals(attributeContent.size, oldSize - 1)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE_2)
+		
+		// Create change and resolve 2
+		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2).resolveBefore(resourceSet1)
+			as RemoveEAttributeValue<Root, String>
+		
+		// Apply forward 2	
 		Assert.assertTrue(resolvedChange2.applyForward)
-		Assert.assertEquals(multivaluedAttribute.size, 0)
+		
+		Assert.assertEquals(attributeContent.size, oldSize - 2)
 	}
 	
 	/**
@@ -75,24 +81,34 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void removeEAttributeValueApplyBackwardTest() {
-		val EList<Integer> multivaluedAttribute = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
+		// Set state before
+		prepareAttribute
 		
-		Assert.assertEquals(multivaluedAttribute.size, 2)
-		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)
-		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX + 1), DEFAULT_NEW_VALUE_2)
-		
-		// Resolving the change will be tested in EFeatureChange
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, Integer>createRemoveAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, false)
-			
+		// Create change and resolve and apply
+		val resolvedChange = createUnresolvedChange(NEW_VALUE).resolveBefore(resourceSet1)
+			as RemoveEAttributeValue<Root, String>
 		Assert.assertTrue(resolvedChange.applyForward)
-		Assert.assertEquals(multivaluedAttribute.size, 1)
-		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE_2)
 		
-		Assert.assertTrue(resolvedChange.applyBackward)
-		Assert.assertEquals(multivaluedAttribute.size, 2)
-		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)
-		Assert.assertEquals(multivaluedAttribute.get(DEFAULT_INDEX + 1), DEFAULT_NEW_VALUE_2)
+		// Create change and resolve and apply 2
+		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2).resolveBefore(resourceSet1)
+			as RemoveEAttributeValue<Root, String>		
+		Assert.assertTrue(resolvedChange2.applyForward)	
+		
+		// State after	
+		val oldSize = attributeContent.size
+		
+		// Apply backward 2
+		Assert.assertTrue(resolvedChange2.applyBackward)
+		
+		Assert.assertEquals(attributeContent.size, oldSize + 1)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE_2)
+				
+		// Apply backward 1
+		Assert.assertTrue(resolvedChange.applyBackward)	
+				
+		Assert.assertEquals(attributeContent.size, oldSize + 2)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), NEW_VALUE_2)
 	}
 	
 	/**
@@ -100,14 +116,17 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void removeEAttributeValueInvalidIndexTest() {
-		val index = 5
-		val EList<Integer> multivaluedAttribute = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
-		Assert.assertEquals(multivaluedAttribute.size, 2)
+		// Set state before
+		prepareAttribute
+		index = 5 // > 2
+		Assert.assertEquals(attributeContent.size, 2)
 		
-		// Resolving the change will be tested in EFeatureChange
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, Integer>createRemoveAttributeChange(defaultAffectedEObject, defaultAffectedFeature, index, DEFAULT_NEW_VALUE, false)		
+		// Create change and resolve
+		val resolvedChange = createUnresolvedChange(NEW_VALUE).resolveBefore(resourceSet1)
+			as RemoveEAttributeValue<Root, String>	
+		Assert.assertTrue(resolvedChange.isResolved)
 	
+		// Apply
 		Assert.assertFalse(resolvedChange.applyForward)
 		Assert.assertFalse(resolvedChange.applyBackward)
 	}
@@ -117,14 +136,18 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void removeEAttributeValueInvalidAttribute() {
-		val affectedEObject = rootObject1.singleValuedNonContainmentEReference // NonRoot element
+		prepareAttribute
+		val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
+	 	resource1.contents.add(affectedNonRootEObject)
 		
-		// Resolving the change will be tested in EFeatureChange
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<NonRoot, Integer>createRemoveAttributeChange(affectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, false)	
+		// Create change and resolve
+		val resolvedChange = atomicFactory.<NonRoot, Integer>createRemoveAttributeChange
+			(affectedNonRootEObject, affectedFeature, DEFAULT_INDEX, NEW_VALUE).
+			resolveBefore(resourceSet1)
+		Assert.assertTrue(resolvedChange.isResolved)	
 			
 		// NonRoot has no such feature
-	 	Assert.assertTrue(affectedEObject.eClass.getFeatureID(defaultAffectedFeature) == -1)	
+	 	Assert.assertTrue(affectedNonRootEObject.eClass.getFeatureID(affectedFeature) == -1)	
 	 	
 	 	Assert.assertFalse(resolvedChange.applyForward)
 	 	Assert.assertFalse(resolvedChange.applyBackward)
@@ -135,14 +158,17 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void removeEAttributeValueInvalidValue() {
-		val newValue = "New String Value" // values are Strings, attribute value type is Integer
+		prepareAttribute
+		val newInvalidValue = "New String Value" // values are Strings, attribute value type is Integer
 		
-		// Resolving the change will be tested in EFeatureChange
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, String>createRemoveAttributeChange(defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, newValue, false)	
+		// Create change and resolve
+		val resolvedChange = atomicFactory.<Root, String>createRemoveAttributeChange
+			(affectedEObject, affectedFeature, DEFAULT_INDEX, newInvalidValue).
+			resolveBefore(resourceSet1)
+		Assert.assertTrue(resolvedChange.isResolved)
 		
 		// Type of attribute is Integer not String
-	 	Assert.assertTrue(defaultAffectedFeature.EAttributeType.name == "EIntegerObject")
+	 	Assert.assertTrue(affectedFeature.EAttributeType.name == "EIntegerObject")
 	 	
 	 	Assert.assertFalse(resolvedChange.applyForward)	 	
 	 	Assert.assertFalse(resolvedChange.applyBackward)

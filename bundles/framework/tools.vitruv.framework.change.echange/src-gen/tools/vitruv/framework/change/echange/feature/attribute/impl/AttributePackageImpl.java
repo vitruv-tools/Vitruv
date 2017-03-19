@@ -2,8 +2,6 @@
  */
 package tools.vitruv.framework.change.echange.feature.attribute.impl;
 
-import org.eclipse.emf.common.command.Command;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -14,8 +12,6 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
-import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
@@ -89,20 +85,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * @generated
 	 */
 	private EDataType eObjEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType resourceSetEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType commandEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -255,24 +237,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getResourceSet() {
-		return resourceSetEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EDataType getCommand() {
-		return commandEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public AttributeFactory getAttributeFactory() {
 		return (AttributeFactory)getEFactoryInstance();
 	}
@@ -312,8 +276,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		// Create data types
 		eObjEDataType = createEDataType(EOBJ);
-		resourceSetEDataType = createEDataType(RESOURCE_SET);
-		commandEDataType = createEDataType(COMMAND);
 	}
 
 	/**
@@ -474,8 +436,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		// Initialize data types
 		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(commandEDataType, Command.class, "Command", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -2,111 +2,43 @@
 @GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
 package tools.vitruv.framework.change.echange.root
 
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-import tools.vitruv.framework.change.echange.util.EChangeUtil
-import tools.vitruv.framework.change.echange.util.StagingArea
 
 type EObj wraps EObject
-type ResourceSet wraps ResourceSet
 type Resource wraps Resource
-type URI wraps URI
 
 abstract class RootEChange extends AtomicEChange {
-	URI uri
+	String uri
 	Resource resource
 	int index
 	
 	op boolean isResolved() {
 		return super.isResolved && resource != null
 	}
-	op boolean resolveBefore(ResourceSet resourceSet) {
-		return resolve(resourceSet, true)
-	}
-	op boolean resolveAfter(ResourceSet resourceSet) {
-		return resolve(resourceSet, false)
-	}
-	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore) {
-		if (!isResolved) {
-			// Get resource where the root object will be inserted / removed.
-			val resolvedResource = resourceSet.getResource(uri, false)
-				
-			if (resolvedResource == null || !super.resolveBefore(resourceSet)) {
-				return false
-			}
-			
-			resource = resolvedResource
-		}
-		return true
-	}
 }
 
 class InsertRootEObject<T extends EObj> extends RootEChange, EObjectAddedEChange<T> {
+	/**
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 */
 	op boolean isResolved() {
 		return super.isResolved && newValue != null && !newValue.eIsProxy
-	}
-	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore) {
-		if (!isResolved) {
-			var T resolvedNewValue
-			// Resolve the root object
-			if (resolveBefore) {
-				// Root was created and reference is stored in staging area.
-				var stagingArea = StagingArea.getStagingArea(resourceSet)
-				if (!stagingArea.contents.empty) {
-					resolvedNewValue = stagingArea.contents.get(0) as T
-				} else {
-					return false	
-				}
-			} else {
-				// Root object was already inserted (=> change can be reverted)
-				resolvedNewValue = EChangeUtil.resolveProxy(newValue, resourceSet) as T
-			}
-	
-			if (resolvedNewValue == null || resolvedNewValue.eIsProxy
-				|| !super.resolve(resourceSet, resolveBefore)) {
-				return false
-			}
-			
-			newValue = resolvedNewValue
-		}
-		return true
 	}
 }
 
 class RemoveRootEObject<T extends EObj> extends RootEChange, EObjectSubtractedEChange<T> {
+	/**
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 */
 	op boolean isResolved() {
 		return super.isResolved && oldValue != null && !oldValue.eIsProxy()
-	}
-	op boolean resolve(ResourceSet resourceSet, boolean resolveBefore) {
-		if (!isResolved) {
-			var T resolvedOldValue
-
-			// Resolve the root object
-			if (resolveBefore) {
-				// Root object is still in resource (=> change can be applied)
-				resolvedOldValue = EChangeUtil.resolveProxy(oldValue, resourceSet) as T
-			} else  {
-				// Root object was removed and is in the staging area (=> change can be reverted)
-				var stagingArea = StagingArea.getStagingArea(resourceSet)
-				if (!stagingArea.contents.empty) {
-					resolvedOldValue = stagingArea.contents.get(0) as T
-				} else {
-					return false	
-				}
-			}
-					
-			if (resolvedOldValue == null || resolvedOldValue.eIsProxy
-				|| !super.resolve(resourceSet, resolveBefore)) {
-				return false
-			}
-			
-			oldValue = resolvedOldValue
-		}
-		return true
 	}
 }

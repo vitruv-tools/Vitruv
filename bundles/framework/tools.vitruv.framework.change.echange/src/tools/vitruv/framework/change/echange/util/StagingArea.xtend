@@ -4,7 +4,11 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 
-// TODO
+/**
+ * Utility class for the staging area, a special resource in a 
+ * resource set, to place newly created or removed objects
+ * temporarily. 
+ */
 public class StagingArea {
 	public static val DEFAULT_RESOURCE_NAME = "stagingArea.staging"
 	public static val DEFAULT_RESOURCE_EXTENSION = "staging"

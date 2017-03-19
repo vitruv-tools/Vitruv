@@ -3,7 +3,6 @@ package tools.vitruv.framework.tests.echange.eobject
 import allElementTypes.Root
 import org.junit.Assert
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 
 /**
@@ -12,17 +11,25 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
  */
 class CreateEObjectTest extends EObjectTest {
 	/**
+	 * Creates new unresolved change.
+	 */
+	def private CreateEObject<Root> createUnresolvedChange(Root newObject) {
+		// The concrete change type CreateEObject will be used for the tests.
+		return atomicFactory.<Root>createCreateEObjectChange(newObject)
+	}
+	
+	/**
 	 * Tests whether resolving the {@link CreateEObjectTest} EChange returns
 	 * the same class.
 	 */
 	@Test
 	def public void resolveToCorrectType() {
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createCreateEObjectChange(defaultCreatedObject, true)
+		// Create change
+		val unresolvedChange = createUnresolvedChange(createdObject)
 			
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
-		
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
+		// Resolve		
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
 	/**
@@ -31,19 +38,20 @@ class CreateEObjectTest extends EObjectTest {
 	 */
 	@Test
 	def public void createEObjectApplyForwardTest() {
-		// Staging area is empty
+		// Set state before
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createCreateEObjectChange(defaultCreatedObject, true).
-			copyAndResolveBefore(resourceSet1)
+		// Create change and resolve
+		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(resourceSet1)
+			as CreateEObject<Root>
 			
+		// Apply forward
 		Assert.assertTrue(resolvedChange.applyForward)
-		Assert.assertFalse(stagingArea1.contents.empty)
+		
 		// Staging area contains copy
-		Assert.assertFalse(stagingArea1.contents.contains(defaultCreatedObject))
-		val createdObject = stagingArea1.contents.get(0) as Root
-		Assert.assertEquals(createdObject.singleValuedEAttribute, defaultCreatedObject.singleValuedEAttribute)
+		Assert.assertFalse(stagingArea1.contents.contains(createdObject))
+		Assert.assertEquals((stagingArea1.contents.get(0) as Root).singleValuedEAttribute, 
+			createdObject.singleValuedEAttribute)
 		
 		// Now another change would take the object and inserts it in another resource
 		stagingArea1.contents.clear()
@@ -51,16 +59,18 @@ class CreateEObjectTest extends EObjectTest {
 		// Staging area is empty again
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
-		val resolvedChange2	= TypeInferringAtomicEChangeFactory.
-			<Root>createCreateEObjectChange(defaultCreatedObject2, true).
-			copyAndResolveBefore(resourceSet1)	
-		
+		// Create change and resolve 2
+		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(resourceSet1)
+			as CreateEObject<Root>
+			
+		// Apply forward 2
 		Assert.assertTrue(resolvedChange2.applyForward)
+		
 		Assert.assertFalse(stagingArea1.contents.empty)
 		// Staging area contains copy
-		Assert.assertFalse(stagingArea1.contents.contains(defaultCreatedObject2))
-		val createdObject2 = stagingArea1.contents.get(0) as Root
-		Assert.assertEquals(createdObject2.singleValuedEAttribute, defaultCreatedObject2.singleValuedEAttribute)	
+		Assert.assertFalse(stagingArea1.contents.contains(createdObject2))
+		Assert.assertEquals((stagingArea1.contents.get(0) as Root).singleValuedEAttribute, 
+			createdObject2.singleValuedEAttribute)	
 	}
 	
 	/**
@@ -69,16 +79,15 @@ class CreateEObjectTest extends EObjectTest {
 	 */
 	@Test
 	def public void createEObjectApplyBackwardTest() {
-		// Put object in the staging area. State after applying the change.
-		prepareStagingArea(defaultCreatedObject)
-		
+		// Set state after
+		prepareStagingArea(createdObject)
+
+		// Create change and resolve
+		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter(resourceSet1)
+			as CreateEObject<Root>
 		Assert.assertFalse(stagingArea1.contents.empty)
-		Assert.assertTrue(stagingArea1.contents.contains(defaultCreatedObject))
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createCreateEObjectChange(defaultCreatedObject, true).
-			copyAndResolveAfter(resourceSet1)
-			
+		// Apply backward
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
 		Assert.assertTrue(stagingArea1.contents.empty)

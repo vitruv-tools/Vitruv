@@ -9,12 +9,16 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
+import tools.vitruv.framework.change.echange.TypeInferringUnresolvedAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.util.StagingArea
-import org.junit.Assert
+import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
+import allElementTypes.Identified
 
 /**
  * Default class for testing EChange changes.
@@ -33,6 +37,9 @@ import org.junit.Assert
  	protected var Resource stagingArea2 = null
  	protected var ResourceSet resourceSet2 = null
  	
+ 	protected var TypeInferringAtomicEChangeFactory atomicFactory = null
+ 	protected var TypeInferringCompoundEChangeFactory compoundFactory = null
+ 	
  	protected URI fileUri = null
  	protected URI stagingResourceName = null
  	
@@ -41,10 +48,6 @@ import org.junit.Assert
  	
  	protected static val STAGING_AREA_EXTENSION = "staging"
  	protected static val STAGING_AREA_FILE_NAME = "stagingArea"
- 	
- 	protected static val DEFAULT_ROOT_NAME = "Root Element"
- 	protected static val DEFAULT_NON_ROOT_NAME = "Non Root Element"
- 	protected static val DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE = 100
  	
  	@Rule
 	public TemporaryFolder testFolder = new TemporaryFolder()
@@ -70,15 +73,7 @@ import org.junit.Assert
  		resource1 = resourceSet1.createResource(fileUri)
  		
  		rootObject1 = AllElementTypesFactory.eINSTANCE.createRoot()
- 		rootObject1.setId(DEFAULT_ROOT_NAME)
- 		rootObject1.setSingleValuedEAttribute(DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE)
- 		
- 		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot()
- 		nonRoot.setId(DEFAULT_NON_ROOT_NAME)
- 		rootObject1.setSingleValuedNonContainmentEReference(nonRoot)
- 		
  		resource1.getContents().add(rootObject1)
- 		resource1.getContents().add(nonRoot)
  		
  		resource1.save(null)
  		
@@ -94,6 +89,10 @@ import org.junit.Assert
  		
  		// Create staging area for resource set 2
  		stagingArea2 = resourceSet2.createResource(stagingResourceName)
+ 		
+ 		// Factorys for creating changes
+ 		atomicFactory = new TypeInferringUnresolvedAtomicEChangeFactory
+ 		compoundFactory = new TypeInferringCompoundEChangeFactory(atomicFactory)
  	}
  	
  	/**
@@ -109,10 +108,18 @@ import org.junit.Assert
  	/**
  	 * Tests whether a unresolved change and a resolved change are the same class.
  	 */
- 	def protected void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange) {
+ 	def protected static void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange) {
  		Assert.assertFalse(unresolvedChange.isResolved)
  		Assert.assertTrue(resolvedChange.isResolved)
  		Assert.assertFalse(unresolvedChange == resolvedChange)
  		Assert.assertEquals(unresolvedChange.getClass, resolvedChange.getClass)
+ 	}
+ 	
+ 	/**
+ 	 * Tests whether two objects are not the same object, but a copy with the same id.
+ 	 */
+ 	def protected static void assertIsCopy(Identified object1,  Identified object2) {
+ 		Assert.assertTrue(object1 != object2)
+ 		Assert.assertEquals(object1.id, object2.id)
  	}
  }

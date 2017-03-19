@@ -17,9 +17,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
@@ -28,8 +25,6 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
-
-import tools.vitruv.framework.change.echange.util.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -169,42 +164,6 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean resolve(final ResourceSet resourceSet, final boolean newObject) {
-		boolean _isResolved = this.isResolved();
-		boolean _not = (!_isResolved);
-		if (_not) {
-			A _affectedEObject = this.getAffectedEObject();
-			boolean _equals = Objects.equal(_affectedEObject, null);
-			if (_equals) {
-				return false;
-			}
-			final Resource resolvedStagingArea = StagingArea.getStagingArea(resourceSet);
-			A resolvedAffectedEObject = null;
-			if (newObject) {
-				A _affectedEObject_1 = this.getAffectedEObject();
-				A _copy = EcoreUtil.<A>copy(_affectedEObject_1);
-				resolvedAffectedEObject = _copy;
-				((InternalEObject) resolvedAffectedEObject).eSetProxyURI(null);
-			}
-			else {
-				EList<EObject> _contents = resolvedStagingArea.getContents();
-				EObject _get = _contents.get(0);
-				resolvedAffectedEObject = ((A) _get);
-			}
-			if (((Objects.equal(resolvedAffectedEObject, null) || resolvedAffectedEObject.eIsProxy()) || (Objects.equal(resolvedStagingArea, null) && (!super.resolveBefore(resourceSet))))) {
-				return false;
-			}
-			this.setAffectedEObject(resolvedAffectedEObject);
-			this.setStagingArea(resolvedStagingArea);
-		}
-		return true;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -296,8 +255,6 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 		switch (operationID) {
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN:
-				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

@@ -1,14 +1,14 @@
 package tools.vitruv.framework.tests.echange.feature.reference
 
+import allElementTypes.AllElementTypesFactory
 import allElementTypes.AllElementTypesPackage
 import allElementTypes.NonRoot
 import allElementTypes.Root
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 /**
@@ -16,17 +16,77 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
  * which replaces the value of a reference with a new one.
  */
 public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {	
-	protected var NonRoot defaultOldValue = null	
-	protected var EReference defaultAffectedFeature = null
-	
-	/**
-	 * Sets the default affected feature and old value for the tests.
-	 */
+	protected var NonRoot oldValue = null	
+	protected var EReference affectedFeature = null
+
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		defaultAffectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE
-		defaultOldValue = rootObject1.singleValuedNonContainmentEReference
+		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()	
+	}
+	
+	/**
+	 * Starts a test with a containment feature and sets state before.
+	 */
+	def private void isContainmentTest() {
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
+		prepareReference(oldValue)
+		prepareStagingArea(newValue)
+	}
+	
+	/**
+	 * Starts a test with a non containment feature and sets state before.
+	 */
+	def private void isNonContainmentTest() {
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE
+		prepareReference(oldValue)
+		prepareResource	
+	}
+	
+	/**
+	 * Sets the value of the affected feature.
+	 * @param object The new value of the affected feature.
+	 */
+	def private void prepareReference(EObject object) {
+		affectedEObject.eSet(affectedFeature, object)
+	}
+	
+	/**
+	 * Prepares all new and old values and stores them in a resource.
+	 */
+	override protected void prepareResource() {
+		super.prepareResource
+		resource1.contents.add(oldValue)		
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(ReplaceSingleValuedEReference<Root, NonRoot> change, 
+		Root affectedEObject, NonRoot oldValue, NonRoot newValue) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.affectedEObject != affectedEObject)
+		Assert.assertTrue(change.oldValue != oldValue)
+		Assert.assertTrue(change.newValue != newValue)
+	}
+	
+	/**
+	 * Change is resolved.
+	 */
+	def private static void assertIsResolved(ReplaceSingleValuedEReference<Root, NonRoot> change, 
+		Root affectedEObject, NonRoot oldValue, NonRoot newValue) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.affectedEObject == affectedEObject)
+		Assert.assertTrue(change.oldValue == oldValue)
+		Assert.assertTrue(change.newValue == newValue)	
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private ReplaceSingleValuedEReference<Root, NonRoot> createUnresolvedChange() {
+		return atomicFactory.<Root, NonRoot>createReplaceSingleReferenceChange
+		(affectedEObject, affectedFeature, oldValue, newValue)	
 	}
 	
 	/**
@@ -37,22 +97,16 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveReplaceSingleValuedEReferenceTest() {
-		prepareResource
+		// Set state before
+		isNonContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true)
-			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)
-		Assert.assertTrue(unresolvedChange.oldValue != defaultOldValue)
-		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)
+		// Create change
+		val unresolvedChange = createUnresolvedChange()
+		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
 		
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.oldValue == defaultOldValue)
-		Assert.assertTrue(resolvedChange.newValue == defaultNewValue)
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>	
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 	}
 	
 	/**
@@ -62,24 +116,16 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveReplaceSingleValuedEReferenceTest2() {
-		val affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
-		// New value is in staging area
-		prepareStagingArea(defaultNewValue)
+		// Set state before
+		isContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, affectedFeature, defaultOldValue, defaultNewValue, true)
-			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)
-		Assert.assertTrue(unresolvedChange.oldValue != defaultOldValue)
-		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)
+		// Create change
+		val unresolvedChange = createUnresolvedChange()
+		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
 		
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.oldValue == defaultOldValue)
-		Assert.assertTrue(resolvedChange.newValue == defaultNewValue)
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 	}
 	
 	/**
@@ -89,28 +135,19 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveReplaceSingleValuedEReferenceTest3() {
-		prepareResource
-		
 		// Set state before
-		defaultAffectedEObject.eSet(defaultAffectedFeature, defaultOldValue)
+		isNonContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true)
-			
+		// Create change
+		val unresolvedChange = createUnresolvedChange()
+		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
+							
 		// Set state after
-		defaultAffectedEObject.eSet(defaultAffectedFeature, defaultNewValue)
+		prepareReference(newValue)
 		
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)
-		Assert.assertTrue(unresolvedChange.oldValue != defaultOldValue)
-		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)
-		
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.oldValue == defaultOldValue)
-		Assert.assertTrue(resolvedChange.newValue == defaultNewValue)		
+		// Resolve	
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)	
 	}
 	
 	/**
@@ -120,30 +157,20 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	 @Test
 	 def public void resolveReplaceSingleValuedEReferenceTest4() {
-		val affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
-
 		// Set state before
-		defaultAffectedEObject.eSet(affectedFeature, defaultOldValue)
-		prepareStagingArea(defaultNewValue)
+		isContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, affectedFeature, defaultOldValue, defaultNewValue, true)
-
+		// Create change
+		val unresolvedChange = createUnresolvedChange()
+		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
+		
 		// Set state after
-		defaultAffectedEObject.eSet(affectedFeature, defaultNewValue)
-		prepareStagingArea(defaultOldValue)
+		prepareReference(newValue)
+		prepareStagingArea(oldValue)
 		
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)
-		Assert.assertTrue(unresolvedChange.oldValue != defaultOldValue)
-		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)
-		
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.oldValue == defaultOldValue)
-		Assert.assertTrue(resolvedChange.newValue == defaultNewValue)		 	
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) as ReplaceSingleValuedEReference<Root, NonRoot>
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)		 	
 	 }
 
 	/**
@@ -152,14 +179,15 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveToCorrectType() {
-		prepareResource
+		// Set state before
+		isNonContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true)	
+		// Create change
+		val unresolvedChange = createUnresolvedChange()
 			
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
-		
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
 	/**
@@ -168,17 +196,22 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void replaceSingleValuedEReferenceApplyForwardTest() {
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, false)	
+		// Set state before
+		isNonContainmentTest
+				
+		// Create change (resolved)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+			as ReplaceSingleValuedEReference<Root, NonRoot>
 			
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(defaultOldValue != defaultNewValue)
-		Assert.assertTrue(defaultAffectedEObject.eGet(defaultAffectedFeature) == defaultOldValue)
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
+		Assert.assertTrue(oldValue != newValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		Assert.assertEquals(stagingArea1.contents.size, 0)
 		
+		// Apply forward
 		Assert.assertTrue(resolvedChange.applyForward)
 		
-		Assert.assertTrue(defaultAffectedEObject.eGet(defaultAffectedFeature) == defaultNewValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == newValue)
 		Assert.assertEquals(stagingArea1.contents.size, 0) // The staging area must be unaffected
 	}
 	
@@ -188,24 +221,25 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void replaceSingleValuedEReferenceApplyForwardTest2() {
-		val affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
-		defaultAffectedEObject.eSet(affectedFeature, defaultOldValue)
-		prepareStagingArea(defaultNewValue)
+		// Set state before
+		isContainmentTest
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, affectedFeature, defaultOldValue, defaultNewValue, false)
+		// Create change (resolved)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+			as ReplaceSingleValuedEReference<Root, NonRoot>
 			
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(defaultOldValue != defaultNewValue)
-		Assert.assertTrue(defaultAffectedEObject.eGet(affectedFeature) == defaultOldValue)
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
+		Assert.assertTrue(oldValue != newValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		Assert.assertEquals(stagingArea1.contents.size, 1)	
-		Assert.assertTrue(stagingArea1.contents.contains(defaultNewValue))
+		Assert.assertTrue(stagingArea1.contents.contains(newValue))
 		
+		// Apply forward
 		Assert.assertTrue(resolvedChange.applyForward)
 		
-		Assert.assertTrue(defaultAffectedEObject.eGet(affectedFeature) == defaultNewValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == newValue)
 		Assert.assertEquals(stagingArea1.contents.size, 1) 
-		Assert.assertTrue(stagingArea1.contents.contains(defaultOldValue))
+		Assert.assertTrue(stagingArea1.contents.contains(oldValue))
 	}
 	
 	/**
@@ -214,19 +248,25 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void replaceSingleValuedEReferenceApplyBackwardTest() {
-		defaultAffectedEObject.singleValuedNonContainmentEReference = defaultNewValue
+		// Set state before
+		isNonContainmentTest
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, false)	
+		// Create change (resolved)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+			as ReplaceSingleValuedEReference<Root, NonRoot>	
 			
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(defaultOldValue != defaultNewValue)
-		Assert.assertTrue(defaultAffectedEObject.eGet(defaultAffectedFeature) == defaultNewValue)
+		// Set state after
+		prepareReference(newValue)
+		
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
+		Assert.assertTrue(oldValue != newValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == newValue)
 		Assert.assertEquals(stagingArea1.contents.size, 0)
-				
+		
+		// Apply backward
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
-		Assert.assertTrue(defaultAffectedEObject.eGet(defaultAffectedFeature) == defaultOldValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		Assert.assertEquals(stagingArea1.contents.size, 0) // The staging area must be unaffected		
 	}
 	
@@ -236,23 +276,28 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void replaceSingleValuedEReferenceApplyBackwardTest2() {
-		val affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
-		defaultAffectedEObject.eSet(affectedFeature, defaultNewValue)
-		prepareStagingArea(defaultOldValue)
+		// Set state before
+		isContainmentTest
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createReplaceSingleReferenceChange(defaultAffectedEObject, affectedFeature, defaultOldValue, defaultNewValue, false)	
-			
-		Assert.assertTrue(resolvedChange.isResolved)	
-		Assert.assertTrue(defaultOldValue != defaultNewValue)	
-		Assert.assertTrue(defaultAffectedEObject.eGet(affectedFeature) == defaultNewValue)
+		// Create change (resolved)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+			as ReplaceSingleValuedEReference<Root, NonRoot>	
+		
+		// Set state after
+		prepareReference(newValue)
+		prepareStagingArea(oldValue)
+				
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
+		Assert.assertTrue(oldValue != newValue)	
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == newValue)
 		Assert.assertEquals(stagingArea1.contents.size, 1)
-		Assert.assertTrue(stagingArea1.contents.contains(defaultOldValue))
+		Assert.assertTrue(stagingArea1.contents.contains(oldValue))
 		
+		// Apply backward
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
-		Assert.assertTrue(defaultAffectedEObject.eGet(affectedFeature) == defaultOldValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		Assert.assertEquals(stagingArea1.contents.size, 1)
-		Assert.assertTrue(stagingArea1.contents.contains(defaultNewValue))
+		Assert.assertTrue(stagingArea1.contents.contains(newValue))
 	}
 }

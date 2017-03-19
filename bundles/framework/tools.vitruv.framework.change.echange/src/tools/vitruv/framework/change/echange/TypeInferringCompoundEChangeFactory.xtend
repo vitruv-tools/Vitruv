@@ -16,46 +16,50 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
 import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
 
-import static tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory.*
-
 class TypeInferringCompoundEChangeFactory {
-	def static <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(T affectedEObject, String resourceUri, int index, boolean unresolve) {
+	var protected TypeInferringAtomicEChangeFactory atomicFactory
+	
+	new(TypeInferringAtomicEChangeFactory atomicFactory) {
+		this.atomicFactory = atomicFactory
+	}
+	
+	def <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(T affectedEObject, String resourceUri, int index) {
 		val c = CompoundFactory.eINSTANCE.createCreateAndInsertRoot();
-		c.createChange = createCreateEObjectChange(affectedEObject, unresolve);
-		c.insertChange = createInsertRootChange(affectedEObject, resourceUri, index, unresolve);
+		c.createChange = atomicFactory.createCreateEObjectChange(affectedEObject);
+		c.insertChange = atomicFactory.createInsertRootChange(affectedEObject, resourceUri, index);
 		return c
 	}
 	
-	def static <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRootChange(T affectedEObject, String resourceUri, int index, boolean unresolve) {
+	def <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRootChange(T affectedEObject, String resourceUri, int index) {
 		val c = CompoundFactory.eINSTANCE.createRemoveAndDeleteRoot();
-		c.deleteChange = createDeleteEObjectChange(affectedEObject, unresolve);
-		c.removeChange = createRemoveRootChange(affectedEObject, resourceUri, index, unresolve);
+		c.deleteChange = atomicFactory.createDeleteEObjectChange(affectedEObject);
+		c.removeChange = atomicFactory.createRemoveRootChange(affectedEObject, resourceUri, index);
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A,T> createCreateAndInsertNonRootChange(A affectedEObject, EReference reference, T newValue, int index, boolean unresolve) {
+	def <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A,T> createCreateAndInsertNonRootChange(A affectedEObject, EReference reference, T newValue, int index) {
 		val c = CompoundFactory.eINSTANCE.createCreateAndInsertNonRoot();
-		c.createChange = createCreateEObjectChange(newValue, unresolve);
-		c.insertChange = createInsertReferenceChange(affectedEObject, reference, newValue, index, unresolve);
+		c.createChange = atomicFactory.createCreateEObjectChange(newValue);
+		c.insertChange = atomicFactory.createInsertReferenceChange(affectedEObject, reference, newValue, index);
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A,T> createRemoveAndDeleteNonRootChange(A affectedEObject, EReference reference, T oldValue, int index, boolean unresolve) {
+	def <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A,T> createRemoveAndDeleteNonRootChange(A affectedEObject, EReference reference, T oldValue, int index) {
 		val c = CompoundFactory.eINSTANCE.createRemoveAndDeleteNonRoot();
-		c.deleteChange = createDeleteEObjectChange(oldValue, unresolve);
-		c.removeChange = createRemoveReferenceChange(affectedEObject, reference, oldValue, index, unresolve);
+		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue);
+		c.removeChange = atomicFactory.createRemoveReferenceChange(affectedEObject, reference, oldValue, index);
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A,T> createCreateAndReplaceAndDeleteNonRootChange(A affectedEObject, EReference reference, T oldValue, T newValue, boolean unresolve) {
+	def <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A,T> createCreateAndReplaceAndDeleteNonRootChange(A affectedEObject, EReference reference, T oldValue, T newValue) {
 		val c = CompoundFactory.eINSTANCE.createCreateAndReplaceAndDeleteNonRoot();
-		c.deleteChange = createDeleteEObjectChange(oldValue, unresolve);
-		c.createChange = createCreateEObjectChange(newValue, unresolve);
-		c.replaceChange = createReplaceSingleReferenceChange(affectedEObject, reference, oldValue, newValue, unresolve);
+		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue);
+		c.createChange = atomicFactory.createCreateEObjectChange(newValue);
+		c.replaceChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, oldValue, newValue);
 		return c
 	}
 	
-	def static <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetChange(List<SubtractiveAttributeEChange<A,T>> changes) {
+	def <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetChange(List<SubtractiveAttributeEChange<A,T>> changes) {
 		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEFeature();
 		for (change : changes) {
 			c.subtractiveChanges.add(change)
@@ -63,7 +67,7 @@ class TypeInferringCompoundEChangeFactory {
 		return c
 	}
 	
-	def static <T extends Object, S extends SubtractiveEChange<T>> createCompoundSubtractionChange(List<S> changes) {
+	def <T extends Object, S extends SubtractiveEChange<T>> createCompoundSubtractionChange(List<S> changes) {
 		val c = CompoundFactory.eINSTANCE.createCompoundSubtraction()
 		for (change : changes) {
 			c.subtractiveChanges.add(change)
@@ -71,7 +75,7 @@ class TypeInferringCompoundEChangeFactory {
 		return c
 	}
 	
-	def static <T extends Object, S extends AdditiveEChange<T>> createCompoundAdditionChange(List<S> changes) {
+	def <T extends Object, S extends AdditiveEChange<T>> createCompoundAdditionChange(List<S> changes) {
 		val c = CompoundFactory.eINSTANCE.createCompoundAddition()
 		for (change : changes) {
 			c.additiveChanges.add(change)
@@ -79,7 +83,7 @@ class TypeInferringCompoundEChangeFactory {
 		return c
 	}
 	
-	def static <A extends EObject, F extends EStructuralFeature, T extends Object, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> createReplaceInEListChange(R removeChange, I insertChange) {
+	def <A extends EObject, F extends EStructuralFeature, T extends Object, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> createReplaceInEListChange(R removeChange, I insertChange) {
 		val c = CompoundFactory.eINSTANCE.<A, F, T, R, I>createReplaceInEList()
 		c.removeChange = removeChange
 		c.insertChange = insertChange

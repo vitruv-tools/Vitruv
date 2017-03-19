@@ -2,16 +2,16 @@ package tools.vitruv.framework.tests.change
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
+import java.util.Collection
 import java.util.List
+import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.junit.After
-import org.junit.Before
-
-import java.util.Collection
-import org.eclipse.emf.common.notify.Notifier
-import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
-import tools.vitruv.framework.change.echange.EChange
 import org.junit.Assert
+import org.junit.Before
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
+
 import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
 
 /** 
@@ -36,7 +36,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	def void beforeTest() {
 		this.rootElement = AllElementTypesFactory.eINSTANCE.createRoot()
 		this.rootElement.nonRootObjectContainerHelper = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper()
-		this.changeRecorder = new AtomicEMFChangeRecorder()
+		this.changeRecorder = new AtomicEMFChangeRecorder(false)
 	}
 
 	@After

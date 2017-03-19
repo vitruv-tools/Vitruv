@@ -15,11 +15,18 @@ class AtomicEMFChangeRecorder {
 	var List<ChangeDescription> changeDescriptions;
 	var VURI modelVURI;
 	var Collection<Notifier> elementsToObserve
+	var boolean unresolveRecordedChanges
 	
-	new() {
+	/**
+	 * Constructor for AtomicEMFChangeRecorder
+	 * @param 	unresolveRecordedChanges The recorded changes will be replaced
+	 * 			by unresolved changes, which referenced EObjects are proxy objects.
+	 */
+	new(boolean unresolveRecordedChanges) {
 		this.elementsToObserve = new ArrayList<Notifier>();
 		changeRecorder.setRecordingTransientFeatures(false)
 		changeRecorder.setResolveProxies(true)
+		this.unresolveRecordedChanges = unresolveRecordedChanges
 	}
 	
 	def void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {
@@ -38,7 +45,7 @@ class AtomicEMFChangeRecorder {
 	
 	private def createModelChange(ChangeDescription changeDescription) {
 		if (!(changeDescription.objectChanges.isEmpty && changeDescription.resourceChanges.isEmpty)) {
-			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI);
+			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI, unresolveRecordedChanges);
 			result.applyForward();
 			return result;
 		}

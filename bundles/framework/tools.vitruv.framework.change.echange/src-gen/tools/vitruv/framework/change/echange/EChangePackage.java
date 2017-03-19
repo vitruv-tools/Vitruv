@@ -104,31 +104,13 @@ public interface EChangePackage extends EPackage {
 	int ECHANGE___RESOLVE_AFTER__RESOURCESET = 2;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = 3;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = 4;
-
-	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = 5;
+	int ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = 3;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -137,7 +119,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = 6;
+	int ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = 4;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -146,7 +128,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___APPLY_FORWARD = 7;
+	int ECHANGE___APPLY_FORWARD = 5;
 
 	/**
 	 * The operation id for the '<em>Apply Backward</em>' operation.
@@ -155,7 +137,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___APPLY_BACKWARD = 8;
+	int ECHANGE___APPLY_BACKWARD = 6;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -164,7 +146,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE_OPERATION_COUNT = 9;
+	int ECHANGE_OPERATION_COUNT = 7;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl <em>Atomic EChange</em>}' class.
@@ -211,24 +193,6 @@ public interface EChangePackage extends EPackage {
 	 * @ordered
 	 */
 	int ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET = ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ATOMIC_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ATOMIC_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -320,24 +284,6 @@ public interface EChangePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_ECHANGE___RESOLVE_AFTER__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ATOMIC_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ATOMIC_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -438,24 +384,6 @@ public interface EChangePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_ECHANGE___RESOLVE_AFTER__RESOURCESET = ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ATOMIC_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ATOMIC_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -571,26 +499,6 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getEChange__ResolveAfter__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#copyAndResolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Copy And Resolve Before</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Copy And Resolve Before</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.EChange#copyAndResolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getEChange__CopyAndResolveBefore__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#copyAndResolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Copy And Resolve After</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Copy And Resolve After</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.EChange#copyAndResolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getEChange__CopyAndResolveAfter__ResourceSet();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveBeforeAndApplyForward(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before And Apply Forward</em>}' operation.
@@ -760,22 +668,6 @@ public interface EChangePackage extends EPackage {
 		 * @generated
 		 */
 		EOperation ECHANGE___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getEChange__ResolveAfter__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Copy And Resolve Before</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getEChange__CopyAndResolveBefore__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Copy And Resolve After</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = eINSTANCE.getEChange__CopyAndResolveAfter__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em><b>Resolve Before And Apply Forward</b></em>' operation.

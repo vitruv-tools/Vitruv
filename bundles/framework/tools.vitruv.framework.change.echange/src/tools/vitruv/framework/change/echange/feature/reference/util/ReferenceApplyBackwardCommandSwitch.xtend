@@ -1,8 +1,9 @@
 package tools.vitruv.framework.change.echange.feature.reference.util
 
-import java.util.ArrayList
+import java.util.Collections
 import java.util.List
 import org.eclipse.emf.common.command.Command
+import org.eclipse.emf.common.command.CompoundCommand
 import org.eclipse.emf.edit.command.AddCommand
 import org.eclipse.emf.edit.command.RemoveCommand
 import org.eclipse.emf.edit.command.SetCommand
@@ -13,44 +14,62 @@ import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.util.StagingArea
 import tools.vitruv.framework.util.command.RemoveAtCommand
 
+/**
+ * Switch to create commands for all EChange classes of the reference package.
+ * The commands applies the EChanges backward.
+ */
 public class ReferenceApplyBackwardCommandSwitch extends ReferenceSwitch<List<Command>> {
+	/**
+	 * Create commands to apply a {@link InsertEReference} change backward.
+	 * @param object The change which commands should be created.
+	 */	
 	override public List<Command> caseInsertEReference(InsertEReference object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
-		val commands = new ArrayList<Command>
+		val compoundCommand = new CompoundCommand()
 
-		commands.add(RemoveAtCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.newValue, object.index))
+		compoundCommand.append(RemoveAtCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.newValue, object.index))
 		if (object.containment) {
 			val stagingArea = StagingArea.getStagingArea(object.affectedEObject.eResource.resourceSet)
-			commands.add(new AddCommand(editingDomain, stagingArea.contents, object.newValue))
+			compoundCommand.append(new AddCommand(editingDomain, stagingArea.contents, object.newValue))
 		}
 		
-		return commands
+		return Collections.singletonList(compoundCommand)
 	}	
+	
+	/**
+	 * Create commands to apply a {@link RemoveEReference} change backward.
+	 * @param object The change which commands should be created.
+	 */	
 	override public List<Command> caseRemoveEReference(RemoveEReference object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
-		val commands = new ArrayList<Command>
+		val compoundCommand = new CompoundCommand()
 		
 		if (object.containment) {
 			val stagingArea = StagingArea.getStagingArea(object.affectedEObject.eResource.resourceSet) 
-			commands.add(new RemoveCommand(editingDomain, stagingArea.contents, object.oldValue))
+			compoundCommand.append(new RemoveCommand(editingDomain, stagingArea.contents, object.oldValue))
 		}		
-		commands.add(AddCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.oldValue, object.index))
+		compoundCommand.append(AddCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.oldValue, object.index))
 
-		return commands
+		return Collections.singletonList(compoundCommand)
 	}
+
+	/**
+	 * Create commands to apply a {@link ReplaceSingleValuedEReference} change backward.
+	 * @param object The change which commands should be created.
+	 */	
 	override public List<Command> caseReplaceSingleValuedEReference(ReplaceSingleValuedEReference object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
 		val stagingArea = StagingArea.getStagingArea(object.affectedEObject.eResource.resourceSet) 
-		val commands = new ArrayList<Command>
+		val compoundCommand = new CompoundCommand()
 		
 		if (object.containment) {
-			commands.add(new RemoveCommand(editingDomain, stagingArea.contents, object.oldValue))
+			compoundCommand.append(new RemoveCommand(editingDomain, stagingArea.contents, object.oldValue))
 		}
-		commands.add(SetCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.oldValue))
+		compoundCommand.append(SetCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.oldValue))
 		if (object.containment) {
-			commands.add(new AddCommand(editingDomain, stagingArea.contents, object.newValue))			
+			compoundCommand.append(new AddCommand(editingDomain, stagingArea.contents, object.newValue))			
 		}
 		
-		return commands
+		return Collections.singletonList(compoundCommand)
 	}	
 }

@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
+import tools.vitruv.framework.change.echange.EChangeResolver;
 
 import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch;
 import tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch;
@@ -67,37 +68,16 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean resolveBefore(final ResourceSet resourceSet) {
-		boolean _equals = Objects.equal(resourceSet, null);
-		if (_equals) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean resolveAfter(final ResourceSet resourceSet) {
-		return this.resolveBefore(resourceSet);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EChange copyAndResolveBefore(final ResourceSet resourceSet) {
+	public EChange resolveBefore(final ResourceSet resourceSet) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			final EChange resolvedChange = EcoreUtil.<EChange>copy(this);
-			boolean _resolveBefore = resolvedChange.resolveBefore(resourceSet);
-			if (_resolveBefore) {
-				return resolvedChange;
+			final EChange change = EcoreUtil.<EChange>copy(this);
+			boolean _resolve = EChangeResolver.resolve(change, resourceSet, true);
+			if (_resolve) {
+				return change;
 			}
+			return null;
 		}
 		return this;
 	}
@@ -107,15 +87,16 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EChange copyAndResolveAfter(final ResourceSet resourceSet) {
+	public EChange resolveAfter(final ResourceSet resourceSet) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			final EChange resolvedChange = EcoreUtil.<EChange>copy(this);
-			boolean _resolveAfter = resolvedChange.resolveAfter(resourceSet);
-			if (_resolveAfter) {
-				return resolvedChange;
+			final EChange change = EcoreUtil.<EChange>copy(this);
+			boolean _resolve = EChangeResolver.resolve(change, resourceSet, false);
+			if (_resolve) {
+				return change;
 			}
+			return null;
 		}
 		return this;
 	}
@@ -125,12 +106,22 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean resolveBeforeAndApplyForward(final ResourceSet resourceSet) {
-		boolean _resolveBefore = this.resolveBefore(resourceSet);
-		if (_resolveBefore) {
-			return this.applyForward();
+	public EChange resolveBeforeAndApplyForward(final ResourceSet resourceSet) {
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			final EChange resolvedChange = this.resolveBefore(resourceSet);
+			if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyForward())) {
+				return resolvedChange;
+			}
 		}
-		return false;
+		else {
+			boolean _applyForward = this.applyForward();
+			if (_applyForward) {
+				return this;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -138,12 +129,22 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean resolveAfterAndApplyBackward(final ResourceSet resourceSet) {
-		boolean _resolveAfter = this.resolveAfter(resourceSet);
-		if (_resolveAfter) {
-			return this.applyBackward();
+	public EChange resolveAfterAndApplyBackward(final ResourceSet resourceSet) {
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			final EChange resolvedChange = this.resolveAfter(resourceSet);
+			if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyBackward())) {
+				return resolvedChange;
+			}
 		}
-		return false;
+		else {
+			boolean _applyBackward = this.applyBackward();
+			if (_applyBackward) {
+				return this;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -214,10 +215,6 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 				return resolveBefore((ResourceSet)arguments.get(0));
 			case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET:
 				return resolveAfter((ResourceSet)arguments.get(0));
-			case EChangePackage.ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET:
-				return copyAndResolveBefore((ResourceSet)arguments.get(0));
-			case EChangePackage.ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET:
-				return copyAndResolveAfter((ResourceSet)arguments.get(0));
 			case EChangePackage.ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET:
 				return resolveBeforeAndApplyForward((ResourceSet)arguments.get(0));
 			case EChangePackage.ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET:

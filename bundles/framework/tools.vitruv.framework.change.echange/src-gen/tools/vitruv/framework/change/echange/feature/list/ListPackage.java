@@ -106,6 +106,15 @@ public interface ListPackage extends EPackage {
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -113,24 +122,6 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_AFTER__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -176,15 +167,6 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The number of operations of the '<em>Update Single List Entry EChange</em>' class.
@@ -242,6 +224,15 @@ public interface ListPackage extends EPackage {
 	int INSERT_IN_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -249,24 +240,6 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_IN_LIST_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_IN_LIST_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -312,15 +285,6 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_IN_LIST_ECHANGE___IS_RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -387,6 +351,15 @@ public interface ListPackage extends EPackage {
 	int REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -394,24 +367,6 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_FROM_LIST_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_FROM_LIST_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -457,15 +412,6 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.

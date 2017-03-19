@@ -4,6 +4,7 @@ import java.util.Collections;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.command.RemoveCommand;
@@ -85,6 +86,12 @@ public class RemoveAtCommand extends RemoveCommand {
 	public boolean prepare() {
 		boolean result = super.prepare() &&
 				0 <= index && index < ownerList.size();
+	    EGenericType eType = owner == null ? feature.getEGenericType() : owner.eClass().getFeatureType(feature);
+	    for (Object object : collection) {
+	        if (!eType.isInstance(object)) {
+	        	result = false;
+	        }
+	    }  	
 		return result;
 	}
 	

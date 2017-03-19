@@ -97,6 +97,15 @@ public interface SinglePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -104,24 +113,6 @@ public interface SinglePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -167,15 +158,6 @@ public interface SinglePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.

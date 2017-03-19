@@ -1,20 +1,17 @@
 package tools.vitruv.framework.tests.echange.root
 
 import allElementTypes.Root
+import org.eclipse.emf.ecore.resource.Resource
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
-import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 /**
  * Test class for the concrete {@link RemoveRootEObject} EChange,
  * which removes a root element from a resource.
  */
 class RemoveRootEObjectTest extends RootEChangeTest {
-	protected static val DEFAULT_INDEX = 2;
-	
 	/**
 	 * Inserts new root objects into the resource
 	 * to remove them in the tests.
@@ -25,6 +22,32 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		resource1.contents.add(DEFAULT_INDEX, newRootObject)
 		resource1.contents.add(DEFAULT_INDEX + 1, newRootObject2)
 	}
+
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(RemoveRootEObject<Root> change, Root oldValue) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.oldValue != oldValue)
+		Assert.assertNull(change.resource)
+	}
+	
+	/**
+	 * Change is resolved.
+	 */
+	def private static void assertIsResolved(RemoveRootEObject<Root> change, Root oldValue, Resource resource) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.oldValue == oldValue)
+		Assert.assertTrue(change.resource == resource)	
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private RemoveRootEObject<Root> createUnresolvedChange(Root rootObject) {
+		return atomicFactory.<Root>createRemoveRootChange
+		(rootObject, fileUri.toString, index)	
+	}	
 	
 	/**
 	 * Test resolves a {@link RemoveRootEObject} EChange, with a root 
@@ -32,23 +55,16 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * in state before the change is applied forward.
 	 */
 	@Test
-	def public void resolveRemoveRootEObjectTest() {	
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createRemoveRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)
-			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertNull(unresolvedChange.resource)
-		Assert.assertTrue(unresolvedChange.oldValue != newRootObject)
+	def public void resolveRemoveRootEObjectTest() {			
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newRootObject)
+		unresolvedChange.assertIsNotResolved(newRootObject)	
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
-		// New root object is already in resource so it can be resolved
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as RemoveRootEObject<Root>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange != unresolvedChange)
-		Assert.assertTrue(resolvedChange.oldValue == newRootObject)
-		Assert.assertTrue(resolvedChange.resource.resourceSet == resourceSet1)
-		Assert.assertTrue(resolvedChange.resource == resolvedChange.oldValue.eResource)
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+			as RemoveRootEObject<Root>	
+		resolvedChange.assertIsResolved(newRootObject, resource1)
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
@@ -59,30 +75,19 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 */
 	 @Test
 	 def public void resolveRemoveRootEObjectTest2() {
-	 	resource1.contents.remove(newRootObject)
-	 	
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newRootObject)
+		unresolvedChange.assertIsNotResolved(newRootObject)	
+		Assert.assertTrue(stagingArea1.contents.empty)
+		
+		// Set state after
 	 	prepareStagingArea(newRootObject)
-	 	
-	 	Assert.assertFalse(stagingArea1.contents.empty)
-	 	
-	 	val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createRemoveRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)
 
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertNull(unresolvedChange.resource)
-		Assert.assertTrue(unresolvedChange.oldValue != newRootObject)
+	 	// Resolve
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+			as RemoveRootEObject<Root>	
+		resolvedChange.assertIsResolved(newRootObject, resource1)
 		Assert.assertFalse(stagingArea1.contents.empty)
-		Assert.assertTrue(stagingArea1.contents.contains(newRootObject))
-		
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as RemoveRootEObject<Root>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange != unresolvedChange)
-		Assert.assertTrue(resolvedChange.oldValue == newRootObject)	
-		Assert.assertTrue(resolvedChange.resource.resourceSet == resourceSet1)	
-		Assert.assertTrue(stagingArea1 == resolvedChange.oldValue.eResource)
-		Assert.assertFalse(stagingArea1.contents.empty)
-		Assert.assertTrue(stagingArea1.contents.contains(newRootObject))
 	 }
 	
 	/**
@@ -91,12 +96,14 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def public void resolveToCorrectType() {		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createRemoveRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)
-			
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
-		
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newRootObject)
+		unresolvedChange.assertIsNotResolved(newRootObject)	
+
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+			as RemoveRootEObject<Root>				
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
 	/**
@@ -105,38 +112,37 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def public void removeRootEObjectApplyForwardTest() {
+		// State before
 		val oldSize = resourceContent.size
-	
-		// Remove first root element (newRootObject at index 2)
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createRemoveRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			copyAndResolveBefore(resourceSet1) as RemoveRootEObject<Root>
-			
 		Assert.assertTrue(stagingArea1.contents.empty)	
+		Assert.assertTrue(newRootObject == resourceContent.get(DEFAULT_INDEX))	
+		Assert.assertTrue(newRootObject2 == resourceContent.get(DEFAULT_INDEX + 1))		
+		
+		// Create and resolve change 1
+		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+			as RemoveRootEObject<Root>
+		resolvedChange.assertIsResolved(newRootObject, resource1)
 				
+		// Apply forward 1	
 		Assert.assertTrue(resolvedChange.applyForward)
 		
 		Assert.assertEquals(resourceContent.size, oldSize - 1)
-		Assert.assertTrue(resolvedChange.oldValue == newRootObject)
-		Assert.assertFalse(resourceContent.contains(resolvedChange.oldValue))
-		Assert.assertFalse(stagingArea1.contents.empty)
-		Assert.assertTrue(stagingArea1.contents.contains(newRootObject))
+		Assert.assertTrue(newRootObject == stagingArea1.contents.get(0))
+		Assert.assertTrue(newRootObject2 == resourceContent.get(DEFAULT_INDEX))		
 		
 		// Now the element is deleted or inserted again.
 		stagingArea1.contents.clear()
-		
-		// Remove second root element (newRootObject2 now at index 2)
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-			<Root>createRemoveRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			copyAndResolveBefore(resourceSet1) as RemoveRootEObject<Root>
-		
-		Assert.assertTrue(stagingArea1.contents.empty)
-		
+
+		// Create and resolve change 2
+		val resolvedChange2 = createUnresolvedChange(newRootObject2).resolveBefore(resourceSet1)
+			as RemoveRootEObject<Root>
+		resolvedChange2.assertIsResolved(newRootObject2, resource1)
+
+		// Apply forward 2	
 		Assert.assertTrue(resolvedChange2.applyForward)
-		
+							
 		Assert.assertEquals(resourceContent.size, oldSize - 2)
-		Assert.assertTrue(resolvedChange2.oldValue == newRootObject2)
-		Assert.assertFalse(resourceContent.contains(resolvedChange2.oldValue))
+		Assert.assertTrue(newRootObject2 == stagingArea1.contents.get(0))		
 	}
 	
 	/**
@@ -145,44 +151,44 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def public void removeRootEObjectApplyBackwardTest() {
-		val beforeRemoveSize = resourceContent.size
+		// State before
+		Assert.assertTrue(stagingArea1.contents.empty)	
 		val indexRoot1 = resourceContent.indexOf(newRootObject)
 		val indexRoot2 = resourceContent.indexOf(newRootObject2)
 		
-		// Remove first root element
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createRemoveRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			copyAndResolveBefore(resourceSet1) as RemoveRootEObject<Root>
-	
+		// Create and resolve and apply forward 1
+		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+			as RemoveRootEObject<Root>
 		Assert.assertTrue(resolvedChange.applyForward)
 		
+		// Now the element is deleted or inserted again.
 		stagingArea1.contents.clear()
 		
-		// Remove second root element 
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-			<Root>createRemoveRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			copyAndResolveBefore(resourceSet1) as RemoveRootEObject<Root>
-		
+		// Create and resolve and apply forward 2
+		val resolvedChange2 = createUnresolvedChange(newRootObject2).resolveBefore(resourceSet1)
+			as RemoveRootEObject<Root>
 		Assert.assertTrue(resolvedChange2.applyForward)
 		
-		Assert.assertEquals(resourceContent.size, beforeRemoveSize - 2)
+		// State after
+		val oldSize = resourceContent.size
 		Assert.assertFalse(resourceContent.contains(newRootObject))
 		Assert.assertFalse(resourceContent.contains(newRootObject2))
 		
-		// Revert second change
+		// Apply backward 2
 		Assert.assertTrue(resolvedChange2.applyBackward)
 		
-		Assert.assertEquals(resourceContent.size, beforeRemoveSize - 1)
-		Assert.assertTrue(resourceContent.contains(newRootObject2))
-		
-		// Revert first change
+		Assert.assertEquals(resourceContent.size, oldSize + 1)		
+		Assert.assertTrue(resourceContent.contains(newRootObject2))	
+			
+		// Apply backward 1
 		Assert.assertTrue(resolvedChange.applyBackward)
-		Assert.assertEquals(resourceContent.size, beforeRemoveSize)
+		
+		Assert.assertEquals(resourceContent.size, oldSize + 2)		
 		Assert.assertTrue(resourceContent.contains(newRootObject))
 		
 		// At same index
 		Assert.assertEquals(resourceContent.indexOf(newRootObject), indexRoot1)
-		Assert.assertEquals(resourceContent.indexOf(newRootObject2), indexRoot2)
+		Assert.assertEquals(resourceContent.indexOf(newRootObject2), indexRoot2)		
 	}
 	
 	/**
@@ -190,15 +196,15 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def public void removeRootEObjectInvalidIndex() {
-		prepareStagingArea(newRootObject)
-		val index = 5
-		
+		index = 5
 		Assert.assertTrue(resourceContent.size < index)
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createRemoveRootChange(newRootObject, fileUri.toString, index, true).
-			copyAndResolveAfter(resourceSet1) as RemoveRootEObject<Root> 
+		// Create and resolve change
+		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+			as RemoveRootEObject<Root>
+		resolvedChange.assertIsResolved(newRootObject, resource1)
 			
+		// Apply
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertFalse(resolvedChange.applyBackward)
 	}

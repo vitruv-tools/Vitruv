@@ -7,8 +7,6 @@ import org.eclipse.emf.common.util.EList
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
-import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CompoundAddition
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 import tools.vitruv.framework.tests.echange.feature.attribute.InsertRemoveEAttributeTest
@@ -24,12 +22,61 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 	
 	/**
 	 * Calls setup of super class and sets the list of the affected feature
-	 * for the tests.
+	 * for the tests and sets state before.
 	 */
 	@Before
 	override public void beforeTest() {
 		super.beforeTest
-		attributeContent = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
+		attributeContent = affectedEObject.eGet(affectedFeature) as EList<Integer>
+	}
+	 
+	/**
+	 * Sets the state after the change and fills the attribute of the tests with values.
+	 */
+	def private void prepareStateAfter() {
+		attributeContent.add(NEW_VALUE)
+		attributeContent.add(NEW_VALUE_2)
+		attributeContent.add(NEW_VALUE_3)
+	}
+	
+	/**
+	 * Model is in state before the change.
+	 */
+	def private void assertIsStateBefore() {
+		Assert.assertTrue(attributeContent.empty)
+	}
+	
+	/** 
+	 * Model is in state after the change.
+	 */
+	def private void assertIsStateAfter() {
+		Assert.assertEquals(attributeContent.size, 3)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), NEW_VALUE_2)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 2), NEW_VALUE_3)
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>> change, 
+		Root affectedObject) {
+		Assert.assertFalse(change.isResolved)
+		for (c : change.additiveChanges) {
+			Assert.assertFalse(c.isResolved)
+			Assert.assertFalse(c.affectedEObject == affectedObject)
+		}
+	}
+	
+	/**
+	 * Change is resolved with state before change.
+	 */
+	def private static void assertIsResolved(CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>> change, 
+		Root affectedObject) {
+		Assert.assertTrue(change.isResolved)
+		for (c : change.additiveChanges) {
+			Assert.assertTrue(c.affectedEObject == affectedObject)
+		}
 	}
 	
 	/**
@@ -37,23 +84,22 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 	 */
 	def private List<InsertEAttributeValue<Root, Integer>> getAdditiveChanges() {
 		var List<InsertEAttributeValue<Root, Integer>> changes = new ArrayList<InsertEAttributeValue<Root, Integer>>()
-		changes.add(TypeInferringAtomicEChangeFactory.<Root, Integer>createInsertAttributeChange(
-			defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX, DEFAULT_NEW_VALUE, true))
-		changes.add(TypeInferringAtomicEChangeFactory.<Root, Integer>createInsertAttributeChange(
-			defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX + 1, DEFAULT_NEW_VALUE_2, true))
-		changes.add(TypeInferringAtomicEChangeFactory.<Root, Integer>createInsertAttributeChange(
-			defaultAffectedEObject, defaultAffectedFeature, DEFAULT_INDEX + 2, DEFAULT_NEW_VALUE_3, true))		
+		changes.add(atomicFactory.<Root, Integer>createInsertAttributeChange(
+			affectedEObject, affectedFeature, DEFAULT_INDEX, NEW_VALUE))
+		changes.add(atomicFactory.<Root, Integer>createInsertAttributeChange(
+			affectedEObject, affectedFeature, DEFAULT_INDEX + 1, NEW_VALUE_2))
+		changes.add(atomicFactory.<Root, Integer>createInsertAttributeChange(
+			affectedEObject, affectedFeature, DEFAULT_INDEX + 2, NEW_VALUE_3))		
 		return changes
 	}
 	
 	/**
-	 * Fills the attribute of the tests with values.
+	 * Creates new unresolved change.
 	 */
-	def private void prepareAttribute() {
-		attributeContent.add(DEFAULT_NEW_VALUE)
-		attributeContent.add(DEFAULT_NEW_VALUE_2)
-		attributeContent.add(DEFAULT_NEW_VALUE_3)
-	}
+	def private CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>> createUnresolvedChange() {
+		return compoundFactory.<Integer, InsertEAttributeValue<Root, Integer>>
+			createCompoundAdditionChange(getAdditiveChanges())
+	}	
 	
 	/**
 	 * Resolves a {@link CompoundAddition} EChange. The model is in the state
@@ -61,32 +107,20 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void resolveCompoundAdditionTest() {
-		val oldSize = attributeContent.size
-		Assert.assertTrue(attributeContent.empty)
+		// State before
+		assertIsStateBefore
 		
 		// Create change
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.<Integer, InsertEAttributeValue<Root, Integer>>
-			createCompoundAdditionChange(getAdditiveChanges())
-			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		for (change : unresolvedChange.atomicChanges) {
-			val c = change as InsertEAttributeValue<Root, Integer>
-			Assert.assertTrue(c.affectedEObject != defaultAffectedEObject)
-		}
+		val unresolvedChange = createUnresolvedChange()
+		unresolvedChange.assertIsNotResolved(affectedEObject)	
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
 			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
-			
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)	
-		for (change : resolvedChange.atomicChanges) {
-			val c = change as InsertEAttributeValue<Root, Integer>
-			Assert.assertTrue(c.affectedEObject == defaultAffectedEObject)
-		}
+		resolvedChange.assertIsResolved(affectedEObject)
 					
 		// Resolving applies all changes and reverts them, so the model should be unaffected.	
-		Assert.assertEquals(attributeContent.size, oldSize)
+		assertIsStateBefore
 	}
 	
 	/**
@@ -96,36 +130,23 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 	@Test
 	def public void resolveCompoundAdditionTest2() {
 		// Set state before change
-		attributeContent.clear
-		Assert.assertTrue(attributeContent.empty)
+		assertIsStateBefore
 		
 		// Create change
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.<Integer, InsertEAttributeValue<Root, Integer>>
-			createCompoundAdditionChange(getAdditiveChanges())
+		val unresolvedChange = createUnresolvedChange()
+		unresolvedChange.assertIsNotResolved(affectedEObject)	
 			
 		// Set state after change
-		prepareAttribute
-		val oldSize = attributeContent.size
-		
-		Assert.assertFalse(unresolvedChange.isResolved)
-		for (change : unresolvedChange.atomicChanges) {
-			val c = change as InsertEAttributeValue<Root, Integer>
-			Assert.assertTrue(c.affectedEObject != defaultAffectedEObject)
-		}
+		prepareStateAfter
+		assertIsStateAfter
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
 			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
-			
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)	
-		for (change : resolvedChange.atomicChanges) {
-			val c = change as InsertEAttributeValue<Root, Integer>
-			Assert.assertTrue(c.affectedEObject == defaultAffectedEObject)
-		}
+		resolvedChange.assertIsResolved(affectedEObject)
 					
 		// Resolving applies all changes and reverts them, so the model should be unaffected.	
-		Assert.assertEquals(attributeContent.size, oldSize)				
+		assertIsStateAfter			
 	}
 	
 	/**
@@ -135,14 +156,12 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 	@Test
 	def public void resolveToCorrectType() {
 		// Create change
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.<Integer, InsertEAttributeValue<Root, Integer>>
-			createCompoundAdditionChange(getAdditiveChanges())	
-			
+		val unresolvedChange = createUnresolvedChange()
+		
 		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) 
-			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>	
-			
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)	
 	}
 	
 	/**
@@ -150,21 +169,18 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void compoundAdditionApplyForwardTest() {
-		// Set state before
-		Assert.assertTrue(attributeContent.empty)
-		val oldSize = attributeContent.size
+		// State before
+		assertIsStateBefore
 		
 		// Create change
-		val resolvedChange = TypeInferringCompoundEChangeFactory.<Integer, InsertEAttributeValue<Root, Integer>>
-			createCompoundAdditionChange(getAdditiveChanges()).copyAndResolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1) 
+			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
 		
 		// Apply forward
 		Assert.assertTrue(resolvedChange.applyForward)
 		
-		Assert.assertEquals(attributeContent.size, oldSize + 3)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), DEFAULT_NEW_VALUE_2)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 2), DEFAULT_NEW_VALUE_3)
+		// State after
+		assertIsStateAfter
 	}
 	
 	/**
@@ -172,22 +188,21 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void compoundAdditionApplyBackwardTest() {
-		// Set state before
-		Assert.assertTrue(attributeContent.empty)
+		// State before
+		assertIsStateBefore
 		
-		// Create change
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.<Integer, InsertEAttributeValue<Root, Integer>>
-			createCompoundAdditionChange(getAdditiveChanges())
-			
-		// Set state after
-		prepareAttribute
-		val oldSize = attributeContent.size
+		// Create and resolve and apply change
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1) 
+			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
+		Assert.assertTrue(resolvedChange.applyForward)
 		
-		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1)
+		// State after
+		assertIsStateAfter
 		
 		// Apply backward
 		Assert.assertTrue(resolvedChange.applyBackward)
-		Assert.assertEquals(attributeContent.size, oldSize - 3)
+		
+		// State before
+		assertIsStateBefore
 	}
 }

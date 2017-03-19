@@ -3,15 +3,13 @@ package tools.vitruv.framework.tests.echange.compound
 import allElementTypes.Root
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
-import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.compound.ReplaceInEList
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 import tools.vitruv.framework.tests.echange.feature.attribute.InsertRemoveEAttributeTest
-import org.junit.Assert
 
 /**
  * Test class for the concrete {@link ReplaceInEList} EChange,
@@ -20,8 +18,8 @@ import org.junit.Assert
 class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 	protected var EList<Integer> attributeContent = null
 	
-	protected static val Integer DEFAULT_OLD_VALUE = 123
-	protected static val Integer DEFAULT_OLD_VALUE_2 = 456
+	protected static val Integer OLD_VALUE = 123
+	protected static val Integer OLD_VALUE_2 = 456
 	
 	protected static val Integer DEFAULT_INDEX = 0
 	protected static val Integer DEFAULT_INDEX_2 = 1
@@ -33,7 +31,8 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest
-		attributeContent = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<Integer>
+		attributeContent = affectedEObject.eGet(affectedFeature) as EList<Integer>
+		prepareStateBefore
 	}
 	
 	/**
@@ -41,26 +40,69 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 	 */
 	def private void prepareStateBefore() {
 		attributeContent.clear
-		attributeContent.add(DEFAULT_OLD_VALUE)
-		attributeContent.add(DEFAULT_OLD_VALUE_2)		
+		attributeContent.add(OLD_VALUE)
+		attributeContent.add(OLD_VALUE_2)		
 	}
-	
+		
 	/**
 	 * Sets the attribute to the state after the change.
 	 */
 	def private void prepareStateAfter() {
 		attributeContent.clear
-		attributeContent.add(DEFAULT_NEW_VALUE)
-		attributeContent.add(DEFAULT_NEW_VALUE_2)		
+		attributeContent.add(NEW_VALUE)
+		attributeContent.add(NEW_VALUE_2)		
 	}
 	
+	/**
+	 * Model is in state before the change.
+	 */
+	def private void assertIsStateBefore() {
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), OLD_VALUE)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), OLD_VALUE_2)	
+		Assert.assertEquals(attributeContent.size, 2)	
+	}
+	
+	/**
+	 * Model is in state after the change.
+	 */
+	def private void assertIsStateAfter() {
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), NEW_VALUE_2)
+		Assert.assertEquals(attributeContent.size, 2)	
+	}
+		
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
+		InsertEAttributeValue<Root, Integer>> change, Root affectedRootObject) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertFalse(change.removeChange.isResolved)
+		Assert.assertFalse(change.insertChange.isResolved)	
+		Assert.assertFalse(change.removeChange.affectedEObject == affectedRootObject)
+		Assert.assertFalse(change.insertChange.affectedEObject == affectedRootObject)
+	}
+	
+	/**
+	 * Change is resolved with state before change.
+	 */
+	def private static void assertIsResolved(ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
+		InsertEAttributeValue<Root, Integer>> change, Root affectedRootObject) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.removeChange.affectedEObject == affectedRootObject)
+		Assert.assertTrue(change.insertChange.affectedEObject == affectedRootObject)
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */	
 	def private ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
-		InsertEAttributeValue<Root, Integer>> createChange(int index, int oldValue, int newValue) {
-		val removeChange = TypeInferringAtomicEChangeFactory.<Root, Integer>createRemoveAttributeChange
-			(defaultAffectedEObject, defaultAffectedFeature, index, oldValue, true)
-		val insertChange = TypeInferringAtomicEChangeFactory.<Root, Integer>createInsertAttributeChange
-			(defaultAffectedEObject, defaultAffectedFeature, index, newValue, true)
-		val change = TypeInferringCompoundEChangeFactory.<Root, EAttribute, Integer, 
+		InsertEAttributeValue<Root, Integer>> createUnresolvedChange(int index, int oldValue, int newValue) {
+		val removeChange = atomicFactory.<Root, Integer>createRemoveAttributeChange
+			(affectedEObject, affectedFeature, index, oldValue)
+		val insertChange = atomicFactory.<Root, Integer>createInsertAttributeChange
+			(affectedEObject, affectedFeature, index, newValue)
+		val change = compoundFactory.<Root, EAttribute, Integer, 
 			RemoveEAttributeValue<Root, Integer>, InsertEAttributeValue<Root, Integer>>
 			createReplaceInEListChange(removeChange, insertChange)
 		return change
@@ -75,31 +117,20 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 	def public void resolveReplaceInEListTest() {
 		// Set state before
 		prepareStateBefore
-		val oldSize = attributeContent.size
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_OLD_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_OLD_VALUE_2)	
+		assertIsStateBefore
 		
 		// Create change
-		val unresolvedChange = createChange(DEFAULT_INDEX, DEFAULT_OLD_VALUE, DEFAULT_NEW_VALUE)
-		
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertFalse(unresolvedChange.removeChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertFalse(unresolvedChange.insertChange.affectedEObject == defaultAffectedEObject)
-		
+		val unresolvedChange = createUnresolvedChange(DEFAULT_INDEX, OLD_VALUE, NEW_VALUE)
+		unresolvedChange.assertIsNotResolved(affectedEObject)
+
 		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
 			as ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
 			InsertEAttributeValue<Root, Integer>>
-			
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)	
-		Assert.assertTrue(resolvedChange.removeChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.insertChange.affectedEObject == defaultAffectedEObject)
+		resolvedChange.assertIsResolved(affectedEObject)			
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		Assert.assertEquals(attributeContent.size, oldSize)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_OLD_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_OLD_VALUE_2)	
+		assertIsStateBefore
 	}
 	
 	/**
@@ -109,33 +140,22 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void resolveReplaceInEListTest2() {
-		// Set state before
-		prepareStateAfter
-		val oldSize = attributeContent.size
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_NEW_VALUE_2)	
-		
 		// Create change
-		val unresolvedChange = createChange(DEFAULT_INDEX, DEFAULT_OLD_VALUE, DEFAULT_NEW_VALUE)
+		val unresolvedChange = createUnresolvedChange(DEFAULT_INDEX, OLD_VALUE, NEW_VALUE)
+		unresolvedChange.assertIsNotResolved(affectedEObject)
 		
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertFalse(unresolvedChange.removeChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertFalse(unresolvedChange.insertChange.affectedEObject == defaultAffectedEObject)
-		
+		// Set state after
+		prepareStateAfter
+		assertIsStateAfter
+						
 		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1)
 			as ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
 			InsertEAttributeValue<Root, Integer>>
-			
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)	
-		Assert.assertTrue(resolvedChange.removeChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.insertChange.affectedEObject == defaultAffectedEObject)
+		resolvedChange.assertIsResolved(affectedEObject)
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		Assert.assertEquals(attributeContent.size, oldSize)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_NEW_VALUE_2)	
+		assertIsStateAfter
 	}
 	
 	/**
@@ -144,16 +164,14 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 	 */	
 	@Test
 	def public void resolveToCorrectType() {
-		// Set state before
-		prepareStateBefore
-		
 		// Create change
-		val unresolvedChange = createChange(DEFAULT_INDEX, DEFAULT_OLD_VALUE, DEFAULT_NEW_VALUE)
+		val unresolvedChange = createUnresolvedChange(DEFAULT_INDEX, OLD_VALUE, NEW_VALUE)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
-				
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)		
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+			as ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
+			InsertEAttributeValue<Root, Integer>>	
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)		
 	}
 	
 	/**
@@ -161,33 +179,29 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void replaceInEListApplyForwardTest() {
-		// Set state before	
-		prepareStateBefore
-		val oldSize = attributeContent.size
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_OLD_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_OLD_VALUE_2)	
+		// State before	
+		assertIsStateBefore
 		
 		// Create change 1
-		val resolvedChange = createChange(DEFAULT_INDEX, DEFAULT_OLD_VALUE, DEFAULT_NEW_VALUE).
-			copyAndResolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(DEFAULT_INDEX, OLD_VALUE, NEW_VALUE).
+			resolveBefore(resourceSet1)
 			
 		// Apply forward change 1
 		Assert.assertTrue(resolvedChange.applyForward)
 		
-		Assert.assertEquals(attributeContent.size, oldSize)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_OLD_VALUE_2)		
+		Assert.assertEquals(attributeContent.size, 2)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)	
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), OLD_VALUE_2)		
 		
 		// Create change 2
-		val resolvedChange2 = createChange(DEFAULT_INDEX_2, DEFAULT_OLD_VALUE_2, DEFAULT_NEW_VALUE_2).
-			copyAndResolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(DEFAULT_INDEX_2, OLD_VALUE_2, NEW_VALUE_2).
+			resolveBefore(resourceSet1)
 			
 		// Apply forward change 2
 		Assert.assertTrue(resolvedChange2.applyForward)			
 
-		Assert.assertEquals(attributeContent.size, oldSize)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_NEW_VALUE_2)		
+		// State after
+		assertIsStateAfter	
 	}
 	
 	/**
@@ -195,42 +209,33 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void replaceInEListApplyBackwardTest() {
-		// Set state before	
-		prepareStateBefore
-		val oldSize = attributeContent.size
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_OLD_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_OLD_VALUE_2)	
+		// State before	
+		assertIsStateBefore
 		
-		// Create change 1
-		val resolvedChange = createChange(DEFAULT_INDEX, DEFAULT_OLD_VALUE, DEFAULT_NEW_VALUE).
-			copyAndResolveBefore(resourceSet1)
-			
-		// Apply forward change 1
+		// Create and resolve and apply change 1
+		val resolvedChange = createUnresolvedChange(DEFAULT_INDEX, OLD_VALUE, NEW_VALUE).
+			resolveBefore(resourceSet1)
 		Assert.assertTrue(resolvedChange.applyForward)	
 		
-		// Create change 2
-		val resolvedChange2 = createChange(DEFAULT_INDEX_2, DEFAULT_OLD_VALUE_2, DEFAULT_NEW_VALUE_2).
-			copyAndResolveBefore(resourceSet1)
-			
-		// Apply forward change 2
+		// Create and resolve and apply change 2
+		val resolvedChange2 = createUnresolvedChange(DEFAULT_INDEX_2, OLD_VALUE_2, NEW_VALUE_2).
+			resolveBefore(resourceSet1)
 		Assert.assertTrue(resolvedChange2.applyForward)			
-
-		Assert.assertEquals(attributeContent.size, oldSize)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_NEW_VALUE_2)	
+		
+		// State after
+		assertIsStateAfter	
 		
 		// Apply backward change 2
 		Assert.assertTrue(resolvedChange2.applyBackward)
 		
-		Assert.assertEquals(attributeContent.size, oldSize)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_NEW_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_OLD_VALUE_2)	
+		Assert.assertEquals(attributeContent.size, 2)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)	
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), OLD_VALUE_2)	
 		
 		// Apply backward change 1
 		Assert.assertTrue(resolvedChange.applyBackward)	
 		
-		Assert.assertEquals(attributeContent.size, oldSize)			
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), DEFAULT_OLD_VALUE)	
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), DEFAULT_OLD_VALUE_2)				
+		// State before
+		assertIsStateBefore			
 	}
 }

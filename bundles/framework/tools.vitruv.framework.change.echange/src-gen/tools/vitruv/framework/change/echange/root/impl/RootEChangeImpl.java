@@ -9,14 +9,12 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
@@ -50,7 +48,7 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * @generated
 	 * @ordered
 	 */
-	protected static final URI URI_EDEFAULT = null;
+	protected static final String URI_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getUri() <em>Uri</em>}' attribute.
@@ -60,7 +58,7 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * @generated
 	 * @ordered
 	 */
-	protected URI uri = URI_EDEFAULT;
+	protected String uri = URI_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getResource() <em>Resource</em>}' attribute.
@@ -126,7 +124,7 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public URI getUri() {
+	public String getUri() {
 		return uri;
 	}
 
@@ -135,8 +133,8 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setUri(URI newUri) {
-		URI oldUri = uri;
+	public void setUri(String newUri) {
+		String oldUri = uri;
 		uri = newUri;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, RootPackage.ROOT_ECHANGE__URI, oldUri, uri));
@@ -198,43 +196,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean resolveBefore(final ResourceSet resourceSet) {
-		return this.resolve(resourceSet, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean resolveAfter(final ResourceSet resourceSet) {
-		return this.resolve(resourceSet, false);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean resolve(final ResourceSet resourceSet, final boolean resolveBefore) {
-		boolean _isResolved = this.isResolved();
-		boolean _not = (!_isResolved);
-		if (_not) {
-			URI _uri = this.getUri();
-			final Resource resolvedResource = resourceSet.getResource(_uri, false);
-			if ((Objects.equal(resolvedResource, null) || (!super.resolveBefore(resourceSet)))) {
-				return false;
-			}
-			this.setResource(resolvedResource);
-		}
-		return true;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -257,7 +218,7 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case RootPackage.ROOT_ECHANGE__URI:
-				setUri((URI)newValue);
+				setUri((String)newValue);
 				return;
 			case RootPackage.ROOT_ECHANGE__RESOURCE:
 				setResource((Resource)newValue);
@@ -318,8 +279,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return RootPackage.ROOT_ECHANGE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-				case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET: return RootPackage.ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -336,12 +295,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		switch (operationID) {
 			case RootPackage.ROOT_ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case RootPackage.ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET:
-				return resolveBefore((ResourceSet)arguments.get(0));
-			case RootPackage.ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET:
-				return resolveAfter((ResourceSet)arguments.get(0));
-			case RootPackage.ROOT_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN:
-				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

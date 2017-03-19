@@ -282,7 +282,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getCompoundEChange__ResolveBeforeAndApply__ResourceSet() {
+	public EOperation getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet() {
 		return compoundEChangeEClass.getEOperations().get(4);
 	}
 
@@ -291,17 +291,8 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getCompoundEChange__ResolveAfterAndApply__ResourceSet() {
+	public EOperation getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet() {
 		return compoundEChangeEClass.getEOperations().get(5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getCompoundEChange__Resolve__ResourceSet_boolean_boolean() {
-		return compoundEChangeEClass.getEOperations().get(6);
 	}
 
 	/**
@@ -679,9 +670,8 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___IS_RESOLVED);
 		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET);
 		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET);
-		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET);
-		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET);
-		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN);
+		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET);
+		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET);
 
 		moveEObjectEClass = createEClass(MOVE_EOBJECT);
 		createEReference(moveEObjectEClass, MOVE_EOBJECT__SUBTRACT_WHERE_CHANGE);
@@ -954,22 +944,17 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
 		initEOperation(getCompoundEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getCompoundEChange__ResolveBefore__ResourceSet(), theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getCompoundEChange__ResolveBefore__ResourceSet(), theEChangePackage.getEChange(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getCompoundEChange__ResolveAfter__ResourceSet(), theEcorePackage.getEBoolean(), "resolveAfter", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getCompoundEChange__ResolveAfter__ResourceSet(), theEChangePackage.getEChange(), "resolveAfter", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getCompoundEChange__ResolveBeforeAndApply__ResourceSet(), theEcorePackage.getEBoolean(), "resolveBeforeAndApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet(), theEChangePackage.getEChange(), "resolveBeforeAndApplyForward", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getCompoundEChange__ResolveAfterAndApply__ResourceSet(), theEcorePackage.getEBoolean(), "resolveAfterAndApply", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet(), theEChangePackage.getEChange(), "resolveAfterAndApplyBackward", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		op = initEOperation(getCompoundEChange__Resolve__ResourceSet_boolean_boolean(), theEcorePackage.getEBoolean(), "resolve", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEBoolean(), "revertAfterResolving", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(moveEObjectEClass, MoveEObject.class, "MoveEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(theReferencePackage.getUpdateReferenceEChange());

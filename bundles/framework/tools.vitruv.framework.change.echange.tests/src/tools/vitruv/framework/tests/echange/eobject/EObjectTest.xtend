@@ -4,15 +4,14 @@ import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import org.eclipse.emf.ecore.EObject
 import org.junit.Before
-import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 /**
  * Abstract class which is used by the EObject EChange test classes.
  */
 public abstract class EObjectTest extends EChangeTest {
-	protected var Root defaultCreatedObject = null;
-	protected var Root defaultCreatedObject2 = null;
+	protected var Root createdObject = null;
+	protected var Root createdObject2 = null;
 	
 	protected static val Integer DEFAULT_CREATED_OBJECT_1_INTEGER_VALUE = 111
 	protected static val Integer DEFAULT_CREATED_OBJECT_2_INTEGER_VALUE = 222
@@ -24,10 +23,10 @@ public abstract class EObjectTest extends EChangeTest {
 	@Before
 	override void beforeTest() {
 		super.beforeTest()
-		defaultCreatedObject = AllElementTypesFactory.eINSTANCE.createRoot()
-		defaultCreatedObject.singleValuedEAttribute = DEFAULT_CREATED_OBJECT_1_INTEGER_VALUE
-		defaultCreatedObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
-		defaultCreatedObject2.singleValuedEAttribute = DEFAULT_CREATED_OBJECT_2_INTEGER_VALUE
+		createdObject = AllElementTypesFactory.eINSTANCE.createRoot()
+		createdObject.singleValuedEAttribute = DEFAULT_CREATED_OBJECT_1_INTEGER_VALUE
+		createdObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
+		createdObject2.singleValuedEAttribute = DEFAULT_CREATED_OBJECT_2_INTEGER_VALUE
 	}
 	
 	/**

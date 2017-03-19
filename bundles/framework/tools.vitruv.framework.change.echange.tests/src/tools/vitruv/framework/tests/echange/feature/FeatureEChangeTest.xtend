@@ -1,35 +1,72 @@
 package tools.vitruv.framework.tests.echange.feature
 
+import allElementTypes.AllElementTypesFactory
 import allElementTypes.AllElementTypesPackage
 import allElementTypes.Root
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
-import org.junit.Before
-import allElementTypes.AllElementTypesFactory
-import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 
  * (single- or multi-valued attributes or references) of a {@link EObject}.
  */
  public class FeatureEChangeTest extends EChangeTest {
- 	protected var Root defaultAffectedEObject = null
- 	protected var EAttribute defaultAffectedFeature = null
+ 	protected var Root affectedEObject = null
+ 	protected var EAttribute affectedFeature = null
  	
  	@Before
  	override public void beforeTest() {
  		super.beforeTest()
- 		defaultAffectedEObject = rootObject1
- 		defaultAffectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
+ 		affectedEObject = rootObject1
+ 		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
  	}
- 	
+
+	/**
+	 * Creates and inserts a new root element in the resource 1.
+	 */
+	def private Root prepareSecondRoot() {
+		val root = AllElementTypesFactory.eINSTANCE.createRoot()
+		resource1.contents.add(root)
+		return root		
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */ 	
+	def private static void assertIsNotResolved(FeatureEChange<Root, EAttribute> change, 
+		Root affectedEObject, EAttribute affectedFeature) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.affectedEObject != affectedEObject)
+		Assert.assertTrue(change.affectedFeature == affectedFeature)				
+	} 
+	
+	/**
+	 * Change is resolved.
+	 */
+ 	def private static void assertIsResolved(FeatureEChange<Root, EAttribute> change, 
+		Root affectedEObject, EAttribute affectedFeature) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.affectedEObject == affectedEObject)
+		Assert.assertTrue(change.affectedFeature == affectedFeature)			
+	} 
+
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private FeatureEChange<Root, EAttribute> createUnresolvedChange() {
+		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
+		return atomicFactory.<Root, String>createReplaceSingleAttributeChange
+		(affectedEObject, affectedFeature, null, null)	
+	}	 
+	 
  	/**
  	 * Tests if a feature change, which affected object and feature references 
  	 * to the changed model instance, resolved correctly to the same model instance, 
@@ -37,24 +74,14 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  	 */
  	@Test
  	def public void resolveEFeatureChangeTest() {
- 		Assert.assertTrue(rootObject1 == defaultAffectedEObject)
- 		
- 		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
- 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
- 			<Root, String>createReplaceSingleAttributeChange(defaultAffectedEObject, defaultAffectedFeature, null, null, true)
- 			
- 		Assert.assertFalse(unresolvedChange.isResolved())
- 		Assert.assertTrue(rootObject1 != unresolvedChange.affectedEObject)
- 		
- 		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as FeatureEChange<Root, EAttribute>
- 		
- 		Assert.assertFalse(unresolvedChange.isResolved())
- 		Assert.assertTrue(rootObject1 != unresolvedChange.affectedEObject)
- 		
-  		Assert.assertNotNull(resolvedChange)		
- 		Assert.assertTrue(resolvedChange.isResolved())
- 		Assert.assertTrue(rootObject1 == resolvedChange.affectedEObject)
- 		Assert.assertTrue(unresolvedChange.affectedEObject != resolvedChange.affectedEObject)
+		// Create change 		
+ 		val unresolvedChange = createUnresolvedChange()
+ 		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
+ 					
+ 		// Resolve
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+ 			as FeatureEChange<Root, EAttribute>
+ 		resolvedChange.assertIsResolved(affectedEObject, affectedFeature)
  	}
  	
  	/**
@@ -64,21 +91,21 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  	 */
  	@Test
  	def public void resolveEFeatureChangeTest2() {
- 		Assert.assertTrue(rootObject1 == defaultAffectedEObject)
- 		Assert.assertTrue(rootObject1 != rootObject2)
- 		
- 		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
- 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
- 			<Root, String>createReplaceSingleAttributeChange(defaultAffectedEObject, defaultAffectedFeature, null, null, true)
+		// Create change 		
+ 		val unresolvedChange = createUnresolvedChange()
+ 		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
  			
- 		Assert.assertTrue(rootObject1 != unresolvedChange.affectedEObject)
- 		Assert.assertTrue(rootObject2 != unresolvedChange.affectedEObject)
+  		// Resolve 1
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+ 			as FeatureEChange<Root, EAttribute>
+ 		resolvedChange.assertIsResolved(rootObject1, affectedFeature)  		
+  		
+  		// Resolve 2
+ 		val resolvedChange2 = unresolvedChange.resolveBefore(resourceSet2)
+ 			as FeatureEChange<Root, EAttribute>
+ 		resolvedChange2.assertIsResolved(rootObject2, affectedFeature)
  		
- 		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet2) as FeatureEChange<Root, EAttribute>
- 		
- 		Assert.assertTrue(resolvedChange.isResolved)
- 		Assert.assertTrue(rootObject1 != resolvedChange.affectedEObject)
- 		Assert.assertTrue(rootObject2 == resolvedChange.affectedEObject)	
+ 		Assert.assertTrue(rootObject1 != rootObject2)	
  	}
 
 	/**
@@ -86,26 +113,20 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 	 */
 	@Test
 	def public void resolveEFeatureChangeFails() {
-		// create second Root element and place it in the first resource
-		val root = AllElementTypesFactory.eINSTANCE.createRoot()
-		root.id = DEFAULT_ROOT_NAME
-		resource1.contents.add(root)
+		// Change first resource by insert second root element
+		affectedEObject = prepareSecondRoot
 		
 		// second resource has no such root element
-		Assert.assertNull(resource2.getEObject(EcoreUtil.getURI(root).fragment))
+		Assert.assertNull(resource2.getEObject(EcoreUtil.getURI(affectedEObject).fragment))
 		
-		val affectedEObject = root
-		
-		 // The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, String>createReplaceSingleAttributeChange(affectedEObject, defaultAffectedFeature, null, null, true) 
+		// Create change 		
+ 		val unresolvedChange = createUnresolvedChange()
+ 		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
 			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet2)
-		
-		Assert.assertFalse(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange == resolvedChange)
+  		// Resolve
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet2)
+ 			as FeatureEChange<Root, EAttribute>
+		Assert.assertNull(resolvedChange)
 	}
 
 	/**
@@ -113,15 +134,15 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 	 */
 	@Test
 	def public void resolveResolvedEFeatureChange() {
-		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, String>createReplaceSingleAttributeChange(defaultAffectedEObject, defaultAffectedFeature, null, null, false)
-			
-		Assert.assertTrue(resolvedChange.isResolved)
+		// Create change and resolve	
+ 		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+ 			as FeatureEChange<Root, EAttribute>
+ 		resolvedChange.assertIsResolved(affectedEObject, affectedFeature)
 		
-		val resolvedChange2 = resolvedChange.copyAndResolveBefore(resourceSet1)
-		
-		Assert.assertTrue(resolvedChange2.isResolved)
+		// Resolve again
+		val resolvedChange2 = resolvedChange.resolveBefore(resourceSet1)
+		 	as FeatureEChange<Root, EAttribute>
+ 		resolvedChange2.assertIsResolved(affectedEObject, affectedFeature)
 		Assert.assertTrue(resolvedChange == resolvedChange2)
 	}
  	
@@ -130,19 +151,17 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  	 */
  	@Test
  	def public void resolveEFeatureAffectedObjectNull() {
- 		val affectedEObject = null
+ 		affectedEObject = null
  		
- 		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
- 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
- 			<Root, String>createReplaceSingleAttributeChange(affectedEObject, defaultAffectedFeature, null, null, true)
- 			
- 		Assert.assertNull(unresolvedChange.getAffectedEObject)
+		// Create change	
+ 		val unresolvedChange = createUnresolvedChange()
  		Assert.assertFalse(unresolvedChange.isResolved)
- 					
- 		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as FeatureEChange<Root, EAttribute>
-
-		Assert.assertFalse(resolvedChange.isResolved)
- 	  	Assert.assertTrue(unresolvedChange == resolvedChange)			
+ 		Assert.assertNull(unresolvedChange.affectedEObject)
+ 		
+ 		// Resolve		
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+ 			as FeatureEChange<Root, EAttribute>
+		Assert.assertNull(resolvedChange)			
  	}
  	
  	/**
@@ -150,19 +169,16 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  	 */
  	 @Test
  	 def public void resolveEFeatureAffectedFeatureNull() {
- 	 	val EAttribute affectedFeature = null
+ 	 	affectedFeature = null
  	 	
- 	 	// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
- 		val unresolvedChange = TypeInferringAtomicEChangeFactory.
- 			<Root, String>createReplaceSingleAttributeChange(defaultAffectedEObject, affectedFeature, null, null, true)
- 			
- 		Assert.assertNull(unresolvedChange.getAffectedFeature)
- 		Assert.assertFalse(unresolvedChange.isResolved)
+		// Create change	
+ 		val unresolvedChange = createUnresolvedChange()
+ 		unresolvedChange.assertIsNotResolved(affectedEObject, null)	
  		
- 		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as FeatureEChange<Root, EAttribute>
- 		
- 	  	Assert.assertFalse(resolvedChange.isResolved)
- 	  	Assert.assertTrue(unresolvedChange == resolvedChange)
+ 		// Resolve
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+ 			as FeatureEChange<Root, EAttribute>
+ 	  	Assert.assertNull(resolvedChange)
  	 }
  	 
  	 /**
@@ -170,15 +186,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  	  */
  	  @Test
  	  def public void resolveEFeatureResourceSetNull() {
- 	  	// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
- 	  	val unresolvedChange = TypeInferringAtomicEChangeFactory.
- 	  		<Root, String>createReplaceSingleAttributeChange(defaultAffectedEObject, defaultAffectedFeature, null, null, true)
- 	  		
- 	  	Assert.assertFalse(unresolvedChange.isResolved)
+		// Create change	
+ 		val unresolvedChange = createUnresolvedChange()	
+ 		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)	
  	  	
- 	  	val resolvedChange = unresolvedChange.copyAndResolveBefore(null) as FeatureEChange<Root, EAttribute>
- 	  	
- 	  	Assert.assertFalse(resolvedChange.isResolved)
- 	  	Assert.assertTrue(unresolvedChange == resolvedChange)
+ 	  	// Resolve
+ 	  	val resolvedChange = unresolvedChange.resolveBefore(null) 
+ 	  		as FeatureEChange<Root, EAttribute>
+ 	  	Assert.assertNull(resolvedChange)
  	  }
  }

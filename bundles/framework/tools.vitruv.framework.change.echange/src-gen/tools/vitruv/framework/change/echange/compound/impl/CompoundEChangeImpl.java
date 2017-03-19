@@ -4,18 +4,18 @@ package tools.vitruv.framework.change.echange.compound.impl;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
-import org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
+import tools.vitruv.framework.change.echange.EChangeResolver;
 
 import tools.vitruv.framework.change.echange.compound.CompoundEChange;
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
@@ -82,97 +82,85 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean resolveBefore(final ResourceSet resourceSet) {
-		return this.resolve(resourceSet, true, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean resolveAfter(final ResourceSet resourceSet) {
-		return this.resolve(resourceSet, false, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean resolveBeforeAndApply(final ResourceSet resourceSet) {
-		return this.resolve(resourceSet, true, false);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean resolveAfterAndApply(final ResourceSet resourceSet) {
-		return this.resolve(resourceSet, false, false);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean resolve(final ResourceSet resourceSet, final boolean resolveBefore, final boolean revertAfterResolving) {
+	public EChange resolveBefore(final ResourceSet resourceSet) {
 		boolean _isResolved = this.isResolved();
 		boolean _not = (!_isResolved);
 		if (_not) {
-			boolean _resolveBefore = super.resolveBefore(resourceSet);
-			boolean _not_1 = (!_resolveBefore);
-			if (_not_1) {
-				return false;
+			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
+			boolean _resolveCompoundEChange = EChangeResolver.resolveCompoundEChange(change, resourceSet, true, true);
+			if (_resolveCompoundEChange) {
+				return change;
 			}
-			final BasicEList<EChange> changesMade = new BasicEList<EChange>();
-			if (resolveBefore) {
-				EList<AtomicEChange> _atomicChanges = this.getAtomicChanges();
-				for (final EChange change : _atomicChanges) {
-					boolean _resolveBeforeAndApplyForward = change.resolveBeforeAndApplyForward(resourceSet);
-					boolean _not_2 = (!_resolveBeforeAndApplyForward);
-					if (_not_2) {
-						EList<EChange> _reverse = XcoreEListExtensions.<EChange>reverse(changesMade);
-						for (final EChange changed : _reverse) {
-							changed.applyBackward();
-						}
-						return false;
-					}
-					else {
-						changesMade.add(change);
-					}
-				}
+			return null;
+		}
+		return this;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolveAfter(final ResourceSet resourceSet) {
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
+			boolean _resolveCompoundEChange = EChangeResolver.resolveCompoundEChange(change, resourceSet, false, true);
+			if (_resolveCompoundEChange) {
+				return change;
 			}
-			else {
-				EList<AtomicEChange> _atomicChanges_1 = this.getAtomicChanges();
-				EList<AtomicEChange> _reverse_1 = XcoreEListExtensions.<AtomicEChange>reverse(_atomicChanges_1);
-				for (final EChange change_1 : _reverse_1) {
-					boolean _resolveAfterAndApplyBackward = change_1.resolveAfterAndApplyBackward(resourceSet);
-					boolean _not_3 = (!_resolveAfterAndApplyBackward);
-					if (_not_3) {
-						EList<EChange> _reverse_2 = XcoreEListExtensions.<EChange>reverse(changesMade);
-						for (final EChange changed_1 : _reverse_2) {
-							changed_1.applyForward();
-						}
-						return false;
-					}
-					else {
-						changesMade.add(change_1);
-					}
-				}
-			}
-			if (revertAfterResolving) {
-				if (resolveBefore) {
-					this.applyBackward();
-				}
-				else {
-					this.applyForward();
-				}
+			return null;
+		}
+		return this;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolveBeforeAndApplyForward(final ResourceSet resourceSet) {
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
+			boolean _resolveCompoundEChange = EChangeResolver.resolveCompoundEChange(change, resourceSet, true, false);
+			if (_resolveCompoundEChange) {
+				return change;
 			}
 		}
-		return true;
+		else {
+			boolean _applyForward = this.applyForward();
+			if (_applyForward) {
+				return this;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EChange resolveAfterAndApplyBackward(final ResourceSet resourceSet) {
+		boolean _isResolved = this.isResolved();
+		boolean _not = (!_isResolved);
+		if (_not) {
+			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
+			boolean _resolveCompoundEChange = EChangeResolver.resolveCompoundEChange(change, resourceSet, false, false);
+			if (_resolveCompoundEChange) {
+				return change;
+			}
+		}
+		else {
+			boolean _applyBackward = this.applyBackward();
+			if (_applyBackward) {
+				return this;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -187,6 +175,8 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 				case EChangePackage.ECHANGE___IS_RESOLVED: return CompoundPackage.COMPOUND_ECHANGE___IS_RESOLVED;
 				case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 				case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -209,12 +199,10 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 				return resolveBefore((ResourceSet)arguments.get(0));
 			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET:
 				return resolveAfter((ResourceSet)arguments.get(0));
-			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET:
-				return resolveBeforeAndApply((ResourceSet)arguments.get(0));
-			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET:
-				return resolveAfterAndApply((ResourceSet)arguments.get(0));
-			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN:
-				return resolve((ResourceSet)arguments.get(0), (Boolean)arguments.get(1), (Boolean)arguments.get(2));
+			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET:
+				return resolveBeforeAndApplyForward((ResourceSet)arguments.get(0));
+			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET:
+				return resolveAfterAndApplyBackward((ResourceSet)arguments.get(0));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

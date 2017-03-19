@@ -17,8 +17,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
 
@@ -26,8 +24,6 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
-
-import tools.vitruv.framework.change.echange.util.EChangeUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -175,26 +171,6 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean resolveBefore(final ResourceSet resourceSet) {
-		boolean _isResolved = this.isResolved();
-		boolean _not = (!_isResolved);
-		if (_not) {
-			A _affectedEObject = this.getAffectedEObject();
-			EObject _resolveProxy = EChangeUtil.resolveProxy(_affectedEObject, resourceSet);
-			A resolvedAffectedEObject = ((A) _resolveProxy);
-			if ((((Objects.equal(this.getAffectedFeature(), null) || Objects.equal(resolvedAffectedEObject, null)) || resolvedAffectedEObject.eIsProxy()) || (!super.resolveBefore(resourceSet)))) {
-				return false;
-			}
-			this.setAffectedEObject(resolvedAffectedEObject);
-		}
-		return true;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -271,7 +247,6 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET: return FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
@@ -288,8 +263,6 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 		switch (operationID) {
 			case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET:
-				return resolveBefore((ResourceSet)arguments.get(0));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

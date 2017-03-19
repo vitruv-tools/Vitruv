@@ -3,7 +3,6 @@ package tools.vitruv.framework.tests.echange.eobject
 import allElementTypes.Root
 import org.junit.Assert
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 /**
@@ -12,19 +11,28 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject
  */
 class DeleteEObjectTest extends EObjectTest {	
 	/**
+	 * Creates new unresolved change.
+	 */
+	def private DeleteEObject<Root> createUnresolvedChange(Root oldObject) {
+		// The concrete change type CreateEObject will be used for the tests.
+		return atomicFactory.<Root>createDeleteEObjectChange(oldObject)
+	}
+	
+	/**
 	 * Tests whether resolving the {@link DeleteEObjectTest} EChange returns
 	 * the same class.
 	 */
 	@Test
 	def public void resolveToCorrectType() {
-		prepareStagingArea(defaultCreatedObject)
+		// Set state before
+		prepareStagingArea(createdObject)
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createDeleteEObjectChange(defaultCreatedObject, true)
+		// Create change
+		val unresolvedChange = createUnresolvedChange(createdObject)
 			
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
-		
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
+		// Resolve		
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
 	/**
@@ -33,28 +41,30 @@ class DeleteEObjectTest extends EObjectTest {
 	 */
 	@Test
 	def public void deleteEObjectApplyForwardTest() {
-		// Fill staging area
-		prepareStagingArea(defaultCreatedObject)
-		
+		// Set state before
+		prepareStagingArea(createdObject)
 		Assert.assertFalse(stagingArea1.contents.empty)
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createDeleteEObjectChange(defaultCreatedObject, true).
-			copyAndResolveBefore(resourceSet1)
+		// Create change and resolve
+		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(resourceSet1)
+			as DeleteEObject<Root>
 			
-		Assert.assertTrue(resolvedChange.applyForward)
+		// Apply forward
+		Assert.assertTrue(resolvedChange.applyForward)	
+				
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
 		// Now another change would remove a object and put it in the staging area
-		prepareStagingArea(defaultCreatedObject2)
-		
+		prepareStagingArea(createdObject2)
 		Assert.assertFalse(stagingArea1.contents.empty)
 		
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-			<Root>createDeleteEObjectChange(defaultCreatedObject2, true).
-			copyAndResolveBefore(resourceSet1)
+		// Create change and resolve
+		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(resourceSet1)
+			as DeleteEObject<Root>
 			
-		Assert.assertTrue(resolvedChange2.applyForward)
+		// Apply forward
+		Assert.assertTrue(resolvedChange2.applyForward)	
+		
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
@@ -64,19 +74,21 @@ class DeleteEObjectTest extends EObjectTest {
 	 */
 	@Test
 	def public void deleteEObjectApplyBackwardTest() {
-		// Staging area is empty
+		// Set state after
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createDeleteEObjectChange(defaultCreatedObject, true).
-			copyAndResolveAfter(resourceSet1)
+		// Create change and resolve 1
+		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter(resourceSet1)
+			as DeleteEObject<Root>
 			
+		// Apply backward 1
 		Assert.assertTrue(resolvedChange.applyBackward)
+		
 		Assert.assertFalse(stagingArea1.contents.empty)
 		// Staging area contains copy
-		Assert.assertFalse(stagingArea1.contents.contains(defaultCreatedObject))
-		val createdObject = stagingArea1.contents.get(0) as Root
-		Assert.assertEquals(createdObject.singleValuedEAttribute, defaultCreatedObject.singleValuedEAttribute)
+		Assert.assertFalse(stagingArea1.contents.contains(createdObject))
+		Assert.assertEquals((stagingArea1.contents.get(0) as Root).singleValuedEAttribute, 
+			createdObject.singleValuedEAttribute)
 		
 		// Now another change would be reverted and the object would be inserted.
 		stagingArea1.contents.clear()
@@ -84,15 +96,17 @@ class DeleteEObjectTest extends EObjectTest {
 		// Staging area is empty again
 		Assert.assertTrue(stagingArea1.contents.empty)
 		
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-			<Root>createDeleteEObjectChange(defaultCreatedObject2, true).
-			copyAndResolveAfter(resourceSet1)	
+		// Create change and resolve 2
+		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveAfter(resourceSet1)
+			as DeleteEObject<Root>
 			
+		// Apply backward 1
 		Assert.assertTrue(resolvedChange2.applyBackward)
+		
 		Assert.assertFalse(stagingArea1.contents.empty)		
 		// Staging area contains copy			
-		Assert.assertFalse(stagingArea1.contents.contains(defaultCreatedObject2))
-		val createdObject2 = stagingArea1.contents.get(0) as Root
-		Assert.assertEquals(createdObject2.singleValuedEAttribute, defaultCreatedObject2.singleValuedEAttribute)
+		Assert.assertFalse(stagingArea1.contents.contains(createdObject2))
+		Assert.assertEquals((stagingArea1.contents.get(0) as Root).singleValuedEAttribute, 
+			createdObject2.singleValuedEAttribute)
 	}
 }

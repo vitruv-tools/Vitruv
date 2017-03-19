@@ -80,42 +80,6 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ECHANGE_FEATURE_COUNT = EChangePackage.ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = EChangePackage.ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = EChangePackage.ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -170,31 +134,22 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ECHANGE_OPERATION_COUNT + 3;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = EChangePackage.ECHANGE_OPERATION_COUNT + 4;
+	int COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ECHANGE_OPERATION_COUNT + 4;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET = EChangePackage.ECHANGE_OPERATION_COUNT + 5;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = EChangePackage.ECHANGE_OPERATION_COUNT + 6;
+	int COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ECHANGE_OPERATION_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -203,7 +158,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_ECHANGE_OPERATION_COUNT = EChangePackage.ECHANGE_OPERATION_COUNT + 7;
+	int COMPOUND_ECHANGE_OPERATION_COUNT = EChangePackage.ECHANGE_OPERATION_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.MoveEObjectImpl <em>Move EObject</em>}' class.
@@ -261,42 +216,6 @@ public interface CompoundPackage extends EPackage {
 	int MOVE_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 4;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -342,31 +261,22 @@ public interface CompoundPackage extends EPackage {
 	int MOVE_EOBJECT___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MOVE_EOBJECT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int MOVE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MOVE_EOBJECT___RESOLVE_AFTER_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int MOVE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -415,42 +325,6 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_SUBTRACTION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___COPY_AND_RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___COPY_AND_RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -496,31 +370,22 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_SUBTRACTION___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int COMPOUND_SUBTRACTION___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION___RESOLVE_AFTER_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int COMPOUND_SUBTRACTION___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -569,42 +434,6 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPLICIT_UNSET_EFEATURE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = COMPOUND_SUBTRACTION___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPLICIT_UNSET_EFEATURE___COPY_AND_RESOLVE_AFTER__RESOURCESET = COMPOUND_SUBTRACTION___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -650,31 +479,22 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER_AND_APPLY__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXPLICIT_UNSET_EFEATURE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = COMPOUND_SUBTRACTION___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -732,42 +552,6 @@ public interface CompoundPackage extends EPackage {
 	int REPLACE_IN_ELIST_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_IN_ELIST___COPY_AND_RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_IN_ELIST___COPY_AND_RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_IN_ELIST___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_IN_ELIST___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -813,31 +597,22 @@ public interface CompoundPackage extends EPackage {
 	int REPLACE_IN_ELIST___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int REPLACE_IN_ELIST___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST___RESOLVE_AFTER_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_IN_ELIST___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int REPLACE_IN_ELIST___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -886,42 +661,6 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ADDITION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ADDITION___COPY_AND_RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ADDITION___COPY_AND_RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ADDITION___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ADDITION___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -967,31 +706,22 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ADDITION___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_ADDITION___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int COMPOUND_ADDITION___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_ADDITION___RESOLVE_AFTER_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_ADDITION___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int COMPOUND_ADDITION___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -1049,42 +779,6 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1130,31 +824,22 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -1212,42 +897,6 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1293,31 +942,22 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -1375,42 +1015,6 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_ROOT_FEATURE_COUNT = CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_ROOT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = CREATE_AND_INSERT_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_ROOT___COPY_AND_RESOLVE_AFTER__RESOURCESET = CREATE_AND_INSERT_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1456,31 +1060,22 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_ROOT___RESOLVE_AFTER__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_AND_INSERT_ROOT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int CREATE_AND_INSERT_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_AND_INSERT_ROOT___RESOLVE_AFTER_AND_APPLY__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_ROOT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int CREATE_AND_INSERT_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -1538,42 +1133,6 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_ROOT_FEATURE_COUNT = REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_ROOT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_ROOT___COPY_AND_RESOLVE_AFTER__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1619,31 +1178,22 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_ROOT___RESOLVE_AFTER__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_AND_DELETE_ROOT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int REMOVE_AND_DELETE_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_AND_DELETE_ROOT___RESOLVE_AFTER_AND_APPLY__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_ROOT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = REMOVE_AND_DELETE_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int REMOVE_AND_DELETE_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -1701,42 +1251,6 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_NON_ROOT_FEATURE_COUNT = CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_NON_ROOT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = CREATE_AND_INSERT_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_NON_ROOT___COPY_AND_RESOLVE_AFTER__RESOURCESET = CREATE_AND_INSERT_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1782,31 +1296,22 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_NON_ROOT___RESOLVE_AFTER__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_AND_INSERT_NON_ROOT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int CREATE_AND_INSERT_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_AND_INSERT_NON_ROOT___RESOLVE_AFTER_AND_APPLY__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_INSERT_NON_ROOT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = CREATE_AND_INSERT_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int CREATE_AND_INSERT_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -1864,42 +1369,6 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_NON_ROOT_FEATURE_COUNT = REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_NON_ROOT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_NON_ROOT___COPY_AND_RESOLVE_AFTER__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1945,31 +1414,22 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_NON_ROOT___RESOLVE_AFTER__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int REMOVE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_AND_DELETE_NON_ROOT___RESOLVE_AFTER_AND_APPLY__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_AND_DELETE_NON_ROOT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = REMOVE_AND_DELETE_EOBJECT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int REMOVE_AND_DELETE_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -2036,42 +1496,6 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___COPY_AND_RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___COPY_AND_RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2117,31 +1541,22 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve Before And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET;
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Resolve After And Apply</em>' operation.
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_AFTER_AND_APPLY__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN;
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -2243,34 +1658,24 @@ public interface CompoundPackage extends EPackage {
 	EOperation getCompoundEChange__ResolveAfter__ResourceSet();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.CompoundEChange#resolveBeforeAndApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before And Apply</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.CompoundEChange#resolveBeforeAndApplyForward(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before And Apply Forward</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Before And Apply</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.compound.CompoundEChange#resolveBeforeAndApply(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundEChange#resolveBeforeAndApplyForward(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getCompoundEChange__ResolveBeforeAndApply__ResourceSet();
+	EOperation getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.CompoundEChange#resolveAfterAndApply(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After And Apply</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.CompoundEChange#resolveAfterAndApplyBackward(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After And Apply Backward</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve After And Apply</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.compound.CompoundEChange#resolveAfterAndApply(org.eclipse.emf.ecore.resource.ResourceSet)
+	 * @return the meta object for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundEChange#resolveAfterAndApplyBackward(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getCompoundEChange__ResolveAfterAndApply__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.CompoundEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean, boolean) <em>Resolve</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.compound.CompoundEChange#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean, boolean)
-	 * @generated
-	 */
-	EOperation getCompoundEChange__Resolve__ResourceSet_boolean_boolean();
+	EOperation getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.MoveEObject <em>Move EObject</em>}'.
@@ -2736,28 +2141,20 @@ public interface CompoundPackage extends EPackage {
 		EOperation COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getCompoundEChange__ResolveAfter__ResourceSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Before And Apply</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve Before And Apply Forward</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY__RESOURCESET = eINSTANCE.getCompoundEChange__ResolveBeforeAndApply__ResourceSet();
+		EOperation COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = eINSTANCE.getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve After And Apply</b></em>' operation.
+		 * The meta object literal for the '<em><b>Resolve After And Apply Backward</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY__RESOURCESET = eINSTANCE.getCompoundEChange__ResolveAfterAndApply__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation COMPOUND_ECHANGE___RESOLVE__RESOURCESET_BOOLEAN_BOOLEAN = eINSTANCE.getCompoundEChange__Resolve__ResourceSet_boolean_boolean();
+		EOperation COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = eINSTANCE.getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.MoveEObjectImpl <em>Move EObject</em>}' class.

@@ -11,9 +11,9 @@ import tools.vitruv.framework.tests.echange.EChangeTest
  * Abstract class which is used by all test classes for references.
  */
 public abstract class ReferenceEChangeTest extends EChangeTest {
-	protected var Root defaultAffectedEObject = null
-	protected var NonRoot defaultNewValue = null
-	protected var NonRoot defaultNewValue2 = null
+	protected var Root affectedEObject = null
+	protected var NonRoot newValue = null
+	protected var NonRoot newValue2 = null
 	
 	protected static val DEFAULT_NEW_NON_ROOT_NAME = "New Non Root Element"
 	protected static val DEFAULT_NEW_NON_ROOT_NAME_2 = "New Non Root Element 2"
@@ -24,19 +24,19 @@ public abstract class ReferenceEChangeTest extends EChangeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		defaultAffectedEObject = rootObject1
-		defaultNewValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
-		defaultNewValue.id = DEFAULT_NEW_NON_ROOT_NAME
-		defaultNewValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot()
-		defaultNewValue2.id = DEFAULT_NEW_NON_ROOT_NAME_2
+		affectedEObject = rootObject1
+		newValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
+		newValue.id = DEFAULT_NEW_NON_ROOT_NAME
+		newValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot()
+		newValue2.id = DEFAULT_NEW_NON_ROOT_NAME_2
 	}
 	
 	/**
 	 * Prepares the resource and adds the new values.
 	 */
 	def protected void prepareResource() {
-		resource1.contents.add(defaultNewValue)
-		resource1.contents.add(defaultNewValue2)
+		resource1.contents.add(newValue)
+		resource1.contents.add(newValue2)
 	}
 	
 	/**

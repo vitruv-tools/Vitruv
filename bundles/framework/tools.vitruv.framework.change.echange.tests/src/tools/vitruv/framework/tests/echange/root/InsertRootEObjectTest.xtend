@@ -1,19 +1,42 @@
 package tools.vitruv.framework.tests.echange.root
 
 import allElementTypes.Root
+import org.eclipse.emf.ecore.resource.Resource
 import org.junit.Assert
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
-import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 /**
  * Test class for the concrete {@link InsertRootEObject} EChange,
  * which inserts a new root element into a resource.
  */
 class InsertRootEObjectTest extends RootEChangeTest {
-	protected static val DEFAULT_INDEX = 2
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(InsertRootEObject<Root> change, Root newValue) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.newValue != newValue)
+		Assert.assertNull(change.resource)
+	}
 	
+	/**
+	 * Change is resolved.
+	 */
+	def private static void assertIsResolved(InsertRootEObject<Root> change, Root newValue, Resource resource) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.newValue == newValue)
+		Assert.assertTrue(change.resource == resource)	
+	}
+
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private InsertRootEObject<Root> createUnresolvedChange(Root rootObject) {
+		return atomicFactory.<Root>createInsertRootChange
+		(rootObject, fileUri.toString, index)	
+	}
+		
 	/**
 	 * Test resolves a {@link InsertRootEObject} EChange with a new root which is
 	 * in the staging area and not in the new resource. This happens
@@ -21,30 +44,18 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def public void resolveInsertRootEObjectTest() {
-		// Insert object first in resource so the URI is set correctly (object state after inserting it)
-		prepareResource(newRootObject, DEFAULT_INDEX)
+		// Set state before
+		prepareStagingArea(newRootObject)
 		
 		// Create change
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)		
-
-		// Remove object from resource and put it in staging area
-		resourceContent.remove(newRootObject)
-		prepareStagingArea(newRootObject)
-			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertNull(unresolvedChange.resource)
-		Assert.assertTrue(unresolvedChange.newValue != newRootObject)
-		Assert.assertFalse(resourceContent.contains(newRootObject))
+		val unresolvedChange = createUnresolvedChange(newRootObject)
+		unresolvedChange.assertIsNotResolved(newRootObject)		
 		Assert.assertTrue(stagingArea1.contents.contains(newRootObject))
-		
-		// resolve
-		var resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as InsertRootEObject<Root>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertNotNull(resolvedChange.resource)
-		Assert.assertTrue(resolvedChange.resource.resourceSet == resourceSet1)
-		Assert.assertTrue(resolvedChange.newValue == newRootObject)
+			
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+			as InsertRootEObject<Root>	
+		resolvedChange.assertIsResolved(newRootObject, resource1)
 		Assert.assertTrue(stagingArea1.contents.contains(newRootObject))
 	}
 	
@@ -55,26 +66,23 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def public void resolveInsertRootEObjectTest2() {	
-		// Insert in resource
-		prepareResource(newRootObject, DEFAULT_INDEX)
+		// Set state before
+		prepareStagingArea(newRootObject)
 		
 		// Create change
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)
-			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertNull(unresolvedChange.resource)
-		Assert.assertTrue(unresolvedChange.newValue != newRootObject)	
-		Assert.assertFalse(stagingArea1.contents.contains(newRootObject))	
-		
+		val unresolvedChange = createUnresolvedChange(newRootObject)
+		unresolvedChange.assertIsNotResolved(newRootObject)		
+		Assert.assertTrue(stagingArea1.contents.contains(newRootObject))
+
+		// Set state after
+		stagingArea1.contents.clear
+		prepareResource(newRootObject, index)
+
 		// Resolve
-		var resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as InsertRootEObject<Root>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertNotNull(resolvedChange.resource)
-		Assert.assertTrue(resolvedChange.resource.resourceSet == resourceSet1)
-		Assert.assertTrue(resolvedChange.newValue == newRootObject)
-		Assert.assertFalse(stagingArea1.contents.contains(newRootObject))
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+			as InsertRootEObject<Root>	
+		resolvedChange.assertIsResolved(newRootObject, resource1)
+		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
 	/**
@@ -83,83 +91,55 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def public void resolveToCorrectType() {
+		// Set state before
 		prepareStagingArea(newRootObject)
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)
-			
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
-		
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
-	}
-	
-	/**
-	 * Tests resolves a {@link InsertRootEObject} EChange with no root object
-	 * in the staging area or in the resource.
-	 */
-	 @Test
-	 def public void resolveInsertRootEObjectFailsTest() {
-		// Insert object first in resource so the URI is set correctly (object state after inserting it)
-		prepareResource(newRootObject, DEFAULT_INDEX)
-		
 		// Create change
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true)		
-
-		// Remove object from resource
-		resourceContent.remove(newRootObject)	 
-		
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertNull(unresolvedChange.resource)
-		Assert.assertTrue(unresolvedChange.newValue != newRootObject)
-		Assert.assertFalse(resourceContent.contains(newRootObject))	
-		Assert.assertTrue(stagingArea1.contents.empty)
-		
-		// resolve
-		var resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as InsertRootEObject<Root>
-		
-		Assert.assertFalse(resolvedChange.isResolved)
-		Assert.assertNull(resolvedChange.resource)
-		Assert.assertFalse(resolvedChange.newValue == newRootObject)
-		Assert.assertTrue(stagingArea1.contents.empty)	
-	 }
+		val unresolvedChange = createUnresolvedChange(newRootObject)
+			
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
+	}
 	
 	/**
 	 * Tests applying a {@link InsertRootEObject} EChange forward 
 	 * by inserting a new root elements into a resource.
 	 */
 	@Test
-	def public void insertRootEObjectApplyForwardTest() {
-		val oldSize = resourceContent.size;
-				
-		// Prepare staging area for the first object
+	def public void insertRootEObjectApplyForwardTest() {	
+		// Set state before
 		prepareStagingArea(newRootObject)
-
-		// Insert first root element
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			copyAndResolveBefore(resourceSet1) as InsertRootEObject<Root>
-			
+		val oldSize = resourceContent.size;
+		
+		// Create change and resolve 1
+		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+			as InsertRootEObject<Root>
+		resolvedChange.assertIsResolved(newRootObject, resource1)
+					
+		// Apply forward 1
 		Assert.assertTrue(resolvedChange.applyForward)
 		
 		Assert.assertTrue(stagingArea1.contents.empty)
 		Assert.assertEquals(resourceContent.size, oldSize + 1)
-		Assert.assertTrue(resourceContent.contains(resolvedChange.newValue))
+		Assert.assertTrue(newRootObject == resourceContent.get(DEFAULT_INDEX))
 		
 		// Prepare staging area for the second object
 		prepareStagingArea(newRootObject2)
 		Assert.assertFalse(stagingArea1.contents.empty)
 				
-		// Insert second root element
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-			<Root>createInsertRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			copyAndResolveBefore(resourceSet1) as InsertRootEObject<Root>
+		// Create change and resolve 2
+		val resolvedChange2 = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+			as InsertRootEObject<Root>
+		resolvedChange2.assertIsResolved(newRootObject2, resource1)
 			
+		// Apply forward 2
 		Assert.assertTrue(resolvedChange2.applyForward)
 		
 		Assert.assertTrue(stagingArea1.contents.empty)
 		Assert.assertEquals(resourceContent.size, oldSize + 2)
-		Assert.assertTrue(resourceContent.contains(resolvedChange2.newValue))
+		Assert.assertTrue(newRootObject2 == resourceContent.get(DEFAULT_INDEX))
+		Assert.assertTrue(newRootObject == resourceContent.get(DEFAULT_INDEX + 1))
 	}
 	
 	/**
@@ -168,51 +148,40 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def public void insertRootEObjectApplyBackwardTest() {
-		val beforeInsertSize = resourceContent.size;
-		
-		// Prepare and insert first root element
+		// Set state before
 		prepareStagingArea(newRootObject)
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createInsertRootChange(newRootObject, fileUri.toString, DEFAULT_INDEX, true).
-			copyAndResolveBefore(resourceSet1) as InsertRootEObject<Root>	
-
+		
+		// Create change and resolve and apply forward 1
+		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+			as InsertRootEObject<Root>
 		Assert.assertTrue(resolvedChange.applyForward)
-			
-		// Prepare and insert second root element
+		
+		// Create change and resolve and apply forward 2
 		prepareStagingArea(newRootObject2)
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-			<Root>createInsertRootChange(newRootObject2, fileUri.toString, DEFAULT_INDEX, true).
-			copyAndResolveBefore(resourceSet1) as InsertRootEObject<Root>
-		
+		val resolvedChange2 = createUnresolvedChange(newRootObject2).resolveBefore(resourceSet1)
+			as InsertRootEObject<Root>
 		Assert.assertTrue(resolvedChange2.applyForward)
+				
+		// State after
+		val oldSize = resourceContent.size	
+		Assert.assertTrue(newRootObject2 == resourceContent.get(DEFAULT_INDEX))
+		Assert.assertTrue(newRootObject == resourceContent.get(DEFAULT_INDEX + 1))
 		
-		// Both objects are in resource and staging area is empty
-		Assert.assertEquals(resourceContent.size, beforeInsertSize + 2)	
-		Assert.assertTrue(resourceContent.contains(newRootObject))
-		Assert.assertTrue(resourceContent.contains(newRootObject2))
-		Assert.assertTrue(stagingArea1.contents.empty)	
-		
-		// Revert second change
+		// Apply backward 2
 		Assert.assertTrue(resolvedChange2.applyBackward)
 		
-		Assert.assertEquals(resourceContent.size, beforeInsertSize + 1)
-		Assert.assertFalse(resourceContent.contains(newRootObject2))
-		Assert.assertTrue(resourceContent.contains(newRootObject))
-		Assert.assertFalse(stagingArea1.contents.empty)
-		
-		/* Presumption: after removing a root object, 
-		 * it will be deleted (and removed from the staging area) 
-		 * by a DeleteEObject EChange, before the next root object will 
-		 * be removed.
-		 */ 
+		Assert.assertEquals(resourceContent.size, oldSize - 1)	
+		Assert.assertTrue(newRootObject == resourceContent.get(DEFAULT_INDEX))
+		Assert.assertTrue(newRootObject2 == stagingArea1.contents.get(0))
+			
+		// Now another change would take the object from the staging area
 		stagingArea1.contents.clear
 		
-		// Revert first change
+		// Apply backward 1
 		Assert.assertTrue(resolvedChange.applyBackward)
-			
-		Assert.assertEquals(resourceContent.size, beforeInsertSize)
-		Assert.assertFalse(resourceContent.contains(newRootObject))
-		Assert.assertFalse(stagingArea1.contents.empty)
+		
+		Assert.assertEquals(resourceContent.size, oldSize - 2)	
+		Assert.assertTrue(newRootObject == stagingArea1.contents.get(0))
 	}
 	
 	/**
@@ -220,17 +189,17 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def public void insertRootEObjectInvalidIndexTest() {
+		// Set state before
 		prepareStagingArea(newRootObject)
-		val index = 5
-		
+		index = 5
 		Assert.assertTrue(resourceContent.size < index)
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root>createInsertRootChange(newRootObject, fileUri.toString, index, true).
-			copyAndResolveBefore(resourceSet1) as InsertRootEObject<Root>	
-			
-		Assert.assertTrue(resolvedChange.isResolved)			
-		Assert.assertTrue(resolvedChange.resource.resourceSet == resourceSet1)
+		// Create change and resolve
+		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+			as InsertRootEObject<Root>	
+		resolvedChange.assertIsResolved(newRootObject, resource1)	
+		
+		// Apply		
 		Assert.assertFalse(resolvedChange.applyForward)
 	}
 }

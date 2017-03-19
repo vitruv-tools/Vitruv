@@ -5,7 +5,6 @@ package tools.vitruv.framework.change.echange.eobject;
 import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
 
@@ -82,19 +81,16 @@ public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChang
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((super.isResolved() && (!<%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null))) && (!this.getAffectedEObject().eIsProxy())) && (!<%com.google.common.base.Objects%>.equal(this.getStagingArea(), null)));'"
 	 * @generated
 	 */
 	boolean isResolved();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.eobject.ResourceSet" resourceSetUnique="false" newObjectUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tA _affectedEObject = this.getAffectedEObject();\n\tboolean _equals = <%com.google.common.base.Objects%>.equal(_affectedEObject, null);\n\tif (_equals)\n\t{\n\t\treturn false;\n\t}\n\tfinal <%org.eclipse.emf.ecore.resource.Resource%> resolvedStagingArea = <%tools.vitruv.framework.change.echange.util.StagingArea%>.getStagingArea(resourceSet);\n\tA resolvedAffectedEObject = null;\n\tif (newObject)\n\t{\n\t\tA _affectedEObject_1 = this.getAffectedEObject();\n\t\tA _copy = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<A>copy(_affectedEObject_1);\n\t\tresolvedAffectedEObject = _copy;\n\t\t((<%org.eclipse.emf.ecore.InternalEObject%>) resolvedAffectedEObject).eSetProxyURI(null);\n\t}\n\telse\n\t{\n\t\t<%org.eclipse.emf.common.util.EList%><<%org.eclipse.emf.ecore.EObject%>> _contents = resolvedStagingArea.getContents();\n\t\t<%org.eclipse.emf.ecore.EObject%> _get = _contents.get(0);\n\t\tresolvedAffectedEObject = ((A) _get);\n\t}\n\tif (((<%com.google.common.base.Objects%>.equal(resolvedAffectedEObject, null) || resolvedAffectedEObject.eIsProxy()) || (<%com.google.common.base.Objects%>.equal(resolvedStagingArea, null) && (!super.resolveBefore(resourceSet)))))\n\t{\n\t\treturn false;\n\t}\n\tthis.setAffectedEObject(resolvedAffectedEObject);\n\tthis.setStagingArea(resolvedStagingArea);\n}\nreturn true;'"
-	 * @generated
-	 */
-	boolean resolve(ResourceSet resourceSet, boolean newObject);
 
 } // EObjectExistenceEChange

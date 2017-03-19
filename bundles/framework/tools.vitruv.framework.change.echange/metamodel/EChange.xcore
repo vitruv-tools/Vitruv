@@ -5,6 +5,7 @@ package tools.vitruv.framework.change.echange
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.EChangeResolver
 import tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch
 import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch
 
@@ -22,107 +23,103 @@ abstract class EChange {
 	}
 	
 	/**
-	 * Resolves the unresolved proxy EObjects of the change to a given set of resources with concrete EObjects.
-	 * The model has to be in the state before the change will applied forward. If the model is in state after the
+	 * Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set of 
+	 * resources with concrete EObjects.
+	 * The model has to be in the state before the change is applied forward. If the model is in state after the
 	 * change and it will be applied backward, {@link resolveAfter} has to be called instead.
 	 * Before the change can be applied all proxy objects need to be resolved.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
-	 * @return 	{@code true} if the change was successfully resolved.
-	 * 			Returns {@code false} if the change could not be resolved or the resource set was {@code null}.
+	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
+	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
+	 * 			the original change.
 	 */
-	op boolean resolveBefore(ResourceSet resourceSet) {
-		if (resourceSet == null) {
-			return false
+	op EChange resolveBefore(ResourceSet resourceSet) {
+		if (!isResolved) {
+			val change = EcoreUtil.copy(this)
+			if (EChangeResolver.resolve(change, resourceSet, true)) {
+				return change
+			}
+			return null		
 		}
-		return true
+		return this
 	}
 	
 	/**
-	 * Resolves the unresolved proxy EObjects of the change to a given set of resources with concrete EObjects.
-	 * The model has to be in the state after the change is applied forward. If the model is in state before
+	 * Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set 
+	 * of resources with concrete EObjects.
+	 * The model has to be in the state after the change is applied backward. If the model is in state before
 	 * the change and it will be applied forward, {@link resolveBefore} has to be called instead.
 	 * Before the change can be applied all proxy objects need to be resolved.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
-	 * @return 	{@code true} if the change was successfully resolved.
-	 * 			Returns {@code false} if the change could not be resolved or the resource set was {@code null}.
+	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
+	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
+	 * 			the original change.
 	 */
-	op boolean resolveAfter(ResourceSet resourceSet) {
-		return resolveBefore(resourceSet)
-	}
-	
-	/**
-	 * Resolves the change like {@link resolveBefore}, but creates a copy of the change and resolves that 
-	 * one instead.
-	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
-	 * 			the unresolved should be resolved to.
-	 * @return 	Returns the resolved copy of the original change if the change was successfully resolved.
-	 * 			If the change could not be resolved successfully, was already resolved or the resource set 
-	 * 			is null it returns the original change.
-	 */
-	op EChange copyAndResolveBefore(ResourceSet resourceSet) {
+	op EChange resolveAfter(ResourceSet resourceSet) {
 		if (!isResolved) {
-			val resolvedChange = EcoreUtil.copy(this)
-			if (resolvedChange.resolveBefore(resourceSet)) {
-				return resolvedChange
-			}			
-		}
-		return this
-	}
-
-	/**
-	 * Resolves the change like {@link resolveAfter}, but creates a copy of the change and resolves that 
-	 * one instead.
-	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
-	 * 			the unresolved should be resolved to.
-	 * @return 	Returns the resolved copy of the original change if the change was successfully resolved.
-	 * 			If the change could not be resolved successfully, was already resolved or the resource set 
-	 * 			is null it returns the original change.
-	 */	
-	op EChange copyAndResolveAfter(ResourceSet resourceSet) {
-		if (!isResolved) {
-			val resolvedChange = EcoreUtil.copy(this)
-			if (resolvedChange.resolveAfter(resourceSet)) {
-				return resolvedChange
-			}			
+			val change = EcoreUtil.copy(this)
+			if (EChangeResolver.resolve(change, resourceSet, false)) {
+				return change
+			}
+			return null			
 		}
 		return this
 	}
 	
 	/**
 	 * Resolves the change like {@link resolveBefore}, but also applies the change forward.
+	 * If the change was already resolved, it returns the original change and applies it forward.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
-	 * @return 	{@code true} if the change was successfully resolved and applied forward.
-	 * 			Returns {@code false} if the change could not be resolved / applied or the resource set was 
-	 * 			{@code null}.
+	 * @return 	Returns the resolved change if the change could be applied forward. The returned change
+	 * 			is a copy of the change or, if the change was already resolved, the original change. 
+	 * 			If the change could not be resolved and / or applied or the 
+	 * 			resource set is {@code null}, it returns {@code null}
 	 */
-	op boolean resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		if (resolveBefore(resourceSet)) {
-			return applyForward()
+	op EChange resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+		if (!isResolved) {
+			val resolvedChange = resolveBefore(resourceSet)
+			if (resolvedChange != null && resolvedChange.applyForward) {
+				return resolvedChange
+			}			
+		} else {
+			if (applyForward) {
+				return this
+			}
 		}
-		return false
+		return null
 	}
 
 	/**
 	 * Resolves the change like {@link resolveAfter}, but also applies the change backward.
+	 * If the change was already resolved, it returns the original change and applies it backward.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
-	 * @return 	{@code true} if the change was successfully resolved and applied backward.
-	 * 			Returns {@code false} if the change could not be resolved / applied or the resource set was 
-	 * 			{@code null}.
+	 * @return 	Returns the resolved change if the change could be applied backward. The returned change
+	 * 			is a copy of the change or, if the change was already resolved, the original change. 
+	 * 			If the change could not be resolved and / or applied or the resource set is {@code null}, 
+	 * 			it returns {@code null}
 	 */	
-	op boolean resolveAfterAndApplyBackward(ResourceSet resourceSet) {
-		if (resolveAfter(resourceSet)) {
-			return applyBackward()
+	op EChange resolveAfterAndApplyBackward(ResourceSet resourceSet) {
+		if (!isResolved) {
+			val resolvedChange = resolveAfter(resourceSet)
+			if (resolvedChange != null && resolvedChange.applyBackward) {
+				return resolvedChange
+			}			
+		} else {
+			if (applyBackward) {
+				return this
+			}	
 		}
-		return false
+		return null
 	}
+	
 	/**
 	 * Applies the change to the model which the change was resolved to.
 	 * The change must be resolved before it can be applied.
-	 * @return	Returns whether the change was successfully applied. If the 
+	 * @return	Returns whether the change was successfully applied forward. If the 
 	 * 			change was not resolved or could not be applied it returns {@code false}
 	 */
 	op boolean applyForward() {
@@ -145,7 +142,7 @@ abstract class EChange {
 	/**
 	 * Reverts the change on the model which the change was resolved to.
 	 * The change must be resolved before it can be reverted.
-	 * @return	Returns whether the change was successfully reverted. If the
+	 * @return	Returns whether the change was successfully applied backward. If the
 	 * 			change was not resolved or could not be reverted it returns {@code false}
 	 */
 	op boolean applyBackward() {

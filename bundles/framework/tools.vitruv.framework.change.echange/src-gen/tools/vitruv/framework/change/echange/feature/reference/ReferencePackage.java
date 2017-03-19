@@ -101,6 +101,15 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT = FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -108,24 +117,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_REFERENCE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -171,15 +162,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_REFERENCE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -246,6 +228,15 @@ public interface ReferencePackage extends EPackage {
 	int ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -253,24 +244,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_REFERENCE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_REFERENCE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = UPDATE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = UPDATE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -318,15 +291,6 @@ public interface ReferencePackage extends EPackage {
 	int ADDITIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -345,22 +309,13 @@ public interface ReferencePackage extends EPackage {
 	int ADDITIVE_REFERENCE_ECHANGE___GET_NEW_VALUE = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve New Value</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_REFERENCE_ECHANGE___RESOLVE_NEW_VALUE__RESOURCESET_BOOLEAN = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Additive Reference EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 2;
+	int ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.SubtractiveReferenceEChangeImpl <em>Subtractive Reference EChange</em>}' class.
@@ -409,6 +364,15 @@ public interface ReferencePackage extends EPackage {
 	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -416,24 +380,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_REFERENCE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_REFERENCE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = UPDATE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET = UPDATE_REFERENCE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -481,15 +427,6 @@ public interface ReferencePackage extends EPackage {
 	int SUBTRACTIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
 
 	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_REFERENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -508,22 +445,13 @@ public interface ReferencePackage extends EPackage {
 	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_OLD_VALUE = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve Old Value</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___RESOLVE_OLD_VALUE__RESOURCESET_BOOLEAN = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Subtractive Reference EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE_OPERATION_COUNT = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 2;
+	int SUBTRACTIVE_REFERENCE_ECHANGE_OPERATION_COUNT = UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl <em>Insert EReference</em>}' class.
@@ -581,22 +509,22 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EREFERENCE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
+	int INSERT_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EREFERENCE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+	int INSERT_EREFERENCE___RESOLVE_AFTER__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -653,49 +581,13 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE___IS_CONTAINMENT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve New Value</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE___RESOLVE_NEW_VALUE__RESOURCESET_BOOLEAN = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EREFERENCE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 3;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE___RESOLVE_AFTER__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 4;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 5;
+	int INSERT_EREFERENCE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Insert EReference</em>' class.
@@ -704,7 +596,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 6;
+	int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
@@ -762,22 +654,22 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EREFERENCE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
+	int REMOVE_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EREFERENCE___COPY_AND_RESOLVE_AFTER__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+	int REMOVE_EREFERENCE___RESOLVE_AFTER__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -834,49 +726,13 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE___IS_CONTAINMENT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve Old Value</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE___RESOLVE_OLD_VALUE__RESOURCESET_BOOLEAN = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EREFERENCE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 3;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE___RESOLVE_AFTER__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 4;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 5;
+	int REMOVE_EREFERENCE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Remove EReference</em>' class.
@@ -885,7 +741,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 6;
+	int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
@@ -943,22 +799,22 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve Before</em>' operation.
+	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___COPY_AND_RESOLVE_BEFORE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_BEFORE__RESOURCESET;
+	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
-	 * The operation id for the '<em>Copy And Resolve After</em>' operation.
+	 * The operation id for the '<em>Resolve After</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___COPY_AND_RESOLVE_AFTER__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___COPY_AND_RESOLVE_AFTER__RESOURCESET;
+	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_AFTER__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -1042,58 +898,13 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Resolve New Value</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_NEW_VALUE__RESOURCESET_BOOLEAN = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
-	 * The operation id for the '<em>Resolve Old Value</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_OLD_VALUE__RESOURCESET_BOOLEAN = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 2;
-
-	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 3;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 4;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_AFTER__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 5;
-
-	/**
-	 * The operation id for the '<em>Resolve</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 6;
+	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Replace Single Valued EReference</em>' class.
@@ -1102,7 +913,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 7;
+	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '<em>EObj</em>' data type.
@@ -1166,16 +977,6 @@ public interface ReferencePackage extends EPackage {
 	EClass getAdditiveReferenceEChange();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange#resolveNewValue(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve New Value</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve New Value</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange#resolveNewValue(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
-	 * @generated
-	 */
-	EOperation getAdditiveReferenceEChange__ResolveNewValue__ResourceSet_boolean();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange <em>Subtractive Reference EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1184,16 +985,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getSubtractiveReferenceEChange();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange#resolveOldValue(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve Old Value</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Old Value</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange#resolveOldValue(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
-	 * @generated
-	 */
-	EOperation getSubtractiveReferenceEChange__ResolveOldValue__ResourceSet_boolean();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference <em>Insert EReference</em>}'.
@@ -1216,36 +1007,6 @@ public interface ReferencePackage extends EPackage {
 	EOperation getInsertEReference__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Before</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getInsertEReference__ResolveBefore__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve After</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getInsertEReference__ResolveAfter__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
-	 * @generated
-	 */
-	EOperation getInsertEReference__Resolve__ResourceSet_boolean();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference <em>Remove EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1266,36 +1027,6 @@ public interface ReferencePackage extends EPackage {
 	EOperation getRemoveEReference__IsResolved();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Before</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getRemoveEReference__ResolveBefore__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve After</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getRemoveEReference__ResolveAfter__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
-	 * @generated
-	 */
-	EOperation getRemoveEReference__Resolve__ResourceSet_boolean();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference <em>Replace Single Valued EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1314,36 +1045,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getReplaceSingleValuedEReference__IsResolved();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve Before</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getReplaceSingleValuedEReference__ResolveBefore__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve After</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
-	 * @generated
-	 */
-	EOperation getReplaceSingleValuedEReference__ResolveAfter__ResourceSet();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean) <em>Resolve</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Resolve</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#resolve(org.eclipse.emf.ecore.resource.ResourceSet, boolean)
-	 * @generated
-	 */
-	EOperation getReplaceSingleValuedEReference__Resolve__ResourceSet_boolean();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
@@ -1430,14 +1131,6 @@ public interface ReferencePackage extends EPackage {
 		EClass ADDITIVE_REFERENCE_ECHANGE = eINSTANCE.getAdditiveReferenceEChange();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve New Value</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation ADDITIVE_REFERENCE_ECHANGE___RESOLVE_NEW_VALUE__RESOURCESET_BOOLEAN = eINSTANCE.getAdditiveReferenceEChange__ResolveNewValue__ResourceSet_boolean();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.SubtractiveReferenceEChangeImpl <em>Subtractive Reference EChange</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1446,14 +1139,6 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass SUBTRACTIVE_REFERENCE_ECHANGE = eINSTANCE.getSubtractiveReferenceEChange();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve Old Value</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation SUBTRACTIVE_REFERENCE_ECHANGE___RESOLVE_OLD_VALUE__RESOURCESET_BOOLEAN = eINSTANCE.getSubtractiveReferenceEChange__ResolveOldValue__ResourceSet_boolean();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl <em>Insert EReference</em>}' class.
@@ -1474,30 +1159,6 @@ public interface ReferencePackage extends EPackage {
 		EOperation INSERT_EREFERENCE___IS_RESOLVED = eINSTANCE.getInsertEReference__IsResolved();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Before</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation INSERT_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getInsertEReference__ResolveBefore__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve After</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation INSERT_EREFERENCE___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getInsertEReference__ResolveAfter__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation INSERT_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getInsertEReference__Resolve__ResourceSet_boolean();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1516,30 +1177,6 @@ public interface ReferencePackage extends EPackage {
 		EOperation REMOVE_EREFERENCE___IS_RESOLVED = eINSTANCE.getRemoveEReference__IsResolved();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolve Before</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REMOVE_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getRemoveEReference__ResolveBefore__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve After</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REMOVE_EREFERENCE___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getRemoveEReference__ResolveAfter__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REMOVE_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getRemoveEReference__Resolve__ResourceSet_boolean();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1556,30 +1193,6 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = eINSTANCE.getReplaceSingleValuedEReference__IsResolved();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve Before</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getReplaceSingleValuedEReference__ResolveBefore__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve After</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getReplaceSingleValuedEReference__ResolveAfter__ResourceSet();
-
-		/**
-		 * The meta object literal for the '<em><b>Resolve</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___RESOLVE__RESOURCESET_BOOLEAN = eINSTANCE.getReplaceSingleValuedEReference__Resolve__ResourceSet_boolean();
 
 		/**
 		 * The meta object literal for the '<em>EObj</em>' data type.

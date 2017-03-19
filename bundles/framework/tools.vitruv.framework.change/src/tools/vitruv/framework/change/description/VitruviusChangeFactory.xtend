@@ -1,20 +1,20 @@
 package tools.vitruv.framework.change.description
 
-import tools.vitruv.framework.util.datatypes.VURI
-import org.eclipse.emf.ecore.change.ChangeDescription
-import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
-import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
-import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
-import org.eclipse.emf.ecore.EObject
 import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.change.ChangeDescription
+import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
+import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
+import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
+import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
+import tools.vitruv.framework.change.echange.TypeInferringUnresolvedAtomicEChangeFactory
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
+import tools.vitruv.framework.util.datatypes.VURI
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -38,20 +38,20 @@ class VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		return new EMFModelChangeImpl(changeDescription, vuri);
+	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri, boolean unresolve) {
+		return new EMFModelChangeImpl(changeDescription, vuri, unresolve);
 	}
 	
 	public def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
 		return new ConcreteChangeImpl(change, vuri);
 	}
 	
-	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
+	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource, boolean unresolve) {
 		val vuri = VURI.getInstance(changedFileResource);
 		if (kind == FileChangeKind.Create) {
-			return new ConcreteChangeImpl(generateFileCreateChange(changedFileResource), vuri);
+			return new ConcreteChangeImpl(generateFileCreateChange(changedFileResource, unresolve), vuri);
 		} else {
-			return new ConcreteChangeImpl(generateFileDeleteChange(changedFileResource), vuri);
+			return new ConcreteChangeImpl(generateFileDeleteChange(changedFileResource, unresolve), vuri);
 		}
 	}
 	
@@ -75,7 +75,7 @@ class VitruviusChangeFactory {
 		return compositeChange;
 	}
 		
-	private def EChange generateFileCreateChange(Resource resource) {
+	private def EChange generateFileCreateChange(Resource resource, boolean unresolve) {
 		var EObject rootElement = null;
 		var index = 0 // TODO Stefan: Added for working EChange implementation + boolean: unresolve
         if (1 == resource.getContents().size()) {
@@ -89,15 +89,27 @@ class VitruviusChangeFactory {
                     + ". Propagation of 'root element created' not triggered.");
             return null;
         }
-        val CreateAndInsertRoot<EObject> createRootEObj = TypeInferringCompoundEChangeFactory.createCreateAndInsertRootChange(rootElement, resource.URI.toString, index, true);
+		var TypeInferringCompoundEChangeFactory factory
+        if (unresolve) {
+        	factory = new TypeInferringCompoundEChangeFactory(new TypeInferringUnresolvedAtomicEChangeFactory)
+        } else {
+        	factory = new TypeInferringCompoundEChangeFactory(new TypeInferringUnresolvedAtomicEChangeFactory)
+        }
+        val CreateAndInsertRoot<EObject> createRootEObj = factory.createCreateAndInsertRootChange(rootElement, resource.URI.toString, index);
         return createRootEObj; 
 	}
 	
-	private def generateFileDeleteChange(Resource resource) {
+	private def generateFileDeleteChange(Resource resource, boolean unresolve) {
 		if (0 < resource.getContents().size()) {
 			val index = 0 // TODO Stefan: Added for working EChange implementation + boolean: unresolve
             val EObject rootElement = resource.getContents().get(index);
-            val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory.createRemoveAndDeleteRootChange(rootElement, resource.URI.toString, index, true);
+            var TypeInferringCompoundEChangeFactory factory
+       		if (unresolve) {
+        		factory = new TypeInferringCompoundEChangeFactory(new TypeInferringUnresolvedAtomicEChangeFactory)
+        	} else {
+        		factory = new TypeInferringCompoundEChangeFactory(new TypeInferringUnresolvedAtomicEChangeFactory)
+        	}
+            val RemoveAndDeleteRoot<EObject> deleteRootObj = factory.createRemoveAndDeleteRootChange(rootElement, resource.URI.toString, index);
             return deleteRootObj;
         }
         logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");

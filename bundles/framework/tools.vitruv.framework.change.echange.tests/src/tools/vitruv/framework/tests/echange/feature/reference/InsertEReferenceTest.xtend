@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.EReference
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 
 /**
@@ -18,23 +17,73 @@ import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
  * which inserts a reference in a multivalued attribute.
  */
 public class InsertEReferenceTest extends ReferenceEChangeTest {
-	protected var EReference defaultAffectedFeature = null
+	protected var EReference affectedFeature = null
 	protected var EList<EObject> resourceContent = null
 	protected var EList<NonRoot> referenceContent = null
+	protected var int index = DEFAULT_INDEX
 	
 	protected static val Integer DEFAULT_INDEX = 0
 	
-	/**
-	 * Sets the default affected feature for the tests.
-	 */
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		defaultAffectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE
 		resourceContent = resource1.contents
-		referenceContent = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<NonRoot>
 	}
 	
+	/**
+	 * Starts a test with a containment feature and sets state before.
+	 */	
+	def private void isContainmentTest() {
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
+		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
+		prepareStagingArea(newValue)
+	}
+	
+	/**
+	 * Starts a test with a non containment feature and sets state before.
+	 */	
+	def private void isNonContainmentTest() {
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE	
+		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
+		prepareResource	
+	}
+	
+	/**
+	 * Prepares the multivalued reference used in the tests 
+	 * and fills it with a new value.
+	 */
+	def private void prepareReference(NonRoot object) {
+		referenceContent.add(object)
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(InsertEReference<Root, NonRoot> change, 
+		Root affectedEObject, NonRoot newValue) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.affectedEObject != affectedEObject)
+		Assert.assertTrue(change.newValue != newValue)			
+	}
+
+	/**
+	 * Change is resolved.
+	 */
+	def private static void assertIsResolved(InsertEReference<Root, NonRoot> change, 
+		Root affectedEObject, NonRoot newValue) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.affectedEObject == affectedEObject)
+		Assert.assertTrue(change.newValue == newValue)			
+	}
+
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private InsertEReference<Root, NonRoot> createUnresolvedChange(NonRoot newValue) {
+		return atomicFactory.<Root, NonRoot>createInsertReferenceChange
+		(affectedEObject, affectedFeature, newValue, index)	
+	}
+			
 	/**
 	 * Test resolves a {@link InsertEReference} EChange with correct parameters on
 	 * a model which is in state before the change.
@@ -43,20 +92,17 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveInsertEReferenceTest() {
-		prepareResource
+		// Set state before
+		isNonContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)
-			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)
-		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newValue)
+		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 		
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as InsertEReference<Root, NonRoot>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.newValue == defaultNewValue)
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+			as InsertEReference<Root, NonRoot>
+		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
 	
 	/**
@@ -67,21 +113,16 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveInsertEReferenceTest2() {
-		prepareStagingArea(defaultNewValue)
+		// Set state before
+		isContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newValue)
+		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)
-		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)	
-		Assert.assertFalse(resourceContent.contains(defaultNewValue))
-		
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as InsertEReference<Root, NonRoot>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.newValue == defaultNewValue)				
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) as InsertEReference<Root, NonRoot>
+		resolvedChange.assertIsResolved(affectedEObject, newValue)				
 	}
 	
 	/**
@@ -92,21 +133,19 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveInsertEReferenceTest3() {
-		prepareResource
+		// Set state before
+		isNonContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newValue)
+		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)
-		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)		
-		Assert.assertTrue(resourceContent.contains(defaultNewValue))	
+		// Set state after
+		prepareReference(newValue)
 		
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as InsertEReference<Root, NonRoot>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.newValue == defaultNewValue)			
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) as InsertEReference<Root, NonRoot>
+		resolvedChange.assertIsResolved(affectedEObject, newValue)			
 	}
 	
 	/**
@@ -117,23 +156,19 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveInsertEReferenceTest4() {
-		val affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
-		referenceContent = defaultAffectedEObject.eGet(affectedFeature) as EList<NonRoot>
-		referenceContent.add(defaultNewValue)
+		// Set state before
+		isContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, affectedFeature, defaultNewValue, DEFAULT_INDEX, true)		
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newValue)
+		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)		
 		
-		Assert.assertFalse(unresolvedChange.isResolved)	
-		Assert.assertTrue(unresolvedChange.affectedEObject != defaultAffectedEObject)	
-		Assert.assertTrue(unresolvedChange.newValue != defaultNewValue)
-		Assert.assertTrue(referenceContent.contains(defaultNewValue))
+		// Set state after
+		prepareReference(newValue)
 		
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as InsertEReference<Root, NonRoot>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(resolvedChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.newValue == defaultNewValue)					
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) as InsertEReference<Root, NonRoot>
+		resolvedChange.assertIsResolved(affectedEObject, newValue)						
 	}
 	
 	/**
@@ -142,14 +177,15 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveToCorrectType() {
-		resourceContent.add(defaultNewValue)
+		// Set state before
+		isNonContainmentTest
 		
-		val unresolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, true)	
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newValue)
 			
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1)
-		
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1)
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
 	 /**
@@ -160,27 +196,27 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	  */
 	@Test
 	def public void insertEReferenceApplyForwardTest() {
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, false)
-	 	 	
-	    Assert.assertEquals(referenceContent.size, 0)
+		// Set state before
+		isNonContainmentTest
+		val oldSize = referenceContent.size
+		
+		// Create change (resolved)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
 	 	
-	 	// Insert first value
+	 	// Apply forward
 	 	Assert.assertTrue(resolvedChange.applyForward)
-	 	
-	 	Assert.assertEquals(referenceContent.size, 1)
-	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue)
+	 	Assert.assertEquals(referenceContent.size, oldSize + 1)
+	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue)
 
+	 	// Create change 2 (resolved)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
 	 	
-	 	val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-	 	 	<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue2, DEFAULT_INDEX, false)
-	 	
-	 	// Insert second value before first value (at index 0)
+	 	// Apply forward 2
 	 	Assert.assertTrue(resolvedChange2.applyForward)
 	 	
-	 	Assert.assertEquals(referenceContent.size, 2)
-	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue2)
-	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == defaultNewValue)
+	 	Assert.assertEquals(referenceContent.size, oldSize + 2)
+	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue2)
+	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == newValue)
 	}
 	
 	/**
@@ -191,34 +227,33 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void insertEReferenceApplyForwardTest2() {
-		prepareStagingArea(defaultNewValue)
-		val affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
-		referenceContent = defaultAffectedEObject.eGet(affectedFeature) as EList<NonRoot>
+		// Set state before
+		isContainmentTest
+		val oldSize = referenceContent.size
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, affectedFeature, defaultNewValue, DEFAULT_INDEX, false)
+		// Create change (resolved)		
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
 			
 		Assert.assertEquals(stagingArea1.contents.size, 1)
-		Assert.assertEquals(referenceContent.size, 0)
 		
-		// Insert first value
+		// Apply forward
 	 	Assert.assertTrue(resolvedChange.applyForward)
 	 	
 		Assert.assertEquals(stagingArea1.contents.size, 0)
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue)
+		Assert.assertEquals(referenceContent.size, oldSize + 1)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue)
 		
-		prepareStagingArea(defaultNewValue2)
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-	 	 	<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, affectedFeature, defaultNewValue2, DEFAULT_INDEX, false)
+		// Prepare and create change 2
+		prepareStagingArea(newValue2) // another change would fill the staging area.
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
 	 	
-	 	// Insert second value before first value (at index 0)
+	 	// Apply forward 2
 	 	Assert.assertTrue(resolvedChange2.applyForward)
 	 	
 		Assert.assertEquals(stagingArea1.contents.size, 0)	 	
-	 	Assert.assertEquals(referenceContent.size, 2)
-	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue2)
-	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == defaultNewValue)
+	 	Assert.assertEquals(referenceContent.size, oldSize + 2)
+	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue2)
+	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == newValue)
 	}
 	
 	/**
@@ -229,30 +264,32 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void insertEReferenceApplyBackwardTest() {
-		Assert.assertEquals(referenceContent.size, 0)
+		// Set state before
+		isNonContainmentTest
 		
-		// defaultNewValue2 was added first at index 0 (resolvedChange), then defaultNewValue at index 0 (resolvedChange2)
-		referenceContent.add(defaultNewValue)
-		referenceContent.add(defaultNewValue2)
+		// Create change and apply forward
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+	 	Assert.assertTrue(resolvedChange.applyForward)
+	 	
+	 	// Create change 2 and apply forward			
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+	 	Assert.assertTrue(resolvedChange2.applyForward)			
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue2, DEFAULT_INDEX, false)
-			
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, false)
-			
-		Assert.assertEquals(referenceContent.size, 2)
-		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue)
-		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == defaultNewValue2)	
+		// State after
+		val oldSize = referenceContent.size		
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue2)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == newValue)	
 		
+		// Apply backward 2
 		Assert.assertTrue(resolvedChange2.applyBackward)
 		
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue2)
+		Assert.assertEquals(referenceContent.size, oldSize - 1)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue)
 		
+		// Apply backward 1
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
-		Assert.assertEquals(referenceContent.size, 0)
+		Assert.assertEquals(referenceContent.size, oldSize - 2)
 	}
 	
 	/**
@@ -263,39 +300,37 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void insertEReferenceApplyBackwardTest2() {
-		val affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
-		referenceContent = defaultAffectedEObject.eGet(affectedFeature) as EList<NonRoot>
+		// Set state before
+		isContainmentTest
+
+		// Create change and apply forward
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+	 	Assert.assertTrue(resolvedChange.applyForward)
+	 	
+	 	// Create change 2 and apply forward			
+		prepareStagingArea(newValue2)	
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+	 	Assert.assertTrue(resolvedChange2.applyForward)	
+	 	
+	 	// State after
+	 	val oldSize = referenceContent.size
 		Assert.assertEquals(stagingArea1.contents.size, 0)
-		Assert.assertEquals(referenceContent.size, 0)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue2)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == newValue)	
 		
-		// defaultNewValue2 was added first at index 0 (resolvedChange), then defaultNewValue at index 0 (resolvedChange2)
-		referenceContent.add(defaultNewValue)
-		referenceContent.add(defaultNewValue2)
-	
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, affectedFeature, defaultNewValue2, DEFAULT_INDEX, false)
-			
-		val resolvedChange2 = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, affectedFeature, defaultNewValue, DEFAULT_INDEX, false)	
-			
-		
-		Assert.assertEquals(referenceContent.size, 2)
-		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue)
-		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == defaultNewValue2)	
-		
+		// Apply backward 2
 		Assert.assertTrue(resolvedChange2.applyBackward)
-		
 		Assert.assertEquals(stagingArea1.contents.size, 1)
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == defaultNewValue2)
-		
+		Assert.assertEquals(referenceContent.size, oldSize - 1)
+		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue)		
 		// Now another change would delete the element in the staging area (or reinsert)
 		stagingArea1.contents.clear
 		
+		// Apply backward 1
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
 		Assert.assertEquals(stagingArea1.contents.size, 1)
-		Assert.assertEquals(referenceContent.size, 0)		
+		Assert.assertEquals(referenceContent.size, oldSize - 2)		
 	}
 	
 	/**
@@ -303,14 +338,17 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void insertEReferenceInvalidIndexTest() {
-		val index = 5 // Valid index in empty list is only 0
-		val EList<NonRoot> multivaluedReference = defaultAffectedEObject.eGet(defaultAffectedFeature) as EList<NonRoot>
-		Assert.assertEquals(multivaluedReference.size, 0)
+		// Set state before
+		isNonContainmentTest
+		index = 5 // Valid index in empty list is only 0
+		Assert.assertEquals(referenceContent.size, 0)
 		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, NonRoot>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, defaultNewValue, index, false)
-			
-		Assert.assertTrue(resolvedChange.isResolved)
+		// Create and resolve
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+			as InsertEReference<Root, NonRoot>		
+		resolvedChange.assertIsResolved(affectedEObject, newValue)	
+		
+		// Apply	
 		Assert.assertFalse(resolvedChange.applyForward)
 		Assert.assertFalse(resolvedChange.applyBackward)
 	}
@@ -320,30 +358,18 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void insertEReferenceInvalidAttribute() {
-		val affectedEObject = rootObject1.singleValuedNonContainmentEReference // NonRoot element
+		// Set state before
+		isNonContainmentTest
+		val invalidAffectedEObject = newValue2 // NonRoot element
 
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<NonRoot, NonRoot>createInsertReferenceChange(affectedEObject, defaultAffectedFeature, defaultNewValue, DEFAULT_INDEX, false)
+		// Create and resolve change
+		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createInsertReferenceChange
+			(invalidAffectedEObject, affectedFeature, newValue, DEFAULT_INDEX).
+			resolveBefore(resourceSet1)
+		Assert.assertTrue(resolvedChange.isResolved)
 		
 		// NonRoot has no such feature
-		Assert.assertTrue(affectedEObject.eClass.getFeatureID(defaultAffectedFeature) == -1)
-		
-		Assert.assertFalse(resolvedChange.applyForward)
-		Assert.assertFalse(resolvedChange.applyBackward)
-	}
-	
-	/**
-	 * Tests a {@link InsertEReference} EChange with the wrong value type.
-	 */
-	@Test
-	def public void insertEReferenceInvalidValue() {
-		val newValue = AllElementTypesFactory.eINSTANCE.createRoot() // value is Root, reference value is NonRoot
-		
-		val resolvedChange = TypeInferringAtomicEChangeFactory.
-			<Root, Root>createInsertReferenceChange(defaultAffectedEObject, defaultAffectedFeature, newValue, DEFAULT_INDEX, false)
-			
-		// Type of reference is NonRoot not Root
-		Assert.assertEquals(defaultAffectedFeature.EType.name, "NonRoot")
+		Assert.assertTrue(invalidAffectedEObject.eClass.getFeatureID(affectedFeature) == -1)
 		
 		Assert.assertFalse(resolvedChange.applyForward)
 		Assert.assertFalse(resolvedChange.applyBackward)

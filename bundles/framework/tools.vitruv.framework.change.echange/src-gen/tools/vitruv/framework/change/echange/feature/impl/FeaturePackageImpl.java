@@ -15,8 +15,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
@@ -66,13 +64,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * @generated
 	 */
 	private EDataType eFeatEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType resourceSetEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -179,15 +170,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getFeatureEChange__ResolveBefore__ResourceSet() {
-		return featureEChangeEClass.getEOperations().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getUpdateMultiValuedFeatureEChange() {
 		return updateMultiValuedFeatureEChangeEClass;
 	}
@@ -224,15 +206,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getResourceSet() {
-		return resourceSetEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public FeatureFactory getFeatureFactory() {
 		return (FeatureFactory)getEFactoryInstance();
 	}
@@ -260,7 +233,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_FEATURE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_EOBJECT);
 		createEOperation(featureEChangeEClass, FEATURE_ECHANGE___IS_RESOLVED);
-		createEOperation(featureEChangeEClass, FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET);
 
 		updateMultiValuedFeatureEChangeEClass = createEClass(UPDATE_MULTI_VALUED_FEATURE_ECHANGE);
 
@@ -269,7 +241,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		// Create data types
 		eObjEDataType = createEDataType(EOBJ);
 		eFeatEDataType = createEDataType(EFEAT);
-		resourceSetEDataType = createEDataType(RESOURCE_SET);
 	}
 
 	/**
@@ -345,9 +316,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 
 		initEOperation(getFeatureEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getFeatureEChange__ResolveBefore__ResourceSet(), theEcorePackage.getEBoolean(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
 		initEClass(updateMultiValuedFeatureEChangeEClass, UpdateMultiValuedFeatureEChange.class, "UpdateMultiValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(updateSingleValuedFeatureEChangeEClass, UpdateSingleValuedFeatureEChange.class, "UpdateSingleValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -355,7 +323,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		// Initialize data types
 		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(eFeatEDataType, EStructuralFeature.class, "EFeat", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

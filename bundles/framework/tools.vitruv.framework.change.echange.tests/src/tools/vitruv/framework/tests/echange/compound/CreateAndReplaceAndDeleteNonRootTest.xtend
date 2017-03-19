@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EReference
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
 import tools.vitruv.framework.tests.echange.feature.reference.ReferenceEChangeTest
 
@@ -18,8 +17,9 @@ import tools.vitruv.framework.tests.echange.feature.reference.ReferenceEChangeTe
  * in a single value containment reference. The existing one will be deleted.
  */
 class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
-	protected var NonRoot defaultOldValue = null	
-	protected var EReference defaultAffectedFeature = null
+	protected var NonRoot oldValue = null	
+	protected var EReference affectedFeature = null
+	protected var index = DEFAULT_INDEX
 	
 	protected static val Integer DEFAULT_INDEX = 0
 	
@@ -29,10 +29,83 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		defaultOldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
-		defaultAffectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
+		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
+		affectedEObject.eSet(affectedFeature, oldValue)
+	}
+
+	/**
+	 * Sets the model after the change
+	 * (Replaces the {@code oldValue} with {@code newValue})
+	 */
+	def private void prepareStateAfter() {
+		affectedEObject.eSet(affectedFeature, newValue)
 	}
 	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
+		NonRoot oldNonRootObject, NonRoot newNonRootObject) {
+		Assert.assertFalse(change.isResolved)
+		
+		Assert.assertFalse(change.createChange.isResolved)
+		Assert.assertFalse(change.replaceChange.isResolved)
+		Assert.assertFalse(change.deleteChange.isResolved)
+		
+		Assert.assertTrue(change.createChange.affectedEObject != newNonRootObject)
+		Assert.assertTrue(change.replaceChange.newValue != newNonRootObject)
+		Assert.assertTrue(change.replaceChange.oldValue != oldNonRootObject)
+		Assert.assertTrue(change.deleteChange.affectedEObject != oldNonRootObject)
+		
+		Assert.assertTrue(change.replaceChange.affectedEObject != affectedRootObject)
+		
+		Assert.assertTrue(change.replaceChange.oldValue != change.deleteChange.affectedEObject)
+		Assert.assertTrue(change.replaceChange.newValue != change.createChange.affectedEObject)
+	}
+	
+	/**
+	 * Change is resolved with state before change.
+	 */
+	def private static void assertIsResolvedBefore(CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
+		NonRoot oldNonRootObject, NonRoot newNonRootObject) {
+		Assert.assertTrue(change.isResolved)
+		
+		Assert.assertTrue(change.replaceChange.oldValue == change.deleteChange.affectedEObject)
+		Assert.assertTrue(change.replaceChange.newValue == change.createChange.affectedEObject)		
+		
+		// The new object is a copy, the old one the existing one.
+		change.replaceChange.newValue.assertIsCopy(newNonRootObject)
+		Assert.assertTrue(change.replaceChange.oldValue == oldNonRootObject)
+		
+		Assert.assertTrue(change.replaceChange.affectedEObject == affectedRootObject)
+	}
+	
+	/**
+	 * Change is resolved with state after change.
+	 */
+	def private static void assertIsResolvedAfter(CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
+		NonRoot oldNonRootObject, NonRoot newNonRootObject) {
+		Assert.assertTrue(change.isResolved)
+		
+		Assert.assertTrue(change.replaceChange.oldValue == change.deleteChange.affectedEObject)
+		Assert.assertTrue(change.replaceChange.newValue == change.createChange.affectedEObject)		
+		
+		// The new object is a existing one, the old one is a copy.
+		change.replaceChange.oldValue.assertIsCopy(oldNonRootObject)
+		Assert.assertTrue(change.replaceChange.newValue == newNonRootObject)
+				
+		Assert.assertTrue(change.replaceChange.affectedEObject == affectedRootObject)
+	}	
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(NonRoot newNonRootValue) {
+		return compoundFactory.<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange
+		(affectedEObject, affectedFeature, oldValue, newNonRootValue)	
+	}
+		
 	/**
 	 * Resolves a {@link CreateAndReplaceAndDeleteNonRoot} EChange. The 
 	 * model is in state before the change, so new value doesn't exist and 
@@ -40,40 +113,21 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveCreateAndReplaceAndDeleteNonRootTest() {
-		defaultAffectedEObject.eSet(defaultAffectedFeature, defaultOldValue)
+		// State before
 		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.
-			<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true)
-			
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange.createChange.affectedEObject != defaultNewValue)
-		Assert.assertTrue(unresolvedChange.replaceChange.affectedEObject != defaultAffectedEObject)
-		Assert.assertTrue(unresolvedChange.replaceChange.oldValue != defaultOldValue)
-		Assert.assertTrue(unresolvedChange.replaceChange.newValue != defaultNewValue)
-		Assert.assertTrue(unresolvedChange.deleteChange.affectedEObject != defaultOldValue)
-		Assert.assertTrue(unresolvedChange.createChange.affectedEObject != 
-			unresolvedChange.replaceChange.newValue)
-		Assert.assertTrue(unresolvedChange.deleteChange.affectedEObject != 
-			unresolvedChange.replaceChange.oldValue)
-		
-		val resolvedChange = unresolvedChange.copyAndResolveBefore(resourceSet1) as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
-		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)
-		// New value is copy of original object
-		Assert.assertTrue(resolvedChange.createChange.affectedEObject != defaultNewValue)
-		Assert.assertTrue(resolvedChange.replaceChange.affectedEObject == defaultAffectedEObject)
-		Assert.assertTrue(resolvedChange.replaceChange.oldValue == defaultOldValue)
-		Assert.assertTrue(resolvedChange.replaceChange.newValue != defaultNewValue)
-		Assert.assertTrue(resolvedChange.deleteChange.affectedEObject == defaultOldValue)
-		Assert.assertTrue(resolvedChange.createChange.affectedEObject == 
-			resolvedChange.replaceChange.newValue)
-		Assert.assertTrue(resolvedChange.deleteChange.affectedEObject == 
-			resolvedChange.replaceChange.oldValue)
-			
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newValue)
+		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
+
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
+		resolvedChange.assertIsResolvedBefore(affectedEObject, oldValue, newValue)
+							
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
-		Assert.assertTrue(defaultAffectedEObject.eGet(defaultAffectedFeature) == defaultOldValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
@@ -84,45 +138,24 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveCreateAndReplaceAndDeleteNonRootTest2() {
-		// Set state before change.
-		defaultAffectedEObject.eSet(defaultAffectedFeature, defaultOldValue)
-		
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.
-			<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true)
-			
-		// Set state after change	
-		defaultAffectedEObject.eSet(defaultAffectedFeature, defaultNewValue)
-		
+		// State before change
 		Assert.assertTrue(stagingArea1.contents.empty)
-		Assert.assertFalse(unresolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange.createChange.affectedEObject != defaultNewValue)
-		Assert.assertTrue(unresolvedChange.replaceChange.affectedEObject != defaultAffectedEObject)
-		Assert.assertTrue(unresolvedChange.replaceChange.oldValue != defaultOldValue)
-		Assert.assertTrue(unresolvedChange.replaceChange.newValue != defaultNewValue)
-		Assert.assertTrue(unresolvedChange.deleteChange.affectedEObject != defaultOldValue)
-		Assert.assertTrue(unresolvedChange.createChange.affectedEObject != 
-			unresolvedChange.replaceChange.newValue)
-		Assert.assertTrue(unresolvedChange.deleteChange.affectedEObject != 
-			unresolvedChange.replaceChange.oldValue)
-			
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(unresolvedChange != resolvedChange)
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newValue)
+		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
+	
+		// Set state after change	
+		prepareStateAfter
 		
-		Assert.assertTrue(resolvedChange.createChange.affectedEObject == defaultNewValue)
-		Assert.assertTrue(resolvedChange.replaceChange.affectedEObject == defaultAffectedEObject)
-		// Old value is copy of original object
-		Assert.assertTrue(resolvedChange.replaceChange.oldValue != defaultOldValue)
-		Assert.assertTrue(resolvedChange.replaceChange.newValue == defaultNewValue)
-		Assert.assertTrue(resolvedChange.deleteChange.affectedEObject != defaultOldValue)
-		Assert.assertTrue(resolvedChange.createChange.affectedEObject == 
-			resolvedChange.replaceChange.newValue)
-		Assert.assertTrue(resolvedChange.deleteChange.affectedEObject == 
-			resolvedChange.replaceChange.oldValue)
-			
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
+		resolvedChange.assertIsResolvedAfter(affectedEObject, oldValue, newValue)
+				
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
-		Assert.assertTrue(defaultAffectedEObject.eGet(defaultAffectedFeature) == defaultNewValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == newValue)
 		Assert.assertTrue(stagingArea1.contents.empty)
 	}
 	
@@ -132,15 +165,13 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void resolveToCorrectType() {
-		// Set state before change.
-		defaultAffectedEObject.eSet(defaultAffectedFeature, defaultOldValue)
-
-		val unresolvedChange = TypeInferringCompoundEChangeFactory.
-			<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true)
-
-		val resolvedChange = unresolvedChange.copyAndResolveAfter(resourceSet1) as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
-
-		assertDifferentChangeSameClass(unresolvedChange, resolvedChange)				
+		// Create change
+		val unresolvedChange = createUnresolvedChange(newValue)
+		
+		// Resolve
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)				
 	}
 	
 	/**
@@ -149,45 +180,30 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void createAndReplaceAndDeleteNonRootApplyForwardTest() {
-		// Set state before change.
-		defaultAffectedEObject.eSet(defaultAffectedFeature, defaultOldValue)
-		
-		// Create change 1
-		val resolvedChange = TypeInferringCompoundEChangeFactory.
-			<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true).
-			copyAndResolveBefore(resourceSet1)
-			
-		var NonRoot newValue = defaultAffectedEObject.eGet(defaultAffectedFeature) as NonRoot
-		Assert.assertTrue(resolvedChange.isResolved)
-		Assert.assertTrue(newValue == defaultOldValue)
-		Assert.assertTrue(newValue != defaultNewValue)
+		// State before
 		Assert.assertTrue(stagingArea1.contents.empty)
-		
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
+				
+		// Create and resolve 1
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
+			
 		// Apply change 1 forward
 		Assert.assertTrue(resolvedChange.applyForward)
-		
-		newValue = defaultAffectedEObject.eGet(defaultAffectedFeature) as NonRoot
-		Assert.assertTrue(newValue != defaultOldValue)
-		// New value is copy
-		Assert.assertTrue(newValue != defaultNewValue)
-		Assert.assertEquals(newValue.id, DEFAULT_NEW_NON_ROOT_NAME)
+				
+		var NonRoot valueAfterChange1 = affectedEObject.eGet(affectedFeature) as NonRoot
+		valueAfterChange1.assertIsCopy(newValue)
 		Assert.assertTrue(stagingArea1.contents.empty)
-		
-		// Create change 2
-		val resolvedChange2 = TypeInferringCompoundEChangeFactory.
-			<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange(defaultAffectedEObject, defaultAffectedFeature, newValue, defaultNewValue2, true).
-			copyAndResolveBefore(resourceSet1)
+				
+		// Create and resolve 2
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
 			
-		Assert.assertTrue(resolvedChange.isResolved)
-		
 		// Apply change 2 forward
-		Assert.assertTrue(resolvedChange2.applyForward)	
+		Assert.assertTrue(resolvedChange2.applyForward)
 		
-		var NonRoot newValue2 = defaultAffectedEObject.eGet(defaultAffectedFeature) as NonRoot
-		Assert.assertTrue(newValue2 != newValue)
-		// New value 2 is copy
-		Assert.assertTrue(newValue2 != defaultNewValue2)
-		Assert.assertEquals(newValue2.id, DEFAULT_NEW_NON_ROOT_NAME_2)
+		var NonRoot valueAfterChange2 = affectedEObject.eGet(affectedFeature) as NonRoot
+		valueAfterChange2.assertIsCopy(newValue2)
 		Assert.assertTrue(stagingArea1.contents.empty)			
 	}
 	
@@ -197,26 +213,23 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	@Test
 	def public void createAndReplaceAndDeleteNonRootApplyBackwardTest() {
-		// Set state before change.
-		defaultAffectedEObject.eSet(defaultAffectedFeature, defaultOldValue)
+		// State before change.
+		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		
 		// Create change 
-		val resolvedChange = TypeInferringCompoundEChangeFactory.
-			<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange(defaultAffectedEObject, defaultAffectedFeature, defaultOldValue, defaultNewValue, true).
-			copyAndResolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
 			
 		// Set state after change 
-		defaultAffectedEObject.eSet(defaultAffectedFeature, defaultNewValue)
-	
-		Assert.assertTrue(resolvedChange.isResolved)
+		Assert.assertTrue(resolvedChange.applyForward)
+		newValue.assertIsCopy(affectedEObject.eGet(affectedFeature) as NonRoot)
 		Assert.assertTrue(stagingArea1.contents.empty)
-		
+				
 		// Apply backward
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
-		val oldValue = defaultAffectedEObject.eGet(defaultAffectedFeature) as NonRoot
-		Assert.assertTrue(defaultOldValue == oldValue)
-		Assert.assertTrue(defaultNewValue != oldValue)
+		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		Assert.assertTrue(stagingArea1.contents.empty)			
 	}
 }

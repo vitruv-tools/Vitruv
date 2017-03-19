@@ -5,17 +5,20 @@ import org.eclipse.emf.ecore.EAttribute
 import org.junit.Before
 import tools.vitruv.framework.tests.echange.EChangeTest
 import allElementTypes.AllElementTypesPackage
+import org.eclipse.emf.common.util.EList
 
 /**
  * Abstract class which is used by insert and remove attribute test classes.
  */
 public abstract class InsertRemoveEAttributeTest extends EChangeTest {
-	protected var Root defaultAffectedEObject = null
-	protected var EAttribute defaultAffectedFeature = null
+	protected var Root affectedEObject = null
+	protected var EAttribute affectedFeature = null
+	protected var EList<Integer> attributeContent = null
+	protected var index = DEFAULT_INDEX
 	
-	protected static val Integer DEFAULT_NEW_VALUE = 111
-	protected static val Integer DEFAULT_NEW_VALUE_2 = 222
-	protected static val Integer DEFAULT_NEW_VALUE_3 = 333
+	protected static val Integer NEW_VALUE = 111
+	protected static val Integer NEW_VALUE_2 = 222
+	protected static val Integer NEW_VALUE_3 = 333
 	protected static val Integer DEFAULT_INDEX = 0
 	
 	/**
@@ -25,7 +28,8 @@ public abstract class InsertRemoveEAttributeTest extends EChangeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		defaultAffectedEObject = rootObject1
-		defaultAffectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_EATTRIBUTE
+		affectedEObject = rootObject1
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_EATTRIBUTE
+		attributeContent = affectedEObject.eGet(affectedFeature) as EList<Integer>
 	}
 }
