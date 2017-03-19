@@ -11,4 +11,5 @@ Require-Bundle: org.junit,
  tools.vitruv.framework.tests.util.metamodels,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.util,
- org.eclipse.emf.ecore.xmi
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.emf.edit

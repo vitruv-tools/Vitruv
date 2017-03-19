@@ -1,20 +1,19 @@
-package tools.vitruv.framework.util.command;
+package tools.vitruv.framework.change.echange.util;
 
 import java.util.Collections;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 /**
- * Command which is used to remove entries of a EList at a specific index.
+ * Command which is used to remove a entry of a EList at a specific index.
+ * Only single objects are supported.
  */
 public class RemoveAtCommand extends RemoveCommand {
-	// TODO Stefan: Tests
 	/**
 	 * Creates a new RemoveAtCommand.
 	 * @param editing Domain The used editing domain.
@@ -24,25 +23,25 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * @param index Index at which the value is removed in the EList.
 	 * @return The RemoveAtCommand which removes entries of a EList at a specific index.
 	 */
-	public static Command create(final EditingDomain editingDomain, final EObject owner, final EStructuralFeature feature, final Object value, final int index) {
+	def public static Command create(EditingDomain editingDomain, EObject owner, EStructuralFeature feature, Object value, int index) {
 		return new RemoveAtCommand(editingDomain, owner, feature, value, index);
 	}
 	
 	/**
 	 * Creates a new RemoveAtCommand.
 	 * @param editing Domain The used editing domain.
-	 * @param ownerList The editied EList.
+	 * @param ownerList The edited EList.
 	 * @param value The value which will be removed.
 	 * @param index Index at which the value is removed in the EList.
 	 * @return The RemoveAtCommand which removes entries of a EList at a specific index.
 	 */
-	public static Command create(final EditingDomain editingDomain, final EList<?> ownerList, final Object value, final int index) {
+	def public static Command create(EditingDomain editingDomain, EList<?> ownerList, Object value, int index) {
 		return new RemoveAtCommand(editingDomain, ownerList, value, index);
 	}
 	/**
 	 * Index at which the value is removed in the list.
 	 */
-	private int index;
+	var private int index;
 	
 	/**
 	 * Constructor for a RemoveAtCommand, which removes an entry of an EList feature at a specific index.
@@ -52,7 +51,7 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * @param value The value which will be removed.
 	 * @param index Index at which the value is removed in the EList.
 	 */
-	public RemoveAtCommand(EditingDomain editingDomain, EObject owner, EStructuralFeature feature, Object value, int index) {
+	new(EditingDomain editingDomain, EObject owner, EStructuralFeature feature, Object value, int index) {
 		super(editingDomain, owner, feature, Collections.singleton(value));
 		this.index = index;
 	}
@@ -64,7 +63,7 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * @param value The value which will be removed.
 	 * @param index The Index at which the value is removed in the EList.
 	 */
-	public RemoveAtCommand(EditingDomain editingDomain, EList<?> ownerList, Object value, int index) {
+	new(EditingDomain editingDomain, EList<?> ownerList, Object value, int index) {
 		super(editingDomain, ownerList, Collections.singleton(value));
 		this.index = index;
 	}
@@ -73,31 +72,29 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * Returns the index at which the value will be removed.
 	 * @return The index
 	 */
-	public int getIndex() {
+	def public int getIndex() {
 		return this.index;
 	}
 	
-	@Override
-	public void doExecute() {
+	override public void doExecute() {
 		ownerList.remove(index);
 	}
 	
-	@Override
-	public boolean prepare() {
-		boolean result = super.prepare() &&
-				0 <= index && index < ownerList.size();  	
-		return result;
-	}
-	
-	@Override
-	public void doUndo() {
-		for(Object object : collection) {
-			ownerList.add(index, object);
+	override public boolean prepare() {
+		var result = super.prepare() && 0 <= index && index < ownerList.size()
+				&& (collection.size() == 1);  
+		if (!result) {
+			return false;
 		}
+		// Check if get(index) == object		
+		return ownerList.get(index).equals(collection.get(0))
 	}
 	
-	@Override
-	public void doRedo() {
-		ownerList.remove(index);
+	override void doUndo() {
+		throw new UnsupportedOperationException();
+	}
+	
+	override public void doRedo() {
+		throw new UnsupportedOperationException();
 	}
 }

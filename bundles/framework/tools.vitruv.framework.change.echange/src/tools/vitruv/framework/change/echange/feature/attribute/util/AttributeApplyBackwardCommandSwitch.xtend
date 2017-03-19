@@ -9,7 +9,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeV
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.util.EChangeUtil
-import tools.vitruv.framework.util.command.RemoveAtCommand
+import tools.vitruv.framework.change.echange.util.RemoveAtCommand
 
 /**
  * Switch to create commands for all EChange classes of the attribute package.

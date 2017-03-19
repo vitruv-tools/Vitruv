@@ -90,16 +90,16 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrecType() {
+	def public void resolveToCorrectType() {
 		// Set state before
 		isSingleValuedAttributeTest
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
-		
+
 		// Resolve		
  		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
-		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)		
+		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)	
 	}
 		
 	/**
@@ -172,6 +172,9 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		prepareStateBefore
 	}
 	
+	/**
+	 * Sets the state before, depending on single or multi valued attribute test.
+	 */
 	def private void prepareStateBefore() {
 		if (!affectedFeature.many) {
 			affectedEObject.eSet(affectedFeature, OLD_VALUE)					
@@ -182,10 +185,16 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		}
 	}
 	
+	/**
+	 * Sets the state after the change.
+	 */
 	def private void prepareStateAfter() {
 		affectedEObject.eUnset(affectedFeature)		
 	}
 	
+	/**
+	 * Model is in state before the single or multi valued unset change.
+	 */
 	def private void assertIsStateBefore() {
 		if (!affectedFeature.many) {
 			Assert.assertTrue(affectedEObject.eIsSet(affectedFeature))
@@ -198,10 +207,16 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		}
 	}
 	
+	/**
+	 * Model is in state after the single or multi valued unset change.
+	 */
 	def private void assertIsStateAfter() {
 		Assert.assertFalse(affectedEObject.eIsSet(affectedFeature))
 	}
 	
+	/**
+	 * Change is not resolved.
+	 */
 	def private assertIsNotResolved(ExplicitUnsetEFeature<Root, Integer> change, Root affectedRootObject) {
 		Assert.assertFalse(change.isResolved)
 		for (c : change.atomicChanges) {
@@ -210,6 +225,9 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		}
 	}
 	
+	/**
+	 * Change is resolved.
+	 */
 	def private assertIsResolved(ExplicitUnsetEFeature<Root, Integer> change, Root affectedRootObject) {
 		Assert.assertNotNull(change)
 		Assert.assertTrue(change.isResolved)
@@ -238,6 +256,9 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		return compoundFactory.<Root, Integer>createExplicitUnsetChange(subtractiveChanges)
 	}	
 	
+	/**
+	 * Starts a test with resolving a change before the change is applied.
+	 */
 	def private void resolveBeforeTest() {
 		// State before
 		assertIsStateBefore
@@ -263,6 +284,9 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		assertIsStateAfter			
 	}
 	
+	/**
+	 * Starts a test with resolving the change after the change is applied.
+	 */
 	def private void resolveAfterTest() {
 		// State Before
 		assertIsStateBefore	
@@ -292,6 +316,9 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		assertIsStateBefore			
 	}
 	
+	/**
+	 * Starts a test with applying the change forward.
+	 */
 	def private void applyForwardTest() {
 		// State before
 		assertIsStateBefore
@@ -307,6 +334,9 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		assertIsStateAfter		
 	}
 	
+	/**
+	 * Starts a test with applying the change backward.
+	 */	
 	def private void applyBackwardTest() {
 		// State before
 		assertIsStateBefore

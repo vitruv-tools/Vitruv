@@ -13,15 +13,6 @@ import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeV
  */
 public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	/**
-	 * Creates new unresolved change.
-	 */
-	def private InsertEAttributeValue<Root, Integer> createUnresolvedChange(int newValue) {
-		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
-		return atomicFactory.<Root, Integer>createInsertAttributeChange
-		(affectedEObject, affectedFeature, index, newValue)	
-	}
-	
-	/**
 	 * Tests whether resolving the {@link InsertEAttributeValue} EChange returns the same class.
 	 */
 	@Test
@@ -60,7 +51,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	// Apply forward 2
 	 	Assert.assertTrue(resolvedChange2.applyForward)
 	 	
-	 	Assert.assertEquals(attributeContent.size, 2)
+	 	Assert.assertEquals(attributeContent.size, oldSize + 2)
 	 	Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE_2)
 	 	Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), NEW_VALUE)
 	 }
@@ -130,7 +121,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 		resolveBefore(resourceSet1)
 	 	
 	 	// NonRoot has no such feature
-	 	Assert.assertTrue(affectedNonRootEObject.eClass.getFeatureID(affectedFeature) == -1)	
+	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
 	 	
 	 	Assert.assertFalse(resolvedChange.applyForward)
 	 	Assert.assertFalse(resolvedChange.applyBackward)
@@ -149,9 +140,18 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 		resolveBefore(resourceSet1)
 	 		
 	 	// Type of attribute is Integer not String
-	 	Assert.assertTrue(affectedFeature.EAttributeType.name == "EIntegerObject")
+	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
 	 	
 	 	Assert.assertFalse(resolvedChange.applyForward)	 	
 	 	Assert.assertFalse(resolvedChange.applyBackward)
 	 }
+	 
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private InsertEAttributeValue<Root, Integer> createUnresolvedChange(int newValue) {
+		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
+		return atomicFactory.<Root, Integer>createInsertAttributeChange
+		(affectedEObject, affectedFeature, index, newValue)	
+	}
 }

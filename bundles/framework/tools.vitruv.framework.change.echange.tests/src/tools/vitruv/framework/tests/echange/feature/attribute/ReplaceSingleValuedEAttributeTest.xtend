@@ -135,7 +135,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	(affectedNonRootEObject, affectedRootFeature, oldIntValue, newIntValue)
 	 	
 	 	// NonRoot has no such feature
-	 	Assert.assertTrue(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature) == -1)	
+	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature), -1)	
 	 	
 	 	Assert.assertFalse(resolvedChange.applyForward)
 	 	Assert.assertFalse(resolvedChange.applyBackward)

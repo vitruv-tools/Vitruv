@@ -25,6 +25,7 @@ import tools.vitruv.framework.tests.echange.feature.reference.RemoveEReferenceTe
 import tools.vitruv.framework.tests.echange.feature.reference.ReplaceSingleValuedEReferenceTest;
 import tools.vitruv.framework.tests.echange.root.InsertRootEObjectTest;
 import tools.vitruv.framework.tests.echange.root.RemoveRootEObjectTest;
+import tools.vitruv.framework.tests.echange.util.RemoveAtCommandTest;
 
 @RunWith(Suite.class)
 
@@ -48,7 +49,9 @@ import tools.vitruv.framework.tests.echange.root.RemoveRootEObjectTest;
 	RemoveAndDeleteRootTest.class,
 	CreateAndInsertNonRootTest.class,
 	RemoveAndDeleteNonRootTest.class,
-	CreateAndReplaceAndDeleteNonRootTest.class})
+	CreateAndReplaceAndDeleteNonRootTest.class,
+	
+	RemoveAtCommandTest.class})
 
 public class EChangeTestSuite {
 

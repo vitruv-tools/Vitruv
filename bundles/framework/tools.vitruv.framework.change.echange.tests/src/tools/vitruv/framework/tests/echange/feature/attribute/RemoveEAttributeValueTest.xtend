@@ -13,23 +13,6 @@ import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeV
  */
 public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {	
 	/**
-	 * Prepares the affected attribute for the tests.
-	 */
-	def private void prepareAttribute() {
-		attributeContent.add(NEW_VALUE)
-		attributeContent.add(NEW_VALUE_2)
-	}
-	
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private RemoveEAttributeValue<Root, Integer> createUnresolvedChange(int newValue) {
-		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
-		return atomicFactory.<Root, Integer>createRemoveAttributeChange
-		(affectedEObject, affectedFeature, index, newValue)	
-	}
-	
-	/**
 	 * Tests whether resolving the {@link RemoveEAttributeValue} EChange
 	 * returns the same class. 
 	 */
@@ -147,7 +130,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		Assert.assertTrue(resolvedChange.isResolved)	
 			
 		// NonRoot has no such feature
-	 	Assert.assertTrue(affectedNonRootEObject.eClass.getFeatureID(affectedFeature) == -1)	
+	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
 	 	
 	 	Assert.assertFalse(resolvedChange.applyForward)
 	 	Assert.assertFalse(resolvedChange.applyBackward)
@@ -168,9 +151,26 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		Assert.assertTrue(resolvedChange.isResolved)
 		
 		// Type of attribute is Integer not String
-	 	Assert.assertTrue(affectedFeature.EAttributeType.name == "EIntegerObject")
+	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
 	 	
 	 	Assert.assertFalse(resolvedChange.applyForward)	 	
 	 	Assert.assertFalse(resolvedChange.applyBackward)
+	}	
+	
+	/**
+	 * Prepares the affected attribute for the tests.
+	 */
+	def private void prepareAttribute() {
+		attributeContent.add(NEW_VALUE)
+		attributeContent.add(NEW_VALUE_2)
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private RemoveEAttributeValue<Root, Integer> createUnresolvedChange(int newValue) {
+		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
+		return atomicFactory.<Root, Integer>createRemoveAttributeChange
+		(affectedEObject, affectedFeature, index, newValue)	
 	}
 }

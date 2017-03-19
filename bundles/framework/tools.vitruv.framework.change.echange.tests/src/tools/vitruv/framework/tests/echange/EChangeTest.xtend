@@ -114,7 +114,7 @@ import allElementTypes.Identified
  		Assert.assertFalse(unresolvedChange == resolvedChange)
  		Assert.assertEquals(unresolvedChange.getClass, resolvedChange.getClass)
  	}
- 	
+ 	 	
  	/**
  	 * Tests whether two objects are not the same object, but a copy with the same id.
  	 */
