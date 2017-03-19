@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.common.util.BasicEList
-import tools.vitruv.framework.change.echange.EChangeResolver
+import tools.vitruv.framework.change.echange.CompoundEChangeResolver
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.AtomicEChange
@@ -63,7 +63,7 @@ abstract class CompoundEChange extends tools.vitruv.framework.change.echange.ECh
 	op EChange resolveBefore(ResourceSet resourceSet) {
 		if (!isResolved) {
 			val change = EcoreUtil.copy(this)
-			if (EChangeResolver.resolveCompoundEChange(change, resourceSet, true, true)) {
+			if (CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, true, true)) {
 				return change
 			}
 			return null		
@@ -86,7 +86,7 @@ abstract class CompoundEChange extends tools.vitruv.framework.change.echange.ECh
 	op EChange resolveAfter(ResourceSet resourceSet) {
 		if (!isResolved) {
 			val change = EcoreUtil.copy(this)
-			if (EChangeResolver.resolveCompoundEChange(change, resourceSet, false, true)) {
+			if (CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, false, true)) {
 				return change
 			}
 			return null			
@@ -107,7 +107,7 @@ abstract class CompoundEChange extends tools.vitruv.framework.change.echange.ECh
 	op EChange resolveBeforeAndApplyForward(ResourceSet resourceSet) {
 		if (!isResolved) {
 			val change = EcoreUtil.copy(this)
-			if (EChangeResolver.resolveCompoundEChange(change, resourceSet, true, false)) {
+			if (CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, true, false)) {
 				return change
 			}		
 		} else {
@@ -131,7 +131,7 @@ abstract class CompoundEChange extends tools.vitruv.framework.change.echange.ECh
 	op EChange resolveAfterAndApplyBackward(ResourceSet resourceSet) {
 		if (!isResolved) {
 			val change = EcoreUtil.copy(this)
-			if (EChangeResolver.resolveCompoundEChange(change, resourceSet, false, false)) {
+			if (CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, false, false)) {
 				return change
 			}	
 		} else {

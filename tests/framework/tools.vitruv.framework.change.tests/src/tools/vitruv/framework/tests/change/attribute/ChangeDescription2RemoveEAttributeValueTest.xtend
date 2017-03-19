@@ -101,8 +101,9 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		changes.assertChangeCount(1);
 		val subtractiveChanges = changes.claimChange(0).assertExplicitUnset.subtractiveChanges
 		subtractiveChanges.assertChangeCount(2);
-		subtractiveChanges.get(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
-		subtractiveChanges.get(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
+		subtractiveChanges.get(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
+		subtractiveChanges.get(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+
 	}
 	
 }

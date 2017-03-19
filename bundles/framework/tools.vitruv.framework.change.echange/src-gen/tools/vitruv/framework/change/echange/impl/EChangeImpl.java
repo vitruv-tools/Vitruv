@@ -20,9 +20,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import tools.vitruv.framework.change.echange.AtomicEChangeResolver;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.EChangeResolver;
 
 import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch;
 import tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch;
@@ -73,7 +73,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final EChange change = EcoreUtil.<EChange>copy(this);
-			boolean _resolve = EChangeResolver.resolve(change, resourceSet, true);
+			boolean _resolve = AtomicEChangeResolver.resolve(change, resourceSet, true);
 			if (_resolve) {
 				return change;
 			}
@@ -92,7 +92,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final EChange change = EcoreUtil.<EChange>copy(this);
-			boolean _resolve = EChangeResolver.resolve(change, resourceSet, false);
+			boolean _resolve = AtomicEChangeResolver.resolve(change, resourceSet, false);
 			if (_resolve) {
 				return change;
 			}

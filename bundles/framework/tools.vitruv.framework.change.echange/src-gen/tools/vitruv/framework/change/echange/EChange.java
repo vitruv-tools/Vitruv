@@ -49,7 +49,7 @@ public interface EChange extends EObject {
 	 * 			the original change.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.EChangeResolver%>.resolve(change, resourceSet, true);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.AtomicEChangeResolver%>.resolve(change, resourceSet, true);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
 	 * @generated
 	 */
 	EChange resolveBefore(ResourceSet resourceSet);
@@ -71,7 +71,7 @@ public interface EChange extends EObject {
 	 * 			the original change.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.EChangeResolver%>.resolve(change, resourceSet, false);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.AtomicEChangeResolver%>.resolve(change, resourceSet, false);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
 	 * @generated
 	 */
 	EChange resolveAfter(ResourceSet resourceSet);

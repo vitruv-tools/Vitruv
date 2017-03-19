@@ -5,7 +5,7 @@ package tools.vitruv.framework.change.echange
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.echange.EChangeResolver
+import tools.vitruv.framework.change.echange.AtomicEChangeResolver
 import tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch
 import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch
 
@@ -37,7 +37,7 @@ abstract class EChange {
 	op EChange resolveBefore(ResourceSet resourceSet) {
 		if (!isResolved) {
 			val change = EcoreUtil.copy(this)
-			if (EChangeResolver.resolve(change, resourceSet, true)) {
+			if (AtomicEChangeResolver.resolve(change, resourceSet, true)) {
 				return change
 			}
 			return null		
@@ -60,7 +60,7 @@ abstract class EChange {
 	op EChange resolveAfter(ResourceSet resourceSet) {
 		if (!isResolved) {
 			val change = EcoreUtil.copy(this)
-			if (EChangeResolver.resolve(change, resourceSet, false)) {
+			if (AtomicEChangeResolver.resolve(change, resourceSet, false)) {
 				return change
 			}
 			return null			

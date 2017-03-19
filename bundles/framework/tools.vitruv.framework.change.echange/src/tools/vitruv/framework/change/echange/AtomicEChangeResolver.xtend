@@ -1,33 +1,31 @@
 package tools.vitruv.framework.change.echange
 
-import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.util.StagingArea
-import org.eclipse.emf.ecore.EStructuralFeature
-import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
-import org.eclipse.emf.common.util.EList
-import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 
 /**
  * Static class for resolving EChanges internally.
  */
-class EChangeResolver {
+class AtomicEChangeResolver {
 	/**
 	 * 'Resolves' {@link EChange} attributes.
 	 * @param change 			The change which should be resolved.
@@ -36,7 +34,7 @@ class EChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def private static boolean resolveEChange(EChange change, ResourceSet resourceSet, boolean resolveBefore) {
+	def package static boolean resolveEChange(EChange change, ResourceSet resourceSet, boolean resolveBefore) {
 		if (!change.isResolved) {
 			if (resourceSet == null) {
 				return false
@@ -386,59 +384,5 @@ class EChangeResolver {
 		return change.resolveEObjectExistenceEChange(resourceSet, !resolveBefore)
 	}	
 
-	/**
-	 * Dispatch method for resolving the {@link CompoundEChange} EChange.
-	 * @param change 				The change which should be resolved.
-	 * @param resourceSet 			The resources set with the EObject which the 
-	 * 								change should be resolved to.
-	 * @param resolveBefore			{@code true} if the model is in state before the change,
-	 * 								{@code false} if the model is in state after.
-	 * @param revertAfterResolving	{@code true} if the change should be reverted after resolving
-	 * 								the compound change.
-	 */		
-	def static boolean resolveCompoundEChange(CompoundEChange change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
-		if (!change.isResolved) {
-			
-			if (!change.resolveEChange(resourceSet, resolveBefore)) {
-				return false
-			}
-			
-			val changesMade = new BasicEList<EChange>
-			if (resolveBefore) {
-				for (EChange c : change.atomicChanges) {
-					if (!EChangeResolver.resolve(c, resourceSet, true) || !c.applyForward) {
-						// Error resolving or applying forward => revert
-						for (EChange changed : changesMade.reverse) {
-							changed.applyBackward
-						}
-						return false
-					} else {
-						changesMade.add(c)
-					}
-				}
-			} else {
-				for (EChange c : change.atomicChanges.reverse) {
-					if (!EChangeResolver.resolve(c, resourceSet, false) || !c.applyBackward) {
-						// Error resolving or applying backward => revert
-						for (EChange changed : changesMade.reverse) {
-							changed.applyForward
-						}
-						return false
-					} else {
-						changesMade.add(c)
-					}
-				}
-			}
-			
-			// Revert all changes which were made resolving the compound change.
-			if (revertAfterResolving) {
-				if (resolveBefore) {
-					change.applyBackward
-				} else {
-					change.applyForward
-				}
-			}
-		}
-		return true		
-	}
+
 }

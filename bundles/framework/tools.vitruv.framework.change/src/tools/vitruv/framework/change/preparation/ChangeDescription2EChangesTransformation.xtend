@@ -326,7 +326,7 @@ public class ChangeDescription2EChangesTransformation {
 				for (change : subtractiveChanges) {
 					typedChanges.add(change);
 				}
-				return #[transformationUtil.createExplicitUnsetChange(typedChanges)];
+				return #[transformationUtil.createExplicitUnsetChange(typedChanges.reverseView)];
 			}
 			return resultChanges
 		} else {

@@ -31,59 +31,6 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
 	}
-
-	/**
-	 * Puts the newly created items in the reference to set
-	 * the state after the change.
-	 */
-	def private void prepareReference() {
-		referenceContent.add(newValue)
-		referenceContent.add(newValue2)
-	}
-	/**
-	 * Change is not resolved.
-	 */
-	def private static void assertIsNotResolved(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
-		NonRoot newNonRoot) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.createChange.isResolved)
-		Assert.assertFalse(change.insertChange.isResolved)
-		Assert.assertTrue(change.createChange.affectedEObject != newNonRoot)
-		Assert.assertTrue(change.insertChange.newValue != newNonRoot)
-		Assert.assertTrue(change.insertChange.affectedEObject != affectedEObject)
-		Assert.assertTrue(change.createChange.affectedEObject != change.insertChange.newValue)
-	}
-	
-	/**
-	 * Change is resolved but with newly created object.
-	 */
-	def private static void assertIsResolvedNewObject(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
-		NonRoot newNonRoot) {
-		Assert.assertTrue(change.isResolved)
-		// Not the same object, but copy
-		change.insertChange.newValue.assertIsCopy(newNonRoot)
-		Assert.assertTrue(change.createChange.affectedEObject == change.insertChange.newValue)
-		Assert.assertTrue(change.insertChange.affectedEObject == affectedEObject)	
-	}
-	
-	/**
-	 * Change is resolved with existing object.
-	 */
-	def private static void assertIsResolvedExistingObject(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
-		NonRoot newNonRoot) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.createChange.affectedEObject == newNonRoot)
-		Assert.assertTrue(change.insertChange.newValue == newNonRoot)
-		Assert.assertTrue(change.insertChange.affectedEObject == affectedEObject)	
-	}
-		
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private CreateAndInsertNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot) {
-		return compoundFactory.<Root, NonRoot>createCreateAndInsertNonRootChange
-		(affectedRootObject, affectedFeature, newNonRoot, index)
-	}
 	
 	/**
 	 * Resolves a {@link CreateAndInsertNonRoot} EChange. The model is in state
@@ -224,5 +171,60 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(index2, referenceContent.indexOf(resolvedChange2.createChange.affectedEObject))
 		Assert.assertEquals(referenceContent.size, oldSize - 2)
 		Assert.assertTrue(stagingArea1.contents.empty)		
+	}
+	
+
+	/**
+	 * Puts the newly created items in the reference to set
+	 * the state after the change.
+	 */
+	def private void prepareReference() {
+		referenceContent.add(newValue)
+		referenceContent.add(newValue2)
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
+		NonRoot newNonRoot) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertFalse(change.createChange.isResolved)
+		Assert.assertFalse(change.insertChange.isResolved)
+		Assert.assertTrue(change.createChange.affectedEObject != newNonRoot)
+		Assert.assertTrue(change.insertChange.newValue != newNonRoot)
+		Assert.assertTrue(change.insertChange.affectedEObject != affectedEObject)
+		Assert.assertTrue(change.createChange.affectedEObject != change.insertChange.newValue)
+	}
+	
+	/**
+	 * Change is resolved but with newly created object.
+	 */
+	def private static void assertIsResolvedNewObject(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
+		NonRoot newNonRoot) {
+		Assert.assertTrue(change.isResolved)
+		// Not the same object, but copy
+		change.insertChange.newValue.assertIsCopy(newNonRoot)
+		Assert.assertTrue(change.createChange.affectedEObject == change.insertChange.newValue)
+		Assert.assertTrue(change.insertChange.affectedEObject == affectedEObject)	
+	}
+	
+	/**
+	 * Change is resolved with existing object.
+	 */
+	def private static void assertIsResolvedExistingObject(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
+		NonRoot newNonRoot) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.createChange.affectedEObject == newNonRoot)
+		Assert.assertTrue(change.insertChange.newValue == newNonRoot)
+		Assert.assertTrue(change.insertChange.affectedEObject == affectedEObject)	
+	}
+		
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private CreateAndInsertNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot) {
+		return compoundFactory.<Root, NonRoot>createCreateAndInsertNonRootChange
+		(affectedRootObject, affectedFeature, newNonRoot, index)
 	}
 }

@@ -13,9 +13,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.CompoundEChangeResolver;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.EChangeResolver;
 
 import tools.vitruv.framework.change.echange.compound.CompoundEChange;
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
@@ -87,7 +87,7 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
-			boolean _resolveCompoundEChange = EChangeResolver.resolveCompoundEChange(change, resourceSet, true, true);
+			boolean _resolveCompoundEChange = CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, true, true);
 			if (_resolveCompoundEChange) {
 				return change;
 			}
@@ -106,7 +106,7 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
-			boolean _resolveCompoundEChange = EChangeResolver.resolveCompoundEChange(change, resourceSet, false, true);
+			boolean _resolveCompoundEChange = CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, false, true);
 			if (_resolveCompoundEChange) {
 				return change;
 			}
@@ -125,7 +125,7 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
-			boolean _resolveCompoundEChange = EChangeResolver.resolveCompoundEChange(change, resourceSet, true, false);
+			boolean _resolveCompoundEChange = CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, true, false);
 			if (_resolveCompoundEChange) {
 				return change;
 			}
@@ -149,7 +149,7 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
-			boolean _resolveCompoundEChange = EChangeResolver.resolveCompoundEChange(change, resourceSet, false, false);
+			boolean _resolveCompoundEChange = CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, false, false);
 			if (_resolveCompoundEChange) {
 				return change;
 			}

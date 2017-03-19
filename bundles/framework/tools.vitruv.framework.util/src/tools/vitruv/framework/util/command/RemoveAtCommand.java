@@ -85,13 +85,7 @@ public class RemoveAtCommand extends RemoveCommand {
 	@Override
 	public boolean prepare() {
 		boolean result = super.prepare() &&
-				0 <= index && index < ownerList.size();
-	    EGenericType eType = owner == null ? feature.getEGenericType() : owner.eClass().getFeatureType(feature);
-	    for (Object object : collection) {
-	        if (!eType.isInstance(object)) {
-	        	result = false;
-	        }
-	    }  	
+				0 <= index && index < ownerList.size();  	
 		return result;
 	}
 	
