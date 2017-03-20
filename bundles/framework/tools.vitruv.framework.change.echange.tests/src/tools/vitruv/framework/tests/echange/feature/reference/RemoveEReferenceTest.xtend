@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests.echange.feature.reference
 
-import allElementTypes.AllElementTypesFactory
 import allElementTypes.AllElementTypesPackage
 import allElementTypes.NonRoot
 import allElementTypes.Root
@@ -12,7 +11,6 @@ import org.junit.Before
 import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 
-// TODO Stefan: incomplete
 /**
  * Test class for the concrete {@link RemoveEReference} EChange, 
  * which removes a reference from a multivalued attribute.
@@ -28,7 +26,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		resourceContent = resource1.contents
+		resourceContent = resource.contents
 	}
 
 	/**
@@ -111,7 +109,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
@@ -132,7 +130,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
@@ -156,7 +154,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		prepareReferenceAfter
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)			
 	}
@@ -180,7 +178,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		prepareStagingArea(newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)									
 	}
@@ -198,7 +196,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newValue)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -215,7 +213,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		val oldSize = referenceContent.size
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 		
 	 	// Apply forward
 	 	Assert.assertTrue(resolvedChange.applyForward)
@@ -224,7 +222,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue2)
 		
 		// Create change 2 (resolved)
-		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet)
 			
 		// Apply forward 2
 		Assert.assertTrue(resolvedChange2.applyForward)
@@ -246,25 +244,25 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		val oldSize = referenceContent.size
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 		
 	 	// Apply forward
 	 	Assert.assertTrue(resolvedChange.applyForward)
 			
 		Assert.assertEquals(referenceContent.size, oldSize - 1)
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue2)
-		Assert.assertTrue(stagingArea1.contents.contains(newValue))		
+		Assert.assertTrue(stagingArea.contents.contains(newValue))		
 		// Now another change would delete the element in the staging area (or reinsert)
-		stagingArea1.contents.clear
+		stagingArea.contents.clear
 		
 		// Create change 2 (resolved)
-		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet)
 			
 		// Apply forward 2
 		Assert.assertTrue(resolvedChange2.applyForward)
 		
 		Assert.assertEquals(referenceContent.size, oldSize - 2)
-		Assert.assertTrue(stagingArea1.contents.contains(newValue2))
+		Assert.assertTrue(stagingArea.contents.contains(newValue2))
 	}
 	
 	/**
@@ -277,11 +275,11 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		isNonContainmentTest
 
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 	 	Assert.assertTrue(resolvedChange.applyForward)
 		
 	 	// Create change 2 and apply forward			
-		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet)
 	 	Assert.assertTrue(resolvedChange2.applyForward)
 
 		// State after
@@ -312,26 +310,26 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 	 	Assert.assertTrue(resolvedChange.applyForward)
-		stagingArea1.contents.clear
+		stagingArea.contents.clear
 		
 	 	// Create change 2 and apply forward			
-		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet)
 	 	Assert.assertTrue(resolvedChange2.applyForward)
 
 		// State after
 		val oldSize = referenceContent.size	
 		Assert.assertFalse(referenceContent.contains(newValue))
 		Assert.assertFalse(referenceContent.contains(newValue2))
-		Assert.assertTrue(stagingArea1.contents.contains(newValue2))
+		Assert.assertTrue(stagingArea.contents.contains(newValue2))
 		
 		// apply backward 2
 		Assert.assertTrue(resolvedChange2.applyBackward)
 		
 		Assert.assertEquals(referenceContent.size, oldSize + 1)
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue2)
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		
 		// Now another change would fill the staging area for the next object
 		prepareStagingArea(newValue)
@@ -342,7 +340,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, oldSize + 2)
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue)
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == newValue2)	
-		Assert.assertTrue(stagingArea1.contents.empty)	
+		Assert.assertTrue(stagingArea.contents.empty)	
 	}
 	
 	/**
@@ -357,7 +355,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue)
 		
 		// Create and resolve
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 		
@@ -378,7 +376,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		
 		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createRemoveReferenceChange
 		(invalidAffectedEObject, affectedFeature, newValue, DEFAULT_INDEX).
-			resolveBefore(resourceSet1)
+			resolveBefore(resourceSet)
 		Assert.assertTrue(resolvedChange.isResolved)
 			
 		// NonRoot has no such feature

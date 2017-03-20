@@ -31,8 +31,8 @@ public class ReferenceApplyBackwardCommandSwitch extends ReferenceSwitch<List<Co
 		if (object.containment) {
 			val stagingArea = StagingArea.getStagingArea(object.affectedEObject.eResource.resourceSet)
 			compoundCommand.append(new AddCommand(editingDomain, stagingArea.contents, object.newValue))
-		}
-		
+		}			
+			
 		return Collections.singletonList(compoundCommand)
 	}	
 	
@@ -48,7 +48,7 @@ public class ReferenceApplyBackwardCommandSwitch extends ReferenceSwitch<List<Co
 			val stagingArea = StagingArea.getStagingArea(object.affectedEObject.eResource.resourceSet) 
 			compoundCommand.append(new RemoveCommand(editingDomain, stagingArea.contents, object.oldValue))
 		}		
-		compoundCommand.append(AddCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.oldValue, object.index))
+		compoundCommand.append(AddCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.oldValue, object.index))			
 
 		return Collections.singletonList(compoundCommand)
 	}
@@ -62,11 +62,11 @@ public class ReferenceApplyBackwardCommandSwitch extends ReferenceSwitch<List<Co
 		val stagingArea = StagingArea.getStagingArea(object.affectedEObject.eResource.resourceSet) 
 		val compoundCommand = new CompoundCommand()
 		
-		if (object.containment) {
+		if (object.containment && object.oldValue != null) {
 			compoundCommand.append(new RemoveCommand(editingDomain, stagingArea.contents, object.oldValue))
 		}
 		compoundCommand.append(SetCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.oldValue))
-		if (object.containment) {
+		if (object.containment && object.newValue != null) {
 			compoundCommand.append(new AddCommand(editingDomain, stagingArea.contents, object.newValue))			
 		}
 		

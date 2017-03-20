@@ -115,7 +115,7 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject)	
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
 		resolvedChange.assertIsResolved(affectedEObject)
 					
@@ -141,7 +141,7 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 		assertIsStateAfter
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
 		resolvedChange.assertIsResolved(affectedEObject)
 					
@@ -159,7 +159,7 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 		val unresolvedChange = createUnresolvedChange()
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)	
 	}
@@ -173,7 +173,7 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 		assertIsStateBefore
 		
 		// Create change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1) 
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet) 
 			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
 		
 		// Apply forward
@@ -192,7 +192,7 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 		assertIsStateBefore
 		
 		// Create and resolve and apply change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1) 
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet) 
 			as CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>>
 		Assert.assertTrue(resolvedChange.applyForward)
 		

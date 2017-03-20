@@ -36,7 +36,7 @@ public abstract class EObjectTest extends EChangeTest {
 	 * 		Clears and sets the 0th element.
 	 */	
 	protected def void prepareStagingArea(EObject object) {
-		stagingArea1.contents.clear
-		stagingArea1.contents.add(object)
+		stagingArea.contents.clear
+		stagingArea.contents.add(object)
 	}
 }

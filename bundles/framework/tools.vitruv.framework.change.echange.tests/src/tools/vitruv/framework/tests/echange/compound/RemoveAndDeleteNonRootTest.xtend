@@ -97,20 +97,20 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	def public void resolveRemoveAndDeleteNonRoot() {
 		// State before
 		val size = referenceContent.size
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue)
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as RemoveAndDeleteNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolvedExistingObject(affectedEObject, newValue)		
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertEquals(referenceContent.size, size)
-		Assert.assertTrue(stagingArea1.contents.empty)					
+		Assert.assertTrue(stagingArea.contents.empty)					
 	}
 	
 	/**
@@ -120,7 +120,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void resolveRemoveAndDeleteNonRoot2() {
 		// State before change
-		Assert.assertTrue(stagingArea1.contents.empty)	
+		Assert.assertTrue(stagingArea.contents.empty)	
 				
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue)
@@ -131,13 +131,13 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		val size = referenceContent.size			
 				
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as RemoveAndDeleteNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolvedNewObject(affectedEObject, newValue)	
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertEquals(referenceContent.size, size)
-		Assert.assertTrue(stagingArea1.contents.empty)		
+		Assert.assertTrue(stagingArea.contents.empty)		
 	}
 	
 	/**
@@ -150,7 +150,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue)
 		
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -161,13 +161,13 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void removeAndDeleteNonRootApplyForwardTest() {
 		// State before change
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		Assert.assertTrue(referenceContent.contains(newValue))	
 		Assert.assertTrue(referenceContent.contains(newValue2))	
 		val oldSize = referenceContent.size
 		
 		// Create and resolve change 1
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet)
 			 as RemoveAndDeleteNonRoot<Root, NonRoot>
 		
 		// Apply forward 1
@@ -176,10 +176,10 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, oldSize - 1)
 		Assert.assertFalse(referenceContent.contains(newValue))
 		Assert.assertTrue(referenceContent.contains(newValue2))
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 	
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet)
 			 as RemoveAndDeleteNonRoot<Root, NonRoot>	
 			
 		// Apply forward 2
@@ -188,7 +188,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, oldSize - 2)
 		Assert.assertFalse(referenceContent.contains(newValue))
 		Assert.assertFalse(referenceContent.contains(newValue2))
-		Assert.assertTrue(stagingArea1.contents.empty)		
+		Assert.assertTrue(stagingArea.contents.empty)		
 	}
 	
 	/**
@@ -198,17 +198,17 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void removeAndDeleteNonRootApplyBackwardTest() {
 		// State before
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		val index1 = referenceContent.indexOf(newValue)
 		val index2 = referenceContent.indexOf(newValue2)
 		
 		// Create and resolve and apply change 1
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet)
 			 as RemoveAndDeleteNonRoot<Root, NonRoot>
 		Assert.assertTrue(resolvedChange.applyForward)
 		
 		// Create and resolve and apply change 2
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet)
 			 as RemoveAndDeleteNonRoot<Root, NonRoot>
 		Assert.assertTrue(resolvedChange2.applyForward)		
 		
@@ -221,7 +221,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		
 		Assert.assertEquals(referenceContent.size, oldSize + 1)	
 		Assert.assertTrue(referenceContent.contains(newValue2))
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 				
 		// Apply backward 1
 		Assert.assertTrue(resolvedChange.applyBackward)
@@ -229,6 +229,6 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, oldSize + 2)	
 		Assert.assertEquals(referenceContent.indexOf(newValue), index1)
 		Assert.assertEquals(referenceContent.indexOf(newValue2), index2)
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 	}
 }

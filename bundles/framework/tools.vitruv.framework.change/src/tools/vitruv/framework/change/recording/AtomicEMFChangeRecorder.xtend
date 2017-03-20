@@ -17,6 +17,10 @@ class AtomicEMFChangeRecorder {
 	var Collection<Notifier> elementsToObserve
 	var boolean unresolveRecordedChanges
 	
+	new() {
+		this(false)
+	}
+	
 	/**
 	 * Constructor for AtomicEMFChangeRecorder
 	 * @param 	unresolveRecordedChanges The recorded changes will be replaced

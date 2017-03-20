@@ -28,7 +28,7 @@ class CreateEObjectTest extends EObjectTest {
 		val unresolvedChange = createUnresolvedChange(createdObject)
 			
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -39,37 +39,37 @@ class CreateEObjectTest extends EObjectTest {
 	@Test
 	def public void createEObjectApplyForwardTest() {
 		// Set state before
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(resourceSet)
 			as CreateEObject<Root>
 			
 		// Apply forward
 		Assert.assertTrue(resolvedChange.applyForward)
 		
 		// Staging area contains copy
-		Assert.assertFalse(stagingArea1.contents.contains(createdObject))
-		Assert.assertEquals((stagingArea1.contents.get(0) as Root).singleValuedEAttribute, 
+		Assert.assertFalse(stagingArea.contents.contains(createdObject))
+		Assert.assertEquals((stagingArea.contents.get(0) as Root).singleValuedEAttribute, 
 			createdObject.singleValuedEAttribute)
 		
 		// Now another change would take the object and inserts it in another resource
-		stagingArea1.contents.clear()
+		stagingArea.contents.clear()
 		
 		// Staging area is empty again
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		
 		// Create change and resolve 2
-		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(resourceSet)
 			as CreateEObject<Root>
 			
 		// Apply forward 2
 		Assert.assertTrue(resolvedChange2.applyForward)
 		
-		Assert.assertFalse(stagingArea1.contents.empty)
+		Assert.assertFalse(stagingArea.contents.empty)
 		// Staging area contains copy
-		Assert.assertFalse(stagingArea1.contents.contains(createdObject2))
-		Assert.assertEquals((stagingArea1.contents.get(0) as Root).singleValuedEAttribute, 
+		Assert.assertFalse(stagingArea.contents.contains(createdObject2))
+		Assert.assertEquals((stagingArea.contents.get(0) as Root).singleValuedEAttribute, 
 			createdObject2.singleValuedEAttribute)	
 	}
 	
@@ -83,14 +83,14 @@ class CreateEObjectTest extends EObjectTest {
 		prepareStagingArea(createdObject)
 
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter(resourceSet1)
+		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter(resourceSet)
 			as CreateEObject<Root>
-		Assert.assertFalse(stagingArea1.contents.empty)
+		Assert.assertFalse(stagingArea.contents.empty)
 		
 		// Apply backward
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 	}
 	
 }

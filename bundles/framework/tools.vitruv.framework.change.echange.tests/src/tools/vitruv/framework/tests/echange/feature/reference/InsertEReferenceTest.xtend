@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests.echange.feature.reference
 
-import allElementTypes.AllElementTypesFactory
 import allElementTypes.AllElementTypesPackage
 import allElementTypes.NonRoot
 import allElementTypes.Root
@@ -27,7 +26,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		resourceContent = resource1.contents
+		resourceContent = resource.contents
 	}
 	
 	/**
@@ -100,7 +99,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as InsertEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
@@ -121,7 +120,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) as InsertEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) as InsertEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)				
 	}
 	
@@ -144,7 +143,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		prepareReference(newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) as InsertEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) as InsertEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)			
 	}
 	
@@ -167,7 +166,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		prepareReference(newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) as InsertEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) as InsertEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)						
 	}
 	
@@ -184,7 +183,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newValue)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -201,7 +200,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		val oldSize = referenceContent.size
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 	 	
 	 	// Apply forward
 	 	Assert.assertTrue(resolvedChange.applyForward)
@@ -209,7 +208,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue)
 
 	 	// Create change 2 (resolved)
-		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet)
 	 	
 	 	// Apply forward 2
 	 	Assert.assertTrue(resolvedChange2.applyForward)
@@ -232,25 +231,25 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		val oldSize = referenceContent.size
 		
 		// Create change (resolved)		
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 			
-		Assert.assertEquals(stagingArea1.contents.size, 1)
+		Assert.assertEquals(stagingArea.contents.size, 1)
 		
 		// Apply forward
 	 	Assert.assertTrue(resolvedChange.applyForward)
 	 	
-		Assert.assertEquals(stagingArea1.contents.size, 0)
+		Assert.assertEquals(stagingArea.contents.size, 0)
 		Assert.assertEquals(referenceContent.size, oldSize + 1)
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue)
 		
 		// Prepare and create change 2
 		prepareStagingArea(newValue2) // another change would fill the staging area.
-		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet)
 	 	
 	 	// Apply forward 2
 	 	Assert.assertTrue(resolvedChange2.applyForward)
 	 	
-		Assert.assertEquals(stagingArea1.contents.size, 0)	 	
+		Assert.assertEquals(stagingArea.contents.size, 0)	 	
 	 	Assert.assertEquals(referenceContent.size, oldSize + 2)
 	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue2)
 	 	Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == newValue)
@@ -268,11 +267,11 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		isNonContainmentTest
 		
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 	 	Assert.assertTrue(resolvedChange.applyForward)
 	 	
 	 	// Create change 2 and apply forward			
-		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet)
 	 	Assert.assertTrue(resolvedChange2.applyForward)			
 		
 		// State after
@@ -304,32 +303,32 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 	 	Assert.assertTrue(resolvedChange.applyForward)
 	 	
 	 	// Create change 2 and apply forward			
 		prepareStagingArea(newValue2)	
-		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet)
 	 	Assert.assertTrue(resolvedChange2.applyForward)	
 	 	
 	 	// State after
 	 	val oldSize = referenceContent.size
-		Assert.assertEquals(stagingArea1.contents.size, 0)
+		Assert.assertEquals(stagingArea.contents.size, 0)
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue2)
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX + 1) == newValue)	
 		
 		// Apply backward 2
 		Assert.assertTrue(resolvedChange2.applyBackward)
-		Assert.assertEquals(stagingArea1.contents.size, 1)
+		Assert.assertEquals(stagingArea.contents.size, 1)
 		Assert.assertEquals(referenceContent.size, oldSize - 1)
 		Assert.assertTrue(referenceContent.get(DEFAULT_INDEX) == newValue)		
 		// Now another change would delete the element in the staging area (or reinsert)
-		stagingArea1.contents.clear
+		stagingArea.contents.clear
 		
 		// Apply backward 1
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
-		Assert.assertEquals(stagingArea1.contents.size, 1)
+		Assert.assertEquals(stagingArea.contents.size, 1)
 		Assert.assertEquals(referenceContent.size, oldSize - 2)		
 	}
 	
@@ -344,7 +343,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, 0)
 		
 		// Create and resolve
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 			as InsertEReference<Root, NonRoot>		
 		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 		
@@ -365,7 +364,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Create and resolve change
 		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createInsertReferenceChange
 			(invalidAffectedEObject, affectedFeature, newValue, DEFAULT_INDEX).
-			resolveBefore(resourceSet1)
+			resolveBefore(resourceSet)
 		Assert.assertTrue(resolvedChange.isResolved)
 		
 		// NonRoot has no such feature

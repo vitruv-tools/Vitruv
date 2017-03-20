@@ -154,7 +154,7 @@ class AtomicEChangeResolver {
 			if (change.affectedEObject == null || !change.resolveEChange(resourceSet, true)) {
 				return false
 			}
-			// Get the staging area where the created object will placed in.
+			// Get the staging area where the created object will placed in or deleted from.
 			change.stagingArea = StagingArea.getStagingArea(resourceSet)
 
 			// Resolve the affected object

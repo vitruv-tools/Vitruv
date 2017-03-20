@@ -19,8 +19,8 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	@Before
 	override public void beforeTest()  {
 		super.beforeTest()
-		resource1.contents.add(DEFAULT_INDEX, newRootObject)
-		resource1.contents.add(DEFAULT_INDEX + 1, newRootObject2)
+		resource.contents.add(DEFAULT_INDEX, newRootObject)
+		resource.contents.add(DEFAULT_INDEX + 1, newRootObject2)
 	}
 
 	/**
@@ -59,13 +59,13 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject)
 		unresolvedChange.assertIsNotResolved(newRootObject)	
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as RemoveRootEObject<Root>	
-		resolvedChange.assertIsResolved(newRootObject, resource1)
-		Assert.assertTrue(stagingArea1.contents.empty)
+		resolvedChange.assertIsResolved(newRootObject, resource)
+		Assert.assertTrue(stagingArea.contents.empty)
 	}
 	
 	/**
@@ -78,16 +78,16 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject)
 		unresolvedChange.assertIsNotResolved(newRootObject)	
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		
 		// Set state after
 	 	prepareStagingArea(newRootObject)
 
 	 	// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as RemoveRootEObject<Root>	
-		resolvedChange.assertIsResolved(newRootObject, resource1)
-		Assert.assertFalse(stagingArea1.contents.empty)
+		resolvedChange.assertIsResolved(newRootObject, resource)
+		Assert.assertFalse(stagingArea.contents.empty)
 	 }
 	
 	/**
@@ -101,7 +101,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		unresolvedChange.assertIsNotResolved(newRootObject)	
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as RemoveRootEObject<Root>				
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
@@ -114,35 +114,35 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	def public void removeRootEObjectApplyForwardTest() {
 		// State before
 		val oldSize = resourceContent.size
-		Assert.assertTrue(stagingArea1.contents.empty)	
+		Assert.assertTrue(stagingArea.contents.empty)	
 		Assert.assertTrue(newRootObject == resourceContent.get(DEFAULT_INDEX))	
 		Assert.assertTrue(newRootObject2 == resourceContent.get(DEFAULT_INDEX + 1))		
 		
 		// Create and resolve change 1
-		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet)
 			as RemoveRootEObject<Root>
-		resolvedChange.assertIsResolved(newRootObject, resource1)
+		resolvedChange.assertIsResolved(newRootObject, resource)
 				
 		// Apply forward 1	
 		Assert.assertTrue(resolvedChange.applyForward)
 		
 		Assert.assertEquals(resourceContent.size, oldSize - 1)
-		Assert.assertTrue(newRootObject == stagingArea1.contents.get(0))
+		Assert.assertTrue(newRootObject == stagingArea.contents.get(0))
 		Assert.assertTrue(newRootObject2 == resourceContent.get(DEFAULT_INDEX))		
 		
 		// Now the element is deleted or inserted again.
-		stagingArea1.contents.clear()
+		stagingArea.contents.clear()
 
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(newRootObject2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newRootObject2).resolveBefore(resourceSet)
 			as RemoveRootEObject<Root>
-		resolvedChange2.assertIsResolved(newRootObject2, resource1)
+		resolvedChange2.assertIsResolved(newRootObject2, resource)
 
 		// Apply forward 2	
 		Assert.assertTrue(resolvedChange2.applyForward)
 							
 		Assert.assertEquals(resourceContent.size, oldSize - 2)
-		Assert.assertTrue(newRootObject2 == stagingArea1.contents.get(0))		
+		Assert.assertTrue(newRootObject2 == stagingArea.contents.get(0))		
 	}
 	
 	/**
@@ -152,20 +152,20 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	@Test
 	def public void removeRootEObjectApplyBackwardTest() {
 		// State before
-		Assert.assertTrue(stagingArea1.contents.empty)	
+		Assert.assertTrue(stagingArea.contents.empty)	
 		val indexRoot1 = resourceContent.indexOf(newRootObject)
 		val indexRoot2 = resourceContent.indexOf(newRootObject2)
 		
 		// Create and resolve and apply forward 1
-		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet)
 			as RemoveRootEObject<Root>
 		Assert.assertTrue(resolvedChange.applyForward)
 		
 		// Now the element is deleted or inserted again.
-		stagingArea1.contents.clear()
+		stagingArea.contents.clear()
 		
 		// Create and resolve and apply forward 2
-		val resolvedChange2 = createUnresolvedChange(newRootObject2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newRootObject2).resolveBefore(resourceSet)
 			as RemoveRootEObject<Root>
 		Assert.assertTrue(resolvedChange2.applyForward)
 		
@@ -200,9 +200,9 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		Assert.assertTrue(resourceContent.size < index)
 		
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet)
 			as RemoveRootEObject<Root>
-		resolvedChange.assertIsResolved(newRootObject, resource1)
+		resolvedChange.assertIsResolved(newRootObject, resource)
 			
 		// Apply
 		Assert.assertTrue(resolvedChange.isResolved)

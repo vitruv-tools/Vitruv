@@ -1,12 +1,12 @@
 package tools.vitruv.framework.tests.echange
 
 import allElementTypes.AllElementTypesFactory
+import allElementTypes.Identified
 import allElementTypes.Root
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.junit.After
 import org.junit.Assert
@@ -14,11 +14,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvedAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.util.StagingArea
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
-import allElementTypes.Identified
 
 /**
  * Default class for testing EChange changes.
@@ -27,15 +26,10 @@ import allElementTypes.Identified
  */
  public abstract class EChangeTest {
 
- 	protected var Root rootObject1 = null
- 	protected var Resource resource1 = null
- 	protected var Resource stagingArea1 = null
- 	protected var ResourceSet resourceSet1 = null
- 	
- 	protected var Root rootObject2 = null
- 	protected var Resource resource2 = null
- 	protected var Resource stagingArea2 = null
- 	protected var ResourceSet resourceSet2 = null
+ 	protected var Root rootObject = null
+ 	protected var Resource resource = null
+ 	protected var Resource stagingArea = null
+ 	protected var ResourceSet resourceSet = null
  	
  	protected var TypeInferringAtomicEChangeFactory atomicFactory = null
  	protected var TypeInferringCompoundEChangeFactory compoundFactory = null
@@ -67,28 +61,18 @@ import allElementTypes.Identified
 		stagingResourceName = URI.createFileURI(StagingArea.DEFAULT_RESOURCE_NAME)
  		
  		// Create model
- 		resourceSet1 = new ResourceSetImpl()
- 		resourceSet1.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
- 		resourceSet1.getResourceFactoryRegistry().getExtensionToFactoryMap().put(StagingArea.DEFAULT_RESOURCE_EXTENSION, new XMIResourceFactoryImpl())
- 		resource1 = resourceSet1.createResource(fileUri)
+ 		resourceSet = new ResourceSetImpl()
+ 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
+ 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(StagingArea.DEFAULT_RESOURCE_EXTENSION, new XMIResourceFactoryImpl())
+ 		resource = resourceSet.createResource(fileUri)
  		
- 		rootObject1 = AllElementTypesFactory.eINSTANCE.createRoot()
- 		resource1.getContents().add(rootObject1)
+ 		rootObject = AllElementTypesFactory.eINSTANCE.createRoot()
+ 		resource.getContents().add(rootObject)
  		
- 		resource1.save(null)
+ 		resource.save(null)
  		
  		// Create staging area for resource set 1
- 		stagingArea1 = resourceSet1.createResource(stagingResourceName)
- 		
- 		// Load model in second resource
- 		resourceSet2 = new ResourceSetImpl()
- 		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
- 		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(StagingArea.DEFAULT_RESOURCE_EXTENSION, new XMIResourceFactoryImpl())
- 		resource2 = resourceSet2.getResource(fileUri, true)
- 		rootObject2 = resource2.getEObject(EcoreUtil.getURI(rootObject1).fragment()) as Root
- 		
- 		// Create staging area for resource set 2
- 		stagingArea2 = resourceSet2.createResource(stagingResourceName)
+ 		stagingArea = resourceSet.createResource(stagingResourceName)
  		
  		// Factorys for creating changes
  		atomicFactory = new TypeInferringUnresolvedAtomicEChangeFactory
@@ -101,8 +85,7 @@ import allElementTypes.Identified
  	 */
  	@After
  	def void afterTest() {
-		stagingArea1.contents.clear
-		stagingArea2.contents.clear
+		stagingArea.contents.clear
  	}
  	
  	/**

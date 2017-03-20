@@ -27,7 +27,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
  	@Before
  	override public void beforeTest() {
  		super.beforeTest()
- 		affectedEObject = rootObject1
+ 		affectedEObject = rootObject
  		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
  		oldValue = DEFAULT_ROOT_NAME
  		newValue = "New Root ID"
@@ -37,14 +37,14 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 * Set state before the change
 	 */
 	def private void prepareStateBefore() {
-  		rootObject1.setId(oldValue)	 	
+  		rootObject.setId(oldValue)	 	
 	}
 	 
 	/**
 	 * Set state after the change
 	 */
 	def private void prepareStateAfter() {
-  		rootObject1.setId(newValue)	 	
+  		rootObject.setId(newValue)	 	
 	}
 	 
 	/**
@@ -69,7 +69,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange()
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -83,7 +83,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 		prepareStateBefore
 		
 		// Create change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
 			as ReplaceSingleValuedEAttribute<Root, String>
 	 		
 	 	Assert.assertEquals(affectedEObject.id, oldValue)
@@ -104,7 +104,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 		prepareStateBefore
 		
 		// Create change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
 			as ReplaceSingleValuedEAttribute<Root, String>
 			
 		// Set state after
@@ -125,7 +125,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 def public void replaceSingleValuedEAttributeInvalidAttribute() {
 	 	// NonRoot element has no int attribute.
 	 	val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
-	 	resource1.contents.add(affectedNonRootEObject)
+	 	resource.contents.add(affectedNonRootEObject)
 	 	val affectedRootFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_EATTRIBUTE
 	 	val oldIntValue = DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE
 	 	val newIntValue = 500
@@ -152,7 +152,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	// Create and resolve change
 	 	val resolvedChange = atomicFactory.<Root, Integer>createReplaceSingleAttributeChange
 	 		(affectedEObject, affectedFeature, oldIntValue, newIntValue).
-	 		resolveBefore(resourceSet1)
+	 		resolveBefore(resourceSet)
 	 	Assert.assertTrue(resolvedChange.isResolved)
 	 		
 	 	// Type of attribute is String not Integer

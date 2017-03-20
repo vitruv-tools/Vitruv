@@ -123,7 +123,7 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject)	
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
 		resolvedChange.assertIsResolved(affectedEObject)
 
@@ -149,7 +149,7 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 		assertIsStateAfter
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
 		resolvedChange.assertIsResolved(affectedEObject)
 
@@ -167,7 +167,7 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 		val unresolvedChange = createUnresolvedChange()
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)					
 	}
@@ -181,7 +181,7 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 		assertIsStateBefore
 		
 		// Create change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1) 
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet) 
 			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
 			
 		// Apply forward
@@ -200,7 +200,7 @@ class CompoundSubtractionTest extends InsertRemoveEAttributeTest {
 		assertIsStateBefore
 		
 		// Create change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1) 
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet) 
 			as CompoundSubtraction<Integer, RemoveEAttributeValue<Root, Integer>>
 			
 		// Set state after change

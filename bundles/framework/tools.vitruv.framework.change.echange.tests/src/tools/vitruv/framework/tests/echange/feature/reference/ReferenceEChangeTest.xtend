@@ -24,7 +24,7 @@ public abstract class ReferenceEChangeTest extends EChangeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		affectedEObject = rootObject1
+		affectedEObject = rootObject
 		newValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
 		newValue.id = DEFAULT_NEW_NON_ROOT_NAME
 		newValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot()
@@ -35,8 +35,8 @@ public abstract class ReferenceEChangeTest extends EChangeTest {
 	 * Prepares the resource and adds the new values.
 	 */
 	def protected void prepareResource() {
-		resource1.contents.add(newValue)
-		resource1.contents.add(newValue2)
+		resource.contents.add(newValue)
+		resource.contents.add(newValue2)
 	}
 	
 	/**
@@ -45,7 +45,9 @@ public abstract class ReferenceEChangeTest extends EChangeTest {
 	 * @param 	object The new object.
 	 */
 	def protected void prepareStagingArea(EObject object) {
-		stagingArea1.contents.clear
-		stagingArea1.contents.add(object)
+		stagingArea.contents.clear
+		if (object != null) {
+			stagingArea.contents.add(object)
+		}
 	}
 }

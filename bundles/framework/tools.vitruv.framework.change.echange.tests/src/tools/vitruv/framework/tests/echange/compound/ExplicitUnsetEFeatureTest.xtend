@@ -30,7 +30,7 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		affectedEObject = rootObject1	
+		affectedEObject = rootObject	
 	}
 
 	/**
@@ -98,7 +98,7 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange()
 
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)	
 	}
 		
@@ -268,7 +268,7 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject)
 		
 		// Resolve 1
-		var resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		var resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 			as ExplicitUnsetEFeature<Root, Integer>
 		resolvedChange.assertIsResolved(affectedEObject)
 		
@@ -276,7 +276,7 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		assertIsStateBefore
 				
 		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveBeforeAndApplyForward(resourceSet1)
+		var resolvedAndAppliedChange = unresolvedChange.resolveBeforeAndApplyForward(resourceSet)
 			as ExplicitUnsetEFeature<Root, Integer>
 		resolvedAndAppliedChange.assertIsResolved(affectedEObject)
 		
@@ -300,7 +300,7 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		assertIsStateAfter
 		
 		// Resolve 1
-		var resolvedChange = unresolvedChange.resolveAfter(resourceSet1)
+		var resolvedChange = unresolvedChange.resolveAfter(resourceSet)
 			as ExplicitUnsetEFeature<Root, Integer>
 		resolvedChange.assertIsResolved(affectedEObject)
 		
@@ -308,7 +308,7 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		assertIsStateAfter	
 		
 		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveAfterAndApplyBackward(resourceSet1)
+		var resolvedAndAppliedChange = unresolvedChange.resolveAfterAndApplyBackward(resourceSet)
 			as ExplicitUnsetEFeature<Root, Integer>
 		resolvedAndAppliedChange.assertIsResolved(affectedEObject)
 		
@@ -324,7 +324,7 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		assertIsStateBefore
 		
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
 			as ExplicitUnsetEFeature<Root, Integer>
 			
 		// Apply forward
@@ -342,7 +342,7 @@ class ExplicitUnsetEFeatureTest extends EChangeTest {
 		assertIsStateBefore
 		
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
 			as ExplicitUnsetEFeature<Root, Integer>
 			
 		// Set state after

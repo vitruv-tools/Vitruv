@@ -22,7 +22,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		val unresolvedChange = createUnresolvedChange(NEW_VALUE)
 		
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -39,7 +39,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), NEW_VALUE_2)
 		
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(NEW_VALUE).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(NEW_VALUE).resolveBefore(resourceSet)
 			as RemoveEAttributeValue<Root, String>
 			
 		// Apply forward
@@ -49,7 +49,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE_2)
 		
 		// Create change and resolve 2
-		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2).resolveBefore(resourceSet)
 			as RemoveEAttributeValue<Root, String>
 		
 		// Apply forward 2	
@@ -68,12 +68,12 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		prepareAttribute
 		
 		// Create change and resolve and apply
-		val resolvedChange = createUnresolvedChange(NEW_VALUE).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(NEW_VALUE).resolveBefore(resourceSet)
 			as RemoveEAttributeValue<Root, String>
 		Assert.assertTrue(resolvedChange.applyForward)
 		
 		// Create change and resolve and apply 2
-		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2).resolveBefore(resourceSet)
 			as RemoveEAttributeValue<Root, String>		
 		Assert.assertTrue(resolvedChange2.applyForward)	
 		
@@ -105,7 +105,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		Assert.assertEquals(attributeContent.size, 2)
 		
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(NEW_VALUE).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(NEW_VALUE).resolveBefore(resourceSet)
 			as RemoveEAttributeValue<Root, String>	
 		Assert.assertTrue(resolvedChange.isResolved)
 	
@@ -121,12 +121,12 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	def public void removeEAttributeValueInvalidAttribute() {
 		prepareAttribute
 		val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
-	 	resource1.contents.add(affectedNonRootEObject)
+	 	resource.contents.add(affectedNonRootEObject)
 		
 		// Create change and resolve
 		val resolvedChange = atomicFactory.<NonRoot, Integer>createRemoveAttributeChange
 			(affectedNonRootEObject, affectedFeature, DEFAULT_INDEX, NEW_VALUE).
-			resolveBefore(resourceSet1)
+			resolveBefore(resourceSet)
 		Assert.assertTrue(resolvedChange.isResolved)	
 			
 		// NonRoot has no such feature
@@ -147,7 +147,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Create change and resolve
 		val resolvedChange = atomicFactory.<Root, String>createRemoveAttributeChange
 			(affectedEObject, affectedFeature, DEFAULT_INDEX, newInvalidValue).
-			resolveBefore(resourceSet1)
+			resolveBefore(resourceSet)
 		Assert.assertTrue(resolvedChange.isResolved)
 		
 		// Type of attribute is Integer not String

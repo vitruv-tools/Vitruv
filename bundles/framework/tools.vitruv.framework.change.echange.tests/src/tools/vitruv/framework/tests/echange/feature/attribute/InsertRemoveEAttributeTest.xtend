@@ -28,7 +28,7 @@ public abstract class InsertRemoveEAttributeTest extends EChangeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
-		affectedEObject = rootObject1
+		affectedEObject = rootObject
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_EATTRIBUTE
 		attributeContent = affectedEObject.eGet(affectedFeature) as EList<Integer>
 	}

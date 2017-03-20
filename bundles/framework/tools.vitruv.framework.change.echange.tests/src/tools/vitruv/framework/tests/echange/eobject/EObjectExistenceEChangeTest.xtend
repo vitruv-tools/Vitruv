@@ -62,13 +62,13 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		val unresolvedChange = createUnresolvedChange(createdObject)
 		unresolvedChange.assertIsNotResolved(createdObject)
 		// Staging area is unaffected while resolving the change		
-		Assert.assertTrue(stagingArea1.contents.empty) 
+		Assert.assertTrue(stagingArea.contents.empty) 
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 			as CreateEObject<Root>
-		resolvedChange.assertIsResolvedNewObject(createdObject, stagingArea1)	
-		Assert.assertTrue(stagingArea1.contents.empty)
+		resolvedChange.assertIsResolvedNewObject(createdObject, stagingArea)	
+		Assert.assertTrue(stagingArea.contents.empty)
 	}
 	
 	/**
@@ -84,16 +84,16 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		// Set state after
 		prepareStagingArea(createdObject)
 		// Staging area is unaffected while resolving the change
-		Assert.assertFalse(stagingArea1.contents.empty)
-		Assert.assertTrue(stagingArea1.contents.get(0) == createdObject)		
+		Assert.assertFalse(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.contents.get(0) == createdObject)		
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
 			as CreateEObject<Root>
-		resolvedChange.assertIsResolvedExistingObject(createdObject, stagingArea1)	
+		resolvedChange.assertIsResolvedExistingObject(createdObject, stagingArea)	
 		
-		Assert.assertFalse(stagingArea1.contents.empty)
-		Assert.assertTrue(stagingArea1.contents.get(0) == createdObject)	
+		Assert.assertFalse(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.contents.get(0) == createdObject)	
 	}
 	
 	/**
@@ -109,7 +109,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		Assert.assertFalse(unresolvedChange.isResolved)
 		
 		// Resolve
-		Assert.assertNull(unresolvedChange.resolveBefore(resourceSet1) as CreateEObject<Root>)
-		Assert.assertNull(unresolvedChange.resolveAfter(resourceSet1) as CreateEObject<Root>)		
+		Assert.assertNull(unresolvedChange.resolveBefore(resourceSet) as CreateEObject<Root>)
+		Assert.assertNull(unresolvedChange.resolveAfter(resourceSet) as CreateEObject<Root>)		
 	}
 }

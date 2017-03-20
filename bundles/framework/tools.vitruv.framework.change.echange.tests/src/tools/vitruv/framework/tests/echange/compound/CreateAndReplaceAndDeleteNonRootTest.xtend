@@ -114,7 +114,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void resolveCreateAndReplaceAndDeleteNonRootTest() {
 		// State before
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		
 		// Create change
@@ -122,13 +122,13 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolvedBefore(affectedEObject, oldValue, newValue)
 							
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 	}
 	
 	/**
@@ -139,7 +139,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void resolveCreateAndReplaceAndDeleteNonRootTest2() {
 		// State before change
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		
 		// Create change
@@ -150,13 +150,13 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		prepareStateAfter
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolvedAfter(affectedEObject, oldValue, newValue)
 				
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == newValue)
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 	}
 	
 	/**
@@ -169,7 +169,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)				
 	}
@@ -181,11 +181,11 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void createAndReplaceAndDeleteNonRootApplyForwardTest() {
 		// State before
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 				
 		// Create and resolve 1
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
 			
 		// Apply change 1 forward
@@ -193,10 +193,10 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 				
 		var NonRoot valueAfterChange1 = affectedEObject.eGet(affectedFeature) as NonRoot
 		valueAfterChange1.assertIsCopy(newValue)
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 				
 		// Create and resolve 2
-		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(newValue2).resolveBefore(resourceSet)
 			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
 			
 		// Apply change 2 forward
@@ -204,7 +204,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		
 		var NonRoot valueAfterChange2 = affectedEObject.eGet(affectedFeature) as NonRoot
 		valueAfterChange2.assertIsCopy(newValue2)
-		Assert.assertTrue(stagingArea1.contents.empty)			
+		Assert.assertTrue(stagingArea.contents.empty)			
 	}
 	
 	/**
@@ -214,22 +214,22 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void createAndReplaceAndDeleteNonRootApplyBackwardTest() {
 		// State before change.
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
 		
 		// Create change 
-		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(resourceSet)
 			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
 			
 		// Set state after change 
 		Assert.assertTrue(resolvedChange.applyForward)
 		newValue.assertIsCopy(affectedEObject.eGet(affectedFeature) as NonRoot)
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 				
 		// Apply backward
 		Assert.assertTrue(resolvedChange.applyBackward)
 		
 		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
-		Assert.assertTrue(stagingArea1.contents.empty)			
+		Assert.assertTrue(stagingArea.contents.empty)			
 	}
 }

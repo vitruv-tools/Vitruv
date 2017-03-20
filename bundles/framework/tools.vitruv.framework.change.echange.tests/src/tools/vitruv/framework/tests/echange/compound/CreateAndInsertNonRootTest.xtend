@@ -41,20 +41,20 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	def public void resolveCreateAndInsertNonRootTest() {
 		// State before
 		val size = referenceContent.size
-		Assert.assertTrue(stagingArea1.contents.empty)	
+		Assert.assertTrue(stagingArea.contents.empty)	
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue)
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolvedNewObject(affectedEObject, newValue)	
 			
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertEquals(referenceContent.size, size)
-		Assert.assertTrue(stagingArea1.contents.empty)			
+		Assert.assertTrue(stagingArea.contents.empty)			
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void resolveCreateAndInsertNonRootTest2() {
 		// State before
-		Assert.assertTrue(stagingArea1.contents.empty)			
+		Assert.assertTrue(stagingArea.contents.empty)			
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue)
@@ -75,13 +75,13 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		val size = referenceContent.size
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1) 
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolvedExistingObject(affectedEObject, newValue)	
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.		
 		Assert.assertEquals(referenceContent.size, size)
-		Assert.assertTrue(stagingArea1.contents.empty)				
+		Assert.assertTrue(stagingArea.contents.empty)				
 	}
 	
 	/**
@@ -94,7 +94,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue)
 		
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -106,26 +106,26 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void createAndInsertNonRootApplyForwardTest() {
 		// State before
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		val oldSize = referenceContent.size	
 		
 		// Create and resolve and apply change
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet)
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		Assert.assertTrue(resolvedChange.applyForward)
 		
 		Assert.assertEquals(referenceContent.size, oldSize + 1)
 		Assert.assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		
 		// Create and resolve and apply change 2	
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet)
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		Assert.assertTrue(resolvedChange2.applyForward)
 		
 		Assert.assertEquals(referenceContent.size, oldSize + 2)
 		Assert.assertTrue(referenceContent.contains(resolvedChange2.createChange.affectedEObject))
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 	}
 	
 	/**
@@ -136,17 +136,17 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void createAndInsertNonRootApplyBackwardTest() {
 		// State before
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 		val index1 = referenceContent.indexOf(newValue)
 		val index2 = referenceContent.indexOf(newValue2)
 		
 		// Create and resolve and apply change 1
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet1)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet)
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		Assert.assertTrue(resolvedChange.applyForward)	
 		
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet1)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet)
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		Assert.assertTrue(resolvedChange2.applyForward)	
 				
@@ -154,7 +154,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		val oldSize = referenceContent.size
 		Assert.assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
 		Assert.assertTrue(referenceContent.contains(resolvedChange2.createChange.affectedEObject))	
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 					
 		// Apply backward 2
 		Assert.assertTrue(resolvedChange2.applyBackward)
@@ -162,7 +162,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		Assert.assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
 		Assert.assertFalse(referenceContent.contains(resolvedChange2.createChange.affectedEObject))	
 		Assert.assertEquals(referenceContent.size, oldSize - 1)
-		Assert.assertTrue(stagingArea1.contents.empty)
+		Assert.assertTrue(stagingArea.contents.empty)
 			
 		// Apply backward 1	
 		Assert.assertTrue(resolvedChange.applyBackward)
@@ -170,7 +170,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(index1, referenceContent.indexOf(resolvedChange.createChange.affectedEObject))
 		Assert.assertEquals(index2, referenceContent.indexOf(resolvedChange2.createChange.affectedEObject))
 		Assert.assertEquals(referenceContent.size, oldSize - 2)
-		Assert.assertTrue(stagingArea1.contents.empty)		
+		Assert.assertTrue(stagingArea.contents.empty)		
 	}
 	
 

@@ -63,11 +63,11 @@ public class ReferenceApplyForwardCommandSwitch extends ReferenceSwitch<List<Com
 		val stagingArea = StagingArea.getStagingArea(object.affectedEObject.eResource.resourceSet)
 		val compoundCommand = new CompoundCommand()
 
-		if (object.containment) {
+		if (object.containment && object.newValue != null) {
 			compoundCommand.append(new RemoveCommand(editingDomain, stagingArea.contents, object.newValue))
 		}
 		compoundCommand.append(SetCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.newValue))
-		if (object.containment) {
+		if (object.containment && object.oldValue != null) {
 			compoundCommand.append(new AddCommand(editingDomain, stagingArea.contents, object.oldValue))
 		}
 		

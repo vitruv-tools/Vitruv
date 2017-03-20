@@ -124,7 +124,7 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 			as ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
 			InsertEAttributeValue<Root, Integer>>
 		resolvedChange.assertIsResolved(affectedEObject)			
@@ -149,7 +149,7 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 		assertIsStateAfter
 						
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
 			as ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
 			InsertEAttributeValue<Root, Integer>>
 		resolvedChange.assertIsResolved(affectedEObject)
@@ -168,7 +168,7 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 		val unresolvedChange = createUnresolvedChange(DEFAULT_INDEX, OLD_VALUE, NEW_VALUE)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 			as ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
 			InsertEAttributeValue<Root, Integer>>	
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)		
@@ -184,7 +184,7 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 		
 		// Create change 1
 		val resolvedChange = createUnresolvedChange(DEFAULT_INDEX, OLD_VALUE, NEW_VALUE).
-			resolveBefore(resourceSet1)
+			resolveBefore(resourceSet)
 			
 		// Apply forward change 1
 		Assert.assertTrue(resolvedChange.applyForward)
@@ -195,7 +195,7 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 		
 		// Create change 2
 		val resolvedChange2 = createUnresolvedChange(DEFAULT_INDEX_2, OLD_VALUE_2, NEW_VALUE_2).
-			resolveBefore(resourceSet1)
+			resolveBefore(resourceSet)
 			
 		// Apply forward change 2
 		Assert.assertTrue(resolvedChange2.applyForward)			
@@ -214,12 +214,12 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 		
 		// Create and resolve and apply change 1
 		val resolvedChange = createUnresolvedChange(DEFAULT_INDEX, OLD_VALUE, NEW_VALUE).
-			resolveBefore(resourceSet1)
+			resolveBefore(resourceSet)
 		Assert.assertTrue(resolvedChange.applyForward)	
 		
 		// Create and resolve and apply change 2
 		val resolvedChange2 = createUnresolvedChange(DEFAULT_INDEX_2, OLD_VALUE_2, NEW_VALUE_2).
-			resolveBefore(resourceSet1)
+			resolveBefore(resourceSet)
 		Assert.assertTrue(resolvedChange2.applyForward)			
 		
 		// State after

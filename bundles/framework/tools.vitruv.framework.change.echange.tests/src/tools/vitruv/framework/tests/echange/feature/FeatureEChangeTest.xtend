@@ -6,13 +6,19 @@ import allElementTypes.Root
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.util.StagingArea
 import tools.vitruv.framework.tests.echange.EChangeTest
+import org.junit.After
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 
@@ -22,11 +28,33 @@ import tools.vitruv.framework.tests.echange.EChangeTest
  	protected var Root affectedEObject = null
  	protected var EAttribute affectedFeature = null
  	
+ 	// Second model instance
+ 	protected var Root rootObject2 = null
+ 	protected var Resource resource2 = null
+ 	protected var Resource stagingArea2 = null
+ 	protected var ResourceSet resourceSet2 = null
+ 	
  	@Before
  	override public void beforeTest() {
  		super.beforeTest()
- 		affectedEObject = rootObject1
+ 		affectedEObject = rootObject
  		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
+ 		
+ 		// Load model in second resource
+ 		resourceSet2 = new ResourceSetImpl()
+ 		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
+ 		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(StagingArea.DEFAULT_RESOURCE_EXTENSION, new XMIResourceFactoryImpl())
+ 		resource2 = resourceSet2.getResource(fileUri, true)
+ 		rootObject2 = resource2.getEObject(EcoreUtil.getURI(rootObject).fragment()) as Root
+ 		
+ 		// Create staging area for resource set 2
+ 		stagingArea2 = resourceSet2.createResource(stagingResourceName)
+ 	}
+ 	
+ 	@After
+ 	override public void afterTest() {
+ 		stagingArea2.contents.clear
+ 		super.afterTest()
  	}
 
 	/**
@@ -34,7 +62,7 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 	 */
 	def private Root prepareSecondRoot() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot()
-		resource1.contents.add(root)
+		resource.contents.add(root)
 		return root		
 	}
 	
@@ -79,7 +107,7 @@ import tools.vitruv.framework.tests.echange.EChangeTest
  		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
  					
  		// Resolve
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
  			as FeatureEChange<Root, EAttribute>
  		resolvedChange.assertIsResolved(affectedEObject, affectedFeature)
  	}
@@ -96,16 +124,16 @@ import tools.vitruv.framework.tests.echange.EChangeTest
  		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
  			
   		// Resolve 1
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1)
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
  			as FeatureEChange<Root, EAttribute>
- 		resolvedChange.assertIsResolved(rootObject1, affectedFeature)  		
+ 		resolvedChange.assertIsResolved(rootObject, affectedFeature)  		
   		
   		// Resolve 2
  		val resolvedChange2 = unresolvedChange.resolveBefore(resourceSet2)
  			as FeatureEChange<Root, EAttribute>
  		resolvedChange2.assertIsResolved(rootObject2, affectedFeature)
  		
- 		Assert.assertTrue(rootObject1 != rootObject2)	
+ 		Assert.assertTrue(rootObject != rootObject2)	
  	}
 
 	/**
@@ -135,12 +163,12 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 	@Test
 	def public void resolveResolvedEFeatureChange() {
 		// Create change and resolve	
- 		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet1)
+ 		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
  			as FeatureEChange<Root, EAttribute>
  		resolvedChange.assertIsResolved(affectedEObject, affectedFeature)
 		
 		// Resolve again
-		val resolvedChange2 = resolvedChange.resolveBefore(resourceSet1)
+		val resolvedChange2 = resolvedChange.resolveBefore(resourceSet)
 		 	as FeatureEChange<Root, EAttribute>
  		resolvedChange2.assertIsResolved(affectedEObject, affectedFeature)
 		Assert.assertTrue(resolvedChange == resolvedChange2)
@@ -159,7 +187,7 @@ import tools.vitruv.framework.tests.echange.EChangeTest
  		Assert.assertNull(unresolvedChange.affectedEObject)
  		
  		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
  			as FeatureEChange<Root, EAttribute>
 		Assert.assertNull(resolvedChange)			
  	}
@@ -176,7 +204,7 @@ import tools.vitruv.framework.tests.echange.EChangeTest
  		unresolvedChange.assertIsNotResolved(affectedEObject, null)	
  		
  		// Resolve
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet1) 
+ 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
  			as FeatureEChange<Root, EAttribute>
  	  	Assert.assertNull(resolvedChange)
  	 }

@@ -27,7 +27,7 @@ public abstract class RootEChangeTest extends EChangeTest {
 		super.beforeTest()
 		newRootObject = AllElementTypesFactory.eINSTANCE.createRoot()
 		newRootObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
-		resourceContent = resourceSet1.getResource(fileUri, false).contents
+		resourceContent = resourceSet.getResource(fileUri, false).contents
 	}
 	
 	/**
@@ -38,8 +38,8 @@ public abstract class RootEChangeTest extends EChangeTest {
 	 * 		Clears and sets the 0th element.
 	 */
 	protected def void prepareStagingArea(EObject object) {
-		stagingArea1.contents.clear
-		stagingArea1.contents.add(object)
+		stagingArea.contents.clear
+		stagingArea.contents.add(object)
 	}
 	
 	/**

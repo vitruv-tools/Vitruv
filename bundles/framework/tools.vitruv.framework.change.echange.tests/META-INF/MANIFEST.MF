@@ -12,4 +12,5 @@ Require-Bundle: org.junit,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.util,
  org.eclipse.emf.ecore.xmi,
- org.eclipse.emf.edit
+ org.eclipse.emf.edit,
+ tools.vitruv.framework.change
