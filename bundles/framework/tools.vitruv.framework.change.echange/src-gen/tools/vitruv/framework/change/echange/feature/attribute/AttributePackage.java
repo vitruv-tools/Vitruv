@@ -107,7 +107,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__OBJECT = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -116,7 +116,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__OBJECT = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -125,7 +125,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -134,7 +134,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -225,7 +225,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__OBJECT = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -234,7 +234,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__OBJECT = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -243,7 +243,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -252,7 +252,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -352,7 +352,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__OBJECT = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -361,7 +361,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__OBJECT = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -370,7 +370,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -379,7 +379,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -488,7 +488,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE__OBJECT = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -497,7 +497,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE_AFTER__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE_AFTER__OBJECT = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -506,7 +506,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -515,7 +515,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -624,7 +624,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE__OBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -633,7 +633,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_AFTER__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_AFTER__OBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -642,7 +642,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -651,7 +651,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -760,7 +760,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE__OBJECT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -769,7 +769,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_AFTER__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_AFTER__OBJECT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -778,7 +778,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -787,7 +787,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.

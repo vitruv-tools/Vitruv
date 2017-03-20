@@ -91,7 +91,7 @@ import tools.vitruv.framework.change.echange.util.StagingArea
  	/**
  	 * Tests whether a unresolved change and a resolved change are the same class.
  	 */
- 	def protected static void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange) {
+ 	def protected static void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange)	 {
  		Assert.assertFalse(unresolvedChange.isResolved)
  		Assert.assertTrue(resolvedChange.isResolved)
  		Assert.assertFalse(unresolvedChange == resolvedChange)

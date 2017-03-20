@@ -113,7 +113,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+	int ROOT_ECHANGE___RESOLVE_BEFORE__OBJECT = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -122,7 +122,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+	int ROOT_ECHANGE___RESOLVE_AFTER__OBJECT = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -131,7 +131,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -140,7 +140,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -240,7 +240,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT___RESOLVE_BEFORE__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+	int INSERT_ROOT_EOBJECT___RESOLVE_BEFORE__OBJECT = ROOT_ECHANGE___RESOLVE_BEFORE__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -249,7 +249,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT___RESOLVE_AFTER__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+	int INSERT_ROOT_EOBJECT___RESOLVE_AFTER__OBJECT = ROOT_ECHANGE___RESOLVE_AFTER__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -258,7 +258,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int INSERT_ROOT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -267,7 +267,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int INSERT_ROOT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -376,7 +376,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT___RESOLVE_BEFORE__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+	int REMOVE_ROOT_EOBJECT___RESOLVE_BEFORE__OBJECT = ROOT_ECHANGE___RESOLVE_BEFORE__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -385,7 +385,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT___RESOLVE_AFTER__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+	int REMOVE_ROOT_EOBJECT___RESOLVE_AFTER__OBJECT = ROOT_ECHANGE___RESOLVE_AFTER__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -394,7 +394,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int REMOVE_ROOT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -403,7 +403,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int REMOVE_ROOT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
