@@ -17,6 +17,10 @@ class AtomicEMFChangeRecorder {
 	var Collection<Notifier> elementsToObserve
 	var boolean unresolveRecordedChanges
 	
+	/**
+	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
+	 * the recorded changes.
+	 */
 	new() {
 		this(false)
 	}
@@ -49,7 +53,7 @@ class AtomicEMFChangeRecorder {
 	
 	private def createModelChange(ChangeDescription changeDescription) {
 		if (!(changeDescription.objectChanges.isEmpty && changeDescription.resourceChanges.isEmpty)) {
-			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI, unresolveRecordedChanges);
+			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI);
 			result.applyForward();
 			return result;
 		}

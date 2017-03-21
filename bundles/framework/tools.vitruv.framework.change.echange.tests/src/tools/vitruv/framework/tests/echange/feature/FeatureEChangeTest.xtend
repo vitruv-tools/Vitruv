@@ -57,43 +57,6 @@ import org.junit.After
  		super.afterTest()
  	}
 
-	/**
-	 * Creates and inserts a new root element in the resource 1.
-	 */
-	def private Root prepareSecondRoot() {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot()
-		resource.contents.add(root)
-		return root		
-	}
-	
-	/**
-	 * Change is not resolved.
-	 */ 	
-	def private static void assertIsNotResolved(FeatureEChange<Root, EAttribute> change, 
-		Root affectedEObject, EAttribute affectedFeature) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertTrue(change.affectedEObject != affectedEObject)
-		Assert.assertTrue(change.affectedFeature == affectedFeature)				
-	} 
-	
-	/**
-	 * Change is resolved.
-	 */
- 	def private static void assertIsResolved(FeatureEChange<Root, EAttribute> change, 
-		Root affectedEObject, EAttribute affectedFeature) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.affectedEObject == affectedEObject)
-		Assert.assertTrue(change.affectedFeature == affectedFeature)			
-	} 
-
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private FeatureEChange<Root, EAttribute> createUnresolvedChange() {
-		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
-		return atomicFactory.<Root, String>createReplaceSingleAttributeChange
-		(affectedEObject, affectedFeature, null, null)	
-	}	 
 	 
  	/**
  	 * Tests if a feature change, which affected object and feature references 
@@ -222,5 +185,44 @@ import org.junit.After
  	  	val resolvedChange = unresolvedChange.resolveBefore(null) 
  	  		as FeatureEChange<Root, EAttribute>
  	  	Assert.assertNull(resolvedChange)
- 	  }
+ 	}
+ 	  
+ 	
+	/**
+	 * Creates and inserts a new root element in the resource 1.
+	 */
+	def private Root prepareSecondRoot() {
+		val root = AllElementTypesFactory.eINSTANCE.createRoot()
+		resource.contents.add(root)
+		return root		
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */ 	
+	def private static void assertIsNotResolved(FeatureEChange<Root, EAttribute> change, 
+		Root affectedEObject, EAttribute affectedFeature) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.affectedEObject != affectedEObject)
+		Assert.assertTrue(change.affectedFeature == affectedFeature)				
+	} 
+	
+	/**
+	 * Change is resolved.
+	 */
+ 	def private static void assertIsResolved(FeatureEChange<Root, EAttribute> change, 
+		Root affectedEObject, EAttribute affectedFeature) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.affectedEObject == affectedEObject)
+		Assert.assertTrue(change.affectedFeature == affectedFeature)			
+	} 
+
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private FeatureEChange<Root, EAttribute> createUnresolvedChange() {
+		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
+		return atomicFactory.<Root, String>createReplaceSingleAttributeChange
+		(affectedEObject, affectedFeature, null, null)	
+	}	 
  }

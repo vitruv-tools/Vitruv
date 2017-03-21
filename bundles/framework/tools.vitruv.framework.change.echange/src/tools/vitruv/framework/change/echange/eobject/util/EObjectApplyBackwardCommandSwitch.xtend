@@ -14,6 +14,21 @@ import tools.vitruv.framework.change.echange.util.EChangeUtil
  * The commands applies the EChanges backward.
  */
 class EObjectApplyBackwardCommandSwitch extends EobjectSwitch<List<Command>> {
+	private static EObjectApplyBackwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def EObjectApplyBackwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new EObjectApplyBackwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a {@link CreateEObject} change backward.
 	 * @param object The change which commands should be created.

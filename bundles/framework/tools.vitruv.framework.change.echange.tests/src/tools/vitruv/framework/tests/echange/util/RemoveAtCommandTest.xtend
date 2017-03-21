@@ -82,20 +82,29 @@ class RemoveAtCommandTest {
 		createRemoveAtCommand(list, 5, 3).assertRemovedCorrectValueFrom(list)
 	}
 	
+	/**
+	 * Creates a new remove at command.
+	 */
 	def private RemoveAtCommand createRemoveAtCommand(EList<?> ownerList, Object value, int index) {
 		return RemoveAtCommand.create(editingDomain, ownerList, value, index) as RemoveAtCommand
 	}
 	
+	/**
+	 * Command is prepareable (can be executed)
+	 */
 	def private static void assertIsPreparable(Command command) {
 		Assert.assertTrue(command.canExecute)
 	}
 	
+	/**
+	 * Command is not preparable (cannot be executed)
+	 */
 	def private static void assertIsNotPreparable(Command command) {
 		Assert.assertFalse(command.canExecute)
 	}	
 	
 	/** 
-	 * 
+	 * Checks if a command can be executed and executes it.
 	 */
 	def private static void assertExecuteCommand(Command command) {
 		Assert.assertTrue(command.canExecute)
@@ -123,7 +132,7 @@ class RemoveAtCommandTest {
 	}
 	
 	/**
-	 * 
+	 * Executes command and checks if it removed the right value from the list.
 	 */
 	def private static void assertRemovedCorrectValueFrom(RemoveAtCommand command, EList<?> list) {
 		var value = command.collection.get(0)

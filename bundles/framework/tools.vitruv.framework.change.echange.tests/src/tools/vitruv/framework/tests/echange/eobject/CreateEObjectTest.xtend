@@ -11,14 +11,6 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
  */
 class CreateEObjectTest extends EObjectTest {
 	/**
-	 * Creates new unresolved change.
-	 */
-	def private CreateEObject<Root> createUnresolvedChange(Root newObject) {
-		// The concrete change type CreateEObject will be used for the tests.
-		return atomicFactory.<Root>createCreateEObjectChange(newObject)
-	}
-	
-	/**
 	 * Tests whether resolving the {@link CreateEObjectTest} EChange returns
 	 * the same class.
 	 */
@@ -93,4 +85,12 @@ class CreateEObjectTest extends EObjectTest {
 		Assert.assertTrue(stagingArea.contents.empty)
 	}
 	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private CreateEObject<Root> createUnresolvedChange(Root newObject) {
+		// The concrete change type CreateEObject will be used for the tests.
+		return atomicFactory.<Root>createCreateEObjectChange(newObject)
+	}
+		
 }

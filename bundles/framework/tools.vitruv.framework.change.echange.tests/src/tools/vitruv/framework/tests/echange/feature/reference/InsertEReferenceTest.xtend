@@ -28,60 +28,6 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		super.beforeTest()
 		resourceContent = resource.contents
 	}
-	
-	/**
-	 * Starts a test with a containment feature and sets state before.
-	 */	
-	def private void isContainmentTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
-		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
-		prepareStagingArea(newValue)
-	}
-	
-	/**
-	 * Starts a test with a non containment feature and sets state before.
-	 */	
-	def private void isNonContainmentTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE	
-		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
-		prepareResource	
-	}
-	
-	/**
-	 * Prepares the multivalued reference used in the tests 
-	 * and fills it with a new value.
-	 */
-	def private void prepareReference(NonRoot object) {
-		referenceContent.add(object)
-	}
-	
-	/**
-	 * Change is not resolved.
-	 */
-	def private static void assertIsNotResolved(InsertEReference<Root, NonRoot> change, 
-		Root affectedEObject, NonRoot newValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertTrue(change.affectedEObject != affectedEObject)
-		Assert.assertTrue(change.newValue != newValue)			
-	}
-
-	/**
-	 * Change is resolved.
-	 */
-	def private static void assertIsResolved(InsertEReference<Root, NonRoot> change, 
-		Root affectedEObject, NonRoot newValue) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.affectedEObject == affectedEObject)
-		Assert.assertTrue(change.newValue == newValue)			
-	}
-
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private InsertEReference<Root, NonRoot> createUnresolvedChange(NonRoot newValue) {
-		return atomicFactory.<Root, NonRoot>createInsertReferenceChange
-		(affectedEObject, affectedFeature, newValue, index)	
-	}
 			
 	/**
 	 * Test resolves a {@link InsertEReference} EChange with correct parameters on
@@ -372,5 +318,59 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		
 		Assert.assertFalse(resolvedChange.applyForward)
 		Assert.assertFalse(resolvedChange.applyBackward)
+	}
+	
+	/**
+	 * Starts a test with a containment feature and sets state before.
+	 */	
+	def private void isContainmentTest() {
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
+		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
+		prepareStagingArea(newValue)
+	}
+	
+	/**
+	 * Starts a test with a non containment feature and sets state before.
+	 */	
+	def private void isNonContainmentTest() {
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE	
+		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
+		prepareResource	
+	}
+	
+	/**
+	 * Prepares the multivalued reference used in the tests 
+	 * and fills it with a new value.
+	 */
+	def private void prepareReference(NonRoot object) {
+		referenceContent.add(object)
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(InsertEReference<Root, NonRoot> change, 
+		Root affectedEObject, NonRoot newValue) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.affectedEObject != affectedEObject)
+		Assert.assertTrue(change.newValue != newValue)			
+	}
+
+	/**
+	 * Change is resolved.
+	 */
+	def private static void assertIsResolved(InsertEReference<Root, NonRoot> change, 
+		Root affectedEObject, NonRoot newValue) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.affectedEObject == affectedEObject)
+		Assert.assertTrue(change.newValue == newValue)			
+	}
+
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private InsertEReference<Root, NonRoot> createUnresolvedChange(NonRoot newValue) {
+		return atomicFactory.<Root, NonRoot>createInsertReferenceChange
+		(affectedEObject, affectedFeature, newValue, index)	
 	}
 }

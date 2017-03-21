@@ -14,6 +14,21 @@ import tools.vitruv.framework.change.echange.util.StagingArea
  * The commands applies the EChanges forward.
  */
 public class RootApplyForwardCommandSwitch extends RootSwitch<List<Command>> {
+	private static RootApplyForwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def RootApplyForwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new RootApplyForwardCommandSwitch();
+		}
+		return instance;
+	}
+		
 	/**
 	 * Create commands to apply a {@link InsertRootEObject} change forward.
 	 * @param object The change which commands should be created.

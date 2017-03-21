@@ -11,14 +11,6 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject
  */
 class DeleteEObjectTest extends EObjectTest {	
 	/**
-	 * Creates new unresolved change.
-	 */
-	def private DeleteEObject<Root> createUnresolvedChange(Root oldObject) {
-		// The concrete change type CreateEObject will be used for the tests.
-		return atomicFactory.<Root>createDeleteEObjectChange(oldObject)
-	}
-	
-	/**
 	 * Tests whether resolving the {@link DeleteEObjectTest} EChange returns
 	 * the same class.
 	 */
@@ -109,4 +101,13 @@ class DeleteEObjectTest extends EObjectTest {
 		Assert.assertEquals((stagingArea.contents.get(0) as Root).singleValuedEAttribute, 
 			createdObject2.singleValuedEAttribute)
 	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private DeleteEObject<Root> createUnresolvedChange(Root oldObject) {
+		// The concrete change type CreateEObject will be used for the tests.
+		return atomicFactory.<Root>createDeleteEObjectChange(oldObject)
+	}
+	
 }

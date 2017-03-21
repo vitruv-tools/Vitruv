@@ -32,29 +32,6 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
  		oldValue = DEFAULT_ROOT_NAME
  		newValue = "New Root ID"
  	}
-	 
-	/**
-	 * Set state before the change
-	 */
-	def private void prepareStateBefore() {
-  		rootObject.setId(oldValue)	 	
-	}
-	 
-	/**
-	 * Set state after the change
-	 */
-	def private void prepareStateAfter() {
-  		rootObject.setId(newValue)	 	
-	}
-	 
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private ReplaceSingleValuedEAttribute<Root, String> createUnresolvedChange() {
-		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
-		return atomicFactory.<Root, String>createReplaceSingleAttributeChange
-		(affectedEObject, affectedFeature, oldValue, newValue)	
-	}
 		
 	/**
 	 * Tests whether resolving the {@link ReplaceSingleValuedEAttribute} EChange returns 
@@ -160,5 +137,29 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	
 	 	Assert.assertFalse(resolvedChange.applyForward)
 	 	Assert.assertFalse(resolvedChange.applyBackward)
-	 }
+	}
+	 
+		 
+	/**
+	 * Set state before the change
+	 */
+	def private void prepareStateBefore() {
+  		rootObject.setId(oldValue)	 	
+	}
+	 
+	/**
+	 * Set state after the change
+	 */
+	def private void prepareStateAfter() {
+  		rootObject.setId(newValue)	 	
+	}
+	 
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private ReplaceSingleValuedEAttribute<Root, String> createUnresolvedChange() {
+		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
+		return atomicFactory.<Root, String>createReplaceSingleAttributeChange
+		(affectedEObject, affectedFeature, oldValue, newValue)	
+	}
 }

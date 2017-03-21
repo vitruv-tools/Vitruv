@@ -20,6 +20,21 @@ import tools.vitruv.framework.change.echange.util.RemoveAtCommand
  * The commands applies the EChanges forward.
  */
 public class ReferenceApplyForwardCommandSwitch extends ReferenceSwitch<List<Command>> {
+	private static ReferenceApplyForwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def ReferenceApplyForwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new ReferenceApplyForwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a {@link InsertEReference} change forward.
 	 * @param object The change which commands should be created.

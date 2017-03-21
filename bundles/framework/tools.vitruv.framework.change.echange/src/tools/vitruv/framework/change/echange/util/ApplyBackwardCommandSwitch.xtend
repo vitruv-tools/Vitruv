@@ -14,12 +14,27 @@ import tools.vitruv.framework.change.echange.root.util.RootApplyBackwardCommandS
  * The commands applies the EChanges backward.
  */
 public class ApplyBackwardCommandSwitch extends EChangeSwitch<List<Command>> {
+	private static ApplyBackwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def ApplyBackwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new ApplyBackwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a {@link EChange} change backward.
 	 * @param object The change which commands should be created.
 	 */	
 	def public List<Command> caseEChange(EChange object) {
-		return (new CompoundApplyBackwardCommandSwitch()).doSwitch(object)
+		return CompoundApplyBackwardCommandSwitch.instance.doSwitch(object)
 	}
 	
 	/**
@@ -27,12 +42,12 @@ public class ApplyBackwardCommandSwitch extends EChangeSwitch<List<Command>> {
 	 * @param object The change which commands should be created.
 	 */	
 	def public List<Command> caseAtomicEChange(AtomicEChange object) {
-		var result = (new FeatureApplyBackwardCommandSwitch()).doSwitch(object)
+		var result = FeatureApplyBackwardCommandSwitch.instance.doSwitch(object)
 		if (result == null) {
-			result = (new RootApplyBackwardCommandSwitch()).doSwitch(object)
+			result = RootApplyBackwardCommandSwitch.instance.doSwitch(object)
 		}
 		if (result == null) {
-			result = (new EObjectApplyBackwardCommandSwitch()).doSwitch(object)
+			result = EObjectApplyBackwardCommandSwitch.instance.doSwitch(object)
 		}
 		return result
 	}

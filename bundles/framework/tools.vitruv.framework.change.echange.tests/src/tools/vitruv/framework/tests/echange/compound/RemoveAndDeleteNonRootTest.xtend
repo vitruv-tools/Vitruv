@@ -36,60 +36,6 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	}
 	
 	/**
-	 * Removes the new values from the affected reference
-	 * to set state after.
-	 */
-	def private void prepareStateAfter() {
-		referenceContent.remove(newValue)
-		referenceContent.remove(newValue2)
-	}
-
-	/**
-	 * Change is not resolved.
-	 */
-	def private static void assertIsNotResolved(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
-		NonRoot removedNonRootObject) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.removeChange.isResolved)
-		Assert.assertFalse(change.deleteChange.isResolved)
-		Assert.assertTrue(change.removeChange.oldValue != removedNonRootObject)
-		Assert.assertTrue(change.deleteChange.affectedEObject != removedNonRootObject)
-		Assert.assertTrue(change.deleteChange.affectedEObject != change.removeChange.oldValue)
-	}
-	
-	/**
-	 * Change is resolved but with newly created object.
-	 */
-	def private static void assertIsResolvedNewObject(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
-		NonRoot removedNonRootObject) {
-		Assert.assertTrue(change.isResolved)
-		// Not the same object, but copy
-		change.removeChange.oldValue.assertIsCopy(removedNonRootObject)	
-		Assert.assertTrue(change.deleteChange.affectedEObject == change.removeChange.oldValue)		
-		Assert.assertTrue(change.removeChange.affectedEObject == affectedRootObject)	
-		
-	}
-	
-	/**
-	 * Change is resolved with existing object.
-	 */
-	def private static void assertIsResolvedExistingObject(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
-		NonRoot removedNonRootObject) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.deleteChange.affectedEObject == removedNonRootObject)
-		Assert.assertTrue(change.removeChange.oldValue == removedNonRootObject)
-		Assert.assertTrue(change.removeChange.affectedEObject == affectedRootObject)
-	}
-	
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private RemoveAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot) {
-		return compoundFactory.<Root, NonRoot>createRemoveAndDeleteNonRootChange
-		(affectedRootObject, affectedFeature, newNonRoot, index)	
-	}	
-		
-	/**
 	 * Resolves a {@link RemoveAndDeleteNonRoot} EChange. The model is in state
 	 * before the change, so the non root element is in a containment reference.
 	 */
@@ -231,4 +177,59 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.indexOf(newValue2), index2)
 		Assert.assertTrue(stagingArea.contents.empty)
 	}
+	
+	/**
+	 * Removes the new values from the affected reference
+	 * to set state after.
+	 */
+	def private void prepareStateAfter() {
+		referenceContent.remove(newValue)
+		referenceContent.remove(newValue2)
+	}
+
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
+		NonRoot removedNonRootObject) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertFalse(change.removeChange.isResolved)
+		Assert.assertFalse(change.deleteChange.isResolved)
+		Assert.assertTrue(change.removeChange.oldValue != removedNonRootObject)
+		Assert.assertTrue(change.deleteChange.affectedEObject != removedNonRootObject)
+		Assert.assertTrue(change.deleteChange.affectedEObject != change.removeChange.oldValue)
+	}
+	
+	/**
+	 * Change is resolved but with newly created object.
+	 */
+	def private static void assertIsResolvedNewObject(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
+		NonRoot removedNonRootObject) {
+		Assert.assertTrue(change.isResolved)
+		// Not the same object, but copy
+		change.removeChange.oldValue.assertIsCopy(removedNonRootObject)	
+		Assert.assertTrue(change.deleteChange.affectedEObject == change.removeChange.oldValue)		
+		Assert.assertTrue(change.removeChange.affectedEObject == affectedRootObject)	
+		
+	}
+	
+	/**
+	 * Change is resolved with existing object.
+	 */
+	def private static void assertIsResolvedExistingObject(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
+		NonRoot removedNonRootObject) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.deleteChange.affectedEObject == removedNonRootObject)
+		Assert.assertTrue(change.removeChange.oldValue == removedNonRootObject)
+		Assert.assertTrue(change.removeChange.affectedEObject == affectedRootObject)
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private RemoveAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot) {
+		return compoundFactory.<Root, NonRoot>createRemoveAndDeleteNonRootChange
+		(affectedRootObject, affectedFeature, newNonRoot, index)	
+	}	
+		
 }

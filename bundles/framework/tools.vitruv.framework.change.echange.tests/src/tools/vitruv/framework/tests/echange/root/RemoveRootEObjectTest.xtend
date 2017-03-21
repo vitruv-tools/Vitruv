@@ -21,32 +21,6 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		super.beforeTest()
 		resource.contents.add(DEFAULT_INDEX, newRootObject)
 		resource.contents.add(DEFAULT_INDEX + 1, newRootObject2)
-	}
-
-	/**
-	 * Change is not resolved.
-	 */
-	def private static void assertIsNotResolved(RemoveRootEObject<Root> change, Root oldValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertTrue(change.oldValue != oldValue)
-		Assert.assertNull(change.resource)
-	}
-	
-	/**
-	 * Change is resolved.
-	 */
-	def private static void assertIsResolved(RemoveRootEObject<Root> change, Root oldValue, Resource resource) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.oldValue == oldValue)
-		Assert.assertTrue(change.resource == resource)	
-	}
-	
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private RemoveRootEObject<Root> createUnresolvedChange(Root rootObject) {
-		return atomicFactory.<Root>createRemoveRootChange
-		(rootObject, fileUri.toString, index)	
 	}	
 	
 	/**
@@ -207,5 +181,31 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		// Apply
 		Assert.assertTrue(resolvedChange.isResolved)
 		Assert.assertFalse(resolvedChange.applyBackward)
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(RemoveRootEObject<Root> change, Root oldValue) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.oldValue != oldValue)
+		Assert.assertNull(change.resource)
+	}
+	
+	/**
+	 * Change is resolved.
+	 */
+	def private static void assertIsResolved(RemoveRootEObject<Root> change, Root oldValue, Resource resource) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.oldValue == oldValue)
+		Assert.assertTrue(change.resource == resource)	
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private RemoveRootEObject<Root> createUnresolvedChange(Root rootObject) {
+		return atomicFactory.<Root>createRemoveRootChange
+		(rootObject, resource, index)	
 	}
 }

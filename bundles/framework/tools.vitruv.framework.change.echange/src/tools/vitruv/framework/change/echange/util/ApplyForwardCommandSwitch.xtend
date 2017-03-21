@@ -14,12 +14,27 @@ import tools.vitruv.framework.change.echange.root.util.RootApplyForwardCommandSw
  * The commands applies the EChanges forward.
  */
 public class ApplyForwardCommandSwitch extends EChangeSwitch<List<Command>>{
+	private static ApplyForwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def ApplyForwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new ApplyForwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a {@link EChange} change forward.
 	 * @param object The change which commands should be created.
 	 */
 	def public List<Command> caseEChange(EChange object) {
-		return (new CompoundApplyForwardCommandSwitch()).doSwitch(object)
+		return CompoundApplyForwardCommandSwitch.instance.doSwitch(object)
 	}
 	
 	/**
@@ -27,12 +42,12 @@ public class ApplyForwardCommandSwitch extends EChangeSwitch<List<Command>>{
 	 * @param object The change which commands should be created.
 	 */
 	def public List<Command> caseAtomicEChange(AtomicEChange object) {
-		var result = (new FeatureApplyForwardCommandSwitch()).doSwitch(object)
+		var result = FeatureApplyForwardCommandSwitch.instance.doSwitch(object)
 		if (result == null) {
-			result = (new RootApplyForwardCommandSwitch()).doSwitch(object)
+			result = RootApplyForwardCommandSwitch.instance.doSwitch(object)
 		}
 		if (result == null) {
-			result = (new EObjectApplyForwardCommandSwitch()).doSwitch(object)
+			result = EObjectApplyForwardCommandSwitch.instance.doSwitch(object)
 		}
 		return result		
 	}

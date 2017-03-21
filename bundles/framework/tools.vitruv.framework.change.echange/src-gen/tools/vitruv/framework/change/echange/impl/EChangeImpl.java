@@ -155,8 +155,8 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	public boolean applyForward() {
 		boolean _isResolved = this.isResolved();
 		if (_isResolved) {
-			ApplyForwardCommandSwitch _applyForwardCommandSwitch = new ApplyForwardCommandSwitch();
-			final List<Command> commands = _applyForwardCommandSwitch.doSwitch(this);
+			ApplyForwardCommandSwitch _instance = ApplyForwardCommandSwitch.getInstance();
+			final List<Command> commands = _instance.doSwitch(this);
 			boolean _notEquals = (!Objects.equal(commands, null));
 			if (_notEquals) {
 				for (final Command c : commands) {
@@ -182,8 +182,8 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	public boolean applyBackward() {
 		boolean _isResolved = this.isResolved();
 		if (_isResolved) {
-			ApplyBackwardCommandSwitch _applyBackwardCommandSwitch = new ApplyBackwardCommandSwitch();
-			final List<Command> commands = _applyBackwardCommandSwitch.doSwitch(this);
+			ApplyBackwardCommandSwitch _instance = ApplyBackwardCommandSwitch.getInstance();
+			final List<Command> commands = _instance.doSwitch(this);
 			boolean _notEquals = (!Objects.equal(commands, null));
 			if (_notEquals) {
 				for (final Command c : commands) {

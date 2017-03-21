@@ -16,7 +16,7 @@ import org.junit.rules.TemporaryFolder
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
-import tools.vitruv.framework.change.echange.TypeInferringUnresolvedAtomicEChangeFactory
+import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.util.StagingArea
 
 /**
@@ -75,8 +75,8 @@ import tools.vitruv.framework.change.echange.util.StagingArea
  		stagingArea = resourceSet.createResource(stagingResourceName)
  		
  		// Factorys for creating changes
- 		atomicFactory = new TypeInferringUnresolvedAtomicEChangeFactory
- 		compoundFactory = new TypeInferringCompoundEChangeFactory(atomicFactory)
+ 		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory.instance
+ 		compoundFactory = TypeInferringCompoundEChangeFactory.unresolvingInstance
  	}
  	
  	/**

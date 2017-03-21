@@ -10,33 +10,7 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
  * Test class for the concrete {@link InsertRootEObject} EChange,
  * which inserts a new root element into a resource.
  */
-class InsertRootEObjectTest extends RootEChangeTest {
-	/**
-	 * Change is not resolved.
-	 */
-	def private static void assertIsNotResolved(InsertRootEObject<Root> change, Root newValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertTrue(change.newValue != newValue)
-		Assert.assertNull(change.resource)
-	}
-	
-	/**
-	 * Change is resolved.
-	 */
-	def private static void assertIsResolved(InsertRootEObject<Root> change, Root newValue, Resource resource) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.newValue == newValue)
-		Assert.assertTrue(change.resource == resource)	
-	}
-
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private InsertRootEObject<Root> createUnresolvedChange(Root rootObject) {
-		return atomicFactory.<Root>createInsertRootChange
-		(rootObject, fileUri.toString, index)	
-	}
-		
+class InsertRootEObjectTest extends RootEChangeTest {	
 	/**
 	 * Test resolves a {@link InsertRootEObject} EChange with a new root which is
 	 * in the staging area and not in the new resource. This happens
@@ -201,5 +175,31 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		
 		// Apply		
 		Assert.assertFalse(resolvedChange.applyForward)
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(InsertRootEObject<Root> change, Root newValue) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.newValue != newValue)
+		Assert.assertNull(change.resource)
+	}
+	
+	/**
+	 * Change is resolved.
+	 */
+	def private static void assertIsResolved(InsertRootEObject<Root> change, Root newValue, Resource resource) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.newValue == newValue)
+		Assert.assertTrue(change.resource == resource)	
+	}
+
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private InsertRootEObject<Root> createUnresolvedChange(Root rootObject) {
+		return atomicFactory.<Root>createInsertRootChange
+		(rootObject, resource, index)	
 	}
 }

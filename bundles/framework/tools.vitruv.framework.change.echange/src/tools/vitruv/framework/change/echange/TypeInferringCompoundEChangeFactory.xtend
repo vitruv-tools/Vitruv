@@ -4,6 +4,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.compound.CompoundFactory
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
@@ -17,23 +18,39 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
 
 class TypeInferringCompoundEChangeFactory {
-	var protected TypeInferringAtomicEChangeFactory atomicFactory
+	private TypeInferringAtomicEChangeFactory atomicFactory
+	private static TypeInferringCompoundEChangeFactory instance
+	private static TypeInferringCompoundEChangeFactory unresolvingInstance
 	
-	new(TypeInferringAtomicEChangeFactory atomicFactory) {
+	private new(TypeInferringAtomicEChangeFactory atomicFactory) {
 		this.atomicFactory = atomicFactory
 	}
 	
-	def <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(T affectedEObject, String resourceUri, int index) {
+	def public static TypeInferringCompoundEChangeFactory getInstance() {
+		if (instance == null) {
+			instance = new TypeInferringCompoundEChangeFactory(TypeInferringAtomicEChangeFactory.instance)
+		}
+		return instance		
+	}
+	
+	def public static TypeInferringCompoundEChangeFactory getUnresolvingInstance() {
+		if (unresolvingInstance == null) {
+			unresolvingInstance = new TypeInferringCompoundEChangeFactory(TypeInferringUnresolvingAtomicEChangeFactory.instance)
+		}
+		return unresolvingInstance
+	}
+	
+	def <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(T affectedEObject, Resource resource, int index) {
 		val c = CompoundFactory.eINSTANCE.createCreateAndInsertRoot();
 		c.createChange = atomicFactory.createCreateEObjectChange(affectedEObject);
-		c.insertChange = atomicFactory.createInsertRootChange(affectedEObject, resourceUri, index);
+		c.insertChange = atomicFactory.createInsertRootChange(affectedEObject, resource, index);
 		return c
 	}
 	
-	def <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRootChange(T affectedEObject, String resourceUri, int index) {
+	def <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRootChange(T affectedEObject, Resource resource, int index) {
 		val c = CompoundFactory.eINSTANCE.createRemoveAndDeleteRoot();
 		c.deleteChange = atomicFactory.createDeleteEObjectChange(affectedEObject);
-		c.removeChange = atomicFactory.createRemoveRootChange(affectedEObject, resourceUri, index);
+		c.removeChange = atomicFactory.createRemoveRootChange(affectedEObject, resource, index);
 		return c
 	}
 	

@@ -6,11 +6,18 @@ import org.junit.Assert
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 
+/**
+ * Helper class to compare different instances of the same change.
+ */
 class EChangeAssertEquals {
 	def public dispatch static void assertEquals(EChange change, EChange change2) {
+		// Is needed so xtend creates the assertEquals(EChange, EChange) method.
 		Assert.assertTrue(false)
 	}
 	
+	/**
+	 * Compares two {@link ReplaceSingleValuedEAttribute} EChanges.
+	 */
 	def public dispatch static void assertEquals(ReplaceSingleValuedEAttribute change, EChange change2) {
 		var replaceChange = change2.assertIsInstanceOf(ReplaceSingleValuedEAttribute)
 		Assert.assertSame(change.affectedEObject, replaceChange.affectedEObject)
@@ -19,6 +26,9 @@ class EChangeAssertEquals {
 		Assert.assertEquals(change.newValue, replaceChange.newValue)
 	}
 	
+	/**
+	 * Compares two {@link InsertEAttributeValue} EChanges.
+	 */	
 	def public dispatch static void assertEquals(InsertEAttributeValue change, EChange change2) {
 		var insertChange = change2.assertIsInstanceOf(InsertEAttributeValue)
 		Assert.assertSame(change.affectedEObject, insertChange.affectedEObject)
@@ -26,6 +36,9 @@ class EChangeAssertEquals {
 		Assert.assertEquals(change.newValue, insertChange.newValue)	
 	}
 	
+	/**
+	 * Compares two {@link RemoveEAttributeValue} EChanges.
+	 */	
 	def public dispatch static void assertEquals(RemoveEAttributeValue change, EChange change2) {
 		var removeChange = change2.assertIsInstanceOf(RemoveEAttributeValue)
 		Assert.assertSame(change.affectedEObject, removeChange.affectedEObject)

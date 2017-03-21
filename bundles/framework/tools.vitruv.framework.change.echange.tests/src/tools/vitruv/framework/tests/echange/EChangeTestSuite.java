@@ -23,13 +23,16 @@ import tools.vitruv.framework.tests.echange.feature.attribute.ReplaceSingleValue
 import tools.vitruv.framework.tests.echange.feature.reference.InsertEReferenceTest;
 import tools.vitruv.framework.tests.echange.feature.reference.RemoveEReferenceTest;
 import tools.vitruv.framework.tests.echange.feature.reference.ReplaceSingleValuedEReferenceTest;
+import tools.vitruv.framework.tests.echange.integration.EAttributeChangeIntegrationTest;
 import tools.vitruv.framework.tests.echange.root.InsertRootEObjectTest;
 import tools.vitruv.framework.tests.echange.root.RemoveRootEObjectTest;
 import tools.vitruv.framework.tests.echange.util.RemoveAtCommandTest;
 
 @RunWith(Suite.class)
 
-@SuiteClasses({FeatureEChangeTest.class, 
+@SuiteClasses({
+	// Atomic changes
+	FeatureEChangeTest.class, 
 	InsertEAttributeValueTest.class,
 	RemoveEAttributeValueTest.class, 
 	ReplaceSingleValuedEAttributeTest.class,
@@ -41,6 +44,8 @@ import tools.vitruv.framework.tests.echange.util.RemoveAtCommandTest;
 	EObjectExistenceEChangeTest.class,
 	CreateEObjectTest.class,
 	DeleteEObjectTest.class,
+	
+	// Compound changes
 	ExplicitUnsetEFeatureTest.class,
 	ReplaceInEListTest.class,
 	CompoundSubtractionTest.class,
@@ -51,6 +56,10 @@ import tools.vitruv.framework.tests.echange.util.RemoveAtCommandTest;
 	RemoveAndDeleteNonRootTest.class,
 	CreateAndReplaceAndDeleteNonRootTest.class,
 	
+	// Integration tests
+	EAttributeChangeIntegrationTest.class,
+	
+	// Additional tests
 	RemoveAtCommandTest.class})
 
 public class EChangeTestSuite {

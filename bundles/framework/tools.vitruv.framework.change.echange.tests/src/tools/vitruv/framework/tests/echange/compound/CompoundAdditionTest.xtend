@@ -28,77 +28,6 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 	override public void beforeTest() {
 		super.beforeTest
 		attributeContent = affectedEObject.eGet(affectedFeature) as EList<Integer>
-	}
-	 
-	/**
-	 * Sets the state after the change and fills the attribute of the tests with values.
-	 */
-	def private void prepareStateAfter() {
-		attributeContent.add(NEW_VALUE)
-		attributeContent.add(NEW_VALUE_2)
-		attributeContent.add(NEW_VALUE_3)
-	}
-	
-	/**
-	 * Model is in state before the change.
-	 */
-	def private void assertIsStateBefore() {
-		Assert.assertTrue(attributeContent.empty)
-	}
-	
-	/** 
-	 * Model is in state after the change.
-	 */
-	def private void assertIsStateAfter() {
-		Assert.assertEquals(attributeContent.size, 3)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), NEW_VALUE_2)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 2), NEW_VALUE_3)
-	}
-	
-	/**
-	 * Change is not resolved.
-	 */
-	def private static void assertIsNotResolved(CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>> change, 
-		Root affectedObject) {
-		Assert.assertFalse(change.isResolved)
-		for (c : change.additiveChanges) {
-			Assert.assertFalse(c.isResolved)
-			Assert.assertFalse(c.affectedEObject == affectedObject)
-		}
-	}
-	
-	/**
-	 * Change is resolved with state before change.
-	 */
-	def private static void assertIsResolved(CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>> change, 
-		Root affectedObject) {
-		Assert.assertTrue(change.isResolved)
-		for (c : change.additiveChanges) {
-			Assert.assertTrue(c.affectedEObject == affectedObject)
-		}
-	}
-	
-	/**
-	 * Creates the atomic changes for the compound change in the tests.
-	 */
-	def private List<InsertEAttributeValue<Root, Integer>> getAdditiveChanges() {
-		var List<InsertEAttributeValue<Root, Integer>> changes = new ArrayList<InsertEAttributeValue<Root, Integer>>()
-		changes.add(atomicFactory.<Root, Integer>createInsertAttributeChange(
-			affectedEObject, affectedFeature, DEFAULT_INDEX, NEW_VALUE))
-		changes.add(atomicFactory.<Root, Integer>createInsertAttributeChange(
-			affectedEObject, affectedFeature, DEFAULT_INDEX + 1, NEW_VALUE_2))
-		changes.add(atomicFactory.<Root, Integer>createInsertAttributeChange(
-			affectedEObject, affectedFeature, DEFAULT_INDEX + 2, NEW_VALUE_3))		
-		return changes
-	}
-	
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>> createUnresolvedChange() {
-		return compoundFactory.<Integer, InsertEAttributeValue<Root, Integer>>
-			createCompoundAdditionChange(getAdditiveChanges())
 	}	
 	
 	/**
@@ -204,5 +133,76 @@ class CompoundAdditionTest extends InsertRemoveEAttributeTest {
 		
 		// State before
 		assertIsStateBefore
+	}
+	
+	/**
+	 * Sets the state after the change and fills the attribute of the tests with values.
+	 */
+	def private void prepareStateAfter() {
+		attributeContent.add(NEW_VALUE)
+		attributeContent.add(NEW_VALUE_2)
+		attributeContent.add(NEW_VALUE_3)
+	}
+	
+	/**
+	 * Model is in state before the change.
+	 */
+	def private void assertIsStateBefore() {
+		Assert.assertTrue(attributeContent.empty)
+	}
+	
+	/** 
+	 * Model is in state after the change.
+	 */
+	def private void assertIsStateAfter() {
+		Assert.assertEquals(attributeContent.size, 3)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 1), NEW_VALUE_2)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX + 2), NEW_VALUE_3)
+	}
+	
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>> change, 
+		Root affectedObject) {
+		Assert.assertFalse(change.isResolved)
+		for (c : change.additiveChanges) {
+			Assert.assertFalse(c.isResolved)
+			Assert.assertFalse(c.affectedEObject == affectedObject)
+		}
+	}
+	
+	/**
+	 * Change is resolved with state before change.
+	 */
+	def private static void assertIsResolved(CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>> change, 
+		Root affectedObject) {
+		Assert.assertTrue(change.isResolved)
+		for (c : change.additiveChanges) {
+			Assert.assertTrue(c.affectedEObject == affectedObject)
+		}
+	}
+	
+	/**
+	 * Creates the atomic changes for the compound change in the tests.
+	 */
+	def private List<InsertEAttributeValue<Root, Integer>> getAdditiveChanges() {
+		var List<InsertEAttributeValue<Root, Integer>> changes = new ArrayList<InsertEAttributeValue<Root, Integer>>()
+		changes.add(atomicFactory.<Root, Integer>createInsertAttributeChange(
+			affectedEObject, affectedFeature, DEFAULT_INDEX, NEW_VALUE))
+		changes.add(atomicFactory.<Root, Integer>createInsertAttributeChange(
+			affectedEObject, affectedFeature, DEFAULT_INDEX + 1, NEW_VALUE_2))
+		changes.add(atomicFactory.<Root, Integer>createInsertAttributeChange(
+			affectedEObject, affectedFeature, DEFAULT_INDEX + 2, NEW_VALUE_3))		
+		return changes
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private CompoundAddition<Integer, InsertEAttributeValue<Root, Integer>> createUnresolvedChange() {
+		return compoundFactory.<Integer, InsertEAttributeValue<Root, Integer>>
+			createCompoundAdditionChange(getAdditiveChanges())
 	}
 }

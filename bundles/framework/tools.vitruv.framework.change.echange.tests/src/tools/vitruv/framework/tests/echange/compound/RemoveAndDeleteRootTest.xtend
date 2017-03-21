@@ -41,53 +41,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	}
 	
 	/**
-	 * Removes the inserted items to set the state after the change.
-	 */
-	def private void prepareStateAfter() {
-		resourceContent.remove(newRootObject)
-		resourceContent.remove(newRootObject2)
-	}
-
-	/**
-	 * Change is not resolved.
-	 */
-	def private static void assertIsNotResolved(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.removeChange.isResolved)
-		Assert.assertFalse(change.deleteChange.isResolved)
-		Assert.assertTrue(change.removeChange.oldValue != affectedRootObject)
-		Assert.assertTrue(change.deleteChange.affectedEObject != affectedRootObject)
-		Assert.assertTrue(change.deleteChange.affectedEObject != change.removeChange.oldValue)
-	}
-	
-	/**
-	 * Change is resolved but with newly created object.
-	 */
-	def private static void assertIsResolvedNewObject(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
-		Assert.assertTrue(change.isResolved)
-		// Not the same object, but copy
-		change.removeChange.oldValue.assertIsCopy(affectedRootObject)
-		Assert.assertTrue(change.deleteChange.affectedEObject == change.removeChange.oldValue)		
-	}
-	
-	/**
-	 * Change is resolved with existing object.
-	 */
-	def private static void assertIsResolvedExistingObject(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.deleteChange.affectedEObject == affectedRootObject)
-		Assert.assertTrue(change.removeChange.oldValue == affectedRootObject)
-	}
-	
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private RemoveAndDeleteRoot<Root> createUnresolvedChange(Root newObject) {
-		return compoundFactory.<Root>createRemoveAndDeleteRootChange
-		(newObject, fileUri.toString, index)	
-	}	
-	
-	/**
 	 * Resolves the {@link RemoveAndDeleteRoot} EChange. The model is in state
 	 * before the change is applied, so the staging area is empty and the root 
 	 * object is in the resource.
@@ -231,4 +184,53 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertEquals(resourceContent.indexOf(newRootObject2), index2)
 		Assert.assertTrue(stagingArea.contents.empty)	
 	}
+	
+
+	
+	/**
+	 * Removes the inserted items to set the state after the change.
+	 */
+	def private void prepareStateAfter() {
+		resourceContent.remove(newRootObject)
+		resourceContent.remove(newRootObject2)
+	}
+
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertFalse(change.removeChange.isResolved)
+		Assert.assertFalse(change.deleteChange.isResolved)
+		Assert.assertTrue(change.removeChange.oldValue != affectedRootObject)
+		Assert.assertTrue(change.deleteChange.affectedEObject != affectedRootObject)
+		Assert.assertTrue(change.deleteChange.affectedEObject != change.removeChange.oldValue)
+	}
+	
+	/**
+	 * Change is resolved but with newly created object.
+	 */
+	def private static void assertIsResolvedNewObject(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
+		Assert.assertTrue(change.isResolved)
+		// Not the same object, but copy
+		change.removeChange.oldValue.assertIsCopy(affectedRootObject)
+		Assert.assertTrue(change.deleteChange.affectedEObject == change.removeChange.oldValue)		
+	}
+	
+	/**
+	 * Change is resolved with existing object.
+	 */
+	def private static void assertIsResolvedExistingObject(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.deleteChange.affectedEObject == affectedRootObject)
+		Assert.assertTrue(change.removeChange.oldValue == affectedRootObject)
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private RemoveAndDeleteRoot<Root> createUnresolvedChange(Root newObject) {
+		return compoundFactory.<Root>createRemoveAndDeleteRootChange
+		(newObject, resource, index)	
+	}	
 }

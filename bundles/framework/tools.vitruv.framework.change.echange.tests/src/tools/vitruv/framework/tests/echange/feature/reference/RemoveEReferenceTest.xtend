@@ -30,70 +30,6 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	}
 
 	/**
-	 * Starts a test with a containment feature and sets state before.
-	 */	
-	def private void isContainmentTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
-		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
-		prepareReference
-	}
-
-	/**
-	 * Starts a test with a non containment feature and sets state before.
-	 */	
-	def private void isNonContainmentTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE	
-		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
-		prepareReference
-		prepareResource	
-	}
-	
-	/**
-	 * Prepares the multivalued reference used in the tests 
-	 * and fills it with the new values.
-	 */
-	def private void prepareReference() {
-		referenceContent.add(newValue)
-		referenceContent.add(newValue2)
-	}
-	
-	/**
-	 * Prepares the multivalued reference after the change
-	 * was applied forward.
-	 */
-	def private void prepareReferenceAfter() {
-		referenceContent.clear
-	}
-
-	/**
-	 * Change is not resolved.
-	 */
-	def private static void assertIsNotResolved(RemoveEReference<Root, NonRoot> change, 
-		Root affectedEObject, NonRoot newValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertTrue(change.affectedEObject != affectedEObject)
-		Assert.assertTrue(change.oldValue != newValue)			
-	}
-
-	/**
-	 * Change is resolved.
-	 */
-	def private static void assertIsResolved(RemoveEReference<Root, NonRoot> change, 
-		Root affectedEObject, NonRoot newValue) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.affectedEObject == affectedEObject)
-		Assert.assertTrue(change.oldValue == newValue)			
-	}
-	
-	/**
-	 * Creates new unresolved change.
-	 */
-	def private RemoveEReference<Root, NonRoot> createUnresolvedChange(NonRoot oldValue) {
-		return atomicFactory.<Root, NonRoot>createRemoveReferenceChange
-		(affectedEObject, affectedFeature, oldValue, index)	
-	}
-	
-	/**
 	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
 	 * The model is in state before the change was applied forward.
 	 * The resource that will be removed is in a non containment reference,
@@ -384,5 +320,69 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		
 		Assert.assertFalse(resolvedChange.applyForward)
 		Assert.assertFalse(resolvedChange.applyBackward)
+	}
+	
+	/**
+	 * Starts a test with a containment feature and sets state before.
+	 */	
+	def private void isContainmentTest() {
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
+		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
+		prepareReference
+	}
+
+	/**
+	 * Starts a test with a non containment feature and sets state before.
+	 */	
+	def private void isNonContainmentTest() {
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE	
+		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
+		prepareReference
+		prepareResource	
+	}
+	
+	/**
+	 * Prepares the multivalued reference used in the tests 
+	 * and fills it with the new values.
+	 */
+	def private void prepareReference() {
+		referenceContent.add(newValue)
+		referenceContent.add(newValue2)
+	}
+	
+	/**
+	 * Prepares the multivalued reference after the change
+	 * was applied forward.
+	 */
+	def private void prepareReferenceAfter() {
+		referenceContent.clear
+	}
+
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(RemoveEReference<Root, NonRoot> change, 
+		Root affectedEObject, NonRoot newValue) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertTrue(change.affectedEObject != affectedEObject)
+		Assert.assertTrue(change.oldValue != newValue)			
+	}
+
+	/**
+	 * Change is resolved.
+	 */
+	def private static void assertIsResolved(RemoveEReference<Root, NonRoot> change, 
+		Root affectedEObject, NonRoot newValue) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.affectedEObject == affectedEObject)
+		Assert.assertTrue(change.oldValue == newValue)			
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */
+	def private RemoveEReference<Root, NonRoot> createUnresolvedChange(NonRoot oldValue) {
+		return atomicFactory.<Root, NonRoot>createRemoveReferenceChange
+		(affectedEObject, affectedFeature, oldValue, index)	
 	}
 }

@@ -124,7 +124,7 @@ abstract class EChange {
 	 */
 	op boolean applyForward() {
 		if (isResolved) {
-			val commands = (new ApplyForwardCommandSwitch()).doSwitch(this)
+			val commands = ApplyForwardCommandSwitch.instance.doSwitch(this)
 			if (commands != null) {
 				for (Command c : commands) {
 					if (c.canExecute()) {
@@ -147,7 +147,7 @@ abstract class EChange {
 	 */
 	op boolean applyBackward() {
 		if (isResolved) {
-			val commands = (new ApplyBackwardCommandSwitch()).doSwitch(this)
+			val commands = ApplyBackwardCommandSwitch.instance.doSwitch(this)
 			if (commands != null) {
 				for (Command c : commands) {
 					if (c.canExecute()) {

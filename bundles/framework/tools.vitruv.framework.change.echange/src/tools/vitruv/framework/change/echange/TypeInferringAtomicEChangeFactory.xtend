@@ -23,50 +23,113 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.root.RootFactory
+import org.eclipse.emf.ecore.resource.Resource
 
 /**
- * Factory class for elements of change models. 
+ * Factory singleton class for elements of change models.
  * Infers types (i.e. metaclasses and feature types) from parameters where possible.<br/>
  * 
  * Can be used by any transformation that creates change models.
  */
 class TypeInferringAtomicEChangeFactory {
-	def private setRootChangeFeatures(RootEChange c, String resourceURI, int index) {
-		c.uri = resourceURI
-		c.index = index
+	private static TypeInferringAtomicEChangeFactory instance
+	
+	protected new() {}
+	
+	/**
+	 * Gets the singleton instance of the factory.
+	 * @return The singleton instance.
+	 */
+	def public static TypeInferringAtomicEChangeFactory getInstance() {
+		if (instance == null) {
+			instance = new TypeInferringAtomicEChangeFactory()
+		}
+		return instance
 	}
 	
-	def protected <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(FeatureEChange<A,F> c, A affectedEObject, F affectedFeature) {
-		c.affectedEObject = affectedEObject	
-		c.affectedFeature = affectedFeature
+	/** 
+	 * Sets the attributes of a RootEChange.
+	 * @param change The RootEChange which attributes are to be set.
+	 * @param resourceURI The affected resource of the change.
+	 * @param index The affected index of the resource.
+	 */
+	def protected setRootChangeFeatures(RootEChange change, Resource resource, int index) {
+		change.uri = resource.URI.toString
+		change.resource = resource
+		change.index = index
+	}
+	
+	/**
+	 * Sets the attributes of a FeatureEChange.
+	 * @param change The FeatureEChange which attributes are to be set.
+	 * @param affectedEObject The affected EObject of the change.
+	 * @param affectedFeature The affected feature of the change.
+	 */
+	def protected <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(FeatureEChange<A,F> change, A affectedEObject, F affectedFeature) {
+		change.affectedEObject = affectedEObject	
+		change.affectedFeature = affectedFeature
 	}
 
-	def protected <T extends EObject> void setNewValue(EObjectAddedEChange<T> c, T newReferenceValue) {
-		c.newValue = newReferenceValue
+	/** 
+	 * Sets the new value of a EObjectAddedEChange.
+	 * @param change The EObjectAddedEChange which new value is to be set.
+	 * @param newValue The new value of the change.
+	 */
+	def protected <T extends EObject> void setNewValue(EObjectAddedEChange<T> change, T newValue) {
+		change.newValue = newValue
 	}	
 	
-	def protected <T extends EObject> void setOldValue(EObjectSubtractedEChange<T> c, T oldReferenceValue) {
-		c.oldValue = oldReferenceValue
+	/**
+	 * Sets the old value of the EObjectSubtractedEChange.
+	 * @param change The EObjectSubtractedEChange which old value is to be set.
+	 * @param oldValue The old value of the change.
+	 */
+	def protected <T extends EObject> void setOldValue(EObjectSubtractedEChange<T> change, T oldValue) {
+		change.oldValue = oldValue
 	}	
 	
-	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> c, A affectedEObject) {
-		c.affectedEObject = affectedEObject;
+	/**
+	 * Sets the affected EObject of a EObjectExistenceEChange.
+	 * @param change The EObjectExistenceEChange which affected EObject is to be set.
+	 * @param affectedEObject The affected EObject.
+	 */
+	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change, A affectedEObject) {
+		change.affectedEObject = affectedEObject;
 	}	
 	
-	def <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, String resourceURI, int index) {
+	/**
+	 * Creates a new {@link InsertRootEObject} EChange.
+	 * @param newValue The new root EObject.
+	 * @param resource The resource which the new root object is placed in.
+	 * @param index The index of the resource which the new root object is placed in.
+	 */
+	def <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, Resource resource, int index) {
 		val c = RootFactory.eINSTANCE.createInsertRootEObject
 		setNewValue(c, newValue)
-		setRootChangeFeatures(c, resourceURI, index)
+		setRootChangeFeatures(c, resource, index)
 		return c
 	}
 	
-	def <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, String resourceURI, int index) {
+	/**
+	 * Creates a new {@link RemoveRootEObject} EChange.
+	 * @param oldValue The root EObject which is removed.
+	 * @param resource The resource which the root object is removed from.
+	 * @param index The index of the resource which the root object is removed from.
+	 */
+	def <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, Resource resource, int index) {
 		val c = RootFactory.eINSTANCE.createRemoveRootEObject
 		setOldValue(c, oldValue)
-		setRootChangeFeatures(c, resourceURI, index)
+		setRootChangeFeatures(c, resource, index)
 		return c
 	}
 
+	/**
+	 * Creates a new {@link InsertEAttribute} EChange.
+	 * @param affectedEObject The affected EObject of the change.
+	 * @param affectedAttribute The affected EAttribute of the change.
+	 * @param newValue The inserted value.
+	 * @param index The index at which the new value is inserted in the attribute.
+	 */
 	def <A extends EObject, T extends Object> InsertEAttributeValue<A,T> createInsertAttributeChange(A affectedEObject, EAttribute affectedAttribute, int index, T newValue) {
 		val c = AttributeFactory.eINSTANCE.createInsertEAttributeValue()
 		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
@@ -75,6 +138,13 @@ class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
+	/** 
+	 * Creates a new {@link ReplaceSingleValuedEAttribute} EChange.
+	 * @param affectedEObject The affected EObject of the change.
+	 * @param affectedAttribute The affected EAttribute of the change.
+	 * @param oldValue The replaced value.
+	 * @param newValue The new value.
+	 */
 	def <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A,T> createReplaceSingleAttributeChange(A affectedEObject, EAttribute affectedAttribute, T oldValue, T newValue) {
 		val c = AttributeFactory.eINSTANCE.createReplaceSingleValuedEAttribute
 		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
@@ -83,6 +153,13 @@ class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
+	/**
+	 * Creates a new {@link RemoveEAttributeValue} EChange.
+	 * @param affectedEObject The affected EObject of the change.
+	 * @param affectedAttribute The affected EAttribute of the change.
+	 * @param oldValue The removed value.
+	 * @param index The index at which the old value is removed from.
+	 */
 	def <A extends EObject, T extends Object> RemoveEAttributeValue<A,T> createRemoveAttributeChange(A affectedEObject, EAttribute affectedAttribute, int index, T oldValue) {
 		val c = AttributeFactory.eINSTANCE.createRemoveEAttributeValue()
 		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
@@ -91,6 +168,13 @@ class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
+	/**
+	 * Creates a new {@link InsertEReference} EChange.
+	 * @param affectedEObject The affected EObject of the change.
+	 * @param affectedReference The affected EReference of the change.
+	 * @param newValue The inserted value.
+	 * @param index The index at which the new value is inserted in the reference.
+	 */
 	def <A extends EObject, T extends EObject> InsertEReference<A,T> createInsertReferenceChange(A affectedEObject, EReference affectedReference, T newValue, int index) {
 		val c = ReferenceFactory.eINSTANCE.createInsertEReference()
 		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
@@ -99,6 +183,13 @@ class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
+	/**
+	 * Creates a new {@link ReplaceSingleValuedEReference} EChange.
+	 * @param affectedEObject The affected EObject of the change.
+	 * @param affectedReference The affected EReference of the change.
+	 * @param oldValue The value which is replaced.
+	 * @param newValue The value which replaces the old one.
+	 */
 	def <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A,T> createReplaceSingleReferenceChange(A affectedEObject, EReference affectedReference, T oldValue, T newValue) {
 		val c = ReferenceFactory.eINSTANCE.createReplaceSingleValuedEReference
 		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
@@ -107,6 +198,13 @@ class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
+	/**
+	 * Creates a new {@link RemoveEReference} EChange.
+	 * @param affectedEObject The affected EObject of the change.
+	 * @param affectedReference The affected EReference of the change.
+	 * @param oldValue The value which is removed.
+	 * @param index The index at which the old value is removed from.
+	 */
 	def <A extends EObject, T extends EObject> RemoveEReference<A,T> createRemoveReferenceChange(A affectedEObject, EReference affectedReference, T oldValue, int index) {
 		val c = ReferenceFactory.eINSTANCE.createRemoveEReference()
 		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
@@ -115,12 +213,20 @@ class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
+	/**
+	 * Creates a new {@link CreateEObject} EChange.
+	 * @param affectedEObject The created EObject.
+	 */
 	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject) {
 		val c = EobjectFactory.eINSTANCE.createCreateEObject()
 		setEObjectExistenceChange(c, affectedEObject)
 		return c
 	}
 	
+	/**
+	 * Creates a new {@link DeleteEObject} EChange.
+	 * @param affectedEObject The deleted EObject.
+	 */
 	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject) {
 		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
 		setEObjectExistenceChange(c, affectedEObject)

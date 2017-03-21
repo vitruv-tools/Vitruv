@@ -12,14 +12,29 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
  * The commands applies the EChanges backward.
  */
 public class ListApplyBackwardCommandSwitch extends ListSwitch<List<Command>> {
+	private static ListApplyBackwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def ListApplyBackwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new ListApplyBackwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a {@link RemoveFromListEChange} change backward.
 	 * @param object The change which commands should be created.
 	 */
 	def public List<Command> caseRemoveFromListEChange(RemoveFromListEChange object) {
-		var result = (new AttributeApplyBackwardCommandSwitch()).doSwitch(object)
+		var result = AttributeApplyBackwardCommandSwitch.instance.doSwitch(object)
 		if (result == null) {
-			result = (new ReferenceApplyBackwardCommandSwitch()).doSwitch(object)
+			result = ReferenceApplyBackwardCommandSwitch.instance.doSwitch(object)
 		}
 		return result
 	}
@@ -29,9 +44,9 @@ public class ListApplyBackwardCommandSwitch extends ListSwitch<List<Command>> {
 	 * @param object The change which commands should be created.
 	 */	
 	def public List<Command> caseInsertInListEChange(InsertInListEChange object) {
-		var result = (new AttributeApplyBackwardCommandSwitch()).doSwitch(object)
+		var result = AttributeApplyBackwardCommandSwitch.instance.doSwitch(object)
 		if (result == null) {
-			result = (new ReferenceApplyBackwardCommandSwitch()).doSwitch(object)
+			result = ReferenceApplyBackwardCommandSwitch.instance.doSwitch(object)
 		}
 		return result
 	}

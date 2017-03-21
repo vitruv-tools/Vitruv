@@ -13,14 +13,29 @@ import tools.vitruv.framework.change.echange.feature.reference.util.ReferenceApp
  * The commands applies the EChanges backward.
  */
 public class FeatureApplyBackwardCommandSwitch extends FeatureSwitch<List<Command>> {
+	private static FeatureApplyBackwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def FeatureApplyBackwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new FeatureApplyBackwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a {@link FeatureEChange} change backward.
 	 * @param object The change which commands should be created.
 	 */	
 	def public List<Command> caseFeatureEChange(FeatureEChange object) {
-		var result = (new AttributeApplyBackwardCommandSwitch()).doSwitch(object)
+		var result = AttributeApplyBackwardCommandSwitch.instance.doSwitch(object)
 		if (result == null) {
-			result = (new ReferenceApplyBackwardCommandSwitch()).doSwitch(object)
+			result = ReferenceApplyBackwardCommandSwitch.instance.doSwitch(object)
 		}
 		return result
 	}
@@ -30,7 +45,7 @@ public class FeatureApplyBackwardCommandSwitch extends FeatureSwitch<List<Comman
 	 * @param object The change which commands should be created.
 	 */	
 	def public List<Command> caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
-		var result = (new ListApplyBackwardCommandSwitch()).doSwitch(object)
+		var result = ListApplyBackwardCommandSwitch.instance.doSwitch(object)
 		return result	
 	}
 }	

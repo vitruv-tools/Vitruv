@@ -11,7 +11,6 @@ import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
-import tools.vitruv.framework.change.echange.TypeInferringUnresolvedAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.util.datatypes.VURI
@@ -38,8 +37,8 @@ class VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri, boolean unresolve) {
-		return new EMFModelChangeImpl(changeDescription, vuri, unresolve);
+	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+		return new EMFModelChangeImpl(changeDescription, vuri);
 	}
 	
 	public def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
@@ -91,11 +90,11 @@ class VitruviusChangeFactory {
         }
 		var TypeInferringCompoundEChangeFactory factory
         if (unresolve) {
-        	factory = new TypeInferringCompoundEChangeFactory(new TypeInferringUnresolvedAtomicEChangeFactory)
+        	factory = TypeInferringCompoundEChangeFactory.unresolvingInstance
         } else {
-        	factory = new TypeInferringCompoundEChangeFactory(new TypeInferringUnresolvedAtomicEChangeFactory)
+        	factory = TypeInferringCompoundEChangeFactory.instance
         }
-        val CreateAndInsertRoot<EObject> createRootEObj = factory.createCreateAndInsertRootChange(rootElement, resource.URI.toString, index);
+        val CreateAndInsertRoot<EObject> createRootEObj = factory.createCreateAndInsertRootChange(rootElement, resource, index);
         return createRootEObj; 
 	}
 	
@@ -104,12 +103,12 @@ class VitruviusChangeFactory {
 			val index = 0 // TODO Stefan: Added for working EChange implementation + boolean: unresolve
             val EObject rootElement = resource.getContents().get(index);
             var TypeInferringCompoundEChangeFactory factory
-       		if (unresolve) {
-        		factory = new TypeInferringCompoundEChangeFactory(new TypeInferringUnresolvedAtomicEChangeFactory)
-        	} else {
-        		factory = new TypeInferringCompoundEChangeFactory(new TypeInferringUnresolvedAtomicEChangeFactory)
-        	}
-            val RemoveAndDeleteRoot<EObject> deleteRootObj = factory.createRemoveAndDeleteRootChange(rootElement, resource.URI.toString, index);
+	        if (unresolve) {
+	        	factory = TypeInferringCompoundEChangeFactory.unresolvingInstance
+	        } else {
+	        	factory = TypeInferringCompoundEChangeFactory.instance
+	        }
+            val RemoveAndDeleteRoot<EObject> deleteRootObj = factory.createRemoveAndDeleteRootChange(rootElement, resource, index);
             return deleteRootObj;
         }
         logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");

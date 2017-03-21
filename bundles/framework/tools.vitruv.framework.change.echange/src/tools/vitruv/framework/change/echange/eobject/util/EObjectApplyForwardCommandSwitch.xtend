@@ -14,6 +14,21 @@ import tools.vitruv.framework.change.echange.util.EChangeUtil
  * The commands applies the EChanges forward.
  */
 class EObjectApplyForwardCommandSwitch extends EobjectSwitch<List<Command>> {
+	private static EObjectApplyForwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def EObjectApplyForwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new EObjectApplyForwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a {@link CreateEObject} change forward.
 	 * @param object The change which commands should be created.

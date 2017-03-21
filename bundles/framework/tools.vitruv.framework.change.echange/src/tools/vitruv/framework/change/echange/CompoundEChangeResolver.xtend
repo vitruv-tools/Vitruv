@@ -23,29 +23,29 @@ class CompoundEChangeResolver {
 				return false
 			}
 			
-			val changesMade = new BasicEList<EChange>
+			val appliedChanges = new BasicEList<EChange>
 			if (resolveBefore) {
 				for (EChange c : change.atomicChanges) {
 					if (!AtomicEChangeResolver.resolve(c, resourceSet, true) || !c.applyForward) {
-						// Error resolving or applying forward => revert
-						for (EChange changed : changesMade.reverseView) {
+						// Error resolving or applying forward => revert all applied changes
+						for (EChange changed : appliedChanges.reverseView) {
 							changed.applyBackward
 						}
 						return false
 					} else {
-						changesMade.add(c)
+						appliedChanges.add(c)
 					}
 				}
 			} else {
 				for (EChange c : change.atomicChanges.reverseView) {
 					if (!AtomicEChangeResolver.resolve(c, resourceSet, false) || !c.applyBackward) {
-						// Error resolving or applying backward => revert
-						for (EChange changed : changesMade.reverseView) {
+						// Error resolving or applying backward => revert all applied changes
+						for (EChange changed : appliedChanges.reverseView) {
 							changed.applyForward
 						}
 						return false
 					} else {
-						changesMade.add(c)
+						appliedChanges.add(c)
 					}
 				}
 			}
@@ -62,6 +62,16 @@ class CompoundEChangeResolver {
 		return true		
 	}	
 	
+	/**
+	 * Dispatch method for resolving the {@link CompoundEChange} EChange.
+	 * @param change 				The change which should be resolved.
+	 * @param resourceSet 			The resources set with the EObject which the 
+	 * 								change should be resolved to.
+	 * @param resolveBefore			{@code true} if the model is in state before the change,
+	 * 								{@code false} if the model is in state after.
+	 * @param revertAfterResolving	{@code true} if the change should be reverted after resolving
+	 * 								the compound change.
+	 */	
 	def static dispatch boolean resolveCompoundEChange(ExplicitUnsetEFeature<?, ?> change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
 		// ExplicitUnsetEFeature is special case of compound changes, because
 		// applying its atomic changes removes only all values but does not unset the feature.
@@ -94,11 +104,10 @@ class CompoundEChangeResolver {
 			}
 			
 			// Revert all changes which were made resolving the compound change.
-			if (!revertAfterResolving && resolveBefore) {
+			if ((!revertAfterResolving && resolveBefore)
+				|| (revertAfterResolving && !resolveBefore)
+			) {
 				change.applyForward // Calls single unset command
-			}
-			if (revertAfterResolving && !resolveBefore) {
-				change.applyForward
 			}
 		}
 		return true

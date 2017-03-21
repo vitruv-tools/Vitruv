@@ -18,6 +18,21 @@ import org.eclipse.emf.edit.command.SetCommand
  * The commands applies the EChanges forward.
  */
 class CompoundApplyForwardCommandSwitch extends CompoundSwitch<List<Command>> {
+	private static CompoundApplyForwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def CompoundApplyForwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new CompoundApplyForwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a compound change forward.
 	 * @param object The change which commands should be created.
@@ -25,7 +40,7 @@ class CompoundApplyForwardCommandSwitch extends CompoundSwitch<List<Command>> {
 	def public List<Command> caseCompoundEChange(CompoundEChange object) {
 		val commands = new ArrayList<Command>
 		for (AtomicEChange change : object.atomicChanges) {
-			commands.addAll((new ApplyForwardCommandSwitch()).doSwitch(change))
+			commands.addAll(ApplyForwardCommandSwitch.instance.doSwitch(change))
 		}
 		return commands	
 	}	

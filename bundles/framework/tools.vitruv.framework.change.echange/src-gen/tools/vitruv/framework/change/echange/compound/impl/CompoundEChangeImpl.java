@@ -173,10 +173,10 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
 				case EChangePackage.ECHANGE___IS_RESOLVED: return CompoundPackage.COMPOUND_ECHANGE___IS_RESOLVED;
-				case EChangePackage.ECHANGE___RESOLVE_BEFORE__OBJECT: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-				case EChangePackage.ECHANGE___RESOLVE_AFTER__OBJECT: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-				case EChangePackage.ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-				case EChangePackage.ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+				case EChangePackage.ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}

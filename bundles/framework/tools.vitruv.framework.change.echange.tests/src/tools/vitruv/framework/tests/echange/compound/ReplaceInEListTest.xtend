@@ -36,79 +36,6 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 	}
 	
 	/**
-	 * Sets the attribute to the state before the change.
-	 */
-	def private void prepareStateBefore() {
-		attributeContent.clear
-		attributeContent.add(OLD_VALUE)
-		attributeContent.add(OLD_VALUE_2)		
-	}
-		
-	/**
-	 * Sets the attribute to the state after the change.
-	 */
-	def private void prepareStateAfter() {
-		attributeContent.clear
-		attributeContent.add(NEW_VALUE)
-		attributeContent.add(NEW_VALUE_2)		
-	}
-	
-	/**
-	 * Model is in state before the change.
-	 */
-	def private void assertIsStateBefore() {
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), OLD_VALUE)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), OLD_VALUE_2)	
-		Assert.assertEquals(attributeContent.size, 2)	
-	}
-	
-	/**
-	 * Model is in state after the change.
-	 */
-	def private void assertIsStateAfter() {
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)
-		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), NEW_VALUE_2)
-		Assert.assertEquals(attributeContent.size, 2)	
-	}
-		
-	/**
-	 * Change is not resolved.
-	 */
-	def private static void assertIsNotResolved(ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
-		InsertEAttributeValue<Root, Integer>> change, Root affectedRootObject) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.removeChange.isResolved)
-		Assert.assertFalse(change.insertChange.isResolved)	
-		Assert.assertFalse(change.removeChange.affectedEObject == affectedRootObject)
-		Assert.assertFalse(change.insertChange.affectedEObject == affectedRootObject)
-	}
-	
-	/**
-	 * Change is resolved with state before change.
-	 */
-	def private static void assertIsResolved(ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
-		InsertEAttributeValue<Root, Integer>> change, Root affectedRootObject) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.removeChange.affectedEObject == affectedRootObject)
-		Assert.assertTrue(change.insertChange.affectedEObject == affectedRootObject)
-	}
-	
-	/**
-	 * Creates new unresolved change.
-	 */	
-	def private ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
-		InsertEAttributeValue<Root, Integer>> createUnresolvedChange(int index, int oldValue, int newValue) {
-		val removeChange = atomicFactory.<Root, Integer>createRemoveAttributeChange
-			(affectedEObject, affectedFeature, index, oldValue)
-		val insertChange = atomicFactory.<Root, Integer>createInsertAttributeChange
-			(affectedEObject, affectedFeature, index, newValue)
-		val change = compoundFactory.<Root, EAttribute, Integer, 
-			RemoveEAttributeValue<Root, Integer>, InsertEAttributeValue<Root, Integer>>
-			createReplaceInEListChange(removeChange, insertChange)
-		return change
-	}
-	
-	/**
 	 * Resolves a {@link ReplaceInEList} EChange. The model is 
 	 * in the state before the change, so the old values are in 
 	 * the multi valued attribute.
@@ -237,5 +164,78 @@ class ReplaceInEListTest extends InsertRemoveEAttributeTest {
 		
 		// State before
 		assertIsStateBefore			
+	}
+	
+	/**
+	 * Sets the attribute to the state before the change.
+	 */
+	def private void prepareStateBefore() {
+		attributeContent.clear
+		attributeContent.add(OLD_VALUE)
+		attributeContent.add(OLD_VALUE_2)		
+	}
+		
+	/**
+	 * Sets the attribute to the state after the change.
+	 */
+	def private void prepareStateAfter() {
+		attributeContent.clear
+		attributeContent.add(NEW_VALUE)
+		attributeContent.add(NEW_VALUE_2)		
+	}
+	
+	/**
+	 * Model is in state before the change.
+	 */
+	def private void assertIsStateBefore() {
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), OLD_VALUE)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), OLD_VALUE_2)	
+		Assert.assertEquals(attributeContent.size, 2)	
+	}
+	
+	/**
+	 * Model is in state after the change.
+	 */
+	def private void assertIsStateAfter() {
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX), NEW_VALUE)
+		Assert.assertEquals(attributeContent.get(DEFAULT_INDEX_2), NEW_VALUE_2)
+		Assert.assertEquals(attributeContent.size, 2)	
+	}
+		
+	/**
+	 * Change is not resolved.
+	 */
+	def private static void assertIsNotResolved(ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
+		InsertEAttributeValue<Root, Integer>> change, Root affectedRootObject) {
+		Assert.assertFalse(change.isResolved)
+		Assert.assertFalse(change.removeChange.isResolved)
+		Assert.assertFalse(change.insertChange.isResolved)	
+		Assert.assertFalse(change.removeChange.affectedEObject == affectedRootObject)
+		Assert.assertFalse(change.insertChange.affectedEObject == affectedRootObject)
+	}
+	
+	/**
+	 * Change is resolved with state before change.
+	 */
+	def private static void assertIsResolved(ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
+		InsertEAttributeValue<Root, Integer>> change, Root affectedRootObject) {
+		Assert.assertTrue(change.isResolved)
+		Assert.assertTrue(change.removeChange.affectedEObject == affectedRootObject)
+		Assert.assertTrue(change.insertChange.affectedEObject == affectedRootObject)
+	}
+	
+	/**
+	 * Creates new unresolved change.
+	 */	
+	def private ReplaceInEList<Root, EAttribute, Integer, RemoveEAttributeValue<Root, Integer>, 
+		InsertEAttributeValue<Root, Integer>> createUnresolvedChange(int index, int oldValue, int newValue) {
+		val removeChange = atomicFactory.<Root, Integer>createRemoveAttributeChange
+			(affectedEObject, affectedFeature, index, oldValue)
+		val insertChange = atomicFactory.<Root, Integer>createInsertAttributeChange
+			(affectedEObject, affectedFeature, index, newValue)
+		val change = compoundFactory.<Root, EAttribute, Integer, 
+			RemoveEAttributeValue<Root, Integer>, InsertEAttributeValue<Root, Integer>>
+			createReplaceInEListChange(removeChange, insertChange)
+		return change
 	}
 }

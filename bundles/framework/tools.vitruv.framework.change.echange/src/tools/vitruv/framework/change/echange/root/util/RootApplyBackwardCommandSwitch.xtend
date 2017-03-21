@@ -15,6 +15,25 @@ import tools.vitruv.framework.change.echange.util.StagingArea
  */
 
 public class RootApplyBackwardCommandSwitch extends RootSwitch<List<Command>> {
+	private static RootApplyBackwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def RootApplyBackwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new RootApplyBackwardCommandSwitch();
+		}
+		return instance;
+	}
+	
+	/**
+	 * Create commands to apply a {@link InsertRootEObject} change backward.
+	 * @param object The change which commands should be created.
+	 */
 	override public List<Command> caseInsertRootEObject(InsertRootEObject object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.newValue)	
 		// Remove from resource and put in staging area
@@ -22,6 +41,11 @@ public class RootApplyBackwardCommandSwitch extends RootSwitch<List<Command>> {
 		val stagingArea = StagingArea.getStagingArea(object.resource)
 		return Collections.singletonList(new AddCommand(editingDomain, stagingArea.contents, object.newValue))
 	}
+	
+	/**
+	 * Create commands to apply a {@link RemoveRootEObject} change backward.
+	 * @param object The change which commands should be created.
+	 */
 	override public List<Command> caseRemoveRootEObject(RemoveRootEObject object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.oldValue)			
 		// Remove from staging area and insert in resource

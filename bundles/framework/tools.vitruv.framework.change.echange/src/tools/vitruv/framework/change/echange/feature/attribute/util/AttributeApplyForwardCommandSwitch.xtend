@@ -16,6 +16,21 @@ import tools.vitruv.framework.change.echange.util.RemoveAtCommand
  * The commands applies the EChanges forward.
  */
 public class AttributeApplyForwardCommandSwitch extends AttributeSwitch<List<Command>> {
+	private static AttributeApplyForwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def AttributeApplyForwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new AttributeApplyForwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a {@link InsertEAttributeValue} change forward.
 	 * @param object The change which commands should be created.

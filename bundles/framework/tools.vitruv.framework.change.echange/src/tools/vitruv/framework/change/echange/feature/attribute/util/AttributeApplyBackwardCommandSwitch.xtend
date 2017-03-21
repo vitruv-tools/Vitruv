@@ -16,6 +16,21 @@ import tools.vitruv.framework.change.echange.util.RemoveAtCommand
  * The commands applies the EChanges backward.
  */
 public class AttributeApplyBackwardCommandSwitch extends AttributeSwitch<List<Command>> {
+	private static AttributeApplyBackwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def AttributeApplyBackwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new AttributeApplyBackwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a {@link InsertEAttributeValue} change backward.
 	 * @param object The change which commands should be created.

@@ -12,6 +12,21 @@ import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch
  * The commands applies the EChanges backward.
  */
 class CompoundApplyBackwardCommandSwitch extends CompoundSwitch<List<Command>> {
+	private static CompoundApplyBackwardCommandSwitch instance;
+	
+	private new() {}
+	
+	/**
+	 * Gets the singleton of the switch.
+	 * @return The singleton instance.
+	 */
+	public static def CompoundApplyBackwardCommandSwitch getInstance() {
+		if (instance == null) {
+			instance = new CompoundApplyBackwardCommandSwitch();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Create commands to apply a compound change backward.
 	 * @param object The change which commands should be created.
@@ -19,7 +34,7 @@ class CompoundApplyBackwardCommandSwitch extends CompoundSwitch<List<Command>> {
 	def public List<Command> caseCompoundEChange(CompoundEChange object) {
 		val commands = new ArrayList<Command>
 		for (AtomicEChange change : object.atomicChanges.reverseView) {
-			commands.addAll((new ApplyBackwardCommandSwitch()).doSwitch(change))
+			commands.addAll(ApplyBackwardCommandSwitch.instance.doSwitch(change))
 		}
 		return commands	
 	}	

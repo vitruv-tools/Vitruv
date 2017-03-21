@@ -20,15 +20,15 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 	private final VURI vuri;
 	private var boolean canBeBackwardsApplied;
 	
-    public new(ChangeDescription changeDescription, VURI vuri, boolean unresolve) {
+    public new(ChangeDescription changeDescription, VURI vuri) {
     	this.changeDescription = changeDescription;
         this.vuri = vuri;
         this.canBeBackwardsApplied = false;
-		extractChangeInformation(unresolve);
+		extractChangeInformation();
     }
 
-	private def void extractChangeInformation(boolean unresolve) {
-        val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription, unresolve).transform()
+	private def void extractChangeInformation() {
+        val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform()
 		for (eChange : eChanges) {
 			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
 		}

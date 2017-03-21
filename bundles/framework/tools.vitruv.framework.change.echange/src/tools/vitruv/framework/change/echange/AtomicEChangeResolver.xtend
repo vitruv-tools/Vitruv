@@ -42,7 +42,7 @@ class AtomicEChangeResolver {
 		}
 		return true		
 	}
-
+	
 	/**
 	 * Resolves {@link FeatureEChange} attributes {@code affectedEObject} and {@code affectedFeature}.
 	 * @param change 			The change which should be resolved.
