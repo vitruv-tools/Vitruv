@@ -34,11 +34,15 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedPrimitiveTypeEAttribute <em>Single Valued Primitive Type EAttribute</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedNonContainmentEReference <em>Single Valued Non Containment EReference</em>}</li>
+ *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedUnsettableNonContainmentEReference <em>Single Valued Unsettable Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedContainmentEReference <em>Single Valued Containment EReference</em>}</li>
+ *   <li>{@link allElementTypes.impl.RootImpl#getSingleValuedUnsettableContainmentEReference <em>Single Valued Unsettable Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedEAttribute <em>Multi Valued EAttribute</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedUnsettableEAttribute <em>Multi Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedNonContainmentEReference <em>Multi Valued Non Containment EReference</em>}</li>
+ *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedUnsettableNonContainmentEReference <em>Multi Valued Unsettable Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedContainmentEReference <em>Multi Valued Containment EReference</em>}</li>
+ *   <li>{@link allElementTypes.impl.RootImpl#getMultiValuedUnsettableContainmentEReference <em>Multi Valued Unsettable Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getNonRootObjectContainerHelper <em>Non Root Object Container Helper</em>}</li>
  *   <li>{@link allElementTypes.impl.RootImpl#getRecursiveRoot <em>Recursive Root</em>}</li>
  * </ul>
@@ -126,6 +130,25 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	protected NonRoot singleValuedNonContainmentEReference;
 
 	/**
+	 * The cached value of the '{@link #getSingleValuedUnsettableNonContainmentEReference() <em>Single Valued Unsettable Non Containment EReference</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSingleValuedUnsettableNonContainmentEReference()
+	 * @generated
+	 * @ordered
+	 */
+	protected NonRoot singleValuedUnsettableNonContainmentEReference;
+
+	/**
+	 * This is true if the Single Valued Unsettable Non Containment EReference reference has been set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean singleValuedUnsettableNonContainmentEReferenceESet;
+
+	/**
 	 * The cached value of the '{@link #getSingleValuedContainmentEReference() <em>Single Valued Containment EReference</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -134,6 +157,25 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * @ordered
 	 */
 	protected NonRoot singleValuedContainmentEReference;
+
+	/**
+	 * The cached value of the '{@link #getSingleValuedUnsettableContainmentEReference() <em>Single Valued Unsettable Containment EReference</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSingleValuedUnsettableContainmentEReference()
+	 * @generated
+	 * @ordered
+	 */
+	protected NonRoot singleValuedUnsettableContainmentEReference;
+
+	/**
+	 * This is true if the Single Valued Unsettable Containment EReference containment reference has been set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean singleValuedUnsettableContainmentEReferenceESet;
 
 	/**
 	 * The cached value of the '{@link #getMultiValuedEAttribute() <em>Multi Valued EAttribute</em>}' attribute list.
@@ -166,6 +208,16 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	protected EList<NonRoot> multiValuedNonContainmentEReference;
 
 	/**
+	 * The cached value of the '{@link #getMultiValuedUnsettableNonContainmentEReference() <em>Multi Valued Unsettable Non Containment EReference</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultiValuedUnsettableNonContainmentEReference()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<NonRoot> multiValuedUnsettableNonContainmentEReference;
+
+	/**
 	 * The cached value of the '{@link #getMultiValuedContainmentEReference() <em>Multi Valued Containment EReference</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -174,6 +226,16 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * @ordered
 	 */
 	protected EList<NonRoot> multiValuedContainmentEReference;
+
+	/**
+	 * The cached value of the '{@link #getMultiValuedUnsettableContainmentEReference() <em>Multi Valued Unsettable Containment EReference</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultiValuedUnsettableContainmentEReference()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<NonRoot> multiValuedUnsettableContainmentEReference;
 
 	/**
 	 * The cached value of the '{@link #getNonRootObjectContainerHelper() <em>Non Root Object Container Helper</em>}' containment reference.
@@ -345,6 +407,69 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public NonRoot getSingleValuedUnsettableNonContainmentEReference() {
+		if (singleValuedUnsettableNonContainmentEReference != null && singleValuedUnsettableNonContainmentEReference.eIsProxy()) {
+			InternalEObject oldSingleValuedUnsettableNonContainmentEReference = (InternalEObject)singleValuedUnsettableNonContainmentEReference;
+			singleValuedUnsettableNonContainmentEReference = (NonRoot)eResolveProxy(oldSingleValuedUnsettableNonContainmentEReference);
+			if (singleValuedUnsettableNonContainmentEReference != oldSingleValuedUnsettableNonContainmentEReference) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE, oldSingleValuedUnsettableNonContainmentEReference, singleValuedUnsettableNonContainmentEReference));
+			}
+		}
+		return singleValuedUnsettableNonContainmentEReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NonRoot basicGetSingleValuedUnsettableNonContainmentEReference() {
+		return singleValuedUnsettableNonContainmentEReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setSingleValuedUnsettableNonContainmentEReference(NonRoot newSingleValuedUnsettableNonContainmentEReference) {
+		NonRoot oldSingleValuedUnsettableNonContainmentEReference = singleValuedUnsettableNonContainmentEReference;
+		singleValuedUnsettableNonContainmentEReference = newSingleValuedUnsettableNonContainmentEReference;
+		boolean oldSingleValuedUnsettableNonContainmentEReferenceESet = singleValuedUnsettableNonContainmentEReferenceESet;
+		singleValuedUnsettableNonContainmentEReferenceESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE, oldSingleValuedUnsettableNonContainmentEReference, singleValuedUnsettableNonContainmentEReference, !oldSingleValuedUnsettableNonContainmentEReferenceESet));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void unsetSingleValuedUnsettableNonContainmentEReference() {
+		NonRoot oldSingleValuedUnsettableNonContainmentEReference = singleValuedUnsettableNonContainmentEReference;
+		boolean oldSingleValuedUnsettableNonContainmentEReferenceESet = singleValuedUnsettableNonContainmentEReferenceESet;
+		singleValuedUnsettableNonContainmentEReference = null;
+		singleValuedUnsettableNonContainmentEReferenceESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE, oldSingleValuedUnsettableNonContainmentEReference, null, oldSingleValuedUnsettableNonContainmentEReferenceESet));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isSetSingleValuedUnsettableNonContainmentEReference() {
+		return singleValuedUnsettableNonContainmentEReferenceESet;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public NonRoot getSingleValuedContainmentEReference() {
 		return singleValuedContainmentEReference;
 	}
@@ -381,6 +506,101 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, newSingleValuedContainmentEReference, newSingleValuedContainmentEReference));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NonRoot getSingleValuedUnsettableContainmentEReference() {
+		return singleValuedUnsettableContainmentEReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetSingleValuedUnsettableContainmentEReference(NonRoot newSingleValuedUnsettableContainmentEReference, NotificationChain msgs) {
+		NonRoot oldSingleValuedUnsettableContainmentEReference = singleValuedUnsettableContainmentEReference;
+		singleValuedUnsettableContainmentEReference = newSingleValuedUnsettableContainmentEReference;
+		boolean oldSingleValuedUnsettableContainmentEReferenceESet = singleValuedUnsettableContainmentEReferenceESet;
+		singleValuedUnsettableContainmentEReferenceESet = true;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE, oldSingleValuedUnsettableContainmentEReference, newSingleValuedUnsettableContainmentEReference, !oldSingleValuedUnsettableContainmentEReferenceESet);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setSingleValuedUnsettableContainmentEReference(NonRoot newSingleValuedUnsettableContainmentEReference) {
+		if (newSingleValuedUnsettableContainmentEReference != singleValuedUnsettableContainmentEReference) {
+			NotificationChain msgs = null;
+			if (singleValuedUnsettableContainmentEReference != null)
+				msgs = ((InternalEObject)singleValuedUnsettableContainmentEReference).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE, null, msgs);
+			if (newSingleValuedUnsettableContainmentEReference != null)
+				msgs = ((InternalEObject)newSingleValuedUnsettableContainmentEReference).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE, null, msgs);
+			msgs = basicSetSingleValuedUnsettableContainmentEReference(newSingleValuedUnsettableContainmentEReference, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else {
+			boolean oldSingleValuedUnsettableContainmentEReferenceESet = singleValuedUnsettableContainmentEReferenceESet;
+			singleValuedUnsettableContainmentEReferenceESet = true;
+			if (eNotificationRequired())
+				eNotify(new ENotificationImpl(this, Notification.SET, AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE, newSingleValuedUnsettableContainmentEReference, newSingleValuedUnsettableContainmentEReference, !oldSingleValuedUnsettableContainmentEReferenceESet));
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicUnsetSingleValuedUnsettableContainmentEReference(NotificationChain msgs) {
+		NonRoot oldSingleValuedUnsettableContainmentEReference = singleValuedUnsettableContainmentEReference;
+		singleValuedUnsettableContainmentEReference = null;
+		boolean oldSingleValuedUnsettableContainmentEReferenceESet = singleValuedUnsettableContainmentEReferenceESet;
+		singleValuedUnsettableContainmentEReferenceESet = false;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.UNSET, AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE, oldSingleValuedUnsettableContainmentEReference, null, oldSingleValuedUnsettableContainmentEReferenceESet);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void unsetSingleValuedUnsettableContainmentEReference() {
+		if (singleValuedUnsettableContainmentEReference != null) {
+			NotificationChain msgs = null;
+			msgs = ((InternalEObject)singleValuedUnsettableContainmentEReference).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE, null, msgs);
+			msgs = basicUnsetSingleValuedUnsettableContainmentEReference(msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else {
+			boolean oldSingleValuedUnsettableContainmentEReferenceESet = singleValuedUnsettableContainmentEReferenceESet;
+			singleValuedUnsettableContainmentEReferenceESet = false;
+			if (eNotificationRequired())
+				eNotify(new ENotificationImpl(this, Notification.UNSET, AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE, null, null, oldSingleValuedUnsettableContainmentEReferenceESet));
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isSetSingleValuedUnsettableContainmentEReference() {
+		return singleValuedUnsettableContainmentEReferenceESet;
 	}
 
 	/**
@@ -442,11 +662,71 @@ public class RootImpl extends IdentifiedImpl implements Root {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<NonRoot> getMultiValuedUnsettableNonContainmentEReference() {
+		if (multiValuedUnsettableNonContainmentEReference == null) {
+			multiValuedUnsettableNonContainmentEReference = new EObjectResolvingEList.Unsettable<NonRoot>(NonRoot.class, this, AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE);
+		}
+		return multiValuedUnsettableNonContainmentEReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void unsetMultiValuedUnsettableNonContainmentEReference() {
+		if (multiValuedUnsettableNonContainmentEReference != null) ((InternalEList.Unsettable<?>)multiValuedUnsettableNonContainmentEReference).unset();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isSetMultiValuedUnsettableNonContainmentEReference() {
+		return multiValuedUnsettableNonContainmentEReference != null && ((InternalEList.Unsettable<?>)multiValuedUnsettableNonContainmentEReference).isSet();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<NonRoot> getMultiValuedContainmentEReference() {
 		if (multiValuedContainmentEReference == null) {
 			multiValuedContainmentEReference = new EObjectContainmentEList<NonRoot>(NonRoot.class, this, AllElementTypesPackage.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE);
 		}
 		return multiValuedContainmentEReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<NonRoot> getMultiValuedUnsettableContainmentEReference() {
+		if (multiValuedUnsettableContainmentEReference == null) {
+			multiValuedUnsettableContainmentEReference = new EObjectContainmentEList.Unsettable<NonRoot>(NonRoot.class, this, AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE);
+		}
+		return multiValuedUnsettableContainmentEReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void unsetMultiValuedUnsettableContainmentEReference() {
+		if (multiValuedUnsettableContainmentEReference != null) ((InternalEList.Unsettable<?>)multiValuedUnsettableContainmentEReference).unset();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isSetMultiValuedUnsettableContainmentEReference() {
+		return multiValuedUnsettableContainmentEReference != null && ((InternalEList.Unsettable<?>)multiValuedUnsettableContainmentEReference).isSet();
 	}
 
 	/**
@@ -545,8 +825,12 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		switch (featureID) {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE:
 				return basicSetSingleValuedContainmentEReference(null, msgs);
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				return basicUnsetSingleValuedUnsettableContainmentEReference(msgs);
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE:
 				return ((InternalEList<?>)getMultiValuedContainmentEReference()).basicRemove(otherEnd, msgs);
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				return ((InternalEList<?>)getMultiValuedUnsettableContainmentEReference()).basicRemove(otherEnd, msgs);
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				return basicSetNonRootObjectContainerHelper(null, msgs);
 			case AllElementTypesPackage.ROOT__RECURSIVE_ROOT:
@@ -572,16 +856,25 @@ public class RootImpl extends IdentifiedImpl implements Root {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
 				if (resolve) return getSingleValuedNonContainmentEReference();
 				return basicGetSingleValuedNonContainmentEReference();
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE:
+				if (resolve) return getSingleValuedUnsettableNonContainmentEReference();
+				return basicGetSingleValuedUnsettableNonContainmentEReference();
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE:
 				return getSingleValuedContainmentEReference();
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				return getSingleValuedUnsettableContainmentEReference();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_EATTRIBUTE:
 				return getMultiValuedEAttribute();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE:
 				return getMultiValuedUnsettableEAttribute();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE:
 				return getMultiValuedNonContainmentEReference();
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE:
+				return getMultiValuedUnsettableNonContainmentEReference();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE:
 				return getMultiValuedContainmentEReference();
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				return getMultiValuedUnsettableContainmentEReference();
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				return getNonRootObjectContainerHelper();
 			case AllElementTypesPackage.ROOT__RECURSIVE_ROOT:
@@ -611,8 +904,14 @@ public class RootImpl extends IdentifiedImpl implements Root {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
 				setSingleValuedNonContainmentEReference((NonRoot)newValue);
 				return;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE:
+				setSingleValuedUnsettableNonContainmentEReference((NonRoot)newValue);
+				return;
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE:
 				setSingleValuedContainmentEReference((NonRoot)newValue);
+				return;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				setSingleValuedUnsettableContainmentEReference((NonRoot)newValue);
 				return;
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_EATTRIBUTE:
 				getMultiValuedEAttribute().clear();
@@ -626,9 +925,17 @@ public class RootImpl extends IdentifiedImpl implements Root {
 				getMultiValuedNonContainmentEReference().clear();
 				getMultiValuedNonContainmentEReference().addAll((Collection<? extends NonRoot>)newValue);
 				return;
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE:
+				getMultiValuedUnsettableNonContainmentEReference().clear();
+				getMultiValuedUnsettableNonContainmentEReference().addAll((Collection<? extends NonRoot>)newValue);
+				return;
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE:
 				getMultiValuedContainmentEReference().clear();
 				getMultiValuedContainmentEReference().addAll((Collection<? extends NonRoot>)newValue);
+				return;
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				getMultiValuedUnsettableContainmentEReference().clear();
+				getMultiValuedUnsettableContainmentEReference().addAll((Collection<? extends NonRoot>)newValue);
 				return;
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				setNonRootObjectContainerHelper((NonRootObjectContainerHelper)newValue);
@@ -660,8 +967,14 @@ public class RootImpl extends IdentifiedImpl implements Root {
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
 				setSingleValuedNonContainmentEReference((NonRoot)null);
 				return;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE:
+				unsetSingleValuedUnsettableNonContainmentEReference();
+				return;
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE:
 				setSingleValuedContainmentEReference((NonRoot)null);
+				return;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				unsetSingleValuedUnsettableContainmentEReference();
 				return;
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_EATTRIBUTE:
 				getMultiValuedEAttribute().clear();
@@ -672,8 +985,14 @@ public class RootImpl extends IdentifiedImpl implements Root {
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE:
 				getMultiValuedNonContainmentEReference().clear();
 				return;
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE:
+				unsetMultiValuedUnsettableNonContainmentEReference();
+				return;
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE:
 				getMultiValuedContainmentEReference().clear();
+				return;
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				unsetMultiValuedUnsettableContainmentEReference();
 				return;
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				setNonRootObjectContainerHelper((NonRootObjectContainerHelper)null);
@@ -701,16 +1020,24 @@ public class RootImpl extends IdentifiedImpl implements Root {
 				return isSetSingleValuedUnsettableEAttribute();
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE:
 				return singleValuedNonContainmentEReference != null;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE:
+				return isSetSingleValuedUnsettableNonContainmentEReference();
 			case AllElementTypesPackage.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE:
 				return singleValuedContainmentEReference != null;
+			case AllElementTypesPackage.ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				return isSetSingleValuedUnsettableContainmentEReference();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_EATTRIBUTE:
 				return multiValuedEAttribute != null && !multiValuedEAttribute.isEmpty();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE:
 				return isSetMultiValuedUnsettableEAttribute();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE:
 				return multiValuedNonContainmentEReference != null && !multiValuedNonContainmentEReference.isEmpty();
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE:
+				return isSetMultiValuedUnsettableNonContainmentEReference();
 			case AllElementTypesPackage.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE:
 				return multiValuedContainmentEReference != null && !multiValuedContainmentEReference.isEmpty();
+			case AllElementTypesPackage.ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE:
+				return isSetMultiValuedUnsettableContainmentEReference();
 			case AllElementTypesPackage.ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER:
 				return nonRootObjectContainerHelper != null;
 			case AllElementTypesPackage.ROOT__RECURSIVE_ROOT:
