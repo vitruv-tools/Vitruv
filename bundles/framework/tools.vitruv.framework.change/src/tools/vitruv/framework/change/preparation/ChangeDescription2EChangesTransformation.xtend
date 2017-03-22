@@ -251,17 +251,28 @@ public class ChangeDescription2EChangesTransformation {
 							ChangeKind.REMOVE_LITERAL, #[elementReferencedBeforeChange]))
 				}
 			}
+			if (affectedReference.isUnsettable && !featureChange.isSet) {
+				val List<EChange> typedChanges = new ArrayList<EChange>();
+				for (change : resultChanges) {
+					typedChanges.add(change);
+				}
+				return #[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, typedChanges)];
+			}
 			return resultChanges
 		} else {
-			return createChangeForSingleReferenceChange(affectedEObject, affectedReference,
+			val EChange change = createChangeForSingleReferenceChange(affectedEObject, affectedReference,
 				featureChange.referenceValue)
+			if (affectedReference.isUnsettable && !featureChange.isSet) {
+				return #[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, #[change])];
+			}
+			return #[change]
 		}
 	}
 
-	def List<EChange> createChangeForSingleReferenceChange(EObject affectedEObject, EReference affectedReference,
+	def EChange createChangeForSingleReferenceChange(EObject affectedEObject, EReference affectedReference,
 		EObject newReferenceValue) {
 		val oldReferenceValue = affectedEObject.getReferenceValueList(affectedReference).claimNotMany();
-		return #[createReplaceSingleValuedReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, false)];
+		return createReplaceSingleValuedReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, false);
 	}
 
 	def private List<EChange> createChangeForMultiReferenceChange(EObject affectedEObject, EReference affectedReference,
@@ -313,13 +324,13 @@ public class ChangeDescription2EChangesTransformation {
 				for (change : subtractiveChanges) {
 					typedChanges.add(change);
 				}
-				return #[createExplicitUnsetChange(typedChanges)];
+				return #[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, typedChanges)];
 			}
 			return resultChanges
 		} else {
 			val SubtractiveAttributeEChange<EObject,Object> change = createChangeForSingleAttributeChange(affectedEObject, affectedAttribute, featureChange.value)
 			if (affectedAttribute.isUnsettable && !featureChange.isSet) {
-				return #[createExplicitUnsetChange(#[change])];
+				return #[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, #[change])];
 			}
 			
 			return #[change];
