@@ -9,9 +9,11 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 import java.util.List
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
+import org.eclipse.emf.ecore.EAttribute
 
 class TypeInferringCompoundEChangeFactory {
 	def static <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(T affectedEObject, String resourceUri) {
@@ -50,10 +52,22 @@ class TypeInferringCompoundEChangeFactory {
 		return c
 	}
 	
-	def static <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetChange(List<SubtractiveAttributeEChange<A,T>> changes) {
-		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEFeature();
+	def static <A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttributeChange(A affectedEObject, EAttribute affectedAttribute, List<SubtractiveAttributeEChange<A,T>> changes) {
+		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEAttribute();
+		c.affectedEObject = affectedEObject;
+		c.affectedFeature = affectedAttribute;
 		for (change : changes) {
 			c.subtractiveChanges.add(change);
+		}
+		return c;
+	}
+	
+	def static <A extends EObject, T extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReferenceChange(A affectedEObject, EReference affectedReference, List<EChange> changes) {
+		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEReference();
+		c.affectedEObject = affectedEObject;
+		c.affectedFeature = affectedReference;
+		for (change : changes) {
+			c.changes.add(change);
 		}
 		return c;
 	}

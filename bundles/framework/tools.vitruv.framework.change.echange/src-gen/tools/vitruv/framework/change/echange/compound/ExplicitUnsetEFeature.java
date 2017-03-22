@@ -2,32 +2,77 @@
  */
 package tools.vitruv.framework.change.echange.compound;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
-
-import tools.vitruv.framework.change.echange.AtomicEChange;
-
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Explicit Unset EFeature</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedFeature <em>Affected Feature</em>}</li>
+ * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature()
- * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true"
  * @generated
  */
-public interface ExplicitUnsetEFeature<A extends EObject, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A, T>> {
+public interface ExplicitUnsetEFeature<A extends EObject, F extends EStructuralFeature> extends CompoundEChange {
 	/**
+	 * Returns the value of the '<em><b>Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Affected EObject</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='<%org.eclipse.emf.common.util.EList%><<%tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange%><A, T>> _subtractiveChanges = this.getSubtractiveChanges();\nfinal <%org.eclipse.xtext.xbase.lib.Functions.Function1%><<%tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange%><A, T>, <%tools.vitruv.framework.change.echange.AtomicEChange%>> _function = new <%org.eclipse.xtext.xbase.lib.Functions.Function1%><<%tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange%><A, T>, <%tools.vitruv.framework.change.echange.AtomicEChange%>>()\n{\n\tpublic <%tools.vitruv.framework.change.echange.AtomicEChange%> apply(final <%tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange%><A, T> it)\n\t{\n\t\treturn it;\n\t}\n};\nreturn <%org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions%>.<<%tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange%><A, T>, <%tools.vitruv.framework.change.echange.AtomicEChange%>>map(_subtractiveChanges, _function);'"
+	 * @return the value of the '<em>Affected EObject</em>' reference.
+	 * @see #setAffectedEObject(EObject)
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature_AffectedEObject()
+	 * @model required="true"
 	 * @generated
 	 */
-	EList<AtomicEChange> getAtomicChanges();
+	A getAffectedEObject();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedEObject <em>Affected EObject</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Affected EObject</em>' reference.
+	 * @see #getAffectedEObject()
+	 * @generated
+	 */
+	void setAffectedEObject(A value);
+
+	/**
+	 * Returns the value of the '<em><b>Affected Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Affected Feature</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Affected Feature</em>' reference.
+	 * @see #setAffectedFeature(EStructuralFeature)
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature_AffectedFeature()
+	 * @model required="true"
+	 * @generated
+	 */
+	F getAffectedFeature();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedFeature <em>Affected Feature</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Affected Feature</em>' reference.
+	 * @see #getAffectedFeature()
+	 * @generated
+	 */
+	void setAffectedFeature(F value);
 
 } // ExplicitUnsetEFeature

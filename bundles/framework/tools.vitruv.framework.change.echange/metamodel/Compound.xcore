@@ -3,15 +3,12 @@
 package tools.vitruv.framework.change.echange.compound
 
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.framework.change.echange.AdditiveEChange
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-import tools.vitruv.framework.change.echange.feature.FeatureEChange
-import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
-import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
@@ -22,6 +19,11 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import org.eclipse.emf.common.util.BasicEList
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EReference
+
+
 
 abstract class CompoundEChange extends tools.vitruv.framework.change.echange.EChange {
 	op unique AtomicEChange[+] getAtomicChanges()
@@ -48,24 +50,49 @@ class MoveEObject<A extends EObject, B extends EObject, T extends EObject> exten
 	}
 }
 
-class ExplicitUnsetEFeature<A extends EObject, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {
+abstract class ExplicitUnsetEFeature<A extends EObject, F extends EStructuralFeature> extends CompoundEChange {
+	refers A[1] affectedEObject
+	refers F[1] affectedFeature
+}
+
+class ExplicitUnsetEAttribute<A extends EObject, T extends Object> extends ExplicitUnsetEFeature<A, EAttribute>, CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {
 	op unique AtomicEChange[+] getAtomicChanges() {
 		return subtractiveChanges.map[it]
 	}
 }
 
-class ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
-	contains R[1] removeChange
-	contains I[1] insertChange
+class ExplicitUnsetEReference<A extends EObject> extends ExplicitUnsetEFeature<A, EReference> {
+	contains EChange[+] changes
+	/**
+	 * Returns the changes this unset consists of. Can also be compound changes, e.g., a RemoveAndDeleteNonRoot
+	 */
+	op unique EChange[+] getContainedChanges() {
+		return changes;
+	}
 	op unique AtomicEChange[+] getAtomicChanges() {
-		val list = new BasicEList<AtomicEChange>();
-		list.add(getRemoveChange());
-		list.add(getInsertChange());
-		return list;
+		changes.map[
+			if (it instanceof AtomicEChange) 
+				#[it] 
+			else if (it instanceof CompoundEChange) 
+				it.atomicChanges 
+			else 
+				throw new IllegalArgumentException
+		].flatten.asEList
 	}
 }
 
-class CompoundSubtraction<T extends Object, S extends SubtractiveEChange<T>> extends CompoundEChange {
+//class ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
+//	contains R[1] removeChange
+//	contains I[1] insertChange
+//	op unique AtomicEChange[+] getAtomicChanges() {
+//		val list = new BasicEList<AtomicEChange>();
+//		list.add(getRemoveChange());
+//		list.add(getInsertChange());
+//		return list;
+//	}
+//}
+
+abstract class CompoundSubtraction<T extends Object, S extends SubtractiveEChange<T>> extends CompoundEChange {
 	contains S[+] subtractiveChanges
 	op unique AtomicEChange[+] getAtomicChanges() {
 		val result = new BasicEList<AtomicEChange>();
@@ -74,7 +101,7 @@ class CompoundSubtraction<T extends Object, S extends SubtractiveEChange<T>> ext
 	}
 }
 
-class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChange {
+abstract class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChange {
 	contains S[+] additiveChanges
 	op unique AtomicEChange[+] getAtomicChanges() {
 		val result = new BasicEList<AtomicEChange>();
