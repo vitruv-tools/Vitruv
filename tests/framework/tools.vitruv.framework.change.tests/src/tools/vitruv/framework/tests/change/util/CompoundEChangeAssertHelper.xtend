@@ -9,10 +9,12 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 import org.junit.Assert
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
+import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
 
 class CompoundEChangeAssertHelper {
 	def public static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> assertCreateAndInsertNonRoot(
@@ -54,11 +56,19 @@ class CompoundEChangeAssertHelper {
 		compositeChange.removeChange.assertRemoveRootEObject(expectedOldValue, uri)
 	}
 
-	def public static <A extends EObject, T, S extends SubtractiveAttributeEChange<A, T>> ExplicitUnsetEFeature<A, T> assertExplicitUnset(
+	def public static <A extends EObject, T, S extends SubtractiveAttributeEChange<A, T>> ExplicitUnsetEAttribute<A, T> assertExplicitUnsetEAttribute(
 			EChange change) {
-		val unsetChange = change.assertObjectInstanceOf(ExplicitUnsetEFeature)
+		val unsetChange = change.assertObjectInstanceOf(ExplicitUnsetEAttribute)
 		Assert.assertEquals("atomic changes should be the same than the subtractive changes",
 			unsetChange.atomicChanges, unsetChange.subtractiveChanges)
+		return unsetChange
+	}
+	
+	def public static <A extends EObject, T extends EObject, S extends SubtractiveReferenceEChange<A, T>> ExplicitUnsetEReference<A> assertExplicitUnsetEReference(
+			EChange change) {
+		val unsetChange = change.assertObjectInstanceOf(ExplicitUnsetEReference)
+		//Assert.assertEquals("atomic changes should be the same than the subtractive changes",
+			//unsetChange.atomicChanges, unsetChange.changes)
 		return unsetChange
 	}
 	

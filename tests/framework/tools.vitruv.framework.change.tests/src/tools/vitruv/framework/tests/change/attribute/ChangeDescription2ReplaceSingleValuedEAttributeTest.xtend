@@ -94,7 +94,7 @@ class ChangeDescription2ReplaceSingleValuedEAttributeTest extends ChangeDescript
 		this.rootElement.eUnset(ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE)
 
 		changes.assertChangeCount(1);
-		val subtractiveChanges = changes.claimChange(0).assertExplicitUnset.subtractiveChanges
+		val subtractiveChanges = changes.claimChange(0).assertExplicitUnsetEAttribute.subtractiveChanges
 		assertChangeCount(subtractiveChanges, 1);
 		subtractiveChanges.get(0).assertReplaceSingleValuedEAttribute(this.rootElement, ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
 	}	
