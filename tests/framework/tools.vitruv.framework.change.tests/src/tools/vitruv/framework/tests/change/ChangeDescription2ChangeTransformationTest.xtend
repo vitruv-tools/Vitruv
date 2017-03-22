@@ -36,7 +36,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	def void beforeTest() {
 		this.rootElement = AllElementTypesFactory.eINSTANCE.createRoot()
 		this.rootElement.nonRootObjectContainerHelper = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper()
-		this.changeRecorder = new AtomicEMFChangeRecorder(false)
+		this.changeRecorder = new AtomicEMFChangeRecorder()
 	}
 
 	@After

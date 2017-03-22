@@ -75,7 +75,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
 		Resource modelResource = this.getVirtualModel().getModelInstance(vuri).getResource();
 		final ConcreteChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind,
-				modelResource, false);
+				modelResource);
 		this.getVirtualModel().propagateChange(fileChange);
 	}
 

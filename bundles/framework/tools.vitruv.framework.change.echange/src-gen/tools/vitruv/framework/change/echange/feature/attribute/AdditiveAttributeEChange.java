@@ -31,11 +31,11 @@ public interface AdditiveAttributeEChange<A extends EObject, T extends Object> e
 	/**
 	 * Returns the value of the '<em><b>New Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>New Value</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The value which will be inserted.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>New Value</em>' attribute.
 	 * @see #setNewValue(Object)
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getAdditiveAttributeEChange_NewValue()

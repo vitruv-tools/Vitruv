@@ -23,6 +23,9 @@ abstract class UpdateAttributeEChange<A extends EObj> extends FeatureEChange<A, 
  * Abstract EChange which inserts a new value into an attribute.
  */
 abstract class AdditiveAttributeEChange<A extends EObj, T extends Object> extends UpdateAttributeEChange<A>, AdditiveEChange<T> {
+	/**
+	 * The value which will be inserted.
+	 */
 	T[1] newValue
 }
 
@@ -30,6 +33,9 @@ abstract class AdditiveAttributeEChange<A extends EObj, T extends Object> extend
  * Abstract EChange which removes a value from an attribute.
  */
 abstract class SubtractiveAttributeEChange<A extends EObj, T extends Object> extends UpdateAttributeEChange<A>, SubtractiveEChange<T> {
+	/**
+	 * The value which will be removed.
+	 */
 	T[1] oldValue
 }
 

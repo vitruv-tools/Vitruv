@@ -31,11 +31,11 @@ public interface SubtractiveAttributeEChange<A extends EObject, T extends Object
 	/**
 	 * Returns the value of the '<em><b>Old Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Old Value</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The value which will be removed.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Old Value</em>' attribute.
 	 * @see #setOldValue(Object)
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getSubtractiveAttributeEChange_OldValue()

@@ -45,12 +45,12 @@ class VitruviusChangeFactory {
 		return new ConcreteChangeImpl(change, vuri);
 	}
 	
-	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource, boolean unresolve) {
+	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		val vuri = VURI.getInstance(changedFileResource);
 		if (kind == FileChangeKind.Create) {
-			return new ConcreteChangeImpl(generateFileCreateChange(changedFileResource, unresolve), vuri);
+			return new ConcreteChangeImpl(generateFileCreateChange(changedFileResource), vuri);
 		} else {
-			return new ConcreteChangeImpl(generateFileDeleteChange(changedFileResource, unresolve), vuri);
+			return new ConcreteChangeImpl(generateFileDeleteChange(changedFileResource), vuri);
 		}
 	}
 	
@@ -74,9 +74,9 @@ class VitruviusChangeFactory {
 		return compositeChange;
 	}
 		
-	private def EChange generateFileCreateChange(Resource resource, boolean unresolve) {
+	private def EChange generateFileCreateChange(Resource resource) {
 		var EObject rootElement = null;
-		var index = 0 // TODO Stefan: Added for working EChange implementation + boolean: unresolve
+		var index = 0
         if (1 == resource.getContents().size()) {
             rootElement = resource.getContents().get(0);
         } else if (1 < resource.getContents().size()) {
@@ -88,27 +88,17 @@ class VitruviusChangeFactory {
                     + ". Propagation of 'root element created' not triggered.");
             return null;
         }
-		var TypeInferringCompoundEChangeFactory factory
-        if (unresolve) {
-        	factory = TypeInferringCompoundEChangeFactory.unresolvingInstance
-        } else {
-        	factory = TypeInferringCompoundEChangeFactory.instance
-        }
-        val CreateAndInsertRoot<EObject> createRootEObj = factory.createCreateAndInsertRootChange(rootElement, resource, index);
+        val CreateAndInsertRoot<EObject> createRootEObj =  TypeInferringCompoundEChangeFactory.
+        	instance.createCreateAndInsertRootChange(rootElement, resource, index);
         return createRootEObj; 
 	}
 	
-	private def generateFileDeleteChange(Resource resource, boolean unresolve) {
+	private def generateFileDeleteChange(Resource resource) {
 		if (0 < resource.getContents().size()) {
-			val index = 0 // TODO Stefan: Added for working EChange implementation + boolean: unresolve
+			val index = 0
             val EObject rootElement = resource.getContents().get(index);
-            var TypeInferringCompoundEChangeFactory factory
-	        if (unresolve) {
-	        	factory = TypeInferringCompoundEChangeFactory.unresolvingInstance
-	        } else {
-	        	factory = TypeInferringCompoundEChangeFactory.instance
-	        }
-            val RemoveAndDeleteRoot<EObject> deleteRootObj = factory.createRemoveAndDeleteRootChange(rootElement, resource, index);
+            val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory.
+            	instance.createRemoveAndDeleteRootChange(rootElement, resource, index);
             return deleteRootObj;
         }
         logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");

@@ -1,15 +1,18 @@
 package tools.vitruv.framework.change.recording
 
-import java.util.Collection
-import org.eclipse.emf.common.notify.Notifier
-import org.eclipse.emf.ecore.change.util.ChangeRecorder
-import org.eclipse.emf.common.notify.Notification
-import java.util.List
 import java.util.ArrayList
+import java.util.Collection
+import java.util.List
+import org.eclipse.emf.common.notify.Notification
+import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.change.ChangeDescription
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import org.eclipse.emf.ecore.change.util.ChangeRecorder
+import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 
 class AtomicEMFChangeRecorder {
 	var List<ChangeDescription> changeDescriptions;
@@ -48,7 +51,8 @@ class AtomicEMFChangeRecorder {
 	def List<TransactionalChange> endRecording() {
 		changeRecorder.endRecording();
 		changeDescriptions.reverseView.forEach[applyAndReverse];
-		return changeDescriptions.filterNull.map[createModelChange].filterNull.toList;
+		var transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList;
+		return transactionalChanges
 	}
 	
 	private def createModelChange(ChangeDescription changeDescription) {

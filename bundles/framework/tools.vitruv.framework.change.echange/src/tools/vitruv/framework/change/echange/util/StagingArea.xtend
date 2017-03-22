@@ -10,8 +10,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet
  * temporarily. 
  */
 public class StagingArea {
-	public static val DEFAULT_RESOURCE_NAME = "stagingArea.staging"
-	public static val DEFAULT_RESOURCE_EXTENSION = "staging"
+	public static val DEFAULT_RESOURCE_NAME = "stagingArea.xmi"
+	public static val DEFAULT_RESOURCE_EXTENSION = "xmi"
 	
 	/**
 	 * Returns the staging area resource of a resource set.

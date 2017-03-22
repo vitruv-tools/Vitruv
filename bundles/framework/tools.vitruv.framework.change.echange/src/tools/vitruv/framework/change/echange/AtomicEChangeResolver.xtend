@@ -70,6 +70,7 @@ class AtomicEChangeResolver {
 	
 	/**
 	 * Resolves the new value of the {@link AdditiveReferenceEChange}.
+	 * @param 	The change which should be resolved.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the new value of
 	 * 			the unresolved should be resolved to.
 	 * @param 	resolveBefore {@code true} if the model is in state before the change.
@@ -106,7 +107,8 @@ class AtomicEChangeResolver {
 	}
 	
 	/**
-	 * Resolves the old value of the {@link AdditiveReferenceEChange}.
+	 * Resolves the old value of the {@link SubtractiveReferenceEChange}.
+	 * @param	change The change which should be resolved.
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the old value of
 	 * 			the unresolved should be resolved to.
 	 * @param 	resolveBefore {@code true} if the model is in state before the change.
