@@ -12,6 +12,11 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
  * A representation of the model object '<em><b>Remove EAttribute Value</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which removes the value of a many valued attribute.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getRemoveEAttributeValue()
  * @model ABounds="tools.vitruv.framework.change.echange.feature.attribute.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"

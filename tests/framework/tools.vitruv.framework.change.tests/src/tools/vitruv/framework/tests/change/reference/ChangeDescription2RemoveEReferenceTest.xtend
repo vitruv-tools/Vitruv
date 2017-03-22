@@ -31,7 +31,7 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		changes.assertChangeCount(1);
 		removeChange = changes.claimChange(0)
 		if (isContainment) {
-			removeChange.assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, 0)
+			removeChange.assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, 0, null)
 		} else {
 			removeChange.assertRemoveEReference(this.rootElement, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, 0,
 				isContainment)
@@ -49,5 +49,4 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		val isContainment = true
 		testRemoveEReference(isContainment)
 	}
-
 }

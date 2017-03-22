@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * A representation of the model object '<em><b>Additive Attribute EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which inserts a new value into an attribute.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

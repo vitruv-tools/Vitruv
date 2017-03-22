@@ -15,6 +15,11 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
  * A representation of the model object '<em><b>Explicit Unset EFeature</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which unsets a single or many valued attribute.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature()
  * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"

@@ -13,25 +13,43 @@ import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedF
 
 type EObj wraps EObject
 
+/**
+ * Abstract EChange which updates the value of an attribute.
+ */
 abstract class UpdateAttributeEChange<A extends EObj> extends FeatureEChange<A, EAttribute> {
 }
 
+/**
+ * Abstract EChange which inserts a new value into an attribute.
+ */
 abstract class AdditiveAttributeEChange<A extends EObj, T extends Object> extends UpdateAttributeEChange<A>, AdditiveEChange<T> {
 	T[1] newValue
 }
 
+/**
+ * Abstract EChange which removes a value from an attribute.
+ */
 abstract class SubtractiveAttributeEChange<A extends EObj, T extends Object> extends UpdateAttributeEChange<A>, SubtractiveEChange<T> {
 	T[1] oldValue
 }
 
+/**
+ * EChange which inserts a new value into a many valued attribute.
+ */
 class InsertEAttributeValue<A extends EObj, T extends Object> extends InsertInListEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T> {
 
 }
 
+/**
+ * EChange which removes the value of a many valued attribute.
+ */
 class RemoveEAttributeValue<A extends EObj, T extends Object> extends RemoveFromListEChange<A, EAttribute, T>, SubtractiveAttributeEChange<A, T> {
 
 }
 
+/**
+ * EChange which replaces the value of the single valued attribute.
+ */
 class ReplaceSingleValuedEAttribute<A extends EObj, T extends Object> extends ReplaceSingleValuedFeatureEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T> {
 
 }

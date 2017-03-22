@@ -15,8 +15,8 @@ class ChangeDescription2MoveRootTest extends ChangeDescription2RootChangeTest {
 		insertRootEObjectInResource(this.resource2)
 		// assert
 		val isDelete = false
-		assertRemoveRoot(0, isDelete, this.uri1)
+		assertRemoveRoot(0, isDelete, this.uri1, this.resource1)
 		val isCreate = false
-		assertInsertRoot(1, isCreate, this.uri2)
+		assertInsertRoot(1, isCreate, this.uri2, this.resource2)
 	}
 }

@@ -11,6 +11,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * A representation of the model object '<em><b>EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract change, which can be applied forward or backward, after it was resolved to a specific instance of a model.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.EChangePackage#getEChange()
  * @model abstract="true"

@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import org.eclipse.emf.ecore.resource.Resource
 
 class ChangeAssertHelper {
 
@@ -93,7 +94,17 @@ class ChangeAssertHelper {
 		Assert.assertEquals("Change " + rootChange + " shall have the uri " + URI.createFileURI(expectedValue).toString,
 			URI.createFileURI(expectedValue).toString, rootChange.uri)
 	}
+	
+	def static void assertResource(RootEChange rootChange, Resource resource) {
+		Assert.assertEquals("Change " + rootChange + " shall have the resource " + resource,
+			rootChange.resource, resource)
+	}
 
+	def static void assertStagingArea(EObjectExistenceEChange existenceChange, Resource stagingArea) {
+		Assert.assertEquals("Change " + existenceChange + " shall have the staging area " + stagingArea,
+			existenceChange.stagingArea, stagingArea)
+	}
+	
 	def static void assertIndex(UpdateSingleListEntryEChange<?, ?> change, int expectedIndex) {
 		Assert.assertEquals("The value is not at the correct index", expectedIndex, change.index)
 	}

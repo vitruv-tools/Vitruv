@@ -15,6 +15,11 @@ import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEC
  * A representation of the model object '<em><b>Replace Single Valued Feature EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which replaces a single valued attribute or reference.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.feature.single.SinglePackage#getReplaceSingleValuedFeatureEChange()
  * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.single.EObj" FBounds="tools.vitruv.framework.change.echange.feature.single.EFeat" TBounds="org.eclipse.emf.ecore.EJavaObject"

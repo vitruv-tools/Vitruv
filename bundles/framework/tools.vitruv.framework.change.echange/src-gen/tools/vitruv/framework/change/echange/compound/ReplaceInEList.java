@@ -21,6 +21,11 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
  * A representation of the model object '<em><b>Replace In EList</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which replaces a value in a many valued non containment reference.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

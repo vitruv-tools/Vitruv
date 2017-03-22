@@ -13,45 +13,48 @@ import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.echange.util.StagingArea
 
 class CompoundEChangeAssertHelper {
 	def public static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> assertCreateAndInsertNonRoot(
-			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex) {
+			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex, Resource stagingArea) {
 		val createAndInsert = change.assertObjectInstanceOf(CreateAndInsertNonRoot)
-		createAndInsert.createChange.assertCreateEObject(expectedNewValue);
+		createAndInsert.createChange.assertCreateEObject(expectedNewValue, stagingArea);
 		createAndInsert.insertChange.assertInsertEReference(affectedEObject, affectedFeature, expectedNewValue,
 			expectedIndex, true);
 		return createAndInsert
 	}
 
 	def public static <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> assertRemoveAndDeleteNonRoot(
-			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedOldValue, int expectedOldIndex) {
+			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedOldValue, int expectedOldIndex,
+			Resource stagingArea) {
 		val compositeChange = assertObjectInstanceOf(change, RemoveAndDeleteNonRoot)
-		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue);
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, stagingArea);
 		compositeChange.removeChange.assertRemoveEReference(affectedEObject, affectedFeature, expectedOldValue,
 			expectedOldIndex, true);
 		return compositeChange
 	}
 	
 	def static void assertCreateAndReplaceAndDeleteNonRoot(EChange change, EObject expectedOldValue,
-			EObject expectedNewValue, EStructuralFeature affectedFeature, EObject affectedEObject, boolean isContainment) {
+			EObject expectedNewValue, EStructuralFeature affectedFeature, EObject affectedEObject, boolean isContainment, Resource stagingArea) {
 		val compositeChange = change.assertObjectInstanceOf(CreateAndReplaceAndDeleteNonRoot)
-		compositeChange.createChange.assertCreateEObject(expectedNewValue)
-		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue)
+		compositeChange.createChange.assertCreateEObject(expectedNewValue, stagingArea)
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, stagingArea)
 		compositeChange.replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, 
 			expectedOldValue, expectedNewValue, isContainment)
 	}
 	
-	def public static void assertCreateAndInsertRootEObject(EChange change, EObject expectedNewValue, String uri) {
+	def public static void assertCreateAndInsertRootEObject(EChange change, EObject expectedNewValue, String uri, Resource resource) {
 		val compositeChange = change.assertObjectInstanceOf(CreateAndInsertRoot)
-		compositeChange.createChange.assertCreateEObject(expectedNewValue)
-		compositeChange.insertChange.assertInsertRootEObject(expectedNewValue, uri)
+		compositeChange.createChange.assertCreateEObject(expectedNewValue, StagingArea.getStagingArea(resource))
+		compositeChange.insertChange.assertInsertRootEObject(expectedNewValue, uri, resource)
 	}
 	
-	def public static void assertRemoveAndDeleteRootEObject(EChange change, EObject expectedOldValue, String uri) {
+	def public static void assertRemoveAndDeleteRootEObject(EChange change, EObject expectedOldValue, String uri, Resource resource) {
 		val compositeChange = change.assertObjectInstanceOf(RemoveAndDeleteRoot)
-		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue)
-		compositeChange.removeChange.assertRemoveRootEObject(expectedOldValue, uri)
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(resource))
+		compositeChange.removeChange.assertRemoveRootEObject(expectedOldValue, uri, resource)
 	}
 
 	def public static <A extends EObject, T, S extends SubtractiveAttributeEChange<A, T>> ExplicitUnsetEFeature<A, T> assertExplicitUnset(

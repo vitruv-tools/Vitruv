@@ -12,6 +12,9 @@ import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch
 type Command wraps Command
 type ResourceSet wraps ResourceSet
 
+/**
+ * Abstract change, which can be applied forward or backward, after it was resolved to a specific instance of a model.
+ */
 abstract class EChange {
 	/**
 	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
@@ -163,13 +166,30 @@ abstract class EChange {
 	}
 }
 
+/**
+ * Abstract EChange which sub changes can only be applied together.
+ */
 abstract class AtomicEChange extends EChange {
 }
 
+/**
+ * Abstract EChange which adds a new value, like an EObject or primitive type.
+ */
 abstract class AdditiveEChange<T extends Object> extends AtomicEChange {
+	/**
+	 * Get the added value.
+	 * @return The newly added value.
+	 */
 	op T[1] getNewValue()
 }
 
+/**
+ * Abstract EChange which removes an existing value, like an EObject or primitive type.
+ */
 abstract class SubtractiveEChange<T extends Object> extends AtomicEChange {
+	/**
+	 * Get the removed value.
+	 * @return The value which will be removed.
+	 */
 	op T[1] getOldValue()
 }

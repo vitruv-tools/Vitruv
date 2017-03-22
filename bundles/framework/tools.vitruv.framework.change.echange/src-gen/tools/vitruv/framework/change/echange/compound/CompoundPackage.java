@@ -1450,6 +1450,242 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_NON_ROOT_OPERATION_COUNT = REMOVE_AND_DELETE_EOBJECT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceWithNonRootImpl <em>Create And Replace With Non Root</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceWithNonRootImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndReplaceWithNonRoot()
+	 * @generated
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT = 12;
+
+	/**
+	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT__CREATE_CHANGE = CREATE_AND_INSERT_EOBJECT__CREATE_CHANGE;
+
+	/**
+	 * The feature id for the '<em><b>Insert Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT__INSERT_CHANGE = CREATE_AND_INSERT_EOBJECT__INSERT_CHANGE;
+
+	/**
+	 * The number of structural features of the '<em>Create And Replace With Non Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT_FEATURE_COUNT = CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT___APPLY_FORWARD = CREATE_AND_INSERT_EOBJECT___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT___APPLY_BACKWARD = CREATE_AND_INSERT_EOBJECT___APPLY_BACKWARD;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT___IS_RESOLVED = CREATE_AND_INSERT_EOBJECT___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT___RESOLVE_BEFORE__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT___RESOLVE_AFTER__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT___GET_ATOMIC_CHANGES = CREATE_AND_INSERT_EOBJECT___GET_ATOMIC_CHANGES;
+
+	/**
+	 * The number of operations of the '<em>Create And Replace With Non Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_WITH_NON_ROOT_OPERATION_COUNT = CREATE_AND_INSERT_EOBJECT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceAndDeleteNonRootImpl <em>Replace And Delete Non Root</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceAndDeleteNonRootImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceAndDeleteNonRoot()
+	 * @generated
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT = 13;
+
+	/**
+	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT__REMOVE_CHANGE = REMOVE_AND_DELETE_EOBJECT__REMOVE_CHANGE;
+
+	/**
+	 * The feature id for the '<em><b>Delete Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT__DELETE_CHANGE = REMOVE_AND_DELETE_EOBJECT__DELETE_CHANGE;
+
+	/**
+	 * The number of structural features of the '<em>Replace And Delete Non Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT_FEATURE_COUNT = REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT___APPLY_FORWARD = REMOVE_AND_DELETE_EOBJECT___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT___APPLY_BACKWARD = REMOVE_AND_DELETE_EOBJECT___APPLY_BACKWARD;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT___IS_RESOLVED = REMOVE_AND_DELETE_EOBJECT___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT___RESOLVE_AFTER__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES = REMOVE_AND_DELETE_EOBJECT___GET_ATOMIC_CHANGES;
+
+	/**
+	 * The number of operations of the '<em>Replace And Delete Non Root</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT_OPERATION_COUNT = REMOVE_AND_DELETE_EOBJECT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceAndDeleteNonRootImpl <em>Create And Replace And Delete Non Root</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1457,7 +1693,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndReplaceAndDeleteNonRoot()
 	 * @generated
 	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT = 12;
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT = 14;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -1584,7 +1820,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEObj()
 	 * @generated
 	 */
-	int EOBJ = 13;
+	int EOBJ = 15;
 
 	/**
 	 * The meta object id for the '<em>EFeat</em>' data type.
@@ -1594,7 +1830,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEFeat()
 	 * @generated
 	 */
-	int EFEAT = 14;
+	int EFEAT = 16;
 
 	/**
 	 * The meta object id for the '<em>Resource Set</em>' data type.
@@ -1604,7 +1840,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getResourceSet()
 	 * @generated
 	 */
-	int RESOURCE_SET = 15;
+	int RESOURCE_SET = 17;
 
 
 	/**
@@ -1988,6 +2224,26 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRemoveAndDeleteNonRoot();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CreateAndReplaceWithNonRoot <em>Create And Replace With Non Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Create And Replace With Non Root</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndReplaceWithNonRoot
+	 * @generated
+	 */
+	EClass getCreateAndReplaceWithNonRoot();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot <em>Replace And Delete Non Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Replace And Delete Non Root</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
+	 * @generated
+	 */
+	EClass getReplaceAndDeleteNonRoot();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot <em>Create And Replace And Delete Non Root</em>}'.
@@ -2417,6 +2673,26 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REMOVE_AND_DELETE_NON_ROOT = eINSTANCE.getRemoveAndDeleteNonRoot();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceWithNonRootImpl <em>Create And Replace With Non Root</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceWithNonRootImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndReplaceWithNonRoot()
+		 * @generated
+		 */
+		EClass CREATE_AND_REPLACE_WITH_NON_ROOT = eINSTANCE.getCreateAndReplaceWithNonRoot();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceAndDeleteNonRootImpl <em>Replace And Delete Non Root</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceAndDeleteNonRootImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceAndDeleteNonRoot()
+		 * @generated
+		 */
+		EClass REPLACE_AND_DELETE_NON_ROOT = eINSTANCE.getReplaceAndDeleteNonRoot();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceAndDeleteNonRootImpl <em>Create And Replace And Delete Non Root</em>}' class.

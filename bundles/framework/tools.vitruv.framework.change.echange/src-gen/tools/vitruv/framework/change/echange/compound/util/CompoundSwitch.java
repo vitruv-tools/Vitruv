@@ -179,6 +179,24 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CompoundPackage.CREATE_AND_REPLACE_WITH_NON_ROOT: {
+				CreateAndReplaceWithNonRoot<?, ?> createAndReplaceWithNonRoot = (CreateAndReplaceWithNonRoot<?, ?>)theEObject;
+				T1 result = caseCreateAndReplaceWithNonRoot(createAndReplaceWithNonRoot);
+				if (result == null) result = caseCreateAndInsertEObject(createAndReplaceWithNonRoot);
+				if (result == null) result = caseCompoundEChange(createAndReplaceWithNonRoot);
+				if (result == null) result = caseEChange(createAndReplaceWithNonRoot);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CompoundPackage.REPLACE_AND_DELETE_NON_ROOT: {
+				ReplaceAndDeleteNonRoot<?, ?> replaceAndDeleteNonRoot = (ReplaceAndDeleteNonRoot<?, ?>)theEObject;
+				T1 result = caseReplaceAndDeleteNonRoot(replaceAndDeleteNonRoot);
+				if (result == null) result = caseRemoveAndDeleteEObject(replaceAndDeleteNonRoot);
+				if (result == null) result = caseCompoundEChange(replaceAndDeleteNonRoot);
+				if (result == null) result = caseEChange(replaceAndDeleteNonRoot);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CompoundPackage.CREATE_AND_REPLACE_AND_DELETE_NON_ROOT: {
 				CreateAndReplaceAndDeleteNonRoot<?, ?> createAndReplaceAndDeleteNonRoot = (CreateAndReplaceAndDeleteNonRoot<?, ?>)theEObject;
 				T1 result = caseCreateAndReplaceAndDeleteNonRoot(createAndReplaceAndDeleteNonRoot);
@@ -368,6 +386,36 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <A extends EObject, T extends EObject> T1 caseRemoveAndDeleteNonRoot(RemoveAndDeleteNonRoot<A, T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Create And Replace With Non Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Create And Replace With Non Root</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, T extends EObject> T1 caseCreateAndReplaceWithNonRoot(CreateAndReplaceWithNonRoot<A, T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Replace And Delete Non Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Replace And Delete Non Root</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, T extends EObject> T1 caseReplaceAndDeleteNonRoot(ReplaceAndDeleteNonRoot<A, T> object) {
 		return null;
 	}
 

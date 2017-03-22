@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * A representation of the model object '<em><b>EObject Added EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which inserts an EObject into a resource or reference.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

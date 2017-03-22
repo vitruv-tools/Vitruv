@@ -12,6 +12,13 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
  * A representation of the model object '<em><b>Insert EReference</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which inserts an EObject into a many valued reference.
+ * If the reference is a containment reference, the inserted object will be taken from the staging area.
+ * There it must be placed by a {@link CreateEObject} EChange or by removing it from another reference.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.feature.reference.ReferencePackage#getInsertEReference()
  * @model ABounds="tools.vitruv.framework.change.echange.feature.reference.EObj" TBounds="tools.vitruv.framework.change.echange.feature.reference.EObj"

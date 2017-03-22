@@ -12,6 +12,11 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
  * A representation of the model object '<em><b>Insert EAttribute Value</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which inserts a new value into a many valued attribute.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getInsertEAttributeValue()
  * @model ABounds="tools.vitruv.framework.change.echange.feature.attribute.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"

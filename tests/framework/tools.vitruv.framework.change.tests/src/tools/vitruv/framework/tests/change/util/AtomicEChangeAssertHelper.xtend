@@ -1,42 +1,58 @@
 package tools.vitruv.framework.tests.change.util
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*;
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import org.eclipse.emf.ecore.EStructuralFeature
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
-import tools.vitruv.framework.change.echange.root.InsertRootEObject
-import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
-import static org.junit.Assert.*;
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import tools.vitruv.framework.change.echange.root.RootEChange
+
+import static org.junit.Assert.*
+
+import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 
 class AtomicEChangeAssertHelper {
-	public def static assertCreateEObject(EChange change, EObject affectedEObject) {
+	public def static assertEObjectExistenceChange(EChange change, EObject affectedEObject, Resource stagingArea) {
+		val eObjectExistingChange = assertObjectInstanceOf(change, EObjectExistenceEChange);
+		eObjectExistingChange.assertAffectedEObject(affectedEObject)
+		eObjectExistingChange.assertStagingArea(stagingArea)
+	}
+	public def static assertCreateEObject(EChange change, EObject affectedEObject, Resource stagingArea) {
 		val createEObject = assertObjectInstanceOf(change, CreateEObject);
-		createEObject.assertAffectedEObject(affectedEObject);
+		createEObject.assertEObjectExistenceChange(affectedEObject, stagingArea);
 	}
 			
-	public def static assertDeleteEObject(EChange change, EObject affectedEObject) {
+	public def static assertDeleteEObject(EChange change, EObject affectedEObject, Resource stagingArea) {
 		val deleteEObject = assertObjectInstanceOf(change, DeleteEObject);
-		deleteEObject.assertAffectedEObject(affectedEObject);
+		deleteEObject.assertEObjectExistenceChange(affectedEObject, stagingArea);
 	}
 	
-	def public static assertInsertRootEObject(EChange change, Object expectedNewValue, String uri) {
+	def public static assertRootEChange(EChange change, String uri, Resource resource) {
+		val rootChange = change.assertObjectInstanceOf(RootEChange)
+		rootChange.assertUri(uri)
+		rootChange.assertResource(resource)
+	}
+	
+	def public static assertInsertRootEObject(EChange change, Object expectedNewValue, String uri, Resource resource) {
 		val insertRoot = change.assertObjectInstanceOf(InsertRootEObject)
 		insertRoot.assertNewValue(expectedNewValue)
-		insertRoot.assertUri(uri)
+		insertRoot.assertRootEChange(uri, resource)
 	}
 
-	def public static assertRemoveRootEObject(EChange change, Object expectedOldValue, String uri) {
+	def public static assertRemoveRootEObject(EChange change, Object expectedOldValue, String uri, Resource resource) {
 		val removeRoot = change.assertObjectInstanceOf(RemoveRootEObject)
 		removeRoot.assertOldValue(expectedOldValue)
-		removeRoot.assertUri(uri)
+		removeRoot.assertRootEChange(uri, resource)
 	}
 	
 	

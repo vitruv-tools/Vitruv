@@ -12,6 +12,11 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * A representation of the model object '<em><b>Addition</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which is a sequence of the same additive EChange.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

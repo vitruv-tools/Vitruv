@@ -12,6 +12,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
 import org.eclipse.emf.ecore.EObject
 import java.util.Collections
 import org.eclipse.emf.edit.command.SetCommand
+import org.eclipse.emf.common.command.UnexecutableCommand
 
 /**
  * Switch to create commands for all EChange classes of the compound package.
@@ -50,6 +51,9 @@ class CompoundApplyForwardCommandSwitch extends CompoundSwitch<List<Command>> {
 	 * @param object The change which command should be created.
 	 */
 	override public List<Command> caseExplicitUnsetEFeature(ExplicitUnsetEFeature object) {
+		if (object.atomicChanges.size == 0) {
+			return Collections.singletonList(UnexecutableCommand.INSTANCE)
+		}
 		var SubtractiveAttributeEChange<EObject, ?> firstChange = 
 			object.atomicChanges.get(0) as SubtractiveAttributeEChange<EObject, ?>
 		val editingDomain = EChangeUtil.getEditingDomain(firstChange.affectedEObject)

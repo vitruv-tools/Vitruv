@@ -12,6 +12,11 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange;
  * A representation of the model object '<em><b>Update Reference EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which updates a reference with a new value.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.feature.reference.ReferencePackage#getUpdateReferenceEChange()
  * @model abstract="true"
@@ -21,6 +26,10 @@ public interface UpdateReferenceEChange<A extends EObject> extends FeatureEChang
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The affected reference is a containment reference.
+	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false" required="true"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='<%org.eclipse.emf.ecore.EReference%> _affectedFeature = this.getAffectedFeature();\nreturn _affectedFeature.isContainment();'"
 	 * @generated

@@ -13,6 +13,11 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * A representation of the model object '<em><b>EObject Existence EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which creates or deletes an EObject.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -29,11 +34,11 @@ public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChang
 	/**
 	 * Returns the value of the '<em><b>Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Affected EObject</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The created or deleted EObject.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Affected EObject</em>' reference.
 	 * @see #setAffectedEObject(EObject)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange_AffectedEObject()
@@ -55,11 +60,12 @@ public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChang
 	/**
 	 * Returns the value of the '<em><b>Staging Area</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Staging Area</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The staging area where the created object will be placed or the deleted
+	 * object be removed from.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Staging Area</em>' attribute.
 	 * @see #setStagingArea(Resource)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange_StagingArea()

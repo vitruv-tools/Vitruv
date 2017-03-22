@@ -11,6 +11,9 @@ import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEC
 type EObj wraps EObject
 type EFeat wraps EStructuralFeature
 
+/**
+ * Abstract EChange which replaces a single valued attribute or reference.
+ */
 abstract class ReplaceSingleValuedFeatureEChange<A extends EObj, F extends EFeat, T extends Object> extends UpdateSingleValuedFeatureEChange<A, F>, AdditiveEChange<T>, SubtractiveEChange<T> {
 	/**
 	 * The change don't replace the default value.

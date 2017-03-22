@@ -11,16 +11,33 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange
 type EObj wraps EObject
 type Resource wraps Resource
 
+/**
+ * Abstract EChange which inserts an EObject into a resource or reference.
+ */
 abstract class EObjectAddedEChange<T extends EObj> extends AdditiveEChange<T> {
 	refers T[1] newValue
 }
 
+/**
+ * Abstract EChange which removes an EObject from a resource or reference.
+ */
 abstract class EObjectSubtractedEChange<T extends EObj> extends SubtractiveEChange<T> {
 	refers T[1] oldValue
 }
 
+/**
+ * Abstract EChange which creates or deletes an EObject.
+ */
 abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
+	/**
+	 * The created or deleted EObject.
+	 */
 	refers A[1] affectedEObject
+	
+	/**
+	 * The staging area where the created object will be placed or the deleted
+	 * object be removed from.
+	 */
 	Resource stagingArea
 	
 	/**
@@ -34,10 +51,18 @@ abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
 	}
 }
 
+/**
+ * EChange which creates a new EObject and places it in the staging area.
+ * There it can be taken by another EChange.
+ */
 class CreateEObject<A extends EObj> extends EObjectExistenceEChange<A> {
 
 }
 
+/** 
+ * EChange which deletes a EObject from the staging area.
+ * The object must be placed in the staging area by another change. 
+ */
 class DeleteEObject<A extends EObj> extends EObjectExistenceEChange<A> {
 
 }

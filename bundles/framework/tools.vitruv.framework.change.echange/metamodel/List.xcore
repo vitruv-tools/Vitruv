@@ -11,12 +11,21 @@ import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureECh
 type EObj wraps EObject
 type EFeat wraps EStructuralFeature
 
+/**
+ * Abstract EChange which changes an EList.
+ */
 abstract class UpdateSingleListEntryEChange<A extends EObj, F extends EFeat> extends UpdateMultiValuedFeatureEChange<A, F> {
 	int[1] index = "0"
 }
 
+/** 
+ * Abstract EChange which inserts a value into an EList.
+ */
 abstract class InsertInListEChange<A extends EObj, F extends EFeat, T extends Object> extends UpdateSingleListEntryEChange<A, F>, AdditiveEChange<T> {
 }
 
+/**
+ * Abstract EChange which removes a value from an EList.
+ */
 abstract class RemoveFromListEChange<A extends EObj, F extends EFeat, T extends Object> extends UpdateSingleListEntryEChange<A, F>, SubtractiveEChange<T> {
 }

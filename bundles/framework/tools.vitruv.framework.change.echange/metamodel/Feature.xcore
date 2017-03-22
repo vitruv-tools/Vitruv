@@ -9,8 +9,18 @@ import tools.vitruv.framework.change.echange.AtomicEChange
 type EObj wraps EObject
 type EFeat wraps EStructuralFeature 
 
+/**
+ * Abstract EChange which changes an attribute or reference of an EObject.
+ */
 abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicEChange {
+	/**
+	 * The affected attribute or reference.
+	 */
 	refers F[1] affectedFeature
+	
+	/**
+	 * The affected EObject of the change.
+	 */
 	refers A[1] affectedEObject 
 
 	/**
@@ -24,8 +34,14 @@ abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicECh
 	}
 }
 
+/**
+ * Abstract EChange which changes a many valued attribute or reference.
+ */
 abstract class UpdateMultiValuedFeatureEChange<A extends EObj , F extends EFeat> extends FeatureEChange<A, F> {
 }
 
+/**
+ * Abstract EChange which changes a single valued attribute or reference.
+ */
 abstract class UpdateSingleValuedFeatureEChange<A extends EObj , F extends EFeat> extends FeatureEChange<A, F> {
 }

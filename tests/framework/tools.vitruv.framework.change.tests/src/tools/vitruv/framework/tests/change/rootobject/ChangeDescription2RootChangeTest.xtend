@@ -52,35 +52,35 @@ class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransform
 	}
 	
 		
-	def protected void assertInsertRoot(int index, boolean isCreate, String uri) {
+	def protected void assertInsertRoot(int index, boolean isCreate, String uri, Resource resource) {
 		if (isCreate) {
-			changes.claimChange(index).assertCreateAndInsertRootEObject(this.rootElement, uri);
+			changes.claimChange(index).assertCreateAndInsertRootEObject(this.rootElement, uri, resource);
 		} else {
-			changes.claimChange(index).assertInsertRootEObject(this.rootElement, uri)
+			changes.claimChange(index).assertInsertRootEObject(this.rootElement, uri, resource)
 		}
 	}
 	
-	def protected void assertInsertRoot2(int index, boolean isCreate, String uri) {
+	def protected void assertInsertRoot2(int index, boolean isCreate, String uri, Resource resource) {
 		if (isCreate) {
-			changes.claimChange(index).assertCreateAndInsertRootEObject(this.rootElement2, uri);
+			changes.claimChange(index).assertCreateAndInsertRootEObject(this.rootElement2, uri, resource);
 		} else {
-			changes.claimChange(index).assertInsertRootEObject(this.rootElement2, uri)
+			changes.claimChange(index).assertInsertRootEObject(this.rootElement2, uri, resource)
 		}
 	}
 	
-	def protected void assertRemoveRoot(int index, boolean isDelete, String uri) {
+	def protected void assertRemoveRoot(int index, boolean isDelete, String uri, Resource resource) {
 		if (isDelete) {
-			changes.claimChange(index).assertRemoveAndDeleteRootEObject(this.rootElement, uri)
+			changes.claimChange(index).assertRemoveAndDeleteRootEObject(this.rootElement, uri, resource)
 		} else {
-			changes.claimChange(index).assertRemoveRootEObject(this.rootElement, uri)
+			changes.claimChange(index).assertRemoveRootEObject(this.rootElement, uri, resource)
 		}
 	}
 	
-	def protected void assertRemoveRoot2(int index, boolean isDelete, String uri) {
+	def protected void assertRemoveRoot2(int index, boolean isDelete, String uri, Resource resource) {
 		if (isDelete) {
-			changes.claimChange(index).assertRemoveAndDeleteRootEObject(this.rootElement2, uri)
+			changes.claimChange(index).assertRemoveAndDeleteRootEObject(this.rootElement2, uri, resource)
 		} else {
-			changes.claimChange(index).assertRemoveRootEObject(this.rootElement2, uri)
+			changes.claimChange(index).assertRemoveRootEObject(this.rootElement2, uri, resource)
 		}
 	}
 	

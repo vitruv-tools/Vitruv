@@ -14,7 +14,7 @@ class ChangeDescription2RemoveRootEObject extends ChangeDescription2RootChangeTe
 		removeRootEObjectInResource()
 		// assert
 		val isDelete = true
-		assertRemoveRoot(0, isDelete, this.uri1)
+		assertRemoveRoot(0, isDelete, this.uri1, this.resource1)
 	}
 	
 	def private void removeRootEObjectInResource(){

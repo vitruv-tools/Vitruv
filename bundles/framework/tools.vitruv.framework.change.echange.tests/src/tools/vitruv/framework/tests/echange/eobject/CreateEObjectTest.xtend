@@ -90,7 +90,7 @@ class CreateEObjectTest extends EObjectTest {
 	 */
 	def private CreateEObject<Root> createUnresolvedChange(Root newObject) {
 		// The concrete change type CreateEObject will be used for the tests.
-		return atomicFactory.<Root>createCreateEObjectChange(newObject)
+		return atomicFactory.<Root>createCreateEObjectChange(newObject, resource)
 	}
 		
 }

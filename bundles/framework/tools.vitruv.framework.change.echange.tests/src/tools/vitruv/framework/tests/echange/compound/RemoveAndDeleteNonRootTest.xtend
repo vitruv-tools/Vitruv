@@ -229,7 +229,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private RemoveAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot) {
 		return compoundFactory.<Root, NonRoot>createRemoveAndDeleteNonRootChange
-		(affectedRootObject, affectedFeature, newNonRoot, index)	
+		(affectedRootObject, affectedFeature, newNonRoot, index, resource)	
 	}	
 		
 }

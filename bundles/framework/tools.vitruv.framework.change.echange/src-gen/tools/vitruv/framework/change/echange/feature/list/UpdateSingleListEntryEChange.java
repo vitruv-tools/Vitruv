@@ -12,6 +12,11 @@ import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureECh
  * A representation of the model object '<em><b>Update Single List Entry EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which changes an EList.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

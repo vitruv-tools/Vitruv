@@ -38,7 +38,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		// assert
 		val changes = getChanges()
 		changes.get(0).assertCreateAndReplaceAndDeleteNonRoot(nonRoot, replaceNonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true)
+			this.rootElement, true, null)
 	}
 
 	@Test

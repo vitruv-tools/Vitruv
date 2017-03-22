@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * A representation of the model object '<em><b>EObject Subtracted EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which removes an EObject from a resource or reference.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

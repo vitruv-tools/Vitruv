@@ -12,6 +12,16 @@ import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedF
  * A representation of the model object '<em><b>Replace Single Valued EReference</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which replaces a single valued reference with a new EObject.
+ * If the reference is a containment reference, the new object will be taken from the staging
+ * area and the old one will be placed in it.
+ * The new object must be placed in the staging area by a {@link CreateEObject} EChange or by removing
+ * it from another reference.
+ * The old one can be deleted by a {@link DeleteEObject} EChange or resinserted by another change.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.feature.reference.ReferencePackage#getReplaceSingleValuedEReference()
  * @model ABounds="tools.vitruv.framework.change.echange.feature.reference.EObj" TBounds="tools.vitruv.framework.change.echange.feature.reference.EObj"

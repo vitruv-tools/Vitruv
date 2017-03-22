@@ -129,6 +129,14 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 				return createRemoveAndDeleteNonRootAdapter();
 			}
 			@Override
+			public <A extends EObject, T extends EObject> Adapter caseCreateAndReplaceWithNonRoot(CreateAndReplaceWithNonRoot<A, T> object) {
+				return createCreateAndReplaceWithNonRootAdapter();
+			}
+			@Override
+			public <A extends EObject, T extends EObject> Adapter caseReplaceAndDeleteNonRoot(ReplaceAndDeleteNonRoot<A, T> object) {
+				return createReplaceAndDeleteNonRootAdapter();
+			}
+			@Override
 			public <A extends EObject, T extends EObject> Adapter caseCreateAndReplaceAndDeleteNonRoot(CreateAndReplaceAndDeleteNonRoot<A, T> object) {
 				return createCreateAndReplaceAndDeleteNonRootAdapter();
 			}
@@ -321,6 +329,34 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createRemoveAndDeleteNonRootAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.CreateAndReplaceWithNonRoot <em>Create And Replace With Non Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndReplaceWithNonRoot
+	 * @generated
+	 */
+	public Adapter createCreateAndReplaceWithNonRootAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot <em>Replace And Delete Non Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
+	 * @generated
+	 */
+	public Adapter createReplaceAndDeleteNonRootAdapter() {
 		return null;
 	}
 

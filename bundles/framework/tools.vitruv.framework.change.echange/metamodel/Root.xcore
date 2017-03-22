@@ -11,16 +11,40 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 type EObj wraps EObject
 type Resource wraps Resource
 
+/**
+ * Abstract EChange which inserts or removes a root element.
+ */
 abstract class RootEChange extends AtomicEChange {
+	/**
+	 * The uri of the resource.
+	 */
 	String uri
+	
+	/**
+	 * The resource where the root element will be inserted or removed from. 
+	 * Is only valid in resolved changes.
+	 */
 	Resource resource
+	
+	/**
+	 * The index where the root element is inserted or removed.
+	 */
 	int index
 	
+	/**
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 */
 	op boolean isResolved() {
 		return super.isResolved && resource != null
 	}
 }
 
+/**
+ * EChange which inserts a new root EObject into a resource. The object will
+ * be taken from the staging area and needs to be filled by {@link CreateEObject} change first.
+ */
 class InsertRootEObject<T extends EObj> extends RootEChange, EObjectAddedEChange<T> {
 	/**
 	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
@@ -32,6 +56,10 @@ class InsertRootEObject<T extends EObj> extends RootEChange, EObjectAddedEChange
 	}
 }
 
+/**
+ * EChange removes an existing root EObject from its resource and places it in the staging area.
+ * There it can be deleted or be taken by another change to reinsert it.
+ */
 class RemoveRootEObject<T extends EObj> extends RootEChange, EObjectSubtractedEChange<T> {
 	/**
 	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.

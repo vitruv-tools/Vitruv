@@ -107,7 +107,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 */
 	def private DeleteEObject<Root> createUnresolvedChange(Root oldObject) {
 		// The concrete change type CreateEObject will be used for the tests.
-		return atomicFactory.<Root>createDeleteEObjectChange(oldObject)
+		return atomicFactory.<Root>createDeleteEObjectChange(oldObject, resource)
 	}
 	
 }

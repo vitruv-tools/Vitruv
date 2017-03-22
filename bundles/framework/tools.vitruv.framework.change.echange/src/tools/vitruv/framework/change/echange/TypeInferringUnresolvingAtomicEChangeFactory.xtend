@@ -76,11 +76,12 @@ class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEC
 		}
 	}
 	
-	override protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change, A affectedEObject) {
+	override protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change, A affectedEObject, Resource resource) {
 		if (affectedEObject != null) {
 			change.affectedEObject = createProxy(affectedEObject)
 		} else {
 			change.affectedEObject = affectedEObject;
 		}
+		change.stagingArea = null
 	}
 }

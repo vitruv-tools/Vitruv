@@ -231,6 +231,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(NonRoot newNonRootValue) {
 		return compoundFactory.<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange
-		(affectedEObject, affectedFeature, oldValue, newNonRootValue)	
+		(affectedEObject, affectedFeature, oldValue, newNonRootValue, resource)	
 	}
 }

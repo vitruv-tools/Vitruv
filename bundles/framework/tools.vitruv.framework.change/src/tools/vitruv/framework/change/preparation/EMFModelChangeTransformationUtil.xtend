@@ -150,7 +150,7 @@ package class EMFModelChangeTransformationUtil {
 		val oldResource = referenceValue.eResource
 		val isCreate = forceCreate || (isContainment && isCreate(oldContainer,oldResource))
 		if (isCreate) {
-			return compoundFactory.createCreateAndInsertNonRootChange(affectedEObject, affectedReference, referenceValue, index);
+			return compoundFactory.createCreateAndInsertNonRootChange(affectedEObject, affectedReference, referenceValue, index, affectedEObject.eResource);
 		} else {
 			return atomicFactory.createInsertReferenceChange(affectedEObject, affectedReference, referenceValue, index);
 		}
@@ -160,7 +160,7 @@ package class EMFModelChangeTransformationUtil {
 		val isContainment = affectedReference.containment
 		val isDelete = isContainment && isDelete(newContainer,newResource)
 		if (isDelete) {
-			return compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedReference, referenceValue, index);
+			return compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedReference, referenceValue, index, affectedEObject.eResource);
 		} else {
 			return atomicFactory.createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index);
 		}
@@ -171,7 +171,7 @@ package class EMFModelChangeTransformationUtil {
 		val isCreate = newReferenceValue != null && isContainment && isCreate(newReferenceValue.eContainer, newReferenceValue.eResource)
 		val isDelete = oldReferenceValue != null && isContainment && oldReferenceValue.eResource == null //isDelete(container, resource)
 		if (forceCreate || (isCreate && isDelete)) {
-			return compoundFactory.createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);
+			return compoundFactory.createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, oldReferenceValue.eResource);
 		} else {
 			return atomicFactory.createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);
 		}

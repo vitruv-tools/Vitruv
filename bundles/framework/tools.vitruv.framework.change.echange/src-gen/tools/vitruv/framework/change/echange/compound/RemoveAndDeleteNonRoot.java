@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
  * A representation of the model object '<em><b>Remove And Delete Non Root</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which removes an existing EObject from a many valued containment reference and deletes it.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getRemoveAndDeleteNonRoot()
  * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="tools.vitruv.framework.change.echange.compound.EObj"

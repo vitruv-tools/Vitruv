@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * A representation of the model object '<em><b>EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which inserts or removes a root element.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -28,11 +33,11 @@ public interface RootEChange extends AtomicEChange {
 	/**
 	 * Returns the value of the '<em><b>Uri</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Uri</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The uri of the resource.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Uri</em>' attribute.
 	 * @see #setUri(String)
 	 * @see tools.vitruv.framework.change.echange.root.RootPackage#getRootEChange_Uri()
@@ -54,11 +59,12 @@ public interface RootEChange extends AtomicEChange {
 	/**
 	 * Returns the value of the '<em><b>Resource</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Resource</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The resource where the root element will be inserted or removed from.
+	 * Is only valid in resolved changes.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Resource</em>' attribute.
 	 * @see #setResource(Resource)
 	 * @see tools.vitruv.framework.change.echange.root.RootPackage#getRootEChange_Resource()
@@ -80,11 +86,11 @@ public interface RootEChange extends AtomicEChange {
 	/**
 	 * Returns the value of the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Index</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The index where the root element is inserted or removed.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Index</em>' attribute.
 	 * @see #setIndex(int)
 	 * @see tools.vitruv.framework.change.echange.root.RootPackage#getRootEChange_Index()
@@ -106,6 +112,12 @@ public interface RootEChange extends AtomicEChange {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (super.isResolved() && (!<%com.google.common.base.Objects%>.equal(this.getResource(), null)));'"
 	 * @generated

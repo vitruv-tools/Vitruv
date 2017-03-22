@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * A representation of the model object '<em><b>Subtractive Attribute EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which removes a value from an attribute.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
