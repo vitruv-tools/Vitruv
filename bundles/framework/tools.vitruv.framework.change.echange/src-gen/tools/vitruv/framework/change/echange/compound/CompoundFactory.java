@@ -4,15 +4,6 @@ package tools.vitruv.framework.change.echange.compound;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-
-import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.SubtractiveEChange;
-
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-
-import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
-import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,6 +32,7 @@ public interface CompoundFactory extends EFactory {
 	<A extends EObject, B extends EObject, T extends EObject> MoveEObject<A, B, T> createMoveEObject();
 
 	/**
+<<<<<<< HEAD
 	 * Returns a new object of class '<em>Explicit Unset EFeature</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -60,21 +52,24 @@ public interface CompoundFactory extends EFactory {
 
 	/**
 	 * Returns a new object of class '<em>Subtraction</em>'.
+=======
+	 * Returns a new object of class '<em>Explicit Unset EAttribute</em>'.
+>>>>>>> remotes/origin/master
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Subtraction</em>'.
+	 * @return a new object of class '<em>Explicit Unset EAttribute</em>'.
 	 * @generated
 	 */
-	<T extends Object, S extends SubtractiveEChange<T>> CompoundSubtraction<T, S> createCompoundSubtraction();
+	<A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttribute();
 
 	/**
-	 * Returns a new object of class '<em>Addition</em>'.
+	 * Returns a new object of class '<em>Explicit Unset EReference</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Addition</em>'.
+	 * @return a new object of class '<em>Explicit Unset EReference</em>'.
 	 * @generated
 	 */
-	<T extends Object, S extends AdditiveEChange<T>> CompoundAddition<T, S> createCompoundAddition();
+	<A extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReference();
 
 	/**
 	 * Returns a new object of class '<em>Create And Insert Root</em>'.

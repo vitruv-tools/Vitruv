@@ -297,32 +297,41 @@ public interface CompoundPackage extends EPackage {
 	int MOVE_EOBJECT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl <em>Subtraction</em>}' class.
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundSubtraction()
+	 * @see tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getExplicitUnsetEFeature()
 	 * @generated
 	 */
-	int COMPOUND_SUBTRACTION = 4;
+	int EXPLICIT_UNSET_EFEATURE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+	int EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Subtraction</em>' class.
+	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+	int EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Explicit Unset EFeature</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -394,26 +403,44 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+	int EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
 
 	/**
-	 * The number of operations of the '<em>Subtraction</em>' class.
+	 * The number of operations of the '<em>Explicit Unset EFeature</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
+	int EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEAttributeImpl <em>Explicit Unset EAttribute</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getExplicitUnsetEFeature()
+	 * @see tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEAttributeImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getExplicitUnsetEAttribute()
 	 * @generated
 	 */
-	int EXPLICIT_UNSET_EFEATURE = 2;
+	int EXPLICIT_UNSET_EATTRIBUTE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT = EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE = EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
@@ -422,16 +449,16 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES;
+	int EXPLICIT_UNSET_EATTRIBUTE__SUBTRACTIVE_CHANGES = EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Explicit Unset EFeature</em>' class.
+	 * The number of structural features of the '<em>Explicit Unset EAttribute</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 0;
+	int EXPLICIT_UNSET_EATTRIBUTE_FEATURE_COUNT = EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -503,53 +530,117 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES = COMPOUND_SUBTRACTION_OPERATION_COUNT + 0;
+	int EXPLICIT_UNSET_EATTRIBUTE___GET_ATOMIC_CHANGES = EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Explicit Unset EFeature</em>' class.
+	 * The number of operations of the '<em>Explicit Unset EAttribute</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT = COMPOUND_SUBTRACTION_OPERATION_COUNT + 1;
+	int EXPLICIT_UNSET_EATTRIBUTE_OPERATION_COUNT = EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEReferenceImpl <em>Explicit Unset EReference</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceInEList()
+	 * @see tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEReferenceImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getExplicitUnsetEReference()
 	 * @generated
 	 */
-	int REPLACE_IN_ELIST = 3;
+	int EXPLICIT_UNSET_EREFERENCE = 4;
 
 	/**
-	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_IN_ELIST__REMOVE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Insert Change</b></em>' containment reference.
+	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST__INSERT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+	int EXPLICIT_UNSET_EREFERENCE__AFFECTED_EOBJECT = EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT;
 
 	/**
-	 * The number of structural features of the '<em>Replace In EList</em>' class.
+	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+	int EXPLICIT_UNSET_EREFERENCE__AFFECTED_FEATURE = EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE;
+
+	/**
+	 * The feature id for the '<em><b>Changes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE__CHANGES = EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Explicit Unset EReference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE_FEATURE_COUNT = EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Get Contained Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___GET_CONTAINED_CHANGES = EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___GET_ATOMIC_CHANGES = EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Explicit Unset EReference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE_OPERATION_COUNT = EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl <em>Subtraction</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundSubtraction()
+	 * @generated
+	 */
+	int COMPOUND_SUBTRACTION = 5;
+
+	/**
+	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Subtraction</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -621,16 +712,16 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+	int COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Replace In EList</em>' class.
+	 * The number of operations of the '<em>Subtraction</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_IN_ELIST_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
+	int COMPOUND_SUBTRACTION_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundAdditionImpl <em>Addition</em>}' class.
@@ -640,7 +731,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundAddition()
 	 * @generated
 	 */
-	int COMPOUND_ADDITION = 5;
+	int COMPOUND_ADDITION = 6;
 
 	/**
 	 * The feature id for the '<em><b>Additive Changes</b></em>' containment reference list.
@@ -1457,7 +1548,11 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndReplaceWithNonRoot()
 	 * @generated
 	 */
+<<<<<<< HEAD
 	int CREATE_AND_REPLACE_WITH_NON_ROOT = 12;
+=======
+	int CREATE_AND_INSERT_EOBJECT = 7;
+>>>>>>> remotes/origin/master
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -1511,7 +1606,11 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
+<<<<<<< HEAD
 	int CREATE_AND_REPLACE_WITH_NON_ROOT___IS_RESOLVED = CREATE_AND_INSERT_EOBJECT___IS_RESOLVED;
+=======
+	int REMOVE_AND_DELETE_EOBJECT = 8;
+>>>>>>> remotes/origin/master
 
 	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
@@ -1565,7 +1664,11 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
+<<<<<<< HEAD
 	int CREATE_AND_REPLACE_WITH_NON_ROOT_OPERATION_COUNT = CREATE_AND_INSERT_EOBJECT_OPERATION_COUNT + 0;
+=======
+	int CREATE_AND_INSERT_ROOT = 9;
+>>>>>>> remotes/origin/master
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceAndDeleteNonRootImpl <em>Replace And Delete Non Root</em>}' class.
@@ -1620,7 +1723,11 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
+<<<<<<< HEAD
 	int REPLACE_AND_DELETE_NON_ROOT___APPLY_BACKWARD = REMOVE_AND_DELETE_EOBJECT___APPLY_BACKWARD;
+=======
+	int REMOVE_AND_DELETE_ROOT = 10;
+>>>>>>> remotes/origin/master
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -1674,7 +1781,11 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
+<<<<<<< HEAD
 	int REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES = REMOVE_AND_DELETE_EOBJECT___GET_ATOMIC_CHANGES;
+=======
+	int CREATE_AND_INSERT_NON_ROOT = 11;
+>>>>>>> remotes/origin/master
 
 	/**
 	 * The number of operations of the '<em>Replace And Delete Non Root</em>' class.
@@ -1729,7 +1840,11 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
+<<<<<<< HEAD
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 3;
+=======
+	int REMOVE_AND_DELETE_NON_ROOT = 12;
+>>>>>>> remotes/origin/master
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -1783,7 +1898,11 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
+<<<<<<< HEAD
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+=======
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT = 13;
+>>>>>>> remotes/origin/master
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -1988,56 +2107,87 @@ public interface CompoundPackage extends EPackage {
 	EClass getExplicitUnsetEFeature();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
+	 * Returns the meta object for the reference '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedEObject <em>Affected EObject</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Affected EObject</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedEObject()
+	 * @see #getExplicitUnsetEFeature()
+	 * @generated
+	 */
+	EReference getExplicitUnsetEFeature_AffectedEObject();
+
+	/**
+	 * Returns the meta object for the reference '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedFeature <em>Affected Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Affected Feature</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedFeature()
+	 * @see #getExplicitUnsetEFeature()
+	 * @generated
+	 */
+	EReference getExplicitUnsetEFeature_AffectedFeature();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute <em>Explicit Unset EAttribute</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Explicit Unset EAttribute</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
+	 * @generated
+	 */
+	EClass getExplicitUnsetEAttribute();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Get Atomic Changes</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAtomicChanges()
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute#getAtomicChanges()
 	 * @generated
 	 */
-	EOperation getExplicitUnsetEFeature__GetAtomicChanges();
+	EOperation getExplicitUnsetEAttribute__GetAtomicChanges();
 
 	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList <em>Replace In EList</em>}'.
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference <em>Explicit Unset EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Replace In EList</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList
+	 * @return the meta object for class '<em>Explicit Unset EReference</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
 	 * @generated
 	 */
-	EClass getReplaceInEList();
+	EClass getExplicitUnsetEReference();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList#getRemoveChange <em>Remove Change</em>}'.
+	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference#getChanges <em>Changes</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Remove Change</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList#getRemoveChange()
-	 * @see #getReplaceInEList()
+	 * @return the meta object for the containment reference list '<em>Changes</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference#getChanges()
+	 * @see #getExplicitUnsetEReference()
 	 * @generated
 	 */
-	EReference getReplaceInEList_RemoveChange();
+	EReference getExplicitUnsetEReference_Changes();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList#getInsertChange <em>Insert Change</em>}'.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference#getContainedChanges() <em>Get Contained Changes</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Insert Change</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList#getInsertChange()
-	 * @see #getReplaceInEList()
+	 * @return the meta object for the '<em>Get Contained Changes</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference#getContainedChanges()
 	 * @generated
 	 */
-	EReference getReplaceInEList_InsertChange();
+	EOperation getExplicitUnsetEReference__GetContainedChanges();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Get Atomic Changes</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList#getAtomicChanges()
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference#getAtomicChanges()
 	 * @generated
 	 */
-	EOperation getReplaceInEList__GetAtomicChanges();
+	EOperation getExplicitUnsetEReference__GetAtomicChanges();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CompoundSubtraction <em>Subtraction</em>}'.
@@ -2473,38 +2623,30 @@ public interface CompoundPackage extends EPackage {
 		EClass EXPLICIT_UNSET_EFEATURE = eINSTANCE.getExplicitUnsetEFeature();
 
 		/**
-		 * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
+		 * The meta object literal for the '<em><b>Affected EObject</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES = eINSTANCE.getExplicitUnsetEFeature__GetAtomicChanges();
+		EReference EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT = eINSTANCE.getExplicitUnsetEFeature_AffectedEObject();
 
 		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.
+		 * The meta object literal for the '<em><b>Affected Feature</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceInEList()
 		 * @generated
 		 */
-		EClass REPLACE_IN_ELIST = eINSTANCE.getReplaceInEList();
+		EReference EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE = eINSTANCE.getExplicitUnsetEFeature_AffectedFeature();
 
 		/**
-		 * The meta object literal for the '<em><b>Remove Change</b></em>' containment reference feature.
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEAttributeImpl <em>Explicit Unset EAttribute</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEAttributeImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getExplicitUnsetEAttribute()
 		 * @generated
 		 */
-		EReference REPLACE_IN_ELIST__REMOVE_CHANGE = eINSTANCE.getReplaceInEList_RemoveChange();
-
-		/**
-		 * The meta object literal for the '<em><b>Insert Change</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference REPLACE_IN_ELIST__INSERT_CHANGE = eINSTANCE.getReplaceInEList_InsertChange();
+		EClass EXPLICIT_UNSET_EATTRIBUTE = eINSTANCE.getExplicitUnsetEAttribute();
 
 		/**
 		 * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
@@ -2512,7 +2654,41 @@ public interface CompoundPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = eINSTANCE.getReplaceInEList__GetAtomicChanges();
+		EOperation EXPLICIT_UNSET_EATTRIBUTE___GET_ATOMIC_CHANGES = eINSTANCE.getExplicitUnsetEAttribute__GetAtomicChanges();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEReferenceImpl <em>Explicit Unset EReference</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEReferenceImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getExplicitUnsetEReference()
+		 * @generated
+		 */
+		EClass EXPLICIT_UNSET_EREFERENCE = eINSTANCE.getExplicitUnsetEReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Changes</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EXPLICIT_UNSET_EREFERENCE__CHANGES = eINSTANCE.getExplicitUnsetEReference_Changes();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Contained Changes</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation EXPLICIT_UNSET_EREFERENCE___GET_CONTAINED_CHANGES = eINSTANCE.getExplicitUnsetEReference__GetContainedChanges();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation EXPLICIT_UNSET_EREFERENCE___GET_ATOMIC_CHANGES = eINSTANCE.getExplicitUnsetEReference__GetAtomicChanges();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl <em>Subtraction</em>}' class.

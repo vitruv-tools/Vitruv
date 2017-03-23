@@ -19,11 +19,6 @@ import tools.vitruv.framework.change.echange.compound.*;
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-
-import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
-import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
-
 /**
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
@@ -89,12 +84,21 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 				return createMoveEObjectAdapter();
 			}
 			@Override
-			public <A extends EObject, T extends Object> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, T> object) {
+			public <A extends EObject, F extends EStructuralFeature> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> object) {
 				return createExplicitUnsetEFeatureAdapter();
 			}
 			@Override
+<<<<<<< HEAD
 			public <A extends EObject, F extends EStructuralFeature, T extends Object, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> Adapter caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
 				return createReplaceInEListAdapter();
+=======
+			public <A extends EObject, T extends Object> Adapter caseExplicitUnsetEAttribute(ExplicitUnsetEAttribute<A, T> object) {
+				return createExplicitUnsetEAttributeAdapter();
+			}
+			@Override
+			public <A extends EObject> Adapter caseExplicitUnsetEReference(ExplicitUnsetEReference<A> object) {
+				return createExplicitUnsetEReferenceAdapter();
+>>>>>>> remotes/origin/master
 			}
 			@Override
 			public <T extends Object, S extends SubtractiveEChange<T>> Adapter caseCompoundSubtraction(CompoundSubtraction<T, S> object) {
@@ -207,16 +211,30 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList <em>Replace In EList</em>}'.
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute <em>Explicit Unset EAttribute</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
 	 * @generated
 	 */
-	public Adapter createReplaceInEListAdapter() {
+	public Adapter createExplicitUnsetEAttributeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference <em>Explicit Unset EReference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
+	 * @generated
+	 */
+	public Adapter createExplicitUnsetEReferenceAdapter() {
 		return null;
 	}
 

@@ -25,7 +25,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getCompoundAddition()
- * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChange {

@@ -36,7 +36,7 @@ import tools.vitruv.framework.change.echange.compound.CompoundSubtraction;
  *
  * @generated
  */
-public class CompoundSubtractionImpl<T extends Object, S extends SubtractiveEChange<T>> extends CompoundEChangeImpl implements CompoundSubtraction<T, S> {
+public abstract class CompoundSubtractionImpl<T extends Object, S extends SubtractiveEChange<T>> extends CompoundEChangeImpl implements CompoundSubtraction<T, S> {
 	/**
 	 * The cached value of the '{@link #getSubtractiveChanges() <em>Subtractive Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

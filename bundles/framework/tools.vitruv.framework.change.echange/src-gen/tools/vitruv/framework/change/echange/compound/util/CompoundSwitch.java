@@ -17,11 +17,6 @@ import tools.vitruv.framework.change.echange.compound.*;
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-
-import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
-import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
-
 /**
  * <!-- begin-user-doc -->
  * The <b>Switch</b> for the model's inheritance hierarchy.
@@ -97,17 +92,27 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE: {
 				ExplicitUnsetEFeature<?, ?> explicitUnsetEFeature = (ExplicitUnsetEFeature<?, ?>)theEObject;
 				T1 result = caseExplicitUnsetEFeature(explicitUnsetEFeature);
-				if (result == null) result = caseCompoundSubtraction(explicitUnsetEFeature);
 				if (result == null) result = caseCompoundEChange(explicitUnsetEFeature);
 				if (result == null) result = caseEChange(explicitUnsetEFeature);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CompoundPackage.REPLACE_IN_ELIST: {
-				ReplaceInEList<?, ?, ?, ?, ?> replaceInEList = (ReplaceInEList<?, ?, ?, ?, ?>)theEObject;
-				T1 result = caseReplaceInEList(replaceInEList);
-				if (result == null) result = caseCompoundEChange(replaceInEList);
-				if (result == null) result = caseEChange(replaceInEList);
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE: {
+				ExplicitUnsetEAttribute<?, ?> explicitUnsetEAttribute = (ExplicitUnsetEAttribute<?, ?>)theEObject;
+				T1 result = caseExplicitUnsetEAttribute(explicitUnsetEAttribute);
+				if (result == null) result = caseExplicitUnsetEFeature(explicitUnsetEAttribute);
+				if (result == null) result = caseCompoundSubtraction(explicitUnsetEAttribute);
+				if (result == null) result = caseCompoundEChange(explicitUnsetEAttribute);
+				if (result == null) result = caseEChange(explicitUnsetEAttribute);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CompoundPackage.EXPLICIT_UNSET_EREFERENCE: {
+				ExplicitUnsetEReference<?> explicitUnsetEReference = (ExplicitUnsetEReference<?>)theEObject;
+				T1 result = caseExplicitUnsetEReference(explicitUnsetEReference);
+				if (result == null) result = caseExplicitUnsetEFeature(explicitUnsetEReference);
+				if (result == null) result = caseCompoundEChange(explicitUnsetEReference);
+				if (result == null) result = caseEChange(explicitUnsetEReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -250,22 +255,41 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <A extends EObject, T extends Object> T1 caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, T> object) {
+	public <A extends EObject, F extends EStructuralFeature> T1 caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Explicit Unset EAttribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Explicit Unset EAttribute</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	public <A extends EObject, T extends Object> T1 caseExplicitUnsetEAttribute(ExplicitUnsetEAttribute<A, T> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Explicit Unset EReference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Explicit Unset EReference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+<<<<<<< HEAD
 	public <A extends EObject, F extends EStructuralFeature, T extends Object, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> T1 caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
+=======
+	public <A extends EObject> T1 caseExplicitUnsetEReference(ExplicitUnsetEReference<A> object) {
+>>>>>>> remotes/origin/master
 		return null;
 	}
 

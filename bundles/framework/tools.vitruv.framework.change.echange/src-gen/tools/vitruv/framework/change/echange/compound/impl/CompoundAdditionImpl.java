@@ -36,7 +36,7 @@ import tools.vitruv.framework.change.echange.compound.CompoundPackage;
  *
  * @generated
  */
-public class CompoundAdditionImpl<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChangeImpl implements CompoundAddition<T, S> {
+public abstract class CompoundAdditionImpl<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChangeImpl implements CompoundAddition<T, S> {
 	/**
 	 * The cached value of the '{@link #getAdditiveChanges() <em>Additive Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

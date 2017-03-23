@@ -6,23 +6,20 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
+<<<<<<< HEAD
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
+=======
+>>>>>>> remotes/origin/master
 import tools.vitruv.framework.change.echange.compound.*;
-
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-
-import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
-import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -69,10 +66,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case CompoundPackage.MOVE_EOBJECT: return createMoveEObject();
-			case CompoundPackage.EXPLICIT_UNSET_EFEATURE: return createExplicitUnsetEFeature();
-			case CompoundPackage.REPLACE_IN_ELIST: return createReplaceInEList();
-			case CompoundPackage.COMPOUND_SUBTRACTION: return createCompoundSubtraction();
-			case CompoundPackage.COMPOUND_ADDITION: return createCompoundAddition();
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE: return createExplicitUnsetEAttribute();
+			case CompoundPackage.EXPLICIT_UNSET_EREFERENCE: return createExplicitUnsetEReference();
 			case CompoundPackage.CREATE_AND_INSERT_ROOT: return createCreateAndInsertRoot();
 			case CompoundPackage.REMOVE_AND_DELETE_ROOT: return createRemoveAndDeleteRoot();
 			case CompoundPackage.CREATE_AND_INSERT_NON_ROOT: return createCreateAndInsertNonRoot();
@@ -138,6 +133,7 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+<<<<<<< HEAD
 	public <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetEFeature() {
 		ExplicitUnsetEFeatureImpl<A, T> explicitUnsetEFeature = new ExplicitUnsetEFeatureImpl<A, T>();
 		return explicitUnsetEFeature;
@@ -161,6 +157,11 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	public <T extends Object, S extends SubtractiveEChange<T>> CompoundSubtraction<T, S> createCompoundSubtraction() {
 		CompoundSubtractionImpl<T, S> compoundSubtraction = new CompoundSubtractionImpl<T, S>();
 		return compoundSubtraction;
+=======
+	public <A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttribute() {
+		ExplicitUnsetEAttributeImpl<A, T> explicitUnsetEAttribute = new ExplicitUnsetEAttributeImpl<A, T>();
+		return explicitUnsetEAttribute;
+>>>>>>> remotes/origin/master
 	}
 
 	/**
@@ -168,9 +169,9 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public <T extends Object, S extends AdditiveEChange<T>> CompoundAddition<T, S> createCompoundAddition() {
-		CompoundAdditionImpl<T, S> compoundAddition = new CompoundAdditionImpl<T, S>();
-		return compoundAddition;
+	public <A extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReference() {
+		ExplicitUnsetEReferenceImpl<A> explicitUnsetEReference = new ExplicitUnsetEReferenceImpl<A>();
+		return explicitUnsetEReference;
 	}
 
 	/**

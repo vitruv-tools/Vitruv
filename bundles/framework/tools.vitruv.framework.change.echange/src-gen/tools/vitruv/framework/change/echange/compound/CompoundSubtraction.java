@@ -25,7 +25,7 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getCompoundSubtraction()
- * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface CompoundSubtraction<T extends Object, S extends SubtractiveEChange<T>> extends CompoundEChange {
