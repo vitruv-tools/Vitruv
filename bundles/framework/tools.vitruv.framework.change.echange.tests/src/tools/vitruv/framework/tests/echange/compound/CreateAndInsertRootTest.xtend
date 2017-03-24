@@ -56,7 +56,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as CreateAndInsertRoot<Root>
-		resolvedChange.assertIsResolvedNewObject(newRootObject)		
+		resolvedChange.assertIsResolved(newRootObject)		
 			
 		// Resolving applies all changes and reverts them, so the model should be unaffected.
 		Assert.assertEquals(resourceContent.size, size)
@@ -83,7 +83,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 			
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) as CreateAndInsertRoot<Root>
-		resolvedChange.assertIsResolvedExistingObject(newRootObject)
+		resolvedChange.assertIsResolved(newRootObject)
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.
 		Assert.assertEquals(resourceContent.size, size)
@@ -193,22 +193,12 @@ class CreateAndInsertRootTest extends EChangeTest {
 	}
 	
 	/**
-	 * Change is resolved but with newly created object.
+	 * Change is resolved.
 	 */
-	def private static void assertIsResolvedNewObject(CreateAndInsertRoot<Root> change, Root newRoot) {
+	def private static void assertIsResolved(CreateAndInsertRoot<Root> change, Root newRoot) {
 		Assert.assertTrue(change.isResolved)
-		// Not the same object, but copy
-		Assert.assertTrue(change.createChange.affectedEObject == change.insertChange.newValue)		
-		change.insertChange.newValue.assertIsCopy(newRoot)
-	}
-	
-	/**
-	 * Change is resolved with existing object.
-	 */
-	def private static void assertIsResolvedExistingObject(CreateAndInsertRoot<Root> change, Root newRoot) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.createChange.affectedEObject == newRoot)
-		Assert.assertTrue(change.insertChange.newValue == newRoot)
+		change.createChange.affectedEObject.assertEqualsOrCopy(newRoot)
+		change.insertChange.newValue.assertEqualsOrCopy(newRoot)
 	}
 	
 	/**

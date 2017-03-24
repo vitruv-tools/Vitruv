@@ -43,7 +43,7 @@ abstract class EChange {
 			if (AtomicEChangeResolver.resolve(change, resourceSet, true)) {
 				return change
 			}
-			return null		
+			return null
 		}
 		return this
 	}

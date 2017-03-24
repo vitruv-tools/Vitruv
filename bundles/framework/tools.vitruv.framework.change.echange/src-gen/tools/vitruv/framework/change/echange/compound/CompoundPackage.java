@@ -340,7 +340,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION___APPLY_FORWARD = COMPOUND_ECHANGE___APPLY_FORWARD;
+	int EXPLICIT_UNSET_EFEATURE___APPLY_FORWARD = COMPOUND_ECHANGE___APPLY_FORWARD;
 
 	/**
 	 * The operation id for the '<em>Apply Backward</em>' operation.
@@ -349,52 +349,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION___APPLY_BACKWARD = COMPOUND_ECHANGE___APPLY_BACKWARD;
-
-	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOUND_SUBTRACTION___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int EXPLICIT_UNSET_EFEATURE___APPLY_BACKWARD = COMPOUND_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -404,6 +359,51 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The number of operations of the '<em>Explicit Unset EFeature</em>' class.
@@ -467,7 +467,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___APPLY_FORWARD = COMPOUND_SUBTRACTION___APPLY_FORWARD;
+	int EXPLICIT_UNSET_EATTRIBUTE___APPLY_FORWARD = EXPLICIT_UNSET_EFEATURE___APPLY_FORWARD;
 
 	/**
 	 * The operation id for the '<em>Apply Backward</em>' operation.
@@ -476,7 +476,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___APPLY_BACKWARD = COMPOUND_SUBTRACTION___APPLY_BACKWARD;
+	int EXPLICIT_UNSET_EATTRIBUTE___APPLY_BACKWARD = EXPLICIT_UNSET_EFEATURE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -485,7 +485,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___IS_RESOLVED = COMPOUND_SUBTRACTION___IS_RESOLVED;
+	int EXPLICIT_UNSET_EATTRIBUTE___IS_RESOLVED = EXPLICIT_UNSET_EFEATURE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
@@ -494,7 +494,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_BEFORE__RESOURCESET;
+	int EXPLICIT_UNSET_EATTRIBUTE___RESOLVE_BEFORE__RESOURCESET = EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -503,7 +503,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_AFTER__RESOURCESET;
+	int EXPLICIT_UNSET_EATTRIBUTE___RESOLVE_AFTER__RESOURCESET = EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -512,7 +512,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+	int EXPLICIT_UNSET_EATTRIBUTE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -521,7 +521,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_SUBTRACTION___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+	int EXPLICIT_UNSET_EATTRIBUTE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -588,6 +588,69 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EREFERENCE_FEATURE_COUNT = EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___APPLY_FORWARD = EXPLICIT_UNSET_EFEATURE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___APPLY_BACKWARD = EXPLICIT_UNSET_EFEATURE___APPLY_BACKWARD;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___IS_RESOLVED = EXPLICIT_UNSET_EFEATURE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___RESOLVE_BEFORE__RESOURCESET = EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___RESOLVE_AFTER__RESOURCESET = EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EXPLICIT_UNSET_EFEATURE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EXPLICIT_UNSET_EFEATURE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
 	 * The operation id for the '<em>Get Contained Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -615,32 +678,41 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EREFERENCE_OPERATION_COUNT = EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl <em>Subtraction</em>}' class.
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundSubtraction()
+	 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceInEList()
 	 * @generated
 	 */
-	int COMPOUND_SUBTRACTION = 5;
+	int REPLACE_IN_ELIST = 5;
 
 	/**
-	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+	int REPLACE_IN_ELIST__REMOVE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Subtraction</em>' class.
+	 * The feature id for the '<em><b>Insert Change</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPOUND_SUBTRACTION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+	int REPLACE_IN_ELIST__INSERT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Replace In EList</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -712,6 +784,115 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
+	int REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Replace In EList</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl <em>Subtraction</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundSubtraction()
+	 * @generated
+	 */
+	int COMPOUND_SUBTRACTION = 6;
+
+	/**
+	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Subtraction</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___APPLY_FORWARD = COMPOUND_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___APPLY_BACKWARD = COMPOUND_ECHANGE___APPLY_BACKWARD;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
 	int COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
@@ -731,7 +912,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundAddition()
 	 * @generated
 	 */
-	int COMPOUND_ADDITION = 6;
+	int COMPOUND_ADDITION = 7;
 
 	/**
 	 * The feature id for the '<em><b>Additive Changes</b></em>' containment reference list.
@@ -840,7 +1021,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertEObject()
 	 * @generated
 	 */
-	int CREATE_AND_INSERT_EOBJECT = 6;
+	int CREATE_AND_INSERT_EOBJECT = 8;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -958,7 +1139,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteEObject()
 	 * @generated
 	 */
-	int REMOVE_AND_DELETE_EOBJECT = 7;
+	int REMOVE_AND_DELETE_EOBJECT = 9;
 
 	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
@@ -1076,7 +1257,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertRoot()
 	 * @generated
 	 */
-	int CREATE_AND_INSERT_ROOT = 8;
+	int CREATE_AND_INSERT_ROOT = 10;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -1194,7 +1375,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteRoot()
 	 * @generated
 	 */
-	int REMOVE_AND_DELETE_ROOT = 9;
+	int REMOVE_AND_DELETE_ROOT = 11;
 
 	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
@@ -1312,7 +1493,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertNonRoot()
 	 * @generated
 	 */
-	int CREATE_AND_INSERT_NON_ROOT = 10;
+	int CREATE_AND_INSERT_NON_ROOT = 12;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -1430,7 +1611,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteNonRoot()
 	 * @generated
 	 */
-	int REMOVE_AND_DELETE_NON_ROOT = 11;
+	int REMOVE_AND_DELETE_NON_ROOT = 13;
 
 	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
@@ -1541,262 +1722,6 @@ public interface CompoundPackage extends EPackage {
 	int REMOVE_AND_DELETE_NON_ROOT_OPERATION_COUNT = REMOVE_AND_DELETE_EOBJECT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceWithNonRootImpl <em>Create And Replace With Non Root</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceWithNonRootImpl
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndReplaceWithNonRoot()
-	 * @generated
-	 */
-<<<<<<< HEAD
-	int CREATE_AND_REPLACE_WITH_NON_ROOT = 12;
-=======
-	int CREATE_AND_INSERT_EOBJECT = 7;
->>>>>>> remotes/origin/master
-
-	/**
-	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT__CREATE_CHANGE = CREATE_AND_INSERT_EOBJECT__CREATE_CHANGE;
-
-	/**
-	 * The feature id for the '<em><b>Insert Change</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT__INSERT_CHANGE = CREATE_AND_INSERT_EOBJECT__INSERT_CHANGE;
-
-	/**
-	 * The number of structural features of the '<em>Create And Replace With Non Root</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT_FEATURE_COUNT = CREATE_AND_INSERT_EOBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT___APPLY_FORWARD = CREATE_AND_INSERT_EOBJECT___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT___APPLY_BACKWARD = CREATE_AND_INSERT_EOBJECT___APPLY_BACKWARD;
-
-	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-<<<<<<< HEAD
-	int CREATE_AND_REPLACE_WITH_NON_ROOT___IS_RESOLVED = CREATE_AND_INSERT_EOBJECT___IS_RESOLVED;
-=======
-	int REMOVE_AND_DELETE_EOBJECT = 8;
->>>>>>> remotes/origin/master
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT___RESOLVE_BEFORE__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT___RESOLVE_AFTER__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = CREATE_AND_INSERT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_AND_REPLACE_WITH_NON_ROOT___GET_ATOMIC_CHANGES = CREATE_AND_INSERT_EOBJECT___GET_ATOMIC_CHANGES;
-
-	/**
-	 * The number of operations of the '<em>Create And Replace With Non Root</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-<<<<<<< HEAD
-	int CREATE_AND_REPLACE_WITH_NON_ROOT_OPERATION_COUNT = CREATE_AND_INSERT_EOBJECT_OPERATION_COUNT + 0;
-=======
-	int CREATE_AND_INSERT_ROOT = 9;
->>>>>>> remotes/origin/master
-
-	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceAndDeleteNonRootImpl <em>Replace And Delete Non Root</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceAndDeleteNonRootImpl
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceAndDeleteNonRoot()
-	 * @generated
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT = 13;
-
-	/**
-	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT__REMOVE_CHANGE = REMOVE_AND_DELETE_EOBJECT__REMOVE_CHANGE;
-
-	/**
-	 * The feature id for the '<em><b>Delete Change</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT__DELETE_CHANGE = REMOVE_AND_DELETE_EOBJECT__DELETE_CHANGE;
-
-	/**
-	 * The number of structural features of the '<em>Replace And Delete Non Root</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT_FEATURE_COUNT = REMOVE_AND_DELETE_EOBJECT_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT___APPLY_FORWARD = REMOVE_AND_DELETE_EOBJECT___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-<<<<<<< HEAD
-	int REPLACE_AND_DELETE_NON_ROOT___APPLY_BACKWARD = REMOVE_AND_DELETE_EOBJECT___APPLY_BACKWARD;
-=======
-	int REMOVE_AND_DELETE_ROOT = 10;
->>>>>>> remotes/origin/master
-
-	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT___IS_RESOLVED = REMOVE_AND_DELETE_EOBJECT___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT___RESOLVE_AFTER__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = REMOVE_AND_DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-<<<<<<< HEAD
-	int REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES = REMOVE_AND_DELETE_EOBJECT___GET_ATOMIC_CHANGES;
-=======
-	int CREATE_AND_INSERT_NON_ROOT = 11;
->>>>>>> remotes/origin/master
-
-	/**
-	 * The number of operations of the '<em>Replace And Delete Non Root</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_AND_DELETE_NON_ROOT_OPERATION_COUNT = REMOVE_AND_DELETE_EOBJECT_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceAndDeleteNonRootImpl <em>Create And Replace And Delete Non Root</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1840,11 +1765,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-<<<<<<< HEAD
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 3;
-=======
-	int REMOVE_AND_DELETE_NON_ROOT = 12;
->>>>>>> remotes/origin/master
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -1898,11 +1819,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-<<<<<<< HEAD
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-=======
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT = 13;
->>>>>>> remotes/origin/master
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -1932,24 +1849,14 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '<em>EObj</em>' data type.
+	 * The meta object id for the '<em>Command</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEObj()
+	 * @see org.eclipse.emf.common.command.Command
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCommand()
 	 * @generated
 	 */
-	int EOBJ = 15;
-
-	/**
-	 * The meta object id for the '<em>EFeat</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EStructuralFeature
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEFeat()
-	 * @generated
-	 */
-	int EFEAT = 16;
+	int COMMAND = 15;
 
 	/**
 	 * The meta object id for the '<em>Resource Set</em>' data type.
@@ -1959,7 +1866,17 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getResourceSet()
 	 * @generated
 	 */
-	int RESOURCE_SET = 17;
+	int RESOURCE_SET = 16;
+
+	/**
+	 * The meta object id for the '<em>EObj</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEObj()
+	 * @generated
+	 */
+	int EOBJ = 17;
 
 
 	/**
@@ -2190,6 +2107,48 @@ public interface CompoundPackage extends EPackage {
 	EOperation getExplicitUnsetEReference__GetAtomicChanges();
 
 	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList <em>Replace In EList</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Replace In EList</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList
+	 * @generated
+	 */
+	EClass getReplaceInEList();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList#getRemoveChange <em>Remove Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Remove Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList#getRemoveChange()
+	 * @see #getReplaceInEList()
+	 * @generated
+	 */
+	EReference getReplaceInEList_RemoveChange();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList#getInsertChange <em>Insert Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Insert Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList#getInsertChange()
+	 * @see #getReplaceInEList()
+	 * @generated
+	 */
+	EReference getReplaceInEList_InsertChange();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Atomic Changes</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList#getAtomicChanges()
+	 * @generated
+	 */
+	EOperation getReplaceInEList__GetAtomicChanges();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CompoundSubtraction <em>Subtraction</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2376,26 +2335,6 @@ public interface CompoundPackage extends EPackage {
 	EClass getRemoveAndDeleteNonRoot();
 
 	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CreateAndReplaceWithNonRoot <em>Create And Replace With Non Root</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Create And Replace With Non Root</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.CreateAndReplaceWithNonRoot
-	 * @generated
-	 */
-	EClass getCreateAndReplaceWithNonRoot();
-
-	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot <em>Replace And Delete Non Root</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Replace And Delete Non Root</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
-	 * @generated
-	 */
-	EClass getReplaceAndDeleteNonRoot();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot <em>Create And Replace And Delete Non Root</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2449,26 +2388,15 @@ public interface CompoundPackage extends EPackage {
 	EOperation getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
+	 * Returns the meta object for data type '{@link org.eclipse.emf.common.command.Command <em>Command</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EObj</em>'.
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
+	 * @return the meta object for data type '<em>Command</em>'.
+	 * @see org.eclipse.emf.common.command.Command
+	 * @model instanceClass="org.eclipse.emf.common.command.Command"
 	 * @generated
 	 */
-	EDataType getEObj();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EStructuralFeature <em>EFeat</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EFeat</em>'.
-	 * @see org.eclipse.emf.ecore.EStructuralFeature
-	 * @model instanceClass="org.eclipse.emf.ecore.EStructuralFeature"
-	 * @generated
-	 */
-	EDataType getEFeat();
+	EDataType getCommand();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.ResourceSet <em>Resource Set</em>}'.
@@ -2480,6 +2408,17 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 */
 	EDataType getResourceSet();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EObj</em>'.
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
+	 * @generated
+	 */
+	EDataType getEObj();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -2691,6 +2630,40 @@ public interface CompoundPackage extends EPackage {
 		EOperation EXPLICIT_UNSET_EREFERENCE___GET_ATOMIC_CHANGES = eINSTANCE.getExplicitUnsetEReference__GetAtomicChanges();
 
 		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceInEList()
+		 * @generated
+		 */
+		EClass REPLACE_IN_ELIST = eINSTANCE.getReplaceInEList();
+
+		/**
+		 * The meta object literal for the '<em><b>Remove Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPLACE_IN_ELIST__REMOVE_CHANGE = eINSTANCE.getReplaceInEList_RemoveChange();
+
+		/**
+		 * The meta object literal for the '<em><b>Insert Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPLACE_IN_ELIST__INSERT_CHANGE = eINSTANCE.getReplaceInEList_InsertChange();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = eINSTANCE.getReplaceInEList__GetAtomicChanges();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CompoundSubtractionImpl <em>Subtraction</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2851,26 +2824,6 @@ public interface CompoundPackage extends EPackage {
 		EClass REMOVE_AND_DELETE_NON_ROOT = eINSTANCE.getRemoveAndDeleteNonRoot();
 
 		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceWithNonRootImpl <em>Create And Replace With Non Root</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceWithNonRootImpl
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndReplaceWithNonRoot()
-		 * @generated
-		 */
-		EClass CREATE_AND_REPLACE_WITH_NON_ROOT = eINSTANCE.getCreateAndReplaceWithNonRoot();
-
-		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceAndDeleteNonRootImpl <em>Replace And Delete Non Root</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceAndDeleteNonRootImpl
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceAndDeleteNonRoot()
-		 * @generated
-		 */
-		EClass REPLACE_AND_DELETE_NON_ROOT = eINSTANCE.getReplaceAndDeleteNonRoot();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceAndDeleteNonRootImpl <em>Create And Replace And Delete Non Root</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2913,24 +2866,14 @@ public interface CompoundPackage extends EPackage {
 		EOperation CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES = eINSTANCE.getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges();
 
 		/**
-		 * The meta object literal for the '<em>EObj</em>' data type.
+		 * The meta object literal for the '<em>Command</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EObject
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEObj()
+		 * @see org.eclipse.emf.common.command.Command
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCommand()
 		 * @generated
 		 */
-		EDataType EOBJ = eINSTANCE.getEObj();
-
-		/**
-		 * The meta object literal for the '<em>EFeat</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EStructuralFeature
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEFeat()
-		 * @generated
-		 */
-		EDataType EFEAT = eINSTANCE.getEFeat();
+		EDataType COMMAND = eINSTANCE.getCommand();
 
 		/**
 		 * The meta object literal for the '<em>Resource Set</em>' data type.
@@ -2941,6 +2884,16 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType RESOURCE_SET = eINSTANCE.getResourceSet();
+
+		/**
+		 * The meta object literal for the '<em>EObj</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.EObject
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEObj()
+		 * @generated
+		 */
+		EDataType EOBJ = eINSTANCE.getEObj();
 
 	}
 

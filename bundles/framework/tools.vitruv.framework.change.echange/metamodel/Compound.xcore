@@ -6,10 +6,10 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.command.Command
 import tools.vitruv.framework.change.echange.CompoundEChangeResolver
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
-import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
@@ -19,6 +19,9 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
@@ -27,7 +30,9 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
 
-
+type Command wraps Command
+type ResourceSet wraps ResourceSet
+type EObj wraps EObject
 
 /**
  * Abstract EChange which is a sequence of several atomic changes.
@@ -148,7 +153,10 @@ abstract class CompoundEChange extends tools.vitruv.framework.change.echange.ECh
 	}
 }
 
-class MoveEObject<A extends EObject, B extends EObject, T extends EObject> extends CompoundEChange {
+/**
+ * 
+ */
+class MoveEObject<A extends EObj, B extends EObj, T extends EObj> extends CompoundEChange {
 	refers UpdateReferenceEChange<A> subtractWhereChange
 	contains EObjectSubtractedEChange<T>[1] subtractWhatChange
 	refers UpdateReferenceEChange<B> addWhereChange
@@ -171,18 +179,27 @@ class MoveEObject<A extends EObject, B extends EObject, T extends EObject> exten
 	}
 }
 
-abstract class ExplicitUnsetEFeature<A extends EObject, F extends EStructuralFeature> extends CompoundEChange {
+/**
+ * Abstract EChange which unsets a single or many valued feature.
+ */
+abstract class ExplicitUnsetEFeature<A extends EObj, F extends EStructuralFeature> extends CompoundEChange {
 	refers A[1] affectedEObject
 	refers F[1] affectedFeature
 }
 
-class ExplicitUnsetEAttribute<A extends EObject, T extends Object> extends ExplicitUnsetEFeature<A, EAttribute>, CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {
+/**
+ * EChange which unsets a single or many valued attribute.
+ */
+class ExplicitUnsetEAttribute<A extends EObj, T extends Object> extends ExplicitUnsetEFeature<A, EAttribute>, CompoundSubtraction<T, SubtractiveAttributeEChange<A,T>> {
 	op unique AtomicEChange[+] getAtomicChanges() {
 		return subtractiveChanges.map[it]
 	}
 }
 
-class ExplicitUnsetEReference<A extends EObject> extends ExplicitUnsetEFeature<A, EReference> {
+/**
+ * EChange which unsets a single or many valued reference.
+ */
+class ExplicitUnsetEReference<A extends EObj> extends ExplicitUnsetEFeature<A, EReference> {
 	contains EChange[+] changes
 	/**
 	 * Returns the changes this unset consists of. Can also be compound changes, e.g., a RemoveAndDeleteNonRoot
@@ -202,17 +219,23 @@ class ExplicitUnsetEReference<A extends EObject> extends ExplicitUnsetEFeature<A
 	}
 }
 
-//class ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
-//	contains R[1] removeChange
-//	contains I[1] insertChange
-//	op unique AtomicEChange[+] getAtomicChanges() {
-//		val list = new BasicEList<AtomicEChange>();
-//		list.add(getRemoveChange());
-//		list.add(getInsertChange());
-//		return list;
-//	}
-//}
+/** 
+ * EChange which replaces an EObject in an EList.
+ */
+class ReplaceInEList<A extends EObj, F extends EStructuralFeature, T extends EObj, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
+	contains R[1] removeChange
+	contains I[1] insertChange
+	op unique AtomicEChange[+] getAtomicChanges() {
+		val list = new BasicEList<AtomicEChange>();
+		list.add(getRemoveChange());
+		list.add(getInsertChange());
+		return list;
+	}
+}
 
+/**
+ * Abstract change which combines several subtractive EChanges of the same type.
+ */
 abstract class CompoundSubtraction<T extends Object, S extends SubtractiveEChange<T>> extends CompoundEChange {
 	contains S[+] subtractiveChanges
 	op unique AtomicEChange[+] getAtomicChanges() {
@@ -222,7 +245,9 @@ abstract class CompoundSubtraction<T extends Object, S extends SubtractiveEChang
 	}
 }
 
-
+/**
+ * Abstract change which combines several additive EChanges of the same type.
+ */
 abstract class CompoundAddition<T extends Object, S extends AdditiveEChange<T>> extends CompoundEChange {
 	contains S[+] additiveChanges
 	op unique AtomicEChange[+] getAtomicChanges() {
@@ -285,17 +310,6 @@ class CreateAndInsertNonRoot<A extends EObj, T extends EObj> extends CreateAndIn
  * EChange which removes an existing EObject from a many valued containment reference and deletes it.
  */
 class RemoveAndDeleteNonRoot<A extends EObj, T extends EObj> extends RemoveAndDeleteEObject<T, RemoveEReference<A, T>> {}
-
-
-/**
- * EChange which creates a new EObject and replaces a single valued containment reference with it. The reference was null.
- */
-class CreateAndReplaceWithNonRoot<A extends EObj, T extends EObj> extends CreateAndInsertEObject<T, ReplaceSingleValuedEReference<A, T>> {}
-
-/**
- * EChange replaces an existing single valued containment reference with null and deletes the prior EObject.
- */
-class ReplaceAndDeleteNonRoot<A extends EObj, T extends EObj> extends RemoveAndDeleteEObject<T, ReplaceSingleValuedEReference<A, T>> {}
 
 /**
  * EChange creates a new EObject and replaces an existing one in a single valued containment reference. The old one will be deleted.

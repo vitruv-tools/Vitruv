@@ -52,7 +52,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as RemoveAndDeleteNonRoot<Root, NonRoot>
-		resolvedChange.assertIsResolvedExistingObject(affectedEObject, newValue)		
+		resolvedChange.assertIsResolved(affectedEObject, newValue)		
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertEquals(referenceContent.size, size)
@@ -79,7 +79,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as RemoveAndDeleteNonRoot<Root, NonRoot>
-		resolvedChange.assertIsResolvedNewObject(affectedEObject, newValue)	
+		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertEquals(referenceContent.size, size)
@@ -201,35 +201,22 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	}
 	
 	/**
-	 * Change is resolved but with newly created object.
+	 * Change is resolved.
 	 */
-	def private static void assertIsResolvedNewObject(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
+	def private static void assertIsResolved(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
 		NonRoot removedNonRootObject) {
 		Assert.assertTrue(change.isResolved)
-		// Not the same object, but copy
-		change.removeChange.oldValue.assertIsCopy(removedNonRootObject)	
-		Assert.assertTrue(change.deleteChange.affectedEObject == change.removeChange.oldValue)		
-		Assert.assertTrue(change.removeChange.affectedEObject == affectedRootObject)	
+		change.deleteChange.affectedEObject.assertEqualsOrCopy(removedNonRootObject)
+		change.removeChange.oldValue.assertEqualsOrCopy(removedNonRootObject)		
+		Assert.assertSame(change.removeChange.affectedEObject, affectedRootObject)	
 		
-	}
-	
-	/**
-	 * Change is resolved with existing object.
-	 */
-	def private static void assertIsResolvedExistingObject(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
-		NonRoot removedNonRootObject) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.deleteChange.affectedEObject == removedNonRootObject)
-		Assert.assertTrue(change.removeChange.oldValue == removedNonRootObject)
-		Assert.assertTrue(change.removeChange.affectedEObject == affectedRootObject)
 	}
 	
 	/**
 	 * Creates new unresolved change.
 	 */
 	def private RemoveAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot) {
-		return compoundFactory.<Root, NonRoot>createRemoveAndDeleteNonRootChange
-		(affectedRootObject, affectedFeature, newNonRoot, index, resource)	
+		return compoundFactory.<Root, NonRoot>createRemoveAndDeleteNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index)	
 	}	
 		
 }

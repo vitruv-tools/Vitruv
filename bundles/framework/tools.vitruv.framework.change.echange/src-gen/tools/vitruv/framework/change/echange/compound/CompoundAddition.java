@@ -14,7 +14,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  *
  * <!-- begin-model-doc -->
  * *
- * EChange which is a sequence of the same additive EChange.
+ * Abstract change which combines several additive EChanges of the same type.
  * <!-- end-model-doc -->
  *
  * <p>

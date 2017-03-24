@@ -15,38 +15,33 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
 import tools.vitruv.framework.change.echange.util.StagingArea
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
+import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 
 class CompoundEChangeAssertHelper {
 	def public static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> assertCreateAndInsertNonRoot(
-
-			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex, Resource stagingArea) {
+			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex) {
 		val createAndInsert = change.assertObjectInstanceOf(CreateAndInsertNonRoot)
-
-		createAndInsert.createChange.assertCreateEObject(expectedNewValue, stagingArea);
+		createAndInsert.createChange.assertCreateEObject(expectedNewValue, StagingArea.getStagingArea(affectedEObject.eResource));
 		createAndInsert.insertChange.assertInsertEReference(affectedEObject, affectedFeature, expectedNewValue,
 			expectedIndex, true);
 		return createAndInsert
 	}
 
 	def public static <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> assertRemoveAndDeleteNonRoot(
-
-			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedOldValue, int expectedOldIndex,
-			Resource stagingArea) {
+			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedOldValue, int expectedOldIndex) {
 		val compositeChange = assertObjectInstanceOf(change, RemoveAndDeleteNonRoot)
-
-		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, stagingArea);
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(affectedEObject.eResource));
 		compositeChange.removeChange.assertRemoveEReference(affectedEObject, affectedFeature, expectedOldValue,
 			expectedOldIndex, true);
 		return compositeChange
 	}
 	
 	def static void assertCreateAndReplaceAndDeleteNonRoot(EChange change, EObject expectedOldValue,
-
-			EObject expectedNewValue, EStructuralFeature affectedFeature, EObject affectedEObject, boolean isContainment, Resource stagingArea) {
+			EObject expectedNewValue, EStructuralFeature affectedFeature, EObject affectedEObject, boolean isContainment) {
 		val compositeChange = change.assertObjectInstanceOf(CreateAndReplaceAndDeleteNonRoot)
-
-		compositeChange.createChange.assertCreateEObject(expectedNewValue, stagingArea)
-		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, stagingArea)
+		compositeChange.createChange.assertCreateEObject(expectedNewValue, StagingArea.getStagingArea(affectedEObject.eResource))
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(affectedEObject.eResource))
 		compositeChange.replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, 
 			expectedOldValue, expectedNewValue, isContainment)
 	}
@@ -54,7 +49,6 @@ class CompoundEChangeAssertHelper {
 
 	def public static void assertCreateAndInsertRootEObject(EChange change, EObject expectedNewValue, String uri, Resource resource) {
 		val compositeChange = change.assertObjectInstanceOf(CreateAndInsertRoot)
-
 		compositeChange.createChange.assertCreateEObject(expectedNewValue, StagingArea.getStagingArea(resource))
 		compositeChange.insertChange.assertInsertRootEObject(expectedNewValue, uri, resource)
 	}
@@ -62,7 +56,6 @@ class CompoundEChangeAssertHelper {
 
 	def public static void assertRemoveAndDeleteRootEObject(EChange change, EObject expectedOldValue, String uri, Resource resource) {
 		val compositeChange = change.assertObjectInstanceOf(RemoveAndDeleteRoot)
-
 		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(resource))
 		compositeChange.removeChange.assertRemoveRootEObject(expectedOldValue, uri, resource)
 	}

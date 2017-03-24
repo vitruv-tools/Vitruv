@@ -17,6 +17,11 @@ import tools.vitruv.framework.change.echange.compound.*;
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 
+import tools.vitruv.framework.change.echange.feature.FeatureEChange;
+
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
+
 /**
  * <!-- begin-user-doc -->
  * The <b>Switch</b> for the model's inheritance hierarchy.
@@ -116,6 +121,14 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CompoundPackage.REPLACE_IN_ELIST: {
+				ReplaceInEList<?, ?, ?, ?, ?> replaceInEList = (ReplaceInEList<?, ?, ?, ?, ?>)theEObject;
+				T1 result = caseReplaceInEList(replaceInEList);
+				if (result == null) result = caseCompoundEChange(replaceInEList);
+				if (result == null) result = caseEChange(replaceInEList);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CompoundPackage.COMPOUND_SUBTRACTION: {
 				CompoundSubtraction<?, ?> compoundSubtraction = (CompoundSubtraction<?, ?>)theEObject;
 				T1 result = caseCompoundSubtraction(compoundSubtraction);
@@ -181,24 +194,6 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseRemoveAndDeleteEObject(removeAndDeleteNonRoot);
 				if (result == null) result = caseCompoundEChange(removeAndDeleteNonRoot);
 				if (result == null) result = caseEChange(removeAndDeleteNonRoot);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case CompoundPackage.CREATE_AND_REPLACE_WITH_NON_ROOT: {
-				CreateAndReplaceWithNonRoot<?, ?> createAndReplaceWithNonRoot = (CreateAndReplaceWithNonRoot<?, ?>)theEObject;
-				T1 result = caseCreateAndReplaceWithNonRoot(createAndReplaceWithNonRoot);
-				if (result == null) result = caseCreateAndInsertEObject(createAndReplaceWithNonRoot);
-				if (result == null) result = caseCompoundEChange(createAndReplaceWithNonRoot);
-				if (result == null) result = caseEChange(createAndReplaceWithNonRoot);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case CompoundPackage.REPLACE_AND_DELETE_NON_ROOT: {
-				ReplaceAndDeleteNonRoot<?, ?> replaceAndDeleteNonRoot = (ReplaceAndDeleteNonRoot<?, ?>)theEObject;
-				T1 result = caseReplaceAndDeleteNonRoot(replaceAndDeleteNonRoot);
-				if (result == null) result = caseRemoveAndDeleteEObject(replaceAndDeleteNonRoot);
-				if (result == null) result = caseCompoundEChange(replaceAndDeleteNonRoot);
-				if (result == null) result = caseEChange(replaceAndDeleteNonRoot);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -285,11 +280,22 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-<<<<<<< HEAD
-	public <A extends EObject, F extends EStructuralFeature, T extends Object, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> T1 caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
-=======
 	public <A extends EObject> T1 caseExplicitUnsetEReference(ExplicitUnsetEReference<A> object) {
->>>>>>> remotes/origin/master
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> T1 caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
 		return null;
 	}
 
@@ -410,36 +416,6 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <A extends EObject, T extends EObject> T1 caseRemoveAndDeleteNonRoot(RemoveAndDeleteNonRoot<A, T> object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Create And Replace With Non Root</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Create And Replace With Non Root</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <A extends EObject, T extends EObject> T1 caseCreateAndReplaceWithNonRoot(CreateAndReplaceWithNonRoot<A, T> object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Replace And Delete Non Root</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Replace And Delete Non Root</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <A extends EObject, T extends EObject> T1 caseReplaceAndDeleteNonRoot(ReplaceAndDeleteNonRoot<A, T> object) {
 		return null;
 	}
 

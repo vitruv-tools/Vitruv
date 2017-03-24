@@ -2,24 +2,29 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
+import org.eclipse.emf.common.command.Command;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-<<<<<<< HEAD
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
-=======
->>>>>>> remotes/origin/master
 import tools.vitruv.framework.change.echange.compound.*;
+
+import tools.vitruv.framework.change.echange.feature.FeatureEChange;
+
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -68,12 +73,11 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 			case CompoundPackage.MOVE_EOBJECT: return createMoveEObject();
 			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE: return createExplicitUnsetEAttribute();
 			case CompoundPackage.EXPLICIT_UNSET_EREFERENCE: return createExplicitUnsetEReference();
+			case CompoundPackage.REPLACE_IN_ELIST: return createReplaceInEList();
 			case CompoundPackage.CREATE_AND_INSERT_ROOT: return createCreateAndInsertRoot();
 			case CompoundPackage.REMOVE_AND_DELETE_ROOT: return createRemoveAndDeleteRoot();
 			case CompoundPackage.CREATE_AND_INSERT_NON_ROOT: return createCreateAndInsertNonRoot();
 			case CompoundPackage.REMOVE_AND_DELETE_NON_ROOT: return createRemoveAndDeleteNonRoot();
-			case CompoundPackage.CREATE_AND_REPLACE_WITH_NON_ROOT: return createCreateAndReplaceWithNonRoot();
-			case CompoundPackage.REPLACE_AND_DELETE_NON_ROOT: return createReplaceAndDeleteNonRoot();
 			case CompoundPackage.CREATE_AND_REPLACE_AND_DELETE_NON_ROOT: return createCreateAndReplaceAndDeleteNonRoot();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -88,12 +92,12 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case CompoundPackage.EOBJ:
-				return createEObjFromString(eDataType, initialValue);
-			case CompoundPackage.EFEAT:
-				return createEFeatFromString(eDataType, initialValue);
+			case CompoundPackage.COMMAND:
+				return createCommandFromString(eDataType, initialValue);
 			case CompoundPackage.RESOURCE_SET:
 				return createResourceSetFromString(eDataType, initialValue);
+			case CompoundPackage.EOBJ:
+				return createEObjFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -107,12 +111,12 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case CompoundPackage.EOBJ:
-				return convertEObjToString(eDataType, instanceValue);
-			case CompoundPackage.EFEAT:
-				return convertEFeatToString(eDataType, instanceValue);
+			case CompoundPackage.COMMAND:
+				return convertCommandToString(eDataType, instanceValue);
 			case CompoundPackage.RESOURCE_SET:
 				return convertResourceSetToString(eDataType, instanceValue);
+			case CompoundPackage.EOBJ:
+				return convertEObjToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -133,35 +137,9 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-<<<<<<< HEAD
-	public <A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetEFeature() {
-		ExplicitUnsetEFeatureImpl<A, T> explicitUnsetEFeature = new ExplicitUnsetEFeatureImpl<A, T>();
-		return explicitUnsetEFeature;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject, F extends EStructuralFeature, T extends Object, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> ReplaceInEList<A, F, T, R, I> createReplaceInEList() {
-		ReplaceInEListImpl<A, F, T, R, I> replaceInEList = new ReplaceInEListImpl<A, F, T, R, I>();
-		return replaceInEList;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <T extends Object, S extends SubtractiveEChange<T>> CompoundSubtraction<T, S> createCompoundSubtraction() {
-		CompoundSubtractionImpl<T, S> compoundSubtraction = new CompoundSubtractionImpl<T, S>();
-		return compoundSubtraction;
-=======
 	public <A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttribute() {
 		ExplicitUnsetEAttributeImpl<A, T> explicitUnsetEAttribute = new ExplicitUnsetEAttributeImpl<A, T>();
 		return explicitUnsetEAttribute;
->>>>>>> remotes/origin/master
 	}
 
 	/**
@@ -172,6 +150,16 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	public <A extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReference() {
 		ExplicitUnsetEReferenceImpl<A> explicitUnsetEReference = new ExplicitUnsetEReferenceImpl<A>();
 		return explicitUnsetEReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> ReplaceInEList<A, F, T, R, I> createReplaceInEList() {
+		ReplaceInEListImpl<A, F, T, R, I> replaceInEList = new ReplaceInEListImpl<A, F, T, R, I>();
+		return replaceInEList;
 	}
 
 	/**
@@ -219,26 +207,6 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public <A extends EObject, T extends EObject> CreateAndReplaceWithNonRoot<A, T> createCreateAndReplaceWithNonRoot() {
-		CreateAndReplaceWithNonRootImpl<A, T> createAndReplaceWithNonRoot = new CreateAndReplaceWithNonRootImpl<A, T>();
-		return createAndReplaceWithNonRoot;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRoot() {
-		ReplaceAndDeleteNonRootImpl<A, T> replaceAndDeleteNonRoot = new ReplaceAndDeleteNonRootImpl<A, T>();
-		return replaceAndDeleteNonRoot;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A, T> createCreateAndReplaceAndDeleteNonRoot() {
 		CreateAndReplaceAndDeleteNonRootImpl<A, T> createAndReplaceAndDeleteNonRoot = new CreateAndReplaceAndDeleteNonRootImpl<A, T>();
 		return createAndReplaceAndDeleteNonRoot;
@@ -249,8 +217,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EObject createEObjFromString(EDataType eDataType, String initialValue) {
-		return (EObject)super.createFromString(eDataType, initialValue);
+	public Command createCommandFromString(EDataType eDataType, String initialValue) {
+		return (Command)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -258,25 +226,7 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EStructuralFeature createEFeatFromString(EDataType eDataType, String initialValue) {
-		return (EStructuralFeature)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertEFeatToString(EDataType eDataType, Object instanceValue) {
+	public String convertCommandToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -295,6 +245,24 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * @generated
 	 */
 	public String convertResourceSetToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject createEObjFromString(EDataType eDataType, String initialValue) {
+		return (EObject)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

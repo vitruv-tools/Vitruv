@@ -17,6 +17,7 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
+import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.util.StagingArea
 
 /**
@@ -76,7 +77,7 @@ import tools.vitruv.framework.change.echange.util.StagingArea
  		
  		// Factorys for creating changes
  		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory.instance
- 		compoundFactory = TypeInferringCompoundEChangeFactory.unresolvingInstance
+ 		compoundFactory = TypeInferringUnresolvingCompoundEChangeFactory.instance
  	}
  	
  	/**
@@ -105,4 +106,13 @@ import tools.vitruv.framework.change.echange.util.StagingArea
  		Assert.assertTrue(object1 != object2)
  		Assert.assertEquals(object1.id, object2.id)
  	}
+ 	
+ 	/**
+ 	 * Tests whether two objects are the same object or copies of each other.
+ 	 */
+ 	def protected static void assertEqualsOrCopy(Identified object1, Identified object2) {
+		if (object1 != object2) {
+			object1.assertIsCopy(object2)
+		}
+	}
  }

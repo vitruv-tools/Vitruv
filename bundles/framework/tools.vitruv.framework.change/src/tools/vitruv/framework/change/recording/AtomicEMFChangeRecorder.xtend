@@ -7,12 +7,9 @@ import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.change.util.ChangeRecorder
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 
 class AtomicEMFChangeRecorder {
 	var List<ChangeDescription> changeDescriptions;
@@ -44,7 +41,7 @@ class AtomicEMFChangeRecorder {
 		this.modelVURI = modelVURI;
 		this.elementsToObserve.clear();
 		this.elementsToObserve += elementsToObserve;
-		this.changeDescriptions =new ArrayList<ChangeDescription>();
+		this.changeDescriptions = new ArrayList<ChangeDescription>();
 		changeRecorder.beginRecording(elementsToObserve)
 	}
 	

@@ -10,16 +10,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * A representation of the model object '<em><b>Explicit Unset EFeature</b></em>'.
  * <!-- end-user-doc -->
  *
-<<<<<<< HEAD
  * <!-- begin-model-doc -->
  * *
- * EChange which unsets a single or many valued attribute.
+ * Abstract EChange which unsets a single or many valued feature.
  * <!-- end-model-doc -->
  *
- *
- * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature()
- * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"
-=======
  * <p>
  * The following features are supported:
  * </p>
@@ -29,8 +24,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature()
- * @model abstract="true"
->>>>>>> remotes/origin/master
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface ExplicitUnsetEFeature<A extends EObject, F extends EStructuralFeature> extends CompoundEChange {
@@ -45,7 +39,7 @@ public interface ExplicitUnsetEFeature<A extends EObject, F extends EStructuralF
 	 * @return the value of the '<em>Affected EObject</em>' reference.
 	 * @see #setAffectedEObject(EObject)
 	 * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature_AffectedEObject()
-	 * @model required="true"
+	 * @model kind="reference" required="true"
 	 * @generated
 	 */
 	A getAffectedEObject();

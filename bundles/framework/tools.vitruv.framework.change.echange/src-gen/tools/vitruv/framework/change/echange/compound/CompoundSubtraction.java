@@ -14,7 +14,7 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  *
  * <!-- begin-model-doc -->
  * *
- * EChange which is a sequence of the same subtractive EChange.
+ * Abstract change which combines several subtractive EChanges of the same type.
  * <!-- end-model-doc -->
  *
  * <p>

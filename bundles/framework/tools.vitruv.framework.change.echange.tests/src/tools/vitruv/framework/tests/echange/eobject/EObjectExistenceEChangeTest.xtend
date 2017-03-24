@@ -27,7 +27,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 			as CreateEObject<Root>
-		resolvedChange.assertIsResolvedNewObject(createdObject, stagingArea)	
+		resolvedChange.assertIsResolved(createdObject, stagingArea)	
 		Assert.assertTrue(stagingArea.contents.empty)
 	}
 	
@@ -50,7 +50,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
 			as CreateEObject<Root>
-		resolvedChange.assertIsResolvedExistingObject(createdObject, stagingArea)	
+		resolvedChange.assertIsResolved(createdObject, stagingArea)	
 		
 		Assert.assertFalse(stagingArea.contents.empty)
 		Assert.assertTrue(stagingArea.contents.get(0) == createdObject)	
@@ -85,24 +85,12 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	/**
 	 * Change is resolved.
 	 */
-	def private static void assertIsResolvedNewObject(EObjectExistenceEChange<Root> change, Root affectedEObject, 
+	def private static void assertIsResolved(EObjectExistenceEChange<Root> change, Root affectedEObject, 
 		Resource stagingArea) {
 		Assert.assertTrue(change.isResolved)
-		// Not the same object, but copy => ID the same
-		Assert.assertTrue(change.affectedEObject != affectedEObject)
-		Assert.assertEquals(change.affectedEObject.id, affectedEObject.id)
+		affectedEObject.assertEqualsOrCopy(change.affectedEObject)
 		Assert.assertTrue(change.stagingArea == stagingArea)	
 	}
-	
-	/**
-	 * Change is resolved.
-	 */
-	def private static void assertIsResolvedExistingObject(EObjectExistenceEChange<Root> change, Root affectedEObject,
-		Resource stagingArea) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.affectedEObject == affectedEObject)
-		Assert.assertTrue(change.stagingArea == stagingArea)
-	}	
 	
 	/**
 	 * Creates new unresolved change.

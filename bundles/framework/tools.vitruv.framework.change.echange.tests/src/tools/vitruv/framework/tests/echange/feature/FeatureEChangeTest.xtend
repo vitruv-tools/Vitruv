@@ -222,7 +222,6 @@ import org.junit.After
 	 */
 	def private FeatureEChange<Root, EAttribute> createUnresolvedChange() {
 		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
-		return atomicFactory.<Root, String>createReplaceSingleAttributeChange
-		(affectedEObject, affectedFeature, null, null)	
+		return atomicFactory.<Root, String>createReplaceSingleAttributeChange(affectedEObject, affectedFeature, null, null)	
 	}	 
  }

@@ -58,7 +58,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as RemoveAndDeleteRoot<Root>
-		resolvedChange.assertIsResolvedExistingObject(newRootObject)	
+		resolvedChange.assertIsResolved(newRootObject)	
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.		
 		Assert.assertEquals(resourceContent.size, size)
@@ -86,7 +86,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as RemoveAndDeleteRoot<Root>
-		resolvedChange.assertIsResolvedNewObject(newRootObject)	
+		resolvedChange.assertIsResolved(newRootObject)	
 			
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertEquals(resourceContent.size, size)
@@ -208,22 +208,12 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	}
 	
 	/**
-	 * Change is resolved but with newly created object.
+	 * Change is resolved.
 	 */
-	def private static void assertIsResolvedNewObject(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
+	def private static void assertIsResolved(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
 		Assert.assertTrue(change.isResolved)
-		// Not the same object, but copy
-		change.removeChange.oldValue.assertIsCopy(affectedRootObject)
-		Assert.assertTrue(change.deleteChange.affectedEObject == change.removeChange.oldValue)		
-	}
-	
-	/**
-	 * Change is resolved with existing object.
-	 */
-	def private static void assertIsResolvedExistingObject(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.deleteChange.affectedEObject == affectedRootObject)
-		Assert.assertTrue(change.removeChange.oldValue == affectedRootObject)
+		change.removeChange.oldValue.assertEqualsOrCopy(affectedRootObject)
+		change.deleteChange.affectedEObject.assertEqualsOrCopy(affectedRootObject)
 	}
 	
 	/**

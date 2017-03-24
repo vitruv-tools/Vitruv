@@ -22,6 +22,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	protected var index = DEFAULT_INDEX
 	
 	protected static val Integer DEFAULT_INDEX = 0
+	protected static val String DEFAULT_OLD_VALUE_ID = "Old Non Root Element"
 	
 	/**
 	 * Calls setup of super class and sets the feature for the tests.
@@ -30,6 +31,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	override public void beforeTest() {
 		super.beforeTest()
 		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
+		oldValue.id = DEFAULT_OLD_VALUE_ID
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		affectedEObject.eSet(affectedFeature, oldValue)
 	}
@@ -52,7 +54,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
-		resolvedChange.assertIsResolvedBefore(affectedEObject, oldValue, newValue)
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 							
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == oldValue)
@@ -80,7 +82,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as CreateAndReplaceAndDeleteNonRoot<Root, NonRoot>
-		resolvedChange.assertIsResolvedAfter(affectedEObject, oldValue, newValue)
+		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 				
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertTrue(affectedEObject.eGet(affectedFeature) == newValue)
@@ -193,36 +195,15 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	}
 	
 	/**
-	 * Change is resolved with state before change.
+	 * Change is resolved.
 	 */
-	def private static void assertIsResolvedBefore(CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
+	def private static void assertIsResolved(CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
 		NonRoot oldNonRootObject, NonRoot newNonRootObject) {
 		Assert.assertTrue(change.isResolved)
-		
-		Assert.assertTrue(change.replaceChange.oldValue == change.deleteChange.affectedEObject)
-		Assert.assertTrue(change.replaceChange.newValue == change.createChange.affectedEObject)		
-		
-		// The new object is a copy, the old one the existing one.
-		change.replaceChange.newValue.assertIsCopy(newNonRootObject)
-		Assert.assertTrue(change.replaceChange.oldValue == oldNonRootObject)
-		
-		Assert.assertTrue(change.replaceChange.affectedEObject == affectedRootObject)
-	}
-	
-	/**
-	 * Change is resolved with state after change.
-	 */
-	def private static void assertIsResolvedAfter(CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
-		NonRoot oldNonRootObject, NonRoot newNonRootObject) {
-		Assert.assertTrue(change.isResolved)
-		
-		Assert.assertTrue(change.replaceChange.oldValue == change.deleteChange.affectedEObject)
-		Assert.assertTrue(change.replaceChange.newValue == change.createChange.affectedEObject)		
-		
-		// The new object is a existing one, the old one is a copy.
-		change.replaceChange.oldValue.assertIsCopy(oldNonRootObject)
-		Assert.assertTrue(change.replaceChange.newValue == newNonRootObject)
-				
+		change.createChange.affectedEObject.assertEqualsOrCopy(newNonRootObject)
+		change.replaceChange.oldValue.assertEqualsOrCopy(oldNonRootObject)
+		change.replaceChange.newValue.assertEqualsOrCopy(newNonRootObject)
+		change.deleteChange.affectedEObject.assertEqualsOrCopy(oldNonRootObject)
 		Assert.assertTrue(change.replaceChange.affectedEObject == affectedRootObject)
 	}	
 	
@@ -230,7 +211,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Creates new unresolved change.
 	 */
 	def private CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(NonRoot newNonRootValue) {
-		return compoundFactory.<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange
-		(affectedEObject, affectedFeature, oldValue, newNonRootValue, resource)	
+		return compoundFactory.<Root, NonRoot>createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, newNonRootValue)	
 	}
 }

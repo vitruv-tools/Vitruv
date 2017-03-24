@@ -18,6 +18,10 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * A representation of the model object '<em><b>Move EObject</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

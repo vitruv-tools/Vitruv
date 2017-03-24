@@ -50,7 +50,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
 			as CreateAndInsertNonRoot<Root, NonRoot>
-		resolvedChange.assertIsResolvedNewObject(affectedEObject, newValue)	
+		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 			
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
 		Assert.assertEquals(referenceContent.size, size)
@@ -77,7 +77,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as CreateAndInsertNonRoot<Root, NonRoot>
-		resolvedChange.assertIsResolvedExistingObject(affectedEObject, newValue)	
+		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.		
 		Assert.assertEquals(referenceContent.size, size)
@@ -198,25 +198,13 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	}
 	
 	/**
-	 * Change is resolved but with newly created object.
+	 * Change is resolved.
 	 */
-	def private static void assertIsResolvedNewObject(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
+	def private static void assertIsResolved(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
 		NonRoot newNonRoot) {
 		Assert.assertTrue(change.isResolved)
-		// Not the same object, but copy
-		change.insertChange.newValue.assertIsCopy(newNonRoot)
-		Assert.assertTrue(change.createChange.affectedEObject == change.insertChange.newValue)
-		Assert.assertTrue(change.insertChange.affectedEObject == affectedEObject)	
-	}
-	
-	/**
-	 * Change is resolved with existing object.
-	 */
-	def private static void assertIsResolvedExistingObject(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
-		NonRoot newNonRoot) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.createChange.affectedEObject == newNonRoot)
-		Assert.assertTrue(change.insertChange.newValue == newNonRoot)
+		change.insertChange.newValue.assertEqualsOrCopy(newNonRoot)
+		change.createChange.affectedEObject.assertEqualsOrCopy(newNonRoot)
 		Assert.assertTrue(change.insertChange.affectedEObject == affectedEObject)	
 	}
 		
@@ -224,7 +212,6 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 * Creates new unresolved change.
 	 */
 	def private CreateAndInsertNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot) {
-		return compoundFactory.<Root, NonRoot>createCreateAndInsertNonRootChange
-		(affectedRootObject, affectedFeature, newNonRoot, index, resource)
+		return compoundFactory.<Root, NonRoot>createCreateAndInsertNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index)
 	}
 }
