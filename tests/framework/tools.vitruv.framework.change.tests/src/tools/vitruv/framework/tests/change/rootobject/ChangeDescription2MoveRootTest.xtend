@@ -8,15 +8,17 @@ class ChangeDescription2MoveRootTest extends ChangeDescription2RootChangeTest {
 	@Ignore
 	@Test
 	def void moveRootEObjectBetweenResources(){
+		val resource1 = this.rootElement.eResource;
+		val resource2 = this.rootElement2.eResource;
+		resource2.contents.clear();
 		// prepare
-		insertRootEObjectInResource(this.resource1)
-		startRecordingOnResourceSet
+		startRecording
 		// test 
-		insertRootEObjectInResource(this.resource2)
+		insertRootEObjectInResource(resource2)
 		// assert
 		val isDelete = false
-		assertRemoveRoot(0, isDelete, this.uri1)
+		assertRemoveRoot(0, isDelete, resource1.URI.toFileString)
 		val isCreate = false
-		assertInsertRoot(1, isCreate, this.uri2)
+		assertInsertRoot(1, isCreate, resource2.URI.toFileString)
 	}
 }

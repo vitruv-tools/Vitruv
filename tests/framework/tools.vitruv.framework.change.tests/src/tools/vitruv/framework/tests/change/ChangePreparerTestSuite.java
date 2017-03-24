@@ -14,7 +14,7 @@ import tools.vitruv.framework.tests.change.reference.ChangeDescription2RemoveERe
 import tools.vitruv.framework.tests.change.reference.ChangeDescription2ReplaceSingleValuedEReferenceTest;
 import tools.vitruv.framework.tests.change.rootobject.ChangeDescription2InsertRootEObjectTest;
 import tools.vitruv.framework.tests.change.rootobject.ChangeDescription2MoveRootTest;
-import tools.vitruv.framework.tests.change.rootobject.ChangeDescription2RemoveRootEObject;
+import tools.vitruv.framework.tests.change.rootobject.ChangeDescription2RemoveRootEObjectTest;
 
 @RunWith(Suite.class)
 
@@ -22,7 +22,7 @@ import tools.vitruv.framework.tests.change.rootobject.ChangeDescription2RemoveRo
 		ChangeDescription2RemoveEAttributeValueTest.class, ChangeDescription2ReplaceSingleValuedEAttributeTest.class,
 		ChangeDescription2InsertEReferenceTest.class, ChangeDescription2RemoveEReferenceTest.class,
 		ChangeDescription2ReplaceSingleValuedEReferenceTest.class, ChangeDescription2InsertRootEObjectTest.class,
-		ChangeDescription2RemoveRootEObject.class, ChangeDescription2MoveEObjectTest.class,
+		ChangeDescription2RemoveRootEObjectTest.class, ChangeDescription2MoveEObjectTest.class,
 		ChangeDescription2MoveRootTest.class, ChangeDescriptionComplexSequencesTest.class})
 public class ChangePreparerTestSuite {
 
