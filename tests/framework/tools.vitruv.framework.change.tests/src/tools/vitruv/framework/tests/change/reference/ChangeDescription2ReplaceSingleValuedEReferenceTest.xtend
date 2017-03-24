@@ -42,21 +42,6 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 	}
 	
 	@Test
-	def public void testReplaceExistingSingleValuedEReferenceContainmentWithResource() {
-		// prepare
-		val nonRoot = createAndAddNonRootToContainment(true)
-
-		// test
-		val replaceNonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
-		this.rootElement.singleValuedContainmentEReference = replaceNonRoot
-
-		// assert
-		val changes = getChanges()
-		changes.get(0).assertCreateAndReplaceAndDeleteNonRoot(nonRoot, replaceNonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true)
-	}
-
-	@Test
 	def public void testReplaceExistingSingleValuedEReferenceContainmentWithDefault() {
 		// prepare
 		val nonRoot = createAndAddNonRootToContainment(false)
