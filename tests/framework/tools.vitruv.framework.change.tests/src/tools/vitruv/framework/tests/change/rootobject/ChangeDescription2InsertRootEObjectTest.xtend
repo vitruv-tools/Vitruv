@@ -9,10 +9,10 @@ class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChan
 		// prepare
 		startRecordingOnResourceSet
 		// test
-		insertRootEObjectInResource(this.resource1)
+		insertRootEObjectInResource(this.resource)
 		// assert
 		val isCreate = true
-		assertInsertRoot(0, isCreate, this.uri1, this.resource1)
+		assertInsertRoot(0, isCreate, this.uri, this.resource)
 		//claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
 	}
 	
@@ -21,16 +21,16 @@ class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChan
 		// prepare
 		startRecordingOnResourceSet
 		// test
-		insertRootEObjectInResource(this.resource1)
+		insertRootEObjectInResource(this.resource)
 		// assert
 		val isCreate = true
-		assertInsertRoot(0, isCreate, this.uri1, this.resource1)
+		assertInsertRoot(0, isCreate, this.uri, this.resource)
 		
 		startRecordingOnResourceSet
 		// test
-		insertRootEObjectInResource2(this.resource1)
+		insertRootEObjectInResource2(this.resource)
 		// assert
-		assertInsertRoot2(0, isCreate, this.uri1, this.resource1)
+		assertInsertRoot2(0, isCreate, this.uri, this.resource)
 		
 		//claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
 	}

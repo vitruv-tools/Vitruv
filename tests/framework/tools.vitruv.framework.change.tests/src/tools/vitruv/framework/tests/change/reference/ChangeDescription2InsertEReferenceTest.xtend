@@ -1,12 +1,13 @@
 package tools.vitruv.framework.tests.change.reference
 
 import allElementTypes.NonRoot
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.junit.Test
+
+import static allElementTypes.AllElementTypesPackage.Literals.*
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
-import org.eclipse.emf.ecore.EStructuralFeature
-import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenceTest {
 
@@ -69,8 +70,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 	
 	def private void assertCreateAndInsertNonRoot(NonRoot nonRoot, EStructuralFeature feature, int expectedIndex) {
 		changes.assertChangeCount(2);
-		changes.claimChange(0).assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot,
-			expectedIndex, null)
+		changes.claimChange(0).assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot, expectedIndex)
 		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
 	}
 }

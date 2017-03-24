@@ -6,6 +6,9 @@ import java.util.Collection
 import java.util.List
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -13,12 +16,17 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
 
 import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
+import org.eclipse.emf.common.util.URI
+import java.io.File
 
 /** 
  * @author langhamm
  */
 abstract class ChangeDescription2ChangeTransformationTest {
 	var protected AtomicEMFChangeRecorder changeRecorder
+	var protected ResourceSet resourceSet
+	var protected Resource resource
+	var protected String uri = tempDirPath + "dummyURI.xmi"
 	var protected Root rootElement
 	var private List<EChange> changes
 
@@ -28,7 +36,18 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	public static val MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME =  "multiValuedContainmentEReference"
 	public static val MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference"
 	public static val MULTI_VALUE_E_ATTRIBUTE_NAME = "multiValuedEAttribute"
-
+	
+	def protected String getTempDirPath() {
+		var path = System.getProperty("java.io.tmpdir").replace("\\", "/");
+		if (path.startsWith("/")) {
+			path = path.substring(1);
+		}
+		if (!path.endsWith("/")) {
+			path = path + "/";
+		} 
+		return path;
+	}
+	
 	/** 
 	 * Create a new model and initialize the change monitoring
 	 */
@@ -36,6 +55,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	def void beforeTest() {
 		this.rootElement = AllElementTypesFactory.eINSTANCE.createRoot()
 		this.rootElement.nonRootObjectContainerHelper = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper()
+		this.resourceSet = new ResourceSetImpl()
+		this.resource = resourceSet.createResource(URI.createFileURI(uri))
+		this.resource.contents.add(rootElement)
 		this.changeRecorder = new AtomicEMFChangeRecorder()
 	}
 
@@ -45,6 +67,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 			this.changeRecorder.endRecording()
 		}
 		this.changeRecorder.dispose()
+		new File(uri).delete();
 	}
 	
 	protected def List<EChange> getChanges() {

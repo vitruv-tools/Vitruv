@@ -1,13 +1,14 @@
 package tools.vitruv.framework.tests.change.integration
 
-import org.junit.Test
-
-import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import allElementTypes.AllElementTypesFactory
-import static allElementTypes.AllElementTypesPackage.Literals.*;
+import org.junit.Ignore
+import org.junit.Test
+import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
+
+import static allElementTypes.AllElementTypesPackage.Literals.*
+
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
-import org.junit.Ignore
 
 class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTransformationTest {
 
@@ -56,9 +57,6 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 			nonRootObjectsContainer, true, true); 
 		val nonRootChange = changes.claimChange(2);
 		nonRootChange.assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
-			nonRoot, 0, null);
-			
-		
+			nonRoot, 0);
 	}
-	
 }

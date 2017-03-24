@@ -46,8 +46,8 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedEAttribute.clear
 
 		changes.assertChangeCount(2);
-		changes.claimChange(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
-		changes.claimChange(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1)
+		changes.claimChange(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1)		
+		changes.claimChange(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
 	}
 	
 	/**
@@ -103,7 +103,6 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		subtractiveChanges.assertChangeCount(2);
 		subtractiveChanges.get(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
 		subtractiveChanges.get(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
-
 	}
 	
 }

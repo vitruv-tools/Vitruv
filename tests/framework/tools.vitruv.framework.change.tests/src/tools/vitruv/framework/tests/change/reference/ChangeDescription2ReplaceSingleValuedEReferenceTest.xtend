@@ -10,7 +10,6 @@ import static extension tools.vitruv.framework.tests.change.util.CompoundEChange
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescription2ChangeTransformationTest {
-
 	@Test
 	def public void testReplaceSingleValuedEReferenceContainment() {
 		// prepare 
@@ -38,7 +37,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		// assert
 		val changes = getChanges()
 		changes.get(0).assertCreateAndReplaceAndDeleteNonRoot(nonRoot, replaceNonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			this.rootElement, true, null)
+			this.rootElement, true)
 	}
 
 	@Test
