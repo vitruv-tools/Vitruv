@@ -244,7 +244,7 @@ public class ChangeDescription2EChangesTransformation {
 			val elementsReferencedAfterChange = featureChange.referenceValue
 			if (elementsReferencedAfterChange == null && listChanges != null && listChanges.isEmpty) {
 				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedReference)
-				for (var index = 0; index < elementsReferencedBeforeChange.size; index++) {
+				for (var index = elementsReferencedBeforeChange.size - 1; index >= 0; index--) {
 					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)
 					resultChanges.addAll(
 						createChangeForMultiReferenceChange(affectedEObject, affectedReference, index,
@@ -311,7 +311,7 @@ public class ChangeDescription2EChangesTransformation {
 			val elementsReferencedAfterChange = featureChange.referenceValue
 			if (elementsReferencedAfterChange == null && listChanges != null && listChanges.isEmpty) {
 				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedAttribute)
-				for (var index = 0; index < elementsReferencedBeforeChange.size; index++) {
+				for (var index = elementsReferencedBeforeChange.size-1; index >= 0; index--) {
 					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)
 					resultChanges.addAll(
 						createChangeForMultiAttributeChange(affectedEObject, affectedAttribute, index,

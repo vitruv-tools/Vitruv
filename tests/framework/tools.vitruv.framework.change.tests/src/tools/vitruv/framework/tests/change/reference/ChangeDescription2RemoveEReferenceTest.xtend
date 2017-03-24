@@ -85,4 +85,18 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		testRemoveEReference(isContainment, isExplicitUnset)
 	}
 
+	@Test
+	def public void testClearEReferences() {
+		val index0Element = createAndAddNonRootToRootMultiReference(0)
+		val index1Element = createAndAddNonRootToRootMultiReference(1)
+		// test
+		startRecording
+
+		// set to default/clear
+		this.rootElement.multiValuedContainmentEReference.clear
+
+		changes.assertChangeCount(2);
+		changes.claimChange(0).assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index1Element, 1)
+		changes.claimChange(1).assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index0Element, 0)
+	}
 }
