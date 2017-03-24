@@ -38,7 +38,7 @@ class TypeInferringAtomicEChangeFactory {
 	protected new() {}
 	
 	/**
-	 * Gets the singleton instance of the factory.
+	 * Get the singleton instance of the factory.
 	 * @return The singleton instance.
 	 */
 	def public static TypeInferringAtomicEChangeFactory getInstance() {

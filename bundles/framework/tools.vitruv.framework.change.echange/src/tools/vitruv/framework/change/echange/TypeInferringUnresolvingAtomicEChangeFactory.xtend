@@ -39,7 +39,7 @@ class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEC
 	 * @param resolvedObject The resolved object.
 	 * @return The proxy object of the given resolved EObject.
 	 */
-	def private <A extends EObject> A createProxy(A resolvedObject) {
+	def package static <A extends EObject> A createProxy(A resolvedObject) {
 		val proxy = EcoreUtil.copy(resolvedObject) as InternalEObject
 		proxy.eSetProxyURI(EcoreUtil.getURI(resolvedObject))
 		return proxy as A
