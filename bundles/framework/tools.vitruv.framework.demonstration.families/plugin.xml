@@ -10,7 +10,7 @@
       <!-- @generated families -->
       <package
             uri="http://www.example.org/families"
-            class="tools.vitruv.framework.demonstration.families.model.families.FamiliesPackage"
+            class="families.FamiliesPackage"
             genModel="model/families.genmodel"/>
    </extension>
 

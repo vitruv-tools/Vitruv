@@ -9,7 +9,10 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.framework.demonstration.families.model.families,
  tools.vitruv.framework.demonstration.families.model.families.impl,
- tools.vitruv.framework.demonstration.families.model.families.util
+ tools.vitruv.framework.demonstration.families.model.families.util,
+ families,
+ families.impl,
+ families.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
