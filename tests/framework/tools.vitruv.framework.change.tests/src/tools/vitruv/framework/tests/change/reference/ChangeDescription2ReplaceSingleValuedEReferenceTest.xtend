@@ -39,7 +39,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		changes.get(0).assertCreateAndReplaceAndDeleteNonRoot(nonRoot, replaceNonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
 			this.rootElement, true)
 	}
-
+	
 	@Test
 	def public void testReplaceExistingSingleValuedEReferenceContainmentWithDefault() {
 		// prepare

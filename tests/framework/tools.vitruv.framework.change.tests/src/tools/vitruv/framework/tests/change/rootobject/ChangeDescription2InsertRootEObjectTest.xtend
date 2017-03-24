@@ -6,31 +6,37 @@ class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChan
 	
 	@Test
 	def void insertCreateRootEObjectInResource(){
+		val resource = this.rootElement.eResource;
+		resource.contents.clear();
 		// prepare
-		startRecordingOnResourceSet
+		startRecording
 		// test
-		insertRootEObjectInResource(this.resource)
+		insertRootEObjectInResource(resource)
 		// assert
 		val isCreate = true
-		assertInsertRoot(0, isCreate, this.uri, this.resource)
+		assertInsertRoot(0, isCreate, resource.URI.toFileString)
 		//claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
 	}
 	
 	@Test
 	def void insertCreateTwoRootEObjectsInResource(){
+		val resource1 = this.rootElement.eResource;
+		resource1.contents.clear();
+		val resource2 = this.rootElement2.eResource;
+		resource2.contents.clear();
 		// prepare
-		startRecordingOnResourceSet
+		startRecording
 		// test
-		insertRootEObjectInResource(this.resource)
+		insertRootEObjectInResource(resource1)
 		// assert
 		val isCreate = true
-		assertInsertRoot(0, isCreate, this.uri, this.resource)
+		assertInsertRoot(0, isCreate, resource1.URI.toFileString)
 		
-		startRecordingOnResourceSet
+		startRecording
 		// test
-		insertRootEObjectInResource2(this.resource)
+		insertRootEObjectInResource2(resource2)
 		// assert
-		assertInsertRoot2(0, isCreate, this.uri, this.resource)
+		assertInsertRoot2(0, isCreate, resource2.URI.toFileString)
 		
 		//claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
 	}
