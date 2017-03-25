@@ -100,7 +100,7 @@ class ChangeAssertHelper {
 			rootChange.resource, resource)
 	}
 
-	def static void assertStagingArea(EObjectExistenceEChange existenceChange, Resource stagingArea) {
+	def static void assertStagingArea(EObjectExistenceEChange<?> existenceChange, Resource stagingArea) {
 		Assert.assertEquals("Change " + existenceChange + " shall have the staging area " + stagingArea,
 			existenceChange.stagingArea, stagingArea)
 	}

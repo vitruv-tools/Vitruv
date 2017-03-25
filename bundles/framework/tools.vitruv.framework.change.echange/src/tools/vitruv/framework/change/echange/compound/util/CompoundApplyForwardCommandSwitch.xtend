@@ -4,6 +4,8 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.List
 import org.eclipse.emf.common.command.Command
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.edit.command.SetCommand
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
@@ -35,7 +37,7 @@ class CompoundApplyForwardCommandSwitch extends CompoundSwitch<List<Command>> {
 	 * Create commands to apply a compound change forward.
 	 * @param object The change which commands should be created.
 	 */
-	def public List<Command> caseCompoundEChange(CompoundEChange object) {
+	override public List<Command> caseCompoundEChange(CompoundEChange object) {
 		val commands = new ArrayList<Command>
 		for (AtomicEChange change : object.atomicChanges) {
 			commands.addAll(ApplyForwardCommandSwitch.instance.doSwitch(change))
@@ -47,7 +49,7 @@ class CompoundApplyForwardCommandSwitch extends CompoundSwitch<List<Command>> {
 	 * Create command to apply unset change forward.
 	 * @param object The change which command should be created.
 	 */
-	def public List<Command> caseExplicitUnsetEFeature(ExplicitUnsetEFeature object) {
+	override public <A extends EObject, F extends EStructuralFeature> List<Command> caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
 		return Collections.singletonList(SetCommand.create(editingDomain, 
 			object.affectedEObject, object.affectedFeature, SetCommand.UNSET_VALUE))		

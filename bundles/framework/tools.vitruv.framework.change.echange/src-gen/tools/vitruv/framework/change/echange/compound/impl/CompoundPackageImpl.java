@@ -36,15 +36,10 @@ import tools.vitruv.framework.change.echange.compound.MoveEObject;
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteEObject;
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot;
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot;
-import tools.vitruv.framework.change.echange.compound.ReplaceInEList;
 
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
-import tools.vitruv.framework.change.echange.feature.FeaturePackage;
-
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
-
-import tools.vitruv.framework.change.echange.feature.list.ListPackage;
 
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 
@@ -91,13 +86,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * @generated
 	 */
 	private EClass explicitUnsetEReferenceEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass replaceInEListEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -452,42 +440,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getReplaceInEList() {
-		return replaceInEListEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getReplaceInEList_RemoveChange() {
-		return (EReference)replaceInEListEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getReplaceInEList_InsertChange() {
-		return (EReference)replaceInEListEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getReplaceInEList__GetAtomicChanges() {
-		return replaceInEListEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getCompoundSubtraction() {
 		return compoundSubtractionEClass;
 	}
@@ -772,11 +724,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		createEOperation(explicitUnsetEReferenceEClass, EXPLICIT_UNSET_EREFERENCE___GET_CONTAINED_CHANGES);
 		createEOperation(explicitUnsetEReferenceEClass, EXPLICIT_UNSET_EREFERENCE___GET_ATOMIC_CHANGES);
 
-		replaceInEListEClass = createEClass(REPLACE_IN_ELIST);
-		createEReference(replaceInEListEClass, REPLACE_IN_ELIST__REMOVE_CHANGE);
-		createEReference(replaceInEListEClass, REPLACE_IN_ELIST__INSERT_CHANGE);
-		createEOperation(replaceInEListEClass, REPLACE_IN_ELIST___GET_ATOMIC_CHANGES);
-
 		compoundSubtractionEClass = createEClass(COMPOUND_SUBTRACTION);
 		createEReference(compoundSubtractionEClass, COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES);
 		createEOperation(compoundSubtractionEClass, COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES);
@@ -844,8 +791,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		ReferencePackage theReferencePackage = (ReferencePackage)EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI);
 		EobjectPackage theEobjectPackage = (EobjectPackage)EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI);
 		AttributePackage theAttributePackage = (AttributePackage)EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI);
-		ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
-		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
 		RootPackage theRootPackage = (RootPackage)EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI);
 
 		// Create type parameters
@@ -857,11 +802,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		ETypeParameter explicitUnsetEAttributeEClass_A = addETypeParameter(explicitUnsetEAttributeEClass, "A");
 		ETypeParameter explicitUnsetEAttributeEClass_T = addETypeParameter(explicitUnsetEAttributeEClass, "T");
 		ETypeParameter explicitUnsetEReferenceEClass_A = addETypeParameter(explicitUnsetEReferenceEClass, "A");
-		ETypeParameter replaceInEListEClass_A = addETypeParameter(replaceInEListEClass, "A");
-		ETypeParameter replaceInEListEClass_F = addETypeParameter(replaceInEListEClass, "F");
-		ETypeParameter replaceInEListEClass_T = addETypeParameter(replaceInEListEClass, "T");
-		ETypeParameter replaceInEListEClass_R = addETypeParameter(replaceInEListEClass, "R");
-		ETypeParameter replaceInEListEClass_I = addETypeParameter(replaceInEListEClass, "I");
 		ETypeParameter compoundSubtractionEClass_T = addETypeParameter(compoundSubtractionEClass, "T");
 		ETypeParameter compoundSubtractionEClass_S = addETypeParameter(compoundSubtractionEClass, "S");
 		ETypeParameter compoundAdditionEClass_T = addETypeParameter(compoundAdditionEClass, "T");
@@ -896,52 +836,10 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		explicitUnsetEAttributeEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(this.getEObj());
 		explicitUnsetEReferenceEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(this.getEObj());
-		replaceInEListEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
-		replaceInEListEClass_F.getEBounds().add(g1);
-		g1 = createEGenericType(this.getEObj());
-		replaceInEListEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theListPackage.getRemoveFromListEChange());
-		EGenericType g2 = createEGenericType(replaceInEListEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceInEListEClass_F);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceInEListEClass_T);
-		g1.getETypeArguments().add(g2);
-		replaceInEListEClass_R.getEBounds().add(g1);
-		g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
-		g2 = createEGenericType(replaceInEListEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceInEListEClass_F);
-		g1.getETypeArguments().add(g2);
-		replaceInEListEClass_R.getEBounds().add(g1);
-		g1 = createEGenericType(theEChangePackage.getSubtractiveEChange());
-		g2 = createEGenericType(replaceInEListEClass_T);
-		g1.getETypeArguments().add(g2);
-		replaceInEListEClass_R.getEBounds().add(g1);
-		g1 = createEGenericType(theListPackage.getInsertInListEChange());
-		g2 = createEGenericType(replaceInEListEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceInEListEClass_F);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceInEListEClass_T);
-		g1.getETypeArguments().add(g2);
-		replaceInEListEClass_I.getEBounds().add(g1);
-		g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
-		g2 = createEGenericType(replaceInEListEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceInEListEClass_F);
-		g1.getETypeArguments().add(g2);
-		replaceInEListEClass_I.getEBounds().add(g1);
-		g1 = createEGenericType(theEChangePackage.getAdditiveEChange());
-		g2 = createEGenericType(replaceInEListEClass_T);
-		g1.getETypeArguments().add(g2);
-		replaceInEListEClass_I.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		compoundSubtractionEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(theEChangePackage.getSubtractiveEChange());
-		g2 = createEGenericType(compoundSubtractionEClass_T);
+		EGenericType g2 = createEGenericType(compoundSubtractionEClass_T);
 		g1.getETypeArguments().add(g2);
 		compoundSubtractionEClass_S.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
@@ -1005,7 +903,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		g2 = createEGenericType(theEcorePackage.getEReference());
 		g1.getETypeArguments().add(g2);
 		explicitUnsetEReferenceEClass.getEGenericSuperTypes().add(g1);
-		replaceInEListEClass.getESuperTypes().add(this.getCompoundEChange());
 		compoundSubtractionEClass.getESuperTypes().add(this.getCompoundEChange());
 		compoundAdditionEClass.getESuperTypes().add(this.getCompoundEChange());
 		createAndInsertEObjectEClass.getESuperTypes().add(this.getCompoundEChange());
@@ -1103,14 +1000,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		initEOperation(getExplicitUnsetEReference__GetContainedChanges(), theEChangePackage.getEChange(), "getContainedChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getExplicitUnsetEReference__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
-
-		initEClass(replaceInEListEClass, ReplaceInEList.class, "ReplaceInEList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(replaceInEListEClass_R);
-		initEReference(getReplaceInEList_RemoveChange(), g1, null, "removeChange", null, 1, 1, ReplaceInEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		g1 = createEGenericType(replaceInEListEClass_I);
-		initEReference(getReplaceInEList_InsertChange(), g1, null, "insertChange", null, 1, 1, ReplaceInEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEOperation(getReplaceInEList__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(compoundSubtractionEClass, CompoundSubtraction.class, "CompoundSubtraction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(compoundSubtractionEClass_S);

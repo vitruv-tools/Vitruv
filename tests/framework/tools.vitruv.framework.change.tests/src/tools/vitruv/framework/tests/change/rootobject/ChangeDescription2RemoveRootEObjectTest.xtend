@@ -14,7 +14,7 @@ class ChangeDescription2RemoveRootEObjectTest extends ChangeDescription2RootChan
 		removeRootEObjectInResource()
 		// assert
 		val isDelete = true
-		assertRemoveRoot(0, isDelete, resource.URI.toFileString)
+		assertRemoveRoot(0, isDelete, resource)
 	}
 	
 	def private void removeRootEObjectInResource(){

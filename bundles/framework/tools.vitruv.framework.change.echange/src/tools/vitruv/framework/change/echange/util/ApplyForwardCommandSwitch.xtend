@@ -33,7 +33,7 @@ public class ApplyForwardCommandSwitch extends EChangeSwitch<List<Command>>{
 	 * Create commands to apply a {@link EChange} change forward.
 	 * @param object The change which commands should be created.
 	 */
-	def public List<Command> caseEChange(EChange object) {
+	override public List<Command> caseEChange(EChange object) {
 		return CompoundApplyForwardCommandSwitch.instance.doSwitch(object)
 	}
 	
@@ -41,7 +41,7 @@ public class ApplyForwardCommandSwitch extends EChangeSwitch<List<Command>>{
 	 * Create commands to apply a {@link AtomicEChange} change forward.
 	 * @param object The change which commands should be created.
 	 */
-	def public List<Command> caseAtomicEChange(AtomicEChange object) {
+	override public List<Command> caseAtomicEChange(AtomicEChange object) {
 		var result = FeatureApplyForwardCommandSwitch.instance.doSwitch(object)
 		if (result == null) {
 			result = RootApplyForwardCommandSwitch.instance.doSwitch(object)

@@ -31,7 +31,7 @@ class CompoundApplyBackwardCommandSwitch extends CompoundSwitch<List<Command>> {
 	 * Create commands to apply a compound change backward.
 	 * @param object The change which commands should be created.
 	 */
-	def public List<Command> caseCompoundEChange(CompoundEChange object) {
+	override public List<Command> caseCompoundEChange(CompoundEChange object) {
 		val commands = new ArrayList<Command>
 		for (AtomicEChange change : object.atomicChanges.reverseView) {
 			commands.addAll(ApplyBackwardCommandSwitch.instance.doSwitch(change))

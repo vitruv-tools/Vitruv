@@ -3,6 +3,7 @@ package tools.vitruv.framework.change.echange.feature.attribute.util
 import java.util.Collections
 import java.util.List
 import org.eclipse.emf.common.command.Command
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.edit.command.AddCommand
 import org.eclipse.emf.edit.command.SetCommand
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
@@ -35,7 +36,7 @@ public class AttributeApplyForwardCommandSwitch extends AttributeSwitch<List<Com
 	 * Create commands to apply a {@link InsertEAttributeValue} change forward.
 	 * @param object The change which commands should be created.
 	 */
-	 override public List<Command> caseInsertEAttributeValue(InsertEAttributeValue object) {
+	 override public <A extends EObject, T extends Object> List<Command> caseInsertEAttributeValue(InsertEAttributeValue<A, T> object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
 		return Collections.singletonList(AddCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.newValue, object.index))
 	}	
@@ -44,7 +45,7 @@ public class AttributeApplyForwardCommandSwitch extends AttributeSwitch<List<Com
 	 * Create commands to apply a {@link RemoveEAttributeValue} change forward.
 	 * @param object The change which commands should be created.
 	 */
-	override public List<Command> caseRemoveEAttributeValue(RemoveEAttributeValue object) {
+	override public <A extends EObject, T extends Object> List<Command> caseRemoveEAttributeValue(RemoveEAttributeValue<A, T> object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
 		return Collections.singletonList(RemoveAtCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.oldValue, object.index))
 	}
@@ -53,7 +54,7 @@ public class AttributeApplyForwardCommandSwitch extends AttributeSwitch<List<Com
 	 * Create commands to apply a {@link ReplaceSingleValuedEAttribute} change forward.
 	 * @param object The change which commands should be created.
 	 */
-	override public List<Command> caseReplaceSingleValuedEAttribute(ReplaceSingleValuedEAttribute object) {
+	override public <A extends EObject, T extends Object> List<Command> caseReplaceSingleValuedEAttribute(ReplaceSingleValuedEAttribute<A, T> object) {
 		val editingDomain = EChangeUtil.getEditingDomain(object.affectedEObject)
 		return Collections.singletonList(SetCommand.create(editingDomain, object.affectedEObject, object.affectedFeature, object.newValue))
 	}	

@@ -40,7 +40,7 @@ class AtomicEChangeResolver {
 				return false
 			}
 		}
-		return true		
+		return true
 	}
 	
 	/**

@@ -14,7 +14,7 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  *
  * <!-- begin-model-doc -->
  * *
- * Abstract change which combines several subtractive EChanges of the same type.
+ * EChange which replaces an EObject in an EList.
  * <!-- end-model-doc -->
  *
  * <p>

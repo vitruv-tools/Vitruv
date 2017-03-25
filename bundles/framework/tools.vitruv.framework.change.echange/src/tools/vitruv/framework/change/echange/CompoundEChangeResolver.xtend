@@ -1,6 +1,8 @@
 package tools.vitruv.framework.change.echange
 
 import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
@@ -83,7 +85,7 @@ class CompoundEChangeResolver {
 	 * @param revertAfterResolving	{@code true} if the change should be reverted after resolving
 	 * 								the compound change.
 	 */	
-	def static dispatch boolean resolveCompoundEChange(ExplicitUnsetEFeature change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
+	def static dispatch boolean resolveCompoundEChange(ExplicitUnsetEFeature<EObject, EStructuralFeature> change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
 		if (!change.isResolved) {
 			if (change.affectedEObject == null || change.affectedFeature == null 
 				|| !resolveCompoundChange(change, resourceSet, resolveBefore, revertAfterResolving)) {

@@ -2,6 +2,8 @@ package tools.vitruv.framework.change.echange.feature.util
 
 import java.util.List
 import org.eclipse.emf.common.command.Command
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange
 import tools.vitruv.framework.change.echange.feature.attribute.util.AttributeApplyBackwardCommandSwitch
@@ -32,7 +34,7 @@ public class FeatureApplyBackwardCommandSwitch extends FeatureSwitch<List<Comman
 	 * Create commands to apply a {@link FeatureEChange} change backward.
 	 * @param object The change which commands should be created.
 	 */	
-	def public List<Command> caseFeatureEChange(FeatureEChange object) {
+	override public <A extends EObject, F extends EStructuralFeature> List<Command> caseFeatureEChange(FeatureEChange<A, F> object) {
 		var result = AttributeApplyBackwardCommandSwitch.instance.doSwitch(object)
 		if (result == null) {
 			result = ReferenceApplyBackwardCommandSwitch.instance.doSwitch(object)
@@ -44,7 +46,7 @@ public class FeatureApplyBackwardCommandSwitch extends FeatureSwitch<List<Comman
 	 * Create commands to apply a {@link UpdateMultiValuedFeatureEChange} change backward.
 	 * @param object The change which commands should be created.
 	 */	
-	def public List<Command> caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
+	override public <A extends EObject, F extends EStructuralFeature> List<Command> caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
 		var result = ListApplyBackwardCommandSwitch.instance.doSwitch(object)
 		return result	
 	}
