@@ -256,9 +256,9 @@ public class ChangeDescription2EChangesTransformation {
 				for (change : resultChanges) {
 					typedChanges.add(change);
 				}
-				return #[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, typedChanges.reverseView)]; // Delete from back to front
+				return #[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, typedChanges)];
 			}
-			return resultChanges.reverseView
+			return resultChanges
 		} else {
 			val EChange change = createChangeForSingleReferenceChange(affectedEObject, affectedReference,
 				featureChange.referenceValue)
@@ -324,9 +324,9 @@ public class ChangeDescription2EChangesTransformation {
 				for (change : subtractiveChanges) {
 					typedChanges.add(change);
 				}
-				return #[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, typedChanges.reverseView)]; // Delete from back to front
+				return #[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, typedChanges)];
 			}
-			return resultChanges.reverseView
+			return resultChanges
 		} else {
 			val SubtractiveAttributeEChange<EObject,Object> change = createChangeForSingleAttributeChange(affectedEObject, affectedAttribute, featureChange.value)
 			if (affectedAttribute.isUnsettable && !featureChange.isSet) {

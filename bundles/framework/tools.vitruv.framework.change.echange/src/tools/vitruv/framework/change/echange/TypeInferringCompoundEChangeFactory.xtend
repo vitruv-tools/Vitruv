@@ -48,6 +48,20 @@ class TypeInferringCompoundEChangeFactory {
 		change.affectedFeature = affectedFeature
 	}
 	
+	def protected <A extends EObject, T extends Object> setUnsetAttributeChangeSubtractiveChanges(ExplicitUnsetEAttribute<A, T> change,
+		List<SubtractiveAttributeEChange<A, T>> changes) {
+		for (c : changes) {
+			change.subtractiveChanges.add(c);
+		}	
+	}	
+	
+	def protected <A extends EObject> setUnsetReferenceChangeEChanges(ExplicitUnsetEReference<A> change,
+		List<EChange> changes) {
+		for (c : changes) {
+			change.changes.add(c);
+		}	
+	}
+	
 	/**
 	 * Creates a new {@link CreateAndInsertRoot} EChange.
 	 * @param affectedEObject The created and inserted root object by the change.
@@ -132,10 +146,7 @@ class TypeInferringCompoundEChangeFactory {
 	def <A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttributeChange(A affectedEObject, EAttribute affectedAttribute, List<SubtractiveAttributeEChange<A,T>> changes) {
 		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEAttribute()
 		c.setUnsetChangeFeatures(affectedEObject, affectedAttribute)
-		for (change : changes) {
-			c.subtractiveChanges.add(change)
-
-		}
+		c.setUnsetAttributeChangeSubtractiveChanges(changes)
 		return c
 	}
 	
@@ -149,9 +160,7 @@ class TypeInferringCompoundEChangeFactory {
 	def <A extends EObject, T extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReferenceChange(A affectedEObject, EReference affectedReference, List<EChange> changes) {
 		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEReference();
 		c.setUnsetChangeFeatures(affectedEObject, affectedReference)
-		for (change : changes) {
-			c.changes.add(change);
-		}
+		c.setUnsetReferenceChangeEChanges(changes)
 		return c;
 	}
 	
