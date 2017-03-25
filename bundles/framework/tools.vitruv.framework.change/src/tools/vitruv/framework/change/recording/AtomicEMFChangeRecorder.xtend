@@ -10,6 +10,9 @@ import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.EChangeUnresolver
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 class AtomicEMFChangeRecorder {
 	var List<ChangeDescription> changeDescriptions;
@@ -49,6 +52,20 @@ class AtomicEMFChangeRecorder {
 		changeRecorder.endRecording();
 		changeDescriptions.reverseView.forEach[applyAndReverse];
 		var transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList;
+		if (this.unresolveRecordedChanges) {
+			var eChanges = transactionalChanges.map [
+				val changes = it.EChanges;
+				return changes;
+			].flatten.toList;
+			for (c : eChanges.reverseView) {
+				c.applyBackward
+			}
+			for (c : eChanges) {
+				val EChange copy = EcoreUtil.copy(c)
+				EChangeUnresolver.unresolve(c)
+				copy.applyForward	
+			}			
+		}	
 		return transactionalChanges
 	}
 	

@@ -65,7 +65,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	 */
 	@Before
 	def void beforeTest() {
-		this.changeRecorder = new AtomicEMFChangeRecorder()
+		this.changeRecorder = new AtomicEMFChangeRecorder(true)
 		this.rootElement = createRootInResource(1);
 	}
 
@@ -83,6 +83,12 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	protected def List<EChange> getChanges() {
 		if (this.changes == null) {
 			this.changes = endRecording()
+			for (var i = changes.size - 1; i >= 0; i--) {
+				changes.set(i, changes.get(i).resolveAfterAndApplyBackward(rs))
+			}
+			for (EChange c : changes) {
+				c.applyForward
+			}
 		}
 		return this.changes
 	}

@@ -1,26 +1,25 @@
 package tools.vitruv.framework.tests.change.util
 
+import java.util.List
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.junit.Assert
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
-import tools.vitruv.framework.change.echange.compound.MoveEObject
-import tools.vitruv.framework.util.datatypes.Quadruple
-import java.util.List
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.junit.Assert
-
-import tools.vitruv.framework.change.echange.feature.FeatureEChange
-import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
-import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.compound.MoveEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
-import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+import tools.vitruv.framework.change.echange.root.RootEChange
+import tools.vitruv.framework.util.datatypes.Quadruple
 
 class ChangeAssertHelper {
 
@@ -40,8 +39,13 @@ class ChangeAssertHelper {
 	}
 
 	public static def assertOldValue(EChange eChange, Object oldValue) {
-		Assert.assertEquals("old value must be the same than the given old value", oldValue,
-			(eChange as SubtractiveEChange<?>).oldValue)
+		if (oldValue instanceof EObject) {
+			assertEqualsOrCopy("old value must be the same or a copy than the given old value", oldValue,
+				(eChange as SubtractiveEChange<?>).oldValue as EObject)				
+		} else {
+			Assert.assertEquals("old value must be the same than the given old value", oldValue,
+				(eChange as SubtractiveEChange<?>).oldValue)			
+		}
 	}
 
 	public static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
@@ -61,10 +65,10 @@ class ChangeAssertHelper {
 
 	public static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
 		if (eChange instanceof FeatureEChange<?, ?>) {
-			Assert.assertEquals("The actual affected EObject is a different one than the expected affected EObject",
+			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
 				expectedAffectedEObject, (eChange as FeatureEChange<?, ?>).affectedEObject)
 		} else if (eChange instanceof EObjectExistenceEChange<?>) {
-			Assert.assertEquals("The actual affected EObject is a different one than the expected affected EObject",
+			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
 				expectedAffectedEObject, (eChange as EObjectExistenceEChange<?>).affectedEObject)
 		} else {
 			throw new IllegalArgumentException();
@@ -127,4 +131,7 @@ class ChangeAssertHelper {
 			eCompoundChange.atomicChanges.size, atomicChanges)
 	}
 
+	def public static assertEqualsOrCopy(String message, EObject object1, EObject object2) {
+		Assert.assertTrue(message, EcoreUtil.equals(object1, object2))
+	}
 }
