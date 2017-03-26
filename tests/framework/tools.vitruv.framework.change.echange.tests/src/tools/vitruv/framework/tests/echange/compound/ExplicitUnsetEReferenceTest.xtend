@@ -17,7 +17,9 @@ import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
-import org.junit.Ignore
+
+import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
 
 /**
  * Test class for the concrete {@link ExplicitUnsetEReference} EChange,
@@ -31,21 +33,14 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	protected var NonRoot oldValue = null
 	protected var NonRoot oldValue2 = null
 	protected var NonRoot oldValue3 = null	
-	
-	protected val String OLD_VALUE_ID = "OLD_VALUE_ID_1"
-	protected val String OLD_VALUE_ID_2 = "OLD_VALUE_ID_2"
-	protected val String OLD_VALUE_ID_3 = "OLD_VALUE_ID_3"
 		
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
 		affectedEObject = rootObject
 		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot
-		oldValue.id = OLD_VALUE_ID
 		oldValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot
-		oldValue2.id = OLD_VALUE_ID_2
 		oldValue3 = AllElementTypesFactory.eINSTANCE.createNonRoot
-		oldValue3.id = OLD_VALUE_ID_3
 	}
 
 	/**
@@ -53,7 +48,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued non containment reference and the model is in state before the change.
 	 */	
 	@Test
-	def public void resolveBeforeUnsetSingleValuedNonContainmentReferenceTest() {
+	def public void resolveBeforeSingleValuedNonContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedNonContainmentTest
 		
@@ -65,9 +60,8 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a single 
 	 * valued containment reference and the model is in state before the change.
 	 */		
-	@Ignore
 	@Test
-	def public void resolveBeforeUnsetSingleValuedContainmentReferenceTest() {
+	def public void resolveBeforeSingleValuedContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedContainmentTest
 		
@@ -80,7 +74,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued non containment reference and the model is in state before the change.
 	 */		
 	@Test
-	def public void resolveBeforeUnsetMultiValuedNonContainmentReferenceTest() {
+	def public void resolveBeforeMultiValuedNonContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedNonContainmentTest
 		
@@ -93,7 +87,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued containment reference and the model is in state before the change.
 	 */		
 	@Test
-	def public void resolveBeforeUnsetMultiValuedContainmentReferenceTest() {
+	def public void resolveBeforeMultiValuedContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest
 		
@@ -106,7 +100,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued non containment reference and the model is in state after the change.
 	 */	
 	@Test
-	def public void resolveAfterUnsetSingleValuedNonContainmentReferenceTest() {
+	def public void resolveAfterSingleValuedNonContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedNonContainmentTest
 		
@@ -118,9 +112,8 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a single 
 	 * valued containment reference and the model is in state after the change.
 	 */	
-	@Ignore
 	@Test
-	def public void resolveAfterUnsetSingleValuedContainmentReferenceTest() {
+	def public void resolveAfterSingleValuedContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedContainmentTest
 		
@@ -133,7 +126,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued non containment reference and the model is in state after the change.
 	 */	
 	@Test
-	def public void resolveAfterUnsetMultiValuedNonContainmentReferenceTest() {
+	def public void resolveAfterMultiValuedNonContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedNonContainmentTest
 		
@@ -146,7 +139,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued containment reference and the model is in state after the change.
 	 */	
 	@Test
-	def public void resolveAfterUnsetMultiValuedContainmentReferenceTest() {
+	def public void resolveAfterMultiValuedContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest
 		
@@ -175,7 +168,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a single valued non containment reference.
 	 */	
 	@Test
-	def public void unsetSingleValuedNonContainmentReferenceApplyForward() {
+	def public void applyForwardSingleValuedNonContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedNonContainmentTest
 				
@@ -187,9 +180,8 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Tests a {@link ExplicitUnsetEReference} EChange by applying it forward.
 	 * Unsets a single valued non containment reference.
 	 */	
-	@Ignore
 	@Test
-	def public void unsetSingleValuedContainmentReferenceApplyForward() {
+	def public void applyForwardSingleValuedContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedContainmentTest
 		
@@ -202,7 +194,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a multi valued non containment reference.
 	 */	
 	@Test
-	def public void unsetMultiValuedNonContainmentReferenceApplyForward() {
+	def public void applyForwardMultiValuedNonContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest
 
@@ -215,7 +207,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a multi valued containment reference.
 	 */	
 	@Test
-	def public void unsetMultiValuedNContainmentReferenceApplyForward() {
+	def public void applyForwardMultiValuedNContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest	
 		
@@ -228,7 +220,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a single valued non containment reference.
 	 */	
 	@Test
-	def public void unsetSingleValuedNonContainmentReferenceApplyBackward() {
+	def public void applyBackwardSingleValuedNonContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedNonContainmentTest
 				
@@ -240,9 +232,8 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Tests a {@link ExplicitUnsetEReference} EChange by applying it backward.
 	 * Unsets a single valued non containment reference.
 	 */	
-	@Ignore
 	@Test
-	def public void unsetSingleValuedContainmentReferenceApplyBackward() {
+	def public void applyBackwardSingleValuedContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedContainmentTest
 		
@@ -255,7 +246,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a multi valued non containment reference.
 	 */	
 	@Test
-	def public void unsetMultiValuedNonContainmentReferenceApplyBackward() {
+	def public void applyBackwardMultiValuedNonContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedNonContainmentTest
 
@@ -268,7 +259,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a multi valued containment reference.
 	 */	
 	@Test
-	def public void unsetMultiValuedNContainmentReferenceApplyBackward() {
+	def public void applyBackwardMultiValuedNContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest	
 		
@@ -438,7 +429,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			}
 		} else {
 			if (!affectedFeature.many) {
-				// Type NYI	
+				Assert.assertNotSame((change.changes.get(0) as ReplaceAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue)
 			} else {
 				Assert.assertNotSame((change.changes.get(0) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue3)
 				Assert.assertNotSame((change.changes.get(1) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue2)
@@ -464,7 +455,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			}
 		} else {
 			if (!affectedFeature.many) {
-				// Type NYI					
+				oldValue.assertEqualsOrCopy((change.changes.get(0) as ReplaceAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)					
 			} else {
 				oldValue3.assertEqualsOrCopy((change.changes.get(0) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)
 				oldValue2.assertEqualsOrCopy((change.changes.get(1) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)
@@ -480,19 +471,19 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		var List<EChange> changes = new ArrayList<EChange>
 		if (!affectedFeature.containment) {
 			if (!affectedFeature.many) {
-				changes.add(atomicFactory.<Root, NonRoot>createReplaceSingleReferenceChange(affectedEObject, affectedFeature, oldValue, null))
+				changes.add(atomicFactory.createReplaceSingleReferenceChange(affectedEObject, affectedFeature, oldValue, null))
 			} else {
-				changes.add(atomicFactory.<Root, NonRoot>createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue3, 2))
-				changes.add(atomicFactory.<Root, NonRoot>createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue2, 1))
-				changes.add(atomicFactory.<Root, NonRoot>createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue, 0))
+				changes.add(atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue3, 2))
+				changes.add(atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue2, 1))
+				changes.add(atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue, 0))
 			}
 		} else {
 			if (!affectedFeature.many) {
-				// Type NYI
+				changes.add(compoundFactory.createReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue))
 			} else {
-				changes.add(compoundFactory.<Root, NonRoot>createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue3, 2))
-				changes.add(compoundFactory.<Root, NonRoot>createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue2, 1))
-				changes.add(compoundFactory.<Root, NonRoot>createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0))
+				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue3, 2))
+				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue2, 1))
+				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0))
 			}
 		}
 		return compoundFactory.<Root, NonRoot>createExplicitUnsetEReferenceChange(affectedEObject, affectedFeature, changes)

@@ -11,6 +11,8 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.tests.echange.EChangeTest
 
+import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEAttribute} EChange, 
  * which replaces the value of an attribute with a new one.
@@ -21,8 +23,8 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
  	protected var String oldValue = null
  	protected var String newValue = null
  
-  	protected static val DEFAULT_ROOT_NAME = "Root Element"	
-  	protected static val DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE = 100
+  	protected static val DEFAULT_ROOT_NAME = "Root Element"
+  	protected static val DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE = 123
   	
  	@Before
  	override public void beforeTest() {
@@ -31,6 +33,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
  		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
  		oldValue = DEFAULT_ROOT_NAME
  		newValue = "New Root ID"
+ 		prepareStateBefore
  	}
 		
 	/**
@@ -39,9 +42,6 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 */
 	@Test
 	def public void resolveToCorrectType() {
-		// Set state before
-		prepareStateBefore
-		
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
 		
@@ -55,20 +55,16 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 * by replacing a single value in a root element with a new value.
 	 */
 	 @Test
-	 def public void replaceSingleValuedEAttributeApplyForwardTest() {
-	 	// Set state before
-		prepareStateBefore
-		
+	 def public void applyForwardTest() {
 		// Create change
 		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
 			as ReplaceSingleValuedEAttribute<Root, String>
-	 		
-	 	Assert.assertEquals(affectedEObject.id, oldValue)
 	 	
 	 	// Apply forward
-	 	Assert.assertTrue(resolvedChange.applyForward)
+	 	resolvedChange.assertApplyForward
 	 	
-	 	Assert.assertEquals(affectedEObject.id, newValue)
+	 	// State after
+	 	assertIsStateAfter
 	 }
 	 
 	 /**
@@ -76,30 +72,26 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	  * by replacing a single value in a root element with the old value.
 	  */
 	 @Test
-	 def public void replaceSingleValuedEAttributeApplyBackwardTest() {
-	 	// Set state before
-		prepareStateBefore
-		
+	 def public void applyBackwardTest() {
 		// Create change
 		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
 			as ReplaceSingleValuedEAttribute<Root, String>
 			
 		// Set state after
 		prepareStateAfter
-		
-	 	Assert.assertEquals(affectedEObject.id, newValue)
 	 	
 	 	// Apply backward
-	 	Assert.assertTrue(resolvedChange.applyBackward)
+	 	resolvedChange.assertApplyBackward
 	 	
-	 	Assert.assertEquals(affectedEObject.id, oldValue)
+	 	// State before
+	 	assertIsStateBefore
 	 }
 	 
 	 /**
 	  * Tests an affected object which has no such attribute.
 	  */
 	 @Test
-	 def public void replaceSingleValuedEAttributeInvalidAttribute() {
+	 def public void invalidAttributeTest() {
 	 	// NonRoot element has no int attribute.
 	 	val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
 	 	resource.contents.add(affectedNonRootEObject)
@@ -122,7 +114,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	  * Tests a {@link ReplaceSingleValuedEAttribue} EChange with the wrong value type.
 	  */
 	 @Test
-	 def public void replaceSingleValuedEAttributeInvalidValue() {
+	 def public void invalidValueTest() {
 	 	val oldIntValue = DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE // values are Integer, attribute value type is String
 	 	val newIntValue = 500
 	 	
@@ -133,7 +125,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	Assert.assertTrue(resolvedChange.isResolved)
 	 		
 	 	// Type of attribute is String not Integer
-	 	Assert.assertTrue(affectedFeature.EAttributeType.name == "EString")
+	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EString")
 	 	
 	 	Assert.assertFalse(resolvedChange.applyForward)
 	 	Assert.assertFalse(resolvedChange.applyBackward)
@@ -144,14 +136,30 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 * Set state before the change
 	 */
 	def private void prepareStateBefore() {
-  		rootObject.setId(oldValue)	 	
+  		rootObject.eSet(affectedFeature, oldValue)
+  		assertIsStateBefore 	
 	}
 	 
 	/**
 	 * Set state after the change
 	 */
 	def private void prepareStateAfter() {
-  		rootObject.setId(newValue)	 	
+  		rootObject.setId(newValue)
+  		assertIsStateAfter 	
+	}
+	
+	/** 
+	 * Model is in state before the change.
+	 */
+	def private void assertIsStateBefore() {
+		Assert.assertEquals(affectedEObject.eGet(affectedFeature), oldValue)
+	}
+	
+	/**
+	 * Model is in state after the change.
+	 */
+	def private void assertIsStateAfter() {
+		Assert.assertEquals(affectedEObject.eGet(affectedFeature), newValue)
 	}
 	 
 	/**
@@ -159,7 +167,6 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 */
 	def private ReplaceSingleValuedEAttribute<Root, String> createUnresolvedChange() {
 		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
-		return atomicFactory.<Root, String>createReplaceSingleAttributeChange
-		(affectedEObject, affectedFeature, oldValue, newValue)	
+		return atomicFactory.createReplaceSingleAttributeChange(affectedEObject, affectedFeature, oldValue, newValue)	
 	}
 }

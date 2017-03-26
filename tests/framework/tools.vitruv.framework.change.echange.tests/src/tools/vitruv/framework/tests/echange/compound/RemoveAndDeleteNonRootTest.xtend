@@ -11,6 +11,8 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 import tools.vitruv.framework.tests.echange.feature.reference.ReferenceEChangeTest
 
+import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+
 /**
  * Test class for the concrete {@link RemoveAndDeleteNonRoot} EChange,
  * which removes a non root element reference from a containment reference 
@@ -19,20 +21,13 @@ import tools.vitruv.framework.tests.echange.feature.reference.ReferenceEChangeTe
 public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	protected var EReference affectedFeature = null
 	protected var EList<NonRoot> referenceContent = null
-	protected var int index = DEFAULT_INDEX
-	
-	protected static val Integer DEFAULT_INDEX = 0
-	
-	/**
-	 * Calls setup of super class and sets the feature for the tests.
-	 */
+
 	@Before
 	override public void beforeTest() {
 		super.beforeTest()
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
-		referenceContent.add(newValue)
-		referenceContent.add(newValue2)
+		prepareStateBefore
 	}
 	
 	/**
@@ -40,13 +35,9 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * before the change, so the non root element is in a containment reference.
 	 */
 	@Test
-	def public void resolveRemoveAndDeleteNonRoot() {
-		// State before
-		val size = referenceContent.size
-		Assert.assertTrue(stagingArea.contents.empty)
-		
+	def public void resolveBeforeTest() {
 		// Create change
-		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue)
+		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 			
 		// Resolve
@@ -55,8 +46,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		resolvedChange.assertIsResolved(affectedEObject, newValue)		
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
-		Assert.assertEquals(referenceContent.size, size)
-		Assert.assertTrue(stagingArea.contents.empty)					
+		assertIsStateBefore
 	}
 	
 	/**
@@ -64,17 +54,13 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * after the change, so the non root element was deleted.
 	 */
 	@Test
-	def public void resolveRemoveAndDeleteNonRoot2() {
-		// State before change
-		Assert.assertTrue(stagingArea.contents.empty)	
-				
+	def public void resolveAfterTest() {		
 		// Create change
-		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue)
+		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 			
 		// Set state after change
-		prepareStateAfter
-		val size = referenceContent.size			
+		prepareStateAfter		
 				
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
@@ -82,8 +68,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
-		Assert.assertEquals(referenceContent.size, size)
-		Assert.assertTrue(stagingArea.contents.empty)		
+		assertIsStateAfter	
 	}
 	
 	/**
@@ -93,7 +78,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void resolveToCorrectType() {
 		// Create change
-		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue)
+		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 		
 		// Resolve		
  		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
@@ -105,36 +90,28 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Removes and deletes a non root element from a containment reference.
 	 */
 	@Test
-	def public void removeAndDeleteNonRootApplyForwardTest() {
-		// State before change
-		Assert.assertTrue(stagingArea.contents.empty)
-		Assert.assertTrue(referenceContent.contains(newValue))	
-		Assert.assertTrue(referenceContent.contains(newValue2))	
-		val oldSize = referenceContent.size
-		
+	def public void applyForwardTest() {
 		// Create and resolve change 1
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(resourceSet)
 			 as RemoveAndDeleteNonRoot<Root, NonRoot>
 		
 		// Apply forward 1
-		Assert.assertTrue(resolvedChange.applyForward)
+		resolvedChange.assertApplyForward
 		
-		Assert.assertEquals(referenceContent.size, oldSize - 1)
+		Assert.assertEquals(referenceContent.size, 1)
 		Assert.assertFalse(referenceContent.contains(newValue))
 		Assert.assertTrue(referenceContent.contains(newValue2))
 		Assert.assertTrue(stagingArea.contents.empty)
 	
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 0).resolveBefore(resourceSet)
 			 as RemoveAndDeleteNonRoot<Root, NonRoot>	
 			
 		// Apply forward 2
-		Assert.assertTrue(resolvedChange2.applyForward)
+		resolvedChange2.assertApplyForward
 		
-		Assert.assertEquals(referenceContent.size, oldSize - 2)
-		Assert.assertFalse(referenceContent.contains(newValue))
-		Assert.assertFalse(referenceContent.contains(newValue2))
-		Assert.assertTrue(stagingArea.contents.empty)		
+		// State after
+		assertIsStateAfter		
 	}
 	
 	/**
@@ -142,49 +119,68 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Creates and reinserts the removed object.
 	 */
 	@Test
-	def public void removeAndDeleteNonRootApplyBackwardTest() {
-		// State before
-		Assert.assertTrue(stagingArea.contents.empty)
-		val index1 = referenceContent.indexOf(newValue)
-		val index2 = referenceContent.indexOf(newValue2)
-		
+	def public void applyBackwardTest() {
 		// Create and resolve and apply change 1
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(resourceSet)
 			 as RemoveAndDeleteNonRoot<Root, NonRoot>
-		Assert.assertTrue(resolvedChange.applyForward)
+		resolvedChange.assertApplyForward
 		
 		// Create and resolve and apply change 2
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 0).resolveBefore(resourceSet)
 			 as RemoveAndDeleteNonRoot<Root, NonRoot>
-		Assert.assertTrue(resolvedChange2.applyForward)		
+		resolvedChange2.assertApplyForward
 		
 		// State after change
-		val oldSize = referenceContent.size
-		Assert.assertTrue(referenceContent.empty)		
+		assertIsStateAfter	
 		
 		// Apply backward 2
-		Assert.assertTrue(resolvedChange2.applyBackward)
+		resolvedChange2.assertApplyBackward
 		
-		Assert.assertEquals(referenceContent.size, oldSize + 1)	
+		Assert.assertEquals(referenceContent.size, 1)	
 		Assert.assertTrue(referenceContent.contains(newValue2))
 		Assert.assertTrue(stagingArea.contents.empty)
 				
 		// Apply backward 1
-		Assert.assertTrue(resolvedChange.applyBackward)
+		resolvedChange.assertApplyBackward
 		
-		Assert.assertEquals(referenceContent.size, oldSize + 2)	
-		Assert.assertEquals(referenceContent.indexOf(newValue), index1)
-		Assert.assertEquals(referenceContent.indexOf(newValue2), index2)
-		Assert.assertTrue(stagingArea.contents.empty)
+		// State before
+		assertIsStateBefore
 	}
 	
 	/**
-	 * Removes the new values from the affected reference
-	 * to set state after.
+	 * Sets the state of the model before the changes.
+	 */
+	def private void prepareStateBefore() {
+		referenceContent.add(newValue)
+		referenceContent.add(newValue2)	
+		assertIsStateBefore	
+	}
+	
+	/**
+	 * Sets the state of the model after the changes.
 	 */
 	def private void prepareStateAfter() {
 		referenceContent.remove(newValue)
 		referenceContent.remove(newValue2)
+		assertIsStateAfter
+	}
+	
+	/**
+	 * Model is in state before the changes.
+	 */
+	def private void assertIsStateBefore() {
+		Assert.assertEquals(referenceContent.size, 2)
+		newValue.assertEqualsOrCopy(referenceContent.get(0))
+		newValue2.assertEqualsOrCopy(referenceContent.get(1))
+		Assert.assertTrue(stagingArea.contents.empty)
+	}
+	
+	/**
+	 * Model is in state after the changes.
+	 */
+	def private void assertIsStateAfter() {
+		Assert.assertEquals(referenceContent.size, 0)
+		Assert.assertTrue(stagingArea.contents.empty)		
 	}
 
 	/**
@@ -195,9 +191,9 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		Assert.assertFalse(change.isResolved)
 		Assert.assertFalse(change.removeChange.isResolved)
 		Assert.assertFalse(change.deleteChange.isResolved)
-		Assert.assertTrue(change.removeChange.oldValue != removedNonRootObject)
-		Assert.assertTrue(change.deleteChange.affectedEObject != removedNonRootObject)
-		Assert.assertTrue(change.deleteChange.affectedEObject != change.removeChange.oldValue)
+		Assert.assertNotSame(change.removeChange.oldValue, removedNonRootObject)
+		Assert.assertNotSame(change.deleteChange.affectedEObject, removedNonRootObject)
+		Assert.assertNotSame(change.deleteChange.affectedEObject, change.removeChange.oldValue)
 	}
 	
 	/**
@@ -215,8 +211,8 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	/**
 	 * Creates new unresolved change.
 	 */
-	def private RemoveAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot) {
-		return compoundFactory.<Root, NonRoot>createRemoveAndDeleteNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index)	
+	def private RemoveAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot, int index) {
+		return compoundFactory.createRemoveAndDeleteNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index)	
 	}	
 		
 }

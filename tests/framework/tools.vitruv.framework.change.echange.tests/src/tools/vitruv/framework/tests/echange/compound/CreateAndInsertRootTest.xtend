@@ -10,6 +10,8 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.tests.echange.EChangeTest
 
+import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+
 /**
  * Test class for the concrete {@link CreateAndInsertRoot} EChange,
  * which creates a new root EObject and inserts it in a resource.
@@ -18,11 +20,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 	protected var Root newRootObject = null
 	protected var Root newRootObject2 = null
 	protected var EList<EObject> resourceContent = null;
-	protected var int index = DEFAULT_INDEX
-	
-	protected static val DEFAULT_INDEX = 1
-	protected static val Integer DEFAULT_CREATED_OBJECT_1_INTEGER_VALUE = 111
-	protected static val Integer DEFAULT_CREATED_OBJECT_2_INTEGER_VALUE = 222	
+
 	
 	/**
 	 * Calls setup of the superclass and creates two new root elements
@@ -32,10 +30,9 @@ class CreateAndInsertRootTest extends EChangeTest {
 	override public void beforeTest() {
 		super.beforeTest()
 		newRootObject = AllElementTypesFactory.eINSTANCE.createRoot()
-		newRootObject.singleValuedEAttribute = DEFAULT_CREATED_OBJECT_1_INTEGER_VALUE
 		newRootObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
-		newRootObject2.singleValuedEAttribute = DEFAULT_CREATED_OBJECT_2_INTEGER_VALUE
-		resourceContent = resourceSet.getResource(fileUri, false).contents
+		resourceContent = resource.contents
+		assertIsStateBefore
 	}
 		
 	/**
@@ -44,13 +41,9 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 * and the root object is not in the resource.
 	 */
 	@Test
-	def public void resolveCreateAndInsertRootTest() {
-		// State before
-		Assert.assertTrue(stagingArea.contents.empty)
-		val size = resourceContent.size
-		
+	def public void resolveBeforeTest() {
 		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject)
+		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved(newRootObject)
 
 		// Resolve
@@ -59,8 +52,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 		resolvedChange.assertIsResolved(newRootObject)		
 			
 		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		Assert.assertEquals(resourceContent.size, size)
-		Assert.assertTrue(stagingArea.contents.empty)
+		assertIsStateBefore
 	}
 	
 	/**
@@ -69,25 +61,20 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 * and the root object is in the resource.
 	 */
 	@Test
-	def public void resolveCreateAndInsertRootTest2() {
-		// State before	
-		Assert.assertTrue(stagingArea.contents.empty)
-		
+	def public void resolveAfterTest() {
 		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject)
+		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved(newRootObject)
 		
 		// Set state after		
-		resourceContent.add(DEFAULT_INDEX, newRootObject)
-		val size = resourceContent.size
+		prepareStateAfter
 			
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) as CreateAndInsertRoot<Root>
 		resolvedChange.assertIsResolved(newRootObject)
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		Assert.assertEquals(resourceContent.size, size)
-		Assert.assertTrue(stagingArea.contents.empty)
+		assertIsStateAfter
 	}
 	
 	/**
@@ -97,7 +84,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 	@Test
 	def public void resolveToCorrectType() {
 		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject)
+		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		
 		// Resolve		
  		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
@@ -109,32 +96,27 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 * by creating and inserting a new root object.
 	 */
 	@Test
-	def public void createAndInsertRootApplyForwardTest() {
-		// State before
-		Assert.assertTrue(stagingArea.contents.empty)
-		val oldSize = resourceContent.size
-		
+	def public void applyForwardTest() {
 		// Create and resolve change 1
-		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(resourceSet)
 			 as CreateAndInsertRoot<Root>
 			
 		// Apply 1
-		Assert.assertTrue(resolvedChange.applyForward)
+		resolvedChange.assertApplyForward
 	
-		Assert.assertEquals(resourceContent.size, oldSize + 1)
+		Assert.assertEquals(resourceContent.size, 2)
 		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
 		Assert.assertTrue(stagingArea.contents.empty)
 		
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(newRootObject2).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore(resourceSet)
 			 as CreateAndInsertRoot<Root>
 			
 		// Apply 2
-		Assert.assertTrue(resolvedChange2.applyForward)
+		resolvedChange2.assertApplyForward
 		
-		Assert.assertEquals(resourceContent.size, oldSize + 2)
-		Assert.assertTrue(resourceContent.contains(resolvedChange2.createChange.affectedEObject))
-		Assert.assertTrue(stagingArea.contents.empty)
+		// State after
+		assertIsStateAfter
 	}
 	
 	/**
@@ -142,43 +124,61 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 * by reverting the change. It removes and deletes a root object. 
 	 */
 	@Test
-	def public void createAndInsertRootApplyBackwardTest() {
-		// State before
-		Assert.assertTrue(stagingArea.contents.empty)
-		
+	def public void applyBackwardTest() {
 		// Create and resolve and apply change 1
-		val resolvedChange = createUnresolvedChange(newRootObject).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(resourceSet)
 			 as CreateAndInsertRoot<Root>
-		Assert.assertTrue(resolvedChange.applyForward)
+		resolvedChange.assertApplyForward
 
 		// Create and resolve and apply change 2
-		val resolvedChange2 = createUnresolvedChange(newRootObject2).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore(resourceSet)
 			 as CreateAndInsertRoot<Root>
-		Assert.assertTrue(resolvedChange2.applyForward)
+		resolvedChange2.assertApplyForward
 
 		// State after
-		val oldSize = resourceContent.size		
-		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))		
-		Assert.assertTrue(resourceContent.contains(resolvedChange2.createChange.affectedEObject))	
-		Assert.assertTrue(stagingArea.contents.empty)	
+		assertIsStateAfter
 		
 		// Apply backward 2
-		Assert.assertTrue(resolvedChange2.applyBackward)
+		resolvedChange2.assertApplyBackward
 		
-		Assert.assertEquals(resourceContent.size, oldSize - 1)
+		Assert.assertEquals(resourceContent.size, 2)
 		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
 		Assert.assertFalse(resourceContent.contains(resolvedChange2.createChange.affectedEObject))		
 		Assert.assertTrue(stagingArea.contents.empty)	
 		
 		// Apply backward 1
-		Assert.assertTrue(resolvedChange.applyBackward)
+		resolvedChange.assertApplyBackward
 		
-		Assert.assertEquals(resourceContent.size, oldSize - 2)
-		Assert.assertFalse(resourceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertFalse(resourceContent.contains(resolvedChange2.createChange.affectedEObject))		
-		Assert.assertTrue(stagingArea.contents.empty)	
+		// State before
+		assertIsStateBefore	
 	}
 	
+	/**
+	 * Sets the state of the model after the changes.
+	 */
+	def private void prepareStateAfter() {
+		resourceContent.add(newRootObject)
+		resourceContent.add(newRootObject2)	
+		assertIsStateAfter
+	}
+	
+	/**
+	 * Model is in state before the changes.
+	 */
+	def private void assertIsStateBefore() {
+		Assert.assertEquals(resourceContent.size, 1)
+		Assert.assertTrue(stagingArea.contents.empty)
+	}
+	
+	/**
+	 * Model is in state after the changes
+	 */
+	def private void assertIsStateAfter() {
+		Assert.assertEquals(resourceContent.size, 3)
+		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
+		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
+		Assert.assertTrue(stagingArea.contents.empty)
+	}
 	
 	/**
 	 * Change is not resolved.
@@ -187,9 +187,9 @@ class CreateAndInsertRootTest extends EChangeTest {
 		Assert.assertFalse(change.isResolved)
 		Assert.assertFalse(change.createChange.isResolved)
 		Assert.assertFalse(change.insertChange.isResolved)
-		Assert.assertTrue(change.createChange.affectedEObject != newRoot)
-		Assert.assertTrue(change.insertChange.newValue != newRoot)
-		Assert.assertTrue(change.createChange.affectedEObject != change.insertChange.newValue)
+		Assert.assertNotSame(change.createChange.affectedEObject, newRoot)
+		Assert.assertNotSame(change.insertChange.newValue, newRoot)
+		Assert.assertNotSame(change.createChange.affectedEObject, change.insertChange.newValue)
 	}
 	
 	/**
@@ -204,8 +204,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 	/**
 	 * Creates new unresolved change.
 	 */
-	def private CreateAndInsertRoot<Root> createUnresolvedChange(Root newObject) {
-		return compoundFactory.<Root>createCreateAndInsertRootChange
-		(newObject, resource, index)	
+	def private CreateAndInsertRoot<Root> createUnresolvedChange(Root newObject, int index) {
+		return compoundFactory.createCreateAndInsertRootChange(newObject, resource, index)	
 	}
 }

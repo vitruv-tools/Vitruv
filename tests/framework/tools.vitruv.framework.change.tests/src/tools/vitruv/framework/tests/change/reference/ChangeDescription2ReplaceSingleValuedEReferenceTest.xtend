@@ -142,10 +142,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		changes.assertChangeCount(1);
 		val innerChanges = changes.claimChange(0).assertExplicitUnsetEReference.changes
 		innerChanges.assertChangeCount(1);
-		// FIXME HK Should be 2 changes!
-		changes.claimChange(0).assertExplicitUnsetEReference.atomicChanges.assertChangeCount(1);
-		innerChanges.get(0).assertReplaceSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE,
-			nonRoot, null, true)
+		innerChanges.get(0).assertReplaceAndDeleteNonRoot(nonRoot, rootElement, ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE)
 	}
 	
 	@Test

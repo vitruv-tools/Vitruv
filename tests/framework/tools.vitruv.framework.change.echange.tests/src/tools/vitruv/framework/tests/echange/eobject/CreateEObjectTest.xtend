@@ -4,12 +4,21 @@ import allElementTypes.Root
 import org.junit.Assert
 import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import org.junit.Before
+
+import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 
 /**
  * Test class for the concrete {@link CreateEObject} EChange,
  * which creates a new EObject and puts it in the staging area.
  */
 class CreateEObjectTest extends EObjectTest {
+	@Before
+	override public void beforeTest() {
+		super.beforeTest
+		prepareStateBefore
+	}
+	
 	/**
 	 * Tests whether resolving the {@link CreateEObjectTest} EChange returns
 	 * the same class.
@@ -29,40 +38,29 @@ class CreateEObjectTest extends EObjectTest {
 	 * new EObject and putting it in the staging area.
 	 */
 	@Test
-	def public void createEObjectApplyForwardTest() {
-		// Set state before
-		Assert.assertTrue(stagingArea.contents.empty)
-		
+	def public void applyForwardTest() {
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(resourceSet)
 			as CreateEObject<Root>
 			
 		// Apply forward
-		Assert.assertTrue(resolvedChange.applyForward)
+		resolvedChange.assertApplyForward
 		
-		// Staging area contains copy
-		Assert.assertFalse(stagingArea.contents.contains(createdObject))
-		Assert.assertEquals((stagingArea.contents.get(0) as Root).singleValuedEAttribute, 
-			createdObject.singleValuedEAttribute)
+		// State after
+		assertIsStateAfter(createdObject)
 		
-		// Now another change would take the object and inserts it in another resource
-		stagingArea.contents.clear()
-		
-		// Staging area is empty again
-		Assert.assertTrue(stagingArea.contents.empty)
+		// Now another change would take the object and inserts it in a resource
+		prepareStateBefore
 		
 		// Create change and resolve 2
 		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(resourceSet)
 			as CreateEObject<Root>
 			
 		// Apply forward 2
-		Assert.assertTrue(resolvedChange2.applyForward)
+		resolvedChange2.assertApplyForward
 		
-		Assert.assertFalse(stagingArea.contents.empty)
-		// Staging area contains copy
-		Assert.assertFalse(stagingArea.contents.contains(createdObject2))
-		Assert.assertEquals((stagingArea.contents.get(0) as Root).singleValuedEAttribute, 
-			createdObject2.singleValuedEAttribute)	
+		// State after
+		assertIsStateAfter(createdObject2)
 	}
 	
 	/**
@@ -70,27 +68,55 @@ class CreateEObjectTest extends EObjectTest {
 	 * by removing a newly created object from the staging area.
 	 */
 	@Test
-	def public void createEObjectApplyBackwardTest() {
+	def public void applyBackwardTest() {
 		// Set state after
-		prepareStagingArea(createdObject)
+		prepareStateAfter(createdObject)
 
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter(resourceSet)
 			as CreateEObject<Root>
-		Assert.assertFalse(stagingArea.contents.empty)
 		
 		// Apply backward
-		Assert.assertTrue(resolvedChange.applyBackward)
-		
+		resolvedChange.assertApplyBackward
+	}
+	
+	/**
+	 * Sets the state of the model before the change.
+	 */
+	def private void prepareStateBefore() {
+		stagingArea.contents.clear
+		assertIsStateBefore
+	}
+	
+	/** 
+	 * Sets the state of the model after the change.
+	 */
+	def private void prepareStateAfter(Root object) {
+		stagingArea.contents.clear
+		stagingArea.contents.add(object)
+		assertIsStateAfter(object)
+	}
+	
+	/**
+	 * Model is in state before the change.
+	 */
+	def private void assertIsStateBefore() {
 		Assert.assertTrue(stagingArea.contents.empty)
+	}
+	
+	/**
+	 * Model is in state after the change.
+	 */
+	def private void assertIsStateAfter(Root object) {
+		Assert.assertEquals(stagingArea.contents.size, 1)
+		object.assertEqualsOrCopy(stagingArea.contents.get(0))
 	}
 	
 	/**
 	 * Creates new unresolved change.
 	 */
 	def private CreateEObject<Root> createUnresolvedChange(Root newObject) {
-		// The concrete change type CreateEObject will be used for the tests.
-		return atomicFactory.<Root>createCreateEObjectChange(newObject, resource)
+		return atomicFactory.createCreateEObjectChange(newObject, resource)
 	}
 		
 }

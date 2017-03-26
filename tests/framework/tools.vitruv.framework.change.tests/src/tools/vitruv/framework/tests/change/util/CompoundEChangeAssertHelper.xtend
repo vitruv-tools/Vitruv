@@ -1,22 +1,25 @@
 package tools.vitruv.framework.tests.change.util
 
-import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*;
-import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*;
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import org.eclipse.emf.ecore.EStructuralFeature
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
-import org.junit.Assert
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
-import tools.vitruv.framework.change.echange.util.StagingArea
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
 import org.eclipse.emf.ecore.resource.Resource
+import org.junit.Assert
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
+import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
+import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
+import tools.vitruv.framework.change.echange.util.StagingArea
+
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 
 class CompoundEChangeAssertHelper {
 	def public static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> assertCreateAndInsertNonRoot(
@@ -46,20 +49,33 @@ class CompoundEChangeAssertHelper {
 			expectedOldValue, expectedNewValue, isContainment)
 	}
 	
+	def static void assertCreateAndReplaceNonRoot(EChange change, EObject expectedNewValue,
+		EObject affectedEObject, EStructuralFeature affectedFeature) {
+		val compositeChange = assertObjectInstanceOf(change, CreateAndReplaceNonRoot)
+		compositeChange.createChange.assertCreateEObject(expectedNewValue, StagingArea.getStagingArea(affectedEObject.eResource))
+		compositeChange.insertChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature,
+			null, expectedNewValue, true)
+	}
+	
+	def static void assertReplaceAndDeleteNonRoot(EChange change, EObject expectedOldValue,
+		EObject affectedEObject, EStructuralFeature affectedFeature) {
+		val compositeChange = assertObjectInstanceOf(change, ReplaceAndDeleteNonRoot)
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(affectedEObject.eResource))
+		compositeChange.removeChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature,
+			expectedOldValue, null, true)
+	}
 
 	def public static void assertCreateAndInsertRootEObject(EChange change, EObject expectedNewValue, String uri, Resource resource) {
 		val compositeChange = change.assertObjectInstanceOf(CreateAndInsertRoot)
 		compositeChange.createChange.assertCreateEObject(expectedNewValue, StagingArea.getStagingArea(resource))
 		compositeChange.insertChange.assertInsertRootEObject(expectedNewValue, uri, resource)
 	}
-	
 
 	def public static void assertRemoveAndDeleteRootEObject(EChange change, EObject expectedOldValue, String uri, Resource resource) {
 		val compositeChange = change.assertObjectInstanceOf(RemoveAndDeleteRoot)
 		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(resource))
 		compositeChange.removeChange.assertRemoveRootEObject(expectedOldValue, uri, resource)
 	}
-
 
 	def public static <A extends EObject, T, S extends SubtractiveAttributeEChange<A, T>> ExplicitUnsetEAttribute<A, T> assertExplicitUnsetEAttribute(
 			EChange change) {

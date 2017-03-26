@@ -1,7 +1,6 @@
 package tools.vitruv.framework.tests.echange
 
 import allElementTypes.AllElementTypesFactory
-import allElementTypes.Identified
 import allElementTypes.Root
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
@@ -9,16 +8,15 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.junit.After
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.util.StagingArea
+import org.eclipse.emf.ecore.EObject
 
 /**
  * Default class for testing EChange changes.
@@ -89,30 +87,17 @@ import tools.vitruv.framework.change.echange.util.StagingArea
 		stagingArea.contents.clear
  	}
  	
- 	/**
- 	 * Tests whether a unresolved change and a resolved change are the same class.
- 	 */
- 	def protected static void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange)	 {
- 		Assert.assertFalse(unresolvedChange.isResolved)
- 		Assert.assertTrue(resolvedChange.isResolved)
- 		Assert.assertFalse(unresolvedChange == resolvedChange)
- 		Assert.assertEquals(unresolvedChange.getClass, resolvedChange.getClass)
- 	}
- 	 	
- 	/**
- 	 * Tests whether two objects are not the same object, but a copy with the same id.
- 	 */
- 	def protected static void assertIsCopy(Identified object1,  Identified object2) {
- 		Assert.assertTrue(object1 != object2)
- 		Assert.assertEquals(object1.id, object2.id)
- 	}
- 	
- 	/**
- 	 * Tests whether two objects are the same object or copies of each other.
- 	 */
- 	def protected static void assertEqualsOrCopy(Identified object1, Identified object2) {
-		if (object1 != object2) {
-			object1.assertIsCopy(object2)
+	/**
+	 * Prepares the staging area and the object which is in progress
+	 * for a test. Inserts a new element to the staging area which will 
+	 * be used in the test.
+	 * @param object The EObject which will be inserted in the staging area. 
+	 * 		Clears and sets the 0th element.
+	 */
+	protected def void prepareStagingArea(EObject object) {
+		if (object != null) {
+			stagingArea.contents.clear
+			stagingArea.contents.add(object)			
 		}
 	}
  }

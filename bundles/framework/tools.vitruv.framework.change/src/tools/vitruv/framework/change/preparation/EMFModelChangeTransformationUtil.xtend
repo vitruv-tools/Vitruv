@@ -169,19 +169,22 @@ package class EMFModelChangeTransformationUtil {
 	
 	def static EChange createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
-		val isCreate = newReferenceValue != null && isContainment && isCreate(newReferenceValue.eContainer, newReferenceValue.eResource)
-		val isDelete = oldReferenceValue != null && isContainment;// && isDelete(oldReferenceValue.eContainer, oldReferenceValue.eResource)
-		if (forceCreate || (isCreate && isDelete)) {
-			return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);
-		} else {
+		if (!isContainment && !forceCreate) {
 			return TypeInferringAtomicEChangeFactory.instance.createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);
+		} else {
+			if (oldReferenceValue == null) {
+				return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceNonRootChange(affectedEObject, affectedReference, newReferenceValue)
+			} else if (newReferenceValue == null) {
+				return TypeInferringCompoundEChangeFactory.instance.createReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue)
+			} else {
+				return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);				
+			}
 		}
 	}
 	
 	def static EChange createInsertAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, int index, Object newValue) {
 		return TypeInferringAtomicEChangeFactory.instance.createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValue)
 	}
-	
 
 	def static EChange createRemoveAttributeChange(EObject affectedEObject, 
 		EAttribute affectedAttribute, int index, Object oldValue) {

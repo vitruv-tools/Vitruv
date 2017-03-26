@@ -56,7 +56,6 @@ import org.junit.After
  		stagingArea2.contents.clear
  		super.afterTest()
  	}
-
 	 
  	/**
  	 * Tests if a feature change, which affected object and feature references 
@@ -64,7 +63,7 @@ import org.junit.After
  	 * after unresolving the object. 
  	 */
  	@Test
- 	def public void resolveEFeatureChangeTest() {
+ 	def public void resolveBeforeTest() {
 		// Create change 		
  		val unresolvedChange = createUnresolvedChange()
  		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
@@ -81,7 +80,7 @@ import org.junit.After
  	 * after unresolving the object.
  	 */
  	@Test
- 	def public void resolveEFeatureChangeTest2() {
+ 	def public void resolveOnSecondResourceSet() {
 		// Create change 		
  		val unresolvedChange = createUnresolvedChange()
  		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
@@ -95,8 +94,6 @@ import org.junit.After
  		val resolvedChange2 = unresolvedChange.resolveBefore(resourceSet2)
  			as FeatureEChange<Root, EAttribute>
  		resolvedChange2.assertIsResolved(rootObject2, affectedFeature)
- 		
- 		Assert.assertTrue(rootObject != rootObject2)	
  	}
 
 	/**
@@ -134,7 +131,7 @@ import org.junit.After
 		val resolvedChange2 = resolvedChange.resolveBefore(resourceSet)
 		 	as FeatureEChange<Root, EAttribute>
  		resolvedChange2.assertIsResolved(affectedEObject, affectedFeature)
-		Assert.assertTrue(resolvedChange == resolvedChange2)
+		Assert.assertSame(resolvedChange, resolvedChange2)
 	}
  	
  	/**
@@ -203,8 +200,8 @@ import org.junit.After
 	def private static void assertIsNotResolved(FeatureEChange<Root, EAttribute> change, 
 		Root affectedEObject, EAttribute affectedFeature) {
 		Assert.assertFalse(change.isResolved)
-		Assert.assertTrue(change.affectedEObject != affectedEObject)
-		Assert.assertTrue(change.affectedFeature == affectedFeature)				
+		Assert.assertNotSame(change.affectedEObject, affectedEObject)
+		Assert.assertSame(change.affectedFeature, affectedFeature)				
 	} 
 	
 	/**
@@ -213,8 +210,8 @@ import org.junit.After
  	def private static void assertIsResolved(FeatureEChange<Root, EAttribute> change, 
 		Root affectedEObject, EAttribute affectedFeature) {
 		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.affectedEObject == affectedEObject)
-		Assert.assertTrue(change.affectedFeature == affectedFeature)			
+		Assert.assertSame(change.affectedEObject, affectedEObject)
+		Assert.assertSame(change.affectedFeature, affectedFeature)			
 	} 
 
 	/**
@@ -222,6 +219,6 @@ import org.junit.After
 	 */
 	def private FeatureEChange<Root, EAttribute> createUnresolvedChange() {
 		// The concrete change type ReplaceSingleEAttributeChange will be used for the tests.
-		return atomicFactory.<Root, String>createReplaceSingleAttributeChange(affectedEObject, affectedFeature, null, null)	
+		return atomicFactory.createReplaceSingleAttributeChange(affectedEObject, affectedFeature, null, null)	
 	}	 
  }

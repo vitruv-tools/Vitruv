@@ -68,6 +68,8 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 			case CompoundPackage.REMOVE_AND_DELETE_ROOT: return createRemoveAndDeleteRoot();
 			case CompoundPackage.CREATE_AND_INSERT_NON_ROOT: return createCreateAndInsertNonRoot();
 			case CompoundPackage.REMOVE_AND_DELETE_NON_ROOT: return createRemoveAndDeleteNonRoot();
+			case CompoundPackage.CREATE_AND_REPLACE_NON_ROOT: return createCreateAndReplaceNonRoot();
+			case CompoundPackage.REPLACE_AND_DELETE_NON_ROOT: return createReplaceAndDeleteNonRoot();
 			case CompoundPackage.CREATE_AND_REPLACE_AND_DELETE_NON_ROOT: return createCreateAndReplaceAndDeleteNonRoot();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -180,6 +182,26 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	public <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRoot() {
 		RemoveAndDeleteNonRootImpl<A, T> removeAndDeleteNonRoot = new RemoveAndDeleteNonRootImpl<A, T>();
 		return removeAndDeleteNonRoot;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRoot() {
+		CreateAndReplaceNonRootImpl<A, T> createAndReplaceNonRoot = new CreateAndReplaceNonRootImpl<A, T>();
+		return createAndReplaceNonRoot;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRoot() {
+		ReplaceAndDeleteNonRootImpl<A, T> replaceAndDeleteNonRoot = new ReplaceAndDeleteNonRootImpl<A, T>();
+		return replaceAndDeleteNonRoot;
 	}
 
 	/**

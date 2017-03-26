@@ -7,6 +7,8 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 
+import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+
 /**
  * Test class for the abstract class {@link EObjectExistenceEChange} EChange,
  * which creates or deletes a new EObject.
@@ -17,18 +19,20 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * a new object which was not created yet. So the staging area will be filled.
 	 */
 	@Test
-	def public void resovlveEObjectExistenceEChangeTest() {	
+	def public void resovlveBeforeTest() {	
+		// State before
+		assertIsStateBefore
+		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(createdObject)
 		unresolvedChange.assertIsNotResolved(createdObject)
-		// Staging area is unaffected while resolving the change		
-		Assert.assertTrue(stagingArea.contents.empty) 
+		assertIsStateBefore
 		
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 			as CreateEObject<Root>
-		resolvedChange.assertIsResolved(createdObject, stagingArea)	
-		Assert.assertTrue(stagingArea.contents.empty)
+		resolvedChange.assertIsResolved(createdObject, stagingArea)
+		assertIsStateBefore
 	}
 	
 	/**
@@ -36,24 +40,25 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * new object which was already created and was put in the staging area.
 	 */
 	@Test
-	def public void resolveEObjectExistenceEChangeTest2() {
+	def public void resolveAfterTest() {
+		// State before
+		assertIsStateBefore
+		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(createdObject)
 		unresolvedChange.assertIsNotResolved(createdObject)
 				
 		// Set state after
 		prepareStagingArea(createdObject)
-		// Staging area is unaffected while resolving the change
-		Assert.assertFalse(stagingArea.contents.empty)
-		Assert.assertTrue(stagingArea.contents.get(0) == createdObject)		
+		assertIsStateAfter	
 		
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
 			as CreateEObject<Root>
 		resolvedChange.assertIsResolved(createdObject, stagingArea)	
 		
-		Assert.assertFalse(stagingArea.contents.empty)
-		Assert.assertTrue(stagingArea.contents.get(0) == createdObject)	
+		// State after
+		assertIsStateAfter
 	}
 	
 	/**
@@ -61,7 +66,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * affected EObject.
 	 */
 	@Test
-	def public void resolveEObjectExistenceEChangeInvalidObjectTest() {
+	def public void resolveInvalidAffectedEObjectTest() {
 		createdObject = null
 		
 		// Create change
@@ -78,7 +83,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 */
 	def private static void assertIsNotResolved(EObjectExistenceEChange<Root> change, Root affectedEObject) {
 		Assert.assertFalse(change.isResolved)
-		Assert.assertTrue(change.affectedEObject != affectedEObject)
+		Assert.assertNotSame(change.affectedEObject, affectedEObject)
 		Assert.assertNull(change.stagingArea)
 	}
 	
@@ -89,7 +94,22 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		Resource stagingArea) {
 		Assert.assertTrue(change.isResolved)
 		affectedEObject.assertEqualsOrCopy(change.affectedEObject)
-		Assert.assertTrue(change.stagingArea == stagingArea)	
+		Assert.assertSame(change.stagingArea, stagingArea)	
+	}
+	
+	/**
+	 * Model is in state before the change.
+	 */
+	def private void assertIsStateBefore() {
+		Assert.assertTrue(stagingArea.contents.empty)		
+	}
+	
+	/**
+	 * Model is in state after the change.
+	 */
+	def private void assertIsStateAfter() {
+		Assert.assertEquals(stagingArea.contents.size, 1)
+		createdObject.assertEqualsOrCopy(stagingArea.contents.get(0))
 	}
 	
 	/**
@@ -97,6 +117,6 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 */
 	def private EObjectExistenceEChange<Root> createUnresolvedChange(Root createdObject) {
 		// The concrete change type CreateEObject will be used for the tests.
-		return atomicFactory.<Root>createCreateEObjectChange(createdObject, resource)
+		return atomicFactory.createCreateEObjectChange(createdObject, resource)
 	}
 }

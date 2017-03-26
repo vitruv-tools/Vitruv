@@ -13,6 +13,8 @@ import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
 
+import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+
 /**
  * Test class for the concrete {@link ExplicitUnsetEAttribute} EChange,
  * which unsets a single or multi valued attribute.
@@ -38,7 +40,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * valued attribute and the model is in state before the change.
 	 */
 	@Test
-	def public void resolveBeforeUnsetSingleValuedAttributeTest() {
+	def public void resolveBeforeSingleValuedAttributeTest() {
 		// Set state before
 		isSingleValuedAttributeTest
 		
@@ -51,7 +53,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * valued attribute and the model is in state after the change.
 	 */
 	@Test
-	def public void resolveAfterUnsetSingleValuedAttributeTest() {
+	def public void resolveAfterSingleValuedAttributeTest() {
 		// Set state before
 		isSingleValuedAttributeTest	
 		
@@ -107,7 +109,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Unsets a single valued unsettable attribute.
 	 */
 	@Test
-	def public void unsetSingleValuedAttributeApplyForwardTest() {
+	def public void applyForwardUnsetSingleValuedAttributeTest() {
 		// Set state before
 		isSingleValuedAttributeTest
 
@@ -120,7 +122,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Unsets a multi valued unsettable attribute.
 	 */
 	@Test
-	def public void unsetMulitValuedAttributeApplyForwardTest() {
+	def public void applyForwardUnsetMulitValuedAttributeTest() {
 		// Set state before
 		isMultiValuedAttributeTest
 
@@ -133,7 +135,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Unsets a single valued unsettable attribute.
 	 */
 	@Test
-	def public void unsetSingleValuedAttributeApplyBackwardTest() {
+	def public void applyBackwardUnsetSingleValuedAttributeTest() {
 		// Set state before
 		isSingleValuedAttributeTest
 		
@@ -146,7 +148,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Unsets a multi valued unsettable attribute.
 	 */
 	@Test
-	def public void unsetMulitValuedAttributeApplyBackwardTest() {
+	def public void applyBackwardUnsetMulitValuedAttributeTest() {
 		// Set state before
 		isMultiValuedAttributeTest
 		
@@ -189,7 +191,8 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Sets the state after the change.
 	 */
 	def private void prepareStateAfter() {
-		affectedEObject.eUnset(affectedFeature)		
+		affectedEObject.eUnset(affectedFeature)	
+		assertIsStateAfter
 	}
 	
 	/**
@@ -218,10 +221,10 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 */
 	def private static assertIsNotResolved(ExplicitUnsetEAttribute<Root, Integer> change, Root affectedRootObject) {
 		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.affectedEObject == affectedRootObject)
+		Assert.assertNotSame(change.affectedEObject, affectedRootObject)
 		for (c : change.atomicChanges) {
 			Assert.assertFalse(c.isResolved)
-			Assert.assertFalse((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject == affectedRootObject)
+			Assert.assertNotSame((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject, affectedRootObject)
 		}
 	}
 	
@@ -231,9 +234,9 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	def private static assertIsResolved(ExplicitUnsetEAttribute<Root, Integer> change, Root affectedRootObject) {
 		Assert.assertNotNull(change)
 		Assert.assertTrue(change.isResolved)
-		Assert.assertTrue(change.affectedEObject == affectedRootObject)
+		Assert.assertSame(change.affectedEObject, affectedRootObject)
 		for (c : change.atomicChanges) {
-			Assert.assertTrue((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject == affectedRootObject)
+			Assert.assertSame((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject, affectedRootObject)
 		}		
 	}
 	
@@ -298,7 +301,6 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 		
 		// Set state after
 		prepareStateAfter
-		assertIsStateAfter
 		
 		// Resolve 1
 		var resolvedChange = unresolvedChange.resolveAfter(resourceSet)
@@ -329,7 +331,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 			as ExplicitUnsetEAttribute<Root, Integer>
 			
 		// Apply forward
-		Assert.assertTrue(resolvedChange.applyForward)
+		resolvedChange.assertApplyForward
 		
 		// State after
 		assertIsStateAfter		
@@ -348,10 +350,9 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 			
 		// Set state after
 		prepareStateAfter
-		assertIsStateAfter
 		
 		// Apply forward
-		Assert.assertTrue(resolvedChange.applyBackward)
+		resolvedChange.assertApplyBackward
 		
 		// State before
 		assertIsStateBefore		

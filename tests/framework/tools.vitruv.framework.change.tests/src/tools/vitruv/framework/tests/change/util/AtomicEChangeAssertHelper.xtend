@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
@@ -20,6 +21,8 @@ import tools.vitruv.framework.change.echange.root.RootEChange
 import static org.junit.Assert.*
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
+import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
+import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
 
 class AtomicEChangeAssertHelper {
 	public def static assertEObjectExistenceChange(EChange change, EObject affectedEObject, Resource stagingArea) {
@@ -95,18 +98,28 @@ class AtomicEChangeAssertHelper {
 	
 	def static void assertSetSingleValuedEReference(EChange change,	EObject affectedEObject, EStructuralFeature affectedFeature, 
 			EObject expectedNewValue, boolean isContainment, boolean isCreate) {
-		val replaceChange = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
-		replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, null, expectedNewValue, isContainment);
-		assertFalse(replaceChange.isFromNonDefaultValue);
-		assertTrue(replaceChange.isToNonDefaultValue);
+		if (isContainment && isCreate) {
+			val createAndReplaceChange = change.assertObjectInstanceOf(CreateAndReplaceNonRoot)
+			createAndReplaceChange.assertCreateAndReplaceNonRoot(expectedNewValue, affectedEObject, affectedFeature)
+		} else {
+			val replaceChange = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
+			replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, null, expectedNewValue, isContainment);
+			assertFalse(replaceChange.isFromNonDefaultValue);
+			assertTrue(replaceChange.isToNonDefaultValue);			
+		}
 	}
 		
 	def static void assertUnsetSingleValuedEReference(EChange change, EObject affectedEObject, EStructuralFeature affectedFeature,
 			EObject expectedOldValue, boolean isContainment, boolean isDelete) {
-		val replaceChange = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
-		replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, expectedOldValue, null, isContainment);
-		assertTrue(replaceChange.isFromNonDefaultValue);
-		assertFalse(replaceChange.isToNonDefaultValue);
+		if (isContainment && isDelete) {
+			val replaceAndDeleteChange = change.assertObjectInstanceOf(ReplaceAndDeleteNonRoot)
+			replaceAndDeleteChange.assertReplaceAndDeleteNonRoot(expectedOldValue, affectedEObject, affectedFeature)
+		} else {
+			val replaceChange = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
+			replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, expectedOldValue, null, isContainment);
+			assertTrue(replaceChange.isFromNonDefaultValue);
+			assertFalse(replaceChange.isToNonDefaultValue);			
+		}
 	}
 	
 	// FIXME GENERICS

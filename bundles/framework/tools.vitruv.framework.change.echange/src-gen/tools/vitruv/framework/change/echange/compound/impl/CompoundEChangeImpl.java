@@ -87,8 +87,8 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
-			boolean _resolveCompoundEChange = CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, true, true);
-			if (_resolveCompoundEChange) {
+			boolean _resolve = CompoundEChangeResolver.resolve(change, resourceSet, true, true);
+			if (_resolve) {
 				return change;
 			}
 			return null;
@@ -106,8 +106,8 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
-			boolean _resolveCompoundEChange = CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, false, true);
-			if (_resolveCompoundEChange) {
+			boolean _resolve = CompoundEChangeResolver.resolve(change, resourceSet, false, true);
+			if (_resolve) {
 				return change;
 			}
 			return null;
@@ -125,8 +125,8 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
-			boolean _resolveCompoundEChange = CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, true, false);
-			if (_resolveCompoundEChange) {
+			boolean _resolve = CompoundEChangeResolver.resolve(change, resourceSet, true, false);
+			if (_resolve) {
 				return change;
 			}
 		}
@@ -149,8 +149,8 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		boolean _not = (!_isResolved);
 		if (_not) {
 			final CompoundEChange change = EcoreUtil.<CompoundEChange>copy(this);
-			boolean _resolveCompoundEChange = CompoundEChangeResolver.resolveCompoundEChange(change, resourceSet, false, false);
-			if (_resolveCompoundEChange) {
+			boolean _resolve = CompoundEChangeResolver.resolve(change, resourceSet, false, false);
+			if (_resolve) {
 				return change;
 			}
 		}
