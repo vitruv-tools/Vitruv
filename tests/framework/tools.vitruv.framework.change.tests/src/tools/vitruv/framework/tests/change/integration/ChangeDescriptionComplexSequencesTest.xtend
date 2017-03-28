@@ -52,13 +52,16 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		this.rootElement.nonRootObjectContainerHelper = nonRootObjectsContainer;
 				
 		// assert
-		changes.assertChangeCount(3);
+		changes.assertChangeCount(4);
 		val containerChange = changes.claimChange(0);
 		containerChange.assertSetSingleValuedEReference(rootElement, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER,
 			nonRootObjectsContainer, true, true);
+		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null, nonRootObjectsContainer.id);
 		val nonRootChange = changes.claimChange(2);
 		nonRootChange.assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
 			nonRoot, 0);
+		changes.claimChange(3).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
+		
 		
 	}
 	

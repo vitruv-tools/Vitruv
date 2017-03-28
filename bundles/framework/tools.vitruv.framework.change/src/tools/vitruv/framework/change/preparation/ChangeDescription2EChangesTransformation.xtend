@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
 import org.eclipse.emf.ecore.change.ChangeDescription
 import java.util.ArrayList
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
+import tools.vitruv.framework.change.echange.compound.CompoundEChange
 
 public class ChangeDescription2EChangesTransformation {
 
@@ -190,7 +191,8 @@ public class ChangeDescription2EChangesTransformation {
 				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
 					val recursiveChanges = EMFModelChangeTransformationUtil.createAdditiveCreateChangesForValue(eObject, feature);
 					eChanges.addAll(recursiveChanges);
-					for (change : recursiveChanges.filter(AdditiveReferenceEChange)) {
+					val additiveReferenceChanges = (recursiveChanges + recursiveChanges.filter(CompoundEChange).map[atomicChanges].flatten).filter(AdditiveReferenceEChange)
+					for (change : additiveReferenceChanges) {
 						if ((change as UpdateReferenceEChange<?>).affectedFeature.containment) recursivelyAddChangesForNonDefaultValues(change.newValue as EObject);
 					}
 				}
