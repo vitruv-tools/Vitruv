@@ -6,7 +6,6 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.reactions.environment.SimpleTextXBlockExpression
 import org.eclipse.xtext.xbase.XBlockExpression
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
@@ -36,27 +35,27 @@ final class ReactionsLanguageHelper {
 		return metaclassReference.metaclass.javaClass;
 	}
 	
-	static def Pair<VURI, VURI> getSourceTargetPair(ReactionsSegment reactionsSegment) {
-		val sourceVURI = reactionsSegment.fromMetamodel.model.package.VURI;
-		val targetVURI = reactionsSegment.toMetamodel.model.package.VURI;
-		if (sourceVURI != null && targetVURI != null) {
-			return new Pair<VURI, VURI>(sourceVURI, targetVURI);
+	static def Pair<EPackage, EPackage> getSourceTargetPair(ReactionsSegment reactionsSegment) {
+		val sourcePackage = reactionsSegment.fromMetamodel.model.package.topPackage;
+		val targetPackage = reactionsSegment.toMetamodel.model.package.topPackage;
+		if (sourcePackage != null && targetPackage != null) {
+			return new Pair<EPackage, EPackage>(sourcePackage, targetPackage);
 		} else {
 			return null;
 		}		
 	}
 	
-	static def Pair<VURI, VURI> getSourceTargetPair(Reaction reaction) {
+	static def Pair<EPackage, EPackage> getSourceTargetPair(Reaction reaction) {
 		return reaction.reactionsSegment.sourceTargetPair;
 	}
 	
-	private static def VURI getVURI(EPackage pckg) {
+	private static def EPackage getTopPackage(EPackage pckg) {
 		return if (pckg?.nsURI != null) {
 			var topPckg = pckg;
 			while (topPckg.ESuperPackage != null) {
 				topPckg = pckg.ESuperPackage;
 			}
-			VURI.getInstance(topPckg.nsURI);
+			return topPckg;
 		} else {
 			null;
 		}

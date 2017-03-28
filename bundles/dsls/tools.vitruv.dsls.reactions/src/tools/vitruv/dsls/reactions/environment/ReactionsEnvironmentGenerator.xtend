@@ -2,7 +2,6 @@ package tools.vitruv.dsls.reactions.environment;
 
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.dsls.reactions.helper.XtendImportHelper
 import tools.vitruv.framework.util.datatypes.Pair;
 import java.util.Map
@@ -27,6 +26,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.api.generator.IReactionsEnvironmentGenerator
+import org.eclipse.emf.ecore.EPackage
 
 class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	@Inject
@@ -166,7 +166,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	
 	private def generate(IFileSystemAccess2 fsa) {
 		reinitializeDerivedStateOfTemporaryResources();		
-		val modelCorrespondencesToExecutors = new HashMap<Pair<VURI, VURI>, List<String>>;
+		val modelCorrespondencesToExecutors = new HashMap<Pair<EPackage, EPackage>, List<String>>;
 		for (resource : resources + tempResources) {
 			for (reactionsSegment : resource.reactionsFileInResource.reactionsSegments) {
 				val modelCombination = reactionsSegment.sourceTargetPair;
@@ -182,7 +182,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		generateChange2CommandTransformings(modelCorrespondencesToExecutors, fsa)
 	}
 	
-	private def void generateChange2CommandTransformings(Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
+	private def void generateChange2CommandTransformings(Map<Pair<EPackage, EPackage>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
 		for (modelCombination : modelCorrepondenceToExecutors.keySet) {
 			val changePropagationSpecificationContent = generateChangePropagationSpecification(modelCombination, modelCorrepondenceToExecutors.get(modelCombination));
 			val changePropagationSpecificationNameGenerator = modelCombination.changePropagationSpecificationClassNameGenerator;
@@ -190,12 +190,12 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		}
 	}
 		
-	private def generateChangePropagationSpecification(Pair<VURI, VURI> modelPair, List<String> executorsNames) {
+	private def generateChangePropagationSpecification(Pair<EPackage, EPackage> modelPair, List<String> executorsNames) {
 		val ih = new XtendImportHelper();	
 		val changePropagationSpecificationNameGenerator = modelPair.changePropagationSpecificationClassNameGenerator;
 		val classImplementation = '''
 		/**
-		 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.EMFUri.toString» and «modelPair.second.EMFUri.toString».
+		 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.nsURI» and «modelPair.second.nsURI».
 		 * To add further change processors overwrite the setup method.
 		 */
 		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangePropagationSpecification)» {
@@ -203,7 +203,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 			
 			public «changePropagationSpecificationNameGenerator.simpleName»() {
 				super(new «UserInteractor.name»());
-				this.metamodelPair = new «MetamodelPair.name»("«modelPair.first.EMFUri.toString»", "«modelPair.second.EMFUri.toString»");
+				this.metamodelPair = new «MetamodelPair.name»("«modelPair.first.nsURI»", "«modelPair.second.nsURI»");
 				setup();
 			}
 			
