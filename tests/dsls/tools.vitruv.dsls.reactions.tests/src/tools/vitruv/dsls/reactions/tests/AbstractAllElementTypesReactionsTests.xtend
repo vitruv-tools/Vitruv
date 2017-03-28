@@ -20,6 +20,8 @@ import tools.vitruv.framework.tests.VitruviusChangePropagationTest
 abstract class AbstractAllElementTypesReactionsTests extends VitruviusChangePropagationTest {
 	protected static val MODEL_FILE_EXTENSION = "minimalAllElements";
 	
+	
+	
 	protected override createMetamodels() {
 		// Simple changes model
 		val metamodelUri = VURI.getInstance(AllElementTypesPackage.eNS_URI);

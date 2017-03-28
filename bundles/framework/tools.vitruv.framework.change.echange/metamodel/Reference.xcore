@@ -33,7 +33,6 @@ abstract class UpdateReferenceEChange<A extends EObject> extends FeatureEChange<
  * Abstract EChange which inserts an EObject into a reference.
  */
 abstract class AdditiveReferenceEChange<A extends EObj, T extends EObj> extends UpdateReferenceEChange<A>, EObjectAddedEChange<T> {
-
 }
 
 /**

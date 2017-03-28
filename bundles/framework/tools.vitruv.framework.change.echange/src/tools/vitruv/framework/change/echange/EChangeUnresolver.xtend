@@ -86,16 +86,7 @@ class EChangeUnresolver {
 	def static package <A extends EObject, F extends EStructuralFeature> void unresolveExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> change) {
 		change.affectedEObject = createProxy(change.affectedEObject)
 	}
-	/**
-	 * Dispatch method for {@link EChange} to unresolve it.
-	 * @param change The EChange.
-	 */		
-	def dispatch public static void unresolve(EChange change) {
-		// Cannot be instantiated or unresolved, if an EChange
-		// reaches this point, then the method for that change is missing
-		// and has to be implemented.
-		throw new UnsupportedOperationException()
-	}
+	
 	/**
 	 * Dispatch method for {@link CompoundEChange} to unresolve it.
 	 * @param change The CompoundEChange.

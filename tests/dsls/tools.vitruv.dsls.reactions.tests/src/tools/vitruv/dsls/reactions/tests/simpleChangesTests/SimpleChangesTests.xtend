@@ -214,7 +214,6 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
 		
 	//@Test
 	public def void testUnsetSingleValuedNonContainmentEReference() throws Throwable {
@@ -282,7 +281,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
+		compareMonitor.set(ChangeType.DeleteEObject);
 		compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
+		compareMonitor.set(ChangeType.CreateEObject);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
@@ -362,6 +363,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.CreateNonRootEObjectInList);
+		compareMonitor.set(ChangeType.CreateEObject);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
@@ -374,6 +376,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		removeMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectInList);
+		compareMonitor.set(ChangeType.DeleteEObject);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
@@ -386,7 +389,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		replaceMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest", "multiValuedContainmentNonRootTest2");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectInList);
+		compareMonitor.set(ChangeType.DeleteEObject);
 		compareMonitor.set(ChangeType.CreateNonRootEObjectInList);
+		compareMonitor.set(ChangeType.CreateEObject);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertEquals("multiValuedContainmentNonRootTest2", rootElement.multiValuedContainmentEReference.last.id);
