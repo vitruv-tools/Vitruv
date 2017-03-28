@@ -5,7 +5,7 @@
       <repositories location="../tools.vitruv.updatesite/target/repository"/>
     </contributions>
     <contributions label="externals">
-      <repositories location="http://download.eclipse.org/releases/neon/">
+      <repositories location="http://download.eclipse.org/releases/neon/" mirrorArtifacts="false">
         <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.9.0" categories="//@customCategories[identifier='externals']"/>
         <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0" categories="//@customCategories[identifier='externals']"/>
         <features name="org.eclipse.emf.common.feature.group" versionRange="2.12.0" categories="//@customCategories[identifier='externals']"/>
