@@ -359,3 +359,13 @@ routine createNonRootInContainer(minimal::NonRootObjectContainerHelper container
 		add correspondence between newNonRoot and insertedNonRoot
 	}
 }
+
+reaction NonRootCreated {
+	after element minimal::NonRoot created
+	call SimpleChangesTestsExecutionMonitor.instance.set(CreateEObject)
+}
+
+reaction NonRootDeleted {
+	after element minimal::NonRoot deleted
+	call SimpleChangesTestsExecutionMonitor.instance.set(DeleteEObject)
+}

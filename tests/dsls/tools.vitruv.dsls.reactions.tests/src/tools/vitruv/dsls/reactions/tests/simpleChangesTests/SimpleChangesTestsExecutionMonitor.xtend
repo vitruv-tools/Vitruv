@@ -24,6 +24,8 @@ final class SimpleChangesTestsExecutionMonitor {
 	}
 	
 	public enum ChangeType {
+		CreateEObject,
+		DeleteEObject,
 		UpdateSingleValuedPrimitveTypeEAttribute,
 		UpdateSingleValuedEAttribute,
 		UnsetEAttribute,
