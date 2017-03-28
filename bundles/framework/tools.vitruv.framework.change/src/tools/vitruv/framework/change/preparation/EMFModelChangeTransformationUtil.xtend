@@ -147,9 +147,8 @@ package class EMFModelChangeTransformationUtil {
 	
 	def static EChange createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
-		val oldContainer = referenceValue.eContainer
 		val oldResource = referenceValue.eResource
-		val isCreate = forceCreate || (isContainment && isCreate(oldContainer,oldResource))
+		val isCreate = forceCreate || (isContainment && oldResource == null)
 		if (isCreate) {
 			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertNonRootChange(affectedEObject, affectedReference, referenceValue, index);
 		} else {
