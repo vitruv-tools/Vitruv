@@ -70,7 +70,7 @@ public interface CompoundEChange extends EChange {
 	 * 			the original change.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.compound.CompoundEChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.compound.CompoundEChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.CompoundEChangeResolver%>.resolve(change, resourceSet, true, true);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.compound.CompoundEChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.compound.CompoundEChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.resolve.CompoundEChangeResolver%>.resolve(change, resourceSet, true, true);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
 	 * @generated
 	 */
 	EChange resolveBefore(ResourceSet resourceSet);
@@ -92,7 +92,7 @@ public interface CompoundEChange extends EChange {
 	 * 			the original change.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.compound.CompoundEChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.compound.CompoundEChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.CompoundEChangeResolver%>.resolve(change, resourceSet, false, true);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.compound.CompoundEChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.compound.CompoundEChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.resolve.CompoundEChangeResolver%>.resolve(change, resourceSet, false, true);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
 	 * @generated
 	 */
 	EChange resolveAfter(ResourceSet resourceSet);
@@ -112,7 +112,7 @@ public interface CompoundEChange extends EChange {
 	 * 			resource set is {@code null}, it returns {@code null}
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.compound.CompoundEChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.compound.CompoundEChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.CompoundEChangeResolver%>.resolve(change, resourceSet, true, false);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n}\nelse\n{\n\tboolean _applyForward = this.applyForward();\n\tif (_applyForward)\n\t{\n\t\treturn this;\n\t}\n}\nreturn null;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.compound.CompoundEChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.compound.CompoundEChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.resolve.CompoundEChangeResolver%>.resolve(change, resourceSet, true, false);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n}\nelse\n{\n\tboolean _applyForward = this.applyForward();\n\tif (_applyForward)\n\t{\n\t\treturn this;\n\t}\n}\nreturn null;'"
 	 * @generated
 	 */
 	EChange resolveBeforeAndApplyForward(ResourceSet resourceSet);
@@ -132,7 +132,7 @@ public interface CompoundEChange extends EChange {
 	 * 			it returns {@code null}
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.compound.CompoundEChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.compound.CompoundEChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.CompoundEChangeResolver%>.resolve(change, resourceSet, false, false);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n}\nelse\n{\n\tboolean _applyBackward = this.applyBackward();\n\tif (_applyBackward)\n\t{\n\t\treturn this;\n\t}\n}\nreturn null;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.compound.CompoundEChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.compound.CompoundEChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.resolve.CompoundEChangeResolver%>.resolve(change, resourceSet, false, false);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n}\nelse\n{\n\tboolean _applyBackward = this.applyBackward();\n\tif (_applyBackward)\n\t{\n\t\treturn this;\n\t}\n}\nreturn null;'"
 	 * @generated
 	 */
 	EChange resolveAfterAndApplyBackward(ResourceSet resourceSet);

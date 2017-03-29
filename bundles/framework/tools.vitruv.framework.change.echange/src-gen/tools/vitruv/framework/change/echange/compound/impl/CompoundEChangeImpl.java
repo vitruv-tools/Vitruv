@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
-import tools.vitruv.framework.change.echange.CompoundEChangeResolver;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
 
@@ -21,6 +20,8 @@ import tools.vitruv.framework.change.echange.compound.CompoundEChange;
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
 
 import tools.vitruv.framework.change.echange.impl.EChangeImpl;
+
+import tools.vitruv.framework.change.echange.resolve.CompoundEChangeResolver;
 
 /**
  * <!-- begin-user-doc -->

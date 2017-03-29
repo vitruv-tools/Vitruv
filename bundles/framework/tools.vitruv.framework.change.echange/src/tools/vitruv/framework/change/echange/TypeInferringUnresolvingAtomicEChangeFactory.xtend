@@ -9,7 +9,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.root.RootEChange
 
-import static extension tools.vitruv.framework.change.echange.EChangeUnresolver.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnresolver.*
 
 /**
  * Factory singleton class for elements of change models.

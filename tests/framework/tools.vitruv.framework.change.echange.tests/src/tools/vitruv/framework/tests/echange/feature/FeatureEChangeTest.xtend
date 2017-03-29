@@ -16,7 +16,7 @@ import org.junit.Before
 import org.junit.Test
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
-import tools.vitruv.framework.change.echange.util.StagingArea
+import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.tests.echange.EChangeTest
 import org.junit.After
 

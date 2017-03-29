@@ -8,7 +8,7 @@ import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
-import static extension tools.vitruv.framework.change.echange.EChangeUnresolver.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnresolver.*
 
 class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferringCompoundEChangeFactory {
 	protected TypeInferringAtomicEChangeFactory atomicFactory

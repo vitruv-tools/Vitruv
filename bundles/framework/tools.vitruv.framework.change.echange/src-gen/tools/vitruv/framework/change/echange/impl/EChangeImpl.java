@@ -20,9 +20,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import tools.vitruv.framework.change.echange.AtomicEChangeResolver;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
+
+import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver;
 
 import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch;
 import tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch;

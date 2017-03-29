@@ -11,7 +11,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.EChangeUnresolver
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 class AtomicEMFChangeRecorder {

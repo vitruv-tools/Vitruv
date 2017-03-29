@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.echange
+package tools.vitruv.framework.change.echange.resolve
 
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.URI
@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
@@ -20,7 +21,6 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.util.EChangeUtil
-import tools.vitruv.framework.change.echange.util.StagingArea
 
 /**
  * Static class for resolving EChanges internally.

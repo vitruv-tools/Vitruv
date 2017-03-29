@@ -13,7 +13,7 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.util.RemoveAtCommand
-import tools.vitruv.framework.change.echange.util.StagingArea
+import tools.vitruv.framework.change.echange.resolve.StagingArea
 
 /**
  * Switch to create commands for all EChange classes of the reference package.

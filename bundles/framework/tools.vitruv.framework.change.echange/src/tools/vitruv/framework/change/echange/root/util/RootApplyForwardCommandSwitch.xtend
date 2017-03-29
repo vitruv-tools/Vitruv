@@ -8,7 +8,7 @@ import org.eclipse.emf.edit.command.AddCommand
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.util.EChangeUtil
-import tools.vitruv.framework.change.echange.util.StagingArea
+import tools.vitruv.framework.change.echange.resolve.StagingArea
 
 /**
  * Switch to create commands for all EChange classes of the root package.

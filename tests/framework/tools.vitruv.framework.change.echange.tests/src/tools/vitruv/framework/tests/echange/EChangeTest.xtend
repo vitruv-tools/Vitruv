@@ -15,7 +15,7 @@ import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
-import tools.vitruv.framework.change.echange.util.StagingArea
+import tools.vitruv.framework.change.echange.resolve.StagingArea
 import org.eclipse.emf.ecore.EObject
 
 /**

@@ -5,7 +5,7 @@ package tools.vitruv.framework.change.echange
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.echange.AtomicEChangeResolver
+import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver
 import tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch
 import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch
 

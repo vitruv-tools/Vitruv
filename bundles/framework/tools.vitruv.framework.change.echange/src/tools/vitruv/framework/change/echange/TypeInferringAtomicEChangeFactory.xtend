@@ -24,7 +24,7 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.root.RootFactory
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.echange.util.StagingArea
+import tools.vitruv.framework.change.echange.resolve.StagingArea
 
 /**
  * Factory singleton class for elements of change models.

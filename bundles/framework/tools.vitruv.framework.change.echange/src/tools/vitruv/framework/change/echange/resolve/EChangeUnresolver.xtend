@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.echange
+package tools.vitruv.framework.change.echange.resolve
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -16,11 +16,12 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
+import tools.vitruv.framework.change.echange.AtomicEChange
 
 /**
  * Utility class to unresolve a given EChange.
  */
-class EChangeUnresolver {
+public class EChangeUnresolver {
 	private new() {}
 	
 	/**
@@ -28,7 +29,7 @@ class EChangeUnresolver {
 	 * @param resolvedObject The resolved EObject whose proxy should be created.
 	 * @return The proxy object of the given EObject.
 	 */
-	def static package <A extends EObject> A createProxy(A resolvedObject) {
+	def static public <A extends EObject> A createProxy(A resolvedObject) {
 		if (resolvedObject != null) {
 			val proxy = EcoreUtil.copy(resolvedObject) as InternalEObject
 			proxy.eSetProxyURI(EcoreUtil.getURI(resolvedObject))
@@ -41,7 +42,7 @@ class EChangeUnresolver {
 	 * Unresolves the attributes of the {@link RootEChange} class.
 	 * @param The RootEChange.
 	 */
-	def static package unresolveRootEChange(RootEChange change) {
+	def static public unresolveRootEChange(RootEChange change) {
 		change.resource = null
 	}
 	
@@ -49,7 +50,7 @@ class EChangeUnresolver {
 	 * Unresolves the attributes of the {@link FeatureEChange} class.
 	 * @param The FeatureEChange.
 	 */
-	def static package <A extends EObject, F extends EStructuralFeature> void unresolveFeatureEChange(FeatureEChange<A,F> change) {
+	def static public <A extends EObject, F extends EStructuralFeature> void unresolveFeatureEChange(FeatureEChange<A,F> change) {
 		change.affectedEObject = createProxy(change.affectedEObject)
 	}
 	
@@ -57,7 +58,7 @@ class EChangeUnresolver {
 	 * Unresolves the attributes of the {@link EObjectAddedEChange} class.
 	 * @param The EObjectAddedEChange.
 	 */
-	def static package <T extends EObject> void unresolveEObjectAddedEChange(EObjectAddedEChange<T> change) {
+	def static public <T extends EObject> void unresolveEObjectAddedEChange(EObjectAddedEChange<T> change) {
 		change.newValue = createProxy(change.newValue)
 	}	
 
@@ -65,7 +66,7 @@ class EChangeUnresolver {
 	 * Unresolves the attributes of the {@link EObjectSubtractedEChange} class.
 	 * @param The EObjectSubtractedEChange.
 	 */	
-	def static package <T extends EObject> void unresolveEObjectSubtractedEChange(EObjectSubtractedEChange<T> change) {
+	def static public <T extends EObject> void unresolveEObjectSubtractedEChange(EObjectSubtractedEChange<T> change) {
 		change.oldValue = createProxy(change.oldValue)
 	}
 
@@ -73,7 +74,7 @@ class EChangeUnresolver {
 	 * Unresolves the atomic changes of the {@link CompoundEChange} class.
 	 * @param The CompoundEChange.
 	 */		
-	def static package void unresolveCompoundEChange(CompoundEChange change) {
+	def static public void unresolveCompoundEChange(CompoundEChange change) {
 		for (AtomicEChange c : change.atomicChanges) {
 			c.unresolve
 		}		
@@ -83,7 +84,7 @@ class EChangeUnresolver {
 	 * Unresolves the attributes of the {@link ExplicitUnsetEFeature} class.
 	 * @param The ExplicitUnsetEFeature change.
 	 */		
-	def static package <A extends EObject, F extends EStructuralFeature> void unresolveExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> change) {
+	def static public <A extends EObject, F extends EStructuralFeature> void unresolveExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> change) {
 		change.affectedEObject = createProxy(change.affectedEObject)
 	}
 	

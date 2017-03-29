@@ -1,9 +1,11 @@
-package tools.vitruv.framework.change.echange
+package tools.vitruv.framework.change.echange.resolve
 
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.echange.AtomicEChange
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.util.EChangeUtil
