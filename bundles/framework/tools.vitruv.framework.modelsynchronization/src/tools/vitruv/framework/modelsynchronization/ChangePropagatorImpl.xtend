@@ -38,7 +38,8 @@ class ChangePropagatorImpl implements ChangePropagator {
 	final CommandExecuting commandExecuting
 	Set<ChangePropagationListener> changePropagationListeners
 	Queue<Blackboard> blackboardHistory
-
+	Blackboard globalBlackboard;
+	
 	new(ModelRepository modelProviding, ChangePropagationSpecificationProvider changePropagationProvider,
 		MetamodelRepository metamodelRepository, CorrespondenceProviding correspondenceProviding) {
 		this.modelProviding = modelProviding
@@ -48,6 +49,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 		this.commandExecuting = new CommandExecutingImpl()
 		this.metamodelRepository = metamodelRepository;
 		this.blackboardHistory = EvictingQueue.create(BLACKBOARD_HITORY_SIZE)
+		globalBlackboard = new BlackboardImpl(null, this.modelProviding)
 	}
 
 	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
@@ -73,6 +75,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 		change.applyBackward()
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
 		propagateSingleChange(change, result)
+		saveChangedModels(globalBlackboard, modelProviding);
 		finishChangePropagation(change)
 		return result
 	}
@@ -119,8 +122,9 @@ class ChangePropagatorImpl implements ChangePropagator {
 					return propagationSpecification.propagateChange(change, correspondenceModel);
 				])
 			])
-		val resource = extractSourceResource(change);
-		commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard, resource))	
+		globalBlackboard.pushSourceModelResource(extractSourceResource(change));
+		commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard))
+		blackboard.getAndArchiveChangedResources.forEach[globalBlackboard.pushChangedResource(it)];
 	}
 	
 	private def Resource extractSourceResource(TransactionalChange change) {
@@ -138,5 +142,18 @@ class ChangePropagatorImpl implements ChangePropagator {
 			// Return the first resource, as they should all be same 
 			return sourceResources.get(0);
 		}
+	}
+	
+	def private void saveChangedModels(Blackboard blackboard, ModelRepository modelRepository) {
+		val changedEObjects = blackboard.getAndArchiveChangedResources;
+		val sourceResources = blackboard.getAndArchiveSourceModelResources.filterNull;
+		val changedNonSourceResources = changedEObjects
+						.filter[!sourceResources.exists[sourceResource | sourceResource.URI.equals(it.URI)]
+				];
+		for (Resource resource : changedNonSourceResources) {
+			resource.modified = true;
+		}
+		// FIXME This should be done by the VSUM, not by the command executor
+		modelRepository.saveAllModels();
 	}
 }

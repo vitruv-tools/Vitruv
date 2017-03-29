@@ -16,14 +16,13 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.util.command.VitruviusTransformationRecordingCommand
 import tools.vitruv.framework.util.command.ChangePropagationResult
-import org.eclipse.emf.ecore.resource.Resource
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
 
 	// FIXME HK The sourceResource is only necessary for avoiding source models to be saved. Because that
 	// logic has to be moved to the ChangePropagator, the sourceResource will then not be necessary anymore.
-	override List<VitruviusChange> executeCommands(Blackboard blackboard, Resource sourceResource) {
+	override List<VitruviusChange> executeCommands(Blackboard blackboard) {
 		val ModelRepository modelProviding = blackboard.getModelProviding()
 		val ArrayList<EObject> affectedObjects = new ArrayList()
 		val ArrayList<ChangePropagationResult> transformationResults = new ArrayList()
@@ -33,7 +32,7 @@ class CommandExecutingImpl implements CommandExecuting {
 				transformationResults.add(command.transformationResult)
 			}
 			
-			affectedObjects.addAll(command.getAffectedObjects().filter [ eObj |
+			val changedEObjects = command.getAffectedObjects().filter [ eObj |
 				!(eObj instanceof Correspondence) && !(eObj instanceof Correspondences)].filter(EObject)
 			// FIXME HK The next filter tries to remove objects that were in a source model (in fact in a model that
 			// has the same file extension than the source model). This is especially necessary to avoid overwriting
@@ -42,22 +41,13 @@ class CommandExecutingImpl implements CommandExecuting {
 			// overwrite the changed ones.
 			// This will hopefully not be necessary anymore if we replay recorded changes in the VSUM isolated from their
 			// recording in editors.
-				.filter[eResource == null || sourceResource == null || 
-					!eResource.URI.fileExtension.equals(sourceResource.URI.fileExtension)
-				]);
+//				.filter[eResource == null || sourceResource == null || 
+//					!eResource.URI.fileExtension.equals(sourceResource.URI.fileExtension)
+//				];
+			changedEObjects.forEach[if (it.eResource != null) blackboard.pushChangedResource(it.eResource)];
 		}
 		this.executeTransformationResults(transformationResults, affectedObjects.filter(EObject), blackboard)
 		return Collections::emptyList()
-	}
-
-	def private void saveChangedModels(Iterable<EObject> affectedObjects, ModelRepository modelRepository) {
-		for (EObject eObject : affectedObjects) {
-			if (null !== eObject.eResource()) {
-				eObject.eResource.modified = true;
-			}
-		}
-		// FIXME This should be done by the VSUM, not by the command executor
-		modelRepository.saveAllModels();
 	}
 
 	def private void executeTransformationResults(ArrayList<ChangePropagationResult> transformationResults, Iterable<EObject> modifiedEObjects,
@@ -73,7 +63,7 @@ class CommandExecutingImpl implements CommandExecuting {
 			for (VURI vuriToDelete : transformationResult.getVurisToDelete()) {
 				blackboard.getModelProviding().deleteModel(vuriToDelete)
 			}
-			saveChangedModels(modifiedEObjects, blackboard.modelProviding)
+			//saveChangedModels(modifiedEObjects, blackboard.modelProviding)
 			for (Pair<EObject, VURI> createdEObjectVURIPair : transformationResult.getRootEObjectsToSave()) {
 				blackboard.getModelProviding().
 					createModel(createdEObjectVURIPair.getSecond(),
