@@ -21,6 +21,12 @@ import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.change.echange.compound.CompoundEChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import org.eclipse.emf.ecore.resource.Resource
 
 class ChangePropagatorImpl implements ChangePropagator {
 	static final int BLACKBOARD_HITORY_SIZE = 2
@@ -113,7 +119,24 @@ class ChangePropagatorImpl implements ChangePropagator {
 					return propagationSpecification.propagateChange(change, correspondenceModel);
 				])
 			])
-		commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard))	
+		val resource = extractSourceResource(change);
+		commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard, resource))	
 	}
 	
+	private def Resource extractSourceResource(TransactionalChange change) {
+		val atomicChanges = change.EChanges.map[
+			if (it instanceof CompoundEChange) it.atomicChanges else #[it]
+		].flatten
+		val involvedObjects = atomicChanges.map[
+			if (it instanceof FeatureEChange<?,?>) it.affectedEObject 
+				else if (it instanceof EObjectAddedEChange<?>) it.newValue 
+				else if (it instanceof EObjectSubtractedEChange<?>) it.oldValue].filter(EObject);
+		val sourceResources = involvedObjects.map[eResource].filterNull;
+		if (sourceResources.empty) {
+			return null
+		} else {
+			// Return the first resource, as they should all be same 
+			return sourceResources.get(0);
+		}
+	}
 }

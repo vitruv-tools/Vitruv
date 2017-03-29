@@ -15,35 +15,36 @@ import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.util.command.VitruviusTransformationRecordingCommand
-import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import org.eclipse.emf.ecore.resource.Resource
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
 
-	override List<VitruviusChange> executeCommands(Blackboard blackboard) {
+	// FIXME HK The sourceResource is only necessary for avoiding source models to be saved. Because that
+	// logic has to be moved to the ChangePropagator, the sourceResource will then not be necessary anymore.
+	override List<VitruviusChange> executeCommands(Blackboard blackboard, Resource sourceResource) {
 		val ModelRepository modelProviding = blackboard.getModelProviding()
-		val ArrayList<Object> affectedObjects = new ArrayList()
+		val ArrayList<EObject> affectedObjects = new ArrayList()
 		val ArrayList<ChangePropagationResult> transformationResults = new ArrayList()
 		for (VitruviusRecordingCommand command : blackboard.getAndArchiveCommandsForExecution()) {
 			modelProviding.executeRecordingCommandOnTransactionalDomain(command);
 			if (command instanceof VitruviusTransformationRecordingCommand) {
 				transformationResults.add(command.transformationResult)
 			}
+			
 			affectedObjects.addAll(command.getAffectedObjects().filter [ eObj |
-				!(eObj instanceof Correspondence) && !(eObj instanceof Correspondences)])
-//			modelProviding.executeRecordingCommandOnTransactionalDomain(EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
-//				command.undo
-//				for (affectedObject : affectedObjects.filter(EObject)) {
-//					TuidManager.instance.registerObjectUnderModification(affectedObject);
-//				}
-//				command.redo();
-//				for (affectedObject : affectedObjects.filter(EObject)) {
-//					TuidManager.instance.updateTuidsOfRegisteredObjects;
-//					TuidManager.instance.flushRegisteredObjectsUnderModification;
-//				}
-//				return null;
-//			]));
+				!(eObj instanceof Correspondence) && !(eObj instanceof Correspondences)].filter(EObject)
+			// FIXME HK The next filter tries to remove objects that were in a source model (in fact in a model that
+			// has the same file extension than the source model). This is especially necessary to avoid overwriting
+			// Java files that were modified but whose JaMoPP VSUM model is not up to date because changes were not made
+			// to the EMF Model but in the text editor and recorded by the Java AST. Therefore, saving those models would
+			// overwrite the changed ones.
+			// This will hopefully not be necessary anymore if we replay recorded changes in the VSUM isolated from their
+			// recording in editors.
+				.filter[eResource == null || sourceResource == null || 
+					!eResource.URI.fileExtension.equals(sourceResource.URI.fileExtension)
+				]);
 		}
 		this.executeTransformationResults(transformationResults, affectedObjects.filter(EObject), blackboard)
 		return Collections::emptyList()
@@ -52,15 +53,10 @@ class CommandExecutingImpl implements CommandExecuting {
 	def private void saveChangedModels(Iterable<EObject> affectedObjects, ModelRepository modelRepository) {
 		for (EObject eObject : affectedObjects) {
 			if (null !== eObject.eResource()) {
-				val vuri = VURI::getInstance(eObject.eResource());
-				// FIXME HK We do not save Java files at the moment, because AST changes are not correctly
-				// reflected in the JaMoPP models, so that saving JaMoPP models overwrites AST changes
-				if (!vuri.toString.startsWith(VitruviusConstants.getPathmapPrefix()) && !vuri.fileExtension.endsWith("java")) {
-					eObject.eResource.modified = true;
-				}
+				eObject.eResource.modified = true;
 			}
 		}
-		// FIXME This should be done by the VSUM, not by the command executor«
+		// FIXME This should be done by the VSUM, not by the command executor
 		modelRepository.saveAllModels();
 	}
 
