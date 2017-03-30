@@ -9,8 +9,6 @@ import org.apache.log4j.Logger
 import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
-import tools.vitruv.framework.modelsynchronization.commandexecution.CommandExecuting
-import tools.vitruv.framework.modelsynchronization.commandexecution.CommandExecutingImpl
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.metamodel.MetamodelRepository
 import tools.vitruv.framework.metamodel.ModelRepository
@@ -28,7 +26,6 @@ class ChangePropagatorImpl implements ChangePropagator {
 	final ModelRepository modelProviding
 	final ChangePropagationSpecificationProvider changePropagationProvider
 	final CorrespondenceProviding correspondenceProviding
-	final CommandExecuting commandExecuting
 	Set<ChangePropagationListener> changePropagationListeners
 	
 	new(ModelRepository modelProviding, ChangePropagationSpecificationProvider changePropagationProvider,
@@ -37,7 +34,6 @@ class ChangePropagatorImpl implements ChangePropagator {
 		this.changePropagationProvider = changePropagationProvider
 		this.correspondenceProviding = correspondenceProviding
 		this.changePropagationListeners = new HashSet<ChangePropagationListener>()
-		this.commandExecuting = new CommandExecutingImpl()
 		this.metamodelRepository = metamodelRepository;
 	}
 

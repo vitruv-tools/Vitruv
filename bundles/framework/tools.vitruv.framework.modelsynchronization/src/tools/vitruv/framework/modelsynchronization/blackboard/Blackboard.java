@@ -55,6 +55,7 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
  * @author kramerm
  *
  */
+@Deprecated // Only Mapping languages still needs this, will be removed if Mappings are updated
 public interface Blackboard {
     CorrespondenceModel getCorrespondenceModel();
 
