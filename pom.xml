@@ -12,7 +12,7 @@
 		<module>bundles</module>
 		<module>features</module>
 		<module>tests</module>
-		<module>relen</module>
+		<module>releng</module>
 	</modules>
 
 	<properties>
