@@ -1,7 +1,6 @@
 package tools.vitruv.framework.tests
 
 import tools.vitruv.framework.tests.VitruviusEMFCasestudyTest
-import org.junit.runner.Description
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.VURI
@@ -29,8 +28,8 @@ abstract class VitruviusChangePropagationTest extends VitruviusEMFCasestudyTest 
 	 * 
 	 * @throws Throwable
 	 */
-	public override void beforeTest(Description description) throws Throwable {
-		super.beforeTest(description);
+	public override void beforeTest() throws Throwable {
+		super.beforeTest();
 		initializeTestModel();
 		Logger.rootLogger.level = Level.ERROR;
 	}

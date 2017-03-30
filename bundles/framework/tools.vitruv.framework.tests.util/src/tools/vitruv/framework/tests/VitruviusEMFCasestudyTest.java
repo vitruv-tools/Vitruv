@@ -7,7 +7,6 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.junit.runner.Description;
 
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
@@ -39,8 +38,8 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	 * @throws Throwable
 	 */
 	@Override
-	public void beforeTest(final Description description) throws Throwable {
-		super.beforeTest(description);
+	public void beforeTest() throws Throwable {
+		super.beforeTest();
 		this.testUserInteractor = new TestUserInteractor();
 		this.getVirtualModel().setUserInteractor(this.testUserInteractor);
 		this.resourceSet = new ResourceSetImpl();
@@ -50,7 +49,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	protected abstract List<Metamodel> createMetamodels();
 
 	@Override
-	protected void afterTest(final org.junit.runner.Description description) {
+	protected void afterTest() {
 	}
 
 	@Override

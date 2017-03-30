@@ -11,7 +11,6 @@ import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 public abstract class AbstractVSUMTest extends MetaRepositoryTest {
-
     protected InternalVirtualModel createMetaRepositoryAndVSUM(final String mm1URIString, final String fileExt1,
             final String mm2URIString, final String fileExt2) {
         List<Metamodel> metamodels = new ArrayList<Metamodel>();
@@ -24,7 +23,7 @@ public abstract class AbstractVSUMTest extends MetaRepositoryTest {
 
     protected InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels) {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        InternalVirtualModel vsum = TestUtil.createVSUM(metamodels, Collections.emptyList(), classLoader);
+        InternalVirtualModel vsum = TestUtil.createVSUM(VSUM_NAME, metamodels, Collections.emptyList(), classLoader);
         return vsum;
     }
 }

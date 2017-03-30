@@ -18,8 +18,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
 import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
+import org.junit.rules.TestName;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
@@ -39,6 +38,7 @@ import tools.vitruv.framework.vsum.InternalVirtualModel;
 public abstract class VitruviusCasestudyTest implements ChangePropagationListener {
 
 	private static final boolean ADD_TIMESTAMP_TO_PROJECT_NAMES = true;
+	@Rule protected TestName testName = new TestName();
 	
 	protected ResourceSet resourceSet;
 
@@ -51,22 +51,23 @@ public abstract class VitruviusCasestudyTest implements ChangePropagationListene
     private InternalVirtualModel virtualModel;
     protected Iterable<Metamodel> metamodels;
     
-    protected abstract void afterTest(Description description);
+    protected abstract void afterTest();
 
     protected abstract CorrespondenceModel getCorrespondenceModel() throws Throwable;
     
     protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
     protected abstract Iterable<Metamodel> createMetamodels();
     
-    protected void beforeTest(final Description description) throws Throwable {
+    protected void beforeTest() throws Throwable {
     	TuidManager.getInstance().reinitialize();
-        createTestProject(description);
-        createVirtualModel();
+    	String testMethodName = testName.getMethodName();
+        createTestProject(testMethodName);
+        createVirtualModel(testMethodName);
     }
 
     // ensure that MockupProject is existing
-	protected void createTestProject(final Description description) throws CoreException {
-		this.currentTestProjectName = TestUtil.PROJECT_URI + "_" + description.getMethodName();
+	protected void createTestProject(final String testName) throws CoreException {
+		this.currentTestProjectName = TestUtil.PROJECT_URI + "_" + testName;
 		if (ADD_TIMESTAMP_TO_PROJECT_NAMES) {
 			this.currentTestProjectName = TestUtil.getStringWithTimestamp(this.currentTestProjectName);
 		}
@@ -76,9 +77,13 @@ public abstract class VitruviusCasestudyTest implements ChangePropagationListene
         }
 	}
 	
-	private void createVirtualModel() {
+	private void createVirtualModel(final String testName) {
+		String currentTestProjectVsumName = TestUtil.PROJECT_URI + "_" + testName + "_vsum_";
+		if (ADD_TIMESTAMP_TO_PROJECT_NAMES) {
+			currentTestProjectVsumName = TestUtil.getStringWithTimestamp(currentTestProjectVsumName);
+		}
 		this.metamodels = this.createMetamodels();
-		this.virtualModel = TestUtil.createVSUM(metamodels, createChangePropagationSpecifications());
+		this.virtualModel = TestUtil.createVSUM(currentTestProjectVsumName, metamodels, createChangePropagationSpecifications());
 		this.virtualModel.addChangePropagationListener(this);
 	}
 
@@ -90,34 +95,6 @@ public abstract class VitruviusCasestudyTest implements ChangePropagationListene
     public static void setUpAllTests() {
         TestUtil.initializeLogger();
     }
-
-    /**
-     * Test watcher that moves src and model files as well as the VSUM project (which are created
-     * during the previous test) to own folders and removes the PCMJavaBuilder from the project
-     */
-    @Rule
-    public TestWatcher watchmen = new TestWatcher() {
-        @Override
-        protected void finished(final org.junit.runner.Description description) {
-            VitruviusCasestudyTest.this.afterTest(description);
-            VitruviusCasestudyTest.this.resourceSet = null;
-            final String previousMethodName = description.getMethodName();
-            //TestUtil.moveProjectToProjectWithTimeStamp(currentTestProjectName);
-            TestUtil.moveVSUMProjectToOwnFolderWithTimepstamp(previousMethodName);
-        };
-
-        @Override
-        protected void starting(final Description description) {
-            try {
-                VitruviusCasestudyTest.this.beforeTest(description);
-            } catch (final Throwable e) {
-                if (e instanceof RuntimeException) {
-                    throw (RuntimeException) e;
-                }
-                throw new RuntimeException(e);
-            }
-        }
-    };
 
     protected String getProjectPath() {
         return this.currentTestProjectName + "/";

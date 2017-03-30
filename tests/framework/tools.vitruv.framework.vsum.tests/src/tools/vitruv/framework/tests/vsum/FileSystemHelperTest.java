@@ -24,11 +24,12 @@ public class FileSystemHelperTest extends VSUMTest {
 
         long start = System.currentTimeMillis();
         // save to disk
-        FileSystemHelper.saveVSUMvURIsToFile(vuris);
+        FileSystemHelper fsHelper = new FileSystemHelper(VSUM_NAME);
+        fsHelper.saveVSUMvURIsToFile(vuris);
         long durationForSave = System.currentTimeMillis() - start;
         long startLoad = System.currentTimeMillis();
         // load from Disk
-        Set<VURI> loadedVURIs = FileSystemHelper.loadVSUMvURIsFromFile();
+        Set<VURI> loadedVURIs = fsHelper.loadVSUMvURIsFromFile();
 
         long durationForLoad = System.currentTimeMillis() - startLoad;
         long durationForLoadAndSave = System.currentTimeMillis() - start;

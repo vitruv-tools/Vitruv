@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import pcm_mockup.Pcm_mockupPackage;
-import tools.vitruv.framework.metamodel.MetamodelRepositoryImpl;
 import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.metamodel.MetamodelRepositoryImpl;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -15,6 +15,7 @@ import uml_mockup.Uml_mockupPackage;
 
 public class MetaRepositoryTest {
     protected static final String PROJECT_FOLDER_NAME = "MockupProject";
+    protected static final String VSUM_NAME = "VsumProject";
 
     protected static final String PCM_MM_URI = Pcm_mockupPackage.eNS_URI;
     protected static final String UML_MM_URI = Uml_mockupPackage.eNS_URI;
@@ -32,7 +33,7 @@ public class MetaRepositoryTest {
         // initialize Logger when not done yet
         TestUtil.initializeLogger();
         TestUtil.deleteAllProjectFolderCopies(PROJECT_FOLDER_NAME);
-        TestUtil.clearMetaProject();
+        TestUtil.clearMetaProject(VSUM_NAME);
     }
 
     @Before

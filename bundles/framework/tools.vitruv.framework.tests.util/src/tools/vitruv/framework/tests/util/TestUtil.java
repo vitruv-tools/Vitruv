@@ -24,7 +24,6 @@ import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
-import tools.vitruv.framework.vsum.VSUMConstants;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelImpl;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
@@ -49,8 +48,8 @@ public final class TestUtil {
     private TestUtil() {
     }
 
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels) {
-        return createVSUM(metamodels, new ArrayList<ChangePropagationSpecification>(), null);
+    public static InternalVirtualModel createVSUM(final String vsumName, final Iterable<Metamodel> metamodels) {
+        return createVSUM(vsumName, metamodels, new ArrayList<ChangePropagationSpecification>(), null);
     }
     
     /**
@@ -60,8 +59,8 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-        return createVSUM(metamodels, changePropagationSpecifications, null);
+    public static InternalVirtualModel createVSUM(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
+        return createVSUM(vsumName, metamodels, changePropagationSpecifications, null);
     }
 
     /**
@@ -71,7 +70,7 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications, final ClassLoader classLoader) {
+    public static InternalVirtualModel createVSUM(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications, final ClassLoader classLoader) {
         VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
         for (Metamodel metamodel : metamodels) {
         	vmodelConfig.addMetamodel(metamodel);
@@ -80,7 +79,7 @@ public final class TestUtil {
         	vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
         }
         // TODO HK Replace name with parameter
-    	final InternalVirtualModel vmodel = new VirtualModelImpl("vitruvius.meta", vmodelConfig, classLoader);
+    	final InternalVirtualModel vmodel = new VirtualModelImpl(vsumName, vmodelConfig, classLoader);
         return vmodel;
     }
 
@@ -201,38 +200,6 @@ public final class TestUtil {
     }
 
     /**
-     * moves the VSUM Project to a own folder with empty name to include in VSUM project folder
-     */
-    public static void moveVSUMProjectToOwnFolder() {
-        moveVSUMProjectToOwnFolderWithTimepstamp("");
-    }
-
-    /**
-     * moves the VSUM Project to a own folder
-     *
-     * @param addtionalName
-     *            name that will be included in to VSUM project folder
-     */
-    public static void moveVSUMProjectToOwnFolderWithTimepstamp(final String addtionalName) {
-        final IProject project = FileSystemHelper.getVSUMProject();
-        moveProjectToOwnFolderWithTimestamp(addtionalName, project);
-    }
-
-    public static void moveProjectToOwnFolderWithTimestamp(final String addtionalName, final IProject project) {
-        final String timestamp = getStringWithTimestamp("");
-        final IPath destinationPath = new Path(
-                "/" + VSUMConstants.VSUM_PROJECT_NAME + "_" + addtionalName + "_" + timestamp);
-        try {
-            project.open(new NullProgressMonitor());
-            //project.delete(true, new NullProgressMonitor());
-            project.move(destinationPath, true, new NullProgressMonitor());
-        } catch (final CoreException e) {
-            logger.warn("Could not move " + VSUMConstants.VSUM_PROJECT_NAME + "project to folder. " + destinationPath
-                    + ". Reason: " + e);
-        }
-    }
-
-    /**
      * init logger for test purposes
      */
     public static void initializeLogger() {
@@ -348,12 +315,13 @@ public final class TestUtil {
         return project.getName();
     }
 
-    public static void clearMetaProject() {
+    public static void clearMetaProject(String vsumName) {
         try {
-            final IFolder correspondenceFolder = FileSystemHelper.getCorrespondenceFolder();
+        	FileSystemHelper fsHelper = new FileSystemHelper(vsumName);
+            final IFolder correspondenceFolder = fsHelper.getCorrespondenceFolder();
             correspondenceFolder.delete(true, new NullProgressMonitor());
             FileSystemHelper.createFolder(correspondenceFolder);
-            final IFile currentInstancesFile = FileSystemHelper.getVSUMInstancesFile();
+            final IFile currentInstancesFile = fsHelper.getVSUMInstancesFile();
             currentInstancesFile.delete(true, new NullProgressMonitor());
         } catch (final CoreException e) {
             // soften

@@ -37,7 +37,7 @@ public final class MappingLanguageTestUtil {
 	 * @return the created VSUM
 	 */
 	public static VirtualModel createEmptyVSUM(Collection<Metamodel> metamodels, Collection<ChangePropagationSpecification> transformer) {
-		return TestUtil.createVSUM(metamodels, transformer);
+		return TestUtil.createVSUM("vitruvius.meta", metamodels, transformer);
 	}
 
 	public static Metamodel createMetamodel(String nsURI, TUIDCalculatorAndResolver tuidCalculatorAndResolver, String... extensions) {

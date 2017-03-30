@@ -31,7 +31,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		for (metamodel : modelConfiguration.metamodels) {
 			metamodelRepository.addMetamodel(metamodel);
 		}
-		this.modelRepository = new ModelRepositoryImpl(metamodelRepository, classLoader);
+		this.modelRepository = new ModelRepositoryImpl(name, metamodelRepository, classLoader);
 //		for (transformer : modelConfiguration.change2CommandTransformings) {
 //			val transformableMetamodels = transformer.transformableMetamodels;
 //			// TODO HK This is ugly: get the correspondence model to initialize it
