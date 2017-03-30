@@ -16,6 +16,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
@@ -38,7 +40,7 @@ import tools.vitruv.framework.vsum.InternalVirtualModel;
 public abstract class VitruviusCasestudyTest implements ChangePropagationListener {
 
 	private static final boolean ADD_TIMESTAMP_TO_PROJECT_NAMES = true;
-	@Rule protected TestName testName = new TestName();
+	@Rule public TestName testName = new TestName();
 	
 	protected ResourceSet resourceSet;
 
@@ -51,14 +53,16 @@ public abstract class VitruviusCasestudyTest implements ChangePropagationListene
     private InternalVirtualModel virtualModel;
     protected Iterable<Metamodel> metamodels;
     
-    protected abstract void afterTest();
+    @After
+    public abstract void afterTest();
 
     protected abstract CorrespondenceModel getCorrespondenceModel() throws Throwable;
     
     protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
     protected abstract Iterable<Metamodel> createMetamodels();
     
-    protected void beforeTest() throws Throwable {
+    @Before
+    public void beforeTest() throws Throwable {
     	TuidManager.getInstance().reinitialize();
     	String testMethodName = testName.getMethodName();
         createTestProject(testMethodName);

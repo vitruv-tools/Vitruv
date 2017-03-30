@@ -49,7 +49,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	protected abstract List<Metamodel> createMetamodels();
 
 	@Override
-	protected void afterTest() {
+	public void afterTest() {
 	}
 
 	@Override
