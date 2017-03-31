@@ -420,7 +420,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 				// if resolved EObject is still null throw an exception
 				// TODO think about something more lightweight than throwing an exception
 				throw new RuntimeException(
-					'''Could not resolve TUID «tuidString» in eObject «rootEObject»'''.
+					'''Could not resolve TUID «tuidString» in eObject «rootEObject» with VURI «vuri»'''.
 						toString)
 			}
 
