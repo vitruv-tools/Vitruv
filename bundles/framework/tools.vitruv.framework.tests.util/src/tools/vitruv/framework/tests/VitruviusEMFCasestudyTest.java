@@ -46,6 +46,9 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
 	@Override
 	public void afterTest() {
+		if (changeRecorder.isRecording()) {
+			changeRecorder.endRecording();
+		}
 	}
 
 	@Override
