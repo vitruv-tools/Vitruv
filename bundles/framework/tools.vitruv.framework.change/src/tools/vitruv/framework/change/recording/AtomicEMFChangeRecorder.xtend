@@ -26,11 +26,14 @@ class AtomicEMFChangeRecorder {
 		this.modelVURI = modelVURI;
 		this.elementsToObserve.clear();
 		this.elementsToObserve += elementsToObserve;
-		this.changeDescriptions =new ArrayList<ChangeDescription>();
+		this.changeDescriptions = new ArrayList<ChangeDescription>();
 		changeRecorder.beginRecording(elementsToObserve)
 	}
 	
 	def List<TransactionalChange> endRecording() {
+		if (!isRecording) {
+			throw new IllegalStateException();
+		}
 		changeRecorder.endRecording();
 		changeDescriptions.reverseView.forEach[applyAndReverse];
 		return changeDescriptions.filterNull.map[createModelChange].filterNull.toList;
