@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -28,7 +29,6 @@ import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.TuidManager;
-import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 /**
@@ -64,9 +64,12 @@ public abstract class VitruviusCasestudyTest implements ChangePropagationListene
     @Before
     public void beforeTest() throws Throwable {
     	TuidManager.getInstance().reinitialize();
+    	this.resourceSet = new ResourceSetImpl();
     	String testMethodName = testName.getMethodName();
         createTestProject(testMethodName);
         createVirtualModel(testMethodName);
+        this.testUserInteractor = new TestUserInteractor();
+        this.getVirtualModel().setUserInteractor(testUserInteractor);
     }
 
     // ensure that MockupProject is existing
@@ -102,10 +105,6 @@ public abstract class VitruviusCasestudyTest implements ChangePropagationListene
 
     protected String getProjectPath() {
         return this.currentTestProjectName + "/";
-    }
-
-    protected void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
-    	this.virtualModel.setUserInteractor(newUserInteracting);
     }
 
     /**

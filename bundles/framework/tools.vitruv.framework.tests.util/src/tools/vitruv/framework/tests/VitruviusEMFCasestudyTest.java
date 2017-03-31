@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
@@ -40,9 +39,6 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	@Override
 	public void beforeTest() throws Throwable {
 		super.beforeTest();
-		this.testUserInteractor = new TestUserInteractor();
-		this.getVirtualModel().setUserInteractor(this.testUserInteractor);
-		this.resourceSet = new ResourceSetImpl();
 		this.changeRecorder = new AtomicEMFChangeRecorder();
 	}
 
