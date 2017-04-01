@@ -1,6 +1,9 @@
 package tools.vitruv.framework.modelsynchronization.blackboard;
 
 import java.util.List;
+import java.util.Set;
+
+import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.ModelRepository;
@@ -52,12 +55,21 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
  * @author kramerm
  *
  */
+@Deprecated // Only Mapping languages still needs this, will be removed if Mappings are updated
 public interface Blackboard {
     CorrespondenceModel getCorrespondenceModel();
 
     ModelRepository getModelProviding();
 
     void pushCommands(List<VitruviusRecordingCommand> commands);
+
+    void pushSourceModelResource(Resource resource);
+
+    void pushChangedResource(Resource resource);
+
+    Set<Resource> getAndArchiveSourceModelResources();
+
+    Set<Resource> getAndArchiveChangedResources();
 
     List<VitruviusRecordingCommand> getAndArchiveCommandsForExecution();
 

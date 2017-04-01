@@ -49,6 +49,9 @@ class AtomicEMFChangeRecorder {
 	}
 	
 	def List<TransactionalChange> endRecording() {
+		if (!isRecording) {
+			throw new IllegalStateException();
+		}
 		changeRecorder.endRecording();
 		changeDescriptions.reverseView.forEach[applyAndReverse];
 		var transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList;

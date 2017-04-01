@@ -25,27 +25,29 @@ import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VSUMConstants;
 
 public class FileSystemHelper {
-    /** Utility classes should not have a public or default constructor. */
-    private FileSystemHelper() {
+    private final String vsumName;
+
+    public FileSystemHelper(final String vsumName) {
+        this.vsumName = vsumName;
     }
 
-    public static VURI getCorrespondencesVURI(final VURI... mmURIs) {
+    public VURI getCorrespondencesVURI(final VURI... mmURIs) {
         IFile correspondenceFile = getCorrespondenceIFile(mmURIs);
         return VURI.getInstance(correspondenceFile);
     }
 
-    public static void saveCorrespondenceModelMMURIs(final VURI[] mmURIs) {
+    public void saveCorrespondenceModelMMURIs(final VURI[] mmURIs) {
         IFile correspondenceModelIFile = getCorrespondenceIFile(mmURIs);
         Set<VURI> mmURIsSet = new HashSet<VURI>(Arrays.asList(mmURIs));
         saveVURISetToFile(mmURIsSet, correspondenceModelIFile.getLocation().toOSString());
     }
 
-    public static IFile getCorrespondenceIFile(final VURI[] mmURIs) {
+    public IFile getCorrespondenceIFile(final VURI[] mmURIs) {
         String fileName = getCorrespondenceFileName(mmURIs);
         return getCorrespondenceIFile(fileName);
     }
 
-    public static IFile getCorrespondenceIFile(final String fileName) {
+    public IFile getCorrespondenceIFile(final String fileName) {
         IFolder correspondenceFolder = getCorrespondenceFolder();
         IFile correspondenceFile = correspondenceFolder.getFile(fileName);
         return correspondenceFile;
@@ -72,7 +74,7 @@ public class FileSystemHelper {
         return fileName;
     }
 
-    public static void saveVSUMvURIsToFile(final Set<VURI> vuris) {
+    public void saveVSUMvURIsToFile(final Set<VURI> vuris) {
         String fileName = getVSUMMapFileName();
         saveVURISetToFile(vuris, fileName);
     }
@@ -99,7 +101,7 @@ public class FileSystemHelper {
         }
     }
 
-    public static Set<VURI> loadVSUMvURIsFromFile() {
+    public Set<VURI> loadVSUMvURIsFromFile() {
         String fileName = getVSUMMapFileName();
         return loadVURISetFromFile(fileName);
 
@@ -166,8 +168,8 @@ public class FileSystemHelper {
         return root.getProject(projectName);
     }
 
-    public static IProject getVSUMProject() {
-        IProject vsumProject = getProject(VSUMConstants.VSUM_PROJECT_NAME);
+    public IProject getVSUMProject() {
+        IProject vsumProject = getProject(this.vsumName);
         if (!vsumProject.exists()) {
             createProject(vsumProject);
         } else if (!vsumProject.isAccessible()) {
@@ -177,7 +179,7 @@ public class FileSystemHelper {
 
     }
 
-    private static void deleteAndRecreateProject(final IProject vsumProject) {
+    private void deleteAndRecreateProject(final IProject vsumProject) {
         try {
             vsumProject.delete(true, new NullProgressMonitor());
             createProject(vsumProject);
@@ -187,7 +189,7 @@ public class FileSystemHelper {
         }
     }
 
-    public static void createProject(final IProject project) {
+    public void createProject(final IProject project) {
         try {
             project.create(null);
             project.open(null);
@@ -210,26 +212,26 @@ public class FileSystemHelper {
         folder.create(false, true, null);
     }
 
-    public static IFolder getCorrespondenceFolder() {
+    public IFolder getCorrespondenceFolder() {
         IProject vsumProject = getVSUMProject();
         return getCorrespondenceFolder(vsumProject);
     }
 
-    private static IFolder getCorrespondenceFolder(final IProject project) {
+    private IFolder getCorrespondenceFolder(final IProject project) {
         IFolder correspondenceFolder = project.getFolder(VSUMConstants.CORRESPONDENCE_FOLDER_NAME);
         return correspondenceFolder;
     }
 
-    private static String getVSUMMapFileName() {
+    private String getVSUMMapFileName() {
         IFile file = getVSUMInstancesFile();
         return file.getLocation().toOSString();
     }
 
-    public static IFile getVSUMInstancesFile() {
+    public IFile getVSUMInstancesFile() {
         return getVSUMInstancesFile("");
     }
 
-    public static IFile getVSUMInstancesFile(final String prefix) {
+    public IFile getVSUMInstancesFile(final String prefix) {
         IFile file = getVSUMProject().getFolder(VSUMConstants.VSUM_FOLDER_NAME)
                 .getFile(prefix + VSUMConstants.VSUM_INSTANCES_FILE_NAME);
         return file;

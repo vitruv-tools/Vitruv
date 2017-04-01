@@ -41,19 +41,21 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
     private final Map<VURI, ModelInstance> modelInstances;
     private final List<InternalCorrespondenceModel> correspondenceModels;
+    private final FileSystemHelper fileSystemHelper;
 
-    public ModelRepositoryImpl(final MetamodelRepository metamodelRepository) {
-        this(metamodelRepository, null);
+    public ModelRepositoryImpl(final String vsumName, final MetamodelRepository metamodelRepository) {
+        this(vsumName, metamodelRepository, null);
     }
 
-    public ModelRepositoryImpl(final MetamodelRepository metamodelRepository, final ClassLoader classLoader) {
+    public ModelRepositoryImpl(final String vsumName, final MetamodelRepository metamodelRepository,
+            final ClassLoader classLoader) {
         this.metamodelRepository = metamodelRepository;
 
         this.resourceSet = new ResourceSetImpl();
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.correspondenceModels = new ArrayList<InternalCorrespondenceModel>();
-
+        this.fileSystemHelper = new FileSystemHelper(vsumName);
         loadVURIsOfVSMUModelInstances();
     }
 
@@ -202,7 +204,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
     private void createCorrespondenceModel(final MetamodelPair mapping) {
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
-            VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mapping.getMetamodelA().getURI(),
+            VURI correspondencesVURI = this.fileSystemHelper.getCorrespondencesVURI(mapping.getMetamodelA().getURI(),
                     mapping.getMetamodelB().getURI());
             Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
             InternalCorrespondenceModel correspondenceModel = new CorrespondenceModelImpl(mapping, this,
@@ -249,7 +251,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     private void loadVURIsOfVSMUModelInstances() {
-        Set<VURI> vuris = FileSystemHelper.loadVSUMvURIsFromFile();
+        Set<VURI> vuris = this.fileSystemHelper.loadVSUMvURIsFromFile();
         for (VURI vuri : vuris) {
             Metamodel metamodel = getMetamodelByURI(vuri);
             ModelInstance modelInstance = loadModelInstance(vuri, metamodel);
@@ -258,7 +260,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     private void saveVURIsOfVSUMModelInstances() {
-        FileSystemHelper.saveVSUMvURIsToFile(this.modelInstances.keySet());
+        this.fileSystemHelper.saveVSUMvURIsToFile(this.modelInstances.keySet());
     }
 
     private Metamodel getMetamodelByURI(final VURI uri) {

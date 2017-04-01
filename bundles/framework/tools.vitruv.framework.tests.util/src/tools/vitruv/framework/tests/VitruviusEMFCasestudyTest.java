@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.junit.runner.Description;
 
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
@@ -39,18 +37,18 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	 * @throws Throwable
 	 */
 	@Override
-	public void beforeTest(final Description description) throws Throwable {
-		super.beforeTest(description);
-		this.testUserInteractor = new TestUserInteractor();
-		this.getVirtualModel().setUserInteractor(this.testUserInteractor);
-		this.resourceSet = new ResourceSetImpl();
-		this.changeRecorder = new AtomicEMFChangeRecorder(false);
+	public void beforeTest() throws Throwable {
+		super.beforeTest();
+		this.changeRecorder = new AtomicEMFChangeRecorder();
 	}
 
 	protected abstract List<Metamodel> createMetamodels();
 
 	@Override
-	protected void afterTest(final org.junit.runner.Description description) {
+	public void afterTest() {
+		if (changeRecorder.isRecording()) {
+			changeRecorder.endRecording();
+		}
 	}
 
 	@Override
