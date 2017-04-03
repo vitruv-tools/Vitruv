@@ -84,7 +84,7 @@ class CreateEObjectTest extends EObjectTest {
 	 * Sets the state of the model before the change.
 	 */
 	def private void prepareStateBefore() {
-		stagingArea.contents.clear
+		stagingArea.clear
 		assertIsStateBefore
 	}
 	
@@ -92,8 +92,8 @@ class CreateEObjectTest extends EObjectTest {
 	 * Sets the state of the model after the change.
 	 */
 	def private void prepareStateAfter(Root object) {
-		stagingArea.contents.clear
-		stagingArea.contents.add(object)
+		stagingArea.clear
+		stagingArea.add(object)
 		assertIsStateAfter(object)
 	}
 	
@@ -101,15 +101,15 @@ class CreateEObjectTest extends EObjectTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertTrue(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter(Root object) {
-		Assert.assertEquals(stagingArea.contents.size, 1)
-		object.assertEqualsOrCopy(stagingArea.contents.get(0))
+		Assert.assertFalse(stagingArea.empty)
+		object.assertEqualsOrCopy(stagingArea.peek)
 	}
 	
 	/**

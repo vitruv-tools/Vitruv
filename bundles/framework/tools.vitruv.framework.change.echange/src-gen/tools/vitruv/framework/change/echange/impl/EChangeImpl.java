@@ -6,10 +6,6 @@ import com.google.common.base.Objects;
 
 import java.lang.reflect.InvocationTargetException;
 
-import java.util.List;
-
-import org.eclipse.emf.common.command.Command;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -18,15 +14,12 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
 
-import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver;
+import tools.vitruv.framework.change.echange.resolve.EChangeResolver;
 
-import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch;
-import tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch;
+import tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch;
 
 /**
  * <!-- begin-user-doc -->
@@ -70,17 +63,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	public EChange resolveBefore(final ResourceSet resourceSet) {
-		boolean _isResolved = this.isResolved();
-		boolean _not = (!_isResolved);
-		if (_not) {
-			final EChange change = EcoreUtil.<EChange>copy(this);
-			boolean _resolve = AtomicEChangeResolver.resolve(change, resourceSet, true);
-			if (_resolve) {
-				return change;
-			}
-			return null;
-		}
-		return this;
+		return EChangeResolver.resolveCopy(this, resourceSet, true, true);
 	}
 
 	/**
@@ -89,17 +72,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	public EChange resolveAfter(final ResourceSet resourceSet) {
-		boolean _isResolved = this.isResolved();
-		boolean _not = (!_isResolved);
-		if (_not) {
-			final EChange change = EcoreUtil.<EChange>copy(this);
-			boolean _resolve = AtomicEChangeResolver.resolve(change, resourceSet, false);
-			if (_resolve) {
-				return change;
-			}
-			return null;
-		}
-		return this;
+		return EChangeResolver.resolveCopy(this, resourceSet, false, true);
 	}
 
 	/**
@@ -108,21 +81,13 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	public EChange resolveBeforeAndApplyForward(final ResourceSet resourceSet) {
-		boolean _isResolved = this.isResolved();
-		boolean _not = (!_isResolved);
-		if (_not) {
-			final EChange resolvedChange = this.resolveBefore(resourceSet);
-			if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyForward())) {
-				return resolvedChange;
-			}
+		final EChange resolvedChange = this.resolveBefore(resourceSet);
+		if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyForward())) {
+			return resolvedChange;
 		}
 		else {
-			boolean _applyForward = this.applyForward();
-			if (_applyForward) {
-				return this;
-			}
+			return null;
 		}
-		return null;
 	}
 
 	/**
@@ -131,21 +96,13 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	public EChange resolveAfterAndApplyBackward(final ResourceSet resourceSet) {
-		boolean _isResolved = this.isResolved();
-		boolean _not = (!_isResolved);
-		if (_not) {
-			final EChange resolvedChange = this.resolveAfter(resourceSet);
-			if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyBackward())) {
-				return resolvedChange;
-			}
+		final EChange resolvedChange = this.resolveAfter(resourceSet);
+		if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyBackward())) {
+			return resolvedChange;
 		}
 		else {
-			boolean _applyBackward = this.applyBackward();
-			if (_applyBackward) {
-				return this;
-			}
+			return null;
 		}
-		return null;
 	}
 
 	/**
@@ -154,25 +111,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	public boolean applyForward() {
-		boolean _isResolved = this.isResolved();
-		if (_isResolved) {
-			ApplyForwardCommandSwitch _instance = ApplyForwardCommandSwitch.getInstance();
-			final List<Command> commands = _instance.doSwitch(this);
-			boolean _notEquals = (!Objects.equal(commands, null));
-			if (_notEquals) {
-				for (final Command c : commands) {
-					boolean _canExecute = c.canExecute();
-					if (_canExecute) {
-						c.execute();
-					}
-					else {
-						return false;
-					}
-				}
-				return true;
-			}
-		}
-		return false;
+		return ApplyEChangeSwitch.applyEChange(this, true);
 	}
 
 	/**
@@ -181,25 +120,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	public boolean applyBackward() {
-		boolean _isResolved = this.isResolved();
-		if (_isResolved) {
-			ApplyBackwardCommandSwitch _instance = ApplyBackwardCommandSwitch.getInstance();
-			final List<Command> commands = _instance.doSwitch(this);
-			boolean _notEquals = (!Objects.equal(commands, null));
-			if (_notEquals) {
-				for (final Command c : commands) {
-					boolean _canExecute = c.canExecute();
-					if (_canExecute) {
-						c.execute();
-					}
-					else {
-						return false;
-					}
-				}
-				return true;
-			}
-		}
-		return false;
+		return ApplyEChangeSwitch.applyEChange(this, false);
 	}
 
 	/**

@@ -1,11 +1,11 @@
 package tools.vitruv.framework.tests.echange.eobject
 
 import allElementTypes.Root
-import org.eclipse.emf.ecore.resource.Resource
 import org.junit.Assert
 import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import tools.vitruv.framework.change.echange.resolve.StagingArea
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 
@@ -91,7 +91,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * Change is resolved.
 	 */
 	def private static void assertIsResolved(EObjectExistenceEChange<Root> change, Root affectedEObject, 
-		Resource stagingArea) {
+		StagingArea stagingArea) {
 		Assert.assertTrue(change.isResolved)
 		affectedEObject.assertEqualsOrCopy(change.affectedEObject)
 		Assert.assertSame(change.stagingArea, stagingArea)	
@@ -101,15 +101,15 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertTrue(stagingArea.contents.empty)		
+		Assert.assertTrue(stagingArea.empty)		
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(stagingArea.contents.size, 1)
-		createdObject.assertEqualsOrCopy(stagingArea.contents.get(0))
+		Assert.assertFalse(stagingArea.empty)
+		createdObject.assertEqualsOrCopy(stagingArea.peek)
 	}
 	
 	/**

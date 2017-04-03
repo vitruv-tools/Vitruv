@@ -4,9 +4,9 @@ package tools.vitruv.framework.change.echange.eobject;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.eclipse.emf.ecore.resource.Resource;
-
 import tools.vitruv.framework.change.echange.AtomicEChange;
+
+import tools.vitruv.framework.change.echange.resolve.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -67,12 +67,12 @@ public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChang
 	 * object be removed from.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Staging Area</em>' attribute.
-	 * @see #setStagingArea(Resource)
+	 * @see #setStagingArea(StagingArea)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange_StagingArea()
-	 * @model unique="false" dataType="tools.vitruv.framework.change.echange.eobject.Resource"
+	 * @model unique="false" dataType="tools.vitruv.framework.change.echange.eobject.StagingArea"
 	 * @generated
 	 */
-	Resource getStagingArea();
+	StagingArea getStagingArea();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getStagingArea <em>Staging Area</em>}' attribute.
@@ -82,7 +82,7 @@ public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChang
 	 * @see #getStagingArea()
 	 * @generated
 	 */
-	void setStagingArea(Resource value);
+	void setStagingArea(StagingArea value);
 
 	/**
 	 * <!-- begin-user-doc -->

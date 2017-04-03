@@ -285,7 +285,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getCompoundEChange__ResolveBefore__ResourceSet() {
+	public EOperation getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet() {
 		return compoundEChangeEClass.getEOperations().get(2);
 	}
 
@@ -294,26 +294,8 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getCompoundEChange__ResolveAfter__ResourceSet() {
-		return compoundEChangeEClass.getEOperations().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet() {
-		return compoundEChangeEClass.getEOperations().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EOperation getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet() {
-		return compoundEChangeEClass.getEOperations().get(5);
+		return compoundEChangeEClass.getEOperations().get(3);
 	}
 
 	/**
@@ -734,8 +716,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		compoundEChangeEClass = createEClass(COMPOUND_ECHANGE);
 		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___GET_ATOMIC_CHANGES);
 		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___IS_RESOLVED);
-		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET);
-		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET);
 		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET);
 		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET);
 
@@ -931,12 +911,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		compoundEChangeEClass.getESuperTypes().add(theEChangePackage.getEChange());
 		moveEObjectEClass.getESuperTypes().add(this.getCompoundEChange());
 		explicitUnsetEFeatureEClass.getESuperTypes().add(this.getCompoundEChange());
-		g1 = createEGenericType(this.getExplicitUnsetEFeature());
-		g2 = createEGenericType(explicitUnsetEAttributeEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theEcorePackage.getEAttribute());
-		g1.getETypeArguments().add(g2);
-		explicitUnsetEAttributeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getCompoundSubtraction());
 		g2 = createEGenericType(explicitUnsetEAttributeEClass_T);
 		g1.getETypeArguments().add(g2);
@@ -946,6 +920,12 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		g2.getETypeArguments().add(g3);
 		g3 = createEGenericType(explicitUnsetEAttributeEClass_T);
 		g2.getETypeArguments().add(g3);
+		explicitUnsetEAttributeEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getExplicitUnsetEFeature());
+		g2 = createEGenericType(explicitUnsetEAttributeEClass_A);
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(theEcorePackage.getEAttribute());
+		g1.getETypeArguments().add(g2);
 		explicitUnsetEAttributeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getExplicitUnsetEFeature());
 		g2 = createEGenericType(explicitUnsetEReferenceEClass_A);
@@ -1022,13 +1002,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
 		initEOperation(getCompoundEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getCompoundEChange__ResolveBefore__ResourceSet(), theEChangePackage.getEChange(), "resolveBefore", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		op = initEOperation(getCompoundEChange__ResolveAfter__ResourceSet(), theEChangePackage.getEChange(), "resolveAfter", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		op = initEOperation(getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet(), theEChangePackage.getEChange(), "resolveBeforeAndApplyForward", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet(), theEChangePackage.getEChange(), "resolveBeforeAndApplyForward", 0, 1, !IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		op = initEOperation(getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet(), theEChangePackage.getEChange(), "resolveAfterAndApplyBackward", 0, 1, !IS_UNIQUE, IS_ORDERED);

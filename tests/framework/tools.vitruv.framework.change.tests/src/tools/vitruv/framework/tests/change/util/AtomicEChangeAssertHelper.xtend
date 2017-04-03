@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
+import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
@@ -14,6 +15,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
@@ -22,20 +24,19 @@ import static org.junit.Assert.*
 
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
-import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
 
 class AtomicEChangeAssertHelper {
-	public def static assertEObjectExistenceChange(EChange change, EObject affectedEObject, Resource stagingArea) {
+	public def static assertEObjectExistenceChange(EChange change, EObject affectedEObject, StagingArea stagingArea) {
 		val eObjectExistingChange = assertObjectInstanceOf(change, EObjectExistenceEChange);
 		eObjectExistingChange.assertAffectedEObject(affectedEObject)
 		eObjectExistingChange.assertStagingArea(stagingArea)
 	}
-	public def static assertCreateEObject(EChange change, EObject affectedEObject, Resource stagingArea) {
+	public def static assertCreateEObject(EChange change, EObject affectedEObject, StagingArea stagingArea) {
 		val createEObject = assertObjectInstanceOf(change, CreateEObject);
 		createEObject.assertEObjectExistenceChange(affectedEObject, stagingArea);
 	}
 			
-	public def static assertDeleteEObject(EChange change, EObject affectedEObject, Resource stagingArea) {
+	public def static assertDeleteEObject(EChange change, EObject affectedEObject, StagingArea stagingArea) {
 		val deleteEObject = assertObjectInstanceOf(change, DeleteEObject);
 		deleteEObject.assertEObjectExistenceChange(affectedEObject, stagingArea);
 	}

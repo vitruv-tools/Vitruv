@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-import org.eclipse.emf.ecore.resource.Resource;
-
 import tools.vitruv.framework.change.echange.eobject.*;
+
+import tools.vitruv.framework.change.echange.resolve.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -76,8 +76,8 @@ public class EobjectFactoryImpl extends EFactoryImpl implements EobjectFactory {
 		switch (eDataType.getClassifierID()) {
 			case EobjectPackage.EOBJ:
 				return createEObjFromString(eDataType, initialValue);
-			case EobjectPackage.RESOURCE:
-				return createResourceFromString(eDataType, initialValue);
+			case EobjectPackage.STAGING_AREA:
+				return createStagingAreaFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -93,8 +93,8 @@ public class EobjectFactoryImpl extends EFactoryImpl implements EobjectFactory {
 		switch (eDataType.getClassifierID()) {
 			case EobjectPackage.EOBJ:
 				return convertEObjToString(eDataType, instanceValue);
-			case EobjectPackage.RESOURCE:
-				return convertResourceToString(eDataType, instanceValue);
+			case EobjectPackage.STAGING_AREA:
+				return convertStagingAreaToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -143,8 +143,8 @@ public class EobjectFactoryImpl extends EFactoryImpl implements EobjectFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Resource createResourceFromString(EDataType eDataType, String initialValue) {
-		return (Resource)super.createFromString(eDataType, initialValue);
+	public StagingArea createStagingAreaFromString(EDataType eDataType, String initialValue) {
+		return (StagingArea)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class EobjectFactoryImpl extends EFactoryImpl implements EobjectFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertResourceToString(EDataType eDataType, Object instanceValue) {
+	public String convertStagingAreaToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

@@ -51,14 +51,14 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 
 		// Set state after
-		stagingArea.contents.clear
+		stagingArea.clear
 		resourceContent.add(1, newRootObject)
 
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as InsertRootEObject<Root>	
 		resolvedChange.assertIsResolved(newRootObject, resource)
-		Assert.assertTrue(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -96,7 +96,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		// Apply forward 1
 		resolvedChange.assertApplyForward
 		
-		Assert.assertTrue(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.empty)
 		Assert.assertEquals(resourceContent.size, 2)
 		Assert.assertTrue(newRootObject == resourceContent.get(1))
 		
@@ -143,11 +143,11 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		resolvedChange2.assertApplyBackward
 		
 		Assert.assertEquals(resourceContent.size, 2)	
-		Assert.assertTrue(newRootObject == resourceContent.get(1))
-		Assert.assertTrue(newRootObject2 == stagingArea.contents.get(0))
+		assertEqualsOrCopy(newRootObject, resourceContent.get(1))
+		assertEqualsOrCopy(newRootObject2, stagingArea.peek)
 			
 		// Now another change would take the object from the staging area
-		stagingArea.contents.clear
+		stagingArea.clear
 		
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -179,7 +179,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(stagingArea.contents.size, 1)
+		Assert.assertFalse(stagingArea.empty)
 		Assert.assertEquals(resourceContent.size, 1)
 	}
 	
@@ -187,7 +187,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(stagingArea.contents.size, 0)
+		Assert.assertTrue(stagingArea.empty)
 		Assert.assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))		

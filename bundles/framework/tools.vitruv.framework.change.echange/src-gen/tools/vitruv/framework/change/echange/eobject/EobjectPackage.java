@@ -617,14 +617,14 @@ public interface EobjectPackage extends EPackage {
 	int EOBJ = 5;
 
 	/**
-	 * The meta object id for the '<em>Resource</em>' data type.
+	 * The meta object id for the '<em>Staging Area</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.resource.Resource
-	 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getResource()
+	 * @see tools.vitruv.framework.change.echange.resolve.StagingArea
+	 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getStagingArea()
 	 * @generated
 	 */
-	int RESOURCE = 6;
+	int STAGING_AREA = 6;
 
 
 	/**
@@ -743,15 +743,15 @@ public interface EobjectPackage extends EPackage {
 	EDataType getEObj();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.Resource <em>Resource</em>}'.
+	 * Returns the meta object for data type '{@link tools.vitruv.framework.change.echange.resolve.StagingArea <em>Staging Area</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Resource</em>'.
-	 * @see org.eclipse.emf.ecore.resource.Resource
-	 * @model instanceClass="org.eclipse.emf.ecore.resource.Resource"
+	 * @return the meta object for data type '<em>Staging Area</em>'.
+	 * @see tools.vitruv.framework.change.echange.resolve.StagingArea
+	 * @model instanceClass="tools.vitruv.framework.change.echange.resolve.StagingArea"
 	 * @generated
 	 */
-	EDataType getResource();
+	EDataType getStagingArea();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -877,14 +877,14 @@ public interface EobjectPackage extends EPackage {
 		EDataType EOBJ = eINSTANCE.getEObj();
 
 		/**
-		 * The meta object literal for the '<em>Resource</em>' data type.
+		 * The meta object literal for the '<em>Staging Area</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.resource.Resource
-		 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getResource()
+		 * @see tools.vitruv.framework.change.echange.resolve.StagingArea
+		 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getStagingArea()
 		 * @generated
 		 */
-		EDataType RESOURCE = eINSTANCE.getResource();
+		EDataType STAGING_AREA = eINSTANCE.getStagingArea();
 
 	}
 

@@ -4,12 +4,11 @@ package tools.vitruv.framework.change.echange
 
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver
-import tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch
-import tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch
+import tools.vitruv.framework.change.echange.resolve.EChangeResolver
+import tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch
 
 type Command wraps Command
+
 type ResourceSet wraps ResourceSet
 
 /**
@@ -24,7 +23,6 @@ abstract class EChange {
 	op boolean isResolved() {
 		return true
 	}
-	
 	/**
 	 * Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set of 
 	 * resources with concrete EObjects.
@@ -34,20 +32,12 @@ abstract class EChange {
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
 	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
-	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
-	 * 			the original change.
+	 * 			is {@code null}, it returns {@code null}. If the change is already resolved an exception is thrown.
+	 * @throws IllegalStateException The change is already resolved.
 	 */
 	op EChange resolveBefore(ResourceSet resourceSet) {
-		if (!isResolved) {
-			val change = EcoreUtil.copy(this)
-			if (AtomicEChangeResolver.resolve(change, resourceSet, true)) {
-				return change
-			}
-			return null
-		}
-		return this
+		return EChangeResolver.resolveCopy(this, resourceSet, true, true)
 	}
-	
 	/**
 	 * Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set 
 	 * of resources with concrete EObjects.
@@ -57,18 +47,11 @@ abstract class EChange {
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
 	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
-	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
-	 * 			the original change.
+	 * 			is {@code null}, it returns {@code null}. If the change is already resolved and exception is thrown.
+	 * @throws IllegalStateException The change is already resolved.
 	 */
 	op EChange resolveAfter(ResourceSet resourceSet) {
-		if (!isResolved) {
-			val change = EcoreUtil.copy(this)
-			if (AtomicEChangeResolver.resolve(change, resourceSet, false)) {
-				return change
-			}
-			return null		
-		}
-		return this
+		return EChangeResolver.resolveCopy(this, resourceSet, false, true)
 	}
 	
 	/**
@@ -80,21 +63,16 @@ abstract class EChange {
 	 * 			is a copy of the change or, if the change was already resolved, the original change. 
 	 * 			If the change could not be resolved and / or applied or the 
 	 * 			resource set is {@code null}, it returns {@code null}
+	 * @throws IllegalStateException The change is already resolved.
 	 */
 	op EChange resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		if (!isResolved) {
-			val resolvedChange = resolveBefore(resourceSet)
-			if (resolvedChange != null && resolvedChange.applyForward) {
-				return resolvedChange
-			}			
+		val resolvedChange = resolveBefore(resourceSet)
+		if (resolvedChange != null && resolvedChange.applyForward) {
+			return resolvedChange
 		} else {
-			if (applyForward) {
-				return this
-			}
+			return null
 		}
-		return null
 	}
-
 	/**
 	 * Resolves the change like {@link resolveAfter}, but also applies the change backward.
 	 * If the change was already resolved, it returns the original change and applies it backward.
@@ -104,65 +82,39 @@ abstract class EChange {
 	 * 			is a copy of the change or, if the change was already resolved, the original change. 
 	 * 			If the change could not be resolved and / or applied or the resource set is {@code null}, 
 	 * 			it returns {@code null}
-	 */	
+	 * @throws IllegalStateException The change is already resolved.
+	 */
 	op EChange resolveAfterAndApplyBackward(ResourceSet resourceSet) {
-		if (!isResolved) {
-			val resolvedChange = resolveAfter(resourceSet)
-			if (resolvedChange != null && resolvedChange.applyBackward) {
-				return resolvedChange
-			}			
+		val resolvedChange = resolveAfter(resourceSet)
+		if (resolvedChange != null && resolvedChange.applyBackward) {
+			return resolvedChange
 		} else {
-			if (applyBackward) {
-				return this
-			}	
+			return null
 		}
-		return null
 	}
-	
 	/**
 	 * Applies the change to the model which the change was resolved to.
 	 * The change must be resolved before it can be applied.
-	 * @return	Returns whether the change was successfully applied forward. If the 
-	 * 			change was not resolved or could not be applied it returns {@code false}
+	 * @return	Returns whether the change was successfully applied forward. If the
+	 * 			change was not resolved an Exception is thrown. 
+	 * 			If the change could not be applied it returns {@code false}.
+	 * 			Otherwise it returns {@code true}.
+	 * @throws IllegalStateException The change is not resolved
 	 */
 	op boolean applyForward() {
-		if (isResolved) {
-			val commands = ApplyForwardCommandSwitch.instance.doSwitch(this)
-			if (commands != null) {
-				for (Command c : commands) {
-					if (c.canExecute()) {
-						c.execute()
-					} else {
-						return false
-					}
-				}
-				return true
-			}
-		}
-		return false
+		ApplyEChangeSwitch.applyEChange(this, true)
 	}
-	
 	/**
 	 * Reverts the change on the model which the change was resolved to.
 	 * The change must be resolved before it can be reverted.
 	 * @return	Returns whether the change was successfully applied backward. If the
-	 * 			change was not resolved or could not be reverted it returns {@code false}
+	 * 			change was not resolved an Exception is thrown. 
+	 * 			If the change could not be applied it returns {@code false}.
+	 * 			Otherwise it returns {@code true}.
+	 * @throws IllegalStateException The change is not resolved.
 	 */
 	op boolean applyBackward() {
-		if (isResolved) {
-			val commands = ApplyBackwardCommandSwitch.instance.doSwitch(this)
-			if (commands != null) {
-				for (Command c : commands) {
-					if (c.canExecute()) {
-						c.execute()
-					} else {
-						return false
-					}
-				}
-				return true
-			}
-		}
-		return false
+		ApplyEChangeSwitch.applyEChange(this, false)
 	}
 }
 

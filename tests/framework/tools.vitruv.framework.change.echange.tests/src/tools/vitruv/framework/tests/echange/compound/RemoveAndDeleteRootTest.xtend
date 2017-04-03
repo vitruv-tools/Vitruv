@@ -104,7 +104,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertEquals(resourceContent.size, 2)
 		Assert.assertFalse(resourceContent.contains(newRootObject))	
 		Assert.assertTrue(resourceContent.contains(newRootObject2))	
-		Assert.assertTrue(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.empty)
 		
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 0).resolveBefore(resourceSet)
@@ -141,7 +141,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 
 		Assert.assertEquals(resourceContent.size, 2)
 		Assert.assertTrue(resourceContent.contains(newRootObject2))
-		Assert.assertTrue(stagingArea.contents.empty)	
+		Assert.assertTrue(stagingArea.empty)	
 			
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -175,7 +175,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
-		Assert.assertTrue(stagingArea.contents.empty)		
+		Assert.assertTrue(stagingArea.empty)		
 	}
 	
 	/** 
@@ -183,7 +183,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 */
 	def private void assertIsStateAfter() {
 		Assert.assertEquals(resourceContent.size, 1)
-		Assert.assertTrue(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.empty)
 	}
 
 	/**

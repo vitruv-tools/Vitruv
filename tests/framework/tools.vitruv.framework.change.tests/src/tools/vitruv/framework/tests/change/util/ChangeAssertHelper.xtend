@@ -18,6 +18,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.util.datatypes.Quadruple
 
@@ -104,7 +105,7 @@ class ChangeAssertHelper {
 			rootChange.resource, resource)
 	}
 
-	def static void assertStagingArea(EObjectExistenceEChange<?> existenceChange, Resource stagingArea) {
+	def static void assertStagingArea(EObjectExistenceEChange<?> existenceChange, StagingArea stagingArea) {
 		Assert.assertEquals("Change " + existenceChange + " shall have the staging area " + stagingArea,
 			existenceChange.stagingArea, stagingArea)
 	}

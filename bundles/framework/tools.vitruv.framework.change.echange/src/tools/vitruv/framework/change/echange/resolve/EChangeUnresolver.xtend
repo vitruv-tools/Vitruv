@@ -32,6 +32,7 @@ public class EChangeUnresolver {
 	def static public <A extends EObject> A createProxy(A resolvedObject) {
 		if (resolvedObject != null) {
 			val proxy = EcoreUtil.copy(resolvedObject) as InternalEObject
+			//val proxy = EcoreUtil.create(resolvedObject.eClass) as InternalEObject
 			proxy.eSetProxyURI(EcoreUtil.getURI(resolvedObject))
 			return proxy as A			
 		}

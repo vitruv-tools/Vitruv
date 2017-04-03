@@ -3,13 +3,13 @@
 package tools.vitruv.framework.change.echange.eobject
 
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
+import tools.vitruv.framework.change.echange.resolve.StagingArea
 
 type EObj wraps EObject
-type Resource wraps Resource
+type StagingArea wraps StagingArea
 
 /**
  * Abstract EChange which inserts an EObject into a resource or reference.
@@ -38,7 +38,7 @@ abstract class EObjectExistenceEChange<A extends EObj> extends AtomicEChange {
 	 * The staging area where the created object will be placed or the deleted
 	 * object be removed from.
 	 */
-	Resource stagingArea
+	StagingArea stagingArea
 	
 	/**
 	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.

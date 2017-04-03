@@ -31,7 +31,7 @@ import org.junit.After
  	// Second model instance
  	protected var Root rootObject2 = null
  	protected var Resource resource2 = null
- 	protected var Resource stagingArea2 = null
+ 	protected var StagingArea stagingArea2 = null
  	protected var ResourceSet resourceSet2 = null
  	
  	@Before
@@ -43,17 +43,16 @@ import org.junit.After
  		// Load model in second resource
  		resourceSet2 = new ResourceSetImpl()
  		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
- 		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(StagingArea.DEFAULT_RESOURCE_EXTENSION, new XMIResourceFactoryImpl())
  		resource2 = resourceSet2.getResource(fileUri, true)
  		rootObject2 = resource2.getEObject(EcoreUtil.getURI(rootObject).fragment()) as Root
  		
  		// Create staging area for resource set 2
- 		stagingArea2 = resourceSet2.createResource(stagingResourceName)
+ 		stagingArea2 = StagingArea.getStagingArea(resourceSet2)
  	}
  	
  	@After
  	override public void afterTest() {
- 		stagingArea2.contents.clear
+ 		stagingArea2.clear
  		super.afterTest()
  	}
 	 
@@ -118,9 +117,9 @@ import org.junit.After
 	}
 
 	/**
-	 * Tests whether resolving an already resolved EFeatureChange returns itself
+	 * Tests whether resolving an already resolved EFeatureChange throws an exception.
 	 */
-	@Test
+	@Test(expected=IllegalArgumentException)
 	def public void resolveResolvedEFeatureChange() {
 		// Create change and resolve	
  		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
@@ -128,10 +127,8 @@ import org.junit.After
  		resolvedChange.assertIsResolved(affectedEObject, affectedFeature)
 		
 		// Resolve again
-		val resolvedChange2 = resolvedChange.resolveBefore(resourceSet)
-		 	as FeatureEChange<Root, EAttribute>
- 		resolvedChange2.assertIsResolved(affectedEObject, affectedFeature)
-		Assert.assertSame(resolvedChange, resolvedChange2)
+		resolvedChange.resolveBefore(resourceSet)
+
 	}
  	
  	/**

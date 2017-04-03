@@ -8,6 +8,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.framework.change.echange,
+ tools.vitruv.framework.change.echange.command,
  tools.vitruv.framework.change.echange.compound,
  tools.vitruv.framework.change.echange.compound.impl,
  tools.vitruv.framework.change.echange.compound.util,

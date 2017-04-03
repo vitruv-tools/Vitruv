@@ -53,7 +53,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved(newRootObject)	
-		Assert.assertTrue(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.empty)
 		
 		// Set state after
 	 	prepareStagingArea(newRootObject)
@@ -62,7 +62,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as RemoveRootEObject<Root>	
 		resolvedChange.assertIsResolved(newRootObject, resource)
-		Assert.assertFalse(stagingArea.contents.empty)
+		Assert.assertFalse(stagingArea.empty)
 	 }
 	
 	/**
@@ -96,11 +96,11 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		resolvedChange.assertApplyForward
 		
 		Assert.assertEquals(resourceContent.size, 2)
-		Assert.assertTrue(newRootObject == stagingArea.contents.get(0))
-		Assert.assertTrue(newRootObject2 == resourceContent.get(1))		
+		assertEqualsOrCopy(newRootObject, stagingArea.peek)
+		assertEqualsOrCopy(newRootObject2, resourceContent.get(1))		
 		
 		// Now the element is deleted or inserted again.
-		stagingArea.contents.clear()
+		stagingArea.clear
 
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 0).resolveBefore(resourceSet)
@@ -126,7 +126,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		resolvedChange.assertApplyForward
 		
 		// Now the element is deleted or inserted again.
-		stagingArea.contents.clear()
+		stagingArea.clear()
 		
 		// Create and resolve and apply forward 2
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 0).resolveBefore(resourceSet)
@@ -183,7 +183,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		Assert.assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
-		Assert.assertTrue(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -191,7 +191,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 */
 	def private void assertIsStateAfter() {
 		Assert.assertEquals(resourceContent.size, 1)
-		Assert.assertFalse(stagingArea.contents.empty)
+		Assert.assertFalse(stagingArea.empty)
 	}
 	
 	/**

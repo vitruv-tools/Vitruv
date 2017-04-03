@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EObject
 
  	protected var Root rootObject = null
  	protected var Resource resource = null
- 	protected var Resource stagingArea = null
+ 	protected var StagingArea stagingArea = null
  	protected var ResourceSet resourceSet = null
  	
  	protected var TypeInferringAtomicEChangeFactory atomicFactory = null
@@ -57,12 +57,10 @@ import org.eclipse.emf.ecore.EObject
  		// Setup Files
  		var modelFile = testFolder.newFile(MODEL_FILE_NAME + "." + METAMODEL)
 		fileUri = URI.createFileURI(modelFile.getAbsolutePath())
-		stagingResourceName = URI.createFileURI(StagingArea.DEFAULT_RESOURCE_NAME)
  		
  		// Create model
  		resourceSet = new ResourceSetImpl()
  		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
- 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(StagingArea.DEFAULT_RESOURCE_EXTENSION, new XMIResourceFactoryImpl())
  		resource = resourceSet.createResource(fileUri)
  		
  		rootObject = AllElementTypesFactory.eINSTANCE.createRoot()
@@ -71,7 +69,7 @@ import org.eclipse.emf.ecore.EObject
  		resource.save(null)
  		
  		// Create staging area for resource set 1
- 		stagingArea = resourceSet.createResource(stagingResourceName)
+ 		stagingArea = StagingArea.getStagingArea(resourceSet)
  		
  		// Factorys for creating changes
  		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory.instance
@@ -84,7 +82,7 @@ import org.eclipse.emf.ecore.EObject
  	 */
  	@After
  	def void afterTest() {
-		stagingArea.contents.clear
+		stagingArea.clear
  	}
  	
 	/**
@@ -96,8 +94,7 @@ import org.eclipse.emf.ecore.EObject
 	 */
 	protected def void prepareStagingArea(EObject object) {
 		if (object != null) {
-			stagingArea.contents.clear
-			stagingArea.contents.add(object)			
+			stagingArea.add(object)			
 		}
 	}
  }

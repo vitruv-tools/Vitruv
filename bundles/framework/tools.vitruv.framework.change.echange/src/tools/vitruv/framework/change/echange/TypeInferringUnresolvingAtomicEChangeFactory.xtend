@@ -20,9 +20,10 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnr
  */
 class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEChangeFactory {
 	private static TypeInferringUnresolvingAtomicEChangeFactory instance
-	
-	private new() {}
-	
+
+	private new() {
+	}
+
 	/**
 	 * Gets the singleton instance of the factory which unresolves the changes.
 	 * @return The singleton instance.
@@ -38,23 +39,25 @@ class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEC
 		super.setRootChangeFeatures(change, resource, index)
 		change.unresolveRootEChange
 	}
-	
-	override protected <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(FeatureEChange<A,F> change, A affectedEObject, F affectedFeature) {
+
+	override protected <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(
+		FeatureEChange<A, F> change, A affectedEObject, F affectedFeature) {
 		super.setFeatureChangeFeatures(change, affectedEObject, affectedFeature)
 		change.unresolveFeatureEChange
 	}
-	
+
 	override protected <T extends EObject> void setNewValue(EObjectAddedEChange<T> change, T newValue) {
 		super.setNewValue(change, newValue)
 		change.unresolveEObjectAddedEChange
-	}	
-	
+	}
+
 	override protected <T extends EObject> void setOldValue(EObjectSubtractedEChange<T> change, T oldValue) {
 		super.setOldValue(change, oldValue)
 		change.unresolveEObjectSubtractedEChange
 	}
-	
-	override protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change, A affectedEObject, Resource resource) {
+
+	override protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
+		A affectedEObject, Resource resource) {
 		super.setEObjectExistenceChange(change, affectedEObject, resource)
 		change.unresolve
 	}

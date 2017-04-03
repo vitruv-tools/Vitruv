@@ -16,8 +16,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.resource.Resource;
-
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangePackage;
 
@@ -25,6 +23,8 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
+
+import tools.vitruv.framework.change.echange.resolve.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -59,7 +59,7 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Resource STAGING_AREA_EDEFAULT = null;
+	protected static final StagingArea STAGING_AREA_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getStagingArea() <em>Staging Area</em>}' attribute.
@@ -69,7 +69,7 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * @generated
 	 * @ordered
 	 */
-	protected Resource stagingArea = STAGING_AREA_EDEFAULT;
+	protected StagingArea stagingArea = STAGING_AREA_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -134,7 +134,7 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Resource getStagingArea() {
+	public StagingArea getStagingArea() {
 		return stagingArea;
 	}
 
@@ -143,8 +143,8 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setStagingArea(Resource newStagingArea) {
-		Resource oldStagingArea = stagingArea;
+	public void setStagingArea(StagingArea newStagingArea) {
+		StagingArea oldStagingArea = stagingArea;
 		stagingArea = newStagingArea;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA, oldStagingArea, stagingArea));
@@ -189,7 +189,7 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 				setAffectedEObject((A)newValue);
 				return;
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
-				setStagingArea((Resource)newValue);
+				setStagingArea((StagingArea)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

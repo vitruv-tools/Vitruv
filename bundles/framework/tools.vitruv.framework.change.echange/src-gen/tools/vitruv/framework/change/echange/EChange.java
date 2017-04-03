@@ -50,11 +50,11 @@ public interface EChange extends EObject {
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
 	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
-	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
-	 * 			the original change.
+	 * 			is {@code null}, it returns {@code null}. If the change is already resolved an exception is thrown.
+	 * @throws IllegalStateException The change is already resolved.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver%>.resolve(change, resourceSet, true);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, true, true);'"
 	 * @generated
 	 */
 	EChange resolveBefore(ResourceSet resourceSet);
@@ -72,11 +72,11 @@ public interface EChange extends EObject {
 	 * @param 	resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
 	 * 			the unresolved should be resolved to.
 	 * @return 	Returns a resolved copy of the change. If the copy could not be resolved or the resource set
-	 * 			is {@code null}, it returns {@code null}. If the change was already resolved, it returns
-	 * 			the original change.
+	 * 			is {@code null}, it returns {@code null}. If the change is already resolved and exception is thrown.
+	 * @throws IllegalStateException The change is already resolved.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> change = <%org.eclipse.emf.ecore.util.EcoreUtil%>.<<%tools.vitruv.framework.change.echange.EChange%>>copy(this);\n\tboolean _resolve = <%tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver%>.resolve(change, resourceSet, false);\n\tif (_resolve)\n\t{\n\t\treturn change;\n\t}\n\treturn null;\n}\nreturn this;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, false, true);'"
 	 * @generated
 	 */
 	EChange resolveAfter(ResourceSet resourceSet);
@@ -94,9 +94,10 @@ public interface EChange extends EObject {
 	 * 			is a copy of the change or, if the change was already resolved, the original change.
 	 * 			If the change could not be resolved and / or applied or the
 	 * 			resource set is {@code null}, it returns {@code null}
+	 * @throws IllegalStateException The change is already resolved.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveBefore(resourceSet);\n\tif (((!<%com.google.common.base.Objects%>.equal(resolvedChange, null)) && resolvedChange.applyForward()))\n\t{\n\t\treturn resolvedChange;\n\t}\n}\nelse\n{\n\tboolean _applyForward = this.applyForward();\n\tif (_applyForward)\n\t{\n\t\treturn this;\n\t}\n}\nreturn null;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveBefore(resourceSet);\nif (((!<%com.google.common.base.Objects%>.equal(resolvedChange, null)) && resolvedChange.applyForward()))\n{\n\treturn resolvedChange;\n}\nelse\n{\n\treturn null;\n}'"
 	 * @generated
 	 */
 	EChange resolveBeforeAndApplyForward(ResourceSet resourceSet);
@@ -114,9 +115,10 @@ public interface EChange extends EObject {
 	 * 			is a copy of the change or, if the change was already resolved, the original change.
 	 * 			If the change could not be resolved and / or applied or the resource set is {@code null},
 	 * 			it returns {@code null}
+	 * @throws IllegalStateException The change is already resolved.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nboolean _not = (!_isResolved);\nif (_not)\n{\n\tfinal <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveAfter(resourceSet);\n\tif (((!<%com.google.common.base.Objects%>.equal(resolvedChange, null)) && resolvedChange.applyBackward()))\n\t{\n\t\treturn resolvedChange;\n\t}\n}\nelse\n{\n\tboolean _applyBackward = this.applyBackward();\n\tif (_applyBackward)\n\t{\n\t\treturn this;\n\t}\n}\nreturn null;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveAfter(resourceSet);\nif (((!<%com.google.common.base.Objects%>.equal(resolvedChange, null)) && resolvedChange.applyBackward()))\n{\n\treturn resolvedChange;\n}\nelse\n{\n\treturn null;\n}'"
 	 * @generated
 	 */
 	EChange resolveAfterAndApplyBackward(ResourceSet resourceSet);
@@ -129,10 +131,13 @@ public interface EChange extends EObject {
 	 * Applies the change to the model which the change was resolved to.
 	 * The change must be resolved before it can be applied.
 	 * @return	Returns whether the change was successfully applied forward. If the
-	 * 			change was not resolved or could not be applied it returns {@code false}
+	 * 			change was not resolved an Exception is thrown.
+	 * 			If the change could not be applied it returns {@code false}.
+	 * 			Otherwise it returns {@code true}.
+	 * @throws IllegalStateException The change is not resolved
 	 * <!-- end-model-doc -->
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\t<%tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch%> _instance = <%tools.vitruv.framework.change.echange.util.ApplyForwardCommandSwitch%>.getInstance();\n\tfinal <%java.util.List%><<%org.eclipse.emf.common.command.Command%>> commands = _instance.doSwitch(this);\n\tboolean _notEquals = (!<%com.google.common.base.Objects%>.equal(commands, null));\n\tif (_notEquals)\n\t{\n\t\tfor (final <%org.eclipse.emf.common.command.Command%> c : commands)\n\t\t{\n\t\t\tboolean _canExecute = c.canExecute();\n\t\t\tif (_canExecute)\n\t\t\t{\n\t\t\t\tc.execute();\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\treturn false;\n\t\t\t}\n\t\t}\n\t\treturn true;\n\t}\n}\nreturn false;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch%>.applyEChange(this, true);'"
 	 * @generated
 	 */
 	boolean applyForward();
@@ -145,10 +150,13 @@ public interface EChange extends EObject {
 	 * Reverts the change on the model which the change was resolved to.
 	 * The change must be resolved before it can be reverted.
 	 * @return	Returns whether the change was successfully applied backward. If the
-	 * 			change was not resolved or could not be reverted it returns {@code false}
+	 * 			change was not resolved an Exception is thrown.
+	 * 			If the change could not be applied it returns {@code false}.
+	 * 			Otherwise it returns {@code true}.
+	 * @throws IllegalStateException The change is not resolved.
 	 * <!-- end-model-doc -->
 	 * @model unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='boolean _isResolved = this.isResolved();\nif (_isResolved)\n{\n\t<%tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch%> _instance = <%tools.vitruv.framework.change.echange.util.ApplyBackwardCommandSwitch%>.getInstance();\n\tfinal <%java.util.List%><<%org.eclipse.emf.common.command.Command%>> commands = _instance.doSwitch(this);\n\tboolean _notEquals = (!<%com.google.common.base.Objects%>.equal(commands, null));\n\tif (_notEquals)\n\t{\n\t\tfor (final <%org.eclipse.emf.common.command.Command%> c : commands)\n\t\t{\n\t\t\tboolean _canExecute = c.canExecute();\n\t\t\tif (_canExecute)\n\t\t\t{\n\t\t\t\tc.execute();\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\treturn false;\n\t\t\t}\n\t\t}\n\t\treturn true;\n\t}\n}\nreturn false;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch%>.applyEChange(this, false);'"
 	 * @generated
 	 */
 	boolean applyBackward();

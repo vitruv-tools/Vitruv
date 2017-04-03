@@ -101,7 +101,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	
 	 	// Resolving the change will be tested in EFeatureChange
 	 	val resolvedChange = atomicFactory.<NonRoot, Integer>createReplaceSingleAttributeChange
-	 	(affectedNonRootEObject, affectedRootFeature, oldIntValue, newIntValue)
+	 	(affectedNonRootEObject, affectedRootFeature, oldIntValue, newIntValue).resolveBefore(resourceSet)
 	 	
 	 	// NonRoot has no such feature
 	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature), -1)	

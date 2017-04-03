@@ -100,8 +100,8 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE: {
 				ExplicitUnsetEAttribute<?, ?> explicitUnsetEAttribute = (ExplicitUnsetEAttribute<?, ?>)theEObject;
 				T1 result = caseExplicitUnsetEAttribute(explicitUnsetEAttribute);
-				if (result == null) result = caseExplicitUnsetEFeature(explicitUnsetEAttribute);
 				if (result == null) result = caseCompoundSubtraction(explicitUnsetEAttribute);
+				if (result == null) result = caseExplicitUnsetEFeature(explicitUnsetEAttribute);
 				if (result == null) result = caseCompoundEChange(explicitUnsetEAttribute);
 				if (result == null) result = caseEChange(explicitUnsetEAttribute);
 				if (result == null) result = defaultCase(theEObject);

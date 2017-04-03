@@ -158,7 +158,7 @@ package class EMFModelChangeTransformationUtil {
 	
 	def static EChange createRemoveReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, EObject newContainer, Resource newResource) {
 		val isContainment = affectedReference.containment
-		val isDelete = isContainment && isDelete(newContainer,newResource)
+		val isDelete = isContainment && isDelete(newContainer, newResource)
 		if (isDelete) {
 			return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteNonRootChange(affectedEObject, affectedReference, referenceValue, index);
 		} else {

@@ -4,6 +4,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import tools.vitruv.framework.tests.echange.command.AddToStagingAreaCommandTest;
+import tools.vitruv.framework.tests.echange.command.RemoveAtCommandTest;
+import tools.vitruv.framework.tests.echange.command.RemoveFromStagingAreaCommandTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndInsertNonRootTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndInsertRootTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndReplaceAndDeleteNonRootTest;
@@ -21,10 +24,8 @@ import tools.vitruv.framework.tests.echange.feature.attribute.ReplaceSingleValue
 import tools.vitruv.framework.tests.echange.feature.reference.InsertEReferenceTest;
 import tools.vitruv.framework.tests.echange.feature.reference.RemoveEReferenceTest;
 import tools.vitruv.framework.tests.echange.feature.reference.ReplaceSingleValuedEReferenceTest;
-import tools.vitruv.framework.tests.echange.integration.EAttributeChangeIntegrationTest;
 import tools.vitruv.framework.tests.echange.root.InsertRootEObjectTest;
 import tools.vitruv.framework.tests.echange.root.RemoveRootEObjectTest;
-import tools.vitruv.framework.tests.echange.util.RemoveAtCommandTest;
 
 @RunWith(Suite.class)
 
@@ -52,11 +53,10 @@ import tools.vitruv.framework.tests.echange.util.RemoveAtCommandTest;
 	RemoveAndDeleteNonRootTest.class,
 	CreateAndReplaceAndDeleteNonRootTest.class,
 	
-	// Integration tests
-	EAttributeChangeIntegrationTest.class,
-	
 	// Additional tests
-	RemoveAtCommandTest.class})
+	RemoveAtCommandTest.class,
+	AddToStagingAreaCommandTest.class,
+	RemoveFromStagingAreaCommandTest.class})
 
 public class EChangeTestSuite {
 

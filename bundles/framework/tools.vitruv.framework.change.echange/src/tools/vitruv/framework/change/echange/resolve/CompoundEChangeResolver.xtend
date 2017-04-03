@@ -1,5 +1,6 @@
 package tools.vitruv.framework.change.echange.resolve
 
+import java.util.List
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -8,6 +9,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
+import tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch
 import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 class CompoundEChangeResolver {
@@ -22,11 +24,9 @@ class CompoundEChangeResolver {
 	 * 								the compound change.
 	 */	
 	def private static boolean resolveCompoundEChange(CompoundEChange change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
-		if (!change.isResolved) {
-			if (!AtomicEChangeResolver.resolveEChange(change, resourceSet, resolveBefore)
-				|| !resolveAtomicChanges(change, resourceSet, resolveBefore, revertAfterResolving)) {
-				return false
-			}	
+		if (!AtomicEChangeResolver.resolveEChange(change, resourceSet, resolveBefore) 
+			|| !resolveAtomicChanges(change, resourceSet, resolveBefore, revertAfterResolving)) {
+			return false
 		}
 		return true				
 	}
@@ -43,40 +43,28 @@ class CompoundEChangeResolver {
 	 * 								the atomic changes.
 	 */
 	def private static boolean resolveAtomicChanges(CompoundEChange change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
-		val appliedChanges = new BasicEList<EChange>
-		if (resolveBefore) {
-			for (AtomicEChange c : change.atomicChanges) {
-				if (!AtomicEChangeResolver.resolve(c, resourceSet, true) || !c.applyForward) {
-					// Error resolving or applying forward => revert all applied changes
-					for (EChange changed : appliedChanges.reverseView) {
-						changed.applyBackward
-					}
-					return false
-				} else {
-					appliedChanges.add(c)
+		var List<AtomicEChange> atomicChanges = change.atomicChanges
+		if (!resolveBefore) {
+			atomicChanges.reverse
+		}
+		
+		val appliedChanges = new BasicEList<EChange>		
+		for (AtomicEChange c : atomicChanges) {
+			if (!AtomicEChangeResolver.resolve(c, resourceSet, resolveBefore) 
+				|| !ApplyEChangeSwitch.applyEChange(c, resolveBefore)) {
+				// Error resolving or applying => revert all applied changes
+				for (EChange changed : appliedChanges.reverseView) {
+					ApplyEChangeSwitch.applyEChange(changed, !resolveBefore)
 				}
-			}
-		} else {
-			for (AtomicEChange c : change.atomicChanges.reverseView) {
-				if (!AtomicEChangeResolver.resolve(c, resourceSet, false) || !c.applyBackward) {
-					// Error resolving or applying backward => revert all applied changes
-					for (EChange changed : appliedChanges.reverseView) {
-						changed.applyForward
-					}
-					return false
-				} else {
-					appliedChanges.add(c)
-				}
+				return false
+			} else {
+				appliedChanges.add(c)
 			}
 		}
 		
 		// Revert all changes which were made resolving the compound change.
 		if (revertAfterResolving) {
-			if (resolveBefore) {
-				change.applyBackward
-			} else {
-				change.applyForward
-			}
+			ApplyEChangeSwitch.applyEChange(change, !resolveBefore)
 		}
 		return true		
 	}
@@ -92,7 +80,7 @@ class CompoundEChangeResolver {
 	 * @param revertAfterResolving	{@code true} if the change should be reverted after resolving
 	 * 								the compound change.
 	 */		
-	def static dispatch boolean resolve(CompoundEChange change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
+	def package static dispatch boolean resolve(CompoundEChange change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
 		return resolveCompoundEChange(change, resourceSet, resolveBefore, revertAfterResolving)
 	}	
 	
@@ -108,26 +96,24 @@ class CompoundEChangeResolver {
 	 * @param revertAfterResolving	{@code true} if the change should be reverted after resolving
 	 * 								the compound change.
 	 */	
-	def static dispatch boolean resolve(ExplicitUnsetEFeature<EObject, EStructuralFeature> change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
-		if (!change.isResolved) {
-			if (change.affectedEObject == null || change.affectedFeature == null 
-				|| !resolveCompoundEChange(change, resourceSet, resolveBefore, revertAfterResolving)) {
-				return false
-			}
-				
-			change.affectedEObject = EChangeUtil.resolveProxy(change.affectedEObject, resourceSet)
-
-			if (change.affectedEObject == null || change.affectedEObject.eIsProxy) {
-				return false
-			}	
+	def package static dispatch boolean resolve(ExplicitUnsetEFeature<EObject, EStructuralFeature> change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
+		if (change.affectedEObject == null || change.affectedFeature == null 
+			|| !resolveCompoundEChange(change, resourceSet, resolveBefore, revertAfterResolving)) {
+			return false
+		}
 			
-			// Unset change is special case of compound changes, because the application of the 
-			// atomic changes (removing all elements) != application of the compound change (explicit unset command)
-			// => Attribute needs to be unset additionally.
-			if ((!revertAfterResolving && resolveBefore)
-				|| (revertAfterResolving && !resolveBefore)) {
-				change.applyForward // Calls single unset command
-			}
+		change.affectedEObject = EChangeUtil.resolveProxy(change.affectedEObject, resourceSet)
+
+		if (change.affectedEObject == null || change.affectedEObject.eIsProxy) {
+			return false
+		}	
+		
+		// Unset change is special case of compound changes, because the application of the 
+		// atomic changes (removing all elements) != application of the compound change (explicit unset command)
+		// => Attribute needs to be unset additionally.
+		if ((!revertAfterResolving && resolveBefore)
+			|| (revertAfterResolving && !resolveBefore)) {
+			change.applyForward // Calls single unset command
 		}
 		return true
 	}

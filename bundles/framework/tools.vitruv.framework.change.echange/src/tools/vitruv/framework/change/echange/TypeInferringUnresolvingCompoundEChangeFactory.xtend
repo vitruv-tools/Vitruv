@@ -17,37 +17,38 @@ class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferringCompou
 	private new(TypeInferringAtomicEChangeFactory atomicFactory) {
 		super(atomicFactory)
 	}
-	
+
 	/**
 	 * Get the singleton instance of the factory.
 	 * @return The singleton instance.
 	 */
 	def public static TypeInferringUnresolvingCompoundEChangeFactory getInstance() {
 		if (instance == null) {
-			instance = new TypeInferringUnresolvingCompoundEChangeFactory(TypeInferringUnresolvingAtomicEChangeFactory.instance)
+			instance = new TypeInferringUnresolvingCompoundEChangeFactory(
+				TypeInferringUnresolvingAtomicEChangeFactory.instance)
 		}
 		return instance
 	}
-	
-	override protected <A extends EObject, F extends EStructuralFeature> setUnsetChangeFeatures(ExplicitUnsetEFeature<A, F> change, 
-		A affectedEObject, F affectedFeature) {
+
+	override protected <A extends EObject, F extends EStructuralFeature> setUnsetChangeFeatures(
+		ExplicitUnsetEFeature<A, F> change, A affectedEObject, F affectedFeature) {
 		super.setUnsetChangeFeatures(change, affectedEObject, affectedFeature)
 		change.unresolveExplicitUnsetEFeature
 	}
-	
-	override protected <A extends EObject, T extends Object> setUnsetAttributeChangeSubtractiveChanges(ExplicitUnsetEAttribute<A, T> change,
-		List<SubtractiveAttributeEChange<A, T>> changes) {
+
+	override protected <A extends EObject, T extends Object> setUnsetAttributeChangeSubtractiveChanges(
+		ExplicitUnsetEAttribute<A, T> change, List<SubtractiveAttributeEChange<A, T>> changes) {
 		for (c : changes) {
 			c.unresolve
 			change.subtractiveChanges.add(c);
-		}	
-	}	
-	
+		}
+	}
+
 	override protected <A extends EObject> setUnsetReferenceChangeEChanges(ExplicitUnsetEReference<A> change,
 		List<EChange> changes) {
 		for (c : changes) {
 			c.unresolve
 			change.changes.add(c);
-		}	
+		}
 	}
 }

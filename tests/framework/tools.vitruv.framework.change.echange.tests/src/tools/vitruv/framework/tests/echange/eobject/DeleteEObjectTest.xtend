@@ -100,8 +100,8 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Sets the state of the model before a change.
 	 */
 	def private void prepareStateBefore(Root stagingAreaObject) {
-		stagingArea.contents.clear
-		stagingArea.contents.add(stagingAreaObject)
+		stagingArea.clear
+		stagingArea.add(stagingAreaObject)
 		assertIsStateBefore(stagingAreaObject)
 	}
 	
@@ -109,7 +109,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Sets the state of the model after a change.
 	 */
 	def private void prepareStateAfter() {
-		stagingArea.contents.clear	
+		stagingArea.clear	
 		assertIsStateAfter
 	}
 	
@@ -117,15 +117,15 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore(Root stagingAreaObject) {
-		Assert.assertEquals(stagingArea.contents.size, 1)
-		stagingAreaObject.assertEqualsOrCopy(stagingArea.contents.get(0))
+		Assert.assertFalse(stagingArea.empty)
+		stagingAreaObject.assertEqualsOrCopy(stagingArea.peek)
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(stagingArea.contents.size, 0)
+		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**

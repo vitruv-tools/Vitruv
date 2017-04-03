@@ -183,9 +183,9 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 			
 		Assert.assertEquals(referenceContent.size, 1)
 		Assert.assertEquals(referenceContent.get(0), newValue2)
-		Assert.assertEquals(stagingArea.contents.get(0), newValue)		
+		Assert.assertEquals(stagingArea.peek, newValue)		
 		// Now another change would delete the element in the staging area (or reinsert)
-		stagingArea.contents.clear
+		stagingArea.clear
 		
 		// Create change 2 (resolved)
 		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(resourceSet)
@@ -242,7 +242,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		// Create change and apply forward
 		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(resourceSet)
 	 	resolvedChange.assertApplyForward
-		stagingArea.contents.clear
+		stagingArea.clear
 		
 	 	// Create change 2 and apply forward			
 		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(resourceSet)
@@ -256,7 +256,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		
 		Assert.assertEquals(referenceContent.size, 1)
 		Assert.assertEquals(referenceContent.get(0), newValue2)
-		Assert.assertTrue(stagingArea.contents.empty)
+		Assert.assertTrue(stagingArea.empty)
 		
 		// Now another change would fill the staging area for the next object
 		prepareStagingArea(newValue)
@@ -356,7 +356,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, 2)
 		newValue.assertEqualsOrCopy(referenceContent.get(0) as EObject)
 		newValue2.assertEqualsOrCopy(referenceContent.get(1) as EObject)
-		Assert.assertEquals(stagingArea.contents.size, 0)	
+		Assert.assertTrue(stagingArea.empty)	
 	}
 	
 	/**
@@ -365,9 +365,9 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def private void assertIsStateAfter() {
 		Assert.assertEquals(referenceContent.size, 0)
 		if (affectedFeature.containment) {
-			Assert.assertEquals(stagingArea.contents.size, 1)
+			Assert.assertFalse(stagingArea.empty)
 		} else {
-			Assert.assertEquals(stagingArea.contents.size, 0)
+			Assert.assertTrue(stagingArea.empty)
 		}		
 	}
 	

@@ -162,7 +162,6 @@ public class ChangeDescription2EChangesTransformation {
 		for (rootToAdd : listChange.referenceValues) {
 			var oldRootContainer = rootToAdd.eContainer
 			var oldRootResource = rootToAdd.eResource
-
 			var index = listChange.index
 			eChanges.add(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource,
 					newResource, index))
@@ -170,7 +169,6 @@ public class ChangeDescription2EChangesTransformation {
 	}
 
 	def private void addChangeForRemoveResourceChange(ResourceChange resourceChange, ListChange listChange,
-
 		Resource oldResource) {
 		val rootElementListIndex = listChange.index
 		// The resource is also in the state before the change was applied (like the model elements).
@@ -178,7 +176,6 @@ public class ChangeDescription2EChangesTransformation {
 		val rootToRemove = resourceChange.resource.contents.get(rootElementListIndex)
 		var newRootContainer = null//changeDescription.getNewContainer(rootToRemove)
 		var newRootResource = null//changeDescription.getNewResource(rootToRemove)
-
 		eChanges.add(createRemoveRootChange(rootToRemove, newRootContainer, newRootResource,
 				oldResource, rootElementListIndex))
 	}
