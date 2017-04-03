@@ -95,7 +95,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@Test
 	def public void applyForwardTest() {
 		// Create and resolve change 1
-		val resolvedChange = createUnresolvedChange(newRootObject, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(resourceSet)
 			 as RemoveAndDeleteRoot<Root>
 			
 		// Apply 1
@@ -107,7 +107,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertTrue(stagingArea.empty)
 		
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(newRootObject2, 0).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newRootObject2, 1).resolveBefore(resourceSet)
 			 as RemoveAndDeleteRoot<Root>
 			
 		// Apply 1

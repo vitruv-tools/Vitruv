@@ -10,7 +10,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
 
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnresolver.*
 
-class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferringCompoundEChangeFactory {
+final class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferringCompoundEChangeFactory {
 	protected TypeInferringAtomicEChangeFactory atomicFactory
 	private static TypeInferringUnresolvingCompoundEChangeFactory instance
 

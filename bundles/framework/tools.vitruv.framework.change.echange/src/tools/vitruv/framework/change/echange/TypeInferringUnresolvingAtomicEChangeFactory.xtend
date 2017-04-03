@@ -18,7 +18,7 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnr
  * 
  * Can be used by any transformation that creates change models.
  */
-class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEChangeFactory {
+final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEChangeFactory {
 	private static TypeInferringUnresolvingAtomicEChangeFactory instance
 
 	private new() {

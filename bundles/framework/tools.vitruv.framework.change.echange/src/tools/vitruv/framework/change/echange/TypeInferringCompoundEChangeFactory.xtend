@@ -16,9 +16,8 @@ import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
-import org.eclipse.emf.ecore.InternalEObject
+import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
 class TypeInferringCompoundEChangeFactory {
 	protected TypeInferringAtomicEChangeFactory atomicFactory
