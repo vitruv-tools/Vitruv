@@ -62,6 +62,9 @@ class ChangePropagatorImpl implements ChangePropagator {
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		propagateSingleChange(change, result, changedResourcesTracker);
 		changedResourcesTracker.markNonSourceResourceAsChanged();
+		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
+		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
+		modelProviding.saveAllModels
 		finishChangePropagation(change)
 		return result
 	}

@@ -71,8 +71,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 	
 	override propagateChange(VitruviusChange change) {
+		// Save is done by the change propagator because it has to be performed before finishing sync
 		changePropagator.propagateChange(change);
-		save();
 	}
 	
 	override setUserInteractor(UserInteracting userInteractor) {
