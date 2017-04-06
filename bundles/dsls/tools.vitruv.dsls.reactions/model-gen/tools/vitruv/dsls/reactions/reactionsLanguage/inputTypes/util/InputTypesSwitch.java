@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage;
-import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Int;
 
 /**
  * <!-- begin-user-doc -->
@@ -73,9 +72,51 @@ public class InputTypesSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case InputTypesPackage.INT: {
-				Int int_ = (Int)theEObject;
-				T result = caseInt(int_);
+			case InputTypesPackage.INTEGER: {
+				tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Integer integer = (tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Integer)theEObject;
+				T result = caseInteger(integer);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case InputTypesPackage.SHORT: {
+				tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Short short_ = (tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Short)theEObject;
+				T result = caseShort(short_);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case InputTypesPackage.BOOLEAN: {
+				tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Boolean boolean_ = (tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Boolean)theEObject;
+				T result = caseBoolean(boolean_);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case InputTypesPackage.LONG: {
+				tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Long long_ = (tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Long)theEObject;
+				T result = caseLong(long_);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case InputTypesPackage.CHARACTER: {
+				tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Character character = (tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Character)theEObject;
+				T result = caseCharacter(character);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case InputTypesPackage.BYTE: {
+				tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Byte byte_ = (tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Byte)theEObject;
+				T result = caseByte(byte_);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case InputTypesPackage.FLOAT: {
+				tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Float float_ = (tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Float)theEObject;
+				T result = caseFloat(float_);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case InputTypesPackage.DOUBLE: {
+				tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Double double_ = (tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Double)theEObject;
+				T result = caseDouble(double_);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -99,17 +140,122 @@ public class InputTypesSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Int</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Integer</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Int</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Integer</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInt(Int object) {
+	public T caseInteger(tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Integer object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Short</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Short</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseShort(tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Short object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Boolean</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Boolean</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseBoolean(tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Boolean object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Long</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Long</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseLong(tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Long object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Character</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Character</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCharacter(tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Character object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Byte</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Byte</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseByte(tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Byte object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Float</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Float</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseFloat(tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Float object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Double</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Double</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDouble(tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Double object) {
 		return null;
 	}
 

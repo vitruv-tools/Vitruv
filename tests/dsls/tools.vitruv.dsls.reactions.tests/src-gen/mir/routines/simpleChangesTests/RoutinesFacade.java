@@ -108,4 +108,10 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     	container, insertedNonRoot);
     effect.applyRoutine();
   }
+  
+  public void testPrimitiveTypesRoutine(final Integer intVal, final Long longVal, final Short shortVal, final Byte byteVal, final Character charVal, final Double doubleVal, final Float floatVal, final Integer boolVal, final String stringVal) {
+    mir.routines.simpleChangesTests.TestPrimitiveTypesRoutineRoutine effect = new mir.routines.simpleChangesTests.TestPrimitiveTypesRoutineRoutine(this.executionState, calledBy,
+    	intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal);
+    effect.applyRoutine();
+  }
 }

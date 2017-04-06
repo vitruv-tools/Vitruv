@@ -85,11 +85,26 @@ class ParameterGenerator {
 	}
 	
 	private def getMappedInstanceClass(EClass eClass) {
-		if (eClass.instanceClass.equals(InputTypesPackage.Literals.STRING.instanceClass)) {
+		if (eClass.equals(InputTypesPackage.Literals.STRING)) {
 			return String;
-		} else if (eClass.equals(InputTypesPackage.Literals.INT)) {
+		} else if (eClass.equals(InputTypesPackage.Literals.INTEGER)) {
 			return Integer;
+		} else if (eClass.equals(InputTypesPackage.Literals.LONG)) {
+			return Long;
+		} else if (eClass.equals(InputTypesPackage.Literals.SHORT)) {
+			return Short;
+		} else if (eClass.equals(InputTypesPackage.Literals.BOOLEAN)) {
+			return Integer;
+		} else if (eClass.equals(InputTypesPackage.Literals.CHARACTER)) {
+			return Character;
+		} else if (eClass.equals(InputTypesPackage.Literals.BYTE)) {
+			return Byte;
+		} else if (eClass.equals(InputTypesPackage.Literals.FLOAT)) {
+			return Float;
+		} else if (eClass.equals(InputTypesPackage.Literals.DOUBLE)) {
+			return Double;
 		}
+		
 		return eClass.instanceClass
 	}
 	

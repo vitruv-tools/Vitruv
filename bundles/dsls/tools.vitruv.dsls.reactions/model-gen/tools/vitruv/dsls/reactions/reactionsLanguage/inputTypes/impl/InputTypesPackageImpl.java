@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesFactory;
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage;
-import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Int;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +29,56 @@ public class InputTypesPackageImpl extends EPackageImpl implements InputTypesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass intEClass = null;
+	private EClass integerEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass shortEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass booleanEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass longEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass characterEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass byteEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass floatEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass doubleEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -107,8 +155,71 @@ public class InputTypesPackageImpl extends EPackageImpl implements InputTypesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getInt() {
-		return intEClass;
+	public EClass getInteger() {
+		return integerEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getShort() {
+		return shortEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getBoolean() {
+		return booleanEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getLong() {
+		return longEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getCharacter() {
+		return characterEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getByte() {
+		return byteEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getFloat() {
+		return floatEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getDouble() {
+		return doubleEClass;
 	}
 
 	/**
@@ -141,7 +252,21 @@ public class InputTypesPackageImpl extends EPackageImpl implements InputTypesPac
 		// Create classes and their features
 		stringEClass = createEClass(STRING);
 
-		intEClass = createEClass(INT);
+		integerEClass = createEClass(INTEGER);
+
+		shortEClass = createEClass(SHORT);
+
+		booleanEClass = createEClass(BOOLEAN);
+
+		longEClass = createEClass(LONG);
+
+		characterEClass = createEClass(CHARACTER);
+
+		byteEClass = createEClass(BYTE);
+
+		floatEClass = createEClass(FLOAT);
+
+		doubleEClass = createEClass(DOUBLE);
 	}
 
 	/**
@@ -176,7 +301,21 @@ public class InputTypesPackageImpl extends EPackageImpl implements InputTypesPac
 		// Initialize classes, features, and operations; add parameters
 		initEClass(stringEClass, tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.String.class, "String", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(intEClass, Int.class, "Int", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(integerEClass, tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Integer.class, "Integer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(shortEClass, tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Short.class, "Short", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(booleanEClass, tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Boolean.class, "Boolean", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(longEClass, tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Long.class, "Long", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(characterEClass, tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Character.class, "Character", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(byteEClass, tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Byte.class, "Byte", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(floatEClass, tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Float.class, "Float", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(doubleEClass, tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.Double.class, "Double", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
