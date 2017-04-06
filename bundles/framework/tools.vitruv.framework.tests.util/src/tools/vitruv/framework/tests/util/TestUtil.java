@@ -204,7 +204,7 @@ public final class TestUtil {
      * init logger for test purposes
      */
     public static void initializeLogger() {
-    	Logger.getRootLogger().setLevel(Level.WARN);
+    	Logger.getRootLogger().setLevel(Level.ERROR);
         Logger.getRootLogger().removeAllAppenders();
         Logger.getRootLogger()
                 .addAppender(new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
@@ -215,7 +215,7 @@ public final class TestUtil {
             }
             Logger.getRootLogger().setLevel(Level.toLevel(outputLevelProperty));
     	} else {
-    		Logger.getRootLogger().setLevel(Level.WARN);
+    		Logger.getRootLogger().setLevel(Level.ERROR);
     	}
     }
 
