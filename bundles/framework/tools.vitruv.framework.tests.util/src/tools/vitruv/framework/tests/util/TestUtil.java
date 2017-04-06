@@ -7,6 +7,7 @@ import java.util.Date;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -203,7 +204,10 @@ public final class TestUtil {
      * init logger for test purposes
      */
     public static void initializeLogger() {
-    	Logger.getRootLogger().setLevel(Level.OFF);
+    	Logger.getRootLogger().setLevel(Level.WARN);
+        Logger.getRootLogger().removeAllAppenders();
+        Logger.getRootLogger()
+                .addAppender(new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
     	String outputLevelProperty = System.getProperty("logOutputLevel");
     	if (outputLevelProperty != null) {
     		if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
@@ -211,7 +215,7 @@ public final class TestUtil {
             }
             Logger.getRootLogger().setLevel(Level.toLevel(outputLevelProperty));
     	} else {
-    		Logger.getRootLogger().setLevel(Level.OFF);
+    		Logger.getRootLogger().setLevel(Level.WARN);
     	}
     }
 
