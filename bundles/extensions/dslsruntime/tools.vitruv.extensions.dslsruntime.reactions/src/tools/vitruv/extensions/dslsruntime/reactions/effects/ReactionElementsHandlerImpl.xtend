@@ -32,17 +32,15 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 			return;
 		}
 		ReactionsCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceModel, element);
-		if (element.eContainer() == null) {
-			if (element.eResource() != null) {
-				logger.debug("Deleting root object: " + element);
-				transformationResult.addVuriToDeleteIfNotNull(VURI.getInstance(element.eResource()));
-			} else {
-				logger.warn("The element to delete was already removed: " + element);
-			}
+		// Check if resource contains only the deleted element as root, then delete it
+		// Checking the container is not sufficient, because element can have a container of another resource!
+		if (element.eResource()?.contents.equals(#[element])) {
+			logger.debug("Deleting root object: " + element);
+			transformationResult.addVuriToDeleteIfNotNull(VURI.getInstance(element.eResource()));
 		} else {
-			logger.debug("Removing non-root object: " + element);
-			EcoreUtil.remove(element);
+			logger.debug("Removing non-root object " + element + " from container " + element.eContainer());
 		}
+		EcoreUtil.remove(element);
 		// If we delete an object, we have to update TUIDs because TUIDs of child elements 
 		// may have to be resolved for removing correspondences as well and must therefore be up-to-date
 		TuidManager.instance.updateTuidsOfRegisteredObjects();
