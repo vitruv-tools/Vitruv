@@ -284,14 +284,14 @@ public final class EcoreResourceBridge {
 		return resource;
 	}
 
-	public static void registerMetamodelPackageOn(ResourceSet rs, Object factory, String... nsURIs) {
+	public static void registerMetamodelPackageOn(ResourceSet rs, Object pckg, String... nsURIs) {
 		for (String nsURI : nsURIs) {
-			rs.getPackageRegistry().put(nsURI, factory);
+			rs.getPackageRegistry().put(nsURI, pckg);
 		}
 	}
 
-	public static void registerGlobalMetamodelPackage(String nsURI, Object factory) {
-		EPackage.Registry.INSTANCE.put(nsURI, factory);
+	public static void registerGlobalMetamodelPackage(String nsURI, Object pckg) {
+		EPackage.Registry.INSTANCE.put(nsURI, pckg);
 	}
 
 	public static void registerExtensionFactoryOn(ResourceSet rs, Object resourceFactory, String... fileExtensions) {

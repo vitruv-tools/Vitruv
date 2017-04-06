@@ -192,7 +192,7 @@ public class TUIDCacheTest {
     }
 
     private TUIDCalculatorAndResolver prepareTUIDCAR() {
-        EcoreResourceBridge.registerGlobalMetamodelPackage(Pcm_mockupPackage.eNS_URI, Pcm_mockupFactory.eINSTANCE);
+        EcoreResourceBridge.registerGlobalMetamodelPackage(Pcm_mockupPackage.eNS_URI, Pcm_mockupPackage.eINSTANCE);
         EcoreResourceBridge.registerDefaultXMIExtensionFactory("pcm_mockup");
         TUIDCalculatorAndResolver tuidCAR = new AttributeTUIDCalculatorAndResolver(Pcm_mockupPackage.eNS_URI, "id");
         return tuidCAR;
