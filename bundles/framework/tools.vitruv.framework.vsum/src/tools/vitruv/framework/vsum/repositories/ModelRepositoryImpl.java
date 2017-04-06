@@ -42,6 +42,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     private final Map<VURI, ModelInstance> modelInstances;
     private final List<InternalCorrespondenceModel> correspondenceModels;
     private final FileSystemHelper fileSystemHelper;
+    private final String vsumName;
 
     public ModelRepositoryImpl(final String vsumName, final MetamodelRepository metamodelRepository) {
         this(vsumName, metamodelRepository, null);
@@ -50,6 +51,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     public ModelRepositoryImpl(final String vsumName, final MetamodelRepository metamodelRepository,
             final ClassLoader classLoader) {
         this.metamodelRepository = metamodelRepository;
+        this.vsumName = vsumName;
 
         this.resourceSet = new ResourceSetImpl();
 
@@ -156,6 +158,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
     @Override
     public void saveAllModels() {
+        logger.debug("Saving all models of model repository for VSUM: " + this.vsumName);
         saveAllChangedModels();
         saveAllChangedCorrespondenceModels();
     }
@@ -164,6 +167,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         for (ModelInstance modelInstance : this.modelInstances.values()) {
             Resource resourceToSave = modelInstance.getResource();
             if (resourceToSave.isModified()) {
+                logger.debug("  Saving resource: " + resourceToSave);
                 saveModelInstance(modelInstance);
             }
         }
