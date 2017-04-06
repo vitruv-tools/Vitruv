@@ -32,7 +32,7 @@ import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 public class TUIDCacheTest {
     private static final Logger LOGGER = Logger.getLogger(TUIDCacheTest.class.getSimpleName());
 
-    private static final String TEST_FOLDER = "test_tmp";
+    private static final String TEST_FOLDER = TestUtil.getTempDirPath() + "test_tmp";
 
     @Before
     public void beforeTest() {

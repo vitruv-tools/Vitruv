@@ -48,6 +48,17 @@ public final class TestUtil {
      */
     private TestUtil() {
     }
+    
+	public static String getTempDirPath() {
+		String path = System.getProperty("java.io.tmpdir").replace("\\", "/");
+		if (path.startsWith("/")) {
+			path = path.substring(1);
+		}
+		if (!path.endsWith("/")) {
+			path = path + "/";
+		}
+		return path;
+	}
 
     public static InternalVirtualModel createVSUM(final String vsumName, final Iterable<Metamodel> metamodels) {
         return createVSUM(vsumName, metamodels, new ArrayList<ChangePropagationSpecification>(), null);
