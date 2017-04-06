@@ -280,32 +280,28 @@ public final class EcoreResourceBridge {
 		return resource;
 	}
 
-	public static void registerMetamodelPackages(ResourceSet rs, Object factory, String... nsURIs) {
+	public static void registerMetamodelPackageOn(ResourceSet rs, Object factory, String... nsURIs) {
 		for (String nsURI : nsURIs) {
 			rs.getPackageRegistry().put(nsURI, factory);
-			// registerMetamodelPackages(nsURI,factory);
 		}
 	}
 
-	// TODO MK rename to registerMetamodelPackage
-	public static void registerMetamodelPackages(String nsURI, Object factory) {
+	public static void registerGlobalMetamodelPackage(String nsURI, Object factory) {
 		EPackage.Registry.INSTANCE.put(nsURI, factory);
 	}
 
-	public static void registerExtensionFactories(ResourceSet rs, Object resourceFactory, String... fileExtensions) {
+	public static void registerExtensionFactoryOn(ResourceSet rs, Object resourceFactory, String... fileExtensions) {
 		for (String fileExtension : fileExtensions) {
 			rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension, resourceFactory);
-			// registerExtensionFactories(fileExtension, resourceFactory);
 		}
 	}
 
-	// TODO MK rename to registerExtensionFactory
-	public static void registerExtensionFactories(String fileExtension, Object resourceFactory) {
+	public static void registerGlobalExtensionFactory(String fileExtension, Object resourceFactory) {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(fileExtension, resourceFactory);
 	}
 
 	public static void registerDefaultXMIExtensionFactory(String fileExtension) {
-		registerExtensionFactories(fileExtension, new XMIResourceFactoryImpl());
+		registerGlobalExtensionFactory(fileExtension, new XMIResourceFactoryImpl());
 	}
 
 }
