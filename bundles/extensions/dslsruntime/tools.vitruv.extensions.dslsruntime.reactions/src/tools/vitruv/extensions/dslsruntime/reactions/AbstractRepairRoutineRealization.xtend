@@ -78,9 +78,11 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 				throw new IllegalArgumentException("correspondenceSource, element and persistancePath must be specified");
 			}
 			val oldVURI = if (element.eResource() != null) {
+				logger.debug("Registered for deletion resource with root " + element + ": " + element.eResource());
 				VURI.getInstance(element.eResource());
 			}
 			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath, correspondenceModel);
+			logger.debug("Registered resource for creation with root " + element + ": " + VURI.getInstance(_resourceURI));
 			EcoreUtil.remove(element);
 			transformationResult.addRootEObjectToSave(element, VURI.getInstance(_resourceURI));
 			transformationResult.addVuriToDeleteIfNotNull(oldVURI);

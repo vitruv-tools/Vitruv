@@ -149,6 +149,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
                 resource.getContents().add(rootEObject);
 
                 ModelRepositoryImpl.this.saveModelInstance(modelInstance);
+                logger.debug("Create model with resource: " + resource);
                 TuidManager.getInstance().updateTuidsOfRegisteredObjects();
                 TuidManager.getInstance().flushRegisteredObjectsUnderModification();
                 return null;
@@ -298,8 +299,13 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
             @Override
             public Void call() throws Exception {
                 try {
+                	// Update TUIDs to ensure that they do not accidentially match newly created elements
+                    TuidManager.getInstance().registerObjectUnderModification(modelInstance.getFirstRootEObject());
+                    logger.debug("Deleting model with resource: " + resource);
                     resource.delete(null);
                     ModelRepositoryImpl.this.modelInstances.remove(vuri);
+                    TuidManager.getInstance().updateTuidsOfRegisteredObjects();
+                    TuidManager.getInstance().flushRegisteredObjectsUnderModification();
                 } catch (final IOException e) {
                     logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
                 }
