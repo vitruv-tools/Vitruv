@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -257,10 +256,8 @@ public final class EcoreResourceBridge {
 			final Map<Object, Object> loadOptions) {
 		Resource resource = null;
 		try {
-			// Try to load, otherwise create resource
-			try {
+			if (EMFBridge.existsResourceAtUri(resourceURI)) {
 				resource = resourceSet.getResource(resourceURI, true);
-			} catch (WrappedException ex) {
 			}
 			
 			if (resource == null) {
