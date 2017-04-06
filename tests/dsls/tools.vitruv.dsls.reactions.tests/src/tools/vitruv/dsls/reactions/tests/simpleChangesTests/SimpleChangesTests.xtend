@@ -50,7 +50,6 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 		
 	private def prepareTestModel() {
-		Logger.rootLogger.level = Level.DEBUG;
 		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
 		container.setId("NonRootObjectContainer");
 		rootElement.nonRootObjectContainerHelper = container;
