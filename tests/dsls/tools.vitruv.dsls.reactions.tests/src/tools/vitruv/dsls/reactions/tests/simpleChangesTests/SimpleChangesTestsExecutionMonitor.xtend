@@ -55,7 +55,7 @@ final class SimpleChangesTestsExecutionMonitor {
 	
 	public override boolean equals(Object object) {
 		if (object instanceof SimpleChangesTestsExecutionMonitor) {
-			val monitor = object as SimpleChangesTestsExecutionMonitor;
+			val monitor = object;
 			return monitor.values.equals(this.values);
 		}
 		return false;
