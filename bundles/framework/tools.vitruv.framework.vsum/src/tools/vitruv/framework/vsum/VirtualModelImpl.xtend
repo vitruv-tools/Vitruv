@@ -13,6 +13,7 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRe
 import tools.vitruv.framework.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
+import java.util.List
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ModelRepositoryImpl modelRepository;
@@ -59,7 +60,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 	
 	override createModel(VURI vuri, EObject rootEObject) {
-		this.modelRepository.createModel(vuri, rootEObject);
+		this.modelRepository.createModel(vuri, #[rootEObject]);
+	}
+	
+	override createModel(VURI vuri, List<EObject> rootEObjects) {
+		this.modelRepository.createModel(vuri, rootEObjects);
 	}
 	
 	override executeCommand(Callable<Void> command) {

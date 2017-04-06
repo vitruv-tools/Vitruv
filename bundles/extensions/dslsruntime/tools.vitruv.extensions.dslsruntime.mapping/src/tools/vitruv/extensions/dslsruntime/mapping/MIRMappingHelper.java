@@ -100,7 +100,7 @@ public final class MIRMappingHelper {
 
 	public static boolean hasContainment(EObject eObject, ChangePropagationResult result) {
 		return (hasContainment(eObject) || ((result != null)
-				&& (result.getRootEObjectsToSave().stream().anyMatch(it -> it.getFirst().equals(eObject)))));
+				&& (result.getRootEObjectsToSave().values().stream().anyMatch(list -> list.stream().anyMatch(it -> it.equals(eObject))))));
 	}
 
 	/**

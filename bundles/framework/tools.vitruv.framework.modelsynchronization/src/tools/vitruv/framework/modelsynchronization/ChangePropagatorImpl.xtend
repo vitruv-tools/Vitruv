@@ -18,7 +18,6 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.util.datatypes.Pair
 
 class ChangePropagatorImpl implements ChangePropagator {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -119,7 +118,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 		// FIXME HK Put this to the correct place, if change replay to the VSUM is integrated:
 		// Propagation result execution has to be performed after modification information extraction
 		// because otherwise some resources do potentially not exist anymore 
-		this.executePropagationResult(propagationResult)	
+		this.executePropagationResult(propagationResult)
 	}
 	
 	def private void executePropagationResult(ChangePropagationResult transformationResult) {
@@ -130,8 +129,9 @@ class ChangePropagatorImpl implements ChangePropagator {
 		for (VURI vuriToDelete : transformationResult.getVurisToDelete()) {
 			modelProviding.deleteModel(vuriToDelete)
 		}
-		for (Pair<EObject, VURI> createdEObjectVURIPair : transformationResult.getRootEObjectsToSave()) {
-			modelProviding.createModel(createdEObjectVURIPair.getSecond(), createdEObjectVURIPair.getFirst())
+		val vurisToSave = transformationResult.getRootEObjectsToSave()
+		for (createdResourceVuri : vurisToSave.keySet) {
+			modelProviding.createModel(createdResourceVuri, vurisToSave.get(createdResourceVuri))
 		}
 	}
 }

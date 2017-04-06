@@ -137,16 +137,18 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     @Override
-    public void createModel(final VURI vuri, final EObject rootEObject) {
+    public void createModel(final VURI vuri, final List<EObject> rootEObjects) {
         final ModelInstance modelInstance = getModel(vuri);
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                TuidManager.getInstance().registerObjectUnderModification(rootEObject);
+                for (EObject rootEObject : rootEObjects) {
+                    TuidManager.getInstance().registerObjectUnderModification(rootEObject);
+                }
                 final Resource resource = modelInstance.getResource();
                 // clear the resource first
                 resource.getContents().clear();
-                resource.getContents().add(rootEObject);
+                resource.getContents().addAll(rootEObjects);
 
                 ModelRepositoryImpl.this.saveModelInstance(modelInstance);
                 logger.debug("Create model with resource: " + resource);
@@ -299,7 +301,8 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
             @Override
             public Void call() throws Exception {
                 try {
-                	// Update TUIDs to ensure that they do not accidentially match newly created elements
+                    // Update TUIDs to ensure that they do not accidentially match newly created
+                    // elements
                     TuidManager.getInstance().registerObjectUnderModification(modelInstance.getFirstRootEObject());
                     logger.debug("Deleting model with resource: " + resource);
                     resource.delete(null);
