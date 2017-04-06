@@ -256,27 +256,22 @@ public final class EcoreResourceBridge {
 			final Map<Object, Object> loadOptions) {
 		Resource resource = null;
 		try {
-			try {
-				//if (EMFBridge.existsResourceAtUri(resourceURI)) {
-					resource = resourceSet.getResource(resourceURI, true);	
-				//}
-			} catch (org.eclipse.emf.common.util.WrappedException e) {
-				// FIXME Exceptions are thrown here. We have to do something to 
-				// avoid them or handle them. Nevertheless, trying to handle them
-				// results in errors loading JaMoPP models.
+			if (EMFBridge.existsResourceAtUri(resourceURI)) {
+				resource = resourceSet.getResource(resourceURI, true);
 			}
 			if (resource == null) {
+				Resource oldResource = resourceSet.getResource(resourceURI, false);
+				if (oldResource != null) {
+					oldResource.delete(null);
+				}
 				resource = resourceSet.createResource(resourceURI);
 			} else {
 				resource.load(loadOptions);
 			}
-			// fixes issue caused by JaMoPP: If a model is transitively loaded
-			// (e.g. because of an
-			// import)
-			// the URI starts with pathmap instead of the usual URI. If you try
-			// to load this model
-			// again
-			// the URI remains wrong.
+
+			// Fixes issue caused by JaMoPP: If a model is transitively loaded
+			// (e.g. because of an import) the URI starts with pathmap instead of
+			// the usual URI. If you try to load this model again the URI remains wrong.
 			resource.setURI(resourceURI);
 		} catch (final IOException e) {
 			// soften
