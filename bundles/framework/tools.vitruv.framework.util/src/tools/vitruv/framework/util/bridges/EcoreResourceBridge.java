@@ -246,7 +246,6 @@ public final class EcoreResourceBridge {
 	 */
 	public static void saveResource(final Resource resource, final Map<?, ?> saveOptions) throws IOException {
 		resource.save(saveOptions);
-		resource.setModified(true);
 	}
 
 	public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet) {
