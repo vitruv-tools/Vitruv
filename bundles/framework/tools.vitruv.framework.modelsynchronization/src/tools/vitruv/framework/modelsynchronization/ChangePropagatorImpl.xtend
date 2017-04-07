@@ -17,7 +17,6 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecificationPr
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.util.command.ChangePropagationResult
-import tools.vitruv.framework.util.datatypes.VURI
 
 class ChangePropagatorImpl implements ChangePropagator {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -59,8 +58,10 @@ class ChangePropagatorImpl implements ChangePropagator {
 		change.applyBackward()
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
-		propagateSingleChange(change, result, changedResourcesTracker);
+		val propagationResult = new ChangePropagationResult();
+		propagateSingleChange(change, result, propagationResult, changedResourcesTracker);
 		changedResourcesTracker.markNonSourceResourceAsChanged();
+		executePropagationResult(propagationResult);
 		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
 		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
 		modelProviding.saveAllModels
@@ -83,23 +84,24 @@ class ChangePropagatorImpl implements ChangePropagator {
 	}
 
 	private def dispatch void propagateSingleChange(CompositeContainerChange change, List<List<VitruviusChange>> commandExecutionChanges,
-		ChangedResourcesTracker changedResourcesTracker) {
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		for (VitruviusChange innerChange : ((change as CompositeContainerChange)).getChanges()) {
-			propagateSingleChange(innerChange, commandExecutionChanges, changedResourcesTracker)
+			propagateSingleChange(innerChange, commandExecutionChanges, propagationResult, changedResourcesTracker)
 		}
 	}
 
 	private def dispatch void propagateSingleChange(TransactionalChange change, 
-		List<List<VitruviusChange>> commandExecutionChanges, ChangedResourcesTracker changedResourcesTracker) {
+		List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult,
+		ChangedResourcesTracker changedResourcesTracker) {
 		change.applyForward();
 		val changeMetamodel = metamodelRepository.getMetamodel(change.URI.fileExtension);
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeMetamodel.URI)) {
-			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, changedResourcesTracker);
+			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
 		}
 	}
 	
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
-			List<List<VitruviusChange>> commandExecutionChanges, ChangedResourcesTracker changedResourcesTracker) {
+			List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(propagationSpecification.metamodelPair.first, propagationSpecification.metamodelPair.second);
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
@@ -108,20 +110,14 @@ class ChangePropagatorImpl implements ChangePropagator {
 			return propagationSpecification.propagateChange(change, correspondenceModel);
 		])
 		modelProviding.executeRecordingCommandOnTransactionalDomain(command);
-		val propagationResult = command.transformationResult;
-				
+					
 		// Store modification information
 		val changedEObjects = command.getAffectedObjects().filter(EObject)
 		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(it.eResource)];
 		changedResourcesTracker.addSourceResourceOfChange(change);
 		
-		// FIXME HK Put this to the correct place, if change replay to the VSUM is integrated:
-		// Propagation result execution has to be performed after modification information extraction
-		// because otherwise some resources do potentially not exist anymore 
-		this.executePropagationResult(propagationResult)
+		propagationResult.integrateResult(command.transformationResult);
 	}
-	
-	private var ChangePropagationResult propResult;
 	
 	def private void executePropagationResult(ChangePropagationResult changePropagationResult) {
 		if (null === changePropagationResult) {
