@@ -142,15 +142,12 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                for (EObject rootEObject : rootEObjects) {
-                    TuidManager.getInstance().registerObjectUnderModification(rootEObject);
-                }
+                TuidManager.getInstance().registerObjectUnderModification(rootEObject);
                 final Resource resource = modelInstance.getResource();
-                // clear the resource first
-                resource.getContents().clear();
-                resource.getContents().addAll(rootEObjects);
 
-                ModelRepositoryImpl.this.saveModelInstance(modelInstance);
+                resource.getContents().add(rootEObject);
+                resource.setModified(true);
+
                 logger.debug("Create model with resource: " + resource);
                 TuidManager.getInstance().updateTuidsOfRegisteredObjects();
                 TuidManager.getInstance().flushRegisteredObjectsUnderModification();
