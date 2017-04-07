@@ -137,7 +137,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     @Override
-    public void createModel(final VURI vuri, final List<EObject> rootEObjects) {
+    public void persistRootElement(final VURI vuri, final EObject rootEObject) {
         final ModelInstance modelInstance = getModel(vuri);
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
@@ -303,8 +303,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet);
     }
 
-    @Override
-    public void deleteModel(final VURI vuri) {
+    private void deleteModel(final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         final Resource resource = modelInstance.getResource();
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {

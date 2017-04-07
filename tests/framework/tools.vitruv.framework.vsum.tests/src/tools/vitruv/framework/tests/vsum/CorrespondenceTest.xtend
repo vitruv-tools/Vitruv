@@ -120,7 +120,7 @@ class CorrespondenceTest extends VsumTest {
 	def private void saveUPackageInNewFileAndUpdateCorrespondence(InternalVirtualModel vsum, UPackage pkg,
 		CorrespondenceModel correspondenceModel) {
 		var VURI newVURI = VURI.getInstance(getNewUMLInstanceURI())
-		vsum.createModel(newVURI, pkg)
+		vsum.persistRootElement(newVURI, pkg)
 	}
 
 	def private String getNewUMLInstanceURI() {

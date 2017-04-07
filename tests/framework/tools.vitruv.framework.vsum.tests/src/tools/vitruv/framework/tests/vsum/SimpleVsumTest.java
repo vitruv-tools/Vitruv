@@ -41,7 +41,7 @@ public class SimpleVsumTest extends VsumTest {
         VURI vuri = VURI.getInstance(getAlternativePcmInstanceURI());
         ModelInstance mi = vsum.getModelInstance(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        vsum.createModel(vuri, repo);
+        vsum.persistRootElement(vuri, repo);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
         vsum.executeCommand(new Callable<Void>() {
             @Override
@@ -84,7 +84,7 @@ public class SimpleVsumTest extends VsumTest {
         VURI vuri = VURI.getInstance(getAlternativePcmInstanceURI());
         ModelInstance mi = vsum.getModelInstance(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        vsum.createModel(vuri, repo);
+        vsum.persistRootElement(vuri, repo);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
         vsum.executeCommand(new Callable<Void>() {
             @Override

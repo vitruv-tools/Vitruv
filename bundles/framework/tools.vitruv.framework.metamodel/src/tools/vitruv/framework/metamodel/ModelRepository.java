@@ -1,6 +1,5 @@
 package tools.vitruv.framework.metamodel;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.eclipse.emf.ecore.EObject;
@@ -10,8 +9,7 @@ import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public interface ModelRepository {
-	void createModel(VURI modelVuri, List<EObject> rootEObjects);
-	void deleteModel(VURI modelVuri);
+	void persistRootElement(VURI persistenceVuri, EObject rootElement);
 	ModelInstance getModel(VURI modelVuri);
 	void forceReloadModelIfExisting(VURI modelVuri);
     void saveAllModels();

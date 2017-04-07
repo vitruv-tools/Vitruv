@@ -42,7 +42,7 @@ public abstract class VsumTest extends AbstractVsumTest {
         VURI vuri = VURI.getInstance(getAlternativePcmInstanceURI());
         ModelInstance mi = vsum.getModelInstance(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        vsum.createModel(vuri, repo);
+        vsum.persistRootElement(vuri, repo);
         vsum.executeCommand(new Callable<Void>() {
             @Override
             public Void call() {
@@ -65,7 +65,7 @@ public abstract class VsumTest extends AbstractVsumTest {
         // create UML
         VURI vuriUML = VURI.getInstance(getAlterantiveUMLInstanceURI());
         final UPackage uPackage = Uml_mockupFactory.eINSTANCE.createUPackage();
-        vsum.createModel(vuriUML, uPackage);
+        vsum.persistRootElement(vuriUML, uPackage);
         vsum.executeCommand(new Callable<Void>() {
             @Override
             public Void call() {
