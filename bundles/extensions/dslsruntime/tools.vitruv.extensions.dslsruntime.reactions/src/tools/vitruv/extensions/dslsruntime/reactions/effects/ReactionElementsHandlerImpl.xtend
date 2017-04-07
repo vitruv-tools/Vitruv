@@ -4,7 +4,6 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
-import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.apache.log4j.Logger
 import tools.vitruv.framework.util.command.ChangePropagationResult
@@ -32,14 +31,7 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 			return;
 		}
 		ReactionsCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceModel, element);
-		// Check if resource contains only the deleted element as root, then delete it
-		// Checking the container is not sufficient, because element can have a container of another resource!
-		if (element.eResource()?.contents.equals(#[element])) {
-			logger.debug("Deleting root object: " + element);
-			transformationResult.addVuriToDeleteIfNotNull(VURI.getInstance(element.eResource()));
-		} else {
-			logger.debug("Removing non-root object " + element + " from container " + element.eContainer());
-		}
+		logger.debug("Removing object " + element + " from container " + element.eContainer());
 		EcoreUtil.remove(element);
 		// If we delete an object, we have to update Tuids because Tuids of child elements 
 		// may have to be resolved for removing correspondences as well and must therefore be up-to-date
