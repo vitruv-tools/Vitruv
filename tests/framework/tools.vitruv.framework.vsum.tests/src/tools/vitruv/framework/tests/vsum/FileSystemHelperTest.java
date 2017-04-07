@@ -9,7 +9,7 @@ import org.junit.Test;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
-public class FileSystemHelperTest extends VSUMTest {
+public class FileSystemHelperTest extends VsumTest {
 
     private static final Logger logger = Logger.getLogger(FileSystemHelperTest.class.getSimpleName());
 
@@ -25,11 +25,11 @@ public class FileSystemHelperTest extends VSUMTest {
         long start = System.currentTimeMillis();
         // save to disk
         FileSystemHelper fsHelper = new FileSystemHelper(VSUM_NAME);
-        fsHelper.saveVSUMvURIsToFile(vuris);
+        fsHelper.saveVsumVURIsToFile(vuris);
         long durationForSave = System.currentTimeMillis() - start;
         long startLoad = System.currentTimeMillis();
         // load from Disk
-        Set<VURI> loadedVURIs = fsHelper.loadVSUMvURIsFromFile();
+        Set<VURI> loadedVURIs = fsHelper.loadVsumVURIsFromFile();
 
         long durationForLoad = System.currentTimeMillis() - startLoad;
         long durationForLoadAndSave = System.currentTimeMillis() - start;

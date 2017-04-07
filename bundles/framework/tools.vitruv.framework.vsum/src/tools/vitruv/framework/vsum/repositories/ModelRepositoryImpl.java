@@ -106,7 +106,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
                     // case 2 or 3
                     ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
                     ModelRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance);
-                    saveVURIsOfVSUMModelInstances();
+                    saveVURIsOfVsumModelInstances();
                     return null;
                 }
             });
@@ -258,7 +258,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     private void loadVURIsOfVSMUModelInstances() {
-        Set<VURI> vuris = this.fileSystemHelper.loadVSUMvURIsFromFile();
+        Set<VURI> vuris = this.fileSystemHelper.loadVsumVURIsFromFile();
         for (VURI vuri : vuris) {
             Metamodel metamodel = getMetamodelByURI(vuri);
             ModelInstance modelInstance = loadModelInstance(vuri, metamodel);
@@ -266,8 +266,8 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         }
     }
 
-    private void saveVURIsOfVSUMModelInstances() {
-        this.fileSystemHelper.saveVSUMvURIsToFile(this.modelInstances.keySet());
+    private void saveVURIsOfVsumModelInstances() {
+        this.fileSystemHelper.saveVsumVURIsToFile(this.modelInstances.keySet());
     }
 
     private Metamodel getMetamodelByURI(final VURI uri) {

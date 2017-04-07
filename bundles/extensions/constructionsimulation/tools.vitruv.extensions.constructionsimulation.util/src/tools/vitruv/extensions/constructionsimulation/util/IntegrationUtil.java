@@ -10,7 +10,7 @@ public class IntegrationUtil {
     }
 
     public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels) {
-    	return TestUtil.createVSUM("vitruvius.meta", metamodels);
+    	return TestUtil.createVirtualModel("vitruvius.meta", metamodels);
     }
 
 }

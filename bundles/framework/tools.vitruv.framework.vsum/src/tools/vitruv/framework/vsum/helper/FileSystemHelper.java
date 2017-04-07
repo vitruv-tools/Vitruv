@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMConstants;
+import tools.vitruv.framework.vsum.VsumConstants;
 
 public class FileSystemHelper {
     private final String vsumName;
@@ -74,8 +74,8 @@ public class FileSystemHelper {
         return fileName;
     }
 
-    public void saveVSUMvURIsToFile(final Set<VURI> vuris) {
-        String fileName = getVSUMMapFileName();
+    public void saveVsumVURIsToFile(final Set<VURI> vuris) {
+        String fileName = getVsumMapFileName();
         saveVURISetToFile(vuris, fileName);
     }
 
@@ -101,8 +101,8 @@ public class FileSystemHelper {
         }
     }
 
-    public Set<VURI> loadVSUMvURIsFromFile() {
-        String fileName = getVSUMMapFileName();
+    public Set<VURI> loadVsumVURIsFromFile() {
+        String fileName = getVsumMapFileName();
         return loadVURISetFromFile(fileName);
 
     }
@@ -168,7 +168,7 @@ public class FileSystemHelper {
         return root.getProject(projectName);
     }
 
-    public IProject getVSUMProject() {
+    public IProject getVsumProject() {
         IProject vsumProject = getProject(this.vsumName);
         if (!vsumProject.exists()) {
             createProject(vsumProject);
@@ -197,15 +197,15 @@ public class FileSystemHelper {
             // description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
             // project.setDescription(description, null);
             createFolder(getCorrespondenceFolder(project));
-            createFolder(getVSUMFolder(project));
+            createFolder(getVsumFolder(project));
         } catch (CoreException e) {
             // soften
             throw new RuntimeException(e);
         }
     }
 
-    private static IFolder getVSUMFolder(final IProject project) {
-        return project.getFolder(VSUMConstants.VSUM_FOLDER_NAME);
+    private static IFolder getVsumFolder(final IProject project) {
+        return project.getFolder(VsumConstants.VSUM_FOLDER_NAME);
     }
 
     public static void createFolder(final IFolder folder) throws CoreException {
@@ -213,27 +213,27 @@ public class FileSystemHelper {
     }
 
     public IFolder getCorrespondenceFolder() {
-        IProject vsumProject = getVSUMProject();
+        IProject vsumProject = getVsumProject();
         return getCorrespondenceFolder(vsumProject);
     }
 
     private IFolder getCorrespondenceFolder(final IProject project) {
-        IFolder correspondenceFolder = project.getFolder(VSUMConstants.CORRESPONDENCE_FOLDER_NAME);
+        IFolder correspondenceFolder = project.getFolder(VsumConstants.CORRESPONDENCE_FOLDER_NAME);
         return correspondenceFolder;
     }
 
-    private String getVSUMMapFileName() {
-        IFile file = getVSUMInstancesFile();
+    private String getVsumMapFileName() {
+        IFile file = getVsumInstancesFile();
         return file.getLocation().toOSString();
     }
 
-    public IFile getVSUMInstancesFile() {
-        return getVSUMInstancesFile("");
+    public IFile getVsumInstancesFile() {
+        return getVsumInstancesFile("");
     }
 
-    public IFile getVSUMInstancesFile(final String prefix) {
-        IFile file = getVSUMProject().getFolder(VSUMConstants.VSUM_FOLDER_NAME)
-                .getFile(prefix + VSUMConstants.VSUM_INSTANCES_FILE_NAME);
+    public IFile getVsumInstancesFile(final String prefix) {
+        IFile file = getVsumProject().getFolder(VsumConstants.VSUM_FOLDER_NAME)
+                .getFile(prefix + VsumConstants.VSUM_INSTANCES_FILE_NAME);
         return file;
     }
 

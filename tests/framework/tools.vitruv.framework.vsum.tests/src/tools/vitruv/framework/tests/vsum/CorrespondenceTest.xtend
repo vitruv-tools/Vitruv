@@ -28,11 +28,11 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.util.datatypes.ModelInstance
 
-class CorrespondenceTest extends VSUMTest {
+class CorrespondenceTest extends VsumTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
 
 	@Test def void testAllInCommand() {
-		val InternalVirtualModel vsum = createMetaRepositoryVSUMAndModelInstances()
+		val InternalVirtualModel vsum = createMetaRepositoryVsumAndModelInstances()
 		vsum.executeCommand([testAll(vsum) return null]);
 	}
 
@@ -55,7 +55,7 @@ class CorrespondenceTest extends VSUMTest {
 	}
 
 	@Test def void testCorrespondenceUpdate() {
-		val InternalVirtualModel vsum = createMetaRepositoryVSUMAndModelInstances()
+		val InternalVirtualModel vsum = createMetaRepositoryVsumAndModelInstances()
 		vsum.executeCommand([ // create vsum and Repo and UPackage
 			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
@@ -76,7 +76,7 @@ class CorrespondenceTest extends VSUMTest {
 	}
 
 	@Test def void testMoveRootEObjectBetweenResource() {
-		val InternalVirtualModel vsum = createMetaRepositoryVSUMAndModelInstances()
+		val InternalVirtualModel vsum = createMetaRepositoryVsumAndModelInstances()
 		vsum.executeCommand([
 			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)

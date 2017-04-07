@@ -1,8 +1,8 @@
 package tools.vitruv.framework.vsum;
 
-public class VSUMConstants {
+public class VsumConstants {
     /** Utility classes should not have a public or default constructor. */
-    private VSUMConstants() {
+    private VsumConstants() {
     }
 
     public static final String CORRESPONDENCE_FOLDER_NAME = "correspondence";
