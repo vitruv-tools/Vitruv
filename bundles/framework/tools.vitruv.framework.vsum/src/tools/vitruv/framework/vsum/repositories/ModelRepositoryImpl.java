@@ -166,7 +166,20 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         saveAllChangedCorrespondenceModels();
     }
 
+    private void deleteEmptyModels() {
+        List<VURI> vurisToDelete = new ArrayList<VURI>();
+        for (ModelInstance modelInstance : this.modelInstances.values()) {
+            if (modelInstance.getRootElements().isEmpty()) {
+                vurisToDelete.add(modelInstance.getURI());
+            }
+        }
+        for (VURI vuri : vurisToDelete) {
+            deleteModel(vuri);
+        }
+    }
+
     private void saveAllChangedModels() {
+        deleteEmptyModels();
         for (ModelInstance modelInstance : this.modelInstances.values()) {
             Resource resourceToSave = modelInstance.getResource();
             if (resourceToSave.isModified()) {
@@ -301,14 +314,9 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
             @Override
             public Void call() throws Exception {
                 try {
-                    // Update Tuids to ensure that they do not accidentially match newly created
-                    // elements
-                    TuidManager.getInstance().registerObjectUnderModification(modelInstance.getFirstRootEObject());
-                    logger.debug("Deleting model with resource: " + resource);
+                    logger.debug("Deleting resource: " + resource);
                     resource.delete(null);
                     ModelRepositoryImpl.this.modelInstances.remove(vuri);
-                    TuidManager.getInstance().updateTuidsOfRegisteredObjects();
-                    TuidManager.getInstance().flushRegisteredObjectsUnderModification();
                 } catch (final IOException e) {
                     logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
                 }
