@@ -121,17 +121,16 @@ class ChangePropagatorImpl implements ChangePropagator {
 		this.executePropagationResult(propagationResult)
 	}
 	
-	def private void executePropagationResult(ChangePropagationResult transformationResult) {
-		if (null === transformationResult) {
-			logger.info("Current TransformationResult is null. Can not save new root EObjects or delete VURIs.")
+	private var ChangePropagationResult propResult;
+	
+	def private void executePropagationResult(ChangePropagationResult changePropagationResult) {
+		if (null === changePropagationResult) {
+			logger.info("Current propagation result is null. Can not save new root EObjects.")
 			return;
 		}
-		for (VURI vuriToDelete : transformationResult.getVurisToDelete()) {
-			modelProviding.deleteModel(vuriToDelete)
-		}
-		val vurisToSave = transformationResult.getRootEObjectsToSave()
-		for (createdResourceVuri : vurisToSave.keySet) {
-			modelProviding.createModel(createdResourceVuri, vurisToSave.get(createdResourceVuri))
+		val elementsToPersist = changePropagationResult.getElementToPersistenceMap();
+		for (element : elementsToPersist.keySet) {
+			modelProviding.persistRootElement(elementsToPersist.get(element), element);	
 		}
 	}
 }

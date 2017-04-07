@@ -25,7 +25,7 @@ public class DefaultContainmentMapping extends AbstractMappingRealization {
 				}
 			}
 			
-			state.getTransformationResult().addRootEObjectToSave(objectToCreateContainmentFor, userChosenVuri);
+			state.getTransformationResult().registerForEstablishPersistence(objectToCreateContainmentFor, userChosenVuri);
 		});
 		
 		state.updateAllTuidsOfCachedObjects();
