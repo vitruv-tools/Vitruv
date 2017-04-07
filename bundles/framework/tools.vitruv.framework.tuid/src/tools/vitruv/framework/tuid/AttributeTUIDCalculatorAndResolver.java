@@ -10,22 +10,22 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import tools.vitruv.framework.util.bridges.EcoreBridge;
 
 /**
- * A {@link HierarchicalTUIDCalculatorAndResolver} that creates the TUID for
+ * A {@link HierarchicalTuidCalculatorAndResolver} that creates the Tuid for
  * each {@link EObject} by finding the first attribute from the list that the
  * EObject possesses and returning "{attribute name}={attribute value}".
  *
- * @see DefaultTUIDCalculatorAndResolver
+ * @see DefaultTuidCalculatorAndResolver
  * @author Dominik Werle
  */
-public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver<EObject> {
+public class AttributeTuidCalculatorAndResolver extends HierarchicalTuidCalculatorAndResolver<EObject> {
 	private final List<String> attributeNames;
 
-	public AttributeTUIDCalculatorAndResolver(final String tuidPrefix, final String... attributeNames) {
+	public AttributeTuidCalculatorAndResolver(final String tuidPrefix, final String... attributeNames) {
 		super(tuidPrefix);
 		this.attributeNames = Arrays.asList(attributeNames);
 	}
 
-	public AttributeTUIDCalculatorAndResolver(final String tuidPrefix, final List<String> attributeNames) {
+	public AttributeTuidCalculatorAndResolver(final String tuidPrefix, final List<String> attributeNames) {
 		super(tuidPrefix);
 		this.attributeNames = new ArrayList<String>(attributeNames);
 	}
@@ -37,11 +37,11 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
 
 	@Override
 	protected boolean hasId(final EObject obj, final String indidivualId) throws IllegalArgumentException {
-		return indidivualId.equals(calculateIndividualTUIDDelegator(obj));
+		return indidivualId.equals(calculateIndividualTuidDelegator(obj));
 	}
 
 	@Override
-	protected String calculateIndividualTUIDDelegator(final EObject obj) throws IllegalArgumentException {
+	protected String calculateIndividualTuidDelegator(final EObject obj) throws IllegalArgumentException {
 		for (String attributeName : this.attributeNames) {
 			final String attributeValue = EcoreBridge.getStringValueOfAttribute(obj, attributeName);
 			if (null != attributeValue) {

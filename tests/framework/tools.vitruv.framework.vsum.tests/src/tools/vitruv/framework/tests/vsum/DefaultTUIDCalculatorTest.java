@@ -13,40 +13,40 @@ import org.junit.Test;
 
 import pcm_mockup.Component;
 import pcm_mockup.Repository;
-import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
-import tools.vitruv.framework.tuid.HierarchicalTUIDCalculatorAndResolver;
-import tools.vitruv.framework.tuid.TUID;
-import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
+import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
+import tools.vitruv.framework.tuid.HierarchicalTuidCalculatorAndResolver;
+import tools.vitruv.framework.tuid.Tuid;
+import tools.vitruv.framework.tuid.TuidCalculatorAndResolver;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 
-public class DefaultTUIDCalculatorTest extends VSUMTest {
+public class DefaultTuidCalculatorTest extends VSUMTest {
     @Test
     public void testAll() {
         InternalVirtualModel vsum = createMetaRepositoryVSUMAndModelInstances();
-        VURI model1URI = VURI.getInstance(getDefaultPCMInstanceURI());
+        VURI model1URI = VURI.getInstance(getDefaultPcmInstanceURI());
         ModelInstance model1 = vsum.getModelInstance(model1URI);
         Repository pcmRoot = (Repository) model1.getResource().getContents().get(0);
-        String expectedTUID = "<root>" + HierarchicalTUIDCalculatorAndResolver.SUBDIVIDER + pcmRoot.eClass().getName()
-                + HierarchicalTUIDCalculatorAndResolver.SUBDIVIDER + "id=" + pcmRoot.getId();
-        EObject resolvedEObject = testTUIDCalculator(PCM_MM_URI, pcmRoot, pcmRoot, expectedTUID, "id");
+        String expectedTuid = "<root>" + HierarchicalTuidCalculatorAndResolver.SUBDIVIDER + pcmRoot.eClass().getName()
+                + HierarchicalTuidCalculatorAndResolver.SUBDIVIDER + "id=" + pcmRoot.getId();
+        EObject resolvedEObject = testTuidCalculator(PCM_MM_URI, pcmRoot, pcmRoot, expectedTuid, "id");
         assertEquals(resolvedEObject, pcmRoot);
         Component pcmComponent = (Component) pcmRoot.eContents().get(1);
-        expectedTUID = pcmComponent.getId();
-        resolvedEObject = testTUIDCalculator(PCM_MM_URI, pcmRoot, pcmComponent, expectedTUID, "id");
+        expectedTuid = pcmComponent.getId();
+        resolvedEObject = testTuidCalculator(PCM_MM_URI, pcmRoot, pcmComponent, expectedTuid, "id");
         assertEquals(resolvedEObject, pcmComponent);
     }
 
     @Test
-    public void testTUIDCalculationAndResolutionForUnsettedElement() {
+    public void testTuidCalculationAndResolutionForUnsettedElement() {
         // create UML class with empty Property
         // TODO ML: use mockup UML metamodel instead of real UML metamodel
         Property umlProperty = createUmlModelWithProperty();
-        String expectedTUID = "name";
+        String expectedTuid = "name";
         String umlPrefix = umlProperty.eClass().getEPackage().getNsPrefix();
-        EObject resolvedEObject = testTUIDCalculator(umlPrefix, umlProperty.getClass_().getPackage(), umlProperty,
-                expectedTUID, "name");
+        EObject resolvedEObject = testTuidCalculator(umlPrefix, umlProperty.getClass_().getPackage(), umlProperty,
+                expectedTuid, "name");
         assertEquals("UAttribute could not be correctly resolved", resolvedEObject, umlProperty);
     }
 
@@ -59,22 +59,22 @@ public class DefaultTUIDCalculatorTest extends VSUMTest {
         return umlProperty;
     }
 
-    private EObject testTUIDCalculator(final String tuidPrefix, final EObject rootEObject, final EObject eObject,
-            final String expectedTUID, final String... attributeNames) {
-        TUIDCalculatorAndResolver defaultTUIDCalculatorAndResolver = new AttributeTUIDCalculatorAndResolver(tuidPrefix,
+    private EObject testTuidCalculator(final String tuidPrefix, final EObject rootEObject, final EObject eObject,
+            final String expectedTuid, final String... attributeNames) {
+        TuidCalculatorAndResolver defaultTuidCalculatorAndResolver = new AttributeTuidCalculatorAndResolver(tuidPrefix,
                 attributeNames);
-        boolean hasTUID = defaultTUIDCalculatorAndResolver.calculateTUIDFromEObject(eObject) != null;
-        assertTrue("TUID Calculator is not able to calculate TUID for EObject " + eObject, hasTUID);
-        String calculatedTuid = defaultTUIDCalculatorAndResolver.calculateTUIDFromEObject(eObject);
-        // Calculated TUID contains more than just the UUID itself. It also contains the resource
-        // and the class name that was used to create the TUID. Hence, we just compare with contains
+        boolean hasTuid = defaultTuidCalculatorAndResolver.calculateTuidFromEObject(eObject) != null;
+        assertTrue("Tuid Calculator is not able to calculate Tuid for EObject " + eObject, hasTuid);
+        String calculatedTuid = defaultTuidCalculatorAndResolver.calculateTuidFromEObject(eObject);
+        // Calculated Tuid contains more than just the UUID itself. It also contains the resource
+        // and the class name that was used to create the Tuid. Hence, we just compare with contains
         // instead of equals
-        assertNotNull("Calculated TUID is null", calculatedTuid);
-        assertTrue("Calculated TUID does not contain expected TUID", calculatedTuid.contains(expectedTUID));
-        TUID tuid = TUID.getInstance(calculatedTuid);
+        assertNotNull("Calculated Tuid is null", calculatedTuid);
+        assertTrue("Calculated Tuid does not contain expected Tuid", calculatedTuid.contains(expectedTuid));
+        Tuid tuid = Tuid.getInstance(calculatedTuid);
         String tuidString = tuid.toString();
-        assertNotNull("TUID string is null", tuidString);
-        EObject resolvedEObject = defaultTUIDCalculatorAndResolver.resolveEObjectFromRootAndFullTUID(rootEObject,
+        assertNotNull("Tuid string is null", tuidString);
+        EObject resolvedEObject = defaultTuidCalculatorAndResolver.resolveEObjectFromRootAndFullTuid(rootEObject,
                 tuidString);
         assertNotNull(resolvedEObject);
         return resolvedEObject;

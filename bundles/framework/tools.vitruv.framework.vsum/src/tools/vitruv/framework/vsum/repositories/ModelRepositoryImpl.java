@@ -301,7 +301,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
             @Override
             public Void call() throws Exception {
                 try {
-                    // Update TUIDs to ensure that they do not accidentially match newly created
+                    // Update Tuids to ensure that they do not accidentially match newly created
                     // elements
                     TuidManager.getInstance().registerObjectUnderModification(modelInstance.getFirstRootEObject());
                     logger.debug("Deleting model with resource: " + resource);

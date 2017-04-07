@@ -14,8 +14,8 @@ import com.google.inject.Module;
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.tests.util.TestUtil;
-import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
-import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
+import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
+import tools.vitruv.framework.tuid.TuidCalculatorAndResolver;
 import tools.vitruv.framework.util.bridges.JavaHelper;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -40,12 +40,12 @@ public final class MappingLanguageTestUtil {
 		return TestUtil.createVSUM("vitruvius.meta", metamodels, transformer);
 	}
 
-	public static Metamodel createMetamodel(String nsURI, TUIDCalculatorAndResolver tuidCalculatorAndResolver, String... extensions) {
+	public static Metamodel createMetamodel(String nsURI, TuidCalculatorAndResolver tuidCalculatorAndResolver, String... extensions) {
 		return new Metamodel(VURI.getInstance(nsURI), nsURI, tuidCalculatorAndResolver, extensions);
 	}
 	
-	public static Metamodel createAttributeTUIDMetamodel(String nsURI, String... extensions) {
-		return new Metamodel(VURI.getInstance(nsURI), nsURI, new AttributeTUIDCalculatorAndResolver(nsURI, DEFAULT_ATTRIBUTE_NAMES), extensions);
+	public static Metamodel createAttributeTuidMetamodel(String nsURI, String... extensions) {
+		return new Metamodel(VURI.getInstance(nsURI), nsURI, new AttributeTuidCalculatorAndResolver(nsURI, DEFAULT_ATTRIBUTE_NAMES), extensions);
 	}
 	
 	public static Injector injector(Consumer<Binder> configure) {

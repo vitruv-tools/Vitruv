@@ -38,7 +38,7 @@ public class SimpleVSUMTest extends VSUMTest {
         InternalVirtualModel vsum = createMetaRepositoryAndVSUM();
 
         // create test model
-        VURI vuri = VURI.getInstance(getAlternativePCMInstanceURI());
+        VURI vuri = VURI.getInstance(getAlternativePcmInstanceURI());
         ModelInstance mi = vsum.getModelInstance(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.createModel(vuri, repo);
@@ -81,7 +81,7 @@ public class SimpleVSUMTest extends VSUMTest {
         InternalVirtualModel vsum = createMetaRepositoryAndVSUM();
 
         // create test model
-        VURI vuri = VURI.getInstance(getAlternativePCMInstanceURI());
+        VURI vuri = VURI.getInstance(getAlternativePcmInstanceURI());
         ModelInstance mi = vsum.getModelInstance(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.createModel(vuri, repo);

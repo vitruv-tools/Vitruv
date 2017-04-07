@@ -571,7 +571,7 @@ public final class EcoreBridge {
 
 	/**
 	 * Copied from
-	 * {@link DefaultTUIDCalculatorAndResolver#getValueOfAttribute(EObject, String)}
+	 * {@link DefaultTuidCalculatorAndResolver#getValueOfAttribute(EObject, String)}
 	 * . Tries to obtain the value of the feature named <code>featureName</code>
 	 * from the given {@link EObject}. If the feature is of type
 	 * <code>EString</code>, it is returned directly, if it is of type
@@ -579,7 +579,7 @@ public final class EcoreBridge {
 	 * @author Dominik Werle
 	 */
 	// TODO: refactor into helper class that both
-	// DefaultTUIDCalculatorAndResolver and AttributeTUIDCalculatorAndResolver
+	// DefaultTuidCalculatorAndResolver and AttributeTuidCalculatorAndResolver
 	// use.
 	public static String getStringValueOfAttribute(final EObject eObject, final String featureName) {
 		EStructuralFeature idFeature = eObject.eClass().getEStructuralFeature(featureName);

@@ -41,7 +41,7 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 			logger.debug("Removing non-root object " + element + " from container " + element.eContainer());
 		}
 		EcoreUtil.remove(element);
-		// If we delete an object, we have to update TUIDs because TUIDs of child elements 
+		// If we delete an object, we have to update Tuids because Tuids of child elements 
 		// may have to be resolved for removing correspondences as well and must therefore be up-to-date
 		TuidManager.instance.updateTuidsOfRegisteredObjects();
 	}
@@ -56,7 +56,7 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 	}
 	
 	override postprocessElements() {
-		// Modifications are finished, so update the TUIDs
+		// Modifications are finished, so update the Tuids
 		TuidManager.instance.updateTuidsOfRegisteredObjects();
 	}
 	

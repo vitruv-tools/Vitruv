@@ -4,7 +4,7 @@ package tools.vitruv.framework.correspondence.impl;
 
 import tools.vitruv.framework.correspondence.*;
 
-import tools.vitruv.framework.tuid.TUID;
+import tools.vitruv.framework.tuid.Tuid;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -74,8 +74,8 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case CorrespondencePackage.TUID:
-				return createTUIDFromString(eDataType, initialValue);
+			case CorrespondencePackage.Tuid:
+				return createTuidFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -89,8 +89,8 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case CorrespondencePackage.TUID:
-				return convertTUIDToString(eDataType, instanceValue);
+			case CorrespondencePackage.Tuid:
+				return convertTuidToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -121,8 +121,8 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TUID createTUIDFromString(EDataType eDataType, String initialValue) {
-		return (TUID)super.createFromString(eDataType, initialValue);
+	public Tuid createTuidFromString(EDataType eDataType, String initialValue) {
+		return (Tuid)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertTUIDToString(EDataType eDataType, Object instanceValue) {
+	public String convertTuidToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

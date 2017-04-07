@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import tools.vitruv.framework.correspondence.Correspondences;
-import tools.vitruv.framework.tuid.TUID;
+import tools.vitruv.framework.tuid.Tuid;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Correspondence</b></em>'.
@@ -36,9 +36,9 @@ import tools.vitruv.framework.tuid.TUID;
  * <em>Depends On</em>}</li>
  * <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getDependedOnBy
  * <em>Depended On By</em>}</li>
- * <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getATUIDs
+ * <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getATuids
  * <em>ATUI Ds</em>}</li>
- * <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getBTUIDs
+ * <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getBTuids
  * <em>BTUI Ds</em>}</li>
  * </ul>
  *
@@ -73,24 +73,24 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
     protected EList<Correspondence> dependedOnBy;
 
     /**
-     * The cached value of the '{@link #getATUIDs() <em>ATUI Ds</em>}' attribute list. <!--
+     * The cached value of the '{@link #getATuids() <em>ATUI Ds</em>}' attribute list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getATUIDs()
+     * @see #getATuids()
      * @generated
      * @ordered
      */
-    protected EList<TUID> aTUIDs;
+    protected EList<Tuid> aTuids;
 
     /**
-     * The cached value of the '{@link #getBTUIDs() <em>BTUI Ds</em>}' attribute list. <!--
+     * The cached value of the '{@link #getBTuids() <em>BTUI Ds</em>}' attribute list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getBTUIDs()
+     * @see #getBTuids()
      * @generated
      * @ordered
      */
-    protected EList<TUID> bTUIDs;
+    protected EList<Tuid> bTuids;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -194,12 +194,12 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      * @generated
      */
     @Override
-    public EList<TUID> getATUIDs() {
-        if (this.aTUIDs == null) {
-            this.aTUIDs = new EDataTypeUniqueEList<TUID>(TUID.class, this,
+    public EList<Tuid> getATuids() {
+        if (this.aTuids == null) {
+            this.aTuids = new EDataTypeUniqueEList<Tuid>(Tuid.class, this,
                     CorrespondencePackage.CORRESPONDENCE__ATUI_DS);
         }
-        return this.aTUIDs;
+        return this.aTuids;
     }
 
     /**
@@ -208,12 +208,12 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      * @generated
      */
     @Override
-    public EList<TUID> getBTUIDs() {
-        if (this.bTUIDs == null) {
-            this.bTUIDs = new EDataTypeUniqueEList<TUID>(TUID.class, this,
+    public EList<Tuid> getBTuids() {
+        if (this.bTuids == null) {
+            this.bTuids = new EDataTypeUniqueEList<Tuid>(Tuid.class, this,
                     CorrespondencePackage.CORRESPONDENCE__BTUI_DS);
         }
-        return this.bTUIDs;
+        return this.bTuids;
     }
 
     /**
@@ -223,7 +223,7 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      */
     @Override
     public EList<EObject> getAs() {
-        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromTUIDs(getATUIDs()));
+        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromTuids(getATuids()));
     }
 
     /**
@@ -233,7 +233,7 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      */
     @Override
     public EList<EObject> getBs() {
-        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromTUIDs(getBTUIDs()));
+        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromTuids(getBTuids()));
     }
 
     /**
@@ -243,7 +243,7 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      */
     @Deprecated
     @Override
-    public TUID getElementATUID() {
+    public Tuid getElementATuid() {
         throw new UnsupportedOperationException();
     }
 
@@ -254,7 +254,7 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      */
     @Deprecated
     @Override
-    public TUID getElementBTUID() {
+    public Tuid getElementBTuid() {
         throw new UnsupportedOperationException();
     }
 
@@ -265,8 +265,8 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      */
     @Override
     public EList<EObject> getElementsForMetamodel(final String metamodelNamespaceUri) {
-        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromTUIDs(
-                getParent().getCorrespondenceModel().getTUIDsForMetamodel(this, metamodelNamespaceUri)));
+        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromTuids(
+                getParent().getCorrespondenceModel().getTuidsForMetamodel(this, metamodelNamespaceUri)));
     }
 
     /**
@@ -339,9 +339,9 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
         case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
             return getDependedOnBy();
         case CorrespondencePackage.CORRESPONDENCE__ATUI_DS:
-            return getATUIDs();
+            return getATuids();
         case CorrespondencePackage.CORRESPONDENCE__BTUI_DS:
-            return getBTUIDs();
+            return getBTuids();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -367,12 +367,12 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
             getDependedOnBy().addAll((Collection<? extends Correspondence>) newValue);
             return;
         case CorrespondencePackage.CORRESPONDENCE__ATUI_DS:
-            getATUIDs().clear();
-            getATUIDs().addAll((Collection<? extends TUID>) newValue);
+            getATuids().clear();
+            getATuids().addAll((Collection<? extends Tuid>) newValue);
             return;
         case CorrespondencePackage.CORRESPONDENCE__BTUI_DS:
-            getBTUIDs().clear();
-            getBTUIDs().addAll((Collection<? extends TUID>) newValue);
+            getBTuids().clear();
+            getBTuids().addAll((Collection<? extends Tuid>) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -396,10 +396,10 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
             getDependedOnBy().clear();
             return;
         case CorrespondencePackage.CORRESPONDENCE__ATUI_DS:
-            getATUIDs().clear();
+            getATuids().clear();
             return;
         case CorrespondencePackage.CORRESPONDENCE__BTUI_DS:
-            getBTUIDs().clear();
+            getBTuids().clear();
             return;
         }
         super.eUnset(featureID);
@@ -420,9 +420,9 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
         case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
             return this.dependedOnBy != null && !this.dependedOnBy.isEmpty();
         case CorrespondencePackage.CORRESPONDENCE__ATUI_DS:
-            return this.aTUIDs != null && !this.aTUIDs.isEmpty();
+            return this.aTuids != null && !this.aTuids.isEmpty();
         case CorrespondencePackage.CORRESPONDENCE__BTUI_DS:
-            return this.bTUIDs != null && !this.bTUIDs.isEmpty();
+            return this.bTuids != null && !this.bTuids.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -438,10 +438,10 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
             return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (aTUIDs: ");
-        result.append(this.aTUIDs);
-        result.append(", bTUIDs: ");
-        result.append(this.bTUIDs);
+        result.append(" (aTuids: ");
+        result.append(this.aTuids);
+        result.append(", bTuids: ");
+        result.append(this.bTuids);
         result.append(')');
         return result.toString();
     }

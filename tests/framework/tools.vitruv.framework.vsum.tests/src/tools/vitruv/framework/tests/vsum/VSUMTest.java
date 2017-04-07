@@ -21,7 +21,7 @@ public abstract class VSUMTest extends AbstractVSUMTest {
         return getCurrentProjectFolderName() + "/model/";
     }
 
-    protected String getDefaultPCMInstanceURI() {
+    protected String getDefaultPcmInstanceURI() {
         return getCurrentProjectModelFolder() + "My.pcm_mockup";
     }
 
@@ -29,7 +29,7 @@ public abstract class VSUMTest extends AbstractVSUMTest {
         return getCurrentProjectModelFolder() + "My.uml_mockup";
     }
 
-    protected String getAlternativePCMInstanceURI() {
+    protected String getAlternativePcmInstanceURI() {
         return getCurrentProjectModelFolder() + "NewPCMInstance.pcm_mockup";
     }
 
@@ -39,7 +39,7 @@ public abstract class VSUMTest extends AbstractVSUMTest {
 
     protected ModelInstance fillVSUM(final InternalVirtualModel vsum) {
         // create PCM
-        VURI vuri = VURI.getInstance(getAlternativePCMInstanceURI());
+        VURI vuri = VURI.getInstance(getAlternativePcmInstanceURI());
         ModelInstance mi = vsum.getModelInstance(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.createModel(vuri, repo);
@@ -81,7 +81,7 @@ public abstract class VSUMTest extends AbstractVSUMTest {
         return mi;
     }
 
-    protected InternalVirtualModel createMetaRepositoryVSUMAndModelInstances(final String pcmModelUriString,
+    protected InternalVirtualModel createMetaRepositoryVirtualModelAndModelInstances(final String pcmModelUriString,
             final String umlModelUriString) {
         InternalVirtualModel vsum = createMetaRepositoryAndVSUM();
         createMockupModels(pcmModelUriString, umlModelUriString, vsum);
@@ -99,7 +99,7 @@ public abstract class VSUMTest extends AbstractVSUMTest {
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {
-        createMockupModels(getDefaultPCMInstanceURI(), getDefaultUMLInstanceURI(), vsum);
+        createMockupModels(getDefaultPcmInstanceURI(), getDefaultUMLInstanceURI(), vsum);
     }
 
     protected void createMockupModels(final String pcmModelUriString, final String umlModelUriString,

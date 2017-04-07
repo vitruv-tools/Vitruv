@@ -75,7 +75,7 @@
 //        }
 //
 //        this.metaRepository = createEmptyMetaRepository(mappingTest.metamodelURIsAndExtensions.map [
-//        	createAttributeTUIDMetamodel(first, second)
+//        	createAttributeTuidMetamodel(first, second)
 //        ])
 //        this.vsum = TestUtil.createVSUM(this.metaRepository);
 //        val commandExecuter = new CommandExecutingImpl();
@@ -148,10 +148,10 @@
 //	
 //	// Utility functions
 //	@SuppressWarnings("unchecked")
-//	public def <T extends EObject> T reloadByTUID(T eObject) {
+//	public def <T extends EObject> T reloadByTuid(T eObject) {
 //		try {
-//			val tuid = getCorrespondenceModel().calculateTUIDFromEObject(eObject);
-//			return getCorrespondenceModel().resolveEObjectFromTUID(tuid) as T;
+//			val tuid = getCorrespondenceModel().calculateTuidFromEObject(eObject);
+//			return getCorrespondenceModel().resolveEObjectFromTuid(tuid) as T;
 //		} catch (Throwable e) {
 //			LOGGER.error(e);
 //		}

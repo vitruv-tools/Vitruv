@@ -11,7 +11,7 @@
   <genPackages prefix="Correspondence" basePackage="tools.vitruv.framework"
       disposableProviderFactory="true" ecorePackage="correspondence.ecore#/">
     <genDataTypes ecoreDataType="correspondence.ecore#//CorrespondenceModel"/>
-    <genDataTypes ecoreDataType="correspondence.ecore#//TUID"/>
+    <genDataTypes ecoreDataType="correspondence.ecore#//Tuid"/>
     <genClasses ecoreClass="correspondence.ecore#//Correspondences">
       <genFeatures createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondences/correspondences"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondences/correspondenceModel"/>
@@ -20,12 +20,12 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/parent"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/dependsOn"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/dependedOnBy"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/aTUIDs"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/bTUIDs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/aTuids"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/bTuids"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getAs"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getBs"/>
-      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementATUID"/>
-      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementBTUID"/>
+      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementATuid"/>
+      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementBTuid"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementsForMetamodel">
         <genParameters ecoreParameter="correspondence.ecore#//Correspondence/getElementsForMetamodel/metamodelNamespaceUri"/>
       </genOperations>

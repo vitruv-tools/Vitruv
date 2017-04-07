@@ -22,15 +22,15 @@ import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
 import tools.vitruv.framework.tests.util.TestUtil;
-import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
-import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
+import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
+import tools.vitruv.framework.tuid.TuidCalculatorAndResolver;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 
 /**
  * These tests can be executed as simple JUnit tests (no Plug-in tests)
  */
-public class TUIDCacheTest {
-    private static final Logger LOGGER = Logger.getLogger(TUIDCacheTest.class.getSimpleName());
+public class TuidCacheTest {
+    private static final Logger LOGGER = Logger.getLogger(TuidCacheTest.class.getSimpleName());
 
     private static final String TEST_FOLDER = TestUtil.getTempDirPath() + "test_tmp";
 
@@ -60,7 +60,7 @@ public class TUIDCacheTest {
 
     @Test
     public void testCreateChildSaveCalcRemoveCalcSaveCalc() throws IOException {
-        TUIDCalculatorAndResolver tuidCAR = prepareTUIDCAR();
+        TuidCalculatorAndResolver tuidCAR = prepareTuidCAR();
 
         // create
         Repository repository = create();
@@ -69,63 +69,63 @@ public class TUIDCacheTest {
         repository.getComponents().add(component);
         // save
         // calc
-        String uncachedTUIDAfterSave = saveAndCalc("", tuidCAR, component, "newtestresource");
+        String uncachedTuidAfterSave = saveAndCalc("", tuidCAR, component, "newtestresource");
 
         // remove
         remove(component);
         // calc
-        String cachedTUIDAfterRemove = calc(tuidCAR, component, uncachedTUIDAfterSave, "cachedTUIDAfterRemove");
+        String cachedTuidAfterRemove = calc(tuidCAR, component, uncachedTuidAfterSave, "cachedTuidAfterRemove");
 
         // save
         // calc
-        saveAndCalc(cachedTUIDAfterRemove, tuidCAR, component, "newtestresource");
+        saveAndCalc(cachedTuidAfterRemove, tuidCAR, component, "newtestresource");
     }
 
     @Test
     public void testCreateSaveCalcRemoveCalcSaveCalc() throws IOException {
-        TUIDCalculatorAndResolver tuidCAR = prepareTUIDCAR();
+        TuidCalculatorAndResolver tuidCAR = prepareTuidCAR();
 
         // create
         Repository repository = create();
         // save
         // calc
-        String uncachedTUIDAfterSave = saveAndCalc("", tuidCAR, repository, "newtestresource");
+        String uncachedTuidAfterSave = saveAndCalc("", tuidCAR, repository, "newtestresource");
 
         // remove
         remove(repository);
         // calc
-        String cachedTUIDAfterRemove = calc(tuidCAR, repository, uncachedTUIDAfterSave, "cachedTUIDAfterRemove");
+        String cachedTuidAfterRemove = calc(tuidCAR, repository, uncachedTuidAfterSave, "cachedTuidAfterRemove");
 
         // save
         // calc
-        saveAndCalc(cachedTUIDAfterRemove, tuidCAR, repository, "newtestresource");
+        saveAndCalc(cachedTuidAfterRemove, tuidCAR, repository, "newtestresource");
     }
 
     @Test
     public void testCreateCalcSaveCalcRemoveCalcSaveCalc() throws IOException {
-        TUIDCalculatorAndResolver tuidCAR = prepareTUIDCAR();
+        TuidCalculatorAndResolver tuidCAR = prepareTuidCAR();
 
         // create
         Repository repository = create();
         // calc
-        String cachedTUIDBeforeSave = calc(tuidCAR, repository, "", "cachedTUIDAfterRemove");
+        String cachedTuidBeforeSave = calc(tuidCAR, repository, "", "cachedTuidAfterRemove");
         // save
         // calc
-        String uncachedTUIDAfterSave = saveAndCalc(cachedTUIDBeforeSave, tuidCAR, repository, "newtestresource");
+        String uncachedTuidAfterSave = saveAndCalc(cachedTuidBeforeSave, tuidCAR, repository, "newtestresource");
 
         // remove
         remove(repository);
         // calc
-        String cachedTUIDAfterRemove = calc(tuidCAR, repository, uncachedTUIDAfterSave, "cachedTUIDAfterRemove");
+        String cachedTuidAfterRemove = calc(tuidCAR, repository, uncachedTuidAfterSave, "cachedTuidAfterRemove");
 
         // save
         // calc
-        saveAndCalc(cachedTUIDAfterRemove, tuidCAR, repository, "newtestresource");
+        saveAndCalc(cachedTuidAfterRemove, tuidCAR, repository, "newtestresource");
     }
 
     @Test
     public void testCreateSaveRemoveCalcSaveCalc() throws IOException {
-        TUIDCalculatorAndResolver tuidCAR = prepareTUIDCAR();
+        TuidCalculatorAndResolver tuidCAR = prepareTuidCAR();
 
         // create
         Repository repository = create();
@@ -135,55 +135,55 @@ public class TUIDCacheTest {
         // remove
         remove(repository);
         // calc
-        String cachedTUIDAfterRemove = calc(tuidCAR, repository, "", "cachedTUIDAfterRemove");
+        String cachedTuidAfterRemove = calc(tuidCAR, repository, "", "cachedTuidAfterRemove");
 
         // save
         // calc
-        saveAndCalc(cachedTUIDAfterRemove, tuidCAR, repository, "newtestresource");
+        saveAndCalc(cachedTuidAfterRemove, tuidCAR, repository, "newtestresource");
     }
 
     @Test
     public void testCreateCalcSaveRemoveCalcSaveCalc() throws IOException {
-        TUIDCalculatorAndResolver tuidCAR = prepareTUIDCAR();
+        TuidCalculatorAndResolver tuidCAR = prepareTuidCAR();
 
         // create
         Repository repository = create();
         // calc
-        String cachedTUIDBeforeSave = calc(tuidCAR, repository, "", "cachedTUIDAfterRemove");
+        String cachedTuidBeforeSave = calc(tuidCAR, repository, "", "cachedTuidAfterRemove");
         // save
         save(repository, "newtestresource");
 
         // remove
         remove(repository);
         // calc
-        String cachedTUIDAfterRemove = calc(tuidCAR, repository, cachedTUIDBeforeSave, "cachedTUIDAfterRemove", true);
+        String cachedTuidAfterRemove = calc(tuidCAR, repository, cachedTuidBeforeSave, "cachedTuidAfterRemove", true);
 
         // save
         // calc
-        saveAndCalc(cachedTUIDAfterRemove, tuidCAR, repository, "newtestresource");
+        saveAndCalc(cachedTuidAfterRemove, tuidCAR, repository, "newtestresource");
     }
 
-    private String calc(final TUIDCalculatorAndResolver tuidCAR, final EObject eObject, final String oldTUID,
+    private String calc(final TuidCalculatorAndResolver tuidCAR, final EObject eObject, final String oldTuid,
             final String msg) {
-        return calc(tuidCAR, eObject, oldTUID, msg, false);
+        return calc(tuidCAR, eObject, oldTuid, msg, false);
     }
 
-    private String calc(final TUIDCalculatorAndResolver tuidCAR, final EObject eObject, final String oldTUID,
-            final String msg, final boolean equalTUID) {
-        String newTUID = tuidCAR.calculateTUIDFromEObject(eObject);
-        traceAndAssert(oldTUID, newTUID, msg, equalTUID);
-        return newTUID;
+    private String calc(final TuidCalculatorAndResolver tuidCAR, final EObject eObject, final String oldTuid,
+            final String msg, final boolean equalTuid) {
+        String newTuid = tuidCAR.calculateTuidFromEObject(eObject);
+        traceAndAssert(oldTuid, newTuid, msg, equalTuid);
+        return newTuid;
     }
 
     private void remove(final EObject eObject) {
         EcoreUtil.remove(eObject);
     }
 
-    private String saveAndCalc(final String oldTUID, final TUIDCalculatorAndResolver tuidCAR, final EObject eObject,
+    private String saveAndCalc(final String oldTuid, final TuidCalculatorAndResolver tuidCAR, final EObject eObject,
             final String fileName) throws IOException {
-        String uncachedTUIDAfterSave = saveAndCalculateTUID(eObject, tuidCAR, fileName);
-        traceAndAssert(oldTUID, uncachedTUIDAfterSave, "uncachedTUIDAfterSave", false);
-        return uncachedTUIDAfterSave;
+        String uncachedTuidAfterSave = saveAndCalculateTuid(eObject, tuidCAR, fileName);
+        traceAndAssert(oldTuid, uncachedTuidAfterSave, "uncachedTuidAfterSave", false);
+        return uncachedTuidAfterSave;
     }
 
     private Repository create() {
@@ -191,26 +191,26 @@ public class TUIDCacheTest {
         return repository;
     }
 
-    private TUIDCalculatorAndResolver prepareTUIDCAR() {
+    private TuidCalculatorAndResolver prepareTuidCAR() {
         EcoreResourceBridge.registerGlobalMetamodelPackage(Pcm_mockupPackage.eNS_URI, Pcm_mockupPackage.eINSTANCE);
         EcoreResourceBridge.registerDefaultXMIExtensionFactory("pcm_mockup");
-        TUIDCalculatorAndResolver tuidCAR = new AttributeTUIDCalculatorAndResolver(Pcm_mockupPackage.eNS_URI, "id");
+        TuidCalculatorAndResolver tuidCAR = new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eNS_URI, "id");
         return tuidCAR;
     }
 
-    private void traceAndAssert(final String oldTUID, final String newTUID, final String msg, final boolean equalTUID) {
-        LOGGER.trace(msg + ": '" + newTUID + "'");
-        if (equalTUID) {
-            assertEquals(oldTUID, newTUID);
+    private void traceAndAssert(final String oldTuid, final String newTuid, final String msg, final boolean equalTuid) {
+        LOGGER.trace(msg + ": '" + newTuid + "'");
+        if (equalTuid) {
+            assertEquals(oldTuid, newTuid);
         } else {
-            assertNotEquals(oldTUID, newTUID);
+            assertNotEquals(oldTuid, newTuid);
         }
     }
 
-    private String saveAndCalculateTUID(final EObject eObject, final TUIDCalculatorAndResolver tuidCAR,
+    private String saveAndCalculateTuid(final EObject eObject, final TuidCalculatorAndResolver tuidCAR,
             final String fileName) throws IOException {
         save(eObject, fileName);
-        return tuidCAR.calculateTUIDFromEObject(eObject);
+        return tuidCAR.calculateTuidFromEObject(eObject);
     }
 
     private void save(final EObject eObject, final String fileName) throws IOException {

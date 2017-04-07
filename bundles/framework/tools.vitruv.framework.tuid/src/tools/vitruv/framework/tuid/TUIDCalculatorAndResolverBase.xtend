@@ -13,12 +13,12 @@ import java.util.List
 import tools.vitruv.framework.util.datatypes.VURI
 
 /** 
- * Base class for TUID calculators and resolvers. It handles the default parts of the TUID like
- * generator identifier and URI inclusion for TUID calculation and resolution.
+ * Base class for Tuid calculators and resolvers. It handles the default parts of the Tuid like
+ * generator identifier and URI inclusion for Tuid calculation and resolution.
  * @author Stephan Seifermann
  */
-abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolver {
-	static final Logger LOGGER = Logger.getLogger(TUIDCalculatorAndResolverBase.getSimpleName())
+abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolver {
+	static final Logger LOGGER = Logger.getLogger(TuidCalculatorAndResolverBase.getSimpleName())
 	final String tuidPrefix
 	// TODO MK check whether cachedResourcelessRoots and cachedRoot2KeyMap can be replaced with a
 	// BiMap
@@ -34,8 +34,8 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 		this.cachedRoot2KeyMap = new HashMap<EObject, Integer>()
 	}
 
-	override boolean isValidTUID(String tuid) {
-		return tuid.startsWith(getTUIDPrefixAndSeparator())
+	override boolean isValidTuid(String tuid) {
+		return tuid.startsWith(getTuidPrefixAndSeparator())
 	}
 
 	/** 
@@ -63,21 +63,21 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 	}
 	
 	
-    override List<String> calculateTUIDsFromEObjects(List<EObject> eObjects) {
-        return eObjects.map[calculateTUIDFromEObject(it)]
+    override List<String> calculateTuidsFromEObjects(List<EObject> eObjects) {
+        return eObjects.map[calculateTuidFromEObject(it)]
     }
 
-	override String calculateTUIDFromEObject(EObject eObject) {
+	override String calculateTuidFromEObject(EObject eObject) {
 		var EObject root = getMostDistantParentOfSameMetamodel(eObject)
 		var String tuidPrefix = null
 		if (root.eResource() === null) {
-			tuidPrefix = getTUIDPrefixAndSeparator() + getVURIReplacementForCachedRoot(root)
+			tuidPrefix = getTuidPrefixAndSeparator() + getVURIReplacementForCachedRoot(root)
 			if (!isCached(root)) {
-				// the root has no resource and therefore it has to be cached for correct TUID
+				// the root has no resource and therefore it has to be cached for correct Tuid
 				// resolution and calculation
 				addRootToCache(root)
 				LOGGER.
-					trace('''The given EObject «eObject» has no resource attached. Added it to the TUID cache using the prefix '«»«tuidPrefix»'.''')
+					trace('''The given EObject «eObject» has no resource attached. Added it to the Tuid cache using the prefix '«»«tuidPrefix»'.''')
 			}
 
 		} else {
@@ -86,10 +86,10 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 				// cache
 				removeRootFromCache(root)
 			}
-			tuidPrefix = getTUIDPrefixAndSeparator() + VURI.getInstance(eObject.eResource())
+			tuidPrefix = getTuidPrefixAndSeparator() + VURI.getInstance(eObject.eResource())
 		}
 		var EObject virtualRootEObject = root.eContainer()
-		return calculateTUIDFromEObject(eObject, virtualRootEObject, tuidPrefix)
+		return calculateTuidFromEObject(eObject, virtualRootEObject, tuidPrefix)
 	}
 
 	def private void addRootToCache(EObject root) {
@@ -116,10 +116,10 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 	}
 
 	override void removeIfRootAndCached(String tuid) {
-		var String[] segmentsAfterMarker = getSegmentsAfterCachedTUIDMarker(tuid)
-		var boolean isTUIDOfRoot = segmentsAfterMarker !== null && segmentsAfterMarker.length === 1
-		if (isTUIDOfRoot) {
-			var Integer key = getCacheKeyForTUIDString(tuid)
+		var String[] segmentsAfterMarker = getSegmentsAfterCachedTuidMarker(tuid)
+		var boolean isTuidOfRoot = segmentsAfterMarker !== null && segmentsAfterMarker.length === 1
+		if (isTuidOfRoot) {
+			var Integer key = getCacheKeyForTuidString(tuid)
 			if (key !== null) {
 				removeCacheEntryForKey(key)
 			}
@@ -129,11 +129,11 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 	}
 
 	def private String getVURIReplacementForCachedRoot(EObject root) {
-		return VitruviusConstants.getCachedTUIDMarker() + getCacheKey(root)
+		return VitruviusConstants.getCachedTuidMarker() + getCacheKey(root)
 	}
 
 	def private Integer claimCacheKey(String tuid) {
-		var Integer key = getCacheKeyForTUIDString(tuid)
+		var Integer key = getCacheKeyForTuidString(tuid)
 		if (key === null) {
 			throw new IllegalArgumentException('''Cannot get the cache key for the tuid '«»«tuid»' because it is not of the form '{marker}{key}...'!''')
 		} else {
@@ -141,8 +141,8 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 		}
 	}
 
-	def private Integer getCacheKeyForTUIDString(String tuid) {
-		var String[] segmentsAfterMarker = getSegmentsAfterCachedTUIDMarker(tuid)
+	def private Integer getCacheKeyForTuidString(String tuid) {
+		var String[] segmentsAfterMarker = getSegmentsAfterCachedTuidMarker(tuid)
 		if (segmentsAfterMarker !== null && segmentsAfterMarker.length > 0) {
 			var String keyString = segmentsAfterMarker.get(0)
 			return getCacheKeyForKeySegment(keyString)
@@ -169,11 +169,11 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 		return this.nextCacheKey++
 	}
 
-	def private String[] getSegmentsAfterCachedTUIDMarker(String tuid) {
-		var String cachedTUIDMarker = VitruviusConstants.getCachedTUIDMarker()
-		var String tuidSuffix = getTUIDWithoutDefaultPrefix(tuid)
-		if (tuidSuffix.startsWith(cachedTUIDMarker)) {
-			var int markerEndIndex = cachedTUIDMarker.length()
+	def private String[] getSegmentsAfterCachedTuidMarker(String tuid) {
+		var String cachedTuidMarker = VitruviusConstants.getCachedTuidMarker()
+		var String tuidSuffix = getTuidWithoutDefaultPrefix(tuid)
+		if (tuidSuffix.startsWith(cachedTuidMarker)) {
+			var int markerEndIndex = cachedTuidMarker.length()
 			var String suffixAfterMarker = tuidSuffix.substring(markerEndIndex)
 			return getSegments(suffixAfterMarker)
 		} else {
@@ -181,12 +181,12 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 		}
 	}
 
-	def String getTUIDPrefixAndSeparator() {
-		return getTUIDPrefix() + VitruviusConstants.getTUIDSegmentSeperator()
+	def String getTuidPrefixAndSeparator() {
+		return getTuidPrefix() + VitruviusConstants.getTuidSegmentSeperator()
 	}
 
 	override String getModelVURIContainingIdentifiedEObject(String extTuid) {
-		var String tuidSuffix = getTUIDWithoutDefaultPrefix(extTuid)
+		var String tuidSuffix = getTuidWithoutDefaultPrefix(extTuid)
 		var String[] segments = getSegments(tuidSuffix)
 		var String firstSegmentOfSuffix = segments.get(0)
 		if (isCached(firstSegmentOfSuffix)) {
@@ -197,19 +197,19 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 	}
 
 	def private String[] getSegments(String tuid) {
-		return tuid.split(VitruviusConstants.getTUIDSegmentSeperator())
+		return tuid.split(VitruviusConstants.getTuidSegmentSeperator())
 	}
 
 	def private boolean isCached(String firstSegmentOfSuffix) {
-		return firstSegmentOfSuffix.startsWith(VitruviusConstants.getCachedTUIDMarker())
+		return firstSegmentOfSuffix.startsWith(VitruviusConstants.getCachedTuidMarker())
 	}
 
-	override EObject resolveEObjectFromRootAndFullTUID(EObject root_finalParam_, String tuid) {
+	override EObject resolveEObjectFromRootAndFullTuid(EObject root_finalParam_, String tuid) {
 		var root = root_finalParam_
 		if (root === null) {
 			root = claimRootFromCache(tuid)
 		}
-		var String identifier = getTUIDWithoutRootObjectPrefix(root, tuid)
+		var String identifier = getTuidWithoutRootObjectPrefix(root, tuid)
 		if (identifier === null) {
 			return null
 		}
@@ -221,7 +221,7 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 		if (foundElement !== null) {
 			return foundElement
 		}
-		LOGGER.warn('''No EObject found for TUID: «tuid» in root object: «root»''')
+		LOGGER.warn('''No EObject found for Tuid: «tuid» in root object: «root»''')
 		return null
 	}
 
@@ -231,22 +231,22 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 	}
 
 	/** 
-	 * Removes the root object prefix from the given TUID and returns the result.
+	 * Removes the root object prefix from the given Tuid and returns the result.
 	 * @param rootThe root object.
-	 * @param extTuidThe TUID to process.
-	 * @return The TUID without the root object prefix.
+	 * @param extTuidThe Tuid to process.
+	 * @return The Tuid without the root object prefix.
 	 */
-	def private String getTUIDWithoutRootObjectPrefix(EObject root, String extTuid) {
-		var String rootTUID = calculateTUIDFromEObject(root)
-		if (!extTuid.startsWith(rootTUID)) {
-			LOGGER.warn('''TUID «extTuid» is not in EObject «root»''')
+	def private String getTuidWithoutRootObjectPrefix(EObject root, String extTuid) {
+		var String rootTuid = calculateTuidFromEObject(root)
+		if (!extTuid.startsWith(rootTuid)) {
+			LOGGER.warn('''Tuid «extTuid» is not in EObject «root»''')
 			return null
 		}
-		var String identifyingTUIDPart = extTuid.substring(rootTUID.length())
-		if (identifyingTUIDPart.startsWith(VitruviusConstants.getTUIDSegmentSeperator())) {
-			identifyingTUIDPart = identifyingTUIDPart.substring(VitruviusConstants.getTUIDSegmentSeperator().length())
+		var String identifyingTuidPart = extTuid.substring(rootTuid.length())
+		if (identifyingTuidPart.startsWith(VitruviusConstants.getTuidSegmentSeperator())) {
+			identifyingTuidPart = identifyingTuidPart.substring(VitruviusConstants.getTuidSegmentSeperator().length())
 		}
-		return identifyingTUIDPart
+		return identifyingTuidPart
 	}
 
 	/** 
@@ -258,17 +258,17 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 	def protected abstract EObject getIdentifiedEObjectWithinRootEObjectInternal(EObject root, String[] ids)
 
 	/** 
-	 * @param tuidThe TUID.
-	 * @return The given TUID without the default part.
+	 * @param tuidThe Tuid.
+	 * @return The given Tuid without the default part.
 	 */
-	def private String getTUIDWithoutDefaultPrefix(String tuid) {
-		if (!isValidTUID(tuid)) {
-			throw new IllegalArgumentException('''TUID: «tuid» not generated by class «getTUIDPrefix()»''')
+	def private String getTuidWithoutDefaultPrefix(String tuid) {
+		if (!isValidTuid(tuid)) {
+			throw new IllegalArgumentException('''Tuid: «tuid» not generated by class «getTuidPrefix()»''')
 		}
-		return tuid.substring(getTUIDPrefixAndSeparator().length())
+		return tuid.substring(getTuidPrefixAndSeparator().length())
 	}
 
-	def private String getTUIDPrefix() {
+	def private String getTuidPrefix() {
 		return this.tuidPrefix
 	}
 

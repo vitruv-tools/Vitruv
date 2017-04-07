@@ -5,12 +5,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
 /**
- * Utility class for TUID generators.
+ * Utility class for Tuid generators.
  * 
  * @author Stephan Seifermann
  *
  */
-public class TUIDCalculatorUtilities {
+public class TuidCalculatorUtilities {
 
     /**
      * Takes an EObject and a prefix and calculates a generic individual identifier from it. It uses
@@ -21,7 +21,7 @@ public class TUIDCalculatorUtilities {
      * 
      * @param obj The object for which the ID shall be calculated.
      * @param prefix A prefix, which is prepended.
-     * @return The individual TUID.
+     * @return The individual Tuid.
      */
     @SuppressWarnings("unchecked")
     @Deprecated
