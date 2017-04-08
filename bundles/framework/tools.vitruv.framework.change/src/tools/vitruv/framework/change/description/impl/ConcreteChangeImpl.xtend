@@ -1,5 +1,6 @@
 package tools.vitruv.framework.change.description.impl
 
+import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 
@@ -14,19 +15,18 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
     }
 
 	override applyForward() {
-		super.applyForward();
-		// for (EChange eChange : recordedChange.getEChanges()) {
-        // if (eChange instanceof JavaFeatureEChange<?, ?>) {
-        // if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
-        // JavaFeatureEChange<?, ?> javaFeatureEChange = (JavaFeatureEChange<?, ?>) eChange;
-        // TUID tuid = correspondenceModel
-        // .calculateTUIDFromEObject(javaFeatureEChange.getOldAffectedEObject());
-        // if (tuid != null && javaFeatureEChange.getAffectedEObject() != null) {
-        // tuidMap.put(javaFeatureEChange.getAffectedEObject(), tuid);
-        // }
-        // }
-        // }
-        // }
+		this.eChange.applyForward
 	}
 	
+	override applyBackward() {
+		this.eChange.applyBackward
+	}
+	
+	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+		this.eChange = this.eChange.resolveBeforeAndApplyForward(resourceSet)
+	}
+	
+	override resolveAfterAndApplyBackward(ResourceSet resourceSet) {
+		this.eChange = this.eChange.resolveAfterAndApplyBackward(resourceSet)
+	}
 }

@@ -3,6 +3,7 @@ package tools.vitruv.framework.change.description.impl
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	
@@ -16,4 +17,15 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
 		super.removeChange(change);
 	}
 	
+	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+		for (c : changes) {
+			c.resolveBeforeAndApplyForward(resourceSet)
+		}
+	}
+	
+	override resolveAfterAndApplyBackward(ResourceSet resourceSet) {
+		for (c : changes.reverseView) {
+			c.resolveAfterAndApplyBackward(resourceSet)
+		}
+	}	
 }

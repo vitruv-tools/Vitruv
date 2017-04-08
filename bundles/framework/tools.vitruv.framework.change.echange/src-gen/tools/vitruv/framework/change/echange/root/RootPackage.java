@@ -80,13 +80,22 @@ public interface RootPackage extends EPackage {
 	int ROOT_ECHANGE__URI = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>File Created Or Deleted</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE__FILE_CREATED_OR_DELETED = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Resource</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE__RESOURCE = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+	int ROOT_ECHANGE__RESOURCE = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -95,7 +104,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE__INDEX = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+	int ROOT_ECHANGE__INDEX = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>EChange</em>' class.
@@ -104,7 +113,7 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
+	int ROOT_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 4;
 
 	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
@@ -196,6 +205,15 @@ public interface RootPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_ROOT_EOBJECT__URI = ROOT_ECHANGE__URI;
+
+	/**
+	 * The feature id for the '<em><b>File Created Or Deleted</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT__FILE_CREATED_OR_DELETED = ROOT_ECHANGE__FILE_CREATED_OR_DELETED;
 
 	/**
 	 * The feature id for the '<em><b>Resource</b></em>' attribute.
@@ -332,6 +350,15 @@ public interface RootPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_ROOT_EOBJECT__URI = ROOT_ECHANGE__URI;
+
+	/**
+	 * The feature id for the '<em><b>File Created Or Deleted</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT__FILE_CREATED_OR_DELETED = ROOT_ECHANGE__FILE_CREATED_OR_DELETED;
 
 	/**
 	 * The feature id for the '<em><b>Resource</b></em>' attribute.
@@ -493,6 +520,17 @@ public interface RootPackage extends EPackage {
 	EAttribute getRootEChange_Uri();
 
 	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.root.RootEChange#isFileCreatedOrDeleted <em>File Created Or Deleted</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>File Created Or Deleted</em>'.
+	 * @see tools.vitruv.framework.change.echange.root.RootEChange#isFileCreatedOrDeleted()
+	 * @see #getRootEChange()
+	 * @generated
+	 */
+	EAttribute getRootEChange_FileCreatedOrDeleted();
+
+	/**
 	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.root.RootEChange#getResource <em>Resource</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -626,6 +664,14 @@ public interface RootPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ROOT_ECHANGE__URI = eINSTANCE.getRootEChange_Uri();
+
+		/**
+		 * The meta object literal for the '<em><b>File Created Or Deleted</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ROOT_ECHANGE__FILE_CREATED_OR_DELETED = eINSTANCE.getRootEChange_FileCreatedOrDeleted();
 
 		/**
 		 * The meta object literal for the '<em><b>Resource</b></em>' attribute feature.

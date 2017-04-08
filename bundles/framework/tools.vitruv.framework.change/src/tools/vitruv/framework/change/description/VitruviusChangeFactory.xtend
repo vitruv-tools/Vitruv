@@ -14,6 +14,7 @@ import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -45,13 +46,18 @@ class VitruviusChangeFactory {
 		return new ConcreteChangeImpl(change, vuri);
 	}
 	
-	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
+	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource, boolean unresolve) {
 		val vuri = VURI.getInstance(changedFileResource);
+		var EChange change;
 		if (kind == FileChangeKind.Create) {
-			return new ConcreteChangeImpl(generateFileCreateChange(changedFileResource), vuri);
+			change = generateFileCreateChange(changedFileResource);
 		} else {
-			return new ConcreteChangeImpl(generateFileDeleteChange(changedFileResource), vuri);
+			change = generateFileDeleteChange(changedFileResource);
 		}
+		if (unresolve) {
+			EChangeUnresolver.unresolve(change)
+		}
+		return new ConcreteChangeImpl(change, vuri)
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {

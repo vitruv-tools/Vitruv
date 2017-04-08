@@ -66,7 +66,8 @@ class AtomicEMFChangeRecorder {
 	private def createModelChange(ChangeDescription changeDescription) {
 		if (!(changeDescription.objectChanges.isEmpty && changeDescription.resourceChanges.isEmpty)) {
 			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI);
-			result.applyForward();
+			changeDescription.applyAndReverse()
+			//result.applyForward();
 			return result;
 		}
 		changeDescription.applyAndReverse()
@@ -102,16 +103,16 @@ class AtomicEMFChangeRecorder {
 		// Roll back
 		for (c : eChanges.reverseView) {
 			updateStagingArea(c) // corrects the missing or wrong staging area of CreateEObject changes.
-			if (!c.applyBackward) throw new RuntimeException
+			c.applyBackward
 		}
 		// Apply again and unresolve the results if necessary
 		for (c : eChanges) {
 			if (this.unresolveRecordedChanges) {
 				val EChange copy = EcoreUtil.copy(c)
 				EChangeUnresolver.unresolve(c)
-				if (!copy.applyForward) throw new RuntimeException
+				copy.applyForward
 			} else {
-				if (!c.applyForward) throw new RuntimeException
+				c.applyForward
 			}
 		}				
 	}

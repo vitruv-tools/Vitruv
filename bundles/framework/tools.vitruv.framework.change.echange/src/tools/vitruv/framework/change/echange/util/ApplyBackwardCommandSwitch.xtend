@@ -45,8 +45,7 @@ package class ApplyBackwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEAttributeValue<EObject, Object> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[
-			AddCommand.create(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue,
+		return #[new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue,
 				change.index)]
 	}
 
@@ -56,7 +55,7 @@ package class ApplyBackwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEAttribute<EObject, Object> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[SetCommand.create(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue)]
+		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue)]
 	}
 
 	/**
@@ -88,7 +87,7 @@ package class ApplyBackwardCommandSwitch {
 			val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
 			compoundCommand.append(new RemoveFromStagingAreaCommand(editingDomain, stagingArea, change.oldValue))
 		}
-		compoundCommand.append(AddCommand.create(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index))
+		compoundCommand.append(new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index))
 		return #[compoundCommand]
 	}
 
@@ -104,8 +103,7 @@ package class ApplyBackwardCommandSwitch {
 		if (change.containment && change.oldValue != null) {
 			compoundCommand.append(new RemoveFromStagingAreaCommand(editingDomain, stagingArea, change.oldValue))
 		}
-		compoundCommand.append(
-			SetCommand.create(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue))
+		compoundCommand.append(new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue))
 		if (change.containment && change.newValue != null) {
 			compoundCommand.append(new AddToStagingAreaCommand(editingDomain, stagingArea, change.newValue))
 		}
@@ -119,8 +117,7 @@ package class ApplyBackwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(InsertRootEObject<EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.newValue)
-		// Remove from resource and put in staging area
-		// Will be automatically removed because object can only be in one resource.
+		// Will be automatically removed from resource because object can only be in one resource.
 		val stagingArea = StagingArea.getStagingArea(change.resource)
 		return #[new AddToStagingAreaCommand(editingDomain, stagingArea, change.newValue)]
 	}
@@ -131,8 +128,7 @@ package class ApplyBackwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(RemoveRootEObject<EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.oldValue)
-		// Remove from staging area and insert in resource
-		// Will be automatically removed because object can only be in one resource.
+		// Will be automatically removed from resource because object can only be in one resource.
 		return #[new AddCommand(editingDomain, change.resource.getContents, change.oldValue, change.index)]
 	}
 

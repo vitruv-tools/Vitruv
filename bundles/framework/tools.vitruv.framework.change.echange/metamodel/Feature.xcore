@@ -21,7 +21,7 @@ abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicECh
 	/**
 	 * The affected EObject of the change.
 	 */
-	refers A[1] affectedEObject 
+	refers A[1] affectedEObject
 
 	/**
 	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.

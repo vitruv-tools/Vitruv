@@ -314,4 +314,8 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         EMFCommandBridge.executeVitruviusRecordingCommand(getTransactionalEditingDomain(), command);
     }
 
+    @Override
+    public ResourceSet getResourceSet() {
+        return this.resourceSet;
+    }
 }

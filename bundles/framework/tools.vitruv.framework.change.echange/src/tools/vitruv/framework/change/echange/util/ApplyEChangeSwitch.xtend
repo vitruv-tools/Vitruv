@@ -19,6 +19,7 @@ public class ApplyEChangeSwitch {
 	 * 									otherwise backward.
 	 * @returns							The change was successfully applied.
 	 * @throws IllegalStateException	The change is already resolved.
+	 * @throws RunTimeException			The change could not be applied.
 	 */
 	def public static boolean applyEChange(EChange change, boolean applyForward) {
 		if (!change.isResolved) {
@@ -37,11 +38,11 @@ public class ApplyEChangeSwitch {
 				if (c.canExecute()) {
 					c.execute()
 				} else {
-					return false
+					throw new RuntimeException("EChange could not be applied.")
 				}
 			}
 			return true
 		}
-		return false
+		throw new RuntimeException("EChange could not be applied.")
 	}
 }

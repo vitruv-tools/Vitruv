@@ -1,15 +1,16 @@
 package tools.vitruv.framework.change.description.impl
 
-import org.eclipse.emf.ecore.change.ChangeDescription
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import org.eclipse.emf.ecore.change.FeatureChange
-import org.eclipse.emf.ecore.EObject
 import java.util.ArrayList
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.change.ChangeDescription
+import org.eclipse.emf.ecore.change.FeatureChange
+import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
+import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.util.datatypes.VURI
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
@@ -23,7 +24,7 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
     public new(ChangeDescription changeDescription, VURI vuri) {
     	this.changeDescription = changeDescription;
         this.vuri = vuri;
-        this.canBeBackwardsApplied = false;
+        this.canBeBackwardsApplied = true;
 		extractChangeInformation();
     }
 
@@ -64,7 +65,9 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		if (!this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
 		}
-		applyChange();
+		for (c : changes.reverseView) {
+			c.applyBackward
+		}
 		this.canBeBackwardsApplied = false;
 	}
 	
@@ -72,15 +75,19 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		if (this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
-		applyChange();
+		for (c : changes) {
+			c.applyForward
+		}
 		this.canBeBackwardsApplied = true;
 	}
 	
+	
+	/* 
 	private def applyChange() {
 		registerOldObjectTuidsForUpdate();
 		changeDescription.applyAndReverse();
 		updateTuids();
-	}
+	}*/
 	
 	private def void registerOldObjectTuidsForUpdate() {
 		val tuidManager = TuidManager.instance;
@@ -105,5 +112,25 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
         TuidManager.instance.updateTuidsOfRegisteredObjects();
         TuidManager.instance.flushRegisteredObjectsUnderModification();
     }
+	
+	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+		if (this.canBeBackwardsApplied) {
+			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
+		}
+		for (c : changes) {
+			c.resolveBeforeAndApplyForward(resourceSet)
+		}
+		this.canBeBackwardsApplied = true;
+	}
+	
+	override resolveAfterAndApplyBackward(ResourceSet resourceSet) {
+		if (!this.canBeBackwardsApplied) {
+			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
+		}
+		for (c : changes.reverseView) {
+			c.resolveAfterAndApplyBackward(resourceSet)
+		}
+		this.canBeBackwardsApplied = false;
+	}
 	
 }
