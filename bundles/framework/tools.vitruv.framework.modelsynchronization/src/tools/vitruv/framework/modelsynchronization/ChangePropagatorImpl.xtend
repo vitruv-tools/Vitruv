@@ -20,6 +20,8 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.datatypes.Pair
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.CreateFileChange
+import tools.vitruv.framework.change.description.DeleteFileChange
 
 class ChangePropagatorImpl implements ChangePropagator {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -56,19 +58,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 		if (!change.validate()) {
 			throw new IllegalArgumentException('''Change contains changes from different models: «change»''')
 		}
-
-		this.modelProviding.forceReloadModelIfExisting(change.URI)
-		startChangePropagation(change);
-
-		modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain(
-			new Callable<Void>() {
-				override call() throws Exception {
-					change.resolveAfterAndApplyBackward(modelProviding.resourceSet);
-					return null
-				}
-            }
-        )
-
+		startChangePropagation(change);	
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		propagateSingleChange(change, result, changedResourcesTracker);
@@ -101,16 +91,35 @@ class ChangePropagatorImpl implements ChangePropagator {
 	private def dispatch void propagateSingleChange(TransactionalChange change, 
 		List<List<VitruviusChange>> commandExecutionChanges, ChangedResourcesTracker changedResourcesTracker) {
 			
-		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
-			change.applyForward
-			return null
-		])
-		modelProviding.executeRecordingCommandOnTransactionalDomain(command);
+		modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+			override call() {
+				change.resolveBeforeAndApplyForward(modelProviding.resourceSet)
+				return null
+			}
+		})
 		
+		propagateChangeToOtherModels(change, commandExecutionChanges, changedResourcesTracker)
+	}
+	
+	private def dispatch void propagateSingleChange(CreateFileChange change,
+		List<List<VitruviusChange>> commandExecutionChanges, ChangedResourcesTracker changedResourcesTracker) {
+		modelProviding.createModel(change.URI, change.getRoot)
+		
+		propagateChangeToOtherModels(change, commandExecutionChanges, changedResourcesTracker)
+	}
+	
+	private def dispatch void propagateSingleChange(DeleteFileChange change,
+		List<List<VitruviusChange>> commandExecutionChanges, ChangedResourcesTracker changedResourcesTracker) {
+		this.modelProviding.deleteModel(change.URI)
+		propagateChangeToOtherModels(change, commandExecutionChanges, changedResourcesTracker)			
+	}
+	
+	private def void propagateChangeToOtherModels(TransactionalChange change, 
+		List<List<VitruviusChange>> commandExecutionChanges, ChangedResourcesTracker changedResourcesTracker) {
 		val changeMetamodel = metamodelRepository.getMetamodel(change.URI.fileExtension);
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeMetamodel.URI)) {
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, changedResourcesTracker);
-		}
+		}			
 	}
 	
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,

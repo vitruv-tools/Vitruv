@@ -21,7 +21,6 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.root.RootEChange#getUri <em>Uri</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.root.RootEChange#isFileCreatedOrDeleted <em>File Created Or Deleted</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.root.RootEChange#getResource <em>Resource</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.root.RootEChange#getIndex <em>Index</em>}</li>
  * </ul>
@@ -56,32 +55,6 @@ public interface RootEChange extends AtomicEChange {
 	 * @generated
 	 */
 	void setUri(String value);
-
-	/**
-	 * Returns the value of the '<em><b>File Created Or Deleted</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * *
-	 * The
-	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>File Created Or Deleted</em>' attribute.
-	 * @see #setFileCreatedOrDeleted(boolean)
-	 * @see tools.vitruv.framework.change.echange.root.RootPackage#getRootEChange_FileCreatedOrDeleted()
-	 * @model unique="false"
-	 * @generated
-	 */
-	boolean isFileCreatedOrDeleted();
-
-	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.root.RootEChange#isFileCreatedOrDeleted <em>File Created Or Deleted</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>File Created Or Deleted</em>' attribute.
-	 * @see #isFileCreatedOrDeleted()
-	 * @generated
-	 */
-	void setFileCreatedOrDeleted(boolean value);
 
 	/**
 	 * Returns the value of the '<em><b>Resource</b></em>' attribute.

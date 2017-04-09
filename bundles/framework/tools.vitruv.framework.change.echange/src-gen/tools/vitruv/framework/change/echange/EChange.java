@@ -95,6 +95,7 @@ public interface EChange extends EObject {
 	 * 			If the change could not be resolved and / or applied or the
 	 * 			resource set is {@code null}, it returns {@code null}
 	 * @throws IllegalStateException The change is already resolved.
+	 * @throws RuntimeException The change could not be applied.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveBefore(resourceSet);\nif (((!<%com.google.common.base.Objects%>.equal(resolvedChange, null)) && resolvedChange.applyForward()))\n{\n\treturn resolvedChange;\n}\nelse\n{\n\treturn null;\n}'"
@@ -116,6 +117,7 @@ public interface EChange extends EObject {
 	 * 			If the change could not be resolved and / or applied or the resource set is {@code null},
 	 * 			it returns {@code null}
 	 * @throws IllegalStateException The change is already resolved.
+	 * @throws RuntimeException The change could not be applied.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveAfter(resourceSet);\nif (((!<%com.google.common.base.Objects%>.equal(resolvedChange, null)) && resolvedChange.applyBackward()))\n{\n\treturn resolvedChange;\n}\nelse\n{\n\treturn null;\n}'"
@@ -135,6 +137,7 @@ public interface EChange extends EObject {
 	 * 			If the change could not be applied it returns {@code false}.
 	 * 			Otherwise it returns {@code true}.
 	 * @throws IllegalStateException The change is not resolved
+	 * @throws RuntimeException The change could not be applied.
 	 * <!-- end-model-doc -->
 	 * @model unique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch%>.applyEChange(this, true);'"
@@ -154,6 +157,7 @@ public interface EChange extends EObject {
 	 * 			If the change could not be applied it returns {@code false}.
 	 * 			Otherwise it returns {@code true}.
 	 * @throws IllegalStateException The change is not resolved.
+	 * @throws RuntimeException The change could not be applied.
 	 * <!-- end-model-doc -->
 	 * @model unique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch%>.applyEChange(this, false);'"

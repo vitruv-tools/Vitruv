@@ -95,7 +95,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	/**
 	 * Tests the {@link InsertEAttributeValue} EChange with invalid index.
 	 */
-	@Test
+	@Test(expected=RuntimeException)
 	def public void invalidIndexTest() {
 	 	var index = 5 // Valid index in empty list is only 0
 	 	Assert.assertTrue(attributeContent.empty) 
@@ -127,8 +127,8 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	// NonRoot has no such feature
 		Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
 	 	
-		Assert.assertFalse(resolvedChange.applyForward)
-		Assert.assertFalse(resolvedChange.applyBackward)
+	 	resolvedChange.assertCannotBeAppliedForward	 	
+		resolvedChange.assertCannotBeAppliedBackward
 	}
 	 
 	/**
@@ -146,8 +146,8 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	// Type of attribute is Integer not String
 	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
 	 	
-	 	Assert.assertFalse(resolvedChange.applyForward)	 	
-		Assert.assertFalse(resolvedChange.applyBackward)
+	 	resolvedChange.assertCannotBeAppliedForward	 	
+		resolvedChange.assertCannotBeAppliedBackward
 	}
 	
 	/**

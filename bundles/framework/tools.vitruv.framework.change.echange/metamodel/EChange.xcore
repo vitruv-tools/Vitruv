@@ -64,6 +64,7 @@ abstract class EChange {
 	 * 			If the change could not be resolved and / or applied or the 
 	 * 			resource set is {@code null}, it returns {@code null}
 	 * @throws IllegalStateException The change is already resolved.
+	 * @throws RuntimeException The change could not be applied.
 	 */
 	op EChange resolveBeforeAndApplyForward(ResourceSet resourceSet) {
 		val resolvedChange = resolveBefore(resourceSet)
@@ -83,6 +84,7 @@ abstract class EChange {
 	 * 			If the change could not be resolved and / or applied or the resource set is {@code null}, 
 	 * 			it returns {@code null}
 	 * @throws IllegalStateException The change is already resolved.
+	 * @throws RuntimeException The change could not be applied.
 	 */
 	op EChange resolveAfterAndApplyBackward(ResourceSet resourceSet) {
 		val resolvedChange = resolveAfter(resourceSet)
@@ -100,6 +102,7 @@ abstract class EChange {
 	 * 			If the change could not be applied it returns {@code false}.
 	 * 			Otherwise it returns {@code true}.
 	 * @throws IllegalStateException The change is not resolved
+	 * @throws RuntimeException The change could not be applied.
 	 */
 	op boolean applyForward() {
 		ApplyEChangeSwitch.applyEChange(this, true)
@@ -112,6 +115,7 @@ abstract class EChange {
 	 * 			If the change could not be applied it returns {@code false}.
 	 * 			Otherwise it returns {@code true}.
 	 * @throws IllegalStateException The change is not resolved.
+	 * @throws RuntimeException The change could not be applied.
 	 */
 	op boolean applyBackward() {
 		ApplyEChangeSwitch.applyEChange(this, false)

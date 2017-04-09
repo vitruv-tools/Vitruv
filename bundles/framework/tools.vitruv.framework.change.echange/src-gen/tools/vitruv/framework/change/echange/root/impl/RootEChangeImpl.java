@@ -33,7 +33,6 @@ import tools.vitruv.framework.change.echange.root.RootPackage;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.root.impl.RootEChangeImpl#getUri <em>Uri</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.root.impl.RootEChangeImpl#isFileCreatedOrDeleted <em>File Created Or Deleted</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.root.impl.RootEChangeImpl#getResource <em>Resource</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.root.impl.RootEChangeImpl#getIndex <em>Index</em>}</li>
  * </ul>
@@ -60,26 +59,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * @ordered
 	 */
 	protected String uri = URI_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #isFileCreatedOrDeleted() <em>File Created Or Deleted</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isFileCreatedOrDeleted()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean FILE_CREATED_OR_DELETED_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isFileCreatedOrDeleted() <em>File Created Or Deleted</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isFileCreatedOrDeleted()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean fileCreatedOrDeleted = FILE_CREATED_OR_DELETED_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getResource() <em>Resource</em>}' attribute.
@@ -166,27 +145,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isFileCreatedOrDeleted() {
-		return fileCreatedOrDeleted;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setFileCreatedOrDeleted(boolean newFileCreatedOrDeleted) {
-		boolean oldFileCreatedOrDeleted = fileCreatedOrDeleted;
-		fileCreatedOrDeleted = newFileCreatedOrDeleted;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, RootPackage.ROOT_ECHANGE__FILE_CREATED_OR_DELETED, oldFileCreatedOrDeleted, fileCreatedOrDeleted));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public Resource getResource() {
 		return resource;
 	}
@@ -243,8 +201,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		switch (featureID) {
 			case RootPackage.ROOT_ECHANGE__URI:
 				return getUri();
-			case RootPackage.ROOT_ECHANGE__FILE_CREATED_OR_DELETED:
-				return isFileCreatedOrDeleted();
 			case RootPackage.ROOT_ECHANGE__RESOURCE:
 				return getResource();
 			case RootPackage.ROOT_ECHANGE__INDEX:
@@ -263,9 +219,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		switch (featureID) {
 			case RootPackage.ROOT_ECHANGE__URI:
 				setUri((String)newValue);
-				return;
-			case RootPackage.ROOT_ECHANGE__FILE_CREATED_OR_DELETED:
-				setFileCreatedOrDeleted((Boolean)newValue);
 				return;
 			case RootPackage.ROOT_ECHANGE__RESOURCE:
 				setResource((Resource)newValue);
@@ -288,9 +241,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 			case RootPackage.ROOT_ECHANGE__URI:
 				setUri(URI_EDEFAULT);
 				return;
-			case RootPackage.ROOT_ECHANGE__FILE_CREATED_OR_DELETED:
-				setFileCreatedOrDeleted(FILE_CREATED_OR_DELETED_EDEFAULT);
-				return;
 			case RootPackage.ROOT_ECHANGE__RESOURCE:
 				setResource(RESOURCE_EDEFAULT);
 				return;
@@ -311,8 +261,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		switch (featureID) {
 			case RootPackage.ROOT_ECHANGE__URI:
 				return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
-			case RootPackage.ROOT_ECHANGE__FILE_CREATED_OR_DELETED:
-				return fileCreatedOrDeleted != FILE_CREATED_OR_DELETED_EDEFAULT;
 			case RootPackage.ROOT_ECHANGE__RESOURCE:
 				return RESOURCE_EDEFAULT == null ? resource != null : !RESOURCE_EDEFAULT.equals(resource);
 			case RootPackage.ROOT_ECHANGE__INDEX:
@@ -363,8 +311,6 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (uri: ");
 		result.append(uri);
-		result.append(", fileCreatedOrDeleted: ");
-		result.append(fileCreatedOrDeleted);
 		result.append(", resource: ");
 		result.append(resource);
 		result.append(", index: ");

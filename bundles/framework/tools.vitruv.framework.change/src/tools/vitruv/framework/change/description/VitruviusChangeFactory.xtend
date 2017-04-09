@@ -7,6 +7,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
+import tools.vitruv.framework.change.description.impl.CreateFileChangeImpl
+import tools.vitruv.framework.change.description.impl.DeleteFileChangeImpl
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import tools.vitruv.framework.change.echange.EChange
@@ -14,7 +16,6 @@ import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -46,18 +47,19 @@ class VitruviusChangeFactory {
 		return new ConcreteChangeImpl(change, vuri);
 	}
 	
-	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource, boolean unresolve) {
+	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		val vuri = VURI.getInstance(changedFileResource);
-		var EChange change;
+		var EObject root;
 		if (kind == FileChangeKind.Create) {
-			change = generateFileCreateChange(changedFileResource);
+			var createAndInsertRootChange = generateFileCreateChange(changedFileResource);
+			root = createAndInsertRootChange.createChange.affectedEObject
+			return new CreateFileChangeImpl(createAndInsertRootChange, vuri, root)
 		} else {
-			change = generateFileDeleteChange(changedFileResource);
+			var removeAndDeleteRootChange = generateFileDeleteChange(changedFileResource);
+			root = removeAndDeleteRootChange.deleteChange.affectedEObject
+			return new DeleteFileChangeImpl(removeAndDeleteRootChange, vuri, root)
 		}
-		if (unresolve) {
-			EChangeUnresolver.unresolve(change)
-		}
-		return new ConcreteChangeImpl(change, vuri)
+		
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {
@@ -80,7 +82,7 @@ class VitruviusChangeFactory {
 		return compositeChange;
 	}
 		
-	private def EChange generateFileCreateChange(Resource resource) {
+	private def CreateAndInsertRoot<EObject> generateFileCreateChange(Resource resource) {
 		var EObject rootElement = null;
 		var index = 0
         if (1 == resource.getContents().size()) {
@@ -99,7 +101,7 @@ class VitruviusChangeFactory {
         return createRootEObj; 
 	}
 	
-	private def generateFileDeleteChange(Resource resource) {
+	private def RemoveAndDeleteRoot<EObject> generateFileDeleteChange(Resource resource) {
 		if (0 < resource.getContents().size()) {
 			val index = 0
             val EObject rootElement = resource.getContents().get(index);

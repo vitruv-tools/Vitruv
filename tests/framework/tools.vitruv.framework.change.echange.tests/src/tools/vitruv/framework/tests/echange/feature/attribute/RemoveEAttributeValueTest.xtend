@@ -107,8 +107,8 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		Assert.assertTrue(resolvedChange.isResolved)
 	
 		// Apply
-		Assert.assertFalse(resolvedChange.applyForward)
-		Assert.assertFalse(resolvedChange.applyBackward)
+	 	resolvedChange.assertCannotBeAppliedForward	 	
+		resolvedChange.assertCannotBeAppliedBackward
 	}
 	
 	/**
@@ -128,8 +128,9 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// NonRoot has no such feature
 	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
 	 	
-	 	Assert.assertFalse(resolvedChange.applyForward)
-	 	Assert.assertFalse(resolvedChange.applyBackward)
+	 	// Apply
+	 	resolvedChange.assertCannotBeAppliedForward	 	
+		resolvedChange.assertCannotBeAppliedBackward
 	}
 	
 	/**
@@ -148,8 +149,9 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Type of attribute is Integer not String
 	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
 	 	
-	 	Assert.assertFalse(resolvedChange.applyForward)	 	
-	 	Assert.assertFalse(resolvedChange.applyBackward)
+	 	// Apply
+	 	resolvedChange.assertCannotBeAppliedForward	 	
+		resolvedChange.assertCannotBeAppliedBackward
 	}	
 	
 	/**

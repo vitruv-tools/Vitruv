@@ -155,7 +155,7 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getRootEChange_FileCreatedOrDeleted() {
+	public EAttribute getRootEChange_Resource() {
 		return (EAttribute)rootEChangeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -164,17 +164,8 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getRootEChange_Resource() {
-		return (EAttribute)rootEChangeEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getRootEChange_Index() {
-		return (EAttribute)rootEChangeEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)rootEChangeEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -270,7 +261,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		// Create classes and their features
 		rootEChangeEClass = createEClass(ROOT_ECHANGE);
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__URI);
-		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__FILE_CREATED_OR_DELETED);
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__RESOURCE);
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__INDEX);
 		createEOperation(rootEChangeEClass, ROOT_ECHANGE___IS_RESOLVED);
@@ -342,7 +332,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		// Initialize classes, features, and operations; add parameters
 		initEClass(rootEChangeEClass, RootEChange.class, "RootEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRootEChange_Uri(), theEcorePackage.getEString(), "uri", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getRootEChange_FileCreatedOrDeleted(), theEcorePackage.getEBoolean(), "fileCreatedOrDeleted", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRootEChange_Resource(), this.getResource(), "resource", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRootEChange_Index(), theEcorePackage.getEInt(), "index", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

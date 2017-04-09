@@ -13,14 +13,6 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
     public override String toString() {
         return ConcreteChangeImpl.getSimpleName() + ": VURI: " + this.URI + " EChange: " + this.eChange;
     }
-
-	override applyForward() {
-		this.eChange.applyForward
-	}
-	
-	override applyBackward() {
-		this.eChange.applyBackward
-	}
 	
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
 		this.eChange = this.eChange.resolveBeforeAndApplyForward(resourceSet)

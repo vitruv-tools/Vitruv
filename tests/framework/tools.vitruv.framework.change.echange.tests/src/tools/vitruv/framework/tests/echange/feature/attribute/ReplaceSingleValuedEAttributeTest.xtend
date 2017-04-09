@@ -106,8 +106,9 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	// NonRoot has no such feature
 	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature), -1)	
 	 	
-	 	Assert.assertFalse(resolvedChange.applyForward)
-	 	Assert.assertFalse(resolvedChange.applyBackward)
+	 	// Apply
+	 	resolvedChange.assertCannotBeAppliedForward	 	
+		resolvedChange.assertCannotBeAppliedBackward
 	 }
 	 
 	 /**
@@ -127,8 +128,9 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	// Type of attribute is String not Integer
 	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EString")
 	 	
-	 	Assert.assertFalse(resolvedChange.applyForward)
-	 	Assert.assertFalse(resolvedChange.applyBackward)
+	 	// Apply
+	 	resolvedChange.assertCannotBeAppliedForward	 	
+		resolvedChange.assertCannotBeAppliedBackward
 	}
 	 
 		 

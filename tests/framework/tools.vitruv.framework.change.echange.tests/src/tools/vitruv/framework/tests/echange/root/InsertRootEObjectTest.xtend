@@ -172,7 +172,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		resolvedChange.assertIsResolved(newRootObject, resource)	
 		
 		// Apply		
-		Assert.assertFalse(resolvedChange.applyForward)
+	 	resolvedChange.assertCannotBeAppliedForward	 	
 	}
 
 	/**

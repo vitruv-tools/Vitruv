@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -16,8 +15,8 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChan
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
 import tools.vitruv.framework.modelsynchronization.ChangePropagationAbortCause;
+import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
@@ -62,14 +61,6 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	protected void triggerSynchronization(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-		for (Resource r : this.resourceSet.getResources()) {
-			try {
-				r.save(Collections.EMPTY_MAP);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		this.getVirtualModel().propagateChange(compositeChange);
 		this.changeRecorder.beginRecording(vuri, Collections.emptyList());
 	}
@@ -80,8 +71,9 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	}
 
 	protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final Resource resource) {
+		Resource modelResource = this.getVirtualModel().getModelInstance(VURI.getInstance(resource)).getResource();
 		final ConcreteChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind,
-				resource, true);
+				modelResource);
 		this.getVirtualModel().propagateChange(fileChange);
 	}
 

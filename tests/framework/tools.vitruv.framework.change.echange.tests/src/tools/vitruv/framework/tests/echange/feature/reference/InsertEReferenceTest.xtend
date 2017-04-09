@@ -281,8 +281,8 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 		
 		// Apply	
-		Assert.assertFalse(resolvedChange.applyForward)
-		Assert.assertFalse(resolvedChange.applyBackward)
+	 	resolvedChange.assertCannotBeAppliedForward	 	
+		resolvedChange.assertCannotBeAppliedBackward
 	}
 	
 	/**
@@ -303,8 +303,9 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		// NonRoot has no such feature
 		Assert.assertEquals(invalidAffectedEObject.eClass.getFeatureID(affectedFeature), -1)
 		
-		Assert.assertFalse(resolvedChange.applyForward)
-		Assert.assertFalse(resolvedChange.applyBackward)
+		// Apply
+	 	resolvedChange.assertCannotBeAppliedForward	 	
+		resolvedChange.assertCannotBeAppliedBackward
 	}
 	
 	/**

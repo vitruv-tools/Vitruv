@@ -43,4 +43,34 @@ class EChangeAssertHelper {
 		Assert.assertTrue(change.isResolved)
 		Assert.assertTrue(change.applyBackward)
 	}
+	
+	/**
+	 * Tests whether an non applicable change could be applied forward.
+	 */	
+	def public static void assertCannotBeAppliedForward(EChange change) {
+		var boolean exceptionThrown = false
+		try {
+			change.applyForward
+		} catch (RuntimeException e) {
+			exceptionThrown = true
+		}
+		if (!exceptionThrown) {
+			Assert.fail("No RuntimeException thrown.")
+		}
+	}
+	
+	/**
+	 * Tests whether an non applicable change could be applied backward.
+	 */
+	def public static void assertCannotBeAppliedBackward(EChange change) {
+		var boolean exceptionThrown = false
+		try {
+			change.applyForward
+		} catch (RuntimeException e) {
+			exceptionThrown = true
+		}
+		if (!exceptionThrown) {
+			Assert.fail("No RuntimeException thrown.")
+		}		
+	}
 }
