@@ -3,5 +3,12 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="inputTypes" nsURI="http://vitruv.tools/dsls/reactions/ReactionsLanguage/InputTypes"
     nsPrefix="inputTypes">
   <eClassifiers xsi:type="ecore:EClass" name="String"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Int"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Integer"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Short"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Boolean"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Long"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Character"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Byte"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Float"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Double"/>
 </ecore:EPackage>

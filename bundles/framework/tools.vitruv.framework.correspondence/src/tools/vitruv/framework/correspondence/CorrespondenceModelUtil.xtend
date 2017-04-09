@@ -90,9 +90,9 @@ class CorrespondenceModelUtil {
 	 */
 	def public static <T, U extends Correspondence> Set<T> getAllEObjectsOfTypeInCorrespondences(
 		GenericCorrespondenceModel<U> ci, Class<T> type) {
-		val tuidSet = ci.allCorrespondencesWithoutDependencies.map[(it.getATUIDs + it.getBTUIDs)].flatten.toSet
+		val tuidSet = ci.allCorrespondencesWithoutDependencies.map[(it.getATuids + it.getBTuids)].flatten.toSet
 		val eObjectSet = Sets.newHashSet
-		tuidSet.forEach[try {eObjectSet.add(ci.resolveEObjectFromTUID(it))} catch (RuntimeException e) { }]
+		tuidSet.forEach[try {eObjectSet.add(ci.resolveEObjectFromTuid(it))} catch (RuntimeException e) { }]
 		return eObjectSet.filter(type).toSet
 	// return ci.allCorrespondencesWithoutDependencies.map[(it.^as + it.bs).filter(type)].flatten.toSet
 	}
@@ -100,11 +100,11 @@ class CorrespondenceModelUtil {
 	def public static <T extends Correspondence> Set<T> getCorrespondencesBetweenEObjects(GenericCorrespondenceModel<T> ci,
 		Set<EObject> aS, Set<EObject> bS) {
 		val correspondencesThatInvolveAs = ci.getCorrespondencesThatInvolveAtLeast(aS)
-		val atuids = aS.mapFixed[ci.calculateTUIDFromEObject(it)]
-		val btuids = bS.mapFixed[ci.calculateTUIDFromEObject(it)]
+		val atuids = aS.mapFixed[ci.calculateTuidFromEObject(it)]
+		val btuids = bS.mapFixed[ci.calculateTuidFromEObject(it)]
 		val correspondencesBetweenEObjects = correspondencesThatInvolveAs.filter [
-			(it.getATUIDs.containsAll(atuids) && it.getBTUIDs.containsAll(btuids)) ||
-				(it.getATUIDs.containsAll(btuids) && it.getBTUIDs.containsAll(atuids))
+			(it.getATuids.containsAll(atuids) && it.getBTuids.containsAll(btuids)) ||
+				(it.getATuids.containsAll(btuids) && it.getBTuids.containsAll(atuids))
 		]
 		return correspondencesBetweenEObjects.toSet
 	}

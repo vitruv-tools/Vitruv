@@ -190,7 +190,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCorrespondence_ATUIDs() {
+	public EAttribute getCorrespondence_ATuids() {
 		return (EAttribute)correspondenceEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -199,7 +199,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCorrespondence_BTUIDs() {
+	public EAttribute getCorrespondence_BTuids() {
 		return (EAttribute)correspondenceEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -226,7 +226,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getTUID() {
+	public EDataType getTuid() {
 		return tuidEDataType;
 	}
 
@@ -273,7 +273,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
 		// Create data types
 		correspondenceModelEDataType = createEDataType(CORRESPONDENCE_MODEL);
-		tuidEDataType = createEDataType(TUID);
+		tuidEDataType = createEDataType(Tuid);
 	}
 
 	/**
@@ -315,16 +315,16 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEReference(getCorrespondence_Parent(), this.getCorrespondences(), this.getCorrespondences_Correspondences(), "parent", null, 1, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCorrespondence_DependsOn(), this.getCorrespondence(), this.getCorrespondence_DependedOnBy(), "dependsOn", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getCorrespondence_DependedOnBy(), this.getCorrespondence(), this.getCorrespondence_DependsOn(), "dependedOnBy", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEAttribute(getCorrespondence_ATUIDs(), this.getTUID(), "aTUIDs", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getCorrespondence_BTUIDs(), this.getTUID(), "bTUIDs", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCorrespondence_ATuids(), this.getTuid(), "aTuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCorrespondence_BTuids(), this.getTuid(), "bTuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getAs", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getBs", 0, -1, IS_UNIQUE, IS_ORDERED);
 
-		addEOperation(correspondenceEClass, this.getTUID(), "getElementATUID", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(correspondenceEClass, this.getTuid(), "getElementATuid", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		addEOperation(correspondenceEClass, this.getTUID(), "getElementBTUID", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(correspondenceEClass, this.getTuid(), "getElementBTuid", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		EOperation op = addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getElementsForMetamodel", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "metamodelNamespaceUri", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -333,7 +333,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
 		// Initialize data types
 		initEDataType(correspondenceModelEDataType, CorrespondenceModel.class, "CorrespondenceModel", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(tuidEDataType, tools.vitruv.framework.tuid.TUID.class, "TUID", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(tuidEDataType, tools.vitruv.framework.tuid.Tuid.class, "Tuid", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -14,7 +14,7 @@ import java.util.List
 import allElementTypes.Identified
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver
+import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 import tools.vitruv.framework.tests.VitruviusChangePropagationTest
 
 abstract class AbstractAllElementTypesReactionsTests extends VitruviusChangePropagationTest {
@@ -30,7 +30,7 @@ abstract class AbstractAllElementTypesReactionsTests extends VitruviusChangeProp
 		val String[] fileExtensions = newArrayOfSize(1);
 		fileExtensions.set(0, MODEL_FILE_EXTENSION);
 		val minimalMetamodel = new Metamodel(metamodelUri, metamodelNSUris, 
-			new AttributeTUIDCalculatorAndResolver(AllElementTypesPackage.eNS_URI, AllElementTypesPackage.Literals.IDENTIFIED__ID.name),
+			new AttributeTuidCalculatorAndResolver(AllElementTypesPackage.eNS_URI, AllElementTypesPackage.Literals.IDENTIFIED__ID.name),
 			fileExtensions);
 		return #[minimalMetamodel];
 	}

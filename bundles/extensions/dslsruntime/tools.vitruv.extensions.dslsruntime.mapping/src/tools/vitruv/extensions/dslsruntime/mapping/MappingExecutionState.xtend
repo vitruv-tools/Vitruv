@@ -1,7 +1,7 @@
 package tools.vitruv.extensions.dslsruntime.mapping
 
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
-import tools.vitruv.framework.tuid.TUID
+import tools.vitruv.framework.tuid.Tuid
 import tools.vitruv.framework.util.datatypes.VURI
 import java.util.HashSet
 import java.util.List
@@ -23,7 +23,7 @@ class MappingExecutionState {
 	private final ChangePropagationResult transformationResult
 	private final UserInteracting userInteracting
 	
-	private Map<EObject, Map<CorrespondenceModel, List<TUID>>> oldTUIDMap = newHashMap
+	private Map<EObject, Map<CorrespondenceModel, List<Tuid>>> oldTuidMap = newHashMap
 	
 	private final List<EObject> createdEObjects = newArrayList
 	private final List<EObject> changedEObjects = newArrayList
@@ -44,37 +44,37 @@ class MappingExecutionState {
 	}
 	
 	public def addObjectForTuidUpdate(EObject eObject) {
-		oldTUIDMap
+		oldTuidMap
 			.getOrPut(eObject, [newHashMap])
 			.getOrPut(mci, [newArrayList])
-			.add(mci.calculateTUIDFromEObject(eObject))
+			.add(mci.calculateTuidFromEObject(eObject))
 	}
 	
 	public def updateTuidOfCachedObject(EObject eObject) {
-		if (!oldTUIDMap.containsKey(eObject)) {
+		if (!oldTuidMap.containsKey(eObject)) {
 //			LOGGER.info("EObject " + eObject.toString() + " not in old tuid map")
 		} else {
-			val ciToTUIDs = oldTUIDMap.get(eObject)
-			for (tuid : (ciToTUIDs.get(mci) ?: #[])) {
+			val ciToTuids = oldTuidMap.get(eObject)
+			for (tuid : (ciToTuids.get(mci) ?: #[])) {
 				tuid.updateTuid(eObject)
 			}
-			oldTUIDMap.get(eObject)?.remove(eObject)
+			oldTuidMap.get(eObject)?.remove(eObject)
 		}
 	}
 	
 	public def updateAllTuidsOfCachedObjects() {
-		for (entry : oldTUIDMap.entrySet) {
+		for (entry : oldTuidMap.entrySet) {
 			val eObject = entry.key
 			if (eObject != null) { // TODO: do this correctly
-				val ciToTUIDs = entry.value
-				for (ciAndTUIDs : ciToTUIDs.entrySet) {
-					for (tuid : ciAndTUIDs.value) {
+				val ciToTuids = entry.value
+				for (ciAndTuids : ciToTuids.entrySet) {
+					for (tuid : ciAndTuids.value) {
 						tuid.updateTuid(eObject)
 					}
 				}
 			}
 		}
-		oldTUIDMap.clear
+		oldTuidMap.clear
 	}
 	
 	public def addCreatedEObject(EObject eObject) {

@@ -42,6 +42,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     private final Map<VURI, ModelInstance> modelInstances;
     private final List<InternalCorrespondenceModel> correspondenceModels;
     private final FileSystemHelper fileSystemHelper;
+    private final String vsumName;
 
     public ModelRepositoryImpl(final String vsumName, final MetamodelRepository metamodelRepository) {
         this(vsumName, metamodelRepository, null);
@@ -50,6 +51,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     public ModelRepositoryImpl(final String vsumName, final MetamodelRepository metamodelRepository,
             final ClassLoader classLoader) {
         this.metamodelRepository = metamodelRepository;
+        this.vsumName = vsumName;
 
         this.resourceSet = new ResourceSetImpl();
 
@@ -104,7 +106,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
                     // case 2 or 3
                     ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
                     ModelRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance);
-                    saveVURIsOfVSUMModelInstances();
+                    saveVURIsOfVsumModelInstances();
                     return null;
                 }
             });
@@ -135,18 +137,18 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     @Override
-    public void createModel(final VURI vuri, final EObject rootEObject) {
+    public void persistRootElement(final VURI vuri, final EObject rootEObject) {
         final ModelInstance modelInstance = getModel(vuri);
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 TuidManager.getInstance().registerObjectUnderModification(rootEObject);
                 final Resource resource = modelInstance.getResource();
-                // clear the resource first
-                resource.getContents().clear();
-                resource.getContents().add(rootEObject);
 
-                ModelRepositoryImpl.this.saveModelInstance(modelInstance);
+                resource.getContents().add(rootEObject);
+                resource.setModified(true);
+
+                logger.debug("Create model with resource: " + resource);
                 TuidManager.getInstance().updateTuidsOfRegisteredObjects();
                 TuidManager.getInstance().flushRegisteredObjectsUnderModification();
                 return null;
@@ -161,14 +163,29 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
     @Override
     public void saveAllModels() {
+        logger.debug("Saving all models of model repository for VSUM: " + this.vsumName);
         saveAllChangedModels();
         saveAllChangedCorrespondenceModels();
     }
 
+    private void deleteEmptyModels() {
+        List<VURI> vurisToDelete = new ArrayList<VURI>();
+        for (ModelInstance modelInstance : this.modelInstances.values()) {
+            if (modelInstance.getRootElements().isEmpty()) {
+                vurisToDelete.add(modelInstance.getURI());
+            }
+        }
+        for (VURI vuri : vurisToDelete) {
+            deleteModel(vuri);
+        }
+    }
+
     private void saveAllChangedModels() {
+        deleteEmptyModels();
         for (ModelInstance modelInstance : this.modelInstances.values()) {
             Resource resourceToSave = modelInstance.getResource();
             if (resourceToSave.isModified()) {
+                logger.debug("  Saving resource: " + resourceToSave);
                 saveModelInstance(modelInstance);
             }
         }
@@ -256,7 +273,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     private void loadVURIsOfVSMUModelInstances() {
-        Set<VURI> vuris = this.fileSystemHelper.loadVSUMvURIsFromFile();
+        Set<VURI> vuris = this.fileSystemHelper.loadVsumVURIsFromFile();
         for (VURI vuri : vuris) {
             Metamodel metamodel = getMetamodelByURI(vuri);
             ModelInstance modelInstance = loadModelInstance(vuri, metamodel);
@@ -264,8 +281,8 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         }
     }
 
-    private void saveVURIsOfVSUMModelInstances() {
-        this.fileSystemHelper.saveVSUMvURIsToFile(this.modelInstances.keySet());
+    private void saveVURIsOfVsumModelInstances() {
+        this.fileSystemHelper.saveVsumVURIsToFile(this.modelInstances.keySet());
     }
 
     private Metamodel getMetamodelByURI(final VURI uri) {
@@ -291,14 +308,14 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet);
     }
 
-    @Override
-    public void deleteModel(final VURI vuri) {
+    private void deleteModel(final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         final Resource resource = modelInstance.getResource();
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 try {
+                    logger.debug("Deleting resource: " + resource);
                     resource.delete(null);
                     ModelRepositoryImpl.this.modelInstances.remove(vuri);
                 } catch (final IOException e) {

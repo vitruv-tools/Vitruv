@@ -90,7 +90,7 @@ public abstract class VitruviusCasestudyTest implements ChangePropagationListene
 			currentTestProjectVsumName = TestUtil.getStringWithTimestamp(currentTestProjectVsumName);
 		}
 		this.metamodels = this.createMetamodels();
-		this.virtualModel = TestUtil.createVSUM(currentTestProjectVsumName, metamodels, createChangePropagationSpecifications());
+		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, metamodels, createChangePropagationSpecifications());
 		this.virtualModel.addChangePropagationListener(this);
 	}
 

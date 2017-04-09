@@ -7,6 +7,7 @@ import java.util.Date;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -21,7 +22,7 @@ import org.eclipse.core.runtime.Path;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
+import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
@@ -47,9 +48,20 @@ public final class TestUtil {
      */
     private TestUtil() {
     }
+    
+	public static String getTempDirPath() {
+		String path = System.getProperty("java.io.tmpdir").replace("\\", "/");
+		if (path.startsWith("/")) {
+			path = path.substring(1);
+		}
+		if (!path.endsWith("/")) {
+			path = path + "/";
+		}
+		return path;
+	}
 
-    public static InternalVirtualModel createVSUM(final String vsumName, final Iterable<Metamodel> metamodels) {
-        return createVSUM(vsumName, metamodels, new ArrayList<ChangePropagationSpecification>(), null);
+    public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels) {
+        return createVirtualModel(vsumName, metamodels, new ArrayList<ChangePropagationSpecification>(), null);
     }
     
     /**
@@ -59,8 +71,8 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static InternalVirtualModel createVSUM(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-        return createVSUM(vsumName, metamodels, changePropagationSpecifications, null);
+    public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
+        return createVirtualModel(vsumName, metamodels, changePropagationSpecifications, null);
     }
 
     /**
@@ -70,7 +82,7 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static InternalVirtualModel createVSUM(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications, final ClassLoader classLoader) {
+    public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications, final ClassLoader classLoader) {
         VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
         for (Metamodel metamodel : metamodels) {
         	vmodelConfig.addMetamodel(metamodel);
@@ -78,7 +90,6 @@ public final class TestUtil {
         for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
         	vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
         }
-        // TODO HK Replace name with parameter
     	final InternalVirtualModel vmodel = new VirtualModelImpl(vsumName, vmodelConfig, classLoader);
         return vmodel;
     }
@@ -95,7 +106,7 @@ public final class TestUtil {
      * @return
      */
     public static Metamodel createMetamodel(final String nsURI, final VURI uri, final String fileExt) {
-        final Metamodel mm = new Metamodel(uri, nsURI, new AttributeTUIDCalculatorAndResolver(nsURI), fileExt);
+        final Metamodel mm = new Metamodel(uri, nsURI, new AttributeTuidCalculatorAndResolver(nsURI), fileExt);
         return mm;
     }
 
@@ -203,7 +214,10 @@ public final class TestUtil {
      * init logger for test purposes
      */
     public static void initializeLogger() {
-    	Logger.getRootLogger().setLevel(Level.OFF);
+    	Logger.getRootLogger().setLevel(Level.ERROR);
+        Logger.getRootLogger().removeAllAppenders();
+        Logger.getRootLogger()
+                .addAppender(new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
     	String outputLevelProperty = System.getProperty("logOutputLevel");
     	if (outputLevelProperty != null) {
     		if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
@@ -211,7 +225,7 @@ public final class TestUtil {
             }
             Logger.getRootLogger().setLevel(Level.toLevel(outputLevelProperty));
     	} else {
-    		Logger.getRootLogger().setLevel(Level.OFF);
+    		Logger.getRootLogger().setLevel(Level.ERROR);
     	}
     }
 
@@ -321,7 +335,7 @@ public final class TestUtil {
             final IFolder correspondenceFolder = fsHelper.getCorrespondenceFolder();
             correspondenceFolder.delete(true, new NullProgressMonitor());
             FileSystemHelper.createFolder(correspondenceFolder);
-            final IFile currentInstancesFile = fsHelper.getVSUMInstancesFile();
+            final IFile currentInstancesFile = fsHelper.getVsumInstancesFile();
             currentInstancesFile.delete(true, new NullProgressMonitor());
         } catch (final CoreException e) {
             // soften

@@ -8,11 +8,11 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
-import tools.vitruv.framework.tuid.TUIDCalculatorAndResolverBase;
+import tools.vitruv.framework.tuid.TuidCalculatorAndResolverBase;
 import tools.vitruv.framework.util.VitruviusConstants;
 
 /**
- * Base class for hierarchical TUID calculators. Hierarchical means that the TUID reflects the
+ * Base class for hierarchical Tuid calculators. Hierarchical means that the Tuid reflects the
  * containment hierarchy and for each element in this hierarchy a segment is added. The subclasses
  * only have to provide the strings for the individual segments. The string does not have to be
  * unique but has to become unique in combination with the segments from higher hierarchical levels.
@@ -23,12 +23,12 @@ import tools.vitruv.framework.util.VitruviusConstants;
  * @author Stephan Seifermann
  *
  */
-public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> extends TUIDCalculatorAndResolverBase {
+public abstract class HierarchicalTuidCalculatorAndResolver<T extends EObject> extends TuidCalculatorAndResolverBase {
 
-    private static final Logger LOGGER = Logger.getLogger(HierarchicalTUIDCalculatorAndResolver.class);
+    private static final Logger LOGGER = Logger.getLogger(HierarchicalTuidCalculatorAndResolver.class);
     public static final String SUBDIVIDER = "-_-";
 
-    public HierarchicalTUIDCalculatorAndResolver(final String tuidPrefix) {
+    public HierarchicalTuidCalculatorAndResolver(final String tuidPrefix) {
         super(tuidPrefix);
     }
 
@@ -38,13 +38,13 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
     protected abstract Class<T> getRootObjectClass();
 
     // ============================================================================
-    // TUID resolution
+    // Tuid resolution
     // ============================================================================
     @Override
     protected EObject getIdentifiedEObjectWithinRootEObjectInternal(final EObject root, final String[] ids) {
         if (!getRootObjectClass().isAssignableFrom(root.getClass())) {
             LOGGER.error(
-                    "TUID resolving is only possible with root object of type " + getRootObjectClass().getSimpleName());
+                    "Tuid resolving is only possible with root object of type " + getRootObjectClass().getSimpleName());
             return null;
         }
 
@@ -57,7 +57,7 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
      * @param rootObject
      *            The root object from which the search shall be started.
      * @param ids
-     *            An array of the TUID segments. The segments of the root object have to be removed
+     *            An array of the Tuid segments. The segments of the root object have to be removed
      *            before calling this method.
      * @return The found EObject or null if there is no matching EObject.
      */
@@ -79,7 +79,7 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
      *            The object, which's containment have to checked.
      * @param individualId
      *            The identifier of the wanted EObject. This has to be exactly one segment of a
-     *            TUID.
+     *            Tuid.
      * @return The found EObject or null if there is no matching EObject.
      */
     private EObject findById(final EObject rootObject, final String individualId) {
@@ -148,17 +148,17 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
      *            The individual ID to check.
      * @return True if the object has the same individual ID.
      * @throws IllegalArgumentException
-     *             If there is no TUID calculation mechanism for this particular type of EObject.
+     *             If there is no Tuid calculation mechanism for this particular type of EObject.
      */
     protected abstract boolean hasId(EObject obj, String indidivualId) throws IllegalArgumentException;
 
     // ============================================================================
-    // TUID generation
+    // Tuid generation
     // ============================================================================
     @Override
-    public String calculateTUIDFromEObject(final EObject eObject, final EObject virtualRootObject,
+    public String calculateTuidFromEObject(final EObject eObject, final EObject virtualRootObject,
             final String prefix) {
-        if (!isValidTUID(prefix) || prefix.endsWith(VitruviusConstants.getTUIDSegmentSeperator())) {
+        if (!isValidTuid(prefix) || prefix.endsWith(VitruviusConstants.getTuidSegmentSeperator())) {
             throw new IllegalArgumentException(
                     "The given prefix is invalid (must contain URI and default segment and must NOT end with a separator.");
         }
@@ -166,14 +166,14 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
         LinkedList<String> segments = new LinkedList<String>();
         EObject parent = eObject;
         for (; parent != null && parent != virtualRootObject; parent = parent.eContainer()) {
-            String currentSegment = calculateIndividualTUIDDelegator(parent);
+            String currentSegment = calculateIndividualTuidDelegator(parent);
             if (0 < currentSegment.length()) {
                 segments.push(currentSegment);
             }
         }
         // at this position parent is null || parent == virtualRootObject
         segments.push(prefix);
-        return StringUtils.join(segments, VitruviusConstants.getTUIDSegmentSeperator());
+        return StringUtils.join(segments, VitruviusConstants.getTuidSegmentSeperator());
     }
 
     /**
@@ -183,9 +183,9 @@ public abstract class HierarchicalTUIDCalculatorAndResolver<T extends EObject> e
      *            The object for the ID calculation.
      * @return The individual ID.
      * @throws IllegalArgumentException
-     *             If there is no TUID calculation mechanism for this particular type of EObject.
+     *             If there is no Tuid calculation mechanism for this particular type of EObject.
      */
-    protected abstract String calculateIndividualTUIDDelegator(EObject obj) throws IllegalArgumentException;
+    protected abstract String calculateIndividualTuidDelegator(EObject obj) throws IllegalArgumentException;
 
     // ============================================================================
     // Helper stuff

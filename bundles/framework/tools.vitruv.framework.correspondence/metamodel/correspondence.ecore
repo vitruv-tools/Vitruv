@@ -11,8 +11,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Correspondence" abstract="true">
     <eOperations name="getAs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eOperations name="getBs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-    <eOperations name="getElementATUID" eType="#//TUID"/>
-    <eOperations name="getElementBTUID" eType="#//TUID"/>
+    <eOperations name="getElementATuid" eType="#//Tuid"/>
+    <eOperations name="getElementBTuid" eType="#//Tuid"/>
     <eOperations name="getElementsForMetamodel" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
       <eParameters name="metamodelNamespaceUri" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
@@ -22,13 +22,13 @@
         upperBound="-1" eType="#//Correspondence" eOpposite="#//Correspondence/dependedOnBy"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependedOnBy" ordered="false"
         upperBound="-1" eType="#//Correspondence" eOpposite="#//Correspondence/dependsOn"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aTUIDs" upperBound="-1"
-        eType="#//TUID"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bTUIDs" upperBound="-1"
-        eType="#//TUID"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aTuids" upperBound="-1"
+        eType="#//Tuid"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bTuids" upperBound="-1"
+        eType="#//Tuid"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ManualCorrespondence" eSuperTypes="#//Correspondence"/>
   <eClassifiers xsi:type="ecore:EDataType" name="CorrespondenceModel" instanceClassName="tools.vitruv.framework.correspondence.CorrespondenceModel"
       serializable="false"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="TUID" instanceClassName="tools.vitruv.framework.tuid.TUID"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Tuid" instanceClassName="tools.vitruv.framework.tuid.Tuid"/>
 </ecore:EPackage>

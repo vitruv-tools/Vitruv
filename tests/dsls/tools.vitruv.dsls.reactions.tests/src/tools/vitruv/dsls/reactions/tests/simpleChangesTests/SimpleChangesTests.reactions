@@ -15,7 +15,7 @@ reaction ReplacedSingleValuedPrimitiveTypeEAttribute {
 	call replaceSingleValuedPrimitiveTypeEAttribute(affectedEObject, newValue)
 }
 
-routine replaceSingleValuedPrimitiveTypeEAttribute(minimal::Root rootElement, Int value) {
+routine replaceSingleValuedPrimitiveTypeEAttribute(minimal::Root rootElement, Integer value) {
 	match {
 		val targetElement = retrieve minimal::Root corresponding to rootElement
 	}
@@ -37,7 +37,7 @@ reaction ReplacedSingleValuedEAttribute {
 	call replaceSingleValuedEAttribute(affectedEObject, newValue)
 }
 
-routine replaceSingleValuedEAttribute(minimal::Root rootElement, Int value) {
+routine replaceSingleValuedEAttribute(minimal::Root rootElement, Integer value) {
 	match {
 		// The check statements do only test that multiple check statements work
 		check { rootElement != null }
@@ -196,7 +196,7 @@ reaction InsertedEAttributeValue {
 	call insertEAttribute(affectedEObject, newValue)
 }
 
-routine insertEAttribute(minimal::Root rootElement, Int attributeValue) {
+routine insertEAttribute(minimal::Root rootElement, Integer attributeValue) {
 	match {
 		val targetElement = retrieve minimal::Root corresponding to rootElement
 	}
@@ -218,7 +218,7 @@ reaction RemovedEAttributeValue {
 	call removeEAttribute(affectedEObject, oldValue)
 }
 
-routine removeEAttribute(minimal::Root rootElement, Int removedAttributeValue) {
+routine removeEAttribute(minimal::Root rootElement, Integer removedAttributeValue) {
 	match {
 		val targetElement = retrieve minimal::Root corresponding to rootElement
 	}
@@ -368,4 +368,11 @@ reaction NonRootCreated {
 reaction NonRootDeleted {
 	after element minimal::NonRoot deleted
 	call SimpleChangesTestsExecutionMonitor.instance.set(DeleteEObject)
+}
+
+// Unused routine: Only to test if primitve types are mapped and scoped correctly
+routine testPrimitiveTypesRoutine(Integer intVal, Long longVal, Short shortVal, Byte byteVal, Character charVal, Double doubleVal, Float floatVal, Boolean boolVal, String stringVal) {
+	action {
+		call testPrimitiveTypesRoutine(intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal)
+	}
 }

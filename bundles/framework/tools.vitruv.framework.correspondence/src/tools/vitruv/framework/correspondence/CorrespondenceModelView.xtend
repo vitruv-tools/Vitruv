@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import java.util.function.Supplier
 import tools.vitruv.framework.correspondence.GenericCorrespondenceModel
 import tools.vitruv.framework.correspondence.Correspondence
-import tools.vitruv.framework.tuid.TUID
+import tools.vitruv.framework.tuid.Tuid
 
 class CorrespondenceModelView<T extends Correspondence> implements GenericCorrespondenceModel<T> {
 	private final GenericCorrespondenceModel<Correspondence> correspondenceModelDelegate;
@@ -28,16 +28,16 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.addCorrespondence(correspondence);
 	}
 
-	override calculateTUIDFromEObject(EObject eObject) {
-		correspondenceModelDelegate.calculateTUIDFromEObject(eObject);
+	override calculateTuidFromEObject(EObject eObject) {
+		correspondenceModelDelegate.calculateTuidFromEObject(eObject);
 	}
 
-	override calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
-		correspondenceModelDelegate.calculateTUIDFromEObject(eObject, virtualRootObject, prefix);
+	override calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
+		correspondenceModelDelegate.calculateTuidFromEObject(eObject, virtualRootObject, prefix);
 	}
 
-	override calculateTUIDsFromEObjects(List<EObject> eObjects) {
-		correspondenceModelDelegate.calculateTUIDsFromEObjects(eObjects);
+	override calculateTuidsFromEObjects(List<EObject> eObjects) {
+		correspondenceModelDelegate.calculateTuidsFromEObjects(eObjects);
 	}
 
 	// Re-implement this method, because we cannot claim a unique generic correspondence and restrict it to the given type afterwards 
@@ -68,8 +68,8 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.getCorrespondences(eObjects).filter(correspondenceType).toSet();
 	}
 
-	override getCorrespondencesForTUIDs(List<TUID> tuids) {
-		correspondenceModelDelegate.getCorrespondencesForTUIDs(tuids).filter(correspondenceType).toSet();
+	override getCorrespondencesForTuids(List<Tuid> tuids) {
+		correspondenceModelDelegate.getCorrespondencesForTuids(tuids).filter(correspondenceType).toSet();
 	}
 
 	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
@@ -77,13 +77,13 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 			toSet();
 	}
 
-	override getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids) {
-		correspondenceModelDelegate.getCorrespondencesThatInvolveAtLeastTUIDs(tuids).filter(correspondenceType).
+	override getCorrespondencesThatInvolveAtLeastTuids(Set<Tuid> tuids) {
+		correspondenceModelDelegate.getCorrespondencesThatInvolveAtLeastTuids(tuids).filter(correspondenceType).
 			toSet();
 	}
 
-	override getTUIDsForMetamodel(T correspondence, String metamodelNamespaceUri) {
-		correspondenceModelDelegate.getTUIDsForMetamodel(correspondence, metamodelNamespaceUri);
+	override getTuidsForMetamodel(T correspondence, String metamodelNamespaceUri) {
+		correspondenceModelDelegate.getTuidsForMetamodel(correspondence, metamodelNamespaceUri);
 	}
 
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
@@ -108,24 +108,24 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependend(eObjects);
 	}
 
-	override removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(Set<TUID> tuids) {
-		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(tuids);
+	override removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(Set<Tuid> tuids) {
+		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(tuids);
 	}
 
-	override resolveEObjectFromRootAndFullTUID(EObject root, String tuidString) {
-		correspondenceModelDelegate.resolveEObjectFromRootAndFullTUID(root, tuidString);
+	override resolveEObjectFromRootAndFullTuid(EObject root, String tuidString) {
+		correspondenceModelDelegate.resolveEObjectFromRootAndFullTuid(root, tuidString);
 	}
 
-	override resolveEObjectFromTUID(TUID tuid) {
-		correspondenceModelDelegate.resolveEObjectFromTUID(tuid);
+	override resolveEObjectFromTuid(Tuid tuid) {
+		correspondenceModelDelegate.resolveEObjectFromTuid(tuid);
 	}
 
-	override resolveEObjectsFromTUIDs(List<TUID> tuids) {
-		correspondenceModelDelegate.resolveEObjectsFromTUIDs(tuids);
+	override resolveEObjectsFromTuids(List<Tuid> tuids) {
+		correspondenceModelDelegate.resolveEObjectsFromTuids(tuids);
 	}
 
-	override resolveEObjectsSetsFromTUIDsSets(Set<List<TUID>> tuidLists) {
-		correspondenceModelDelegate.resolveEObjectsSetsFromTUIDsSets(tuidLists);
+	override resolveEObjectsSetsFromTuidsSets(Set<List<Tuid>> tuidLists) {
+		correspondenceModelDelegate.resolveEObjectsSetsFromTuidsSets(tuidLists);
 	}
 
 	// TODO re-design the CorrespondenceModel to avoid a functionality depending on the correpondenceType

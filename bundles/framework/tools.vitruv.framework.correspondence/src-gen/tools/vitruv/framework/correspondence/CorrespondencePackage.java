@@ -232,14 +232,14 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCE_MODEL = 3;
 
 	/**
-	 * The meta object id for the '<em>TUID</em>' data type.
+	 * The meta object id for the '<em>Tuid</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.tuid.TUID
-	 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getTUID()
+	 * @see tools.vitruv.framework.tuid.Tuid
+	 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getTuid()
 	 * @generated
 	 */
-	int TUID = 4;
+	int Tuid = 4;
 
 
 	/**
@@ -318,26 +318,26 @@ public interface CorrespondencePackage extends EPackage {
 	EReference getCorrespondence_DependedOnBy();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link tools.vitruv.framework.correspondence.Correspondence#getATUIDs <em>ATUI Ds</em>}'.
+	 * Returns the meta object for the attribute list '{@link tools.vitruv.framework.correspondence.Correspondence#getATuids <em>ATUI Ds</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>ATUI Ds</em>'.
-	 * @see tools.vitruv.framework.correspondence.Correspondence#getATUIDs()
+	 * @see tools.vitruv.framework.correspondence.Correspondence#getATuids()
 	 * @see #getCorrespondence()
 	 * @generated
 	 */
-	EAttribute getCorrespondence_ATUIDs();
+	EAttribute getCorrespondence_ATuids();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link tools.vitruv.framework.correspondence.Correspondence#getBTUIDs <em>BTUI Ds</em>}'.
+	 * Returns the meta object for the attribute list '{@link tools.vitruv.framework.correspondence.Correspondence#getBTuids <em>BTUI Ds</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>BTUI Ds</em>'.
-	 * @see tools.vitruv.framework.correspondence.Correspondence#getBTUIDs()
+	 * @see tools.vitruv.framework.correspondence.Correspondence#getBTuids()
 	 * @see #getCorrespondence()
 	 * @generated
 	 */
-	EAttribute getCorrespondence_BTUIDs();
+	EAttribute getCorrespondence_BTuids();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.correspondence.ManualCorrespondence <em>Manual Correspondence</em>}'.
@@ -361,15 +361,15 @@ public interface CorrespondencePackage extends EPackage {
 	EDataType getCorrespondenceModel();
 
 	/**
-	 * Returns the meta object for data type '{@link tools.vitruv.framework.tuid.TUID <em>TUID</em>}'.
+	 * Returns the meta object for data type '{@link tools.vitruv.framework.tuid.Tuid <em>Tuid</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>TUID</em>'.
-	 * @see tools.vitruv.framework.tuid.TUID
-	 * @model instanceClass="tools.vitruv.framework.tuid.TUID"
+	 * @return the meta object for data type '<em>Tuid</em>'.
+	 * @see tools.vitruv.framework.tuid.Tuid
+	 * @model instanceClass="tools.vitruv.framework.tuid.Tuid"
 	 * @generated
 	 */
-	EDataType getTUID();
+	EDataType getTuid();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -459,7 +459,7 @@ public interface CorrespondencePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute CORRESPONDENCE__ATUI_DS = eINSTANCE.getCorrespondence_ATUIDs();
+		EAttribute CORRESPONDENCE__ATUI_DS = eINSTANCE.getCorrespondence_ATuids();
 
 		/**
 		 * The meta object literal for the '<em><b>BTUI Ds</b></em>' attribute list feature.
@@ -467,7 +467,7 @@ public interface CorrespondencePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute CORRESPONDENCE__BTUI_DS = eINSTANCE.getCorrespondence_BTUIDs();
+		EAttribute CORRESPONDENCE__BTUI_DS = eINSTANCE.getCorrespondence_BTuids();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.correspondence.impl.ManualCorrespondenceImpl <em>Manual Correspondence</em>}' class.
@@ -490,14 +490,14 @@ public interface CorrespondencePackage extends EPackage {
 		EDataType CORRESPONDENCE_MODEL = eINSTANCE.getCorrespondenceModel();
 
 		/**
-		 * The meta object literal for the '<em>TUID</em>' data type.
+		 * The meta object literal for the '<em>Tuid</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.tuid.TUID
-		 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getTUID()
+		 * @see tools.vitruv.framework.tuid.Tuid
+		 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getTuid()
 		 * @generated
 		 */
-		EDataType TUID = eINSTANCE.getTUID();
+		EDataType Tuid = eINSTANCE.getTuid();
 
 	}
 

@@ -1,6 +1,6 @@
 package tools.vitruv.dsls.mapping.helpers
 
-import tools.vitruv.framework.tuid.TUID
+import tools.vitruv.framework.tuid.Tuid
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
@@ -8,35 +8,35 @@ import org.apache.log4j.Logger
 import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
-class TUIDUpdateHelper {
-	private static final Logger LOGGER = Logger.getLogger(TUIDUpdateHelper)
-	private Map<EObject, Map<CorrespondenceModel, List<TUID>>> oldTUIDMap = newHashMap
+class TuidUpdateHelper {
+	private static final Logger LOGGER = Logger.getLogger(TuidUpdateHelper)
+	private Map<EObject, Map<CorrespondenceModel, List<Tuid>>> oldTuidMap = newHashMap
 	
 	public def addObjectToUpdate(CorrespondenceModel ci, EObject eObject) {
-		oldTUIDMap
+		oldTuidMap
 			.getOrPut(eObject, [newHashMap])
 			.getOrPut(ci, [newArrayList])
-			.add(ci.calculateTUIDFromEObject(eObject))
+			.add(ci.calculateTuidFromEObject(eObject))
 	}
 	
 	public def updateObject(CorrespondenceModel ci, EObject eObject) {
-		if (!oldTUIDMap.containsKey(eObject)) {
+		if (!oldTuidMap.containsKey(eObject)) {
 			LOGGER.info("EObject " + eObject.toString() + " not in old tuid map")
 		} else {
-			val ciToTUIDs = oldTUIDMap.get(eObject)
-			for (tuid : (ciToTUIDs.get(ci) ?: #[])) {
+			val ciToTuids = oldTuidMap.get(eObject)
+			for (tuid : (ciToTuids.get(ci) ?: #[])) {
 				tuid.updateTuid(eObject)
 			}
-			oldTUIDMap.get(eObject)?.remove(eObject)
+			oldTuidMap.get(eObject)?.remove(eObject)
 		}
 	}
 	
 	public def updateAll() {
-		for (entry : oldTUIDMap.entrySet) {
+		for (entry : oldTuidMap.entrySet) {
 			val eObject = entry.key
-			val ciToTUIDs = entry.value
-			for (ciAndTUIDs : ciToTUIDs.entrySet) {
-				for (tuid : ciAndTUIDs.value) {
+			val ciToTuids = entry.value
+			for (ciAndTuids : ciToTuids.entrySet) {
+				for (tuid : ciAndTuids.value) {
 					tuid.updateTuid(eObject)
 				}
 			}			

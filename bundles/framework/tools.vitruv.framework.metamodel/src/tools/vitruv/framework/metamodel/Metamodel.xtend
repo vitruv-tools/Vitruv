@@ -5,10 +5,10 @@ import java.util.List
 import java.util.Map
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver
+import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.AbstractURIHaving
-import tools.vitruv.framework.tuid.TUID
+import tools.vitruv.framework.tuid.Tuid
 import tools.vitruv.framework.tuid.TuidCalculator
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EPackage
 
 class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener {
 	List<String> fileExtensions
-	TUIDCalculatorAndResolver tuidCalculatorAndResolver
+	TuidCalculatorAndResolver tuidCalculatorAndResolver
 	Set<String> nsURIs
 	Map<Object, Object> defaultLoadOptions
 	Map<Object, Object> defaultSaveOptions
@@ -29,29 +29,29 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		return (#[rootPackage.nsURI] + rootPackage.ESubpackages.map[it.nsURIsRecursive].flatten).toSet;
 	}
 
-	def protected static String getTUIDPrefix(Iterable<String> nsURIs) {
+	def protected static String getTuidPrefix(Iterable<String> nsURIs) {
 		if (nsURIs !== null && nsURIs.size() > 0) {
 			return nsURIs.iterator().next()
 		} else {
 			throw new RuntimeException(
-				'''Cannot get a TUID prefix from the set of namespace URIs '«»«nsURIs»'!'''.toString)
+				'''Cannot get a Tuid prefix from the set of namespace URIs '«»«nsURIs»'!'''.toString)
 		}
 	}
 
 	/** 
 	 * Convenience method if the metamodel consists of only a single namespace
 	 */
-	new(VURI mainNamespaceUri, String namespaceUri, TUIDCalculatorAndResolver tuidCalculator, String... fileExtensions) {
+	new(VURI mainNamespaceUri, String namespaceUri, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
 		super(mainNamespaceUri);
 		initialize(newHashSet(namespaceUri), tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
 	}
 
-	new(VURI mainNamespaceUri, Set<String> namespaceUris, TUIDCalculatorAndResolver tuidCalculator, String... fileExtensions) {
+	new(VURI mainNamespaceUri, Set<String> namespaceUris, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
 		super(mainNamespaceUri);
 		initialize(namespaceUris, tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
 	}
 
-	protected def void initialize(Set<String> nsURIs, TUIDCalculatorAndResolver tuidCalculator, Map<Object, Object> defaultLoadOptions, Map<Object, Object> defaultSaveOptions, String... fileExtensions) {
+	protected def void initialize(Set<String> nsURIs, TuidCalculatorAndResolver tuidCalculator, Map<Object, Object> defaultLoadOptions, Map<Object, Object> defaultSaveOptions, String... fileExtensions) {
 		this.fileExtensions = fileExtensions
 		this.tuidCalculatorAndResolver = tuidCalculator;
 		this.nsURIs = nsURIs
@@ -65,21 +65,21 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		return new ArrayList<String>(this.fileExtensions);
 	}
 
-	def String calculateTUIDFromEObject(EObject eObject) {
-		return this.tuidCalculatorAndResolver.calculateTUIDFromEObject(eObject)
+	def String calculateTuidFromEObject(EObject eObject) {
+		return this.tuidCalculatorAndResolver.calculateTuidFromEObject(eObject)
 	}
 
 	/** 
-	 * syntactic sugar for map[{@link #calculateTUIDFromEObject(EObject)}]
+	 * syntactic sugar for map[{@link #calculateTuidFromEObject(EObject)}]
 	 * @param eObjects
 	 * @return
 	 */
-	def List<String> calculateTUIDsFromEObjects(List<EObject> eObjects) {
-		return eObjects.map[calculateTUIDFromEObject(it)].toList
+	def List<String> calculateTuidsFromEObjects(List<EObject> eObjects) {
+		return eObjects.map[calculateTuidFromEObject(it)].toList
 	}
 
-	def String calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
-		return this.tuidCalculatorAndResolver.calculateTUIDFromEObject(eObject, virtualRootObject, prefix)
+	def String calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
+		return this.tuidCalculatorAndResolver.calculateTuidFromEObject(eObject, virtualRootObject, prefix)
 	}
 
 	def VURI getModelVURIContainingIdentifiedEObject(String tuid) {
@@ -90,11 +90,11 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		return VURI::getInstance(modelVURI)
 	}
 
-	def EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuid) {
-		return this.tuidCalculatorAndResolver.resolveEObjectFromRootAndFullTUID(root, tuid)
+	def EObject resolveEObjectFromRootAndFullTuid(EObject root, String tuid) {
+		return this.tuidCalculatorAndResolver.resolveEObjectFromRootAndFullTuid(root, tuid)
 	}
 
-	def void removeRootFromTUIDCache(EObject root) {
+	def void removeRootFromTuidCache(EObject root) {
 		this.tuidCalculatorAndResolver.removeRootFromCache(root)
 	}
 
@@ -114,8 +114,8 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		return true
 	}
 
-	def boolean hasTUID(String tuid) {
-		return this.tuidCalculatorAndResolver.isValidTUID(tuid)
+	def boolean hasTuid(String tuid) {
+		return this.tuidCalculatorAndResolver.isValidTuid(tuid)
 	}
 
 	def Set<String> getNsURIs() {
@@ -135,16 +135,16 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	}
 
 	override calculateTuid(EObject object) {
-		return TUID.getInstance(calculateTUIDFromEObject(object));
+		return Tuid.getInstance(calculateTuidFromEObject(object));
 	}
 
-	override performPreAction(TUID oldTuid) {
-		if (this.hasTUID(oldTuid.toString)) {
+	override performPreAction(Tuid oldTuid) {
+		if (this.hasTuid(oldTuid.toString)) {
 			removeIfRootAndCached(oldTuid.toString);
 		}
 	}
 
-	override performPostAction(TUID newTuid) {
+	override performPostAction(Tuid newTuid) {
 		// Do nothing
 	}
 

@@ -31,13 +31,76 @@ public interface InputTypesFactory extends EFactory {
 	String createString();
 
 	/**
-	 * Returns a new object of class '<em>Int</em>'.
+	 * Returns a new object of class '<em>Integer</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Int</em>'.
+	 * @return a new object of class '<em>Integer</em>'.
 	 * @generated
 	 */
-	Int createInt();
+	Integer createInteger();
+
+	/**
+	 * Returns a new object of class '<em>Short</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Short</em>'.
+	 * @generated
+	 */
+	Short createShort();
+
+	/**
+	 * Returns a new object of class '<em>Boolean</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Boolean</em>'.
+	 * @generated
+	 */
+	Boolean createBoolean();
+
+	/**
+	 * Returns a new object of class '<em>Long</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Long</em>'.
+	 * @generated
+	 */
+	Long createLong();
+
+	/**
+	 * Returns a new object of class '<em>Character</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Character</em>'.
+	 * @generated
+	 */
+	Character createCharacter();
+
+	/**
+	 * Returns a new object of class '<em>Byte</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Byte</em>'.
+	 * @generated
+	 */
+	Byte createByte();
+
+	/**
+	 * Returns a new object of class '<em>Float</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Float</em>'.
+	 * @generated
+	 */
+	Float createFloat();
+
+	/**
+	 * Returns a new object of class '<em>Double</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Double</em>'.
+	 * @generated
+	 */
+	Double createDouble();
 
 	/**
 	 * Returns the package supported by this factory.

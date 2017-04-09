@@ -13,8 +13,6 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
-import org.apache.log4j.Logger
-import org.apache.log4j.Level
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
@@ -50,7 +48,6 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 		
 	private def prepareTestModel() {
-		Logger.rootLogger.level = Level.DEBUG;
 		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
 		container.setId("NonRootObjectContainer");
 		rootElement.nonRootObjectContainerHelper = container;

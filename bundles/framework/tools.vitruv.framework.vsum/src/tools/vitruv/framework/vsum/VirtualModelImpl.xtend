@@ -58,8 +58,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.modelRepository.saveAllModels();
 	}
 	
-	override createModel(VURI vuri, EObject rootEObject) {
-		this.modelRepository.createModel(vuri, rootEObject);
+	override persistRootElement(VURI persistenceVuri, EObject rootElement) {
+		this.modelRepository.persistRootElement(persistenceVuri, rootElement);
 	}
 	
 	override executeCommand(Callable<Void> command) {
@@ -71,8 +71,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 	
 	override propagateChange(VitruviusChange change) {
+		// Save is done by the change propagator because it has to be performed before finishing sync
 		changePropagator.propagateChange(change);
-		save();
 	}
 	
 	override setUserInteractor(UserInteracting userInteractor) {

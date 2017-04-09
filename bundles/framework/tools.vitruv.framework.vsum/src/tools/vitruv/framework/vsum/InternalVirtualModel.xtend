@@ -10,7 +10,7 @@ import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
 interface InternalVirtualModel extends VirtualModel {
 	def CorrespondenceModel getCorrespondenceModel(VURI metamodel1, VURI metamodel2);
 	def void save();
-	def void createModel(VURI vuri, EObject rootEObject);
+	def void persistRootElement(VURI persistenceVuri, EObject rootElement);
 	def void executeCommand(Callable<Void> command);
 	def void addChangePropagationListener(ChangePropagationListener propagationListener);
 	def void setUserInteractor(UserInteracting userInteractor);

@@ -78,7 +78,14 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			if (metamodelImport == null || metamodelImport.package == null) {
 				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false),
 					createEObjectDescription(InputTypesPackage.Literals.STRING, false),
-					createEObjectDescription(InputTypesPackage.Literals.INT, false)
+					createEObjectDescription(InputTypesPackage.Literals.INTEGER, false),
+					createEObjectDescription(InputTypesPackage.Literals.BOOLEAN, false),
+					createEObjectDescription(InputTypesPackage.Literals.SHORT, false),
+					createEObjectDescription(InputTypesPackage.Literals.LONG, false),
+					createEObjectDescription(InputTypesPackage.Literals.BYTE, false),
+					createEObjectDescription(InputTypesPackage.Literals.CHARACTER, false),
+					createEObjectDescription(InputTypesPackage.Literals.FLOAT, false),
+					createEObjectDescription(InputTypesPackage.Literals.DOUBLE, false)
 				];
 			} else {
 				collectObjectDescriptions(metamodelImport.package, true, true, metamodelImport.useQualifiedNames)		
