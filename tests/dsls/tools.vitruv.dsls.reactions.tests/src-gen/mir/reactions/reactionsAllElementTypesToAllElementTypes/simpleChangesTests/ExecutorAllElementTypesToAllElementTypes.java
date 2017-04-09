@@ -28,5 +28,6 @@ public class ExecutorAllElementTypesToAllElementTypes extends AbstractReactionsE
     this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerContentsInitializationReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerContentsInitializationReaction(userInteracting));
     this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.NonRootCreatedReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.NonRootCreatedReaction(userInteracting));
     this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.NonRootDeletedReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.NonRootDeletedReaction(userInteracting));
+    this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.AnyChangeReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.AnyChangeReaction(userInteracting));
   }
 }
