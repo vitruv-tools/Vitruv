@@ -18,6 +18,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresenta
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentation
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.AtomicChangeTypeRepresentation
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
+import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 
 class ReactionClassGenerator extends ClassGenerator {
 	protected final Reaction reaction;
@@ -27,6 +28,7 @@ class ReactionClassGenerator extends ClassGenerator {
 	private final ClassNameGenerator reactionClassNameGenerator;
 	private final UserExecutionClassGenerator userExecutionClassGenerator;
 	private final ClassNameGenerator routinesFacadeClassNameGenerator;
+	private final static val typedChangeVariableName = "typedChange";
 	
 	new(Reaction reaction, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
@@ -86,23 +88,26 @@ class ReactionClassGenerator extends ClassGenerator {
 	 */
 	protected def generateMethodExecuteReaction() {
 		val methodName = "executeReaction";
-		val changeParameterList = relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList;
+		val accessibleElementList = relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList();
 		val callRoutineMethod = userExecutionClassGenerator.generateMethodCallRoutine(reaction.callRoutine, 
-			changeParameterList, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
+			accessibleElementList, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
 			val changeParameter = generateUntypedChangeParameter();
 			parameters += changeParameter;
-			val typedChangeName = "typedChange";
 			body = '''
-				«changeTypeRepresentation.getRelevantChangeAssignmentCode(changeParameter.name, typedChangeName)»
-				«relevantAtomicChangeTypeRepresentation.generatePropertiesAssignmentCode(typedChangeName)»
+				«changeTypeRepresentation.getRelevantChangeAssignmentCode(changeParameter.name, typedChangeVariableName)»
+				«relevantAtomicChangeTypeRepresentation.generatePropertiesAssignmentCode(typedChangeVariableName)»
 				«routinesFacadeClassNameGenerator.qualifiedName» routinesFacade = new «routinesFacadeClassNameGenerator.qualifiedName»(this.executionState, this);
 				«userExecutionClassGenerator.qualifiedClassName» userExecution = new «userExecutionClassGenerator.qualifiedClassName»(this.executionState, this);
 				userExecution.«callRoutineMethod.simpleName»(«
-					FOR parameter : changeParameterList SEPARATOR ", " AFTER ", "»«parameter.name»«ENDFOR»routinesFacade);
+					FOR argument : accessibleElementList.generateArgumentsForAccesibleElements SEPARATOR ", " AFTER ", "»«argument»«ENDFOR»routinesFacade);
 			'''
 		];
+	}
+	
+	public def Iterable<String> generateArgumentsForAccesibleElements(Iterable<AccessibleElement> elements) {
+		elements.map[if (name == AtomicChangeTypeRepresentation.changeName) typedChangeVariableName else name];
 	}
 	
 	
@@ -116,7 +121,6 @@ class ReactionClassGenerator extends ClassGenerator {
 			val changeParameter = generateUntypedChangeParameter(reaction);
 			visibility = JvmVisibility.PUBLIC;
 			parameters += changeParameter
-			val typedChangeVariableName = "typedChange";
 			body = '''
 				if (!(«changeParameter.name» instanceof «changeTypeRepresentation.changeType»)) {
 					return false;
@@ -130,7 +134,8 @@ class ReactionClassGenerator extends ClassGenerator {
 					«changeTypeRepresentation.getRelevantChangeAssignmentCode(changeParameter.name, typedChangeVariableName)»
 					«relevantAtomicChangeTypeRepresentation.generatePropertiesAssignmentCode(typedChangeVariableName)»
 					if (!«userDefinedPreconditionMethod.simpleName»(«
-						FOR parameter : relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList SEPARATOR ", "»«parameter.name»«ENDFOR»)) {
+						FOR argument : relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList().generateArgumentsForAccesibleElements SEPARATOR ", "»«
+							argument»«ENDFOR»)) {
 						return false;
 					}
 				«ENDIF»
@@ -144,7 +149,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		val methodName = USER_DEFINED_TRIGGER_PRECONDITION_METHOD_NAME;
 		return preconditionBlock.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
-			parameters += generateAccessibleElementsParameters(relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList);
+			parameters += generateAccessibleElementsParameters(relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList());
 			body = preconditionBlock.code;
 		];		
 	}
