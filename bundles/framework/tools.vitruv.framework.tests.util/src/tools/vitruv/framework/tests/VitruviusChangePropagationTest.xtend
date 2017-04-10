@@ -113,9 +113,4 @@ abstract class VitruviusChangePropagationTest extends VitruviusEMFCasestudyTest 
 		assertTrue(EcoreUtil.equals(root, root2));
 	}
 	
-	protected def void saveAndSynchronizeChanges(EObject object) {
-		EcoreResourceBridge.saveResource(object.eResource());
-		this.triggerSynchronization(VURI.getInstance(object.eResource()));
-	}
-	
 }

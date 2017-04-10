@@ -1,5 +1,6 @@
 package tools.vitruv.framework.tests;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +18,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
 import tools.vitruv.framework.modelsynchronization.ChangePropagationAbortCause;
+import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
@@ -92,4 +94,9 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
 	}
 
+	protected void saveAndSynchronizeChanges(EObject object) throws IOException {
+		EcoreResourceBridge.saveResource(object.eResource());
+		this.triggerSynchronization(VURI.getInstance(object.eResource()));
+	}
+	
 }
