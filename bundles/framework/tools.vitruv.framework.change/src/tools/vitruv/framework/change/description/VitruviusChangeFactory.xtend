@@ -49,17 +49,13 @@ class VitruviusChangeFactory {
 	
 	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		val vuri = VURI.getInstance(changedFileResource);
-		var EObject root;
 		if (kind == FileChangeKind.Create) {
-			var createAndInsertRootChange = generateFileCreateChange(changedFileResource);
-			root = createAndInsertRootChange.createChange.affectedEObject
-			return new CreateFileChangeImpl(createAndInsertRootChange, vuri, root)
+			var eChange = generateFileCreateChange(changedFileResource);
+			return new CreateFileChangeImpl(eChange, vuri)
 		} else {
-			var removeAndDeleteRootChange = generateFileDeleteChange(changedFileResource);
-			root = removeAndDeleteRootChange.deleteChange.affectedEObject
-			return new DeleteFileChangeImpl(removeAndDeleteRootChange, vuri, root)
+			var eChange = generateFileDeleteChange(changedFileResource);
+			return new DeleteFileChangeImpl(eChange, vuri)
 		}
-		
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {
@@ -82,7 +78,7 @@ class VitruviusChangeFactory {
 		return compositeChange;
 	}
 		
-	private def CreateAndInsertRoot<EObject> generateFileCreateChange(Resource resource) {
+	private def EChange generateFileCreateChange(Resource resource) {
 		var EObject rootElement = null;
 		var index = 0
         if (1 == resource.getContents().size()) {
@@ -101,7 +97,7 @@ class VitruviusChangeFactory {
         return createRootEObj; 
 	}
 	
-	private def RemoveAndDeleteRoot<EObject> generateFileDeleteChange(Resource resource) {
+	private def EChange generateFileDeleteChange(Resource resource) {
 		if (0 < resource.getContents().size()) {
 			val index = 0
             val EObject rootElement = resource.getContents().get(index);

@@ -9,6 +9,8 @@ import java.util.concurrent.Callable
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.description.CompositeContainerChange
+import tools.vitruv.framework.change.description.CreateFileChange
+import tools.vitruv.framework.change.description.DeleteFileChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
@@ -18,10 +20,6 @@ import tools.vitruv.framework.metamodel.MetamodelRepository
 import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.framework.util.datatypes.Pair
-i
-import tools.vitruv.framework.change.description.CreateFileChange
-import tools.vitruv.framework.change.description.DeleteFileChange
 
 class ChangePropagatorImpl implements ChangePropagator {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -63,7 +61,6 @@ class ChangePropagatorImpl implements ChangePropagator {
 		startChangePropagation(change);	
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
-
 		val propagationResult = new ChangePropagationResult();
 		propagateSingleChange(change, result, propagationResult, changedResourcesTracker);
 		changedResourcesTracker.markNonSourceResourceAsChanged();
@@ -90,18 +87,14 @@ class ChangePropagatorImpl implements ChangePropagator {
 	}
 
 	private def dispatch void propagateSingleChange(CompositeContainerChange change, List<List<VitruviusChange>> commandExecutionChanges,
-
 		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		for (VitruviusChange innerChange : ((change as CompositeContainerChange)).getChanges()) {
-
 			propagateSingleChange(innerChange, commandExecutionChanges, propagationResult, changedResourcesTracker)
 		}
 	}
 
-	private def dispatch void propagateSingleChange(TransactionalChange change, 
-
-		List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult,
-		ChangedResourcesTracker changedResourcesTracker) {
+	private def dispatch void propagateSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 
 			
 		modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
@@ -111,34 +104,31 @@ class ChangePropagatorImpl implements ChangePropagator {
 			}
 		})
 		
-		propagateChangeToOtherModels(change, commandExecutionChanges, changedResourcesTracker)
+		propagateChangeToOtherModels(change, commandExecutionChanges, propagationResult, changedResourcesTracker)
 	}
 	
-	private def dispatch void propagateSingleChange(CreateFileChange change,
-		List<List<VitruviusChange>> commandExecutionChanges, ChangedResourcesTracker changedResourcesTracker) {
-		modelProviding.createModel(change.URI, change.getRoot)
+	private def dispatch void propagateSingleChange(CreateFileChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+		modelProviding.getModel(change.URI)
 		
-		propagateChangeToOtherModels(change, commandExecutionChanges, changedResourcesTracker)
+		propagateChangeToOtherModels(change, commandExecutionChanges, propagationResult, changedResourcesTracker)
 	}
 	
-	private def dispatch void propagateSingleChange(DeleteFileChange change,
-		List<List<VitruviusChange>> commandExecutionChanges, ChangedResourcesTracker changedResourcesTracker) {
-		this.modelProviding.deleteModel(change.URI)
-		propagateChangeToOtherModels(change, commandExecutionChanges, changedResourcesTracker)			
+	private def dispatch void propagateSingleChange(DeleteFileChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+		// TODO: Elbert S. Delete / Apply change
+		propagateChangeToOtherModels(change, commandExecutionChanges, propagationResult, changedResourcesTracker)			
 	}
 	
-	private def void propagateChangeToOtherModels(TransactionalChange change, 
-		List<List<VitruviusChange>> commandExecutionChanges, ChangedResourcesTracker changedResourcesTracker) {
+	private def void propagateChangeToOtherModels(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		val changeMetamodel = metamodelRepository.getMetamodel(change.URI.fileExtension);
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeMetamodel.URI)) {
-
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
-
 		}			
 	}
 	
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
-
 			List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(propagationSpecification.metamodelPair.first, propagationSpecification.metamodelPair.second);
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for

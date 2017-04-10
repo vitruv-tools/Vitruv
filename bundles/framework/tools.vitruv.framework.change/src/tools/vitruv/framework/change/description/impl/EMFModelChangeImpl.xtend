@@ -121,9 +121,11 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		if (this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
+		registerOldObjectTuidsForUpdate();
 		for (c : changes) {
 			c.resolveBeforeAndApplyForward(resourceSet)
 		}
+		updateTuids();
 		this.canBeBackwardsApplied = true;
 	}
 	
@@ -131,9 +133,11 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		if (!this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
 		}
+		registerOldObjectTuidsForUpdate();
 		for (c : changes.reverseView) {
 			c.resolveAfterAndApplyBackward(resourceSet)
 		}
+		updateTuids();
 		this.canBeBackwardsApplied = false;
 	}
 	
