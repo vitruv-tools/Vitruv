@@ -47,7 +47,7 @@ import static org.junit.Assert.fail;
  * @author Heiko Klare
  *
  */
-public abstract class VitruviusCasestudyTest {
+public abstract class VitruviusApplicationTest {
 	private static final boolean ADD_TIMESTAMP_TO_PROJECT_NAMES = true;
 
 	@Rule

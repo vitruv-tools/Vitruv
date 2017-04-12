@@ -23,7 +23,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
  *
  */
 
-public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest {
+public abstract class VitruviusEmfApplicationTest extends VitruviusApplicationTest {
 
 	private AtomicEMFChangeRecorder changeRecorder;
 
