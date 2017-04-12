@@ -9,18 +9,5 @@ import tools.vitruv.framework.tests.VitruviusEMFCasestudyTest
  */
 abstract class VitruviusChangePropagationTest extends VitruviusEMFCasestudyTest {
 
-	/**
-	 * Set up test resources and initialize the test model,
-	 * acting as a template method for the {@link initializeTestModel} method.
-	 * 
-	 * @throws Throwable
-	 */
-	public override void beforeTest() throws Throwable {
-		super.beforeTest();
-		initializeTestModel();
-	}
-	
-	protected abstract def void initializeTestModel();
-	
 	
 }

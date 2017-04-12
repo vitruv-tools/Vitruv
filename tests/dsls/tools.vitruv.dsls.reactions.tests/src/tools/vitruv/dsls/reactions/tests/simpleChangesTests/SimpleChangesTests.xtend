@@ -39,14 +39,18 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 	}
 	
-	protected override initializeTestModel() {
+	protected override setup() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(TEST_SOURCE_MODEL_NAME);
 		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root);
 		prepareTestModel();
 		assertModelsEqual();
 	}
-		
+	
+	override protected cleanup() {
+		// Do nothing
+	}
+	
 	private def prepareTestModel() {
 		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
 		container.setId("NonRootObjectContainer");

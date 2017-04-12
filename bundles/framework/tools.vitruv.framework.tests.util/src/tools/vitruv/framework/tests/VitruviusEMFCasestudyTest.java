@@ -19,6 +19,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
  * Base class for all Vitruvius EMF case study tests
  *
  * @author langhamm
+ * @author Heiko Klare
  *
  */
 
@@ -27,18 +28,33 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest {
 	private AtomicEMFChangeRecorder changeRecorder;
 
 	@Override
-	public void beforeTest() throws Throwable {
+	public final void beforeTest() {
 		super.beforeTest();
 		this.changeRecorder = new AtomicEMFChangeRecorder();
+		setup();
 	}
 
 	@Override
-	public void afterTest() {
+	public final void afterTest() {
 		if (changeRecorder.isRecording()) {
 			changeRecorder.endRecording();
 		}
+		cleanup();
 	}
+	
+	/**
+	 * This method gets called at the beginning of each test case, after the
+	 * test project and VSUM have been initialized. 
+	 * It can be used, for example, to initialize the test models.
+	 */
+	protected abstract void setup();
 
+	/**
+	 * This method gets called at the end of each test case.
+	 * It can be used for clean up actions.
+	 */
+	protected abstract void cleanup();
+	
 	private void propagateChanges(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);

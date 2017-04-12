@@ -38,6 +38,7 @@ import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Base class for all Vitruvius application tests
@@ -70,7 +71,7 @@ public abstract class VitruviusCasestudyTest {
 	public abstract void afterTest();
 
 	@Before
-	public void beforeTest() throws Throwable {
+	public void beforeTest() {
 		TuidManager.getInstance().reinitialize();
 		this.resourceSet = new ResourceSetImpl();
 		String testMethodName = testName.getMethodName();
@@ -78,14 +79,18 @@ public abstract class VitruviusCasestudyTest {
 		createVirtualModel(testMethodName);
 	}
 	
-	protected IProject initializeTestProject(final String testName) throws CoreException {
+	protected IProject initializeTestProject(final String testName) {
 		String testProjectName = TestUtil.PROJECT_URI + "_" + testName;
 		if (ADD_TIMESTAMP_TO_PROJECT_NAMES) {
 			testProjectName = TestUtil.getStringWithTimestamp(testProjectName);
 		}
 		IProject testProject = TestUtil.getProjectByName(testProjectName);
 		if (!testProject.exists()) {
-			this.createProject(testProject);
+			try {
+				this.createProject(testProject);
+			} catch (CoreException e) {
+				fail("Failed on creation of test project");
+			}
 		}
 		return testProject;
 	}
