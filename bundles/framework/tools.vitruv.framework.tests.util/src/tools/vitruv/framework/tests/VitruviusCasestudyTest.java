@@ -82,7 +82,7 @@ public abstract class VitruviusCasestudyTest {
 		createVirtualModel(testMethodName);
 	}
 	
-	private void initializeTestProject(final String testName) throws CoreException {
+	protected void initializeTestProject(final String testName) throws CoreException {
 		this.currentTestProjectName = TestUtil.PROJECT_URI + "_" + testName;
 		if (ADD_TIMESTAMP_TO_PROJECT_NAMES) {
 			this.currentTestProjectName = TestUtil.getStringWithTimestamp(this.currentTestProjectName);
