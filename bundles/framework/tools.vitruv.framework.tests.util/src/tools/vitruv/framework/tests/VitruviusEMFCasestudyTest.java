@@ -24,7 +24,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
 
 public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest {
 
-	protected AtomicEMFChangeRecorder changeRecorder;
+	private AtomicEMFChangeRecorder changeRecorder;
 
 	@Override
 	public void beforeTest() throws Throwable {
@@ -39,29 +39,66 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest {
 		}
 	}
 
-	private void triggerSynchronization(final VURI vuri) {
+	private void propagateChanges(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		this.getVirtualModel().propagateChange(compositeChange);
-		this.changeRecorder.beginRecording(vuri, Collections.emptyList());
+	}
+	
+	private void startRecordingChanges(Resource resource) {
+		VURI vuri = VURI.getInstance(resource);
+		this.changeRecorder.beginRecording(vuri, Collections.singleton(resource));
+	}
+	
+	/**
+	 * Starts recording changes for the model of the given {@link EObject}
+	 * @param object the {@link EObject} to record changes for
+	 */
+	protected void startRecordingChanges(EObject object) {
+		startRecordingChanges(object.eResource());
 	}
 
+	/**
+	 * The model containing the given {@link EObject} gets saved and changes that
+	 * were recorded for that model get propagated. Recording is restarted afterwards.
+	 * 
+	 * @param object the {@link EObject} to save and propagated recorded changes for
+	 * @throws IOException
+	 */
 	protected void saveAndSynchronizeChanges(EObject object) throws IOException {
-		EcoreResourceBridge.saveResource(object.eResource());
-		this.triggerSynchronization(VURI.getInstance(object.eResource()));
+		Resource resource = object.eResource();
+		EcoreResourceBridge.saveResource(resource);
+		this.propagateChanges(VURI.getInstance(resource));
+		this.startRecordingChanges(resource);
 	}
 
+	/**
+	 * A model with the given root element at the given path within the test project gets created.
+	 * The changes for the insertion of the root element are propagated and recording of further
+	 * changes is started. No call to {@link #startRecordingChanges(EObject)}
+	 * is necessary.
+	 * 
+	 * @param modelPathInProject path within project to persist the model at
+	 * @param rootElement root element to persist
+	 * @throws IOException
+	 */
 	protected void createAndSynchronizeModel(String modelPathInProject, EObject rootElement) throws IOException {
 		if (StringUtils.isEmpty(modelPathInProject) || rootElement == null) {
 			throw new IllegalArgumentException();
 		}
 		Resource resource = createModelResource(modelPathInProject);
-		EcoreResourceBridge.saveResource(resource);
-		this.changeRecorder.beginRecording(VURI.getInstance(resource), Collections.singleton(resource));
+		this.startRecordingChanges(resource);
 		resource.getContents().add(rootElement);
 		saveAndSynchronizeChanges(rootElement);
 	}
 	
+	/**
+	 * The model at the given path is deleted. The old root element is removed and changes
+	 * for that removal are propagated. 
+	 * 
+	 * @param modelPathInProject path within project to remove model from
+	 * @throws IOException
+	 */
 	protected void deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
 		if (StringUtils.isEmpty(modelPathInProject)) {
 			throw new IllegalArgumentException();
@@ -69,7 +106,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest {
 		Resource resource = getModelResource(modelPathInProject);
 		VURI vuri = VURI.getInstance(resource);
 		resource.delete(Collections.EMPTY_MAP);
-		triggerSynchronization(vuri);
+		propagateChanges(vuri);
 	}
 	
 
