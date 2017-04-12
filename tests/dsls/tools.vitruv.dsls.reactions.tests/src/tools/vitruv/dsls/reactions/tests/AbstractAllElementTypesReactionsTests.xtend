@@ -6,9 +6,9 @@ import java.util.HashSet
 import tools.vitruv.framework.metamodel.Metamodel
 import allElementTypes.AllElementTypesPackage
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
-import tools.vitruv.framework.tests.VitruviusChangePropagationTest
+import tools.vitruv.framework.tests.VitruviusEmfApplicationTest
 
-abstract class AbstractAllElementTypesReactionsTests extends VitruviusChangePropagationTest {
+abstract class AbstractAllElementTypesReactionsTests extends VitruviusEmfApplicationTest {
 	protected static val MODEL_FILE_EXTENSION = "minimalAllElements";
 	
 	protected override createMetamodels() {
