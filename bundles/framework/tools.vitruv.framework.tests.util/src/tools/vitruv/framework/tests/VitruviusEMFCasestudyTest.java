@@ -46,11 +46,6 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest {
 		this.changeRecorder.beginRecording(vuri, Collections.emptyList());
 	}
 
-	protected void triggerSynchronization(final EObject eObject) {
-		final VURI vuri = VURI.getInstance(eObject.eResource());
-		this.triggerSynchronization(vuri);
-	}
-
 	protected void saveAndSynchronizeChanges(EObject object) throws IOException {
 		EcoreResourceBridge.saveResource(object.eResource());
 		this.triggerSynchronization(VURI.getInstance(object.eResource()));
