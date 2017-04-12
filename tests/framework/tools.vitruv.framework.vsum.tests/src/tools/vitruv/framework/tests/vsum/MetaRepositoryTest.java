@@ -33,8 +33,6 @@ public class MetaRepositoryTest {
     public static void beforeClass() {
         // initialize Logger when not done yet
         TestUtil.initializeLogger();
-        // TestUtil.deleteAllProjectFolderCopies(PROJECT_FOLDER_NAME);
-        // TestUtil.clearMetaProject(VSUM_NAME);
     }
 
     @Before

@@ -9,7 +9,6 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -31,7 +30,6 @@ import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelImpl;
-import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
 /**
  * Utility class for all Vitruvius test cases
@@ -196,41 +194,4 @@ public final class TestUtil {
         return iProject;
     }
 
-    public static void deleteAllProjectFolderCopies(final String originalProjectName) {
-        final IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects(0);
-        for (final IProject project : allProjects) {
-            final boolean copyOfOriginalProject = isCopyWithEqualPrefix(originalProjectName, project);
-            // boolean copyOfMetaProject = isCopyWithEqualPrefix(VSUMConstants.VSUM_PROJECT_NAME,
-            // project);
-            if (copyOfOriginalProject) {// || copyOfMetaProject) {
-                try {
-                    project.delete(true, new NullProgressMonitor());
-                } catch (final CoreException e) {
-                    // soften
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
-    private static boolean isCopyWithEqualPrefix(final String originalProjectName, final IProject project) {
-        final String currentProjectName = project.getName();
-        final boolean samePrefix = currentProjectName.startsWith(originalProjectName);
-        final boolean copyOfOriginalProject = samePrefix && !currentProjectName.equals(originalProjectName);
-        return copyOfOriginalProject;
-    }
-
-    public static void clearMetaProject(String vsumName) {
-        try {
-        	FileSystemHelper fsHelper = new FileSystemHelper(vsumName);
-            final IFolder correspondenceFolder = fsHelper.getCorrespondenceFolder();
-            correspondenceFolder.delete(true, new NullProgressMonitor());
-            FileSystemHelper.createFolder(correspondenceFolder);
-            final IFile currentInstancesFile = fsHelper.getVsumInstancesFile();
-            currentInstancesFile.delete(true, new NullProgressMonitor());
-        } catch (final CoreException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
-    }
 }
