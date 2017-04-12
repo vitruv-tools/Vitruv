@@ -78,19 +78,20 @@ public abstract class VitruviusCasestudyTest {
 		TuidManager.getInstance().reinitialize();
 		this.resourceSet = new ResourceSetImpl();
 		String testMethodName = testName.getMethodName();
-		initializeTestProject(testMethodName);
+		this.currentTestProject = initializeTestProject(testMethodName);
 		createVirtualModel(testMethodName);
 	}
 	
-	protected void initializeTestProject(final String testName) throws CoreException {
+	protected IProject initializeTestProject(final String testName) throws CoreException {
 		this.currentTestProjectName = TestUtil.PROJECT_URI + "_" + testName;
 		if (ADD_TIMESTAMP_TO_PROJECT_NAMES) {
 			this.currentTestProjectName = TestUtil.getStringWithTimestamp(this.currentTestProjectName);
 		}
-		this.currentTestProject = TestUtil.getProjectByName(this.currentTestProjectName);
-		if (!this.currentTestProject.exists()) {
-			this.createProject(this.currentTestProject);
+		IProject testProject = TestUtil.getProjectByName(this.currentTestProjectName);
+		if (!testProject.exists()) {
+			this.createProject(testProject);
 		}
+		return testProject;
 	}
 	
 	private void createVirtualModel(final String testName) {
