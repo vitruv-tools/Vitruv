@@ -1,26 +1,15 @@
 package tools.vitruv.framework.tests;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jdt.launching.LibraryLocation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -80,29 +69,20 @@ public abstract class VitruviusApplicationTest {
 	}
 	
 	protected IProject initializeTestProject(final String testName) {
-		String testProjectName = TestUtil.PROJECT_URI + "_" + testName;
-		if (ADD_TIMESTAMP_TO_PROJECT_NAMES) {
-			testProjectName = TestUtil.getStringWithTimestamp(testProjectName);
-		}
-		IProject testProject = TestUtil.getProjectByName(testProjectName);
-		if (!testProject.exists()) {
-			try {
-				this.createProject(testProject);
-			} catch (CoreException e) {
-				fail("Failed on creation of test project");
-			}
+		IProject testProject = null;
+		try {
+			testProject = TestUtil.createProject(testName, ADD_TIMESTAMP_TO_PROJECT_NAMES); 
+		} catch (CoreException e) {
+			fail("Failed on creation of test project");
 		}
 		return testProject;
 	}
 	
 	private void createVirtualModel(final String testName) {
 		String currentTestProjectVsumName = TestUtil.PROJECT_URI + "_" + testName + "_vsum_";
-		if (ADD_TIMESTAMP_TO_PROJECT_NAMES) {
-			currentTestProjectVsumName = TestUtil.getStringWithTimestamp(currentTestProjectVsumName);
-		}
 		this.metamodels = this.createMetamodels();
-		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, metamodels,
-				createChangePropagationSpecifications());
+		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, ADD_TIMESTAMP_TO_PROJECT_NAMES,
+				metamodels,	createChangePropagationSpecifications());
 		this.testUserInteractor = new TestUserInteractor();
 		this.getVirtualModel().setUserInteractor(testUserInteractor);
 	}
@@ -176,42 +156,4 @@ public abstract class VitruviusApplicationTest {
 		assertTrue(EcoreUtil.equals(firstRoot, secondRoot));
 	}
 
-	/**
-	 * copied from:
-	 * https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
-	 * :)
-	 *
-	 * @param testProject
-	 * @throws CoreException
-	 */
-	// TODO Move to utility class
-	private void createProject(final IProject testProject) throws CoreException {
-		testProject.create(new NullProgressMonitor());
-		testProject.open(new NullProgressMonitor());
-		final IProjectDescription description = testProject.getDescription();
-		description.setNatureIds(new String[] { JavaCore.NATURE_ID });
-		testProject.setDescription(description, null);
-		final IJavaProject javaProject = JavaCore.create(testProject);
-		final IFolder binFolder = testProject.getFolder("bin");
-		binFolder.create(false, true, null);
-		javaProject.setOutputLocation(binFolder.getFullPath(), null);
-		final List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
-		final IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-		if (null != vmInstall) {
-			final LibraryLocation[] locations = JavaRuntime.getLibraryLocations(vmInstall);
-			for (final LibraryLocation element : locations) {
-				entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
-			}
-		}
-		// add libs to project class path
-		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
-		final IFolder sourceFolder = testProject.getFolder("src");
-		sourceFolder.create(false, true, null);
-		final IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder);
-		final IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
-		final IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
-		java.lang.System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-		newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
-		javaProject.setRawClasspath(newEntries, null);
-	}
 }

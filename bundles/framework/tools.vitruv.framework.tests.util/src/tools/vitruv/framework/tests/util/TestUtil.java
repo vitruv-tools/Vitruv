@@ -1,8 +1,8 @@
 package tools.vitruv.framework.tests.util;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
@@ -12,13 +12,16 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.LibraryLocation;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.metamodel.Metamodel;
@@ -37,11 +40,9 @@ import tools.vitruv.framework.vsum.helper.FileSystemHelper;
  */
 public final class TestUtil {
 
-    private static final Logger logger = Logger.getLogger(TestUtil.class.getSimpleName());
     public static final String PROJECT_URI = "MockupProject";
     public static final int WAITING_TIME_FOR_SYNCHRONIZATION = 1 * 1000;
     public static final String SOURCE_FOLDER = "src";
-    public static final String ORIGINAL_FILE_PREFIX = "ORIGINAL_";
 
     /**
      * Utility classes should not have a public constructor
@@ -59,29 +60,64 @@ public final class TestUtil {
 		}
 		return path;
 	}
-
+	
+	public static IProject createProject(String projectName) throws CoreException {
+		return createProject(projectName, false);
+	}
+	
+	public static IProject createProject(String projectName, boolean addTimestamp) throws CoreException {
+		IProject testProject = TestUtil.getProjectByName(projectName);
+		
+		// copied from: https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
+		testProject.create(new NullProgressMonitor());
+		testProject.open(new NullProgressMonitor());
+		final IProjectDescription description = testProject.getDescription();
+		description.setNatureIds(new String[] { JavaCore.NATURE_ID });
+		testProject.setDescription(description, null);
+		final IJavaProject javaProject = JavaCore.create(testProject);
+		final IFolder binFolder = testProject.getFolder("bin");
+		binFolder.create(false, true, null);
+		javaProject.setOutputLocation(binFolder.getFullPath(), null);
+		final List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
+		final IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+		if (null != vmInstall) {
+			final LibraryLocation[] locations = JavaRuntime.getLibraryLocations(vmInstall);
+			for (final LibraryLocation element : locations) {
+				entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
+			}
+		}
+		// add libs to project class path
+		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
+		final IFolder sourceFolder = testProject.getFolder("src");
+		sourceFolder.create(false, true, null);
+		final IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder);
+		final IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+		final IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
+		java.lang.System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
+		newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
+		javaProject.setRawClasspath(newEntries, null);
+		
+		return testProject;
+	}
+	
+	
     public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels) {
-        return createVirtualModel(vsumName, metamodels, new ArrayList<ChangePropagationSpecification>(), null);
+        return createVirtualModel(vsumName, false, metamodels, new ArrayList<ChangePropagationSpecification>());
     }
     
-    /**
-     * creates and returns a VSUM with the given meta repository
-     *
-     * @param metaRepository
-     *            metaRepository for the VSUM
-     * @return vsum
-     */
     public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-        return createVirtualModel(vsumName, metamodels, changePropagationSpecifications, null);
+        return createVirtualModel(vsumName, false, metamodels, changePropagationSpecifications);
+    }
+    
+    public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestamp, 
+    		final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
+    	String finalVsumName = vsumName;
+    	if (addTimestamp) {
+    		finalVsumName = getStringWithTimestamp(finalVsumName);
+    	}
+        return createVirtualModel(finalVsumName, metamodels, changePropagationSpecifications, null);
     }
 
-    /**
-     * creates and returns a VSUM with the given meta repository
-     *
-     * @param metaRepository
-     *            metaRepository for the VSUM
-     * @return vsum
-     */
     public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications, final ClassLoader classLoader) {
         VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
         for (Metamodel metamodel : metamodels) {
@@ -110,104 +146,10 @@ public final class TestUtil {
         return mm;
     }
 
-    /**
-     * Moves the created model and src folder files to a specific folder/path.
-     *
-     * @param destinationPathAsString
-     *            destinationPath in test workspace
-     */
-    public static void moveSrcFilesFromMockupProjectToPath(final String sourcePathAsString, final String destinationPathAsString) {
-        moveFilesFromMockupProjectTo("src", sourcePathAsString, destinationPathAsString);
-    }
-
-    /**
-     * moves created model fodlder
-     *
-     * @param destPathWithTimestamp
-     */
-    public static void moveModelFilesFromProjectToPath(final String sourcePath, final String destPathWithTimestamp) {
-        moveFilesFromMockupProjectTo("model", sourcePath, "model" + destPathWithTimestamp);
-    }
-
-    /**
-     * Moves the created model and src folder files to a specific folder/path. Adds time stamp to
-     * destination path string
-     *
-     * @param destinationPathAsStringWithoutTimestamp
-     *            destination path in test workspace
-     */
-    public static void moveSrcFilesFromMockupProjectToPathWithTimestamp(
-            final String mockupProjectName) {
-        final String destPathWithTimestamp = getStringWithTimestamp(mockupProjectName);
-        moveSrcFilesFromMockupProjectToPath(mockupProjectName, destPathWithTimestamp);
-    }
-
     public static String getStringWithTimestamp(final String destinationPathAsStringWithoutTimestamp) {
         final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_").replace(":", "_");
         final String destPathWithTimestamp = destinationPathAsStringWithoutTimestamp + "_" + timestamp;
         return destPathWithTimestamp;
-    }
-
-    public static void moveModelFilesFromMockupProjectToPathWithTimestamp(
-            final String destinationPathAsStringWithoutTimeStamp) {
-        final String destPathWithTimestamp = getStringWithTimestamp(destinationPathAsStringWithoutTimeStamp);
-        moveModelFilesFromProjectToPath(destinationPathAsStringWithoutTimeStamp, destPathWithTimestamp);
-    }
-
-    /**
-     * Moves files from one folder in the MockupProject to another one
-     *
-     * @param srcPath
-     * @param destinationPath
-     */
-    public static void moveFilesFromMockupProjectTo(final String srcFolder, final String sourcePath, final String destinationPath) {
-        moveFilesFromTo(sourcePath, srcFolder, destinationPath);
-    }
-
-    /**
-     * Moves files from one folder in the MockupProject to another one
-     *
-     * @param srcProjectName
-     *            Name of the srcProject
-     * @param srcPath
-     *            srcPath in workspace
-     * @param destinationPath
-     *            destinationPath in test workspace
-     * @throws URISyntaxException
-     */
-    public static void moveFilesFromTo(final String srcProjectName, final String srcPath,
-            final String destinationPath) {
-        // IResource iResource = Wor
-        final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        final IProject project = root.getProject(srcProjectName);
-        final IResource member = project.findMember(srcPath);
-        if (null == member) {
-            logger.warn("Member ('" + srcPath + "') not found. Nothing to do in ‘moveCreatedFilesToPath‘");
-            return;
-        }
-        final IPath destinationIPath = new Path(destinationPath);
-        try {
-            member.move(destinationIPath, true, new NullProgressMonitor());
-        } catch (final CoreException e) {
-            logger.warn("Could not move src folder to destination folder " + destinationIPath + ": " + e.getMessage());
-        }
-    }
-    
-    public static void moveProjectToProjectWithTimeStamp(final String projectName) {
-    	final String destPathWithTimestamp = getStringWithTimestamp(projectName);
-        renameProject(projectName, destPathWithTimestamp);
-    }
-    
-    private static void renameProject(final String sourceProjectName, final String destinationProjectName) {
-    	final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        final IProject project = root.getProject(sourceProjectName);
-    	try {
-        	IProjectDescription descr = project.getDescription();
-            descr.setName(destinationProjectName);
-        	project.move(descr, true, new NullProgressMonitor());
-        } catch (final CoreException e) {
-            logger.warn("Could not rename project " + sourceProjectName + " to " + destinationProjectName + ": " + e.getMessage());
-        }
     }
 
     /**
@@ -242,10 +184,6 @@ public final class TestUtil {
         TestUtil.waitForSynchronization(WAITING_TIME_FOR_SYNCHRONIZATION);
     }
 
-    public static IProject getTestProject() {
-        return getProjectByName(PROJECT_URI);
-    }
-
     public static IProject getProjectByName(final String projectName) {
         final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
         return iProject;
@@ -275,36 +213,6 @@ public final class TestUtil {
         return copyOfOriginalProject;
     }
 
-    public static String copyProjectFolder(final String projectFolderName) {
-        final String timestamp = "" + System.currentTimeMillis();
-        try {
-            final IProject originalProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectFolderName);
-            return copyProjectWithSuffix(originalProject, timestamp);
-            // IProject metaProject = FileSystemHelper.getVSUMProject();
-            // copyProjectWithSuffix(metaProject, timestamp);
-        } catch (final CoreException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static String copyProjectWithSuffix(final IProject originalProject, final String suffix)
-            throws CoreException {
-        final IPath originalPath = originalProject.getFullPath();
-        final String lastSegment = originalPath.lastSegment();
-        String projectCopyName = lastSegment + suffix;
-        IProject project = FileSystemHelper.getProject(projectCopyName);
-        int count = 0;
-        while (project.exists()) {
-            count++;
-            project = FileSystemHelper.getProject(projectCopyName + count);
-        }
-        projectCopyName += count;
-        final IPath copyPath = originalPath.removeLastSegments(1).append(projectCopyName);
-        originalProject.copy(copyPath, true, new NullProgressMonitor());
-        return projectCopyName;
-    }
-    
     public static String createProjectFolderWithTimestamp(final String projectName) {
         final String timestamp = "" + System.currentTimeMillis();
         try {
