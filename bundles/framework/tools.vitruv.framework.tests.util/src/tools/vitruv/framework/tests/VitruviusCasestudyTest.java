@@ -52,7 +52,7 @@ public abstract class VitruviusCasestudyTest {
 	@Rule
 	public TestName testName = new TestName();
 
-	protected ResourceSet resourceSet;
+	private ResourceSet resourceSet;
 	protected TestUserInteractor testUserInteractor;
 
 	protected String currentTestProjectName;
