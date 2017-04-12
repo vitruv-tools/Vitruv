@@ -9,10 +9,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.framework.change.description.CompositeContainerChange;
-import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -51,13 +49,6 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest {
 	protected void triggerSynchronization(final EObject eObject) {
 		final VURI vuri = VURI.getInstance(eObject.eResource());
 		this.triggerSynchronization(vuri);
-	}
-
-	protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
-		Resource modelResource = this.getVirtualModel().getModelInstance(vuri).getResource();
-		final ConcreteChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind,
-				modelResource);
-		this.getVirtualModel().propagateChange(fileChange);
 	}
 
 	protected void saveAndSynchronizeChanges(EObject object) throws IOException {
