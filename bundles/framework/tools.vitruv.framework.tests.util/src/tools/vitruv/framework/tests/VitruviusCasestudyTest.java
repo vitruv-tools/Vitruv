@@ -121,7 +121,7 @@ public abstract class VitruviusCasestudyTest {
 		return this.currentTestProjectName + "/" + modelPathWithinProject;
 	}
 
-	protected VURI getModelVuri(String modelPathWithinProject) {
+	private VURI getModelVuri(String modelPathWithinProject) {
 		return VURI.getInstance(getPlatformModelPath(modelPathWithinProject));
 	}
 
