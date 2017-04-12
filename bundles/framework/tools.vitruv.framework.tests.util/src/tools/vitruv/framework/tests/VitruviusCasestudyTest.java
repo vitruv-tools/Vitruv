@@ -53,7 +53,7 @@ public abstract class VitruviusCasestudyTest {
 	public TestName testName = new TestName();
 
 	private ResourceSet resourceSet;
-	protected TestUserInteractor testUserInteractor;
+	private TestUserInteractor testUserInteractor;
 	private IProject currentTestProject;
 	private InternalVirtualModel virtualModel;
 	private Iterable<Metamodel> metamodels;
@@ -116,6 +116,10 @@ public abstract class VitruviusCasestudyTest {
 	
 	protected IProject getCurrentTestProject() {
 		return currentTestProject;
+	}
+	
+	protected TestUserInteractor getUserInteractor() {
+		return testUserInteractor;
 	}
 
 	private String getPlatformModelPath(final String modelPathWithinProject) {
