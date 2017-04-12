@@ -69,10 +69,9 @@ public abstract class VitruviusApplicationTest {
 	}
 	
 	protected IProject initializeTestProject(final String testName) {
-		String testProjectName = TestUtil.PROJECT_URI + "_" + testName;
 		IProject testProject = null;
 		try {
-			testProject = TestUtil.createProject(testProjectName, ADD_TIMESTAMP_TO_PROJECT_NAMES); 
+			testProject = TestUtil.createProject(testName, ADD_TIMESTAMP_TO_PROJECT_NAMES); 
 		} catch (CoreException e) {
 			fail("Exception during creation of test project");
 		}
@@ -80,7 +79,7 @@ public abstract class VitruviusApplicationTest {
 	}
 	
 	private void createVirtualModel(final String testName) {
-		String currentTestProjectVsumName = TestUtil.PROJECT_URI + "_" + testName + "_vsum_";
+		String currentTestProjectVsumName = testName + "_vsum_";
 		this.metamodels = this.createMetamodels();
 		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, ADD_TIMESTAMP_TO_PROJECT_NAMES,
 				metamodels,	createChangePropagationSpecifications());
