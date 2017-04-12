@@ -54,14 +54,11 @@ public abstract class VitruviusCasestudyTest {
 
 	private ResourceSet resourceSet;
 	protected TestUserInteractor testUserInteractor;
-
-	protected IProject currentTestProject;
-
+	private IProject currentTestProject;
 	private InternalVirtualModel virtualModel;
 	private Iterable<Metamodel> metamodels;
 
 	protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
-
 	protected abstract Iterable<Metamodel> createMetamodels();
 
 	@BeforeClass
@@ -115,6 +112,10 @@ public abstract class VitruviusCasestudyTest {
 
 	protected InternalVirtualModel getVirtualModel() {
 		return virtualModel;
+	}
+	
+	protected IProject getCurrentTestProject() {
+		return currentTestProject;
 	}
 
 	private String getPlatformModelPath(final String modelPathWithinProject) {
