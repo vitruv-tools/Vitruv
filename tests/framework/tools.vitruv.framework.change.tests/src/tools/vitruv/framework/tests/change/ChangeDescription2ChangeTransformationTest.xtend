@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.junit.After
 import org.junit.Before
 
-import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
 import tools.vitruv.framework.change.echange.EChange
 import org.junit.Assert
 import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
@@ -16,12 +15,13 @@ import org.eclipse.emf.common.util.URI
 import java.io.File
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import java.util.ArrayList
+import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 
 /** 
  * @author langhamm
  */
 abstract class ChangeDescription2ChangeTransformationTest {
-	var protected AtomicEMFChangeRecorder changeRecorder
+	var protected AtomicEmfChangeRecorder changeRecorder
 	var protected Root rootElement
 	var private List<EChange> changes
 	var rs = new ResourceSetImpl
@@ -65,7 +65,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	 */
 	@Before
 	def void beforeTest() {
-		this.changeRecorder = new AtomicEMFChangeRecorder()
+		this.changeRecorder = new AtomicEmfChangeRecorder()
 		this.rootElement = createRootInResource(1);
 	}
 

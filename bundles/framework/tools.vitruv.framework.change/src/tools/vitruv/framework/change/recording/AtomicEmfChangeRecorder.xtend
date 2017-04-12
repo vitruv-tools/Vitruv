@@ -11,7 +11,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.description.TransactionalChange
 
-class AtomicEMFChangeRecorder {
+class AtomicEmfChangeRecorder {
 	var List<ChangeDescription> changeDescriptions;
 	var VURI modelVURI;
 	var Collection<Notifier> elementsToObserve
