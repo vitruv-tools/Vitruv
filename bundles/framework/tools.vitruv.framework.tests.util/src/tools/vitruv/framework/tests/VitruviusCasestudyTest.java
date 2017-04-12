@@ -55,7 +55,6 @@ public abstract class VitruviusCasestudyTest {
 	private ResourceSet resourceSet;
 	protected TestUserInteractor testUserInteractor;
 
-	protected String currentTestProjectName;
 	protected IProject currentTestProject;
 
 	private InternalVirtualModel virtualModel;
@@ -83,11 +82,11 @@ public abstract class VitruviusCasestudyTest {
 	}
 	
 	protected IProject initializeTestProject(final String testName) throws CoreException {
-		this.currentTestProjectName = TestUtil.PROJECT_URI + "_" + testName;
+		String testProjectName = TestUtil.PROJECT_URI + "_" + testName;
 		if (ADD_TIMESTAMP_TO_PROJECT_NAMES) {
-			this.currentTestProjectName = TestUtil.getStringWithTimestamp(this.currentTestProjectName);
+			testProjectName = TestUtil.getStringWithTimestamp(testProjectName);
 		}
-		IProject testProject = TestUtil.getProjectByName(this.currentTestProjectName);
+		IProject testProject = TestUtil.getProjectByName(testProjectName);
 		if (!testProject.exists()) {
 			this.createProject(testProject);
 		}
@@ -119,7 +118,7 @@ public abstract class VitruviusCasestudyTest {
 	}
 
 	private String getPlatformModelPath(final String modelPathWithinProject) {
-		return this.currentTestProjectName + "/" + modelPathWithinProject;
+		return this.currentTestProject.getName() + "/" + modelPathWithinProject;
 	}
 
 	private VURI getModelVuri(String modelPathWithinProject) {
