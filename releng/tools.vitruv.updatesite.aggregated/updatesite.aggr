@@ -5,13 +5,7 @@
       <repositories location="../tools.vitruv.updatesite/target/repository"/>
     </contributions>
     <contributions label="externals">
-      <repositories location="http://download.eclipse.org/releases/neon/" mirrorArtifacts="false">
-        <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.9.0" categories="//@customCategories[identifier='externals']"/>
-        <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0" categories="//@customCategories[identifier='externals']"/>
-        <features name="org.eclipse.emf.common.feature.group" versionRange="2.12.0" categories="//@customCategories[identifier='externals']"/>
-        <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.10.0" categories="//@customCategories[identifier='externals']"/>
-        <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.10.0" categories="//@customCategories[identifier='externals']"/>
-      </repositories>
+      <repositories location="http://download.eclipse.org/releases/neon/" mirrorArtifacts="false"/>
       <repositories location="http://vitruv-tools.github.io/updatesite/release/license">
         <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)" categories="//@customCategories[identifier='externals']"/>
       </repositories>
@@ -27,5 +21,5 @@
   <configurations operatingSystem="linux" windowSystem="gtk" architecture="x86_64"/>
   <configurations operatingSystem="macosx" windowSystem="cocoa"/>
   <configurations operatingSystem="macosx" windowSystem="cocoa" architecture="x86_64"/>
-  <customCategories identifier="externals" label="External Dependencies" features="//@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.1 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.2 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.3 //@validationSets[label='main']/@contributions[label='externals']/@repositories.1/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.2/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.2/@features.1 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.4"/>
+  <customCategories identifier="externals" label="External Dependencies" features="//@validationSets[label='main']/@contributions[label='externals']/@repositories.1/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.2/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.2/@features.1"/>
 </aggregator:Aggregation>
