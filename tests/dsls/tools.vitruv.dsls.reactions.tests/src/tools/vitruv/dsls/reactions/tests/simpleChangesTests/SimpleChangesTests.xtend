@@ -28,7 +28,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
 	
 	private def Root getRootElement() {
-		return TEST_SOURCE_MODEL_NAME.projectModelPath.root as Root;
+		return TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root;
 	}
 	
 	private def String getProjectModelPath(String modelName) {
@@ -36,7 +36,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 	
 	private def assertModelsEqual() {
-		assertModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 	}
 	
 	protected override initializeTestModel() {
@@ -464,7 +464,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
-		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 	}
 	
 	@Test
@@ -473,7 +473,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
 		assertModelExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
-		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 		deleteAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);

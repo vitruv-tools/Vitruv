@@ -2,9 +2,9 @@ package tools.vitruv.framework.tests;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -14,10 +14,6 @@ import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder;
-import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
-import tools.vitruv.framework.modelsynchronization.ChangePropagationAbortCause;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 
@@ -28,36 +24,21 @@ import tools.vitruv.framework.util.datatypes.VURI;
  *
  */
 
-public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements ChangePropagationListener {
+public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest {
 
 	protected AtomicEMFChangeRecorder changeRecorder;
 
-	/**
-	 * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM,
-	 * Metarepository etc. before each test
-	 *
-	 * @throws Throwable
-	 */
 	@Override
 	public void beforeTest() throws Throwable {
 		super.beforeTest();
 		this.changeRecorder = new AtomicEMFChangeRecorder();
 	}
 
-	protected abstract List<Metamodel> createMetamodels();
-
 	@Override
 	public void afterTest() {
 		if (changeRecorder.isRecording()) {
 			changeRecorder.endRecording();
 		}
-	}
-
-	@Override
-	protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
-		// TODO HK Implement correctly
-		Iterator<Metamodel> it = metamodels.iterator();
-		return this.getVirtualModel().getCorrespondenceModel(it.next().getURI(), it.next().getURI());
 	}
 
 	protected void triggerSynchronization(final VURI vuri) {
@@ -79,24 +60,31 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 		this.getVirtualModel().propagateChange(fileChange);
 	}
 
-	@Override
-	public void startedChangePropagation() {
-
-	}
-
-	@Override
-	public void finishedChangePropagation() {
-
-	}
-
-	@Override
-	public void abortedChangePropagation(final ChangePropagationAbortCause cause) {
-
-	}
-
 	protected void saveAndSynchronizeChanges(EObject object) throws IOException {
 		EcoreResourceBridge.saveResource(object.eResource());
 		this.triggerSynchronization(VURI.getInstance(object.eResource()));
 	}
+
+	protected void createAndSynchronizeModel(String modelPathInProject, EObject rootElement) throws IOException {
+		if (StringUtils.isEmpty(modelPathInProject) || rootElement == null) {
+			throw new IllegalArgumentException();
+		}
+		Resource resource = createModelResource(modelPathInProject);
+		EcoreResourceBridge.saveResource(resource);
+		this.changeRecorder.beginRecording(VURI.getInstance(resource), Collections.singleton(resource));
+		resource.getContents().add(rootElement);
+		saveAndSynchronizeChanges(rootElement);
+	}
 	
+	protected void deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
+		if (StringUtils.isEmpty(modelPathInProject)) {
+			throw new IllegalArgumentException();
+		}
+		Resource resource = getModelResource(modelPathInProject);
+		VURI vuri = VURI.getInstance(resource);
+		resource.delete(Collections.EMPTY_MAP);
+		triggerSynchronization(vuri);
+	}
+	
+
 }
