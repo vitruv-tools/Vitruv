@@ -1,7 +1,8 @@
 package tools.vitruv.framework.tests.vsum;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
+import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -32,20 +33,18 @@ public class MetaRepositoryTest {
     public static void beforeClass() {
         // initialize Logger when not done yet
         TestUtil.initializeLogger();
-        TestUtil.deleteAllProjectFolderCopies(PROJECT_FOLDER_NAME);
-        TestUtil.clearMetaProject(VSUM_NAME);
+        // TestUtil.deleteAllProjectFolderCopies(PROJECT_FOLDER_NAME);
+        // TestUtil.clearMetaProject(VSUM_NAME);
     }
 
     @Before
     public void beforeTest() {
-        this.currentProjectFolderName = TestUtil.createProjectFolderWithTimestamp(PROJECT_FOLDER_NAME);
+        try {
+            this.currentProjectFolderName = TestUtil.createProject(PROJECT_FOLDER_NAME, true).getName();
+        } catch (CoreException e) {
+            fail("Exception during creation of test project");
+        }
         TuidManager.getInstance().reinitialize();
-    }
-
-    public MetamodelRepositoryImpl createMetaRepository() {
-        MetamodelRepositoryImpl metaRepository = new MetamodelRepositoryImpl();
-        assertNotNull(metaRepository);
-        return metaRepository;
     }
 
     public Metamodel testAddMetamodel(final MetamodelRepositoryImpl metaRepository, final String nsURI, final VURI uri,

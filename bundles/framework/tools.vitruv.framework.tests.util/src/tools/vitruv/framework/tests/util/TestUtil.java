@@ -1,6 +1,7 @@
 package tools.vitruv.framework.tests.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -61,12 +62,18 @@ public final class TestUtil {
 		return path;
 	}
 	
-	public static IProject createProject(String projectName) throws CoreException {
-		return createProject(projectName, false);
-	}
-	
 	public static IProject createProject(String projectName, boolean addTimestamp) throws CoreException {
-		IProject testProject = TestUtil.getProjectByName(projectName);
+		String finalProjectName = projectName;
+		if (addTimestamp) {
+			finalProjectName = getStringWithTimestamp(projectName);
+		}
+		IProject testProject = TestUtil.getProjectByName(finalProjectName);
+		
+		// If project exists, add an index
+		int counter = 1;
+		while (testProject.exists()) {
+			testProject = TestUtil.getProjectByName(finalProjectName + "--" + counter++);
+		}
 		
 		// copied from: https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
 		testProject.create(new NullProgressMonitor());
@@ -102,11 +109,11 @@ public final class TestUtil {
 	
 	
     public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels) {
-        return createVirtualModel(vsumName, false, metamodels, new ArrayList<ChangePropagationSpecification>());
+        return createVirtualModel(vsumName, false, metamodels, Collections.emptyList());
     }
     
-    public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-        return createVirtualModel(vsumName, false, metamodels, changePropagationSpecifications);
+    public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestamp, final Iterable<Metamodel> metamodels) {
+        return createVirtualModel(vsumName, addTimestamp, metamodels, Collections.emptyList());
     }
     
     public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestamp, 
@@ -115,10 +122,10 @@ public final class TestUtil {
     	if (addTimestamp) {
     		finalVsumName = getStringWithTimestamp(finalVsumName);
     	}
-        return createVirtualModel(finalVsumName, metamodels, changePropagationSpecifications, null);
+        return createVirtualModel(finalVsumName, metamodels, changePropagationSpecifications);
     }
 
-    public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications, final ClassLoader classLoader) {
+    public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
         VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
         for (Metamodel metamodel : metamodels) {
         	vmodelConfig.addMetamodel(metamodel);
@@ -126,7 +133,7 @@ public final class TestUtil {
         for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
         	vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
         }
-    	final InternalVirtualModel vmodel = new VirtualModelImpl(vsumName, vmodelConfig, classLoader);
+    	final InternalVirtualModel vmodel = new VirtualModelImpl(vsumName, vmodelConfig, null);
         return vmodel;
     }
 
@@ -211,30 +218,6 @@ public final class TestUtil {
         final boolean samePrefix = currentProjectName.startsWith(originalProjectName);
         final boolean copyOfOriginalProject = samePrefix && !currentProjectName.equals(originalProjectName);
         return copyOfOriginalProject;
-    }
-
-    public static String createProjectFolderWithTimestamp(final String projectName) {
-        final String timestamp = "" + System.currentTimeMillis();
-        try {
-            return createProjectWithSuffix(projectName, timestamp);
-        } catch (final CoreException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
-    }
-    
-    private static String createProjectWithSuffix(final String projectName, final String suffix)
-            throws CoreException {
-        String projectCopyName = projectName + suffix;
-        int count = 0;
-        IProject project = FileSystemHelper.getProject(projectCopyName + count);
-        while (project.exists()) {
-            count++;
-            project = FileSystemHelper.getProject(projectCopyName + count);
-        }
-        project.create(null);
-        project.open(null);
-        return project.getName();
     }
 
     public static void clearMetaProject(String vsumName) {

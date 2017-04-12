@@ -69,11 +69,12 @@ public abstract class VitruviusApplicationTest {
 	}
 	
 	protected IProject initializeTestProject(final String testName) {
+		String testProjectName = TestUtil.PROJECT_URI + "_" + testName;
 		IProject testProject = null;
 		try {
-			testProject = TestUtil.createProject(testName, ADD_TIMESTAMP_TO_PROJECT_NAMES); 
+			testProject = TestUtil.createProject(testProjectName, ADD_TIMESTAMP_TO_PROJECT_NAMES); 
 		} catch (CoreException e) {
-			fail("Failed on creation of test project");
+			fail("Exception during creation of test project");
 		}
 		return testProject;
 	}
