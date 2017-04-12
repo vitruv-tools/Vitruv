@@ -39,7 +39,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest {
 		}
 	}
 
-	protected void triggerSynchronization(final VURI vuri) {
+	private void triggerSynchronization(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		this.getVirtualModel().propagateChange(compositeChange);
