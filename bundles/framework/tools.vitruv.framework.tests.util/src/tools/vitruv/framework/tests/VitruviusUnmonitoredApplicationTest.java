@@ -23,10 +23,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Basic test class for all Vitruvius application tests that require a test project 
- * and a VSUM project within the test workspace. The class creates a test project and a VSUM
- * for each test case within the workspace of the Eclipse test instance.
- * It provides several methods for handling models and their resources.
+ * Basic test class for all Vitruvius application tests that require a test
+ * project and a VSUM project within the test workspace. The class creates a
+ * test project and a VSUM for each test case within the workspace of the
+ * Eclipse test instance. It provides several methods for handling models and
+ * their resources.
  *
  * @author langhamm
  * @author Heiko Klare
