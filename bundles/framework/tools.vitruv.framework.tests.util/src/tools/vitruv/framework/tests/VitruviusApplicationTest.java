@@ -31,7 +31,6 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class VitruviusApplicationTest extends VitruviusTest {
 
-
 	private ResourceSet resourceSet;
 	private TestUserInteractor testUserInteractor;
 	private InternalVirtualModel virtualModel;
