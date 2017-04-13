@@ -23,7 +23,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Base class for all Vitruvius application tests
+ * Basic test class for all Vitruvius application tests that require a test project 
+ * and a VSUM project within the test workspace. The class creates a test project and a VSUM
+ * for each test case within the workspace of the Eclipse test instance.
+ * It provides several methods for handling models and their resources.
  *
  * @author langhamm
  * @author Heiko Klare
@@ -34,7 +37,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	private ResourceSet resourceSet;
 	private TestUserInteractor testUserInteractor;
 	private InternalVirtualModel virtualModel;
-	private Iterable<Metamodel> metamodels;
+	private CorrespondenceModel correspondenceModel;
 
 	protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
 
@@ -53,18 +56,19 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 
 	private void createVirtualModel(final String testName) {
 		String currentTestProjectVsumName = testName + "_vsum_";
-		this.metamodels = this.createMetamodels();
+		Iterable<Metamodel> metamodels = this.createMetamodels();
 		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, metamodels,
 				createChangePropagationSpecifications());
+		// TODO HK Implement correctly: Should be obsolete when correspondence
+		// model is not MM-pair-specific any more
+		Iterator<Metamodel> it = metamodels.iterator();
+		this.correspondenceModel = virtualModel.getCorrespondenceModel(it.next().getURI(), it.next().getURI());
 		this.testUserInteractor = new TestUserInteractor();
 		this.getVirtualModel().setUserInteractor(testUserInteractor);
 	}
 
-	protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
-		// TODO HK Implement correctly: Should be obsolete when correspondence
-		// model is not MM-pair-specific any more
-		Iterator<Metamodel> it = metamodels.iterator();
-		return this.getVirtualModel().getCorrespondenceModel(it.next().getURI(), it.next().getURI());
+	protected CorrespondenceModel getCorrespondenceModel() {
+		return correspondenceModel;
 	}
 
 	protected InternalVirtualModel getVirtualModel() {
