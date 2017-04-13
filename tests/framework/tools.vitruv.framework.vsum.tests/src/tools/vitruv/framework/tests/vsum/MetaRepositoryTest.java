@@ -38,7 +38,7 @@ public class MetaRepositoryTest {
     @Before
     public void beforeTest() {
         try {
-            this.currentProjectFolderName = TestUtil.createProject(PROJECT_FOLDER_NAME, true).getName();
+            this.currentProjectFolderName = TestUtil.createProject(PROJECT_FOLDER_NAME).getName();
         } catch (CoreException e) {
             fail("Exception during creation of test project");
         }

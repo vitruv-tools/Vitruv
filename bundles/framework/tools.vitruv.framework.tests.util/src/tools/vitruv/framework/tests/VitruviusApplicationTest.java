@@ -37,8 +37,6 @@ import static org.junit.Assert.fail;
  *
  */
 public abstract class VitruviusApplicationTest {
-	private static final boolean ADD_TIMESTAMP_TO_PROJECT_NAMES = true;
-
 	@Rule
 	public TestName testName = new TestName();
 
@@ -49,6 +47,7 @@ public abstract class VitruviusApplicationTest {
 	private Iterable<Metamodel> metamodels;
 
 	protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
+
 	protected abstract Iterable<Metamodel> createMetamodels();
 
 	@BeforeClass
@@ -67,26 +66,25 @@ public abstract class VitruviusApplicationTest {
 		this.currentTestProject = initializeTestProject(testMethodName);
 		createVirtualModel(testMethodName);
 	}
-	
+
 	protected IProject initializeTestProject(final String testName) {
 		IProject testProject = null;
 		try {
-			testProject = TestUtil.createProject(testName, ADD_TIMESTAMP_TO_PROJECT_NAMES); 
+			testProject = TestUtil.createProject(testName);
 		} catch (CoreException e) {
 			fail("Exception during creation of test project");
 		}
 		return testProject;
 	}
-	
+
 	private void createVirtualModel(final String testName) {
 		String currentTestProjectVsumName = testName + "_vsum_";
 		this.metamodels = this.createMetamodels();
-		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, ADD_TIMESTAMP_TO_PROJECT_NAMES,
-				metamodels,	createChangePropagationSpecifications());
+		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, metamodels,
+				createChangePropagationSpecifications());
 		this.testUserInteractor = new TestUserInteractor();
 		this.getVirtualModel().setUserInteractor(testUserInteractor);
 	}
-	
 
 	protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
 		// TODO HK Implement correctly: Should be obsolete when correspondence
@@ -98,11 +96,11 @@ public abstract class VitruviusApplicationTest {
 	protected InternalVirtualModel getVirtualModel() {
 		return virtualModel;
 	}
-	
+
 	protected IProject getCurrentTestProject() {
 		return currentTestProject;
 	}
-	
+
 	protected TestUserInteractor getUserInteractor() {
 		return testUserInteractor;
 	}
@@ -118,11 +116,11 @@ public abstract class VitruviusApplicationTest {
 	protected Resource createModelResource(String modelPathWithinProject) {
 		return resourceSet.createResource(getModelVuri(modelPathWithinProject).getEMFUri());
 	}
-	
+
 	private Resource getModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
 		return resourceSet.getResource(getModelVuri(modelPathWithinProject).getEMFUri(), true);
 	}
-	
+
 	protected Resource getModelResource(String modelPathWithinProject) {
 		return getModelResource(modelPathWithinProject, this.resourceSet);
 	}
@@ -141,14 +139,14 @@ public abstract class VitruviusApplicationTest {
 
 	protected void assertModelExists(String modelPathWithinProject) {
 		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
-		assertTrue("Model at " + modelPathWithinProject +  " does not exist bust should", modelExists);
+		assertTrue("Model at " + modelPathWithinProject + " does not exist bust should", modelExists);
 	}
-	
+
 	protected void assertModelNotExists(String modelPathWithinProject) {
 		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
 		assertFalse("Model at " + modelPathWithinProject + " exists but should not", modelExists);
 	}
-	
+
 	protected void assertPersistedModelsEqual(String firstModelPathWithinProject, String secondModelPathWithinProject) {
 		ResourceSet testResourceSet = new ResourceSetImpl();
 		EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet);
