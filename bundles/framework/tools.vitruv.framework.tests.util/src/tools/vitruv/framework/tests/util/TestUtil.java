@@ -131,7 +131,7 @@ public final class TestUtil {
         for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
         	vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
         }
-    	final InternalVirtualModel vmodel = new VirtualModelImpl(vsumName, vmodelConfig, null);
+    	final InternalVirtualModel vmodel = new VirtualModelImpl(vsumName, vmodelConfig);
         return vmodel;
     }
 
