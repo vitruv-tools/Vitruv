@@ -41,8 +41,6 @@ import tools.vitruv.framework.vsum.VirtualModelImpl;
  */
 public final class TestUtil {
 
-	public static final String PROJECT_URI = "MockupProject";
-	public static final int WAITING_TIME_FOR_SYNCHRONIZATION = 1 * 1000;
 	public static final String SOURCE_FOLDER = "src";
 
 	/**
