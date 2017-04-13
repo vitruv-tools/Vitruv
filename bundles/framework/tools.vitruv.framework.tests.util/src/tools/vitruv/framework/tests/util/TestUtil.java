@@ -203,19 +203,6 @@ public final class TestUtil {
 		}
 	}
 
-	public static void waitForSynchronization(final int waitingTimeForSynchronization) {
-		try {
-			Thread.sleep(waitingTimeForSynchronization);
-		} catch (final InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void waitForSynchronization() {
-		TestUtil.waitForSynchronization(WAITING_TIME_FOR_SYNCHRONIZATION);
-	}
-
 	public static IProject getProjectByName(final String projectName) {
 		final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		return iProject;
