@@ -11,11 +11,11 @@ import tools.vitruv.framework.change.echange.EChange
 import org.junit.Assert
 import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.common.util.URI
 import java.io.File
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import java.util.ArrayList
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+import tools.vitruv.framework.util.bridges.EMFBridge
 
 /** 
  * @author langhamm
@@ -25,8 +25,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	var protected Root rootElement
 	var private List<EChange> changes
 	var rs = new ResourceSetImpl
-	var protected String uriFragment = tempDirPath + "dummyURI"
-	val private List<String> urisToDelete = new ArrayList<String>();
+	val private List<File> filesToDelete = new ArrayList<File>();
 
 	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
 	public static val SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "singleValuedNonContainmentEReference"
@@ -35,17 +34,6 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	public static val MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference"
 	public static val MULTI_VALUE_E_ATTRIBUTE_NAME = "multiValuedEAttribute"
 
-	def private String getTempDirPath() {
-		var path = System.getProperty("java.io.tmpdir").replace("\\", "/");
-		if (path.startsWith("/")) {
-			path = path.substring(1);
-		}
-		if (!path.endsWith("/")) {
-			path = path + "/";
-		}
-		return path;
-	}
-	
 	new() {
 		rs.resourceFactoryRegistry.extensionToFactoryMap.put("xmi", new XMIResourceFactoryImpl());
 	}
@@ -53,9 +41,10 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	protected def Root createRootInResource(int count) {
 		val rootElement = AllElementTypesFactory.eINSTANCE.createRoot()
 		rootElement.nonRootObjectContainerHelper = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper()
-		val uri = uriFragment + count + ".xmi";
-		val resource = rs.createResource(URI.createFileURI(uri))
-		urisToDelete += uri;
+		val tmpFile = File.createTempFile("dummyURI" + count, ".xmi");
+		val uri = EMFBridge.getEmfFileUriForFile(tmpFile);
+		val resource = rs.createResource(uri)
+		filesToDelete += tmpFile;
 		resource.contents += rootElement;
 		return rootElement;
 	}
@@ -75,8 +64,8 @@ abstract class ChangeDescription2ChangeTransformationTest {
 			this.changeRecorder.endRecording()
 		}
 		this.changeRecorder.dispose()
-		for (uri : urisToDelete) {
-			new File(uri).delete();
+		for (file : filesToDelete) {
+			file.delete();
 		}
 	}
 
