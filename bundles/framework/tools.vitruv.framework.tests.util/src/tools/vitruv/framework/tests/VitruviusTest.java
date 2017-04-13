@@ -21,7 +21,7 @@ import tools.vitruv.framework.tuid.TuidManager;
  * 
  * @author Heiko Klare
  */
-public class VitruviusTest {
+public abstract class VitruviusTest {
 	@Rule
 	public TestName testName = new TestName();
 
