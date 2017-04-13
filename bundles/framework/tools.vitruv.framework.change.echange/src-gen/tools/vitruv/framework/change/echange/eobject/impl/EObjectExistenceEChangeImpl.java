@@ -2,7 +2,13 @@
  */
 package tools.vitruv.framework.change.echange.eobject.impl;
 
+import com.google.common.base.Objects;
+
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -10,10 +16,15 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.EChangePackage;
+
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
+
+import tools.vitruv.framework.change.echange.resolve.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,6 +35,7 @@ import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getStagingArea <em>Staging Area</em>}</li>
  * </ul>
  *
  * @generated
@@ -38,6 +50,26 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * @ordered
 	 */
 	protected A affectedEObject;
+
+	/**
+	 * The default value of the '{@link #getStagingArea() <em>Staging Area</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStagingArea()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final StagingArea STAGING_AREA_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getStagingArea() <em>Staging Area</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStagingArea()
+	 * @generated
+	 * @ordered
+	 */
+	protected StagingArea stagingArea = STAGING_AREA_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -65,7 +97,7 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 */
 	@SuppressWarnings("unchecked")
 	public A getAffectedEObject() {
-		if (affectedEObject != null && affectedEObject.eIsProxy()) {
+		if (affectedEObject != null && ((EObject)affectedEObject).eIsProxy()) {
 			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
 			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
 			if (affectedEObject != oldAffectedEObject) {
@@ -102,12 +134,44 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public StagingArea getStagingArea() {
+		return stagingArea;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setStagingArea(StagingArea newStagingArea) {
+		StagingArea oldStagingArea = stagingArea;
+		stagingArea = newStagingArea;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA, oldStagingArea, stagingArea));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isResolved() {
+		return (((super.isResolved() && (!Objects.equal(this.getAffectedEObject(), null))) && (!this.getAffectedEObject().eIsProxy())) && (!Objects.equal(this.getStagingArea(), null)));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT:
 				if (resolve) return getAffectedEObject();
 				return basicGetAffectedEObject();
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
+				return getStagingArea();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -124,6 +188,9 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)newValue);
 				return;
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
+				setStagingArea((StagingArea)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -139,6 +206,9 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)null);
 				return;
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
+				setStagingArea(STAGING_AREA_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -153,8 +223,56 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 		switch (featureID) {
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT:
 				return affectedEObject != null;
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
+				return STAGING_AREA_EDEFAULT == null ? stagingArea != null : !STAGING_AREA_EDEFAULT.equals(stagingArea);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+		if (baseClass == EChange.class) {
+			switch (baseOperationID) {
+				case EChangePackage.ECHANGE___IS_RESOLVED: return EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		return super.eDerivedOperationID(baseOperationID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED:
+				return isResolved();
+		}
+		return super.eInvoke(operationID, arguments);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (stagingArea: ");
+		result.append(stagingArea);
+		result.append(')');
+		return result.toString();
 	}
 
 } //EObjectExistenceEChangeImpl

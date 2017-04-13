@@ -11,22 +11,51 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
 
-abstract class UpdateAttributeEChange<A extends EObject> extends FeatureEChange<A, EAttribute> {
+type EObj wraps EObject
+
+/**
+ * Abstract EChange which updates the value of an attribute.
+ */
+abstract class UpdateAttributeEChange<A extends EObj> extends FeatureEChange<A, EAttribute> {
 }
 
-abstract class AdditiveAttributeEChange<A extends EObject, T extends Object> extends AdditiveEChange<T>, UpdateAttributeEChange<A> {
+/**
+ * Abstract EChange which inserts a new value into an attribute.
+ */
+abstract class AdditiveAttributeEChange<A extends EObj, T extends Object> extends UpdateAttributeEChange<A>, AdditiveEChange<T> {
+	/**
+	 * The value which will be inserted.
+	 */
 	T[1] newValue
 }
 
-abstract class SubtractiveAttributeEChange<A extends EObject, T extends Object> extends SubtractiveEChange<T>, UpdateAttributeEChange<A> {
+/**
+ * Abstract EChange which removes a value from an attribute.
+ */
+abstract class SubtractiveAttributeEChange<A extends EObj, T extends Object> extends UpdateAttributeEChange<A>, SubtractiveEChange<T> {
+	/**
+	 * The value which will be removed.
+	 */
 	T[1] oldValue
 }
 
-class InsertEAttributeValue<A extends EObject, T extends Object> extends InsertInListEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T> {
+/**
+ * EChange which inserts a new value into a many valued attribute.
+ */
+class InsertEAttributeValue<A extends EObj, T extends Object> extends InsertInListEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T> {
+
 }
 
-class RemoveEAttributeValue<A extends EObject, T extends Object> extends RemoveFromListEChange<A, EAttribute, T>, SubtractiveAttributeEChange<A, T> {
+/**
+ * EChange which removes the value of a many valued attribute.
+ */
+class RemoveEAttributeValue<A extends EObj, T extends Object> extends RemoveFromListEChange<A, EAttribute, T>, SubtractiveAttributeEChange<A, T> {
+
 }
 
-class ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EAttribute, T> {
+/**
+ * EChange which replaces the value of the single valued attribute.
+ */
+class ReplaceSingleValuedEAttribute<A extends EObj, T extends Object> extends ReplaceSingleValuedFeatureEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T> {
+
 }

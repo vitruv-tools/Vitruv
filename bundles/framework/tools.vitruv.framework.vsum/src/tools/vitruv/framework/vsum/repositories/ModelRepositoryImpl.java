@@ -157,6 +157,11 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     @Override
+    public ResourceSet getResourceSet() {
+        return this.resourceSet;
+    }
+
+    @Override
     public void saveAllModels() {
         logger.debug("Saving all models of model repository for VSUM: " + this.vsumName);
         saveAllChangedModels();

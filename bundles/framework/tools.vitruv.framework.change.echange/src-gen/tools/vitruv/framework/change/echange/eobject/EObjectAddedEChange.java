@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * A representation of the model object '<em><b>EObject Added EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which inserts an EObject into a resource or reference.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -19,7 +24,7 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectAddedEChange()
- * @model abstract="true"
+ * @model abstract="true" TBounds="tools.vitruv.framework.change.echange.eobject.EObj"
  * @generated
  */
 public interface EObjectAddedEChange<T extends EObject> extends AdditiveEChange<T> {
@@ -34,7 +39,7 @@ public interface EObjectAddedEChange<T extends EObject> extends AdditiveEChange<
 	 * @return the value of the '<em>New Value</em>' reference.
 	 * @see #setNewValue(EObject)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectAddedEChange_NewValue()
-	 * @model required="true"
+	 * @model kind="reference" required="true"
 	 * @generated
 	 */
 	T getNewValue();

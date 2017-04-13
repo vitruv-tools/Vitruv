@@ -256,6 +256,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
+		compareMonitor.set(ChangeType.CreateEObject);
 		compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
@@ -268,6 +269,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
 		unsetSingleValuedContainmentNonRootObject(rootElement);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
+		compareMonitor.set(ChangeType.DeleteEObject);
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
 		//compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
 		compareMonitor.assertEqualWithStatic();

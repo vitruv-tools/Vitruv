@@ -5,18 +5,21 @@ import java.util.Collections
 import java.util.HashSet
 import java.util.List
 import java.util.Set
+import java.util.concurrent.Callable
 import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.description.CompositeContainerChange
-import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.correspondence.CorrespondenceProviding
+import tools.vitruv.framework.change.description.CreateFileChange
+import tools.vitruv.framework.change.description.DeleteFileChange
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
+import tools.vitruv.framework.correspondence.CorrespondenceProviding
 import tools.vitruv.framework.metamodel.MetamodelRepository
 import tools.vitruv.framework.metamodel.ModelRepository
-import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
-import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.framework.util.command.EMFCommandBridge
 
 class ChangePropagatorImpl implements ChangePropagator {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -53,9 +56,9 @@ class ChangePropagatorImpl implements ChangePropagator {
 		if (!change.validate()) {
 			throw new IllegalArgumentException('''Change contains changes from different models: «change»''')
 		}
-		
-		startChangePropagation(change);
-		change.applyBackward()
+
+
+		startChangePropagation(change);	
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		val propagationResult = new ChangePropagationResult();
@@ -90,14 +93,39 @@ class ChangePropagatorImpl implements ChangePropagator {
 		}
 	}
 
-	private def dispatch void propagateSingleChange(TransactionalChange change, 
-		List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult,
-		ChangedResourcesTracker changedResourcesTracker) {
-		change.applyForward();
+	private def dispatch void propagateSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+
+			
+		modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+			override call() {
+				change.resolveBeforeAndApplyForward(modelProviding.resourceSet)
+				return null
+			}
+		})
+		
+		propagateChangeToOtherModels(change, commandExecutionChanges, propagationResult, changedResourcesTracker)
+	}
+	
+	private def dispatch void propagateSingleChange(CreateFileChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+		modelProviding.getModel(change.URI)
+		
+		propagateChangeToOtherModels(change, commandExecutionChanges, propagationResult, changedResourcesTracker)
+	}
+	
+	private def dispatch void propagateSingleChange(DeleteFileChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+		// TODO: Elbert S. Delete / Apply change
+		propagateChangeToOtherModels(change, commandExecutionChanges, propagationResult, changedResourcesTracker)			
+	}
+	
+	private def void propagateChangeToOtherModels(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		val changeMetamodel = metamodelRepository.getMetamodel(change.URI.fileExtension);
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeMetamodel.URI)) {
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
-		}
+		}			
 	}
 	
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,

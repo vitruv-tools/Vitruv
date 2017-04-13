@@ -16,6 +16,11 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  * A representation of the model object '<em><b>Remove And Delete EObject</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which removes an EObject from a reference and deletes it.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -25,7 +30,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getRemoveAndDeleteEObject()
- * @model abstract="true"
+ * @model abstract="true" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubtractedEChange<T>> extends CompoundEChange {
