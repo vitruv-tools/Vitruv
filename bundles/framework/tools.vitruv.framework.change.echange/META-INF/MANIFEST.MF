@@ -8,6 +8,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.framework.change.echange,
+ tools.vitruv.framework.change.echange.command,
  tools.vitruv.framework.change.echange.compound,
  tools.vitruv.framework.change.echange.compound.impl,
  tools.vitruv.framework.change.echange.compound.util,
@@ -30,6 +31,7 @@ Export-Package: tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.echange.feature.single.util,
  tools.vitruv.framework.change.echange.feature.util,
  tools.vitruv.framework.change.echange.impl,
+ tools.vitruv.framework.change.echange.resolve,
  tools.vitruv.framework.change.echange.root,
  tools.vitruv.framework.change.echange.root.impl,
  tools.vitruv.framework.change.echange.root.util,
@@ -42,6 +44,8 @@ Require-Bundle: com.google.guava,
  org.eclipse.emf.ecore;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.emf,
  org.eclipse.emf.ecore.xcore.lib,
- tools.vitruv.framework.change.echange;visibility:=reexport
+ tools.vitruv.framework.change.echange;visibility:=reexport,
+ org.eclipse.emf.ecore.edit,
+ tools.vitruv.framework.util
 Bundle-ActivationPolicy: lazy
 

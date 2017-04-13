@@ -14,7 +14,7 @@ class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChan
 		insertRootEObjectInResource(resource)
 		// assert
 		val isCreate = true
-		assertInsertRoot(0, isCreate, resource.URI.toFileString)
+		assertInsertRoot(0, isCreate, resource)
 		//claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
 	}
 	
@@ -30,13 +30,13 @@ class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChan
 		insertRootEObjectInResource(resource1)
 		// assert
 		val isCreate = true
-		assertInsertRoot(0, isCreate, resource1.URI.toFileString)
+		assertInsertRoot(0, isCreate, resource1)
 		
 		startRecording
 		// test
 		insertRootEObjectInResource2(resource2)
 		// assert
-		assertInsertRoot2(0, isCreate, resource2.URI.toFileString)
+		assertInsertRoot2(0, isCreate, resource2)
 		
 		//claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
 	}

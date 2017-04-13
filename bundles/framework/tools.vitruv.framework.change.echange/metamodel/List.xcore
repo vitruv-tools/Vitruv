@@ -8,12 +8,24 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange
 
-abstract class UpdateSingleListEntryEChange<A extends EObject, F extends EStructuralFeature> extends UpdateMultiValuedFeatureEChange<A, F> {
+type EObj wraps EObject
+type EFeat wraps EStructuralFeature
+
+/**
+ * Abstract EChange which changes an EList.
+ */
+abstract class UpdateSingleListEntryEChange<A extends EObj, F extends EFeat> extends UpdateMultiValuedFeatureEChange<A, F> {
 	int[1] index = "0"
 }
 
-abstract class InsertInListEChange<A extends EObject, F extends EStructuralFeature, T extends Object> extends UpdateSingleListEntryEChange<A, F>, AdditiveEChange<T> {
+/** 
+ * Abstract EChange which inserts a value into an EList.
+ */
+abstract class InsertInListEChange<A extends EObj, F extends EFeat, T extends Object> extends UpdateSingleListEntryEChange<A, F>, AdditiveEChange<T> {
 }
 
-abstract class RemoveFromListEChange<A extends EObject, F extends EStructuralFeature, T extends Object> extends UpdateSingleListEntryEChange<A, F>, SubtractiveEChange<T> {
+/**
+ * Abstract EChange which removes a value from an EList.
+ */
+abstract class RemoveFromListEChange<A extends EObj, F extends EFeat, T extends Object> extends UpdateSingleListEntryEChange<A, F>, SubtractiveEChange<T> {
 }

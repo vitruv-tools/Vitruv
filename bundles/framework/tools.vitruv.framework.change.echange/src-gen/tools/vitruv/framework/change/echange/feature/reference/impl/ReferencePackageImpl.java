@@ -2,14 +2,20 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
+import org.eclipse.emf.common.command.Command;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
@@ -76,6 +82,27 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * @generated
 	 */
 	private EClass replaceSingleValuedEReferenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eObjEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType resourceSetEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType commandEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -193,6 +220,15 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getInsertEReference__IsResolved() {
+		return insertEReferenceEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getRemoveEReference() {
 		return removeEReferenceEClass;
 	}
@@ -202,8 +238,53 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getRemoveEReference__IsResolved() {
+		return removeEReferenceEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getReplaceSingleValuedEReference() {
 		return replaceSingleValuedEReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getReplaceSingleValuedEReference__IsResolved() {
+		return replaceSingleValuedEReferenceEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEObj() {
+		return eObjEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getResourceSet() {
+		return resourceSetEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getCommand() {
+		return commandEDataType;
 	}
 
 	/**
@@ -242,10 +323,18 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		subtractiveReferenceEChangeEClass = createEClass(SUBTRACTIVE_REFERENCE_ECHANGE);
 
 		insertEReferenceEClass = createEClass(INSERT_EREFERENCE);
+		createEOperation(insertEReferenceEClass, INSERT_EREFERENCE___IS_RESOLVED);
 
 		removeEReferenceEClass = createEClass(REMOVE_EREFERENCE);
+		createEOperation(removeEReferenceEClass, REMOVE_EREFERENCE___IS_RESOLVED);
 
 		replaceSingleValuedEReferenceEClass = createEClass(REPLACE_SINGLE_VALUED_EREFERENCE);
+		createEOperation(replaceSingleValuedEReferenceEClass, REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED);
+
+		// Create data types
+		eObjEDataType = createEDataType(EOBJ);
+		resourceSetEDataType = createEDataType(RESOURCE_SET);
+		commandEDataType = createEDataType(COMMAND);
 	}
 
 	/**
@@ -294,25 +383,25 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		// Set bounds for type parameters
 		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
 		updateReferenceEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		additiveReferenceEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		additiveReferenceEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		subtractiveReferenceEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		subtractiveReferenceEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		insertEReferenceEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		insertEReferenceEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeEReferenceEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeEReferenceEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		replaceSingleValuedEReferenceEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		replaceSingleValuedEReferenceEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
@@ -322,20 +411,20 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		g2 = createEGenericType(theEcorePackage.getEReference());
 		g1.getETypeArguments().add(g2);
 		updateReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getUpdateReferenceEChange());
+		g2 = createEGenericType(additiveReferenceEChangeEClass_A);
+		g1.getETypeArguments().add(g2);
+		additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theEobjectPackage.getEObjectAddedEChange());
 		g2 = createEGenericType(additiveReferenceEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getUpdateReferenceEChange());
-		g2 = createEGenericType(additiveReferenceEChangeEClass_A);
-		g1.getETypeArguments().add(g2);
-		additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theEobjectPackage.getEObjectSubtractedEChange());
-		g2 = createEGenericType(subtractiveReferenceEChangeEClass_T);
+		g2 = createEGenericType(subtractiveReferenceEChangeEClass_A);
 		g1.getETypeArguments().add(g2);
 		subtractiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateReferenceEChange());
-		g2 = createEGenericType(subtractiveReferenceEChangeEClass_A);
+		g1 = createEGenericType(theEobjectPackage.getEObjectSubtractedEChange());
+		g2 = createEGenericType(subtractiveReferenceEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		subtractiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theListPackage.getInsertInListEChange());
@@ -366,6 +455,14 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		g2 = createEGenericType(removeEReferenceEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeEReferenceEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
+		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(theEcorePackage.getEReference());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
+		g1.getETypeArguments().add(g2);
+		replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getAdditiveReferenceEChange());
 		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -374,14 +471,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getSubtractiveReferenceEChange());
 		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
-		g1.getETypeArguments().add(g2);
-		replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
-		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theEcorePackage.getEReference());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
 		g1.getETypeArguments().add(g2);
@@ -398,9 +487,20 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
 		initEClass(insertEReferenceEClass, InsertEReference.class, "InsertEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEOperation(getInsertEReference__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(removeEReferenceEClass, RemoveEReference.class, "RemoveEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEOperation(getRemoveEReference__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(replaceSingleValuedEReferenceEClass, ReplaceSingleValuedEReference.class, "ReplaceSingleValuedEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getReplaceSingleValuedEReference__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		// Initialize data types
+		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(commandEDataType, Command.class, "Command", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

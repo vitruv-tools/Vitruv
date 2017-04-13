@@ -4,12 +4,17 @@ package tools.vitruv.framework.change.echange.root.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
@@ -48,6 +53,20 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * @generated
 	 */
 	private EClass removeRootEObjectEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eObjEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType resourceEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -136,6 +155,33 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getRootEChange_Resource() {
+		return (EAttribute)rootEChangeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRootEChange_Index() {
+		return (EAttribute)rootEChangeEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRootEChange__IsResolved() {
+		return rootEChangeEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getInsertRootEObject() {
 		return insertRootEObjectEClass;
 	}
@@ -145,8 +191,44 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getInsertRootEObject__IsResolved() {
+		return insertRootEObjectEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getRemoveRootEObject() {
 		return removeRootEObjectEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRemoveRootEObject__IsResolved() {
+		return removeRootEObjectEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEObj() {
+		return eObjEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getResource() {
+		return resourceEDataType;
 	}
 
 	/**
@@ -179,10 +261,19 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		// Create classes and their features
 		rootEChangeEClass = createEClass(ROOT_ECHANGE);
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__URI);
+		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__RESOURCE);
+		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__INDEX);
+		createEOperation(rootEChangeEClass, ROOT_ECHANGE___IS_RESOLVED);
 
 		insertRootEObjectEClass = createEClass(INSERT_ROOT_EOBJECT);
+		createEOperation(insertRootEObjectEClass, INSERT_ROOT_EOBJECT___IS_RESOLVED);
 
 		removeRootEObjectEClass = createEClass(REMOVE_ROOT_EOBJECT);
+		createEOperation(removeRootEObjectEClass, REMOVE_ROOT_EOBJECT___IS_RESOLVED);
+
+		// Create data types
+		eObjEDataType = createEDataType(EOBJ);
+		resourceEDataType = createEDataType(RESOURCE);
 	}
 
 	/**
@@ -218,9 +309,9 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		ETypeParameter removeRootEObjectEClass_T = addETypeParameter(removeRootEObjectEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
+		EGenericType g1 = createEGenericType(this.getEObj());
 		insertRootEObjectEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeRootEObjectEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
@@ -240,11 +331,23 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(rootEChangeEClass, RootEChange.class, "RootEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getRootEChange_Uri(), theEcorePackage.getEString(), "uri", "", 1, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRootEChange_Uri(), theEcorePackage.getEString(), "uri", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRootEChange_Resource(), this.getResource(), "resource", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRootEChange_Index(), theEcorePackage.getEInt(), "index", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getRootEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(insertRootEObjectEClass, InsertRootEObject.class, "InsertRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEOperation(getInsertRootEObject__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(removeRootEObjectEClass, RemoveRootEObject.class, "RemoveRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getRemoveRootEObject__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
+		// Initialize data types
+		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(resourceEDataType, Resource.class, "Resource", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
