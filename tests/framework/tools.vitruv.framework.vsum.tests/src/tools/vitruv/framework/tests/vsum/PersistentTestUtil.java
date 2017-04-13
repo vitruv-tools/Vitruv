@@ -25,7 +25,7 @@ public class PersistentTestUtil {
         Set<VURI> vuris = new HashSet<VURI>();
         for (int i = 0; i < nrOfVURIs; ++i) {
             vuris.add(VURI.getInstance(
-                    projectFolderName + "/dummyInstances/testInstance_" + i + "." + AbstractVsumTest.PCM_FILE_EXT));
+                    projectFolderName + "/dummyInstances/testInstance_" + i + "." + VsumTest.PCM_FILE_EXT));
         }
         return vuris;
     }
