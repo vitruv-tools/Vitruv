@@ -67,6 +67,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		for (file : filesToDelete) {
 			file.delete();
 		}
+		filesToDelete.clear();
 	}
 
 	protected def List<EChange> getChanges() {
