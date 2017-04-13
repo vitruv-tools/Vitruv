@@ -94,7 +94,7 @@ class ParameterGenerator {
 		} else if (eClass.equals(InputTypesPackage.Literals.SHORT)) {
 			return Short;
 		} else if (eClass.equals(InputTypesPackage.Literals.BOOLEAN)) {
-			return Integer;
+			return Boolean;
 		} else if (eClass.equals(InputTypesPackage.Literals.CHARACTER)) {
 			return Character;
 		} else if (eClass.equals(InputTypesPackage.Literals.BYTE)) {
