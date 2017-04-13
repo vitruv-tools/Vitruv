@@ -3,8 +3,6 @@ package tools.vitruv.framework.tests;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -12,22 +10,17 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.rules.TestName;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.tests.util.TestUtil;
-import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * Base class for all Vitruvius application tests
@@ -36,13 +29,11 @@ import static org.junit.Assert.fail;
  * @author Heiko Klare
  *
  */
-public abstract class VitruviusApplicationTest {
-	@Rule
-	public TestName testName = new TestName();
+public abstract class VitruviusApplicationTest extends VitruviusTest {
+
 
 	private ResourceSet resourceSet;
 	private TestUserInteractor testUserInteractor;
-	private IProject currentTestProject;
 	private InternalVirtualModel virtualModel;
 	private Iterable<Metamodel> metamodels;
 
@@ -50,31 +41,15 @@ public abstract class VitruviusApplicationTest {
 
 	protected abstract Iterable<Metamodel> createMetamodels();
 
-	@BeforeClass
-	public static void setUpAllTests() {
-		TestUtil.initializeLogger();
-	}
-
 	@After
 	public abstract void afterTest();
 
 	@Before
 	public void beforeTest() {
-		TuidManager.getInstance().reinitialize();
+		super.beforeTest();
 		this.resourceSet = new ResourceSetImpl();
 		String testMethodName = testName.getMethodName();
-		this.currentTestProject = initializeTestProject(testMethodName);
 		createVirtualModel(testMethodName);
-	}
-
-	protected IProject initializeTestProject(final String testName) {
-		IProject testProject = null;
-		try {
-			testProject = TestUtil.createProject(testName);
-		} catch (CoreException e) {
-			fail("Exception during creation of test project");
-		}
-		return testProject;
 	}
 
 	private void createVirtualModel(final String testName) {
@@ -97,16 +72,12 @@ public abstract class VitruviusApplicationTest {
 		return virtualModel;
 	}
 
-	protected IProject getCurrentTestProject() {
-		return currentTestProject;
-	}
-
 	protected TestUserInteractor getUserInteractor() {
 		return testUserInteractor;
 	}
 
 	private String getPlatformModelPath(final String modelPathWithinProject) {
-		return this.currentTestProject.getName() + "/" + modelPathWithinProject;
+		return this.getCurrentTestProject().getName() + "/" + modelPathWithinProject;
 	}
 
 	private VURI getModelVuri(String modelPathWithinProject) {
