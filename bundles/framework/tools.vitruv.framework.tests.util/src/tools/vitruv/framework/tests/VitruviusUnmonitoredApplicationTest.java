@@ -63,7 +63,9 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		// TODO HK Implement correctly: Should be obsolete when correspondence
 		// model is not MM-pair-specific any more
 		Iterator<Metamodel> it = metamodels.iterator();
-		this.correspondenceModel = virtualModel.getCorrespondenceModel(it.next().getURI(), it.next().getURI());
+		Metamodel firstMetamodel = it.next();
+		Metamodel secondMetamodel = it.hasNext() ? it.next() : firstMetamodel; 
+		this.correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.getURI(), secondMetamodel.getURI());
 		this.testUserInteractor = new TestUserInteractor();
 		this.getVirtualModel().setUserInteractor(testUserInteractor);
 	}
