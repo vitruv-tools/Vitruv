@@ -13,7 +13,6 @@ import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.MetamodelRepositoryImpl;
 import tools.vitruv.framework.tests.VitruviusTest;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
@@ -36,13 +35,6 @@ public abstract class VsumTest extends VitruviusTest {
 
     public String getCurrentProjectFolderName() {
         return getCurrentTestProject().getName();
-    }
-
-    public Metamodel testAddMetamodel(final MetamodelRepositoryImpl metaRepository, final String nsURI, final VURI uri,
-            final String fileExt) {
-        Metamodel mm = TestUtil.createMetamodel(nsURI, uri, fileExt);
-        metaRepository.addMetamodel(mm);
-        return mm;
     }
 
     protected InternalVirtualModel createMetaRepositoryAndVsum(final String mm1URIString, final String fileExt1,
