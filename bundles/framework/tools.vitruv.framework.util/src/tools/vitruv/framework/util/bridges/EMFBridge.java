@@ -49,6 +49,17 @@ public final class EMFBridge {
 	}
 
 	/**
+	 * Creates and returns and EMF file URI for the given File.
+	 * 
+	 * @param file
+	 *            - the file to get the EMF URI for
+	 * @return the EMF file URI for the given file
+	 */
+	public static URI getEmfFileUriForFile(final File file) {
+		return URI.createFileURI(file.getAbsolutePath());
+	}
+
+	/**
 	 * Creates and returns an EMF platform resource URI for the given Eclipse
 	 * resource.
 	 *
@@ -73,7 +84,8 @@ public final class EMFBridge {
 		} else if (uri.isFile()) {
 			return new Path(uri.toFileString());
 		}
-		throw new UnsupportedOperationException("Getting the path is currently only implemented for file and platform URIs.");
+		throw new UnsupportedOperationException(
+				"Getting the path is currently only implemented for file and platform URIs.");
 	}
 
 	/**
@@ -90,11 +102,12 @@ public final class EMFBridge {
 		}
 		throw new UnsupportedOperationException("Getting the IFile is currently only implemented for platform URIs.");
 	}
-	
+
 	/**
 	 * Return whether a resource exists at the specified {@link URI}.
 	 * 
-	 * @param uri an EMF URI
+	 * @param uri
+	 *            an EMF URI
 	 * @return true if a resource exists at the {@link URI}, false otherwise
 	 */
 	public static boolean existsResourceAtUri(final URI uri) {
@@ -103,7 +116,8 @@ public final class EMFBridge {
 		} else if (uri.isFile()) {
 			return new File(uri.toFileString()).exists();
 		}
-		throw new UnsupportedOperationException("Checking if a resource at an URI exists is currently only implemented for file and platform URIs.");
+		throw new UnsupportedOperationException(
+				"Checking if a resource at an URI exists is currently only implemented for file and platform URIs.");
 	}
 
 	/**
@@ -164,7 +178,7 @@ public final class EMFBridge {
 		String[] folderNames = folderName.split(File.separator);
 		IContainer currentContainer = project;
 		IFolder folder = null;
-		for (int i=0; i<folderNames.length; i++) {
+		for (int i = 0; i < folderNames.length; i++) {
 			folder = currentContainer.getFolder(new Path(folderNames[i]));
 			if (!folder.exists()) {
 				try {
@@ -175,8 +189,8 @@ public final class EMFBridge {
 				}
 			}
 			currentContainer = folder;
-		} 
+		}
 		return folder;
 	}
-	
+
 }
