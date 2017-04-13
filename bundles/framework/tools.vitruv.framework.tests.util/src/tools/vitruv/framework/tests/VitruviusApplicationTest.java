@@ -1,127 +1,129 @@
 package tools.vitruv.framework.tests;
 
-import java.util.Iterator;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.junit.After;
-import org.junit.Before;
 
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
-import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.tests.util.TestUtil;
-import tools.vitruv.framework.util.bridges.EMFBridge;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.description.VitruviusChangeFactory;
+import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
+import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.InternalVirtualModel;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
- * Base class for all Vitruvius application tests
+ * Base class for all Vitruvius EMF case study tests
  *
  * @author langhamm
  * @author Heiko Klare
  *
  */
-public abstract class VitruviusApplicationTest extends VitruviusTest {
 
-	private ResourceSet resourceSet;
-	private TestUserInteractor testUserInteractor;
-	private InternalVirtualModel virtualModel;
-	private Iterable<Metamodel> metamodels;
+public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
 
-	protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
+	private AtomicEmfChangeRecorder changeRecorder;
 
-	protected abstract Iterable<Metamodel> createMetamodels();
-
-	@After
-	public abstract void afterTest();
-
-	@Before
-	public void beforeTest() {
+	@Override
+	public final void beforeTest() {
 		super.beforeTest();
-		this.resourceSet = new ResourceSetImpl();
-		String testMethodName = testName.getMethodName();
-		createVirtualModel(testMethodName);
+		this.changeRecorder = new AtomicEmfChangeRecorder();
+		setup();
 	}
 
-	private void createVirtualModel(final String testName) {
-		String currentTestProjectVsumName = testName + "_vsum_";
-		this.metamodels = this.createMetamodels();
-		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, metamodels,
-				createChangePropagationSpecifications());
-		this.testUserInteractor = new TestUserInteractor();
-		this.getVirtualModel().setUserInteractor(testUserInteractor);
-	}
-
-	protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
-		// TODO HK Implement correctly: Should be obsolete when correspondence
-		// model is not MM-pair-specific any more
-		Iterator<Metamodel> it = metamodels.iterator();
-		return this.getVirtualModel().getCorrespondenceModel(it.next().getURI(), it.next().getURI());
-	}
-
-	protected InternalVirtualModel getVirtualModel() {
-		return virtualModel;
-	}
-
-	protected TestUserInteractor getUserInteractor() {
-		return testUserInteractor;
-	}
-
-	private String getPlatformModelPath(final String modelPathWithinProject) {
-		return this.getCurrentTestProject().getName() + "/" + modelPathWithinProject;
-	}
-
-	private VURI getModelVuri(String modelPathWithinProject) {
-		return VURI.getInstance(getPlatformModelPath(modelPathWithinProject));
-	}
-
-	protected Resource createModelResource(String modelPathWithinProject) {
-		return resourceSet.createResource(getModelVuri(modelPathWithinProject).getEMFUri());
-	}
-
-	private Resource getModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
-		return resourceSet.getResource(getModelVuri(modelPathWithinProject).getEMFUri(), true);
-	}
-
-	protected Resource getModelResource(String modelPathWithinProject) {
-		return getModelResource(modelPathWithinProject, this.resourceSet);
-	}
-
-	private EObject getFirstRootElement(String modelPathWithinProject, ResourceSet resourceSet) {
-		List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).getContents();
-		if (resourceContents.size() < 1) {
-			throw new IllegalStateException("Model has no root");
+	@Override
+	public final void afterTest() {
+		if (changeRecorder.isRecording()) {
+			changeRecorder.endRecording();
 		}
-		return resourceContents.get(0);
+		cleanup();
+	}
+	
+	/**
+	 * This method gets called at the beginning of each test case, after the
+	 * test project and VSUM have been initialized. 
+	 * It can be used, for example, to initialize the test models.
+	 */
+	protected abstract void setup();
+
+	/**
+	 * This method gets called at the end of each test case.
+	 * It can be used for clean up actions.
+	 */
+	protected abstract void cleanup();
+	
+	private void propagateChanges(final VURI vuri) {
+		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
+		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
+		this.getVirtualModel().propagateChange(compositeChange);
+	}
+	
+	private void startRecordingChanges(Resource resource) {
+		VURI vuri = VURI.getInstance(resource);
+		this.changeRecorder.beginRecording(vuri, Collections.singleton(resource));
+	}
+	
+	/**
+	 * Starts recording changes for the model of the given {@link EObject}
+	 * @param object the {@link EObject} to record changes for
+	 */
+	protected void startRecordingChanges(EObject object) {
+		startRecordingChanges(object.eResource());
 	}
 
-	protected EObject getFirstRootElement(String modelPathWithinProject) {
-		return getFirstRootElement(modelPathWithinProject, this.resourceSet);
+	/**
+	 * The model containing the given {@link EObject} gets saved and changes that
+	 * were recorded for that model get propagated. Recording is restarted afterwards.
+	 * 
+	 * @param object the {@link EObject} to save and propagated recorded changes for
+	 * @throws IOException
+	 */
+	protected void saveAndSynchronizeChanges(EObject object) throws IOException {
+		Resource resource = object.eResource();
+		EcoreResourceBridge.saveResource(resource);
+		this.propagateChanges(VURI.getInstance(resource));
+		this.startRecordingChanges(resource);
 	}
 
-	protected void assertModelExists(String modelPathWithinProject) {
-		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
-		assertTrue("Model at " + modelPathWithinProject + " does not exist bust should", modelExists);
+	/**
+	 * A model with the given root element at the given path within the test project gets created.
+	 * The changes for the insertion of the root element are propagated and recording of further
+	 * changes is started. No call to {@link #startRecordingChanges(EObject)}
+	 * is necessary.
+	 * 
+	 * @param modelPathInProject path within project to persist the model at
+	 * @param rootElement root element to persist
+	 * @throws IOException
+	 */
+	protected void createAndSynchronizeModel(String modelPathInProject, EObject rootElement) throws IOException {
+		if (StringUtils.isEmpty(modelPathInProject) || rootElement == null) {
+			throw new IllegalArgumentException();
+		}
+		Resource resource = createModelResource(modelPathInProject);
+		this.startRecordingChanges(resource);
+		resource.getContents().add(rootElement);
+		saveAndSynchronizeChanges(rootElement);
 	}
-
-	protected void assertModelNotExists(String modelPathWithinProject) {
-		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
-		assertFalse("Model at " + modelPathWithinProject + " exists but should not", modelExists);
+	
+	/**
+	 * The model at the given path is deleted. The old root element is removed and changes
+	 * for that removal are propagated. 
+	 * 
+	 * @param modelPathInProject path within project to remove model from
+	 * @throws IOException
+	 */
+	protected void deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
+		if (StringUtils.isEmpty(modelPathInProject)) {
+			throw new IllegalArgumentException();
+		}
+		Resource resource = getModelResource(modelPathInProject);
+		VURI vuri = VURI.getInstance(resource);
+		resource.delete(Collections.EMPTY_MAP);
+		propagateChanges(vuri);
 	}
-
-	protected void assertPersistedModelsEqual(String firstModelPathWithinProject, String secondModelPathWithinProject) {
-		ResourceSet testResourceSet = new ResourceSetImpl();
-		EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet);
-		EObject secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet);
-		assertTrue(EcoreUtil.equals(firstRoot, secondRoot));
-	}
+	
 
 }
