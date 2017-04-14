@@ -399,3 +399,8 @@ reaction AnyChange {
 	call { change.eClass }
 }
 
+routine testJavaTypes(plain SimpleChangesTestsExecutionMonitor as monitor) {
+	action {
+		call { }
+	}
+}

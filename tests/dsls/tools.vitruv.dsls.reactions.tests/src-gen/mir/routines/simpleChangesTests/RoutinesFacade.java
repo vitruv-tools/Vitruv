@@ -3,6 +3,7 @@ package mir.routines.simpleChangesTests;
 import allElementTypes.NonRoot;
 import allElementTypes.NonRootObjectContainerHelper;
 import allElementTypes.Root;
+import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
@@ -112,6 +113,12 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
   public void testPrimitiveTypesRoutine(final Integer intVal, final Long longVal, final Short shortVal, final Byte byteVal, final Character charVal, final Double doubleVal, final Float floatVal, final Boolean boolVal, final String stringVal) {
     mir.routines.simpleChangesTests.TestPrimitiveTypesRoutineRoutine effect = new mir.routines.simpleChangesTests.TestPrimitiveTypesRoutineRoutine(this.executionState, calledBy,
     	intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal);
+    effect.applyRoutine();
+  }
+  
+  public void testJavaTypes(final SimpleChangesTestsExecutionMonitor monitor) {
+    mir.routines.simpleChangesTests.TestJavaTypesRoutine effect = new mir.routines.simpleChangesTests.TestJavaTypesRoutine(this.executionState, calledBy,
+    	monitor);
     effect.applyRoutine();
   }
 }
