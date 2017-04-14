@@ -19,6 +19,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLang
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
+import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 
 class ParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -78,10 +79,15 @@ class ParameterGenerator {
 		return context.toParameter(parameterName, changeType);
 	}
 	
+	public def Iterable<AccessibleElement> getInputElements(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
+		return metaclassReferences.map[new AccessibleElement(it.name, it.metaclass.mappedInstanceClass)]
+			+ javaElements.map[new AccessibleElement(it.name, it.type.qualifiedName)];
+	}
+	
 	public def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
-		return metaclassReferences.map[
-			generateParameter(contextObject, it.name, it.metaclass.mappedInstanceClass)
-		] + javaElements.map[toParameter(contextObject, it.name, it.type)];
+		return contextObject.getInputElements(metaclassReferences, javaElements).map[
+			toParameter(contextObject, it.name, typeRef(it.fullyQualifiedType))
+		];
 	}
 	
 	private def getMappedInstanceClass(EClass eClass) {
