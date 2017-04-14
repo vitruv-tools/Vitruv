@@ -375,7 +375,20 @@ reaction NonRootDeleted {
 // Unused routine: Only to test if primitive types are mapped and scoped correctly
 routine testPrimitiveTypesRoutine(Integer intVal, Long longVal, Short shortVal, Byte byteVal, Character charVal, Double doubleVal, Float floatVal, Boolean boolVal, String stringVal) {
 	action {
-		call testPrimitiveTypesRoutine(intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal)
+		call {
+			// Call methods of types to ensure that they are correctly mapped
+			// otherwise static code checks will fail
+			intVal.intValue;
+			longVal.longValue;
+			shortVal.shortValue;
+			byteVal.byteValue;
+			charVal.charValue;
+			doubleVal.doubleValue;
+			floatVal.floatValue;
+			boolVal.booleanValue;
+			stringVal.charAt(0);
+			testPrimitiveTypesRoutine(intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal)
+		}
 	}
 }
 
