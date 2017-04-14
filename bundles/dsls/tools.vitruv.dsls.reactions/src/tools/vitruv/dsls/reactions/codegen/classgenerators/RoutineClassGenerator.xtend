@@ -60,7 +60,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		this.javaInputElements = routine.input.javaInputElements;
 		this.elementUpdateCounter = 0;
 		this.currentlyAccessibleElements = new ArrayList();
-		this.currentlyAccessibleElements += routine.generateInputParameters().map[new AccessibleElement(it.name, it.parameterType.qualifiedName)];
+		this.currentlyAccessibleElements += routine.getInputElements(modelInputElements, javaInputElements);
 	}
 	
 	private def Iterable<JvmFormalParameter> generateInputParameters(EObject contextObject) {
