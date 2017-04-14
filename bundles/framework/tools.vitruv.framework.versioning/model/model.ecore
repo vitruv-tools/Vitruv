@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="model" nsURI="http://tools.vitruv/versioning/1.0" nsPrefix="tools.vitruv.framework.versioning">
-  <eClassifiers xsi:type="ecore:EClass" name="Commit">
+  <eClassifiers xsi:type="ecore:EClass" name="Commit" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="hash" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="changes" upperBound="-1"
         eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="commitmessage" lowerBound="1"
         eType="#//CommitMessage"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
-        eType="#//Commit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commitsBranchedFromThis"
+        upperBound="-1" eType="#//Commit"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CommitMessage">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="date" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
@@ -23,6 +23,14 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Branch">
     <eStructuralFeatures xsi:type="ecore:EReference" name="currentHeadCommit" lowerBound="1"
+        eType="#//Commit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MergeCommit" eSuperTypes="#//Commit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commitsMergedToThis" lowerBound="2"
+        upperBound="2" eType="#//Commit"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SimpleCommit" eSuperTypes="#//Commit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
         eType="#//Commit"/>
   </eClassifiers>
 </ecore:EPackage>

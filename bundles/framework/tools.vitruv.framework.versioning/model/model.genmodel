@@ -10,7 +10,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Commit/hash"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Commit/changes"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Commit/commitmessage"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Commit/parent"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Commit/commitsBranchedFromThis"/>
     </genClasses>
     <genClasses ecoreClass="model.ecore#//CommitMessage">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//CommitMessage/date"/>
@@ -23,6 +23,12 @@
     </genClasses>
     <genClasses ecoreClass="model.ecore#//Branch">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Branch/currentHeadCommit"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//MergeCommit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//MergeCommit/commitsMergedToThis"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//SimpleCommit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//SimpleCommit/parent"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Echange" basePackage="tools.vitruv.framework.change" ecorePackage="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage">
