@@ -1,7 +1,21 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: tools.vitruv.framework.versioning
-Bundle-SymbolicName: tools.vitruv.framework.versioning; singleton:=true
+Bundle-Name: %pluginName
+Bundle-SymbolicName: tools.vitruv.framework.versioning;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: ecore,
+ ecore.impl,
+ ecore.util,
+ model,
+ model.impl,
+ model.util,
+ tools.vitruv.framework.change.echange,
+ tools.vitruv.framework.change.echange.impl,
+ tools.vitruv.framework.change.echange.util
 Bundle-Version: 0.1.0.qualifier
-Require-Bundle: org.eclipse.emf.ecore
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport
+Bundle-ActivationPolicy: lazy

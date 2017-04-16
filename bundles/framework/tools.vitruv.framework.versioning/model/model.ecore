@@ -58,11 +58,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
         eType="#//Branch"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Conflict">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceCommit" lowerBound="1"
-        eType="#//Commit"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="targetCommit" lowerBound="1"
-        eType="#//Commit"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Conflict" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//ConflictType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="solvability" eType="#//ConflictSolvability"/>
   </eClassifiers>
@@ -72,5 +68,22 @@
   <eClassifiers xsi:type="ecore:EEnum" name="ConflictSolvability">
     <eLiterals name="automatically"/>
     <eLiterals name="manual" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SimpleChangeConflict" eSuperTypes="#//Conflict">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChange" lowerBound="1"
+        eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetChange" lowerBound="1"
+        eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MultiChangeConflict" eSuperTypes="#//Conflict">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChanges" lowerBound="1"
+        upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetChanges" lowerBound="1"
+        upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConflictDetector">
+    <eOperations name="detectConflicts" upperBound="-1" eType="#//Conflict">
+      <eParameters name="diff" eType="#//BranchDiff"/>
+    </eOperations>
   </eClassifiers>
 </ecore:EPackage>
