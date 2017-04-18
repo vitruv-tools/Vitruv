@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
@@ -86,6 +87,13 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * @generated
    */
   private EClass metamodelReferenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass domainReferenceEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -348,6 +356,26 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getDomainReference()
+  {
+    return domainReferenceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getDomainReference_Domain()
+  {
+    return (EAttribute)domainReferenceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public MirBaseFactory getMirBaseFactory()
   {
     return (MirBaseFactory)getEFactoryInstance();
@@ -399,6 +427,9 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
 
     metamodelReferenceEClass = createEClass(METAMODEL_REFERENCE);
     createEReference(metamodelReferenceEClass, METAMODEL_REFERENCE__MODEL);
+
+    domainReferenceEClass = createEClass(DOMAIN_REFERENCE);
+    createEAttribute(domainReferenceEClass, DOMAIN_REFERENCE__DOMAIN);
   }
 
   /**
@@ -464,6 +495,9 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
 
     initEClass(metamodelReferenceEClass, MetamodelReference.class, "MetamodelReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMetamodelReference_Model(), this.getMetamodelImport(), null, "model", null, 0, 1, MetamodelReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(domainReferenceEClass, DomainReference.class, "DomainReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getDomainReference_Domain(), ecorePackage.getEString(), "domain", null, 0, 1, DomainReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

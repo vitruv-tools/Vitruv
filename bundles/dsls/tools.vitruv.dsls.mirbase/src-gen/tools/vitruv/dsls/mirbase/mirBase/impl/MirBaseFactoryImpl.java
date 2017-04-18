@@ -73,6 +73,7 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
       case MirBasePackage.NAMED_METACLASS_REFERENCE: return createNamedMetaclassReference();
       case MirBasePackage.METACLASS_FEATURE_REFERENCE: return createMetaclassFeatureReference();
       case MirBasePackage.METAMODEL_REFERENCE: return createMetamodelReference();
+      case MirBasePackage.DOMAIN_REFERENCE: return createDomainReference();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -164,6 +165,17 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
   {
     MetamodelReferenceImpl metamodelReference = new MetamodelReferenceImpl();
     return metamodelReference;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public DomainReference createDomainReference()
+  {
+    DomainReferenceImpl domainReference = new DomainReferenceImpl();
+    return domainReference;
   }
 
   /**

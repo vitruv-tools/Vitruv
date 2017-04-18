@@ -59,6 +59,7 @@ import org.eclipse.xtext.xtype.XFunctionTypeRef;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypePackage;
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
@@ -83,6 +84,9 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 		Set<Parameter> parameters = context.getEnabledBooleanParameters();
 		if (epackage == MirBasePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
+			case MirBasePackage.DOMAIN_REFERENCE:
+				sequence_DomainReference(context, (DomainReference) semanticObject); 
+				return; 
 			case MirBasePackage.DUMMY_ENTRY_RULE:
 				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
 				return; 
@@ -364,6 +368,24 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 	 */
 	protected void sequence_ClassicallyNamedModelElement_MetaclassReference(ISerializationContext context, NamedMetaclassReference semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     DomainReference returns DomainReference
+	 *
+	 * Constraint:
+	 *     domain=ID
+	 */
+	protected void sequence_DomainReference(ISerializationContext context, DomainReference semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.DOMAIN_REFERENCE__DOMAIN) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.DOMAIN_REFERENCE__DOMAIN));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getDomainReferenceAccess().getDomainIDTerminalRuleCall_0(), semanticObject.getDomain());
+		feeder.finish();
 	}
 	
 	

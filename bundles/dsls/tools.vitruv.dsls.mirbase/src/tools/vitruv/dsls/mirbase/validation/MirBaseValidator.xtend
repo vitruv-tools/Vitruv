@@ -7,11 +7,12 @@ import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
 import tools.vitruv.framework.util.bridges.EclipseBridge
-import org.eclipse.osgi.container.namespaces.EclipsePlatformNamespace
 import org.eclipse.xtext.validation.Check
 
 import static tools.vitruv.dsls.mirbase.validation.EclipsePluginHelper.*
 import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference
+import tools.vitruv.framework.domains.VitruvDomainProvider
 
 /**
  * This class contains custom validation rules. 
@@ -56,5 +57,15 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 				return
 			}
 		}
+	}
+	
+	@Check
+	def checkDomainRefrence(DomainReference domainReference) {
+		val domainNames = VitruvDomainProvider.allDomainProvidersFromExtensionPoint.map[domain.name].toList;
+	    if (!domainNames.contains(domainReference.domain)) {
+	    	error('''No domain with the specified name found. Available domains are : «FOR domainName : domainNames SEPARATOR ", "»«domainName»«ENDFOR»''', domainReference,
+	    		MirBasePackage.Literals.DOMAIN_REFERENCE__DOMAIN
+	    	);
+	    }
 	}
 }

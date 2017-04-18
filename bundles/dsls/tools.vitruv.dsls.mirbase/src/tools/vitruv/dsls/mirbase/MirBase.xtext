@@ -50,3 +50,7 @@ MetaclassFeatureReference:
 MetamodelReference:
 	model=[MetamodelImport]
 ;
+
+DomainReference:
+	domain=ID
+;
