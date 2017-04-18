@@ -26,9 +26,13 @@
     </genClasses>
     <genClasses ecoreClass="model.ecore#//Author">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Author/email"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Author/ownedBranches"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Author/contributedBranches"/>
     </genClasses>
     <genClasses ecoreClass="model.ecore#//Branch">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Branch/currentHeadCommit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Branch/owner"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Branch/contributors"/>
     </genClasses>
     <genClasses ecoreClass="model.ecore#//MergeCommit">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//MergeCommit/commitsMergedToThis"/>
@@ -70,6 +74,12 @@
       <genOperations ecoreOperation="model.ecore#//ConflictDetector/detectConflicts">
         <genParameters ecoreParameter="model.ecore#//ConflictDetector/detectConflicts/diff"/>
       </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//Signed">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Signed/signature"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//Signature">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Signature/signer"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Echange" basePackage="tools.vitruv.framework.change" ecorePackage="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage">
