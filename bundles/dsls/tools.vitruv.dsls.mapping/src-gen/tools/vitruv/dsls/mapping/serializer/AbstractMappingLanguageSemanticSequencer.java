@@ -82,6 +82,7 @@ import tools.vitruv.dsls.mapping.mappingLanguage.VariableRef;
 import tools.vitruv.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression;
 import tools.vitruv.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression;
 import tools.vitruv.dsls.mapping.services.MappingLanguageGrammarAccess;
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
@@ -182,6 +183,9 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 			}
 		else if (epackage == MirBasePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
+			case MirBasePackage.DOMAIN_REFERENCE:
+				sequence_DomainReference(context, (DomainReference) semanticObject); 
+				return; 
 			case MirBasePackage.DUMMY_ENTRY_RULE:
 				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
 				return; 
