@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="tools.vitruv.framework.vsum" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="tools.vitruv.framework.metamodel" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="tools.vitruv.framework.vsum" id="domain" name="Vitruv Domain"/>
+         <meta.schema plugin="tools.vitruv.framework.metamodel" id="domain" name="Vitruv Domain"/>
       </appInfo>
       <documentation>
          Extension point for registering a Vitruv domain
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <choice minOccurs="0" maxOccurs="unbounded">
-            <element ref="domain"/>
+            <element ref="domainProvider"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,20 +47,20 @@
       </complexType>
    </element>
 
-   <element name="domain">
+   <element name="domainProvider">
       <annotation>
          <documentation>
             A Vitruv domain
          </documentation>
       </annotation>
       <complexType>
-         <attribute name="domainClass" type="string">
+         <attribute name="class" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":tools.vitruv.framework.vsum.domains.VitruvDomain"/>
+                  <meta.attribute kind="java" basedOn=":tools.vitruv.framework.domains.VitruvDomainProvider"/>
                </appInfo>
             </annotation>
          </attribute>
