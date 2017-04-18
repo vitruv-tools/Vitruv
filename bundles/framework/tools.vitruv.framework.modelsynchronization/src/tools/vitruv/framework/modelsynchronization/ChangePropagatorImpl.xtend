@@ -10,24 +10,25 @@ import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.metamodel.MetamodelRepository
-import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import tools.vitruv.framework.domains.repository.ModelRepository
 
 class ChangePropagatorImpl implements ChangePropagator {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
-	final MetamodelRepository metamodelRepository;
+	final VitruvDomainRepository metamodelRepository;
 	final ModelRepository modelProviding
 	final ChangePropagationSpecificationProvider changePropagationProvider
 	final CorrespondenceProviding correspondenceProviding
 	Set<ChangePropagationListener> changePropagationListeners
 	
 	new(ModelRepository modelProviding, ChangePropagationSpecificationProvider changePropagationProvider,
-		MetamodelRepository metamodelRepository, CorrespondenceProviding correspondenceProviding) {
+		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding) {
 		this.modelProviding = modelProviding
 		this.changePropagationProvider = changePropagationProvider
 		this.correspondenceProviding = correspondenceProviding
@@ -94,15 +95,15 @@ class ChangePropagatorImpl implements ChangePropagator {
 		List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult,
 		ChangedResourcesTracker changedResourcesTracker) {
 		change.applyForward();
-		val changeMetamodel = metamodelRepository.getMetamodel(change.URI.fileExtension);
-		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeMetamodel.URI)) {
+		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension);
+		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
 		}
 	}
 	
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
 			List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
-		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(propagationSpecification.metamodelPair.first, propagationSpecification.metamodelPair.second);
+		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(VURI.getInstance(propagationSpecification.sourceDomain.metamodelRootPackage.nsURI), VURI.getInstance(propagationSpecification.targetDomain.metamodelRootPackage.nsURI));
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!

@@ -25,7 +25,8 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
-import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -106,38 +107,38 @@ public final class TestUtil {
 
 	
 	/**
-	 * Creates a VSUM with the given name, {@link Metamodel}s and an empty set of
+	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and an empty set of
 	 * {@link ChangePropagationSpecification}s. It automatically adds a
 	 * timestamp to the name.
 	 * 
 	 * @param vsumName
 	 *            - name of the VSUM
 	 * @param metamodels
-	 *            - {@link Metamodel}s to add to the VSUM
+	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
 	 * @return the created {@link VirtualModel}
 	 */
-	public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels) {
+	public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<VitruvDomain> metamodels) {
 		return createVirtualModel(vsumName, metamodels, Collections.emptyList());
 	}
 
 	/**
-	 * Creates a VSUM with the given name, {@link Metamodel}s and
+	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and
 	 * {@link ChangePropagationSpecification}s. It automatically adds a
 	 * timestamp to the name.
 	 * 
 	 * @param vsumName
 	 *            - name of the VSUM
 	 * @param metamodels
-	 *            - {@link Metamodel}s to add to the VSUM
+	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
 	 * @param changePropagationSpecifications
 	 *            - {@link ChangePropagationSpecification}s to add to the VSUM
 	 * @return the created {@link VirtualModel}
 	 */
-	public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels,
+	public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<VitruvDomain> metamodels,
 			final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
 		String finalVsumName = addTimestampToString(vsumName);
 		VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
-		for (Metamodel metamodel : metamodels) {
+		for (VitruvDomain metamodel : metamodels) {
 			vmodelConfig.addMetamodel(metamodel);
 		}
 		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
@@ -148,16 +149,16 @@ public final class TestUtil {
 	}
 
 	/**
-	 * Creates and returns a {@link Metamodel}
+	 * Creates and returns a {@link AbstractVitruvDomain}
 	 *
 	 * @param metamodelRootPackage
-	 *            - the root {@link EPackage} of the {@link Metamodel} to create
+	 *            - the root {@link EPackage} of the {@link AbstractVitruvDomain} to create
 	 * @param fileExt
-	 *            - fileExtension for which the {@link Metamodel} is repsonsible
-	 * @return the create {@link Metamodel}
+	 *            - fileExtension for which the {@link AbstractVitruvDomain} is repsonsible
+	 * @return the create {@link AbstractVitruvDomain}
 	 */
-	public static Metamodel createMetamodel(final String name, final EPackage metamodelRootPackage, final String fileExt) {
-		final Metamodel mm = new Metamodel(name, metamodelRootPackage, new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt);
+	public static VitruvDomain createMetamodel(final String name, final EPackage metamodelRootPackage, final String fileExt) {
+		final VitruvDomain mm = new AbstractVitruvDomain(name, metamodelRootPackage, new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt);
 		return mm;
 	}
 

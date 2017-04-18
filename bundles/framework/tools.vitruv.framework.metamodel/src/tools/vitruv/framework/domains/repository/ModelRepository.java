@@ -1,4 +1,4 @@
-package tools.vitruv.framework.metamodel;
+package tools.vitruv.framework.domains.repository;
 
 import java.util.concurrent.Callable;
 

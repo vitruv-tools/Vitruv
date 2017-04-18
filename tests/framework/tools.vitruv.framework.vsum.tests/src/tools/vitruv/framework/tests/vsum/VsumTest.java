@@ -6,13 +6,15 @@ import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 
 import pcm_mockup.Component;
 import pcm_mockup.PInterface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
-import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.domains.AbstractVitruvDomain;
+import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tests.VitruviusTest;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
@@ -37,13 +39,14 @@ public abstract class VsumTest extends VitruviusTest {
         return getCurrentTestProject().getName();
     }
 
-    protected InternalVirtualModel createMetaRepositoryAndVsum(final String mm1URIString, final String fileExt1,
-            final String mm2URIString, final String fileExt2) {
-        List<Metamodel> metamodels = new ArrayList<Metamodel>();
-        metamodels.add(new Metamodel(VURI.getInstance(mm1URIString), mm1URIString,
-                new AttributeTuidCalculatorAndResolver(mm1URIString, "id"), fileExt1));
-        metamodels.add(new Metamodel(VURI.getInstance(mm2URIString), mm2URIString,
-                new AttributeTuidCalculatorAndResolver(mm2URIString, "id"), fileExt2));
+    protected InternalVirtualModel createMetaRepositoryAndVsum(final String sourceMetamodelName,
+            final EPackage sourceMetamodelRootPackage, final String fileExt1, final String targetMetamodelName,
+            final EPackage targetMetamodelRootPackage, final String fileExt2) {
+        List<VitruvDomain> metamodels = new ArrayList<VitruvDomain>();
+        metamodels.add(new AbstractVitruvDomain(sourceMetamodelName, sourceMetamodelRootPackage,
+                new AttributeTuidCalculatorAndResolver(sourceMetamodelRootPackage.getNsURI(), "id"), fileExt1));
+        metamodels.add(new AbstractVitruvDomain(targetMetamodelName, targetMetamodelRootPackage,
+                new AttributeTuidCalculatorAndResolver(targetMetamodelRootPackage.getNsURI(), "id"), fileExt2));
         return TestUtil.createVirtualModel(VSUM_NAME, metamodels);
     }
 
@@ -125,7 +128,8 @@ public abstract class VsumTest extends VitruviusTest {
     }
 
     protected InternalVirtualModel createMetaRepositoryAndVsum() {
-        return createMetaRepositoryAndVsum(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT);
+        return createMetaRepositoryAndVsum("Pcm", Pcm_mockupPackage.eINSTANCE, PCM_FILE_EXT, "Uml",
+                Uml_mockupPackage.eINSTANCE, UML_FILE_EXT);
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {

@@ -13,7 +13,7 @@ import org.junit.Before;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -42,7 +42,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 
 	protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
 
-	protected abstract Iterable<Metamodel> createMetamodels();
+	protected abstract Iterable<VitruvDomain> createMetamodels();
 
 	@After
 	public abstract void afterTest();
@@ -57,14 +57,14 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 
 	private void createVirtualModel(final String testName) {
 		String currentTestProjectVsumName = testName + "_vsum_";
-		Iterable<Metamodel> metamodels = this.createMetamodels();
+		Iterable<VitruvDomain> metamodels = this.createMetamodels();
 		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, metamodels,
 				createChangePropagationSpecifications());
 		// TODO HK Implement correctly: Should be obsolete when correspondence
 		// model is not MM-pair-specific any more
-		Iterator<Metamodel> it = metamodels.iterator();
-		Metamodel firstMetamodel = it.next();
-		Metamodel secondMetamodel = it.hasNext() ? it.next() : firstMetamodel; 
+		Iterator<VitruvDomain> it = metamodels.iterator();
+		VitruvDomain firstMetamodel = it.next();
+		VitruvDomain secondMetamodel = it.hasNext() ? it.next() : firstMetamodel; 
 		this.correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.getURI(), secondMetamodel.getURI());
 		this.testUserInteractor = new TestUserInteractor();
 		this.getVirtualModel().setUserInteractor(testUserInteractor);

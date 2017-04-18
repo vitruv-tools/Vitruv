@@ -42,7 +42,8 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	}
 	
 	private def void assertMetamodelsCompatible(ChangePropagationSpecification potentialChangeProcessor) {
-		if (!this.metamodelPair.equals(potentialChangeProcessor.metamodelPair)) {
+		if (!this.sourceDomain.equals(potentialChangeProcessor.sourceDomain) ||
+			!this.targetDomain.equals(potentialChangeProcessor.targetDomain)) {
 			throw new IllegalArgumentException("ChangeProcessor metamodels are not compatible");
 		}
 	}

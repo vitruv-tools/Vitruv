@@ -1,10 +1,10 @@
 package tools.vitruv.framework.testutils.domains;
 
 import allElementTypes.AllElementTypesPackage;
-import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 
-public final class AllElementTypesDomain extends Metamodel {
+public final class AllElementTypesDomain extends AbstractVitruvDomain {
 	public static final String METAMODEL_NAME = "AllElementTypes";
 	public static final String FILE_EXTENSION = "allElementTypes";
 	

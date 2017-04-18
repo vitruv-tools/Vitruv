@@ -30,15 +30,15 @@ import tools.vitruv.framework.tuid.Tuid
 import tools.vitruv.framework.correspondence.CorrespondenceFactory
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
-import tools.vitruv.framework.metamodel.MetamodelPair
-import tools.vitruv.framework.metamodel.Metamodel
-import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.util.datatypes.ModelInstance
+import tools.vitruv.framework.domains.repository.VitruvDomainPair
+import tools.vitruv.framework.domains.repository.ModelRepository
+import tools.vitruv.framework.domains.TuidAwareVitruvDomain
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
 	static final Logger logger = Logger::getLogger(typeof(CorrespondenceModelImpl).getSimpleName())
-	final MetamodelPair mapping
+	final VitruvDomainPair mapping
 	final ModelRepository modelProviding
 	final Correspondences correspondences
 	final ClaimableMap<Tuid,Set<List<Tuid>>> tuid2tuidListsMap
@@ -46,7 +46,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	boolean changedAfterLastSave = false
 	final Map<String, String> saveCorrespondenceOptions
 
-	new(MetamodelPair mapping, ModelRepository modelProviding, VURI correspondencesVURI, Resource correspondencesResource) {
+	new(VitruvDomainPair mapping, ModelRepository modelProviding, VURI correspondencesVURI, Resource correspondencesResource) {
 		super(correspondencesVURI, correspondencesResource)
 		this.mapping = mapping
 		this.modelProviding = modelProviding
@@ -97,32 +97,32 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 	
 	override calculateTuidFromEObject(EObject eObject) {
-		val Metamodel metamodel = eObject.getMetamodelForEObject()
+		val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
 		 if (null == metamodel){
 		 	return null 
 		 }
-         return Tuid::getInstance(metamodel.calculateTuidFromEObject(eObject))
+         return metamodel.calculateTuid(eObject)
 	}
 	
 	@Deprecated
 	override calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
-		 val Metamodel metamodel = eObject.getMetamodelForEObject()
+		 val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
 		 if(null == metamodel){
 		 	return null 
 		 }
 		 if(null == virtualRootObject || null == prefix){
 		 	logger.info("virtualRootObject or prefix is null. Using standard calculation method for EObject " + eObject)
-         	return Tuid::getInstance(metamodel.calculateTuidFromEObject(eObject))
+         	return metamodel.calculateTuid(eObject)
      	}
      	return Tuid::getInstance(metamodel.calculateTuidFromEObject(eObject, virtualRootObject, prefix))
 	}
 	
 	def private getMetamodelForEObject(EObject eObject){
-		var Metamodel metamodel = null
-		if (this.mapping.getMetamodelA().hasMetaclassInstances(eObject.toList)) {
+		var TuidAwareVitruvDomain metamodel = null
+		if (this.mapping.getMetamodelA().isInstanceOfDomainMetamodel(eObject)) {
 			metamodel = this.mapping.getMetamodelA()
 		}
-		if (this.mapping.getMetamodelB().hasMetaclassInstances(eObject.toList)) {
+		if (this.mapping.getMetamodelB().isInstanceOfDomainMetamodel(eObject)) {
 			metamodel = this.mapping.getMetamodelB()
 		}
 		if (metamodel === null) {
@@ -230,17 +230,17 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		}
 	}
 
-	override MetamodelPair getMapping() {
+	override VitruvDomainPair getMapping() {
 		return this.mapping
 	}
 
-	def private Metamodel getMetamodelHavingTuid(String tuidString) {
-		var Metamodel metamodel = null
-		var Metamodel metamodelA = this.mapping.getMetamodelA()
+	def private TuidAwareVitruvDomain getMetamodelHavingTuid(String tuidString) {
+		var TuidAwareVitruvDomain metamodel = null
+		var TuidAwareVitruvDomain metamodelA = this.mapping.getMetamodelA()
 		if (metamodelA.hasTuid(tuidString)) {
 			metamodel = metamodelA
 		}
-		var Metamodel metamodelB = this.mapping.getMetamodelB()
+		var TuidAwareVitruvDomain metamodelB = this.mapping.getMetamodelB()
 		if (metamodelB.hasTuid(tuidString)) {
 			metamodel = metamodelB
 		}
@@ -394,7 +394,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	
 	override EObject resolveEObjectFromTuid(Tuid tuid) {
 		var String tuidString = tuid.toString()
-		var Metamodel metamodel = getMetamodelHavingTuid(tuidString)
+		var TuidAwareVitruvDomain metamodel = getMetamodelHavingTuid(tuidString)
 		var VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString)
 		var EObject rootEObject = null
 		var ModelInstance modelInstance = null
@@ -440,7 +440,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		List<EObject> eObjects2) {
 		var aEObjects = eObjects1
 		var bEObjects = eObjects2
-		if (this.mapping.getMetamodelA().hasMetaclassInstances(bEObjects)) {
+		if (bEObjects.forall[this.mapping.getMetamodelA().isInstanceOfDomainMetamodel(it)]) {
 			// swap
 			var tmp = aEObjects
 			aEObjects = bEObjects
@@ -517,9 +517,9 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 * @author Dominik Werle 
 	 */
 	override getTuidsForMetamodel(Correspondence correspondence, String metamodelNamespaceUri) {
-	 	if (mapping.getMetamodelA.nsURIs.contains(metamodelNamespaceUri)) {
+	 	if (mapping.getMetamodelA.nsUris.contains(metamodelNamespaceUri)) {
 	 		return correspondence.getATuids
-	 	} else if (mapping.getMetamodelB.nsURIs.contains(metamodelNamespaceUri)) {
+	 	} else if (mapping.getMetamodelB.nsUris.contains(metamodelNamespaceUri)) {
 	 		return correspondence.getBTuids
 	 	} else {
 	 		throw new IllegalArgumentException('''Metamodel namespace URI "«metamodelNamespaceUri»" is not a namespace URI of one of the metamodels for the associated mapping''')

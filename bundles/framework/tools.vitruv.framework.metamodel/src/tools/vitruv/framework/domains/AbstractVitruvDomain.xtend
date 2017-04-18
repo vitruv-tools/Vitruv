@@ -1,4 +1,4 @@
-package tools.vitruv.framework.metamodel
+package tools.vitruv.framework.domains
 
 import java.util.Collections
 import java.util.List
@@ -17,8 +17,8 @@ import org.eclipse.emf.ecore.EPackage
 import java.util.Collection
 import tools.vitruv.framework.domains.VitruvDomain
 
-class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener, VitruvDomain {
-	List<String> fileExtensions
+class AbstractVitruvDomain extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener, VitruvDomain {
+	Collection<String> fileExtensions
 	TuidCalculatorAndResolver tuidCalculatorAndResolver
 	Set<String> nsURIs
 	EPackage metamodelRootPackage;
@@ -86,11 +86,11 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		return eObjects.map[calculateTuidFromEObject(it)].toList
 	}
 
-	def String calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
+	override String calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
 		return this.tuidCalculatorAndResolver.calculateTuidFromEObject(eObject, virtualRootObject, prefix)
 	}
 
-	def VURI getModelVURIContainingIdentifiedEObject(String tuid) {
+	override VURI getModelVURIContainingIdentifiedEObject(String tuid) {
 		val modelVURI = this.tuidCalculatorAndResolver.getModelVURIContainingIdentifiedEObject(tuid)
 		if (null == modelVURI) {
 			return null;
@@ -98,7 +98,7 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		return VURI::getInstance(modelVURI)
 	}
 
-	def EObject resolveEObjectFromRootAndFullTuid(EObject root, String tuid) {
+	override EObject resolveEObjectFromRootAndFullTuid(EObject root, String tuid) {
 		return this.tuidCalculatorAndResolver.resolveEObjectFromRootAndFullTuid(root, tuid)
 	}
 
@@ -110,36 +110,33 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		this.tuidCalculatorAndResolver.removeIfRootAndCached(tuid)
 	}
 
-	def boolean hasMetaclassInstances(List<EObject> eObjects) {
-		for (EObject eObject : eObjects) {
-			if (null === eObject || null === eObject.eClass() || null === eObject.eClass().getEPackage() ||
-				null === eObject.eClass().getEPackage().getNsURI() ||
-				!this.nsURIs.contains(eObject.eClass().getEPackage().getNsURI())) {
-				return false
-			}
-
+	override boolean isInstanceOfDomainMetamodel(EObject eObject) {
+		if (null === eObject || null === eObject.eClass() || null === eObject.eClass().getEPackage() ||
+			null === eObject.eClass().getEPackage().getNsURI() ||
+			!this.nsURIs.contains(eObject.eClass().getEPackage().getNsURI())) {
+			return false
 		}
 		return true
 	}
 
-	def boolean hasTuid(String tuid) {
+	override boolean hasTuid(String tuid) {
 		return this.tuidCalculatorAndResolver.isValidTuid(tuid)
 	}
 
-	def Set<String> getNsURIs() {
+	override Set<String> getNsUris() {
 		return this.nsURIs
 	}
 
-	def Map<Object, Object> getDefaultLoadOptions() {
+	override Map<Object, Object> getDefaultLoadOptions() {
 		return this.defaultLoadOptions
 	}
 
-	def Map<Object, Object> getDefaultSaveOptions() {
+	override Map<Object, Object> getDefaultSaveOptions() {
 		return this.defaultSaveOptions
 	}
 
 	override canCalculateTuid(EObject object) {
-		return hasMetaclassInstances(#[object]);
+		return isInstanceOfDomainMetamodel(object);
 	}
 
 	override calculateTuid(EObject object) {
@@ -179,5 +176,5 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	override getName() {
 		return name;
 	}
-
+	
 }
