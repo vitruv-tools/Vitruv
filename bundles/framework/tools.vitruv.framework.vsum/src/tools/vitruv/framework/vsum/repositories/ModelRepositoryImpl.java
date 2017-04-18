@@ -192,6 +192,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
             public Void call() throws Exception {
                 for (InternalCorrespondenceModel correspondenceModel : ModelRepositoryImpl.this.correspondenceModels) {
                     if (correspondenceModel.changedAfterLastSave()) {
+                    	logger.debug("  Saving correspondence model: " + correspondenceModel.getResource());
                         correspondenceModel.saveModel();
                         correspondenceModel.resetChangedAfterLastSave();
                     }
