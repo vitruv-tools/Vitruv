@@ -14,14 +14,19 @@ import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
 import java.util.ArrayList
 import org.eclipse.emf.ecore.EPackage
+import java.util.Collection
+import tools.vitruv.framework.domains.VitruvDomain
 
-class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener {
+class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener, VitruvDomain {
 	List<String> fileExtensions
 	TuidCalculatorAndResolver tuidCalculatorAndResolver
 	Set<String> nsURIs
+	EPackage metamodelRootPackage;
+	Collection<EPackage> furtherRootPackages;
 	Map<Object, Object> defaultLoadOptions
 	Map<Object, Object> defaultSaveOptions
-
+	String name;
+	
 	/**
 	 * Returns the namespace URI of the given {@link EPackage} and all subpackages.
 	 */
@@ -41,27 +46,30 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	/** 
 	 * Convenience method if the metamodel consists of only a single namespace
 	 */
-	new(VURI mainNamespaceUri, String namespaceUri, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
-		super(mainNamespaceUri);
-		initialize(newHashSet(namespaceUri), tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
+	new(String name, EPackage metamodelRootPackage, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
+		super(VURI::getInstance(metamodelRootPackage.nsURI));
+		initialize(name, metamodelRootPackage, Collections::emptySet(), tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
+	}
+	
+	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
+		super(VURI::getInstance(metamodelRootPackage.nsURI));
+		initialize(name, metamodelRootPackage, furtherRootPackages, tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
 	}
 
-	new(VURI mainNamespaceUri, Set<String> namespaceUris, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
-		super(mainNamespaceUri);
-		initialize(namespaceUris, tuidCalculator, Collections::emptyMap(), Collections::emptyMap(), fileExtensions)
-	}
-
-	protected def void initialize(Set<String> nsURIs, TuidCalculatorAndResolver tuidCalculator, Map<Object, Object> defaultLoadOptions, Map<Object, Object> defaultSaveOptions, String... fileExtensions) {
+	protected def void initialize(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, TuidCalculatorAndResolver tuidCalculator, Map<Object, Object> defaultLoadOptions, Map<Object, Object> defaultSaveOptions, String... fileExtensions) {
+		this.name = name;
 		this.fileExtensions = fileExtensions
 		this.tuidCalculatorAndResolver = tuidCalculator;
-		this.nsURIs = nsURIs
+		this.metamodelRootPackage = metamodelRootPackage;
+		this.furtherRootPackages = furtherRootPackages;
+		this.nsURIs = (metamodelRootPackage.nsURIsRecursive + furtherRootPackages.map[nsURIsRecursive].flatten).toSet
 		this.defaultLoadOptions = defaultLoadOptions
 		this.defaultSaveOptions = defaultSaveOptions
 		TuidManager.instance.addTuidCalculator(this);
 		TuidManager.instance.addTuidUpdateListener(this);
 	}
 
-	def List<String> getFileExtensions() {
+	override Collection<String> getFileExtensions() {
 		return new ArrayList<String>(this.fileExtensions);
 	}
 
@@ -158,6 +166,18 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 
 	def boolean isMetamodelFor(VURI modelVuri) {
 		return fileExtensions.contains(modelVuri.fileExtension);
+	}
+	
+	override getMetamodelRootPackage() {
+		return metamodelRootPackage;
+	}
+	
+	override getFurtherRootPackages() {
+		return furtherRootPackages;
+	}
+	
+	override getName() {
+		return name;
 	}
 
 }

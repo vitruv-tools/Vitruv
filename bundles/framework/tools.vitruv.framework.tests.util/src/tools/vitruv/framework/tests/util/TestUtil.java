@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -26,7 +27,6 @@ import org.eclipse.jdt.launching.LibraryLocation;
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
-import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
@@ -150,16 +150,14 @@ public final class TestUtil {
 	/**
 	 * Creates and returns a {@link Metamodel}
 	 *
-	 * @param nsUri
-	 *            - namespaceURI of the {@link Metamodel}
-	 * @param uri
-	 *            - the actual URI for the {@link Metamodel}
+	 * @param metamodelRootPackage
+	 *            - the root {@link EPackage} of the {@link Metamodel} to create
 	 * @param fileExt
 	 *            - fileExtension for which the {@link Metamodel} is repsonsible
 	 * @return the create {@link Metamodel}
 	 */
-	public static Metamodel createMetamodel(final String nsUri, final VURI uri, final String fileExt) {
-		final Metamodel mm = new Metamodel(uri, nsUri, new AttributeTuidCalculatorAndResolver(nsUri), fileExt);
+	public static Metamodel createMetamodel(final String name, final EPackage metamodelRootPackage, final String fileExt) {
+		final Metamodel mm = new Metamodel(name, metamodelRootPackage, new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt);
 		return mm;
 	}
 
