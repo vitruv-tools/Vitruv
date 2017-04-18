@@ -14,6 +14,8 @@ import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
+import org.apache.log4j.Logger
+import org.apache.log4j.Level
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
@@ -22,6 +24,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
 	override protected createChangePropagationSpecifications() {
+		Logger.rootLogger.level = Level.DEBUG
 		return #[new AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes() {}];
 	}
 	

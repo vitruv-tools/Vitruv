@@ -1,12 +1,14 @@
 package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor;
+import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 public class ExecutorAllElementTypesToAllElementTypes extends AbstractReactionsExecutor {
   public ExecutorAllElementTypesToAllElementTypes(final UserInteracting userInteracting) {
-    super(userInteracting, new tools.vitruv.framework.util.datatypes.MetamodelPair(allElementTypes.impl.AllElementTypesPackageImpl.eNS_URI, allElementTypes.impl.AllElementTypesPackageImpl.eNS_URI));
+    super(userInteracting);
+    setMetamodels(new AllElementTypesDomainProvider().getDomain(), new AllElementTypesDomainProvider().getDomain());
   }
   
   protected void setup() {
