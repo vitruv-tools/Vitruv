@@ -22,21 +22,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private val String name;
 	
 	public new(String name, VirtualModelConfiguration modelConfiguration) {
-		this(name, modelConfiguration, null);
-	}
-	
-	public new(String name, VirtualModelConfiguration modelConfiguration, ClassLoader classLoader) {
 		this.name = name;
 		metamodelRepository = new MetamodelRepositoryImpl();
 		for (metamodel : modelConfiguration.metamodels) {
 			metamodelRepository.addMetamodel(metamodel);
 		}
-		this.modelRepository = new ModelRepositoryImpl(name, metamodelRepository, classLoader);
-//		for (transformer : modelConfiguration.change2CommandTransformings) {
-//			val transformableMetamodels = transformer.transformableMetamodels;
-//			// TODO HK This is ugly: get the correspondence model to initialize it
-//			modelRepository.getCorrespondenceModel(transformableMetamodels.first, transformableMetamodels.second)
-//		}
+		this.modelRepository = new ModelRepositoryImpl(name, metamodelRepository);
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository();
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)

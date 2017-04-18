@@ -18,7 +18,7 @@ import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.util.datatypes.VURI
 
-class AtomicEMFChangeRecorder {
+class AtomicEmfChangeRecorder {
 	var List<ChangeDescription> changeDescriptions;
 	var VURI modelVURI;
 	var Collection<Notifier> elementsToObserve

@@ -5,7 +5,10 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -13,7 +16,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,29 +34,18 @@ import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 public class TuidCacheTest {
     private static final Logger LOGGER = Logger.getLogger(TuidCacheTest.class.getSimpleName());
 
-    private static final String TEST_FOLDER = TestUtil.getTempDirPath() + "test_tmp";
-
-    @Before
-    public void beforeTest() {
-        File folder = new File(TEST_FOLDER);
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-    }
+    List<File> filesToDelete = new ArrayList<File>();
 
     @After
     public void afterTest() {
-        File folder = new File(TEST_FOLDER);
-        if (folder.exists()) {
-            for (File file : folder.listFiles()) {
-                file.delete();
-            }
-            folder.delete();
+        for (File file : this.filesToDelete) {
+            file.delete();
         }
+        this.filesToDelete.clear();
     }
 
     @BeforeClass
-    public static void initi() {
+    public static void init() {
         TestUtil.initializeLogger();
     }
 
@@ -214,7 +205,7 @@ public class TuidCacheTest {
     }
 
     private void save(final EObject eObject, final String fileName) throws IOException {
-        URI uri = URI.createFileURI(TEST_FOLDER + "/" + fileName + ".pcm_mockup");
+        URI uri = URI.createFileURI(SystemUtils.getJavaIoTmpDir().getAbsolutePath() + "/" + fileName + ".pcm_mockup");
         ResourceSetImpl resourceSet = new ResourceSetImpl();
         Resource resource = EcoreResourceBridge.loadResourceAtURI(uri, resourceSet);
         EObject root = EcoreUtil.getRootContainer(eObject);

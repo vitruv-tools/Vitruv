@@ -77,13 +77,13 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 //		}
 //	}
 	
-	@Check
-	def checkEffectInput(RoutineInput effectInput) {
-		if (!effectInput.javaInputElements.empty) {
-			warning("Using plain Java elements is discouraged. Try to use model elements and make list inputs to single valued input of other effect that is called for each element.",
-				ReactionsLanguagePackage.Literals.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
-		}
-	}
+//	@Check
+//	def checkEffectInput(RoutineInput effectInput) {
+//		if (!effectInput.javaInputElements.empty) {
+//			warning("Using plain Java elements is discouraged. Try to use model elements and make list inputs to single valued input of other effect that is called for each element.",
+//				ReactionsLanguagePackage.Literals.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
+//		}
+//	}
 	
 	@Check
 	def checkRoutine(Routine routine) {

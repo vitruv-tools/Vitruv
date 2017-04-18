@@ -1,5 +1,7 @@
 import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor
 import static tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.*;
+import tools.vitruv.framework.change.echange.compound.CompoundEChange
+import tools.vitruv.framework.change.echange.AtomicEChange
 
 import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
 
@@ -370,9 +372,35 @@ reaction NonRootDeleted {
 	call SimpleChangesTestsExecutionMonitor.instance.set(DeleteEObject)
 }
 
-// Unused routine: Only to test if primitve types are mapped and scoped correctly
+// Unused routine: Only to test if primitive types are mapped and scoped correctly
 routine testPrimitiveTypesRoutine(Integer intVal, Long longVal, Short shortVal, Byte byteVal, Character charVal, Double doubleVal, Float floatVal, Boolean boolVal, String stringVal) {
 	action {
-		call testPrimitiveTypesRoutine(intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal)
+		call {
+			// Call methods of types to ensure that they are correctly mapped
+			// otherwise static code checks will fail
+			intVal.intValue;
+			longVal.longValue;
+			shortVal.shortValue;
+			byteVal.byteValue;
+			charVal.charValue;
+			doubleVal.doubleValue;
+			floatVal.floatValue;
+			boolVal.booleanValue;
+			stringVal.charAt(0);
+			testPrimitiveTypesRoutine(intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal)
+		}
+	}
+}
+
+// Unused reaction: Only check, that change is available when reacting to any change
+reaction AnyChange {
+	after any change
+	with change instanceof AtomicEChange || change instanceof CompoundEChange
+	call { change.eClass }
+}
+
+routine testJavaTypes(plain SimpleChangesTestsExecutionMonitor as monitor) {
+	action {
+		call { }
 	}
 }
