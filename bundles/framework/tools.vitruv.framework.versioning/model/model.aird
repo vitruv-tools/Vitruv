@@ -734,7 +734,7 @@
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="model.ecore#/"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_FGZ_YCInEee8B8x6se3nAg" name="version" representation="_FGfe8CInEee8B8x6se3nAg">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_FGZ_YCInEee8B8x6se3nAg" name="branch" representation="_FGfe8CInEee8B8x6se3nAg">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="model.ecore#/"/>
       </ownedRepresentationDescriptors>
@@ -1109,7 +1109,7 @@
     <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@additionalLayers[name='Validation']"/>
     <target xmi:type="ecore:EPackage" href="model.ecore#/"/>
   </diagram:DSemanticDiagram>
-  <diagram:DSemanticDiagram xmi:id="_FGfe8CInEee8B8x6se3nAg" name="version">
+  <diagram:DSemanticDiagram xmi:id="_FGfe8CInEee8B8x6se3nAg" name="branch">
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_FGfe8SInEee8B8x6se3nAg" source="DANNOTATION_CUSTOMIZATION_KEY">
       <data xmi:type="diagram:ComputedStyleDescriptionRegistry" xmi:id="_FGfe8iInEee8B8x6se3nAg">
         <computedStyleDescriptions xmi:type="style:BundledImageDescription" xmi:id="_Ggq98CInEee8B8x6se3nAg" labelExpression="service:render" labelAlignment="LEFT" tooltipExpression="service:renderTooltip" sizeComputationExpression="1">
