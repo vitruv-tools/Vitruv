@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius DSLs Reactions Language Tests
 Bundle-SymbolicName: tools.vitruv.dsls.reactions.tests;singleton:=true
 Bundle-Version: 0.2.0.qualifier
-Export-Package: tools.vitruv.dsls.reactions.tests,
- tools.vitruv.dsls.reactions.tests
+Export-Package: tools.vitruv.dsls.reactions.tests
 Require-Bundle: org.junit,
  org.apache.log4j,
  com.google.guava,
