@@ -26,7 +26,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 				parameters += userInteractingParameter;
 				body = '''
 				super(«userInteractingParameter.name»);
-				setMetamodels(new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), new «
+				setVitruvDomains(new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), new «
 						reactionsSegment.toDomain.domainProviderForReference.class»().getDomain());'''
 			]
 			members += toMethod("setup", typeRef(Void.TYPE)) [

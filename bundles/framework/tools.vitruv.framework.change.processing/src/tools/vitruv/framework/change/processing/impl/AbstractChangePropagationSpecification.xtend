@@ -17,7 +17,7 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 		return userInteracting;
 	}
 	
-	protected def setMetamodels(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+	protected def setVitruvDomains(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		this.sourceDomain = sourceDomain;
 		this.targetDomain = targetDomain;
 	}
