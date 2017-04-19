@@ -1469,25 +1469,25 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-// Entry rule entryRuleMetamodelReference
-entryRuleMetamodelReference
+// Entry rule entryRuleDomainReference
+entryRuleDomainReference
 :
-{ before(grammarAccess.getMetamodelReferenceRule()); }
-	 ruleMetamodelReference
-{ after(grammarAccess.getMetamodelReferenceRule()); } 
+{ before(grammarAccess.getDomainReferenceRule()); }
+	 ruleDomainReference
+{ after(grammarAccess.getDomainReferenceRule()); } 
 	 EOF 
 ;
 
-// Rule MetamodelReference
-ruleMetamodelReference 
+// Rule DomainReference
+ruleDomainReference 
 	@init {
 		int stackSize = keepStackSize();
 	}
 	:
 	(
-		{ before(grammarAccess.getMetamodelReferenceAccess().getModelAssignment()); }
-		(rule__MetamodelReference__ModelAssignment)
-		{ after(grammarAccess.getMetamodelReferenceAccess().getModelAssignment()); }
+		{ before(grammarAccess.getDomainReferenceAccess().getDomainAssignment()); }
+		(rule__DomainReference__DomainAssignment)
+		{ after(grammarAccess.getDomainReferenceAccess().getDomainAssignment()); }
 	)
 ;
 finally {
@@ -5070,9 +5070,9 @@ rule__ReactionsSegment__Group__3__Impl
 	}
 :
 (
-	{ before(grammarAccess.getReactionsSegmentAccess().getFromMetamodelAssignment_3()); }
-	(rule__ReactionsSegment__FromMetamodelAssignment_3)
-	{ after(grammarAccess.getReactionsSegmentAccess().getFromMetamodelAssignment_3()); }
+	{ before(grammarAccess.getReactionsSegmentAccess().getFromDomainAssignment_3()); }
+	(rule__ReactionsSegment__FromDomainAssignment_3)
+	{ after(grammarAccess.getReactionsSegmentAccess().getFromDomainAssignment_3()); }
 )
 ;
 finally {
@@ -5124,9 +5124,9 @@ rule__ReactionsSegment__Group__5__Impl
 	}
 :
 (
-	{ before(grammarAccess.getReactionsSegmentAccess().getToMetamodelAssignment_5()); }
-	(rule__ReactionsSegment__ToMetamodelAssignment_5)
-	{ after(grammarAccess.getReactionsSegmentAccess().getToMetamodelAssignment_5()); }
+	{ before(grammarAccess.getReactionsSegmentAccess().getToDomainAssignment_5()); }
+	(rule__ReactionsSegment__ToDomainAssignment_5)
+	{ after(grammarAccess.getReactionsSegmentAccess().getToDomainAssignment_5()); }
 )
 ;
 finally {
@@ -21561,30 +21561,30 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ReactionsSegment__FromMetamodelAssignment_3
+rule__ReactionsSegment__FromDomainAssignment_3
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getReactionsSegmentAccess().getFromMetamodelMetamodelReferenceParserRuleCall_3_0()); }
-		ruleMetamodelReference
-		{ after(grammarAccess.getReactionsSegmentAccess().getFromMetamodelMetamodelReferenceParserRuleCall_3_0()); }
+		{ before(grammarAccess.getReactionsSegmentAccess().getFromDomainDomainReferenceParserRuleCall_3_0()); }
+		ruleDomainReference
+		{ after(grammarAccess.getReactionsSegmentAccess().getFromDomainDomainReferenceParserRuleCall_3_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ReactionsSegment__ToMetamodelAssignment_5
+rule__ReactionsSegment__ToDomainAssignment_5
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getReactionsSegmentAccess().getToMetamodelMetamodelReferenceParserRuleCall_5_0()); }
-		ruleMetamodelReference
-		{ after(grammarAccess.getReactionsSegmentAccess().getToMetamodelMetamodelReferenceParserRuleCall_5_0()); }
+		{ before(grammarAccess.getReactionsSegmentAccess().getToDomainDomainReferenceParserRuleCall_5_0()); }
+		ruleDomainReference
+		{ after(grammarAccess.getReactionsSegmentAccess().getToDomainDomainReferenceParserRuleCall_5_0()); }
 	)
 ;
 finally {
@@ -22493,19 +22493,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__MetamodelReference__ModelAssignment
+rule__DomainReference__DomainAssignment
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportCrossReference_0()); }
-		(
-			{ before(grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportIDTerminalRuleCall_0_1()); }
-			RULE_ID
-			{ after(grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportIDTerminalRuleCall_0_1()); }
-		)
-		{ after(grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportCrossReference_0()); }
+		{ before(grammarAccess.getDomainReferenceAccess().getDomainIDTerminalRuleCall_0()); }
+		RULE_ID
+		{ after(grammarAccess.getDomainReferenceAccess().getDomainIDTerminalRuleCall_0()); }
 	)
 ;
 finally {

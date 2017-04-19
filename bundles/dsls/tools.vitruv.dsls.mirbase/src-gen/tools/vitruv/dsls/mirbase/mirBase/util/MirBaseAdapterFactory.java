@@ -116,6 +116,11 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
         return createMetamodelReferenceAdapter();
       }
       @Override
+      public Adapter caseDomainReference(DomainReference object)
+      {
+        return createDomainReferenceAdapter();
+      }
+      @Override
       public Adapter defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -253,6 +258,21 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMetamodelReferenceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.DomainReference <em>Domain Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mirbase.mirBase.DomainReference
+   * @generated
+   */
+  public Adapter createDomainReferenceAdapter()
   {
     return null;
   }

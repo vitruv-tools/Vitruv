@@ -299,6 +299,21 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getModelMetamodelImportIDTerminalRuleCall_0_1() { return cModelMetamodelImportIDTerminalRuleCall_0_1; }
 	}
+	public class DomainReferenceElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mirbase.MirBase.DomainReference");
+		private final Assignment cDomainAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cDomainIDTerminalRuleCall_0 = (RuleCall)cDomainAssignment.eContents().get(0);
+		
+		//DomainReference:
+		//	domain=ID;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//domain=ID
+		public Assignment getDomainAssignment() { return cDomainAssignment; }
+		
+		//ID
+		public RuleCall getDomainIDTerminalRuleCall_0() { return cDomainIDTerminalRuleCall_0; }
+	}
 	
 	
 	private final DummyEntryRuleElements pDummyEntryRule;
@@ -311,6 +326,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	private final ClassicallyNamedModelElementElements pClassicallyNamedModelElement;
 	private final MetaclassFeatureReferenceElements pMetaclassFeatureReference;
 	private final MetamodelReferenceElements pMetamodelReference;
+	private final DomainReferenceElements pDomainReference;
 	
 	private final Grammar grammar;
 	
@@ -335,6 +351,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		this.pClassicallyNamedModelElement = new ClassicallyNamedModelElementElements();
 		this.pMetaclassFeatureReference = new MetaclassFeatureReferenceElements();
 		this.pMetamodelReference = new MetamodelReferenceElements();
+		this.pDomainReference = new DomainReferenceElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -476,6 +493,16 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getMetamodelReferenceRule() {
 		return getMetamodelReferenceAccess().getRule();
+	}
+	
+	//DomainReference:
+	//	domain=ID;
+	public DomainReferenceElements getDomainReferenceAccess() {
+		return pDomainReference;
+	}
+	
+	public ParserRule getDomainReferenceRule() {
+		return getDomainReferenceAccess().getRule();
 	}
 	
 	//XExpression:

@@ -1818,6 +1818,16 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getMetamodelReferenceAccess().getRule();
 	}
 	
+	//DomainReference:
+	//	domain=ID;
+	public MirBaseGrammarAccess.DomainReferenceElements getDomainReferenceAccess() {
+		return gaMirBase.getDomainReferenceAccess();
+	}
+	
+	public ParserRule getDomainReferenceRule() {
+		return getDomainReferenceAccess().getRule();
+	}
+	
 	//XExpression:
 	//	XAssignment;
 	public XbaseGrammarAccess.XExpressionElements getXExpressionAccess() {

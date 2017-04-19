@@ -7,7 +7,6 @@ import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import java.util.HashMap
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction

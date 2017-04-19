@@ -6,8 +6,8 @@ import tools.vitruv.framework.change.echange.AtomicEChange
 import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
 
 reactions: simpleChangesTests
-in reaction to changes in minimal 
-execute actions in minimal
+in reaction to changes in AllElementTypes 
+execute actions in AllElementTypes
 
 /*
  * UpdateSingleValuedEAttribute

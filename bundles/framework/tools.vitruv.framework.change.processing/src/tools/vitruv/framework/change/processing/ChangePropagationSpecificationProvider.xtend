@@ -1,8 +1,8 @@
 package tools.vitruv.framework.change.processing
 
-import tools.vitruv.framework.util.datatypes.VURI
 import java.util.List
+import tools.vitruv.framework.domains.VitruvDomain
 
 interface ChangePropagationSpecificationProvider extends Iterable<ChangePropagationSpecification> {
-	public def List<ChangePropagationSpecification> getChangePropagationSpecifications(VURI metamodelVuri);
+	public def List<ChangePropagationSpecification> getChangePropagationSpecifications(VitruvDomain sourceDomain);
 }

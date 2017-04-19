@@ -66,11 +66,11 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Keyword cInReactionToChangesInKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cFromMetamodelAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cFromMetamodelMetamodelReferenceParserRuleCall_3_0 = (RuleCall)cFromMetamodelAssignment_3.eContents().get(0);
+		private final Assignment cFromDomainAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cFromDomainDomainReferenceParserRuleCall_3_0 = (RuleCall)cFromDomainAssignment_3.eContents().get(0);
 		private final Keyword cExecuteActionsInKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final Assignment cToMetamodelAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cToMetamodelMetamodelReferenceParserRuleCall_5_0 = (RuleCall)cToMetamodelAssignment_5.eContents().get(0);
+		private final Assignment cToDomainAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cToDomainDomainReferenceParserRuleCall_5_0 = (RuleCall)cToDomainAssignment_5.eContents().get(0);
 		private final Alternatives cAlternatives_6 = (Alternatives)cGroup.eContents().get(6);
 		private final Assignment cReactionsAssignment_6_0 = (Assignment)cAlternatives_6.eContents().get(0);
 		private final RuleCall cReactionsReactionParserRuleCall_6_0_0 = (RuleCall)cReactionsAssignment_6_0.eContents().get(0);
@@ -79,12 +79,12 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		
 		//ReactionsSegment:
 		//	'reactions:' name=ValidID
-		//	'in reaction to changes in' fromMetamodel=MetamodelReference
-		//	'execute actions in' toMetamodel=MetamodelReference (reactions+=Reaction | routines+=Routine)*;
+		//	'in reaction to changes in' fromDomain=DomainReference
+		//	'execute actions in' toDomain=DomainReference (reactions+=Reaction | routines+=Routine)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'reactions:' name=ValidID 'in reaction to changes in' fromMetamodel=MetamodelReference 'execute actions in'
-		//toMetamodel=MetamodelReference (reactions+=Reaction | routines+=Routine)*
+		//'reactions:' name=ValidID 'in reaction to changes in' fromDomain=DomainReference 'execute actions in'
+		//toDomain=DomainReference (reactions+=Reaction | routines+=Routine)*
 		public Group getGroup() { return cGroup; }
 		
 		//'reactions:'
@@ -99,20 +99,20 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		//'in reaction to changes in'
 		public Keyword getInReactionToChangesInKeyword_2() { return cInReactionToChangesInKeyword_2; }
 		
-		//fromMetamodel=MetamodelReference
-		public Assignment getFromMetamodelAssignment_3() { return cFromMetamodelAssignment_3; }
+		//fromDomain=DomainReference
+		public Assignment getFromDomainAssignment_3() { return cFromDomainAssignment_3; }
 		
-		//MetamodelReference
-		public RuleCall getFromMetamodelMetamodelReferenceParserRuleCall_3_0() { return cFromMetamodelMetamodelReferenceParserRuleCall_3_0; }
+		//DomainReference
+		public RuleCall getFromDomainDomainReferenceParserRuleCall_3_0() { return cFromDomainDomainReferenceParserRuleCall_3_0; }
 		
 		//'execute actions in'
 		public Keyword getExecuteActionsInKeyword_4() { return cExecuteActionsInKeyword_4; }
 		
-		//toMetamodel=MetamodelReference
-		public Assignment getToMetamodelAssignment_5() { return cToMetamodelAssignment_5; }
+		//toDomain=DomainReference
+		public Assignment getToDomainAssignment_5() { return cToDomainAssignment_5; }
 		
-		//MetamodelReference
-		public RuleCall getToMetamodelMetamodelReferenceParserRuleCall_5_0() { return cToMetamodelMetamodelReferenceParserRuleCall_5_0; }
+		//DomainReference
+		public RuleCall getToDomainDomainReferenceParserRuleCall_5_0() { return cToDomainDomainReferenceParserRuleCall_5_0; }
 		
 		//(reactions+=Reaction | routines+=Routine)*
 		public Alternatives getAlternatives_6() { return cAlternatives_6; }
@@ -1900,8 +1900,8 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	
 	//ReactionsSegment:
 	//	'reactions:' name=ValidID
-	//	'in reaction to changes in' fromMetamodel=MetamodelReference
-	//	'execute actions in' toMetamodel=MetamodelReference (reactions+=Reaction | routines+=Routine)*;
+	//	'in reaction to changes in' fromDomain=DomainReference
+	//	'execute actions in' toDomain=DomainReference (reactions+=Reaction | routines+=Routine)*;
 	public ReactionsSegmentElements getReactionsSegmentAccess() {
 		return pReactionsSegment;
 	}
@@ -2571,6 +2571,16 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	
 	public ParserRule getMetamodelReferenceRule() {
 		return getMetamodelReferenceAccess().getRule();
+	}
+	
+	//DomainReference:
+	//	domain=ID;
+	public MirBaseGrammarAccess.DomainReferenceElements getDomainReferenceAccess() {
+		return gaMirBase.getDomainReferenceAccess();
+	}
+	
+	public ParserRule getDomainReferenceRule() {
+		return getDomainReferenceAccess().getRule();
 	}
 	
 	//XExpression:

@@ -334,8 +334,8 @@ public class ReactionsLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getReactionsFileAccess().getNamespaceImportsAssignment_0(), "rule__ReactionsFile__NamespaceImportsAssignment_0");
 					put(grammarAccess.getReactionsFileAccess().getReactionsSegmentsAssignment_2(), "rule__ReactionsFile__ReactionsSegmentsAssignment_2");
 					put(grammarAccess.getReactionsSegmentAccess().getNameAssignment_1(), "rule__ReactionsSegment__NameAssignment_1");
-					put(grammarAccess.getReactionsSegmentAccess().getFromMetamodelAssignment_3(), "rule__ReactionsSegment__FromMetamodelAssignment_3");
-					put(grammarAccess.getReactionsSegmentAccess().getToMetamodelAssignment_5(), "rule__ReactionsSegment__ToMetamodelAssignment_5");
+					put(grammarAccess.getReactionsSegmentAccess().getFromDomainAssignment_3(), "rule__ReactionsSegment__FromDomainAssignment_3");
+					put(grammarAccess.getReactionsSegmentAccess().getToDomainAssignment_5(), "rule__ReactionsSegment__ToDomainAssignment_5");
 					put(grammarAccess.getReactionsSegmentAccess().getReactionsAssignment_6_0(), "rule__ReactionsSegment__ReactionsAssignment_6_0");
 					put(grammarAccess.getReactionsSegmentAccess().getRoutinesAssignment_6_1(), "rule__ReactionsSegment__RoutinesAssignment_6_1");
 					put(grammarAccess.getReactionAccess().getDocumentationAssignment_0(), "rule__Reaction__DocumentationAssignment_0");
@@ -396,6 +396,7 @@ public class ReactionsLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getClassicallyNamedModelElementAccess().getNameAssignment_1(), "rule__ClassicallyNamedModelElement__NameAssignment_1");
 					put(grammarAccess.getMetaclassFeatureReferenceAccess().getFeatureAssignment_2(), "rule__MetaclassFeatureReference__FeatureAssignment_2");
 					put(grammarAccess.getMetamodelReferenceAccess().getModelAssignment(), "rule__MetamodelReference__ModelAssignment");
+					put(grammarAccess.getDomainReferenceAccess().getDomainAssignment(), "rule__DomainReference__DomainAssignment");
 					put(grammarAccess.getXAssignmentAccess().getFeatureAssignment_0_1(), "rule__XAssignment__FeatureAssignment_0_1");
 					put(grammarAccess.getXAssignmentAccess().getValueAssignment_0_3(), "rule__XAssignment__ValueAssignment_0_3");
 					put(grammarAccess.getXAssignmentAccess().getFeatureAssignment_1_1_0_0_1(), "rule__XAssignment__FeatureAssignment_1_1_0_0_1");

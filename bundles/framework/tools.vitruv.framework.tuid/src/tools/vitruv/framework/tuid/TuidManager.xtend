@@ -46,8 +46,6 @@ final class TuidManager {
 	}
 	
 	public def reinitialize() {
-		tuidUpdateListener.clear();
-		tuidCalculator.clear();
 		flushRegisteredObjectsUnderModification();
 		Tuid.reinitialize();
 	}
