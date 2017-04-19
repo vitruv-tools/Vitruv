@@ -54,6 +54,8 @@
       <eLiterals name="automatically"/>
       <eLiterals name="manual" value="1"/>
     </eClassifiers>
+    <eSubpackages name="resolve" nsURI="http://tools.vitruv/versioning/1.0/conflict/resolve"
+        nsPrefix="tools.vitruv.framework.versioning.resolve"/>
   </eSubpackages>
   <eSubpackages name="commit" nsURI="http://tools.vitruv/versioning/1.0/commit" nsPrefix="tools.vitruv.framework.versioning.commit">
     <eClassifiers xsi:type="ecore:EClass" name="MergeCommit" eSuperTypes="#//commit/Commit">
