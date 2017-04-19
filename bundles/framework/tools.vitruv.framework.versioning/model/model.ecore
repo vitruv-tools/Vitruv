@@ -98,7 +98,9 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="solvability" eType="#//conflict/ConflictSolvability"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="ConflictType">
-      <eLiterals name="type1"/>
+      <eLiterals name="NAMING"/>
+      <eLiterals name="MULTIPLICITY" value="1"/>
+      <eLiterals name="VISIBILITY" value="2"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="ConflictSolvability">
       <eLiterals name="automatically"/>
