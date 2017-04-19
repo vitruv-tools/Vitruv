@@ -25,9 +25,9 @@ class ExecutorClassGenerator extends ClassGenerator {
 				val userInteractingParameter = generateUserInteractingParameter;
 				parameters += userInteractingParameter;
 				body = '''
-				super(«userInteractingParameter.name»);
-				setVitruvDomains(new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), new «
-						reactionsSegment.toDomain.domainProviderForReference.class»().getDomain());'''
+				super(«userInteractingParameter.name»,
+					new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), 
+					new «reactionsSegment.toDomain.domainProviderForReference.class»().getDomain());'''
 			]
 			members += toMethod("setup", typeRef(Void.TYPE)) [
 				visibility = JvmVisibility.PROTECTED;

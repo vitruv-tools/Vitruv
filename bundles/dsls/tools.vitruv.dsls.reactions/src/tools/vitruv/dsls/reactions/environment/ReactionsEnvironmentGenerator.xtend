@@ -199,8 +199,9 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		 */
 		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangePropagationSpecification)» {
 			public «changePropagationSpecificationNameGenerator.simpleName»() {
-				super(new «UserInteractor.name»());
-				setVitruvDomains(new «ih.typeRef(modelPair.first.class)»().getDomain(), new «ih.typeRef(modelPair.second.class)»().getDomain());
+				super(new «UserInteractor.name»(),
+					new «ih.typeRef(modelPair.first.class)»().getDomain(), 
+					new «ih.typeRef(modelPair.second.class)»().getDomain());
 				setup();
 			}
 			

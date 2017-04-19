@@ -9,14 +9,15 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
+import tools.vitruv.framework.domains.VitruvDomain
 
 abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpecification {
 	private final static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
 
 	private Change2ReactionsMap changeToReactionsMap;
 	
-	new (UserInteracting userInteracting) {
-		super(userInteracting);
+	new (UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+		super(userInteracting, sourceDomain, targetDomain);
 		this.changeToReactionsMap = new Change2ReactionsMap();
 		this.setup();
 	}

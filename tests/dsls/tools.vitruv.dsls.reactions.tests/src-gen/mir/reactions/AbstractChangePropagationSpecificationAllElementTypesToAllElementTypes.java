@@ -9,8 +9,9 @@ import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider;
  */
 public abstract class AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes extends CompositeChangePropagationSpecification {
 	public AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes() {
-		super(new tools.vitruv.framework.userinteraction.impl.UserInteractor());
-		setVitruvDomains(new AllElementTypesDomainProvider().getDomain(), new AllElementTypesDomainProvider().getDomain());
+		super(new tools.vitruv.framework.userinteraction.impl.UserInteractor(),
+			new AllElementTypesDomainProvider().getDomain(), 
+			new AllElementTypesDomainProvider().getDomain());
 		setup();
 	}
 	

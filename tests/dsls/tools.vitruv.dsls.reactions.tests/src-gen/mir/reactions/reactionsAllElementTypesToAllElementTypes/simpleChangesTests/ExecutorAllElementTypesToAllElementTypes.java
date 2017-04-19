@@ -7,8 +7,9 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 @SuppressWarnings("all")
 public class ExecutorAllElementTypesToAllElementTypes extends AbstractReactionsExecutor {
   public ExecutorAllElementTypesToAllElementTypes(final UserInteracting userInteracting) {
-    super(userInteracting);
-    setVitruvDomains(new AllElementTypesDomainProvider().getDomain(), new AllElementTypesDomainProvider().getDomain());
+    super(userInteracting,
+    	new AllElementTypesDomainProvider().getDomain(), 
+    	new AllElementTypesDomainProvider().getDomain());
   }
   
   protected void setup() {

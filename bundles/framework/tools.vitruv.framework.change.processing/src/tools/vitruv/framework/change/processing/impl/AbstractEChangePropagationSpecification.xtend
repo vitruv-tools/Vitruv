@@ -6,12 +6,13 @@ import org.apache.log4j.Logger
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.framework.domains.VitruvDomain
 
 abstract class AbstractEChangePropagationSpecification extends AbstractChangePropagationSpecification {
 	private final static val LOGGER = Logger.getLogger(AbstractEChangePropagationSpecification);
 	
-	new(UserInteracting userInteracting) {
-		super(userInteracting);
+	new(UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+		super(userInteracting, sourceDomain, targetDomain);
 	}
 	
 	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {

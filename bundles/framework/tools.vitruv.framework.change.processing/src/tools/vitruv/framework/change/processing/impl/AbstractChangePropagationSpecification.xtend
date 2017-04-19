@@ -9,15 +9,16 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 	private var VitruvDomain sourceDomain;
 	private var VitruvDomain targetDomain;
 	
-	new(UserInteracting userInteracting) {
+	new(UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		setUserInteracting(userInteracting);
+		setVitruvDomains(sourceDomain, targetDomain);
 	}
 	
 	protected def UserInteracting getUserInteracting() {
 		return userInteracting;
 	}
 	
-	protected def setVitruvDomains(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+	private def setVitruvDomains(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		this.sourceDomain = sourceDomain;
 		this.targetDomain = targetDomain;
 	}
