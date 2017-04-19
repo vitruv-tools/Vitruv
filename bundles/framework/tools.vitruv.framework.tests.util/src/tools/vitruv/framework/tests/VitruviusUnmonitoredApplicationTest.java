@@ -42,7 +42,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 
 	protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
 
-	protected abstract Iterable<VitruvDomain> createMetamodels();
+	protected abstract Iterable<VitruvDomain> getVitruvDomains();
 
 	@After
 	public abstract void afterTest();
@@ -57,12 +57,12 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 
 	private void createVirtualModel(final String testName) {
 		String currentTestProjectVsumName = testName + "_vsum_";
-		Iterable<VitruvDomain> metamodels = this.createMetamodels();
-		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, metamodels,
+		Iterable<VitruvDomain> domains = this.getVitruvDomains();
+		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, domains,
 				createChangePropagationSpecifications());
 		// TODO HK Implement correctly: Should be obsolete when correspondence
 		// model is not MM-pair-specific any more
-		Iterator<VitruvDomain> it = metamodels.iterator();
+		Iterator<VitruvDomain> it = domains.iterator();
 		VitruvDomain firstMetamodel = it.next();
 		VitruvDomain secondMetamodel = it.hasNext() ? it.next() : firstMetamodel; 
 		this.correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.getURI(), secondMetamodel.getURI());
