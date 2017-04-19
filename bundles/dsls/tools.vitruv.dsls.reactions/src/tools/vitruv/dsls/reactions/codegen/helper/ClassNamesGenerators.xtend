@@ -42,8 +42,15 @@ final class ClassNamesGenerators {
 //		return pckg.nsPrefix.replace(".", "_").toFirstUpper;
 //	}
 	
+	private static def String correctAcronymCapitalization(String potentialAcronym) {
+		if (potentialAcronym.toUpperCase == potentialAcronym) {
+			return potentialAcronym.toLowerCase.toFirstUpper;
+		}
+		return potentialAcronym;
+	}
+	
 	private static def String getDomainPairName(Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>> metamodelPair) {
-		return '''«metamodelPair.first.domain.name.toLowerCase.toFirstUpper»To«metamodelPair.second.domain.name.toLowerCase.toFirstUpper»'''	
+		return '''«metamodelPair.first.domain.name.correctAcronymCapitalization»To«metamodelPair.second.domain.name.correctAcronymCapitalization»'''	
 	}
 	
 	private static def String getMetamodelPairName(ReactionsSegment reactionSegment) {
