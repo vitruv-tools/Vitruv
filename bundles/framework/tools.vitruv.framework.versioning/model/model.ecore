@@ -66,34 +66,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
         eType="#//Branch"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Conflict" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//ConflictType"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="solvability" eType="#//ConflictSolvability"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="ConflictType">
-    <eLiterals name="type1"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="ConflictSolvability">
-    <eLiterals name="automatically"/>
-    <eLiterals name="manual" value="1"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SimpleChangeConflict" eSuperTypes="#//Conflict">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChange" lowerBound="1"
-        eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="targetChange" lowerBound="1"
-        eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MultiChangeConflict" eSuperTypes="#//Conflict">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChanges" lowerBound="1"
-        upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="targetChanges" lowerBound="1"
-        upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ConflictDetector">
-    <eOperations name="detectConflicts" upperBound="-1" eType="#//Conflict">
-      <eParameters name="diff" eType="#//BranchDiff"/>
-    </eOperations>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Signed" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="signature" lowerBound="1"
         eType="#//Signature"/>
@@ -102,4 +74,35 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="signer" lowerBound="1"
         eType="#//Author"/>
   </eClassifiers>
+  <eSubpackages name="conflict" nsURI="http://tools.vitruv/versioning/1.0/conflict"
+      nsPrefix="tools.vitruv.framework.versioning">
+    <eClassifiers xsi:type="ecore:EClass" name="SimpleChangeConflict" eSuperTypes="#//conflict/Conflict">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChange" lowerBound="1"
+          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="targetChange" lowerBound="1"
+          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MultiChangeConflict" eSuperTypes="#//conflict/Conflict">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChanges" lowerBound="1"
+          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="targetChanges" lowerBound="1"
+          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ConflictDetector">
+      <eOperations name="detectConflicts" upperBound="-1" eType="#//conflict/Conflict">
+        <eParameters name="diff" eType="#//BranchDiff"/>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Conflict" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//conflict/ConflictType"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="solvability" eType="#//conflict/ConflictSolvability"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="ConflictType">
+      <eLiterals name="type1"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="ConflictSolvability">
+      <eLiterals name="automatically"/>
+      <eLiterals name="manual" value="1"/>
+    </eClassifiers>
+  </eSubpackages>
 </ecore:EPackage>
