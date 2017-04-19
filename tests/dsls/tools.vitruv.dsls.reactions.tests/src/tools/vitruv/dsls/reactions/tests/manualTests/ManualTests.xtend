@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.reactions.tests.manualTests
 
 import org.junit.Test
-import allElementTypes.AllElementTypesPackage
 import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.xtext.builder.EclipseResourceFileSystemAccess2
 import tools.vitruv.dsls.reactions.ui.internal.ReactionsActivator
@@ -11,6 +10,7 @@ import com.google.inject.Inject
 import tools.vitruv.dsls.reactions.api.generator.IReactionsEnvironmentGenerator
 import tools.vitruv.dsls.reactions.api.generator.ReactionBuilderFactory
 import org.junit.Ignore
+import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider
 
 class ManualTests {
 	private static class Injections {
@@ -26,8 +26,8 @@ class ManualTests {
 		val environmentGenerator = injector.getInstance(IReactionsEnvironmentGenerator);
 		val reaction = new ReactionBuilderFactory().createReactionBuilder()
 			.setName("TestReaction")
-			.setTrigger(AllElementTypesPackage.eINSTANCE)
-			.setTargetChange(AllElementTypesPackage.eINSTANCE)
+			.setTrigger(new AllElementTypesDomainProvider().domain)
+			.setTargetChange(new AllElementTypesDomainProvider().domain)
 			.setExecutionBlock(''' {
 				println("That's it");
 			}
