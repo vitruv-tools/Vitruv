@@ -8,7 +8,7 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 public class ExecutorAllElementTypesToAllElementTypes extends AbstractReactionsExecutor {
   public ExecutorAllElementTypesToAllElementTypes(final UserInteracting userInteracting) {
     super(userInteracting);
-    setMetamodels(new AllElementTypesDomainProvider().getDomain(), new AllElementTypesDomainProvider().getDomain());
+    setVitruvDomains(new AllElementTypesDomainProvider().getDomain(), new AllElementTypesDomainProvider().getDomain());
   }
   
   protected void setup() {
