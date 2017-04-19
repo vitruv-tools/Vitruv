@@ -125,7 +125,7 @@ public abstract class VsumTest extends VitruviusTest {
         List<VitruvDomain> vitruvDomains = new ArrayList<VitruvDomain>();
         vitruvDomains.add(UmlDomain);
         vitruvDomains.add(PcmDomain);
-        return TestUtil.createVirtualModel(VSUM_NAME, vitruvDomains);
+        return TestUtil.createVirtualModel(VSUM_NAME, true, vitruvDomains);
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {

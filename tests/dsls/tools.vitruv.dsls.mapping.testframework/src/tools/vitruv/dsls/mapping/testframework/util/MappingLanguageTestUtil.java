@@ -39,7 +39,7 @@ public final class MappingLanguageTestUtil {
 	 * @return the created VSUM
 	 */
 	public static VirtualModel createEmptyVSUM(Collection<VitruvDomain> metamodels, Collection<ChangePropagationSpecification> transformer) {
-		return TestUtil.createVirtualModel("vitruvius.meta", metamodels, transformer);
+		return TestUtil.createVirtualModel("vitruvius.meta", true, metamodels, transformer);
 	}
 
 	public static AbstractVitruvDomain createMetamodel(String name, EPackage rootPackage, TuidCalculatorAndResolver tuidCalculatorAndResolver, String... extensions) {

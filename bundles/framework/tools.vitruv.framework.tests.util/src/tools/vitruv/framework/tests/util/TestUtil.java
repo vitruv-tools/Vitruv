@@ -55,7 +55,7 @@ public final class TestUtil {
 	 * timestamp to the name.
 	 * 
 	 * @param projectName
-	 *            - name of the project t ocreate
+	 *            - name of the project to create
 	 * @return the created {@link IProject}
 	 */
 	public static IProject createProject(String projectName) throws CoreException {
@@ -105,38 +105,44 @@ public final class TestUtil {
 		return testProject;
 	}
 
-	
 	/**
-	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and an empty set of
-	 * {@link ChangePropagationSpecification}s. It automatically adds a
-	 * timestamp to the name.
+	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and an
+	 * empty set of {@link ChangePropagationSpecification}s.
 	 * 
 	 * @param vsumName
 	 *            - name of the VSUM
+	 * @param addTimestamp
+	 *            - specifies if a timestamp shall be added to the name
 	 * @param metamodels
 	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
 	 * @return the created {@link VirtualModel}
 	 */
-	public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<VitruvDomain> metamodels) {
-		return createVirtualModel(vsumName, metamodels, Collections.emptyList());
+	public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestamp,
+			final Iterable<VitruvDomain> metamodels) {
+		return createVirtualModel(vsumName, addTimestamp, metamodels, Collections.emptyList());
 	}
 
 	/**
 	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and
-	 * {@link ChangePropagationSpecification}s. It automatically adds a
-	 * timestamp to the name.
+	 * {@link ChangePropagationSpecification}s.
 	 * 
 	 * @param vsumName
 	 *            - name of the VSUM
+	 * @param addTimestamp
+	 *            - specifies if a timestamp shall be added to the name
 	 * @param metamodels
 	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
 	 * @param changePropagationSpecifications
 	 *            - {@link ChangePropagationSpecification}s to add to the VSUM
 	 * @return the created {@link VirtualModel}
 	 */
-	public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<VitruvDomain> metamodels,
+	public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestamp,
+			final Iterable<VitruvDomain> metamodels,
 			final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-		String finalVsumName = addTimestampToString(vsumName);
+		String finalVsumName = vsumName;
+		if (addTimestamp) {
+			finalVsumName = addTimestampToString(vsumName);
+		}
 		VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
 		for (VitruvDomain metamodel : metamodels) {
 			vmodelConfig.addMetamodel(metamodel);
@@ -149,17 +155,21 @@ public final class TestUtil {
 	}
 
 	/**
-	 * Creates and returns a {@link AbstractVitruvDomain}
+	 * Creates and returns a {@link VitruvDomain}.
 	 *
 	 * @param metamodelRootPackage
-	 *            - the root {@link EPackage} of the {@link AbstractVitruvDomain} to create
+	 *            - the root {@link EPackage} of the {@link VitruvDomain} to
+	 *            create
 	 * @param fileExt
-	 *            - fileExtension for which the {@link AbstractVitruvDomain} is repsonsible
-	 * @return the create {@link AbstractVitruvDomain}
+	 *            - fileExtension for which the {@link VitruvDomain} is
+	 *            responsible
+	 * @return the create {@link VitruvDomain}
 	 */
-	public static VitruvDomain createMetamodel(final String name, final EPackage metamodelRootPackage, final String fileExt) {
-		final VitruvDomain mm = new AbstractVitruvDomain(name, metamodelRootPackage, new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt);
-		return mm;
+	public static VitruvDomain createVitruvDomain(final String name, final EPackage metamodelRootPackage,
+			final String fileExt) {
+		final VitruvDomain domain = new AbstractVitruvDomain(name, metamodelRootPackage,
+				new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt);
+		return domain;
 	}
 
 	private static String addTimestampToString(final String originalString) {

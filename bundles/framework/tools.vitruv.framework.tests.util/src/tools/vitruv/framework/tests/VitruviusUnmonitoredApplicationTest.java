@@ -59,7 +59,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	private void createVirtualModel(final String testName) {
 		String currentTestProjectVsumName = testName + "_vsum_";
 		Iterable<VitruvDomain> domains = this.getVitruvDomains();
-		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, domains,
+		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, true, domains,
 				createChangePropagationSpecifications());
 		// TODO HK Implement correctly: Should be obsolete when correspondence
 		// model is not MM-pair-specific any more
