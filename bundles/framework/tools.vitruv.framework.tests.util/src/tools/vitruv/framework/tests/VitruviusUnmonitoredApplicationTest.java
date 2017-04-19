@@ -3,6 +3,7 @@ package tools.vitruv.framework.tests;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -64,8 +65,9 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		// model is not MM-pair-specific any more
 		Iterator<VitruvDomain> it = domains.iterator();
 		VitruvDomain firstMetamodel = it.next();
-		VitruvDomain secondMetamodel = it.hasNext() ? it.next() : firstMetamodel; 
-		this.correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.getURI(), secondMetamodel.getURI());
+		VitruvDomain secondMetamodel = it.hasNext() ? it.next() : firstMetamodel;
+		this.correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.getURI(),
+				secondMetamodel.getURI());
 		this.testUserInteractor = new TestUserInteractor();
 		this.getVirtualModel().setUserInteractor(testUserInteractor);
 	}
@@ -90,6 +92,16 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		return VURI.getInstance(getPlatformModelPath(modelPathWithinProject));
 	}
 
+	/**
+	 * Creates and returns a resource with the given path relative to the
+	 * project folder.
+	 * 
+	 * @param modelPathWithinProject
+	 *            - the path to the resource within the project folder,
+	 *            including the model file extension
+	 * @return the created resource or <code>null</code> if not factory is
+	 *         registered for resource with the given file extension
+	 */
 	protected Resource createModelResource(String modelPathWithinProject) {
 		return resourceSet.createResource(getModelVuri(modelPathWithinProject).getEMFUri());
 	}
@@ -98,6 +110,28 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		return resourceSet.getResource(getModelVuri(modelPathWithinProject).getEMFUri(), true);
 	}
 
+	/**
+	 * Loads and returns the resource with the given {@link URI}.
+	 * 
+	 * @param modelUri
+	 *            - The {@link URI} of the resource to load
+	 * @return the resource loaded from the given {@link URI} or
+	 *         <code>null</code> if it could not be loaded
+	 */
+	protected Resource getModelResource(URI modelUri) {
+		return resourceSet.getResource(modelUri, true);
+	}
+
+	/**
+	 * Loads and returns the resource with the given path relative to the
+	 * project folder.
+	 * 
+	 * @param modelPathWithinProject
+	 *            - the path to the resource within the project folder,
+	 *            including the model file extension
+	 * @return the resource loaded from the given path or <code>null</code> if
+	 *         it could not be loaded
+	 */
 	protected Resource getModelResource(String modelPathWithinProject) {
 		return getModelResource(modelPathWithinProject, this.resourceSet);
 	}
@@ -110,20 +144,58 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		return resourceContents.get(0);
 	}
 
+	/**
+	 * Returns the first root element within the resource with the given path
+	 * relative to the project folder
+	 * 
+	 * @param modelPathWithinProject
+	 *            - the path to the resource within the project folder,
+	 *            including the model file extension
+	 * @return the root element of the resource
+	 * @throws IllegalStateException
+	 *             if the resource does not contain a root element
+	 */
 	protected EObject getFirstRootElement(String modelPathWithinProject) {
 		return getFirstRootElement(modelPathWithinProject, this.resourceSet);
 	}
 
+	/**
+	 * Asserts that a model with the given path relative to the project folder
+	 * exists.
+	 * 
+	 * @param modelPathWithinProject
+	 *            - the path to the resource within the project folder,
+	 *            including the model file extension
+	 */
 	protected void assertModelExists(String modelPathWithinProject) {
 		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
 		assertTrue("Model at " + modelPathWithinProject + " does not exist bust should", modelExists);
 	}
 
+	/**
+	 * Asserts that no model with the given path relative to the project folder
+	 * exists.
+	 * 
+	 * @param modelPathWithinProject
+	 *            - the path to the resource within the project folder,
+	 *            including the model file extension
+	 */
 	protected void assertModelNotExists(String modelPathWithinProject) {
 		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
 		assertFalse("Model at " + modelPathWithinProject + " exists but should not", modelExists);
 	}
 
+	/**
+	 * Asserts that the two models persisted in resources with the given paths
+	 * relative to the project folder have equal contents.
+	 * 
+	 * @param firstModelPathWithinProject
+	 *            - the path to the first resource within the project folder,
+	 *            including the model file extension
+	 * @param secondModelPathWithinProject
+	 *            - the path to the second resource within the project folder,
+	 *            including the model file extension
+	 */
 	protected void assertPersistedModelsEqual(String firstModelPathWithinProject, String secondModelPathWithinProject) {
 		ResourceSet testResourceSet = new ResourceSetImpl();
 		EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet);
