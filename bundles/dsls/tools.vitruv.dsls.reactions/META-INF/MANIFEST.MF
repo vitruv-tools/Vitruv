@@ -28,7 +28,7 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xtext.generator,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.processing,
- tools.vitruv.framework.metamodel
+ tools.vitruv.framework.metamodel;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.api.generator,
