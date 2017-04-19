@@ -5,6 +5,8 @@ import java.util.ArrayList
 import java.util.List
 
 interface VitruvDomainProvider<D extends VitruvDomain> {
+	public static String EXTENSION_POINT_ID = "tools.vitruv.framework.metamodel.domain"
+	
 	abstract def D getDomain();
 
 	/**
@@ -36,7 +38,7 @@ interface VitruvDomainProvider<D extends VitruvDomain> {
 	 */
 	def static Iterable<VitruvDomainProvider<?>> getAllDomainProvidersFromExtensionPoint() {
 		val List<VitruvDomainProvider<?>> domainProvider = new ArrayList<VitruvDomainProvider<?>>();
-		Platform.getExtensionRegistry().getConfigurationElementsFor(VitruvDomain.EXTENSION_POINT_ID).map [
+		Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_ID).map [
 			it.createExecutableExtension("class")
 		].forEach[if(it instanceof VitruvDomainProvider<?>) domainProvider.add(it)];
 		return domainProvider;
