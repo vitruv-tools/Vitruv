@@ -6,9 +6,6 @@ import tools.vitruv.dsls.reactions.helper.XtendImportHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 import tools.vitruv.framework.domains.VitruvDomainProvider
 
 final class ClassNamesGenerators {
@@ -46,7 +43,7 @@ final class ClassNamesGenerators {
 //	}
 	
 	private static def String getDomainPairName(Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>> metamodelPair) {
-		return '''«metamodelPair.first.domain.name»To«metamodelPair.second.domain.name»'''	
+		return '''«metamodelPair.first.domain.name.toLowerCase.toFirstUpper»To«metamodelPair.second.domain.name.toLowerCase.toFirstUpper»'''	
 	}
 	
 	private static def String getMetamodelPairName(ReactionsSegment reactionSegment) {
