@@ -6,7 +6,6 @@ import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 
 import pcm_mockup.Component;
 import pcm_mockup.PInterface;
@@ -39,16 +38,11 @@ public abstract class VsumTest extends VitruviusTest {
         return getCurrentTestProject().getName();
     }
 
-    protected InternalVirtualModel createMetaRepositoryAndVsum(final String sourceMetamodelName,
-            final EPackage sourceMetamodelRootPackage, final String fileExt1, final String targetMetamodelName,
-            final EPackage targetMetamodelRootPackage, final String fileExt2) {
-        List<VitruvDomain> metamodels = new ArrayList<VitruvDomain>();
-        metamodels.add(new AbstractVitruvDomain(sourceMetamodelName, sourceMetamodelRootPackage,
-                new AttributeTuidCalculatorAndResolver(sourceMetamodelRootPackage.getNsURI(), "id"), fileExt1));
-        metamodels.add(new AbstractVitruvDomain(targetMetamodelName, targetMetamodelRootPackage,
-                new AttributeTuidCalculatorAndResolver(targetMetamodelRootPackage.getNsURI(), "id"), fileExt2));
-        return TestUtil.createVirtualModel(VSUM_NAME, metamodels);
-    }
+    private static final VitruvDomain UmlDomain = new AbstractVitruvDomain("UML", Uml_mockupPackage.eINSTANCE,
+            new AttributeTuidCalculatorAndResolver(Uml_mockupPackage.eINSTANCE.getNsURI(), "id"), UML_FILE_EXT);
+
+    private static final VitruvDomain PcmDomain = new AbstractVitruvDomain("PCM", Pcm_mockupPackage.eINSTANCE,
+            new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eINSTANCE.getNsURI(), "id"), PCM_FILE_EXT);
 
     protected String getCurrentProjectModelFolder() {
         return getCurrentProjectFolderName() + "/model/";
@@ -128,8 +122,10 @@ public abstract class VsumTest extends VitruviusTest {
     }
 
     protected InternalVirtualModel createMetaRepositoryAndVsum() {
-        return createMetaRepositoryAndVsum("Pcm", Pcm_mockupPackage.eINSTANCE, PCM_FILE_EXT, "Uml",
-                Uml_mockupPackage.eINSTANCE, UML_FILE_EXT);
+        List<VitruvDomain> vitruvDomains = new ArrayList<VitruvDomain>();
+        vitruvDomains.add(UmlDomain);
+        vitruvDomains.add(PcmDomain);
+        return TestUtil.createVirtualModel(VSUM_NAME, vitruvDomains);
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {
