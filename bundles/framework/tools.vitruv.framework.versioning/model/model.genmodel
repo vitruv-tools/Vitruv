@@ -82,34 +82,34 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Signature/signer"/>
     </genClasses>
   </genPackages>
-  <genPackages prefix="Echange" basePackage="tools.vitruv.framework.change" ecorePackage="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage">
-    <genDataTypes ecoreDataType="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/Command"/>
-    <genDataTypes ecoreDataType="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/ResourceSet"/>
-    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange">
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/isResolved"/>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBefore">
-        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBefore/resourceSet"/>
+  <genPackages prefix="Echange" basePackage="tools.vitruv.framework.change" ecorePackage="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage">
+    <genDataTypes ecoreDataType="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/Command"/>
+    <genDataTypes ecoreDataType="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/ResourceSet"/>
+    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange">
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/isResolved"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBefore">
+        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBefore/resourceSet"/>
       </genOperations>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfter">
-        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfter/resourceSet"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfter">
+        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfter/resourceSet"/>
       </genOperations>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBeforeAndApplyForward">
-        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBeforeAndApplyForward/resourceSet"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBeforeAndApplyForward">
+        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBeforeAndApplyForward/resourceSet"/>
       </genOperations>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfterAndApplyBackward">
-        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfterAndApplyBackward/resourceSet"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfterAndApplyBackward">
+        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfterAndApplyBackward/resourceSet"/>
       </genOperations>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyForward"/>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyBackward"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyForward"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyBackward"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/AtomicEChange"/>
-    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/AdditiveEChange">
-      <genTypeParameters ecoreTypeParameter="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/AdditiveEChange/T"/>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/AdditiveEChange/getNewValue"/>
+    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/AtomicEChange"/>
+    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/AdditiveEChange">
+      <genTypeParameters ecoreTypeParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/AdditiveEChange/T"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/AdditiveEChange/getNewValue"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/SubtractiveEChange">
-      <genTypeParameters ecoreTypeParameter="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/SubtractiveEChange/T"/>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/SubtractiveEChange/getOldValue"/>
+    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/SubtractiveEChange">
+      <genTypeParameters ecoreTypeParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/SubtractiveEChange/T"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/SubtractiveEChange/getOldValue"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Ecore" ecorePackage="../../org.eclipse.emf.ecore/model/Ecore.ecore#/">

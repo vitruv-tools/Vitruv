@@ -3,7 +3,7 @@
   <viewpoint:DAnalysis xmi:id="_Yd_VsCCTEeeuerPs_w3LAg" selectedViews="_YjlAUCCTEeeuerPs_w3LAg" version="11.1.0.201608251200">
     <semanticResources>model.ecore</semanticResources>
     <semanticResources>model.genmodel</semanticResources>
-    <semanticResources>platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore</semanticResources>
+    <semanticResources>platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore</semanticResources>
     <semanticResources>platform:/resource/org.eclipse.emf.ecore.xcore.lib/model/XcoreLang.xcore</semanticResources>
     <semanticResources>java:/Objects/org.eclipse.emf.common.command.Command</semanticResources>
     <semanticResources>java:/Objects/org.eclipse.emf.ecore.resource.ResourceSet</semanticResources>
@@ -1016,8 +1016,8 @@
       </ownedElements>
     </ownedDiagramElements>
     <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_ZqwlYCFEEeeRPpsdZUUZCg" name="EChange" tooltipText="" incomingEdges="_by59oCFEEeeRPpsdZUUZCg" width="12" height="10">
-      <target xmi:type="ecore:EClass" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
-      <semanticElements xmi:type="ecore:EClass" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+      <target xmi:type="ecore:EClass" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange"/>
+      <semanticElements xmi:type="ecore:EClass" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange"/>
       <decorations xmi:type="viewpoint:Decoration" xmi:id="_ZrHxwCFEEeeRPpsdZUUZCg">
         <description xmi:type="description:SemanticBasedDecoration" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@decorationDescriptionsSet/@decorationDescriptions[name='External']"/>
       </decorations>
@@ -1030,60 +1030,60 @@
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_Zq8LkCFEEeeRPpsdZUUZCg" name="isResolved() : EBoolean" tooltipText="isResolved() : EBoolean">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/isResolved"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/isResolved"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/isResolved"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/isResolved"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_ZrBrICFEEeeRPpsdZUUZCg" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_ZrCSMCFEEeeRPpsdZUUZCg" name="resolveBefore(resourceSet ResourceSet) : EChange" tooltipText="resolveBefore(resourceSet) : EChange">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBefore"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBefore"/>
-        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBefore/resourceSet"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBefore"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBefore"/>
+        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBefore/resourceSet"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_ZrC5QCFEEeeRPpsdZUUZCg" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_ZrDgUCFEEeeRPpsdZUUZCg" name="resolveAfter(resourceSet ResourceSet) : EChange" tooltipText="resolveAfter(resourceSet) : EChange">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfter"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfter"/>
-        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfter/resourceSet"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfter"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfter"/>
+        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfter/resourceSet"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_ZrDgUSFEEeeRPpsdZUUZCg" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_ZrEHYCFEEeeRPpsdZUUZCg" name="resolveBeforeAndApplyForward(resourceSet ResourceSet) : EChange" tooltipText="resolveBeforeAndApplyForward(resourceSet) : EChange">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBeforeAndApplyForward"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBeforeAndApplyForward"/>
-        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBeforeAndApplyForward/resourceSet"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBeforeAndApplyForward"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBeforeAndApplyForward"/>
+        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBeforeAndApplyForward/resourceSet"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_ZrEucCFEEeeRPpsdZUUZCg" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_ZrFVgCFEEeeRPpsdZUUZCg" name="resolveAfterAndApplyBackward(resourceSet ResourceSet) : EChange" tooltipText="resolveAfterAndApplyBackward(resourceSet) : EChange">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfterAndApplyBackward"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfterAndApplyBackward"/>
-        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfterAndApplyBackward/resourceSet"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfterAndApplyBackward"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfterAndApplyBackward"/>
+        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfterAndApplyBackward/resourceSet"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_ZrF8kCFEEeeRPpsdZUUZCg" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_ZrF8kSFEEeeRPpsdZUUZCg" name="applyForward() : EBoolean" tooltipText="applyForward() : EBoolean">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyForward"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyForward"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyForward"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyForward"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_ZrF8kiFEEeeRPpsdZUUZCg" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_ZrGjoCFEEeeRPpsdZUUZCg" name="applyBackward() : EBoolean" tooltipText="applyBackward() : EBoolean">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyBackward"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyBackward"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyBackward"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyBackward"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_ZrHKsCFEEeeRPpsdZUUZCg" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
@@ -2123,8 +2123,8 @@
       </data>
     </ownedAnnotationEntries>
     <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_SQ4kkCKTEeeyNOesGj0TDQ" name="EChange" tooltipText="" incomingEdges="_SZxTcCUHEeeuHMmWGqjVGw _SZzvsCUHEeeuHMmWGqjVGw _SZ2zACUHEeeuHMmWGqjVGw _SZ4oMCUHEeeuHMmWGqjVGw" width="12" height="10">
-      <target xmi:type="ecore:EClass" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
-      <semanticElements xmi:type="ecore:EClass" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+      <target xmi:type="ecore:EClass" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange"/>
+      <semanticElements xmi:type="ecore:EClass" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange"/>
       <decorations xmi:type="viewpoint:Decoration" xmi:id="_SRRmICKTEeeyNOesGj0TDQ">
         <description xmi:type="description:SemanticBasedDecoration" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@decorationDescriptionsSet/@decorationDescriptions[name='External']"/>
       </decorations>
@@ -2137,60 +2137,60 @@
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_SRH1ICKTEeeyNOesGj0TDQ" name="isResolved() : EBoolean" tooltipText="isResolved() : EBoolean">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/isResolved"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/isResolved"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/isResolved"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/isResolved"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_SRJDQCKTEeeyNOesGj0TDQ" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_SRJqUCKTEeeyNOesGj0TDQ" name="resolveBefore(resourceSet ResourceSet) : EChange" tooltipText="resolveBefore(resourceSet) : EChange">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBefore"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBefore"/>
-        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBefore/resourceSet"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBefore"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBefore"/>
+        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBefore/resourceSet"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_SRK4cCKTEeeyNOesGj0TDQ" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_SRK4cSKTEeeyNOesGj0TDQ" name="resolveAfter(resourceSet ResourceSet) : EChange" tooltipText="resolveAfter(resourceSet) : EChange">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfter"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfter"/>
-        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfter/resourceSet"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfter"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfter"/>
+        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfter/resourceSet"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_SRLfgCKTEeeyNOesGj0TDQ" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_SRMGkCKTEeeyNOesGj0TDQ" name="resolveBeforeAndApplyForward(resourceSet ResourceSet) : EChange" tooltipText="resolveBeforeAndApplyForward(resourceSet) : EChange">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBeforeAndApplyForward"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBeforeAndApplyForward"/>
-        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveBeforeAndApplyForward/resourceSet"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBeforeAndApplyForward"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBeforeAndApplyForward"/>
+        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveBeforeAndApplyForward/resourceSet"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_SRMtoCKTEeeyNOesGj0TDQ" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_SRMtoSKTEeeyNOesGj0TDQ" name="resolveAfterAndApplyBackward(resourceSet ResourceSet) : EChange" tooltipText="resolveAfterAndApplyBackward(resourceSet) : EChange">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfterAndApplyBackward"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfterAndApplyBackward"/>
-        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/resolveAfterAndApplyBackward/resourceSet"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfterAndApplyBackward"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfterAndApplyBackward"/>
+        <semanticElements xmi:type="ecore:EParameter" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/resolveAfterAndApplyBackward/resourceSet"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_SRNUsCKTEeeyNOesGj0TDQ" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_SRNUsSKTEeeyNOesGj0TDQ" name="applyForward() : EBoolean" tooltipText="applyForward() : EBoolean">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyForward"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyForward"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyForward"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyForward"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_SRN7wCKTEeeyNOesGj0TDQ" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_SRN7wSKTEeeyNOesGj0TDQ" name="applyBackward() : EBoolean" tooltipText="applyBackward() : EBoolean">
-        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyBackward"/>
-        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange/applyBackward"/>
+        <target xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyBackward"/>
+        <semanticElements xmi:type="ecore:EOperation" href="platform:/resource/tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/EPackage/EChange/applyBackward"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_SROi0CKTEeeyNOesGj0TDQ" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='Operation']/@style"/>
         </ownedStyle>

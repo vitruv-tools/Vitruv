@@ -4,7 +4,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Commit" abstract="true" eSuperTypes="#//Signed">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="hash" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="changes" upperBound="-1"
-        eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+        eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="commitmessage" lowerBound="1"
         eType="#//CommitMessage"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="commitsBranchedFromThis"
@@ -78,15 +78,15 @@
       nsPrefix="tools.vitruv.framework.versioning">
     <eClassifiers xsi:type="ecore:EClass" name="SimpleChangeConflict" eSuperTypes="#//conflict/Conflict">
       <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChange" lowerBound="1"
-          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="targetChange" lowerBound="1"
-          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MultiChangeConflict" eSuperTypes="#//conflict/Conflict">
       <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChanges" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="targetChanges" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/EChange.xcore#/EPackage/EChange"/>
+          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ConflictDetector">
       <eOperations name="detectConflicts" upperBound="-1" eType="#//conflict/Conflict">
