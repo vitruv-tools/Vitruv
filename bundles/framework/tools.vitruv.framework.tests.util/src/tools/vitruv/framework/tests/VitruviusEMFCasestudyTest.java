@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests;
+/*package tools.vitruv.framework.tests;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -19,23 +19,23 @@ import tools.vitruv.framework.modelsynchronization.ChangePropagationAbortCause;
 import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
 import tools.vitruv.framework.util.datatypes.VURI;
 
-/**
+*//**
  * Base class for all Vitruvius EMF case study tests
  *
  * @author langhamm
  *
- */
+ *//*
 
 public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements ChangePropagationListener {
 
 	protected AtomicEmfChangeRecorder changeRecorder;
 
-	/**
+	*//**
 	 * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM,
 	 * Metarepository etc. before each test
 	 *
 	 * @throws Throwable
-	 */
+	 *//*
 	@Override
 	public void beforeTest() throws Throwable {
 		super.beforeTest();
@@ -93,3 +93,4 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	}
 
 }
+*/
