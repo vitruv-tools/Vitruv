@@ -1,4 +1,4 @@
-/*package tools.vitruv.framework.tests;
+package tools.vitruv.framework.tests;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -19,25 +19,25 @@ import tools.vitruv.framework.modelsynchronization.ChangePropagationAbortCause;
 import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
 import tools.vitruv.framework.util.datatypes.VURI;
 
-*//**
+/**
  * Base class for all Vitruvius EMF case study tests
  *
  * @author langhamm
  *
- *//*
+ */
 
-public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements ChangePropagationListener {
+public abstract class VitruviusEMFCasestudyTest extends VitruviusUnmonitoredApplicationTest implements ChangePropagationListener {
 
 	protected AtomicEmfChangeRecorder changeRecorder;
 
-	*//**
+	/**
 	 * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM,
 	 * Metarepository etc. before each test
 	 *
 	 * @throws Throwable
-	 *//*
+	 */
 	@Override
-	public void beforeTest() throws Throwable {
+	public void beforeTest(){
 		super.beforeTest();
 		this.changeRecorder = new AtomicEmfChangeRecorder(true);
 	}
@@ -51,12 +51,12 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 		}
 	}
 
-	@Override
-	protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
-		// TODO HK Implement correctly
-		Iterator<Metamodel> it = metamodels.iterator();
-		return this.getVirtualModel().getCorrespondenceModel(it.next().getURI(), it.next().getURI());
-	}
+//	@Override
+//	protected CorrespondenceModel getCorrespondenceModel()  {
+//		// TODO HK Implement correctly
+//		Iterator<Metamodel> it = metamodels.iterator();
+//		return this.getVirtualModel().getCorrespondenceModel(it.next().getURI(), it.next().getURI());
+//	}
 
 	protected void triggerSynchronization(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
@@ -93,4 +93,3 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	}
 
 }
-*/
