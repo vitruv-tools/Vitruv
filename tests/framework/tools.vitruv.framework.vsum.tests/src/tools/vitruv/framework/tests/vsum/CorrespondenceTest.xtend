@@ -32,7 +32,7 @@ class CorrespondenceTest extends VsumTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
 
 	@Test def void testAllInCommand() {
-		val InternalVirtualModel vsum = createMetaRepositoryVsumAndModelInstances()
+		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
 		vsum.executeCommand([testAll(vsum) return null]);
 	}
 
@@ -55,7 +55,7 @@ class CorrespondenceTest extends VsumTest {
 	}
 
 	@Test def void testCorrespondenceUpdate() {
-		val InternalVirtualModel vsum = createMetaRepositoryVsumAndModelInstances()
+		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
 		vsum.executeCommand([ // create vsum and Repo and UPackage
 			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
@@ -76,7 +76,7 @@ class CorrespondenceTest extends VsumTest {
 	}
 
 	@Test def void testMoveRootEObjectBetweenResource() {
-		val InternalVirtualModel vsum = createMetaRepositoryVsumAndModelInstances()
+		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
 		vsum.executeCommand([
 			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
@@ -149,7 +149,7 @@ class CorrespondenceTest extends VsumTest {
 		//var VURI pcmVURI = VURI.getInstance(getDefaultPcmInstanceURI())
 		vsum.save()//(pcmVURI)
 		// create a new vsum from disk and load correspondence instance from disk
-		var InternalVirtualModel vsum2 = createMetaRepositoryVirtualModelAndModelInstances(alternativePcmInstanceURI, alterantiveUMLInstanceURI);
+		var InternalVirtualModel vsum2 = createAlternativeVirtualModelAndModelInstances(alternativePcmInstanceURI, alterantiveUMLInstanceURI);
 		var Repository repo2 = testLoadObject(vsum2, alternativePcmInstanceURI, Repository)
 		var UPackage pkg2 = testLoadObject(vsum2, alterantiveUMLInstanceURI, UPackage)
 		var CorrespondenceModel corresp2 = testCorrespondenceModelCreation(vsum2)

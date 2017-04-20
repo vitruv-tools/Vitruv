@@ -108,24 +108,28 @@ public abstract class VsumTest extends VitruviusTest {
         return mi;
     }
 
-    protected InternalVirtualModel createMetaRepositoryVirtualModelAndModelInstances(final String pcmModelUriString,
+    protected InternalVirtualModel createAlternativeVirtualModelAndModelInstances(final String pcmModelUriString,
             final String umlModelUriString) {
-        InternalVirtualModel vsum = createMetaRepositoryAndVsum();
+        InternalVirtualModel vsum = createVirtualModel(VSUM_NAME + "2");
         createMockupModels(pcmModelUriString, umlModelUriString, vsum);
         return vsum;
     }
 
-    protected InternalVirtualModel createMetaRepositoryVsumAndModelInstances() {
-        InternalVirtualModel vsum = createMetaRepositoryAndVsum();
+    protected InternalVirtualModel createVirtualModelAndModelInstances() {
+        InternalVirtualModel vsum = createDefaultVirtualModel();
         createMockupModelsWithDefaultUris(vsum);
         return vsum;
     }
 
-    protected InternalVirtualModel createMetaRepositoryAndVsum() {
+    protected InternalVirtualModel createDefaultVirtualModel() {
+        return createVirtualModel(VSUM_NAME);
+    }
+
+    protected InternalVirtualModel createVirtualModel(final String vsumName) {
         List<VitruvDomain> vitruvDomains = new ArrayList<VitruvDomain>();
         vitruvDomains.add(UmlDomain);
         vitruvDomains.add(PcmDomain);
-        return TestUtil.createVirtualModel(VSUM_NAME, true, vitruvDomains);
+        return TestUtil.createVirtualModel(vsumName, true, vitruvDomains);
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {
