@@ -12,7 +12,7 @@ import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
-import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder;
+import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.modelsynchronization.ChangePropagationAbortCause;
@@ -28,7 +28,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
 
 public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements ChangePropagationListener {
 
-	protected AtomicEMFChangeRecorder changeRecorder;
+	protected AtomicEmfChangeRecorder changeRecorder;
 
 	/**
 	 * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM,
@@ -39,7 +39,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	@Override
 	public void beforeTest() throws Throwable {
 		super.beforeTest();
-		this.changeRecorder = new AtomicEMFChangeRecorder(true);
+		this.changeRecorder = new AtomicEmfChangeRecorder(true);
 	}
 
 	protected abstract List<Metamodel> createMetamodels();
