@@ -6,7 +6,7 @@ import tools.vitruv.dsls.reactions.helper.XtendImportHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.framework.domains.VitruvDomainProvider
+import tools.vitruv.framework.domains.VitruvDomain
 
 final class ClassNamesGenerators {
 	private static String BASIC_PACKAGE = "mir";
@@ -49,12 +49,12 @@ final class ClassNamesGenerators {
 		return potentialAcronym;
 	}
 	
-	private static def String getDomainPairName(Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>> metamodelPair) {
-		return '''«metamodelPair.first.domain.name.correctAcronymCapitalization»To«metamodelPair.second.domain.name.correctAcronymCapitalization»'''	
+	private static def String getDomainPairName(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
+		return '''«metamodelPair.first.name.correctAcronymCapitalization»To«metamodelPair.second.name.correctAcronymCapitalization»'''	
 	}
 	
 	private static def String getMetamodelPairName(ReactionsSegment reactionSegment) {
-		return new Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>>(reactionSegment.fromDomain.domainProviderForReference, reactionSegment.toDomain.domainProviderForReference).domainPairName;
+		return new Pair<VitruvDomain, VitruvDomain>(reactionSegment.fromDomain.domainForReference, reactionSegment.toDomain.domainForReference).domainPairName;
 	}
 	
 	private static def String getPackageName(ReactionsSegment reactionSegment) '''
@@ -63,7 +63,7 @@ final class ClassNamesGenerators {
 	private static def String getQualifiedPackageName(ReactionsSegment reactionSegment) '''
 		«basicReactionsPackageQualifiedName».«reactionSegment.packageName»'''
 	
-	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>> metamodelPair) {
+	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
 		return new ChangePropagationSpecificationClassNameGenerator(metamodelPair);
 	}
 	
@@ -94,7 +94,7 @@ final class ClassNamesGenerators {
 	private static class ChangePropagationSpecificationClassNameGenerator extends ClassNameGenerator {
 		private val String metamodelPairName;
 		
-		public new(Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>> metamodelPair) {
+		public new(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
 			this.metamodelPairName = metamodelPair.domainPairName;
 		}
 		

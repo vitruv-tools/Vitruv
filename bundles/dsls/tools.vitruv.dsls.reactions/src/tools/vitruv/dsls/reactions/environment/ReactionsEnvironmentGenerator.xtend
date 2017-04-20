@@ -25,7 +25,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.api.generator.IReactionsEnvironmentGenerator
-import tools.vitruv.framework.domains.VitruvDomainProvider
+import tools.vitruv.framework.domains.VitruvDomain
 
 class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	@Inject
@@ -165,7 +165,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	
 	private def generate(IFileSystemAccess2 fsa) {
 		reinitializeDerivedStateOfTemporaryResources();		
-		val modelCorrespondencesToExecutors = new HashMap<Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>>, List<String>>;
+		val modelCorrespondencesToExecutors = new HashMap<Pair<VitruvDomain, VitruvDomain>, List<String>>;
 		for (resource : resources + tempResources) {
 			for (reactionsSegment : resource.reactionsFileInResource.reactionsSegments) {
 				val modelCombination = reactionsSegment.sourceTargetPair;
@@ -181,7 +181,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		generateChange2CommandTransformings(modelCorrespondencesToExecutors, fsa)
 	}
 	
-	private def void generateChange2CommandTransformings(Map<Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
+	private def void generateChange2CommandTransformings(Map<Pair<VitruvDomain, VitruvDomain>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
 		for (modelCombination : modelCorrepondenceToExecutors.keySet) {
 			val changePropagationSpecificationContent = generateChangePropagationSpecification(modelCombination, modelCorrepondenceToExecutors.get(modelCombination));
 			val changePropagationSpecificationNameGenerator = modelCombination.changePropagationSpecificationClassNameGenerator;
@@ -189,19 +189,19 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		}
 	}
 		
-	private def generateChangePropagationSpecification(Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>> modelPair, List<String> executorsNames) {
+	private def generateChangePropagationSpecification(Pair<VitruvDomain, VitruvDomain> modelPair, List<String> executorsNames) {
 		val ih = new XtendImportHelper();	
 		val changePropagationSpecificationNameGenerator = modelPair.changePropagationSpecificationClassNameGenerator;
 		val classImplementation = '''
 		/**
-		 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.domain.name» and «modelPair.second.domain.name».
+		 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.name» and «modelPair.second.name».
 		 * To add further change processors overwrite the setup method.
 		 */
 		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangePropagationSpecification)» {
 			public «changePropagationSpecificationNameGenerator.simpleName»() {
 				super(new «UserInteractor.name»(),
-					new «ih.typeRef(modelPair.first.class)»().getDomain(), 
-					new «ih.typeRef(modelPair.second.class)»().getDomain());
+					new «ih.typeRef(modelPair.first.providerForDomain.class)»().getDomain(), 
+					new «ih.typeRef(modelPair.second.providerForDomain.class)»().getDomain());
 				setup();
 			}
 			

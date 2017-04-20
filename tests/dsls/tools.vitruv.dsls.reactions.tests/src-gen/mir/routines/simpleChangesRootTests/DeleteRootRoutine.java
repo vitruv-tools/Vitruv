@@ -1,8 +1,8 @@
-package mir.routines.simpleChangesTests;
+package mir.routines.simpleChangesRootTests;
 
 import allElementTypes.Root;
 import java.io.IOException;
-import mir.routines.simpleChangesTests.RoutinesFacade;
+import mir.routines.simpleChangesRootTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
@@ -30,8 +30,8 @@ public class DeleteRootRoutine extends AbstractRepairRoutineRealization {
   
   public DeleteRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement) {
     super(reactionExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.DeleteRootRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesRootTests.DeleteRootRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesRootTests.RoutinesFacade(getExecutionState(), this);
     this.rootElement = rootElement;
   }
   

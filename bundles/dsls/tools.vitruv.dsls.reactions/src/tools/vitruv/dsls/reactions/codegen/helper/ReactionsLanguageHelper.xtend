@@ -10,6 +10,7 @@ import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.framework.util.datatypes.Pair
 import tools.vitruv.framework.domains.VitruvDomainProvider
+import tools.vitruv.framework.domains.VitruvDomain
 
 final class ReactionsLanguageHelper {
 	private new() {}
@@ -35,6 +36,14 @@ final class ReactionsLanguageHelper {
 		return metaclassReference.metaclass.javaClass;
 	}
 	
+	public static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {
+		return VitruvDomainProvider.getDomainProviderFromExtensionPoint(domain.name);
+	}
+	
+	public static def VitruvDomain getDomainForReference(DomainReference domainReference) {
+		return getDomainProviderForReference(domainReference).domain;
+	}
+	
 	public static def VitruvDomainProvider<?> getDomainProviderForReference(DomainReference domainReference) {
 		val referencedDomainProvider = VitruvDomainProvider.getDomainProviderFromExtensionPoint(domainReference.domain)
 	    if (referencedDomainProvider == null) {
@@ -43,11 +52,11 @@ final class ReactionsLanguageHelper {
 	    return referencedDomainProvider;
 	}
 	
-	static def Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>> getSourceTargetPair(ReactionsSegment reactionsSegment) {
-		val sourceDomain = reactionsSegment.fromDomain.domainProviderForReference;
-		val targetDomain = reactionsSegment.toDomain.domainProviderForReference;
+	static def Pair<VitruvDomain, VitruvDomain> getSourceTargetPair(ReactionsSegment reactionsSegment) {
+		val sourceDomain = reactionsSegment.fromDomain.domainForReference;
+		val targetDomain = reactionsSegment.toDomain.domainForReference;
 		if (sourceDomain != null && targetDomain != null) {
-			return new Pair<VitruvDomainProvider<?>, VitruvDomainProvider<?>>(sourceDomain, targetDomain);
+			return new Pair<VitruvDomain, VitruvDomain>(sourceDomain, targetDomain);
 		} else {
 			return null;
 		}		

@@ -19,7 +19,7 @@ public class VsumPersistenceTest extends VsumTest {
     @Test
     public void testSaveAndLoadModels() throws Exception {
         // 1. create empty VSUM + store dummy model instances
-        InternalVirtualModel vsum = createMetaRepositoryAndVsum();
+        InternalVirtualModel vsum = createDefaultVirtualModel();
         int nrOfVURIs = 2;
         Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentProjectFolderName(), nrOfVURIs);
         // PersistentTestUtil.createResources(vuris);

@@ -86,18 +86,6 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     effect.applyRoutine();
   }
   
-  public void createRoot(final Root rootElement) {
-    mir.routines.simpleChangesTests.CreateRootRoutine effect = new mir.routines.simpleChangesTests.CreateRootRoutine(this.executionState, calledBy,
-    	rootElement);
-    effect.applyRoutine();
-  }
-  
-  public void deleteRoot(final Root rootElement) {
-    mir.routines.simpleChangesTests.DeleteRootRoutine effect = new mir.routines.simpleChangesTests.DeleteRootRoutine(this.executionState, calledBy,
-    	rootElement);
-    effect.applyRoutine();
-  }
-  
   public void createNonRootObjectContainer(final Root rootElement, final NonRootObjectContainerHelper nonRootObjectContainer) {
     mir.routines.simpleChangesTests.CreateNonRootObjectContainerRoutine effect = new mir.routines.simpleChangesTests.CreateNonRootObjectContainerRoutine(this.executionState, calledBy,
     	rootElement, nonRootObjectContainer);

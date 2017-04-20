@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="tools.vitruv.framework.vsum" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="tools.vitruv.framework.applications" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="tools.vitruv.framework.vsum" id="application" name="Vitruv Application"/>
+         <meta.schema plugin="tools.vitruv.framework.applications" id="application" name="Vitruv Application"/>
       </appInfo>
       <documentation>
          Extension point for registering a Vitruv application
@@ -54,33 +54,13 @@
          </documentation>
       </annotation>
       <complexType>
-         <attribute name="applicationClass" type="string">
+         <attribute name="class" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn=":tools.vitruv.framework.vsum.applications.VitruvApplication"/>
-               </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="sourceDomain" type="string">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appInfo>
-                  <meta.attribute kind="identifier" basedOn="tools.vitruv.framework.vsum.domain/@id"/>
-               </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="targetDomain" type="string">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appInfo>
-                  <meta.attribute kind="identifier" basedOn="tools.vitruv.framework.vsum.domain/@id"/>
                </appInfo>
             </annotation>
          </attribute>

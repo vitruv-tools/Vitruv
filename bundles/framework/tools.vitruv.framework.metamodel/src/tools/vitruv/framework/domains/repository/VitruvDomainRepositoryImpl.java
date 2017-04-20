@@ -5,7 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
+
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.tuid.Tuid;
 import tools.vitruv.framework.util.datatypes.ClaimableHashMap;
 import tools.vitruv.framework.util.datatypes.ClaimableMap;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -59,4 +62,24 @@ public class VitruvDomainRepositoryImpl implements VitruvDomainRepository {
     public Iterator<VitruvDomain> iterator() {
         return this.fileExtension2MetamodelMap.values().iterator();
     }
+
+	@Override
+	public VitruvDomain getDomain(EObject object) {
+		for (VitruvDomain domain : uri2MetamodelMap.values()) {
+			if (domain.isInstanceOfDomainMetamodel(object)) {
+				return domain;
+			}
+		}
+		throw new IllegalStateException("No domain for given object <" + object + "> registered");
+	}
+
+	@Override
+	public VitruvDomain getDomain(Tuid tuid) {
+		for (VitruvDomain domain : uri2MetamodelMap.values()) {
+			if (domain.hasTuid(tuid.toString())) {
+				return domain;
+			}
+		}
+		throw new IllegalStateException("No domain for given tuid <" + tuid+ "> registered");
+	}
 }

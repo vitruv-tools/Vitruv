@@ -1,10 +1,12 @@
-package mir.routines.simpleChangesTests;
+package mir.routines.simpleChangesRootTests;
 
 import allElementTypes.Root;
 import allElementTypes.impl.AllElementTypesFactoryImpl;
 import java.io.IOException;
-import mir.routines.simpleChangesTests.RoutinesFacade;
+import mir.routines.simpleChangesRootTests.RoutinesFacade;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
@@ -38,14 +40,19 @@ public class CreateRootRoutine extends AbstractRepairRoutineRealization {
       String _id = rootElement.getId();
       String _replace = _id.replace("Source", "Target");
       String _plus = ("model/" + _replace);
-      this.persistProjectRelative(rootElement, newRoot, _plus);
+      String _plus_1 = (_plus + ".");
+      Resource _eResource = rootElement.eResource();
+      URI _uRI = _eResource.getURI();
+      String _fileExtension = _uRI.fileExtension();
+      String _plus_2 = (_plus_1 + _fileExtension);
+      this.persistProjectRelative(rootElement, newRoot, _plus_2);
     }
   }
   
   public CreateRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement) {
     super(reactionExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.CreateRootRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesRootTests.CreateRootRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesRootTests.RoutinesFacade(getExecutionState(), this);
     this.rootElement = rootElement;
   }
   

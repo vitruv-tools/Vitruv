@@ -28,14 +28,14 @@ import tools.vitruv.framework.vsum.InternalVirtualModel;
 public class SimpleVsumTest extends VsumTest {
     @Test
     public void testAll() {
-        createMetaRepositoryVsumAndModelInstances();
+        createDefaultVirtualModel();
     }
 
     @Ignore
     @Test
     public void testVsumAddGetChangeAndSaveModel() {
         // create VSUM
-        InternalVirtualModel vsum = createMetaRepositoryAndVsum();
+        InternalVirtualModel vsum = createDefaultVirtualModel();
 
         // create test model
         VURI vuri = VURI.getInstance(getAlternativePcmInstanceURI());
@@ -78,7 +78,7 @@ public class SimpleVsumTest extends VsumTest {
     @Test
     public void testVUMResourceIsChangedExternally() throws IOException {
         // same as above
-        InternalVirtualModel vsum = createMetaRepositoryAndVsum();
+        InternalVirtualModel vsum = createDefaultVirtualModel();
 
         // create test model
         VURI vuri = VURI.getInstance(getAlternativePcmInstanceURI());
@@ -112,7 +112,7 @@ public class SimpleVsumTest extends VsumTest {
 
     @Test
     public void testLoadVSUMRepeadly() {
-        InternalVirtualModel vsum = createMetaRepositoryAndVsum();
+        InternalVirtualModel vsum = createDefaultVirtualModel();
 
         ModelInstance mi = fillVsum(vsum);
 
@@ -164,7 +164,7 @@ public class SimpleVsumTest extends VsumTest {
 
     @Test
     public void testMockupModelInstantiation() {
-        InternalVirtualModel vsum = createMetaRepositoryAndVsum();
+        InternalVirtualModel vsum = createDefaultVirtualModel();
         String model1URIString = getDefaultUMLInstanceURI();
         String model2URIString = getDefaultUMLInstanceURI();
         createMockupModels(model1URIString, model2URIString, vsum);
