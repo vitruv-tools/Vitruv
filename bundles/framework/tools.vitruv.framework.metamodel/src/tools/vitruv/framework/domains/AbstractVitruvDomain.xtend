@@ -90,16 +90,16 @@ class AbstractVitruvDomain extends AbstractURIHaving implements TuidCalculator, 
 		return this.tuidCalculatorAndResolver.calculateTuidFromEObject(eObject, virtualRootObject, prefix)
 	}
 
-	override VURI getModelVURIContainingIdentifiedEObject(String tuid) {
-		val modelVURI = this.tuidCalculatorAndResolver.getModelVURIContainingIdentifiedEObject(tuid)
+	override VURI getModelVURIContainingIdentifiedEObject(Tuid tuid) {
+		val modelVURI = this.tuidCalculatorAndResolver.getModelVURIContainingIdentifiedEObject(tuid.toString)
 		if (null == modelVURI) {
 			return null;
 		}
 		return VURI::getInstance(modelVURI)
 	}
 
-	override EObject resolveEObjectFromRootAndFullTuid(EObject root, String tuid) {
-		return this.tuidCalculatorAndResolver.resolveEObjectFromRootAndFullTuid(root, tuid)
+	override EObject resolveEObjectFromRootAndFullTuid(EObject root, Tuid tuid) {
+		return this.tuidCalculatorAndResolver.resolveEObjectFromRootAndFullTuid(root, tuid.toString)
 	}
 
 	def void removeRootFromTuidCache(EObject root) {

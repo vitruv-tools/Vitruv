@@ -288,7 +288,7 @@ routine createRoot(minimal::Root rootElement) {
 		}
 		add correspondence between newRoot and rootElement
 		call {
-			persistProjectRelative(rootElement, newRoot, "model/" + rootElement.id.replace("Source", "Target"));
+			persistProjectRelative(rootElement, newRoot, "model/" + rootElement.id.replace("Source", "Target") + "." + rootElement.eResource.URI.fileExtension);
 		}
 	}
 }

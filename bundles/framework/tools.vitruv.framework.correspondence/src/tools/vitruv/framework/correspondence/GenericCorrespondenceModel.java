@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.domains.repository.VitruvDomainPair;
 import tools.vitruv.framework.tuid.Tuid;
 import tools.vitruv.framework.util.datatypes.URIHaving;
 
@@ -153,14 +152,12 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 
     public Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
 
-    EObject resolveEObjectFromRootAndFullTuid(EObject root, String tuidString);
+    EObject resolveEObjectFromRootAndFullTuid(EObject root, Tuid tuid);
 
     Set<T> getAllCorrespondencesWithoutDependencies();
 
     public List<T> getAllCorrespondences();
 
-    public VitruvDomainPair getMapping();
-    
     /**
      * Returns the Tuids for a correspondence that belong to the side that has a metamodel whose
      * namespace URIs include the given <code>metamodelNamespaceUri</code>
