@@ -1,9 +1,9 @@
-package mir.routines.simpleChangesTests;
+package mir.routines.simpleChangesRootTests;
 
 import allElementTypes.Root;
 import allElementTypes.impl.AllElementTypesFactoryImpl;
 import java.io.IOException;
-import mir.routines.simpleChangesTests.RoutinesFacade;
+import mir.routines.simpleChangesRootTests.RoutinesFacade;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -51,8 +51,8 @@ public class CreateRootRoutine extends AbstractRepairRoutineRealization {
   
   public CreateRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Root rootElement) {
     super(reactionExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.CreateRootRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesRootTests.CreateRootRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesRootTests.RoutinesFacade(getExecutionState(), this);
     this.rootElement = rootElement;
   }
   
