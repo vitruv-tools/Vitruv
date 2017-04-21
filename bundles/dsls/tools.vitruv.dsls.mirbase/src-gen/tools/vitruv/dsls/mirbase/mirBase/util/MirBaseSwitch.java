@@ -125,10 +125,33 @@ public class MirBaseSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MirBasePackage.METACLASS_EATTRIBUTE_REFERENCE:
+      {
+        MetaclassEAttributeReference metaclassEAttributeReference = (MetaclassEAttributeReference)theEObject;
+        T result = caseMetaclassEAttributeReference(metaclassEAttributeReference);
+        if (result == null) result = caseMetaclassReference(metaclassEAttributeReference);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MirBasePackage.METACLASS_EREFERENCE_REFERENCE:
+      {
+        MetaclassEReferenceReference metaclassEReferenceReference = (MetaclassEReferenceReference)theEObject;
+        T result = caseMetaclassEReferenceReference(metaclassEReferenceReference);
+        if (result == null) result = caseMetaclassReference(metaclassEReferenceReference);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MirBasePackage.METAMODEL_REFERENCE:
       {
         MetamodelReference metamodelReference = (MetamodelReference)theEObject;
         T result = caseMetamodelReference(metamodelReference);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MirBasePackage.DOMAIN_REFERENCE:
+      {
+        DomainReference domainReference = (DomainReference)theEObject;
+        T result = caseDomainReference(domainReference);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -249,6 +272,38 @@ public class MirBaseSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Metaclass EAttribute Reference</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Metaclass EAttribute Reference</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseMetaclassEAttributeReference(MetaclassEAttributeReference object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Metaclass EReference Reference</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Metaclass EReference Reference</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseMetaclassEReferenceReference(MetaclassEReferenceReference object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Metamodel Reference</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -260,6 +315,22 @@ public class MirBaseSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseMetamodelReference(MetamodelReference object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Domain Reference</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Domain Reference</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseDomainReference(DomainReference object)
   {
     return null;
   }

@@ -80,7 +80,7 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
       case ReactionsLanguagePackage.MODEL_ELEMENT_USAGE_CHANGE_TYPE: return createModelElementUsageChangeType();
       case ReactionsLanguagePackage.ELEMENT_CREATION_CHANGE_TYPE: return createElementCreationChangeType();
       case ReactionsLanguagePackage.ELEMENT_DELETION_CHANGE_TYPE: return createElementDeletionChangeType();
-      case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE: return createElementFeatureChangeType();
+      case ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE: return createElementReferenceChangeType();
       case ReactionsLanguagePackage.ELEMENT_ROOT_CHANGE_TYPE: return createElementRootChangeType();
       case ReactionsLanguagePackage.ELEMENT_INSERTION_CHANGE_TYPE: return createElementInsertionChangeType();
       case ReactionsLanguagePackage.ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE: return createElementInsertionInListChangeType();
@@ -296,10 +296,10 @@ public class ReactionsLanguageFactoryImpl extends EFactoryImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public ElementFeatureChangeType createElementFeatureChangeType()
+  public ElementReferenceChangeType createElementReferenceChangeType()
   {
-    ElementFeatureChangeTypeImpl elementFeatureChangeType = new ElementFeatureChangeTypeImpl();
-    return elementFeatureChangeType;
+    ElementReferenceChangeTypeImpl elementReferenceChangeType = new ElementReferenceChangeTypeImpl();
+    return elementReferenceChangeType;
   }
 
   /**

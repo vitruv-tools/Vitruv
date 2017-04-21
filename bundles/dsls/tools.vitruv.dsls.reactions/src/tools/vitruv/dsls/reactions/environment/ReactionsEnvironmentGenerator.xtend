@@ -18,7 +18,6 @@ import java.io.File
 import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.resource.DerivedStateAwareResource
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
-import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.userinteraction.impl.UserInteractor
 import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
@@ -26,7 +25,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.api.generator.IReactionsEnvironmentGenerator
-import org.eclipse.emf.ecore.EPackage
+import tools.vitruv.framework.domains.VitruvDomain
 
 class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	@Inject
@@ -76,8 +75,8 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 				val reactionsFile = res.reactionsFileInResource;
 				var ReactionsSegment foundSegment = null;
 				for (segment :  reactionsFile.reactionsSegments) {
-					if (segment.fromMetamodel == reactionsSegment.fromMetamodel
-						&& segment.toMetamodel == reactionsSegment.toMetamodel
+					if (segment.fromDomain.domain == reactionsSegment.fromDomain.domain
+						&& segment.toDomain.domain == reactionsSegment.toDomain.domain
 					) {
 						foundSegment = segment;
 					}	
@@ -95,8 +94,8 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	
 	private def ReactionsSegment addReactionsSegment(ReactionsFile fileToAddTo, ReactionsSegment originalSegment, String segmentName) {
 		val newSegment = ReactionsLanguageFactory.eINSTANCE.createReactionsSegment();
-		newSegment.fromMetamodel = originalSegment.fromMetamodel;
-		newSegment.toMetamodel = originalSegment.toMetamodel;
+		newSegment.fromDomain = originalSegment.fromDomain;
+		newSegment.toDomain = originalSegment.toDomain;
 		newSegment.name = segmentName;
 		fileToAddTo.reactionsSegments += newSegment;
 		return newSegment;
@@ -166,7 +165,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	
 	private def generate(IFileSystemAccess2 fsa) {
 		reinitializeDerivedStateOfTemporaryResources();		
-		val modelCorrespondencesToExecutors = new HashMap<Pair<EPackage, EPackage>, List<String>>;
+		val modelCorrespondencesToExecutors = new HashMap<Pair<VitruvDomain, VitruvDomain>, List<String>>;
 		for (resource : resources + tempResources) {
 			for (reactionsSegment : resource.reactionsFileInResource.reactionsSegments) {
 				val modelCombination = reactionsSegment.sourceTargetPair;
@@ -182,7 +181,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		generateChange2CommandTransformings(modelCorrespondencesToExecutors, fsa)
 	}
 	
-	private def void generateChange2CommandTransformings(Map<Pair<EPackage, EPackage>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
+	private def void generateChange2CommandTransformings(Map<Pair<VitruvDomain, VitruvDomain>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
 		for (modelCombination : modelCorrepondenceToExecutors.keySet) {
 			val changePropagationSpecificationContent = generateChangePropagationSpecification(modelCombination, modelCorrepondenceToExecutors.get(modelCombination));
 			val changePropagationSpecificationNameGenerator = modelCombination.changePropagationSpecificationClassNameGenerator;
@@ -190,26 +189,21 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		}
 	}
 		
-	private def generateChangePropagationSpecification(Pair<EPackage, EPackage> modelPair, List<String> executorsNames) {
+	private def generateChangePropagationSpecification(Pair<VitruvDomain, VitruvDomain> modelPair, List<String> executorsNames) {
 		val ih = new XtendImportHelper();	
 		val changePropagationSpecificationNameGenerator = modelPair.changePropagationSpecificationClassNameGenerator;
 		val classImplementation = '''
 		/**
-		 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.nsURI» and «modelPair.second.nsURI».
+		 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.name» and «modelPair.second.name».
 		 * To add further change processors overwrite the setup method.
 		 */
 		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangePropagationSpecification)» {
-			private final «MetamodelPair.name» metamodelPair;
-			
 			public «changePropagationSpecificationNameGenerator.simpleName»() {
-				super(new «UserInteractor.name»());
-				this.metamodelPair = new «MetamodelPair.name»("«modelPair.first.nsURI»", "«modelPair.second.nsURI»");
+				super(new «UserInteractor.name»(),
+					new «ih.typeRef(modelPair.first.providerForDomain.class)»().getDomain(), 
+					new «ih.typeRef(modelPair.second.providerForDomain.class)»().getDomain());
 				setup();
 			}
-			
-			public «MetamodelPair.name» getMetamodelPair() {
-				return metamodelPair;
-			}	
 			
 			/**
 			 * Adds the reactions change processors to this {@link «changePropagationSpecificationNameGenerator.simpleName»}.

@@ -1,15 +1,11 @@
 package tools.vitruv.framework.change.description.impl
 
-import java.util.ArrayList
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.ChangeDescription
-import org.eclipse.emf.ecore.change.FeatureChange
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.VURI
 
 /**

@@ -13,6 +13,8 @@ import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
 
 import static tools.vitruv.dsls.mirbase.validation.EclipsePluginHelper.*
 import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference
+import tools.vitruv.framework.domains.VitruvDomainProvider
 
 /**
  * Custom quickfixes.
@@ -21,7 +23,7 @@ import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
  */
 class MirBaseQuickfixProvider extends XbaseQuickfixProvider {
 	@Fix(MirBaseValidator.METAMODEL_IMPORT_DEPENDENCY_MISSING)
-	def addDependencyToManifest(Issue issue, IssueResolutionAcceptor acceptor) {
+	def addMetamodelDependencyToManifest(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Add dependency.', 'Add the dependency.', null) [ element, context |
 			val metamodelImport = element as MetamodelImport
 
@@ -29,6 +31,22 @@ class MirBaseQuickfixProvider extends XbaseQuickfixProvider {
 				"org.eclipse.emf.ecore.generated_package", "uri", metamodelImport.package.nsURI)
 
 			val project = getProject(metamodelImport.eResource)
+			if (!hasDependency(project, contributorName)) {
+				addDependency(project, contributorName)
+			}
+		]
+	}
+	
+	@Fix(MirBaseValidator.DOMAIN_IMPORT_DEPENDENCY_MISSING)
+	def addDomainDependencyToManifest(Issue issue, IssueResolutionAcceptor acceptor) {
+		acceptor.accept(issue, 'Add dependency.', 'Add the dependency.', null) [ element, context |
+			val domainReference = element as DomainReference
+			
+			val domainProvider = VitruvDomainProvider.getDomainProviderFromExtensionPoint(domainReference.domain);
+			val contributorName = EclipseBridge.getNameOfContributorOfExtension(
+					VitruvDomainProvider.EXTENSION_POINT_ID,
+					"class", domainProvider.class.name);
+			val project = getProject(domainReference.eResource)
 			if (!hasDependency(project, contributorName)) {
 				addDependency(project, contributorName)
 			}

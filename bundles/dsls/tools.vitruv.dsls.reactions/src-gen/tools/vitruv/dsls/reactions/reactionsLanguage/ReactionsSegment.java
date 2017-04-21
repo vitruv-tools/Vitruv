@@ -7,7 +7,7 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,8 +19,8 @@ import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getName <em>Name</em>}</li>
- *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getFromMetamodel <em>From Metamodel</em>}</li>
- *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getToMetamodel <em>To Metamodel</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getFromDomain <em>From Domain</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getToDomain <em>To Domain</em>}</li>
  *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getReactions <em>Reactions</em>}</li>
  *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getRoutines <em>Routines</em>}</li>
  * </ul>
@@ -58,56 +58,56 @@ public interface ReactionsSegment extends EObject
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>From Metamodel</b></em>' containment reference.
+   * Returns the value of the '<em><b>From Domain</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>From Metamodel</em>' containment reference isn't clear,
+   * If the meaning of the '<em>From Domain</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>From Metamodel</em>' containment reference.
-   * @see #setFromMetamodel(MetamodelReference)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReactionsSegment_FromMetamodel()
+   * @return the value of the '<em>From Domain</em>' containment reference.
+   * @see #setFromDomain(DomainReference)
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReactionsSegment_FromDomain()
    * @model containment="true"
    * @generated
    */
-  MetamodelReference getFromMetamodel();
+  DomainReference getFromDomain();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getFromMetamodel <em>From Metamodel</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getFromDomain <em>From Domain</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>From Metamodel</em>' containment reference.
-   * @see #getFromMetamodel()
+   * @param value the new value of the '<em>From Domain</em>' containment reference.
+   * @see #getFromDomain()
    * @generated
    */
-  void setFromMetamodel(MetamodelReference value);
+  void setFromDomain(DomainReference value);
 
   /**
-   * Returns the value of the '<em><b>To Metamodel</b></em>' containment reference.
+   * Returns the value of the '<em><b>To Domain</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>To Metamodel</em>' containment reference isn't clear,
+   * If the meaning of the '<em>To Domain</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>To Metamodel</em>' containment reference.
-   * @see #setToMetamodel(MetamodelReference)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReactionsSegment_ToMetamodel()
+   * @return the value of the '<em>To Domain</em>' containment reference.
+   * @see #setToDomain(DomainReference)
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReactionsSegment_ToDomain()
    * @model containment="true"
    * @generated
    */
-  MetamodelReference getToMetamodel();
+  DomainReference getToDomain();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getToMetamodel <em>To Metamodel</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getToDomain <em>To Domain</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>To Metamodel</em>' containment reference.
-   * @see #getToMetamodel()
+   * @param value the new value of the '<em>To Domain</em>' containment reference.
+   * @see #getToDomain()
    * @generated
    */
-  void setToMetamodel(MetamodelReference value);
+  void setToDomain(DomainReference value);
 
   /**
    * Returns the value of the '<em><b>Reactions</b></em>' containment reference list.

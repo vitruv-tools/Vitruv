@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -24,9 +25,9 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
-import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
-import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
@@ -54,20 +55,43 @@ public final class TestUtil {
 	 * timestamp to the name.
 	 * 
 	 * @param projectName
-	 *            - name of the project t ocreate
+	 *            - name of the project to create
+	 * @param addTimestampAndMakeNameUnique
+	 *            - specifies if a timestamp shall be added to the name and if
+	 *            the name shall be made unique so that is does not conflict
+	 *            with an existing project
 	 * @return the created {@link IProject}
+	 * @throws IllegalStateException
+	 *             if project with given name already exists and its not
+	 *             specified to make name unique
 	 */
-	public static IProject createProject(String projectName) throws CoreException {
-		String finalProjectName = addTimestampToString(projectName);
+	public static IProject createProject(String projectName, boolean addTimestampAndMakeNameUnique)
+			throws CoreException {
+		String finalProjectName = projectName;
+		if (addTimestampAndMakeNameUnique) {
+			finalProjectName = addTimestampToProjectNameAndMakeUnique(finalProjectName);
+		}
 		IProject testProject = TestUtil.getProjectByName(finalProjectName);
 
-		// If project exists, add an index
-		int counter = 1;
-		while (testProject.exists()) {
-			testProject = TestUtil.getProjectByName(finalProjectName + "--" + counter++);
+		if (testProject.exists()) {
+			throw new IllegalStateException("Project already exists");
 		}
 
 		return initializeProject(testProject);
+	}
+
+	private static String addTimestampToProjectNameAndMakeUnique(String projectName) {
+		String timestampedProjectName = addTimestampToString(projectName);
+		IProject testProject = TestUtil.getProjectByName(timestampedProjectName);
+
+		String countedProjectName = timestampedProjectName;
+		// If project exists, add an index
+		int counter = 1;
+		while (testProject.exists()) {
+			countedProjectName = timestampedProjectName + "--" + counter++;
+			testProject = TestUtil.getProjectByName(countedProjectName);
+		}
+		return countedProjectName;
 	}
 
 	private static IProject initializeProject(IProject testProject) throws CoreException {
@@ -104,40 +128,50 @@ public final class TestUtil {
 		return testProject;
 	}
 
-	
 	/**
-	 * Creates a VSUM with the given name, {@link Metamodel}s and an empty set of
-	 * {@link ChangePropagationSpecification}s. It automatically adds a
-	 * timestamp to the name.
+	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and an
+	 * empty set of {@link ChangePropagationSpecification}s.
 	 * 
 	 * @param vsumName
 	 *            - name of the VSUM
+	 * @param addTimestampAndMakeNameUnique
+	 *            - specifies if a timestamp shall be added to the name and if
+	 *            the name shall be made unique so that is does not conflict
+	 *            with an existing project
 	 * @param metamodels
-	 *            - {@link Metamodel}s to add to the VSUM
+	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
 	 * @return the created {@link VirtualModel}
 	 */
-	public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels) {
-		return createVirtualModel(vsumName, metamodels, Collections.emptyList());
+	public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestampAndMakeNameUnique,
+			final Iterable<VitruvDomain> metamodels) {
+		return createVirtualModel(vsumName, addTimestampAndMakeNameUnique, metamodels, Collections.emptyList());
 	}
 
 	/**
-	 * Creates a VSUM with the given name, {@link Metamodel}s and
-	 * {@link ChangePropagationSpecification}s. It automatically adds a
-	 * timestamp to the name.
+	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and
+	 * {@link ChangePropagationSpecification}s.
 	 * 
 	 * @param vsumName
 	 *            - name of the VSUM
+	 * @param addTimestampAndMakeNameUnique
+	 *            - specifies if a timestamp shall be added to the name and if
+	 *            the name shall be made unique so that is does not conflict
+	 *            with an existing project
 	 * @param metamodels
-	 *            - {@link Metamodel}s to add to the VSUM
+	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
 	 * @param changePropagationSpecifications
 	 *            - {@link ChangePropagationSpecification}s to add to the VSUM
 	 * @return the created {@link VirtualModel}
 	 */
-	public static InternalVirtualModel createVirtualModel(final String vsumName, final Iterable<Metamodel> metamodels,
+	public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestampAndMakeNameUnique,
+			final Iterable<VitruvDomain> metamodels,
 			final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-		String finalVsumName = addTimestampToString(vsumName);
+		String finalVsumName = vsumName;
+		if (addTimestampAndMakeNameUnique) {
+			finalVsumName = addTimestampToProjectNameAndMakeUnique(vsumName);
+		}
 		VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
-		for (Metamodel metamodel : metamodels) {
+		for (VitruvDomain metamodel : metamodels) {
 			vmodelConfig.addMetamodel(metamodel);
 		}
 		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
@@ -148,19 +182,21 @@ public final class TestUtil {
 	}
 
 	/**
-	 * Creates and returns a {@link Metamodel}
+	 * Creates and returns a {@link VitruvDomain}.
 	 *
-	 * @param nsUri
-	 *            - namespaceURI of the {@link Metamodel}
-	 * @param uri
-	 *            - the actual URI for the {@link Metamodel}
+	 * @param metamodelRootPackage
+	 *            - the root {@link EPackage} of the {@link VitruvDomain} to
+	 *            create
 	 * @param fileExt
-	 *            - fileExtension for which the {@link Metamodel} is repsonsible
-	 * @return the create {@link Metamodel}
+	 *            - fileExtension for which the {@link VitruvDomain} is
+	 *            responsible
+	 * @return the create {@link VitruvDomain}
 	 */
-	public static Metamodel createMetamodel(final String nsUri, final VURI uri, final String fileExt) {
-		final Metamodel mm = new Metamodel(uri, nsUri, new AttributeTuidCalculatorAndResolver(nsUri), fileExt);
-		return mm;
+	public static VitruvDomain createVitruvDomain(final String name, final EPackage metamodelRootPackage,
+			final String fileExt) {
+		final VitruvDomain domain = new AbstractVitruvDomain(name, metamodelRootPackage,
+				new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt);
+		return domain;
 	}
 
 	private static String addTimestampToString(final String originalString) {

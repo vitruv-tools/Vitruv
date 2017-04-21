@@ -1,18 +1,22 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Framework Metamodel Representations
-Bundle-SymbolicName: tools.vitruv.framework.metamodel
+Bundle-SymbolicName: tools.vitruv.framework.metamodel;singleton:=true
 Bundle-Version: 0.2.0.qualifier
+Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.eclipse.emf.ecore,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.transaction,
  tools.vitruv.framework.util,
- tools.vitruv.framework.tuid,
+ tools.vitruv.framework.tuid;visibility:=reexport,
  tools.vitruv.framework.change
-Export-Package: tools.vitruv.framework.metamodel
+Bundle-ActivationPolicy: lazy
+Export-Package: tools.vitruv.framework.domains,
+ tools.vitruv.framework.domains.repository
 Bundle-Vendor: vitruv.tools

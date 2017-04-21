@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum
 
-import tools.vitruv.framework.metamodel.Metamodel
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.domains.VitruvDomain
 
 class VirtualModelConfigurationBuilder {
 	private val VirtualModelConfiguration modelConfiguration;
@@ -10,7 +10,7 @@ class VirtualModelConfigurationBuilder {
 		this.modelConfiguration = new VirtualModelConfiguration();	
 	}
 	
-	public def VirtualModelConfigurationBuilder addMetamodel(Metamodel metamodel) {
+	public def VirtualModelConfigurationBuilder addMetamodel(VitruvDomain metamodel) {
 		modelConfiguration.addMetamodel(metamodel);
 		return this;
 	}

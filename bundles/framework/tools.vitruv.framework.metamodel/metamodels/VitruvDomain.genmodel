@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.framework.metamodel/src-gen" modelPluginID="tools.vitruv.framework.metamodel"
+    modelName="VitruvDomain" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore" operationReflection="true"
+    importOrganizing="true">
+  <foreignModel>VitruvDomain.ecore</foreignModel>
+  <genPackages prefix="Domains" basePackage="tools.vitruv.framework" disposableProviderFactory="true"
+      ecorePackage="VitruvDomain.ecore#/">
+    <genClasses ecoreClass="VitruvDomain.ecore#//VitruvDomain">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VitruvDomain.ecore#//VitruvDomain/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VitruvDomain.ecore#//VitruvDomain/metamodelRootPackages"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VitruvDomain.ecore#//VitruvDomain/fileExtensions"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="VitruvDomain.ecore#//URIHaving"/>
+    <genClasses image="false" ecoreClass="VitruvDomain.ecore#//TuidUpdatingDomain"/>
+    <genClasses image="false" ecoreClass="VitruvDomain.ecore#//TuidAwareDomain">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VitruvDomain.ecore#//TuidAwareDomain/tuidCalculatorAndResolver"/>
+      <genOperations ecoreOperation="VitruvDomain.ecore#//TuidAwareDomain/hasTuid">
+        <genParameters ecoreParameter="VitruvDomain.ecore#//TuidAwareDomain/hasTuid/tuid"/>
+      </genOperations>
+      <genOperations ecoreOperation="VitruvDomain.ecore#//TuidAwareDomain/calculateTuidFromEObject">
+        <genParameters ecoreParameter="VitruvDomain.ecore#//TuidAwareDomain/calculateTuidFromEObject/object"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="VitruvDomain.ecore#//TuidCalculatorAndResolver"/>
+  </genPackages>
+</genmodel:GenModel>

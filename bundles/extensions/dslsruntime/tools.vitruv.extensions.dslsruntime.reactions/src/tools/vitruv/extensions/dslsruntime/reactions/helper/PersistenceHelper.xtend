@@ -5,7 +5,6 @@ import org.eclipse.core.resources.IFile
 import tools.vitruv.framework.util.bridges.EMFBridge
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 public final class PersistenceHelper {
 	private new() {}
@@ -29,24 +28,22 @@ public final class PersistenceHelper {
 		return URI.createPlatformResourceURI(srcFolderPath, true);
 	}
 
-	private static def URI appendPathToURI(URI baseURI, String relativePath, CorrespondenceModel correspondenceModel) {
+	private static def URI appendPathToURI(URI baseURI, String relativePath) {
 		val newModelFileSegments = relativePath.split("/");
 		if (!newModelFileSegments.last.contains(".")) {
-			// No file extension was specified, add the first one that is valid for the metamodel
-			val fileExtension = correspondenceModel.getMapping().getMetamodelB().getFileExtensions().get(0);
-			newModelFileSegments.set(newModelFileSegments.size - 1, newModelFileSegments.last + "." + fileExtension);
+			throw new IllegalArgumentException("File extension must be specified");
 		}
 		return baseURI.appendSegments(newModelFileSegments);
 	}
 
-	public static def URI getURIFromSourceResourceFolder(EObject source, String relativePath, CorrespondenceModel correspondenceModel) {
+	public static def URI getURIFromSourceResourceFolder(EObject source, String relativePath) {
 		val baseURI = getURIOfElementResourceFolder(source);
-		return baseURI.appendPathToURI(relativePath, correspondenceModel);
+		return baseURI.appendPathToURI(relativePath);
 	}
 
-	public static def URI getURIFromSourceProjectFolder(EObject source, String relativePath, CorrespondenceModel correspondenceModel) {
+	public static def URI getURIFromSourceProjectFolder(EObject source, String relativePath) {
 		val baseURI = getURIOfElementProject(source);
-		return baseURI.appendPathToURI(relativePath, correspondenceModel);
+		return baseURI.appendPathToURI(relativePath);
 	}
 
 }

@@ -33,10 +33,10 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationA
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType;
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionAsRootChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementInsertionInListChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalAsRootChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalFromListChangeType;
@@ -193,7 +193,7 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass elementFeatureChangeTypeEClass = null;
+  private EClass elementReferenceChangeTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -598,7 +598,7 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getReactionsSegment_FromMetamodel()
+  public EReference getReactionsSegment_FromDomain()
   {
     return (EReference)reactionsSegmentEClass.getEStructuralFeatures().get(1);
   }
@@ -608,7 +608,7 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getReactionsSegment_ToMetamodel()
+  public EReference getReactionsSegment_ToDomain()
   {
     return (EReference)reactionsSegmentEClass.getEStructuralFeatures().get(2);
   }
@@ -868,9 +868,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getElementFeatureChangeType()
+  public EClass getElementReferenceChangeType()
   {
-    return elementFeatureChangeTypeEClass;
+    return elementReferenceChangeTypeEClass;
   }
 
   /**
@@ -878,9 +878,9 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getElementFeatureChangeType_Feature()
+  public EReference getElementReferenceChangeType_Feature()
   {
-    return (EReference)elementFeatureChangeTypeEClass.getEStructuralFeatures().get(0);
+    return (EReference)elementReferenceChangeTypeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1669,8 +1669,8 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
 
     reactionsSegmentEClass = createEClass(REACTIONS_SEGMENT);
     createEAttribute(reactionsSegmentEClass, REACTIONS_SEGMENT__NAME);
-    createEReference(reactionsSegmentEClass, REACTIONS_SEGMENT__FROM_METAMODEL);
-    createEReference(reactionsSegmentEClass, REACTIONS_SEGMENT__TO_METAMODEL);
+    createEReference(reactionsSegmentEClass, REACTIONS_SEGMENT__FROM_DOMAIN);
+    createEReference(reactionsSegmentEClass, REACTIONS_SEGMENT__TO_DOMAIN);
     createEReference(reactionsSegmentEClass, REACTIONS_SEGMENT__REACTIONS);
     createEReference(reactionsSegmentEClass, REACTIONS_SEGMENT__ROUTINES);
 
@@ -1710,8 +1710,8 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
 
     elementDeletionChangeTypeEClass = createEClass(ELEMENT_DELETION_CHANGE_TYPE);
 
-    elementFeatureChangeTypeEClass = createEClass(ELEMENT_FEATURE_CHANGE_TYPE);
-    createEReference(elementFeatureChangeTypeEClass, ELEMENT_FEATURE_CHANGE_TYPE__FEATURE);
+    elementReferenceChangeTypeEClass = createEClass(ELEMENT_REFERENCE_CHANGE_TYPE);
+    createEReference(elementReferenceChangeTypeEClass, ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE);
 
     elementRootChangeTypeEClass = createEClass(ELEMENT_ROOT_CHANGE_TYPE);
 
@@ -1878,16 +1878,16 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
     elementDeletionChangeTypeEClass.getESuperTypes().add(this.getElementExistenceChangeType());
     elementInsertionChangeTypeEClass.getESuperTypes().add(this.getModelElementUsageChangeType());
     elementInsertionInListChangeTypeEClass.getESuperTypes().add(this.getElementInsertionChangeType());
-    elementInsertionInListChangeTypeEClass.getESuperTypes().add(this.getElementFeatureChangeType());
+    elementInsertionInListChangeTypeEClass.getESuperTypes().add(this.getElementReferenceChangeType());
     elementInsertionAsRootChangeTypeEClass.getESuperTypes().add(this.getElementRootChangeType());
     elementInsertionAsRootChangeTypeEClass.getESuperTypes().add(this.getElementInsertionChangeType());
     elementRemovalChangeTypeEClass.getESuperTypes().add(this.getModelElementUsageChangeType());
     elementRemovalAsRootChangeTypeEClass.getESuperTypes().add(this.getElementRootChangeType());
     elementRemovalAsRootChangeTypeEClass.getESuperTypes().add(this.getElementRemovalChangeType());
     elementRemovalFromListChangeTypeEClass.getESuperTypes().add(this.getElementRemovalChangeType());
-    elementRemovalFromListChangeTypeEClass.getESuperTypes().add(this.getElementFeatureChangeType());
+    elementRemovalFromListChangeTypeEClass.getESuperTypes().add(this.getElementReferenceChangeType());
     elementReplacementChangeTypeEClass.getESuperTypes().add(this.getModelElementUsageChangeType());
-    elementReplacementChangeTypeEClass.getESuperTypes().add(this.getElementFeatureChangeType());
+    elementReplacementChangeTypeEClass.getESuperTypes().add(this.getElementReferenceChangeType());
     elementCreationAndInsertionChangeTypeEClass.getESuperTypes().add(this.getElementCompoundChangeType());
     elementDeletionAndRemovalChangeTypeEClass.getESuperTypes().add(this.getElementCompoundChangeType());
     elementDeletionAndCreationAndReplacementChangeTypeEClass.getESuperTypes().add(this.getElementCompoundChangeType());
@@ -1927,8 +1927,8 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
 
     initEClass(reactionsSegmentEClass, ReactionsSegment.class, "ReactionsSegment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getReactionsSegment_Name(), ecorePackage.getEString(), "name", null, 0, 1, ReactionsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getReactionsSegment_FromMetamodel(), theMirBasePackage.getMetamodelReference(), null, "fromMetamodel", null, 0, 1, ReactionsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getReactionsSegment_ToMetamodel(), theMirBasePackage.getMetamodelReference(), null, "toMetamodel", null, 0, 1, ReactionsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getReactionsSegment_FromDomain(), theMirBasePackage.getDomainReference(), null, "fromDomain", null, 0, 1, ReactionsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getReactionsSegment_ToDomain(), theMirBasePackage.getDomainReference(), null, "toDomain", null, 0, 1, ReactionsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getReactionsSegment_Reactions(), this.getReaction(), this.getReaction_ReactionsSegment(), "reactions", null, 0, -1, ReactionsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getReactionsSegment_Routines(), this.getRoutine(), this.getRoutine_ReactionsSegment(), "routines", null, 0, -1, ReactionsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1968,8 +1968,8 @@ public class ReactionsLanguagePackageImpl extends EPackageImpl implements Reacti
 
     initEClass(elementDeletionChangeTypeEClass, ElementDeletionChangeType.class, "ElementDeletionChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(elementFeatureChangeTypeEClass, ElementFeatureChangeType.class, "ElementFeatureChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getElementFeatureChangeType_Feature(), theMirBasePackage.getMetaclassFeatureReference(), null, "feature", null, 0, 1, ElementFeatureChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(elementReferenceChangeTypeEClass, ElementReferenceChangeType.class, "ElementReferenceChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getElementReferenceChangeType_Feature(), theMirBasePackage.getMetaclassEReferenceReference(), null, "feature", null, 0, 1, ElementReferenceChangeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(elementRootChangeTypeEClass, ElementRootChangeType.class, "ElementRootChangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

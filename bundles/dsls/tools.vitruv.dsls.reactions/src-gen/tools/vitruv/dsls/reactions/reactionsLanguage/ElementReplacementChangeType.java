@@ -14,6 +14,6 @@ package tools.vitruv.dsls.reactions.reactionsLanguage;
  * @model
  * @generated
  */
-public interface ElementReplacementChangeType extends ModelElementUsageChangeType, ElementFeatureChangeType
+public interface ElementReplacementChangeType extends ModelElementUsageChangeType, ElementReferenceChangeType
 {
 } // ElementReplacementChangeType

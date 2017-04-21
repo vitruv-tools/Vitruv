@@ -12,7 +12,8 @@ import pcm_mockup.PInterface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
-import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.domains.AbstractVitruvDomain;
+import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tests.VitruviusTest;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
@@ -37,15 +38,11 @@ public abstract class VsumTest extends VitruviusTest {
         return getCurrentTestProject().getName();
     }
 
-    protected InternalVirtualModel createMetaRepositoryAndVsum(final String mm1URIString, final String fileExt1,
-            final String mm2URIString, final String fileExt2) {
-        List<Metamodel> metamodels = new ArrayList<Metamodel>();
-        metamodels.add(new Metamodel(VURI.getInstance(mm1URIString), mm1URIString,
-                new AttributeTuidCalculatorAndResolver(mm1URIString, "id"), fileExt1));
-        metamodels.add(new Metamodel(VURI.getInstance(mm2URIString), mm2URIString,
-                new AttributeTuidCalculatorAndResolver(mm2URIString, "id"), fileExt2));
-        return TestUtil.createVirtualModel(VSUM_NAME, metamodels);
-    }
+    private static final VitruvDomain UmlDomain = new AbstractVitruvDomain("UML", Uml_mockupPackage.eINSTANCE,
+            new AttributeTuidCalculatorAndResolver(Uml_mockupPackage.eINSTANCE.getNsURI(), "id"), UML_FILE_EXT);
+
+    private static final VitruvDomain PcmDomain = new AbstractVitruvDomain("PCM", Pcm_mockupPackage.eINSTANCE,
+            new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eINSTANCE.getNsURI(), "id"), PCM_FILE_EXT);
 
     protected String getCurrentProjectModelFolder() {
         return getCurrentProjectFolderName() + "/model/";
@@ -111,21 +108,28 @@ public abstract class VsumTest extends VitruviusTest {
         return mi;
     }
 
-    protected InternalVirtualModel createMetaRepositoryVirtualModelAndModelInstances(final String pcmModelUriString,
+    protected InternalVirtualModel createAlternativeVirtualModelAndModelInstances(final String pcmModelUriString,
             final String umlModelUriString) {
-        InternalVirtualModel vsum = createMetaRepositoryAndVsum();
+        InternalVirtualModel vsum = createVirtualModel(VSUM_NAME + "2");
         createMockupModels(pcmModelUriString, umlModelUriString, vsum);
         return vsum;
     }
 
-    protected InternalVirtualModel createMetaRepositoryVsumAndModelInstances() {
-        InternalVirtualModel vsum = createMetaRepositoryAndVsum();
+    protected InternalVirtualModel createVirtualModelAndModelInstances() {
+        InternalVirtualModel vsum = createDefaultVirtualModel();
         createMockupModelsWithDefaultUris(vsum);
         return vsum;
     }
 
-    protected InternalVirtualModel createMetaRepositoryAndVsum() {
-        return createMetaRepositoryAndVsum(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT);
+    protected InternalVirtualModel createDefaultVirtualModel() {
+        return createVirtualModel(VSUM_NAME);
+    }
+
+    protected InternalVirtualModel createVirtualModel(final String vsumName) {
+        List<VitruvDomain> vitruvDomains = new ArrayList<VitruvDomain>();
+        vitruvDomains.add(UmlDomain);
+        vitruvDomains.add(PcmDomain);
+        return TestUtil.createVirtualModel(vsumName, true, vitruvDomains);
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {

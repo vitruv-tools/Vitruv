@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,19 +30,20 @@ public class FileSystemHelper {
         this.vsumName = vsumName;
     }
 
-    public VURI getCorrespondencesVURI(final VURI... mmURIs) {
-        IFile correspondenceFile = getCorrespondenceIFile(mmURIs);
+    public VURI getCorrespondencesVURI() {
+        IFile correspondenceFile = getCorrespondenceIFile();
         return VURI.getInstance(correspondenceFile);
     }
 
-    public void saveCorrespondenceModelMMURIs(final VURI[] mmURIs) {
-        IFile correspondenceModelIFile = getCorrespondenceIFile(mmURIs);
-        Set<VURI> mmURIsSet = new HashSet<VURI>(Arrays.asList(mmURIs));
+    public void saveCorrespondenceModelMMURIs() {
+        IFile correspondenceModelIFile = getCorrespondenceIFile();
+        // FIXME This does nothing reasonable anymore
+        Set<VURI> mmURIsSet = new HashSet<VURI>();// Arrays.asList(mmURIs));
         saveVURISetToFile(mmURIsSet, correspondenceModelIFile.getLocation().toOSString());
     }
 
-    public IFile getCorrespondenceIFile(final VURI[] mmURIs) {
-        String fileName = getCorrespondenceFileName(mmURIs);
+    public IFile getCorrespondenceIFile() {
+        String fileName = getCorrespondenceFileName();
         return getCorrespondenceIFile(fileName);
     }
 
@@ -53,24 +53,24 @@ public class FileSystemHelper {
         return correspondenceFile;
     }
 
-    private static String getCorrespondenceFileName(final VURI[] mmURIs) {
+    private static String getCorrespondenceFileName() {
         String fileExtSeparator = VitruviusConstants.getFileExtSeparator();
         String fileExt = VitruviusConstants.getCorrespondencesFileExt();
-        VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
-        Arrays.sort(copyOfMMURIs);
+        // VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
+        // Arrays.sort(copyOfMMURIs);
         String fileName = "";
-        for (VURI uri : copyOfMMURIs) {
-
-            String authority = uri.getEMFUri().authority();
-            if (authority != null) {
-                int indexOfLastDot = authority.lastIndexOf('.');
-
-                fileName += authority.substring(indexOfLastDot + 1);
-
-            }
-            fileName += uri.toString().hashCode();
-        }
-        fileName = fileName + fileExtSeparator + fileExt;
+        // for (VURI uri : copyOfMMURIs) {
+        //
+        // String authority = uri.getEMFUri().authority();
+        // if (authority != null) {
+        // int indexOfLastDot = authority.lastIndexOf('.');
+        //
+        // fileName += authority.substring(indexOfLastDot + 1);
+        //
+        // }
+        // fileName += uri.toString().hashCode();
+        // }
+        fileName = "Correspondences" + fileExtSeparator + fileExt;
         return fileName;
     }
 

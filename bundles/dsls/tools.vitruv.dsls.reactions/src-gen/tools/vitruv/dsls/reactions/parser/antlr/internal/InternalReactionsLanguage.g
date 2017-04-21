@@ -174,18 +174,18 @@ ruleReactionsSegment returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getReactionsSegmentAccess().getFromMetamodelMetamodelReferenceParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getReactionsSegmentAccess().getFromDomainDomainReferenceParserRuleCall_3_0());
 				}
-				lv_fromMetamodel_3_0=ruleMetamodelReference
+				lv_fromDomain_3_0=ruleDomainReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getReactionsSegmentRule());
 					}
 					set(
 						$current,
-						"fromMetamodel",
-						lv_fromMetamodel_3_0,
-						"tools.vitruv.dsls.mirbase.MirBase.MetamodelReference");
+						"fromDomain",
+						lv_fromDomain_3_0,
+						"tools.vitruv.dsls.mirbase.MirBase.DomainReference");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -197,18 +197,18 @@ ruleReactionsSegment returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getReactionsSegmentAccess().getToMetamodelMetamodelReferenceParserRuleCall_5_0());
+					newCompositeNode(grammarAccess.getReactionsSegmentAccess().getToDomainDomainReferenceParserRuleCall_5_0());
 				}
-				lv_toMetamodel_5_0=ruleMetamodelReference
+				lv_toDomain_5_0=ruleDomainReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getReactionsSegmentRule());
 					}
 					set(
 						$current,
-						"toMetamodel",
-						lv_toMetamodel_5_0,
-						"tools.vitruv.dsls.mirbase.MirBase.MetamodelReference");
+						"toDomain",
+						lv_toDomain_5_0,
+						"tools.vitruv.dsls.mirbase.MirBase.DomainReference");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -896,8 +896,8 @@ ruleElementDeletionChangeType returns [EObject current=null]
 ;
 
 
-// Rule ElementFeatureChangeType
-ruleElementFeatureChangeType[EObject in_current]  returns [EObject current=in_current]
+// Rule ElementReferenceChangeType
+ruleElementReferenceChangeType[EObject in_current]  returns [EObject current=in_current]
 @init {
 	enterRule();
 }
@@ -907,18 +907,18 @@ ruleElementFeatureChangeType[EObject in_current]  returns [EObject current=in_cu
 	(
 		(
 			{
-				newCompositeNode(grammarAccess.getElementFeatureChangeTypeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_0());
+				newCompositeNode(grammarAccess.getElementReferenceChangeTypeAccess().getFeatureMetaclassEReferenceReferenceParserRuleCall_0());
 			}
-			lv_feature_0_0=ruleMetaclassFeatureReference
+			lv_feature_0_0=ruleMetaclassEReferenceReference
 			{
 				if ($current==null) {
-					$current = createModelElementForParent(grammarAccess.getElementFeatureChangeTypeRule());
+					$current = createModelElementForParent(grammarAccess.getElementReferenceChangeTypeRule());
 				}
 				set(
 					$current,
 					"feature",
 					lv_feature_0_0,
-					"tools.vitruv.dsls.mirbase.MirBase.MetaclassFeatureReference");
+					"tools.vitruv.dsls.mirbase.MirBase.MetaclassEReferenceReference");
 				afterParserOrEnumRuleCall();
 			}
 		)
@@ -985,11 +985,11 @@ ruleElementInsertionInListChangeType returns [EObject current=null]
 			if ($current==null) {
 				$current = createModelElement(grammarAccess.getElementInsertionInListChangeTypeRule());
 			}
-			newCompositeNode(grammarAccess.getElementInsertionInListChangeTypeAccess().getElementFeatureChangeTypeParserRuleCall_1());
+			newCompositeNode(grammarAccess.getElementInsertionInListChangeTypeAccess().getElementReferenceChangeTypeParserRuleCall_1());
 		}
-		this_ElementFeatureChangeType_1=ruleElementFeatureChangeType[$current]
+		this_ElementReferenceChangeType_1=ruleElementReferenceChangeType[$current]
 		{
-			$current = $this_ElementFeatureChangeType_1.current;
+			$current = $this_ElementReferenceChangeType_1.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -1115,11 +1115,11 @@ ruleElementRemovalFromListChangeType returns [EObject current=null]
 			if ($current==null) {
 				$current = createModelElement(grammarAccess.getElementRemovalFromListChangeTypeRule());
 			}
-			newCompositeNode(grammarAccess.getElementRemovalFromListChangeTypeAccess().getElementFeatureChangeTypeParserRuleCall_1());
+			newCompositeNode(grammarAccess.getElementRemovalFromListChangeTypeAccess().getElementReferenceChangeTypeParserRuleCall_1());
 		}
-		this_ElementFeatureChangeType_1=ruleElementFeatureChangeType[$current]
+		this_ElementReferenceChangeType_1=ruleElementReferenceChangeType[$current]
 		{
-			$current = $this_ElementFeatureChangeType_1.current;
+			$current = $this_ElementReferenceChangeType_1.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -1149,11 +1149,11 @@ ruleElementReplacementChangeType returns [EObject current=null]
 			if ($current==null) {
 				$current = createModelElement(grammarAccess.getElementReplacementChangeTypeRule());
 			}
-			newCompositeNode(grammarAccess.getElementReplacementChangeTypeAccess().getElementFeatureChangeTypeParserRuleCall_1());
+			newCompositeNode(grammarAccess.getElementReplacementChangeTypeAccess().getElementReferenceChangeTypeParserRuleCall_1());
 		}
-		this_ElementFeatureChangeType_1=ruleElementFeatureChangeType[$current]
+		this_ElementReferenceChangeType_1=ruleElementReferenceChangeType[$current]
 		{
-			$current = $this_ElementFeatureChangeType_1.current;
+			$current = $this_ElementReferenceChangeType_1.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -3285,15 +3285,69 @@ ruleMetaclassFeatureReference returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleMetamodelReference
-entryRuleMetamodelReference returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getMetamodelReferenceRule()); }
-	iv_ruleMetamodelReference=ruleMetamodelReference
-	{ $current=$iv_ruleMetamodelReference.current; }
+// Entry rule entryRuleMetaclassEReferenceReference
+entryRuleMetaclassEReferenceReference returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getMetaclassEReferenceReferenceRule()); }
+	iv_ruleMetaclassEReferenceReference=ruleMetaclassEReferenceReference
+	{ $current=$iv_ruleMetaclassEReferenceReference.current; }
 	EOF;
 
-// Rule MetamodelReference
-ruleMetamodelReference returns [EObject current=null]
+// Rule MetaclassEReferenceReference
+ruleMetaclassEReferenceReference returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			if ($current==null) {
+				$current = createModelElement(grammarAccess.getMetaclassEReferenceReferenceRule());
+			}
+			newCompositeNode(grammarAccess.getMetaclassEReferenceReferenceAccess().getMetaclassReferenceParserRuleCall_0());
+		}
+		this_MetaclassReference_0=ruleMetaclassReference[$current]
+		{
+			$current = $this_MetaclassReference_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		otherlv_1='['
+		{
+			newLeafNode(otherlv_1, grammarAccess.getMetaclassEReferenceReferenceAccess().getLeftSquareBracketKeyword_1());
+		}
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getMetaclassEReferenceReferenceRule());
+					}
+				}
+				{
+					newCompositeNode(grammarAccess.getMetaclassEReferenceReferenceAccess().getFeatureEReferenceCrossReference_2_0());
+				}
+				ruleValidID
+				{
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_3=']'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getMetaclassEReferenceReferenceAccess().getRightSquareBracketKeyword_3());
+		}
+	)
+;
+
+// Entry rule entryRuleDomainReference
+entryRuleDomainReference returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getDomainReferenceRule()); }
+	iv_ruleDomainReference=ruleDomainReference
+	{ $current=$iv_ruleDomainReference.current; }
+	EOF;
+
+// Rule DomainReference
+ruleDomainReference returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -3302,14 +3356,19 @@ ruleMetamodelReference returns [EObject current=null]
 }:
 	(
 		(
+			lv_domain_0_0=RULE_ID
+			{
+				newLeafNode(lv_domain_0_0, grammarAccess.getDomainReferenceAccess().getDomainIDTerminalRuleCall_0());
+			}
 			{
 				if ($current==null) {
-					$current = createModelElement(grammarAccess.getMetamodelReferenceRule());
+					$current = createModelElement(grammarAccess.getDomainReferenceRule());
 				}
-			}
-			otherlv_0=RULE_ID
-			{
-				newLeafNode(otherlv_0, grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportCrossReference_0());
+				setWithLastConsumed(
+					$current,
+					"domain",
+					lv_domain_0_0,
+					"org.eclipse.xtext.xbase.Xtype.ID");
 			}
 		)
 	)

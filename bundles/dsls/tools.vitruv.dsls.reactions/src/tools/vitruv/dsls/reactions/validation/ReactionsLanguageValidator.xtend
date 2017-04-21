@@ -7,12 +7,18 @@ import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import java.util.HashMap
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType
+import org.eclipse.emf.ecore.EClass
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType
 
 /**
  * This class contains custom validation rules. 
@@ -98,6 +104,33 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		if (!Character.isUpperCase(reaction.name.charAt(0))) {
 			warning("Reaction names should start upper case",
 				ReactionsLanguagePackage.Literals.REACTION__NAME);
+		}
+	}
+	
+	@Check
+	def checkMetaclassFeature(ModelElementChange elementChange) {
+		val elementType = elementChange?.elementType?.metaclass;
+		val elementChangeType = elementChange?.changeType;
+		// Only continue if element type is specified and its a feature change
+		var ElementChangeType atomicChangeType = null;
+		if (elementChangeType instanceof ElementReferenceChangeType) {
+			atomicChangeType = elementChangeType;
+		} else if (elementChangeType instanceof ElementCreationAndInsertionChangeType) {
+			atomicChangeType = elementChangeType.insertChange;
+		} else if (elementChangeType instanceof ElementDeletionAndRemovalChangeType) {
+			atomicChangeType = elementChangeType.removeChange;
+		} else if (elementChangeType instanceof ElementDeletionAndCreationAndReplacementChangeType) {
+			atomicChangeType = elementChangeType.replacedChange;
+		}
+		if (atomicChangeType instanceof ElementReferenceChangeType) {
+			val featureType = atomicChangeType.feature?.feature?.EType as EClass;
+			if (elementType != null && featureType != null) {
+				if (!elementType.equals(featureType) && !elementType.EAllSuperTypes.contains(featureType) && !featureType.EAllSuperTypes.contains(elementType)) {
+					warning("Element of specified type cannot be contained in the specified features",
+						elementChange, ReactionsLanguagePackage.Literals.MODEL_ELEMENT_CHANGE__ELEMENT_TYPE
+					)
+				}
+			}
 		}
 	}
 

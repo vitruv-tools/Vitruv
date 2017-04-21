@@ -44,7 +44,13 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 	}
 	
 	override registerObjectUnderModification(EObject element) {
-		TuidManager.instance.registerObjectUnderModification(element);
+		if (element != null) {
+			TuidManager.instance.registerObjectUnderModification(element);
+			if (element.eContainer != null) {
+				TuidManager.instance.registerObjectUnderModification(element.eContainer);
+			}
+
+		}
 	}
 	
 	override postprocessElements() {

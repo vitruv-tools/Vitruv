@@ -128,8 +128,8 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 			for (imp : imports) {
 				val reaction = reactionBuilderFactory.createReactionBuilder
 					.setName(getReactionName(imp, resource))
-					.setTrigger(imp.package)
-					.setTargetChange(imp.otherImport.package)
+					.setTrigger(null)// TODO MK: Set correct domain here, before: imp.package
+					.setTargetChange(null) // TODO MK: Set correct domain here, before: imp.otherImport.package
 					.setExecutionBlock('''
 						final tools.vitruv.extensions.dslsruntime.mapping.MappingExecutionState state =
 							new tools.vitruv.extensions.dslsruntime.mapping.MappingExecutionState(transformationResult, this.userInteracting, blackboard);

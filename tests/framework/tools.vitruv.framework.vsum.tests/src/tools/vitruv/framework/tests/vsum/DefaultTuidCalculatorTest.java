@@ -24,7 +24,7 @@ import tools.vitruv.framework.vsum.InternalVirtualModel;
 public class DefaultTuidCalculatorTest extends VsumTest {
     @Test
     public void testAll() {
-        InternalVirtualModel vsum = createMetaRepositoryVsumAndModelInstances();
+        InternalVirtualModel vsum = createVirtualModelAndModelInstances();
         VURI model1URI = VURI.getInstance(getDefaultPcmInstanceURI());
         ModelInstance model1 = vsum.getModelInstance(model1URI);
         Repository pcmRoot = (Repository) model1.getResource().getContents().get(0);

@@ -71,7 +71,7 @@ public abstract class VitruviusTest {
 	private static IProject initializeTestProject(final String testName) {
 		IProject testProject = null;
 		try {
-			testProject = TestUtil.createProject(testName);
+			testProject = TestUtil.createProject(testName, true);
 		} catch (CoreException e) {
 			fail("Exception during creation of test project");
 		}

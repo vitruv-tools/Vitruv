@@ -159,13 +159,13 @@ public interface ReactionsLanguageFactory extends EFactory
   ElementDeletionChangeType createElementDeletionChangeType();
 
   /**
-   * Returns a new object of class '<em>Element Feature Change Type</em>'.
+   * Returns a new object of class '<em>Element Reference Change Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Element Feature Change Type</em>'.
+   * @return a new object of class '<em>Element Reference Change Type</em>'.
    * @generated
    */
-  ElementFeatureChangeType createElementFeatureChangeType();
+  ElementReferenceChangeType createElementReferenceChangeType();
 
   /**
    * Returns a new object of class '<em>Element Root Change Type</em>'.
