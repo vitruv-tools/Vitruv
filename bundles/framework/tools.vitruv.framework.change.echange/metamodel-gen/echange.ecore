@@ -12,7 +12,7 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract change, which can be applied forward or backward, after it was resolved to a specific instance of a model."/>
     </eAnnotations>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+    <eOperations name="isResolved" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
         <details key="body" value="return true;"/>
@@ -46,13 +46,13 @@
       </eAnnotations>
       <eParameters name="resourceSet" unique="false" eType="#//ResourceSet"/>
     </eOperations>
-    <eOperations name="applyForward" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+    <eOperations name="applyForward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;Applies the change to the model which the change was resolved to.&#xA;The change must be resolved before it can be applied.&#xA;@return&#x9;Returns whether the change was successfully applied forward. If the&#xA;&#x9;&#x9;&#x9;change was not resolved an Exception is thrown.&#xA;&#x9;&#x9;&#x9;If the change could not be applied it returns {@code false}.&#xA;&#x9;&#x9;&#x9;Otherwise it returns {@code true}.&#xA;@throws IllegalStateException The change is not resolved&#xA;@throws RuntimeException The change could not be applied."/>
         <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch%>.applyEChange(this, true);"/>
       </eAnnotations>
     </eOperations>
-    <eOperations name="applyBackward" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+    <eOperations name="applyBackward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;Reverts the change on the model which the change was resolved to.&#xA;The change must be resolved before it can be reverted.&#xA;@return&#x9;Returns whether the change was successfully applied backward. If the&#xA;&#x9;&#x9;&#x9;change was not resolved an Exception is thrown.&#xA;&#x9;&#x9;&#x9;If the change could not be applied it returns {@code false}.&#xA;&#x9;&#x9;&#x9;Otherwise it returns {@code true}.&#xA;@throws IllegalStateException The change is not resolved.&#xA;@throws RuntimeException The change could not be applied."/>
         <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch%>.applyEChange(this, false);"/>
@@ -69,7 +69,7 @@
       <details key="documentation" value="*&#xA;Abstract EChange which adds a new value, like an EObject or primitive type."/>
     </eAnnotations>
     <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eOperations name="getNewValue" unique="false" lowerBound="1">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -84,7 +84,7 @@
       <details key="documentation" value="*&#xA;Abstract EChange which removes an existing value, like an EObject or primitive type."/>
     </eAnnotations>
     <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eOperations name="getOldValue" unique="false" lowerBound="1">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
