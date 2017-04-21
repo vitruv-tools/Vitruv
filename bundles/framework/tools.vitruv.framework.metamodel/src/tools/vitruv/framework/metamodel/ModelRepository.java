@@ -3,8 +3,8 @@ package tools.vitruv.framework.metamodel;
 import java.util.concurrent.Callable;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -18,5 +18,10 @@ public interface ModelRepository {
     void createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable);
     void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command);
     
-    ResourceSet getResourceSet();
+    /**
+     * Applies a unresolved change forward to the affected model in the repository.
+     * The EChanges in the change will be resolved in the process.
+     * @param change The change which shall be applied to the model.
+     */
+    void applyChangeForwardOnModel(TransactionalChange change);
 }

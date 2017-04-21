@@ -12,6 +12,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore,
  org.eclipse.emf.transaction,
  tools.vitruv.framework.util,
- tools.vitruv.framework.tuid
+ tools.vitruv.framework.tuid,
+ tools.vitruv.framework.change
 Export-Package: tools.vitruv.framework.metamodel
 Bundle-Vendor: vitruv.tools

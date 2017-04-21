@@ -50,6 +50,4 @@ interface VitruviusChange extends URIHaving {
 	def void applyForward() throws IllegalStateException;
 	
 	def void resolveBeforeAndApplyForward(ResourceSet resourceSet);
-	
-	def void resolveAfterAndApplyBackward(ResourceSet resourceSet);
 }

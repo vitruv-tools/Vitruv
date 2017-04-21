@@ -7,8 +7,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
-import tools.vitruv.framework.change.description.impl.CreateFileChangeImpl
-import tools.vitruv.framework.change.description.impl.DeleteFileChangeImpl
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import tools.vitruv.framework.change.echange.EChange
@@ -49,13 +47,13 @@ class VitruviusChangeFactory {
 	
 	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		val vuri = VURI.getInstance(changedFileResource);
+		var EChange eChange = null
 		if (kind == FileChangeKind.Create) {
-			var eChange = generateFileCreateChange(changedFileResource);
-			return new CreateFileChangeImpl(eChange, vuri)
+			eChange = generateFileCreateChange(changedFileResource);
 		} else {
-			var eChange = generateFileDeleteChange(changedFileResource);
-			return new DeleteFileChangeImpl(eChange, vuri)
+			eChange = generateFileDeleteChange(changedFileResource);
 		}
+		return new ConcreteChangeImpl(eChange, vuri)
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {

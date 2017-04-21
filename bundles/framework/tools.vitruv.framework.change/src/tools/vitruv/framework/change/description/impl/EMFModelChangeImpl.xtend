@@ -38,10 +38,6 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		}
 	}
 
-    private def ChangeDescription getChangeDescription() {
-        return this.changeDescription;
-    }
-
     override String toString() '''
     	«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
     		«FOR eChange : EChanges»
@@ -65,11 +61,9 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		if (!this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
 		}
-		registerOldObjectTuidsForUpdate();
 		for (c : changes.reverseView) {
 			c.applyBackward
 		}
-		updateTuids();
 		this.canBeBackwardsApplied = false;
 	}
 	
@@ -77,68 +71,19 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		if (this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
-		registerOldObjectTuidsForUpdate();
 		for (c : changes) {
 			c.applyForward
 		}
-		updateTuids();
 		this.canBeBackwardsApplied = true;
 	}
-	
-	
-	/* 
-	private def applyChange() {
-		registerOldObjectTuidsForUpdate();
-		changeDescription.applyAndReverse();
-		updateTuids();
-	}*/
-	
-	private def void registerOldObjectTuidsForUpdate() {
-		val tuidManager = TuidManager.instance;
-		val objects = new ArrayList<EObject>();
-        objects.addAll(getChangeDescription().getObjectChanges().keySet());
-		objects.addAll(getChangeDescription().getObjectsToDetach());
-        for (EObject object : getChangeDescription().getObjectChanges().keySet()) {
-			tuidManager.registerObjectUnderModification(object);
-        	for (FeatureChange featureChange : getChangeDescription().getObjectChanges().get(object)) {
-	        	tuidManager.registerObjectUnderModification(featureChange.getReferenceValue());
-			}
-        }
-        for (EObject object : getChangeDescription().getObjectsToDetach()) {
-        	tuidManager.registerObjectUnderModification(object);
-		}
-		for (EObject object : getChangeDescription().getObjectsToAttach()) {
-        	tuidManager.registerObjectUnderModification(object);
-		}
-    }
-
-    protected def void updateTuids() {
-        TuidManager.instance.updateTuidsOfRegisteredObjects();
-        TuidManager.instance.flushRegisteredObjectsUnderModification();
-    }
 	
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
 		if (this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
-		registerOldObjectTuidsForUpdate();
 		for (c : changes) {
 			c.resolveBeforeAndApplyForward(resourceSet)
 		}
-		updateTuids();
 		this.canBeBackwardsApplied = true;
 	}
-	
-	override resolveAfterAndApplyBackward(ResourceSet resourceSet) {
-		if (!this.canBeBackwardsApplied) {
-			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
-		}
-		registerOldObjectTuidsForUpdate();
-		for (c : changes.reverseView) {
-			c.resolveAfterAndApplyBackward(resourceSet)
-		}
-		updateTuids();
-		this.canBeBackwardsApplied = false;
-	}
-	
 }
