@@ -61,6 +61,8 @@ import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypePackage;
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport;
@@ -89,6 +91,12 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 				return; 
 			case MirBasePackage.DUMMY_ENTRY_RULE:
 				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
+				return; 
+			case MirBasePackage.METACLASS_EATTRIBUTE_REFERENCE:
+				sequence_MetaclassEAttributeReference_MetaclassReference(context, (MetaclassEAttributeReference) semanticObject); 
+				return; 
+			case MirBasePackage.METACLASS_EREFERENCE_REFERENCE:
+				sequence_MetaclassEReferenceReference_MetaclassReference(context, (MetaclassEReferenceReference) semanticObject); 
 				return; 
 			case MirBasePackage.METACLASS_FEATURE_REFERENCE:
 				sequence_MetaclassFeatureReference_MetaclassReference(context, (MetaclassFeatureReference) semanticObject); 
@@ -386,6 +394,30 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getDomainReferenceAccess().getDomainIDTerminalRuleCall_0(), semanticObject.getDomain());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     MetaclassEAttributeReference returns MetaclassEAttributeReference
+	 *
+	 * Constraint:
+	 *     (metamodel=[MetamodelImport|ID]? metaclass=[EClass|QualifiedName] feature=[EAttribute|ValidID])
+	 */
+	protected void sequence_MetaclassEAttributeReference_MetaclassReference(ISerializationContext context, MetaclassEAttributeReference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     MetaclassEReferenceReference returns MetaclassEReferenceReference
+	 *
+	 * Constraint:
+	 *     (metamodel=[MetamodelImport|ID]? metaclass=[EClass|QualifiedName] feature=[EReference|ValidID])
+	 */
+	protected void sequence_MetaclassEReferenceReference_MetaclassReference(ISerializationContext context, MetaclassEReferenceReference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

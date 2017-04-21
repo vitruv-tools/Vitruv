@@ -14,6 +14,6 @@ package tools.vitruv.dsls.reactions.reactionsLanguage;
  * @model
  * @generated
  */
-public interface ElementInsertionInListChangeType extends ElementInsertionChangeType, ElementFeatureChangeType
+public interface ElementInsertionInListChangeType extends ElementInsertionChangeType, ElementReferenceChangeType
 {
 } // ElementInsertionInListChangeType

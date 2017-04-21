@@ -46,7 +46,15 @@ ClassicallyNamedModelElement returns NamedMetaclassReference:
 MetaclassFeatureReference:
 	MetaclassReference '[' feature=[ecore::EStructuralFeature|ValidID] ']'
 ;
-	
+
+MetaclassEAttributeReference:
+	MetaclassReference '[' feature=[ecore::EAttribute|ValidID] ']'
+;
+
+MetaclassEReferenceReference:
+	MetaclassReference '[' feature=[ecore::EReference|ValidID] ']'
+;
+
 MetamodelReference:
 	model=[MetamodelImport]
 ;

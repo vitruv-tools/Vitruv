@@ -2,46 +2,41 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.framework.change.echange;singleton:=true
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: tools.vitruv.framework.change.echange,
+Export-Package: tools.vitruv.framework.change.echange.feature.list,
+ tools.vitruv.framework.change.echange.feature.list.impl,
+ tools.vitruv.framework.change.echange.feature.list.util,
+ tools.vitruv.framework.change.echange.root,
+ tools.vitruv.framework.change.echange.root.impl,
+ tools.vitruv.framework.change.echange.root.util,
  tools.vitruv.framework.change.echange.compound,
  tools.vitruv.framework.change.echange.compound.impl,
  tools.vitruv.framework.change.echange.compound.util,
  tools.vitruv.framework.change.echange.eobject,
  tools.vitruv.framework.change.echange.eobject.impl,
  tools.vitruv.framework.change.echange.eobject.util,
- tools.vitruv.framework.change.echange.feature,
- tools.vitruv.framework.change.echange.feature.attribute,
- tools.vitruv.framework.change.echange.feature.attribute.impl,
- tools.vitruv.framework.change.echange.feature.attribute.util,
- tools.vitruv.framework.change.echange.feature.impl,
- tools.vitruv.framework.change.echange.feature.list,
- tools.vitruv.framework.change.echange.feature.list.impl,
- tools.vitruv.framework.change.echange.feature.list.util,
- tools.vitruv.framework.change.echange.feature.reference,
- tools.vitruv.framework.change.echange.feature.reference.impl,
- tools.vitruv.framework.change.echange.feature.reference.util,
+ tools.vitruv.framework.change.echange,
+ tools.vitruv.framework.change.echange.impl,
+ tools.vitruv.framework.change.echange.util,
  tools.vitruv.framework.change.echange.feature.single,
  tools.vitruv.framework.change.echange.feature.single.impl,
  tools.vitruv.framework.change.echange.feature.single.util,
+ tools.vitruv.framework.change.echange.feature,
+ tools.vitruv.framework.change.echange.feature.impl,
  tools.vitruv.framework.change.echange.feature.util,
- tools.vitruv.framework.change.echange.impl,
- tools.vitruv.framework.change.echange.root,
- tools.vitruv.framework.change.echange.root.impl,
- tools.vitruv.framework.change.echange.root.util,
- tools.vitruv.framework.change.echange.util
-Require-Bundle: com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- org.eclipse.core.runtime,
+ tools.vitruv.framework.change.echange.feature.attribute,
+ tools.vitruv.framework.change.echange.feature.attribute.impl,
+ tools.vitruv.framework.change.echange.feature.attribute.util,
+ tools.vitruv.framework.change.echange.feature.reference,
+ tools.vitruv.framework.change.echange.feature.reference.impl,
+ tools.vitruv.framework.change.echange.feature.reference.util
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- edu.kit.ipd.sdq.commons.util.emf,
+ org.eclipse.xtext.xbase.lib,
  org.eclipse.emf.ecore.xcore.lib,
  tools.vitruv.framework.change.echange;visibility:=reexport
 Bundle-ActivationPolicy: lazy
-

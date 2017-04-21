@@ -54,18 +54,18 @@
   <eClassifiers xsi:type="ecore:EClass" name="ModelElementUsageChangeType" eSuperTypes="#//ElementChangeType"/>
   <eClassifiers xsi:type="ecore:EClass" name="ElementCreationChangeType" eSuperTypes="#//ElementExistenceChangeType"/>
   <eClassifiers xsi:type="ecore:EClass" name="ElementDeletionChangeType" eSuperTypes="#//ElementExistenceChangeType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ElementFeatureChangeType">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassFeatureReference"
+  <eClassifiers xsi:type="ecore:EClass" name="ElementReferenceChangeType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassEReferenceReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ElementRootChangeType"/>
   <eClassifiers xsi:type="ecore:EClass" name="ElementInsertionChangeType" eSuperTypes="#//ModelElementUsageChangeType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ElementInsertionInListChangeType" eSuperTypes="#//ElementInsertionChangeType #//ElementFeatureChangeType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementInsertionInListChangeType" eSuperTypes="#//ElementInsertionChangeType #//ElementReferenceChangeType"/>
   <eClassifiers xsi:type="ecore:EClass" name="ElementInsertionAsRootChangeType" eSuperTypes="#//ElementRootChangeType #//ElementInsertionChangeType"/>
   <eClassifiers xsi:type="ecore:EClass" name="ElementRemovalChangeType" eSuperTypes="#//ModelElementUsageChangeType"/>
   <eClassifiers xsi:type="ecore:EClass" name="ElementRemovalAsRootChangeType" eSuperTypes="#//ElementRootChangeType #//ElementRemovalChangeType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ElementRemovalFromListChangeType" eSuperTypes="#//ElementRemovalChangeType #//ElementFeatureChangeType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ElementReplacementChangeType" eSuperTypes="#//ModelElementUsageChangeType #//ElementFeatureChangeType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementRemovalFromListChangeType" eSuperTypes="#//ElementRemovalChangeType #//ElementReferenceChangeType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementReplacementChangeType" eSuperTypes="#//ModelElementUsageChangeType #//ElementReferenceChangeType"/>
   <eClassifiers xsi:type="ecore:EClass" name="ElementCreationAndInsertionChangeType"
       eSuperTypes="#//ElementCompoundChangeType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="createChange" eType="#//ElementCreationChangeType"

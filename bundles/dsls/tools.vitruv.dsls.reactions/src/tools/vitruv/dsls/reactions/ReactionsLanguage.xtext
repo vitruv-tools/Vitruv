@@ -58,7 +58,7 @@ ModelAttributeChange:
 	'attribute' ({ModelAttributeInsertedChange} 'insert in' |
 		{ModelAttributeRemovedChange} 'remove from' |
 		{ModelAttributeReplacedChange} 'replaced at')
-		feature=MetaclassFeatureReference;
+		feature=MetaclassEAttributeReference;
 
 ArbitraryModelChange:
 	{ArbitraryModelChange} 'any change';
@@ -78,8 +78,8 @@ ElementCreationChangeType returns ElementCreationChangeType:
 ElementDeletionChangeType returns ElementDeletionChangeType:
 	'deleted' {ElementDeletionChangeType};
 
-fragment ElementFeatureChangeType:
-	feature=MetaclassFeatureReference;
+fragment ElementReferenceChangeType:
+	feature=MetaclassEReferenceReference;
 
 // This is just for a complete type hierachy
 ElementRootChangeType returns ElementRootChangeType:
@@ -89,7 +89,7 @@ ElementInsertionChangeType:
 	(ElementInsertionInListChangeType | ElementInsertionAsRootChangeType);
 
 ElementInsertionInListChangeType:
-	'inserted in' ElementFeatureChangeType;
+	'inserted in' ElementReferenceChangeType;
 
 ElementInsertionAsRootChangeType:
 	{ElementInsertionAsRootChangeType} 'inserted as root';
@@ -101,10 +101,10 @@ ElementRemovalAsRootChangeType:
 	{ElementRemovalAsRootChangeType} 'removed as root';
 		
 ElementRemovalFromListChangeType:
-	'removed from' ElementFeatureChangeType;
+	'removed from' ElementReferenceChangeType;
 
 ElementReplacementChangeType:
-	'replaced at' ElementFeatureChangeType;
+	'replaced at' ElementReferenceChangeType;
 
 // *********** Compound element changes ***********
 

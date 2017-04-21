@@ -87,6 +87,24 @@ public interface MirBaseFactory extends EFactory
   MetaclassFeatureReference createMetaclassFeatureReference();
 
   /**
+   * Returns a new object of class '<em>Metaclass EAttribute Reference</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Metaclass EAttribute Reference</em>'.
+   * @generated
+   */
+  MetaclassEAttributeReference createMetaclassEAttributeReference();
+
+  /**
+   * Returns a new object of class '<em>Metaclass EReference Reference</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Metaclass EReference Reference</em>'.
+   * @generated
+   */
+  MetaclassEReferenceReference createMetaclassEReferenceReference();
+
+  /**
    * Returns a new object of class '<em>Metamodel Reference</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

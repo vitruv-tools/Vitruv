@@ -202,10 +202,10 @@ public class ReactionsLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE:
+      case ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE:
       {
-        ElementFeatureChangeType elementFeatureChangeType = (ElementFeatureChangeType)theEObject;
-        T result = caseElementFeatureChangeType(elementFeatureChangeType);
+        ElementReferenceChangeType elementReferenceChangeType = (ElementReferenceChangeType)theEObject;
+        T result = caseElementReferenceChangeType(elementReferenceChangeType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -230,7 +230,7 @@ public class ReactionsLanguageSwitch<T> extends Switch<T>
         ElementInsertionInListChangeType elementInsertionInListChangeType = (ElementInsertionInListChangeType)theEObject;
         T result = caseElementInsertionInListChangeType(elementInsertionInListChangeType);
         if (result == null) result = caseElementInsertionChangeType(elementInsertionInListChangeType);
-        if (result == null) result = caseElementFeatureChangeType(elementInsertionInListChangeType);
+        if (result == null) result = caseElementReferenceChangeType(elementInsertionInListChangeType);
         if (result == null) result = caseModelElementUsageChangeType(elementInsertionInListChangeType);
         if (result == null) result = caseElementChangeType(elementInsertionInListChangeType);
         if (result == null) result = defaultCase(theEObject);
@@ -272,7 +272,7 @@ public class ReactionsLanguageSwitch<T> extends Switch<T>
         ElementRemovalFromListChangeType elementRemovalFromListChangeType = (ElementRemovalFromListChangeType)theEObject;
         T result = caseElementRemovalFromListChangeType(elementRemovalFromListChangeType);
         if (result == null) result = caseElementRemovalChangeType(elementRemovalFromListChangeType);
-        if (result == null) result = caseElementFeatureChangeType(elementRemovalFromListChangeType);
+        if (result == null) result = caseElementReferenceChangeType(elementRemovalFromListChangeType);
         if (result == null) result = caseModelElementUsageChangeType(elementRemovalFromListChangeType);
         if (result == null) result = caseElementChangeType(elementRemovalFromListChangeType);
         if (result == null) result = defaultCase(theEObject);
@@ -283,7 +283,7 @@ public class ReactionsLanguageSwitch<T> extends Switch<T>
         ElementReplacementChangeType elementReplacementChangeType = (ElementReplacementChangeType)theEObject;
         T result = caseElementReplacementChangeType(elementReplacementChangeType);
         if (result == null) result = caseModelElementUsageChangeType(elementReplacementChangeType);
-        if (result == null) result = caseElementFeatureChangeType(elementReplacementChangeType);
+        if (result == null) result = caseElementReferenceChangeType(elementReplacementChangeType);
         if (result == null) result = caseElementChangeType(elementReplacementChangeType);
         if (result == null) result = defaultCase(theEObject);
         return result;
@@ -811,17 +811,17 @@ public class ReactionsLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Element Feature Change Type</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Element Reference Change Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Element Feature Change Type</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Element Reference Change Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseElementFeatureChangeType(ElementFeatureChangeType object)
+  public T caseElementReferenceChangeType(ElementReferenceChangeType object)
   {
     return null;
   }
