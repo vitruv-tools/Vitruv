@@ -8,6 +8,7 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.apache.log4j.Logger
+import tools.vitruv.framework.domains.VitruvDomain
 
 abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification {
 	private static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
@@ -15,8 +16,8 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	private val List<ChangePropagationSpecification> changePreprocessors;
 	private val List<ChangePropagationSpecification> changeMainprocessors;
 
-	new(UserInteracting userInteracting) {
-		super(userInteracting);
+	new(UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+		super(userInteracting, sourceDomain, targetDomain);
 		changePreprocessors = new ArrayList<ChangePropagationSpecification>();
 		changeMainprocessors = new ArrayList<ChangePropagationSpecification>();
 	}
@@ -42,7 +43,8 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	}
 	
 	private def void assertMetamodelsCompatible(ChangePropagationSpecification potentialChangeProcessor) {
-		if (!this.metamodelPair.equals(potentialChangeProcessor.metamodelPair)) {
+		if (!this.sourceDomain.equals(potentialChangeProcessor.sourceDomain) ||
+			!this.targetDomain.equals(potentialChangeProcessor.targetDomain)) {
 			throw new IllegalArgumentException("ChangeProcessor metamodels are not compatible");
 		}
 	}

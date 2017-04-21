@@ -23,6 +23,7 @@
 		<module>tools.vitruv.framework.monitorededitor</module>
 		<module>tools.vitruv.framework.tests.util</module>
 		<module>tools.vitruv.framework.tests.util.metamodels</module>
+		<module>tools.vitruv.framework.testutils.domains</module>
 		<module>tools.vitruv.framework.tuid</module>
 		<module>tools.vitruv.framework.userinteracting</module>
 		<module>tools.vitruv.framework.util</module>

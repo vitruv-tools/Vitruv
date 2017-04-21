@@ -7,11 +7,12 @@ import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
 import tools.vitruv.framework.util.bridges.EclipseBridge
-import org.eclipse.osgi.container.namespaces.EclipsePlatformNamespace
 import org.eclipse.xtext.validation.Check
 
 import static tools.vitruv.dsls.mirbase.validation.EclipsePluginHelper.*
 import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference
+import tools.vitruv.framework.domains.VitruvDomainProvider
 
 /**
  * This class contains custom validation rules. 
@@ -20,6 +21,7 @@ import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
  */
 class MirBaseValidator extends AbstractMirBaseValidator {
 	public static val METAMODEL_IMPORT_DEPENDENCY_MISSING = "metamodelImportDependencyMissing"
+	public static val DOMAIN_IMPORT_DEPENDENCY_MISSING = "domainImportDependencyMissing"
 	public static val VITRUVIUS_DEPENDENCY_MISSING = "vitruviusDependencyMissing"
 	
 	@Check
@@ -31,6 +33,21 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 		val project = getProject(metamodelImport.eResource)
 		if (!hasDependency(project, contributorName)) {
 			warning('''Dependency to plug-in '«contributorName»' missing.''', metamodelImport, MirBasePackage.Literals.METAMODEL_IMPORT__PACKAGE, METAMODEL_IMPORT_DEPENDENCY_MISSING)
+		}
+	}
+	
+	@Check
+	def checkDomainDependency(DomainReference domainReference) {
+		if (!isValidDomainReference(domainReference)) {
+			return;
+		}
+		val domainProvider = VitruvDomainProvider.getDomainProviderFromExtensionPoint(domainReference.domain);
+		val contributorName = EclipseBridge.getNameOfContributorOfExtension(
+					VitruvDomainProvider.EXTENSION_POINT_ID,
+					"class", domainProvider.class.name);
+		val project = getProject(domainReference.eResource)
+		if (!hasDependency(project, contributorName)) {
+			warning('''Dependency to plug-in '«contributorName»' missing.''', domainReference, MirBasePackage.Literals.DOMAIN_REFERENCE__DOMAIN, DOMAIN_IMPORT_DEPENDENCY_MISSING)
 		}
 	}
 	
@@ -56,5 +73,20 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 				return
 			}
 		}
+	}
+	
+	@Check
+	def checkDomainRefrence(DomainReference domainReference) {
+		val domainNames = VitruvDomainProvider.allDomainProvidersFromExtensionPoint.map[domain.name].toList;
+	    if (!isValidDomainReference(domainReference)) {
+	    	error('''No domain with the specified name found. Available domains are : «FOR domainName : domainNames SEPARATOR ", "»«domainName»«ENDFOR»''', domainReference,
+	    		MirBasePackage.Literals.DOMAIN_REFERENCE__DOMAIN
+	    	);
+	    }
+	}
+	
+	private def boolean isValidDomainReference(DomainReference domainReference) {
+		val domainNames = VitruvDomainProvider.allDomainProvidersFromExtensionPoint.map[domain.name].toList;
+	    return domainNames.contains(domainReference.domain);
 	}
 }

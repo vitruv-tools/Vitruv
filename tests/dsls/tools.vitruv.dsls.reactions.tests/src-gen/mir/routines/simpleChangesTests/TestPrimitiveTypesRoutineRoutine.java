@@ -18,12 +18,21 @@ public class TestPrimitiveTypesRoutineRoutine extends AbstractRepairRoutineReali
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final Integer intVal, final Long longVal, final Short shortVal, final Byte byteVal, final Character charVal, final Double doubleVal, final Float floatVal, final Integer boolVal, final String stringVal, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final Integer intVal, final Long longVal, final Short shortVal, final Byte byteVal, final Character charVal, final Double doubleVal, final Float floatVal, final Boolean boolVal, final String stringVal, @Extension final RoutinesFacade _routinesFacade) {
+      intVal.intValue();
+      longVal.longValue();
+      shortVal.shortValue();
+      byteVal.byteValue();
+      charVal.charValue();
+      doubleVal.doubleValue();
+      floatVal.floatValue();
+      boolVal.booleanValue();
+      stringVal.charAt(0);
       _routinesFacade.testPrimitiveTypesRoutine(intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal);
     }
   }
   
-  public TestPrimitiveTypesRoutineRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Integer intVal, final Long longVal, final Short shortVal, final Byte byteVal, final Character charVal, final Double doubleVal, final Float floatVal, final Integer boolVal, final String stringVal) {
+  public TestPrimitiveTypesRoutineRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Integer intVal, final Long longVal, final Short shortVal, final Byte byteVal, final Character charVal, final Double doubleVal, final Float floatVal, final Boolean boolVal, final String stringVal) {
     super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.simpleChangesTests.TestPrimitiveTypesRoutineRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
@@ -44,7 +53,7 @@ public class TestPrimitiveTypesRoutineRoutine extends AbstractRepairRoutineReali
   
   private Float floatVal;
   
-  private Integer boolVal;
+  private Boolean boolVal;
   
   private String stringVal;
   
@@ -57,7 +66,7 @@ public class TestPrimitiveTypesRoutineRoutine extends AbstractRepairRoutineReali
     getLogger().debug("   Character: " + this.charVal);
     getLogger().debug("   Double: " + this.doubleVal);
     getLogger().debug("   Float: " + this.floatVal);
-    getLogger().debug("   Integer: " + this.boolVal);
+    getLogger().debug("   Boolean: " + this.boolVal);
     getLogger().debug("   String: " + this.stringVal);
     
     userExecution.callRoutine1(intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal, actionsFacade);

@@ -4,6 +4,8 @@ import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
 
 var rootPath = ".."
+var projectName = "tools.vitruv.dsls.mirbase"
+var testProjectPath = "../../../tests/dsls/${projectName}"
 
 Workflow {
 	
@@ -14,12 +16,14 @@ Workflow {
 				rootPath = rootPath
 				runtimeTest = {
 					enabled = true
+					root = "${testProjectPath}.tests"
 				}
 				eclipsePlugin = {
 					enabled = true
 				}
 				eclipsePluginTest = {
 					enabled = true
+					root = "${testProjectPath}.ui.tests"
 				}
 				createEclipseMetaData = true
 			}

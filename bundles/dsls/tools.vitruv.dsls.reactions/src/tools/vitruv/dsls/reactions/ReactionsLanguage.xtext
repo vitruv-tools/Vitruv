@@ -14,8 +14,8 @@ ReactionsFile:
 	
 ReactionsSegment:
 	'reactions:' name=ValidID
-	'in reaction to changes in' fromMetamodel=MetamodelReference 
-	'execute actions in' toMetamodel=MetamodelReference
+	'in reaction to changes in' fromDomain=DomainReference 
+	'execute actions in' toDomain=DomainReference
 	(reactions+=Reaction |
 		routines+=Routine)*;
 

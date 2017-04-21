@@ -112,8 +112,8 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(tuids);
 	}
 
-	override resolveEObjectFromRootAndFullTuid(EObject root, String tuidString) {
-		correspondenceModelDelegate.resolveEObjectFromRootAndFullTuid(root, tuidString);
+	override resolveEObjectFromRootAndFullTuid(EObject root, Tuid tuid) {
+		correspondenceModelDelegate.resolveEObjectFromRootAndFullTuid(root, tuid);
 	}
 
 	override resolveEObjectFromTuid(Tuid tuid) {
@@ -159,8 +159,4 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		return correspondenceModelDelegate.getURI;
 	}
 	
-	override getMapping() {
-		return correspondenceModelDelegate.mapping
-	}
-
 }

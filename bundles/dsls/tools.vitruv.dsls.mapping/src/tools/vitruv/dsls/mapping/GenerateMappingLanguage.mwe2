@@ -7,6 +7,7 @@ import org.eclipse.xtext.xtext.generator.model.project.*
 var rootPath = ".."
 var projectName = "tools.vitruv.dsls.mapping"
 var runtimeProject = "../${projectName}"
+var testProjectPath = "../../../tests/dsls/${projectName}"
 
 Workflow {
 	bean = StandaloneSetup {
@@ -41,12 +42,14 @@ Workflow {
 				rootPath = rootPath
 				runtimeTest = {
 					enabled = true
+					root = "${testProjectPath}.tests"
 				}
 				eclipsePlugin = {
 					enabled = true
 				}
 				eclipsePluginTest = {
 					enabled = true
+					root = "${testProjectPath}.ui.tests"
 				}
 				createEclipseMetaData = true
 			}

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="domains" nsURI="http://vitruv.tools/framework/domains" nsPrefix="domains">
+  <eClassifiers xsi:type="ecore:EClass" name="VitruvDomain" eSuperTypes="../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject #//externals/URIHaving #//TuidAwareDomain">
+    <eOperations name="compareTo" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt">
+      <eAnnotations references="../../org.eclipse.emf.ecore/model/Ecore.ecore#//EClass/eSuperTypes/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%">
+        <details key="body" value="return getURI().compareTo(other.getURI());"/>
+      </eAnnotations>
+      <eParameters name="other" eType="#//externals/URIHaving"/>
+    </eOperations>
+    <eOperations name="hasMetaclassInstances" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="for (EObject eObject : eObjects) {&#xD;&#xA;&#x9;if (null == eObject || null == eObject.eClass() || null ==eObject.eClass().getEPackage() ||&#xD;&#xA;&#x9;&#x9;!this.getMetamodelRootPackages().contains(eObject.eClass().getEPackage())) {&#xD;&#xA;&#x9;&#x9;return false;&#xD;&#xA;&#x9;}&#xD;&#xA;}&#xD;&#xA;return true;"/>
+      </eAnnotations>
+      <eParameters name="eObjects" upperBound="-1" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metamodelRootPackages"
+        upperBound="-1" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileExtensions" upperBound="-1"
+        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="URI" eType="#//externals/VURI"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TuidUpdatingDomain" abstract="true"
+      eSuperTypes="#//externals/TuidUpdateListener #//TuidAwareDomain">
+    <eOperations name="performPreAction">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="if (this.hasTuid(oldTuid.toString())) {&#xD;&#xA;&#x9;this.getTuidCalculatorAndResolver().removeIfRootAndCached(oldTuid.toString());&#xD;&#xA;}"/>
+      </eAnnotations>
+      <eParameters name="oldTuid" eType="#//externals/Tuid"/>
+    </eOperations>
+    <eOperations name="performPostAction">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="// Do nothing"/>
+      </eAnnotations>
+      <eParameters name="oldTuid" eType="#//externals/Tuid"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TuidAwareDomain" abstract="true" eSuperTypes="#//externals/TuidCalculator">
+    <eOperations name="hasTuid" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return this.getTuidCalculatorAndResolver().isValidTuid(tuid);"/>
+      </eAnnotations>
+      <eParameters name="tuid" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="calculateTuid" eType="#//externals/Tuid">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return Tuid.getInstance(this.getTuidCalculatorAndResolver().calculateTuidFromEObject(object));"/>
+      </eAnnotations>
+      <eParameters name="object" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="canCalculateTuid" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="org.eclipse.emf.common.util.EList&lt;EObject> objects = new org.eclipse.emf.common.util.BasicEList&lt;EObject>();&#xD;&#xA;objects.add(object);&#xD;&#xA;return hasMetaclassInstances(objects);"/>
+      </eAnnotations>
+      <eParameters name="object" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="hasMetaclassInstances" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="eObjects" upperBound="-1" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tuidCalculatorAndResolver"
+        eType="#//externals/TuidCalculatorAndResolver"/>
+  </eClassifiers>
+  <eSubpackages name="externals" nsURI="externals" nsPrefix="externals">
+    <eClassifiers xsi:type="ecore:EClass" name="TuidCalculator" instanceClassName="tools.vitruv.framework.tuid.TuidCalculator"
+        abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="TuidUpdateListener" instanceClassName="tools.vitruv.framework.tuid.TuidUpdateListener"
+        abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="TuidCalculatorAndResolver" instanceClassName="tools.vitruv.framework.tuid.TuidCalculatorAndResolver"
+        abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="URIHaving" instanceClassName="tools.vitruv.framework.util.datatypes.URIHaving"
+        abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="VURI" instanceClassName="tools.vitruv.framework.util.datatypes.VURI"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="Tuid" instanceClassName="tools.vitruv.framework.tuid.Tuid"/>
+  </eSubpackages>
+</ecore:EPackage>

@@ -353,6 +353,34 @@ public interface MirBasePackage extends EPackage
    */
   int METAMODEL_REFERENCE_FEATURE_COUNT = 1;
 
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.DomainReferenceImpl <em>Domain Reference</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.DomainReferenceImpl
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getDomainReference()
+   * @generated
+   */
+  int DOMAIN_REFERENCE = 8;
+
+  /**
+   * The feature id for the '<em><b>Domain</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOMAIN_REFERENCE__DOMAIN = 0;
+
+  /**
+   * The number of structural features of the '<em>Domain Reference</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOMAIN_REFERENCE_FEATURE_COUNT = 1;
+
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule <em>Dummy Entry Rule</em>}'.
@@ -556,6 +584,27 @@ public interface MirBasePackage extends EPackage
   EReference getMetamodelReference_Model();
 
   /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mirbase.mirBase.DomainReference <em>Domain Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Domain Reference</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.DomainReference
+   * @generated
+   */
+  EClass getDomainReference();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mirbase.mirBase.DomainReference#getDomain <em>Domain</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Domain</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.DomainReference#getDomain()
+   * @see #getDomainReference()
+   * @generated
+   */
+  EAttribute getDomainReference_Domain();
+
+  /**
    * Returns the factory that creates the instances of the model.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -745,6 +794,24 @@ public interface MirBasePackage extends EPackage
      * @generated
      */
     EReference METAMODEL_REFERENCE__MODEL = eINSTANCE.getMetamodelReference_Model();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.DomainReferenceImpl <em>Domain Reference</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.DomainReferenceImpl
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getDomainReference()
+     * @generated
+     */
+    EClass DOMAIN_REFERENCE = eINSTANCE.getDomainReference();
+
+    /**
+     * The meta object literal for the '<em><b>Domain</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute DOMAIN_REFERENCE__DOMAIN = eINSTANCE.getDomainReference_Domain();
 
   }
 

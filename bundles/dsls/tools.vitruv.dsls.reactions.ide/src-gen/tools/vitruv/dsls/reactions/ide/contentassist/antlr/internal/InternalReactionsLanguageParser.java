@@ -4968,23 +4968,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
     // $ANTLR end "ruleMetaclassFeatureReference"
 
 
-    // $ANTLR start "entryRuleMetamodelReference"
-    // InternalReactionsLanguage.g:1473:1: entryRuleMetamodelReference : ruleMetamodelReference EOF ;
-    public final void entryRuleMetamodelReference() throws RecognitionException {
+    // $ANTLR start "entryRuleDomainReference"
+    // InternalReactionsLanguage.g:1473:1: entryRuleDomainReference : ruleDomainReference EOF ;
+    public final void entryRuleDomainReference() throws RecognitionException {
         try {
-            // InternalReactionsLanguage.g:1474:1: ( ruleMetamodelReference EOF )
-            // InternalReactionsLanguage.g:1475:1: ruleMetamodelReference EOF
+            // InternalReactionsLanguage.g:1474:1: ( ruleDomainReference EOF )
+            // InternalReactionsLanguage.g:1475:1: ruleDomainReference EOF
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelReferenceRule()); 
+               before(grammarAccess.getDomainReferenceRule()); 
             }
             pushFollow(FOLLOW_1);
-            ruleMetamodelReference();
+            ruleDomainReference();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelReferenceRule()); 
+               after(grammarAccess.getDomainReferenceRule()); 
             }
             match(input,EOF,FOLLOW_2); if (state.failed) return ;
 
@@ -4999,30 +4999,30 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "entryRuleMetamodelReference"
+    // $ANTLR end "entryRuleDomainReference"
 
 
-    // $ANTLR start "ruleMetamodelReference"
-    // InternalReactionsLanguage.g:1482:1: ruleMetamodelReference : ( ( rule__MetamodelReference__ModelAssignment ) ) ;
-    public final void ruleMetamodelReference() throws RecognitionException {
+    // $ANTLR start "ruleDomainReference"
+    // InternalReactionsLanguage.g:1482:1: ruleDomainReference : ( ( rule__DomainReference__DomainAssignment ) ) ;
+    public final void ruleDomainReference() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:1486:2: ( ( ( rule__MetamodelReference__ModelAssignment ) ) )
-            // InternalReactionsLanguage.g:1487:2: ( ( rule__MetamodelReference__ModelAssignment ) )
+            // InternalReactionsLanguage.g:1486:2: ( ( ( rule__DomainReference__DomainAssignment ) ) )
+            // InternalReactionsLanguage.g:1487:2: ( ( rule__DomainReference__DomainAssignment ) )
             {
-            // InternalReactionsLanguage.g:1487:2: ( ( rule__MetamodelReference__ModelAssignment ) )
-            // InternalReactionsLanguage.g:1488:3: ( rule__MetamodelReference__ModelAssignment )
+            // InternalReactionsLanguage.g:1487:2: ( ( rule__DomainReference__DomainAssignment ) )
+            // InternalReactionsLanguage.g:1488:3: ( rule__DomainReference__DomainAssignment )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelReferenceAccess().getModelAssignment()); 
+               before(grammarAccess.getDomainReferenceAccess().getDomainAssignment()); 
             }
-            // InternalReactionsLanguage.g:1489:3: ( rule__MetamodelReference__ModelAssignment )
-            // InternalReactionsLanguage.g:1489:4: rule__MetamodelReference__ModelAssignment
+            // InternalReactionsLanguage.g:1489:3: ( rule__DomainReference__DomainAssignment )
+            // InternalReactionsLanguage.g:1489:4: rule__DomainReference__DomainAssignment
             {
             pushFollow(FOLLOW_2);
-            rule__MetamodelReference__ModelAssignment();
+            rule__DomainReference__DomainAssignment();
 
             state._fsp--;
             if (state.failed) return ;
@@ -5030,7 +5030,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelReferenceAccess().getModelAssignment()); 
+               after(grammarAccess.getDomainReferenceAccess().getDomainAssignment()); 
             }
 
             }
@@ -5050,7 +5050,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "ruleMetamodelReference"
+    // $ANTLR end "ruleDomainReference"
 
 
     // $ANTLR start "entryRuleXExpression"
@@ -13348,11 +13348,11 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                 {
                 int LA20_1 = input.LA(2);
 
-                if ( (LA20_1==13) ) {
-                    alt20=1;
-                }
-                else if ( (LA20_1==EOF||(LA20_1>=RULE_ID && LA20_1<=RULE_DECIMAL)||LA20_1==RULE_STRING||(LA20_1>=14 && LA20_1<=50)||(LA20_1>=55 && LA20_1<=56)||LA20_1==59||LA20_1==72||(LA20_1>=74 && LA20_1<=75)||LA20_1==77||(LA20_1>=80 && LA20_1<=82)||(LA20_1>=86 && LA20_1<=117)||LA20_1==121||LA20_1==123||(LA20_1>=125 && LA20_1<=126)) ) {
+                if ( (LA20_1==EOF||(LA20_1>=RULE_ID && LA20_1<=RULE_DECIMAL)||LA20_1==RULE_STRING||(LA20_1>=14 && LA20_1<=50)||(LA20_1>=55 && LA20_1<=56)||LA20_1==59||LA20_1==72||(LA20_1>=74 && LA20_1<=75)||LA20_1==77||(LA20_1>=80 && LA20_1<=82)||(LA20_1>=86 && LA20_1<=117)||LA20_1==121||LA20_1==123||(LA20_1>=125 && LA20_1<=126)) ) {
                     alt20=2;
+                }
+                else if ( (LA20_1==13) ) {
+                    alt20=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -13386,11 +13386,11 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                 {
                 int LA20_3 = input.LA(2);
 
-                if ( (LA20_3==EOF||(LA20_3>=RULE_ID && LA20_3<=RULE_DECIMAL)||LA20_3==RULE_STRING||(LA20_3>=14 && LA20_3<=50)||(LA20_3>=55 && LA20_3<=56)||LA20_3==59||LA20_3==72||(LA20_3>=74 && LA20_3<=75)||LA20_3==77||(LA20_3>=80 && LA20_3<=82)||(LA20_3>=86 && LA20_3<=117)||LA20_3==121||LA20_3==123||(LA20_3>=125 && LA20_3<=126)) ) {
-                    alt20=2;
-                }
-                else if ( (LA20_3==13) ) {
+                if ( (LA20_3==13) ) {
                     alt20=1;
+                }
+                else if ( (LA20_3==EOF||(LA20_3>=RULE_ID && LA20_3<=RULE_DECIMAL)||LA20_3==RULE_STRING||(LA20_3>=14 && LA20_3<=50)||(LA20_3>=55 && LA20_3<=56)||LA20_3==59||LA20_3==72||(LA20_3>=74 && LA20_3<=75)||LA20_3==77||(LA20_3>=80 && LA20_3<=82)||(LA20_3>=86 && LA20_3<=117)||LA20_3==121||LA20_3==123||(LA20_3>=125 && LA20_3<=126)) ) {
+                    alt20=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -13405,11 +13405,11 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                 {
                 int LA20_4 = input.LA(2);
 
-                if ( (LA20_4==13) ) {
-                    alt20=1;
-                }
-                else if ( (LA20_4==EOF||(LA20_4>=RULE_ID && LA20_4<=RULE_DECIMAL)||LA20_4==RULE_STRING||(LA20_4>=14 && LA20_4<=50)||(LA20_4>=55 && LA20_4<=56)||LA20_4==59||LA20_4==72||(LA20_4>=74 && LA20_4<=75)||LA20_4==77||(LA20_4>=80 && LA20_4<=82)||(LA20_4>=86 && LA20_4<=117)||LA20_4==121||LA20_4==123||(LA20_4>=125 && LA20_4<=126)) ) {
+                if ( (LA20_4==EOF||(LA20_4>=RULE_ID && LA20_4<=RULE_DECIMAL)||LA20_4==RULE_STRING||(LA20_4>=14 && LA20_4<=50)||(LA20_4>=55 && LA20_4<=56)||LA20_4==59||LA20_4==72||(LA20_4>=74 && LA20_4<=75)||LA20_4==77||(LA20_4>=80 && LA20_4<=82)||(LA20_4>=86 && LA20_4<=117)||LA20_4==121||LA20_4==123||(LA20_4>=125 && LA20_4<=126)) ) {
                     alt20=2;
+                }
+                else if ( (LA20_4==13) ) {
+                    alt20=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -13424,11 +13424,11 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                 {
                 int LA20_5 = input.LA(2);
 
-                if ( (LA20_5==EOF||(LA20_5>=RULE_ID && LA20_5<=RULE_DECIMAL)||LA20_5==RULE_STRING||(LA20_5>=14 && LA20_5<=50)||(LA20_5>=55 && LA20_5<=56)||LA20_5==59||LA20_5==72||(LA20_5>=74 && LA20_5<=75)||LA20_5==77||(LA20_5>=80 && LA20_5<=82)||(LA20_5>=86 && LA20_5<=117)||LA20_5==121||LA20_5==123||(LA20_5>=125 && LA20_5<=126)) ) {
-                    alt20=2;
-                }
-                else if ( (LA20_5==13) ) {
+                if ( (LA20_5==13) ) {
                     alt20=1;
+                }
+                else if ( (LA20_5==EOF||(LA20_5>=RULE_ID && LA20_5<=RULE_DECIMAL)||LA20_5==RULE_STRING||(LA20_5>=14 && LA20_5<=50)||(LA20_5>=55 && LA20_5<=56)||LA20_5==59||LA20_5==72||(LA20_5>=74 && LA20_5<=75)||LA20_5==77||(LA20_5>=80 && LA20_5<=82)||(LA20_5>=86 && LA20_5<=117)||LA20_5==121||LA20_5==123||(LA20_5>=125 && LA20_5<=126)) ) {
+                    alt20=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -18658,26 +18658,26 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__ReactionsSegment__Group__3__Impl"
-    // InternalReactionsLanguage.g:5067:1: rule__ReactionsSegment__Group__3__Impl : ( ( rule__ReactionsSegment__FromMetamodelAssignment_3 ) ) ;
+    // InternalReactionsLanguage.g:5067:1: rule__ReactionsSegment__Group__3__Impl : ( ( rule__ReactionsSegment__FromDomainAssignment_3 ) ) ;
     public final void rule__ReactionsSegment__Group__3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:5071:1: ( ( ( rule__ReactionsSegment__FromMetamodelAssignment_3 ) ) )
-            // InternalReactionsLanguage.g:5072:1: ( ( rule__ReactionsSegment__FromMetamodelAssignment_3 ) )
+            // InternalReactionsLanguage.g:5071:1: ( ( ( rule__ReactionsSegment__FromDomainAssignment_3 ) ) )
+            // InternalReactionsLanguage.g:5072:1: ( ( rule__ReactionsSegment__FromDomainAssignment_3 ) )
             {
-            // InternalReactionsLanguage.g:5072:1: ( ( rule__ReactionsSegment__FromMetamodelAssignment_3 ) )
-            // InternalReactionsLanguage.g:5073:2: ( rule__ReactionsSegment__FromMetamodelAssignment_3 )
+            // InternalReactionsLanguage.g:5072:1: ( ( rule__ReactionsSegment__FromDomainAssignment_3 ) )
+            // InternalReactionsLanguage.g:5073:2: ( rule__ReactionsSegment__FromDomainAssignment_3 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getReactionsSegmentAccess().getFromMetamodelAssignment_3()); 
+               before(grammarAccess.getReactionsSegmentAccess().getFromDomainAssignment_3()); 
             }
-            // InternalReactionsLanguage.g:5074:2: ( rule__ReactionsSegment__FromMetamodelAssignment_3 )
-            // InternalReactionsLanguage.g:5074:3: rule__ReactionsSegment__FromMetamodelAssignment_3
+            // InternalReactionsLanguage.g:5074:2: ( rule__ReactionsSegment__FromDomainAssignment_3 )
+            // InternalReactionsLanguage.g:5074:3: rule__ReactionsSegment__FromDomainAssignment_3
             {
             pushFollow(FOLLOW_2);
-            rule__ReactionsSegment__FromMetamodelAssignment_3();
+            rule__ReactionsSegment__FromDomainAssignment_3();
 
             state._fsp--;
             if (state.failed) return ;
@@ -18685,7 +18685,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getReactionsSegmentAccess().getFromMetamodelAssignment_3()); 
+               after(grammarAccess.getReactionsSegmentAccess().getFromDomainAssignment_3()); 
             }
 
             }
@@ -18826,26 +18826,26 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__ReactionsSegment__Group__5__Impl"
-    // InternalReactionsLanguage.g:5121:1: rule__ReactionsSegment__Group__5__Impl : ( ( rule__ReactionsSegment__ToMetamodelAssignment_5 ) ) ;
+    // InternalReactionsLanguage.g:5121:1: rule__ReactionsSegment__Group__5__Impl : ( ( rule__ReactionsSegment__ToDomainAssignment_5 ) ) ;
     public final void rule__ReactionsSegment__Group__5__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:5125:1: ( ( ( rule__ReactionsSegment__ToMetamodelAssignment_5 ) ) )
-            // InternalReactionsLanguage.g:5126:1: ( ( rule__ReactionsSegment__ToMetamodelAssignment_5 ) )
+            // InternalReactionsLanguage.g:5125:1: ( ( ( rule__ReactionsSegment__ToDomainAssignment_5 ) ) )
+            // InternalReactionsLanguage.g:5126:1: ( ( rule__ReactionsSegment__ToDomainAssignment_5 ) )
             {
-            // InternalReactionsLanguage.g:5126:1: ( ( rule__ReactionsSegment__ToMetamodelAssignment_5 ) )
-            // InternalReactionsLanguage.g:5127:2: ( rule__ReactionsSegment__ToMetamodelAssignment_5 )
+            // InternalReactionsLanguage.g:5126:1: ( ( rule__ReactionsSegment__ToDomainAssignment_5 ) )
+            // InternalReactionsLanguage.g:5127:2: ( rule__ReactionsSegment__ToDomainAssignment_5 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getReactionsSegmentAccess().getToMetamodelAssignment_5()); 
+               before(grammarAccess.getReactionsSegmentAccess().getToDomainAssignment_5()); 
             }
-            // InternalReactionsLanguage.g:5128:2: ( rule__ReactionsSegment__ToMetamodelAssignment_5 )
-            // InternalReactionsLanguage.g:5128:3: rule__ReactionsSegment__ToMetamodelAssignment_5
+            // InternalReactionsLanguage.g:5128:2: ( rule__ReactionsSegment__ToDomainAssignment_5 )
+            // InternalReactionsLanguage.g:5128:3: rule__ReactionsSegment__ToDomainAssignment_5
             {
             pushFollow(FOLLOW_2);
-            rule__ReactionsSegment__ToMetamodelAssignment_5();
+            rule__ReactionsSegment__ToDomainAssignment_5();
 
             state._fsp--;
             if (state.failed) return ;
@@ -18853,7 +18853,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getReactionsSegmentAccess().getToMetamodelAssignment_5()); 
+               after(grammarAccess.getReactionsSegmentAccess().getToDomainAssignment_5()); 
             }
 
             }
@@ -70616,29 +70616,29 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
     // $ANTLR end "rule__ReactionsSegment__NameAssignment_1"
 
 
-    // $ANTLR start "rule__ReactionsSegment__FromMetamodelAssignment_3"
-    // InternalReactionsLanguage.g:21564:1: rule__ReactionsSegment__FromMetamodelAssignment_3 : ( ruleMetamodelReference ) ;
-    public final void rule__ReactionsSegment__FromMetamodelAssignment_3() throws RecognitionException {
+    // $ANTLR start "rule__ReactionsSegment__FromDomainAssignment_3"
+    // InternalReactionsLanguage.g:21564:1: rule__ReactionsSegment__FromDomainAssignment_3 : ( ruleDomainReference ) ;
+    public final void rule__ReactionsSegment__FromDomainAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:21568:1: ( ( ruleMetamodelReference ) )
-            // InternalReactionsLanguage.g:21569:2: ( ruleMetamodelReference )
+            // InternalReactionsLanguage.g:21568:1: ( ( ruleDomainReference ) )
+            // InternalReactionsLanguage.g:21569:2: ( ruleDomainReference )
             {
-            // InternalReactionsLanguage.g:21569:2: ( ruleMetamodelReference )
-            // InternalReactionsLanguage.g:21570:3: ruleMetamodelReference
+            // InternalReactionsLanguage.g:21569:2: ( ruleDomainReference )
+            // InternalReactionsLanguage.g:21570:3: ruleDomainReference
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getReactionsSegmentAccess().getFromMetamodelMetamodelReferenceParserRuleCall_3_0()); 
+               before(grammarAccess.getReactionsSegmentAccess().getFromDomainDomainReferenceParserRuleCall_3_0()); 
             }
             pushFollow(FOLLOW_2);
-            ruleMetamodelReference();
+            ruleDomainReference();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getReactionsSegmentAccess().getFromMetamodelMetamodelReferenceParserRuleCall_3_0()); 
+               after(grammarAccess.getReactionsSegmentAccess().getFromDomainDomainReferenceParserRuleCall_3_0()); 
             }
 
             }
@@ -70658,32 +70658,32 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__ReactionsSegment__FromMetamodelAssignment_3"
+    // $ANTLR end "rule__ReactionsSegment__FromDomainAssignment_3"
 
 
-    // $ANTLR start "rule__ReactionsSegment__ToMetamodelAssignment_5"
-    // InternalReactionsLanguage.g:21579:1: rule__ReactionsSegment__ToMetamodelAssignment_5 : ( ruleMetamodelReference ) ;
-    public final void rule__ReactionsSegment__ToMetamodelAssignment_5() throws RecognitionException {
+    // $ANTLR start "rule__ReactionsSegment__ToDomainAssignment_5"
+    // InternalReactionsLanguage.g:21579:1: rule__ReactionsSegment__ToDomainAssignment_5 : ( ruleDomainReference ) ;
+    public final void rule__ReactionsSegment__ToDomainAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:21583:1: ( ( ruleMetamodelReference ) )
-            // InternalReactionsLanguage.g:21584:2: ( ruleMetamodelReference )
+            // InternalReactionsLanguage.g:21583:1: ( ( ruleDomainReference ) )
+            // InternalReactionsLanguage.g:21584:2: ( ruleDomainReference )
             {
-            // InternalReactionsLanguage.g:21584:2: ( ruleMetamodelReference )
-            // InternalReactionsLanguage.g:21585:3: ruleMetamodelReference
+            // InternalReactionsLanguage.g:21584:2: ( ruleDomainReference )
+            // InternalReactionsLanguage.g:21585:3: ruleDomainReference
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getReactionsSegmentAccess().getToMetamodelMetamodelReferenceParserRuleCall_5_0()); 
+               before(grammarAccess.getReactionsSegmentAccess().getToDomainDomainReferenceParserRuleCall_5_0()); 
             }
             pushFollow(FOLLOW_2);
-            ruleMetamodelReference();
+            ruleDomainReference();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getReactionsSegmentAccess().getToMetamodelMetamodelReferenceParserRuleCall_5_0()); 
+               after(grammarAccess.getReactionsSegmentAccess().getToDomainDomainReferenceParserRuleCall_5_0()); 
             }
 
             }
@@ -70703,7 +70703,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__ReactionsSegment__ToMetamodelAssignment_5"
+    // $ANTLR end "rule__ReactionsSegment__ToDomainAssignment_5"
 
 
     // $ANTLR start "rule__ReactionsSegment__ReactionsAssignment_6_0"
@@ -73388,37 +73388,25 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
     // $ANTLR end "rule__MetaclassFeatureReference__FeatureAssignment_2"
 
 
-    // $ANTLR start "rule__MetamodelReference__ModelAssignment"
-    // InternalReactionsLanguage.g:22496:1: rule__MetamodelReference__ModelAssignment : ( ( RULE_ID ) ) ;
-    public final void rule__MetamodelReference__ModelAssignment() throws RecognitionException {
+    // $ANTLR start "rule__DomainReference__DomainAssignment"
+    // InternalReactionsLanguage.g:22496:1: rule__DomainReference__DomainAssignment : ( RULE_ID ) ;
+    public final void rule__DomainReference__DomainAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22500:1: ( ( ( RULE_ID ) ) )
-            // InternalReactionsLanguage.g:22501:2: ( ( RULE_ID ) )
+            // InternalReactionsLanguage.g:22500:1: ( ( RULE_ID ) )
+            // InternalReactionsLanguage.g:22501:2: ( RULE_ID )
             {
-            // InternalReactionsLanguage.g:22501:2: ( ( RULE_ID ) )
-            // InternalReactionsLanguage.g:22502:3: ( RULE_ID )
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportCrossReference_0()); 
-            }
-            // InternalReactionsLanguage.g:22503:3: ( RULE_ID )
-            // InternalReactionsLanguage.g:22504:4: RULE_ID
+            // InternalReactionsLanguage.g:22501:2: ( RULE_ID )
+            // InternalReactionsLanguage.g:22502:3: RULE_ID
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportIDTerminalRuleCall_0_1()); 
+               before(grammarAccess.getDomainReferenceAccess().getDomainIDTerminalRuleCall_0()); 
             }
             match(input,RULE_ID,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportIDTerminalRuleCall_0_1()); 
-            }
-
-            }
-
-            if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportCrossReference_0()); 
+               after(grammarAccess.getDomainReferenceAccess().getDomainIDTerminalRuleCall_0()); 
             }
 
             }
@@ -73438,27 +73426,27 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetamodelReference__ModelAssignment"
+    // $ANTLR end "rule__DomainReference__DomainAssignment"
 
 
     // $ANTLR start "rule__XAssignment__FeatureAssignment_0_1"
-    // InternalReactionsLanguage.g:22515:1: rule__XAssignment__FeatureAssignment_0_1 : ( ( ruleFeatureCallID ) ) ;
+    // InternalReactionsLanguage.g:22511:1: rule__XAssignment__FeatureAssignment_0_1 : ( ( ruleFeatureCallID ) ) ;
     public final void rule__XAssignment__FeatureAssignment_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22519:1: ( ( ( ruleFeatureCallID ) ) )
-            // InternalReactionsLanguage.g:22520:2: ( ( ruleFeatureCallID ) )
+            // InternalReactionsLanguage.g:22515:1: ( ( ( ruleFeatureCallID ) ) )
+            // InternalReactionsLanguage.g:22516:2: ( ( ruleFeatureCallID ) )
             {
-            // InternalReactionsLanguage.g:22520:2: ( ( ruleFeatureCallID ) )
-            // InternalReactionsLanguage.g:22521:3: ( ruleFeatureCallID )
+            // InternalReactionsLanguage.g:22516:2: ( ( ruleFeatureCallID ) )
+            // InternalReactionsLanguage.g:22517:3: ( ruleFeatureCallID )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getFeatureJvmIdentifiableElementCrossReference_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22522:3: ( ruleFeatureCallID )
-            // InternalReactionsLanguage.g:22523:4: ruleFeatureCallID
+            // InternalReactionsLanguage.g:22518:3: ( ruleFeatureCallID )
+            // InternalReactionsLanguage.g:22519:4: ruleFeatureCallID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getFeatureJvmIdentifiableElementFeatureCallIDParserRuleCall_0_1_0_1()); 
@@ -73499,17 +73487,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XAssignment__ValueAssignment_0_3"
-    // InternalReactionsLanguage.g:22534:1: rule__XAssignment__ValueAssignment_0_3 : ( ruleXAssignment ) ;
+    // InternalReactionsLanguage.g:22530:1: rule__XAssignment__ValueAssignment_0_3 : ( ruleXAssignment ) ;
     public final void rule__XAssignment__ValueAssignment_0_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22538:1: ( ( ruleXAssignment ) )
-            // InternalReactionsLanguage.g:22539:2: ( ruleXAssignment )
+            // InternalReactionsLanguage.g:22534:1: ( ( ruleXAssignment ) )
+            // InternalReactionsLanguage.g:22535:2: ( ruleXAssignment )
             {
-            // InternalReactionsLanguage.g:22539:2: ( ruleXAssignment )
-            // InternalReactionsLanguage.g:22540:3: ruleXAssignment
+            // InternalReactionsLanguage.g:22535:2: ( ruleXAssignment )
+            // InternalReactionsLanguage.g:22536:3: ruleXAssignment
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getValueXAssignmentParserRuleCall_0_3_0()); 
@@ -73544,23 +73532,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XAssignment__FeatureAssignment_1_1_0_0_1"
-    // InternalReactionsLanguage.g:22549:1: rule__XAssignment__FeatureAssignment_1_1_0_0_1 : ( ( ruleOpMultiAssign ) ) ;
+    // InternalReactionsLanguage.g:22545:1: rule__XAssignment__FeatureAssignment_1_1_0_0_1 : ( ( ruleOpMultiAssign ) ) ;
     public final void rule__XAssignment__FeatureAssignment_1_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22553:1: ( ( ( ruleOpMultiAssign ) ) )
-            // InternalReactionsLanguage.g:22554:2: ( ( ruleOpMultiAssign ) )
+            // InternalReactionsLanguage.g:22549:1: ( ( ( ruleOpMultiAssign ) ) )
+            // InternalReactionsLanguage.g:22550:2: ( ( ruleOpMultiAssign ) )
             {
-            // InternalReactionsLanguage.g:22554:2: ( ( ruleOpMultiAssign ) )
-            // InternalReactionsLanguage.g:22555:3: ( ruleOpMultiAssign )
+            // InternalReactionsLanguage.g:22550:2: ( ( ruleOpMultiAssign ) )
+            // InternalReactionsLanguage.g:22551:3: ( ruleOpMultiAssign )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getFeatureJvmIdentifiableElementCrossReference_1_1_0_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22556:3: ( ruleOpMultiAssign )
-            // InternalReactionsLanguage.g:22557:4: ruleOpMultiAssign
+            // InternalReactionsLanguage.g:22552:3: ( ruleOpMultiAssign )
+            // InternalReactionsLanguage.g:22553:4: ruleOpMultiAssign
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getFeatureJvmIdentifiableElementOpMultiAssignParserRuleCall_1_1_0_0_1_0_1()); 
@@ -73601,17 +73589,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XAssignment__RightOperandAssignment_1_1_1"
-    // InternalReactionsLanguage.g:22568:1: rule__XAssignment__RightOperandAssignment_1_1_1 : ( ruleXAssignment ) ;
+    // InternalReactionsLanguage.g:22564:1: rule__XAssignment__RightOperandAssignment_1_1_1 : ( ruleXAssignment ) ;
     public final void rule__XAssignment__RightOperandAssignment_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22572:1: ( ( ruleXAssignment ) )
-            // InternalReactionsLanguage.g:22573:2: ( ruleXAssignment )
+            // InternalReactionsLanguage.g:22568:1: ( ( ruleXAssignment ) )
+            // InternalReactionsLanguage.g:22569:2: ( ruleXAssignment )
             {
-            // InternalReactionsLanguage.g:22573:2: ( ruleXAssignment )
-            // InternalReactionsLanguage.g:22574:3: ruleXAssignment
+            // InternalReactionsLanguage.g:22569:2: ( ruleXAssignment )
+            // InternalReactionsLanguage.g:22570:3: ruleXAssignment
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAssignmentAccess().getRightOperandXAssignmentParserRuleCall_1_1_1_0()); 
@@ -73646,23 +73634,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XOrExpression__FeatureAssignment_1_0_0_1"
-    // InternalReactionsLanguage.g:22583:1: rule__XOrExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpOr ) ) ;
+    // InternalReactionsLanguage.g:22579:1: rule__XOrExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpOr ) ) ;
     public final void rule__XOrExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22587:1: ( ( ( ruleOpOr ) ) )
-            // InternalReactionsLanguage.g:22588:2: ( ( ruleOpOr ) )
+            // InternalReactionsLanguage.g:22583:1: ( ( ( ruleOpOr ) ) )
+            // InternalReactionsLanguage.g:22584:2: ( ( ruleOpOr ) )
             {
-            // InternalReactionsLanguage.g:22588:2: ( ( ruleOpOr ) )
-            // InternalReactionsLanguage.g:22589:3: ( ruleOpOr )
+            // InternalReactionsLanguage.g:22584:2: ( ( ruleOpOr ) )
+            // InternalReactionsLanguage.g:22585:3: ( ruleOpOr )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOrExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22590:3: ( ruleOpOr )
-            // InternalReactionsLanguage.g:22591:4: ruleOpOr
+            // InternalReactionsLanguage.g:22586:3: ( ruleOpOr )
+            // InternalReactionsLanguage.g:22587:4: ruleOpOr
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOrExpressionAccess().getFeatureJvmIdentifiableElementOpOrParserRuleCall_1_0_0_1_0_1()); 
@@ -73703,17 +73691,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XOrExpression__RightOperandAssignment_1_1"
-    // InternalReactionsLanguage.g:22602:1: rule__XOrExpression__RightOperandAssignment_1_1 : ( ruleXAndExpression ) ;
+    // InternalReactionsLanguage.g:22598:1: rule__XOrExpression__RightOperandAssignment_1_1 : ( ruleXAndExpression ) ;
     public final void rule__XOrExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22606:1: ( ( ruleXAndExpression ) )
-            // InternalReactionsLanguage.g:22607:2: ( ruleXAndExpression )
+            // InternalReactionsLanguage.g:22602:1: ( ( ruleXAndExpression ) )
+            // InternalReactionsLanguage.g:22603:2: ( ruleXAndExpression )
             {
-            // InternalReactionsLanguage.g:22607:2: ( ruleXAndExpression )
-            // InternalReactionsLanguage.g:22608:3: ruleXAndExpression
+            // InternalReactionsLanguage.g:22603:2: ( ruleXAndExpression )
+            // InternalReactionsLanguage.g:22604:3: ruleXAndExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOrExpressionAccess().getRightOperandXAndExpressionParserRuleCall_1_1_0()); 
@@ -73748,23 +73736,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XAndExpression__FeatureAssignment_1_0_0_1"
-    // InternalReactionsLanguage.g:22617:1: rule__XAndExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpAnd ) ) ;
+    // InternalReactionsLanguage.g:22613:1: rule__XAndExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpAnd ) ) ;
     public final void rule__XAndExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22621:1: ( ( ( ruleOpAnd ) ) )
-            // InternalReactionsLanguage.g:22622:2: ( ( ruleOpAnd ) )
+            // InternalReactionsLanguage.g:22617:1: ( ( ( ruleOpAnd ) ) )
+            // InternalReactionsLanguage.g:22618:2: ( ( ruleOpAnd ) )
             {
-            // InternalReactionsLanguage.g:22622:2: ( ( ruleOpAnd ) )
-            // InternalReactionsLanguage.g:22623:3: ( ruleOpAnd )
+            // InternalReactionsLanguage.g:22618:2: ( ( ruleOpAnd ) )
+            // InternalReactionsLanguage.g:22619:3: ( ruleOpAnd )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAndExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22624:3: ( ruleOpAnd )
-            // InternalReactionsLanguage.g:22625:4: ruleOpAnd
+            // InternalReactionsLanguage.g:22620:3: ( ruleOpAnd )
+            // InternalReactionsLanguage.g:22621:4: ruleOpAnd
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAndExpressionAccess().getFeatureJvmIdentifiableElementOpAndParserRuleCall_1_0_0_1_0_1()); 
@@ -73805,17 +73793,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XAndExpression__RightOperandAssignment_1_1"
-    // InternalReactionsLanguage.g:22636:1: rule__XAndExpression__RightOperandAssignment_1_1 : ( ruleXEqualityExpression ) ;
+    // InternalReactionsLanguage.g:22632:1: rule__XAndExpression__RightOperandAssignment_1_1 : ( ruleXEqualityExpression ) ;
     public final void rule__XAndExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22640:1: ( ( ruleXEqualityExpression ) )
-            // InternalReactionsLanguage.g:22641:2: ( ruleXEqualityExpression )
+            // InternalReactionsLanguage.g:22636:1: ( ( ruleXEqualityExpression ) )
+            // InternalReactionsLanguage.g:22637:2: ( ruleXEqualityExpression )
             {
-            // InternalReactionsLanguage.g:22641:2: ( ruleXEqualityExpression )
-            // InternalReactionsLanguage.g:22642:3: ruleXEqualityExpression
+            // InternalReactionsLanguage.g:22637:2: ( ruleXEqualityExpression )
+            // InternalReactionsLanguage.g:22638:3: ruleXEqualityExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAndExpressionAccess().getRightOperandXEqualityExpressionParserRuleCall_1_1_0()); 
@@ -73850,23 +73838,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XEqualityExpression__FeatureAssignment_1_0_0_1"
-    // InternalReactionsLanguage.g:22651:1: rule__XEqualityExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpEquality ) ) ;
+    // InternalReactionsLanguage.g:22647:1: rule__XEqualityExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpEquality ) ) ;
     public final void rule__XEqualityExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22655:1: ( ( ( ruleOpEquality ) ) )
-            // InternalReactionsLanguage.g:22656:2: ( ( ruleOpEquality ) )
+            // InternalReactionsLanguage.g:22651:1: ( ( ( ruleOpEquality ) ) )
+            // InternalReactionsLanguage.g:22652:2: ( ( ruleOpEquality ) )
             {
-            // InternalReactionsLanguage.g:22656:2: ( ( ruleOpEquality ) )
-            // InternalReactionsLanguage.g:22657:3: ( ruleOpEquality )
+            // InternalReactionsLanguage.g:22652:2: ( ( ruleOpEquality ) )
+            // InternalReactionsLanguage.g:22653:3: ( ruleOpEquality )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXEqualityExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22658:3: ( ruleOpEquality )
-            // InternalReactionsLanguage.g:22659:4: ruleOpEquality
+            // InternalReactionsLanguage.g:22654:3: ( ruleOpEquality )
+            // InternalReactionsLanguage.g:22655:4: ruleOpEquality
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXEqualityExpressionAccess().getFeatureJvmIdentifiableElementOpEqualityParserRuleCall_1_0_0_1_0_1()); 
@@ -73907,17 +73895,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XEqualityExpression__RightOperandAssignment_1_1"
-    // InternalReactionsLanguage.g:22670:1: rule__XEqualityExpression__RightOperandAssignment_1_1 : ( ruleXRelationalExpression ) ;
+    // InternalReactionsLanguage.g:22666:1: rule__XEqualityExpression__RightOperandAssignment_1_1 : ( ruleXRelationalExpression ) ;
     public final void rule__XEqualityExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22674:1: ( ( ruleXRelationalExpression ) )
-            // InternalReactionsLanguage.g:22675:2: ( ruleXRelationalExpression )
+            // InternalReactionsLanguage.g:22670:1: ( ( ruleXRelationalExpression ) )
+            // InternalReactionsLanguage.g:22671:2: ( ruleXRelationalExpression )
             {
-            // InternalReactionsLanguage.g:22675:2: ( ruleXRelationalExpression )
-            // InternalReactionsLanguage.g:22676:3: ruleXRelationalExpression
+            // InternalReactionsLanguage.g:22671:2: ( ruleXRelationalExpression )
+            // InternalReactionsLanguage.g:22672:3: ruleXRelationalExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXEqualityExpressionAccess().getRightOperandXRelationalExpressionParserRuleCall_1_1_0()); 
@@ -73952,17 +73940,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XRelationalExpression__TypeAssignment_1_0_1"
-    // InternalReactionsLanguage.g:22685:1: rule__XRelationalExpression__TypeAssignment_1_0_1 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:22681:1: rule__XRelationalExpression__TypeAssignment_1_0_1 : ( ruleJvmTypeReference ) ;
     public final void rule__XRelationalExpression__TypeAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22689:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:22690:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:22685:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:22686:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:22690:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:22691:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:22686:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:22687:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXRelationalExpressionAccess().getTypeJvmTypeReferenceParserRuleCall_1_0_1_0()); 
@@ -73997,23 +73985,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XRelationalExpression__FeatureAssignment_1_1_0_0_1"
-    // InternalReactionsLanguage.g:22700:1: rule__XRelationalExpression__FeatureAssignment_1_1_0_0_1 : ( ( ruleOpCompare ) ) ;
+    // InternalReactionsLanguage.g:22696:1: rule__XRelationalExpression__FeatureAssignment_1_1_0_0_1 : ( ( ruleOpCompare ) ) ;
     public final void rule__XRelationalExpression__FeatureAssignment_1_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22704:1: ( ( ( ruleOpCompare ) ) )
-            // InternalReactionsLanguage.g:22705:2: ( ( ruleOpCompare ) )
+            // InternalReactionsLanguage.g:22700:1: ( ( ( ruleOpCompare ) ) )
+            // InternalReactionsLanguage.g:22701:2: ( ( ruleOpCompare ) )
             {
-            // InternalReactionsLanguage.g:22705:2: ( ( ruleOpCompare ) )
-            // InternalReactionsLanguage.g:22706:3: ( ruleOpCompare )
+            // InternalReactionsLanguage.g:22701:2: ( ( ruleOpCompare ) )
+            // InternalReactionsLanguage.g:22702:3: ( ruleOpCompare )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXRelationalExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_1_0_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22707:3: ( ruleOpCompare )
-            // InternalReactionsLanguage.g:22708:4: ruleOpCompare
+            // InternalReactionsLanguage.g:22703:3: ( ruleOpCompare )
+            // InternalReactionsLanguage.g:22704:4: ruleOpCompare
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXRelationalExpressionAccess().getFeatureJvmIdentifiableElementOpCompareParserRuleCall_1_1_0_0_1_0_1()); 
@@ -74054,17 +74042,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XRelationalExpression__RightOperandAssignment_1_1_1"
-    // InternalReactionsLanguage.g:22719:1: rule__XRelationalExpression__RightOperandAssignment_1_1_1 : ( ruleXOtherOperatorExpression ) ;
+    // InternalReactionsLanguage.g:22715:1: rule__XRelationalExpression__RightOperandAssignment_1_1_1 : ( ruleXOtherOperatorExpression ) ;
     public final void rule__XRelationalExpression__RightOperandAssignment_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22723:1: ( ( ruleXOtherOperatorExpression ) )
-            // InternalReactionsLanguage.g:22724:2: ( ruleXOtherOperatorExpression )
+            // InternalReactionsLanguage.g:22719:1: ( ( ruleXOtherOperatorExpression ) )
+            // InternalReactionsLanguage.g:22720:2: ( ruleXOtherOperatorExpression )
             {
-            // InternalReactionsLanguage.g:22724:2: ( ruleXOtherOperatorExpression )
-            // InternalReactionsLanguage.g:22725:3: ruleXOtherOperatorExpression
+            // InternalReactionsLanguage.g:22720:2: ( ruleXOtherOperatorExpression )
+            // InternalReactionsLanguage.g:22721:3: ruleXOtherOperatorExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXRelationalExpressionAccess().getRightOperandXOtherOperatorExpressionParserRuleCall_1_1_1_0()); 
@@ -74099,23 +74087,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_1"
-    // InternalReactionsLanguage.g:22734:1: rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpOther ) ) ;
+    // InternalReactionsLanguage.g:22730:1: rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpOther ) ) ;
     public final void rule__XOtherOperatorExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22738:1: ( ( ( ruleOpOther ) ) )
-            // InternalReactionsLanguage.g:22739:2: ( ( ruleOpOther ) )
+            // InternalReactionsLanguage.g:22734:1: ( ( ( ruleOpOther ) ) )
+            // InternalReactionsLanguage.g:22735:2: ( ( ruleOpOther ) )
             {
-            // InternalReactionsLanguage.g:22739:2: ( ( ruleOpOther ) )
-            // InternalReactionsLanguage.g:22740:3: ( ruleOpOther )
+            // InternalReactionsLanguage.g:22735:2: ( ( ruleOpOther ) )
+            // InternalReactionsLanguage.g:22736:3: ( ruleOpOther )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOtherOperatorExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22741:3: ( ruleOpOther )
-            // InternalReactionsLanguage.g:22742:4: ruleOpOther
+            // InternalReactionsLanguage.g:22737:3: ( ruleOpOther )
+            // InternalReactionsLanguage.g:22738:4: ruleOpOther
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOtherOperatorExpressionAccess().getFeatureJvmIdentifiableElementOpOtherParserRuleCall_1_0_0_1_0_1()); 
@@ -74156,17 +74144,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XOtherOperatorExpression__RightOperandAssignment_1_1"
-    // InternalReactionsLanguage.g:22753:1: rule__XOtherOperatorExpression__RightOperandAssignment_1_1 : ( ruleXAdditiveExpression ) ;
+    // InternalReactionsLanguage.g:22749:1: rule__XOtherOperatorExpression__RightOperandAssignment_1_1 : ( ruleXAdditiveExpression ) ;
     public final void rule__XOtherOperatorExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22757:1: ( ( ruleXAdditiveExpression ) )
-            // InternalReactionsLanguage.g:22758:2: ( ruleXAdditiveExpression )
+            // InternalReactionsLanguage.g:22753:1: ( ( ruleXAdditiveExpression ) )
+            // InternalReactionsLanguage.g:22754:2: ( ruleXAdditiveExpression )
             {
-            // InternalReactionsLanguage.g:22758:2: ( ruleXAdditiveExpression )
-            // InternalReactionsLanguage.g:22759:3: ruleXAdditiveExpression
+            // InternalReactionsLanguage.g:22754:2: ( ruleXAdditiveExpression )
+            // InternalReactionsLanguage.g:22755:3: ruleXAdditiveExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXOtherOperatorExpressionAccess().getRightOperandXAdditiveExpressionParserRuleCall_1_1_0()); 
@@ -74201,23 +74189,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XAdditiveExpression__FeatureAssignment_1_0_0_1"
-    // InternalReactionsLanguage.g:22768:1: rule__XAdditiveExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpAdd ) ) ;
+    // InternalReactionsLanguage.g:22764:1: rule__XAdditiveExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpAdd ) ) ;
     public final void rule__XAdditiveExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22772:1: ( ( ( ruleOpAdd ) ) )
-            // InternalReactionsLanguage.g:22773:2: ( ( ruleOpAdd ) )
+            // InternalReactionsLanguage.g:22768:1: ( ( ( ruleOpAdd ) ) )
+            // InternalReactionsLanguage.g:22769:2: ( ( ruleOpAdd ) )
             {
-            // InternalReactionsLanguage.g:22773:2: ( ( ruleOpAdd ) )
-            // InternalReactionsLanguage.g:22774:3: ( ruleOpAdd )
+            // InternalReactionsLanguage.g:22769:2: ( ( ruleOpAdd ) )
+            // InternalReactionsLanguage.g:22770:3: ( ruleOpAdd )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAdditiveExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22775:3: ( ruleOpAdd )
-            // InternalReactionsLanguage.g:22776:4: ruleOpAdd
+            // InternalReactionsLanguage.g:22771:3: ( ruleOpAdd )
+            // InternalReactionsLanguage.g:22772:4: ruleOpAdd
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAdditiveExpressionAccess().getFeatureJvmIdentifiableElementOpAddParserRuleCall_1_0_0_1_0_1()); 
@@ -74258,17 +74246,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XAdditiveExpression__RightOperandAssignment_1_1"
-    // InternalReactionsLanguage.g:22787:1: rule__XAdditiveExpression__RightOperandAssignment_1_1 : ( ruleXMultiplicativeExpression ) ;
+    // InternalReactionsLanguage.g:22783:1: rule__XAdditiveExpression__RightOperandAssignment_1_1 : ( ruleXMultiplicativeExpression ) ;
     public final void rule__XAdditiveExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22791:1: ( ( ruleXMultiplicativeExpression ) )
-            // InternalReactionsLanguage.g:22792:2: ( ruleXMultiplicativeExpression )
+            // InternalReactionsLanguage.g:22787:1: ( ( ruleXMultiplicativeExpression ) )
+            // InternalReactionsLanguage.g:22788:2: ( ruleXMultiplicativeExpression )
             {
-            // InternalReactionsLanguage.g:22792:2: ( ruleXMultiplicativeExpression )
-            // InternalReactionsLanguage.g:22793:3: ruleXMultiplicativeExpression
+            // InternalReactionsLanguage.g:22788:2: ( ruleXMultiplicativeExpression )
+            // InternalReactionsLanguage.g:22789:3: ruleXMultiplicativeExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXAdditiveExpressionAccess().getRightOperandXMultiplicativeExpressionParserRuleCall_1_1_0()); 
@@ -74303,23 +74291,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_1"
-    // InternalReactionsLanguage.g:22802:1: rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpMulti ) ) ;
+    // InternalReactionsLanguage.g:22798:1: rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_1 : ( ( ruleOpMulti ) ) ;
     public final void rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22806:1: ( ( ( ruleOpMulti ) ) )
-            // InternalReactionsLanguage.g:22807:2: ( ( ruleOpMulti ) )
+            // InternalReactionsLanguage.g:22802:1: ( ( ( ruleOpMulti ) ) )
+            // InternalReactionsLanguage.g:22803:2: ( ( ruleOpMulti ) )
             {
-            // InternalReactionsLanguage.g:22807:2: ( ( ruleOpMulti ) )
-            // InternalReactionsLanguage.g:22808:3: ( ruleOpMulti )
+            // InternalReactionsLanguage.g:22803:2: ( ( ruleOpMulti ) )
+            // InternalReactionsLanguage.g:22804:3: ( ruleOpMulti )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMultiplicativeExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22809:3: ( ruleOpMulti )
-            // InternalReactionsLanguage.g:22810:4: ruleOpMulti
+            // InternalReactionsLanguage.g:22805:3: ( ruleOpMulti )
+            // InternalReactionsLanguage.g:22806:4: ruleOpMulti
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMultiplicativeExpressionAccess().getFeatureJvmIdentifiableElementOpMultiParserRuleCall_1_0_0_1_0_1()); 
@@ -74360,17 +74348,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMultiplicativeExpression__RightOperandAssignment_1_1"
-    // InternalReactionsLanguage.g:22821:1: rule__XMultiplicativeExpression__RightOperandAssignment_1_1 : ( ruleXUnaryOperation ) ;
+    // InternalReactionsLanguage.g:22817:1: rule__XMultiplicativeExpression__RightOperandAssignment_1_1 : ( ruleXUnaryOperation ) ;
     public final void rule__XMultiplicativeExpression__RightOperandAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22825:1: ( ( ruleXUnaryOperation ) )
-            // InternalReactionsLanguage.g:22826:2: ( ruleXUnaryOperation )
+            // InternalReactionsLanguage.g:22821:1: ( ( ruleXUnaryOperation ) )
+            // InternalReactionsLanguage.g:22822:2: ( ruleXUnaryOperation )
             {
-            // InternalReactionsLanguage.g:22826:2: ( ruleXUnaryOperation )
-            // InternalReactionsLanguage.g:22827:3: ruleXUnaryOperation
+            // InternalReactionsLanguage.g:22822:2: ( ruleXUnaryOperation )
+            // InternalReactionsLanguage.g:22823:3: ruleXUnaryOperation
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMultiplicativeExpressionAccess().getRightOperandXUnaryOperationParserRuleCall_1_1_0()); 
@@ -74405,23 +74393,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XUnaryOperation__FeatureAssignment_0_1"
-    // InternalReactionsLanguage.g:22836:1: rule__XUnaryOperation__FeatureAssignment_0_1 : ( ( ruleOpUnary ) ) ;
+    // InternalReactionsLanguage.g:22832:1: rule__XUnaryOperation__FeatureAssignment_0_1 : ( ( ruleOpUnary ) ) ;
     public final void rule__XUnaryOperation__FeatureAssignment_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22840:1: ( ( ( ruleOpUnary ) ) )
-            // InternalReactionsLanguage.g:22841:2: ( ( ruleOpUnary ) )
+            // InternalReactionsLanguage.g:22836:1: ( ( ( ruleOpUnary ) ) )
+            // InternalReactionsLanguage.g:22837:2: ( ( ruleOpUnary ) )
             {
-            // InternalReactionsLanguage.g:22841:2: ( ( ruleOpUnary ) )
-            // InternalReactionsLanguage.g:22842:3: ( ruleOpUnary )
+            // InternalReactionsLanguage.g:22837:2: ( ( ruleOpUnary ) )
+            // InternalReactionsLanguage.g:22838:3: ( ruleOpUnary )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXUnaryOperationAccess().getFeatureJvmIdentifiableElementCrossReference_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22843:3: ( ruleOpUnary )
-            // InternalReactionsLanguage.g:22844:4: ruleOpUnary
+            // InternalReactionsLanguage.g:22839:3: ( ruleOpUnary )
+            // InternalReactionsLanguage.g:22840:4: ruleOpUnary
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXUnaryOperationAccess().getFeatureJvmIdentifiableElementOpUnaryParserRuleCall_0_1_0_1()); 
@@ -74462,17 +74450,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XUnaryOperation__OperandAssignment_0_2"
-    // InternalReactionsLanguage.g:22855:1: rule__XUnaryOperation__OperandAssignment_0_2 : ( ruleXUnaryOperation ) ;
+    // InternalReactionsLanguage.g:22851:1: rule__XUnaryOperation__OperandAssignment_0_2 : ( ruleXUnaryOperation ) ;
     public final void rule__XUnaryOperation__OperandAssignment_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22859:1: ( ( ruleXUnaryOperation ) )
-            // InternalReactionsLanguage.g:22860:2: ( ruleXUnaryOperation )
+            // InternalReactionsLanguage.g:22855:1: ( ( ruleXUnaryOperation ) )
+            // InternalReactionsLanguage.g:22856:2: ( ruleXUnaryOperation )
             {
-            // InternalReactionsLanguage.g:22860:2: ( ruleXUnaryOperation )
-            // InternalReactionsLanguage.g:22861:3: ruleXUnaryOperation
+            // InternalReactionsLanguage.g:22856:2: ( ruleXUnaryOperation )
+            // InternalReactionsLanguage.g:22857:3: ruleXUnaryOperation
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXUnaryOperationAccess().getOperandXUnaryOperationParserRuleCall_0_2_0()); 
@@ -74507,17 +74495,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XCastedExpression__TypeAssignment_1_1"
-    // InternalReactionsLanguage.g:22870:1: rule__XCastedExpression__TypeAssignment_1_1 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:22866:1: rule__XCastedExpression__TypeAssignment_1_1 : ( ruleJvmTypeReference ) ;
     public final void rule__XCastedExpression__TypeAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22874:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:22875:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:22870:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:22871:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:22875:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:22876:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:22871:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:22872:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCastedExpressionAccess().getTypeJvmTypeReferenceParserRuleCall_1_1_0()); 
@@ -74552,23 +74540,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XPostfixOperation__FeatureAssignment_1_0_1"
-    // InternalReactionsLanguage.g:22885:1: rule__XPostfixOperation__FeatureAssignment_1_0_1 : ( ( ruleOpPostfix ) ) ;
+    // InternalReactionsLanguage.g:22881:1: rule__XPostfixOperation__FeatureAssignment_1_0_1 : ( ( ruleOpPostfix ) ) ;
     public final void rule__XPostfixOperation__FeatureAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22889:1: ( ( ( ruleOpPostfix ) ) )
-            // InternalReactionsLanguage.g:22890:2: ( ( ruleOpPostfix ) )
+            // InternalReactionsLanguage.g:22885:1: ( ( ( ruleOpPostfix ) ) )
+            // InternalReactionsLanguage.g:22886:2: ( ( ruleOpPostfix ) )
             {
-            // InternalReactionsLanguage.g:22890:2: ( ( ruleOpPostfix ) )
-            // InternalReactionsLanguage.g:22891:3: ( ruleOpPostfix )
+            // InternalReactionsLanguage.g:22886:2: ( ( ruleOpPostfix ) )
+            // InternalReactionsLanguage.g:22887:3: ( ruleOpPostfix )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXPostfixOperationAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:22892:3: ( ruleOpPostfix )
-            // InternalReactionsLanguage.g:22893:4: ruleOpPostfix
+            // InternalReactionsLanguage.g:22888:3: ( ruleOpPostfix )
+            // InternalReactionsLanguage.g:22889:4: ruleOpPostfix
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXPostfixOperationAccess().getFeatureJvmIdentifiableElementOpPostfixParserRuleCall_1_0_1_0_1()); 
@@ -74609,23 +74597,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_1"
-    // InternalReactionsLanguage.g:22904:1: rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_1 : ( ( '::' ) ) ;
+    // InternalReactionsLanguage.g:22900:1: rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_1 : ( ( '::' ) ) ;
     public final void rule__XMemberFeatureCall__ExplicitStaticAssignment_1_0_0_0_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22908:1: ( ( ( '::' ) ) )
-            // InternalReactionsLanguage.g:22909:2: ( ( '::' ) )
+            // InternalReactionsLanguage.g:22904:1: ( ( ( '::' ) ) )
+            // InternalReactionsLanguage.g:22905:2: ( ( '::' ) )
             {
-            // InternalReactionsLanguage.g:22909:2: ( ( '::' ) )
-            // InternalReactionsLanguage.g:22910:3: ( '::' )
+            // InternalReactionsLanguage.g:22905:2: ( ( '::' ) )
+            // InternalReactionsLanguage.g:22906:3: ( '::' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_0_0_0_1_1_0()); 
             }
-            // InternalReactionsLanguage.g:22911:3: ( '::' )
-            // InternalReactionsLanguage.g:22912:4: '::'
+            // InternalReactionsLanguage.g:22907:3: ( '::' )
+            // InternalReactionsLanguage.g:22908:4: '::'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_0_0_0_1_1_0()); 
@@ -74662,23 +74650,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_2"
-    // InternalReactionsLanguage.g:22923:1: rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_2 : ( ( ruleFeatureCallID ) ) ;
+    // InternalReactionsLanguage.g:22919:1: rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_2 : ( ( ruleFeatureCallID ) ) ;
     public final void rule__XMemberFeatureCall__FeatureAssignment_1_0_0_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22927:1: ( ( ( ruleFeatureCallID ) ) )
-            // InternalReactionsLanguage.g:22928:2: ( ( ruleFeatureCallID ) )
+            // InternalReactionsLanguage.g:22923:1: ( ( ( ruleFeatureCallID ) ) )
+            // InternalReactionsLanguage.g:22924:2: ( ( ruleFeatureCallID ) )
             {
-            // InternalReactionsLanguage.g:22928:2: ( ( ruleFeatureCallID ) )
-            // InternalReactionsLanguage.g:22929:3: ( ruleFeatureCallID )
+            // InternalReactionsLanguage.g:22924:2: ( ( ruleFeatureCallID ) )
+            // InternalReactionsLanguage.g:22925:3: ( ruleFeatureCallID )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_0_2_0()); 
             }
-            // InternalReactionsLanguage.g:22930:3: ( ruleFeatureCallID )
-            // InternalReactionsLanguage.g:22931:4: ruleFeatureCallID
+            // InternalReactionsLanguage.g:22926:3: ( ruleFeatureCallID )
+            // InternalReactionsLanguage.g:22927:4: ruleFeatureCallID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getFeatureJvmIdentifiableElementFeatureCallIDParserRuleCall_1_0_0_0_2_0_1()); 
@@ -74719,17 +74707,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__ValueAssignment_1_0_1"
-    // InternalReactionsLanguage.g:22942:1: rule__XMemberFeatureCall__ValueAssignment_1_0_1 : ( ruleXAssignment ) ;
+    // InternalReactionsLanguage.g:22938:1: rule__XMemberFeatureCall__ValueAssignment_1_0_1 : ( ruleXAssignment ) ;
     public final void rule__XMemberFeatureCall__ValueAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22946:1: ( ( ruleXAssignment ) )
-            // InternalReactionsLanguage.g:22947:2: ( ruleXAssignment )
+            // InternalReactionsLanguage.g:22942:1: ( ( ruleXAssignment ) )
+            // InternalReactionsLanguage.g:22943:2: ( ruleXAssignment )
             {
-            // InternalReactionsLanguage.g:22947:2: ( ruleXAssignment )
-            // InternalReactionsLanguage.g:22948:3: ruleXAssignment
+            // InternalReactionsLanguage.g:22943:2: ( ruleXAssignment )
+            // InternalReactionsLanguage.g:22944:3: ruleXAssignment
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getValueXAssignmentParserRuleCall_1_0_1_0()); 
@@ -74764,23 +74752,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_1"
-    // InternalReactionsLanguage.g:22957:1: rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_1 : ( ( '?.' ) ) ;
+    // InternalReactionsLanguage.g:22953:1: rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_1 : ( ( '?.' ) ) ;
     public final void rule__XMemberFeatureCall__NullSafeAssignment_1_1_0_0_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22961:1: ( ( ( '?.' ) ) )
-            // InternalReactionsLanguage.g:22962:2: ( ( '?.' ) )
+            // InternalReactionsLanguage.g:22957:1: ( ( ( '?.' ) ) )
+            // InternalReactionsLanguage.g:22958:2: ( ( '?.' ) )
             {
-            // InternalReactionsLanguage.g:22962:2: ( ( '?.' ) )
-            // InternalReactionsLanguage.g:22963:3: ( '?.' )
+            // InternalReactionsLanguage.g:22958:2: ( ( '?.' ) )
+            // InternalReactionsLanguage.g:22959:3: ( '?.' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getNullSafeQuestionMarkFullStopKeyword_1_1_0_0_1_1_0()); 
             }
-            // InternalReactionsLanguage.g:22964:3: ( '?.' )
-            // InternalReactionsLanguage.g:22965:4: '?.'
+            // InternalReactionsLanguage.g:22960:3: ( '?.' )
+            // InternalReactionsLanguage.g:22961:4: '?.'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getNullSafeQuestionMarkFullStopKeyword_1_1_0_0_1_1_0()); 
@@ -74817,23 +74805,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_2"
-    // InternalReactionsLanguage.g:22976:1: rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_2 : ( ( '::' ) ) ;
+    // InternalReactionsLanguage.g:22972:1: rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_2 : ( ( '::' ) ) ;
     public final void rule__XMemberFeatureCall__ExplicitStaticAssignment_1_1_0_0_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22980:1: ( ( ( '::' ) ) )
-            // InternalReactionsLanguage.g:22981:2: ( ( '::' ) )
+            // InternalReactionsLanguage.g:22976:1: ( ( ( '::' ) ) )
+            // InternalReactionsLanguage.g:22977:2: ( ( '::' ) )
             {
-            // InternalReactionsLanguage.g:22981:2: ( ( '::' ) )
-            // InternalReactionsLanguage.g:22982:3: ( '::' )
+            // InternalReactionsLanguage.g:22977:2: ( ( '::' ) )
+            // InternalReactionsLanguage.g:22978:3: ( '::' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_1_0_0_1_2_0()); 
             }
-            // InternalReactionsLanguage.g:22983:3: ( '::' )
-            // InternalReactionsLanguage.g:22984:4: '::'
+            // InternalReactionsLanguage.g:22979:3: ( '::' )
+            // InternalReactionsLanguage.g:22980:4: '::'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getExplicitStaticColonColonKeyword_1_1_0_0_1_2_0()); 
@@ -74870,17 +74858,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_1"
-    // InternalReactionsLanguage.g:22995:1: rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:22991:1: rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:22999:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:23000:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:22995:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:22996:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:23000:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:23001:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:22996:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:22997:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_1_1_1_1_0()); 
@@ -74915,17 +74903,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_1"
-    // InternalReactionsLanguage.g:23010:1: rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:23006:1: rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XMemberFeatureCall__TypeArgumentsAssignment_1_1_1_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23014:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:23015:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:23010:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:23011:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:23015:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:23016:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:23011:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:23012:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_1_1_1_2_1_0()); 
@@ -74960,23 +74948,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__FeatureAssignment_1_1_2"
-    // InternalReactionsLanguage.g:23025:1: rule__XMemberFeatureCall__FeatureAssignment_1_1_2 : ( ( ruleIdOrSuper ) ) ;
+    // InternalReactionsLanguage.g:23021:1: rule__XMemberFeatureCall__FeatureAssignment_1_1_2 : ( ( ruleIdOrSuper ) ) ;
     public final void rule__XMemberFeatureCall__FeatureAssignment_1_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23029:1: ( ( ( ruleIdOrSuper ) ) )
-            // InternalReactionsLanguage.g:23030:2: ( ( ruleIdOrSuper ) )
+            // InternalReactionsLanguage.g:23025:1: ( ( ( ruleIdOrSuper ) ) )
+            // InternalReactionsLanguage.g:23026:2: ( ( ruleIdOrSuper ) )
             {
-            // InternalReactionsLanguage.g:23030:2: ( ( ruleIdOrSuper ) )
-            // InternalReactionsLanguage.g:23031:3: ( ruleIdOrSuper )
+            // InternalReactionsLanguage.g:23026:2: ( ( ruleIdOrSuper ) )
+            // InternalReactionsLanguage.g:23027:3: ( ruleIdOrSuper )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getFeatureJvmIdentifiableElementCrossReference_1_1_2_0()); 
             }
-            // InternalReactionsLanguage.g:23032:3: ( ruleIdOrSuper )
-            // InternalReactionsLanguage.g:23033:4: ruleIdOrSuper
+            // InternalReactionsLanguage.g:23028:3: ( ruleIdOrSuper )
+            // InternalReactionsLanguage.g:23029:4: ruleIdOrSuper
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getFeatureJvmIdentifiableElementIdOrSuperParserRuleCall_1_1_2_0_1()); 
@@ -75017,23 +75005,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_0"
-    // InternalReactionsLanguage.g:23044:1: rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_0 : ( ( '(' ) ) ;
+    // InternalReactionsLanguage.g:23040:1: rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_0 : ( ( '(' ) ) ;
     public final void rule__XMemberFeatureCall__ExplicitOperationCallAssignment_1_1_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23048:1: ( ( ( '(' ) ) )
-            // InternalReactionsLanguage.g:23049:2: ( ( '(' ) )
+            // InternalReactionsLanguage.g:23044:1: ( ( ( '(' ) ) )
+            // InternalReactionsLanguage.g:23045:2: ( ( '(' ) )
             {
-            // InternalReactionsLanguage.g:23049:2: ( ( '(' ) )
-            // InternalReactionsLanguage.g:23050:3: ( '(' )
+            // InternalReactionsLanguage.g:23045:2: ( ( '(' ) )
+            // InternalReactionsLanguage.g:23046:3: ( '(' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_1_1_3_0_0()); 
             }
-            // InternalReactionsLanguage.g:23051:3: ( '(' )
-            // InternalReactionsLanguage.g:23052:4: '('
+            // InternalReactionsLanguage.g:23047:3: ( '(' )
+            // InternalReactionsLanguage.g:23048:4: '('
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_1_1_3_0_0()); 
@@ -75070,17 +75058,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_0"
-    // InternalReactionsLanguage.g:23063:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_0 : ( ruleXShortClosure ) ;
+    // InternalReactionsLanguage.g:23059:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_0 : ( ruleXShortClosure ) ;
     public final void rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23067:1: ( ( ruleXShortClosure ) )
-            // InternalReactionsLanguage.g:23068:2: ( ruleXShortClosure )
+            // InternalReactionsLanguage.g:23063:1: ( ( ruleXShortClosure ) )
+            // InternalReactionsLanguage.g:23064:2: ( ruleXShortClosure )
             {
-            // InternalReactionsLanguage.g:23068:2: ( ruleXShortClosure )
-            // InternalReactionsLanguage.g:23069:3: ruleXShortClosure
+            // InternalReactionsLanguage.g:23064:2: ( ruleXShortClosure )
+            // InternalReactionsLanguage.g:23065:3: ruleXShortClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getMemberCallArgumentsXShortClosureParserRuleCall_1_1_3_1_0_0()); 
@@ -75115,17 +75103,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_0"
-    // InternalReactionsLanguage.g:23078:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_0 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23074:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_0 : ( ruleXExpression ) ;
     public final void rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23082:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23083:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23078:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23079:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23083:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23084:3: ruleXExpression
+            // InternalReactionsLanguage.g:23079:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23080:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getMemberCallArgumentsXExpressionParserRuleCall_1_1_3_1_1_0_0()); 
@@ -75160,17 +75148,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_1"
-    // InternalReactionsLanguage.g:23093:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23089:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_1 : ( ruleXExpression ) ;
     public final void rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_3_1_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23097:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23098:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23093:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23094:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23098:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23099:3: ruleXExpression
+            // InternalReactionsLanguage.g:23094:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23095:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getMemberCallArgumentsXExpressionParserRuleCall_1_1_3_1_1_1_1_0()); 
@@ -75205,17 +75193,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_4"
-    // InternalReactionsLanguage.g:23108:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_4 : ( ruleXClosure ) ;
+    // InternalReactionsLanguage.g:23104:1: rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_4 : ( ruleXClosure ) ;
     public final void rule__XMemberFeatureCall__MemberCallArgumentsAssignment_1_1_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23112:1: ( ( ruleXClosure ) )
-            // InternalReactionsLanguage.g:23113:2: ( ruleXClosure )
+            // InternalReactionsLanguage.g:23108:1: ( ( ruleXClosure ) )
+            // InternalReactionsLanguage.g:23109:2: ( ruleXClosure )
             {
-            // InternalReactionsLanguage.g:23113:2: ( ruleXClosure )
-            // InternalReactionsLanguage.g:23114:3: ruleXClosure
+            // InternalReactionsLanguage.g:23109:2: ( ruleXClosure )
+            // InternalReactionsLanguage.g:23110:3: ruleXClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXMemberFeatureCallAccess().getMemberCallArgumentsXClosureParserRuleCall_1_1_4_0()); 
@@ -75250,17 +75238,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSetLiteral__ElementsAssignment_3_0"
-    // InternalReactionsLanguage.g:23123:1: rule__XSetLiteral__ElementsAssignment_3_0 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23119:1: rule__XSetLiteral__ElementsAssignment_3_0 : ( ruleXExpression ) ;
     public final void rule__XSetLiteral__ElementsAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23127:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23128:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23123:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23124:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23128:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23129:3: ruleXExpression
+            // InternalReactionsLanguage.g:23124:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23125:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSetLiteralAccess().getElementsXExpressionParserRuleCall_3_0_0()); 
@@ -75295,17 +75283,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSetLiteral__ElementsAssignment_3_1_1"
-    // InternalReactionsLanguage.g:23138:1: rule__XSetLiteral__ElementsAssignment_3_1_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23134:1: rule__XSetLiteral__ElementsAssignment_3_1_1 : ( ruleXExpression ) ;
     public final void rule__XSetLiteral__ElementsAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23142:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23143:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23138:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23139:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23143:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23144:3: ruleXExpression
+            // InternalReactionsLanguage.g:23139:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23140:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSetLiteralAccess().getElementsXExpressionParserRuleCall_3_1_1_0()); 
@@ -75340,17 +75328,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XListLiteral__ElementsAssignment_3_0"
-    // InternalReactionsLanguage.g:23153:1: rule__XListLiteral__ElementsAssignment_3_0 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23149:1: rule__XListLiteral__ElementsAssignment_3_0 : ( ruleXExpression ) ;
     public final void rule__XListLiteral__ElementsAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23157:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23158:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23153:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23154:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23158:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23159:3: ruleXExpression
+            // InternalReactionsLanguage.g:23154:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23155:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXListLiteralAccess().getElementsXExpressionParserRuleCall_3_0_0()); 
@@ -75385,17 +75373,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XListLiteral__ElementsAssignment_3_1_1"
-    // InternalReactionsLanguage.g:23168:1: rule__XListLiteral__ElementsAssignment_3_1_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23164:1: rule__XListLiteral__ElementsAssignment_3_1_1 : ( ruleXExpression ) ;
     public final void rule__XListLiteral__ElementsAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23172:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23173:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23168:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23169:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23173:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23174:3: ruleXExpression
+            // InternalReactionsLanguage.g:23169:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23170:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXListLiteralAccess().getElementsXExpressionParserRuleCall_3_1_1_0()); 
@@ -75430,17 +75418,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_0"
-    // InternalReactionsLanguage.g:23183:1: rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_0 : ( ruleJvmFormalParameter ) ;
+    // InternalReactionsLanguage.g:23179:1: rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_0 : ( ruleJvmFormalParameter ) ;
     public final void rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23187:1: ( ( ruleJvmFormalParameter ) )
-            // InternalReactionsLanguage.g:23188:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23183:1: ( ( ruleJvmFormalParameter ) )
+            // InternalReactionsLanguage.g:23184:2: ( ruleJvmFormalParameter )
             {
-            // InternalReactionsLanguage.g:23188:2: ( ruleJvmFormalParameter )
-            // InternalReactionsLanguage.g:23189:3: ruleJvmFormalParameter
+            // InternalReactionsLanguage.g:23184:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23185:3: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXClosureAccess().getDeclaredFormalParametersJvmFormalParameterParserRuleCall_1_0_0_0_0()); 
@@ -75475,17 +75463,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_1"
-    // InternalReactionsLanguage.g:23198:1: rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_1 : ( ruleJvmFormalParameter ) ;
+    // InternalReactionsLanguage.g:23194:1: rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_1 : ( ruleJvmFormalParameter ) ;
     public final void rule__XClosure__DeclaredFormalParametersAssignment_1_0_0_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23202:1: ( ( ruleJvmFormalParameter ) )
-            // InternalReactionsLanguage.g:23203:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23198:1: ( ( ruleJvmFormalParameter ) )
+            // InternalReactionsLanguage.g:23199:2: ( ruleJvmFormalParameter )
             {
-            // InternalReactionsLanguage.g:23203:2: ( ruleJvmFormalParameter )
-            // InternalReactionsLanguage.g:23204:3: ruleJvmFormalParameter
+            // InternalReactionsLanguage.g:23199:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23200:3: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXClosureAccess().getDeclaredFormalParametersJvmFormalParameterParserRuleCall_1_0_0_1_1_0()); 
@@ -75520,23 +75508,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XClosure__ExplicitSyntaxAssignment_1_0_1"
-    // InternalReactionsLanguage.g:23213:1: rule__XClosure__ExplicitSyntaxAssignment_1_0_1 : ( ( '|' ) ) ;
+    // InternalReactionsLanguage.g:23209:1: rule__XClosure__ExplicitSyntaxAssignment_1_0_1 : ( ( '|' ) ) ;
     public final void rule__XClosure__ExplicitSyntaxAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23217:1: ( ( ( '|' ) ) )
-            // InternalReactionsLanguage.g:23218:2: ( ( '|' ) )
+            // InternalReactionsLanguage.g:23213:1: ( ( ( '|' ) ) )
+            // InternalReactionsLanguage.g:23214:2: ( ( '|' ) )
             {
-            // InternalReactionsLanguage.g:23218:2: ( ( '|' ) )
-            // InternalReactionsLanguage.g:23219:3: ( '|' )
+            // InternalReactionsLanguage.g:23214:2: ( ( '|' ) )
+            // InternalReactionsLanguage.g:23215:3: ( '|' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXClosureAccess().getExplicitSyntaxVerticalLineKeyword_1_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:23220:3: ( '|' )
-            // InternalReactionsLanguage.g:23221:4: '|'
+            // InternalReactionsLanguage.g:23216:3: ( '|' )
+            // InternalReactionsLanguage.g:23217:4: '|'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXClosureAccess().getExplicitSyntaxVerticalLineKeyword_1_0_1_0()); 
@@ -75573,17 +75561,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XClosure__ExpressionAssignment_2"
-    // InternalReactionsLanguage.g:23232:1: rule__XClosure__ExpressionAssignment_2 : ( ruleXExpressionInClosure ) ;
+    // InternalReactionsLanguage.g:23228:1: rule__XClosure__ExpressionAssignment_2 : ( ruleXExpressionInClosure ) ;
     public final void rule__XClosure__ExpressionAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23236:1: ( ( ruleXExpressionInClosure ) )
-            // InternalReactionsLanguage.g:23237:2: ( ruleXExpressionInClosure )
+            // InternalReactionsLanguage.g:23232:1: ( ( ruleXExpressionInClosure ) )
+            // InternalReactionsLanguage.g:23233:2: ( ruleXExpressionInClosure )
             {
-            // InternalReactionsLanguage.g:23237:2: ( ruleXExpressionInClosure )
-            // InternalReactionsLanguage.g:23238:3: ruleXExpressionInClosure
+            // InternalReactionsLanguage.g:23233:2: ( ruleXExpressionInClosure )
+            // InternalReactionsLanguage.g:23234:3: ruleXExpressionInClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXClosureAccess().getExpressionXExpressionInClosureParserRuleCall_2_0()); 
@@ -75618,17 +75606,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XExpressionInClosure__ExpressionsAssignment_1_0"
-    // InternalReactionsLanguage.g:23247:1: rule__XExpressionInClosure__ExpressionsAssignment_1_0 : ( ruleXExpressionOrVarDeclaration ) ;
+    // InternalReactionsLanguage.g:23243:1: rule__XExpressionInClosure__ExpressionsAssignment_1_0 : ( ruleXExpressionOrVarDeclaration ) ;
     public final void rule__XExpressionInClosure__ExpressionsAssignment_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23251:1: ( ( ruleXExpressionOrVarDeclaration ) )
-            // InternalReactionsLanguage.g:23252:2: ( ruleXExpressionOrVarDeclaration )
+            // InternalReactionsLanguage.g:23247:1: ( ( ruleXExpressionOrVarDeclaration ) )
+            // InternalReactionsLanguage.g:23248:2: ( ruleXExpressionOrVarDeclaration )
             {
-            // InternalReactionsLanguage.g:23252:2: ( ruleXExpressionOrVarDeclaration )
-            // InternalReactionsLanguage.g:23253:3: ruleXExpressionOrVarDeclaration
+            // InternalReactionsLanguage.g:23248:2: ( ruleXExpressionOrVarDeclaration )
+            // InternalReactionsLanguage.g:23249:3: ruleXExpressionOrVarDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXExpressionInClosureAccess().getExpressionsXExpressionOrVarDeclarationParserRuleCall_1_0_0()); 
@@ -75663,17 +75651,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_0"
-    // InternalReactionsLanguage.g:23262:1: rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_0 : ( ruleJvmFormalParameter ) ;
+    // InternalReactionsLanguage.g:23258:1: rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_0 : ( ruleJvmFormalParameter ) ;
     public final void rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23266:1: ( ( ruleJvmFormalParameter ) )
-            // InternalReactionsLanguage.g:23267:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23262:1: ( ( ruleJvmFormalParameter ) )
+            // InternalReactionsLanguage.g:23263:2: ( ruleJvmFormalParameter )
             {
-            // InternalReactionsLanguage.g:23267:2: ( ruleJvmFormalParameter )
-            // InternalReactionsLanguage.g:23268:3: ruleJvmFormalParameter
+            // InternalReactionsLanguage.g:23263:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23264:3: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXShortClosureAccess().getDeclaredFormalParametersJvmFormalParameterParserRuleCall_0_0_1_0_0()); 
@@ -75708,17 +75696,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_1"
-    // InternalReactionsLanguage.g:23277:1: rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_1 : ( ruleJvmFormalParameter ) ;
+    // InternalReactionsLanguage.g:23273:1: rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_1 : ( ruleJvmFormalParameter ) ;
     public final void rule__XShortClosure__DeclaredFormalParametersAssignment_0_0_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23281:1: ( ( ruleJvmFormalParameter ) )
-            // InternalReactionsLanguage.g:23282:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23277:1: ( ( ruleJvmFormalParameter ) )
+            // InternalReactionsLanguage.g:23278:2: ( ruleJvmFormalParameter )
             {
-            // InternalReactionsLanguage.g:23282:2: ( ruleJvmFormalParameter )
-            // InternalReactionsLanguage.g:23283:3: ruleJvmFormalParameter
+            // InternalReactionsLanguage.g:23278:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23279:3: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXShortClosureAccess().getDeclaredFormalParametersJvmFormalParameterParserRuleCall_0_0_1_1_1_0()); 
@@ -75753,23 +75741,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XShortClosure__ExplicitSyntaxAssignment_0_0_2"
-    // InternalReactionsLanguage.g:23292:1: rule__XShortClosure__ExplicitSyntaxAssignment_0_0_2 : ( ( '|' ) ) ;
+    // InternalReactionsLanguage.g:23288:1: rule__XShortClosure__ExplicitSyntaxAssignment_0_0_2 : ( ( '|' ) ) ;
     public final void rule__XShortClosure__ExplicitSyntaxAssignment_0_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23296:1: ( ( ( '|' ) ) )
-            // InternalReactionsLanguage.g:23297:2: ( ( '|' ) )
+            // InternalReactionsLanguage.g:23292:1: ( ( ( '|' ) ) )
+            // InternalReactionsLanguage.g:23293:2: ( ( '|' ) )
             {
-            // InternalReactionsLanguage.g:23297:2: ( ( '|' ) )
-            // InternalReactionsLanguage.g:23298:3: ( '|' )
+            // InternalReactionsLanguage.g:23293:2: ( ( '|' ) )
+            // InternalReactionsLanguage.g:23294:3: ( '|' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXShortClosureAccess().getExplicitSyntaxVerticalLineKeyword_0_0_2_0()); 
             }
-            // InternalReactionsLanguage.g:23299:3: ( '|' )
-            // InternalReactionsLanguage.g:23300:4: '|'
+            // InternalReactionsLanguage.g:23295:3: ( '|' )
+            // InternalReactionsLanguage.g:23296:4: '|'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXShortClosureAccess().getExplicitSyntaxVerticalLineKeyword_0_0_2_0()); 
@@ -75806,17 +75794,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XShortClosure__ExpressionAssignment_1"
-    // InternalReactionsLanguage.g:23311:1: rule__XShortClosure__ExpressionAssignment_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23307:1: rule__XShortClosure__ExpressionAssignment_1 : ( ruleXExpression ) ;
     public final void rule__XShortClosure__ExpressionAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23315:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23316:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23311:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23312:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23316:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23317:3: ruleXExpression
+            // InternalReactionsLanguage.g:23312:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23313:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXShortClosureAccess().getExpressionXExpressionParserRuleCall_1_0()); 
@@ -75851,17 +75839,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XIfExpression__IfAssignment_3"
-    // InternalReactionsLanguage.g:23326:1: rule__XIfExpression__IfAssignment_3 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23322:1: rule__XIfExpression__IfAssignment_3 : ( ruleXExpression ) ;
     public final void rule__XIfExpression__IfAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23330:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23331:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23326:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23327:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23331:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23332:3: ruleXExpression
+            // InternalReactionsLanguage.g:23327:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23328:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXIfExpressionAccess().getIfXExpressionParserRuleCall_3_0()); 
@@ -75896,17 +75884,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XIfExpression__ThenAssignment_5"
-    // InternalReactionsLanguage.g:23341:1: rule__XIfExpression__ThenAssignment_5 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23337:1: rule__XIfExpression__ThenAssignment_5 : ( ruleXExpression ) ;
     public final void rule__XIfExpression__ThenAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23345:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23346:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23341:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23342:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23346:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23347:3: ruleXExpression
+            // InternalReactionsLanguage.g:23342:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23343:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXIfExpressionAccess().getThenXExpressionParserRuleCall_5_0()); 
@@ -75941,17 +75929,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XIfExpression__ElseAssignment_6_1"
-    // InternalReactionsLanguage.g:23356:1: rule__XIfExpression__ElseAssignment_6_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23352:1: rule__XIfExpression__ElseAssignment_6_1 : ( ruleXExpression ) ;
     public final void rule__XIfExpression__ElseAssignment_6_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23360:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23361:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23356:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23357:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23361:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23362:3: ruleXExpression
+            // InternalReactionsLanguage.g:23357:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23358:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXIfExpressionAccess().getElseXExpressionParserRuleCall_6_1_0()); 
@@ -75986,17 +75974,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_1"
-    // InternalReactionsLanguage.g:23371:1: rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_1 : ( ruleJvmFormalParameter ) ;
+    // InternalReactionsLanguage.g:23367:1: rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_1 : ( ruleJvmFormalParameter ) ;
     public final void rule__XSwitchExpression__DeclaredParamAssignment_2_0_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23375:1: ( ( ruleJvmFormalParameter ) )
-            // InternalReactionsLanguage.g:23376:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23371:1: ( ( ruleJvmFormalParameter ) )
+            // InternalReactionsLanguage.g:23372:2: ( ruleJvmFormalParameter )
             {
-            // InternalReactionsLanguage.g:23376:2: ( ruleJvmFormalParameter )
-            // InternalReactionsLanguage.g:23377:3: ruleJvmFormalParameter
+            // InternalReactionsLanguage.g:23372:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23373:3: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getDeclaredParamJvmFormalParameterParserRuleCall_2_0_0_0_1_0()); 
@@ -76031,17 +76019,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSwitchExpression__SwitchAssignment_2_0_1"
-    // InternalReactionsLanguage.g:23386:1: rule__XSwitchExpression__SwitchAssignment_2_0_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23382:1: rule__XSwitchExpression__SwitchAssignment_2_0_1 : ( ruleXExpression ) ;
     public final void rule__XSwitchExpression__SwitchAssignment_2_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23390:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23391:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23386:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23387:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23391:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23392:3: ruleXExpression
+            // InternalReactionsLanguage.g:23387:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23388:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionParserRuleCall_2_0_1_0()); 
@@ -76076,17 +76064,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_0"
-    // InternalReactionsLanguage.g:23401:1: rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_0 : ( ruleJvmFormalParameter ) ;
+    // InternalReactionsLanguage.g:23397:1: rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_0 : ( ruleJvmFormalParameter ) ;
     public final void rule__XSwitchExpression__DeclaredParamAssignment_2_1_0_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23405:1: ( ( ruleJvmFormalParameter ) )
-            // InternalReactionsLanguage.g:23406:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23401:1: ( ( ruleJvmFormalParameter ) )
+            // InternalReactionsLanguage.g:23402:2: ( ruleJvmFormalParameter )
             {
-            // InternalReactionsLanguage.g:23406:2: ( ruleJvmFormalParameter )
-            // InternalReactionsLanguage.g:23407:3: ruleJvmFormalParameter
+            // InternalReactionsLanguage.g:23402:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23403:3: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getDeclaredParamJvmFormalParameterParserRuleCall_2_1_0_0_0_0()); 
@@ -76121,17 +76109,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSwitchExpression__SwitchAssignment_2_1_1"
-    // InternalReactionsLanguage.g:23416:1: rule__XSwitchExpression__SwitchAssignment_2_1_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23412:1: rule__XSwitchExpression__SwitchAssignment_2_1_1 : ( ruleXExpression ) ;
     public final void rule__XSwitchExpression__SwitchAssignment_2_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23420:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23421:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23416:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23417:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23421:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23422:3: ruleXExpression
+            // InternalReactionsLanguage.g:23417:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23418:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getSwitchXExpressionParserRuleCall_2_1_1_0()); 
@@ -76166,17 +76154,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSwitchExpression__CasesAssignment_4"
-    // InternalReactionsLanguage.g:23431:1: rule__XSwitchExpression__CasesAssignment_4 : ( ruleXCasePart ) ;
+    // InternalReactionsLanguage.g:23427:1: rule__XSwitchExpression__CasesAssignment_4 : ( ruleXCasePart ) ;
     public final void rule__XSwitchExpression__CasesAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23435:1: ( ( ruleXCasePart ) )
-            // InternalReactionsLanguage.g:23436:2: ( ruleXCasePart )
+            // InternalReactionsLanguage.g:23431:1: ( ( ruleXCasePart ) )
+            // InternalReactionsLanguage.g:23432:2: ( ruleXCasePart )
             {
-            // InternalReactionsLanguage.g:23436:2: ( ruleXCasePart )
-            // InternalReactionsLanguage.g:23437:3: ruleXCasePart
+            // InternalReactionsLanguage.g:23432:2: ( ruleXCasePart )
+            // InternalReactionsLanguage.g:23433:3: ruleXCasePart
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getCasesXCasePartParserRuleCall_4_0()); 
@@ -76211,17 +76199,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSwitchExpression__DefaultAssignment_5_2"
-    // InternalReactionsLanguage.g:23446:1: rule__XSwitchExpression__DefaultAssignment_5_2 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23442:1: rule__XSwitchExpression__DefaultAssignment_5_2 : ( ruleXExpression ) ;
     public final void rule__XSwitchExpression__DefaultAssignment_5_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23450:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23451:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23446:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23447:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23451:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23452:3: ruleXExpression
+            // InternalReactionsLanguage.g:23447:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23448:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSwitchExpressionAccess().getDefaultXExpressionParserRuleCall_5_2_0()); 
@@ -76256,17 +76244,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XCasePart__TypeGuardAssignment_1"
-    // InternalReactionsLanguage.g:23461:1: rule__XCasePart__TypeGuardAssignment_1 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:23457:1: rule__XCasePart__TypeGuardAssignment_1 : ( ruleJvmTypeReference ) ;
     public final void rule__XCasePart__TypeGuardAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23465:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:23466:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:23461:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:23462:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:23466:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:23467:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:23462:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:23463:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCasePartAccess().getTypeGuardJvmTypeReferenceParserRuleCall_1_0()); 
@@ -76301,17 +76289,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XCasePart__CaseAssignment_2_1"
-    // InternalReactionsLanguage.g:23476:1: rule__XCasePart__CaseAssignment_2_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23472:1: rule__XCasePart__CaseAssignment_2_1 : ( ruleXExpression ) ;
     public final void rule__XCasePart__CaseAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23480:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23481:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23476:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23477:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23481:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23482:3: ruleXExpression
+            // InternalReactionsLanguage.g:23477:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23478:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCasePartAccess().getCaseXExpressionParserRuleCall_2_1_0()); 
@@ -76346,17 +76334,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XCasePart__ThenAssignment_3_0_1"
-    // InternalReactionsLanguage.g:23491:1: rule__XCasePart__ThenAssignment_3_0_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23487:1: rule__XCasePart__ThenAssignment_3_0_1 : ( ruleXExpression ) ;
     public final void rule__XCasePart__ThenAssignment_3_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23495:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23496:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23491:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23492:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23496:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23497:3: ruleXExpression
+            // InternalReactionsLanguage.g:23492:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23493:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCasePartAccess().getThenXExpressionParserRuleCall_3_0_1_0()); 
@@ -76391,23 +76379,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XCasePart__FallThroughAssignment_3_1"
-    // InternalReactionsLanguage.g:23506:1: rule__XCasePart__FallThroughAssignment_3_1 : ( ( ',' ) ) ;
+    // InternalReactionsLanguage.g:23502:1: rule__XCasePart__FallThroughAssignment_3_1 : ( ( ',' ) ) ;
     public final void rule__XCasePart__FallThroughAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23510:1: ( ( ( ',' ) ) )
-            // InternalReactionsLanguage.g:23511:2: ( ( ',' ) )
+            // InternalReactionsLanguage.g:23506:1: ( ( ( ',' ) ) )
+            // InternalReactionsLanguage.g:23507:2: ( ( ',' ) )
             {
-            // InternalReactionsLanguage.g:23511:2: ( ( ',' ) )
-            // InternalReactionsLanguage.g:23512:3: ( ',' )
+            // InternalReactionsLanguage.g:23507:2: ( ( ',' ) )
+            // InternalReactionsLanguage.g:23508:3: ( ',' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCasePartAccess().getFallThroughCommaKeyword_3_1_0()); 
             }
-            // InternalReactionsLanguage.g:23513:3: ( ',' )
-            // InternalReactionsLanguage.g:23514:4: ','
+            // InternalReactionsLanguage.g:23509:3: ( ',' )
+            // InternalReactionsLanguage.g:23510:4: ','
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCasePartAccess().getFallThroughCommaKeyword_3_1_0()); 
@@ -76444,17 +76432,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XForLoopExpression__DeclaredParamAssignment_0_0_3"
-    // InternalReactionsLanguage.g:23525:1: rule__XForLoopExpression__DeclaredParamAssignment_0_0_3 : ( ruleJvmFormalParameter ) ;
+    // InternalReactionsLanguage.g:23521:1: rule__XForLoopExpression__DeclaredParamAssignment_0_0_3 : ( ruleJvmFormalParameter ) ;
     public final void rule__XForLoopExpression__DeclaredParamAssignment_0_0_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23529:1: ( ( ruleJvmFormalParameter ) )
-            // InternalReactionsLanguage.g:23530:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23525:1: ( ( ruleJvmFormalParameter ) )
+            // InternalReactionsLanguage.g:23526:2: ( ruleJvmFormalParameter )
             {
-            // InternalReactionsLanguage.g:23530:2: ( ruleJvmFormalParameter )
-            // InternalReactionsLanguage.g:23531:3: ruleJvmFormalParameter
+            // InternalReactionsLanguage.g:23526:2: ( ruleJvmFormalParameter )
+            // InternalReactionsLanguage.g:23527:3: ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXForLoopExpressionAccess().getDeclaredParamJvmFormalParameterParserRuleCall_0_0_3_0()); 
@@ -76489,17 +76477,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XForLoopExpression__ForExpressionAssignment_1"
-    // InternalReactionsLanguage.g:23540:1: rule__XForLoopExpression__ForExpressionAssignment_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23536:1: rule__XForLoopExpression__ForExpressionAssignment_1 : ( ruleXExpression ) ;
     public final void rule__XForLoopExpression__ForExpressionAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23544:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23545:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23540:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23541:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23545:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23546:3: ruleXExpression
+            // InternalReactionsLanguage.g:23541:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23542:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXForLoopExpressionAccess().getForExpressionXExpressionParserRuleCall_1_0()); 
@@ -76534,17 +76522,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XForLoopExpression__EachExpressionAssignment_3"
-    // InternalReactionsLanguage.g:23555:1: rule__XForLoopExpression__EachExpressionAssignment_3 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23551:1: rule__XForLoopExpression__EachExpressionAssignment_3 : ( ruleXExpression ) ;
     public final void rule__XForLoopExpression__EachExpressionAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23559:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23560:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23555:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23556:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23560:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23561:3: ruleXExpression
+            // InternalReactionsLanguage.g:23556:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23557:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXForLoopExpressionAccess().getEachExpressionXExpressionParserRuleCall_3_0()); 
@@ -76579,17 +76567,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__InitExpressionsAssignment_3_0"
-    // InternalReactionsLanguage.g:23570:1: rule__XBasicForLoopExpression__InitExpressionsAssignment_3_0 : ( ruleXExpressionOrVarDeclaration ) ;
+    // InternalReactionsLanguage.g:23566:1: rule__XBasicForLoopExpression__InitExpressionsAssignment_3_0 : ( ruleXExpressionOrVarDeclaration ) ;
     public final void rule__XBasicForLoopExpression__InitExpressionsAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23574:1: ( ( ruleXExpressionOrVarDeclaration ) )
-            // InternalReactionsLanguage.g:23575:2: ( ruleXExpressionOrVarDeclaration )
+            // InternalReactionsLanguage.g:23570:1: ( ( ruleXExpressionOrVarDeclaration ) )
+            // InternalReactionsLanguage.g:23571:2: ( ruleXExpressionOrVarDeclaration )
             {
-            // InternalReactionsLanguage.g:23575:2: ( ruleXExpressionOrVarDeclaration )
-            // InternalReactionsLanguage.g:23576:3: ruleXExpressionOrVarDeclaration
+            // InternalReactionsLanguage.g:23571:2: ( ruleXExpressionOrVarDeclaration )
+            // InternalReactionsLanguage.g:23572:3: ruleXExpressionOrVarDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getInitExpressionsXExpressionOrVarDeclarationParserRuleCall_3_0_0()); 
@@ -76624,17 +76612,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_1"
-    // InternalReactionsLanguage.g:23585:1: rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_1 : ( ruleXExpressionOrVarDeclaration ) ;
+    // InternalReactionsLanguage.g:23581:1: rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_1 : ( ruleXExpressionOrVarDeclaration ) ;
     public final void rule__XBasicForLoopExpression__InitExpressionsAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23589:1: ( ( ruleXExpressionOrVarDeclaration ) )
-            // InternalReactionsLanguage.g:23590:2: ( ruleXExpressionOrVarDeclaration )
+            // InternalReactionsLanguage.g:23585:1: ( ( ruleXExpressionOrVarDeclaration ) )
+            // InternalReactionsLanguage.g:23586:2: ( ruleXExpressionOrVarDeclaration )
             {
-            // InternalReactionsLanguage.g:23590:2: ( ruleXExpressionOrVarDeclaration )
-            // InternalReactionsLanguage.g:23591:3: ruleXExpressionOrVarDeclaration
+            // InternalReactionsLanguage.g:23586:2: ( ruleXExpressionOrVarDeclaration )
+            // InternalReactionsLanguage.g:23587:3: ruleXExpressionOrVarDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getInitExpressionsXExpressionOrVarDeclarationParserRuleCall_3_1_1_0()); 
@@ -76669,17 +76657,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__ExpressionAssignment_5"
-    // InternalReactionsLanguage.g:23600:1: rule__XBasicForLoopExpression__ExpressionAssignment_5 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23596:1: rule__XBasicForLoopExpression__ExpressionAssignment_5 : ( ruleXExpression ) ;
     public final void rule__XBasicForLoopExpression__ExpressionAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23604:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23605:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23600:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23601:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23605:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23606:3: ruleXExpression
+            // InternalReactionsLanguage.g:23601:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23602:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getExpressionXExpressionParserRuleCall_5_0()); 
@@ -76714,17 +76702,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_0"
-    // InternalReactionsLanguage.g:23615:1: rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_0 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23611:1: rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_0 : ( ruleXExpression ) ;
     public final void rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23619:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23620:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23615:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23616:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23620:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23621:3: ruleXExpression
+            // InternalReactionsLanguage.g:23616:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23617:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getUpdateExpressionsXExpressionParserRuleCall_7_0_0()); 
@@ -76759,17 +76747,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_1"
-    // InternalReactionsLanguage.g:23630:1: rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23626:1: rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_1 : ( ruleXExpression ) ;
     public final void rule__XBasicForLoopExpression__UpdateExpressionsAssignment_7_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23634:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23635:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23630:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23631:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23635:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23636:3: ruleXExpression
+            // InternalReactionsLanguage.g:23631:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23632:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getUpdateExpressionsXExpressionParserRuleCall_7_1_1_0()); 
@@ -76804,17 +76792,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XBasicForLoopExpression__EachExpressionAssignment_9"
-    // InternalReactionsLanguage.g:23645:1: rule__XBasicForLoopExpression__EachExpressionAssignment_9 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23641:1: rule__XBasicForLoopExpression__EachExpressionAssignment_9 : ( ruleXExpression ) ;
     public final void rule__XBasicForLoopExpression__EachExpressionAssignment_9() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23649:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23650:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23645:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23646:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23650:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23651:3: ruleXExpression
+            // InternalReactionsLanguage.g:23646:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23647:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBasicForLoopExpressionAccess().getEachExpressionXExpressionParserRuleCall_9_0()); 
@@ -76849,17 +76837,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XWhileExpression__PredicateAssignment_3"
-    // InternalReactionsLanguage.g:23660:1: rule__XWhileExpression__PredicateAssignment_3 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23656:1: rule__XWhileExpression__PredicateAssignment_3 : ( ruleXExpression ) ;
     public final void rule__XWhileExpression__PredicateAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23664:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23665:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23660:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23661:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23665:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23666:3: ruleXExpression
+            // InternalReactionsLanguage.g:23661:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23662:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXWhileExpressionAccess().getPredicateXExpressionParserRuleCall_3_0()); 
@@ -76894,17 +76882,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XWhileExpression__BodyAssignment_5"
-    // InternalReactionsLanguage.g:23675:1: rule__XWhileExpression__BodyAssignment_5 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23671:1: rule__XWhileExpression__BodyAssignment_5 : ( ruleXExpression ) ;
     public final void rule__XWhileExpression__BodyAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23679:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23680:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23675:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23676:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23680:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23681:3: ruleXExpression
+            // InternalReactionsLanguage.g:23676:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23677:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXWhileExpressionAccess().getBodyXExpressionParserRuleCall_5_0()); 
@@ -76939,17 +76927,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XDoWhileExpression__BodyAssignment_2"
-    // InternalReactionsLanguage.g:23690:1: rule__XDoWhileExpression__BodyAssignment_2 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23686:1: rule__XDoWhileExpression__BodyAssignment_2 : ( ruleXExpression ) ;
     public final void rule__XDoWhileExpression__BodyAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23694:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23695:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23690:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23691:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23695:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23696:3: ruleXExpression
+            // InternalReactionsLanguage.g:23691:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23692:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXDoWhileExpressionAccess().getBodyXExpressionParserRuleCall_2_0()); 
@@ -76984,17 +76972,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XDoWhileExpression__PredicateAssignment_5"
-    // InternalReactionsLanguage.g:23705:1: rule__XDoWhileExpression__PredicateAssignment_5 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23701:1: rule__XDoWhileExpression__PredicateAssignment_5 : ( ruleXExpression ) ;
     public final void rule__XDoWhileExpression__PredicateAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23709:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23710:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23705:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23706:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23710:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23711:3: ruleXExpression
+            // InternalReactionsLanguage.g:23706:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23707:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXDoWhileExpressionAccess().getPredicateXExpressionParserRuleCall_5_0()); 
@@ -77029,17 +77017,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XBlockExpression__ExpressionsAssignment_2_0"
-    // InternalReactionsLanguage.g:23720:1: rule__XBlockExpression__ExpressionsAssignment_2_0 : ( ruleXExpressionOrVarDeclaration ) ;
+    // InternalReactionsLanguage.g:23716:1: rule__XBlockExpression__ExpressionsAssignment_2_0 : ( ruleXExpressionOrVarDeclaration ) ;
     public final void rule__XBlockExpression__ExpressionsAssignment_2_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23724:1: ( ( ruleXExpressionOrVarDeclaration ) )
-            // InternalReactionsLanguage.g:23725:2: ( ruleXExpressionOrVarDeclaration )
+            // InternalReactionsLanguage.g:23720:1: ( ( ruleXExpressionOrVarDeclaration ) )
+            // InternalReactionsLanguage.g:23721:2: ( ruleXExpressionOrVarDeclaration )
             {
-            // InternalReactionsLanguage.g:23725:2: ( ruleXExpressionOrVarDeclaration )
-            // InternalReactionsLanguage.g:23726:3: ruleXExpressionOrVarDeclaration
+            // InternalReactionsLanguage.g:23721:2: ( ruleXExpressionOrVarDeclaration )
+            // InternalReactionsLanguage.g:23722:3: ruleXExpressionOrVarDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBlockExpressionAccess().getExpressionsXExpressionOrVarDeclarationParserRuleCall_2_0_0()); 
@@ -77074,23 +77062,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XVariableDeclaration__WriteableAssignment_1_0"
-    // InternalReactionsLanguage.g:23735:1: rule__XVariableDeclaration__WriteableAssignment_1_0 : ( ( 'var' ) ) ;
+    // InternalReactionsLanguage.g:23731:1: rule__XVariableDeclaration__WriteableAssignment_1_0 : ( ( 'var' ) ) ;
     public final void rule__XVariableDeclaration__WriteableAssignment_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23739:1: ( ( ( 'var' ) ) )
-            // InternalReactionsLanguage.g:23740:2: ( ( 'var' ) )
+            // InternalReactionsLanguage.g:23735:1: ( ( ( 'var' ) ) )
+            // InternalReactionsLanguage.g:23736:2: ( ( 'var' ) )
             {
-            // InternalReactionsLanguage.g:23740:2: ( ( 'var' ) )
-            // InternalReactionsLanguage.g:23741:3: ( 'var' )
+            // InternalReactionsLanguage.g:23736:2: ( ( 'var' ) )
+            // InternalReactionsLanguage.g:23737:3: ( 'var' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getWriteableVarKeyword_1_0_0()); 
             }
-            // InternalReactionsLanguage.g:23742:3: ( 'var' )
-            // InternalReactionsLanguage.g:23743:4: 'var'
+            // InternalReactionsLanguage.g:23738:3: ( 'var' )
+            // InternalReactionsLanguage.g:23739:4: 'var'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getWriteableVarKeyword_1_0_0()); 
@@ -77127,17 +77115,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XVariableDeclaration__TypeAssignment_2_0_0_0"
-    // InternalReactionsLanguage.g:23754:1: rule__XVariableDeclaration__TypeAssignment_2_0_0_0 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:23750:1: rule__XVariableDeclaration__TypeAssignment_2_0_0_0 : ( ruleJvmTypeReference ) ;
     public final void rule__XVariableDeclaration__TypeAssignment_2_0_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23758:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:23759:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:23754:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:23755:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:23759:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:23760:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:23755:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:23756:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getTypeJvmTypeReferenceParserRuleCall_2_0_0_0_0()); 
@@ -77172,17 +77160,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XVariableDeclaration__NameAssignment_2_0_0_1"
-    // InternalReactionsLanguage.g:23769:1: rule__XVariableDeclaration__NameAssignment_2_0_0_1 : ( ruleValidID ) ;
+    // InternalReactionsLanguage.g:23765:1: rule__XVariableDeclaration__NameAssignment_2_0_0_1 : ( ruleValidID ) ;
     public final void rule__XVariableDeclaration__NameAssignment_2_0_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23773:1: ( ( ruleValidID ) )
-            // InternalReactionsLanguage.g:23774:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:23769:1: ( ( ruleValidID ) )
+            // InternalReactionsLanguage.g:23770:2: ( ruleValidID )
             {
-            // InternalReactionsLanguage.g:23774:2: ( ruleValidID )
-            // InternalReactionsLanguage.g:23775:3: ruleValidID
+            // InternalReactionsLanguage.g:23770:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:23771:3: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_2_0_0_1_0()); 
@@ -77217,17 +77205,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XVariableDeclaration__NameAssignment_2_1"
-    // InternalReactionsLanguage.g:23784:1: rule__XVariableDeclaration__NameAssignment_2_1 : ( ruleValidID ) ;
+    // InternalReactionsLanguage.g:23780:1: rule__XVariableDeclaration__NameAssignment_2_1 : ( ruleValidID ) ;
     public final void rule__XVariableDeclaration__NameAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23788:1: ( ( ruleValidID ) )
-            // InternalReactionsLanguage.g:23789:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:23784:1: ( ( ruleValidID ) )
+            // InternalReactionsLanguage.g:23785:2: ( ruleValidID )
             {
-            // InternalReactionsLanguage.g:23789:2: ( ruleValidID )
-            // InternalReactionsLanguage.g:23790:3: ruleValidID
+            // InternalReactionsLanguage.g:23785:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:23786:3: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_2_1_0()); 
@@ -77262,17 +77250,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XVariableDeclaration__RightAssignment_3_1"
-    // InternalReactionsLanguage.g:23799:1: rule__XVariableDeclaration__RightAssignment_3_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23795:1: rule__XVariableDeclaration__RightAssignment_3_1 : ( ruleXExpression ) ;
     public final void rule__XVariableDeclaration__RightAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23803:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23804:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23799:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23800:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23804:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23805:3: ruleXExpression
+            // InternalReactionsLanguage.g:23800:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23801:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXVariableDeclarationAccess().getRightXExpressionParserRuleCall_3_1_0()); 
@@ -77307,17 +77295,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmFormalParameter__ParameterTypeAssignment_0"
-    // InternalReactionsLanguage.g:23814:1: rule__JvmFormalParameter__ParameterTypeAssignment_0 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:23810:1: rule__JvmFormalParameter__ParameterTypeAssignment_0 : ( ruleJvmTypeReference ) ;
     public final void rule__JvmFormalParameter__ParameterTypeAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23818:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:23819:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:23814:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:23815:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:23819:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:23820:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:23815:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:23816:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmFormalParameterAccess().getParameterTypeJvmTypeReferenceParserRuleCall_0_0()); 
@@ -77352,17 +77340,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmFormalParameter__NameAssignment_1"
-    // InternalReactionsLanguage.g:23829:1: rule__JvmFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
+    // InternalReactionsLanguage.g:23825:1: rule__JvmFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
     public final void rule__JvmFormalParameter__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23833:1: ( ( ruleValidID ) )
-            // InternalReactionsLanguage.g:23834:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:23829:1: ( ( ruleValidID ) )
+            // InternalReactionsLanguage.g:23830:2: ( ruleValidID )
             {
-            // InternalReactionsLanguage.g:23834:2: ( ruleValidID )
-            // InternalReactionsLanguage.g:23835:3: ruleValidID
+            // InternalReactionsLanguage.g:23830:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:23831:3: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0()); 
@@ -77397,17 +77385,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__FullJvmFormalParameter__ParameterTypeAssignment_0"
-    // InternalReactionsLanguage.g:23844:1: rule__FullJvmFormalParameter__ParameterTypeAssignment_0 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:23840:1: rule__FullJvmFormalParameter__ParameterTypeAssignment_0 : ( ruleJvmTypeReference ) ;
     public final void rule__FullJvmFormalParameter__ParameterTypeAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23848:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:23849:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:23844:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:23845:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:23849:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:23850:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:23845:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:23846:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getFullJvmFormalParameterAccess().getParameterTypeJvmTypeReferenceParserRuleCall_0_0()); 
@@ -77442,17 +77430,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__FullJvmFormalParameter__NameAssignment_1"
-    // InternalReactionsLanguage.g:23859:1: rule__FullJvmFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
+    // InternalReactionsLanguage.g:23855:1: rule__FullJvmFormalParameter__NameAssignment_1 : ( ruleValidID ) ;
     public final void rule__FullJvmFormalParameter__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23863:1: ( ( ruleValidID ) )
-            // InternalReactionsLanguage.g:23864:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:23859:1: ( ( ruleValidID ) )
+            // InternalReactionsLanguage.g:23860:2: ( ruleValidID )
             {
-            // InternalReactionsLanguage.g:23864:2: ( ruleValidID )
-            // InternalReactionsLanguage.g:23865:3: ruleValidID
+            // InternalReactionsLanguage.g:23860:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:23861:3: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getFullJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0()); 
@@ -77487,17 +77475,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFeatureCall__TypeArgumentsAssignment_1_1"
-    // InternalReactionsLanguage.g:23874:1: rule__XFeatureCall__TypeArgumentsAssignment_1_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:23870:1: rule__XFeatureCall__TypeArgumentsAssignment_1_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XFeatureCall__TypeArgumentsAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23878:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:23879:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:23874:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:23875:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:23879:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:23880:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:23875:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:23876:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_1_1_0()); 
@@ -77532,17 +77520,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFeatureCall__TypeArgumentsAssignment_1_2_1"
-    // InternalReactionsLanguage.g:23889:1: rule__XFeatureCall__TypeArgumentsAssignment_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:23885:1: rule__XFeatureCall__TypeArgumentsAssignment_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XFeatureCall__TypeArgumentsAssignment_1_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23893:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:23894:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:23889:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:23890:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:23894:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:23895:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:23890:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:23891:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_1_2_1_0()); 
@@ -77577,23 +77565,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureAssignment_2"
-    // InternalReactionsLanguage.g:23904:1: rule__XFeatureCall__FeatureAssignment_2 : ( ( ruleIdOrSuper ) ) ;
+    // InternalReactionsLanguage.g:23900:1: rule__XFeatureCall__FeatureAssignment_2 : ( ( ruleIdOrSuper ) ) ;
     public final void rule__XFeatureCall__FeatureAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23908:1: ( ( ( ruleIdOrSuper ) ) )
-            // InternalReactionsLanguage.g:23909:2: ( ( ruleIdOrSuper ) )
+            // InternalReactionsLanguage.g:23904:1: ( ( ( ruleIdOrSuper ) ) )
+            // InternalReactionsLanguage.g:23905:2: ( ( ruleIdOrSuper ) )
             {
-            // InternalReactionsLanguage.g:23909:2: ( ( ruleIdOrSuper ) )
-            // InternalReactionsLanguage.g:23910:3: ( ruleIdOrSuper )
+            // InternalReactionsLanguage.g:23905:2: ( ( ruleIdOrSuper ) )
+            // InternalReactionsLanguage.g:23906:3: ( ruleIdOrSuper )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureJvmIdentifiableElementCrossReference_2_0()); 
             }
-            // InternalReactionsLanguage.g:23911:3: ( ruleIdOrSuper )
-            // InternalReactionsLanguage.g:23912:4: ruleIdOrSuper
+            // InternalReactionsLanguage.g:23907:3: ( ruleIdOrSuper )
+            // InternalReactionsLanguage.g:23908:4: ruleIdOrSuper
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureJvmIdentifiableElementIdOrSuperParserRuleCall_2_0_1()); 
@@ -77634,23 +77622,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFeatureCall__ExplicitOperationCallAssignment_3_0"
-    // InternalReactionsLanguage.g:23923:1: rule__XFeatureCall__ExplicitOperationCallAssignment_3_0 : ( ( '(' ) ) ;
+    // InternalReactionsLanguage.g:23919:1: rule__XFeatureCall__ExplicitOperationCallAssignment_3_0 : ( ( '(' ) ) ;
     public final void rule__XFeatureCall__ExplicitOperationCallAssignment_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23927:1: ( ( ( '(' ) ) )
-            // InternalReactionsLanguage.g:23928:2: ( ( '(' ) )
+            // InternalReactionsLanguage.g:23923:1: ( ( ( '(' ) ) )
+            // InternalReactionsLanguage.g:23924:2: ( ( '(' ) )
             {
-            // InternalReactionsLanguage.g:23928:2: ( ( '(' ) )
-            // InternalReactionsLanguage.g:23929:3: ( '(' )
+            // InternalReactionsLanguage.g:23924:2: ( ( '(' ) )
+            // InternalReactionsLanguage.g:23925:3: ( '(' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_3_0_0()); 
             }
-            // InternalReactionsLanguage.g:23930:3: ( '(' )
-            // InternalReactionsLanguage.g:23931:4: '('
+            // InternalReactionsLanguage.g:23926:3: ( '(' )
+            // InternalReactionsLanguage.g:23927:4: '('
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getExplicitOperationCallLeftParenthesisKeyword_3_0_0()); 
@@ -77687,17 +77675,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_0"
-    // InternalReactionsLanguage.g:23942:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_0 : ( ruleXShortClosure ) ;
+    // InternalReactionsLanguage.g:23938:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_0 : ( ruleXShortClosure ) ;
     public final void rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23946:1: ( ( ruleXShortClosure ) )
-            // InternalReactionsLanguage.g:23947:2: ( ruleXShortClosure )
+            // InternalReactionsLanguage.g:23942:1: ( ( ruleXShortClosure ) )
+            // InternalReactionsLanguage.g:23943:2: ( ruleXShortClosure )
             {
-            // InternalReactionsLanguage.g:23947:2: ( ruleXShortClosure )
-            // InternalReactionsLanguage.g:23948:3: ruleXShortClosure
+            // InternalReactionsLanguage.g:23943:2: ( ruleXShortClosure )
+            // InternalReactionsLanguage.g:23944:3: ruleXShortClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsXShortClosureParserRuleCall_3_1_0_0()); 
@@ -77732,17 +77720,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_0"
-    // InternalReactionsLanguage.g:23957:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_0 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23953:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_0 : ( ruleXExpression ) ;
     public final void rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23961:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23962:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23957:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23958:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23962:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23963:3: ruleXExpression
+            // InternalReactionsLanguage.g:23958:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23959:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsXExpressionParserRuleCall_3_1_1_0_0()); 
@@ -77777,17 +77765,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_1"
-    // InternalReactionsLanguage.g:23972:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:23968:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_1 : ( ruleXExpression ) ;
     public final void rule__XFeatureCall__FeatureCallArgumentsAssignment_3_1_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23976:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:23977:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23972:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:23973:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:23977:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:23978:3: ruleXExpression
+            // InternalReactionsLanguage.g:23973:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:23974:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsXExpressionParserRuleCall_3_1_1_1_1_0()); 
@@ -77822,17 +77810,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFeatureCall__FeatureCallArgumentsAssignment_4"
-    // InternalReactionsLanguage.g:23987:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_4 : ( ruleXClosure ) ;
+    // InternalReactionsLanguage.g:23983:1: rule__XFeatureCall__FeatureCallArgumentsAssignment_4 : ( ruleXClosure ) ;
     public final void rule__XFeatureCall__FeatureCallArgumentsAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:23991:1: ( ( ruleXClosure ) )
-            // InternalReactionsLanguage.g:23992:2: ( ruleXClosure )
+            // InternalReactionsLanguage.g:23987:1: ( ( ruleXClosure ) )
+            // InternalReactionsLanguage.g:23988:2: ( ruleXClosure )
             {
-            // InternalReactionsLanguage.g:23992:2: ( ruleXClosure )
-            // InternalReactionsLanguage.g:23993:3: ruleXClosure
+            // InternalReactionsLanguage.g:23988:2: ( ruleXClosure )
+            // InternalReactionsLanguage.g:23989:3: ruleXClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFeatureCallAccess().getFeatureCallArgumentsXClosureParserRuleCall_4_0()); 
@@ -77867,23 +77855,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XConstructorCall__ConstructorAssignment_2"
-    // InternalReactionsLanguage.g:24002:1: rule__XConstructorCall__ConstructorAssignment_2 : ( ( ruleQualifiedName ) ) ;
+    // InternalReactionsLanguage.g:23998:1: rule__XConstructorCall__ConstructorAssignment_2 : ( ( ruleQualifiedName ) ) ;
     public final void rule__XConstructorCall__ConstructorAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24006:1: ( ( ( ruleQualifiedName ) ) )
-            // InternalReactionsLanguage.g:24007:2: ( ( ruleQualifiedName ) )
+            // InternalReactionsLanguage.g:24002:1: ( ( ( ruleQualifiedName ) ) )
+            // InternalReactionsLanguage.g:24003:2: ( ( ruleQualifiedName ) )
             {
-            // InternalReactionsLanguage.g:24007:2: ( ( ruleQualifiedName ) )
-            // InternalReactionsLanguage.g:24008:3: ( ruleQualifiedName )
+            // InternalReactionsLanguage.g:24003:2: ( ( ruleQualifiedName ) )
+            // InternalReactionsLanguage.g:24004:3: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getConstructorJvmConstructorCrossReference_2_0()); 
             }
-            // InternalReactionsLanguage.g:24009:3: ( ruleQualifiedName )
-            // InternalReactionsLanguage.g:24010:4: ruleQualifiedName
+            // InternalReactionsLanguage.g:24005:3: ( ruleQualifiedName )
+            // InternalReactionsLanguage.g:24006:4: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getConstructorJvmConstructorQualifiedNameParserRuleCall_2_0_1()); 
@@ -77924,17 +77912,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XConstructorCall__TypeArgumentsAssignment_3_1"
-    // InternalReactionsLanguage.g:24021:1: rule__XConstructorCall__TypeArgumentsAssignment_3_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:24017:1: rule__XConstructorCall__TypeArgumentsAssignment_3_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XConstructorCall__TypeArgumentsAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24025:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:24026:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24021:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:24022:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:24026:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:24027:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:24022:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24023:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_3_1_0()); 
@@ -77969,17 +77957,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XConstructorCall__TypeArgumentsAssignment_3_2_1"
-    // InternalReactionsLanguage.g:24036:1: rule__XConstructorCall__TypeArgumentsAssignment_3_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:24032:1: rule__XConstructorCall__TypeArgumentsAssignment_3_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__XConstructorCall__TypeArgumentsAssignment_3_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24040:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:24041:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24036:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:24037:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:24041:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:24042:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:24037:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24038:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getTypeArgumentsJvmArgumentTypeReferenceParserRuleCall_3_2_1_0()); 
@@ -78014,23 +78002,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XConstructorCall__ExplicitConstructorCallAssignment_4_0"
-    // InternalReactionsLanguage.g:24051:1: rule__XConstructorCall__ExplicitConstructorCallAssignment_4_0 : ( ( '(' ) ) ;
+    // InternalReactionsLanguage.g:24047:1: rule__XConstructorCall__ExplicitConstructorCallAssignment_4_0 : ( ( '(' ) ) ;
     public final void rule__XConstructorCall__ExplicitConstructorCallAssignment_4_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24055:1: ( ( ( '(' ) ) )
-            // InternalReactionsLanguage.g:24056:2: ( ( '(' ) )
+            // InternalReactionsLanguage.g:24051:1: ( ( ( '(' ) ) )
+            // InternalReactionsLanguage.g:24052:2: ( ( '(' ) )
             {
-            // InternalReactionsLanguage.g:24056:2: ( ( '(' ) )
-            // InternalReactionsLanguage.g:24057:3: ( '(' )
+            // InternalReactionsLanguage.g:24052:2: ( ( '(' ) )
+            // InternalReactionsLanguage.g:24053:3: ( '(' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getExplicitConstructorCallLeftParenthesisKeyword_4_0_0()); 
             }
-            // InternalReactionsLanguage.g:24058:3: ( '(' )
-            // InternalReactionsLanguage.g:24059:4: '('
+            // InternalReactionsLanguage.g:24054:3: ( '(' )
+            // InternalReactionsLanguage.g:24055:4: '('
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getExplicitConstructorCallLeftParenthesisKeyword_4_0_0()); 
@@ -78067,17 +78055,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XConstructorCall__ArgumentsAssignment_4_1_0"
-    // InternalReactionsLanguage.g:24070:1: rule__XConstructorCall__ArgumentsAssignment_4_1_0 : ( ruleXShortClosure ) ;
+    // InternalReactionsLanguage.g:24066:1: rule__XConstructorCall__ArgumentsAssignment_4_1_0 : ( ruleXShortClosure ) ;
     public final void rule__XConstructorCall__ArgumentsAssignment_4_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24074:1: ( ( ruleXShortClosure ) )
-            // InternalReactionsLanguage.g:24075:2: ( ruleXShortClosure )
+            // InternalReactionsLanguage.g:24070:1: ( ( ruleXShortClosure ) )
+            // InternalReactionsLanguage.g:24071:2: ( ruleXShortClosure )
             {
-            // InternalReactionsLanguage.g:24075:2: ( ruleXShortClosure )
-            // InternalReactionsLanguage.g:24076:3: ruleXShortClosure
+            // InternalReactionsLanguage.g:24071:2: ( ruleXShortClosure )
+            // InternalReactionsLanguage.g:24072:3: ruleXShortClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getArgumentsXShortClosureParserRuleCall_4_1_0_0()); 
@@ -78112,17 +78100,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XConstructorCall__ArgumentsAssignment_4_1_1_0"
-    // InternalReactionsLanguage.g:24085:1: rule__XConstructorCall__ArgumentsAssignment_4_1_1_0 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24081:1: rule__XConstructorCall__ArgumentsAssignment_4_1_1_0 : ( ruleXExpression ) ;
     public final void rule__XConstructorCall__ArgumentsAssignment_4_1_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24089:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24090:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24085:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24086:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24090:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24091:3: ruleXExpression
+            // InternalReactionsLanguage.g:24086:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24087:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getArgumentsXExpressionParserRuleCall_4_1_1_0_0()); 
@@ -78157,17 +78145,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_1"
-    // InternalReactionsLanguage.g:24100:1: rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24096:1: rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_1 : ( ruleXExpression ) ;
     public final void rule__XConstructorCall__ArgumentsAssignment_4_1_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24104:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24105:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24100:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24101:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24105:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24106:3: ruleXExpression
+            // InternalReactionsLanguage.g:24101:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24102:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getArgumentsXExpressionParserRuleCall_4_1_1_1_1_0()); 
@@ -78202,17 +78190,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XConstructorCall__ArgumentsAssignment_5"
-    // InternalReactionsLanguage.g:24115:1: rule__XConstructorCall__ArgumentsAssignment_5 : ( ruleXClosure ) ;
+    // InternalReactionsLanguage.g:24111:1: rule__XConstructorCall__ArgumentsAssignment_5 : ( ruleXClosure ) ;
     public final void rule__XConstructorCall__ArgumentsAssignment_5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24119:1: ( ( ruleXClosure ) )
-            // InternalReactionsLanguage.g:24120:2: ( ruleXClosure )
+            // InternalReactionsLanguage.g:24115:1: ( ( ruleXClosure ) )
+            // InternalReactionsLanguage.g:24116:2: ( ruleXClosure )
             {
-            // InternalReactionsLanguage.g:24120:2: ( ruleXClosure )
-            // InternalReactionsLanguage.g:24121:3: ruleXClosure
+            // InternalReactionsLanguage.g:24116:2: ( ruleXClosure )
+            // InternalReactionsLanguage.g:24117:3: ruleXClosure
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXConstructorCallAccess().getArgumentsXClosureParserRuleCall_5_0()); 
@@ -78247,23 +78235,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XBooleanLiteral__IsTrueAssignment_1_1"
-    // InternalReactionsLanguage.g:24130:1: rule__XBooleanLiteral__IsTrueAssignment_1_1 : ( ( 'true' ) ) ;
+    // InternalReactionsLanguage.g:24126:1: rule__XBooleanLiteral__IsTrueAssignment_1_1 : ( ( 'true' ) ) ;
     public final void rule__XBooleanLiteral__IsTrueAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24134:1: ( ( ( 'true' ) ) )
-            // InternalReactionsLanguage.g:24135:2: ( ( 'true' ) )
+            // InternalReactionsLanguage.g:24130:1: ( ( ( 'true' ) ) )
+            // InternalReactionsLanguage.g:24131:2: ( ( 'true' ) )
             {
-            // InternalReactionsLanguage.g:24135:2: ( ( 'true' ) )
-            // InternalReactionsLanguage.g:24136:3: ( 'true' )
+            // InternalReactionsLanguage.g:24131:2: ( ( 'true' ) )
+            // InternalReactionsLanguage.g:24132:3: ( 'true' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBooleanLiteralAccess().getIsTrueTrueKeyword_1_1_0()); 
             }
-            // InternalReactionsLanguage.g:24137:3: ( 'true' )
-            // InternalReactionsLanguage.g:24138:4: 'true'
+            // InternalReactionsLanguage.g:24133:3: ( 'true' )
+            // InternalReactionsLanguage.g:24134:4: 'true'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXBooleanLiteralAccess().getIsTrueTrueKeyword_1_1_0()); 
@@ -78300,17 +78288,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XNumberLiteral__ValueAssignment_1"
-    // InternalReactionsLanguage.g:24149:1: rule__XNumberLiteral__ValueAssignment_1 : ( ruleNumber ) ;
+    // InternalReactionsLanguage.g:24145:1: rule__XNumberLiteral__ValueAssignment_1 : ( ruleNumber ) ;
     public final void rule__XNumberLiteral__ValueAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24153:1: ( ( ruleNumber ) )
-            // InternalReactionsLanguage.g:24154:2: ( ruleNumber )
+            // InternalReactionsLanguage.g:24149:1: ( ( ruleNumber ) )
+            // InternalReactionsLanguage.g:24150:2: ( ruleNumber )
             {
-            // InternalReactionsLanguage.g:24154:2: ( ruleNumber )
-            // InternalReactionsLanguage.g:24155:3: ruleNumber
+            // InternalReactionsLanguage.g:24150:2: ( ruleNumber )
+            // InternalReactionsLanguage.g:24151:3: ruleNumber
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXNumberLiteralAccess().getValueNumberParserRuleCall_1_0()); 
@@ -78345,17 +78333,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XStringLiteral__ValueAssignment_1"
-    // InternalReactionsLanguage.g:24164:1: rule__XStringLiteral__ValueAssignment_1 : ( RULE_STRING ) ;
+    // InternalReactionsLanguage.g:24160:1: rule__XStringLiteral__ValueAssignment_1 : ( RULE_STRING ) ;
     public final void rule__XStringLiteral__ValueAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24168:1: ( ( RULE_STRING ) )
-            // InternalReactionsLanguage.g:24169:2: ( RULE_STRING )
+            // InternalReactionsLanguage.g:24164:1: ( ( RULE_STRING ) )
+            // InternalReactionsLanguage.g:24165:2: ( RULE_STRING )
             {
-            // InternalReactionsLanguage.g:24169:2: ( RULE_STRING )
-            // InternalReactionsLanguage.g:24170:3: RULE_STRING
+            // InternalReactionsLanguage.g:24165:2: ( RULE_STRING )
+            // InternalReactionsLanguage.g:24166:3: RULE_STRING
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXStringLiteralAccess().getValueSTRINGTerminalRuleCall_1_0()); 
@@ -78386,23 +78374,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XTypeLiteral__TypeAssignment_3"
-    // InternalReactionsLanguage.g:24179:1: rule__XTypeLiteral__TypeAssignment_3 : ( ( ruleQualifiedName ) ) ;
+    // InternalReactionsLanguage.g:24175:1: rule__XTypeLiteral__TypeAssignment_3 : ( ( ruleQualifiedName ) ) ;
     public final void rule__XTypeLiteral__TypeAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24183:1: ( ( ( ruleQualifiedName ) ) )
-            // InternalReactionsLanguage.g:24184:2: ( ( ruleQualifiedName ) )
+            // InternalReactionsLanguage.g:24179:1: ( ( ( ruleQualifiedName ) ) )
+            // InternalReactionsLanguage.g:24180:2: ( ( ruleQualifiedName ) )
             {
-            // InternalReactionsLanguage.g:24184:2: ( ( ruleQualifiedName ) )
-            // InternalReactionsLanguage.g:24185:3: ( ruleQualifiedName )
+            // InternalReactionsLanguage.g:24180:2: ( ( ruleQualifiedName ) )
+            // InternalReactionsLanguage.g:24181:3: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTypeLiteralAccess().getTypeJvmTypeCrossReference_3_0()); 
             }
-            // InternalReactionsLanguage.g:24186:3: ( ruleQualifiedName )
-            // InternalReactionsLanguage.g:24187:4: ruleQualifiedName
+            // InternalReactionsLanguage.g:24182:3: ( ruleQualifiedName )
+            // InternalReactionsLanguage.g:24183:4: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTypeLiteralAccess().getTypeJvmTypeQualifiedNameParserRuleCall_3_0_1()); 
@@ -78443,17 +78431,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XTypeLiteral__ArrayDimensionsAssignment_4"
-    // InternalReactionsLanguage.g:24198:1: rule__XTypeLiteral__ArrayDimensionsAssignment_4 : ( ruleArrayBrackets ) ;
+    // InternalReactionsLanguage.g:24194:1: rule__XTypeLiteral__ArrayDimensionsAssignment_4 : ( ruleArrayBrackets ) ;
     public final void rule__XTypeLiteral__ArrayDimensionsAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24202:1: ( ( ruleArrayBrackets ) )
-            // InternalReactionsLanguage.g:24203:2: ( ruleArrayBrackets )
+            // InternalReactionsLanguage.g:24198:1: ( ( ruleArrayBrackets ) )
+            // InternalReactionsLanguage.g:24199:2: ( ruleArrayBrackets )
             {
-            // InternalReactionsLanguage.g:24203:2: ( ruleArrayBrackets )
-            // InternalReactionsLanguage.g:24204:3: ruleArrayBrackets
+            // InternalReactionsLanguage.g:24199:2: ( ruleArrayBrackets )
+            // InternalReactionsLanguage.g:24200:3: ruleArrayBrackets
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTypeLiteralAccess().getArrayDimensionsArrayBracketsParserRuleCall_4_0()); 
@@ -78488,17 +78476,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XThrowExpression__ExpressionAssignment_2"
-    // InternalReactionsLanguage.g:24213:1: rule__XThrowExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24209:1: rule__XThrowExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
     public final void rule__XThrowExpression__ExpressionAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24217:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24218:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24213:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24214:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24218:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24219:3: ruleXExpression
+            // InternalReactionsLanguage.g:24214:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24215:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXThrowExpressionAccess().getExpressionXExpressionParserRuleCall_2_0()); 
@@ -78533,17 +78521,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XReturnExpression__ExpressionAssignment_2"
-    // InternalReactionsLanguage.g:24228:1: rule__XReturnExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24224:1: rule__XReturnExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
     public final void rule__XReturnExpression__ExpressionAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24232:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24233:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24228:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24229:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24233:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24234:3: ruleXExpression
+            // InternalReactionsLanguage.g:24229:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24230:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXReturnExpressionAccess().getExpressionXExpressionParserRuleCall_2_0()); 
@@ -78578,17 +78566,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XTryCatchFinallyExpression__ExpressionAssignment_2"
-    // InternalReactionsLanguage.g:24243:1: rule__XTryCatchFinallyExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24239:1: rule__XTryCatchFinallyExpression__ExpressionAssignment_2 : ( ruleXExpression ) ;
     public final void rule__XTryCatchFinallyExpression__ExpressionAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24247:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24248:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24243:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24244:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24248:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24249:3: ruleXExpression
+            // InternalReactionsLanguage.g:24244:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24245:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTryCatchFinallyExpressionAccess().getExpressionXExpressionParserRuleCall_2_0()); 
@@ -78623,17 +78611,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_0"
-    // InternalReactionsLanguage.g:24258:1: rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_0 : ( ruleXCatchClause ) ;
+    // InternalReactionsLanguage.g:24254:1: rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_0 : ( ruleXCatchClause ) ;
     public final void rule__XTryCatchFinallyExpression__CatchClausesAssignment_3_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24262:1: ( ( ruleXCatchClause ) )
-            // InternalReactionsLanguage.g:24263:2: ( ruleXCatchClause )
+            // InternalReactionsLanguage.g:24258:1: ( ( ruleXCatchClause ) )
+            // InternalReactionsLanguage.g:24259:2: ( ruleXCatchClause )
             {
-            // InternalReactionsLanguage.g:24263:2: ( ruleXCatchClause )
-            // InternalReactionsLanguage.g:24264:3: ruleXCatchClause
+            // InternalReactionsLanguage.g:24259:2: ( ruleXCatchClause )
+            // InternalReactionsLanguage.g:24260:3: ruleXCatchClause
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTryCatchFinallyExpressionAccess().getCatchClausesXCatchClauseParserRuleCall_3_0_0_0()); 
@@ -78668,17 +78656,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_1"
-    // InternalReactionsLanguage.g:24273:1: rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24269:1: rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_1 : ( ruleXExpression ) ;
     public final void rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_0_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24277:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24278:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24273:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24274:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24278:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24279:3: ruleXExpression
+            // InternalReactionsLanguage.g:24274:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24275:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTryCatchFinallyExpressionAccess().getFinallyExpressionXExpressionParserRuleCall_3_0_1_1_0()); 
@@ -78713,17 +78701,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_1"
-    // InternalReactionsLanguage.g:24288:1: rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24284:1: rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_1 : ( ruleXExpression ) ;
     public final void rule__XTryCatchFinallyExpression__FinallyExpressionAssignment_3_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24292:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24293:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24288:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24289:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24293:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24294:3: ruleXExpression
+            // InternalReactionsLanguage.g:24289:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24290:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXTryCatchFinallyExpressionAccess().getFinallyExpressionXExpressionParserRuleCall_3_1_1_0()); 
@@ -78758,17 +78746,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSynchronizedExpression__ParamAssignment_1"
-    // InternalReactionsLanguage.g:24303:1: rule__XSynchronizedExpression__ParamAssignment_1 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24299:1: rule__XSynchronizedExpression__ParamAssignment_1 : ( ruleXExpression ) ;
     public final void rule__XSynchronizedExpression__ParamAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24307:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24308:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24303:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24304:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24308:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24309:3: ruleXExpression
+            // InternalReactionsLanguage.g:24304:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24305:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSynchronizedExpressionAccess().getParamXExpressionParserRuleCall_1_0()); 
@@ -78803,17 +78791,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XSynchronizedExpression__ExpressionAssignment_3"
-    // InternalReactionsLanguage.g:24318:1: rule__XSynchronizedExpression__ExpressionAssignment_3 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24314:1: rule__XSynchronizedExpression__ExpressionAssignment_3 : ( ruleXExpression ) ;
     public final void rule__XSynchronizedExpression__ExpressionAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24322:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24323:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24318:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24319:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24323:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24324:3: ruleXExpression
+            // InternalReactionsLanguage.g:24319:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24320:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXSynchronizedExpressionAccess().getExpressionXExpressionParserRuleCall_3_0()); 
@@ -78848,17 +78836,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XCatchClause__DeclaredParamAssignment_2"
-    // InternalReactionsLanguage.g:24333:1: rule__XCatchClause__DeclaredParamAssignment_2 : ( ruleFullJvmFormalParameter ) ;
+    // InternalReactionsLanguage.g:24329:1: rule__XCatchClause__DeclaredParamAssignment_2 : ( ruleFullJvmFormalParameter ) ;
     public final void rule__XCatchClause__DeclaredParamAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24337:1: ( ( ruleFullJvmFormalParameter ) )
-            // InternalReactionsLanguage.g:24338:2: ( ruleFullJvmFormalParameter )
+            // InternalReactionsLanguage.g:24333:1: ( ( ruleFullJvmFormalParameter ) )
+            // InternalReactionsLanguage.g:24334:2: ( ruleFullJvmFormalParameter )
             {
-            // InternalReactionsLanguage.g:24338:2: ( ruleFullJvmFormalParameter )
-            // InternalReactionsLanguage.g:24339:3: ruleFullJvmFormalParameter
+            // InternalReactionsLanguage.g:24334:2: ( ruleFullJvmFormalParameter )
+            // InternalReactionsLanguage.g:24335:3: ruleFullJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCatchClauseAccess().getDeclaredParamFullJvmFormalParameterParserRuleCall_2_0()); 
@@ -78893,17 +78881,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XCatchClause__ExpressionAssignment_4"
-    // InternalReactionsLanguage.g:24348:1: rule__XCatchClause__ExpressionAssignment_4 : ( ruleXExpression ) ;
+    // InternalReactionsLanguage.g:24344:1: rule__XCatchClause__ExpressionAssignment_4 : ( ruleXExpression ) ;
     public final void rule__XCatchClause__ExpressionAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24352:1: ( ( ruleXExpression ) )
-            // InternalReactionsLanguage.g:24353:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24348:1: ( ( ruleXExpression ) )
+            // InternalReactionsLanguage.g:24349:2: ( ruleXExpression )
             {
-            // InternalReactionsLanguage.g:24353:2: ( ruleXExpression )
-            // InternalReactionsLanguage.g:24354:3: ruleXExpression
+            // InternalReactionsLanguage.g:24349:2: ( ruleXExpression )
+            // InternalReactionsLanguage.g:24350:3: ruleXExpression
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXCatchClauseAccess().getExpressionXExpressionParserRuleCall_4_0()); 
@@ -78938,17 +78926,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFunctionTypeRef__ParamTypesAssignment_0_1_0"
-    // InternalReactionsLanguage.g:24363:1: rule__XFunctionTypeRef__ParamTypesAssignment_0_1_0 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:24359:1: rule__XFunctionTypeRef__ParamTypesAssignment_0_1_0 : ( ruleJvmTypeReference ) ;
     public final void rule__XFunctionTypeRef__ParamTypesAssignment_0_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24367:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:24368:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24363:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:24364:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:24368:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:24369:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:24364:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24365:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFunctionTypeRefAccess().getParamTypesJvmTypeReferenceParserRuleCall_0_1_0_0()); 
@@ -78983,17 +78971,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_1"
-    // InternalReactionsLanguage.g:24378:1: rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_1 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:24374:1: rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_1 : ( ruleJvmTypeReference ) ;
     public final void rule__XFunctionTypeRef__ParamTypesAssignment_0_1_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24382:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:24383:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24378:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:24379:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:24383:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:24384:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:24379:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24380:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFunctionTypeRefAccess().getParamTypesJvmTypeReferenceParserRuleCall_0_1_1_1_0()); 
@@ -79028,17 +79016,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XFunctionTypeRef__ReturnTypeAssignment_2"
-    // InternalReactionsLanguage.g:24393:1: rule__XFunctionTypeRef__ReturnTypeAssignment_2 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:24389:1: rule__XFunctionTypeRef__ReturnTypeAssignment_2 : ( ruleJvmTypeReference ) ;
     public final void rule__XFunctionTypeRef__ReturnTypeAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24397:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:24398:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24393:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:24394:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:24398:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:24399:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:24394:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24395:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXFunctionTypeRefAccess().getReturnTypeJvmTypeReferenceParserRuleCall_2_0()); 
@@ -79073,23 +79061,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmParameterizedTypeReference__TypeAssignment_0"
-    // InternalReactionsLanguage.g:24408:1: rule__JvmParameterizedTypeReference__TypeAssignment_0 : ( ( ruleQualifiedName ) ) ;
+    // InternalReactionsLanguage.g:24404:1: rule__JvmParameterizedTypeReference__TypeAssignment_0 : ( ( ruleQualifiedName ) ) ;
     public final void rule__JvmParameterizedTypeReference__TypeAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24412:1: ( ( ( ruleQualifiedName ) ) )
-            // InternalReactionsLanguage.g:24413:2: ( ( ruleQualifiedName ) )
+            // InternalReactionsLanguage.g:24408:1: ( ( ( ruleQualifiedName ) ) )
+            // InternalReactionsLanguage.g:24409:2: ( ( ruleQualifiedName ) )
             {
-            // InternalReactionsLanguage.g:24413:2: ( ( ruleQualifiedName ) )
-            // InternalReactionsLanguage.g:24414:3: ( ruleQualifiedName )
+            // InternalReactionsLanguage.g:24409:2: ( ( ruleQualifiedName ) )
+            // InternalReactionsLanguage.g:24410:3: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getTypeJvmTypeCrossReference_0_0()); 
             }
-            // InternalReactionsLanguage.g:24415:3: ( ruleQualifiedName )
-            // InternalReactionsLanguage.g:24416:4: ruleQualifiedName
+            // InternalReactionsLanguage.g:24411:3: ( ruleQualifiedName )
+            // InternalReactionsLanguage.g:24412:4: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getTypeJvmTypeQualifiedNameParserRuleCall_0_0_1()); 
@@ -79130,17 +79118,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_1"
-    // InternalReactionsLanguage.g:24427:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:24423:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24431:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:24432:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24427:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:24428:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:24432:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:24433:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:24428:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24429:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getArgumentsJvmArgumentTypeReferenceParserRuleCall_1_1_0()); 
@@ -79175,17 +79163,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_1"
-    // InternalReactionsLanguage.g:24442:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:24438:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24446:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:24447:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24442:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:24443:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:24447:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:24448:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:24443:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24444:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getArgumentsJvmArgumentTypeReferenceParserRuleCall_1_2_1_0()); 
@@ -79220,23 +79208,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmParameterizedTypeReference__TypeAssignment_1_4_1"
-    // InternalReactionsLanguage.g:24457:1: rule__JvmParameterizedTypeReference__TypeAssignment_1_4_1 : ( ( ruleValidID ) ) ;
+    // InternalReactionsLanguage.g:24453:1: rule__JvmParameterizedTypeReference__TypeAssignment_1_4_1 : ( ( ruleValidID ) ) ;
     public final void rule__JvmParameterizedTypeReference__TypeAssignment_1_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24461:1: ( ( ( ruleValidID ) ) )
-            // InternalReactionsLanguage.g:24462:2: ( ( ruleValidID ) )
+            // InternalReactionsLanguage.g:24457:1: ( ( ( ruleValidID ) ) )
+            // InternalReactionsLanguage.g:24458:2: ( ( ruleValidID ) )
             {
-            // InternalReactionsLanguage.g:24462:2: ( ( ruleValidID ) )
-            // InternalReactionsLanguage.g:24463:3: ( ruleValidID )
+            // InternalReactionsLanguage.g:24458:2: ( ( ruleValidID ) )
+            // InternalReactionsLanguage.g:24459:3: ( ruleValidID )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getTypeJvmTypeCrossReference_1_4_1_0()); 
             }
-            // InternalReactionsLanguage.g:24464:3: ( ruleValidID )
-            // InternalReactionsLanguage.g:24465:4: ruleValidID
+            // InternalReactionsLanguage.g:24460:3: ( ruleValidID )
+            // InternalReactionsLanguage.g:24461:4: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getTypeJvmTypeValidIDParserRuleCall_1_4_1_0_1()); 
@@ -79277,17 +79265,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_4_2_1"
-    // InternalReactionsLanguage.g:24476:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_4_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:24472:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_4_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_4_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24480:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:24481:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24476:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:24477:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:24481:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:24482:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:24477:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24478:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getArgumentsJvmArgumentTypeReferenceParserRuleCall_1_4_2_1_0()); 
@@ -79322,17 +79310,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_4_2_2_1"
-    // InternalReactionsLanguage.g:24491:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_4_2_2_1 : ( ruleJvmArgumentTypeReference ) ;
+    // InternalReactionsLanguage.g:24487:1: rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_4_2_2_1 : ( ruleJvmArgumentTypeReference ) ;
     public final void rule__JvmParameterizedTypeReference__ArgumentsAssignment_1_4_2_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24495:1: ( ( ruleJvmArgumentTypeReference ) )
-            // InternalReactionsLanguage.g:24496:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24491:1: ( ( ruleJvmArgumentTypeReference ) )
+            // InternalReactionsLanguage.g:24492:2: ( ruleJvmArgumentTypeReference )
             {
-            // InternalReactionsLanguage.g:24496:2: ( ruleJvmArgumentTypeReference )
-            // InternalReactionsLanguage.g:24497:3: ruleJvmArgumentTypeReference
+            // InternalReactionsLanguage.g:24492:2: ( ruleJvmArgumentTypeReference )
+            // InternalReactionsLanguage.g:24493:3: ruleJvmArgumentTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmParameterizedTypeReferenceAccess().getArgumentsJvmArgumentTypeReferenceParserRuleCall_1_4_2_2_1_0()); 
@@ -79367,17 +79355,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0_0"
-    // InternalReactionsLanguage.g:24506:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0_0 : ( ruleJvmUpperBound ) ;
+    // InternalReactionsLanguage.g:24502:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0_0 : ( ruleJvmUpperBound ) ;
     public final void rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24510:1: ( ( ruleJvmUpperBound ) )
-            // InternalReactionsLanguage.g:24511:2: ( ruleJvmUpperBound )
+            // InternalReactionsLanguage.g:24506:1: ( ( ruleJvmUpperBound ) )
+            // InternalReactionsLanguage.g:24507:2: ( ruleJvmUpperBound )
             {
-            // InternalReactionsLanguage.g:24511:2: ( ruleJvmUpperBound )
-            // InternalReactionsLanguage.g:24512:3: ruleJvmUpperBound
+            // InternalReactionsLanguage.g:24507:2: ( ruleJvmUpperBound )
+            // InternalReactionsLanguage.g:24508:3: ruleJvmUpperBound
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmWildcardTypeReferenceAccess().getConstraintsJvmUpperBoundParserRuleCall_2_0_0_0()); 
@@ -79412,17 +79400,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0_1"
-    // InternalReactionsLanguage.g:24521:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0_1 : ( ruleJvmUpperBoundAnded ) ;
+    // InternalReactionsLanguage.g:24517:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0_1 : ( ruleJvmUpperBoundAnded ) ;
     public final void rule__JvmWildcardTypeReference__ConstraintsAssignment_2_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24525:1: ( ( ruleJvmUpperBoundAnded ) )
-            // InternalReactionsLanguage.g:24526:2: ( ruleJvmUpperBoundAnded )
+            // InternalReactionsLanguage.g:24521:1: ( ( ruleJvmUpperBoundAnded ) )
+            // InternalReactionsLanguage.g:24522:2: ( ruleJvmUpperBoundAnded )
             {
-            // InternalReactionsLanguage.g:24526:2: ( ruleJvmUpperBoundAnded )
-            // InternalReactionsLanguage.g:24527:3: ruleJvmUpperBoundAnded
+            // InternalReactionsLanguage.g:24522:2: ( ruleJvmUpperBoundAnded )
+            // InternalReactionsLanguage.g:24523:3: ruleJvmUpperBoundAnded
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmWildcardTypeReferenceAccess().getConstraintsJvmUpperBoundAndedParserRuleCall_2_0_1_0()); 
@@ -79457,17 +79445,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1_0"
-    // InternalReactionsLanguage.g:24536:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1_0 : ( ruleJvmLowerBound ) ;
+    // InternalReactionsLanguage.g:24532:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1_0 : ( ruleJvmLowerBound ) ;
     public final void rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24540:1: ( ( ruleJvmLowerBound ) )
-            // InternalReactionsLanguage.g:24541:2: ( ruleJvmLowerBound )
+            // InternalReactionsLanguage.g:24536:1: ( ( ruleJvmLowerBound ) )
+            // InternalReactionsLanguage.g:24537:2: ( ruleJvmLowerBound )
             {
-            // InternalReactionsLanguage.g:24541:2: ( ruleJvmLowerBound )
-            // InternalReactionsLanguage.g:24542:3: ruleJvmLowerBound
+            // InternalReactionsLanguage.g:24537:2: ( ruleJvmLowerBound )
+            // InternalReactionsLanguage.g:24538:3: ruleJvmLowerBound
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmWildcardTypeReferenceAccess().getConstraintsJvmLowerBoundParserRuleCall_2_1_0_0()); 
@@ -79502,17 +79490,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1_1"
-    // InternalReactionsLanguage.g:24551:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1_1 : ( ruleJvmLowerBoundAnded ) ;
+    // InternalReactionsLanguage.g:24547:1: rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1_1 : ( ruleJvmLowerBoundAnded ) ;
     public final void rule__JvmWildcardTypeReference__ConstraintsAssignment_2_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24555:1: ( ( ruleJvmLowerBoundAnded ) )
-            // InternalReactionsLanguage.g:24556:2: ( ruleJvmLowerBoundAnded )
+            // InternalReactionsLanguage.g:24551:1: ( ( ruleJvmLowerBoundAnded ) )
+            // InternalReactionsLanguage.g:24552:2: ( ruleJvmLowerBoundAnded )
             {
-            // InternalReactionsLanguage.g:24556:2: ( ruleJvmLowerBoundAnded )
-            // InternalReactionsLanguage.g:24557:3: ruleJvmLowerBoundAnded
+            // InternalReactionsLanguage.g:24552:2: ( ruleJvmLowerBoundAnded )
+            // InternalReactionsLanguage.g:24553:3: ruleJvmLowerBoundAnded
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmWildcardTypeReferenceAccess().getConstraintsJvmLowerBoundAndedParserRuleCall_2_1_1_0()); 
@@ -79547,17 +79535,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmUpperBound__TypeReferenceAssignment_1"
-    // InternalReactionsLanguage.g:24566:1: rule__JvmUpperBound__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:24562:1: rule__JvmUpperBound__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
     public final void rule__JvmUpperBound__TypeReferenceAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24570:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:24571:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24566:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:24567:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:24571:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:24572:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:24567:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24568:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmUpperBoundAccess().getTypeReferenceJvmTypeReferenceParserRuleCall_1_0()); 
@@ -79592,17 +79580,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmUpperBoundAnded__TypeReferenceAssignment_1"
-    // InternalReactionsLanguage.g:24581:1: rule__JvmUpperBoundAnded__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:24577:1: rule__JvmUpperBoundAnded__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
     public final void rule__JvmUpperBoundAnded__TypeReferenceAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24585:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:24586:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24581:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:24582:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:24586:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:24587:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:24582:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24583:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmUpperBoundAndedAccess().getTypeReferenceJvmTypeReferenceParserRuleCall_1_0()); 
@@ -79637,17 +79625,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmLowerBound__TypeReferenceAssignment_1"
-    // InternalReactionsLanguage.g:24596:1: rule__JvmLowerBound__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:24592:1: rule__JvmLowerBound__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
     public final void rule__JvmLowerBound__TypeReferenceAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24600:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:24601:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24596:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:24597:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:24601:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:24602:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:24597:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24598:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmLowerBoundAccess().getTypeReferenceJvmTypeReferenceParserRuleCall_1_0()); 
@@ -79682,17 +79670,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__JvmLowerBoundAnded__TypeReferenceAssignment_1"
-    // InternalReactionsLanguage.g:24611:1: rule__JvmLowerBoundAnded__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
+    // InternalReactionsLanguage.g:24607:1: rule__JvmLowerBoundAnded__TypeReferenceAssignment_1 : ( ruleJvmTypeReference ) ;
     public final void rule__JvmLowerBoundAnded__TypeReferenceAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24615:1: ( ( ruleJvmTypeReference ) )
-            // InternalReactionsLanguage.g:24616:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24611:1: ( ( ruleJvmTypeReference ) )
+            // InternalReactionsLanguage.g:24612:2: ( ruleJvmTypeReference )
             {
-            // InternalReactionsLanguage.g:24616:2: ( ruleJvmTypeReference )
-            // InternalReactionsLanguage.g:24617:3: ruleJvmTypeReference
+            // InternalReactionsLanguage.g:24612:2: ( ruleJvmTypeReference )
+            // InternalReactionsLanguage.g:24613:3: ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getJvmLowerBoundAndedAccess().getTypeReferenceJvmTypeReferenceParserRuleCall_1_0()); 
@@ -79727,17 +79715,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XImportSection__ImportDeclarationsAssignment"
-    // InternalReactionsLanguage.g:24626:1: rule__XImportSection__ImportDeclarationsAssignment : ( ruleXImportDeclaration ) ;
+    // InternalReactionsLanguage.g:24622:1: rule__XImportSection__ImportDeclarationsAssignment : ( ruleXImportDeclaration ) ;
     public final void rule__XImportSection__ImportDeclarationsAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24630:1: ( ( ruleXImportDeclaration ) )
-            // InternalReactionsLanguage.g:24631:2: ( ruleXImportDeclaration )
+            // InternalReactionsLanguage.g:24626:1: ( ( ruleXImportDeclaration ) )
+            // InternalReactionsLanguage.g:24627:2: ( ruleXImportDeclaration )
             {
-            // InternalReactionsLanguage.g:24631:2: ( ruleXImportDeclaration )
-            // InternalReactionsLanguage.g:24632:3: ruleXImportDeclaration
+            // InternalReactionsLanguage.g:24627:2: ( ruleXImportDeclaration )
+            // InternalReactionsLanguage.g:24628:3: ruleXImportDeclaration
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportSectionAccess().getImportDeclarationsXImportDeclarationParserRuleCall_0()); 
@@ -79772,23 +79760,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XImportDeclaration__StaticAssignment_1_0_0"
-    // InternalReactionsLanguage.g:24641:1: rule__XImportDeclaration__StaticAssignment_1_0_0 : ( ( 'static' ) ) ;
+    // InternalReactionsLanguage.g:24637:1: rule__XImportDeclaration__StaticAssignment_1_0_0 : ( ( 'static' ) ) ;
     public final void rule__XImportDeclaration__StaticAssignment_1_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24645:1: ( ( ( 'static' ) ) )
-            // InternalReactionsLanguage.g:24646:2: ( ( 'static' ) )
+            // InternalReactionsLanguage.g:24641:1: ( ( ( 'static' ) ) )
+            // InternalReactionsLanguage.g:24642:2: ( ( 'static' ) )
             {
-            // InternalReactionsLanguage.g:24646:2: ( ( 'static' ) )
-            // InternalReactionsLanguage.g:24647:3: ( 'static' )
+            // InternalReactionsLanguage.g:24642:2: ( ( 'static' ) )
+            // InternalReactionsLanguage.g:24643:3: ( 'static' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getStaticStaticKeyword_1_0_0_0()); 
             }
-            // InternalReactionsLanguage.g:24648:3: ( 'static' )
-            // InternalReactionsLanguage.g:24649:4: 'static'
+            // InternalReactionsLanguage.g:24644:3: ( 'static' )
+            // InternalReactionsLanguage.g:24645:4: 'static'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getStaticStaticKeyword_1_0_0_0()); 
@@ -79825,23 +79813,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XImportDeclaration__ExtensionAssignment_1_0_1"
-    // InternalReactionsLanguage.g:24660:1: rule__XImportDeclaration__ExtensionAssignment_1_0_1 : ( ( 'extension' ) ) ;
+    // InternalReactionsLanguage.g:24656:1: rule__XImportDeclaration__ExtensionAssignment_1_0_1 : ( ( 'extension' ) ) ;
     public final void rule__XImportDeclaration__ExtensionAssignment_1_0_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24664:1: ( ( ( 'extension' ) ) )
-            // InternalReactionsLanguage.g:24665:2: ( ( 'extension' ) )
+            // InternalReactionsLanguage.g:24660:1: ( ( ( 'extension' ) ) )
+            // InternalReactionsLanguage.g:24661:2: ( ( 'extension' ) )
             {
-            // InternalReactionsLanguage.g:24665:2: ( ( 'extension' ) )
-            // InternalReactionsLanguage.g:24666:3: ( 'extension' )
+            // InternalReactionsLanguage.g:24661:2: ( ( 'extension' ) )
+            // InternalReactionsLanguage.g:24662:3: ( 'extension' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getExtensionExtensionKeyword_1_0_1_0()); 
             }
-            // InternalReactionsLanguage.g:24667:3: ( 'extension' )
-            // InternalReactionsLanguage.g:24668:4: 'extension'
+            // InternalReactionsLanguage.g:24663:3: ( 'extension' )
+            // InternalReactionsLanguage.g:24664:4: 'extension'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getExtensionExtensionKeyword_1_0_1_0()); 
@@ -79878,23 +79866,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XImportDeclaration__ImportedTypeAssignment_1_0_2"
-    // InternalReactionsLanguage.g:24679:1: rule__XImportDeclaration__ImportedTypeAssignment_1_0_2 : ( ( ruleQualifiedNameInStaticImport ) ) ;
+    // InternalReactionsLanguage.g:24675:1: rule__XImportDeclaration__ImportedTypeAssignment_1_0_2 : ( ( ruleQualifiedNameInStaticImport ) ) ;
     public final void rule__XImportDeclaration__ImportedTypeAssignment_1_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24683:1: ( ( ( ruleQualifiedNameInStaticImport ) ) )
-            // InternalReactionsLanguage.g:24684:2: ( ( ruleQualifiedNameInStaticImport ) )
+            // InternalReactionsLanguage.g:24679:1: ( ( ( ruleQualifiedNameInStaticImport ) ) )
+            // InternalReactionsLanguage.g:24680:2: ( ( ruleQualifiedNameInStaticImport ) )
             {
-            // InternalReactionsLanguage.g:24684:2: ( ( ruleQualifiedNameInStaticImport ) )
-            // InternalReactionsLanguage.g:24685:3: ( ruleQualifiedNameInStaticImport )
+            // InternalReactionsLanguage.g:24680:2: ( ( ruleQualifiedNameInStaticImport ) )
+            // InternalReactionsLanguage.g:24681:3: ( ruleQualifiedNameInStaticImport )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedTypeJvmDeclaredTypeCrossReference_1_0_2_0()); 
             }
-            // InternalReactionsLanguage.g:24686:3: ( ruleQualifiedNameInStaticImport )
-            // InternalReactionsLanguage.g:24687:4: ruleQualifiedNameInStaticImport
+            // InternalReactionsLanguage.g:24682:3: ( ruleQualifiedNameInStaticImport )
+            // InternalReactionsLanguage.g:24683:4: ruleQualifiedNameInStaticImport
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedTypeJvmDeclaredTypeQualifiedNameInStaticImportParserRuleCall_1_0_2_0_1()); 
@@ -79935,23 +79923,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XImportDeclaration__WildcardAssignment_1_0_3_0"
-    // InternalReactionsLanguage.g:24698:1: rule__XImportDeclaration__WildcardAssignment_1_0_3_0 : ( ( '*' ) ) ;
+    // InternalReactionsLanguage.g:24694:1: rule__XImportDeclaration__WildcardAssignment_1_0_3_0 : ( ( '*' ) ) ;
     public final void rule__XImportDeclaration__WildcardAssignment_1_0_3_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24702:1: ( ( ( '*' ) ) )
-            // InternalReactionsLanguage.g:24703:2: ( ( '*' ) )
+            // InternalReactionsLanguage.g:24698:1: ( ( ( '*' ) ) )
+            // InternalReactionsLanguage.g:24699:2: ( ( '*' ) )
             {
-            // InternalReactionsLanguage.g:24703:2: ( ( '*' ) )
-            // InternalReactionsLanguage.g:24704:3: ( '*' )
+            // InternalReactionsLanguage.g:24699:2: ( ( '*' ) )
+            // InternalReactionsLanguage.g:24700:3: ( '*' )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getWildcardAsteriskKeyword_1_0_3_0_0()); 
             }
-            // InternalReactionsLanguage.g:24705:3: ( '*' )
-            // InternalReactionsLanguage.g:24706:4: '*'
+            // InternalReactionsLanguage.g:24701:3: ( '*' )
+            // InternalReactionsLanguage.g:24702:4: '*'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getWildcardAsteriskKeyword_1_0_3_0_0()); 
@@ -79988,17 +79976,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XImportDeclaration__MemberNameAssignment_1_0_3_1"
-    // InternalReactionsLanguage.g:24717:1: rule__XImportDeclaration__MemberNameAssignment_1_0_3_1 : ( ruleValidID ) ;
+    // InternalReactionsLanguage.g:24713:1: rule__XImportDeclaration__MemberNameAssignment_1_0_3_1 : ( ruleValidID ) ;
     public final void rule__XImportDeclaration__MemberNameAssignment_1_0_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24721:1: ( ( ruleValidID ) )
-            // InternalReactionsLanguage.g:24722:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:24717:1: ( ( ruleValidID ) )
+            // InternalReactionsLanguage.g:24718:2: ( ruleValidID )
             {
-            // InternalReactionsLanguage.g:24722:2: ( ruleValidID )
-            // InternalReactionsLanguage.g:24723:3: ruleValidID
+            // InternalReactionsLanguage.g:24718:2: ( ruleValidID )
+            // InternalReactionsLanguage.g:24719:3: ruleValidID
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getMemberNameValidIDParserRuleCall_1_0_3_1_0()); 
@@ -80033,23 +80021,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XImportDeclaration__ImportedTypeAssignment_1_1"
-    // InternalReactionsLanguage.g:24732:1: rule__XImportDeclaration__ImportedTypeAssignment_1_1 : ( ( ruleQualifiedName ) ) ;
+    // InternalReactionsLanguage.g:24728:1: rule__XImportDeclaration__ImportedTypeAssignment_1_1 : ( ( ruleQualifiedName ) ) ;
     public final void rule__XImportDeclaration__ImportedTypeAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24736:1: ( ( ( ruleQualifiedName ) ) )
-            // InternalReactionsLanguage.g:24737:2: ( ( ruleQualifiedName ) )
+            // InternalReactionsLanguage.g:24732:1: ( ( ( ruleQualifiedName ) ) )
+            // InternalReactionsLanguage.g:24733:2: ( ( ruleQualifiedName ) )
             {
-            // InternalReactionsLanguage.g:24737:2: ( ( ruleQualifiedName ) )
-            // InternalReactionsLanguage.g:24738:3: ( ruleQualifiedName )
+            // InternalReactionsLanguage.g:24733:2: ( ( ruleQualifiedName ) )
+            // InternalReactionsLanguage.g:24734:3: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedTypeJvmDeclaredTypeCrossReference_1_1_0()); 
             }
-            // InternalReactionsLanguage.g:24739:3: ( ruleQualifiedName )
-            // InternalReactionsLanguage.g:24740:4: ruleQualifiedName
+            // InternalReactionsLanguage.g:24735:3: ( ruleQualifiedName )
+            // InternalReactionsLanguage.g:24736:4: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedTypeJvmDeclaredTypeQualifiedNameParserRuleCall_1_1_0_1()); 
@@ -80090,17 +80078,17 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__XImportDeclaration__ImportedNamespaceAssignment_1_2"
-    // InternalReactionsLanguage.g:24751:1: rule__XImportDeclaration__ImportedNamespaceAssignment_1_2 : ( ruleQualifiedNameWithWildcard ) ;
+    // InternalReactionsLanguage.g:24747:1: rule__XImportDeclaration__ImportedNamespaceAssignment_1_2 : ( ruleQualifiedNameWithWildcard ) ;
     public final void rule__XImportDeclaration__ImportedNamespaceAssignment_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:24755:1: ( ( ruleQualifiedNameWithWildcard ) )
-            // InternalReactionsLanguage.g:24756:2: ( ruleQualifiedNameWithWildcard )
+            // InternalReactionsLanguage.g:24751:1: ( ( ruleQualifiedNameWithWildcard ) )
+            // InternalReactionsLanguage.g:24752:2: ( ruleQualifiedNameWithWildcard )
             {
-            // InternalReactionsLanguage.g:24756:2: ( ruleQualifiedNameWithWildcard )
-            // InternalReactionsLanguage.g:24757:3: ruleQualifiedNameWithWildcard
+            // InternalReactionsLanguage.g:24752:2: ( ruleQualifiedNameWithWildcard )
+            // InternalReactionsLanguage.g:24753:3: ruleQualifiedNameWithWildcard
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getXImportDeclarationAccess().getImportedNamespaceQualifiedNameWithWildcardParserRuleCall_1_2_0()); 
@@ -81957,7 +81945,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
     static final String dfa_43s = "\1\4\7\0\2\uffff";
     static final String dfa_44s = "\1\176\7\0\2\uffff";
     static final String dfa_45s = "\10\uffff\1\2\1\1";
-    static final String dfa_46s = "\1\uffff\1\5\1\3\1\2\1\1\1\6\1\0\1\4\2\uffff}>";
+    static final String dfa_46s = "\1\uffff\1\1\1\0\1\6\1\4\1\2\1\3\1\5\2\uffff}>";
     static final String[] dfa_47s = {
             "\4\10\1\uffff\1\10\4\uffff\2\10\1\1\1\2\1\3\1\4\1\5\5\10\1\7\1\6\27\10\4\uffff\2\10\2\uffff\1\10\14\uffff\1\10\1\uffff\2\10\1\uffff\1\10\2\uffff\3\10\3\uffff\40\10\3\uffff\1\10\1\uffff\1\10\1\uffff\2\10",
             "\1\uffff",
@@ -81998,51 +81986,6 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA81_6 = input.LA(1);
-
-                         
-                        int index81_6 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred133_InternalReactionsLanguage()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index81_6);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
-                        int LA81_4 = input.LA(1);
-
-                         
-                        int index81_4 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred133_InternalReactionsLanguage()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index81_4);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
-                        int LA81_3 = input.LA(1);
-
-                         
-                        int index81_3 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred133_InternalReactionsLanguage()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index81_3);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 3 : 
                         int LA81_2 = input.LA(1);
 
                          
@@ -82057,22 +82000,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                         input.seek(index81_2);
                         if ( s>=0 ) return s;
                         break;
-                    case 4 : 
-                        int LA81_7 = input.LA(1);
-
-                         
-                        int index81_7 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred133_InternalReactionsLanguage()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index81_7);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 5 : 
+                    case 1 : 
                         int LA81_1 = input.LA(1);
 
                          
@@ -82087,7 +82015,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                         input.seek(index81_1);
                         if ( s>=0 ) return s;
                         break;
-                    case 6 : 
+                    case 2 : 
                         int LA81_5 = input.LA(1);
 
                          
@@ -82102,6 +82030,66 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                         input.seek(index81_5);
                         if ( s>=0 ) return s;
                         break;
+                    case 3 : 
+                        int LA81_6 = input.LA(1);
+
+                         
+                        int index81_6 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred133_InternalReactionsLanguage()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index81_6);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 4 : 
+                        int LA81_4 = input.LA(1);
+
+                         
+                        int index81_4 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred133_InternalReactionsLanguage()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index81_4);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
+                        int LA81_7 = input.LA(1);
+
+                         
+                        int index81_7 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred133_InternalReactionsLanguage()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index81_7);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 6 : 
+                        int LA81_3 = input.LA(1);
+
+                         
+                        int index81_3 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred133_InternalReactionsLanguage()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index81_3);
+                        if ( s>=0 ) return s;
+                        break;
             }
             if (state.backtracking>0) {state.failed=true; return -1;}
             NoViableAltException nvae =
@@ -82114,7 +82102,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
     static final String dfa_49s = "\1\4\1\uffff\10\0\1\uffff";
     static final String dfa_50s = "\1\176\1\uffff\10\0\1\uffff";
     static final String dfa_51s = "\1\uffff\1\2\10\uffff\1\1";
-    static final String dfa_52s = "\2\uffff\1\4\1\5\1\6\1\0\1\2\1\3\1\7\1\1\1\uffff}>";
+    static final String dfa_52s = "\2\uffff\1\2\1\5\1\0\1\3\1\6\1\7\1\1\1\4\1\uffff}>";
     static final String[] dfa_53s = {
             "\4\1\1\uffff\1\1\4\uffff\14\1\1\3\1\2\1\4\1\5\1\6\1\7\1\10\1\11\21\1\4\uffff\2\1\2\uffff\1\1\14\uffff\1\1\1\uffff\2\1\1\uffff\1\1\2\uffff\3\1\3\uffff\40\1\3\uffff\1\1\1\uffff\1\1\1\uffff\2\1",
             "",
@@ -82156,6 +82144,51 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         	int _s = s;
             switch ( s ) {
                     case 0 : 
+                        int LA87_4 = input.LA(1);
+
+                         
+                        int index87_4 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred139_InternalReactionsLanguage()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index87_4);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 1 : 
+                        int LA87_8 = input.LA(1);
+
+                         
+                        int index87_8 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred139_InternalReactionsLanguage()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index87_8);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 2 : 
+                        int LA87_2 = input.LA(1);
+
+                         
+                        int index87_2 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred139_InternalReactionsLanguage()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index87_2);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 3 : 
                         int LA87_5 = input.LA(1);
 
                          
@@ -82170,7 +82203,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                         input.seek(index87_5);
                         if ( s>=0 ) return s;
                         break;
-                    case 1 : 
+                    case 4 : 
                         int LA87_9 = input.LA(1);
 
                          
@@ -82183,51 +82216,6 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
                          
                         input.seek(index87_9);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
-                        int LA87_6 = input.LA(1);
-
-                         
-                        int index87_6 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred139_InternalReactionsLanguage()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index87_6);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 3 : 
-                        int LA87_7 = input.LA(1);
-
-                         
-                        int index87_7 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred139_InternalReactionsLanguage()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index87_7);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 4 : 
-                        int LA87_2 = input.LA(1);
-
-                         
-                        int index87_2 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred139_InternalReactionsLanguage()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index87_2);
                         if ( s>=0 ) return s;
                         break;
                     case 5 : 
@@ -82246,10 +82234,10 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                         if ( s>=0 ) return s;
                         break;
                     case 6 : 
-                        int LA87_4 = input.LA(1);
+                        int LA87_6 = input.LA(1);
 
                          
-                        int index87_4 = input.index();
+                        int index87_6 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred139_InternalReactionsLanguage()) ) {s = 10;}
@@ -82257,14 +82245,14 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index87_4);
+                        input.seek(index87_6);
                         if ( s>=0 ) return s;
                         break;
                     case 7 : 
-                        int LA87_8 = input.LA(1);
+                        int LA87_7 = input.LA(1);
 
                          
-                        int index87_8 = input.index();
+                        int index87_7 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred139_InternalReactionsLanguage()) ) {s = 10;}
@@ -82272,7 +82260,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index87_8);
+                        input.seek(index87_7);
                         if ( s>=0 ) return s;
                         break;
             }

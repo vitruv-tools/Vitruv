@@ -1,15 +1,13 @@
 package tools.vitruv.dsls.reactions.environment;
 
-import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.api.generator.IReactionBuilder
+import tools.vitruv.framework.domains.VitruvDomain
 
 public class ReactionBuilder implements IReactionBuilder {
 	private ReactionsSegment reactionsSegment;
@@ -31,17 +29,17 @@ public class ReactionBuilder implements IReactionBuilder {
 		return this;
 	}
 	
-	public override setTrigger(EPackage sourceMetamodel) {
+	public override setTrigger(VitruvDomain sourceDomain) {
 		val trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelChange();
-		val metamodelImport = generateMetamodelImport(sourceMetamodel);
-		this.reactionsSegment.fromMetamodel = generateMetamodelReference(metamodelImport);
+		this.reactionsSegment.fromDomain = MirBaseFactory.eINSTANCE.createDomainReference;
+		this.reactionsSegment.fromDomain.domain = sourceDomain.name;
 		this.reaction.trigger = trigger;
 		return this;
 	}
 	
-	public override setTargetChange(EPackage targetMetamodel) {
-		val metamodelImport = generateMetamodelImport(targetMetamodel);
-		this.reactionsSegment.toMetamodel = generateMetamodelReference(metamodelImport);
+	public override setTargetChange(VitruvDomain targetDomain) {
+		this.reactionsSegment.toDomain = MirBaseFactory.eINSTANCE.createDomainReference;
+		this.reactionsSegment.toDomain.domain = targetDomain.name;
 		return this;
 	}
 	
@@ -56,18 +54,18 @@ public class ReactionBuilder implements IReactionBuilder {
 		return this;
 	}
 	
-	private static def MetamodelImport generateMetamodelImport(EPackage pack) {
-		val metamodelImport = MirBaseFactory.eINSTANCE.createMetamodelImport();
-		metamodelImport.name = pack.name;
-		metamodelImport.package = pack;
-		return metamodelImport;
-	}
-	
-	private static def MetamodelReference generateMetamodelReference(MetamodelImport metamodelImport) {
-		val metamodelRef = MirBaseFactory.eINSTANCE.createMetamodelReference();
-		metamodelRef.model = metamodelImport;
-		return metamodelRef;
-	}
+//	private static def MetamodelImport generateMetamodelImport(EPackage pack) {
+//		val metamodelImport = MirBaseFactory.eINSTANCE.createMetamodelImport();
+//		metamodelImport.name = pack.name;
+//		metamodelImport.package = pack;
+//		return metamodelImport;
+//	}
+//	
+//	private static def MetamodelReference generateMetamodelReference(MetamodelImport metamodelImport) {
+//		val metamodelRef = MirBaseFactory.eINSTANCE.createMetamodelReference();
+//		metamodelRef.model = metamodelImport;
+//		return metamodelRef;
+//	}
 	
 	public override Reaction generateReaction() {
 		return reaction;	

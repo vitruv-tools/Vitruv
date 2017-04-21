@@ -2,12 +2,12 @@ package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import org.eclipse.xtext.common.types.JvmVisibility
-import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 
 class ExecutorClassGenerator extends ClassGenerator {
 	private final ReactionsSegment reactionsSegment;
@@ -24,9 +24,10 @@ class ExecutorClassGenerator extends ClassGenerator {
 			members += toConstructor() [
 				val userInteractingParameter = generateUserInteractingParameter;
 				parameters += userInteractingParameter;
-				body = '''super(«userInteractingParameter.name», new «MetamodelPair.name»(«
-					reactionsSegment.fromMetamodel.model.package.class.name».eNS_URI, «
-					reactionsSegment.toMetamodel.model.package.class.name».eNS_URI));'''
+				body = '''
+				super(«userInteractingParameter.name»,
+					new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), 
+					new «reactionsSegment.toDomain.domainProviderForReference.class»().getDomain());'''
 			]
 			members += toMethod("setup", typeRef(Void.TYPE)) [
 				visibility = JvmVisibility.PROTECTED;

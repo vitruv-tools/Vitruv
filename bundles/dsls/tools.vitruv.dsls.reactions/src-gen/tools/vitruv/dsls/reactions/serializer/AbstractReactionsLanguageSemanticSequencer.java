@@ -58,6 +58,7 @@ import org.eclipse.xtext.xtype.XFunctionTypeRef;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypePackage;
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
@@ -122,6 +123,9 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 		Set<Parameter> parameters = context.getEnabledBooleanParameters();
 		if (epackage == MirBasePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
+			case MirBasePackage.DOMAIN_REFERENCE:
+				sequence_DomainReference(context, (DomainReference) semanticObject); 
+				return; 
 			case MirBasePackage.DUMMY_ENTRY_RULE:
 				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
 				return; 
@@ -1206,7 +1210,7 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 	 *     ReactionsSegment returns ReactionsSegment
 	 *
 	 * Constraint:
-	 *     (name=ValidID fromMetamodel=MetamodelReference toMetamodel=MetamodelReference (reactions+=Reaction | routines+=Routine)*)
+	 *     (name=ValidID fromDomain=DomainReference toDomain=DomainReference (reactions+=Reaction | routines+=Routine)*)
 	 */
 	protected void sequence_ReactionsSegment(ISerializationContext context, ReactionsSegment semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+   <extension
+         id="allElementTypesDomainProvider"
+         name="AllElementTypes Domain Provider"
+         point="tools.vitruv.framework.metamodel.domain">
+      <domainProvider
+            class="tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider"></domainProvider>
+   </extension>
+
+</plugin>

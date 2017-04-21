@@ -174,18 +174,18 @@ ruleReactionsSegment returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getReactionsSegmentAccess().getFromMetamodelMetamodelReferenceParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getReactionsSegmentAccess().getFromDomainDomainReferenceParserRuleCall_3_0());
 				}
-				lv_fromMetamodel_3_0=ruleMetamodelReference
+				lv_fromDomain_3_0=ruleDomainReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getReactionsSegmentRule());
 					}
 					set(
 						$current,
-						"fromMetamodel",
-						lv_fromMetamodel_3_0,
-						"tools.vitruv.dsls.mirbase.MirBase.MetamodelReference");
+						"fromDomain",
+						lv_fromDomain_3_0,
+						"tools.vitruv.dsls.mirbase.MirBase.DomainReference");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -197,18 +197,18 @@ ruleReactionsSegment returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getReactionsSegmentAccess().getToMetamodelMetamodelReferenceParserRuleCall_5_0());
+					newCompositeNode(grammarAccess.getReactionsSegmentAccess().getToDomainDomainReferenceParserRuleCall_5_0());
 				}
-				lv_toMetamodel_5_0=ruleMetamodelReference
+				lv_toDomain_5_0=ruleDomainReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getReactionsSegmentRule());
 					}
 					set(
 						$current,
-						"toMetamodel",
-						lv_toMetamodel_5_0,
-						"tools.vitruv.dsls.mirbase.MirBase.MetamodelReference");
+						"toDomain",
+						lv_toDomain_5_0,
+						"tools.vitruv.dsls.mirbase.MirBase.DomainReference");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -3285,15 +3285,15 @@ ruleMetaclassFeatureReference returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleMetamodelReference
-entryRuleMetamodelReference returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getMetamodelReferenceRule()); }
-	iv_ruleMetamodelReference=ruleMetamodelReference
-	{ $current=$iv_ruleMetamodelReference.current; }
+// Entry rule entryRuleDomainReference
+entryRuleDomainReference returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getDomainReferenceRule()); }
+	iv_ruleDomainReference=ruleDomainReference
+	{ $current=$iv_ruleDomainReference.current; }
 	EOF;
 
-// Rule MetamodelReference
-ruleMetamodelReference returns [EObject current=null]
+// Rule DomainReference
+ruleDomainReference returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -3302,14 +3302,19 @@ ruleMetamodelReference returns [EObject current=null]
 }:
 	(
 		(
+			lv_domain_0_0=RULE_ID
+			{
+				newLeafNode(lv_domain_0_0, grammarAccess.getDomainReferenceAccess().getDomainIDTerminalRuleCall_0());
+			}
 			{
 				if ($current==null) {
-					$current = createModelElement(grammarAccess.getMetamodelReferenceRule());
+					$current = createModelElement(grammarAccess.getDomainReferenceRule());
 				}
-			}
-			otherlv_0=RULE_ID
-			{
-				newLeafNode(otherlv_0, grammarAccess.getMetamodelReferenceAccess().getModelMetamodelImportCrossReference_0());
+				setWithLastConsumed(
+					$current,
+					"domain",
+					lv_domain_0_0,
+					"org.eclipse.xtext.xbase.Xtype.ID");
 			}
 		)
 	)

@@ -1,12 +1,15 @@
 package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor;
+import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 public class ExecutorAllElementTypesToAllElementTypes extends AbstractReactionsExecutor {
   public ExecutorAllElementTypesToAllElementTypes(final UserInteracting userInteracting) {
-    super(userInteracting, new tools.vitruv.framework.util.datatypes.MetamodelPair(allElementTypes.impl.AllElementTypesPackageImpl.eNS_URI, allElementTypes.impl.AllElementTypesPackageImpl.eNS_URI));
+    super(userInteracting,
+    	new AllElementTypesDomainProvider().getDomain(), 
+    	new AllElementTypesDomainProvider().getDomain());
   }
   
   protected void setup() {
@@ -22,8 +25,6 @@ public class ExecutorAllElementTypesToAllElementTypes extends AbstractReactionsE
     this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemovedEAttributeValueReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemovedEAttributeValueReaction(userInteracting));
     this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedNonContainmentEReferenceReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedNonContainmentEReferenceReaction(userInteracting));
     this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemovedNonContainmentEReferenceReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemovedNonContainmentEReferenceReaction(userInteracting));
-    this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestReaction(userInteracting));
-    this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestReaction(userInteracting));
     this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerInitializationReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerInitializationReaction(userInteracting));
     this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerContentsInitializationReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperReactionForNonRootObjectContainerContentsInitializationReaction(userInteracting));
     this.addReaction(mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.NonRootCreatedReaction.getExpectedChangeType(), new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.NonRootCreatedReaction(userInteracting));

@@ -6,8 +6,8 @@ import tools.vitruv.framework.change.echange.AtomicEChange
 import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
 
 reactions: simpleChangesTests
-in reaction to changes in minimal 
-execute actions in minimal
+in reaction to changes in AllElementTypes 
+execute actions in AllElementTypes
 
 /*
  * UpdateSingleValuedEAttribute
@@ -281,39 +281,7 @@ routine removeNonContainmentReference(minimal::Root rootElement, minimal::NonRoo
 	}
 }
 
-routine createRoot(minimal::Root rootElement) {
-	action {
-		val newRoot = create minimal::Root and initialize {
-			newRoot.id = rootElement.id;
-		}
-		add correspondence between newRoot and rootElement
-		call {
-			persistProjectRelative(rootElement, newRoot, "model/" + rootElement.id.replace("Source", "Target"));
-		}
-	}
-}
 
-routine deleteRoot(minimal::Root rootElement) {
-	match {
-		val oldModel = retrieve minimal::Root corresponding to rootElement
-	}
-	action {
-		delete oldModel
-	}
-}
-
-/*
- * Creates the model for comparing the further test model with.
- */
-reaction CreateRootTest {
-	after element minimal::Root created and inserted as root
-	call createRoot(newValue)
-}
-
-reaction DeleteRootTest {
-	after element minimal::Root deleted and removed as root
-	call deleteRoot(oldValue)
-}
 
 /**
  * Initializes the nonRootObjectContainer for second model
@@ -375,7 +343,20 @@ reaction NonRootDeleted {
 // Unused routine: Only to test if primitive types are mapped and scoped correctly
 routine testPrimitiveTypesRoutine(Integer intVal, Long longVal, Short shortVal, Byte byteVal, Character charVal, Double doubleVal, Float floatVal, Boolean boolVal, String stringVal) {
 	action {
-		call testPrimitiveTypesRoutine(intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal)
+		call {
+			// Call methods of types to ensure that they are correctly mapped
+			// otherwise static code checks will fail
+			intVal.intValue;
+			longVal.longValue;
+			shortVal.shortValue;
+			byteVal.byteValue;
+			charVal.charValue;
+			doubleVal.doubleValue;
+			floatVal.floatValue;
+			boolVal.booleanValue;
+			stringVal.charAt(0);
+			testPrimitiveTypesRoutine(intVal, longVal, shortVal, byteVal, charVal, doubleVal, floatVal, boolVal, stringVal)
+		}
 	}
 }
 
@@ -386,3 +367,8 @@ reaction AnyChange {
 	call { change.eClass }
 }
 
+routine testJavaTypes(plain SimpleChangesTestsExecutionMonitor as monitor) {
+	action {
+		call { }
+	}
+}

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Framework Test Utilities Domains
+Bundle-SymbolicName: tools.vitruv.framework.testutils.domains;singleton:=true
+Bundle-Version: 0.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: tools.vitruv.framework.metamodel,
+ tools.vitruv.framework.tests.util.metamodels
+Export-Package: tools.vitruv.framework.testutils.domains

@@ -125,22 +125,22 @@ public interface ReactionsLanguagePackage extends EPackage
   int REACTIONS_SEGMENT__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>From Metamodel</b></em>' containment reference.
+   * The feature id for the '<em><b>From Domain</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int REACTIONS_SEGMENT__FROM_METAMODEL = 1;
+  int REACTIONS_SEGMENT__FROM_DOMAIN = 1;
 
   /**
-   * The feature id for the '<em><b>To Metamodel</b></em>' containment reference.
+   * The feature id for the '<em><b>To Domain</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int REACTIONS_SEGMENT__TO_METAMODEL = 2;
+  int REACTIONS_SEGMENT__TO_DOMAIN = 2;
 
   /**
    * The feature id for the '<em><b>Reactions</b></em>' containment reference list.
@@ -2015,26 +2015,26 @@ public interface ReactionsLanguagePackage extends EPackage
   EAttribute getReactionsSegment_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getFromMetamodel <em>From Metamodel</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getFromDomain <em>From Domain</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>From Metamodel</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getFromMetamodel()
+   * @return the meta object for the containment reference '<em>From Domain</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getFromDomain()
    * @see #getReactionsSegment()
    * @generated
    */
-  EReference getReactionsSegment_FromMetamodel();
+  EReference getReactionsSegment_FromDomain();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getToMetamodel <em>To Metamodel</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getToDomain <em>To Domain</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>To Metamodel</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getToMetamodel()
+   * @return the meta object for the containment reference '<em>To Domain</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getToDomain()
    * @see #getReactionsSegment()
    * @generated
    */
-  EReference getReactionsSegment_ToMetamodel();
+  EReference getReactionsSegment_ToDomain();
 
   /**
    * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getReactions <em>Reactions</em>}'.
@@ -3172,20 +3172,20 @@ public interface ReactionsLanguagePackage extends EPackage
     EAttribute REACTIONS_SEGMENT__NAME = eINSTANCE.getReactionsSegment_Name();
 
     /**
-     * The meta object literal for the '<em><b>From Metamodel</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>From Domain</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference REACTIONS_SEGMENT__FROM_METAMODEL = eINSTANCE.getReactionsSegment_FromMetamodel();
+    EReference REACTIONS_SEGMENT__FROM_DOMAIN = eINSTANCE.getReactionsSegment_FromDomain();
 
     /**
-     * The meta object literal for the '<em><b>To Metamodel</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>To Domain</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference REACTIONS_SEGMENT__TO_METAMODEL = eINSTANCE.getReactionsSegment_ToMetamodel();
+    EReference REACTIONS_SEGMENT__TO_DOMAIN = eINSTANCE.getReactionsSegment_ToDomain();
 
     /**
      * The meta object literal for the '<em><b>Reactions</b></em>' containment reference list feature.
