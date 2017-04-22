@@ -22,10 +22,4 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
 			c.resolveBeforeAndApplyForward(resourceSet)
 		}
 	}
-	
-	override resolveAfterAndApplyBackward(ResourceSet resourceSet) {
-		for (c : changes.reverseView) {
-			c.resolveAfterAndApplyBackward(resourceSet)
-		}
-	}	
 }

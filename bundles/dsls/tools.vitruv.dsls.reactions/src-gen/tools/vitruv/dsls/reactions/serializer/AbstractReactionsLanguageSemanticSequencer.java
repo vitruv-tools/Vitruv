@@ -60,6 +60,8 @@ import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypePackage;
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport;
@@ -128,6 +130,12 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 				return; 
 			case MirBasePackage.DUMMY_ENTRY_RULE:
 				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
+				return; 
+			case MirBasePackage.METACLASS_EATTRIBUTE_REFERENCE:
+				sequence_MetaclassEAttributeReference_MetaclassReference(context, (MetaclassEAttributeReference) semanticObject); 
+				return; 
+			case MirBasePackage.METACLASS_EREFERENCE_REFERENCE:
+				sequence_MetaclassEReferenceReference_MetaclassReference(context, (MetaclassEReferenceReference) semanticObject); 
 				return; 
 			case MirBasePackage.METACLASS_FEATURE_REFERENCE:
 				sequence_MetaclassFeatureReference_MetaclassReference(context, (MetaclassFeatureReference) semanticObject); 
@@ -205,16 +213,16 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 				sequence_ElementInsertionAsRootChangeType(context, (ElementInsertionAsRootChangeType) semanticObject); 
 				return; 
 			case ReactionsLanguagePackage.ELEMENT_INSERTION_IN_LIST_CHANGE_TYPE:
-				sequence_ElementFeatureChangeType(context, (ElementInsertionInListChangeType) semanticObject); 
+				sequence_ElementReferenceChangeType(context, (ElementInsertionInListChangeType) semanticObject); 
 				return; 
 			case ReactionsLanguagePackage.ELEMENT_REMOVAL_AS_ROOT_CHANGE_TYPE:
 				sequence_ElementRemovalAsRootChangeType(context, (ElementRemovalAsRootChangeType) semanticObject); 
 				return; 
 			case ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE:
-				sequence_ElementFeatureChangeType(context, (ElementRemovalFromListChangeType) semanticObject); 
+				sequence_ElementReferenceChangeType(context, (ElementRemovalFromListChangeType) semanticObject); 
 				return; 
 			case ReactionsLanguagePackage.ELEMENT_REPLACEMENT_CHANGE_TYPE:
-				sequence_ElementFeatureChangeType(context, (ElementReplacementChangeType) semanticObject); 
+				sequence_ElementReferenceChangeType(context, (ElementReplacementChangeType) semanticObject); 
 				return; 
 			case ReactionsLanguagePackage.EXECUTION_CODE_BLOCK:
 				sequence_CodeBlock_ExecutionCodeBlock(context, (ExecutionCodeBlock) semanticObject); 
@@ -905,21 +913,37 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 	
 	/**
 	 * Contexts:
+	 *     ElementUsageChangeType returns ElementInsertionAsRootChangeType
+	 *     ElementRootChangeType returns ElementInsertionAsRootChangeType
+	 *     ElementInsertionChangeType returns ElementInsertionAsRootChangeType
+	 *     ElementInsertionAsRootChangeType returns ElementInsertionAsRootChangeType
+	 *     ElementChangeType returns ElementInsertionAsRootChangeType
+	 *
+	 * Constraint:
+	 *     {ElementInsertionAsRootChangeType}
+	 */
+	protected void sequence_ElementInsertionAsRootChangeType(ISerializationContext context, ElementInsertionAsRootChangeType semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     ElementUsageChangeType returns ElementInsertionInListChangeType
 	 *     ElementInsertionChangeType returns ElementInsertionInListChangeType
 	 *     ElementInsertionInListChangeType returns ElementInsertionInListChangeType
 	 *     ElementChangeType returns ElementInsertionInListChangeType
 	 *
 	 * Constraint:
-	 *     feature=MetaclassFeatureReference
+	 *     feature=MetaclassEReferenceReference
 	 */
-	protected void sequence_ElementFeatureChangeType(ISerializationContext context, ElementInsertionInListChangeType semanticObject) {
+	protected void sequence_ElementReferenceChangeType(ISerializationContext context, ElementInsertionInListChangeType semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE));
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getElementFeatureChangeTypeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_0(), semanticObject.getFeature());
+		feeder.accept(grammarAccess.getElementReferenceChangeTypeAccess().getFeatureMetaclassEReferenceReferenceParserRuleCall_0(), semanticObject.getFeature());
 		feeder.finish();
 	}
 	
@@ -932,15 +956,15 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 	 *     ElementChangeType returns ElementRemovalFromListChangeType
 	 *
 	 * Constraint:
-	 *     feature=MetaclassFeatureReference
+	 *     feature=MetaclassEReferenceReference
 	 */
-	protected void sequence_ElementFeatureChangeType(ISerializationContext context, ElementRemovalFromListChangeType semanticObject) {
+	protected void sequence_ElementReferenceChangeType(ISerializationContext context, ElementRemovalFromListChangeType semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE));
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getElementFeatureChangeTypeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_0(), semanticObject.getFeature());
+		feeder.accept(grammarAccess.getElementReferenceChangeTypeAccess().getFeatureMetaclassEReferenceReferenceParserRuleCall_0(), semanticObject.getFeature());
 		feeder.finish();
 	}
 	
@@ -952,32 +976,16 @@ public abstract class AbstractReactionsLanguageSemanticSequencer extends MirBase
 	 *     ElementChangeType returns ElementReplacementChangeType
 	 *
 	 * Constraint:
-	 *     feature=MetaclassFeatureReference
+	 *     feature=MetaclassEReferenceReference
 	 */
-	protected void sequence_ElementFeatureChangeType(ISerializationContext context, ElementReplacementChangeType semanticObject) {
+	protected void sequence_ElementReferenceChangeType(ISerializationContext context, ElementReplacementChangeType semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE));
+			if (transientValues.isValueTransient(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ReactionsLanguagePackage.Literals.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getElementFeatureChangeTypeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_0(), semanticObject.getFeature());
+		feeder.accept(grammarAccess.getElementReferenceChangeTypeAccess().getFeatureMetaclassEReferenceReferenceParserRuleCall_0(), semanticObject.getFeature());
 		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ElementUsageChangeType returns ElementInsertionAsRootChangeType
-	 *     ElementRootChangeType returns ElementInsertionAsRootChangeType
-	 *     ElementInsertionChangeType returns ElementInsertionAsRootChangeType
-	 *     ElementInsertionAsRootChangeType returns ElementInsertionAsRootChangeType
-	 *     ElementChangeType returns ElementInsertionAsRootChangeType
-	 *
-	 * Constraint:
-	 *     {ElementInsertionAsRootChangeType}
-	 */
-	protected void sequence_ElementInsertionAsRootChangeType(ISerializationContext context, ElementInsertionAsRootChangeType semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

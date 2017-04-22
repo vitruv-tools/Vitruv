@@ -518,20 +518,20 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		//{ElementDeletionChangeType}
 		public Action getElementDeletionChangeTypeAction_1() { return cElementDeletionChangeTypeAction_1; }
 	}
-	public class ElementFeatureChangeTypeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementFeatureChangeType");
+	public class ElementReferenceChangeTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementReferenceChangeType");
 		private final Assignment cFeatureAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cFeatureMetaclassFeatureReferenceParserRuleCall_0 = (RuleCall)cFeatureAssignment.eContents().get(0);
+		private final RuleCall cFeatureMetaclassEReferenceReferenceParserRuleCall_0 = (RuleCall)cFeatureAssignment.eContents().get(0);
 		
-		//fragment ElementFeatureChangeType:
-		//	feature=MetaclassFeatureReference;
+		//fragment ElementReferenceChangeType:
+		//	feature=MetaclassEReferenceReference;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//feature=MetaclassFeatureReference
+		//feature=MetaclassEReferenceReference
 		public Assignment getFeatureAssignment() { return cFeatureAssignment; }
 		
-		//MetaclassFeatureReference
-		public RuleCall getFeatureMetaclassFeatureReferenceParserRuleCall_0() { return cFeatureMetaclassFeatureReferenceParserRuleCall_0; }
+		//MetaclassEReferenceReference
+		public RuleCall getFeatureMetaclassEReferenceReferenceParserRuleCall_0() { return cFeatureMetaclassEReferenceReferenceParserRuleCall_0; }
 	}
 	public class ElementRootChangeTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementRootChangeType");
@@ -576,20 +576,20 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementInsertionInListChangeType");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cInsertedInKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final RuleCall cElementFeatureChangeTypeParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		private final RuleCall cElementReferenceChangeTypeParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
 		//ElementInsertionInListChangeType:
-		//	'inserted in' ElementFeatureChangeType;
+		//	'inserted in' ElementReferenceChangeType;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'inserted in' ElementFeatureChangeType
+		//'inserted in' ElementReferenceChangeType
 		public Group getGroup() { return cGroup; }
 		
 		//'inserted in'
 		public Keyword getInsertedInKeyword_0() { return cInsertedInKeyword_0; }
 		
-		//ElementFeatureChangeType
-		public RuleCall getElementFeatureChangeTypeParserRuleCall_1() { return cElementFeatureChangeTypeParserRuleCall_1; }
+		//ElementReferenceChangeType
+		public RuleCall getElementReferenceChangeTypeParserRuleCall_1() { return cElementReferenceChangeTypeParserRuleCall_1; }
 	}
 	public class ElementInsertionAsRootChangeTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementInsertionAsRootChangeType");
@@ -652,39 +652,39 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementRemovalFromListChangeType");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cRemovedFromKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final RuleCall cElementFeatureChangeTypeParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		private final RuleCall cElementReferenceChangeTypeParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
 		//ElementRemovalFromListChangeType:
-		//	'removed from' ElementFeatureChangeType;
+		//	'removed from' ElementReferenceChangeType;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'removed from' ElementFeatureChangeType
+		//'removed from' ElementReferenceChangeType
 		public Group getGroup() { return cGroup; }
 		
 		//'removed from'
 		public Keyword getRemovedFromKeyword_0() { return cRemovedFromKeyword_0; }
 		
-		//ElementFeatureChangeType
-		public RuleCall getElementFeatureChangeTypeParserRuleCall_1() { return cElementFeatureChangeTypeParserRuleCall_1; }
+		//ElementReferenceChangeType
+		public RuleCall getElementReferenceChangeTypeParserRuleCall_1() { return cElementReferenceChangeTypeParserRuleCall_1; }
 	}
 	public class ElementReplacementChangeTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementReplacementChangeType");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cReplacedAtKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final RuleCall cElementFeatureChangeTypeParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		private final RuleCall cElementReferenceChangeTypeParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
 		//ElementReplacementChangeType:
-		//	'replaced at' ElementFeatureChangeType;
+		//	'replaced at' ElementReferenceChangeType;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'replaced at' ElementFeatureChangeType
+		//'replaced at' ElementReferenceChangeType
 		public Group getGroup() { return cGroup; }
 		
 		//'replaced at'
 		public Keyword getReplacedAtKeyword_0() { return cReplacedAtKeyword_0; }
 		
-		//ElementFeatureChangeType
-		public RuleCall getElementFeatureChangeTypeParserRuleCall_1() { return cElementFeatureChangeTypeParserRuleCall_1; }
+		//ElementReferenceChangeType
+		public RuleCall getElementReferenceChangeTypeParserRuleCall_1() { return cElementReferenceChangeTypeParserRuleCall_1; }
 	}
 	public class ElementCreationAndInsertionChangeTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.reactions.ReactionsLanguage.ElementCreationAndInsertionChangeType");
@@ -1740,7 +1740,7 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	private final ElementUsageChangeTypeElements pElementUsageChangeType;
 	private final ElementCreationChangeTypeElements pElementCreationChangeType;
 	private final ElementDeletionChangeTypeElements pElementDeletionChangeType;
-	private final ElementFeatureChangeTypeElements pElementFeatureChangeType;
+	private final ElementReferenceChangeTypeElements pElementReferenceChangeType;
 	private final ElementRootChangeTypeElements pElementRootChangeType;
 	private final ElementInsertionChangeTypeElements pElementInsertionChangeType;
 	private final ElementInsertionInListChangeTypeElements pElementInsertionInListChangeType;
@@ -1811,7 +1811,7 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		this.pElementUsageChangeType = new ElementUsageChangeTypeElements();
 		this.pElementCreationChangeType = new ElementCreationChangeTypeElements();
 		this.pElementDeletionChangeType = new ElementDeletionChangeTypeElements();
-		this.pElementFeatureChangeType = new ElementFeatureChangeTypeElements();
+		this.pElementReferenceChangeType = new ElementReferenceChangeTypeElements();
 		this.pElementRootChangeType = new ElementRootChangeTypeElements();
 		this.pElementInsertionChangeType = new ElementInsertionChangeTypeElements();
 		this.pElementInsertionInListChangeType = new ElementInsertionInListChangeTypeElements();
@@ -2050,14 +2050,14 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 		return getElementDeletionChangeTypeAccess().getRule();
 	}
 	
-	//fragment ElementFeatureChangeType:
-	//	feature=MetaclassFeatureReference;
-	public ElementFeatureChangeTypeElements getElementFeatureChangeTypeAccess() {
-		return pElementFeatureChangeType;
+	//fragment ElementReferenceChangeType:
+	//	feature=MetaclassEReferenceReference;
+	public ElementReferenceChangeTypeElements getElementReferenceChangeTypeAccess() {
+		return pElementReferenceChangeType;
 	}
 	
-	public ParserRule getElementFeatureChangeTypeRule() {
-		return getElementFeatureChangeTypeAccess().getRule();
+	public ParserRule getElementReferenceChangeTypeRule() {
+		return getElementReferenceChangeTypeAccess().getRule();
 	}
 	
 	//// This is just for a complete type hierachy
@@ -2082,7 +2082,7 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	}
 	
 	//ElementInsertionInListChangeType:
-	//	'inserted in' ElementFeatureChangeType;
+	//	'inserted in' ElementReferenceChangeType;
 	public ElementInsertionInListChangeTypeElements getElementInsertionInListChangeTypeAccess() {
 		return pElementInsertionInListChangeType;
 	}
@@ -2122,7 +2122,7 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	}
 	
 	//ElementRemovalFromListChangeType:
-	//	'removed from' ElementFeatureChangeType;
+	//	'removed from' ElementReferenceChangeType;
 	public ElementRemovalFromListChangeTypeElements getElementRemovalFromListChangeTypeAccess() {
 		return pElementRemovalFromListChangeType;
 	}
@@ -2132,7 +2132,7 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	}
 	
 	//ElementReplacementChangeType:
-	//	'replaced at' ElementFeatureChangeType;
+	//	'replaced at' ElementReferenceChangeType;
 	public ElementReplacementChangeTypeElements getElementReplacementChangeTypeAccess() {
 		return pElementReplacementChangeType;
 	}
@@ -2561,6 +2561,26 @@ public class ReactionsLanguageGrammarAccess extends AbstractGrammarElementFinder
 	
 	public ParserRule getMetaclassFeatureReferenceRule() {
 		return getMetaclassFeatureReferenceAccess().getRule();
+	}
+	
+	//MetaclassEAttributeReference:
+	//	MetaclassReference '[' feature=[ecore::EAttribute|ValidID] ']';
+	public MirBaseGrammarAccess.MetaclassEAttributeReferenceElements getMetaclassEAttributeReferenceAccess() {
+		return gaMirBase.getMetaclassEAttributeReferenceAccess();
+	}
+	
+	public ParserRule getMetaclassEAttributeReferenceRule() {
+		return getMetaclassEAttributeReferenceAccess().getRule();
+	}
+	
+	//MetaclassEReferenceReference:
+	//	MetaclassReference '[' feature=[ecore::EReference|ValidID] ']';
+	public MirBaseGrammarAccess.MetaclassEReferenceReferenceElements getMetaclassEReferenceReferenceAccess() {
+		return gaMirBase.getMetaclassEReferenceReferenceAccess();
+	}
+	
+	public ParserRule getMetaclassEReferenceReferenceRule() {
+		return getMetaclassEReferenceReferenceAccess().getRule();
 	}
 	
 	//MetamodelReference:

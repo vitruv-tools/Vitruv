@@ -37,7 +37,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	@Override
 	public final void beforeTest() {
 		super.beforeTest();
-		this.changeRecorder = new AtomicEmfChangeRecorder();
+		this.changeRecorder = new AtomicEmfChangeRecorder(true);
 		setup();
 	}
 

@@ -27,6 +27,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="MetaclassFeatureReference" eSuperTypes="#//MetaclassReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MetaclassEAttributeReference" eSuperTypes="#//MetaclassReference">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MetaclassEReferenceReference" eSuperTypes="#//MetaclassReference">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MetamodelReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="model" eType="#//MetamodelImport"/>
   </eClassifiers>

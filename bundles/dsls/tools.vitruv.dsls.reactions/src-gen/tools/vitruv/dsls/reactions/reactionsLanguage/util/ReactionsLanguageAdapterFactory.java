@@ -154,9 +154,9 @@ public class ReactionsLanguageAdapterFactory extends AdapterFactoryImpl
         return createElementDeletionChangeTypeAdapter();
       }
       @Override
-      public Adapter caseElementFeatureChangeType(ElementFeatureChangeType object)
+      public Adapter caseElementReferenceChangeType(ElementReferenceChangeType object)
       {
-        return createElementFeatureChangeTypeAdapter();
+        return createElementReferenceChangeTypeAdapter();
       }
       @Override
       public Adapter caseElementRootChangeType(ElementRootChangeType object)
@@ -616,16 +616,16 @@ public class ReactionsLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType <em>Element Feature Change Type</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType <em>Element Reference Change Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType
    * @generated
    */
-  public Adapter createElementFeatureChangeTypeAdapter()
+  public Adapter createElementReferenceChangeTypeAdapter()
   {
     return null;
   }
