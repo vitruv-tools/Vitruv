@@ -17,8 +17,24 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated model -->
       <package
-            uri="http://tools.vitruv/EChange/1.0"
-            class="tools.vitruv.framework.change.echange.EchangePackage"
+            uri="http://tools.vitruv/versioning/1.0/conflict"
+            class="model.conflict.ConflictPackage"
+            genModel="model/model.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated model -->
+      <package
+            uri="http://tools.vitruv/versioning/1.0/commit"
+            class="model.commit.CommitPackage"
+            genModel="model/model.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated model -->
+      <package
+            uri="http://tools.vitruv/versioning/1.0/branch"
+            class="model.branch.BranchPackage"
             genModel="model/model.genmodel"/>
    </extension>
 
@@ -26,7 +42,15 @@
       <!-- @generated model -->
       <package
             uri="http://www.eclipse.org/emf/2002/Ecore"
-            class="ecore.EcorePackage"
+            class="org.eclipse.emf.ecore.EcorePackage"
+            genModel="model/model.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated model -->
+      <package
+            uri="http://tools.vitruv/EChange/1.0"
+            class="tools.vitruv.framework.change.echange.EChangePackage"
             genModel="model/model.genmodel"/>
    </extension>
 
