@@ -14,13 +14,7 @@ Export-Package: model,
  model.conflict.impl,
  model.conflict.util,
  model.impl,
- model.util,
- org.eclipse.emf.ecore,
- org.eclipse.emf.ecore.impl,
- org.eclipse.emf.ecore.util,
- tools.vitruv.framework.change.echange,
- tools.vitruv.framework.change.echange.impl,
- tools.vitruv.framework.change.echange.util
+ model.util
 Bundle-Version: 0.1.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName

@@ -11,9 +11,6 @@ import model.branch.tests.BranchTests;
 
 import model.conflict.tests.ConflictTests;
 
-import org.eclipse.emf.ecore.tests.EcoreTests;
-
-import tools.vitruv.framework.change.echange.tests.EChangeTests;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,8 +38,6 @@ public class ModelAllTests extends TestSuite {
 		TestSuite suite = new ModelAllTests("Model Tests");
 		suite.addTest(ConflictTests.suite());
 		suite.addTest(BranchTests.suite());
-		suite.addTest(EcoreTests.suite());
-		suite.addTest(EChangeTests.suite());
 		return suite;
 	}
 
