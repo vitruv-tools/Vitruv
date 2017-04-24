@@ -119,7 +119,7 @@ public interface RootEChange extends AtomicEChange {
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (super.isResolved() &amp;&amp; (!&lt;%com.google.common.base.Objects%&gt;.equal(this.getResource(), null)));'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (super.isResolved() &amp;&amp; (this.getResource() != null));'"
 	 * @generated
 	 */
 	boolean isResolved();

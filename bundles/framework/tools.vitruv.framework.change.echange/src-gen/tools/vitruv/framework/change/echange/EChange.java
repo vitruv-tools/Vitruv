@@ -98,7 +98,7 @@ public interface EChange extends EObject {
 	 * @throws RuntimeException The change could not be applied.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%tools.vitruv.framework.change.echange.EChange%&gt; resolvedChange = this.resolveBefore(resourceSet);\nif (((!&lt;%com.google.common.base.Objects%&gt;.equal(resolvedChange, null)) &amp;&amp; resolvedChange.applyForward()))\n{\n\treturn resolvedChange;\n}\nelse\n{\n\treturn null;\n}'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%tools.vitruv.framework.change.echange.EChange%&gt; resolvedChange = this.resolveBefore(resourceSet);\nif (((resolvedChange != null) &amp;&amp; resolvedChange.applyForward()))\n{\n\treturn resolvedChange;\n}\nelse\n{\n\treturn null;\n}'"
 	 * @generated
 	 */
 	EChange resolveBeforeAndApplyForward(ResourceSet resourceSet);
@@ -120,7 +120,7 @@ public interface EChange extends EObject {
 	 * @throws RuntimeException The change could not be applied.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%tools.vitruv.framework.change.echange.EChange%&gt; resolvedChange = this.resolveAfter(resourceSet);\nif (((!&lt;%com.google.common.base.Objects%&gt;.equal(resolvedChange, null)) &amp;&amp; resolvedChange.applyBackward()))\n{\n\treturn resolvedChange;\n}\nelse\n{\n\treturn null;\n}'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%tools.vitruv.framework.change.echange.EChange%&gt; resolvedChange = this.resolveAfter(resourceSet);\nif (((resolvedChange != null) &amp;&amp; resolvedChange.applyBackward()))\n{\n\treturn resolvedChange;\n}\nelse\n{\n\treturn null;\n}'"
 	 * @generated
 	 */
 	EChange resolveAfterAndApplyBackward(ResourceSet resourceSet);
