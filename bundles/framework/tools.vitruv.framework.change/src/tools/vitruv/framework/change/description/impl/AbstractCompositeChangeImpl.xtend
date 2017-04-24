@@ -24,11 +24,11 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
     }
 
     override addChange(C change) {
-		if (change != null) this.changes.add(change);
+		if (change !== null) this.changes.add(change);
     }
 	
 	override removeChange(C change) {
-		if (change != null) this.changes.remove(change);
+		if (change !== null) this.changes.remove(change);
 	}
 				
 	override containsConcreteChange() {
