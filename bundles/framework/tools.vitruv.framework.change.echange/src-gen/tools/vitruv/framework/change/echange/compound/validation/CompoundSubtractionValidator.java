@@ -17,5 +17,6 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
 public interface CompoundSubtractionValidator {
 	boolean validate();
 
+	@SuppressWarnings("rawtypes")
 	boolean validateSubtractiveChanges(EList<SubtractiveEChange> value);
 }
