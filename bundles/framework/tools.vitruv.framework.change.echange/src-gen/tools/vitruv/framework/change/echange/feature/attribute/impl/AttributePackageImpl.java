@@ -4,7 +4,9 @@ package tools.vitruv.framework.change.echange.feature.attribute.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -76,6 +78,13 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * @generated
 	 */
 	private EClass replaceSingleValuedEAttributeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eObjEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -219,6 +228,15 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getEObj() {
+		return eObjEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public AttributeFactory getAttributeFactory() {
 		return (AttributeFactory)getEFactoryInstance();
 	}
@@ -255,6 +273,9 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		removeEAttributeValueEClass = createEClass(REMOVE_EATTRIBUTE_VALUE);
 
 		replaceSingleValuedEAttributeEClass = createEClass(REPLACE_SINGLE_VALUED_EATTRIBUTE);
+
+		// Create data types
+		eObjEDataType = createEDataType(EOBJ);
 	}
 
 	/**
@@ -281,8 +302,8 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
 		ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
 		SinglePackage theSinglePackage = (SinglePackage)EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI);
@@ -301,25 +322,25 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		ETypeParameter replaceSingleValuedEAttributeEClass_T = addETypeParameter(replaceSingleValuedEAttributeEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
+		EGenericType g1 = createEGenericType(this.getEObj());
 		updateAttributeEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		additiveAttributeEChangeEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		additiveAttributeEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		subtractiveAttributeEChangeEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		subtractiveAttributeEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		insertEAttributeValueEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		insertEAttributeValueEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeEAttributeValueEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		removeEAttributeValueEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		replaceSingleValuedEAttributeEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		replaceSingleValuedEAttributeEClass_T.getEBounds().add(g1);
@@ -331,20 +352,20 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g2 = createEGenericType(theEcorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		updateAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getUpdateAttributeEChange());
+		g2 = createEGenericType(additiveAttributeEChangeEClass_A);
+		g1.getETypeArguments().add(g2);
+		additiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theEChangePackage.getAdditiveEChange());
 		g2 = createEGenericType(additiveAttributeEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		additiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getUpdateAttributeEChange());
-		g2 = createEGenericType(additiveAttributeEChangeEClass_A);
-		g1.getETypeArguments().add(g2);
-		additiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theEChangePackage.getSubtractiveEChange());
-		g2 = createEGenericType(subtractiveAttributeEChangeEClass_T);
+		g2 = createEGenericType(subtractiveAttributeEChangeEClass_A);
 		g1.getETypeArguments().add(g2);
 		subtractiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateAttributeEChange());
-		g2 = createEGenericType(subtractiveAttributeEChangeEClass_A);
+		g1 = createEGenericType(theEChangePackage.getSubtractiveEChange());
+		g2 = createEGenericType(subtractiveAttributeEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		subtractiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theListPackage.getInsertInListEChange());
@@ -375,6 +396,14 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g2 = createEGenericType(removeEAttributeValueEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
+		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(theEcorePackage.getEAttribute());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
+		g1.getETypeArguments().add(g2);
+		replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getAdditiveAttributeEChange());
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -383,14 +412,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getSubtractiveAttributeEChange());
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
-		g1.getETypeArguments().add(g2);
-		replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
-		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theEcorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
 		g1.getETypeArguments().add(g2);
@@ -412,6 +433,9 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		initEClass(removeEAttributeValueEClass, RemoveEAttributeValue.class, "RemoveEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(replaceSingleValuedEAttributeEClass, ReplaceSingleValuedEAttribute.class, "ReplaceSingleValuedEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Initialize data types
+		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -17,5 +17,6 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.tuid;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.framework.domains,
- tools.vitruv.framework.domains.repository
+ tools.vitruv.framework.domains.repository,
+ tools.vitruv.framework.metamodel
 Bundle-Vendor: vitruv.tools
