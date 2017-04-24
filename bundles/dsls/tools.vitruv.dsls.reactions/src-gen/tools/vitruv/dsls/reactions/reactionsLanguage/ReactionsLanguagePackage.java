@@ -663,14 +663,14 @@ public interface ReactionsLanguagePackage extends EPackage
   int ELEMENT_DELETION_CHANGE_TYPE_FEATURE_COUNT = ELEMENT_EXISTENCE_CHANGE_TYPE_FEATURE_COUNT + 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementFeatureChangeTypeImpl <em>Element Feature Change Type</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementReferenceChangeTypeImpl <em>Element Reference Change Type</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementFeatureChangeTypeImpl
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementFeatureChangeType()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementReferenceChangeTypeImpl
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementReferenceChangeType()
    * @generated
    */
-  int ELEMENT_FEATURE_CHANGE_TYPE = 15;
+  int ELEMENT_REFERENCE_CHANGE_TYPE = 15;
 
   /**
    * The feature id for the '<em><b>Feature</b></em>' containment reference.
@@ -679,16 +679,16 @@ public interface ReactionsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int ELEMENT_FEATURE_CHANGE_TYPE__FEATURE = 0;
+  int ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE = 0;
 
   /**
-   * The number of structural features of the '<em>Element Feature Change Type</em>' class.
+   * The number of structural features of the '<em>Element Reference Change Type</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ELEMENT_FEATURE_CHANGE_TYPE_FEATURE_COUNT = 1;
+  int ELEMENT_REFERENCE_CHANGE_TYPE_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRootChangeTypeImpl <em>Element Root Change Type</em>}' class.
@@ -2299,25 +2299,25 @@ public interface ReactionsLanguagePackage extends EPackage
   EClass getElementDeletionChangeType();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType <em>Element Feature Change Type</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType <em>Element Reference Change Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Element Feature Change Type</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType
+   * @return the meta object for class '<em>Element Reference Change Type</em>'.
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType
    * @generated
    */
-  EClass getElementFeatureChangeType();
+  EClass getElementReferenceChangeType();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType#getFeature <em>Feature</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType#getFeature <em>Feature</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Feature</em>'.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType#getFeature()
-   * @see #getElementFeatureChangeType()
+   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType#getFeature()
+   * @see #getElementReferenceChangeType()
    * @generated
    */
-  EReference getElementFeatureChangeType_Feature();
+  EReference getElementReferenceChangeType_Feature();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType <em>Element Root Change Type</em>}'.
@@ -3414,14 +3414,14 @@ public interface ReactionsLanguagePackage extends EPackage
     EClass ELEMENT_DELETION_CHANGE_TYPE = eINSTANCE.getElementDeletionChangeType();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementFeatureChangeTypeImpl <em>Element Feature Change Type</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementReferenceChangeTypeImpl <em>Element Reference Change Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementFeatureChangeTypeImpl
-     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementFeatureChangeType()
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementReferenceChangeTypeImpl
+     * @see tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsLanguagePackageImpl#getElementReferenceChangeType()
      * @generated
      */
-    EClass ELEMENT_FEATURE_CHANGE_TYPE = eINSTANCE.getElementFeatureChangeType();
+    EClass ELEMENT_REFERENCE_CHANGE_TYPE = eINSTANCE.getElementReferenceChangeType();
 
     /**
      * The meta object literal for the '<em><b>Feature</b></em>' containment reference feature.
@@ -3429,7 +3429,7 @@ public interface ReactionsLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ELEMENT_FEATURE_CHANGE_TYPE__FEATURE = eINSTANCE.getElementFeatureChangeType_Feature();
+    EReference ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE = eINSTANCE.getElementReferenceChangeType_Feature();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementRootChangeTypeImpl <em>Element Root Change Type</em>}' class.

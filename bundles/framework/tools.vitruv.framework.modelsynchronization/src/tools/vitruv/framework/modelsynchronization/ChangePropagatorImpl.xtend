@@ -5,23 +5,16 @@ import java.util.Collections
 import java.util.HashSet
 import java.util.List
 import java.util.Set
-import java.util.concurrent.Callable
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.description.CompositeContainerChange
-import tools.vitruv.framework.change.description.CreateFileChange
-import tools.vitruv.framework.change.description.DeleteFileChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
-import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
-import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.ModelRepository
@@ -61,13 +54,13 @@ class ChangePropagatorImpl implements ChangePropagator {
 		if (!change.validate()) {
 			throw new IllegalArgumentException('''Change contains changes from different models: «change»''')
 		}
-
-
-		startChangePropagation(change);	
+		startChangePropagation(change);
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		val propagationResult = new ChangePropagationResult();
+		
 		propagateSingleChange(change, result, propagationResult, changedResourcesTracker);
+		
 		changedResourcesTracker.markNonSourceResourceAsChanged();
 		executePropagationResult(propagationResult);
 		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
@@ -98,14 +91,18 @@ class ChangePropagatorImpl implements ChangePropagator {
 		}
 	}
 
-	private def dispatch void propagateSingleChange(TransactionalChange change, 
-		List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult,
-		ChangedResourcesTracker changedResourcesTracker) {
-		change.applyForward();
+
+	private def dispatch void propagateSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+
+		this.modelProviding.applyChangeForwardOnModel(change)
+		
+
 		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension);
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
-		}			
+
+		}	
 	}
 	
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,

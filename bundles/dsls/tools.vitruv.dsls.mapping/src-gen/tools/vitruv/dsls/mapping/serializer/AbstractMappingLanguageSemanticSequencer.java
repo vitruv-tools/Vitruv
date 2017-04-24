@@ -84,6 +84,8 @@ import tools.vitruv.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpress
 import tools.vitruv.dsls.mapping.services.MappingLanguageGrammarAccess;
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport;
@@ -188,6 +190,12 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 				return; 
 			case MirBasePackage.DUMMY_ENTRY_RULE:
 				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
+				return; 
+			case MirBasePackage.METACLASS_EATTRIBUTE_REFERENCE:
+				sequence_MetaclassEAttributeReference_MetaclassReference(context, (MetaclassEAttributeReference) semanticObject); 
+				return; 
+			case MirBasePackage.METACLASS_EREFERENCE_REFERENCE:
+				sequence_MetaclassEReferenceReference_MetaclassReference(context, (MetaclassEReferenceReference) semanticObject); 
 				return; 
 			case MirBasePackage.METACLASS_FEATURE_REFERENCE:
 				sequence_MetaclassFeatureReference_MetaclassReference(context, (MetaclassFeatureReference) semanticObject); 

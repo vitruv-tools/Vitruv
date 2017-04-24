@@ -73,12 +73,6 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	protected def List<EChange> getChanges() {
 		if (this.changes == null) {
 			this.changes = endRecording()
-			for (var i = changes.size - 1; i >= 0; i--) {
-				changes.set(i, changes.get(i).resolveAfterAndApplyBackward(rs))
-			}
-			for (EChange c : changes) {
-				c.applyForward
-			}
 		}
 		return this.changes
 	}

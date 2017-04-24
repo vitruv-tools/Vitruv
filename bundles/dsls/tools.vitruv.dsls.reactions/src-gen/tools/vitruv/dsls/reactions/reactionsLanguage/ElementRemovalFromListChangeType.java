@@ -14,6 +14,6 @@ package tools.vitruv.dsls.reactions.reactionsLanguage;
  * @model
  * @generated
  */
-public interface ElementRemovalFromListChangeType extends ElementRemovalChangeType, ElementFeatureChangeType
+public interface ElementRemovalFromListChangeType extends ElementRemovalChangeType, ElementReferenceChangeType
 {
 } // ElementRemovalFromListChangeType

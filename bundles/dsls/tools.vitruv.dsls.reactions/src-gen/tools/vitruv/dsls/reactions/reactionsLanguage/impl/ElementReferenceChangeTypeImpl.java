@@ -12,25 +12,25 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference;
 
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Element Feature Change Type</b></em>'.
+ * An implementation of the model object '<em><b>Element Reference Change Type</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementFeatureChangeTypeImpl#getFeature <em>Feature</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ElementReferenceChangeTypeImpl#getFeature <em>Feature</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container implements ElementFeatureChangeType
+public class ElementReferenceChangeTypeImpl extends MinimalEObjectImpl.Container implements ElementReferenceChangeType
 {
   /**
    * The cached value of the '{@link #getFeature() <em>Feature</em>}' containment reference.
@@ -40,14 +40,14 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
    * @generated
    * @ordered
    */
-  protected MetaclassFeatureReference feature;
+  protected MetaclassEReferenceReference feature;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ElementFeatureChangeTypeImpl()
+  protected ElementReferenceChangeTypeImpl()
   {
     super();
   }
@@ -60,7 +60,7 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.ELEMENT_FEATURE_CHANGE_TYPE;
+    return ReactionsLanguagePackage.Literals.ELEMENT_REFERENCE_CHANGE_TYPE;
   }
 
   /**
@@ -68,7 +68,7 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
    * <!-- end-user-doc -->
    * @generated
    */
-  public MetaclassFeatureReference getFeature()
+  public MetaclassEReferenceReference getFeature()
   {
     return feature;
   }
@@ -78,13 +78,13 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetFeature(MetaclassFeatureReference newFeature, NotificationChain msgs)
+  public NotificationChain basicSetFeature(MetaclassEReferenceReference newFeature, NotificationChain msgs)
   {
-    MetaclassFeatureReference oldFeature = feature;
+    MetaclassEReferenceReference oldFeature = feature;
     feature = newFeature;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE, oldFeature, newFeature);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE, oldFeature, newFeature);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -95,20 +95,20 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setFeature(MetaclassFeatureReference newFeature)
+  public void setFeature(MetaclassEReferenceReference newFeature)
   {
     if (newFeature != feature)
     {
       NotificationChain msgs = null;
       if (feature != null)
-        msgs = ((InternalEObject)feature).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE, null, msgs);
+        msgs = ((InternalEObject)feature).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE, null, msgs);
       if (newFeature != null)
-        msgs = ((InternalEObject)newFeature).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE, null, msgs);
+        msgs = ((InternalEObject)newFeature).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE, null, msgs);
       msgs = basicSetFeature(newFeature, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE, newFeature, newFeature));
+      eNotify(new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE, newFeature, newFeature));
   }
 
   /**
@@ -121,7 +121,7 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
   {
     switch (featureID)
     {
-      case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE:
+      case ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE:
         return basicSetFeature(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -137,7 +137,7 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
   {
     switch (featureID)
     {
-      case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE:
+      case ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE:
         return getFeature();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -153,8 +153,8 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
   {
     switch (featureID)
     {
-      case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE:
-        setFeature((MetaclassFeatureReference)newValue);
+      case ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE:
+        setFeature((MetaclassEReferenceReference)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -170,8 +170,8 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
   {
     switch (featureID)
     {
-      case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE:
-        setFeature((MetaclassFeatureReference)null);
+      case ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE:
+        setFeature((MetaclassEReferenceReference)null);
         return;
     }
     super.eUnset(featureID);
@@ -187,10 +187,10 @@ public class ElementFeatureChangeTypeImpl extends MinimalEObjectImpl.Container i
   {
     switch (featureID)
     {
-      case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE:
+      case ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE:
         return feature != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //ElementFeatureChangeTypeImpl
+} //ElementReferenceChangeTypeImpl

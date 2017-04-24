@@ -22,11 +22,14 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
+import org.eclipse.emf.ecore.EStructuralFeature
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
 
 class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	private static val LOGGER = Logger.getLogger(MirBaseScopeProviderDelegate)
 	
-	def <T> IScope createScope(IScope parentScope, Iterator<T> elements,
+	def <T> IScope createScope(IScope parentScope, Iterator<? extends T> elements,
 		Function<T, IEObjectDescription> descriptionCreation) {
 		new SimpleScope(parentScope, elements.map [descriptionCreation.apply(it)].filterNull.toList);
 	}
@@ -34,6 +37,10 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	override getScope(EObject context, EReference reference) {
 		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
 			return createEStructuralFeatureScope((context as MetaclassFeatureReference)?.metaclass)
+		else if (reference.equals(METACLASS_EATTRIBUTE_REFERENCE__FEATURE))
+			return createEAttributeScope((context as MetaclassEAttributeReference)?.metaclass)
+		else if (reference.equals(METACLASS_EREFERENCE_REFERENCE__FEATURE))
+			return createEReferenceScope((context as MetaclassEReferenceReference)?.metaclass)
 		else if (reference.equals(METACLASS_REFERENCE__METACLASS))
 			return createQualifiedEClassScope((context as MetaclassReference).metamodel)
 		else if (reference.equals(METAMODEL_REFERENCE__MODEL)) {
@@ -51,14 +58,26 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 		return ((qn != null) && (!qn.empty));
 	}
 	
-	def createEStructuralFeatureScope(EClass eClass) {
-		if (eClass != null) {
-			createScope(IScope.NULLSCOPE, eClass.EAllStructuralFeatures.iterator, [
+	def createEStructuralFeatureScope(Iterator<? extends EStructuralFeature> featuresIterator) {
+		if (featuresIterator != null) {
+			createScope(IScope.NULLSCOPE, featuresIterator, [
 				EObjectDescription.create(it.name, it)
 			])
 		} else {
 			return IScope.NULLSCOPE
 		}
+	}
+	
+	def createEStructuralFeatureScope(EClass eClass) {
+		return createEStructuralFeatureScope(eClass?.EAllStructuralFeatures.iterator);
+	}
+	
+	def createEAttributeScope(EClass eClass) {
+		return createEStructuralFeatureScope(eClass?.EAllAttributes.iterator);
+	}
+	
+	def createEReferenceScope(EClass eClass) {
+		return createEStructuralFeatureScope(eClass?.EAllReferences.iterator);
 	}
 
 	/**

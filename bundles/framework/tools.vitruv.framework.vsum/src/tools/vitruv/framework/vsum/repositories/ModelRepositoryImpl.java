@@ -16,6 +16,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
+import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
@@ -151,6 +153,20 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
                 logger.debug("Create model with resource: " + resource);
                 TuidManager.getInstance().updateTuidsOfRegisteredObjects();
                 TuidManager.getInstance().flushRegisteredObjectsUnderModification();
+                return null;
+            }
+        });
+    }
+
+    private void createEmptyModel(final VURI modelURI) {
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                URI emfURI = modelURI.getEMFUri();
+                // TODO: Stefan E. Changes the load options anything?
+                Resource modelResource = ModelRepositoryImpl.this.resourceSet.createResource(emfURI);
+                ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
+                ModelRepositoryImpl.this.modelInstances.put(modelURI, modelInstance);
                 return null;
             }
         });
@@ -326,4 +342,18 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         EMFCommandBridge.executeVitruviusRecordingCommand(getTransactionalEditingDomain(), command);
     }
 
+    @Override
+    public void applyChangeForwardOnModel(final TransactionalChange change) {
+        if (!existsModelInstance(change.getURI()) && change.getEChanges().get(0) instanceof CreateAndInsertRoot<?>) {
+            createEmptyModel(change.getURI());
+        }
+
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+            @Override
+            public Void call() {
+                change.resolveBeforeAndApplyForward(ModelRepositoryImpl.this.resourceSet);
+                return null;
+            }
+        });
+    }
 }

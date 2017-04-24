@@ -25,8 +25,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertion
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType
 
 final class ChangeTypeRepresentationExtractor {
 
@@ -82,7 +82,7 @@ final class ChangeTypeRepresentationExtractor {
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, !hasNewValue, hasNewValue, null);
 	}
 	
-	private static def dispatch AtomicChangeTypeRepresentation generateChangeTypeRepresentation(ElementFeatureChangeType modelElementChange, EClass elementClass) {
+	private static def dispatch AtomicChangeTypeRepresentation generateChangeTypeRepresentation(ElementReferenceChangeType modelElementChange, EClass elementClass) {
 		var hasOldValue = false;
 		var hasNewValue = false;
 		var EClass clazz = null;

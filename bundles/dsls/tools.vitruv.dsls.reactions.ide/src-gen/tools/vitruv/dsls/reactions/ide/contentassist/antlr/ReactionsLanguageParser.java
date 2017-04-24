@@ -152,6 +152,8 @@ public class ReactionsLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNamedMetaclassReferenceAccess().getGroup_1(), "rule__NamedMetaclassReference__Group_1__0");
 					put(grammarAccess.getClassicallyNamedModelElementAccess().getGroup(), "rule__ClassicallyNamedModelElement__Group__0");
 					put(grammarAccess.getMetaclassFeatureReferenceAccess().getGroup(), "rule__MetaclassFeatureReference__Group__0");
+					put(grammarAccess.getMetaclassEAttributeReferenceAccess().getGroup(), "rule__MetaclassEAttributeReference__Group__0");
+					put(grammarAccess.getMetaclassEReferenceReferenceAccess().getGroup(), "rule__MetaclassEReferenceReference__Group__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_0(), "rule__XAssignment__Group_0__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_1(), "rule__XAssignment__Group_1__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_1_1(), "rule__XAssignment__Group_1_1__0");
@@ -347,7 +349,7 @@ public class ReactionsLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getModelElementChangeAccess().getElementTypeAssignment_1(), "rule__ModelElementChange__ElementTypeAssignment_1");
 					put(grammarAccess.getModelElementChangeAccess().getChangeTypeAssignment_2(), "rule__ModelElementChange__ChangeTypeAssignment_2");
 					put(grammarAccess.getModelAttributeChangeAccess().getFeatureAssignment_2(), "rule__ModelAttributeChange__FeatureAssignment_2");
-					put(grammarAccess.getElementFeatureChangeTypeAccess().getFeatureAssignment(), "rule__ElementFeatureChangeType__FeatureAssignment");
+					put(grammarAccess.getElementReferenceChangeTypeAccess().getFeatureAssignment(), "rule__ElementReferenceChangeType__FeatureAssignment");
 					put(grammarAccess.getElementCreationAndInsertionChangeTypeAccess().getCreateChangeAssignment_0(), "rule__ElementCreationAndInsertionChangeType__CreateChangeAssignment_0");
 					put(grammarAccess.getElementCreationAndInsertionChangeTypeAccess().getInsertChangeAssignment_2(), "rule__ElementCreationAndInsertionChangeType__InsertChangeAssignment_2");
 					put(grammarAccess.getElementDeletionAndRemovalChangeTypeAccess().getDeleteChangeAssignment_0(), "rule__ElementDeletionAndRemovalChangeType__DeleteChangeAssignment_0");
@@ -395,6 +397,8 @@ public class ReactionsLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNamedMetaclassReferenceAccess().getNameAssignment_1_1(), "rule__NamedMetaclassReference__NameAssignment_1_1");
 					put(grammarAccess.getClassicallyNamedModelElementAccess().getNameAssignment_1(), "rule__ClassicallyNamedModelElement__NameAssignment_1");
 					put(grammarAccess.getMetaclassFeatureReferenceAccess().getFeatureAssignment_2(), "rule__MetaclassFeatureReference__FeatureAssignment_2");
+					put(grammarAccess.getMetaclassEAttributeReferenceAccess().getFeatureAssignment_2(), "rule__MetaclassEAttributeReference__FeatureAssignment_2");
+					put(grammarAccess.getMetaclassEReferenceReferenceAccess().getFeatureAssignment_2(), "rule__MetaclassEReferenceReference__FeatureAssignment_2");
 					put(grammarAccess.getMetamodelReferenceAccess().getModelAssignment(), "rule__MetamodelReference__ModelAssignment");
 					put(grammarAccess.getDomainReferenceAccess().getDomainAssignment(), "rule__DomainReference__DomainAssignment");
 					put(grammarAccess.getXAssignmentAccess().getFeatureAssignment_0_1(), "rule__XAssignment__FeatureAssignment_0_1");
