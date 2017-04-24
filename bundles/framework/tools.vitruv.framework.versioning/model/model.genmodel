@@ -6,50 +6,16 @@
     operationReflection="true" importOrganizing="true">
   <foreignModel>model.ecore</foreignModel>
   <genPackages prefix="Model" disposableProviderFactory="true" ecorePackage="model.ecore#/">
-    <genClasses ecoreClass="model.ecore#//Commit">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Commit/hash"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Commit/changes"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Commit/commitmessage"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Commit/commitsBranchedFromThis"/>
-    </genClasses>
-    <genClasses ecoreClass="model.ecore#//CommitMessage">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//CommitMessage/date"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//CommitMessage/message"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//CommitMessage/author"/>
-    </genClasses>
     <genClasses ecoreClass="model.ecore#//Author">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Author/email"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Author/ownedBranches"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Author/contributedBranches"/>
-    </genClasses>
-    <genClasses ecoreClass="model.ecore#//Branch">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Branch/currentHeadCommit"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Branch/owner"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Branch/contributors"/>
-    </genClasses>
-    <genClasses ecoreClass="model.ecore#//MergeCommit">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//MergeCommit/commitsMergedToThis"/>
-    </genClasses>
-    <genClasses ecoreClass="model.ecore#//SimpleCommit">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//SimpleCommit/parent"/>
-    </genClasses>
-    <genClasses ecoreClass="model.ecore#//BranchDiff">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//BranchDiff/sourceCommits"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//BranchDiff/targetCommits"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//BranchDiff/source"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//BranchDiff/target"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//BranchDiff/lastCommonAncestor"/>
     </genClasses>
     <genClasses ecoreClass="model.ecore#//Named">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Named/name"/>
     </genClasses>
     <genClasses ecoreClass="model.ecore#//Tag">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Tag/commit"/>
-    </genClasses>
-    <genClasses ecoreClass="model.ecore#//BranchDiffCreator">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//BranchDiffCreator/source"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//BranchDiffCreator/target"/>
-      <genOperations ecoreOperation="model.ecore#//BranchDiffCreator/createVersionDiff"/>
     </genClasses>
     <genClasses ecoreClass="model.ecore#//Signed">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Signed/signature"/>
@@ -88,9 +54,71 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//conflict/Conflict/type"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//conflict/Conflict/solvability"/>
       </genClasses>
+      <nestedGenPackages prefix="Resolve" disposableProviderFactory="true" ecorePackage="model.ecore#//conflict/resolve"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Commit" disposableProviderFactory="true" ecorePackage="model.ecore#//commit">
+      <genClasses ecoreClass="model.ecore#//commit/MergeCommit">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//commit/MergeCommit/commitsMergedToThis"/>
+      </genClasses>
+      <genClasses ecoreClass="model.ecore#//commit/SimpleCommit">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//commit/SimpleCommit/parent"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="model.ecore#//commit/Commit">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//commit/Commit/checksum"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//commit/Commit/changes"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//commit/Commit/commitmessage"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//commit/Commit/commitsBranchedFromThis"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//commit/Commit/commitsMergedFromThis"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//commit/Commit/identifier"/>
+      </genClasses>
+      <genClasses ecoreClass="model.ecore#//commit/CommitMessage">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//commit/CommitMessage/date"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//commit/CommitMessage/message"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//commit/CommitMessage/author"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Branch" disposableProviderFactory="true" ecorePackage="model.ecore#//branch">
+      <genClasses ecoreClass="model.ecore#//branch/BranchDiffCreator">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiffCreator/source"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiffCreator/target"/>
+        <genOperations ecoreOperation="model.ecore#//branch/BranchDiffCreator/createVersionDiff"/>
+      </genClasses>
+      <genClasses ecoreClass="model.ecore#//branch/BranchDiff">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/sourceCommits"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/targetCommits"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/source"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/target"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/lastCommonAncestor"/>
+      </genClasses>
+      <genClasses ecoreClass="model.ecore#//branch/Branch">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/currentHeadCommit"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/owner"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/contributors"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/branchedFrom"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/childBranches"/>
+      </genClasses>
     </nestedGenPackages>
   </genPackages>
-  <genPackages prefix="Ecore" ecorePackage="../../org.eclipse.emf.ecore/model/Ecore.ecore#/">
+  <genPackages prefix="Ecore" basePackage="org.eclipse.emf" ecorePackage="../../org.eclipse.emf.ecore/model/Ecore.ecore#/">
     <genDataTypes ecoreDataType="../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBigDecimal"/>
     <genDataTypes ecoreDataType="../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBigInteger"/>
     <genDataTypes ecoreDataType="../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
@@ -350,34 +378,34 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ../../org.eclipse.emf.ecore/model/Ecore.ecore#//ETypeParameter/eBounds"/>
     </genClasses>
   </genPackages>
-  <genPackages prefix="Echange" basePackage="tools.vitruv.framework.change" ecorePackage="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#/">
-    <genDataTypes ecoreDataType="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//Command"/>
-    <genDataTypes ecoreDataType="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//ResourceSet"/>
-    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange">
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/isResolved"/>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/resolveBefore">
-        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/resolveBefore/resourceSet"/>
+  <genPackages prefix="EChange" basePackage="tools.vitruv.framework.change" ecorePackage="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#/">
+    <genDataTypes ecoreDataType="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//Command"/>
+    <genDataTypes ecoreDataType="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//ResourceSet"/>
+    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange">
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/isResolved"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/resolveBefore">
+        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/resolveBefore/resourceSet"/>
       </genOperations>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/resolveAfter">
-        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/resolveAfter/resourceSet"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/resolveAfter">
+        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/resolveAfter/resourceSet"/>
       </genOperations>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/resolveBeforeAndApplyForward">
-        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/resolveBeforeAndApplyForward/resourceSet"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/resolveBeforeAndApplyForward">
+        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/resolveBeforeAndApplyForward/resourceSet"/>
       </genOperations>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/resolveAfterAndApplyBackward">
-        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/resolveAfterAndApplyBackward/resourceSet"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/resolveAfterAndApplyBackward">
+        <genParameters ecoreParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/resolveAfterAndApplyBackward/resourceSet"/>
       </genOperations>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/applyForward"/>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//EChange/applyBackward"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/applyForward"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange/applyBackward"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//AtomicEChange"/>
-    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//AdditiveEChange">
-      <genTypeParameters ecoreTypeParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//AdditiveEChange/T"/>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//AdditiveEChange/getNewValue"/>
+    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//AtomicEChange"/>
+    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//AdditiveEChange">
+      <genTypeParameters ecoreTypeParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//AdditiveEChange/T"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//AdditiveEChange/getNewValue"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//SubtractiveEChange">
-      <genTypeParameters ecoreTypeParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//SubtractiveEChange/T"/>
-      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/echange.ecore#//SubtractiveEChange/getOldValue"/>
+    <genClasses image="false" ecoreClass="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//SubtractiveEChange">
+      <genTypeParameters ecoreTypeParameter="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//SubtractiveEChange/T"/>
+      <genOperations ecoreOperation="../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//SubtractiveEChange/getOldValue"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
