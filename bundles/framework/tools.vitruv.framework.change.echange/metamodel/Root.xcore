@@ -37,7 +37,7 @@ abstract class RootEChange extends AtomicEChange {
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 */
 	op boolean isResolved() {
-		return super.isResolved && resource != null
+		return super.isResolved && resource !== null
 	}
 }
 
@@ -52,7 +52,7 @@ class InsertRootEObject<T extends EObj> extends RootEChange, EObjectAddedEChange
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 */
 	op boolean isResolved() {
-		return super.isResolved && newValue != null && !newValue.eIsProxy
+		return super.isResolved && newValue !== null && !newValue.eIsProxy
 	}
 }
 
@@ -67,6 +67,6 @@ class RemoveRootEObject<T extends EObj> extends RootEChange, EObjectSubtractedEC
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 */
 	op boolean isResolved() {
-		return super.isResolved && oldValue != null && !oldValue.eIsProxy()
+		return super.isResolved && oldValue !== null && !oldValue.eIsProxy()
 	}
 }

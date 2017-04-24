@@ -55,7 +55,7 @@ class InsertEReference<A extends EObj, T extends EObj> extends InsertInListEChan
 	 */
 	op boolean isResolved() {
 		return super.isResolved() && 
-			(newValue == null || !newValue.eIsProxy())
+			(newValue === null || !newValue.eIsProxy())
 	}
 }
 
@@ -72,7 +72,7 @@ class RemoveEReference<A extends EObj, T extends EObj> extends RemoveFromListECh
 	 */
 	op boolean isResolved() {
 		return super.isResolved() && 
-			(oldValue == null || !oldValue.eIsProxy())
+			(oldValue === null || !oldValue.eIsProxy())
 	}
 }
 
@@ -92,7 +92,7 @@ class ReplaceSingleValuedEReference<A extends EObj, T extends EObj> extends  Rep
 	 */
 	op boolean isResolved() {
 		return super.isResolved() &&
-			(oldValue == null || !oldValue.eIsProxy()) &&
-			(newValue == null || !newValue.eIsProxy())
+			(oldValue === null || !oldValue.eIsProxy()) &&
+			(newValue === null || !newValue.eIsProxy())
 	}
 }
