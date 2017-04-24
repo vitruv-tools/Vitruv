@@ -133,6 +133,9 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		isInited = true;
 
 		// Initialize simple dependencies
+		FeaturePackage.eINSTANCE.eClass();
+		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 		ListPackage.eINSTANCE.eClass();
 		SinglePackage.eINSTANCE.eClass();
 

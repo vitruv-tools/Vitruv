@@ -92,7 +92,7 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((super.isResolved() && (!<%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null))) && (!this.getAffectedEObject().eIsProxy())) && (!<%com.google.common.base.Objects%>.equal(this.getAffectedFeature(), null)));'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((super.isResolved() &amp;&amp; (!&lt;%com.google.common.base.Objects%&gt;.equal(this.getAffectedEObject(), null))) &amp;&amp; (!this.getAffectedEObject().eIsProxy())) &amp;&amp; (!&lt;%com.google.common.base.Objects%&gt;.equal(this.getAffectedFeature(), null)));'"
 	 * @generated
 	 */
 	boolean isResolved();

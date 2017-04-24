@@ -280,15 +280,13 @@ public class MoveEObjectImpl<A extends EObject, B extends EObject, T extends EOb
 		if (_notEquals) {
 			list.add(subWhereChange);
 		}
-		EObjectSubtractedEChange<T> _subtractWhatChange = this.getSubtractWhatChange();
-		list.add(_subtractWhatChange);
+		list.add(this.getSubtractWhatChange());
 		final UpdateReferenceEChange<B> addWhereChange = this.getAddWhereChange();
 		boolean _notEquals_1 = (!Objects.equal(addWhereChange, null));
 		if (_notEquals_1) {
 			list.add(addWhereChange);
 		}
-		EObjectAddedEChange<T> _addWhatChange = this.getAddWhatChange();
-		list.add(_addWhatChange);
+		list.add(this.getAddWhatChange());
 		return list;
 	}
 

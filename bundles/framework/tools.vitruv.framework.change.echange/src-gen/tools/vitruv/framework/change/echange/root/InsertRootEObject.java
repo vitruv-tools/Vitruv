@@ -33,7 +33,7 @@ public interface InsertRootEObject<T extends EObject> extends RootEChange, EObje
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return ((super.isResolved() && (!<%com.google.common.base.Objects%>.equal(this.getNewValue(), null))) && (!this.getNewValue().eIsProxy()));'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return ((super.isResolved() &amp;&amp; (!&lt;%com.google.common.base.Objects%&gt;.equal(this.getNewValue(), null))) &amp;&amp; (!this.getNewValue().eIsProxy()));'"
 	 * @generated
 	 */
 	boolean isResolved();

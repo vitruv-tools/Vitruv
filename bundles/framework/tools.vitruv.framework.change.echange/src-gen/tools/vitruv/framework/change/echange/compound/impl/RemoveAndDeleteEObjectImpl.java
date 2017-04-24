@@ -171,10 +171,8 @@ public abstract class RemoveAndDeleteEObjectImpl<T extends EObject, C extends EO
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
 		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
-		C _removeChange = this.getRemoveChange();
-		result.add(_removeChange);
-		DeleteEObject<T> _deleteChange = this.getDeleteChange();
-		result.add(_deleteChange);
+		result.add(this.getRemoveChange());
+		result.add(this.getDeleteChange());
 		return result;
 	}
 

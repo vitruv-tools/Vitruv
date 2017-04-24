@@ -182,8 +182,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * @generated
 	 */
 	public boolean isContainment() {
-		EReference _affectedFeature = this.getAffectedFeature();
-		return _affectedFeature.isContainment();
+		return this.getAffectedFeature().isContainment();
 	}
 
 	/**

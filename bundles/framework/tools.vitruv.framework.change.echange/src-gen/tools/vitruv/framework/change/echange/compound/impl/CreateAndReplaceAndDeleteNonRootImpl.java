@@ -227,12 +227,9 @@ public class CreateAndReplaceAndDeleteNonRootImpl<A extends EObject, T extends E
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
 		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
-		CreateEObject<T> _createChange = this.getCreateChange();
-		result.add(_createChange);
-		ReplaceSingleValuedEReference<A, T> _replaceChange = this.getReplaceChange();
-		result.add(_replaceChange);
-		DeleteEObject<T> _deleteChange = this.getDeleteChange();
-		result.add(_deleteChange);
+		result.add(this.getCreateChange());
+		result.add(this.getReplaceChange());
+		result.add(this.getDeleteChange());
 		return result;
 	}
 

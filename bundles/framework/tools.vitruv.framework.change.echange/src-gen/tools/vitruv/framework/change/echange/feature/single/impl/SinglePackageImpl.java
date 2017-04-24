@@ -98,6 +98,8 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 
 		// Initialize simple dependencies
 		FeaturePackage.eINSTANCE.eClass();
+		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theSinglePackage.createPackageContents();

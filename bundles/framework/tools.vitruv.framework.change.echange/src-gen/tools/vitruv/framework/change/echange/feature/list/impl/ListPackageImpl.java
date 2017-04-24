@@ -114,6 +114,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 
 		// Initialize simple dependencies
 		FeaturePackage.eINSTANCE.eClass();
+		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theListPackage.createPackageContents();

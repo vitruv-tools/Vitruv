@@ -92,7 +92,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE_BEFORE__OBJECT = 1;
+	int ECHANGE___RESOLVE_BEFORE__RESOURCESET = 1;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -101,7 +101,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE_AFTER__OBJECT = 2;
+	int ECHANGE___RESOLVE_AFTER__RESOURCESET = 2;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -110,7 +110,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = 3;
+	int ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = 3;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -119,7 +119,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = 4;
+	int ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = 4;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -183,7 +183,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET = ECHANGE___RESOLVE_BEFORE__OBJECT;
+	int ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET = ECHANGE___RESOLVE_BEFORE__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve After</em>' operation.
@@ -192,7 +192,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET = ECHANGE___RESOLVE_AFTER__OBJECT;
+	int ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET = ECHANGE___RESOLVE_AFTER__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
@@ -201,7 +201,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT;
+	int ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
@@ -210,7 +210,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT;
+	int ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 
 	/**
 	 * The operation id for the '<em>Apply Forward</em>' operation.
@@ -488,7 +488,7 @@ public interface EChangePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.EChange#resolveBefore(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getEChange__ResolveBefore__Object();
+	EOperation getEChange__ResolveBefore__ResourceSet();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After</em>}' operation.
@@ -498,7 +498,7 @@ public interface EChangePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.EChange#resolveAfter(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getEChange__ResolveAfter__Object();
+	EOperation getEChange__ResolveAfter__ResourceSet();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveBeforeAndApplyForward(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve Before And Apply Forward</em>}' operation.
@@ -508,7 +508,7 @@ public interface EChangePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.EChange#resolveBeforeAndApplyForward(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getEChange__ResolveBeforeAndApplyForward__Object();
+	EOperation getEChange__ResolveBeforeAndApplyForward__ResourceSet();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#resolveAfterAndApplyBackward(org.eclipse.emf.ecore.resource.ResourceSet) <em>Resolve After And Apply Backward</em>}' operation.
@@ -518,7 +518,7 @@ public interface EChangePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.EChange#resolveAfterAndApplyBackward(org.eclipse.emf.ecore.resource.ResourceSet)
 	 * @generated
 	 */
-	EOperation getEChange__ResolveAfterAndApplyBackward__Object();
+	EOperation getEChange__ResolveAfterAndApplyBackward__ResourceSet();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.EChange#applyForward() <em>Apply Forward</em>}' operation.
@@ -659,7 +659,7 @@ public interface EChangePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___RESOLVE_BEFORE__OBJECT = eINSTANCE.getEChange__ResolveBefore__Object();
+		EOperation ECHANGE___RESOLVE_BEFORE__RESOURCESET = eINSTANCE.getEChange__ResolveBefore__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em><b>Resolve After</b></em>' operation.
@@ -667,7 +667,7 @@ public interface EChangePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___RESOLVE_AFTER__OBJECT = eINSTANCE.getEChange__ResolveAfter__Object();
+		EOperation ECHANGE___RESOLVE_AFTER__RESOURCESET = eINSTANCE.getEChange__ResolveAfter__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em><b>Resolve Before And Apply Forward</b></em>' operation.
@@ -675,7 +675,7 @@ public interface EChangePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT = eINSTANCE.getEChange__ResolveBeforeAndApplyForward__Object();
+		EOperation ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = eINSTANCE.getEChange__ResolveBeforeAndApplyForward__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em><b>Resolve After And Apply Backward</b></em>' operation.
@@ -683,7 +683,7 @@ public interface EChangePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT = eINSTANCE.getEChange__ResolveAfterAndApplyBackward__Object();
+		EOperation ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = eINSTANCE.getEChange__ResolveAfterAndApplyBackward__ResourceSet();
 
 		/**
 		 * The meta object literal for the '<em><b>Apply Forward</b></em>' operation.

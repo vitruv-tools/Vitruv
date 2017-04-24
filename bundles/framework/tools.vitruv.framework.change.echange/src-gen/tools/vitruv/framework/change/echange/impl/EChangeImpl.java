@@ -133,13 +133,13 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 		switch (operationID) {
 			case EChangePackage.ECHANGE___IS_RESOLVED:
 				return isResolved();
-			case EChangePackage.ECHANGE___RESOLVE_BEFORE__OBJECT:
+			case EChangePackage.ECHANGE___RESOLVE_BEFORE__RESOURCESET:
 				return resolveBefore((ResourceSet)arguments.get(0));
-			case EChangePackage.ECHANGE___RESOLVE_AFTER__OBJECT:
+			case EChangePackage.ECHANGE___RESOLVE_AFTER__RESOURCESET:
 				return resolveAfter((ResourceSet)arguments.get(0));
-			case EChangePackage.ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__OBJECT:
+			case EChangePackage.ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET:
 				return resolveBeforeAndApplyForward((ResourceSet)arguments.get(0));
-			case EChangePackage.ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__OBJECT:
+			case EChangePackage.ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET:
 				return resolveAfterAndApplyBackward((ResourceSet)arguments.get(0));
 			case EChangePackage.ECHANGE___APPLY_FORWARD:
 				return applyForward();

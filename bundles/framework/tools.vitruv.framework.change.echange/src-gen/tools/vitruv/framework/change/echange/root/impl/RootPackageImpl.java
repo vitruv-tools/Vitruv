@@ -115,6 +115,8 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		isInited = true;
 
 		// Initialize simple dependencies
+		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 		EobjectPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects

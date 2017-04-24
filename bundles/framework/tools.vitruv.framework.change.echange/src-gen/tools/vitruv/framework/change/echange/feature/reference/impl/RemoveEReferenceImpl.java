@@ -130,8 +130,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @generated
 	 */
 	public boolean isContainment() {
-		EReference _affectedFeature = this.getAffectedFeature();
-		return _affectedFeature.isContainment();
+		return this.getAffectedFeature().isContainment();
 	}
 
 	/**
