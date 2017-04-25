@@ -88,6 +88,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="author" lowerBound="1"
           eType="#//Author"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="InitialCommit" eSuperTypes="#//commit/Commit"/>
   </eSubpackages>
   <eSubpackages name="branch" nsURI="http://tools.vitruv/versioning/1.0/branch" nsPrefix="tools.vitruv.framework.versioning.branch">
     <eClassifiers xsi:type="ecore:EClass" name="BranchDiffCreator">
