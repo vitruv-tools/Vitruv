@@ -59,6 +59,7 @@ public class CommitFactoryImpl extends EFactoryImpl implements CommitFactory {
 			case CommitPackage.MERGE_COMMIT: return createMergeCommit();
 			case CommitPackage.SIMPLE_COMMIT: return createSimpleCommit();
 			case CommitPackage.COMMIT_MESSAGE: return createCommitMessage();
+			case CommitPackage.INITIAL_COMMIT: return createInitialCommit();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -92,6 +93,16 @@ public class CommitFactoryImpl extends EFactoryImpl implements CommitFactory {
 	public CommitMessage createCommitMessage() {
 		CommitMessageImpl commitMessage = new CommitMessageImpl();
 		return commitMessage;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public InitialCommit createInitialCommit() {
+		InitialCommitImpl initialCommit = new InitialCommitImpl();
+		return initialCommit;
 	}
 
 	/**

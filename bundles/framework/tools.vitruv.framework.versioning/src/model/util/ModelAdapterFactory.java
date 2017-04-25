@@ -3,7 +3,6 @@
 package model.util;
 
 import model.*;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 

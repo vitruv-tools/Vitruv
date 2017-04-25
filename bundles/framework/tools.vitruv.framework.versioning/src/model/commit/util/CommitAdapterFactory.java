@@ -86,6 +86,10 @@ public class CommitAdapterFactory extends AdapterFactoryImpl {
 				return createCommitMessageAdapter();
 			}
 			@Override
+			public Adapter caseInitialCommit(InitialCommit object) {
+				return createInitialCommitAdapter();
+			}
+			@Override
 			public Adapter caseSigned(Signed object) {
 				return createSignedAdapter();
 			}
@@ -162,6 +166,20 @@ public class CommitAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createCommitMessageAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.commit.InitialCommit <em>Initial Commit</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.commit.InitialCommit
+	 * @generated
+	 */
+	public Adapter createInitialCommitAdapter() {
 		return null;
 	}
 

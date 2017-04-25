@@ -97,6 +97,14 @@ public class CommitSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CommitPackage.INITIAL_COMMIT: {
+				InitialCommit initialCommit = (InitialCommit)theEObject;
+				T result = caseInitialCommit(initialCommit);
+				if (result == null) result = caseCommit(initialCommit);
+				if (result == null) result = caseSigned(initialCommit);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -158,6 +166,21 @@ public class CommitSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseCommitMessage(CommitMessage object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Initial Commit</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Initial Commit</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseInitialCommit(InitialCommit object) {
 		return null;
 	}
 

@@ -49,6 +49,15 @@ public interface CommitFactory extends EFactory {
 	CommitMessage createCommitMessage();
 
 	/**
+	 * Returns a new object of class '<em>Initial Commit</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Initial Commit</em>'.
+	 * @generated
+	 */
+	InitialCommit createInitialCommit();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

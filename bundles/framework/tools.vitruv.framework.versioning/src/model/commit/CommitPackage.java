@@ -406,6 +406,98 @@ public interface CommitPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link model.commit.impl.InitialCommitImpl <em>Initial Commit</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see model.commit.impl.InitialCommitImpl
+	 * @see model.commit.impl.CommitPackageImpl#getInitialCommit()
+	 * @generated
+	 */
+	int INITIAL_COMMIT = 4;
+
+	/**
+	 * The feature id for the '<em><b>Signature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT__SIGNATURE = COMMIT__SIGNATURE;
+
+	/**
+	 * The feature id for the '<em><b>Checksum</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT__CHECKSUM = COMMIT__CHECKSUM;
+
+	/**
+	 * The feature id for the '<em><b>Changes</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT__CHANGES = COMMIT__CHANGES;
+
+	/**
+	 * The feature id for the '<em><b>Commitmessage</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT__COMMITMESSAGE = COMMIT__COMMITMESSAGE;
+
+	/**
+	 * The feature id for the '<em><b>Commits Branched From This</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT__COMMITS_BRANCHED_FROM_THIS = COMMIT__COMMITS_BRANCHED_FROM_THIS;
+
+	/**
+	 * The feature id for the '<em><b>Commits Merged From This</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT__COMMITS_MERGED_FROM_THIS = COMMIT__COMMITS_MERGED_FROM_THIS;
+
+	/**
+	 * The feature id for the '<em><b>Identifier</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT__IDENTIFIER = COMMIT__IDENTIFIER;
+
+	/**
+	 * The number of structural features of the '<em>Initial Commit</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT_FEATURE_COUNT = COMMIT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Initial Commit</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT_OPERATION_COUNT = COMMIT_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link model.commit.MergeCommit <em>Merge Commit</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -567,6 +659,16 @@ public interface CommitPackage extends EPackage {
 	EReference getCommitMessage_Author();
 
 	/**
+	 * Returns the meta object for class '{@link model.commit.InitialCommit <em>Initial Commit</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Initial Commit</em>'.
+	 * @see model.commit.InitialCommit
+	 * @generated
+	 */
+	EClass getInitialCommit();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -716,6 +818,16 @@ public interface CommitPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMMIT_MESSAGE__AUTHOR = eINSTANCE.getCommitMessage_Author();
+
+		/**
+		 * The meta object literal for the '{@link model.commit.impl.InitialCommitImpl <em>Initial Commit</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see model.commit.impl.InitialCommitImpl
+		 * @see model.commit.impl.CommitPackageImpl#getInitialCommit()
+		 * @generated
+		 */
+		EClass INITIAL_COMMIT = eINSTANCE.getInitialCommit();
 
 	}
 

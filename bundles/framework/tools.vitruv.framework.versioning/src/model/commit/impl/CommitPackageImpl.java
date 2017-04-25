@@ -12,6 +12,7 @@ import model.commit.Commit;
 import model.commit.CommitFactory;
 import model.commit.CommitMessage;
 import model.commit.CommitPackage;
+import model.commit.InitialCommit;
 import model.commit.MergeCommit;
 import model.commit.SimpleCommit;
 
@@ -67,6 +68,13 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 	 * @generated
 	 */
 	private EClass commitMessageEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass initialCommitEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -286,6 +294,15 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getInitialCommit() {
+		return initialCommitEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public CommitFactory getCommitFactory() {
 		return (CommitFactory)getEFactoryInstance();
 	}
@@ -327,6 +344,8 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		createEAttribute(commitMessageEClass, COMMIT_MESSAGE__DATE);
 		createEAttribute(commitMessageEClass, COMMIT_MESSAGE__MESSAGE);
 		createEReference(commitMessageEClass, COMMIT_MESSAGE__AUTHOR);
+
+		initialCommitEClass = createEClass(INITIAL_COMMIT);
 	}
 
 	/**
@@ -364,6 +383,7 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		mergeCommitEClass.getESuperTypes().add(this.getCommit());
 		simpleCommitEClass.getESuperTypes().add(this.getCommit());
 		commitEClass.getESuperTypes().add(theModelPackage.getSigned());
+		initialCommitEClass.getESuperTypes().add(this.getCommit());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(mergeCommitEClass, MergeCommit.class, "MergeCommit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -384,6 +404,8 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		initEAttribute(getCommitMessage_Date(), ecorePackage.getEDate(), "date", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCommitMessage_Message(), ecorePackage.getEString(), "message", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCommitMessage_Author(), theModelPackage.getAuthor(), null, "author", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(initialCommitEClass, InitialCommit.class, "InitialCommit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 	}
 
 } //CommitPackageImpl

@@ -3,7 +3,6 @@
 package model.util;
 
 import model.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
