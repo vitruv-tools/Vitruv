@@ -82,11 +82,12 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="CommitMessage">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="date" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate" changeable="false"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+          changeable="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="author" lowerBound="1"
-          eType="#//Author"/>
+          eType="#//Author" changeable="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="InitialCommit" eSuperTypes="#//commit/Commit"/>
   </eSubpackages>
