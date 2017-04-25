@@ -91,6 +91,16 @@ public class AuthorImpl extends NamedImpl implements Author {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 */
+	public AuthorImpl(final String email, final String name) {
+		super();
+		this.email = email;
+		this.name = name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
