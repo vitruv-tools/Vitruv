@@ -129,7 +129,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	protected CommitImpl() {
 		super();

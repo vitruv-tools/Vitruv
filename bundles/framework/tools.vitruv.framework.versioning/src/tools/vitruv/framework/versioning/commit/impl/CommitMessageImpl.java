@@ -5,7 +5,6 @@ package tools.vitruv.framework.versioning.commit.impl;
 import java.util.Date;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -93,6 +92,18 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 	}
 
 	/**
+	 * 
+	 * @param message 
+	 * @param author
+	 */
+	public CommitMessageImpl(String message, Author author) {
+		super();
+		this.message = message;
+		this.author = author;
+		this.date = new Date();
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -116,32 +127,8 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setDate(Date newDate) {
-		Date oldDate = date;
-		date = newDate;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT_MESSAGE__DATE, oldDate, date));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getMessage() {
 		return message;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMessage(String newMessage) {
-		String oldMessage = message;
-		message = newMessage;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT_MESSAGE__MESSAGE, oldMessage, message));
 	}
 
 	/**
@@ -175,18 +162,6 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAuthor(Author newAuthor) {
-		Author oldAuthor = author;
-		author = newAuthor;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT_MESSAGE__AUTHOR, oldAuthor, author));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -199,48 +174,6 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 				return basicGetAuthor();
 		}
 		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case CommitPackage.COMMIT_MESSAGE__DATE:
-				setDate((Date)newValue);
-				return;
-			case CommitPackage.COMMIT_MESSAGE__MESSAGE:
-				setMessage((String)newValue);
-				return;
-			case CommitPackage.COMMIT_MESSAGE__AUTHOR:
-				setAuthor((Author)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID) {
-		switch (featureID) {
-			case CommitPackage.COMMIT_MESSAGE__DATE:
-				setDate(DATE_EDEFAULT);
-				return;
-			case CommitPackage.COMMIT_MESSAGE__MESSAGE:
-				setMessage(MESSAGE_EDEFAULT);
-				return;
-			case CommitPackage.COMMIT_MESSAGE__AUTHOR:
-				setAuthor((Author)null);
-				return;
-		}
-		super.eUnset(featureID);
 	}
 
 	/**
