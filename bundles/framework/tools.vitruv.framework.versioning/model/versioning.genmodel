@@ -5,7 +5,8 @@
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     operationReflection="true" importOrganizing="true">
   <foreignModel>versioning.ecore</foreignModel>
-  <genPackages prefix="Model" disposableProviderFactory="true" ecorePackage="versioning.ecore#/">
+  <genPackages prefix="Versioning" basePackage="tools.vitruv.framework" disposableProviderFactory="true"
+      ecorePackage="versioning.ecore#/">
     <genClasses ecoreClass="versioning.ecore#//Author">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute versioning.ecore#//Author/email"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference versioning.ecore#//Author/ownedBranches"/>
@@ -83,6 +84,7 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference versioning.ecore#//commit/CommitMessage/author"/>
       </genClasses>
+      <genClasses ecoreClass="versioning.ecore#//commit/InitialCommit"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Branch" disposableProviderFactory="true" ecorePackage="versioning.ecore#//branch">
       <genClasses ecoreClass="versioning.ecore#//branch/BranchDiffCreator">
