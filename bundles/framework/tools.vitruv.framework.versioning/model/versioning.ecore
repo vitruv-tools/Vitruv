@@ -68,17 +68,20 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Commit" abstract="true" eSuperTypes="#//Signed">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="checksum" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" changeable="false"
+          defaultValueLiteral="1000" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="changes" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
+          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"
+          changeable="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitmessage" lowerBound="1"
-          eType="#//commit/CommitMessage"/>
+          eType="#//commit/CommitMessage" changeable="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitsBranchedFromThis"
           upperBound="-1" eType="#//commit/Commit"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitsMergedFromThis"
           upperBound="-1" eType="#//commit/MergeCommit" eOpposite="#//commit/MergeCommit/commitsMergedToThis"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+          defaultValueLiteral="2000" iD="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="CommitMessage">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="date" lowerBound="1"
