@@ -4,117 +4,117 @@
     modelName="Model" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     operationReflection="true" importOrganizing="true">
-  <foreignModel>model.ecore</foreignModel>
-  <genPackages prefix="Model" disposableProviderFactory="true" ecorePackage="model.ecore#/">
-    <genClasses ecoreClass="model.ecore#//Author">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Author/email"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Author/ownedBranches"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Author/contributedBranches"/>
+  <foreignModel>versioning.ecore</foreignModel>
+  <genPackages prefix="Model" disposableProviderFactory="true" ecorePackage="versioning.ecore#/">
+    <genClasses ecoreClass="versioning.ecore#//Author">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute versioning.ecore#//Author/email"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference versioning.ecore#//Author/ownedBranches"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference versioning.ecore#//Author/contributedBranches"/>
     </genClasses>
-    <genClasses ecoreClass="model.ecore#//Named">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Named/name"/>
+    <genClasses ecoreClass="versioning.ecore#//Named">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute versioning.ecore#//Named/name"/>
     </genClasses>
-    <genClasses ecoreClass="model.ecore#//Tag">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Tag/commit"/>
+    <genClasses ecoreClass="versioning.ecore#//Tag">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference versioning.ecore#//Tag/commit"/>
     </genClasses>
-    <genClasses ecoreClass="model.ecore#//Signed">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Signed/signature"/>
+    <genClasses ecoreClass="versioning.ecore#//Signed">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference versioning.ecore#//Signed/signature"/>
     </genClasses>
-    <genClasses ecoreClass="model.ecore#//Signature">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Signature/signer"/>
+    <genClasses ecoreClass="versioning.ecore#//Signature">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference versioning.ecore#//Signature/signer"/>
     </genClasses>
-    <nestedGenPackages prefix="Conflict" disposableProviderFactory="true" ecorePackage="model.ecore#//conflict">
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="model.ecore#//conflict/ConflictType">
-        <genEnumLiterals ecoreEnumLiteral="model.ecore#//conflict/ConflictType/NAMING"/>
-        <genEnumLiterals ecoreEnumLiteral="model.ecore#//conflict/ConflictType/MULTIPLICITY"/>
-        <genEnumLiterals ecoreEnumLiteral="model.ecore#//conflict/ConflictType/VISIBILITY"/>
+    <nestedGenPackages prefix="Conflict" disposableProviderFactory="true" ecorePackage="versioning.ecore#//conflict">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="versioning.ecore#//conflict/ConflictType">
+        <genEnumLiterals ecoreEnumLiteral="versioning.ecore#//conflict/ConflictType/NAMING"/>
+        <genEnumLiterals ecoreEnumLiteral="versioning.ecore#//conflict/ConflictType/MULTIPLICITY"/>
+        <genEnumLiterals ecoreEnumLiteral="versioning.ecore#//conflict/ConflictType/VISIBILITY"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="model.ecore#//conflict/ConflictSolvability">
-        <genEnumLiterals ecoreEnumLiteral="model.ecore#//conflict/ConflictSolvability/automatically"/>
-        <genEnumLiterals ecoreEnumLiteral="model.ecore#//conflict/ConflictSolvability/manual"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="versioning.ecore#//conflict/ConflictSolvability">
+        <genEnumLiterals ecoreEnumLiteral="versioning.ecore#//conflict/ConflictSolvability/automatically"/>
+        <genEnumLiterals ecoreEnumLiteral="versioning.ecore#//conflict/ConflictSolvability/manual"/>
       </genEnums>
-      <genClasses ecoreClass="model.ecore#//conflict/SimpleChangeConflict">
+      <genClasses ecoreClass="versioning.ecore#//conflict/SimpleChangeConflict">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//conflict/SimpleChangeConflict/sourceChange"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//conflict/SimpleChangeConflict/sourceChange"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//conflict/SimpleChangeConflict/targetChange"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//conflict/SimpleChangeConflict/targetChange"/>
       </genClasses>
-      <genClasses ecoreClass="model.ecore#//conflict/MultiChangeConflict">
+      <genClasses ecoreClass="versioning.ecore#//conflict/MultiChangeConflict">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//conflict/MultiChangeConflict/sourceChanges"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//conflict/MultiChangeConflict/sourceChanges"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//conflict/MultiChangeConflict/targetChanges"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//conflict/MultiChangeConflict/targetChanges"/>
       </genClasses>
-      <genClasses ecoreClass="model.ecore#//conflict/ConflictDetector">
-        <genOperations ecoreOperation="model.ecore#//conflict/ConflictDetector/detectConflicts">
-          <genParameters ecoreParameter="model.ecore#//conflict/ConflictDetector/detectConflicts/diff"/>
+      <genClasses ecoreClass="versioning.ecore#//conflict/ConflictDetector">
+        <genOperations ecoreOperation="versioning.ecore#//conflict/ConflictDetector/detectConflicts">
+          <genParameters ecoreParameter="versioning.ecore#//conflict/ConflictDetector/detectConflicts/diff"/>
         </genOperations>
       </genClasses>
-      <genClasses image="false" ecoreClass="model.ecore#//conflict/Conflict">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//conflict/Conflict/type"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//conflict/Conflict/solvability"/>
+      <genClasses image="false" ecoreClass="versioning.ecore#//conflict/Conflict">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute versioning.ecore#//conflict/Conflict/type"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute versioning.ecore#//conflict/Conflict/solvability"/>
       </genClasses>
-      <nestedGenPackages prefix="Resolve" disposableProviderFactory="true" ecorePackage="model.ecore#//conflict/resolve"/>
+      <nestedGenPackages prefix="Resolve" disposableProviderFactory="true" ecorePackage="versioning.ecore#//conflict/resolve"/>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Commit" disposableProviderFactory="true" ecorePackage="model.ecore#//commit">
-      <genClasses ecoreClass="model.ecore#//commit/MergeCommit">
+    <nestedGenPackages prefix="Commit" disposableProviderFactory="true" ecorePackage="versioning.ecore#//commit">
+      <genClasses ecoreClass="versioning.ecore#//commit/MergeCommit">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//commit/MergeCommit/commitsMergedToThis"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//commit/MergeCommit/commitsMergedToThis"/>
       </genClasses>
-      <genClasses ecoreClass="model.ecore#//commit/SimpleCommit">
+      <genClasses ecoreClass="versioning.ecore#//commit/SimpleCommit">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//commit/SimpleCommit/parent"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//commit/SimpleCommit/parent"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="model.ecore#//commit/Commit">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//commit/Commit/checksum"/>
+      <genClasses image="false" ecoreClass="versioning.ecore#//commit/Commit">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute versioning.ecore#//commit/Commit/checksum"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//commit/Commit/changes"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//commit/Commit/changes"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//commit/Commit/commitmessage"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//commit/Commit/commitmessage"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//commit/Commit/commitsBranchedFromThis"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//commit/Commit/commitsBranchedFromThis"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//commit/Commit/commitsMergedFromThis"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//commit/Commit/identifier"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//commit/Commit/commitsMergedFromThis"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute versioning.ecore#//commit/Commit/identifier"/>
       </genClasses>
-      <genClasses ecoreClass="model.ecore#//commit/CommitMessage">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//commit/CommitMessage/date"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//commit/CommitMessage/message"/>
+      <genClasses ecoreClass="versioning.ecore#//commit/CommitMessage">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute versioning.ecore#//commit/CommitMessage/date"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute versioning.ecore#//commit/CommitMessage/message"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//commit/CommitMessage/author"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//commit/CommitMessage/author"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Branch" disposableProviderFactory="true" ecorePackage="model.ecore#//branch">
-      <genClasses ecoreClass="model.ecore#//branch/BranchDiffCreator">
+    <nestedGenPackages prefix="Branch" disposableProviderFactory="true" ecorePackage="versioning.ecore#//branch">
+      <genClasses ecoreClass="versioning.ecore#//branch/BranchDiffCreator">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiffCreator/source"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/BranchDiffCreator/source"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiffCreator/target"/>
-        <genOperations ecoreOperation="model.ecore#//branch/BranchDiffCreator/createVersionDiff"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/BranchDiffCreator/target"/>
+        <genOperations ecoreOperation="versioning.ecore#//branch/BranchDiffCreator/createVersionDiff"/>
       </genClasses>
-      <genClasses ecoreClass="model.ecore#//branch/BranchDiff">
+      <genClasses ecoreClass="versioning.ecore#//branch/BranchDiff">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/sourceCommits"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/BranchDiff/sourceCommits"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/targetCommits"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/BranchDiff/targetCommits"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/source"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/BranchDiff/source"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/target"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/BranchDiff/target"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/BranchDiff/lastCommonAncestor"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/BranchDiff/lastCommonAncestor"/>
       </genClasses>
-      <genClasses ecoreClass="model.ecore#//branch/Branch">
+      <genClasses ecoreClass="versioning.ecore#//branch/Branch">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/currentHeadCommit"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/Branch/currentHeadCommit"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/owner"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/Branch/owner"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/contributors"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/Branch/contributors"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/branchedFrom"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/Branch/branchedFrom"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference model.ecore#//branch/Branch/childBranches"/>
+            ecoreFeature="ecore:EReference versioning.ecore#//branch/Branch/childBranches"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>
