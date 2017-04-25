@@ -6,7 +6,7 @@ import org.junit.Assert
 
 class ExampleTest {
 	@Test
-	def public test1() {
+	def public void test1() {
 		Assert.assertFalse(false);
 	}	
 }
