@@ -32,6 +32,7 @@ import tools.vitruv.framework.versioning.Signed;
 public interface Commit extends Signed {
 	/**
 	 * Returns the value of the '<em><b>Checksum</b></em>' attribute.
+	 * The default value is <code>"1000"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Checksum</em>' attribute isn't clear,
@@ -39,22 +40,11 @@ public interface Commit extends Signed {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Checksum</em>' attribute.
-	 * @see #setChecksum(long)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_Checksum()
-	 * @model required="true"
+	 * @model default="1000" required="true" changeable="false" derived="true"
 	 * @generated
 	 */
 	long getChecksum();
-
-	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.Commit#getChecksum <em>Checksum</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Checksum</em>' attribute.
-	 * @see #getChecksum()
-	 * @generated
-	 */
-	void setChecksum(long value);
 
 	/**
 	 * Returns the value of the '<em><b>Changes</b></em>' reference list.
@@ -67,7 +57,7 @@ public interface Commit extends Signed {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Changes</em>' reference list.
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_Changes()
-	 * @model required="true"
+	 * @model required="true" changeable="false"
 	 * @generated
 	 */
 	EList<EChange> getChanges();
@@ -81,22 +71,11 @@ public interface Commit extends Signed {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Commitmessage</em>' reference.
-	 * @see #setCommitmessage(CommitMessage)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_Commitmessage()
-	 * @model required="true"
+	 * @model required="true" changeable="false"
 	 * @generated
 	 */
 	CommitMessage getCommitmessage();
-
-	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.Commit#getCommitmessage <em>Commitmessage</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Commitmessage</em>' reference.
-	 * @see #getCommitmessage()
-	 * @generated
-	 */
-	void setCommitmessage(CommitMessage value);
 
 	/**
 	 * Returns the value of the '<em><b>Commits Branched From This</b></em>' reference list.
@@ -134,6 +113,7 @@ public interface Commit extends Signed {
 
 	/**
 	 * Returns the value of the '<em><b>Identifier</b></em>' attribute.
+	 * The default value is <code>"2000"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Identifier</em>' attribute isn't clear,
@@ -141,21 +121,10 @@ public interface Commit extends Signed {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Identifier</em>' attribute.
-	 * @see #setIdentifier(int)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_Identifier()
-	 * @model required="true"
+	 * @model default="2000" id="true" required="true" changeable="false"
 	 * @generated
 	 */
 	int getIdentifier();
-
-	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.Commit#getIdentifier <em>Identifier</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Identifier</em>' attribute.
-	 * @see #getIdentifier()
-	 * @generated
-	 */
-	void setIdentifier(int value);
 
 } // Commit

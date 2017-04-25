@@ -54,7 +54,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final long CHECKSUM_EDEFAULT = 0L;
+	protected static final long CHECKSUM_EDEFAULT = 1000L;
 
 	/**
 	 * The cached value of the '{@link #getChecksum() <em>Checksum</em>}' attribute.
@@ -114,7 +114,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int IDENTIFIER_EDEFAULT = 0;
+	protected static final int IDENTIFIER_EDEFAULT = 2000;
 
 	/**
 	 * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' attribute.
@@ -136,6 +136,17 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	}
 
 	/**
+	 * @param changes
+	 * @param commitmessage
+	 */
+	public CommitImpl(EList<EChange> changes, CommitMessage commitmessage) {
+		super();
+		this.changes = changes;
+		this.commitmessage = commitmessage;
+		this.identifier = (int )(Math.random() * Integer.MAX_VALUE  + 1);
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -152,18 +163,6 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 */
 	public long getChecksum() {
 		return checksum;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setChecksum(long newChecksum) {
-		long oldChecksum = checksum;
-		checksum = newChecksum;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT__CHECKSUM, oldChecksum, checksum));
 	}
 
 	/**
@@ -209,18 +208,6 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setCommitmessage(CommitMessage newCommitmessage) {
-		CommitMessage oldCommitmessage = commitmessage;
-		commitmessage = newCommitmessage;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT__COMMITMESSAGE, oldCommitmessage, commitmessage));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<Commit> getCommitsBranchedFromThis() {
 		if (commitsBranchedFromThis == null) {
 			commitsBranchedFromThis = new EObjectResolvingEList<Commit>(Commit.class, this, CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS);
@@ -247,18 +234,6 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 */
 	public int getIdentifier() {
 		return identifier;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setIdentifier(int newIdentifier) {
-		int oldIdentifier = identifier;
-		identifier = newIdentifier;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT__IDENTIFIER, oldIdentifier, identifier));
 	}
 
 	/**
@@ -324,16 +299,6 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CommitPackage.COMMIT__CHECKSUM:
-				setChecksum((Long)newValue);
-				return;
-			case CommitPackage.COMMIT__CHANGES:
-				getChanges().clear();
-				getChanges().addAll((Collection<? extends EChange>)newValue);
-				return;
-			case CommitPackage.COMMIT__COMMITMESSAGE:
-				setCommitmessage((CommitMessage)newValue);
-				return;
 			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
 				getCommitsBranchedFromThis().clear();
 				getCommitsBranchedFromThis().addAll((Collection<? extends Commit>)newValue);
@@ -341,9 +306,6 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 			case CommitPackage.COMMIT__COMMITS_MERGED_FROM_THIS:
 				getCommitsMergedFromThis().clear();
 				getCommitsMergedFromThis().addAll((Collection<? extends MergeCommit>)newValue);
-				return;
-			case CommitPackage.COMMIT__IDENTIFIER:
-				setIdentifier((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -357,23 +319,11 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CommitPackage.COMMIT__CHECKSUM:
-				setChecksum(CHECKSUM_EDEFAULT);
-				return;
-			case CommitPackage.COMMIT__CHANGES:
-				getChanges().clear();
-				return;
-			case CommitPackage.COMMIT__COMMITMESSAGE:
-				setCommitmessage((CommitMessage)null);
-				return;
 			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
 				getCommitsBranchedFromThis().clear();
 				return;
 			case CommitPackage.COMMIT__COMMITS_MERGED_FROM_THIS:
 				getCommitsMergedFromThis().clear();
-				return;
-			case CommitPackage.COMMIT__IDENTIFIER:
-				setIdentifier(IDENTIFIER_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
