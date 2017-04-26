@@ -3,23 +3,23 @@ package tools.vitruv.framework.tests.versioning
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import java.io.IOException
+import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.EList
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.versioning.Author
+import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.commit.InitialCommit
 import tools.vitruv.framework.versioning.commit.impl.InitialCommitImpl
+import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl
 import tools.vitruv.framework.versioning.impl.AuthorImpl
 
 import static org.hamcrest.CoreMatchers.equalTo
+import static org.hamcrest.CoreMatchers.hasItem
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.change.echange.EChange
-import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.common.util.BasicEList
-import tools.vitruv.framework.versioning.commit.impl.CommitImpl
-import tools.vitruv.framework.versioning.commit.Commit
-import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl
 
 class BranchTest extends VersioningTest {
 	protected var Root createdObject = null;
@@ -38,22 +38,24 @@ class BranchTest extends VersioningTest {
 		val EList<EChange> changes = new BasicEList<EChange>()
 		changes.add(resolvedChange)
 
-		val commit = new SimpleCommitImpl() as Commit		
-		// State after
-		assertIsStateAfter(createdObject)
+		val commit = new SimpleCommitImpl(changes, "First commit", authorA, initialCommit) as Commit		
 		
-		// Now another change would take the object and inserts it in a resource
-		prepareStateBefore
-		
-		// Create change and resolve 2
-		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(resourceSet)
-			as CreateEObject<Root>
-			
-		// Apply forward 2
-//		resolvedChange2.assertApplyForward
-		
-		// State after
-		assertIsStateAfter(createdObject2)
+		assertThat(commit.changes, hasItem(resolvedChange))
+		print(resourceSet)
+//		assertIsStateAfter(createdObject)
+//		
+//		// Now another change would take the object and inserts it in a resource
+//		prepareStateBefore
+//		
+//		// Create change and resolve 2
+//		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(resourceSet)
+//			as CreateEObject<Root>
+//			
+//		// Apply forward 2
+////		resolvedChange2.assertApplyForward
+//		
+//		// State after
+//		assertIsStateAfter(createdObject2)
 	}
 
 	@Before
@@ -79,13 +81,13 @@ class BranchTest extends VersioningTest {
 		Assert.assertTrue(stagingArea.empty)
 	}
 	
-	/**
-	 * Model is in state after the change.
-	 */
-	def private void assertIsStateAfter(Root object) {
-		Assert.assertFalse(stagingArea.empty)
-//		object.assertEqualsOrCopy(stagingArea.peek)
-	}
+//	/**
+//	 * Model is in state after the change.
+//	 */
+//	def private void assertIsStateAfter(Root object) {
+//		Assert.assertFalse(stagingArea.empty)
+////		object.assertEqualsOrCopy(stagingArea.peek)
+//	}
 	
 	/**
 	 * Creates new unresolved change.

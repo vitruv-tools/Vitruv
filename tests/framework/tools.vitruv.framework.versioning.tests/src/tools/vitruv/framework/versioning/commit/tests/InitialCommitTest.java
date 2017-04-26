@@ -74,6 +74,7 @@ public class InitialCommitTest extends CommitTest {
 	}
 	
 	public void testSetup() {
+		assertThat(getFixture().getChanges().size(), equalTo(0));
 		assertThat(getFixture().getCommitmessage().getAuthor(), equalTo(author));
 		assertThat(author.getCommits(), hasItem(getFixture()));
 	}

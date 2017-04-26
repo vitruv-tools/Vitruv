@@ -6,7 +6,6 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
-import tools.vitruv.framework.versioning.commit.impl.CommitMessageImpl;
 import tools.vitruv.framework.versioning.commit.impl.InitialCommitImpl;
 import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl;
 import tools.vitruv.framework.versioning.impl.AuthorImpl;
@@ -70,7 +69,7 @@ public abstract class CommitTest extends SignedTest {
 		final InitialCommit parentCommit = new InitialCommitImpl(author);
 		assertThat(parentCommit.getCommitsBranchedFromThis().size(), equalTo(0));
 		final EList<EChange> changes = new BasicEList<EChange>();
-		new SimpleCommitImpl(changes, new CommitMessageImpl("test", author), parentCommit);
+		new SimpleCommitImpl(changes,"test", author, parentCommit);
 		assertThat(parentCommit.getCommitsBranchedFromThis().size(), equalTo(1));
 	}
 
