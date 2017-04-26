@@ -6,9 +6,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import junit.textui.TestRunner;
-import tools.vitruv.framework.versioning.branch.tests.BranchTests;
 import tools.vitruv.framework.versioning.commit.tests.CommitTests;
-import tools.vitruv.framework.versioning.conflict.tests.ConflictTests;
 
 /**
  * <!-- begin-user-doc -->

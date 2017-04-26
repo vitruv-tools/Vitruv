@@ -3,9 +3,13 @@
 package tools.vitruv.framework.versioning.commit.tests;
 
 import junit.textui.TestRunner;
-
-import tools.vitruv.framework.versioning.commit.CommitFactory;
+import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
+import tools.vitruv.framework.versioning.commit.impl.InitialCommitImpl;
+import tools.vitruv.framework.versioning.impl.AuthorImpl;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertThat;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,6 +18,8 @@ import tools.vitruv.framework.versioning.commit.InitialCommit;
  * @generated
  */
 public class InitialCommitTest extends CommitTest {
+	
+	private Author author;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -49,22 +55,27 @@ public class InitialCommitTest extends CommitTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see junit.framework.TestCase#setUp()
-	 * @generated
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(CommitFactory.eINSTANCE.createInitialCommit());
+		author = new AuthorImpl("email", "name");
+		setFixture(new InitialCommitImpl(author));
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see junit.framework.TestCase#tearDown()
-	 * @generated
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		author = null;
 		setFixture(null);
+	}
+	
+	public void testSetup() {
+		assertThat(getFixture().getCommitmessage().getAuthor(), equalTo(author));
+		assertThat(author.getCommits(), hasItem(getFixture()));
 	}
 
 } //InitialCommitTest
