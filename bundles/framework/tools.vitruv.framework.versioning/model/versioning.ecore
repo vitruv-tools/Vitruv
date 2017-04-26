@@ -64,7 +64,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SimpleCommit" eSuperTypes="#//commit/Commit">
       <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
-          eType="#//commit/Commit"/>
+          eType="#//commit/Commit" changeable="false" eOpposite="#//commit/Commit/commitsBranchedFromThis"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Commit" abstract="true" eSuperTypes="#//Signed">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="checksum" lowerBound="1"
@@ -76,7 +76,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitmessage" lowerBound="1"
           eType="#//commit/CommitMessage" changeable="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitsBranchedFromThis"
-          upperBound="-1" eType="#//commit/Commit"/>
+          upperBound="-1" eType="#//commit/SimpleCommit" eOpposite="#//commit/SimpleCommit/parent"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitsMergedFromThis"
           upperBound="-1" eType="#//commit/MergeCommit" eOpposite="#//commit/MergeCommit/commitsMergedToThis"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" lowerBound="1"
