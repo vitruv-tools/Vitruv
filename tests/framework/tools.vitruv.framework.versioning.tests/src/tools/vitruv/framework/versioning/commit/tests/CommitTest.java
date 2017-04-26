@@ -6,7 +6,6 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
-import tools.vitruv.framework.versioning.commit.SimpleCommit;
 import tools.vitruv.framework.versioning.commit.impl.CommitMessageImpl;
 import tools.vitruv.framework.versioning.commit.impl.InitialCommitImpl;
 import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl;
@@ -29,12 +28,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
  * The following features are tested:
  * <ul>
  *   <li>{@link tools.vitruv.framework.versioning.commit.Commit#getChecksum() <em>Checksum</em>}</li>
- * </ul>
- * </p>
- * <p>
- * The following operations are tested:
- * <ul>
- *   <li>{@link tools.vitruv.framework.versioning.commit.Commit#addNextCommit(tools.vitruv.framework.versioning.commit.SimpleCommit) <em>Add Next Commit</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -72,12 +65,6 @@ public abstract class CommitTest extends SignedTest {
 		assertThat(getFixture().getChecksum(), equalTo(1000L));
 	}
 
-	/**
-	 * Tests the '{@link tools.vitruv.framework.versioning.commit.Commit#addNextCommit(tools.vitruv.framework.versioning.commit.SimpleCommit) <em>Add Next Commit</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.versioning.commit.Commit#addNextCommit(tools.vitruv.framework.versioning.commit.SimpleCommit)
-	 */
 	public void testAddNextCommit__SimpleCommit() {
 		final Author author = new AuthorImpl("test", "name");
 		final InitialCommit parentCommit = new InitialCommitImpl(author);
