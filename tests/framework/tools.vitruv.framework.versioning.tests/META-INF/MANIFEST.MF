@@ -17,5 +17,6 @@ Require-Bundle: org.junit;bundle-version="4.12.0";visibility:=reexport,
  org.eclipse.core.runtime,
  tools.vitruv.framework.versioning;bundle-version="0.1.0";visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
- tools.vitruv.framework.change.echange;bundle-version="0.2.0"
+ tools.vitruv.framework.change.echange;bundle-version="0.2.0",
+ tools.vitruv.framework.tests.util.metamodels;bundle-version="0.2.0"
 Bundle-ActivationPolicy: lazy
