@@ -4,6 +4,7 @@ package tools.vitruv.framework.versioning.commit;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -141,13 +142,22 @@ public interface CommitPackage extends EPackage {
 	int COMMIT_FEATURE_COUNT = VersioningPackage.SIGNED_FEATURE_COUNT + 6;
 
 	/**
+	 * The operation id for the '<em>Add Next Commit</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT = VersioningPackage.SIGNED_OPERATION_COUNT + 0;
+
+	/**
 	 * The number of operations of the '<em>Commit</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT_OPERATION_COUNT = VersioningPackage.SIGNED_OPERATION_COUNT + 0;
+	int COMMIT_OPERATION_COUNT = VersioningPackage.SIGNED_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.versioning.commit.impl.MergeCommitImpl <em>Merge Commit</em>}' class.
@@ -239,6 +249,15 @@ public interface CommitPackage extends EPackage {
 	 * @ordered
 	 */
 	int MERGE_COMMIT_FEATURE_COUNT = COMMIT_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Add Next Commit</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MERGE_COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT = COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT;
 
 	/**
 	 * The number of operations of the '<em>Merge Commit</em>' class.
@@ -339,6 +358,15 @@ public interface CommitPackage extends EPackage {
 	 * @ordered
 	 */
 	int SIMPLE_COMMIT_FEATURE_COUNT = COMMIT_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Add Next Commit</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SIMPLE_COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT = COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT;
 
 	/**
 	 * The number of operations of the '<em>Simple Commit</em>' class.
@@ -487,6 +515,15 @@ public interface CommitPackage extends EPackage {
 	int INITIAL_COMMIT_FEATURE_COUNT = COMMIT_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Add Next Commit</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INITIAL_COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT = COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT;
+
+	/**
 	 * The number of operations of the '<em>Initial Commit</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -613,6 +650,16 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getCommit_Identifier();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.commit.Commit#addNextCommit(tools.vitruv.framework.versioning.commit.SimpleCommit) <em>Add Next Commit</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Add Next Commit</em>' operation.
+	 * @see tools.vitruv.framework.versioning.commit.Commit#addNextCommit(tools.vitruv.framework.versioning.commit.SimpleCommit)
+	 * @generated
+	 */
+	EOperation getCommit__AddNextCommit__SimpleCommit();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.commit.CommitMessage <em>Message</em>}'.
@@ -783,6 +830,14 @@ public interface CommitPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute COMMIT__IDENTIFIER = eINSTANCE.getCommit_Identifier();
+
+		/**
+		 * The meta object literal for the '<em><b>Add Next Commit</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT = eINSTANCE.getCommit__AddNextCommit__SimpleCommit();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.commit.impl.CommitMessageImpl <em>Message</em>}' class.

@@ -4,6 +4,7 @@ package tools.vitruv.framework.versioning.commit.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -259,6 +260,15 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getCommit__AddNextCommit__SimpleCommit() {
+		return commitEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getCommitMessage() {
 		return commitMessageEClass;
 	}
@@ -340,6 +350,7 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		createEReference(commitEClass, COMMIT__COMMITS_BRANCHED_FROM_THIS);
 		createEReference(commitEClass, COMMIT__COMMITS_MERGED_FROM_THIS);
 		createEAttribute(commitEClass, COMMIT__IDENTIFIER);
+		createEOperation(commitEClass, COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT);
 
 		commitMessageEClass = createEClass(COMMIT_MESSAGE);
 		createEAttribute(commitMessageEClass, COMMIT_MESSAGE__DATE);
@@ -400,6 +411,9 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		initEReference(getCommit_CommitsBranchedFromThis(), this.getSimpleCommit(), this.getSimpleCommit_Parent(), "commitsBranchedFromThis", null, 0, -1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCommit_CommitsMergedFromThis(), this.getMergeCommit(), this.getMergeCommit_CommitsMergedToThis(), "commitsMergedFromThis", null, 0, -1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCommit_Identifier(), ecorePackage.getEInt(), "identifier", "2000", 1, 1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		EOperation op = initEOperation(getCommit__AddNextCommit__SimpleCommit(), null, "addNextCommit", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getSimpleCommit(), "simpleCommit", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(commitMessageEClass, CommitMessage.class, "CommitMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCommitMessage_Date(), ecorePackage.getEDate(), "date", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

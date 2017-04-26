@@ -1,11 +1,8 @@
-/**
- */
 package tools.vitruv.framework.versioning.commit;
 
+
 import org.eclipse.emf.common.util.EList;
-
 import tools.vitruv.framework.change.echange.EChange;
-
 import tools.vitruv.framework.versioning.Signed;
 
 /**
@@ -128,5 +125,13 @@ public interface Commit extends Signed {
 	 * @generated
 	 */
 	int getIdentifier();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model simpleCommitRequired="true"
+	 * @generated
+	 */
+	void addNextCommit(SimpleCommit simpleCommit);
 
 } // Commit

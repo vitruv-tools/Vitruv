@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.versioning.commit.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -242,6 +243,17 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public void addNextCommit(SimpleCommit simpleCommit) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -275,6 +287,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("boxing")
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -356,6 +369,21 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 				return identifier != IDENTIFIER_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case CommitPackage.COMMIT___ADD_NEXT_COMMIT__SIMPLECOMMIT:
+				addNextCommit((SimpleCommit)arguments.get(0));
+				return null;
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**
