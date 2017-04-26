@@ -67,9 +67,6 @@
           eType="#//commit/Commit" changeable="false" eOpposite="#//commit/Commit/commitsBranchedFromThis"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Commit" abstract="true" eSuperTypes="#//Signed">
-      <eOperations name="addNextCommit">
-        <eParameters name="simpleCommit" lowerBound="1" eType="#//commit/SimpleCommit"/>
-      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="checksum" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" changeable="false"
           defaultValueLiteral="1000" derived="true"/>
