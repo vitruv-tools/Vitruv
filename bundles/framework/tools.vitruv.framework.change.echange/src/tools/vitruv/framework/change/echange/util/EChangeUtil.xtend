@@ -21,7 +21,7 @@ class EChangeUtil {
 	 * @return The resolved EObject. If resolving the proxy fails, the proxy object itself.
 	 */
 	public static def resolveProxy(EObject proxy, ResourceSet resourceSet) {
-		if (proxy != null && resourceSet != null) {
+		if (proxy !== null && resourceSet !== null) {
 			return EcoreUtil.resolve(proxy, resourceSet)
 		}
 		return proxy
@@ -35,7 +35,7 @@ class EChangeUtil {
 	 */
 	public static def EditingDomain getEditingDomain(EObject object) {
 		val ed = AdapterFactoryEditingDomain.getEditingDomainFor(object)
-		if (ed == null) {
+		if (ed === null) {
 			return new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), new BasicCommandStack());
 		}
 		return ed

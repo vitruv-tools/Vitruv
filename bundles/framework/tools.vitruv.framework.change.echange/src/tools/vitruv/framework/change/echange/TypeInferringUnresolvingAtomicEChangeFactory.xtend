@@ -29,7 +29,7 @@ final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAt
 	 * @return The singleton instance.
 	 */
 	def public static TypeInferringUnresolvingAtomicEChangeFactory getInstance() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new TypeInferringUnresolvingAtomicEChangeFactory()
 		}
 		return instance

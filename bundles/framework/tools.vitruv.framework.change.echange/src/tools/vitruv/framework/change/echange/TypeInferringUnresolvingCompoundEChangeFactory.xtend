@@ -23,7 +23,7 @@ final class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferring
 	 * @return The singleton instance.
 	 */
 	def public static TypeInferringUnresolvingCompoundEChangeFactory getInstance() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new TypeInferringUnresolvingCompoundEChangeFactory(
 				TypeInferringUnresolvingAtomicEChangeFactory.instance)
 		}

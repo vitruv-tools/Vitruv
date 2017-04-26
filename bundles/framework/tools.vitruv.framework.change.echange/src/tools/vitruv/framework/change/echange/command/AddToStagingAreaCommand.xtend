@@ -38,6 +38,6 @@ class AddToStagingAreaCommand extends AbstractOverrideableCommand {
 	}
 
 	override public boolean prepare() {
-		return stagingArea != null && object != null
+		return stagingArea !== null && object !== null
 	}	
 }
