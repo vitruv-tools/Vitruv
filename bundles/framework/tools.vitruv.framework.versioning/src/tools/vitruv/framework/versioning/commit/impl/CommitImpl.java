@@ -25,6 +25,7 @@ import tools.vitruv.framework.versioning.commit.CommitMessage;
 import tools.vitruv.framework.versioning.commit.CommitPackage;
 import tools.vitruv.framework.versioning.commit.MergeCommit;
 
+import tools.vitruv.framework.versioning.commit.SimpleCommit;
 import tools.vitruv.framework.versioning.impl.SignedImpl;
 
 /**
@@ -94,7 +95,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Commit> commitsBranchedFromThis;
+	protected EList<SimpleCommit> commitsBranchedFromThis;
 
 	/**
 	 * The cached value of the '{@link #getCommitsMergedFromThis() <em>Commits Merged From This</em>}' reference list.
@@ -208,9 +209,9 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Commit> getCommitsBranchedFromThis() {
+	public EList<SimpleCommit> getCommitsBranchedFromThis() {
 		if (commitsBranchedFromThis == null) {
-			commitsBranchedFromThis = new EObjectResolvingEList<Commit>(Commit.class, this, CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS);
+			commitsBranchedFromThis = new EObjectWithInverseResolvingEList<SimpleCommit>(SimpleCommit.class, this, CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS, CommitPackage.SIMPLE_COMMIT__PARENT);
 		}
 		return commitsBranchedFromThis;
 	}
@@ -245,6 +246,8 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCommitsBranchedFromThis()).basicAdd(otherEnd, msgs);
 			case CommitPackage.COMMIT__COMMITS_MERGED_FROM_THIS:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCommitsMergedFromThis()).basicAdd(otherEnd, msgs);
 		}
@@ -259,6 +262,8 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
+				return ((InternalEList<?>)getCommitsBranchedFromThis()).basicRemove(otherEnd, msgs);
 			case CommitPackage.COMMIT__COMMITS_MERGED_FROM_THIS:
 				return ((InternalEList<?>)getCommitsMergedFromThis()).basicRemove(otherEnd, msgs);
 		}
@@ -301,7 +306,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 		switch (featureID) {
 			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
 				getCommitsBranchedFromThis().clear();
-				getCommitsBranchedFromThis().addAll((Collection<? extends Commit>)newValue);
+				getCommitsBranchedFromThis().addAll((Collection<? extends SimpleCommit>)newValue);
 				return;
 			case CommitPackage.COMMIT__COMMITS_MERGED_FROM_THIS:
 				getCommitsMergedFromThis().clear();

@@ -22,6 +22,7 @@ package tools.vitruv.framework.versioning.commit;
 public interface SimpleCommit extends Commit {
 	/**
 	 * Returns the value of the '<em><b>Parent</b></em>' reference.
+	 * It is bidirectional and its opposite is '{@link tools.vitruv.framework.versioning.commit.Commit#getCommitsBranchedFromThis <em>Commits Branched From This</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parent</em>' reference isn't clear,
@@ -29,21 +30,11 @@ public interface SimpleCommit extends Commit {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parent</em>' reference.
-	 * @see #setParent(Commit)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getSimpleCommit_Parent()
-	 * @model required="true"
+	 * @see tools.vitruv.framework.versioning.commit.Commit#getCommitsBranchedFromThis
+	 * @model opposite="commitsBranchedFromThis" required="true" changeable="false"
 	 * @generated
 	 */
 	Commit getParent();
-
-	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.SimpleCommit#getParent <em>Parent</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Parent</em>' reference.
-	 * @see #getParent()
-	 * @generated
-	 */
-	void setParent(Commit value);
 
 } // SimpleCommit

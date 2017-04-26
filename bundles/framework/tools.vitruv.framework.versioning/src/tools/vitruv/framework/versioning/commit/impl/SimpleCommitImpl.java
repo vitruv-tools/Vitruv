@@ -4,6 +4,7 @@ package tools.vitruv.framework.versioning.commit.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -87,11 +88,44 @@ public class SimpleCommitImpl extends CommitImpl implements SimpleCommit {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setParent(Commit newParent) {
+	public NotificationChain basicSetParent(Commit newParent, NotificationChain msgs) {
 		Commit oldParent = parent;
 		parent = newParent;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.SIMPLE_COMMIT__PARENT, oldParent, parent));
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CommitPackage.SIMPLE_COMMIT__PARENT, oldParent, newParent);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case CommitPackage.SIMPLE_COMMIT__PARENT:
+				if (parent != null)
+					msgs = ((InternalEObject)parent).eInverseRemove(this, CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS, Commit.class, msgs);
+				return basicSetParent((Commit)otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case CommitPackage.SIMPLE_COMMIT__PARENT:
+				return basicSetParent(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -107,36 +141,6 @@ public class SimpleCommitImpl extends CommitImpl implements SimpleCommit {
 				return basicGetParent();
 		}
 		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case CommitPackage.SIMPLE_COMMIT__PARENT:
-				setParent((Commit)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID) {
-		switch (featureID) {
-			case CommitPackage.SIMPLE_COMMIT__PARENT:
-				setParent((Commit)null);
-				return;
-		}
-		super.eUnset(featureID);
 	}
 
 	/**

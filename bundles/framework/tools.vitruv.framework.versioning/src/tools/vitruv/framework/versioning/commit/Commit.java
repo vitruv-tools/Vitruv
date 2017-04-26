@@ -79,7 +79,8 @@ public interface Commit extends Signed {
 
 	/**
 	 * Returns the value of the '<em><b>Commits Branched From This</b></em>' reference list.
-	 * The list contents are of type {@link tools.vitruv.framework.versioning.commit.Commit}.
+	 * The list contents are of type {@link tools.vitruv.framework.versioning.commit.SimpleCommit}.
+	 * It is bidirectional and its opposite is '{@link tools.vitruv.framework.versioning.commit.SimpleCommit#getParent <em>Parent</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Commits Branched From This</em>' reference list isn't clear,
@@ -88,10 +89,11 @@ public interface Commit extends Signed {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Commits Branched From This</em>' reference list.
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_CommitsBranchedFromThis()
-	 * @model
+	 * @see tools.vitruv.framework.versioning.commit.SimpleCommit#getParent
+	 * @model opposite="parent"
 	 * @generated
 	 */
-	EList<Commit> getCommitsBranchedFromThis();
+	EList<SimpleCommit> getCommitsBranchedFromThis();
 
 	/**
 	 * Returns the value of the '<em><b>Commits Merged From This</b></em>' reference list.
