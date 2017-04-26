@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -22,6 +23,7 @@ import tools.vitruv.framework.versioning.VersioningPackage;
 
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
+import tools.vitruv.framework.versioning.commit.Commit;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,6 +36,7 @@ import tools.vitruv.framework.versioning.branch.BranchPackage;
  *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getEmail <em>Email</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getOwnedBranches <em>Owned Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getContributedBranches <em>Contributed Branches</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getCommits <em>Commits</em>}</li>
  * </ul>
  *
  * @generated
@@ -78,6 +81,16 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * @ordered
 	 */
 	protected EList<Branch> contributedBranches;
+
+	/**
+	 * The cached value of the '{@link #getCommits() <em>Commits</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCommits()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Commit> commits;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -158,6 +171,18 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Commit> getCommits() {
+		if (commits == null) {
+			commits = new EObjectResolvingEList<Commit>(Commit.class, this, VersioningPackage.AUTHOR__COMMITS);
+		}
+		return commits;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -200,6 +225,8 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return getOwnedBranches();
 			case VersioningPackage.AUTHOR__CONTRIBUTED_BRANCHES:
 				return getContributedBranches();
+			case VersioningPackage.AUTHOR__COMMITS:
+				return getCommits();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -263,6 +290,8 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return ownedBranches != null && !ownedBranches.isEmpty();
 			case VersioningPackage.AUTHOR__CONTRIBUTED_BRANCHES:
 				return contributedBranches != null && !contributedBranches.isEmpty();
+			case VersioningPackage.AUTHOR__COMMITS:
+				return commits != null && !commits.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

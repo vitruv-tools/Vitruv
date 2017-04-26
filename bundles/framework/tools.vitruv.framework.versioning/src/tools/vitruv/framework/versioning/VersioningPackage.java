@@ -140,13 +140,22 @@ public interface VersioningPackage extends EPackage {
 	int AUTHOR__CONTRIBUTED_BRANCHES = NAMED_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Commits</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AUTHOR__COMMITS = NAMED_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Author</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR_FEATURE_COUNT = NAMED_FEATURE_COUNT + 3;
+	int AUTHOR_FEATURE_COUNT = NAMED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Author</em>' class.
@@ -331,6 +340,17 @@ public interface VersioningPackage extends EPackage {
 	EReference getAuthor_ContributedBranches();
 
 	/**
+	 * Returns the meta object for the reference list '{@link tools.vitruv.framework.versioning.Author#getCommits <em>Commits</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Commits</em>'.
+	 * @see tools.vitruv.framework.versioning.Author#getCommits()
+	 * @see #getAuthor()
+	 * @generated
+	 */
+	EReference getAuthor_Commits();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.Named <em>Named</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -470,6 +490,14 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EReference AUTHOR__CONTRIBUTED_BRANCHES = eINSTANCE.getAuthor_ContributedBranches();
+
+		/**
+		 * The meta object literal for the '<em><b>Commits</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference AUTHOR__COMMITS = eINSTANCE.getAuthor_Commits();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.impl.NamedImpl <em>Named</em>}' class.

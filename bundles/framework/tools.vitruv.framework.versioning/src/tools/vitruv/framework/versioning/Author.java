@@ -5,6 +5,7 @@ package tools.vitruv.framework.versioning;
 import org.eclipse.emf.common.util.EList;
 
 import tools.vitruv.framework.versioning.branch.Branch;
+import tools.vitruv.framework.versioning.commit.Commit;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,6 +19,7 @@ import tools.vitruv.framework.versioning.branch.Branch;
  *   <li>{@link tools.vitruv.framework.versioning.Author#getEmail <em>Email</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#getOwnedBranches <em>Owned Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#getContributedBranches <em>Contributed Branches</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Author#getCommits <em>Commits</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.versioning.VersioningPackage#getAuthor()
@@ -86,5 +88,21 @@ public interface Author extends Named {
 	 * @generated
 	 */
 	EList<Branch> getContributedBranches();
+
+	/**
+	 * Returns the value of the '<em><b>Commits</b></em>' reference list.
+	 * The list contents are of type {@link tools.vitruv.framework.versioning.commit.Commit}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Commits</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Commits</em>' reference list.
+	 * @see tools.vitruv.framework.versioning.VersioningPackage#getAuthor_Commits()
+	 * @model changeable="false"
+	 * @generated
+	 */
+	EList<Commit> getCommits();
 
 } // Author
