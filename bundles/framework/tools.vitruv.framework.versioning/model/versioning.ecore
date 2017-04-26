@@ -7,6 +7,8 @@
         eType="#//branch/Branch" eOpposite="#//branch/Branch/owner"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contributedBranches" upperBound="-1"
         eType="#//branch/Branch" eOpposite="#//branch/Branch/contributors"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commits" upperBound="-1"
+        eType="#//commit/Commit" changeable="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Named" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
