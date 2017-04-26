@@ -59,8 +59,9 @@ public class SimpleCommitImpl extends CommitImpl implements SimpleCommit {
 		// assert changes.size() > 0;
 		assert parent != null;
 		this.parent = parent;
-		this.parent.addNextCommit(this);
-		assert parent.getCommitsBranchedFromThis().size() == 1;
+		final int oldSize = parent.getCommitsBranchedFromThis().size(); 
+		this.parent.getCommitsBranchedFromThis().add(this);
+		assert oldSize + 1 == parent.getCommitsBranchedFromThis().size();
 	}
 
 	/**

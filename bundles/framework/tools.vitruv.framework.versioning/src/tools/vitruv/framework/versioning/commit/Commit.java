@@ -126,12 +126,4 @@ public interface Commit extends Signed {
 	 */
 	int getIdentifier();
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model simpleCommitRequired="true"
-	 * @generated
-	 */
-	void addNextCommit(SimpleCommit simpleCommit);
-
 } // Commit
