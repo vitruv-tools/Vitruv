@@ -31,6 +31,9 @@ public class CommitTests extends TestSuite {
 	 */
 	public static Test suite() {
 		TestSuite suite = new CommitTests("commit Tests");
+		suite.addTestSuite(MergeCommitTest.class);
+		suite.addTestSuite(SimpleCommitTest.class);
+		suite.addTestSuite(InitialCommitTest.class);
 		return suite;
 	}
 

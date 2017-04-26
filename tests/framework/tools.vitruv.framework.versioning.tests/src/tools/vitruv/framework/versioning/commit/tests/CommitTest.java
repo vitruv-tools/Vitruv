@@ -10,6 +10,12 @@ import tools.vitruv.framework.versioning.tests.SignedTest;
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Commit</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are tested:
+ * <ul>
+ *   <li>{@link tools.vitruv.framework.versioning.commit.Commit#getChecksum() <em>Checksum</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
 public abstract class CommitTest extends SignedTest {
@@ -33,6 +39,19 @@ public abstract class CommitTest extends SignedTest {
 	@Override
 	protected Commit getFixture() {
 		return (Commit)fixture;
+	}
+
+	/**
+	 * Tests the '{@link tools.vitruv.framework.versioning.commit.Commit#getChecksum() <em>Checksum</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.versioning.commit.Commit#getChecksum()
+	 * @generated
+	 */
+	public void testGetChecksum() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 } //CommitTest
