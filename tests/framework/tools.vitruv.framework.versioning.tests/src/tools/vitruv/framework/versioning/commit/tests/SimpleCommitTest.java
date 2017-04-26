@@ -2,10 +2,23 @@
  */
 package tools.vitruv.framework.versioning.commit.tests;
 
-import junit.textui.TestRunner;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
+import junit.textui.TestRunner;
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.commit.CommitFactory;
+import tools.vitruv.framework.versioning.commit.InitialCommit;
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
+import tools.vitruv.framework.versioning.commit.impl.CommitMessageImpl;
+import tools.vitruv.framework.versioning.commit.impl.InitialCommitImpl;
+import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl;
+import tools.vitruv.framework.versioning.impl.AuthorImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -67,4 +80,18 @@ public class SimpleCommitTest extends CommitTest {
 		setFixture(null);
 	}
 
+	public void testParentCommitAdding() {
+		final Author author = new AuthorImpl("test", "name");
+		final InitialCommit parentCommit = new InitialCommitImpl(author);
+		assertThat(parentCommit.getCommitsBranchedFromThis().size(), equalTo(0));
+		final EList<EChange> changes = new BasicEList<EChange>();
+		final SimpleCommit sCommit = new SimpleCommitImpl(
+				changes,
+				new CommitMessageImpl("test", author),
+				parentCommit);
+		assertThat(parentCommit.getCommitsBranchedFromThis().size(), equalTo(1));
+		assertThat(sCommit.getParent(), equalTo(parentCommit));
+		
+	}
+	
 } //SimpleCommitTest
