@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -146,6 +146,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 		this.changes = changes;
 		this.commitmessage = commitmessage;
 		this.identifier = (int )(Math.random() * Integer.MAX_VALUE  + 1);
+		this.commitsBranchedFromThis = new BasicEList<SimpleCommit>();
 	}
 
 	/**
@@ -241,12 +242,9 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public void addNextCommit(SimpleCommit simpleCommit) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		this.commitsBranchedFromThis.add(simpleCommit);
 	}
 
 	/**
