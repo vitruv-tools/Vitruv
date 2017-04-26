@@ -134,6 +134,8 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 */
 	protected CommitImpl() {
 		super();
+		this.identifier = (int) (Math.random() * Integer.MAX_VALUE + 1);
+		this.commitsBranchedFromThis = new BasicEList<SimpleCommit>();
 	}
 
 	/**
@@ -141,11 +143,10 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 * @param commitmessage
 	 */
 	public CommitImpl(EList<EChange> changes, CommitMessage commitmessage) {
-		super();
+		this();
 		this.changes = changes;
 		this.commitmessage = commitmessage;
-		this.identifier = (int )(Math.random() * Integer.MAX_VALUE  + 1);
-		this.commitsBranchedFromThis = new BasicEList<SimpleCommit>();
+		commitmessage.getAuthor().getCommits().add(this);
 	}
 
 	/**

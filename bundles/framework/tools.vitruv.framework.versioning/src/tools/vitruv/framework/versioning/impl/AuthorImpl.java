@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -47,10 +47,9 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getEmail()
-	 * @generated
 	 * @ordered
 	 */
-	protected static final String EMAIL_EDEFAULT = null;
+	protected static final String EMAIL_EDEFAULT = "EMAIL";
 
 	/**
 	 * The cached value of the '{@link #getEmail() <em>Email</em>}' attribute.
@@ -99,6 +98,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 */
 	protected AuthorImpl() {
 		super();
+		this.commits = new BasicEList<Commit>();
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * <!-- end-user-doc -->
 	 */
 	public AuthorImpl(final String email, final String name) {
-		super();
+		this();
 		this.email = email;
 		this.name = name;
 	}
