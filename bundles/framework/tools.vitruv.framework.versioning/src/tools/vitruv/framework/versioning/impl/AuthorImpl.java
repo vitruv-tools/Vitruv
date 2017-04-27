@@ -2,11 +2,11 @@
  */
 package tools.vitruv.framework.versioning.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -24,6 +24,8 @@ import tools.vitruv.framework.versioning.VersioningPackage;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 import tools.vitruv.framework.versioning.commit.Commit;
+import tools.vitruv.framework.versioning.commit.InitialCommit;
+import tools.vitruv.framework.versioning.commit.SimpleCommit;
 
 /**
  * <!-- begin-user-doc -->
@@ -98,7 +100,6 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 */
 	protected AuthorImpl() {
 		super();
-		this.commits = new BasicEList<Commit>();
 	}
 
 	/**
@@ -183,6 +184,28 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public InitialCommit createInitialCommit() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SimpleCommit createSimpleCommit(String message, Commit parent) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -251,6 +274,10 @@ public class AuthorImpl extends NamedImpl implements Author {
 				getContributedBranches().clear();
 				getContributedBranches().addAll((Collection<? extends Branch>)newValue);
 				return;
+			case VersioningPackage.AUTHOR__COMMITS:
+				getCommits().clear();
+				getCommits().addAll((Collection<? extends Commit>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -271,6 +298,9 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return;
 			case VersioningPackage.AUTHOR__CONTRIBUTED_BRANCHES:
 				getContributedBranches().clear();
+				return;
+			case VersioningPackage.AUTHOR__COMMITS:
+				getCommits().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -294,6 +324,22 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return commits != null && !commits.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case VersioningPackage.AUTHOR___CREATE_INITIAL_COMMIT:
+				return createInitialCommit();
+			case VersioningPackage.AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT:
+				return createSimpleCommit((String)arguments.get(0), (Commit)arguments.get(1));
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

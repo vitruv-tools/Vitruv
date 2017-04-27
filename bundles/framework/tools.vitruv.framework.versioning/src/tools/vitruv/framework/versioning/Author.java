@@ -6,6 +6,8 @@ import org.eclipse.emf.common.util.EList;
 
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.commit.Commit;
+import tools.vitruv.framework.versioning.commit.InitialCommit;
+import tools.vitruv.framework.versioning.commit.SimpleCommit;
 
 /**
  * <!-- begin-user-doc -->
@@ -100,9 +102,25 @@ public interface Author extends Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Commits</em>' reference list.
 	 * @see tools.vitruv.framework.versioning.VersioningPackage#getAuthor_Commits()
-	 * @model changeable="false"
+	 * @model
 	 * @generated
 	 */
 	EList<Commit> getCommits();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	InitialCommit createInitialCommit();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model messageRequired="true" parentRequired="true"
+	 * @generated
+	 */
+	SimpleCommit createSimpleCommit(String message, Commit parent);
 
 } // Author
