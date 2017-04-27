@@ -54,7 +54,7 @@ public interface Commit extends Signed {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Changes</em>' reference list.
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_Changes()
-	 * @model required="true" changeable="false"
+	 * @model required="true"
 	 * @generated
 	 */
 	EList<EChange> getChanges();
@@ -68,11 +68,22 @@ public interface Commit extends Signed {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Commitmessage</em>' reference.
+	 * @see #setCommitmessage(CommitMessage)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_Commitmessage()
-	 * @model required="true" changeable="false"
+	 * @model required="true"
 	 * @generated
 	 */
 	CommitMessage getCommitmessage();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.Commit#getCommitmessage <em>Commitmessage</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Commitmessage</em>' reference.
+	 * @see #getCommitmessage()
+	 * @generated
+	 */
+	void setCommitmessage(CommitMessage value);
 
 	/**
 	 * Returns the value of the '<em><b>Commits Branched From This</b></em>' reference list.

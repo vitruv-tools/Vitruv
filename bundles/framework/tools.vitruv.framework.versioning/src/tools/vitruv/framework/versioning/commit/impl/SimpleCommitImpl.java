@@ -118,6 +118,25 @@ public class SimpleCommitImpl extends CommitImpl implements SimpleCommit {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public void setParent(Commit newParent) {
+		if (newParent != parent) {
+			NotificationChain msgs = null;
+			if (parent != null)
+				msgs = ((InternalEObject)parent).eInverseRemove(this, CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS, Commit.class, msgs);
+			if (newParent != null)
+				msgs = ((InternalEObject)newParent).eInverseAdd(this, CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS, Commit.class, msgs);
+			msgs = basicSetParent(newParent, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.SIMPLE_COMMIT__PARENT, newParent, newParent));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -156,6 +175,36 @@ public class SimpleCommitImpl extends CommitImpl implements SimpleCommit {
 				return basicGetParent();
 		}
 		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case CommitPackage.SIMPLE_COMMIT__PARENT:
+				setParent((Commit)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case CommitPackage.SIMPLE_COMMIT__PARENT:
+				setParent((Commit)null);
+				return;
+		}
+		super.eUnset(featureID);
 	}
 
 	/**

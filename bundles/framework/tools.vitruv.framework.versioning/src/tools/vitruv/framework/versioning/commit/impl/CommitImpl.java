@@ -211,6 +211,18 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public void setCommitmessage(CommitMessage newCommitmessage) {
+		CommitMessage oldCommitmessage = commitmessage;
+		commitmessage = newCommitmessage;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT__COMMITMESSAGE, oldCommitmessage, commitmessage));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<SimpleCommit> getCommitsBranchedFromThis() {
 		if (commitsBranchedFromThis == null) {
 			commitsBranchedFromThis = new EObjectWithInverseResolvingEList<SimpleCommit>(SimpleCommit.class, this, CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS, CommitPackage.SIMPLE_COMMIT__PARENT);
@@ -315,6 +327,13 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case CommitPackage.COMMIT__CHANGES:
+				getChanges().clear();
+				getChanges().addAll((Collection<? extends EChange>)newValue);
+				return;
+			case CommitPackage.COMMIT__COMMITMESSAGE:
+				setCommitmessage((CommitMessage)newValue);
+				return;
 			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
 				getCommitsBranchedFromThis().clear();
 				getCommitsBranchedFromThis().addAll((Collection<? extends SimpleCommit>)newValue);
@@ -335,6 +354,12 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case CommitPackage.COMMIT__CHANGES:
+				getChanges().clear();
+				return;
+			case CommitPackage.COMMIT__COMMITMESSAGE:
+				setCommitmessage((CommitMessage)null);
+				return;
 			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
 				getCommitsBranchedFromThis().clear();
 				return;
