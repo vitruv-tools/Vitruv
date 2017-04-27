@@ -97,14 +97,14 @@ class CompoundEChangeResolver {
 	 * 								the compound change.
 	 */	
 	def package static dispatch boolean resolve(ExplicitUnsetEFeature<EObject, EStructuralFeature> change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
-		if (change.affectedEObject == null || change.affectedFeature == null 
+		if (change.affectedEObject === null || change.affectedFeature === null 
 			|| !resolveCompoundEChange(change, resourceSet, resolveBefore, revertAfterResolving)) {
 			return false
 		}
 			
 		change.affectedEObject = EChangeUtil.resolveProxy(change.affectedEObject, resourceSet)
 
-		if (change.affectedEObject == null || change.affectedEObject.eIsProxy) {
+		if (change.affectedEObject === null || change.affectedEObject.eIsProxy) {
 			return false
 		}	
 		

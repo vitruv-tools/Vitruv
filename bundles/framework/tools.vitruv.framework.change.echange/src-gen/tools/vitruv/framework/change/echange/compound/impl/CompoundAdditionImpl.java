@@ -85,8 +85,7 @@ public abstract class CompoundAdditionImpl<T extends Object, S extends AdditiveE
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
 		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
-		EList<S> _additiveChanges = this.getAdditiveChanges();
-		result.addAll(_additiveChanges);
+		result.addAll(this.getAdditiveChanges());
 		return result;
 	}
 

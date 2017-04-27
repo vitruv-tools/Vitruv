@@ -59,8 +59,7 @@ public abstract class UpdateReferenceEChangeImpl<A extends EObject> extends Feat
 	 * @generated
 	 */
 	public boolean isContainment() {
-		EReference _affectedFeature = this.getAffectedFeature();
-		return _affectedFeature.isContainment();
+		return this.getAffectedFeature().isContainment();
 	}
 
 	/**

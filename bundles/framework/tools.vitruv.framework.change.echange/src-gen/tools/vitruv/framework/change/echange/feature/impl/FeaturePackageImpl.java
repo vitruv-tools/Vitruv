@@ -113,6 +113,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 
 		// Initialize simple dependencies
 		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theFeaturePackage.createPackageContents();

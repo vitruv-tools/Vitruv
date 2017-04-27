@@ -131,6 +131,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 
 		// Initialize simple dependencies
 		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theEobjectPackage.createPackageContents();

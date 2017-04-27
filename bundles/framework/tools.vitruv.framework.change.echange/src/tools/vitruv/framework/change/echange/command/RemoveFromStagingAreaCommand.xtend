@@ -38,7 +38,7 @@ class RemoveFromStagingAreaCommand extends AbstractOverrideableCommand {
 	}
 	
 	override public boolean prepare() {
-		return stagingArea != null && object != null
+		return stagingArea !== null && object !== null
 			&& !stagingArea.empty && stagingArea.peek == object
 	}
 }

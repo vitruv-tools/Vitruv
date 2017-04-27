@@ -105,11 +105,11 @@ package class ApplyForwardCommandSwitch {
 		val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
 		val compoundCommand = new CompoundCommand()
 
-		if (change.containment && change.newValue != null) {
+		if (change.containment && change.newValue !== null) {
 			compoundCommand.append(new RemoveFromStagingAreaCommand(editingDomain, stagingArea, change.newValue))
 		}
 		compoundCommand.append(new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue))
-		if (change.containment && change.oldValue != null) {
+		if (change.containment && change.oldValue !== null) {
 			compoundCommand.append(new AddToStagingAreaCommand(editingDomain, stagingArea, change.oldValue))
 		}
 

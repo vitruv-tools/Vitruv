@@ -68,7 +68,7 @@ abstract class EChange {
 	 */
 	op EChange resolveBeforeAndApplyForward(ResourceSet resourceSet) {
 		val resolvedChange = resolveBefore(resourceSet)
-		if (resolvedChange != null && resolvedChange.applyForward) {
+		if (resolvedChange !== null && resolvedChange.applyForward) {
 			return resolvedChange
 		} else {
 			return null
@@ -88,7 +88,7 @@ abstract class EChange {
 	 */
 	op EChange resolveAfterAndApplyBackward(ResourceSet resourceSet) {
 		val resolvedChange = resolveAfter(resourceSet)
-		if (resolvedChange != null && resolvedChange.applyBackward) {
+		if (resolvedChange !== null && resolvedChange.applyBackward) {
 			return resolvedChange
 		} else {
 			return null

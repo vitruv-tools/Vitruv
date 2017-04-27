@@ -2,8 +2,6 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
-import com.google.common.base.Objects;
-
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -121,7 +119,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @generated
 	 */
 	public boolean isResolved() {
-		return (super.isResolved() && (Objects.equal(this.getNewValue(), null) || (!this.getNewValue().eIsProxy())));
+		return (super.isResolved() && ((this.getNewValue() == null) || (!this.getNewValue().eIsProxy())));
 	}
 
 	/**
@@ -130,8 +128,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @generated
 	 */
 	public boolean isContainment() {
-		EReference _affectedFeature = this.getAffectedFeature();
-		return _affectedFeature.isContainment();
+		return this.getAffectedFeature().isContainment();
 	}
 
 	/**

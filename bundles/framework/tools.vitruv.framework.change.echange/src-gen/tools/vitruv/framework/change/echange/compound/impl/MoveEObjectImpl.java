@@ -2,8 +2,6 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
-import com.google.common.base.Objects;
-
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -276,19 +274,15 @@ public class MoveEObjectImpl<A extends EObject, B extends EObject, T extends EOb
 	public EList<AtomicEChange> getAtomicChanges() {
 		final BasicEList<AtomicEChange> list = new BasicEList<AtomicEChange>();
 		final UpdateReferenceEChange<A> subWhereChange = this.getSubtractWhereChange();
-		boolean _notEquals = (!Objects.equal(subWhereChange, null));
-		if (_notEquals) {
+		if ((subWhereChange != null)) {
 			list.add(subWhereChange);
 		}
-		EObjectSubtractedEChange<T> _subtractWhatChange = this.getSubtractWhatChange();
-		list.add(_subtractWhatChange);
+		list.add(this.getSubtractWhatChange());
 		final UpdateReferenceEChange<B> addWhereChange = this.getAddWhereChange();
-		boolean _notEquals_1 = (!Objects.equal(addWhereChange, null));
-		if (_notEquals_1) {
+		if ((addWhereChange != null)) {
 			list.add(addWhereChange);
 		}
-		EObjectAddedEChange<T> _addWhatChange = this.getAddWhatChange();
-		list.add(_addWhatChange);
+		list.add(this.getAddWhatChange());
 		return list;
 	}
 

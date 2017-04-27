@@ -85,8 +85,7 @@ public abstract class CompoundSubtractionImpl<T extends Object, S extends Subtra
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
 		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
-		EList<S> _subtractiveChanges = this.getSubtractiveChanges();
-		result.addAll(_subtractiveChanges);
+		result.addAll(this.getSubtractiveChanges());
 		return result;
 	}
 

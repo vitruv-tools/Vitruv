@@ -94,7 +94,7 @@ public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChang
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((super.isResolved() && (!<%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null))) && (!this.getAffectedEObject().eIsProxy())) && (!<%com.google.common.base.Objects%>.equal(this.getStagingArea(), null)));'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((super.isResolved() &amp;&amp; (this.getAffectedEObject() != null)) &amp;&amp; (!this.getAffectedEObject().eIsProxy())) &amp;&amp; (this.getStagingArea() != null));'"
 	 * @generated
 	 */
 	boolean isResolved();

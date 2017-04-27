@@ -180,8 +180,7 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
 		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
-		EList<SubtractiveAttributeEChange<A, T>> _subtractiveChanges = this.getSubtractiveChanges();
-		result.addAll(_subtractiveChanges);
+		result.addAll(this.getSubtractiveChanges());
 		return result;
 	}
 

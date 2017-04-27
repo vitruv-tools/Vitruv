@@ -27,7 +27,7 @@ class VitruviusChangeFactory {
 	private new() {}
 	
 	public static def VitruviusChangeFactory getInstance() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new VitruviusChangeFactory();
 		}
 		return instance;

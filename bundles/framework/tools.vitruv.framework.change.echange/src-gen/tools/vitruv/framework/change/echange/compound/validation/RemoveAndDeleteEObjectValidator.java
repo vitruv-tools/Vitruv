@@ -18,6 +18,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 public interface RemoveAndDeleteEObjectValidator {
 	boolean validate();
 
+	@SuppressWarnings("rawtypes")
 	boolean validateRemoveChange(EObjectSubtractedEChange value);
 	boolean validateDeleteChange(DeleteEObject<EObject> value);
 }

@@ -19,5 +19,6 @@ public interface CreateAndInsertEObjectValidator {
 	boolean validate();
 
 	boolean validateCreateChange(CreateEObject<EObject> value);
+	@SuppressWarnings("rawtypes")
 	boolean validateInsertChange(EObjectAddedEChange value);
 }

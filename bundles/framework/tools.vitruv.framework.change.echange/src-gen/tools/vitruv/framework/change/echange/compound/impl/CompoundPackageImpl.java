@@ -41,9 +41,15 @@ import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot;
 
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
+import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
 
+import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
+
+import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
 
 import tools.vitruv.framework.change.echange.root.RootPackage;
 
@@ -234,9 +240,15 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		isInited = true;
 
 		// Initialize simple dependencies
+		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 		ReferencePackage.eINSTANCE.eClass();
+		EobjectPackage.eINSTANCE.eClass();
 		AttributePackage.eINSTANCE.eClass();
 		RootPackage.eINSTANCE.eClass();
+		FeaturePackage.eINSTANCE.eClass();
+		ListPackage.eINSTANCE.eClass();
+		SinglePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theCompoundPackage.createPackageContents();

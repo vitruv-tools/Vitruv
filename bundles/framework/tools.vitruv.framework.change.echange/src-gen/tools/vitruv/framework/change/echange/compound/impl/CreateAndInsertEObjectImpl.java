@@ -171,10 +171,8 @@ public abstract class CreateAndInsertEObjectImpl<T extends EObject, C extends EO
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
 		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
-		CreateEObject<T> _createChange = this.getCreateChange();
-		result.add(_createChange);
-		C _insertChange = this.getInsertChange();
-		result.add(_insertChange);
+		result.add(this.getCreateChange());
+		result.add(this.getInsertChange());
 		return result;
 	}
 

@@ -48,7 +48,7 @@ public interface CompoundEChange extends EChange {
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='<%org.eclipse.emf.common.util.EList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> _atomicChanges = this.getAtomicChanges();\nfor (final <%tools.vitruv.framework.change.echange.AtomicEChange%> change : _atomicChanges)\n{\n\tboolean _isResolved = change.isResolved();\n\tboolean _not = (!_isResolved);\n\tif (_not)\n\t{\n\t\treturn false;\n\t}\n}\nreturn super.isResolved();'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='&lt;%org.eclipse.emf.common.util.EList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt; _atomicChanges = this.getAtomicChanges();\nfor (final &lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt; change : _atomicChanges)\n{\n\tboolean _isResolved = change.isResolved();\n\tboolean _not = (!_isResolved);\n\tif (_not)\n\t{\n\t\treturn false;\n\t}\n}\nreturn super.isResolved();'"
 	 * @generated
 	 */
 	boolean isResolved();
@@ -69,7 +69,7 @@ public interface CompoundEChange extends EChange {
 	 * @throws IllegalStateException 	The change is already resolved.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, true, false);'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%&gt;.resolveCopy(this, resourceSet, true, false);'"
 	 * @generated
 	 */
 	EChange resolveBeforeAndApplyForward(ResourceSet resourceSet);
@@ -90,7 +90,7 @@ public interface CompoundEChange extends EChange {
 	 * @throws IllegalStateException 	The change is already resolved.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, false, false);'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%&gt;.resolveCopy(this, resourceSet, false, false);'"
 	 * @generated
 	 */
 	EChange resolveAfterAndApplyBackward(ResourceSet resourceSet);

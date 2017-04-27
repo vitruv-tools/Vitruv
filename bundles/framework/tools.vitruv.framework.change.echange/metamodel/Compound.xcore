@@ -96,12 +96,12 @@ class MoveEObject<A extends EObj, B extends EObj, T extends EObj> extends Compou
 	op unique AtomicEChange[+] getAtomicChanges() {
 		val list = new BasicEList<AtomicEChange>();
 		val subWhereChange = getSubtractWhereChange();
-		if (subWhereChange != null) {
+		if (subWhereChange !== null) {
 			list.add(subWhereChange);
 		}
 		list.add(getSubtractWhatChange());
 		val addWhereChange = getAddWhereChange();
-		if (addWhereChange != null) {
+		if (addWhereChange !== null) {
 		    list.add(addWhereChange);
 		}
 		list.add(getAddWhatChange());

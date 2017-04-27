@@ -5,29 +5,52 @@
 -->
 
 <plugin>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated versioning -->
+      <package
+            uri="http://tools.vitruv/versioning/1.0"
+            class="tools.vitruv.framework.versioning.VersioningPackage"
+            genModel="model/versioning.genmodel"/>
+   </extension>
 
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated versioning -->
+      <package
+            uri="http://tools.vitruv/versioning/1.0/conflict"
+            class="tools.vitruv.framework.versioning.conflict.ConflictPackage"
+            genModel="model/versioning.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated versioning -->
+      <package
+            uri="http://tools.vitruv/versioning/1.0/commit"
+            class="tools.vitruv.framework.versioning.commit.CommitPackage"
+            genModel="model/versioning.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated versioning -->
+      <package
+            uri="http://tools.vitruv/versioning/1.0/branch"
+            class="tools.vitruv.framework.versioning.branch.BranchPackage"
+            genModel="model/versioning.genmodel"/>
+   </extension>
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated model -->
       <package
-            uri="http://tools.vitruv/versioning/1.0"
-            class="model.ModelPackage"
-            genModel="model/model.genmodel"/>
+            uri="http://www.eclipse.org/emf/2002/Ecore"
+            class="org.eclipse.emf.ecore.EcorePackage"
+            genModel="model/versioning.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated model -->
       <package
             uri="http://tools.vitruv/EChange/1.0"
-            class="tools.vitruv.framework.change.echange.EchangePackage"
-            genModel="model/model.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated model -->
-      <package
-            uri="http://www.eclipse.org/emf/2002/Ecore"
-            class="ecore.EcorePackage"
-            genModel="model/model.genmodel"/>
+            class="tools.vitruv.framework.change.echange.EChangePackage"
+            genModel="model/versioning.genmodel"/>
    </extension>
 
 </plugin>

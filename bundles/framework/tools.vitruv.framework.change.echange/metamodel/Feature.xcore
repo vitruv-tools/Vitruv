@@ -29,8 +29,8 @@ abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicECh
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 */
 	op boolean isResolved() {
-		return super.isResolved && affectedEObject != null 
-		&& !affectedEObject.eIsProxy && affectedFeature != null
+		return super.isResolved && affectedEObject !== null 
+		&& !affectedEObject.eIsProxy && affectedFeature !== null
 	}
 }
 

@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
+import tools.vitruv.framework.change.echange.EChangePackage;
+
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
@@ -151,6 +153,9 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		isInited = true;
 
 		// Initialize simple dependencies
+		FeaturePackage.eINSTANCE.eClass();
+		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 		EobjectPackage.eINSTANCE.eClass();
 		ListPackage.eINSTANCE.eClass();
 		SinglePackage.eINSTANCE.eClass();

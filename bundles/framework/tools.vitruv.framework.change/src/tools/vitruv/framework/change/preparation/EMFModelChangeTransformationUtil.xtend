@@ -76,7 +76,7 @@ package class EMFModelChangeTransformationUtil {
 	
 
 	def static private boolean isRootContainer(EObject container) {
-		return container == null //|| container instanceof ChangeDescription
+		return container === null //|| container instanceof ChangeDescription
 	}
 	
 	def static boolean hasNonDefaultValue(EObject eObject) {
@@ -98,7 +98,7 @@ package class EMFModelChangeTransformationUtil {
 		val value = eObject.eGet(feature)
 		if (feature.many) {
 			val list = value as List<?>
-			return list != null && !list.isEmpty
+			return list !== null && !list.isEmpty
 		} else {
 			// TODO MK is equals (== in Xtend) for feature default value comparison okay or is identity (===) needed?
 			return value != feature.defaultValue
@@ -128,11 +128,11 @@ package class EMFModelChangeTransformationUtil {
 	}
 	
 	def static boolean isCreate(EObject oldContainer, Resource oldResource) {
-		return (oldContainer == null || oldContainer instanceof ChangeDescription) && oldResource == null
+		return (oldContainer === null || oldContainer instanceof ChangeDescription) && oldResource === null
 	}
 	
 	def static boolean isDelete(EObject newContainer, Resource newResource) {
-		return (newContainer == null || newContainer instanceof ChangeDescription) && newResource == null
+		return (newContainer === null || newContainer instanceof ChangeDescription) && newResource === null
 	}
 
 	def static EChange createRemoveRootChange(EObject rootToRemove, EObject newRootContainer, Resource newRootResource, Resource oldResource, int index) {
@@ -147,7 +147,7 @@ package class EMFModelChangeTransformationUtil {
 	def static EChange createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
 		val oldResource = referenceValue.eResource
-		val isCreate = forceCreate || (isContainment && oldResource == null)
+		val isCreate = forceCreate || (isContainment && oldResource === null)
 		if (isCreate) {
 			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertNonRootChange(affectedEObject, affectedReference, referenceValue, index);
 		} else {
@@ -168,9 +168,9 @@ package class EMFModelChangeTransformationUtil {
 	def static EChange createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
 		if (forceCreate || isContainment) {
-			if (oldReferenceValue == null) {
+			if (oldReferenceValue === null) {
 				return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceNonRootChange(affectedEObject, affectedReference, newReferenceValue)
-			} else if (newReferenceValue == null) {
+			} else if (newReferenceValue === null) {
 				return TypeInferringCompoundEChangeFactory.instance.createReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue)
 			} else {
 				return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);				

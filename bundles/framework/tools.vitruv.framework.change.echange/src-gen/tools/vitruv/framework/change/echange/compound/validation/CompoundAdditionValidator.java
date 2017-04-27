@@ -17,5 +17,6 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
 public interface CompoundAdditionValidator {
 	boolean validate();
 
+	@SuppressWarnings("rawtypes")
 	boolean validateAdditiveChanges(EList<AdditiveEChange> value);
 }
