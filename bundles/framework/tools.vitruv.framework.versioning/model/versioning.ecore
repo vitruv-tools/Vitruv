@@ -6,6 +6,7 @@
     <eOperations name="createSimpleCommit" eType="#//commit/SimpleCommit">
       <eParameters name="message" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="parent" lowerBound="1" eType="#//commit/Commit"/>
+      <eParameters name="changes" upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="email" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBranches" upperBound="-1"
