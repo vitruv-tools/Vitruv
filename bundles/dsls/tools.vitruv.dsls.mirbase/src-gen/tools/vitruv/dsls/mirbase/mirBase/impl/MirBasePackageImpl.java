@@ -12,7 +12,10 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport;
@@ -85,7 +88,28 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass metaclassEAttributeReferenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass metaclassEReferenceReferenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass metamodelReferenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass domainReferenceEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -328,6 +352,46 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getMetaclassEAttributeReference()
+  {
+    return metaclassEAttributeReferenceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getMetaclassEAttributeReference_Feature()
+  {
+    return (EReference)metaclassEAttributeReferenceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getMetaclassEReferenceReference()
+  {
+    return metaclassEReferenceReferenceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getMetaclassEReferenceReference_Feature()
+  {
+    return (EReference)metaclassEReferenceReferenceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getMetamodelReference()
   {
     return metamodelReferenceEClass;
@@ -341,6 +405,26 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
   public EReference getMetamodelReference_Model()
   {
     return (EReference)metamodelReferenceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getDomainReference()
+  {
+    return domainReferenceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getDomainReference_Domain()
+  {
+    return (EAttribute)domainReferenceEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -397,8 +481,17 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     metaclassFeatureReferenceEClass = createEClass(METACLASS_FEATURE_REFERENCE);
     createEReference(metaclassFeatureReferenceEClass, METACLASS_FEATURE_REFERENCE__FEATURE);
 
+    metaclassEAttributeReferenceEClass = createEClass(METACLASS_EATTRIBUTE_REFERENCE);
+    createEReference(metaclassEAttributeReferenceEClass, METACLASS_EATTRIBUTE_REFERENCE__FEATURE);
+
+    metaclassEReferenceReferenceEClass = createEClass(METACLASS_EREFERENCE_REFERENCE);
+    createEReference(metaclassEReferenceReferenceEClass, METACLASS_EREFERENCE_REFERENCE__FEATURE);
+
     metamodelReferenceEClass = createEClass(METAMODEL_REFERENCE);
     createEReference(metamodelReferenceEClass, METAMODEL_REFERENCE__MODEL);
+
+    domainReferenceEClass = createEClass(DOMAIN_REFERENCE);
+    createEAttribute(domainReferenceEClass, DOMAIN_REFERENCE__DOMAIN);
   }
 
   /**
@@ -436,6 +529,8 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     dummyEntryRuleEClass.getESuperTypes().add(this.getMirBaseFile());
     namedMetaclassReferenceEClass.getESuperTypes().add(this.getMetaclassReference());
     metaclassFeatureReferenceEClass.getESuperTypes().add(this.getMetaclassReference());
+    metaclassEAttributeReferenceEClass.getESuperTypes().add(this.getMetaclassReference());
+    metaclassEReferenceReferenceEClass.getESuperTypes().add(this.getMetaclassReference());
 
     // Initialize classes and features; add operations and parameters
     initEClass(dummyEntryRuleEClass, DummyEntryRule.class, "DummyEntryRule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -462,8 +557,17 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     initEClass(metaclassFeatureReferenceEClass, MetaclassFeatureReference.class, "MetaclassFeatureReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMetaclassFeatureReference_Feature(), ecorePackage.getEStructuralFeature(), null, "feature", null, 0, 1, MetaclassFeatureReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(metaclassEAttributeReferenceEClass, MetaclassEAttributeReference.class, "MetaclassEAttributeReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getMetaclassEAttributeReference_Feature(), ecorePackage.getEAttribute(), null, "feature", null, 0, 1, MetaclassEAttributeReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(metaclassEReferenceReferenceEClass, MetaclassEReferenceReference.class, "MetaclassEReferenceReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getMetaclassEReferenceReference_Feature(), ecorePackage.getEReference(), null, "feature", null, 0, 1, MetaclassEReferenceReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(metamodelReferenceEClass, MetamodelReference.class, "MetamodelReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMetamodelReference_Model(), this.getMetamodelImport(), null, "model", null, 0, 1, MetamodelReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(domainReferenceEClass, DomainReference.class, "DomainReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getDomainReference_Domain(), ecorePackage.getEString(), "domain", null, 0, 1, DomainReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

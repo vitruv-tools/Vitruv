@@ -6,18 +6,18 @@
     </contributions>
     <contributions label="externals">
       <repositories location="http://download.eclipse.org/releases/neon/" mirrorArtifacts="false">
-        <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.9.0" categories="//@customCategories[identifier='externals']"/>
-        <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0" categories="//@customCategories[identifier='externals']"/>
-        <features name="org.eclipse.emf.common.feature.group" versionRange="2.12.0" categories="//@customCategories[identifier='externals']"/>
-        <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.10.0" categories="//@customCategories[identifier='externals']"/>
-        <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.10.0" categories="//@customCategories[identifier='externals']"/>
+        <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.9.0"/>
+        <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0"/>
+        <features name="org.eclipse.emf.common.feature.group" versionRange="2.12.0"/>
+        <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.10.0"/>
+        <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.10.0"/>
       </repositories>
       <repositories location="http://vitruv-tools.github.io/updatesite/release/license">
-        <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)" categories="//@customCategories[identifier='externals']"/>
+        <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)"/>
       </repositories>
       <repositories location="http://kit-sdq.github.io/updatesite/nightly/commons">
-        <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="[1.0.0,2.0.0)" categories="//@customCategories[identifier='externals']"/>
-        <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="[1.0.0,2.0.0)" categories="//@customCategories[identifier='externals']"/>
+        <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
+        <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
       </repositories>
     </contributions>
   </validationSets>
@@ -27,5 +27,4 @@
   <configurations operatingSystem="linux" windowSystem="gtk" architecture="x86_64"/>
   <configurations operatingSystem="macosx" windowSystem="cocoa"/>
   <configurations operatingSystem="macosx" windowSystem="cocoa" architecture="x86_64"/>
-  <customCategories identifier="externals" label="External Dependencies" features="//@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.1 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.2 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.3 //@validationSets[label='main']/@contributions[label='externals']/@repositories.0/@features.4 //@validationSets[label='main']/@contributions[label='externals']/@repositories.1/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.2/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.2/@features.1"/>
 </aggregator:Aggregation>

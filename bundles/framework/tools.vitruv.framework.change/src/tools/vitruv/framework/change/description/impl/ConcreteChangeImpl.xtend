@@ -19,8 +19,8 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
         // if (eChange instanceof JavaFeatureEChange<?, ?>) {
         // if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
         // JavaFeatureEChange<?, ?> javaFeatureEChange = (JavaFeatureEChange<?, ?>) eChange;
-        // TUID tuid = correspondenceModel
-        // .calculateTUIDFromEObject(javaFeatureEChange.getOldAffectedEObject());
+        // Tuid tuid = correspondenceModel
+        // .calculateTuidFromEObject(javaFeatureEChange.getOldAffectedEObject());
         // if (tuid != null && javaFeatureEChange.getAffectedEObject() != null) {
         // tuidMap.put(javaFeatureEChange.getAffectedEObject(), tuid);
         // }

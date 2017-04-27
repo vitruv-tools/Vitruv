@@ -5,7 +5,7 @@ package tools.vitruv.framework.correspondence;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.framework.tuid.TUID;
+import tools.vitruv.framework.tuid.Tuid;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Correspondence</b></em>'.
@@ -18,8 +18,8 @@ import tools.vitruv.framework.tuid.TUID;
  *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getParent <em>Parent</em>}</li>
  *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getDependsOn <em>Depends On</em>}</li>
  *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getDependedOnBy <em>Depended On By</em>}</li>
- *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getATUIDs <em>ATUI Ds</em>}</li>
- *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getBTUIDs <em>BTUI Ds</em>}</li>
+ *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getATuids <em>ATUI Ds</em>}</li>
+ *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getBTuids <em>BTUI Ds</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondence()
@@ -92,7 +92,7 @@ public interface Correspondence extends EObject {
 
     /**
      * Returns the value of the '<em><b>ATUI Ds</b></em>' attribute list. The list contents are of
-     * type {@link tools.vitruv.framework.tuid.TUID}. <!--
+     * type {@link tools.vitruv.framework.tuid.Tuid}. <!--
      * begin-user-doc -->
      * <p>
      * If the meaning of the '<em>ATUI Ds</em>' attribute list isn't clear, there really should be
@@ -101,15 +101,15 @@ public interface Correspondence extends EObject {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>ATUI Ds</em>' attribute list.
-     * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondence_ATUIDs()
-     * @model dataType="tools.vitruv.framework.correspondence.TUID"
+     * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondence_ATuids()
+     * @model dataType="tools.vitruv.framework.correspondence.Tuid"
      * @generated
      */
-    EList<TUID> getATUIDs();
+    EList<Tuid> getATuids();
 
     /**
      * Returns the value of the '<em><b>BTUI Ds</b></em>' attribute list. The list contents are of
-     * type {@link tools.vitruv.framework.tuid.TUID}. <!--
+     * type {@link tools.vitruv.framework.tuid.Tuid}. <!--
      * begin-user-doc -->
      * <p>
      * If the meaning of the '<em>BTUI Ds</em>' attribute list isn't clear, there really should be
@@ -118,11 +118,11 @@ public interface Correspondence extends EObject {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>BTUI Ds</em>' attribute list.
-     * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondence_BTUIDs()
-     * @model dataType="tools.vitruv.framework.correspondence.TUID"
+     * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondence_BTuids()
+     * @model dataType="tools.vitruv.framework.correspondence.Tuid"
      * @generated
      */
-    EList<TUID> getBTUIDs();
+    EList<Tuid> getBTuids();
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -142,21 +142,21 @@ public interface Correspondence extends EObject {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @model kind="operation"
-     *        dataType="tools.vitruv.framework.correspondence.TUID"
+     *        dataType="tools.vitruv.framework.correspondence.Tuid"
      * @generated NOT
      * @deprecated
      */
-    TUID getElementATUID();
+    Tuid getElementATuid();
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @model kind="operation"
-     *        dataType="tools.vitruv.framework.correspondence.TUID"
+     *        dataType="tools.vitruv.framework.correspondence.Tuid"
      * @generated NOT
      * @deprecated
      */
-    TUID getElementBTUID();
+    Tuid getElementBTuid();
 
     /**
      * <!-- begin-user-doc -->

@@ -12,8 +12,8 @@
     </genClasses>
     <genClasses ecoreClass="ReactionsLanguage.ecore#//ReactionsSegment">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ReactionsLanguage.ecore#//ReactionsSegment/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ReactionsSegment/fromMetamodel"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ReactionsSegment/toMetamodel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ReactionsSegment/fromDomain"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ReactionsSegment/toDomain"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ReactionsSegment/reactions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ReactionsSegment/routines"/>
     </genClasses>
@@ -45,8 +45,8 @@
     <genClasses ecoreClass="ReactionsLanguage.ecore#//ModelElementUsageChangeType"/>
     <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementCreationChangeType"/>
     <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementDeletionChangeType"/>
-    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementFeatureChangeType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementFeatureChangeType/feature"/>
+    <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementReferenceChangeType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ReactionsLanguage.ecore#//ElementReferenceChangeType/feature"/>
     </genClasses>
     <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementRootChangeType"/>
     <genClasses ecoreClass="ReactionsLanguage.ecore#//ElementInsertionChangeType"/>

@@ -17,11 +17,15 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link allElementTypes.Root#getSingleValuedPrimitiveTypeEAttribute <em>Single Valued Primitive Type EAttribute</em>}</li>
  *   <li>{@link allElementTypes.Root#getSingleValuedUnsettableEAttribute <em>Single Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.Root#getSingleValuedNonContainmentEReference <em>Single Valued Non Containment EReference</em>}</li>
+ *   <li>{@link allElementTypes.Root#getSingleValuedUnsettableNonContainmentEReference <em>Single Valued Unsettable Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getSingleValuedContainmentEReference <em>Single Valued Containment EReference</em>}</li>
+ *   <li>{@link allElementTypes.Root#getSingleValuedUnsettableContainmentEReference <em>Single Valued Unsettable Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getMultiValuedEAttribute <em>Multi Valued EAttribute</em>}</li>
  *   <li>{@link allElementTypes.Root#getMultiValuedUnsettableEAttribute <em>Multi Valued Unsettable EAttribute</em>}</li>
  *   <li>{@link allElementTypes.Root#getMultiValuedNonContainmentEReference <em>Multi Valued Non Containment EReference</em>}</li>
+ *   <li>{@link allElementTypes.Root#getMultiValuedUnsettableNonContainmentEReference <em>Multi Valued Unsettable Non Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getMultiValuedContainmentEReference <em>Multi Valued Containment EReference</em>}</li>
+ *   <li>{@link allElementTypes.Root#getMultiValuedUnsettableContainmentEReference <em>Multi Valued Unsettable Containment EReference</em>}</li>
  *   <li>{@link allElementTypes.Root#getNonRootObjectContainerHelper <em>Non Root Object Container Helper</em>}</li>
  *   <li>{@link allElementTypes.Root#getRecursiveRoot <em>Recursive Root</em>}</li>
  * </ul>
@@ -165,6 +169,59 @@ public interface Root extends Identified {
 	void setSingleValuedNonContainmentEReference(NonRoot value);
 
 	/**
+	 * Returns the value of the '<em><b>Single Valued Unsettable Non Containment EReference</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Single Valued Unsettable Non Containment EReference</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Single Valued Unsettable Non Containment EReference</em>' reference.
+	 * @see #isSetSingleValuedUnsettableNonContainmentEReference()
+	 * @see #unsetSingleValuedUnsettableNonContainmentEReference()
+	 * @see #setSingleValuedUnsettableNonContainmentEReference(NonRoot)
+	 * @see allElementTypes.AllElementTypesPackage#getRoot_SingleValuedUnsettableNonContainmentEReference()
+	 * @model unsettable="true"
+	 * @generated
+	 */
+	NonRoot getSingleValuedUnsettableNonContainmentEReference();
+
+	/**
+	 * Sets the value of the '{@link allElementTypes.Root#getSingleValuedUnsettableNonContainmentEReference <em>Single Valued Unsettable Non Containment EReference</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Single Valued Unsettable Non Containment EReference</em>' reference.
+	 * @see #isSetSingleValuedUnsettableNonContainmentEReference()
+	 * @see #unsetSingleValuedUnsettableNonContainmentEReference()
+	 * @see #getSingleValuedUnsettableNonContainmentEReference()
+	 * @generated
+	 */
+	void setSingleValuedUnsettableNonContainmentEReference(NonRoot value);
+
+	/**
+	 * Unsets the value of the '{@link allElementTypes.Root#getSingleValuedUnsettableNonContainmentEReference <em>Single Valued Unsettable Non Containment EReference</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isSetSingleValuedUnsettableNonContainmentEReference()
+	 * @see #getSingleValuedUnsettableNonContainmentEReference()
+	 * @see #setSingleValuedUnsettableNonContainmentEReference(NonRoot)
+	 * @generated
+	 */
+	void unsetSingleValuedUnsettableNonContainmentEReference();
+
+	/**
+	 * Returns whether the value of the '{@link allElementTypes.Root#getSingleValuedUnsettableNonContainmentEReference <em>Single Valued Unsettable Non Containment EReference</em>}' reference is set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Single Valued Unsettable Non Containment EReference</em>' reference is set.
+	 * @see #unsetSingleValuedUnsettableNonContainmentEReference()
+	 * @see #getSingleValuedUnsettableNonContainmentEReference()
+	 * @see #setSingleValuedUnsettableNonContainmentEReference(NonRoot)
+	 * @generated
+	 */
+	boolean isSetSingleValuedUnsettableNonContainmentEReference();
+
+	/**
 	 * Returns the value of the '<em><b>Single Valued Containment EReference</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -189,6 +246,59 @@ public interface Root extends Identified {
 	 * @generated
 	 */
 	void setSingleValuedContainmentEReference(NonRoot value);
+
+	/**
+	 * Returns the value of the '<em><b>Single Valued Unsettable Containment EReference</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Single Valued Unsettable Containment EReference</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Single Valued Unsettable Containment EReference</em>' containment reference.
+	 * @see #isSetSingleValuedUnsettableContainmentEReference()
+	 * @see #unsetSingleValuedUnsettableContainmentEReference()
+	 * @see #setSingleValuedUnsettableContainmentEReference(NonRoot)
+	 * @see allElementTypes.AllElementTypesPackage#getRoot_SingleValuedUnsettableContainmentEReference()
+	 * @model containment="true" unsettable="true"
+	 * @generated
+	 */
+	NonRoot getSingleValuedUnsettableContainmentEReference();
+
+	/**
+	 * Sets the value of the '{@link allElementTypes.Root#getSingleValuedUnsettableContainmentEReference <em>Single Valued Unsettable Containment EReference</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Single Valued Unsettable Containment EReference</em>' containment reference.
+	 * @see #isSetSingleValuedUnsettableContainmentEReference()
+	 * @see #unsetSingleValuedUnsettableContainmentEReference()
+	 * @see #getSingleValuedUnsettableContainmentEReference()
+	 * @generated
+	 */
+	void setSingleValuedUnsettableContainmentEReference(NonRoot value);
+
+	/**
+	 * Unsets the value of the '{@link allElementTypes.Root#getSingleValuedUnsettableContainmentEReference <em>Single Valued Unsettable Containment EReference</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isSetSingleValuedUnsettableContainmentEReference()
+	 * @see #getSingleValuedUnsettableContainmentEReference()
+	 * @see #setSingleValuedUnsettableContainmentEReference(NonRoot)
+	 * @generated
+	 */
+	void unsetSingleValuedUnsettableContainmentEReference();
+
+	/**
+	 * Returns whether the value of the '{@link allElementTypes.Root#getSingleValuedUnsettableContainmentEReference <em>Single Valued Unsettable Containment EReference</em>}' containment reference is set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Single Valued Unsettable Containment EReference</em>' containment reference is set.
+	 * @see #unsetSingleValuedUnsettableContainmentEReference()
+	 * @see #getSingleValuedUnsettableContainmentEReference()
+	 * @see #setSingleValuedUnsettableContainmentEReference(NonRoot)
+	 * @generated
+	 */
+	boolean isSetSingleValuedUnsettableContainmentEReference();
 
 	/**
 	 * Returns the value of the '<em><b>Multi Valued EAttribute</b></em>' attribute list.
@@ -262,6 +372,45 @@ public interface Root extends Identified {
 	EList<NonRoot> getMultiValuedNonContainmentEReference();
 
 	/**
+	 * Returns the value of the '<em><b>Multi Valued Unsettable Non Containment EReference</b></em>' reference list.
+	 * The list contents are of type {@link allElementTypes.NonRoot}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Multi Valued Unsettable Non Containment EReference</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multi Valued Unsettable Non Containment EReference</em>' reference list.
+	 * @see #isSetMultiValuedUnsettableNonContainmentEReference()
+	 * @see #unsetMultiValuedUnsettableNonContainmentEReference()
+	 * @see allElementTypes.AllElementTypesPackage#getRoot_MultiValuedUnsettableNonContainmentEReference()
+	 * @model unsettable="true"
+	 * @generated
+	 */
+	EList<NonRoot> getMultiValuedUnsettableNonContainmentEReference();
+
+	/**
+	 * Unsets the value of the '{@link allElementTypes.Root#getMultiValuedUnsettableNonContainmentEReference <em>Multi Valued Unsettable Non Containment EReference</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isSetMultiValuedUnsettableNonContainmentEReference()
+	 * @see #getMultiValuedUnsettableNonContainmentEReference()
+	 * @generated
+	 */
+	void unsetMultiValuedUnsettableNonContainmentEReference();
+
+	/**
+	 * Returns whether the value of the '{@link allElementTypes.Root#getMultiValuedUnsettableNonContainmentEReference <em>Multi Valued Unsettable Non Containment EReference</em>}' reference list is set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Multi Valued Unsettable Non Containment EReference</em>' reference list is set.
+	 * @see #unsetMultiValuedUnsettableNonContainmentEReference()
+	 * @see #getMultiValuedUnsettableNonContainmentEReference()
+	 * @generated
+	 */
+	boolean isSetMultiValuedUnsettableNonContainmentEReference();
+
+	/**
 	 * Returns the value of the '<em><b>Multi Valued Containment EReference</b></em>' containment reference list.
 	 * The list contents are of type {@link allElementTypes.NonRoot}.
 	 * <!-- begin-user-doc -->
@@ -276,6 +425,45 @@ public interface Root extends Identified {
 	 * @generated
 	 */
 	EList<NonRoot> getMultiValuedContainmentEReference();
+
+	/**
+	 * Returns the value of the '<em><b>Multi Valued Unsettable Containment EReference</b></em>' containment reference list.
+	 * The list contents are of type {@link allElementTypes.NonRoot}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Multi Valued Unsettable Containment EReference</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multi Valued Unsettable Containment EReference</em>' containment reference list.
+	 * @see #isSetMultiValuedUnsettableContainmentEReference()
+	 * @see #unsetMultiValuedUnsettableContainmentEReference()
+	 * @see allElementTypes.AllElementTypesPackage#getRoot_MultiValuedUnsettableContainmentEReference()
+	 * @model containment="true" unsettable="true"
+	 * @generated
+	 */
+	EList<NonRoot> getMultiValuedUnsettableContainmentEReference();
+
+	/**
+	 * Unsets the value of the '{@link allElementTypes.Root#getMultiValuedUnsettableContainmentEReference <em>Multi Valued Unsettable Containment EReference</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isSetMultiValuedUnsettableContainmentEReference()
+	 * @see #getMultiValuedUnsettableContainmentEReference()
+	 * @generated
+	 */
+	void unsetMultiValuedUnsettableContainmentEReference();
+
+	/**
+	 * Returns whether the value of the '{@link allElementTypes.Root#getMultiValuedUnsettableContainmentEReference <em>Multi Valued Unsettable Containment EReference</em>}' containment reference list is set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Multi Valued Unsettable Containment EReference</em>' containment reference list is set.
+	 * @see #unsetMultiValuedUnsettableContainmentEReference()
+	 * @see #getMultiValuedUnsettableContainmentEReference()
+	 * @generated
+	 */
+	boolean isSetMultiValuedUnsettableContainmentEReference();
 
 	/**
 	 * Returns the value of the '<em><b>Non Root Object Container Helper</b></em>' containment reference.

@@ -83,7 +83,8 @@ public final class MIRMappingHelper {
 			ChangePropagationResult result) {
 		for (Resource res : resources) {
 			if (res.getContents().isEmpty()) {
-				result.addVuriToDeleteIfNotNull(VURI.getInstance(res));
+				// Not necessary any more, because VSUM removes empty resources
+				//result.addVuriToDeleteIfNotNull(VURI.getInstance(res));
 			}
 		}
 	}
@@ -100,7 +101,7 @@ public final class MIRMappingHelper {
 
 	public static boolean hasContainment(EObject eObject, ChangePropagationResult result) {
 		return (hasContainment(eObject) || ((result != null)
-				&& (result.getRootEObjectsToSave().stream().anyMatch(it -> it.getFirst().equals(eObject)))));
+				&& (result.getElementToPersistenceMap().keySet().stream().anyMatch(it -> it.equals(eObject)))));
 	}
 
 	/**

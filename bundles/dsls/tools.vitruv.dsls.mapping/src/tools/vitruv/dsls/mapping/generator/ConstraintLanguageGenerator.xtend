@@ -329,12 +329,12 @@ class ConstraintLanguageGenerator {
 		'''
 	}
 
-	def dispatch String[] getEObjectsWithPossiblyChangedTUID(extension ImportHelper importHelper,
+	def dispatch String[] getEObjectsWithPossiblyChangedTuid(extension ImportHelper importHelper,
 		Map<List<?>, String> localContext, Object object, EPackage pkg) {
 		#[]
 	}
 
-	def dispatch String[] getEObjectsWithPossiblyChangedTUID(extension ImportHelper importHelper,
+	def dispatch String[] getEObjectsWithPossiblyChangedTuid(extension ImportHelper importHelper,
 		Map<List<?>, String> localContext, AttributeEquivalenceExpression constraint, EPackage pkg) {
 
 		val mapping = constraint.getContainerOfType(Mapping)
@@ -344,12 +344,12 @@ class ConstraintLanguageGenerator {
 		#[getJavaExpressionThatReturns(localContext, target.context, mapping)]
 	}
 
-	def dispatch String[] getEObjectsWithPossiblyChangedTUID(extension ImportHelper importHelper,
+	def dispatch String[] getEObjectsWithPossiblyChangedTuid(extension ImportHelper importHelper,
 		Map<List<?>, String> localContext, Object object) {
 		#[]
 	}
 
-	def dispatch String[] getEObjectsWithPossiblyChangedTUID(extension ImportHelper importHelper,
+	def dispatch String[] getEObjectsWithPossiblyChangedTuid(extension ImportHelper importHelper,
 		Map<List<?>, String> localContext, DefaultContainExpression constraint) {
 
 		val target = constraint.target
@@ -359,7 +359,7 @@ class ConstraintLanguageGenerator {
 		return #[targetJava]
 	}
 
-	def dispatch String[] getEObjectsWithPossiblyChangedTUID(extension ImportHelper importHelper,
+	def dispatch String[] getEObjectsWithPossiblyChangedTuid(extension ImportHelper importHelper,
 		Map<List<?>, String> localContext, InExpression constraint) {
 
 		val sourceMapping = constraint.getContainerOfType(Mapping).requireNonNull

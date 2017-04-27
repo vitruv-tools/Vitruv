@@ -4,7 +4,6 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
-import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.apache.log4j.Logger
 import tools.vitruv.framework.util.command.ChangePropagationResult
@@ -32,18 +31,9 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 			return;
 		}
 		ReactionsCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceModel, element);
-		if (element.eContainer() == null) {
-			if (element.eResource() != null) {
-				logger.debug("Deleting root object: " + element);
-				transformationResult.addVuriToDeleteIfNotNull(VURI.getInstance(element.eResource()));
-			} else {
-				logger.warn("The element to delete was already removed: " + element);
-			}
-		} else {
-			logger.debug("Removing non-root object: " + element);
-			EcoreUtil.remove(element);
-		}
-		// If we delete an object, we have to update TUIDs because TUIDs of child elements 
+		logger.debug("Removing object " + element + " from container " + element.eContainer());
+		EcoreUtil.remove(element);
+		// If we delete an object, we have to update Tuids because Tuids of child elements 
 		// may have to be resolved for removing correspondences as well and must therefore be up-to-date
 		TuidManager.instance.updateTuidsOfRegisteredObjects();
 	}
@@ -54,11 +44,17 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 	}
 	
 	override registerObjectUnderModification(EObject element) {
-		TuidManager.instance.registerObjectUnderModification(element);
+		if (element != null) {
+			TuidManager.instance.registerObjectUnderModification(element);
+			if (element.eContainer != null) {
+				TuidManager.instance.registerObjectUnderModification(element.eContainer);
+			}
+
+		}
 	}
 	
 	override postprocessElements() {
-		// Modifications are finished, so update the TUIDs
+		// Modifications are finished, so update the Tuids
 		TuidManager.instance.updateTuidsOfRegisteredObjects();
 	}
 	

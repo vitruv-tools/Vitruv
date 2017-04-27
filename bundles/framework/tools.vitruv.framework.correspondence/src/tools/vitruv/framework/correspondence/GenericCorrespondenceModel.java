@@ -8,8 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.metamodel.MetamodelPair;
-import tools.vitruv.framework.tuid.TUID;
+import tools.vitruv.framework.tuid.Tuid;
 import tools.vitruv.framework.util.datatypes.URIHaving;
 
 /**
@@ -61,7 +60,7 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      * @return all correspondences for the object with the specified tuid and an empty set if the
      *         object has no correspondences.
      */
-    public Set<T> getCorrespondencesForTUIDs(List<TUID> tuids);
+    public Set<T> getCorrespondencesForTuids(List<Tuid> tuids);
 
     public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects);
 
@@ -72,7 +71,7 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 
     public Set<T> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
 
-    public Set<T> getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids);
+    public Set<T> getCorrespondencesThatInvolveAtLeastTuids(Set<Tuid> tuids);
 
     // renamed from addSameTypeCorrespondence
     public void addCorrespondence(T correspondence);
@@ -100,7 +99,7 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      *            for which all correspondences should be removed
      * @return a set containing all removed correspondences
      */
-    public Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(Set<TUID> tuids);
+    public Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(Set<Tuid> tuids);
 
     /**
      * Removes the given correspondence, all correspondences for the eObjects of the given
@@ -114,18 +113,18 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     public Set<T> removeCorrespondencesAndDependendCorrespondences(T correspondence);
 
     /**
-     * syntactic sugar for map[{@link #resolveEObjectFromTUID(TUID)}]
+     * syntactic sugar for map[{@link #resolveEObjectFromTuid(Tuid)}]
      *
      * @param tuid
      * @return
      */
-    public List<EObject> resolveEObjectsFromTUIDs(final List<TUID> tuids);
+    public List<EObject> resolveEObjectsFromTuids(final List<Tuid> tuids);
 
-    public Set<List<EObject>> resolveEObjectsSetsFromTUIDsSets(final Set<List<TUID>> tuidLists);
+    public Set<List<EObject>> resolveEObjectsSetsFromTuidsSets(final Set<List<Tuid>> tuidLists);
 
-    public EObject resolveEObjectFromTUID(final TUID tuid);
+    public EObject resolveEObjectFromTuid(final Tuid tuid);
     
-    public TUID calculateTUIDFromEObject(final EObject eObject);
+    public Tuid calculateTuidFromEObject(final EObject eObject);
 
     /**
      * Is necessary to make the remove operation possible. TODO: check whether we can remove this
@@ -133,15 +132,15 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      *
      * @return
      */
-    public TUID calculateTUIDFromEObject(final EObject eObject, EObject virtualRootObject, String prefix);
+    public Tuid calculateTuidFromEObject(final EObject eObject, EObject virtualRootObject, String prefix);
 
     /**
-     * syntactic sugar for map[{@link #calculateTUIDFromEObject(EObject)}]
+     * syntactic sugar for map[{@link #calculateTuidFromEObject(EObject)}]
      *
      * @param eObjects
      * @return
      */
-    public List<TUID> calculateTUIDsFromEObjects(final List<EObject> eObjects);
+    public List<Tuid> calculateTuidsFromEObjects(final List<EObject> eObjects);
 
     /**
      * SWAPS eObjects1 and eObjects2 to obtain first as and then bs if necessary!
@@ -153,16 +152,14 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 
     public Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
 
-    EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuidString);
+    EObject resolveEObjectFromRootAndFullTuid(EObject root, Tuid tuid);
 
     Set<T> getAllCorrespondencesWithoutDependencies();
 
     public List<T> getAllCorrespondences();
 
-    public MetamodelPair getMapping();
-    
     /**
-     * Returns the TUIDs for a correspondence that belong to the side that has a metamodel whose
+     * Returns the Tuids for a correspondence that belong to the side that has a metamodel whose
      * namespace URIs include the given <code>metamodelNamespaceUri</code>
      *
      * @param metamodelNamespaceUri
@@ -170,7 +167,7 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      * @return
      * @author Dominik Werle
      */
-    public List<TUID> getTUIDsForMetamodel(T correspondence, String metamodelNamespaceUri);
+    public List<Tuid> getTuidsForMetamodel(T correspondence, String metamodelNamespaceUri);
 
     /**
      * Returns a view on the {@link CorrespondenceModel} restricted to the specified kind of

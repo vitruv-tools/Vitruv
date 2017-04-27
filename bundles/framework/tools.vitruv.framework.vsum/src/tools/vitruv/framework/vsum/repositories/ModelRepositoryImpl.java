@@ -20,10 +20,9 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel;
-import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.MetamodelPair;
-import tools.vitruv.framework.metamodel.MetamodelRepository;
-import tools.vitruv.framework.metamodel.ModelRepository;
+import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.domains.repository.ModelRepository;
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
@@ -37,23 +36,28 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     private static final Logger logger = Logger.getLogger(ModelRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
-    private final MetamodelRepository metamodelRepository;
+    private final VitruvDomainRepository metamodelRepository;
 
     private final Map<VURI, ModelInstance> modelInstances;
-    private final List<InternalCorrespondenceModel> correspondenceModels;
+    private InternalCorrespondenceModel correspondenceModel;
+    private final FileSystemHelper fileSystemHelper;
+    private final String vsumName;
 
-    public ModelRepositoryImpl(final MetamodelRepository metamodelRepository) {
-        this(metamodelRepository, null);
+    public ModelRepositoryImpl(final String vsumName, final VitruvDomainRepository metamodelRepository) {
+        this(vsumName, metamodelRepository, null);
     }
 
-    public ModelRepositoryImpl(final MetamodelRepository metamodelRepository, final ClassLoader classLoader) {
+    public ModelRepositoryImpl(final String vsumName, final VitruvDomainRepository metamodelRepository,
+            final ClassLoader classLoader) {
         this.metamodelRepository = metamodelRepository;
+        this.vsumName = vsumName;
 
         this.resourceSet = new ResourceSetImpl();
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
-        this.correspondenceModels = new ArrayList<InternalCorrespondenceModel>();
+        this.fileSystemHelper = new FileSystemHelper(vsumName);
 
+        initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
     }
 
@@ -102,7 +106,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
                     // case 2 or 3
                     ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
                     ModelRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance);
-                    saveVURIsOfVSUMModelInstances();
+                    saveVURIsOfVsumModelInstances();
                     return null;
                 }
             });
@@ -119,7 +123,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                Metamodel metamodel = getMetamodelByURI(modelInstance.getURI());
+                VitruvDomain metamodel = getMetamodelByURI(modelInstance.getURI());
                 Resource resourceToSave = modelInstance.getResource();
                 try {
                     EcoreResourceBridge.saveResource(resourceToSave, metamodel.getDefaultSaveOptions());
@@ -133,18 +137,18 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     @Override
-    public void createModel(final VURI vuri, final EObject rootEObject) {
+    public void persistRootElement(final VURI vuri, final EObject rootEObject) {
         final ModelInstance modelInstance = getModel(vuri);
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 TuidManager.getInstance().registerObjectUnderModification(rootEObject);
                 final Resource resource = modelInstance.getResource();
-                // clear the resource first
-                resource.getContents().clear();
-                resource.getContents().add(rootEObject);
 
-                ModelRepositoryImpl.this.saveModelInstance(modelInstance);
+                resource.getContents().add(rootEObject);
+                resource.setModified(true);
+
+                logger.debug("Create model with resource: " + resource);
                 TuidManager.getInstance().updateTuidsOfRegisteredObjects();
                 TuidManager.getInstance().flushRegisteredObjectsUnderModification();
                 return null;
@@ -154,14 +158,29 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
     @Override
     public void saveAllModels() {
+        logger.debug("Saving all models of model repository for VSUM: " + this.vsumName);
         saveAllChangedModels();
         saveAllChangedCorrespondenceModels();
     }
 
+    private void deleteEmptyModels() {
+        List<VURI> vurisToDelete = new ArrayList<VURI>();
+        for (ModelInstance modelInstance : this.modelInstances.values()) {
+            if (modelInstance.getRootElements().isEmpty()) {
+                vurisToDelete.add(modelInstance.getURI());
+            }
+        }
+        for (VURI vuri : vurisToDelete) {
+            deleteModel(vuri);
+        }
+    }
+
     private void saveAllChangedModels() {
+        deleteEmptyModels();
         for (ModelInstance modelInstance : this.modelInstances.values()) {
             Resource resourceToSave = modelInstance.getResource();
             if (resourceToSave.isModified()) {
+                logger.debug("  Saving resource: " + resourceToSave);
                 saveModelInstance(modelInstance);
             }
         }
@@ -171,12 +190,10 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                for (InternalCorrespondenceModel correspondenceModel : ModelRepositoryImpl.this.correspondenceModels) {
-                    if (correspondenceModel.changedAfterLastSave()) {
-                        correspondenceModel.saveModel();
-                        correspondenceModel.resetChangedAfterLastSave();
-                    }
-                }
+                logger.debug(
+                        "  Saving correspondence model: " + ModelRepositoryImpl.this.correspondenceModel.getResource());
+                ModelRepositoryImpl.this.correspondenceModel.saveModel();
+                ModelRepositoryImpl.this.correspondenceModel.resetChangedAfterLastSave();
                 return null;
             }
         });
@@ -184,7 +201,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI) {
         String fileExtension = modelURI.getFileExtension();
-        Metamodel metamodel = this.metamodelRepository.getMetamodel(fileExtension);
+        VitruvDomain metamodel = this.metamodelRepository.getDomain(fileExtension);
         if (metamodel == null) {
             throw new RuntimeException("Cannot create a new model instance at the uri '" + modelURI
                     + "' because no metamodel is registered for the file extension '" + fileExtension + "'!");
@@ -192,7 +209,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         return loadModelInstance(modelURI, metamodel);
     }
 
-    private ModelInstance loadModelInstance(final VURI modelURI, final Metamodel metamodel) {
+    private ModelInstance loadModelInstance(final VURI modelURI, final VitruvDomain metamodel) {
         URI emfURI = modelURI.getEMFUri();
         Resource modelResource = EcoreResourceBridge.loadResourceAtURI(emfURI, this.resourceSet,
                 metamodel.getDefaultLoadOptions());
@@ -200,25 +217,20 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         return modelInstance;
     }
 
-    private void createCorrespondenceModel(final MetamodelPair mapping) {
+    private void initializeCorrespondenceModel() {
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
-            VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mapping.getMetamodelA().getURI(),
-                    mapping.getMetamodelB().getURI());
-            Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
-            InternalCorrespondenceModel correspondenceModel = new CorrespondenceModelImpl(mapping, this,
-                    correspondencesVURI, correspondencesResource);
-            this.correspondenceModels.add(correspondenceModel);
+            VURI correspondencesVURI = this.fileSystemHelper.getCorrespondencesVURI();
+            Resource correspondencesResource = null;
+            if (EMFBridge.existsResourceAtUri(correspondencesVURI.getEMFUri())) {
+                logger.debug("Loading correspondence model from: " + this.fileSystemHelper.getCorrespondencesVURI());
+                correspondencesResource = this.resourceSet.getResource(correspondencesVURI.getEMFUri(), true);
+            } else {
+                correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
+            }
+            this.correspondenceModel = new CorrespondenceModelImpl(this, this.metamodelRepository, correspondencesVURI,
+                    correspondencesResource);
             return null;
         });
-    }
-
-    private boolean existsCorrespondenceModel(final MetamodelPair metamodelPair) {
-        for (CorrespondenceModel correspondenceModel : this.correspondenceModels) {
-            if (correspondenceModel.getMapping().equals(metamodelPair)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -229,41 +241,43 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
      */
     @Override
     public CorrespondenceModel getCorrespondenceModel(final VURI mmAVURI, final VURI mmBVURI) {
-        Metamodel mmA = this.metamodelRepository.getMetamodel(mmAVURI);
-        Metamodel mmB = this.metamodelRepository.getMetamodel(mmBVURI);
-        if (mmA == null || mmB == null) {
-            throw new IllegalArgumentException("Metamodel is not contained in the metamodel repository");
-        }
-        MetamodelPair metamodelPair = new MetamodelPair(mmA, mmB);
-        if (!existsCorrespondenceModel(metamodelPair)) {
-            // Correspondence model does not exist, so create it
-            createCorrespondenceModel(metamodelPair);
-        }
-        for (CorrespondenceModel correspondenceModel : this.correspondenceModels) {
-            if (correspondenceModel.getMapping().equals(metamodelPair)) {
-                return correspondenceModel;
-            }
-        }
-        throw new IllegalStateException(
-                "Correspondence model does not exist, although it was existing or created before");
+        return this.correspondenceModel;
+        // VitruvDomain mmA = this.metamodelRepository.getDomain(mmAVURI);
+        // VitruvDomain mmB = this.metamodelRepository.getDomain(mmBVURI);
+        // if (mmA == null || mmB == null) {
+        // throw new IllegalArgumentException("Metamodel is not contained in the metamodel
+        // repository");
+        // }
+        // VitruvDomainPair metamodelPair = new VitruvDomainPair(mmA, mmB);
+        // if (!existsCorrespondenceModel(metamodelPair)) {
+        // // Correspondence model does not exist, so create it
+        // createCorrespondenceModel(metamodelPair);
+        // }
+        // for (CorrespondenceModel correspondenceModel : this.correspondenceModels) {
+        // if (correspondenceModel.getMapping().equals(metamodelPair)) {
+        // return correspondenceModel;
+        // }
+        // }
+        // throw new IllegalStateException(
+        // "Correspondence model does not exist, although it was existing or created before");
     }
 
     private void loadVURIsOfVSMUModelInstances() {
-        Set<VURI> vuris = FileSystemHelper.loadVSUMvURIsFromFile();
+        Set<VURI> vuris = this.fileSystemHelper.loadVsumVURIsFromFile();
         for (VURI vuri : vuris) {
-            Metamodel metamodel = getMetamodelByURI(vuri);
+            VitruvDomain metamodel = getMetamodelByURI(vuri);
             ModelInstance modelInstance = loadModelInstance(vuri, metamodel);
             this.modelInstances.put(vuri, modelInstance);
         }
     }
 
-    private void saveVURIsOfVSUMModelInstances() {
-        FileSystemHelper.saveVSUMvURIsToFile(this.modelInstances.keySet());
+    private void saveVURIsOfVsumModelInstances() {
+        this.fileSystemHelper.saveVsumVURIsToFile(this.modelInstances.keySet());
     }
 
-    private Metamodel getMetamodelByURI(final VURI uri) {
+    private VitruvDomain getMetamodelByURI(final VURI uri) {
         String fileExtension = uri.getFileExtension();
-        return this.metamodelRepository.getMetamodel(fileExtension);
+        return this.metamodelRepository.getDomain(fileExtension);
     }
 
     // private void loadAndMapCorrepondenceInstances() {
@@ -284,14 +298,14 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet);
     }
 
-    @Override
-    public void deleteModel(final VURI vuri) {
+    private void deleteModel(final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         final Resource resource = modelInstance.getResource();
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 try {
+                    logger.debug("Deleting resource: " + resource);
                     resource.delete(null);
                     ModelRepositoryImpl.this.modelInstances.remove(vuri);
                 } catch (final IOException e) {

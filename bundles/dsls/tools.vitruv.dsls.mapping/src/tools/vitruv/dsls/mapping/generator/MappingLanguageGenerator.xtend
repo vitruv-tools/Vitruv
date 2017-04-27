@@ -128,8 +128,8 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 			for (imp : imports) {
 				val reaction = reactionBuilderFactory.createReactionBuilder
 					.setName(getReactionName(imp, resource))
-					.setTrigger(imp.package)
-					.setTargetChange(imp.otherImport.package)
+					.setTrigger(null)// TODO MK: Set correct domain here, before: imp.package
+					.setTargetChange(null) // TODO MK: Set correct domain here, before: imp.otherImport.package
 					.setExecutionBlock('''
 						final tools.vitruv.extensions.dslsruntime.mapping.MappingExecutionState state =
 							new tools.vitruv.extensions.dslsruntime.mapping.MappingExecutionState(transformationResult, this.userInteracting, blackboard);
@@ -181,8 +181,8 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						
 						public static void enforceCorrectInitializationOn«imp.toFirstUpperName»(«typeRef(mapping.getWrapperClassName(imp))» «imp.toVarName()», «typeRef(MappingExecutionState)» state) {
 							«FOR constraint : getConstraints(mapping, imp) AFTER "\n"»
-								«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{#['this', imp]->imp.toVarName(), #['this']->imp.toVarName()}, constraint)»
-									state.record(«updateTUIDJava»);
+								«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this', imp]->imp.toVarName(), #['this']->imp.toVarName()}, constraint)»
+									state.record(«updateTuidJava»);
 								«ENDFOR»
 							«ENDFOR»
 							«FOR constraint : getConstraints(mapping, imp)
@@ -199,8 +199,8 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 							«typeRef(MappingExecutionState)» state) {
 							«IF mapping.constraintsBody != null»
 								«FOR constraint : mapping.constraintsBody.expressions»
-									«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
-									state.record(«updateTUIDJava»);
+									«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
+									state.record(«updateTuidJava»);
 									«ENDFOR»
 									«restoreBodyConstraintFrom(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
 								«ENDFOR»
@@ -334,8 +334,8 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						
 						public static void enforceCorrectInitializationOn«imp.toFirstUpperName»(«typeRef(mapping.getWrapperClassName(imp))» «imp.toVarName()», «typeRef(MappingExecutionState)» state) {
 							«FOR constraint : getConstraints(mapping, imp) AFTER "\n"»
-								«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{#['this', imp]->imp.toVarName(), #['this']->imp.toVarName()}, constraint)»
-									state.record(«updateTUIDJava»);
+								«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this', imp]->imp.toVarName(), #['this']->imp.toVarName()}, constraint)»
+									state.record(«updateTuidJava»);
 								«ENDFOR»
 							«ENDFOR»
 							«FOR constraint : getConstraints(mapping, imp)
@@ -352,8 +352,8 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 							«typeRef(MappingExecutionState)» state) {
 							«IF mapping.constraintsBody != null»
 								«FOR constraint : mapping.constraintsBody.expressions»
-									«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
-									state.record(«updateTUIDJava»);
+									«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
+									state.record(«updateTuidJava»);
 									«ENDFOR»
 									«restoreBodyConstraintFrom(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
 								«ENDFOR»

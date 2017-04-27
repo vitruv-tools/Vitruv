@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
+import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
@@ -35,8 +35,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Routine;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsSegmentImpl#getName <em>Name</em>}</li>
- *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsSegmentImpl#getFromMetamodel <em>From Metamodel</em>}</li>
- *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsSegmentImpl#getToMetamodel <em>To Metamodel</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsSegmentImpl#getFromDomain <em>From Domain</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsSegmentImpl#getToDomain <em>To Domain</em>}</li>
  *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsSegmentImpl#getReactions <em>Reactions</em>}</li>
  *   <li>{@link tools.vitruv.dsls.reactions.reactionsLanguage.impl.ReactionsSegmentImpl#getRoutines <em>Routines</em>}</li>
  * </ul>
@@ -66,24 +66,24 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getFromMetamodel() <em>From Metamodel</em>}' containment reference.
+   * The cached value of the '{@link #getFromDomain() <em>From Domain</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFromMetamodel()
+   * @see #getFromDomain()
    * @generated
    * @ordered
    */
-  protected MetamodelReference fromMetamodel;
+  protected DomainReference fromDomain;
 
   /**
-   * The cached value of the '{@link #getToMetamodel() <em>To Metamodel</em>}' containment reference.
+   * The cached value of the '{@link #getToDomain() <em>To Domain</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getToMetamodel()
+   * @see #getToDomain()
    * @generated
    * @ordered
    */
-  protected MetamodelReference toMetamodel;
+  protected DomainReference toDomain;
 
   /**
    * The cached value of the '{@link #getReactions() <em>Reactions</em>}' containment reference list.
@@ -154,9 +154,9 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public MetamodelReference getFromMetamodel()
+  public DomainReference getFromDomain()
   {
-    return fromMetamodel;
+    return fromDomain;
   }
 
   /**
@@ -164,13 +164,13 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetFromMetamodel(MetamodelReference newFromMetamodel, NotificationChain msgs)
+  public NotificationChain basicSetFromDomain(DomainReference newFromDomain, NotificationChain msgs)
   {
-    MetamodelReference oldFromMetamodel = fromMetamodel;
-    fromMetamodel = newFromMetamodel;
+    DomainReference oldFromDomain = fromDomain;
+    fromDomain = newFromDomain;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL, oldFromMetamodel, newFromMetamodel);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_DOMAIN, oldFromDomain, newFromDomain);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -181,20 +181,20 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setFromMetamodel(MetamodelReference newFromMetamodel)
+  public void setFromDomain(DomainReference newFromDomain)
   {
-    if (newFromMetamodel != fromMetamodel)
+    if (newFromDomain != fromDomain)
     {
       NotificationChain msgs = null;
-      if (fromMetamodel != null)
-        msgs = ((InternalEObject)fromMetamodel).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL, null, msgs);
-      if (newFromMetamodel != null)
-        msgs = ((InternalEObject)newFromMetamodel).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL, null, msgs);
-      msgs = basicSetFromMetamodel(newFromMetamodel, msgs);
+      if (fromDomain != null)
+        msgs = ((InternalEObject)fromDomain).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_DOMAIN, null, msgs);
+      if (newFromDomain != null)
+        msgs = ((InternalEObject)newFromDomain).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_DOMAIN, null, msgs);
+      msgs = basicSetFromDomain(newFromDomain, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL, newFromMetamodel, newFromMetamodel));
+      eNotify(new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_DOMAIN, newFromDomain, newFromDomain));
   }
 
   /**
@@ -202,9 +202,9 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public MetamodelReference getToMetamodel()
+  public DomainReference getToDomain()
   {
-    return toMetamodel;
+    return toDomain;
   }
 
   /**
@@ -212,13 +212,13 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetToMetamodel(MetamodelReference newToMetamodel, NotificationChain msgs)
+  public NotificationChain basicSetToDomain(DomainReference newToDomain, NotificationChain msgs)
   {
-    MetamodelReference oldToMetamodel = toMetamodel;
-    toMetamodel = newToMetamodel;
+    DomainReference oldToDomain = toDomain;
+    toDomain = newToDomain;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL, oldToMetamodel, newToMetamodel);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_DOMAIN, oldToDomain, newToDomain);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -229,20 +229,20 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setToMetamodel(MetamodelReference newToMetamodel)
+  public void setToDomain(DomainReference newToDomain)
   {
-    if (newToMetamodel != toMetamodel)
+    if (newToDomain != toDomain)
     {
       NotificationChain msgs = null;
-      if (toMetamodel != null)
-        msgs = ((InternalEObject)toMetamodel).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL, null, msgs);
-      if (newToMetamodel != null)
-        msgs = ((InternalEObject)newToMetamodel).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL, null, msgs);
-      msgs = basicSetToMetamodel(newToMetamodel, msgs);
+      if (toDomain != null)
+        msgs = ((InternalEObject)toDomain).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_DOMAIN, null, msgs);
+      if (newToDomain != null)
+        msgs = ((InternalEObject)newToDomain).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_DOMAIN, null, msgs);
+      msgs = basicSetToDomain(newToDomain, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL, newToMetamodel, newToMetamodel));
+      eNotify(new ENotificationImpl(this, Notification.SET, ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_DOMAIN, newToDomain, newToDomain));
   }
 
   /**
@@ -302,10 +302,10 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
-        return basicSetFromMetamodel(null, msgs);
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
-        return basicSetToMetamodel(null, msgs);
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_DOMAIN:
+        return basicSetFromDomain(null, msgs);
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_DOMAIN:
+        return basicSetToDomain(null, msgs);
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
         return ((InternalEList<?>)getReactions()).basicRemove(otherEnd, msgs);
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__ROUTINES:
@@ -326,10 +326,10 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
     {
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__NAME:
         return getName();
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
-        return getFromMetamodel();
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
-        return getToMetamodel();
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_DOMAIN:
+        return getFromDomain();
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_DOMAIN:
+        return getToDomain();
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
         return getReactions();
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__ROUTINES:
@@ -352,11 +352,11 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__NAME:
         setName((String)newValue);
         return;
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
-        setFromMetamodel((MetamodelReference)newValue);
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_DOMAIN:
+        setFromDomain((DomainReference)newValue);
         return;
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
-        setToMetamodel((MetamodelReference)newValue);
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_DOMAIN:
+        setToDomain((DomainReference)newValue);
         return;
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
         getReactions().clear();
@@ -383,11 +383,11 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
-        setFromMetamodel((MetamodelReference)null);
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_DOMAIN:
+        setFromDomain((DomainReference)null);
         return;
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
-        setToMetamodel((MetamodelReference)null);
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_DOMAIN:
+        setToDomain((DomainReference)null);
         return;
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
         getReactions().clear();
@@ -411,10 +411,10 @@ public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implement
     {
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
-        return fromMetamodel != null;
-      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
-        return toMetamodel != null;
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__FROM_DOMAIN:
+        return fromDomain != null;
+      case ReactionsLanguagePackage.REACTIONS_SEGMENT__TO_DOMAIN:
+        return toDomain != null;
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
         return reactions != null && !reactions.isEmpty();
       case ReactionsLanguagePackage.REACTIONS_SEGMENT__ROUTINES:

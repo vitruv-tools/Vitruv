@@ -14,7 +14,6 @@ import tools.vitruv.extensions.dslsruntime.mapping.interfaces.ElementProvider;
 import tools.vitruv.extensions.dslsruntime.mapping.interfaces.MappingRealization;
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.util.bridges.EcoreBridge;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 public abstract class AbstractMappingRealization implements MappingRealization {
 	protected static void destroy(ElementProvider elementProvider, MappingExecutionState state) {
@@ -25,7 +24,7 @@ public abstract class AbstractMappingRealization implements MappingRealization {
 
 		for (EObject element : elements) {
 			if (EcoreBridge.isRootInResource(element)) {
-				state.getTransformationResult().addVuriToDeleteIfNotNull(VURI.getInstance(element.eResource()));
+				state.getTransformationResult().revokeRegistrationForPersistence(element);//addVuriToDeleteIfNotNull(VURI.getInstance(element.eResource()));
 			}
 		}
 

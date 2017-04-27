@@ -13,8 +13,6 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
-import org.apache.log4j.Logger
-import org.apache.log4j.Level
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
@@ -30,7 +28,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
 	
 	private def Root getRootElement() {
-		return TEST_SOURCE_MODEL_NAME.projectModelPath.root as Root;
+		return TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root;
 	}
 	
 	private def String getProjectModelPath(String modelName) {
@@ -38,19 +36,22 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 	
 	private def assertModelsEqual() {
-		assertModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 	}
 	
-	protected override initializeTestModel() {
+	protected override setup() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(TEST_SOURCE_MODEL_NAME);
 		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root);
 		prepareTestModel();
 		assertModelsEqual();
 	}
-		
+	
+	override protected cleanup() {
+		// Do nothing
+	}
+	
 	private def prepareTestModel() {
-		Logger.rootLogger.level = Level.DEBUG;
 		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
 		container.setId("NonRootObjectContainer");
 		rootElement.nonRootObjectContainerHelper = container;
@@ -214,7 +215,6 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
 		
 	//@Test
 	public def void testUnsetSingleValuedNonContainmentEReference() throws Throwable {
@@ -282,7 +282,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
+		compareMonitor.set(ChangeType.DeleteEObject);
 		compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
+		compareMonitor.set(ChangeType.CreateEObject);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
@@ -362,6 +364,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.CreateNonRootEObjectInList);
+		compareMonitor.set(ChangeType.CreateEObject);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
@@ -374,6 +377,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		removeMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectInList);
+		compareMonitor.set(ChangeType.DeleteEObject);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
@@ -386,7 +390,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		replaceMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest", "multiValuedContainmentNonRootTest2");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectInList);
+		compareMonitor.set(ChangeType.DeleteEObject);
 		compareMonitor.set(ChangeType.CreateNonRootEObjectInList);
+		compareMonitor.set(ChangeType.CreateEObject);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertEquals("multiValuedContainmentNonRootTest2", rootElement.multiValuedContainmentEReference.last.id);
@@ -462,7 +468,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
-		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 	}
 	
 	@Test
@@ -471,7 +477,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
 		assertModelExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
-		assertModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 		deleteAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);

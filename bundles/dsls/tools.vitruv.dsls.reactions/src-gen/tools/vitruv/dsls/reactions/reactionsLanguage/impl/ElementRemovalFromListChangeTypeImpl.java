@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference;
 
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType;
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRemovalFromListChangeType;
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 
@@ -40,7 +40,7 @@ public class ElementRemovalFromListChangeTypeImpl extends ElementRemovalChangeTy
    * @generated
    * @ordered
    */
-  protected MetaclassFeatureReference feature;
+  protected MetaclassEReferenceReference feature;
 
   /**
    * <!-- begin-user-doc -->
@@ -68,7 +68,7 @@ public class ElementRemovalFromListChangeTypeImpl extends ElementRemovalChangeTy
    * <!-- end-user-doc -->
    * @generated
    */
-  public MetaclassFeatureReference getFeature()
+  public MetaclassEReferenceReference getFeature()
   {
     return feature;
   }
@@ -78,9 +78,9 @@ public class ElementRemovalFromListChangeTypeImpl extends ElementRemovalChangeTy
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetFeature(MetaclassFeatureReference newFeature, NotificationChain msgs)
+  public NotificationChain basicSetFeature(MetaclassEReferenceReference newFeature, NotificationChain msgs)
   {
-    MetaclassFeatureReference oldFeature = feature;
+    MetaclassEReferenceReference oldFeature = feature;
     feature = newFeature;
     if (eNotificationRequired())
     {
@@ -95,7 +95,7 @@ public class ElementRemovalFromListChangeTypeImpl extends ElementRemovalChangeTy
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setFeature(MetaclassFeatureReference newFeature)
+  public void setFeature(MetaclassEReferenceReference newFeature)
   {
     if (newFeature != feature)
     {
@@ -154,7 +154,7 @@ public class ElementRemovalFromListChangeTypeImpl extends ElementRemovalChangeTy
     switch (featureID)
     {
       case ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE__FEATURE:
-        setFeature((MetaclassFeatureReference)newValue);
+        setFeature((MetaclassEReferenceReference)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -171,7 +171,7 @@ public class ElementRemovalFromListChangeTypeImpl extends ElementRemovalChangeTy
     switch (featureID)
     {
       case ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE__FEATURE:
-        setFeature((MetaclassFeatureReference)null);
+        setFeature((MetaclassEReferenceReference)null);
         return;
     }
     super.eUnset(featureID);
@@ -201,11 +201,11 @@ public class ElementRemovalFromListChangeTypeImpl extends ElementRemovalChangeTy
   @Override
   public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
   {
-    if (baseClass == ElementFeatureChangeType.class)
+    if (baseClass == ElementReferenceChangeType.class)
     {
       switch (derivedFeatureID)
       {
-        case ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE__FEATURE: return ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE;
+        case ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE__FEATURE: return ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE;
         default: return -1;
       }
     }
@@ -220,11 +220,11 @@ public class ElementRemovalFromListChangeTypeImpl extends ElementRemovalChangeTy
   @Override
   public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
   {
-    if (baseClass == ElementFeatureChangeType.class)
+    if (baseClass == ElementReferenceChangeType.class)
     {
       switch (baseFeatureID)
       {
-        case ReactionsLanguagePackage.ELEMENT_FEATURE_CHANGE_TYPE__FEATURE: return ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE__FEATURE;
+        case ReactionsLanguagePackage.ELEMENT_REFERENCE_CHANGE_TYPE__FEATURE: return ReactionsLanguagePackage.ELEMENT_REMOVAL_FROM_LIST_CHANGE_TYPE__FEATURE;
         default: return -1;
       }
     }

@@ -162,7 +162,7 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoot_SingleValuedContainmentEReference() {
+	public EReference getRoot_SingleValuedUnsettableNonContainmentEReference() {
 		return (EReference)rootEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -171,8 +171,26 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getRoot_SingleValuedContainmentEReference() {
+		return (EReference)rootEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRoot_SingleValuedUnsettableContainmentEReference() {
+		return (EReference)rootEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getRoot_MultiValuedEAttribute() {
-		return (EAttribute)rootEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)rootEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -181,7 +199,7 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * @generated
 	 */
 	public EAttribute getRoot_MultiValuedUnsettableEAttribute() {
-		return (EAttribute)rootEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)rootEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -190,24 +208,6 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * @generated
 	 */
 	public EReference getRoot_MultiValuedNonContainmentEReference() {
-		return (EReference)rootEClass.getEStructuralFeatures().get(7);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getRoot_MultiValuedContainmentEReference() {
-		return (EReference)rootEClass.getEStructuralFeatures().get(8);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getRoot_NonRootObjectContainerHelper() {
 		return (EReference)rootEClass.getEStructuralFeatures().get(9);
 	}
 
@@ -216,8 +216,44 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRoot_RecursiveRoot() {
+	public EReference getRoot_MultiValuedUnsettableNonContainmentEReference() {
 		return (EReference)rootEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRoot_MultiValuedContainmentEReference() {
+		return (EReference)rootEClass.getEStructuralFeatures().get(11);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRoot_MultiValuedUnsettableContainmentEReference() {
+		return (EReference)rootEClass.getEStructuralFeatures().get(12);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRoot_NonRootObjectContainerHelper() {
+		return (EReference)rootEClass.getEStructuralFeatures().get(13);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRoot_RecursiveRoot() {
+		return (EReference)rootEClass.getEStructuralFeatures().get(14);
 	}
 
 	/**
@@ -298,11 +334,15 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 		createEAttribute(rootEClass, ROOT__SINGLE_VALUED_PRIMITIVE_TYPE_EATTRIBUTE);
 		createEAttribute(rootEClass, ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE);
 		createEReference(rootEClass, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE);
+		createEReference(rootEClass, ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE);
 		createEReference(rootEClass, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE);
+		createEReference(rootEClass, ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE);
 		createEAttribute(rootEClass, ROOT__MULTI_VALUED_EATTRIBUTE);
 		createEAttribute(rootEClass, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE);
 		createEReference(rootEClass, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE);
+		createEReference(rootEClass, ROOT__MULTI_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE);
 		createEReference(rootEClass, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE);
+		createEReference(rootEClass, ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE);
 		createEReference(rootEClass, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER);
 		createEReference(rootEClass, ROOT__RECURSIVE_ROOT);
 
@@ -353,11 +393,15 @@ public class AllElementTypesPackageImpl extends EPackageImpl implements AllEleme
 		initEAttribute(getRoot_SingleValuedPrimitiveTypeEAttribute(), ecorePackage.getEInt(), "singleValuedPrimitiveTypeEAttribute", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRoot_SingleValuedUnsettableEAttribute(), ecorePackage.getEIntegerObject(), "singleValuedUnsettableEAttribute", "0", 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_SingleValuedNonContainmentEReference(), this.getNonRoot(), null, "singleValuedNonContainmentEReference", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRoot_SingleValuedUnsettableNonContainmentEReference(), this.getNonRoot(), null, "singleValuedUnsettableNonContainmentEReference", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_SingleValuedContainmentEReference(), this.getNonRoot(), null, "singleValuedContainmentEReference", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRoot_SingleValuedUnsettableContainmentEReference(), this.getNonRoot(), null, "singleValuedUnsettableContainmentEReference", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRoot_MultiValuedEAttribute(), ecorePackage.getEIntegerObject(), "multiValuedEAttribute", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRoot_MultiValuedUnsettableEAttribute(), ecorePackage.getEIntegerObject(), "multiValuedUnsettableEAttribute", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_MultiValuedNonContainmentEReference(), this.getNonRoot(), null, "multiValuedNonContainmentEReference", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRoot_MultiValuedUnsettableNonContainmentEReference(), this.getNonRoot(), null, "multiValuedUnsettableNonContainmentEReference", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_MultiValuedContainmentEReference(), this.getNonRoot(), null, "multiValuedContainmentEReference", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRoot_MultiValuedUnsettableContainmentEReference(), this.getNonRoot(), null, "multiValuedUnsettableContainmentEReference", null, 0, -1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_NonRootObjectContainerHelper(), this.getNonRootObjectContainerHelper(), null, "nonRootObjectContainerHelper", null, 1, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRoot_RecursiveRoot(), this.getRoot(), null, "recursiveRoot", null, 0, 1, Root.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

@@ -6,6 +6,7 @@ import java.util.List
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 
 public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
+	public static final String changeName = "change";
 	public static final String affectedElementAttribute = "affectedEObject";
 	public static final String affectedFeatureAttribute = "affectedFeature";
 	public static final String oldValueAttribute = "oldValue";
@@ -85,6 +86,9 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		}
 		if (hasNewValue) {
 			result.add(new AccessibleElement(newValueAttribute, affectedValueClass));
+		}
+		if (result.empty) {
+			result.add(new AccessibleElement(changeName, changeType));
 		}
 		return result;
 	}

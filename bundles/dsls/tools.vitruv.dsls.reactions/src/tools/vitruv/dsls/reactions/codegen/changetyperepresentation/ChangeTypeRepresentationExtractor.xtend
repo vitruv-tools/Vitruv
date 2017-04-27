@@ -25,8 +25,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertion
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementFeatureChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType
 
 final class ChangeTypeRepresentationExtractor {
 
@@ -82,7 +82,7 @@ final class ChangeTypeRepresentationExtractor {
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, !hasNewValue, hasNewValue, null);
 	}
 	
-	private static def dispatch AtomicChangeTypeRepresentation generateChangeTypeRepresentation(ElementFeatureChangeType modelElementChange, EClass elementClass) {
+	private static def dispatch AtomicChangeTypeRepresentation generateChangeTypeRepresentation(ElementReferenceChangeType modelElementChange, EClass elementClass) {
 		var hasOldValue = false;
 		var hasNewValue = false;
 		var EClass clazz = null;
@@ -109,18 +109,16 @@ final class ChangeTypeRepresentationExtractor {
 	
 	private static def dispatch AtomicChangeTypeRepresentation generateChangeTypeRepresentation(ElementExistenceChangeType modelElementChange, EClass elementClass) {
 		var EClass clazz = null;
-		var hasNewValue = false;
 		switch (modelElementChange) {
 			ElementCreationChangeType: {
 				clazz = EobjectPackage.Literals.CREATE_EOBJECT
-				hasNewValue = true;
 			}
 			ElementDeletionChangeType:
 				clazz = EobjectPackage.Literals.DELETE_EOBJECT
 		}
 		val affectedEObject = if (elementClass != null) elementClass.instanceClass else EObject;
 		val affectedValue = null; 
-		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, !hasNewValue, hasNewValue, null);
+		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, false, false, null);
 	}
 	
 	private static def dispatch CompoundChangeTypeRepresentation generateChangeTypeRepresentation(ElementCreationAndInsertionChangeType modelElementChange, EClass elementClass) {

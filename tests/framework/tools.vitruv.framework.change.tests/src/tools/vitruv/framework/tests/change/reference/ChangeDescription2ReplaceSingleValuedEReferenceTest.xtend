@@ -40,7 +40,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		changes.get(0).assertCreateAndReplaceAndDeleteNonRoot(nonRoot, replaceNonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
 			this.rootElement, true)
 	}
-
+	
 	@Test
 	def public void testReplaceExistingSingleValuedEReferenceContainmentWithDefault() {
 		// prepare
@@ -131,6 +131,37 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		val changes = getChanges()
 		changes.get(0).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
 			nonRoot, false, false)
+	}
+	
+	@Test
+	def public void testUnsetExistingSingleValuedEReferenceContainment() {
+		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot;
+		this.rootElement.singleValuedUnsettableContainmentEReference = nonRoot;
+		startRecording;
+		
+		this.rootElement.eUnset(ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE)
+		changes.assertChangeCount(1);
+		val innerChanges = changes.claimChange(0).assertExplicitUnsetEReference.changes
+		innerChanges.assertChangeCount(1);
+		// FIXME HK Should be 2 changes!
+		changes.claimChange(0).assertExplicitUnsetEReference.atomicChanges.assertChangeCount(1);
+		innerChanges.get(0).assertReplaceSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE,
+			nonRoot, null, true)
+	}
+	
+	@Test
+	def public void testUnsetReplaceExistingSingleValuedEReferenceNonContainment() {
+		val nonRoot = createAndAddNonRootToRootContainer(false)
+		this.rootElement.singleValuedUnsettableNonContainmentEReference = nonRoot;
+		startRecording;
+		
+		this.rootElement.eUnset(ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE)
+		changes.assertChangeCount(1);
+		val innerChanges = changes.claimChange(0).assertExplicitUnsetEReference.changes
+		innerChanges.assertChangeCount(1);
+		changes.claimChange(0).assertExplicitUnsetEReference.atomicChanges.assertChangeCount(1);
+		innerChanges.get(0).assertReplaceSingleValuedEReference(rootElement,
+			ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE, nonRoot, null, false)
 	}
 
 }

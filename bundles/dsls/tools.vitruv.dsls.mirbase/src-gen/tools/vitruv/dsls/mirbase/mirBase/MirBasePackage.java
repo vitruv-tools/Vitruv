@@ -326,6 +326,98 @@ public interface MirBasePackage extends EPackage
   int METACLASS_FEATURE_REFERENCE_FEATURE_COUNT = METACLASS_REFERENCE_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetaclassEAttributeReferenceImpl <em>Metaclass EAttribute Reference</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.MetaclassEAttributeReferenceImpl
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetaclassEAttributeReference()
+   * @generated
+   */
+  int METACLASS_EATTRIBUTE_REFERENCE = 7;
+
+  /**
+   * The feature id for the '<em><b>Metamodel</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METACLASS_EATTRIBUTE_REFERENCE__METAMODEL = METACLASS_REFERENCE__METAMODEL;
+
+  /**
+   * The feature id for the '<em><b>Metaclass</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METACLASS_EATTRIBUTE_REFERENCE__METACLASS = METACLASS_REFERENCE__METACLASS;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METACLASS_EATTRIBUTE_REFERENCE__FEATURE = METACLASS_REFERENCE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Metaclass EAttribute Reference</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METACLASS_EATTRIBUTE_REFERENCE_FEATURE_COUNT = METACLASS_REFERENCE_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetaclassEReferenceReferenceImpl <em>Metaclass EReference Reference</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.MetaclassEReferenceReferenceImpl
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetaclassEReferenceReference()
+   * @generated
+   */
+  int METACLASS_EREFERENCE_REFERENCE = 8;
+
+  /**
+   * The feature id for the '<em><b>Metamodel</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METACLASS_EREFERENCE_REFERENCE__METAMODEL = METACLASS_REFERENCE__METAMODEL;
+
+  /**
+   * The feature id for the '<em><b>Metaclass</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METACLASS_EREFERENCE_REFERENCE__METACLASS = METACLASS_REFERENCE__METACLASS;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METACLASS_EREFERENCE_REFERENCE__FEATURE = METACLASS_REFERENCE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Metaclass EReference Reference</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METACLASS_EREFERENCE_REFERENCE_FEATURE_COUNT = METACLASS_REFERENCE_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetamodelReferenceImpl <em>Metamodel Reference</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -333,7 +425,7 @@ public interface MirBasePackage extends EPackage
    * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetamodelReference()
    * @generated
    */
-  int METAMODEL_REFERENCE = 7;
+  int METAMODEL_REFERENCE = 9;
 
   /**
    * The feature id for the '<em><b>Model</b></em>' reference.
@@ -352,6 +444,34 @@ public interface MirBasePackage extends EPackage
    * @ordered
    */
   int METAMODEL_REFERENCE_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.DomainReferenceImpl <em>Domain Reference</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.DomainReferenceImpl
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getDomainReference()
+   * @generated
+   */
+  int DOMAIN_REFERENCE = 10;
+
+  /**
+   * The feature id for the '<em><b>Domain</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOMAIN_REFERENCE__DOMAIN = 0;
+
+  /**
+   * The number of structural features of the '<em>Domain Reference</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOMAIN_REFERENCE_FEATURE_COUNT = 1;
 
 
   /**
@@ -535,6 +655,48 @@ public interface MirBasePackage extends EPackage
   EReference getMetaclassFeatureReference_Feature();
 
   /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference <em>Metaclass EAttribute Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Metaclass EAttribute Reference</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
+   * @generated
+   */
+  EClass getMetaclassEAttributeReference();
+
+  /**
+   * Returns the meta object for the reference '{@link tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference#getFeature <em>Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Feature</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference#getFeature()
+   * @see #getMetaclassEAttributeReference()
+   * @generated
+   */
+  EReference getMetaclassEAttributeReference_Feature();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference <em>Metaclass EReference Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Metaclass EReference Reference</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
+   * @generated
+   */
+  EClass getMetaclassEReferenceReference();
+
+  /**
+   * Returns the meta object for the reference '{@link tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference#getFeature <em>Feature</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Feature</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference#getFeature()
+   * @see #getMetaclassEReferenceReference()
+   * @generated
+   */
+  EReference getMetaclassEReferenceReference_Feature();
+
+  /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mirbase.mirBase.MetamodelReference <em>Metamodel Reference</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -554,6 +716,27 @@ public interface MirBasePackage extends EPackage
    * @generated
    */
   EReference getMetamodelReference_Model();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mirbase.mirBase.DomainReference <em>Domain Reference</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Domain Reference</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.DomainReference
+   * @generated
+   */
+  EClass getDomainReference();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mirbase.mirBase.DomainReference#getDomain <em>Domain</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Domain</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.DomainReference#getDomain()
+   * @see #getDomainReference()
+   * @generated
+   */
+  EAttribute getDomainReference_Domain();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -729,6 +912,42 @@ public interface MirBasePackage extends EPackage
     EReference METACLASS_FEATURE_REFERENCE__FEATURE = eINSTANCE.getMetaclassFeatureReference_Feature();
 
     /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetaclassEAttributeReferenceImpl <em>Metaclass EAttribute Reference</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.MetaclassEAttributeReferenceImpl
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetaclassEAttributeReference()
+     * @generated
+     */
+    EClass METACLASS_EATTRIBUTE_REFERENCE = eINSTANCE.getMetaclassEAttributeReference();
+
+    /**
+     * The meta object literal for the '<em><b>Feature</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference METACLASS_EATTRIBUTE_REFERENCE__FEATURE = eINSTANCE.getMetaclassEAttributeReference_Feature();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetaclassEReferenceReferenceImpl <em>Metaclass EReference Reference</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.MetaclassEReferenceReferenceImpl
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetaclassEReferenceReference()
+     * @generated
+     */
+    EClass METACLASS_EREFERENCE_REFERENCE = eINSTANCE.getMetaclassEReferenceReference();
+
+    /**
+     * The meta object literal for the '<em><b>Feature</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference METACLASS_EREFERENCE_REFERENCE__FEATURE = eINSTANCE.getMetaclassEReferenceReference_Feature();
+
+    /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.MetamodelReferenceImpl <em>Metamodel Reference</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -745,6 +964,24 @@ public interface MirBasePackage extends EPackage
      * @generated
      */
     EReference METAMODEL_REFERENCE__MODEL = eINSTANCE.getMetamodelReference_Model();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.DomainReferenceImpl <em>Domain Reference</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.DomainReferenceImpl
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getDomainReference()
+     * @generated
+     */
+    EClass DOMAIN_REFERENCE = eINSTANCE.getDomainReference();
+
+    /**
+     * The meta object literal for the '<em><b>Domain</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute DOMAIN_REFERENCE__DOMAIN = eINSTANCE.getDomainReference_Domain();
 
   }
 

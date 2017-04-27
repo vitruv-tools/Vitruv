@@ -2076,7 +2076,7 @@
             <styles xmi:type="notation:ConnectorStyle" xmi:id="_QLlsQ4DSEeaJzadHdjjQAg" routing="Tree"/>
             <styles xmi:type="notation:FontStyle" xmi:id="_QLlsRIDSEeaJzadHdjjQAg" fontName="Ubuntu" fontHeight="8"/>
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_QLlsRYDSEeaJzadHdjjQAg" points="[362, 1357, 362, 1357]$[332, 1327, 332, 1327]"/>
-            <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_QLmTUIDSEeaJzadHdjjQAg" id="(0.5,0.5)"/>
+            <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_QLmTuidSEeaJzadHdjjQAg" id="(0.5,0.5)"/>
             <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_QLmTUYDSEeaJzadHdjjQAg" id="(0.5,1.0352112676056338)"/>
           </edges>
           <edges xmi:type="notation:Edge" xmi:id="_QLmTUoDSEeaJzadHdjjQAg" type="4001" element="_QLKOc4DSEeaJzadHdjjQAg" source="_QLVNk4DSEeaJzadHdjjQAg" target="_QLTYYIDSEeaJzadHdjjQAg">
@@ -2558,7 +2558,7 @@
         <semanticElements xmi:type="ecore:EGenericType" href="metamodel/change.ecore#//feature/UpdateSingleValuedFeatureEChange/@eGenericSuperTypes.0"/>
         <semanticElements xmi:type="ecore:EGenericType" href="metamodel/change.ecore#//feature/UpdateSingleValuedFeatureEChange/@eGenericSuperTypes.0/@eTypeArguments.0"/>
         <semanticElements xmi:type="ecore:EGenericType" href="metamodel/change.ecore#//feature/UpdateSingleValuedFeatureEChange/@eGenericSuperTypes.0/@eTypeArguments.1"/>
-        <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_fOUTUIDMEeaJzadHdjjQAg" targetArrow="InputClosedArrow" routingStyle="tree">
+        <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_fOUTuidMEeaJzadHdjjQAg" targetArrow="InputClosedArrow" routingStyle="tree">
           <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC%20ESupertypes']/@style"/>
           <beginLabelStyle xmi:type="diagram:BeginLabelStyle" xmi:id="_fOUTUYDMEeaJzadHdjjQAg" showIcon="false">
             <labelFormat>italic</labelFormat>

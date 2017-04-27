@@ -1808,6 +1808,26 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getMetaclassFeatureReferenceAccess().getRule();
 	}
 	
+	//MetaclassEAttributeReference:
+	//	MetaclassReference '[' feature=[ecore::EAttribute|ValidID] ']';
+	public MirBaseGrammarAccess.MetaclassEAttributeReferenceElements getMetaclassEAttributeReferenceAccess() {
+		return gaMirBase.getMetaclassEAttributeReferenceAccess();
+	}
+	
+	public ParserRule getMetaclassEAttributeReferenceRule() {
+		return getMetaclassEAttributeReferenceAccess().getRule();
+	}
+	
+	//MetaclassEReferenceReference:
+	//	MetaclassReference '[' feature=[ecore::EReference|ValidID] ']';
+	public MirBaseGrammarAccess.MetaclassEReferenceReferenceElements getMetaclassEReferenceReferenceAccess() {
+		return gaMirBase.getMetaclassEReferenceReferenceAccess();
+	}
+	
+	public ParserRule getMetaclassEReferenceReferenceRule() {
+		return getMetaclassEReferenceReferenceAccess().getRule();
+	}
+	
 	//MetamodelReference:
 	//	model=[MetamodelImport];
 	public MirBaseGrammarAccess.MetamodelReferenceElements getMetamodelReferenceAccess() {
@@ -1816,6 +1836,16 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getMetamodelReferenceRule() {
 		return getMetamodelReferenceAccess().getRule();
+	}
+	
+	//DomainReference:
+	//	domain=ID;
+	public MirBaseGrammarAccess.DomainReferenceElements getDomainReferenceAccess() {
+		return gaMirBase.getDomainReferenceAccess();
+	}
+	
+	public ParserRule getDomainReferenceRule() {
+		return getDomainReferenceAccess().getRule();
 	}
 	
 	//XExpression:

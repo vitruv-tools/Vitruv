@@ -1,363 +1,234 @@
 package tools.vitruv.framework.tests.util;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.eclipse.core.resources.IFile;
+import org.apache.log4j.PatternLayout;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.LibraryLocation;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
-import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
-import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.domains.AbstractVitruvDomain;
+import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
-import tools.vitruv.framework.vsum.VSUMConstants;
+import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelImpl;
-import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
 /**
  * Utility class for all Vitruvius test cases
  *
  * @author Langhamm
+ * @author Heiko Klare
  *
  */
 public final class TestUtil {
 
-    private static final Logger logger = Logger.getLogger(TestUtil.class.getSimpleName());
-    public static final String PROJECT_URI = "MockupProject";
-    public static final int WAITING_TIME_FOR_SYNCHRONIZATION = 1 * 1000;
-    public static final String SOURCE_FOLDER = "src";
-    public static final String ORIGINAL_FILE_PREFIX = "ORIGINAL_";
+	public static final String SOURCE_FOLDER = "src";
 
-    /**
-     * Utility classes should not have a public constructor
-     */
-    private TestUtil() {
-    }
+	/**
+	 * Utility classes should not have a public constructor
+	 */
+	private TestUtil() {
+	}
 
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels) {
-        return createVSUM(metamodels, new ArrayList<ChangePropagationSpecification>(), null);
-    }
-    
-    /**
-     * creates and returns a VSUM with the given meta repository
-     *
-     * @param metaRepository
-     *            metaRepository for the VSUM
-     * @return vsum
-     */
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-        return createVSUM(metamodels, changePropagationSpecifications, null);
-    }
+	/**
+	 * Creates a test project with the given name. It automatically adds a
+	 * timestamp to the name.
+	 * 
+	 * @param projectName
+	 *            - name of the project to create
+	 * @param addTimestampAndMakeNameUnique
+	 *            - specifies if a timestamp shall be added to the name and if
+	 *            the name shall be made unique so that is does not conflict
+	 *            with an existing project
+	 * @return the created {@link IProject}
+	 * @throws IllegalStateException
+	 *             if project with given name already exists and its not
+	 *             specified to make name unique
+	 */
+	public static IProject createProject(String projectName, boolean addTimestampAndMakeNameUnique)
+			throws CoreException {
+		String finalProjectName = projectName;
+		if (addTimestampAndMakeNameUnique) {
+			finalProjectName = addTimestampToProjectNameAndMakeUnique(finalProjectName);
+		}
+		IProject testProject = TestUtil.getProjectByName(finalProjectName);
 
-    /**
-     * creates and returns a VSUM with the given meta repository
-     *
-     * @param metaRepository
-     *            metaRepository for the VSUM
-     * @return vsum
-     */
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications, final ClassLoader classLoader) {
-        VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
-        for (Metamodel metamodel : metamodels) {
-        	vmodelConfig.addMetamodel(metamodel);
-        }
-        for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
-        	vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
-        }
-        // TODO HK Replace name with parameter
-    	final InternalVirtualModel vmodel = new VirtualModelImpl("vitruvius.meta", vmodelConfig, classLoader);
-        return vmodel;
-    }
+		if (testProject.exists()) {
+			throw new IllegalStateException("Project already exists");
+		}
 
-    /**
-     * Creates and returns a Metamodel
-     *
-     * @param nsURI
-     *            namespaceURI of the metamodel
-     * @param uri
-     *            the actual URI for the metamodel
-     * @param fileExt
-     *            fileExtension for which the metamodel is repsonsible
-     * @return
-     */
-    public static Metamodel createMetamodel(final String nsURI, final VURI uri, final String fileExt) {
-        final Metamodel mm = new Metamodel(uri, nsURI, new AttributeTUIDCalculatorAndResolver(nsURI), fileExt);
-        return mm;
-    }
+		return initializeProject(testProject);
+	}
 
-    /**
-     * Moves the created model and src folder files to a specific folder/path.
-     *
-     * @param destinationPathAsString
-     *            destinationPath in test workspace
-     */
-    public static void moveSrcFilesFromMockupProjectToPath(final String sourcePathAsString, final String destinationPathAsString) {
-        moveFilesFromMockupProjectTo("src", sourcePathAsString, destinationPathAsString);
-    }
+	private static String addTimestampToProjectNameAndMakeUnique(String projectName) {
+		String timestampedProjectName = addTimestampToString(projectName);
+		IProject testProject = TestUtil.getProjectByName(timestampedProjectName);
 
-    /**
-     * moves created model fodlder
-     *
-     * @param destPathWithTimestamp
-     */
-    public static void moveModelFilesFromProjectToPath(final String sourcePath, final String destPathWithTimestamp) {
-        moveFilesFromMockupProjectTo("model", sourcePath, "model" + destPathWithTimestamp);
-    }
+		String countedProjectName = timestampedProjectName;
+		// If project exists, add an index
+		int counter = 1;
+		while (testProject.exists()) {
+			countedProjectName = timestampedProjectName + "--" + counter++;
+			testProject = TestUtil.getProjectByName(countedProjectName);
+		}
+		return countedProjectName;
+	}
 
-    /**
-     * Moves the created model and src folder files to a specific folder/path. Adds time stamp to
-     * destination path string
-     *
-     * @param destinationPathAsStringWithoutTimestamp
-     *            destination path in test workspace
-     */
-    public static void moveSrcFilesFromMockupProjectToPathWithTimestamp(
-            final String mockupProjectName) {
-        final String destPathWithTimestamp = getStringWithTimestamp(mockupProjectName);
-        moveSrcFilesFromMockupProjectToPath(mockupProjectName, destPathWithTimestamp);
-    }
+	private static IProject initializeProject(IProject testProject) throws CoreException {
+		// copied from:
+		// https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
+		testProject.create(new NullProgressMonitor());
+		testProject.open(new NullProgressMonitor());
+		final IProjectDescription description = testProject.getDescription();
+		description.setNatureIds(new String[] { JavaCore.NATURE_ID });
+		testProject.setDescription(description, null);
+		final IJavaProject javaProject = JavaCore.create(testProject);
+		final IFolder binFolder = testProject.getFolder("bin");
+		binFolder.create(false, true, null);
+		javaProject.setOutputLocation(binFolder.getFullPath(), null);
+		final List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
+		final IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+		if (null != vmInstall) {
+			final LibraryLocation[] locations = JavaRuntime.getLibraryLocations(vmInstall);
+			for (final LibraryLocation element : locations) {
+				entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
+			}
+		}
+		// add libs to project class path
+		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
+		final IFolder sourceFolder = testProject.getFolder("src");
+		sourceFolder.create(false, true, null);
+		final IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder);
+		final IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+		final IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
+		java.lang.System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
+		newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
+		javaProject.setRawClasspath(newEntries, null);
 
-    public static String getStringWithTimestamp(final String destinationPathAsStringWithoutTimestamp) {
-        final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_").replace(":", "_");
-        final String destPathWithTimestamp = destinationPathAsStringWithoutTimestamp + "_" + timestamp;
-        return destPathWithTimestamp;
-    }
+		return testProject;
+	}
 
-    public static void moveModelFilesFromMockupProjectToPathWithTimestamp(
-            final String destinationPathAsStringWithoutTimeStamp) {
-        final String destPathWithTimestamp = getStringWithTimestamp(destinationPathAsStringWithoutTimeStamp);
-        moveModelFilesFromProjectToPath(destinationPathAsStringWithoutTimeStamp, destPathWithTimestamp);
-    }
+	/**
+	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and an
+	 * empty set of {@link ChangePropagationSpecification}s.
+	 * 
+	 * @param vsumName
+	 *            - name of the VSUM
+	 * @param addTimestampAndMakeNameUnique
+	 *            - specifies if a timestamp shall be added to the name and if
+	 *            the name shall be made unique so that is does not conflict
+	 *            with an existing project
+	 * @param metamodels
+	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
+	 * @return the created {@link VirtualModel}
+	 */
+	public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestampAndMakeNameUnique,
+			final Iterable<VitruvDomain> metamodels) {
+		return createVirtualModel(vsumName, addTimestampAndMakeNameUnique, metamodels, Collections.emptyList());
+	}
 
-    /**
-     * Moves files from one folder in the MockupProject to another one
-     *
-     * @param srcPath
-     * @param destinationPath
-     */
-    public static void moveFilesFromMockupProjectTo(final String srcFolder, final String sourcePath, final String destinationPath) {
-        moveFilesFromTo(sourcePath, srcFolder, destinationPath);
-    }
+	/**
+	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and
+	 * {@link ChangePropagationSpecification}s.
+	 * 
+	 * @param vsumName
+	 *            - name of the VSUM
+	 * @param addTimestampAndMakeNameUnique
+	 *            - specifies if a timestamp shall be added to the name and if
+	 *            the name shall be made unique so that is does not conflict
+	 *            with an existing project
+	 * @param metamodels
+	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
+	 * @param changePropagationSpecifications
+	 *            - {@link ChangePropagationSpecification}s to add to the VSUM
+	 * @return the created {@link VirtualModel}
+	 */
+	public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestampAndMakeNameUnique,
+			final Iterable<VitruvDomain> metamodels,
+			final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
+		String finalVsumName = vsumName;
+		if (addTimestampAndMakeNameUnique) {
+			finalVsumName = addTimestampToProjectNameAndMakeUnique(vsumName);
+		}
+		VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
+		for (VitruvDomain metamodel : metamodels) {
+			vmodelConfig.addMetamodel(metamodel);
+		}
+		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
+			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
+		}
+		final InternalVirtualModel vmodel = new VirtualModelImpl(finalVsumName, vmodelConfig);
+		return vmodel;
+	}
 
-    /**
-     * Moves files from one folder in the MockupProject to another one
-     *
-     * @param srcProjectName
-     *            Name of the srcProject
-     * @param srcPath
-     *            srcPath in workspace
-     * @param destinationPath
-     *            destinationPath in test workspace
-     * @throws URISyntaxException
-     */
-    public static void moveFilesFromTo(final String srcProjectName, final String srcPath,
-            final String destinationPath) {
-        // IResource iResource = Wor
-        final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        final IProject project = root.getProject(srcProjectName);
-        final IResource member = project.findMember(srcPath);
-        if (null == member) {
-            logger.warn("Member ('" + srcPath + "') not found. Nothing to do in ‘moveCreatedFilesToPath‘");
-            return;
-        }
-        final IPath destinationIPath = new Path(destinationPath);
-        try {
-            member.move(destinationIPath, true, new NullProgressMonitor());
-        } catch (final CoreException e) {
-            logger.warn("Could not move src folder to destination folder " + destinationIPath + ": " + e.getMessage());
-        }
-    }
-    
-    public static void moveProjectToProjectWithTimeStamp(final String projectName) {
-    	final String destPathWithTimestamp = getStringWithTimestamp(projectName);
-        renameProject(projectName, destPathWithTimestamp);
-    }
-    
-    private static void renameProject(final String sourceProjectName, final String destinationProjectName) {
-    	final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        final IProject project = root.getProject(sourceProjectName);
-    	try {
-        	IProjectDescription descr = project.getDescription();
-            descr.setName(destinationProjectName);
-        	project.move(descr, true, new NullProgressMonitor());
-        } catch (final CoreException e) {
-            logger.warn("Could not rename project " + sourceProjectName + " to " + destinationProjectName + ": " + e.getMessage());
-        }
-    }
+	/**
+	 * Creates and returns a {@link VitruvDomain}.
+	 *
+	 * @param metamodelRootPackage
+	 *            - the root {@link EPackage} of the {@link VitruvDomain} to
+	 *            create
+	 * @param fileExt
+	 *            - fileExtension for which the {@link VitruvDomain} is
+	 *            responsible
+	 * @return the create {@link VitruvDomain}
+	 */
+	public static VitruvDomain createVitruvDomain(final String name, final EPackage metamodelRootPackage,
+			final String fileExt) {
+		final VitruvDomain domain = new AbstractVitruvDomain(name, metamodelRootPackage,
+				new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt);
+		return domain;
+	}
 
-    /**
-     * moves the VSUM Project to a own folder with empty name to include in VSUM project folder
-     */
-    public static void moveVSUMProjectToOwnFolder() {
-        moveVSUMProjectToOwnFolderWithTimepstamp("");
-    }
+	private static String addTimestampToString(final String originalString) {
+		final String timestamp = new Date(System.currentTimeMillis()).toString().replace(" ", "_").replace(":", "_");
+		final String stringWithTimeStamp = originalString + "_" + timestamp;
+		return stringWithTimeStamp;
+	}
 
-    /**
-     * moves the VSUM Project to a own folder
-     *
-     * @param addtionalName
-     *            name that will be included in to VSUM project folder
-     */
-    public static void moveVSUMProjectToOwnFolderWithTimepstamp(final String addtionalName) {
-        final IProject project = FileSystemHelper.getVSUMProject();
-        moveProjectToOwnFolderWithTimestamp(addtionalName, project);
-    }
+	/**
+	 * Initializes console logger for tests. Sets the logger level to
+	 * {@link Level#ERROR} by default. If the VM property <i>logOutputLevel</i>
+	 * is specified, it is used to determine the logger level.
+	 */
+	public static void initializeLogger() {
+		Logger.getRootLogger().setLevel(Level.ERROR);
+		Logger.getRootLogger().removeAllAppenders();
+		Logger.getRootLogger()
+				.addAppender(new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
+		String outputLevelProperty = System.getProperty("logOutputLevel");
+		if (outputLevelProperty != null) {
+			if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
+				Logger.getRootLogger().addAppender(new ConsoleAppender());
+			}
+			Logger.getRootLogger().setLevel(Level.toLevel(outputLevelProperty));
+		} else {
+			Logger.getRootLogger().setLevel(Level.ERROR);
+		}
+	}
 
-    public static void moveProjectToOwnFolderWithTimestamp(final String addtionalName, final IProject project) {
-        final String timestamp = getStringWithTimestamp("");
-        final IPath destinationPath = new Path(
-                "/" + VSUMConstants.VSUM_PROJECT_NAME + "_" + addtionalName + "_" + timestamp);
-        try {
-            project.open(new NullProgressMonitor());
-            //project.delete(true, new NullProgressMonitor());
-            project.move(destinationPath, true, new NullProgressMonitor());
-        } catch (final CoreException e) {
-            logger.warn("Could not move " + VSUMConstants.VSUM_PROJECT_NAME + "project to folder. " + destinationPath
-                    + ". Reason: " + e);
-        }
-    }
+	public static IProject getProjectByName(final String projectName) {
+		final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		return iProject;
+	}
 
-    /**
-     * init logger for test purposes
-     */
-    public static void initializeLogger() {
-    	Logger.getRootLogger().setLevel(Level.OFF);
-    	String outputLevelProperty = System.getProperty("logOutputLevel");
-    	if (outputLevelProperty != null) {
-    		if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
-                Logger.getRootLogger().addAppender(new ConsoleAppender());
-            }
-            Logger.getRootLogger().setLevel(Level.toLevel(outputLevelProperty));
-    	} else {
-    		Logger.getRootLogger().setLevel(Level.OFF);
-    	}
-    }
-
-    public static void waitForSynchronization(final int waitingTimeForSynchronization) {
-        try {
-            Thread.sleep(waitingTimeForSynchronization);
-        } catch (final InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    public static void waitForSynchronization() {
-        TestUtil.waitForSynchronization(WAITING_TIME_FOR_SYNCHRONIZATION);
-    }
-
-    public static IProject getTestProject() {
-        return getProjectByName(PROJECT_URI);
-    }
-
-    public static IProject getProjectByName(final String projectName) {
-        final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-        return iProject;
-    }
-
-    public static void deleteAllProjectFolderCopies(final String originalProjectName) {
-        final IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects(0);
-        for (final IProject project : allProjects) {
-            final boolean copyOfOriginalProject = isCopyWithEqualPrefix(originalProjectName, project);
-            // boolean copyOfMetaProject = isCopyWithEqualPrefix(VSUMConstants.VSUM_PROJECT_NAME,
-            // project);
-            if (copyOfOriginalProject) {// || copyOfMetaProject) {
-                try {
-                    project.delete(true, new NullProgressMonitor());
-                } catch (final CoreException e) {
-                    // soften
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
-    private static boolean isCopyWithEqualPrefix(final String originalProjectName, final IProject project) {
-        final String currentProjectName = project.getName();
-        final boolean samePrefix = currentProjectName.startsWith(originalProjectName);
-        final boolean copyOfOriginalProject = samePrefix && !currentProjectName.equals(originalProjectName);
-        return copyOfOriginalProject;
-    }
-
-    public static String copyProjectFolder(final String projectFolderName) {
-        final String timestamp = "" + System.currentTimeMillis();
-        try {
-            final IProject originalProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectFolderName);
-            return copyProjectWithSuffix(originalProject, timestamp);
-            // IProject metaProject = FileSystemHelper.getVSUMProject();
-            // copyProjectWithSuffix(metaProject, timestamp);
-        } catch (final CoreException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static String copyProjectWithSuffix(final IProject originalProject, final String suffix)
-            throws CoreException {
-        final IPath originalPath = originalProject.getFullPath();
-        final String lastSegment = originalPath.lastSegment();
-        String projectCopyName = lastSegment + suffix;
-        IProject project = FileSystemHelper.getProject(projectCopyName);
-        int count = 0;
-        while (project.exists()) {
-            count++;
-            project = FileSystemHelper.getProject(projectCopyName + count);
-        }
-        projectCopyName += count;
-        final IPath copyPath = originalPath.removeLastSegments(1).append(projectCopyName);
-        originalProject.copy(copyPath, true, new NullProgressMonitor());
-        return projectCopyName;
-    }
-    
-    public static String createProjectFolderWithTimestamp(final String projectName) {
-        final String timestamp = "" + System.currentTimeMillis();
-        try {
-            return createProjectWithSuffix(projectName, timestamp);
-        } catch (final CoreException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
-    }
-    
-    private static String createProjectWithSuffix(final String projectName, final String suffix)
-            throws CoreException {
-        String projectCopyName = projectName + suffix;
-        int count = 0;
-        IProject project = FileSystemHelper.getProject(projectCopyName + count);
-        while (project.exists()) {
-            count++;
-            project = FileSystemHelper.getProject(projectCopyName + count);
-        }
-        project.create(null);
-        project.open(null);
-        return project.getName();
-    }
-
-    public static void clearMetaProject() {
-        try {
-            final IFolder correspondenceFolder = FileSystemHelper.getCorrespondenceFolder();
-            correspondenceFolder.delete(true, new NullProgressMonitor());
-            FileSystemHelper.createFolder(correspondenceFolder);
-            final IFile currentInstancesFile = FileSystemHelper.getVSUMInstancesFile();
-            currentInstancesFile.delete(true, new NullProgressMonitor());
-        } catch (final CoreException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
-    }
 }

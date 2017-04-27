@@ -29,8 +29,17 @@
     <genClasses ecoreClass="MirBase.ecore#//MetaclassFeatureReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetaclassFeatureReference/feature"/>
     </genClasses>
+    <genClasses ecoreClass="MirBase.ecore#//MetaclassEAttributeReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetaclassEAttributeReference/feature"/>
+    </genClasses>
+    <genClasses ecoreClass="MirBase.ecore#//MetaclassEReferenceReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetaclassEReferenceReference/feature"/>
+    </genClasses>
     <genClasses ecoreClass="MirBase.ecore#//MetamodelReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetamodelReference/model"/>
+    </genClasses>
+    <genClasses ecoreClass="MirBase.ecore#//DomainReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//DomainReference/domain"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -280,6 +280,76 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		//']'
 		public Keyword getRightSquareBracketKeyword_3() { return cRightSquareBracketKeyword_3; }
 	}
+	public class MetaclassEAttributeReferenceElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mirbase.MirBase.MetaclassEAttributeReference");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cMetaclassReferenceParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Keyword cLeftSquareBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cFeatureAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final CrossReference cFeatureEAttributeCrossReference_2_0 = (CrossReference)cFeatureAssignment_2.eContents().get(0);
+		private final RuleCall cFeatureEAttributeValidIDParserRuleCall_2_0_1 = (RuleCall)cFeatureEAttributeCrossReference_2_0.eContents().get(1);
+		private final Keyword cRightSquareBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		
+		//MetaclassEAttributeReference:
+		//	MetaclassReference '[' feature=[ecore::EAttribute|ValidID] ']';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//MetaclassReference '[' feature=[ecore::EAttribute|ValidID] ']'
+		public Group getGroup() { return cGroup; }
+		
+		//MetaclassReference
+		public RuleCall getMetaclassReferenceParserRuleCall_0() { return cMetaclassReferenceParserRuleCall_0; }
+		
+		//'['
+		public Keyword getLeftSquareBracketKeyword_1() { return cLeftSquareBracketKeyword_1; }
+		
+		//feature=[ecore::EAttribute|ValidID]
+		public Assignment getFeatureAssignment_2() { return cFeatureAssignment_2; }
+		
+		//[ecore::EAttribute|ValidID]
+		public CrossReference getFeatureEAttributeCrossReference_2_0() { return cFeatureEAttributeCrossReference_2_0; }
+		
+		//ValidID
+		public RuleCall getFeatureEAttributeValidIDParserRuleCall_2_0_1() { return cFeatureEAttributeValidIDParserRuleCall_2_0_1; }
+		
+		//']'
+		public Keyword getRightSquareBracketKeyword_3() { return cRightSquareBracketKeyword_3; }
+	}
+	public class MetaclassEReferenceReferenceElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mirbase.MirBase.MetaclassEReferenceReference");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cMetaclassReferenceParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Keyword cLeftSquareBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cFeatureAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final CrossReference cFeatureEReferenceCrossReference_2_0 = (CrossReference)cFeatureAssignment_2.eContents().get(0);
+		private final RuleCall cFeatureEReferenceValidIDParserRuleCall_2_0_1 = (RuleCall)cFeatureEReferenceCrossReference_2_0.eContents().get(1);
+		private final Keyword cRightSquareBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		
+		//MetaclassEReferenceReference:
+		//	MetaclassReference '[' feature=[ecore::EReference|ValidID] ']';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//MetaclassReference '[' feature=[ecore::EReference|ValidID] ']'
+		public Group getGroup() { return cGroup; }
+		
+		//MetaclassReference
+		public RuleCall getMetaclassReferenceParserRuleCall_0() { return cMetaclassReferenceParserRuleCall_0; }
+		
+		//'['
+		public Keyword getLeftSquareBracketKeyword_1() { return cLeftSquareBracketKeyword_1; }
+		
+		//feature=[ecore::EReference|ValidID]
+		public Assignment getFeatureAssignment_2() { return cFeatureAssignment_2; }
+		
+		//[ecore::EReference|ValidID]
+		public CrossReference getFeatureEReferenceCrossReference_2_0() { return cFeatureEReferenceCrossReference_2_0; }
+		
+		//ValidID
+		public RuleCall getFeatureEReferenceValidIDParserRuleCall_2_0_1() { return cFeatureEReferenceValidIDParserRuleCall_2_0_1; }
+		
+		//']'
+		public Keyword getRightSquareBracketKeyword_3() { return cRightSquareBracketKeyword_3; }
+	}
 	public class MetamodelReferenceElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mirbase.MirBase.MetamodelReference");
 		private final Assignment cModelAssignment = (Assignment)rule.eContents().get(1);
@@ -299,6 +369,21 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getModelMetamodelImportIDTerminalRuleCall_0_1() { return cModelMetamodelImportIDTerminalRuleCall_0_1; }
 	}
+	public class DomainReferenceElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mirbase.MirBase.DomainReference");
+		private final Assignment cDomainAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cDomainIDTerminalRuleCall_0 = (RuleCall)cDomainAssignment.eContents().get(0);
+		
+		//DomainReference:
+		//	domain=ID;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//domain=ID
+		public Assignment getDomainAssignment() { return cDomainAssignment; }
+		
+		//ID
+		public RuleCall getDomainIDTerminalRuleCall_0() { return cDomainIDTerminalRuleCall_0; }
+	}
 	
 	
 	private final DummyEntryRuleElements pDummyEntryRule;
@@ -310,7 +395,10 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	private final NamedMetaclassReferenceElements pNamedMetaclassReference;
 	private final ClassicallyNamedModelElementElements pClassicallyNamedModelElement;
 	private final MetaclassFeatureReferenceElements pMetaclassFeatureReference;
+	private final MetaclassEAttributeReferenceElements pMetaclassEAttributeReference;
+	private final MetaclassEReferenceReferenceElements pMetaclassEReferenceReference;
 	private final MetamodelReferenceElements pMetamodelReference;
+	private final DomainReferenceElements pDomainReference;
 	
 	private final Grammar grammar;
 	
@@ -334,7 +422,10 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		this.pNamedMetaclassReference = new NamedMetaclassReferenceElements();
 		this.pClassicallyNamedModelElement = new ClassicallyNamedModelElementElements();
 		this.pMetaclassFeatureReference = new MetaclassFeatureReferenceElements();
+		this.pMetaclassEAttributeReference = new MetaclassEAttributeReferenceElements();
+		this.pMetaclassEReferenceReference = new MetaclassEReferenceReferenceElements();
 		this.pMetamodelReference = new MetamodelReferenceElements();
+		this.pDomainReference = new DomainReferenceElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -468,6 +559,26 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		return getMetaclassFeatureReferenceAccess().getRule();
 	}
 	
+	//MetaclassEAttributeReference:
+	//	MetaclassReference '[' feature=[ecore::EAttribute|ValidID] ']';
+	public MetaclassEAttributeReferenceElements getMetaclassEAttributeReferenceAccess() {
+		return pMetaclassEAttributeReference;
+	}
+	
+	public ParserRule getMetaclassEAttributeReferenceRule() {
+		return getMetaclassEAttributeReferenceAccess().getRule();
+	}
+	
+	//MetaclassEReferenceReference:
+	//	MetaclassReference '[' feature=[ecore::EReference|ValidID] ']';
+	public MetaclassEReferenceReferenceElements getMetaclassEReferenceReferenceAccess() {
+		return pMetaclassEReferenceReference;
+	}
+	
+	public ParserRule getMetaclassEReferenceReferenceRule() {
+		return getMetaclassEReferenceReferenceAccess().getRule();
+	}
+	
 	//MetamodelReference:
 	//	model=[MetamodelImport];
 	public MetamodelReferenceElements getMetamodelReferenceAccess() {
@@ -476,6 +587,16 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getMetamodelReferenceRule() {
 		return getMetamodelReferenceAccess().getRule();
+	}
+	
+	//DomainReference:
+	//	domain=ID;
+	public DomainReferenceElements getDomainReferenceAccess() {
+		return pDomainReference;
+	}
+	
+	public ParserRule getDomainReferenceRule() {
+		return getDomainReferenceAccess().getRule();
 	}
 	
 	//XExpression:

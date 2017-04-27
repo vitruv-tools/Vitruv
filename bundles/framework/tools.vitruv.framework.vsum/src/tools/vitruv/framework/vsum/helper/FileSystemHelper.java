@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,58 +21,61 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMConstants;
+import tools.vitruv.framework.vsum.VsumConstants;
 
 public class FileSystemHelper {
-    /** Utility classes should not have a public or default constructor. */
-    private FileSystemHelper() {
+    private final String vsumName;
+
+    public FileSystemHelper(final String vsumName) {
+        this.vsumName = vsumName;
     }
 
-    public static VURI getCorrespondencesVURI(final VURI... mmURIs) {
-        IFile correspondenceFile = getCorrespondenceIFile(mmURIs);
+    public VURI getCorrespondencesVURI() {
+        IFile correspondenceFile = getCorrespondenceIFile();
         return VURI.getInstance(correspondenceFile);
     }
 
-    public static void saveCorrespondenceModelMMURIs(final VURI[] mmURIs) {
-        IFile correspondenceModelIFile = getCorrespondenceIFile(mmURIs);
-        Set<VURI> mmURIsSet = new HashSet<VURI>(Arrays.asList(mmURIs));
+    public void saveCorrespondenceModelMMURIs() {
+        IFile correspondenceModelIFile = getCorrespondenceIFile();
+        // FIXME This does nothing reasonable anymore
+        Set<VURI> mmURIsSet = new HashSet<VURI>();// Arrays.asList(mmURIs));
         saveVURISetToFile(mmURIsSet, correspondenceModelIFile.getLocation().toOSString());
     }
 
-    public static IFile getCorrespondenceIFile(final VURI[] mmURIs) {
-        String fileName = getCorrespondenceFileName(mmURIs);
+    public IFile getCorrespondenceIFile() {
+        String fileName = getCorrespondenceFileName();
         return getCorrespondenceIFile(fileName);
     }
 
-    public static IFile getCorrespondenceIFile(final String fileName) {
+    public IFile getCorrespondenceIFile(final String fileName) {
         IFolder correspondenceFolder = getCorrespondenceFolder();
         IFile correspondenceFile = correspondenceFolder.getFile(fileName);
         return correspondenceFile;
     }
 
-    private static String getCorrespondenceFileName(final VURI[] mmURIs) {
+    private static String getCorrespondenceFileName() {
         String fileExtSeparator = VitruviusConstants.getFileExtSeparator();
         String fileExt = VitruviusConstants.getCorrespondencesFileExt();
-        VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
-        Arrays.sort(copyOfMMURIs);
+        // VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
+        // Arrays.sort(copyOfMMURIs);
         String fileName = "";
-        for (VURI uri : copyOfMMURIs) {
-
-            String authority = uri.getEMFUri().authority();
-            if (authority != null) {
-                int indexOfLastDot = authority.lastIndexOf('.');
-
-                fileName += authority.substring(indexOfLastDot + 1);
-
-            }
-            fileName += uri.toString().hashCode();
-        }
-        fileName = fileName + fileExtSeparator + fileExt;
+        // for (VURI uri : copyOfMMURIs) {
+        //
+        // String authority = uri.getEMFUri().authority();
+        // if (authority != null) {
+        // int indexOfLastDot = authority.lastIndexOf('.');
+        //
+        // fileName += authority.substring(indexOfLastDot + 1);
+        //
+        // }
+        // fileName += uri.toString().hashCode();
+        // }
+        fileName = "Correspondences" + fileExtSeparator + fileExt;
         return fileName;
     }
 
-    public static void saveVSUMvURIsToFile(final Set<VURI> vuris) {
-        String fileName = getVSUMMapFileName();
+    public void saveVsumVURIsToFile(final Set<VURI> vuris) {
+        String fileName = getVsumMapFileName();
         saveVURISetToFile(vuris, fileName);
     }
 
@@ -99,8 +101,8 @@ public class FileSystemHelper {
         }
     }
 
-    public static Set<VURI> loadVSUMvURIsFromFile() {
-        String fileName = getVSUMMapFileName();
+    public Set<VURI> loadVsumVURIsFromFile() {
+        String fileName = getVsumMapFileName();
         return loadVURISetFromFile(fileName);
 
     }
@@ -166,8 +168,8 @@ public class FileSystemHelper {
         return root.getProject(projectName);
     }
 
-    public static IProject getVSUMProject() {
-        IProject vsumProject = getProject(VSUMConstants.VSUM_PROJECT_NAME);
+    public IProject getVsumProject() {
+        IProject vsumProject = getProject(this.vsumName);
         if (!vsumProject.exists()) {
             createProject(vsumProject);
         } else if (!vsumProject.isAccessible()) {
@@ -177,7 +179,7 @@ public class FileSystemHelper {
 
     }
 
-    private static void deleteAndRecreateProject(final IProject vsumProject) {
+    private void deleteAndRecreateProject(final IProject vsumProject) {
         try {
             vsumProject.delete(true, new NullProgressMonitor());
             createProject(vsumProject);
@@ -187,7 +189,7 @@ public class FileSystemHelper {
         }
     }
 
-    public static void createProject(final IProject project) {
+    public void createProject(final IProject project) {
         try {
             project.create(null);
             project.open(null);
@@ -195,43 +197,43 @@ public class FileSystemHelper {
             // description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
             // project.setDescription(description, null);
             createFolder(getCorrespondenceFolder(project));
-            createFolder(getVSUMFolder(project));
+            createFolder(getVsumFolder(project));
         } catch (CoreException e) {
             // soften
             throw new RuntimeException(e);
         }
     }
 
-    private static IFolder getVSUMFolder(final IProject project) {
-        return project.getFolder(VSUMConstants.VSUM_FOLDER_NAME);
+    private static IFolder getVsumFolder(final IProject project) {
+        return project.getFolder(VsumConstants.VSUM_FOLDER_NAME);
     }
 
     public static void createFolder(final IFolder folder) throws CoreException {
         folder.create(false, true, null);
     }
 
-    public static IFolder getCorrespondenceFolder() {
-        IProject vsumProject = getVSUMProject();
+    public IFolder getCorrespondenceFolder() {
+        IProject vsumProject = getVsumProject();
         return getCorrespondenceFolder(vsumProject);
     }
 
-    private static IFolder getCorrespondenceFolder(final IProject project) {
-        IFolder correspondenceFolder = project.getFolder(VSUMConstants.CORRESPONDENCE_FOLDER_NAME);
+    private IFolder getCorrespondenceFolder(final IProject project) {
+        IFolder correspondenceFolder = project.getFolder(VsumConstants.CORRESPONDENCE_FOLDER_NAME);
         return correspondenceFolder;
     }
 
-    private static String getVSUMMapFileName() {
-        IFile file = getVSUMInstancesFile();
+    private String getVsumMapFileName() {
+        IFile file = getVsumInstancesFile();
         return file.getLocation().toOSString();
     }
 
-    public static IFile getVSUMInstancesFile() {
-        return getVSUMInstancesFile("");
+    public IFile getVsumInstancesFile() {
+        return getVsumInstancesFile("");
     }
 
-    public static IFile getVSUMInstancesFile(final String prefix) {
-        IFile file = getVSUMProject().getFolder(VSUMConstants.VSUM_FOLDER_NAME)
-                .getFile(prefix + VSUMConstants.VSUM_INSTANCES_FILE_NAME);
+    public IFile getVsumInstancesFile(final String prefix) {
+        IFile file = getVsumProject().getFolder(VsumConstants.VSUM_FOLDER_NAME)
+                .getFile(prefix + VsumConstants.VSUM_INSTANCES_FILE_NAME);
         return file;
     }
 

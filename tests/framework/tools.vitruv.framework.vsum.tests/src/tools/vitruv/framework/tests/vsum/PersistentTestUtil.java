@@ -12,9 +12,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
+import pcm_mockup.Pcm_mockupFactory;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
-import pcm_mockup.Pcm_mockupFactory;
 
 public class PersistentTestUtil {
     private PersistentTestUtil() {
@@ -25,7 +25,7 @@ public class PersistentTestUtil {
         Set<VURI> vuris = new HashSet<VURI>();
         for (int i = 0; i < nrOfVURIs; ++i) {
             vuris.add(VURI.getInstance(
-                    projectFolderName + "/dummyInstances/testInstance_" + i + "." + MetaRepositoryTest.PCM_FILE_EXT));
+                    projectFolderName + "/dummyInstances/testInstance_" + i + "." + VsumTest.PCM_FILE_EXT));
         }
         return vuris;
     }

@@ -1,13 +1,12 @@
 package tools.vitruv.dsls.reactions.codegen.helper
 
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.Pair
-import org.eclipse.emf.common.util.URI
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.dsls.reactions.helper.XtendImportHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.framework.domains.VitruvDomain
 
 final class ClassNamesGenerators {
 	private static String BASIC_PACKAGE = "mir";
@@ -39,24 +38,23 @@ final class ClassNamesGenerators {
 	public static def String getBasicRoutinesPackageQualifiedName() '''
 		«basicMirPackageQualifiedName».«ROUTINES_PACKAGE»'''	
 	
-	private static def String getMetamodelIdentifier(URI uri) {
-		if (uri.lastSegment.nullOrEmpty) {
-			return uri.toString.split("\\.").last.toFirstUpper;
-		} else {
-			return uri.lastSegment.replace(".", "_").toFirstUpper;
+//	private static def String getMetamodelIdentifier(EPackage pckg) {
+//		return pckg.nsPrefix.replace(".", "_").toFirstUpper;
+//	}
+	
+	private static def String correctAcronymCapitalization(String potentialAcronym) {
+		if (potentialAcronym.toUpperCase == potentialAcronym) {
+			return potentialAcronym.toLowerCase.toFirstUpper;
 		}
+		return potentialAcronym;
 	}
 	
-	private static def String getMetamodelIdentifier(VURI uri) {
-		return uri.EMFUri.metamodelIdentifier;
-	}
-	
-	private static def String getMetamodelPairName(Pair<VURI, VURI> metamodelPair) {
-		return '''«metamodelPair.first.metamodelIdentifier»To«metamodelPair.second.metamodelIdentifier»'''	
+	private static def String getDomainPairName(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
+		return '''«metamodelPair.first.name.correctAcronymCapitalization»To«metamodelPair.second.name.correctAcronymCapitalization»'''	
 	}
 	
 	private static def String getMetamodelPairName(ReactionsSegment reactionSegment) {
-		return reactionSegment.sourceTargetPair.metamodelPairName;
+		return new Pair<VitruvDomain, VitruvDomain>(reactionSegment.fromDomain.domainForReference, reactionSegment.toDomain.domainForReference).domainPairName;
 	}
 	
 	private static def String getPackageName(ReactionsSegment reactionSegment) '''
@@ -65,7 +63,7 @@ final class ClassNamesGenerators {
 	private static def String getQualifiedPackageName(ReactionsSegment reactionSegment) '''
 		«basicReactionsPackageQualifiedName».«reactionSegment.packageName»'''
 	
-	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VURI, VURI> metamodelPair) {
+	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
 		return new ChangePropagationSpecificationClassNameGenerator(metamodelPair);
 	}
 	
@@ -96,8 +94,8 @@ final class ClassNamesGenerators {
 	private static class ChangePropagationSpecificationClassNameGenerator extends ClassNameGenerator {
 		private val String metamodelPairName;
 		
-		public new(Pair<VURI, VURI> metamodelPair) {
-			this.metamodelPairName = metamodelPair.metamodelPairName;
+		public new(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
+			this.metamodelPairName = metamodelPair.domainPairName;
 		}
 		
 		public override getSimpleName() '''

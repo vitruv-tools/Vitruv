@@ -390,8 +390,8 @@
 //					
 //					public static void enforceCorrectInitializationOn«imp.toFirstUpperName»(«typeRef(mapping.getWrapperClassName(imp))» «imp.toVarName()», «typeRef(MappingExecutionState)» state) {
 //						«FOR constraint : getConstraints(mapping, imp) AFTER "\n"»
-//							«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{#['this', imp]->imp.toVarName(), #['this']->imp.toVarName()}, constraint)»
-//								state.record(«updateTUIDJava»);
+//							«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this', imp]->imp.toVarName(), #['this']->imp.toVarName()}, constraint)»
+//								state.record(«updateTuidJava»);
 //							«ENDFOR»
 //						«ENDFOR»
 //						«FOR constraint : getConstraints(mapping, imp)
@@ -408,8 +408,8 @@
 //						«typeRef(MappingExecutionState)» state) {
 //						«IF mapping.constraintsBody != null»
 //							«FOR constraint : mapping.constraintsBody.expressions»
-//								«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
-//								state.record(«updateTUIDJava»);
+//								«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
+//								state.record(«updateTuidJava»);
 //								«ENDFOR»
 //								«restoreBodyConstraintFrom(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
 //							«ENDFOR»
@@ -547,8 +547,8 @@
 //					
 //					public static void enforceCorrectInitializationOn«imp.toFirstUpperName»(«typeRef(mapping.getWrapperClassName(imp))» «imp.toVarName()», «typeRef(MappingExecutionState)» state) {
 //						«FOR constraint : getConstraints(mapping, imp) AFTER "\n"»
-//							«FOR updateTUIDJava : clg.getEObjectsWithPossiblyChangedTUID(ih, #{#['this', imp]->imp.toVarName(), #['this']->imp.toVarName()}, constraint)»
-//								state.record(«updateTUIDJava»);
+//							«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this', imp]->imp.toVarName(), #['this']->imp.toVarName()}, constraint)»
+//								state.record(«updateTuidJava»);
 //							«ENDFOR»
 //						«ENDFOR»
 //						«FOR constraint : getConstraints(mapping, imp)

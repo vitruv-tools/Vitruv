@@ -4,15 +4,6 @@ package tools.vitruv.framework.change.echange.compound;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-
-import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.SubtractiveEChange;
-
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-
-import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
-import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,40 +32,22 @@ public interface CompoundFactory extends EFactory {
 	<A extends EObject, B extends EObject, T extends EObject> MoveEObject<A, B, T> createMoveEObject();
 
 	/**
-	 * Returns a new object of class '<em>Explicit Unset EFeature</em>'.
+	 * Returns a new object of class '<em>Explicit Unset EAttribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Explicit Unset EFeature</em>'.
+	 * @return a new object of class '<em>Explicit Unset EAttribute</em>'.
 	 * @generated
 	 */
-	<A extends EObject, T extends Object> ExplicitUnsetEFeature<A, T> createExplicitUnsetEFeature();
+	<A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttribute();
 
 	/**
-	 * Returns a new object of class '<em>Replace In EList</em>'.
+	 * Returns a new object of class '<em>Explicit Unset EReference</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Replace In EList</em>'.
+	 * @return a new object of class '<em>Explicit Unset EReference</em>'.
 	 * @generated
 	 */
-	<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> ReplaceInEList<A, F, T, R, I> createReplaceInEList();
-
-	/**
-	 * Returns a new object of class '<em>Subtraction</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Subtraction</em>'.
-	 * @generated
-	 */
-	<T extends Object, S extends SubtractiveEChange<T>> CompoundSubtraction<T, S> createCompoundSubtraction();
-
-	/**
-	 * Returns a new object of class '<em>Addition</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Addition</em>'.
-	 * @generated
-	 */
-	<T extends Object, S extends AdditiveEChange<T>> CompoundAddition<T, S> createCompoundAddition();
+	<A extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReference();
 
 	/**
 	 * Returns a new object of class '<em>Create And Insert Root</em>'.

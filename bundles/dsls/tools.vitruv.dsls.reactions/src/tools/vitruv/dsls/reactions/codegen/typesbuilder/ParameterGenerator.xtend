@@ -19,6 +19,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLang
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
+import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 
 class ParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -78,18 +79,38 @@ class ParameterGenerator {
 		return context.toParameter(parameterName, changeType);
 	}
 	
+	public def Iterable<AccessibleElement> getInputElements(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
+		return metaclassReferences.map[new AccessibleElement(it.name, it.metaclass.mappedInstanceClass)]
+			+ javaElements.map[new AccessibleElement(it.name, it.type.qualifiedName)];
+	}
+	
 	public def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
-		return metaclassReferences.map[
-			generateParameter(contextObject, it.name, it.metaclass.mappedInstanceClass)
-		] + javaElements.map[toParameter(contextObject, it.name, it.type)];
+		return contextObject.getInputElements(metaclassReferences, javaElements).map[
+			toParameter(contextObject, it.name, typeRef(it.fullyQualifiedType))
+		];
 	}
 	
 	private def getMappedInstanceClass(EClass eClass) {
-		if (eClass.instanceClass.equals(InputTypesPackage.Literals.STRING.instanceClass)) {
+		if (eClass.equals(InputTypesPackage.Literals.STRING)) {
 			return String;
-		} else if (eClass.equals(InputTypesPackage.Literals.INT)) {
+		} else if (eClass.equals(InputTypesPackage.Literals.INTEGER)) {
 			return Integer;
+		} else if (eClass.equals(InputTypesPackage.Literals.LONG)) {
+			return Long;
+		} else if (eClass.equals(InputTypesPackage.Literals.SHORT)) {
+			return Short;
+		} else if (eClass.equals(InputTypesPackage.Literals.BOOLEAN)) {
+			return Boolean;
+		} else if (eClass.equals(InputTypesPackage.Literals.CHARACTER)) {
+			return Character;
+		} else if (eClass.equals(InputTypesPackage.Literals.BYTE)) {
+			return Byte;
+		} else if (eClass.equals(InputTypesPackage.Literals.FLOAT)) {
+			return Float;
+		} else if (eClass.equals(InputTypesPackage.Literals.DOUBLE)) {
+			return Double;
 		}
+		
 		return eClass.instanceClass
 	}
 	

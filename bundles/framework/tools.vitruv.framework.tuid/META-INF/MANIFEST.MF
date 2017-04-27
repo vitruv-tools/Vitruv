@@ -14,7 +14,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.common,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.change,
- tools.vitruv.framework.util
+ tools.vitruv.framework.util;visibility:=reexport
 Export-Package: tools.vitruv.framework.tuid
 Bundle-Vendor: vitruv.tools
 

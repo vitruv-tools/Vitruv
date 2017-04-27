@@ -13,7 +13,7 @@ final class TuidManager {
 	private static val instance = new TuidManager();
 	private val List<TuidCalculator> tuidCalculator;
 	private val List<TuidUpdateListener> tuidUpdateListener;
-	private val Map<EObject, TUID> tuidUpdateCache = new HashMap<EObject, TUID>();
+	private val Map<EObject, Tuid> tuidUpdateCache = new HashMap<EObject, Tuid>();
 	
 	private new() {
 		this.tuidCalculator = new ArrayList<TuidCalculator>();
@@ -46,10 +46,8 @@ final class TuidManager {
 	}
 	
 	public def reinitialize() {
-		tuidUpdateListener.clear();
-		tuidCalculator.clear();
 		flushRegisteredObjectsUnderModification();
-		TUID.reinitialize();
+		Tuid.reinitialize();
 	}
 	
 	def private TuidCalculator getTuidCalculator(EObject object) {
@@ -57,7 +55,7 @@ final class TuidManager {
 		for (potentialCalculator : tuidCalculator) {
 			if (potentialCalculator.canCalculateTuid(object)) {
 				if (resultCalculator != null) {
-					throw new IllegalStateException("There are two TUID calculators registered that can handle the EObject: " + object + ", which are " + resultCalculator + " and " + potentialCalculator);
+					throw new IllegalStateException("There are two Tuid calculators registered that can handle the EObject: " + object + ", which are " + resultCalculator + " and " + potentialCalculator);
 				}
 				resultCalculator = potentialCalculator;
 			}
@@ -69,12 +67,12 @@ final class TuidManager {
 		return object.tuidCalculator != null;
 	}
 	
-	def private TUID calculateTuid(EObject object) {
+	def private Tuid calculateTuid(EObject object) {
 		val tuidCalculator = object.tuidCalculator;
 		if (tuidCalculator != null) {
 			return tuidCalculator.calculateTuid(object);
 		} else {
-			throw new IllegalArgumentException("No TUID calculator registered for EObject: " + object);
+			throw new IllegalArgumentException("No Tuid calculator registered for EObject: " + object);
 		}
 	}
 	
@@ -94,7 +92,7 @@ final class TuidManager {
 			if (hasTuidCalculator(object)) {
 				val newTuid = object.calculateTuid
 				oldTuid.updateTuid(newTuid);
-				logger.debug("Changed TUID from " + oldTuid + " to " + newTuid);
+				logger.debug("Changed Tuid from " + oldTuid + " to " + newTuid);
 				XtendAssertHelper.assertTrue(oldTuid.equals(newTuid));
 			}
 		}
@@ -108,19 +106,19 @@ final class TuidManager {
 		}
 	}
 	
-	def public updateTuid(TUID oldTuid, EObject newObject) {
+	def public updateTuid(Tuid oldTuid, EObject newObject) {
 		if (newObject.hasTuidCalculator) {
 			oldTuid.updateTuid(newObject.calculateTuid);
 		}
 	}
 	
-	package def notifyListenerBeforeTuidUpdate(TUID oldTuid) {
+	package def notifyListenerBeforeTuidUpdate(Tuid oldTuid) {
 		for (listener : tuidUpdateListener) {
 			listener.performPreAction(oldTuid);
 		}
 	}
 	
-	package def notifyListenerAfterTuidUpdate(TUID newTuid) {
+	package def notifyListenerAfterTuidUpdate(Tuid newTuid) {
 		for (listener : tuidUpdateListener) {
 			listener.performPostAction(newTuid);
 		}

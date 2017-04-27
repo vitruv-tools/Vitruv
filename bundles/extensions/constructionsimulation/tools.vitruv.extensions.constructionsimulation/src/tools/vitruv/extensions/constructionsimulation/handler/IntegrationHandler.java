@@ -21,7 +21,6 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.userinteraction.impl.UserInteractor;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
-import tools.vitruv.framework.vsum.VSUMConstants;
 
 /**
  * Handler for the context menu event created when a user rightclicks a model and selects
@@ -115,7 +114,8 @@ public abstract class IntegrationHandler<T> extends AbstractHandler {
         // Delete vitruvius.meta project
         final IWorkspace workspace = ResourcesPlugin.getWorkspace();
         final IWorkspaceRoot root = workspace.getRoot();
-        final IProject metaFiles = root.getProject(VSUMConstants.VSUM_PROJECT_NAME);
+        // FIXME Find the correct VSUM Project
+        final IProject metaFiles = root.getProject(vsum.getName());
         try {
             metaFiles.delete(true, null);
         } catch (final CoreException e) {

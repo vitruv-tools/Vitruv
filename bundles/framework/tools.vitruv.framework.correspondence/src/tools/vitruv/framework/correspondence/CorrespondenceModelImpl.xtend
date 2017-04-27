@@ -26,37 +26,37 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
 import tools.vitruv.framework.correspondence.Correspondences
 import tools.vitruv.framework.correspondence.Correspondence
-import tools.vitruv.framework.tuid.TUID
+import tools.vitruv.framework.tuid.Tuid
 import tools.vitruv.framework.correspondence.CorrespondenceFactory
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
-import tools.vitruv.framework.metamodel.MetamodelPair
-import tools.vitruv.framework.metamodel.Metamodel
-import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.util.datatypes.ModelInstance
+import tools.vitruv.framework.domains.repository.ModelRepository
+import tools.vitruv.framework.domains.TuidAwareVitruvDomain
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
 	static final Logger logger = Logger::getLogger(typeof(CorrespondenceModelImpl).getSimpleName())
-	final MetamodelPair mapping
 	final ModelRepository modelProviding
+	final VitruvDomainRepository domainRepository;
 	final Correspondences correspondences
-	final ClaimableMap<TUID,Set<List<TUID>>> tuid2tuidListsMap
-	protected final ClaimableMap<List<TUID>, Set<Correspondence>> tuid2CorrespondencesMap
+	final ClaimableMap<Tuid,Set<List<Tuid>>> tuid2tuidListsMap
+	protected final ClaimableMap<List<Tuid>, Set<Correspondence>> tuid2CorrespondencesMap
 	boolean changedAfterLastSave = false
 	final Map<String, String> saveCorrespondenceOptions
 
-	new(MetamodelPair mapping, ModelRepository modelProviding, VURI correspondencesVURI, Resource correspondencesResource) {
+	new(ModelRepository modelProviding, VitruvDomainRepository domainRepository, VURI correspondencesVURI, Resource correspondencesResource) {
 		super(correspondencesVURI, correspondencesResource)
-		this.mapping = mapping
 		this.modelProviding = modelProviding
 		// TODO MK use MutatingListFixing... when necessary (for both maps!)
-		this.tuid2tuidListsMap = new ClaimableHashMap<TUID,Set<List<TUID>>>()
-		this.tuid2CorrespondencesMap = new ClaimableHashMap<List<TUID>, Set<Correspondence>>()
+		this.tuid2tuidListsMap = new ClaimableHashMap<Tuid,Set<List<Tuid>>>()
+		this.tuid2CorrespondencesMap = new ClaimableHashMap<List<Tuid>, Set<Correspondence>>()
 		this.saveCorrespondenceOptions = new HashMap<String, String>()
 		this.saveCorrespondenceOptions.put(VitruviusConstants::getOptionProcessDanglingHref(),
 			VitruviusConstants::getOptionProcessDanglingHrefDiscard())
 		this.correspondences = loadAndRegisterCorrespondences(correspondencesResource)
+		this.domainRepository = domainRepository;
 		TuidManager.instance.addTuidUpdateListener(this);
 	}
 
@@ -71,20 +71,20 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	def private void registerCorrespondence(Correspondence correspondence) {
-		registerTUIDLists(correspondence)
-		registerCorrespondenceForTUIDs(correspondence)
+		registerTuidLists(correspondence)
+		registerCorrespondenceForTuids(correspondence)
 	}
 	
-	def private registerTUIDLists(Correspondence correspondence) {
-		registerTUIDList(correspondence.getATUIDs)
-		registerTUIDList(correspondence.getBTUIDs)
+	def private registerTuidLists(Correspondence correspondence) {
+		registerTuidList(correspondence.getATuids)
+		registerTuidList(correspondence.getBTuids)
 	}
 	
-	def private registerTUIDList(List<TUID> tuidList) {
-		for (TUID tuid : tuidList) {
+	def private registerTuidList(List<Tuid> tuidList) {
+		for (Tuid tuid : tuidList) {
 			var tuidLists = this.tuid2tuidListsMap.get(tuid)
 			if (tuidLists == null) {
-				tuidLists = new HashSet<List<TUID>>()
+				tuidLists = new HashSet<List<Tuid>>()
 				this.tuid2tuidListsMap.put(tuid,tuidLists)
 			}
 			tuidLists.add(tuidList)
@@ -96,44 +96,33 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		correspondenceListForAddition.add(correspondence)
 	}
 	
-	override calculateTUIDFromEObject(EObject eObject) {
-		val Metamodel metamodel = eObject.getMetamodelForEObject()
+	override calculateTuidFromEObject(EObject eObject) {
+		val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
 		 if (null == metamodel){
 		 	return null 
 		 }
-         return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject))
+         return metamodel.calculateTuid(eObject)
 	}
 	
 	@Deprecated
-	override calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
-		 val Metamodel metamodel = eObject.getMetamodelForEObject()
+	override calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
+		 val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
 		 if(null == metamodel){
 		 	return null 
 		 }
 		 if(null == virtualRootObject || null == prefix){
 		 	logger.info("virtualRootObject or prefix is null. Using standard calculation method for EObject " + eObject)
-         	return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject))
+         	return metamodel.calculateTuid(eObject)
      	}
-     	return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject, virtualRootObject, prefix))
+     	return Tuid::getInstance(metamodel.calculateTuidFromEObject(eObject, virtualRootObject, prefix))
 	}
 	
 	def private getMetamodelForEObject(EObject eObject){
-		var Metamodel metamodel = null
-		if (this.mapping.getMetamodelA().hasMetaclassInstances(eObject.toList)) {
-			metamodel = this.mapping.getMetamodelA()
-		}
-		if (this.mapping.getMetamodelB().hasMetaclassInstances(eObject.toList)) {
-			metamodel = this.mapping.getMetamodelB()
-		}
-		if (metamodel === null) {
-			logger.warn('''EObject: '«»«eObject»' is neither an instance of MM1 nor an instance of MM2. '''.toString)
-			return null
-		}
-		return metamodel
+		return this.domainRepository.getDomain(eObject);
 	}
 
-	override List<TUID> calculateTUIDsFromEObjects(List<EObject> eObjects) {
-		return eObjects.mapFixed[calculateTUIDFromEObject(it)].toList
+	override List<Tuid> calculateTuidsFromEObjects(List<EObject> eObjects) {
+		return eObjects.mapFixed[calculateTuidFromEObject(it)].toList
 	}
 
 	override def boolean changedAfterLastSave() {
@@ -175,17 +164,17 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 	
 	override Set<Correspondence> getCorrespondences(List<EObject> eObjects) {
-		var List<TUID> tuids = calculateTUIDsFromEObjects(eObjects)
-		return getCorrespondencesForTUIDs(tuids)
+		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
+		return getCorrespondencesForTuids(tuids)
 	}
 
 	
-	override Set<Correspondence> getCorrespondencesForTUIDs(List<TUID> tuids) {
+	override Set<Correspondence> getCorrespondencesForTuids(List<Tuid> tuids) {
 		var Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids)
 		if (correspondences === null) {
 			correspondences = new HashSet<Correspondence>()
 			this.tuid2CorrespondencesMap.put(tuids, correspondences)
-			registerTUIDList(tuids)
+			registerTuidList(tuids)
 		}
 		return correspondences
 	}
@@ -195,29 +184,29 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects) {
-		var List<TUID> tuids = calculateTUIDsFromEObjects(eObjects)
-		var Set<List<TUID>> correspondingTUIDLists = getCorrespondingTUIDs(correspondenceType, tuids)
-		return resolveEObjectsSetsFromTUIDsSets(correspondingTUIDLists)
+		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
+		var Set<List<Tuid>> correspondingTuidLists = getCorrespondingTuids(correspondenceType, tuids)
+		return resolveEObjectsSetsFromTuidsSets(correspondingTuidLists)
 	}
 	
-	def private Set<List<TUID>> getCorrespondingTUIDs(Class<? extends Correspondence> correspondenceType, List<TUID> tuids) {
-		var Set<Correspondence> allCorrespondences = getCorrespondencesForTUIDs(tuids)
-		var Set<List<TUID>> correspondingTUIDLists = new HashSet<List<TUID>>(allCorrespondences.size())
+	def private Set<List<Tuid>> getCorrespondingTuids(Class<? extends Correspondence> correspondenceType, List<Tuid> tuids) {
+		var Set<Correspondence> allCorrespondences = getCorrespondencesForTuids(tuids)
+		var Set<List<Tuid>> correspondingTuidLists = new HashSet<List<Tuid>>(allCorrespondences.size())
 		for (Correspondence correspondence : allCorrespondences.filter(correspondenceType)) {
-			var List<TUID> aTUIDs = correspondence.getATUIDs()
-			var List<TUID> bTUIDs = correspondence.getBTUIDs()
-			if (aTUIDs === null || bTUIDs === null || aTUIDs.size == 0 || bTUIDs.size == 0) {
+			var List<Tuid> aTuids = correspondence.getATuids()
+			var List<Tuid> bTuids = correspondence.getBTuids()
+			if (aTuids === null || bTuids === null || aTuids.size == 0 || bTuids.size == 0) {
 				throw new IllegalStateException(
-					'''The correspondence '«»«correspondence»' links to an empty TUID '«»«aTUIDs»' or '«»«bTUIDs»'!'''.
+					'''The correspondence '«»«correspondence»' links to an empty Tuid '«»«aTuids»' or '«»«bTuids»'!'''.
 						toString)
 			}
-			if (aTUIDs.equals(tuids)) {
-				correspondingTUIDLists.add(bTUIDs)
+			if (aTuids.equals(tuids)) {
+				correspondingTuidLists.add(bTuids)
 			} else {
-				correspondingTUIDLists.add(aTUIDs)
+				correspondingTuidLists.add(aTuids)
 			}
 		}
-		return correspondingTUIDLists
+		return correspondingTuidLists
 	}
 	
 	override void saveModel() {
@@ -230,26 +219,8 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		}
 	}
 
-	override MetamodelPair getMapping() {
-		return this.mapping
-	}
-
-	def private Metamodel getMetamodelHavingTUID(String tuidString) {
-		var Metamodel metamodel = null
-		var Metamodel metamodelA = this.mapping.getMetamodelA()
-		if (metamodelA.hasTUID(tuidString)) {
-			metamodel = metamodelA
-		}
-		var Metamodel metamodelB = this.mapping.getMetamodelB()
-		if (metamodelB.hasTUID(tuidString)) {
-			metamodel = metamodelB
-		}
-		if (metamodel === null) {
-			throw new IllegalArgumentException(
-				'''The TUID '«»«tuidString»' is neither valid for «metamodelA» nor «metamodelB»'''.
-					toString)
-		}
-		return metamodel
+	def private TuidAwareVitruvDomain getMetamodelHavingTuid(Tuid tuid) {
+		return this.domainRepository.getDomain(tuid)
 	}
 
 	override boolean hasCorrespondences() {
@@ -262,7 +233,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	override boolean hasCorrespondences(List<EObject> eObjects) {
-		var List<TUID> tuids = calculateTUIDsFromEObjects(eObjects)
+		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		var Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids)
 		return correspondences != null && correspondences.size() > 0
 	}
@@ -293,10 +264,10 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		return correspondences as Correspondences
 	}
 
-	def private void registerCorrespondenceForTUIDs(Correspondence correspondence) {
-		val correspondencesForAs = getCorrespondencesForTUIDs(correspondence.getATUIDs)
+	def private void registerCorrespondenceForTuids(Correspondence correspondence) {
+		val correspondencesForAs = getCorrespondencesForTuids(correspondence.getATuids)
 		correspondencesForAs.add(correspondence)
-		val correspondencesForBs = getCorrespondencesForTUIDs(correspondence.getBTUIDs)
+		val correspondencesForBs = getCorrespondencesForTuids(correspondence.getBTuids)
 		correspondencesForBs.add(correspondence)
 	}
 
@@ -307,22 +278,22 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	def private void removeCorrespondenceFromMaps(Correspondence markedCorrespondence) {
-		var List<TUID> aTUIDs = markedCorrespondence.getATUIDs
-		var List<TUID> bTUIDs = markedCorrespondence.getBTUIDs
-		removeTUID2TUIDListsEntries(aTUIDs)
-		removeTUID2TUIDListsEntries(bTUIDs)
-		this.tuid2CorrespondencesMap.get(aTUIDs).remove(markedCorrespondence);
-		if (tuid2CorrespondencesMap.get(aTUIDs).empty) {
-			tuid2CorrespondencesMap.remove(aTUIDs);
+		var List<Tuid> aTuids = markedCorrespondence.getATuids
+		var List<Tuid> bTuids = markedCorrespondence.getBTuids
+		removeTuid2TuidListsEntries(aTuids)
+		removeTuid2TuidListsEntries(bTuids)
+		this.tuid2CorrespondencesMap.get(aTuids).remove(markedCorrespondence);
+		if (tuid2CorrespondencesMap.get(aTuids).empty) {
+			tuid2CorrespondencesMap.remove(aTuids);
 		}
-		this.tuid2CorrespondencesMap.get(bTUIDs).remove(markedCorrespondence);
-		if (tuid2CorrespondencesMap.get(bTUIDs).empty) {
-			tuid2CorrespondencesMap.remove(bTUIDs);
+		this.tuid2CorrespondencesMap.get(bTuids).remove(markedCorrespondence);
+		if (tuid2CorrespondencesMap.get(bTuids).empty) {
+			tuid2CorrespondencesMap.remove(bTuids);
 		}
 	}
 	
-	def private void removeTUID2TUIDListsEntries(List<TUID> tuids) {
-		for (TUID tuid : tuids) {
+	def private void removeTuid2TuidListsEntries(List<Tuid> tuids) {
+		for (Tuid tuid : tuids) {
 			val tuidLists = this.tuid2tuidListsMap.get(tuid)
 			tuidLists.remove(tuids)
 		}
@@ -357,11 +328,11 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 	
 	override Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects) {
-		return removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(eObjects.mapFixed[calculateTUIDFromEObject(it)].toSet)
+		return removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(eObjects.mapFixed[calculateTuidFromEObject(it)].toSet)
 	}
 
-	override Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(Set<TUID> tuids) {
-		val correspondences = getCorrespondencesThatInvolveAtLeastTUIDs(tuids)
+	override Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(Set<Tuid> tuids) {
+		val correspondences = getCorrespondencesThatInvolveAtLeastTuids(tuids)
 		val markedCorrespondences = correspondences.mapFixed[markCorrespondenceAndDependingCorrespondences(it)].flatten
 		removeMarkedCorrespondences(markedCorrespondences)
 		return markedCorrespondences.toSet
@@ -377,25 +348,24 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		this.changedAfterLastSave = false
 	}
 
-	override EObject resolveEObjectFromRootAndFullTUID(EObject root,
-		String tuidString) {
-		return getMetamodelHavingTUID(tuidString).
-			resolveEObjectFromRootAndFullTUID(root, tuidString)
+	override EObject resolveEObjectFromRootAndFullTuid(EObject root,
+		Tuid tuid) {
+		return getMetamodelHavingTuid(tuid).
+			resolveEObjectFromRootAndFullTuid(root, tuid)
 	}
 	
 	
-	override List<EObject> resolveEObjectsFromTUIDs(List<TUID> tuids) {
-		return tuids.mapFixed[resolveEObjectFromTUID(it)].toList
+	override List<EObject> resolveEObjectsFromTuids(List<Tuid> tuids) {
+		return tuids.mapFixed[resolveEObjectFromTuid(it)].toList
 	}
 	
-	override Set<List<EObject>> resolveEObjectsSetsFromTUIDsSets(Set<List<TUID>> tuidLists) {
-		return tuidLists.mapFixed[resolveEObjectsFromTUIDs(it)].toSet
+	override Set<List<EObject>> resolveEObjectsSetsFromTuidsSets(Set<List<Tuid>> tuidLists) {
+		return tuidLists.mapFixed[resolveEObjectsFromTuids(it)].toSet
 	}
 	
-	override EObject resolveEObjectFromTUID(TUID tuid) {
-		var String tuidString = tuid.toString()
-		var Metamodel metamodel = getMetamodelHavingTUID(tuidString)
-		var VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuidString)
+	override EObject resolveEObjectFromTuid(Tuid tuid) {
+		var TuidAwareVitruvDomain metamodel = getMetamodelHavingTuid(tuid)
+		var VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuid)
 		var EObject rootEObject = null
 		var ModelInstance modelInstance = null
 		if (vuri !== null) {
@@ -406,7 +376,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		try {
 			// if the tuid is cached because it has no resource the rootEObject is null
 			resolvedEobject = metamodel.
-				resolveEObjectFromRootAndFullTUID(rootEObject, tuidString)
+				resolveEObjectFromRootAndFullTuid(rootEObject, tuid)
 		} catch (IllegalArgumentException iae) {
 			// do nothing - just try the solving again
 		}
@@ -415,12 +385,12 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 			modelInstance.load(null, true)
 			rootEObject = modelInstance.getUniqueRootEObject()
 			resolvedEobject = metamodel.
-				resolveEObjectFromRootAndFullTUID(rootEObject, tuidString)
+				resolveEObjectFromRootAndFullTuid(rootEObject, tuid)
 			if (null === resolvedEobject) {
 				// if resolved EObject is still null throw an exception
 				// TODO think about something more lightweight than throwing an exception
 				throw new RuntimeException(
-					'''Could not resolve TUID «tuidString» in eObject «rootEObject»'''.
+					'''Could not resolve Tuid «tuid» in eObject «rootEObject» with VURI «vuri»'''.
 						toString)
 			}
 
@@ -440,59 +410,23 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		List<EObject> eObjects2) {
 		var aEObjects = eObjects1
 		var bEObjects = eObjects2
-		if (this.mapping.getMetamodelA().hasMetaclassInstances(bEObjects)) {
-			// swap
-			var tmp = aEObjects
-			aEObjects = bEObjects
-			bEObjects = tmp
-		}
-		var List<TUID> aTUIDs = calculateTUIDsFromEObjects(aEObjects)
-		correspondence.getATUIDs().addAll(aTUIDs)
-		var List<TUID> bTUIDs = calculateTUIDsFromEObjects(bEObjects)
-		correspondence.getBTUIDs().addAll(bTUIDs)
+		var List<Tuid> aTuids = calculateTuidsFromEObjects(aEObjects)
+		correspondence.getATuids().addAll(aTuids)
+		var List<Tuid> bTuids = calculateTuidsFromEObjects(bEObjects)
+		correspondence.getBTuids().addAll(bTuids)
 	}
 
-//	override void updateTUID(EObject oldEObject, EObject newEObject) {
-//		// If the object has no TUID, do nothing
-//		val metamodel = oldEObject?.metamodelForEObject;
-//		if (metamodel == null || !metamodel.hasTUID(oldEObject)) {
-//			return;
-//		}
-//		var TUID oldTUID = calculateTUIDsFromEObjects(oldEObject.toList).claimOne
-//		this.updateTUID(oldTUID, newEObject)
-//	}
-//
-//	override void updateTUID(TUID oldTUID, EObject newEObject) {
-//		var TUID newTUID = calculateTUIDsFromEObjects(newEObject.toList).claimOne
-//		updateTUID(oldTUID, newTUID)
-//	}
-//
-//	 //FIXME note to MK: this currently only works if all key-lists in tuid2CorrespondencesMap only contain one element. 
-//	 //If you implement an update function for list of TUIDs be careful since there could be the case that one TUID is contained 
-//	 //in more than only one key-lists. My current guess is that we have to update all key-lists in which the TUID occurs
-//	override void updateTUID(TUID oldTUID, TUID newTUID) {
-//		var boolean sameTUID = if(oldTUID !== null) oldTUID.equals(newTUID) else newTUID === null
-//		if (sameTUID || oldTUID === null) {
-//			return;
-//		}
-//		var String oldTUIDString = oldTUID.toString()
-//		
-//		oldTUID.renameOrMoveLastSegment(newTUID)
-//		var Metamodel metamodel = getMetamodelHavingTUID(oldTUIDString)
-//		metamodel.removeIfRootAndCached(oldTUIDString)
-//	}
-	
 	override getAllCorrespondencesWithoutDependencies() {
 		this.correspondences.correspondences.filter[it.dependsOn == null || it.dependsOn.size == 0].toSet
 	}
 	
 	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
-		return getCorrespondencesThatInvolveAtLeastTUIDs(eObjects.mapFixed[calculateTUIDFromEObject(it)].toSet)
+		return getCorrespondencesThatInvolveAtLeastTuids(eObjects.mapFixed[calculateTuidFromEObject(it)].toSet)
 	}
 	
-	override getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids) {
-		val supTUIDLists = tuids?.mapFixed[this.tuid2tuidListsMap.get(it)].filterNull.flatten.filter[it.containsAll(tuids)]
-		val corrit = supTUIDLists?.mapFixed[getCorrespondencesForTUIDs(it)]
+	override getCorrespondencesThatInvolveAtLeastTuids(Set<Tuid> tuids) {
+		val supTuidLists = tuids?.mapFixed[this.tuid2tuidListsMap.get(it)].filterNull.flatten.filter[it.containsAll(tuids)]
+		val corrit = supTuidLists?.mapFixed[getCorrespondencesForTuids(it)]
 		val flatcorr = corrit.flatten
 		if(flatcorr.nullOrEmpty){
 			logger.debug("could not find correspondences for tuids: " + tuids)
@@ -516,11 +450,14 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 * 
 	 * @author Dominik Werle 
 	 */
-	override getTUIDsForMetamodel(Correspondence correspondence, String metamodelNamespaceUri) {
-	 	if (mapping.getMetamodelA.nsURIs.contains(metamodelNamespaceUri)) {
-	 		return correspondence.getATUIDs
-	 	} else if (mapping.getMetamodelB.nsURIs.contains(metamodelNamespaceUri)) {
-	 		return correspondence.getBTUIDs
+	override getTuidsForMetamodel(Correspondence correspondence, String metamodelNamespaceUri) {
+		// FIXME This is really ugly, fix it!
+	 	val domainA = domainRepository.getDomain(correspondence.ATuids.get(0));
+	 	val domainB = domainRepository.getDomain(correspondence.BTuids.get(0));
+	 	if (domainA.nsUris.contains(metamodelNamespaceUri)) {
+	 		return correspondence.getATuids
+	 	} else if (domainB.nsUris.contains(metamodelNamespaceUri)) {
+	 		return correspondence.getBTuids
 	 	} else {
 	 		throw new IllegalArgumentException('''Metamodel namespace URI "«metamodelNamespaceUri»" is not a namespace URI of one of the metamodels for the associated mapping''')
 	 	}
@@ -534,31 +471,31 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		return new CorrespondenceModelView(correspondenceType, this, correspondenceCreator);
 	}
 	
-	private Iterable<Pair<List<TUID>,Set<Correspondence>>> tuidUpdateData;
+	private Iterable<Pair<List<Tuid>,Set<Correspondence>>> tuidUpdateData;
 		
 	/**
 	 * Removes the current entries in the
-	 * {@link CorrespondenceModelImpl#tuid2CorrespondencesMap} map for the given oldTUID
-	 * before the hash code of it is updated and returns a pair containing the oldTUID and
+	 * {@link CorrespondenceModelImpl#tuid2CorrespondencesMap} map for the given oldTuid
+	 * before the hash code of it is updated and returns a pair containing the oldTuid and
 	 * the removed correspondence model elements of the map.
 	 *
-	 * @param oldCurrentTUID
-	 * @return oldCurrentTUIDAndStringAndMapEntriesTriple
+	 * @param oldCurrentTuid
+	 * @return oldCurrentTuidAndStringAndMapEntriesTriple
 	 */
-	override performPreAction(TUID oldCurrentTUID) {
+	override performPreAction(Tuid oldCurrentTuid) {
 		if (tuidUpdateData != null) {
 			throw new IllegalStateException("Two update calls were running at the same time");
 		}
-		// The TUID is used as key in this map. Therefore the entry has to be removed before
-		// the hashCode of the TUID changes.
+		// The Tuid is used as key in this map. Therefore the entry has to be removed before
+		// the hashCode of the Tuid changes.
 		// remove the old map entries for the tuid before its hashcode changes
-		val oldTUIDLists = tuid2tuidListsMap.remove(oldCurrentTUID) ?: new HashSet<List<TUID>>()
-		val oldTUIDList2Correspondences = new ArrayList<Pair<List<TUID>,Set<Correspondence>>>(oldTUIDLists.size);
-		for (oldTUIDList : oldTUIDLists) {
-			val correspondencesForOldTUIDList = tuid2CorrespondencesMap.remove(oldTUIDList) ?: new HashSet<Correspondence>()
-			oldTUIDList2Correspondences.add(new Pair<List<TUID>,Set<Correspondence>>(oldTUIDList,correspondencesForOldTUIDList))
+		val oldTuidLists = tuid2tuidListsMap.remove(oldCurrentTuid) ?: new HashSet<List<Tuid>>()
+		val oldTuidList2Correspondences = new ArrayList<Pair<List<Tuid>,Set<Correspondence>>>(oldTuidLists.size);
+		for (oldTuidList : oldTuidLists) {
+			val correspondencesForOldTuidList = tuid2CorrespondencesMap.remove(oldTuidList) ?: new HashSet<Correspondence>()
+			oldTuidList2Correspondences.add(new Pair<List<Tuid>,Set<Correspondence>>(oldTuidList,correspondencesForOldTuidList))
 		}
-		tuidUpdateData = oldTUIDList2Correspondences
+		tuidUpdateData = oldTuidList2Correspondences
 	}
 		
 	 /**
@@ -566,25 +503,25 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 *
 	 * @param removedMapEntries
 	 */
-	override void performPostAction(TUID tuid) {
+	override void performPostAction(Tuid tuid) {
 		// The correspondence model is an EMF-based model, so modifications have to be
 		// performed within a transaction.
 		this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain([ |
 			if (tuidUpdateData == null) {
 				throw new IllegalStateException("Update was not started before performing post action");
 			}
-			val oldTUIDList2Correspondences = tuidUpdateData;
-			val newSetOfoldTUIDLists = new HashSet<List<TUID>>()
-			for (oldTUIDList2CorrespondencesEntry : oldTUIDList2Correspondences) {
-				val oldTUIDList = new ArrayList<TUID>(oldTUIDList2CorrespondencesEntry.first);
-				val correspondences = oldTUIDList2CorrespondencesEntry.second
+			val oldTuidList2Correspondences = tuidUpdateData;
+			val newSetOfoldTuidLists = new HashSet<List<Tuid>>()
+			for (oldTuidList2CorrespondencesEntry : oldTuidList2Correspondences) {
+				val oldTuidList = new ArrayList<Tuid>(oldTuidList2CorrespondencesEntry.first);
+				val correspondences = oldTuidList2CorrespondencesEntry.second
 				// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
-				newSetOfoldTUIDLists.add(oldTUIDList)
+				newSetOfoldTuidLists.add(oldTuidList)
 				// re-add the correspondences entry for the current list of tuids with the new hashcode 
-				tuid2CorrespondencesMap.put(oldTUIDList, correspondences)
+				tuid2CorrespondencesMap.put(oldTuidList, correspondences)
 			}
 			// re-add the entry that maps the tuid to the set if tuid lists that contain it
-			tuid2tuidListsMap.put(tuid, newSetOfoldTUIDLists)
+			tuid2tuidListsMap.put(tuid, newSetOfoldTuidLists)
 			tuidUpdateData = null;
 			setChangeAfterLastSaveFlag();
 			return null;

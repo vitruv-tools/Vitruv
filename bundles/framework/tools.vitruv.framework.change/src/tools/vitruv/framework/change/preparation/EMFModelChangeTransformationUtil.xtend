@@ -170,7 +170,7 @@ package class EMFModelChangeTransformationUtil {
 	def static EChange createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
 		val isCreate = newReferenceValue != null && isContainment && isCreate(newReferenceValue.eContainer, newReferenceValue.eResource)
-		val isDelete = oldReferenceValue != null && isContainment && oldReferenceValue.eResource == null //isDelete(container, resource)
+		val isDelete = oldReferenceValue != null && isContainment;// && isDelete(oldReferenceValue.eContainer, oldReferenceValue.eResource)
 		if (forceCreate || (isCreate && isDelete)) {
 			return createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);
 		} else {
@@ -190,8 +190,12 @@ package class EMFModelChangeTransformationUtil {
 		return TypeInferringAtomicEChangeFactory.createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)
 	}
 	
-	def static EChange createExplicitUnsetChange(List<SubtractiveAttributeEChange<EObject, Object>> changes) {
-		return TypeInferringCompoundEChangeFactory.createExplicitUnsetChange(changes);
+	def static createExplicitUnsetEAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, List<SubtractiveAttributeEChange<EObject, Object>> changes) {
+		return TypeInferringCompoundEChangeFactory.createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, changes);
+	}
+	
+	def static EChange createExplicitUnsetEReferenceChange(EObject affectedEObject, EReference affectedReference, List<EChange> changes) {
+		return TypeInferringCompoundEChangeFactory.createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, changes);
 	}
 	
 }

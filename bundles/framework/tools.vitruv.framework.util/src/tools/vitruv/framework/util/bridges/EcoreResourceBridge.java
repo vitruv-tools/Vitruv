@@ -246,7 +246,6 @@ public final class EcoreResourceBridge {
 	 */
 	public static void saveResource(final Resource resource, final Map<?, ?> saveOptions) throws IOException {
 		resource.save(saveOptions);
-		resource.setModified(true);
 	}
 
 	public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet) {
@@ -257,27 +256,23 @@ public final class EcoreResourceBridge {
 			final Map<Object, Object> loadOptions) {
 		Resource resource = null;
 		try {
-			try {
-				//if (EMFBridge.existsResourceAtUri(resourceURI)) {
-					resource = resourceSet.getResource(resourceURI, true);	
-				//}
-			} catch (org.eclipse.emf.common.util.WrappedException e) {
-				// FIXME Exceptions are thrown here. We have to do something to 
-				// avoid them or handle them. Nevertheless, trying to handle them
-				// results in errors loading JaMoPP models.
+			if (EMFBridge.existsResourceAtUri(resourceURI)) {
+				resource = resourceSet.getResource(resourceURI, true);
 			}
+			
 			if (resource == null) {
+				Resource oldResource = resourceSet.getResource(resourceURI, false);
+				if (oldResource != null) {
+					oldResource.delete(null);
+				}
 				resource = resourceSet.createResource(resourceURI);
 			} else {
 				resource.load(loadOptions);
 			}
-			// fixes issue caused by JaMoPP: If a model is transitively loaded
-			// (e.g. because of an
-			// import)
-			// the URI starts with pathmap instead of the usual URI. If you try
-			// to load this model
-			// again
-			// the URI remains wrong.
+
+			// Fixes issue caused by JaMoPP: If a model is transitively loaded
+			// (e.g. because of an import) the URI starts with pathmap instead of
+			// the usual URI. If you try to load this model again the URI remains wrong.
 			resource.setURI(resourceURI);
 		} catch (final IOException e) {
 			// soften
@@ -286,32 +281,28 @@ public final class EcoreResourceBridge {
 		return resource;
 	}
 
-	public static void registerMetamodelPackages(ResourceSet rs, Object factory, String... nsURIs) {
+	public static void registerMetamodelPackageOn(ResourceSet rs, Object pckg, String... nsURIs) {
 		for (String nsURI : nsURIs) {
-			rs.getPackageRegistry().put(nsURI, factory);
-			// registerMetamodelPackages(nsURI,factory);
+			rs.getPackageRegistry().put(nsURI, pckg);
 		}
 	}
 
-	// TODO MK rename to registerMetamodelPackage
-	public static void registerMetamodelPackages(String nsURI, Object factory) {
-		EPackage.Registry.INSTANCE.put(nsURI, factory);
+	public static void registerGlobalMetamodelPackage(String nsURI, Object pckg) {
+		EPackage.Registry.INSTANCE.put(nsURI, pckg);
 	}
 
-	public static void registerExtensionFactories(ResourceSet rs, Object resourceFactory, String... fileExtensions) {
+	public static void registerExtensionFactoryOn(ResourceSet rs, Object resourceFactory, String... fileExtensions) {
 		for (String fileExtension : fileExtensions) {
 			rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension, resourceFactory);
-			// registerExtensionFactories(fileExtension, resourceFactory);
 		}
 	}
 
-	// TODO MK rename to registerExtensionFactory
-	public static void registerExtensionFactories(String fileExtension, Object resourceFactory) {
+	public static void registerGlobalExtensionFactory(String fileExtension, Object resourceFactory) {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(fileExtension, resourceFactory);
 	}
 
 	public static void registerDefaultXMIExtensionFactory(String fileExtension) {
-		registerExtensionFactories(fileExtension, new XMIResourceFactoryImpl());
+		registerGlobalExtensionFactory(fileExtension, new XMIResourceFactoryImpl());
 	}
 
 }
