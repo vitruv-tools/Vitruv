@@ -2,10 +2,19 @@
  */
 package tools.vitruv.framework.versioning.tests;
 
-import junit.textui.TestRunner;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertThat;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
+
+import junit.textui.TestRunner;
+import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.VersioningFactory;
+import tools.vitruv.framework.versioning.commit.InitialCommit;
+import tools.vitruv.framework.versioning.commit.SimpleCommit;
 
 /**
  * <!-- begin-user-doc -->
@@ -15,7 +24,7 @@ import tools.vitruv.framework.versioning.VersioningFactory;
  * The following operations are tested:
  * <ul>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createInitialCommit() <em>Create Initial Commit</em>}</li>
- *   <li>{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit) <em>Create Simple Commit</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -56,11 +65,13 @@ public class AuthorTest extends NamedTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see junit.framework.TestCase#setUp()
-	 * @generated
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(VersioningFactory.eINSTANCE.createAuthor());
+		final Author author = VersioningFactory.eINSTANCE.createAuthor();
+		author.setName("Name");
+		author.setEmail("email");
+		setFixture(author);
 	}
 
 	/**
@@ -79,25 +90,36 @@ public class AuthorTest extends NamedTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.Author#createInitialCommit()
-	 * @generated
 	 */
 	public void testCreateInitialCommit() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Author author = getFixture();
+		final InitialCommit initialCommit = author.createInitialCommit();
+		assertThat(initialCommit.getChanges().size(), equalTo(0));
+		assertThat(initialCommit.getCommitmessage().getAuthor(), equalTo(author));
+		assertThat(initialCommit.getCommitmessage().getMessage(), equalTo("Initial commit"));
+		assertThat(author.getCommits(), hasItem(initialCommit));
 	}
 
 	/**
-	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit) <em>Create Simple Commit</em>}' operation.
+	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit)
+	 * @see tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList)
 	 * @generated
 	 */
-	public void testCreateSimpleCommit__String_Commit() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+	public void testCreateSimpleCommit__String_Commit_EList() {
+		final Author author = getFixture();
+		final InitialCommit initialCommit = author.createInitialCommit();
+		final String message = "Simple";
+		final EList<EChange> changes = new BasicEList<EChange>();
+		final SimpleCommit simpleCommit = author.createSimpleCommit(message, initialCommit, changes);
+		
+		assertThat(simpleCommit.getChanges().size(), equalTo(0));
+		assertThat(simpleCommit.getCommitmessage().getAuthor(), equalTo(author));
+		assertThat(simpleCommit.getCommitmessage().getMessage(), equalTo(message));
+		assertThat(simpleCommit.getParent(), equalTo(initialCommit));
+		assertThat(author.getCommits(), hasItem(initialCommit));
+		assertThat(author.getCommits(), hasItem(simpleCommit));
 	}
 
 } //AuthorTest

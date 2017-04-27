@@ -4,6 +4,7 @@ package tools.vitruv.framework.versioning.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.Date;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -18,12 +19,15 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.VersioningPackage;
 
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 import tools.vitruv.framework.versioning.commit.Commit;
+import tools.vitruv.framework.versioning.commit.CommitFactory;
+import tools.vitruv.framework.versioning.commit.CommitMessage;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
 
@@ -182,12 +186,16 @@ public class AuthorImpl extends NamedImpl implements Author {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public InitialCommit createInitialCommit() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		final InitialCommit initialCommit = CommitFactory.eINSTANCE.createInitialCommit();
+		final CommitMessage commitMessage = CommitFactory.eINSTANCE.createCommitMessage();
+		commitMessage.setAuthor(this);
+		commitMessage.setDate(new Date());
+		commitMessage.setMessage("Initial commit");
+		initialCommit.setCommitmessage(commitMessage);
+		this.getCommits().add(initialCommit);
+		return initialCommit;
 	}
 
 	/**
@@ -195,10 +203,17 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SimpleCommit createSimpleCommit(String message, Commit parent) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+	public SimpleCommit createSimpleCommit(String message, Commit parent, EList<EChange> changes) {
+		final SimpleCommit simpleCommit = CommitFactory.eINSTANCE.createSimpleCommit();
+		final CommitMessage commitMessage = CommitFactory.eINSTANCE.createCommitMessage();
+		commitMessage.setAuthor(this);
+		commitMessage.setDate(new Date());
+		commitMessage.setMessage(message);
+		simpleCommit.setCommitmessage(commitMessage);
+		simpleCommit.setParent(parent);
+		simpleCommit.getChanges().addAll(changes);
+		this.getCommits().add(simpleCommit);
+		return simpleCommit;
 	}
 
 	/**
@@ -332,12 +347,13 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * @generated
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
 			case VersioningPackage.AUTHOR___CREATE_INITIAL_COMMIT:
 				return createInitialCommit();
-			case VersioningPackage.AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT:
-				return createSimpleCommit((String)arguments.get(0), (Commit)arguments.get(1));
+			case VersioningPackage.AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST:
+				return createSimpleCommit((String)arguments.get(0), (Commit)arguments.get(1), (EList<EChange>)arguments.get(2));
 		}
 		return super.eInvoke(operationID, arguments);
 	}
