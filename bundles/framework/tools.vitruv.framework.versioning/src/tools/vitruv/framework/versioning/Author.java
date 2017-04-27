@@ -4,6 +4,7 @@ package tools.vitruv.framework.versioning;
 
 import org.eclipse.emf.common.util.EList;
 
+import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
@@ -118,9 +119,9 @@ public interface Author extends Named {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model messageRequired="true" parentRequired="true"
+	 * @model messageRequired="true" parentRequired="true" changesMany="true"
 	 * @generated
 	 */
-	SimpleCommit createSimpleCommit(String message, Commit parent);
+	SimpleCommit createSimpleCommit(String message, Commit parent, EList<EChange> changes);
 
 } // Author
