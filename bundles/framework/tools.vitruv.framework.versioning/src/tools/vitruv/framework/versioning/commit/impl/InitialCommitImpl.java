@@ -2,11 +2,8 @@
  */
 package tools.vitruv.framework.versioning.commit.impl;
 
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecore.EClass;
 
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.commit.CommitPackage;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
 
@@ -18,14 +15,6 @@ import tools.vitruv.framework.versioning.commit.InitialCommit;
  * @generated
  */
 public class InitialCommitImpl extends CommitImpl implements InitialCommit {
-	private static final String INITIAL_COMMIT_MESSAGE = "Initial commit";
-	/**
-	 * @param changes
-	 * @param commitmessage
-	 */
-	public InitialCommitImpl(final Author author) {
-		super(new BasicEList<EChange>(), new CommitMessageImpl(INITIAL_COMMIT_MESSAGE, author));
-	}
 
 	/**
 	 * <!-- begin-user-doc -->

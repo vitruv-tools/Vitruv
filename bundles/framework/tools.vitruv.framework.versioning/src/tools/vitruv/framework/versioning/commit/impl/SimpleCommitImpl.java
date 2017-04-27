@@ -4,13 +4,10 @@ package tools.vitruv.framework.versioning.commit.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.CommitPackage;
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
@@ -46,20 +43,6 @@ public class SimpleCommitImpl extends CommitImpl implements SimpleCommit {
 	 */
 	protected SimpleCommitImpl() {
 		super();
-	}
-
-	/**
-	 * @param changes
-	 * @param commitmessage
-	 */
-	public SimpleCommitImpl(final EList<EChange> changes, final String message, final Author author, final Commit parent) {
-		super(changes, new CommitMessageImpl(message, author));
-		// assert changes.size() > 0;
-		assert parent != null;
-		this.parent = parent;
-		final int oldSize = parent.getCommitsBranchedFromThis().size(); 
-		this.parent.getCommitsBranchedFromThis().add(this);
-		assert oldSize + 1 == parent.getCommitsBranchedFromThis().size();
 	}
 
 	/**

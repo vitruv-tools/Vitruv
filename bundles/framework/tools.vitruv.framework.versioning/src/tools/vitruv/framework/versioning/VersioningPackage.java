@@ -4,6 +4,7 @@ package tools.vitruv.framework.versioning;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -158,13 +159,31 @@ public interface VersioningPackage extends EPackage {
 	int AUTHOR_FEATURE_COUNT = NAMED_FEATURE_COUNT + 4;
 
 	/**
+	 * The operation id for the '<em>Create Initial Commit</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AUTHOR___CREATE_INITIAL_COMMIT = NAMED_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Create Simple Commit</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST = NAMED_OPERATION_COUNT + 1;
+
+	/**
 	 * The number of operations of the '<em>Author</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR_OPERATION_COUNT = NAMED_OPERATION_COUNT + 0;
+	int AUTHOR_OPERATION_COUNT = NAMED_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.versioning.impl.TagImpl <em>Tag</em>}' class.
@@ -351,6 +370,26 @@ public interface VersioningPackage extends EPackage {
 	EReference getAuthor_Commits();
 
 	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createInitialCommit() <em>Create Initial Commit</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Create Initial Commit</em>' operation.
+	 * @see tools.vitruv.framework.versioning.Author#createInitialCommit()
+	 * @generated
+	 */
+	EOperation getAuthor__CreateInitialCommit();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Create Simple Commit</em>' operation.
+	 * @see tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList)
+	 * @generated
+	 */
+	EOperation getAuthor__CreateSimpleCommit__String_Commit_EList();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.Named <em>Named</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -498,6 +537,22 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EReference AUTHOR__COMMITS = eINSTANCE.getAuthor_Commits();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Initial Commit</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation AUTHOR___CREATE_INITIAL_COMMIT = eINSTANCE.getAuthor__CreateInitialCommit();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Simple Commit</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST = eINSTANCE.getAuthor__CreateSimpleCommit__String_Commit_EList();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.impl.NamedImpl <em>Named</em>}' class.
