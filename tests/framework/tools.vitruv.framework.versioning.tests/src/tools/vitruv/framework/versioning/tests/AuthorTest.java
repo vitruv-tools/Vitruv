@@ -65,13 +65,11 @@ public class AuthorTest extends NamedTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see junit.framework.TestCase#setUp()
+	 * @generated
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		final Author author = VersioningFactory.eINSTANCE.createAuthor();
-		author.setName("Name");
-		author.setEmail("email");
-		setFixture(author);
+		setFixture(VersioningFactory.eINSTANCE.createAuthor());
 	}
 
 	/**

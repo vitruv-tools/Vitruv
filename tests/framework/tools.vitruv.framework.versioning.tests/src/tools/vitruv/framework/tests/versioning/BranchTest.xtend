@@ -10,12 +10,7 @@ import org.junit.Before
 import org.junit.Test
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.versioning.Author
-import tools.vitruv.framework.versioning.commit.Commit
-import tools.vitruv.framework.versioning.commit.InitialCommit
-import tools.vitruv.framework.versioning.commit.impl.InitialCommitImpl
-import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl
-import tools.vitruv.framework.versioning.impl.AuthorImpl
+import tools.vitruv.framework.versioning.VersioningFactory
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.hasItem
@@ -27,10 +22,10 @@ class BranchTest extends VersioningTest {
 	
 	@Test
 	def public void branchTest() {
-		val authorA = new AuthorImpl("a", "AuthorA") as Author
-//		val authorB = new AuthorImpl("b", "AuthorB") as Author
+		val authorA = VersioningFactory.eINSTANCE.createAuthor
+		authorA.name = "Author A"
+		val initialCommit = authorA.createInitialCommit
 		
-		val initialCommit = new InitialCommitImpl(authorA) as InitialCommit
 		assertThat(initialCommit.changes.length, equalTo(0))
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(resourceSet) as CreateEObject<Root>
@@ -38,10 +33,9 @@ class BranchTest extends VersioningTest {
 		val EList<EChange> changes = new BasicEList<EChange>()
 		changes.add(resolvedChange)
 
-		val commit = new SimpleCommitImpl(changes, "First commit", authorA, initialCommit) as Commit		
+		val commit = authorA.createSimpleCommit("First commit", initialCommit,changes)		
 		
 		assertThat(commit.changes, hasItem(resolvedChange))
-		print(resourceSet)
 //		assertIsStateAfter(createdObject)
 //		
 //		// Now another change would take the object and inserts it in a resource
