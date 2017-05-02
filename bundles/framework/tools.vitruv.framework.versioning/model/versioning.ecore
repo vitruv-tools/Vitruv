@@ -18,6 +18,8 @@
         eType="#//branch/Branch" eOpposite="#//branch/Branch/contributors"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="commits" upperBound="-1"
         eType="#//commit/Commit"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="repository" lowerBound="1"
+        eType="#//Repository" eOpposite="#//Repository/authors"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Named" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -32,6 +34,18 @@
   <eClassifiers xsi:type="ecore:EClass" name="Signature">
     <eStructuralFeatures xsi:type="ecore:EReference" name="signer" lowerBound="1"
         eType="#//Author"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Repository">
+    <eOperations name="createAuthor" lowerBound="1" eType="#//Author">
+      <eParameters name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="email" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tags" upperBound="-1" eType="#//Tag"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="authors" upperBound="-1"
+        eType="#//Author" containment="true" eOpposite="#//Author/repository"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commits" upperBound="-1"
+        eType="#//commit/Commit"/>
   </eClassifiers>
   <eSubpackages name="conflict" nsURI="http://tools.vitruv/versioning/1.0/conflict"
       nsPrefix="tools.vitruv.framework.versioning">
