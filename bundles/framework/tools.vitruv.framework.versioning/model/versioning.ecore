@@ -20,6 +20,8 @@
         eType="#//commit/Commit"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="repository" lowerBound="1"
         eType="#//Repository" eOpposite="#//Repository/authors"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="currentBranch" lowerBound="1"
+        eType="#//branch/Branch"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Named" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
