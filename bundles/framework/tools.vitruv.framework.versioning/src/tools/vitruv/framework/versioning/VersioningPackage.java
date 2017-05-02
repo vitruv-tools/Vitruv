@@ -168,22 +168,13 @@ public interface VersioningPackage extends EPackage {
 	int AUTHOR_FEATURE_COUNT = NAMED_FEATURE_COUNT + 5;
 
 	/**
-	 * The operation id for the '<em>Create Initial Commit</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int AUTHOR___CREATE_INITIAL_COMMIT = NAMED_OPERATION_COUNT + 0;
-
-	/**
 	 * The operation id for the '<em>Create Simple Commit</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST = NAMED_OPERATION_COUNT + 1;
+	int AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST = NAMED_OPERATION_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>Create Branch</em>' operation.
@@ -192,7 +183,7 @@ public interface VersioningPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR___CREATE_BRANCH__STRING_BRANCH = NAMED_OPERATION_COUNT + 2;
+	int AUTHOR___CREATE_BRANCH__STRING_BRANCH = NAMED_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Author</em>' class.
@@ -201,7 +192,7 @@ public interface VersioningPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR_OPERATION_COUNT = NAMED_OPERATION_COUNT + 3;
+	int AUTHOR_OPERATION_COUNT = NAMED_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.versioning.impl.TagImpl <em>Tag</em>}' class.
@@ -380,13 +371,22 @@ public interface VersioningPackage extends EPackage {
 	int REPOSITORY__BRANCHES = 3;
 
 	/**
+	 * The feature id for the '<em><b>Initial Commit</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY__INITIAL_COMMIT = 4;
+
+	/**
 	 * The number of structural features of the '<em>Repository</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPOSITORY_FEATURE_COUNT = 4;
+	int REPOSITORY_FEATURE_COUNT = 5;
 
 	/**
 	 * The operation id for the '<em>Create Author</em>' operation.
@@ -471,16 +471,6 @@ public interface VersioningPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getAuthor_Repository();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createInitialCommit() <em>Create Initial Commit</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Create Initial Commit</em>' operation.
-	 * @see tools.vitruv.framework.versioning.Author#createInitialCommit()
-	 * @generated
-	 */
-	EOperation getAuthor__CreateInitialCommit();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}' operation.
@@ -641,6 +631,17 @@ public interface VersioningPackage extends EPackage {
 	EReference getRepository_Branches();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.versioning.Repository#getInitialCommit <em>Initial Commit</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Initial Commit</em>'.
+	 * @see tools.vitruv.framework.versioning.Repository#getInitialCommit()
+	 * @see #getRepository()
+	 * @generated
+	 */
+	EReference getRepository_InitialCommit();
+
+	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Repository#createAuthor(java.lang.String, java.lang.String) <em>Create Author</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -722,14 +723,6 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EReference AUTHOR__REPOSITORY = eINSTANCE.getAuthor_Repository();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Initial Commit</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation AUTHOR___CREATE_INITIAL_COMMIT = eINSTANCE.getAuthor__CreateInitialCommit();
 
 		/**
 		 * The meta object literal for the '<em><b>Create Simple Commit</b></em>' operation.
@@ -860,6 +853,14 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EReference REPOSITORY__BRANCHES = eINSTANCE.getRepository_Branches();
+
+		/**
+		 * The meta object literal for the '<em><b>Initial Commit</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPOSITORY__INITIAL_COMMIT = eINSTANCE.getRepository_InitialCommit();
 
 		/**
 		 * The meta object literal for the '<em><b>Create Author</b></em>' operation.

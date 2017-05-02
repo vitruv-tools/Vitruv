@@ -223,7 +223,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getAuthor__CreateInitialCommit() {
+	public EOperation getAuthor__CreateSimpleCommit__String_Commit_EList() {
 		return authorEClass.getEOperations().get(0);
 	}
 
@@ -232,17 +232,8 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getAuthor__CreateSimpleCommit__String_Commit_EList() {
-		return authorEClass.getEOperations().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EOperation getAuthor__CreateBranch__String_Branch() {
-		return authorEClass.getEOperations().get(2);
+		return authorEClass.getEOperations().get(1);
 	}
 
 	/**
@@ -367,6 +358,15 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getRepository_InitialCommit() {
+		return (EReference)repositoryEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getRepository__CreateAuthor__String_String() {
 		return repositoryEClass.getEOperations().get(0);
 	}
@@ -405,7 +405,6 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		createEReference(authorEClass, AUTHOR__CONTRIBUTED_BRANCHES);
 		createEReference(authorEClass, AUTHOR__COMMITS);
 		createEReference(authorEClass, AUTHOR__REPOSITORY);
-		createEOperation(authorEClass, AUTHOR___CREATE_INITIAL_COMMIT);
 		createEOperation(authorEClass, AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST);
 		createEOperation(authorEClass, AUTHOR___CREATE_BRANCH__STRING_BRANCH);
 
@@ -426,6 +425,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		createEReference(repositoryEClass, REPOSITORY__AUTHORS);
 		createEReference(repositoryEClass, REPOSITORY__COMMITS);
 		createEReference(repositoryEClass, REPOSITORY__BRANCHES);
+		createEReference(repositoryEClass, REPOSITORY__INITIAL_COMMIT);
 		createEOperation(repositoryEClass, REPOSITORY___CREATE_AUTHOR__STRING_STRING);
 	}
 
@@ -480,8 +480,6 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		initEReference(getAuthor_Commits(), theCommitPackage.getCommit(), null, "commits", null, 0, -1, Author.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAuthor_Repository(), this.getRepository(), this.getRepository_Authors(), "repository", null, 1, 1, Author.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getAuthor__CreateInitialCommit(), theCommitPackage.getInitialCommit(), "createInitialCommit", 0, 1, IS_UNIQUE, IS_ORDERED);
-
 		EOperation op = initEOperation(getAuthor__CreateSimpleCommit__String_Commit_EList(), theCommitPackage.getSimpleCommit(), "createSimpleCommit", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "message", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theCommitPackage.getCommit(), "parent", 1, 1, IS_UNIQUE, IS_ORDERED);
@@ -508,6 +506,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		initEReference(getRepository_Authors(), this.getAuthor(), this.getAuthor_Repository(), "authors", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRepository_Commits(), theCommitPackage.getCommit(), null, "commits", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRepository_Branches(), theBranchPackage.getBranch(), null, "branches", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRepository_InitialCommit(), theCommitPackage.getInitialCommit(), null, "initialCommit", null, 1, 1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = initEOperation(getRepository__CreateAuthor__String_String(), this.getAuthor(), "createAuthor", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "name", 1, 1, IS_UNIQUE, IS_ORDERED);

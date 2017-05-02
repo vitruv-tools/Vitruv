@@ -7,7 +7,6 @@ import org.eclipse.emf.common.util.EList;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.commit.Commit;
-import tools.vitruv.framework.versioning.commit.InitialCommit;
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
 
 /**
@@ -136,14 +135,6 @@ public interface Author extends Named {
 	 * @generated
 	 */
 	void setRepository(Repository value);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	InitialCommit createInitialCommit();
 
 	/**
 	 * <!-- begin-user-doc -->

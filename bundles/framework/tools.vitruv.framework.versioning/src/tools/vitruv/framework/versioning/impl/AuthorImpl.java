@@ -430,8 +430,6 @@ public class AuthorImpl extends NamedImpl implements Author {
 	@SuppressWarnings("unchecked")
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case VersioningPackage.AUTHOR___CREATE_INITIAL_COMMIT:
-				return createInitialCommit();
 			case VersioningPackage.AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST:
 				return createSimpleCommit((String)arguments.get(0), (Commit)arguments.get(1), (EList<EChange>)arguments.get(2));
 			case VersioningPackage.AUTHOR___CREATE_BRANCH__STRING_BRANCH:

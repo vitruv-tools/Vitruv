@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -13,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -28,6 +30,8 @@ import tools.vitruv.framework.versioning.VersioningPackage;
 
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.commit.Commit;
+import tools.vitruv.framework.versioning.commit.CommitFactory;
+import tools.vitruv.framework.versioning.commit.InitialCommit;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,6 +45,7 @@ import tools.vitruv.framework.versioning.commit.Commit;
  *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getAuthors <em>Authors</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getCommits <em>Commits</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getBranches <em>Branches</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getInitialCommit <em>Initial Commit</em>}</li>
  * </ul>
  *
  * @generated
@@ -87,12 +92,22 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	protected EList<Branch> branches;
 
 	/**
+	 * The cached value of the '{@link #getInitialCommit() <em>Initial Commit</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @see #getInitialCommit()
 	 * @generated
+	 * @ordered
+	 */
+	protected InitialCommit initialCommit;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 */
 	protected RepositoryImpl() {
 		super();
+		this.initialCommit = CommitFactory.eINSTANCE.createInitialCommit();
 	}
 
 	/**
@@ -156,6 +171,49 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public InitialCommit getInitialCommit() {
+		return initialCommit;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetInitialCommit(InitialCommit newInitialCommit, NotificationChain msgs) {
+		InitialCommit oldInitialCommit = initialCommit;
+		initialCommit = newInitialCommit;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, VersioningPackage.REPOSITORY__INITIAL_COMMIT, oldInitialCommit, newInitialCommit);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setInitialCommit(InitialCommit newInitialCommit) {
+		if (newInitialCommit != initialCommit) {
+			NotificationChain msgs = null;
+			if (initialCommit != null)
+				msgs = ((InternalEObject)initialCommit).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - VersioningPackage.REPOSITORY__INITIAL_COMMIT, null, msgs);
+			if (newInitialCommit != null)
+				msgs = ((InternalEObject)newInitialCommit).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - VersioningPackage.REPOSITORY__INITIAL_COMMIT, null, msgs);
+			msgs = basicSetInitialCommit(newInitialCommit, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VersioningPackage.REPOSITORY__INITIAL_COMMIT, newInitialCommit, newInitialCommit));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 */
 	public Author createAuthor(String name, String email) {
 		final Author author = VersioningFactory.eINSTANCE.createAuthor();
@@ -194,6 +252,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return ((InternalEList<?>)getAuthors()).basicRemove(otherEnd, msgs);
 			case VersioningPackage.REPOSITORY__BRANCHES:
 				return ((InternalEList<?>)getBranches()).basicRemove(otherEnd, msgs);
+			case VersioningPackage.REPOSITORY__INITIAL_COMMIT:
+				return basicSetInitialCommit(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -214,6 +274,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return getCommits();
 			case VersioningPackage.REPOSITORY__BRANCHES:
 				return getBranches();
+			case VersioningPackage.REPOSITORY__INITIAL_COMMIT:
+				return getInitialCommit();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -243,6 +305,9 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				getBranches().clear();
 				getBranches().addAll((Collection<? extends Branch>)newValue);
 				return;
+			case VersioningPackage.REPOSITORY__INITIAL_COMMIT:
+				setInitialCommit((InitialCommit)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -267,6 +332,9 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 			case VersioningPackage.REPOSITORY__BRANCHES:
 				getBranches().clear();
 				return;
+			case VersioningPackage.REPOSITORY__INITIAL_COMMIT:
+				setInitialCommit((InitialCommit)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -287,6 +355,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return commits != null && !commits.isEmpty();
 			case VersioningPackage.REPOSITORY__BRANCHES:
 				return branches != null && !branches.isEmpty();
+			case VersioningPackage.REPOSITORY__INITIAL_COMMIT:
+				return initialCommit != null;
 		}
 		return super.eIsSet(featureID);
 	}

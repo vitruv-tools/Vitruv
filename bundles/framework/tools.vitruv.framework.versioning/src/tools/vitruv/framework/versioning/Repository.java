@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.commit.Commit;
+import tools.vitruv.framework.versioning.commit.InitialCommit;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,6 +23,7 @@ import tools.vitruv.framework.versioning.commit.Commit;
  *   <li>{@link tools.vitruv.framework.versioning.Repository#getAuthors <em>Authors</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Repository#getCommits <em>Commits</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Repository#getBranches <em>Branches</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Repository#getInitialCommit <em>Initial Commit</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.versioning.VersioningPackage#getRepository()
@@ -94,6 +96,32 @@ public interface Repository extends EObject {
 	 * @generated
 	 */
 	EList<Branch> getBranches();
+
+	/**
+	 * Returns the value of the '<em><b>Initial Commit</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Initial Commit</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Initial Commit</em>' containment reference.
+	 * @see #setInitialCommit(InitialCommit)
+	 * @see tools.vitruv.framework.versioning.VersioningPackage#getRepository_InitialCommit()
+	 * @model containment="true" required="true"
+	 * @generated
+	 */
+	InitialCommit getInitialCommit();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.Repository#getInitialCommit <em>Initial Commit</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Initial Commit</em>' containment reference.
+	 * @see #getInitialCommit()
+	 * @generated
+	 */
+	void setInitialCommit(InitialCommit value);
 
 	/**
 	 * <!-- begin-user-doc -->
