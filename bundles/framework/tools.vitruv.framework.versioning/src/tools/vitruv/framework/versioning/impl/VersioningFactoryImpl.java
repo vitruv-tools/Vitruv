@@ -59,6 +59,7 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 			case VersioningPackage.AUTHOR: return createAuthor();
 			case VersioningPackage.TAG: return createTag();
 			case VersioningPackage.SIGNATURE: return createSignature();
+			case VersioningPackage.REPOSITORY: return createRepository();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -92,6 +93,16 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	public Signature createSignature() {
 		SignatureImpl signature = new SignatureImpl();
 		return signature;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Repository createRepository() {
+		RepositoryImpl repository = new RepositoryImpl();
+		return repository;
 	}
 
 	/**

@@ -150,13 +150,22 @@ public interface VersioningPackage extends EPackage {
 	int AUTHOR__COMMITS = NAMED_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Repository</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AUTHOR__REPOSITORY = NAMED_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Author</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR_FEATURE_COUNT = NAMED_FEATURE_COUNT + 4;
+	int AUTHOR_FEATURE_COUNT = NAMED_FEATURE_COUNT + 5;
 
 	/**
 	 * The operation id for the '<em>Create Initial Commit</em>' operation.
@@ -325,6 +334,71 @@ public interface VersioningPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.versioning.impl.RepositoryImpl <em>Repository</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.versioning.impl.RepositoryImpl
+	 * @see tools.vitruv.framework.versioning.impl.VersioningPackageImpl#getRepository()
+	 * @generated
+	 */
+	int REPOSITORY = 5;
+
+	/**
+	 * The feature id for the '<em><b>Tags</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY__TAGS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Authors</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY__AUTHORS = 1;
+
+	/**
+	 * The feature id for the '<em><b>Commits</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY__COMMITS = 2;
+
+	/**
+	 * The number of structural features of the '<em>Repository</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY_FEATURE_COUNT = 3;
+
+	/**
+	 * The operation id for the '<em>Create Author</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY___CREATE_AUTHOR__STRING_STRING = 0;
+
+	/**
+	 * The number of operations of the '<em>Repository</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY_OPERATION_COUNT = 1;
+
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.Author <em>Author</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -377,6 +451,17 @@ public interface VersioningPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getAuthor_Commits();
+
+	/**
+	 * Returns the meta object for the container reference '{@link tools.vitruv.framework.versioning.Author#getRepository <em>Repository</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Repository</em>'.
+	 * @see tools.vitruv.framework.versioning.Author#getRepository()
+	 * @see #getAuthor()
+	 * @generated
+	 */
+	EReference getAuthor_Repository();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createInitialCommit() <em>Create Initial Commit</em>}' operation.
@@ -493,6 +578,59 @@ public interface VersioningPackage extends EPackage {
 	EReference getSignature_Signer();
 
 	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.Repository <em>Repository</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Repository</em>'.
+	 * @see tools.vitruv.framework.versioning.Repository
+	 * @generated
+	 */
+	EClass getRepository();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.versioning.Repository#getTags <em>Tags</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Tags</em>'.
+	 * @see tools.vitruv.framework.versioning.Repository#getTags()
+	 * @see #getRepository()
+	 * @generated
+	 */
+	EReference getRepository_Tags();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.versioning.Repository#getAuthors <em>Authors</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Authors</em>'.
+	 * @see tools.vitruv.framework.versioning.Repository#getAuthors()
+	 * @see #getRepository()
+	 * @generated
+	 */
+	EReference getRepository_Authors();
+
+	/**
+	 * Returns the meta object for the reference list '{@link tools.vitruv.framework.versioning.Repository#getCommits <em>Commits</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Commits</em>'.
+	 * @see tools.vitruv.framework.versioning.Repository#getCommits()
+	 * @see #getRepository()
+	 * @generated
+	 */
+	EReference getRepository_Commits();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Repository#createAuthor(java.lang.String, java.lang.String) <em>Create Author</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Create Author</em>' operation.
+	 * @see tools.vitruv.framework.versioning.Repository#createAuthor(java.lang.String, java.lang.String)
+	 * @generated
+	 */
+	EOperation getRepository__CreateAuthor__String_String();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -556,6 +694,14 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EReference AUTHOR__COMMITS = eINSTANCE.getAuthor_Commits();
+
+		/**
+		 * The meta object literal for the '<em><b>Repository</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference AUTHOR__REPOSITORY = eINSTANCE.getAuthor_Repository();
 
 		/**
 		 * The meta object literal for the '<em><b>Create Initial Commit</b></em>' operation.
@@ -652,6 +798,48 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EReference SIGNATURE__SIGNER = eINSTANCE.getSignature_Signer();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.impl.RepositoryImpl <em>Repository</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.versioning.impl.RepositoryImpl
+		 * @see tools.vitruv.framework.versioning.impl.VersioningPackageImpl#getRepository()
+		 * @generated
+		 */
+		EClass REPOSITORY = eINSTANCE.getRepository();
+
+		/**
+		 * The meta object literal for the '<em><b>Tags</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPOSITORY__TAGS = eINSTANCE.getRepository_Tags();
+
+		/**
+		 * The meta object literal for the '<em><b>Authors</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPOSITORY__AUTHORS = eINSTANCE.getRepository_Authors();
+
+		/**
+		 * The meta object literal for the '<em><b>Commits</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPOSITORY__COMMITS = eINSTANCE.getRepository_Commits();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Author</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation REPOSITORY___CREATE_AUTHOR__STRING_STRING = eINSTANCE.getRepository__CreateAuthor__String_String();
 
 	}
 

@@ -18,6 +18,7 @@ import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.Named;
+import tools.vitruv.framework.versioning.Repository;
 import tools.vitruv.framework.versioning.Signature;
 import tools.vitruv.framework.versioning.Signed;
 import tools.vitruv.framework.versioning.Tag;
@@ -77,6 +78,13 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * @generated
 	 */
 	private EClass signatureEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass repositoryEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -206,6 +214,15 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getAuthor_Repository() {
+		return (EReference)authorEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getAuthor__CreateInitialCommit() {
 		return authorEClass.getEOperations().get(0);
 	}
@@ -305,6 +322,51 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getRepository() {
+		return repositoryEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRepository_Tags() {
+		return (EReference)repositoryEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRepository_Authors() {
+		return (EReference)repositoryEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRepository_Commits() {
+		return (EReference)repositoryEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRepository__CreateAuthor__String_String() {
+		return repositoryEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public VersioningFactory getVersioningFactory() {
 		return (VersioningFactory)getEFactoryInstance();
 	}
@@ -333,6 +395,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		createEReference(authorEClass, AUTHOR__OWNED_BRANCHES);
 		createEReference(authorEClass, AUTHOR__CONTRIBUTED_BRANCHES);
 		createEReference(authorEClass, AUTHOR__COMMITS);
+		createEReference(authorEClass, AUTHOR__REPOSITORY);
 		createEOperation(authorEClass, AUTHOR___CREATE_INITIAL_COMMIT);
 		createEOperation(authorEClass, AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST);
 		createEOperation(authorEClass, AUTHOR___CREATE_BRANCH__STRING);
@@ -348,6 +411,12 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 
 		signatureEClass = createEClass(SIGNATURE);
 		createEReference(signatureEClass, SIGNATURE__SIGNER);
+
+		repositoryEClass = createEClass(REPOSITORY);
+		createEReference(repositoryEClass, REPOSITORY__TAGS);
+		createEReference(repositoryEClass, REPOSITORY__AUTHORS);
+		createEReference(repositoryEClass, REPOSITORY__COMMITS);
+		createEOperation(repositoryEClass, REPOSITORY___CREATE_AUTHOR__STRING_STRING);
 	}
 
 	/**
@@ -399,6 +468,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		initEReference(getAuthor_OwnedBranches(), theBranchPackage.getBranch(), theBranchPackage.getBranch_Owner(), "ownedBranches", null, 0, -1, Author.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAuthor_ContributedBranches(), theBranchPackage.getBranch(), theBranchPackage.getBranch_Contributors(), "contributedBranches", null, 0, -1, Author.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAuthor_Commits(), theCommitPackage.getCommit(), null, "commits", null, 0, -1, Author.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAuthor_Repository(), this.getRepository(), this.getRepository_Authors(), "repository", null, 1, 1, Author.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getAuthor__CreateInitialCommit(), theCommitPackage.getInitialCommit(), "createInitialCommit", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -421,6 +491,15 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 
 		initEClass(signatureEClass, Signature.class, "Signature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSignature_Signer(), this.getAuthor(), null, "signer", null, 1, 1, Signature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(repositoryEClass, Repository.class, "Repository", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getRepository_Tags(), this.getTag(), null, "tags", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRepository_Authors(), this.getAuthor(), this.getAuthor_Repository(), "authors", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRepository_Commits(), theCommitPackage.getCommit(), null, "commits", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		op = initEOperation(getRepository__CreateAuthor__String_String(), this.getAuthor(), "createAuthor", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "name", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "email", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

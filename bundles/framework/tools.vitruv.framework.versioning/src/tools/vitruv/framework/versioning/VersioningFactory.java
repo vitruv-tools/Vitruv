@@ -49,6 +49,15 @@ public interface VersioningFactory extends EFactory {
 	Signature createSignature();
 
 	/**
+	 * Returns a new object of class '<em>Repository</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Repository</em>'.
+	 * @generated
+	 */
+	Repository createRepository();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

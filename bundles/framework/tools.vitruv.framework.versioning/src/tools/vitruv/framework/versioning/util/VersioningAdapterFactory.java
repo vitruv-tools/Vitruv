@@ -88,6 +88,10 @@ public class VersioningAdapterFactory extends AdapterFactoryImpl {
 				return createSignatureAdapter();
 			}
 			@Override
+			public Adapter caseRepository(Repository object) {
+				return createRepositoryAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -174,6 +178,20 @@ public class VersioningAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createSignatureAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.Repository <em>Repository</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.versioning.Repository
+	 * @generated
+	 */
+	public Adapter createRepositoryAdapter() {
 		return null;
 	}
 
