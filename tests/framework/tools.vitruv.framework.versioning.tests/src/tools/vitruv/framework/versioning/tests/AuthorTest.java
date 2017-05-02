@@ -6,13 +6,19 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
+
 import junit.textui.TestRunner;
+import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.Repository;
 import tools.vitruv.framework.versioning.VersioningFactory;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchFactory;
+import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
+import tools.vitruv.framework.versioning.commit.SimpleCommit;
 
 /**
  * <!-- begin-user-doc -->
@@ -91,23 +97,24 @@ public class AuthorTest extends NamedTest {
 	public void testCreateInitialCommit() {
 		final Author author = getFixture();
 		final InitialCommit initialCommit = author.createInitialCommit();
-		assertThat(initialCommit.getChanges().size(), equalTo(0));
-		assertThat(initialCommit.getCommitmessage().getAuthor(), equalTo(author));
-		assertThat(initialCommit.getCommitmessage().getMessage(), equalTo("Initial commit"));
-		assertThat(author.getCommits(), hasItem(initialCommit));
+		testCommit(initialCommit, "Initial commit", 0);
 	}
-
+		
 	/**
 	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList)
-	 * @generated
 	 */
 	public void testCreateSimpleCommit__String_Commit_EList() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Author author = getFixture();
+		final String commitMessage = "Test message";
+		final InitialCommit parent = author.createInitialCommit();
+		final EList<EChange> changes = new BasicEList<EChange>();
+		final SimpleCommit commit = author.createSimpleCommit(commitMessage, parent, changes);
+		testCommit(commit, commitMessage, 0);
+		assertThat(commit.getParent(), equalTo(parent));
+		assertThat(parent.getCommitsBranchedFromThis(), hasItem(commit));
 	}
 
 	/**
@@ -130,4 +137,13 @@ public class AuthorTest extends NamedTest {
 		assertThat(author.getOwnedBranches(), hasItem(branch));
 	}
 
+	private void testCommit(final Commit commit, final String message, final int changesLength) {
+		final Author author = getFixture();
+		final Repository repo = author.getRepository();
+		assertThat(commit.getChanges().size(), equalTo(changesLength));
+		assertThat(commit.getCommitmessage().getAuthor(), equalTo(author));
+		assertThat(commit.getCommitmessage().getMessage(), equalTo(message));
+		assertThat(author.getCommits(), hasItem(commit));
+		assertThat(repo.getCommits(), hasItem(commit));
+	}
 } //AuthorTest
