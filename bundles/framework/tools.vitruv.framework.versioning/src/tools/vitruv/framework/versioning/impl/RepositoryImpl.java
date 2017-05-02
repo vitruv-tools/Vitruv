@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.Repository;
 import tools.vitruv.framework.versioning.Tag;
+import tools.vitruv.framework.versioning.VersioningFactory;
 import tools.vitruv.framework.versioning.VersioningPackage;
 
 import tools.vitruv.framework.versioning.commit.Commit;
@@ -131,12 +132,13 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public Author createAuthor(String name, String email) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		final Author author = VersioningFactory.eINSTANCE.createAuthor();
+		author.setName(name);
+		author.setEmail(email);
+		author.setRepository(this);
+		return author;
 	}
 
 	/**

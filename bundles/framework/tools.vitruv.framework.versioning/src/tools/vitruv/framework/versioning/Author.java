@@ -23,6 +23,7 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit;
  *   <li>{@link tools.vitruv.framework.versioning.Author#getOwnedBranches <em>Owned Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#getContributedBranches <em>Contributed Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#getCommits <em>Commits</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Author#getRepository <em>Repository</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.versioning.VersioningPackage#getAuthor()
@@ -107,6 +108,34 @@ public interface Author extends Named {
 	 * @generated
 	 */
 	EList<Commit> getCommits();
+
+	/**
+	 * Returns the value of the '<em><b>Repository</b></em>' container reference.
+	 * It is bidirectional and its opposite is '{@link tools.vitruv.framework.versioning.Repository#getAuthors <em>Authors</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Repository</em>' container reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Repository</em>' container reference.
+	 * @see #setRepository(Repository)
+	 * @see tools.vitruv.framework.versioning.VersioningPackage#getAuthor_Repository()
+	 * @see tools.vitruv.framework.versioning.Repository#getAuthors
+	 * @model opposite="authors" required="true" transient="false"
+	 * @generated
+	 */
+	Repository getRepository();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.Author#getRepository <em>Repository</em>}' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Repository</em>' container reference.
+	 * @see #getRepository()
+	 * @generated
+	 */
+	void setRepository(Repository value);
 
 	/**
 	 * <!-- begin-user-doc -->

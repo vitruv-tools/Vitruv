@@ -17,10 +17,12 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.Author;
+import tools.vitruv.framework.versioning.Repository;
 import tools.vitruv.framework.versioning.VersioningPackage;
 
 import tools.vitruv.framework.versioning.branch.Branch;
@@ -43,6 +45,7 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit;
  *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getOwnedBranches <em>Owned Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getContributedBranches <em>Contributed Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getCommits <em>Commits</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getRepository <em>Repository</em>}</li>
  * </ul>
  *
  * @generated
@@ -186,6 +189,47 @@ public class AuthorImpl extends NamedImpl implements Author {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Repository getRepository() {
+		if (eContainerFeatureID() != VersioningPackage.AUTHOR__REPOSITORY) return null;
+		return (Repository)eInternalContainer();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetRepository(Repository newRepository, NotificationChain msgs) {
+		msgs = eBasicSetContainer((InternalEObject)newRepository, VersioningPackage.AUTHOR__REPOSITORY, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setRepository(Repository newRepository) {
+		if (newRepository != eInternalContainer() || (eContainerFeatureID() != VersioningPackage.AUTHOR__REPOSITORY && newRepository != null)) {
+			if (EcoreUtil.isAncestor(this, newRepository))
+				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+			NotificationChain msgs = null;
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			if (newRepository != null)
+				msgs = ((InternalEObject)newRepository).eInverseAdd(this, VersioningPackage.REPOSITORY__AUTHORS, Repository.class, msgs);
+			msgs = basicSetRepository(newRepository, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VersioningPackage.AUTHOR__REPOSITORY, newRepository, newRepository));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 */
 	public InitialCommit createInitialCommit() {
 		final InitialCommit initialCommit = CommitFactory.eINSTANCE.createInitialCommit();
@@ -233,6 +277,10 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getOwnedBranches()).basicAdd(otherEnd, msgs);
 			case VersioningPackage.AUTHOR__CONTRIBUTED_BRANCHES:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getContributedBranches()).basicAdd(otherEnd, msgs);
+			case VersioningPackage.AUTHOR__REPOSITORY:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetRepository((Repository)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -249,8 +297,24 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return ((InternalEList<?>)getOwnedBranches()).basicRemove(otherEnd, msgs);
 			case VersioningPackage.AUTHOR__CONTRIBUTED_BRANCHES:
 				return ((InternalEList<?>)getContributedBranches()).basicRemove(otherEnd, msgs);
+			case VersioningPackage.AUTHOR__REPOSITORY:
+				return basicSetRepository(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
+		switch (eContainerFeatureID()) {
+			case VersioningPackage.AUTHOR__REPOSITORY:
+				return eInternalContainer().eInverseRemove(this, VersioningPackage.REPOSITORY__AUTHORS, Repository.class, msgs);
+		}
+		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
 
 	/**
@@ -269,6 +333,8 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return getContributedBranches();
 			case VersioningPackage.AUTHOR__COMMITS:
 				return getCommits();
+			case VersioningPackage.AUTHOR__REPOSITORY:
+				return getRepository();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -297,6 +363,9 @@ public class AuthorImpl extends NamedImpl implements Author {
 				getCommits().clear();
 				getCommits().addAll((Collection<? extends Commit>)newValue);
 				return;
+			case VersioningPackage.AUTHOR__REPOSITORY:
+				setRepository((Repository)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -321,6 +390,9 @@ public class AuthorImpl extends NamedImpl implements Author {
 			case VersioningPackage.AUTHOR__COMMITS:
 				getCommits().clear();
 				return;
+			case VersioningPackage.AUTHOR__REPOSITORY:
+				setRepository((Repository)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -341,6 +413,8 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return contributedBranches != null && !contributedBranches.isEmpty();
 			case VersioningPackage.AUTHOR__COMMITS:
 				return commits != null && !commits.isEmpty();
+			case VersioningPackage.AUTHOR__REPOSITORY:
+				return getRepository() != null;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -5,7 +5,6 @@ package tools.vitruv.framework.versioning.tests;
 import junit.framework.TestCase;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
 
 import junit.textui.TestRunner;
@@ -111,6 +110,7 @@ public class RepositoryTest extends TestCase {
 		assertThat(author.getContributedBranches().size(), equalTo(0));
 		assertThat(author.getEmail(), equalTo(email));
 		assertThat(author.getName(), equalTo(name));
+		assertThat(author.getRepository(), equalTo(repository));
 	}
 
 } //RepositoryTest
