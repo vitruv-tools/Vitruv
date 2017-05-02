@@ -175,9 +175,9 @@ public interface Author extends Named {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model branchNameRequired="true" branchedFromRequired="true"
+	 * @model branchNameRequired="true"
 	 * @generated
 	 */
-	UserBranch createBranch(String branchName, Branch branchedFrom);
+	UserBranch createBranch(String branchName);
 
 } // Author

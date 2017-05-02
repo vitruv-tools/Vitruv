@@ -512,11 +512,11 @@ public interface VersioningPackage extends EPackage {
 	EOperation getAuthor__CreateSimpleCommit__String_Commit_EList();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch) <em>Create Branch</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Create Branch</em>' operation.
-	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch)
+	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String)
 	 * @generated
 	 */
 	EOperation getAuthor__CreateBranch__String_Branch();

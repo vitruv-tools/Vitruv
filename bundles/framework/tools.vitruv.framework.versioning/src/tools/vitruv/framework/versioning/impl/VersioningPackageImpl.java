@@ -508,7 +508,6 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 
 		op = initEOperation(getAuthor__CreateBranch__String_Branch(), theBranchPackage.getUserBranch(), "createBranch", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "branchName", 1, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theBranchPackage.getBranch(), "branchedFrom", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(namedEClass, Named.class, "Named", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNamed_Name(), ecorePackage.getEString(), "name", null, 1, 1, Named.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
