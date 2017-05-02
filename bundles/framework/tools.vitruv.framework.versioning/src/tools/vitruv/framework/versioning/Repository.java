@@ -6,6 +6,7 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.commit.Commit;
 
 /**
@@ -20,6 +21,7 @@ import tools.vitruv.framework.versioning.commit.Commit;
  *   <li>{@link tools.vitruv.framework.versioning.Repository#getTags <em>Tags</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Repository#getAuthors <em>Authors</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Repository#getCommits <em>Commits</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Repository#getBranches <em>Branches</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.versioning.VersioningPackage#getRepository()
@@ -76,6 +78,22 @@ public interface Repository extends EObject {
 	 * @generated
 	 */
 	EList<Commit> getCommits();
+
+	/**
+	 * Returns the value of the '<em><b>Branches</b></em>' containment reference list.
+	 * The list contents are of type {@link tools.vitruv.framework.versioning.branch.Branch}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Branches</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Branches</em>' containment reference list.
+	 * @see tools.vitruv.framework.versioning.VersioningPackage#getRepository_Branches()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Branch> getBranches();
 
 	/**
 	 * <!-- begin-user-doc -->

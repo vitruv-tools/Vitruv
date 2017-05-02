@@ -192,7 +192,7 @@ public interface VersioningPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR___CREATE_BRANCH__STRING = NAMED_OPERATION_COUNT + 2;
+	int AUTHOR___CREATE_BRANCH__STRING_BRANCH = NAMED_OPERATION_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Author</em>' class.
@@ -371,13 +371,22 @@ public interface VersioningPackage extends EPackage {
 	int REPOSITORY__COMMITS = 2;
 
 	/**
+	 * The feature id for the '<em><b>Branches</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY__BRANCHES = 3;
+
+	/**
 	 * The number of structural features of the '<em>Repository</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPOSITORY_FEATURE_COUNT = 3;
+	int REPOSITORY_FEATURE_COUNT = 4;
 
 	/**
 	 * The operation id for the '<em>Create Author</em>' operation.
@@ -484,14 +493,14 @@ public interface VersioningPackage extends EPackage {
 	EOperation getAuthor__CreateSimpleCommit__String_Commit_EList();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch) <em>Create Branch</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Create Branch</em>' operation.
-	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String)
+	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch)
 	 * @generated
 	 */
-	EOperation getAuthor__CreateBranch__String();
+	EOperation getAuthor__CreateBranch__String_Branch();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.Named <em>Named</em>}'.
@@ -621,6 +630,17 @@ public interface VersioningPackage extends EPackage {
 	EReference getRepository_Commits();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.versioning.Repository#getBranches <em>Branches</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Branches</em>'.
+	 * @see tools.vitruv.framework.versioning.Repository#getBranches()
+	 * @see #getRepository()
+	 * @generated
+	 */
+	EReference getRepository_Branches();
+
+	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Repository#createAuthor(java.lang.String, java.lang.String) <em>Create Author</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -725,7 +745,7 @@ public interface VersioningPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation AUTHOR___CREATE_BRANCH__STRING = eINSTANCE.getAuthor__CreateBranch__String();
+		EOperation AUTHOR___CREATE_BRANCH__STRING_BRANCH = eINSTANCE.getAuthor__CreateBranch__String_Branch();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.impl.NamedImpl <em>Named</em>}' class.
@@ -832,6 +852,14 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EReference REPOSITORY__COMMITS = eINSTANCE.getRepository_Commits();
+
+		/**
+		 * The meta object literal for the '<em><b>Branches</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPOSITORY__BRANCHES = eINSTANCE.getRepository_Branches();
 
 		/**
 		 * The meta object literal for the '<em><b>Create Author</b></em>' operation.

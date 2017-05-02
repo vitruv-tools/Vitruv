@@ -26,6 +26,7 @@ import tools.vitruv.framework.versioning.Tag;
 import tools.vitruv.framework.versioning.VersioningFactory;
 import tools.vitruv.framework.versioning.VersioningPackage;
 
+import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.commit.Commit;
 
 /**
@@ -39,6 +40,7 @@ import tools.vitruv.framework.versioning.commit.Commit;
  *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getTags <em>Tags</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getAuthors <em>Authors</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getCommits <em>Commits</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getBranches <em>Branches</em>}</li>
  * </ul>
  *
  * @generated
@@ -73,6 +75,16 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	 * @ordered
 	 */
 	protected EList<Commit> commits;
+
+	/**
+	 * The cached value of the '{@link #getBranches() <em>Branches</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBranches()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Branch> branches;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -132,6 +144,18 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<Branch> getBranches() {
+		if (branches == null) {
+			branches = new EObjectContainmentEList<Branch>(Branch.class, this, VersioningPackage.REPOSITORY__BRANCHES);
+		}
+		return branches;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 */
 	public Author createAuthor(String name, String email) {
 		final Author author = VersioningFactory.eINSTANCE.createAuthor();
@@ -168,6 +192,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return ((InternalEList<?>)getTags()).basicRemove(otherEnd, msgs);
 			case VersioningPackage.REPOSITORY__AUTHORS:
 				return ((InternalEList<?>)getAuthors()).basicRemove(otherEnd, msgs);
+			case VersioningPackage.REPOSITORY__BRANCHES:
+				return ((InternalEList<?>)getBranches()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -186,6 +212,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return getAuthors();
 			case VersioningPackage.REPOSITORY__COMMITS:
 				return getCommits();
+			case VersioningPackage.REPOSITORY__BRANCHES:
+				return getBranches();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -211,6 +239,10 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				getCommits().clear();
 				getCommits().addAll((Collection<? extends Commit>)newValue);
 				return;
+			case VersioningPackage.REPOSITORY__BRANCHES:
+				getBranches().clear();
+				getBranches().addAll((Collection<? extends Branch>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -232,6 +264,9 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 			case VersioningPackage.REPOSITORY__COMMITS:
 				getCommits().clear();
 				return;
+			case VersioningPackage.REPOSITORY__BRANCHES:
+				getBranches().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -250,6 +285,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return authors != null && !authors.isEmpty();
 			case VersioningPackage.REPOSITORY__COMMITS:
 				return commits != null && !commits.isEmpty();
+			case VersioningPackage.REPOSITORY__BRANCHES:
+				return branches != null && !branches.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

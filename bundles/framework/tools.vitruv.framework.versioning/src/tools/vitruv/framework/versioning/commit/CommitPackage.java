@@ -87,7 +87,7 @@ public interface CommitPackage extends EPackage {
 	int COMMIT__CHECKSUM = VersioningPackage.SIGNED_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Changes</b></em>' reference list.
+	 * The feature id for the '<em><b>Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -178,7 +178,7 @@ public interface CommitPackage extends EPackage {
 	int MERGE_COMMIT__CHECKSUM = COMMIT__CHECKSUM;
 
 	/**
-	 * The feature id for the '<em><b>Changes</b></em>' reference list.
+	 * The feature id for the '<em><b>Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -278,7 +278,7 @@ public interface CommitPackage extends EPackage {
 	int SIMPLE_COMMIT__CHECKSUM = COMMIT__CHECKSUM;
 
 	/**
-	 * The feature id for the '<em><b>Changes</b></em>' reference list.
+	 * The feature id for the '<em><b>Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -433,7 +433,7 @@ public interface CommitPackage extends EPackage {
 	int INITIAL_COMMIT__CHECKSUM = COMMIT__CHECKSUM;
 
 	/**
-	 * The feature id for the '<em><b>Changes</b></em>' reference list.
+	 * The feature id for the '<em><b>Changes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -560,10 +560,10 @@ public interface CommitPackage extends EPackage {
 	EAttribute getCommit_Checksum();
 
 	/**
-	 * Returns the meta object for the reference list '{@link tools.vitruv.framework.versioning.commit.Commit#getChanges <em>Changes</em>}'.
+	 * Returns the meta object for the containment reference list '{@link tools.vitruv.framework.versioning.commit.Commit#getChanges <em>Changes</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Changes</em>'.
+	 * @return the meta object for the containment reference list '<em>Changes</em>'.
 	 * @see tools.vitruv.framework.versioning.commit.Commit#getChanges()
 	 * @see #getCommit()
 	 * @generated
@@ -745,7 +745,7 @@ public interface CommitPackage extends EPackage {
 		EAttribute COMMIT__CHECKSUM = eINSTANCE.getCommit_Checksum();
 
 		/**
-		 * The meta object literal for the '<em><b>Changes</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Changes</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

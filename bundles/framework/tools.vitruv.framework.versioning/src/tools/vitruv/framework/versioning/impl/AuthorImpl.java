@@ -258,7 +258,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Branch createBranch(String branchName) {
+	public Branch createBranch(String branchName, Branch branchedFrom) {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
@@ -432,8 +432,8 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return createInitialCommit();
 			case VersioningPackage.AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST:
 				return createSimpleCommit((String)arguments.get(0), (Commit)arguments.get(1), (EList<EChange>)arguments.get(2));
-			case VersioningPackage.AUTHOR___CREATE_BRANCH__STRING:
-				return createBranch((String)arguments.get(0));
+			case VersioningPackage.AUTHOR___CREATE_BRANCH__STRING_BRANCH:
+				return createBranch((String)arguments.get(0), (Branch)arguments.get(1));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

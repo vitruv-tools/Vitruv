@@ -241,7 +241,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getAuthor__CreateBranch__String() {
+	public EOperation getAuthor__CreateBranch__String_Branch() {
 		return authorEClass.getEOperations().get(2);
 	}
 
@@ -358,6 +358,15 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getRepository_Branches() {
+		return (EReference)repositoryEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getRepository__CreateAuthor__String_String() {
 		return repositoryEClass.getEOperations().get(0);
 	}
@@ -398,7 +407,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		createEReference(authorEClass, AUTHOR__REPOSITORY);
 		createEOperation(authorEClass, AUTHOR___CREATE_INITIAL_COMMIT);
 		createEOperation(authorEClass, AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST);
-		createEOperation(authorEClass, AUTHOR___CREATE_BRANCH__STRING);
+		createEOperation(authorEClass, AUTHOR___CREATE_BRANCH__STRING_BRANCH);
 
 		namedEClass = createEClass(NAMED);
 		createEAttribute(namedEClass, NAMED__NAME);
@@ -416,6 +425,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		createEReference(repositoryEClass, REPOSITORY__TAGS);
 		createEReference(repositoryEClass, REPOSITORY__AUTHORS);
 		createEReference(repositoryEClass, REPOSITORY__COMMITS);
+		createEReference(repositoryEClass, REPOSITORY__BRANCHES);
 		createEOperation(repositoryEClass, REPOSITORY___CREATE_AUTHOR__STRING_STRING);
 	}
 
@@ -477,8 +487,9 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		addEParameter(op, theCommitPackage.getCommit(), "parent", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEChangePackage.getEChange(), "changes", 0, -1, IS_UNIQUE, IS_ORDERED);
 
-		op = initEOperation(getAuthor__CreateBranch__String(), theBranchPackage.getBranch(), "createBranch", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getAuthor__CreateBranch__String_Branch(), theBranchPackage.getBranch(), "createBranch", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "branchName", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theBranchPackage.getBranch(), "branchedFrom", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(namedEClass, Named.class, "Named", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNamed_Name(), ecorePackage.getEString(), "name", null, 1, 1, Named.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -496,6 +507,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		initEReference(getRepository_Tags(), this.getTag(), null, "tags", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRepository_Authors(), this.getAuthor(), this.getAuthor_Repository(), "authors", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRepository_Commits(), theCommitPackage.getCommit(), null, "commits", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRepository_Branches(), theBranchPackage.getBranch(), null, "branches", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = initEOperation(getRepository__CreateAuthor__String_String(), this.getAuthor(), "createAuthor", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "name", 1, 1, IS_UNIQUE, IS_ORDERED);

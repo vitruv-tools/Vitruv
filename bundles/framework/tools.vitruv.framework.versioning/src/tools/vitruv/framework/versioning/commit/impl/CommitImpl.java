@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -67,7 +67,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	protected long checksum = CHECKSUM_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getChanges() <em>Changes</em>}' reference list.
+	 * The cached value of the '{@link #getChanges() <em>Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getChanges()
@@ -161,7 +161,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 */
 	public EList<EChange> getChanges() {
 		if (changes == null) {
-			changes = new EObjectResolvingEList<EChange>(EChange.class, this, CommitPackage.COMMIT__CHANGES);
+			changes = new EObjectContainmentEList<EChange>(EChange.class, this, CommitPackage.COMMIT__CHANGES);
 		}
 		return changes;
 	}
@@ -262,6 +262,8 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case CommitPackage.COMMIT__CHANGES:
+				return ((InternalEList<?>)getChanges()).basicRemove(otherEnd, msgs);
 			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
 				return ((InternalEList<?>)getCommitsBranchedFromThis()).basicRemove(otherEnd, msgs);
 			case CommitPackage.COMMIT__COMMITS_MERGED_FROM_THIS:

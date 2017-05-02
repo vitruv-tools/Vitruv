@@ -44,7 +44,7 @@ public interface Commit extends Signed {
 	long getChecksum();
 
 	/**
-	 * Returns the value of the '<em><b>Changes</b></em>' reference list.
+	 * Returns the value of the '<em><b>Changes</b></em>' containment reference list.
 	 * The list contents are of type {@link tools.vitruv.framework.change.echange.EChange}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -52,9 +52,9 @@ public interface Commit extends Signed {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Changes</em>' reference list.
+	 * @return the value of the '<em>Changes</em>' containment reference list.
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_Changes()
-	 * @model required="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<EChange> getChanges();
