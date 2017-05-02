@@ -204,16 +204,20 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * @generated
 	 */
 	public SimpleCommit createSimpleCommit(String message, Commit parent, EList<EChange> changes) {
-		final SimpleCommit simpleCommit = CommitFactory.eINSTANCE.createSimpleCommit();
-		final CommitMessage commitMessage = CommitFactory.eINSTANCE.createCommitMessage();
-		commitMessage.setAuthor(this);
-		commitMessage.setDate(new Date());
-		commitMessage.setMessage(message);
-		simpleCommit.setCommitmessage(commitMessage);
-		simpleCommit.setParent(parent);
-		simpleCommit.getChanges().addAll(changes);
-		this.getCommits().add(simpleCommit);
-		return simpleCommit;
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Branch createBranch(String branchName) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -354,6 +358,8 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return createInitialCommit();
 			case VersioningPackage.AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST:
 				return createSimpleCommit((String)arguments.get(0), (Commit)arguments.get(1), (EList<EChange>)arguments.get(2));
+			case VersioningPackage.AUTHOR___CREATE_BRANCH__STRING:
+				return createBranch((String)arguments.get(0));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

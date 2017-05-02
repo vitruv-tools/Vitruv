@@ -177,13 +177,22 @@ public interface VersioningPackage extends EPackage {
 	int AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST = NAMED_OPERATION_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Create Branch</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AUTHOR___CREATE_BRANCH__STRING = NAMED_OPERATION_COUNT + 2;
+
+	/**
 	 * The number of operations of the '<em>Author</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR_OPERATION_COUNT = NAMED_OPERATION_COUNT + 2;
+	int AUTHOR_OPERATION_COUNT = NAMED_OPERATION_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.versioning.impl.TagImpl <em>Tag</em>}' class.
@@ -390,6 +399,16 @@ public interface VersioningPackage extends EPackage {
 	EOperation getAuthor__CreateSimpleCommit__String_Commit_EList();
 
 	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Create Branch</em>' operation.
+	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String)
+	 * @generated
+	 */
+	EOperation getAuthor__CreateBranch__String();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.Named <em>Named</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -553,6 +572,14 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST = eINSTANCE.getAuthor__CreateSimpleCommit__String_Commit_EList();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Branch</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation AUTHOR___CREATE_BRANCH__STRING = eINSTANCE.getAuthor__CreateBranch__String();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.impl.NamedImpl <em>Named</em>}' class.

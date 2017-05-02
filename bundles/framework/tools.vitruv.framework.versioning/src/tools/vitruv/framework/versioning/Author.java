@@ -124,4 +124,12 @@ public interface Author extends Named {
 	 */
 	SimpleCommit createSimpleCommit(String message, Commit parent, EList<EChange> changes);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model branchNameRequired="true"
+	 * @generated
+	 */
+	Branch createBranch(String branchName);
+
 } // Author
