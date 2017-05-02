@@ -27,7 +27,6 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link tools.vitruv.framework.versioning.Author#createInitialCommit() <em>Create Initial Commit</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch) <em>Create Branch</em>}</li>
  * </ul>
@@ -73,8 +72,7 @@ public class AuthorTest extends NamedTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		final Repository repo = VersioningFactory.eINSTANCE.createRepository();
-		setFixture(repo.createAuthor("Name", "Email"));
+		setFixture(VersioningFactory.eINSTANCE.createRepository().createAuthor("Name", "Email"));
 	}
 
 	/**
@@ -87,18 +85,6 @@ public class AuthorTest extends NamedTest {
 	protected void tearDown() throws Exception {
 		setFixture(null);
 	}
-
-	/**
-	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createInitialCommit() <em>Create Initial Commit</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.versioning.Author#createInitialCommit()
-	 */
-	public void testCreateInitialCommit() {
-		final Author author = getFixture();
-		final InitialCommit initialCommit = author.createInitialCommit();
-		testCommit(initialCommit, "Initial commit", 0);
-	}
 		
 	/**
 	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}' operation.
@@ -109,7 +95,7 @@ public class AuthorTest extends NamedTest {
 	public void testCreateSimpleCommit__String_Commit_EList() {
 		final Author author = getFixture();
 		final String commitMessage = "Test message";
-		final InitialCommit parent = author.createInitialCommit();
+		final InitialCommit parent = author.getRepository().getInitialCommit();
 		final EList<EChange> changes = new BasicEList<EChange>();
 		final SimpleCommit commit = author.createSimpleCommit(commitMessage, parent, changes);
 		testCommit(commit, commitMessage, 0);
