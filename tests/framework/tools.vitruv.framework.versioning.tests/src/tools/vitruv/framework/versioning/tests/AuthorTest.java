@@ -6,9 +6,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
 
+import org.hamcrest.core.IsNull;
+
 import junit.textui.TestRunner;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.VersioningFactory;
+import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
 
 /**
@@ -99,12 +102,15 @@ public class AuthorTest extends NamedTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList)
-	 * @generated
 	 */
 	public void testCreateSimpleCommit__String_Commit_EList() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Author author = getFixture();
+		final String branchName = "branchName";
+		final Branch branch = author.createBranch(branchName);
+		assertThat(branch.getName(), equalTo(branchName));
+		assertThat(branch.getOwner(), equalTo(author));
+		assertThat(branch.getContributors(), hasItem(author));
+		assertThat(branch.getBranchedFrom(), );
 	}
 
 	/**
