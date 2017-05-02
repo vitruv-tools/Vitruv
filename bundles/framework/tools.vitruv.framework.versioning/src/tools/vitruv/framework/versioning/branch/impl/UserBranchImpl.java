@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.VersioningPackage;
 
+import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 import tools.vitruv.framework.versioning.branch.UserBranch;
 
@@ -49,7 +50,7 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	 * @generated
 	 * @ordered
 	 */
-	protected UserBranch branchedFrom;
+	protected Branch branchedFrom;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -135,10 +136,10 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public UserBranch getBranchedFrom() {
+	public Branch getBranchedFrom() {
 		if (branchedFrom != null && branchedFrom.eIsProxy()) {
 			InternalEObject oldBranchedFrom = (InternalEObject)branchedFrom;
-			branchedFrom = (UserBranch)eResolveProxy(oldBranchedFrom);
+			branchedFrom = (Branch)eResolveProxy(oldBranchedFrom);
 			if (branchedFrom != oldBranchedFrom) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BranchPackage.USER_BRANCH__BRANCHED_FROM, oldBranchedFrom, branchedFrom));
@@ -152,7 +153,7 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public UserBranch basicGetBranchedFrom() {
+	public Branch basicGetBranchedFrom() {
 		return branchedFrom;
 	}
 
@@ -161,11 +162,33 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setBranchedFrom(UserBranch newBranchedFrom) {
-		UserBranch oldBranchedFrom = branchedFrom;
+	public NotificationChain basicSetBranchedFrom(Branch newBranchedFrom, NotificationChain msgs) {
+		Branch oldBranchedFrom = branchedFrom;
 		branchedFrom = newBranchedFrom;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BranchPackage.USER_BRANCH__BRANCHED_FROM, oldBranchedFrom, branchedFrom));
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, BranchPackage.USER_BRANCH__BRANCHED_FROM, oldBranchedFrom, newBranchedFrom);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setBranchedFrom(Branch newBranchedFrom) {
+		if (newBranchedFrom != branchedFrom) {
+			NotificationChain msgs = null;
+			if (branchedFrom != null)
+				msgs = ((InternalEObject)branchedFrom).eInverseRemove(this, BranchPackage.BRANCH__CHILD_BRANCHES, Branch.class, msgs);
+			if (newBranchedFrom != null)
+				msgs = ((InternalEObject)newBranchedFrom).eInverseAdd(this, BranchPackage.BRANCH__CHILD_BRANCHES, Branch.class, msgs);
+			msgs = basicSetBranchedFrom(newBranchedFrom, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, BranchPackage.USER_BRANCH__BRANCHED_FROM, newBranchedFrom, newBranchedFrom));
 	}
 
 	/**
@@ -180,6 +203,10 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 				if (owner != null)
 					msgs = ((InternalEObject)owner).eInverseRemove(this, VersioningPackage.AUTHOR__OWNED_BRANCHES, Author.class, msgs);
 				return basicSetOwner((Author)otherEnd, msgs);
+			case BranchPackage.USER_BRANCH__BRANCHED_FROM:
+				if (branchedFrom != null)
+					msgs = ((InternalEObject)branchedFrom).eInverseRemove(this, BranchPackage.BRANCH__CHILD_BRANCHES, Branch.class, msgs);
+				return basicSetBranchedFrom((Branch)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -194,6 +221,8 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 		switch (featureID) {
 			case BranchPackage.USER_BRANCH__OWNER:
 				return basicSetOwner(null, msgs);
+			case BranchPackage.USER_BRANCH__BRANCHED_FROM:
+				return basicSetBranchedFrom(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -228,7 +257,7 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 				setOwner((Author)newValue);
 				return;
 			case BranchPackage.USER_BRANCH__BRANCHED_FROM:
-				setBranchedFrom((UserBranch)newValue);
+				setBranchedFrom((Branch)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -246,7 +275,7 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 				setOwner((Author)null);
 				return;
 			case BranchPackage.USER_BRANCH__BRANCHED_FROM:
-				setBranchedFrom((UserBranch)null);
+				setBranchedFrom((Branch)null);
 				return;
 		}
 		super.eUnset(featureID);

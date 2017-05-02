@@ -192,7 +192,7 @@ public interface VersioningPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR___CREATE_BRANCH__STRING_BRANCH = NAMED_OPERATION_COUNT + 1;
+	int AUTHOR___CREATE_BRANCH__STRING = NAMED_OPERATION_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Author</em>' class.
@@ -519,7 +519,7 @@ public interface VersioningPackage extends EPackage {
 	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String)
 	 * @generated
 	 */
-	EOperation getAuthor__CreateBranch__String_Branch();
+	EOperation getAuthor__CreateBranch__String();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.Named <em>Named</em>}'.
@@ -786,7 +786,7 @@ public interface VersioningPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation AUTHOR___CREATE_BRANCH__STRING_BRANCH = eINSTANCE.getAuthor__CreateBranch__String_Branch();
+		EOperation AUTHOR___CREATE_BRANCH__STRING = eINSTANCE.getAuthor__CreateBranch__String();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.impl.NamedImpl <em>Named</em>}' class.

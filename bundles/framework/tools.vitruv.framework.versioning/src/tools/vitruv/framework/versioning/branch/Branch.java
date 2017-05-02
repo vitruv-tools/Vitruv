@@ -75,6 +75,7 @@ public interface Branch extends Named {
 	/**
 	 * Returns the value of the '<em><b>Child Branches</b></em>' reference list.
 	 * The list contents are of type {@link tools.vitruv.framework.versioning.branch.UserBranch}.
+	 * It is bidirectional and its opposite is '{@link tools.vitruv.framework.versioning.branch.UserBranch#getBranchedFrom <em>Branched From</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Child Branches</em>' reference list isn't clear,
@@ -83,7 +84,8 @@ public interface Branch extends Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Child Branches</em>' reference list.
 	 * @see tools.vitruv.framework.versioning.branch.BranchPackage#getBranch_ChildBranches()
-	 * @model
+	 * @see tools.vitruv.framework.versioning.branch.UserBranch#getBranchedFrom
+	 * @model opposite="branchedFrom"
 	 * @generated
 	 */
 	EList<UserBranch> getChildBranches();

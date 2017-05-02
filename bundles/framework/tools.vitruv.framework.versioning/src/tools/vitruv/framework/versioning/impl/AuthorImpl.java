@@ -305,22 +305,11 @@ public class AuthorImpl extends NamedImpl implements Author {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public UserBranch createBranch(String branchName) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 */
-	public UserBranch createBranch(String branchName, UserBranch branchedFrom) {
 		final UserBranch branch = BranchFactory.eINSTANCE.createUserBranch();
 		branch.setName(branchName);
-		branch.setBranchedFrom(branchedFrom);
+		branch.setBranchedFrom(this.getCurrentBranch());
 		branch.getContributors().add(this);
 		branch.setOwner(this);
 		this.getRepository().getBranches().add(branch);
@@ -504,7 +493,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 		switch (operationID) {
 			case VersioningPackage.AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST:
 				return createSimpleCommit((String)arguments.get(0), (Commit)arguments.get(1), (EList<EChange>)arguments.get(2));
-			case VersioningPackage.AUTHOR___CREATE_BRANCH__STRING_BRANCH:
+			case VersioningPackage.AUTHOR___CREATE_BRANCH__STRING:
 				return createBranch((String)arguments.get(0));
 		}
 		return super.eInvoke(operationID, arguments);

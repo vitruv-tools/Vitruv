@@ -52,6 +52,7 @@ public interface UserBranch extends Branch {
 
 	/**
 	 * Returns the value of the '<em><b>Branched From</b></em>' reference.
+	 * It is bidirectional and its opposite is '{@link tools.vitruv.framework.versioning.branch.Branch#getChildBranches <em>Child Branches</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Branched From</em>' reference isn't clear,
@@ -59,12 +60,13 @@ public interface UserBranch extends Branch {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Branched From</em>' reference.
-	 * @see #setBranchedFrom(UserBranch)
+	 * @see #setBranchedFrom(Branch)
 	 * @see tools.vitruv.framework.versioning.branch.BranchPackage#getUserBranch_BranchedFrom()
-	 * @model required="true"
+	 * @see tools.vitruv.framework.versioning.branch.Branch#getChildBranches
+	 * @model opposite="childBranches" required="true"
 	 * @generated
 	 */
-	UserBranch getBranchedFrom();
+	Branch getBranchedFrom();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.versioning.branch.UserBranch#getBranchedFrom <em>Branched From</em>}' reference.
@@ -74,6 +76,6 @@ public interface UserBranch extends Branch {
 	 * @see #getBranchedFrom()
 	 * @generated
 	 */
-	void setBranchedFrom(UserBranch value);
+	void setBranchedFrom(Branch value);
 
 } // UserBranch

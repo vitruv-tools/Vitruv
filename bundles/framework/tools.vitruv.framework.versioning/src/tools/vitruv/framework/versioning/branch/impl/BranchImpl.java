@@ -13,8 +13,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -151,7 +149,7 @@ public class BranchImpl extends NamedImpl implements Branch {
 	 */
 	public EList<UserBranch> getChildBranches() {
 		if (childBranches == null) {
-			childBranches = new EObjectResolvingEList<UserBranch>(UserBranch.class, this, BranchPackage.BRANCH__CHILD_BRANCHES);
+			childBranches = new EObjectWithInverseResolvingEList<UserBranch>(UserBranch.class, this, BranchPackage.BRANCH__CHILD_BRANCHES, BranchPackage.USER_BRANCH__BRANCHED_FROM);
 		}
 		return childBranches;
 	}
@@ -167,6 +165,8 @@ public class BranchImpl extends NamedImpl implements Branch {
 		switch (featureID) {
 			case BranchPackage.BRANCH__CONTRIBUTORS:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getContributors()).basicAdd(otherEnd, msgs);
+			case BranchPackage.BRANCH__CHILD_BRANCHES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getChildBranches()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -181,6 +181,8 @@ public class BranchImpl extends NamedImpl implements Branch {
 		switch (featureID) {
 			case BranchPackage.BRANCH__CONTRIBUTORS:
 				return ((InternalEList<?>)getContributors()).basicRemove(otherEnd, msgs);
+			case BranchPackage.BRANCH__CHILD_BRANCHES:
+				return ((InternalEList<?>)getChildBranches()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
