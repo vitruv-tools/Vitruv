@@ -6,8 +6,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
 
-import org.hamcrest.core.IsNull;
-
 import junit.textui.TestRunner;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.VersioningFactory;
@@ -23,7 +21,7 @@ import tools.vitruv.framework.versioning.commit.InitialCommit;
  * <ul>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createInitialCommit() <em>Create Initial Commit</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}</li>
- *   <li>{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch) <em>Create Branch</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -110,17 +108,16 @@ public class AuthorTest extends NamedTest {
 		assertThat(branch.getName(), equalTo(branchName));
 		assertThat(branch.getOwner(), equalTo(author));
 		assertThat(branch.getContributors(), hasItem(author));
-		assertThat(branch.getBranchedFrom(), );
 	}
 
 	/**
-	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}' operation.
+	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch) <em>Create Branch</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String)
+	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch)
 	 * @generated
 	 */
-	public void testCreateBranch__String() {
+	public void testCreateBranch__String_Branch() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
