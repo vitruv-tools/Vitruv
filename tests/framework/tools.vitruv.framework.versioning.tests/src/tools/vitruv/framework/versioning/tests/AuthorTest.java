@@ -15,7 +15,6 @@ import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.Repository;
 import tools.vitruv.framework.versioning.VersioningFactory;
 import tools.vitruv.framework.versioning.branch.Branch;
-import tools.vitruv.framework.versioning.branch.BranchFactory;
 import tools.vitruv.framework.versioning.branch.UserBranch;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
@@ -104,24 +103,28 @@ public class AuthorTest extends NamedTest {
 		assertThat(parent.getCommitsBranchedFromThis(), hasItem(commit));
 	}
 
+
 	/**
-	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch) <em>Create Branch</em>}' operation.
+	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch)
+	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String)
 	 */
-	public void testCreateBranch__String_Branch() {
+	public void testCreateBranch__String() {
 		final Author author = getFixture();
 		final Repository repo = author.getRepository();
-		final Branch masterBranch = BranchFactory.eINSTANCE.createBranch();
+		final Branch masterBranch = author.getCurrentBranch();
 		final String branchName = "branchName";
-		final UserBranch branch = author.createBranch(branchName, masterBranch);
+		final UserBranch branch = author.createBranch(branchName);
 		assertThat(branch.getName(), equalTo(branchName));
 		assertThat(branch.getOwner(), equalTo(author));
 		assertThat(branch.getContributors(), hasItem(author));
+		assertThat(branch.getBranchedFrom(), equalTo(masterBranch));
 		assertThat(repo.getBranches(), hasItem(branch));
 		assertThat(author.getContributedBranches(), hasItem(branch));
 		assertThat(author.getOwnedBranches(), hasItem(branch));
+		assertThat(masterBranch.getChildBranches(), hasItem(branch));
+		assertThat(masterBranch.getChildBranches().size(), equalTo(1));
 	}
 
 	private void testCommit(final Commit commit, final String message, final int changesLength) {
