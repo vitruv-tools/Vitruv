@@ -149,7 +149,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1"
           eType="#//Author" eOpposite="#//Author/ownedBranches"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="branchedFrom" lowerBound="1"
-          eType="#//branch/UserBranch"/>
+          eType="#//branch/Branch" eOpposite="#//branch/Branch/childBranches"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MasterBranch" eSuperTypes="#//branch/Branch"/>
     <eClassifiers xsi:type="ecore:EClass" name="Branch" eSuperTypes="#//Named">
@@ -158,7 +158,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="contributors" upperBound="-1"
           eType="#//Author" eOpposite="#//Author/contributedBranches"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="childBranches" upperBound="-1"
-          eType="#//branch/UserBranch"/>
+          eType="#//branch/UserBranch" eOpposite="#//branch/UserBranch/branchedFrom"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
