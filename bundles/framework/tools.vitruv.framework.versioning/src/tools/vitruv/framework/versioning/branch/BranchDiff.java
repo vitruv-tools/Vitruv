@@ -70,12 +70,12 @@ public interface BranchDiff extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Source</em>' reference.
-	 * @see #setSource(Branch)
+	 * @see #setSource(UserBranch)
 	 * @see tools.vitruv.framework.versioning.branch.BranchPackage#getBranchDiff_Source()
 	 * @model required="true"
 	 * @generated
 	 */
-	Branch getSource();
+	UserBranch getSource();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.versioning.branch.BranchDiff#getSource <em>Source</em>}' reference.
@@ -85,7 +85,7 @@ public interface BranchDiff extends EObject {
 	 * @see #getSource()
 	 * @generated
 	 */
-	void setSource(Branch value);
+	void setSource(UserBranch value);
 
 	/**
 	 * Returns the value of the '<em><b>Target</b></em>' reference.
@@ -96,12 +96,12 @@ public interface BranchDiff extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target</em>' reference.
-	 * @see #setTarget(Branch)
+	 * @see #setTarget(UserBranch)
 	 * @see tools.vitruv.framework.versioning.branch.BranchPackage#getBranchDiff_Target()
 	 * @model required="true"
 	 * @generated
 	 */
-	Branch getTarget();
+	UserBranch getTarget();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.versioning.branch.BranchDiff#getTarget <em>Target</em>}' reference.
@@ -111,7 +111,7 @@ public interface BranchDiff extends EObject {
 	 * @see #getTarget()
 	 * @generated
 	 */
-	void setTarget(Branch value);
+	void setTarget(UserBranch value);
 
 	/**
 	 * Returns the value of the '<em><b>Last Common Ancestor</b></em>' reference.

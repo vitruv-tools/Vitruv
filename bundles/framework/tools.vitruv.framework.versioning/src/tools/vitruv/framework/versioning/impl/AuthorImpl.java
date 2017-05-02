@@ -28,6 +28,7 @@ import tools.vitruv.framework.versioning.VersioningPackage;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchFactory;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
+import tools.vitruv.framework.versioning.branch.UserBranch;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.CommitFactory;
 import tools.vitruv.framework.versioning.commit.CommitMessage;
@@ -79,7 +80,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Branch> ownedBranches;
+	protected EList<UserBranch> ownedBranches;
 
 	/**
 	 * The cached value of the '{@link #getContributedBranches() <em>Contributed Branches</em>}' reference list.
@@ -156,9 +157,9 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Branch> getOwnedBranches() {
+	public EList<UserBranch> getOwnedBranches() {
 		if (ownedBranches == null) {
-			ownedBranches = new EObjectWithInverseResolvingEList<Branch>(Branch.class, this, VersioningPackage.AUTHOR__OWNED_BRANCHES, BranchPackage.BRANCH__OWNER);
+			ownedBranches = new EObjectWithInverseResolvingEList<UserBranch>(UserBranch.class, this, VersioningPackage.AUTHOR__OWNED_BRANCHES, BranchPackage.USER_BRANCH__OWNER);
 		}
 		return ownedBranches;
 	}
@@ -256,8 +257,8 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 */
-	public Branch createBranch(String branchName, Branch branchedFrom) {
-		final Branch branch = BranchFactory.eINSTANCE.createBranch();
+	public UserBranch createBranch(String branchName, UserBranch branchedFrom) {
+		final UserBranch branch = BranchFactory.eINSTANCE.createUserBranch();
 		branch.setName(branchName);
 		branch.setBranchedFrom(branchedFrom);
 		branch.getContributors().add(this);
@@ -280,7 +281,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 			case VersioningPackage.AUTHOR__CONTRIBUTED_BRANCHES:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getContributedBranches()).basicAdd(otherEnd, msgs);
 			case VersioningPackage.AUTHOR__REPOSITORY:
-				if (eInternalContainer() != null)
+				if (eInternalContainer() != null) 
 					msgs = eBasicRemoveFromContainer(msgs);
 				return basicSetRepository((Repository)otherEnd, msgs);
 		}
@@ -355,7 +356,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return;
 			case VersioningPackage.AUTHOR__OWNED_BRANCHES:
 				getOwnedBranches().clear();
-				getOwnedBranches().addAll((Collection<? extends Branch>)newValue);
+				getOwnedBranches().addAll((Collection<? extends UserBranch>)newValue);
 				return;
 			case VersioningPackage.AUTHOR__CONTRIBUTED_BRANCHES:
 				getContributedBranches().clear();
@@ -433,7 +434,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 			case VersioningPackage.AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST:
 				return createSimpleCommit((String)arguments.get(0), (Commit)arguments.get(1), (EList<EChange>)arguments.get(2));
 			case VersioningPackage.AUTHOR___CREATE_BRANCH__STRING_BRANCH:
-				return createBranch((String)arguments.get(0), (Branch)arguments.get(1));
+				return createBranch((String)arguments.get(0), (UserBranch)arguments.get(1));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

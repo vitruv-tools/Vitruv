@@ -13,11 +13,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchDiff;
 import tools.vitruv.framework.versioning.branch.BranchDiffCreator;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
+import tools.vitruv.framework.versioning.branch.UserBranch;
 
 /**
  * <!-- begin-user-doc -->
@@ -42,7 +41,7 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	 * @generated
 	 * @ordered
 	 */
-	protected Branch source;
+	protected UserBranch source;
 
 	/**
 	 * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
@@ -52,7 +51,7 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	 * @generated
 	 * @ordered
 	 */
-	protected Branch target;
+	protected UserBranch target;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -78,10 +77,10 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Branch getSource() {
+	public UserBranch getSource() {
 		if (source != null && source.eIsProxy()) {
 			InternalEObject oldSource = (InternalEObject)source;
-			source = (Branch)eResolveProxy(oldSource);
+			source = (UserBranch)eResolveProxy(oldSource);
 			if (source != oldSource) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BranchPackage.BRANCH_DIFF_CREATOR__SOURCE, oldSource, source));
@@ -95,7 +94,7 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Branch basicGetSource() {
+	public UserBranch basicGetSource() {
 		return source;
 	}
 
@@ -104,8 +103,8 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setSource(Branch newSource) {
-		Branch oldSource = source;
+	public void setSource(UserBranch newSource) {
+		UserBranch oldSource = source;
 		source = newSource;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, BranchPackage.BRANCH_DIFF_CREATOR__SOURCE, oldSource, source));
@@ -116,10 +115,10 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Branch getTarget() {
+	public UserBranch getTarget() {
 		if (target != null && target.eIsProxy()) {
 			InternalEObject oldTarget = (InternalEObject)target;
-			target = (Branch)eResolveProxy(oldTarget);
+			target = (UserBranch)eResolveProxy(oldTarget);
 			if (target != oldTarget) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BranchPackage.BRANCH_DIFF_CREATOR__TARGET, oldTarget, target));
@@ -133,7 +132,7 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Branch basicGetTarget() {
+	public UserBranch basicGetTarget() {
 		return target;
 	}
 
@@ -142,8 +141,8 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setTarget(Branch newTarget) {
-		Branch oldTarget = target;
+	public void setTarget(UserBranch newTarget) {
+		UserBranch oldTarget = target;
 		target = newTarget;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, BranchPackage.BRANCH_DIFF_CREATOR__TARGET, oldTarget, target));
@@ -187,10 +186,10 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case BranchPackage.BRANCH_DIFF_CREATOR__SOURCE:
-				setSource((Branch)newValue);
+				setSource((UserBranch)newValue);
 				return;
 			case BranchPackage.BRANCH_DIFF_CREATOR__TARGET:
-				setTarget((Branch)newValue);
+				setTarget((UserBranch)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -205,10 +204,10 @@ public class BranchDiffCreatorImpl extends MinimalEObjectImpl.Container implemen
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case BranchPackage.BRANCH_DIFF_CREATOR__SOURCE:
-				setSource((Branch)null);
+				setSource((UserBranch)null);
 				return;
 			case BranchPackage.BRANCH_DIFF_CREATOR__TARGET:
-				setTarget((Branch)null);
+				setTarget((UserBranch)null);
 				return;
 		}
 		super.eUnset(featureID);

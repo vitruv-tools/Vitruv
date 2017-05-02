@@ -58,6 +58,8 @@ public class BranchFactoryImpl extends EFactoryImpl implements BranchFactory {
 		switch (eClass.getClassifierID()) {
 			case BranchPackage.BRANCH_DIFF_CREATOR: return createBranchDiffCreator();
 			case BranchPackage.BRANCH_DIFF: return createBranchDiff();
+			case BranchPackage.USER_BRANCH: return createUserBranch();
+			case BranchPackage.MASTER_BRANCH: return createMasterBranch();
 			case BranchPackage.BRANCH: return createBranch();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -82,6 +84,26 @@ public class BranchFactoryImpl extends EFactoryImpl implements BranchFactory {
 	public BranchDiff createBranchDiff() {
 		BranchDiffImpl branchDiff = new BranchDiffImpl();
 		return branchDiff;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public UserBranch createUserBranch() {
+		UserBranchImpl userBranch = new UserBranchImpl();
+		return userBranch;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public MasterBranch createMasterBranch() {
+		MasterBranchImpl masterBranch = new MasterBranchImpl();
+		return masterBranch;
 	}
 
 	/**

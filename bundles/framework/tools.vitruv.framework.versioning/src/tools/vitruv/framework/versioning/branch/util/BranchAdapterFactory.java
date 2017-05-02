@@ -78,6 +78,14 @@ public class BranchAdapterFactory extends AdapterFactoryImpl {
 				return createBranchDiffAdapter();
 			}
 			@Override
+			public Adapter caseUserBranch(UserBranch object) {
+				return createUserBranchAdapter();
+			}
+			@Override
+			public Adapter caseMasterBranch(MasterBranch object) {
+				return createMasterBranchAdapter();
+			}
+			@Override
 			public Adapter caseBranch(Branch object) {
 				return createBranchAdapter();
 			}
@@ -130,6 +138,34 @@ public class BranchAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBranchDiffAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.branch.UserBranch <em>User Branch</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.versioning.branch.UserBranch
+	 * @generated
+	 */
+	public Adapter createUserBranchAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.branch.MasterBranch <em>Master Branch</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.versioning.branch.MasterBranch
+	 * @generated
+	 */
+	public Adapter createMasterBranchAdapter() {
 		return null;
 	}
 

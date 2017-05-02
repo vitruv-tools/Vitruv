@@ -6,6 +6,7 @@ import org.eclipse.emf.common.util.EList;
 
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.branch.Branch;
+import tools.vitruv.framework.versioning.branch.UserBranch;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
 
@@ -58,8 +59,8 @@ public interface Author extends Named {
 
 	/**
 	 * Returns the value of the '<em><b>Owned Branches</b></em>' reference list.
-	 * The list contents are of type {@link tools.vitruv.framework.versioning.branch.Branch}.
-	 * It is bidirectional and its opposite is '{@link tools.vitruv.framework.versioning.branch.Branch#getOwner <em>Owner</em>}'.
+	 * The list contents are of type {@link tools.vitruv.framework.versioning.branch.UserBranch}.
+	 * It is bidirectional and its opposite is '{@link tools.vitruv.framework.versioning.branch.UserBranch#getOwner <em>Owner</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Owned Branches</em>' reference list isn't clear,
@@ -68,11 +69,11 @@ public interface Author extends Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Owned Branches</em>' reference list.
 	 * @see tools.vitruv.framework.versioning.VersioningPackage#getAuthor_OwnedBranches()
-	 * @see tools.vitruv.framework.versioning.branch.Branch#getOwner
+	 * @see tools.vitruv.framework.versioning.branch.UserBranch#getOwner
 	 * @model opposite="owner"
 	 * @generated
 	 */
-	EList<Branch> getOwnedBranches();
+	EList<UserBranch> getOwnedBranches();
 
 	/**
 	 * Returns the value of the '<em><b>Contributed Branches</b></em>' reference list.
@@ -150,6 +151,6 @@ public interface Author extends Named {
 	 * @model branchNameRequired="true" branchedFromRequired="true"
 	 * @generated
 	 */
-	Branch createBranch(String branchName, Branch branchedFrom);
+	UserBranch createBranch(String branchName, UserBranch branchedFrom);
 
 } // Author

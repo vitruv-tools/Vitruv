@@ -29,6 +29,7 @@ import tools.vitruv.framework.versioning.VersioningFactory;
 import tools.vitruv.framework.versioning.VersioningPackage;
 
 import tools.vitruv.framework.versioning.branch.Branch;
+import tools.vitruv.framework.versioning.branch.MasterBranch;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.CommitFactory;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
@@ -46,6 +47,7 @@ import tools.vitruv.framework.versioning.commit.InitialCommit;
  *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getCommits <em>Commits</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getBranches <em>Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getInitialCommit <em>Initial Commit</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.impl.RepositoryImpl#getMaster <em>Master</em>}</li>
  * </ul>
  *
  * @generated
@@ -100,6 +102,16 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	 * @ordered
 	 */
 	protected InitialCommit initialCommit;
+
+	/**
+	 * The cached value of the '{@link #getMaster() <em>Master</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMaster()
+	 * @generated
+	 * @ordered
+	 */
+	protected MasterBranch master;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -214,6 +226,44 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public MasterBranch getMaster() {
+		if (master != null && master.eIsProxy()) {
+			InternalEObject oldMaster = (InternalEObject)master;
+			master = (MasterBranch)eResolveProxy(oldMaster);
+			if (master != oldMaster) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, VersioningPackage.REPOSITORY__MASTER, oldMaster, master));
+			}
+		}
+		return master;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public MasterBranch basicGetMaster() {
+		return master;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMaster(MasterBranch newMaster) {
+		MasterBranch oldMaster = master;
+		master = newMaster;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VersioningPackage.REPOSITORY__MASTER, oldMaster, master));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 */
 	public Author createAuthor(String name, String email) {
 		final Author author = VersioningFactory.eINSTANCE.createAuthor();
@@ -276,6 +326,9 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return getBranches();
 			case VersioningPackage.REPOSITORY__INITIAL_COMMIT:
 				return getInitialCommit();
+			case VersioningPackage.REPOSITORY__MASTER:
+				if (resolve) return getMaster();
+				return basicGetMaster();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -308,6 +361,9 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 			case VersioningPackage.REPOSITORY__INITIAL_COMMIT:
 				setInitialCommit((InitialCommit)newValue);
 				return;
+			case VersioningPackage.REPOSITORY__MASTER:
+				setMaster((MasterBranch)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -335,6 +391,9 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 			case VersioningPackage.REPOSITORY__INITIAL_COMMIT:
 				setInitialCommit((InitialCommit)null);
 				return;
+			case VersioningPackage.REPOSITORY__MASTER:
+				setMaster((MasterBranch)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -357,6 +416,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return branches != null && !branches.isEmpty();
 			case VersioningPackage.REPOSITORY__INITIAL_COMMIT:
 				return initialCommit != null;
+			case VersioningPackage.REPOSITORY__MASTER:
+				return master != null;
 		}
 		return super.eIsSet(featureID);
 	}

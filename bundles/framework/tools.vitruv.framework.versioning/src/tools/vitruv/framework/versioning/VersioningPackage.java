@@ -380,13 +380,22 @@ public interface VersioningPackage extends EPackage {
 	int REPOSITORY__INITIAL_COMMIT = 4;
 
 	/**
+	 * The feature id for the '<em><b>Master</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY__MASTER = 5;
+
+	/**
 	 * The number of structural features of the '<em>Repository</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPOSITORY_FEATURE_COUNT = 5;
+	int REPOSITORY_FEATURE_COUNT = 6;
 
 	/**
 	 * The operation id for the '<em>Create Author</em>' operation.
@@ -483,11 +492,11 @@ public interface VersioningPackage extends EPackage {
 	EOperation getAuthor__CreateSimpleCommit__String_Commit_EList();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch) <em>Create Branch</em>}' operation.
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.UserBranch) <em>Create Branch</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Create Branch</em>' operation.
-	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch)
+	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.UserBranch)
 	 * @generated
 	 */
 	EOperation getAuthor__CreateBranch__String_Branch();
@@ -640,6 +649,17 @@ public interface VersioningPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getRepository_InitialCommit();
+
+	/**
+	 * Returns the meta object for the reference '{@link tools.vitruv.framework.versioning.Repository#getMaster <em>Master</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Master</em>'.
+	 * @see tools.vitruv.framework.versioning.Repository#getMaster()
+	 * @see #getRepository()
+	 * @generated
+	 */
+	EReference getRepository_Master();
 
 	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Repository#createAuthor(java.lang.String, java.lang.String) <em>Create Author</em>}' operation.
@@ -861,6 +881,14 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EReference REPOSITORY__INITIAL_COMMIT = eINSTANCE.getRepository_InitialCommit();
+
+		/**
+		 * The meta object literal for the '<em><b>Master</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPOSITORY__MASTER = eINSTANCE.getRepository_Master();
 
 		/**
 		 * The meta object literal for the '<em><b>Create Author</b></em>' operation.

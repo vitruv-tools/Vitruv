@@ -80,6 +80,22 @@ public class BranchSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case BranchPackage.USER_BRANCH: {
+				UserBranch userBranch = (UserBranch)theEObject;
+				T result = caseUserBranch(userBranch);
+				if (result == null) result = caseBranch(userBranch);
+				if (result == null) result = caseNamed(userBranch);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case BranchPackage.MASTER_BRANCH: {
+				MasterBranch masterBranch = (MasterBranch)theEObject;
+				T result = caseMasterBranch(masterBranch);
+				if (result == null) result = caseBranch(masterBranch);
+				if (result == null) result = caseNamed(masterBranch);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case BranchPackage.BRANCH: {
 				Branch branch = (Branch)theEObject;
 				T result = caseBranch(branch);
@@ -118,6 +134,36 @@ public class BranchSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseBranchDiff(BranchDiff object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>User Branch</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>User Branch</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseUserBranch(UserBranch object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Master Branch</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Master Branch</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMasterBranch(MasterBranch object) {
 		return null;
 	}
 

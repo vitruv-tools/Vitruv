@@ -7,6 +7,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.versioning.branch.Branch;
+import tools.vitruv.framework.versioning.branch.MasterBranch;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
 
@@ -24,6 +25,7 @@ import tools.vitruv.framework.versioning.commit.InitialCommit;
  *   <li>{@link tools.vitruv.framework.versioning.Repository#getCommits <em>Commits</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Repository#getBranches <em>Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Repository#getInitialCommit <em>Initial Commit</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Repository#getMaster <em>Master</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.versioning.VersioningPackage#getRepository()
@@ -122,6 +124,32 @@ public interface Repository extends EObject {
 	 * @generated
 	 */
 	void setInitialCommit(InitialCommit value);
+
+	/**
+	 * Returns the value of the '<em><b>Master</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Master</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Master</em>' reference.
+	 * @see #setMaster(MasterBranch)
+	 * @see tools.vitruv.framework.versioning.VersioningPackage#getRepository_Master()
+	 * @model required="true"
+	 * @generated
+	 */
+	MasterBranch getMaster();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.Repository#getMaster <em>Master</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Master</em>' reference.
+	 * @see #getMaster()
+	 * @generated
+	 */
+	void setMaster(MasterBranch value);
 
 	/**
 	 * <!-- begin-user-doc -->

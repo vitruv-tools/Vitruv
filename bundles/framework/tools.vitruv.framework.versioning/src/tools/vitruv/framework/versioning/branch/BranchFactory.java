@@ -40,6 +40,24 @@ public interface BranchFactory extends EFactory {
 	BranchDiff createBranchDiff();
 
 	/**
+	 * Returns a new object of class '<em>User Branch</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>User Branch</em>'.
+	 * @generated
+	 */
+	UserBranch createUserBranch();
+
+	/**
+	 * Returns a new object of class '<em>Master Branch</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Master Branch</em>'.
+	 * @generated
+	 */
+	MasterBranch createMasterBranch();
+
+	/**
 	 * Returns a new object of class '<em>Branch</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
