@@ -6,15 +6,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
 
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
-
 import junit.textui.TestRunner;
-import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.VersioningFactory;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
-import tools.vitruv.framework.versioning.commit.SimpleCommit;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,6 +20,7 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit;
  * <ul>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createInitialCommit() <em>Create Initial Commit</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -106,18 +102,22 @@ public class AuthorTest extends NamedTest {
 	 * @generated
 	 */
 	public void testCreateSimpleCommit__String_Commit_EList() {
-		final Author author = getFixture();
-		final InitialCommit initialCommit = author.createInitialCommit();
-		final String message = "Simple";
-		final EList<EChange> changes = new BasicEList<EChange>();
-		final SimpleCommit simpleCommit = author.createSimpleCommit(message, initialCommit, changes);
-		
-		assertThat(simpleCommit.getChanges().size(), equalTo(0));
-		assertThat(simpleCommit.getCommitmessage().getAuthor(), equalTo(author));
-		assertThat(simpleCommit.getCommitmessage().getMessage(), equalTo(message));
-		assertThat(simpleCommit.getParent(), equalTo(initialCommit));
-		assertThat(author.getCommits(), hasItem(initialCommit));
-		assertThat(author.getCommits(), hasItem(simpleCommit));
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.versioning.Author#createBranch(java.lang.String)
+	 * @generated
+	 */
+	public void testCreateBranch__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 } //AuthorTest
