@@ -234,30 +234,27 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 */
 	public InitialCommit createInitialCommit() {
 		final InitialCommit initialCommit = CommitFactory.eINSTANCE.createInitialCommit();
-		final CommitMessage commitMessage = CommitFactory.eINSTANCE.createCommitMessage();
-		commitMessage.setAuthor(this);
-		commitMessage.setDate(new Date());
-		commitMessage.setMessage("Initial commit");
-		initialCommit.setCommitmessage(commitMessage);
-		this.getCommits().add(initialCommit);
+		final String message = "Initial commit";
+		addCommitMessageToCommit(initialCommit, message);
+		addCommitToCollections(initialCommit);
 		return initialCommit;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public SimpleCommit createSimpleCommit(String message, Commit parent, EList<EChange> changes) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		final SimpleCommit simpleCommit = CommitFactory.eINSTANCE.createSimpleCommit();
+		addCommitMessageToCommit(simpleCommit, message);
+		addCommitToCollections(simpleCommit);
+		simpleCommit.setParent(parent);
+		return simpleCommit;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public Branch createBranch(String branchName, Branch branchedFrom) {
 		final Branch branch = BranchFactory.eINSTANCE.createBranch();
@@ -265,7 +262,6 @@ public class AuthorImpl extends NamedImpl implements Author {
 		branch.setBranchedFrom(branchedFrom);
 		branch.getContributors().add(this);
 		branch.setOwner(this);
-		
 		this.getRepository().getBranches().add(branch);
 		return branch;
 	}
@@ -459,5 +455,24 @@ public class AuthorImpl extends NamedImpl implements Author {
 		result.append(')');
 		return result.toString();
 	}
-
+	
+	/**
+	 * @param commit
+	 * @param message
+	 */
+	private void addCommitMessageToCommit(final Commit commit, final String message) {
+		final CommitMessage commitMessage = CommitFactory.eINSTANCE.createCommitMessage();
+		commitMessage.setAuthor(this);
+		commitMessage.setDate(new Date());
+		commitMessage.setMessage(message);
+		commit.setCommitmessage(commitMessage);
+	}
+	
+	/**
+	 * @param commit
+	 */
+	private void addCommitToCollections(final Commit commit) {
+		this.getCommits().add(commit);
+		this.getRepository().getCommits().add(commit);
+	}
 } //AuthorImpl
