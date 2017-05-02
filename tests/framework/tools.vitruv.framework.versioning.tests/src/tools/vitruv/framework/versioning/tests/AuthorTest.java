@@ -29,7 +29,7 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit;
  * The following operations are tested:
  * <ul>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}</li>
- *   <li>{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String, tools.vitruv.framework.versioning.branch.Branch) <em>Create Branch</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}</li>
  * </ul>
  * </p>
  * @generated
