@@ -24,6 +24,7 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit;
  *   <li>{@link tools.vitruv.framework.versioning.Author#getContributedBranches <em>Contributed Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#getCommits <em>Commits</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#getRepository <em>Repository</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Author#getCurrentBranch <em>Current Branch</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.versioning.VersioningPackage#getAuthor()
@@ -136,6 +137,32 @@ public interface Author extends Named {
 	 * @generated
 	 */
 	void setRepository(Repository value);
+
+	/**
+	 * Returns the value of the '<em><b>Current Branch</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Current Branch</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Current Branch</em>' reference.
+	 * @see #setCurrentBranch(Branch)
+	 * @see tools.vitruv.framework.versioning.VersioningPackage#getAuthor_CurrentBranch()
+	 * @model required="true"
+	 * @generated
+	 */
+	Branch getCurrentBranch();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.Author#getCurrentBranch <em>Current Branch</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Current Branch</em>' reference.
+	 * @see #getCurrentBranch()
+	 * @generated
+	 */
+	void setCurrentBranch(Branch value);
 
 	/**
 	 * <!-- begin-user-doc -->

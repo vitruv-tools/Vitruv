@@ -159,13 +159,22 @@ public interface VersioningPackage extends EPackage {
 	int AUTHOR__REPOSITORY = NAMED_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Current Branch</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AUTHOR__CURRENT_BRANCH = NAMED_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Author</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AUTHOR_FEATURE_COUNT = NAMED_FEATURE_COUNT + 5;
+	int AUTHOR_FEATURE_COUNT = NAMED_FEATURE_COUNT + 6;
 
 	/**
 	 * The operation id for the '<em>Create Simple Commit</em>' operation.
@@ -482,6 +491,17 @@ public interface VersioningPackage extends EPackage {
 	EReference getAuthor_Repository();
 
 	/**
+	 * Returns the meta object for the reference '{@link tools.vitruv.framework.versioning.Author#getCurrentBranch <em>Current Branch</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Current Branch</em>'.
+	 * @see tools.vitruv.framework.versioning.Author#getCurrentBranch()
+	 * @see #getAuthor()
+	 * @generated
+	 */
+	EReference getAuthor_CurrentBranch();
+
+	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -743,6 +763,14 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EReference AUTHOR__REPOSITORY = eINSTANCE.getAuthor_Repository();
+
+		/**
+		 * The meta object literal for the '<em><b>Current Branch</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference AUTHOR__CURRENT_BRANCH = eINSTANCE.getAuthor_CurrentBranch();
 
 		/**
 		 * The meta object literal for the '<em><b>Create Simple Commit</b></em>' operation.

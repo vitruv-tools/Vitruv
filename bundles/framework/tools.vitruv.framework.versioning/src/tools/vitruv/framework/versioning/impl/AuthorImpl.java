@@ -48,6 +48,7 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit;
  *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getContributedBranches <em>Contributed Branches</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getCommits <em>Commits</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getRepository <em>Repository</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.impl.AuthorImpl#getCurrentBranch <em>Current Branch</em>}</li>
  * </ul>
  *
  * @generated
@@ -101,6 +102,16 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * @ordered
 	 */
 	protected EList<Commit> commits;
+
+	/**
+	 * The cached value of the '{@link #getCurrentBranch() <em>Current Branch</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCurrentBranch()
+	 * @generated
+	 * @ordered
+	 */
+	protected Branch currentBranch;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -232,6 +243,44 @@ public class AuthorImpl extends NamedImpl implements Author {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Branch getCurrentBranch() {
+		if (currentBranch != null && currentBranch.eIsProxy()) {
+			InternalEObject oldCurrentBranch = (InternalEObject)currentBranch;
+			currentBranch = (Branch)eResolveProxy(oldCurrentBranch);
+			if (currentBranch != oldCurrentBranch) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, VersioningPackage.AUTHOR__CURRENT_BRANCH, oldCurrentBranch, currentBranch));
+			}
+		}
+		return currentBranch;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Branch basicGetCurrentBranch() {
+		return currentBranch;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setCurrentBranch(Branch newCurrentBranch) {
+		Branch oldCurrentBranch = currentBranch;
+		currentBranch = newCurrentBranch;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, VersioningPackage.AUTHOR__CURRENT_BRANCH, oldCurrentBranch, currentBranch));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 */
 	public InitialCommit createInitialCommit() {
 		final InitialCommit initialCommit = CommitFactory.eINSTANCE.createInitialCommit();
@@ -281,7 +330,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 			case VersioningPackage.AUTHOR__CONTRIBUTED_BRANCHES:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getContributedBranches()).basicAdd(otherEnd, msgs);
 			case VersioningPackage.AUTHOR__REPOSITORY:
-				if (eInternalContainer() != null) 
+				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
 				return basicSetRepository((Repository)otherEnd, msgs);
 		}
@@ -338,6 +387,9 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return getCommits();
 			case VersioningPackage.AUTHOR__REPOSITORY:
 				return getRepository();
+			case VersioningPackage.AUTHOR__CURRENT_BRANCH:
+				if (resolve) return getCurrentBranch();
+				return basicGetCurrentBranch();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -369,6 +421,9 @@ public class AuthorImpl extends NamedImpl implements Author {
 			case VersioningPackage.AUTHOR__REPOSITORY:
 				setRepository((Repository)newValue);
 				return;
+			case VersioningPackage.AUTHOR__CURRENT_BRANCH:
+				setCurrentBranch((Branch)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -396,6 +451,9 @@ public class AuthorImpl extends NamedImpl implements Author {
 			case VersioningPackage.AUTHOR__REPOSITORY:
 				setRepository((Repository)null);
 				return;
+			case VersioningPackage.AUTHOR__CURRENT_BRANCH:
+				setCurrentBranch((Branch)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -418,6 +476,8 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return commits != null && !commits.isEmpty();
 			case VersioningPackage.AUTHOR__REPOSITORY:
 				return getRepository() != null;
+			case VersioningPackage.AUTHOR__CURRENT_BRANCH:
+				return currentBranch != null;
 		}
 		return super.eIsSet(featureID);
 	}
