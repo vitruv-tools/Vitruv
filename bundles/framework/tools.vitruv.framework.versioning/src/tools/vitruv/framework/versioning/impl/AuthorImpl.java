@@ -321,6 +321,17 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public void switchToBranch(Branch targetBranch) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -495,6 +506,9 @@ public class AuthorImpl extends NamedImpl implements Author {
 				return createSimpleCommit((String)arguments.get(0), (Commit)arguments.get(1), (EList<EChange>)arguments.get(2));
 			case VersioningPackage.AUTHOR___CREATE_BRANCH__STRING:
 				return createBranch((String)arguments.get(0));
+			case VersioningPackage.AUTHOR___SWITCH_TO_BRANCH__BRANCH:
+				switchToBranch((Branch)arguments.get(0));
+				return null;
 		}
 		return super.eInvoke(operationID, arguments);
 	}

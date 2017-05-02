@@ -180,4 +180,12 @@ public interface Author extends Named {
 	 */
 	UserBranch createBranch(String branchName);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model targetBranchRequired="true"
+	 * @generated
+	 */
+	void switchToBranch(Branch targetBranch);
+
 } // Author

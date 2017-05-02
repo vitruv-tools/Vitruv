@@ -250,6 +250,15 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getAuthor__SwitchToBranch__Branch() {
+		return authorEClass.getEOperations().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getNamed() {
 		return namedEClass;
 	}
@@ -426,6 +435,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		createEReference(authorEClass, AUTHOR__CURRENT_BRANCH);
 		createEOperation(authorEClass, AUTHOR___CREATE_SIMPLE_COMMIT__STRING_COMMIT_ELIST);
 		createEOperation(authorEClass, AUTHOR___CREATE_BRANCH__STRING);
+		createEOperation(authorEClass, AUTHOR___SWITCH_TO_BRANCH__BRANCH);
 
 		namedEClass = createEClass(NAMED);
 		createEAttribute(namedEClass, NAMED__NAME);
@@ -508,6 +518,9 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 
 		op = initEOperation(getAuthor__CreateBranch__String(), theBranchPackage.getUserBranch(), "createBranch", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "branchName", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getAuthor__SwitchToBranch__Branch(), null, "switchToBranch", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theBranchPackage.getBranch(), "targetBranch", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(namedEClass, Named.class, "Named", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNamed_Name(), ecorePackage.getEString(), "name", null, 1, 1, Named.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
