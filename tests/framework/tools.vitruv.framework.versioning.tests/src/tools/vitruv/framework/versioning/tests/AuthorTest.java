@@ -29,6 +29,7 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit;
  * <ul>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createSimpleCommit(java.lang.String, tools.vitruv.framework.versioning.commit.Commit, org.eclipse.emf.common.util.EList) <em>Create Simple Commit</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.Author#createBranch(java.lang.String) <em>Create Branch</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Author#switchToBranch(tools.vitruv.framework.versioning.branch.Branch) <em>Switch To Branch</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -125,6 +126,19 @@ public class AuthorTest extends NamedTest {
 		assertThat(author.getOwnedBranches(), hasItem(branch));
 		assertThat(masterBranch.getChildBranches(), hasItem(branch));
 		assertThat(masterBranch.getChildBranches().size(), equalTo(1));
+	}
+
+	/**
+	 * Tests the '{@link tools.vitruv.framework.versioning.Author#switchToBranch(tools.vitruv.framework.versioning.branch.Branch) <em>Switch To Branch</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.versioning.Author#switchToBranch(tools.vitruv.framework.versioning.branch.Branch)
+	 * @generated
+	 */
+	public void testSwitchToBranch__Branch() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 	private void testCommit(final Commit commit, final String message, final int changesLength) {
