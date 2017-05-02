@@ -9,7 +9,6 @@
     </eOperations>
     <eOperations name="createBranch" eType="#//branch/UserBranch">
       <eParameters name="branchName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eParameters name="branchedFrom" lowerBound="1" eType="#//branch/Branch"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="email" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBranches" upperBound="-1"
