@@ -4,8 +4,12 @@ package tools.vitruv.framework.versioning.tests;
 
 import junit.framework.TestCase;
 
-import junit.textui.TestRunner;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertThat;
 
+import junit.textui.TestRunner;
+import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.Repository;
 import tools.vitruv.framework.versioning.VersioningFactory;
 
@@ -97,12 +101,16 @@ public class RepositoryTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.Repository#createAuthor(java.lang.String, java.lang.String)
-	 * @generated
 	 */
 	public void testCreateAuthor__String_String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Repository repository = getFixture();
+		final String name= "TestName";
+		final String email = "TestEmail";
+		final Author author = repository.createAuthor(name, email);
+		assertThat(author.getCommits().size(), equalTo(0));
+		assertThat(author.getContributedBranches().size(), equalTo(0));
+		assertThat(author.getEmail(), equalTo(email));
+		assertThat(author.getName(), equalTo(name));
 	}
 
 } //RepositoryTest
