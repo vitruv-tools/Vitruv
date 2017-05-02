@@ -8,6 +8,9 @@
       <eParameters name="parent" lowerBound="1" eType="#//commit/Commit"/>
       <eParameters name="changes" upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
     </eOperations>
+    <eOperations name="createBranch" eType="#//branch/Branch">
+      <eParameters name="branchName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="email" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBranches" upperBound="-1"
         eType="#//branch/Branch" eOpposite="#//branch/Branch/owner"/>
@@ -79,7 +82,8 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" changeable="false"
           defaultValueLiteral="1000" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="changes" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
+          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"
+          containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitmessage" lowerBound="1"
           eType="#//commit/CommitMessage"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitsBranchedFromThis"
