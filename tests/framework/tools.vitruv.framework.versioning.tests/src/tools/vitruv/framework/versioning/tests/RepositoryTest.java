@@ -111,6 +111,7 @@ public class RepositoryTest extends TestCase {
 		assertThat(author.getEmail(), equalTo(email));
 		assertThat(author.getName(), equalTo(name));
 		assertThat(author.getRepository(), equalTo(repository));
+		assertThat(author.getCurrentBranch(), equalTo(repository.getMaster()));
 	}
 
 } //RepositoryTest

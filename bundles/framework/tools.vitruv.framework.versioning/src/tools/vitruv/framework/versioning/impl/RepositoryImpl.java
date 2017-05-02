@@ -274,6 +274,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 		author.setName(name);
 		author.setEmail(email);
 		author.setRepository(this);
+		author.setCurrentBranch(this.getMaster());
 		return author;
 	}
 
