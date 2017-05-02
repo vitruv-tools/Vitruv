@@ -8,8 +8,10 @@ import static org.junit.Assert.assertThat;
 
 import junit.textui.TestRunner;
 import tools.vitruv.framework.versioning.Author;
+import tools.vitruv.framework.versioning.Repository;
 import tools.vitruv.framework.versioning.VersioningFactory;
 import tools.vitruv.framework.versioning.branch.Branch;
+import tools.vitruv.framework.versioning.branch.BranchFactory;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
 
 /**
@@ -62,11 +64,11 @@ public class AuthorTest extends NamedTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see junit.framework.TestCase#setUp()
-	 * @generated
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(VersioningFactory.eINSTANCE.createAuthor());
+		final Repository repo = VersioningFactory.eINSTANCE.createRepository();
+		setFixture(repo.createAuthor("Name", "Email"));
 	}
 
 	/**
@@ -103,11 +105,16 @@ public class AuthorTest extends NamedTest {
 	 */
 	public void testCreateSimpleCommit__String_Commit_EList() {
 		final Author author = getFixture();
+		final Repository repo = author.getRepository();
+		final Branch masterBranch = BranchFactory.eINSTANCE.createBranch();
 		final String branchName = "branchName";
-		final Branch branch = author.createBranch(branchName);
+		final Branch branch = author.createBranch(branchName, masterBranch);
 		assertThat(branch.getName(), equalTo(branchName));
 		assertThat(branch.getOwner(), equalTo(author));
 		assertThat(branch.getContributors(), hasItem(author));
+		assertThat(repo.getBranches(), hasItem(branch));
+		assertThat(author.getContributedBranches(), hasItem(branch));
+		assertThat(author.getOwnedBranches(), hasItem(branch));
 	}
 
 	/**
