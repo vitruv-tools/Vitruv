@@ -26,6 +26,7 @@ import tools.vitruv.framework.versioning.Repository;
 import tools.vitruv.framework.versioning.VersioningPackage;
 
 import tools.vitruv.framework.versioning.branch.Branch;
+import tools.vitruv.framework.versioning.branch.BranchFactory;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.CommitFactory;
@@ -259,9 +260,14 @@ public class AuthorImpl extends NamedImpl implements Author {
 	 * @generated
 	 */
 	public Branch createBranch(String branchName, Branch branchedFrom) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		final Branch branch = BranchFactory.eINSTANCE.createBranch();
+		branch.setName(branchName);
+		branch.setBranchedFrom(branchedFrom);
+		branch.getContributors().add(this);
+		branch.setOwner(this);
+		
+		this.getRepository().getBranches().add(branch);
+		return branch;
 	}
 
 	/**
