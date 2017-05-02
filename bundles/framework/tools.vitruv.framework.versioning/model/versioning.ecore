@@ -2,7 +2,6 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="versioning" nsURI="http://tools.vitruv/versioning/1.0" nsPrefix="tools.vitruv.framework.versioning">
   <eClassifiers xsi:type="ecore:EClass" name="Author" eSuperTypes="#//Named">
-    <eOperations name="createInitialCommit" eType="#//commit/InitialCommit"/>
     <eOperations name="createSimpleCommit" eType="#//commit/SimpleCommit">
       <eParameters name="message" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="parent" lowerBound="1" eType="#//commit/Commit"/>
@@ -49,6 +48,8 @@
         eType="#//commit/Commit"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="branches" upperBound="-1"
         eType="#//branch/Branch" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initialCommit" lowerBound="1"
+        eType="#//commit/InitialCommit" containment="true"/>
   </eClassifiers>
   <eSubpackages name="conflict" nsURI="http://tools.vitruv/versioning/1.0/conflict"
       nsPrefix="tools.vitruv.framework.versioning">
