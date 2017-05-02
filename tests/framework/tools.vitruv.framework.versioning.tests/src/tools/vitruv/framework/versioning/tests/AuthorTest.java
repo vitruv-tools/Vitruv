@@ -16,6 +16,7 @@ import tools.vitruv.framework.versioning.Repository;
 import tools.vitruv.framework.versioning.VersioningFactory;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchFactory;
+import tools.vitruv.framework.versioning.branch.UserBranch;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
@@ -114,7 +115,7 @@ public class AuthorTest extends NamedTest {
 		final Repository repo = author.getRepository();
 		final Branch masterBranch = BranchFactory.eINSTANCE.createBranch();
 		final String branchName = "branchName";
-		final Branch branch = author.createBranch(branchName, masterBranch);
+		final UserBranch branch = author.createBranch(branchName, masterBranch);
 		assertThat(branch.getName(), equalTo(branchName));
 		assertThat(branch.getOwner(), equalTo(author));
 		assertThat(branch.getContributors(), hasItem(author));
