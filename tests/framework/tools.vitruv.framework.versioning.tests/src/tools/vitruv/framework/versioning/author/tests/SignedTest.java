@@ -1,10 +1,10 @@
 /**
  */
-package tools.vitruv.framework.versioning.tests;
+package tools.vitruv.framework.versioning.author.tests;
 
 import junit.framework.TestCase;
 
-import tools.vitruv.framework.versioning.Signed;
+import tools.vitruv.framework.versioning.author.Signed;
 
 /**
  * <!-- begin-user-doc -->

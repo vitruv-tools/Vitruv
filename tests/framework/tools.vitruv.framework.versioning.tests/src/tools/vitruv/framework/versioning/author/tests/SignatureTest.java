@@ -1,13 +1,13 @@
 /**
  */
-package tools.vitruv.framework.versioning.tests;
+package tools.vitruv.framework.versioning.author.tests;
 
 import junit.framework.TestCase;
 
 import junit.textui.TestRunner;
 
-import tools.vitruv.framework.versioning.Signature;
-import tools.vitruv.framework.versioning.VersioningFactory;
+import tools.vitruv.framework.versioning.author.AuthorFactory;
+import tools.vitruv.framework.versioning.author.Signature;
 
 /**
  * <!-- begin-user-doc -->
@@ -72,7 +72,7 @@ public class SignatureTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(VersioningFactory.eINSTANCE.createSignature());
+		setFixture(AuthorFactory.eINSTANCE.createSignature());
 	}
 
 	/**

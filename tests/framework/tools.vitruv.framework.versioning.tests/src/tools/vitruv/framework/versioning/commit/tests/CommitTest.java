@@ -3,7 +3,6 @@
 package tools.vitruv.framework.versioning.commit.tests;
 
 import tools.vitruv.framework.versioning.commit.Commit;
-import tools.vitruv.framework.versioning.tests.SignedTest;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,7 +20,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
  * </p>
  * @generated
  */
-public abstract class CommitTest extends SignedTest {
+public abstract class CommitTest extends tools.vitruv.framework.versioning.author.tests.SignedTest {
 
 	/**
 	 * Constructs a new Commit test case with the given name.

@@ -1,27 +1,18 @@
 /**
  */
-package tools.vitruv.framework.versioning.tests;
+package tools.vitruv.framework.versioning.repository.tests;
 
 import junit.framework.TestCase;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-
 import junit.textui.TestRunner;
-import tools.vitruv.framework.versioning.Author;
-import tools.vitruv.framework.versioning.Repository;
-import tools.vitruv.framework.versioning.VersioningFactory;
+
+import tools.vitruv.framework.versioning.repository.Repository;
+import tools.vitruv.framework.versioning.repository.RepositoryFactory;
 
 /**
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Repository</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * The following operations are tested:
- * <ul>
- *   <li>{@link tools.vitruv.framework.versioning.Repository#createAuthor(java.lang.String, java.lang.String) <em>Create Author</em>}</li>
- * </ul>
- * </p>
  * @generated
  */
 public class RepositoryTest extends TestCase {
@@ -81,7 +72,7 @@ public class RepositoryTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(VersioningFactory.eINSTANCE.createRepository());
+		setFixture(RepositoryFactory.eINSTANCE.createRepository());
 	}
 
 	/**
@@ -93,25 +84,6 @@ public class RepositoryTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
-	}
-
-	/**
-	 * Tests the '{@link tools.vitruv.framework.versioning.Repository#createAuthor(java.lang.String, java.lang.String) <em>Create Author</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.versioning.Repository#createAuthor(java.lang.String, java.lang.String)
-	 */
-	public void testCreateAuthor__String_String() {
-		final Repository repository = getFixture();
-		final String name= "TestName";
-		final String email = "TestEmail";
-		final Author author = repository.createAuthor(name, email);
-		assertThat(author.getCommits().size(), equalTo(0));
-		assertThat(author.getContributedBranches().size(), equalTo(0));
-		assertThat(author.getEmail(), equalTo(email));
-		assertThat(author.getName(), equalTo(name));
-		assertThat(author.getRepository(), equalTo(repository));
-		assertThat(author.getCurrentBranch(), equalTo(repository.getMaster()));
 	}
 
 } //RepositoryTest
