@@ -111,7 +111,19 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 		final Author author = AuthorFactory.eINSTANCE.createAuthor();
 		author.setName(name);
 		author.setEmail(email);
+		this.getAuthors().add(author);
 		return author;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Repository createRepository() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -211,6 +223,8 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 		switch (operationID) {
 			case VersioningPackage.ROOT___CREATE_AUTHOR__STRING_STRING:
 				return createAuthor((String)arguments.get(0), (String)arguments.get(1));
+			case VersioningPackage.ROOT___CREATE_REPOSITORY:
+				return createRepository();
 		}
 		return super.eInvoke(operationID, arguments);
 	}

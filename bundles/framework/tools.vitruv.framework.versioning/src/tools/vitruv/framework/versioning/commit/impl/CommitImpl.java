@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.framework.change.echange.EChange;
 
+import tools.vitruv.framework.versioning.author.impl.SignedImpl;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.CommitMessage;
 import tools.vitruv.framework.versioning.commit.CommitPackage;
@@ -44,7 +45,7 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit;
  *
  * @generated
  */
-public abstract class CommitImpl extends tools.vitruv.framework.versioning.author.impl.SignedImpl implements Commit {
+public abstract class CommitImpl extends SignedImpl implements Commit {
 	/**
 	 * The default value of the '{@link #getChecksum() <em>Checksum</em>}' attribute.
 	 * <!-- begin-user-doc -->

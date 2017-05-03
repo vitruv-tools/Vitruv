@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import tools.vitruv.framework.versioning.author.Author;
 import tools.vitruv.framework.versioning.author.AuthorPackage;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
@@ -58,7 +59,7 @@ public class BranchImpl extends NamedImpl implements Branch {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<tools.vitruv.framework.versioning.author.Author> contributors;
+	protected EList<Author> contributors;
 
 	/**
 	 * The cached value of the '{@link #getChildBranches() <em>Child Branches</em>}' reference list.
@@ -132,9 +133,9 @@ public class BranchImpl extends NamedImpl implements Branch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<tools.vitruv.framework.versioning.author.Author> getContributors() {
+	public EList<Author> getContributors() {
 		if (contributors == null) {
-			contributors = new EObjectWithInverseResolvingEList.ManyInverse<tools.vitruv.framework.versioning.author.Author>(tools.vitruv.framework.versioning.author.Author.class, this, BranchPackage.BRANCH__CONTRIBUTORS, AuthorPackage.AUTHOR__CONTRIBUTED_BRANCHES);
+			contributors = new EObjectWithInverseResolvingEList.ManyInverse<Author>(Author.class, this, BranchPackage.BRANCH__CONTRIBUTORS, AuthorPackage.AUTHOR__CONTRIBUTED_BRANCHES);
 		}
 		return contributors;
 	}
@@ -217,7 +218,7 @@ public class BranchImpl extends NamedImpl implements Branch {
 				return;
 			case BranchPackage.BRANCH__CONTRIBUTORS:
 				getContributors().clear();
-				getContributors().addAll((Collection<? extends tools.vitruv.framework.versioning.author.Author>)newValue);
+				getContributors().addAll((Collection<? extends Author>)newValue);
 				return;
 			case BranchPackage.BRANCH__CHILD_BRANCHES:
 				getChildBranches().clear();

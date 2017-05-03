@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+import tools.vitruv.framework.versioning.author.Signed;
 import tools.vitruv.framework.versioning.commit.*;
 
 /**
@@ -192,7 +193,7 @@ public class CommitSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSigned(tools.vitruv.framework.versioning.author.Signed object) {
+	public T caseSigned(Signed object) {
 		return null;
 	}
 

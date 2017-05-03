@@ -200,6 +200,15 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getRoot__CreateRepository() {
+		return rootEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public VersioningFactory getVersioningFactory() {
 		return (VersioningFactory)getEFactoryInstance();
 	}
@@ -230,6 +239,7 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		createEReference(rootEClass, ROOT__REPOSITORIES);
 		createEReference(rootEClass, ROOT__AUTHORS);
 		createEOperation(rootEClass, ROOT___CREATE_AUTHOR__STRING_STRING);
+		createEOperation(rootEClass, ROOT___CREATE_REPOSITORY);
 	}
 
 	/**
@@ -286,6 +296,8 @@ public class VersioningPackageImpl extends EPackageImpl implements VersioningPac
 		EOperation op = initEOperation(getRoot__CreateAuthor__String_String(), theAuthorPackage.getAuthor(), "createAuthor", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "name", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "email", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getRoot__CreateRepository(), theRepositoryPackage.getRepository(), "createRepository", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

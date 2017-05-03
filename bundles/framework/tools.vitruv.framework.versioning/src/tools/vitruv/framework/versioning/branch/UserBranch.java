@@ -2,6 +2,8 @@
  */
 package tools.vitruv.framework.versioning.branch;
 
+import tools.vitruv.framework.versioning.author.Author;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>User Branch</b></em>'.
@@ -30,13 +32,13 @@ public interface UserBranch extends Branch {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Owner</em>' reference.
-	 * @see #setOwner(tools.vitruv.framework.versioning.author.Author)
+	 * @see #setOwner(Author)
 	 * @see tools.vitruv.framework.versioning.branch.BranchPackage#getUserBranch_Owner()
 	 * @see tools.vitruv.framework.versioning.author.Author#getOwnedBranches
 	 * @model opposite="ownedBranches" required="true"
 	 * @generated
 	 */
-	tools.vitruv.framework.versioning.author.Author getOwner();
+	Author getOwner();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.versioning.branch.UserBranch#getOwner <em>Owner</em>}' reference.
@@ -46,7 +48,7 @@ public interface UserBranch extends Branch {
 	 * @see #getOwner()
 	 * @generated
 	 */
-	void setOwner(tools.vitruv.framework.versioning.author.Author value);
+	void setOwner(Author value);
 
 	/**
 	 * Returns the value of the '<em><b>Branched From</b></em>' reference.

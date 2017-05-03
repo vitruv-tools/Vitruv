@@ -8,6 +8,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
+import tools.vitruv.framework.versioning.author.Signed;
 import tools.vitruv.framework.versioning.commit.*;
 
 /**
@@ -87,7 +88,7 @@ public class CommitAdapterFactory extends AdapterFactoryImpl {
 				return createInitialCommitAdapter();
 			}
 			@Override
-			public Adapter caseSigned(tools.vitruv.framework.versioning.author.Signed object) {
+			public Adapter caseSigned(Signed object) {
 				return createSignedAdapter();
 			}
 			@Override

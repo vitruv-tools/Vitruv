@@ -68,4 +68,12 @@ public interface Root extends EObject {
 	 */
 	Author createAuthor(String name, String email);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model required="true"
+	 * @generated
+	 */
+	Repository createRepository();
+
 } // Root

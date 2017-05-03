@@ -5,6 +5,7 @@ package tools.vitruv.framework.versioning.branch;
 import org.eclipse.emf.common.util.EList;
 import tools.vitruv.framework.versioning.Named;
 
+import tools.vitruv.framework.versioning.author.Author;
 import tools.vitruv.framework.versioning.commit.Commit;
 
 /**
@@ -68,7 +69,7 @@ public interface Branch extends Named {
 	 * @model opposite="contributedBranches"
 	 * @generated
 	 */
-	EList<tools.vitruv.framework.versioning.author.Author> getContributors();
+	EList<Author> getContributors();
 
 	/**
 	 * Returns the value of the '<em><b>Child Branches</b></em>' reference list.

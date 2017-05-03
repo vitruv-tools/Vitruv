@@ -141,13 +141,22 @@ public interface VersioningPackage extends EPackage {
 	int ROOT___CREATE_AUTHOR__STRING_STRING = 0;
 
 	/**
+	 * The operation id for the '<em>Create Repository</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT___CREATE_REPOSITORY = 1;
+
+	/**
 	 * The number of operations of the '<em>Root</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_OPERATION_COUNT = 1;
+	int ROOT_OPERATION_COUNT = 2;
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.Named <em>Named</em>}'.
@@ -211,6 +220,16 @@ public interface VersioningPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getRoot__CreateAuthor__String_String();
+
+	/**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.Root#createRepository() <em>Create Repository</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Create Repository</em>' operation.
+	 * @see tools.vitruv.framework.versioning.Root#createRepository()
+	 * @generated
+	 */
+	EOperation getRoot__CreateRepository();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -286,6 +305,14 @@ public interface VersioningPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation ROOT___CREATE_AUTHOR__STRING_STRING = eINSTANCE.getRoot__CreateAuthor__String_String();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Repository</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ROOT___CREATE_REPOSITORY = eINSTANCE.getRoot__CreateRepository();
 
 	}
 

@@ -5,6 +5,7 @@ package tools.vitruv.framework.versioning.commit;
 import java.util.Date;
 
 import org.eclipse.emf.ecore.EObject;
+import tools.vitruv.framework.versioning.author.Author;
 
 /**
  * <!-- begin-user-doc -->
@@ -86,12 +87,12 @@ public interface CommitMessage extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Author</em>' reference.
-	 * @see #setAuthor(tools.vitruv.framework.versioning.author.Author)
+	 * @see #setAuthor(Author)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommitMessage_Author()
 	 * @model required="true"
 	 * @generated
 	 */
-	tools.vitruv.framework.versioning.author.Author getAuthor();
+	Author getAuthor();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.CommitMessage#getAuthor <em>Author</em>}' reference.
@@ -101,6 +102,6 @@ public interface CommitMessage extends EObject {
 	 * @see #getAuthor()
 	 * @generated
 	 */
-	void setAuthor(tools.vitruv.framework.versioning.author.Author value);
+	void setAuthor(Author value);
 
 } // CommitMessage

@@ -80,7 +80,7 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 	 * @generated
 	 * @ordered
 	 */
-	protected tools.vitruv.framework.versioning.author.Author author;
+	protected Author author;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -160,10 +160,10 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public tools.vitruv.framework.versioning.author.Author getAuthor() {
+	public Author getAuthor() {
 		if (author != null && author.eIsProxy()) {
 			InternalEObject oldAuthor = (InternalEObject)author;
-			author = (tools.vitruv.framework.versioning.author.Author)eResolveProxy(oldAuthor);
+			author = (Author)eResolveProxy(oldAuthor);
 			if (author != oldAuthor) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CommitPackage.COMMIT_MESSAGE__AUTHOR, oldAuthor, author));
@@ -177,7 +177,7 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public tools.vitruv.framework.versioning.author.Author basicGetAuthor() {
+	public Author basicGetAuthor() {
 		return author;
 	}
 
@@ -186,8 +186,8 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAuthor(tools.vitruv.framework.versioning.author.Author newAuthor) {
-		tools.vitruv.framework.versioning.author.Author oldAuthor = author;
+	public void setAuthor(Author newAuthor) {
+		Author oldAuthor = author;
 		author = newAuthor;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT_MESSAGE__AUTHOR, oldAuthor, author));
@@ -227,7 +227,7 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 				setMessage((String)newValue);
 				return;
 			case CommitPackage.COMMIT_MESSAGE__AUTHOR:
-				setAuthor((tools.vitruv.framework.versioning.author.Author)newValue);
+				setAuthor((Author)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -248,7 +248,7 @@ public class CommitMessageImpl extends MinimalEObjectImpl.Container implements C
 				setMessage(MESSAGE_EDEFAULT);
 				return;
 			case CommitPackage.COMMIT_MESSAGE__AUTHOR:
-				setAuthor((tools.vitruv.framework.versioning.author.Author)null);
+				setAuthor((Author)null);
 				return;
 		}
 		super.eUnset(featureID);
