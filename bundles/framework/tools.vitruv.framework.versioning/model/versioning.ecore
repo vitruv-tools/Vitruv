@@ -9,6 +9,7 @@
       <eParameters name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="email" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
+    <eOperations name="createRepository" lowerBound="1" eType="#//repository/Repository"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="repositories" upperBound="-1"
         eType="#//repository/Repository" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="authors" upperBound="-1"
