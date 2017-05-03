@@ -1,6 +1,6 @@
 /**
  */
-package tools.vitruv.framework.versioning.impl;
+package tools.vitruv.framework.versioning.author.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-import tools.vitruv.framework.versioning.*;
+import tools.vitruv.framework.versioning.author.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,24 +18,24 @@ import tools.vitruv.framework.versioning.*;
  * <!-- end-user-doc -->
  * @generated
  */
-public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFactory {
+public class AuthorFactoryImpl extends EFactoryImpl implements AuthorFactory {
 	/**
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static VersioningFactory init() {
+	public static AuthorFactory init() {
 		try {
-			VersioningFactory theVersioningFactory = (VersioningFactory)EPackage.Registry.INSTANCE.getEFactory(VersioningPackage.eNS_URI);
-			if (theVersioningFactory != null) {
-				return theVersioningFactory;
+			AuthorFactory theAuthorFactory = (AuthorFactory)EPackage.Registry.INSTANCE.getEFactory(AuthorPackage.eNS_URI);
+			if (theAuthorFactory != null) {
+				return theAuthorFactory;
 			}
 		}
 		catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
-		return new VersioningFactoryImpl();
+		return new AuthorFactoryImpl();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VersioningFactoryImpl() {
+	public AuthorFactoryImpl() {
 		super();
 	}
 
@@ -56,7 +56,8 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case VersioningPackage.ROOT: return createRoot();
+			case AuthorPackage.AUTHOR: return createAuthor();
+			case AuthorPackage.SIGNATURE: return createSignature();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -67,9 +68,9 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Root createRoot() {
-		RootImpl root = new RootImpl();
-		return root;
+	public Author createAuthor() {
+		AuthorImpl author = new AuthorImpl();
+		return author;
 	}
 
 	/**
@@ -77,8 +78,18 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VersioningPackage getVersioningPackage() {
-		return (VersioningPackage)getEPackage();
+	public Signature createSignature() {
+		SignatureImpl signature = new SignatureImpl();
+		return signature;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AuthorPackage getAuthorPackage() {
+		return (AuthorPackage)getEPackage();
 	}
 
 	/**
@@ -88,8 +99,8 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	 * @generated
 	 */
 	@Deprecated
-	public static VersioningPackage getPackage() {
-		return VersioningPackage.eINSTANCE;
+	public static AuthorPackage getPackage() {
+		return AuthorPackage.eINSTANCE;
 	}
 
-} //VersioningFactoryImpl
+} //AuthorFactoryImpl

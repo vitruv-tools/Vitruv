@@ -3,8 +3,6 @@
 package tools.vitruv.framework.versioning.branch;
 
 import org.eclipse.emf.common.util.EList;
-
-import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.Named;
 
 import tools.vitruv.framework.versioning.commit.Commit;
@@ -56,8 +54,8 @@ public interface Branch extends Named {
 
 	/**
 	 * Returns the value of the '<em><b>Contributors</b></em>' reference list.
-	 * The list contents are of type {@link tools.vitruv.framework.versioning.Author}.
-	 * It is bidirectional and its opposite is '{@link tools.vitruv.framework.versioning.Author#getContributedBranches <em>Contributed Branches</em>}'.
+	 * The list contents are of type {@link tools.vitruv.framework.versioning.author.Author}.
+	 * It is bidirectional and its opposite is '{@link tools.vitruv.framework.versioning.author.Author#getContributedBranches <em>Contributed Branches</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Contributors</em>' reference list isn't clear,
@@ -66,11 +64,11 @@ public interface Branch extends Named {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Contributors</em>' reference list.
 	 * @see tools.vitruv.framework.versioning.branch.BranchPackage#getBranch_Contributors()
-	 * @see tools.vitruv.framework.versioning.Author#getContributedBranches
+	 * @see tools.vitruv.framework.versioning.author.Author#getContributedBranches
 	 * @model opposite="contributedBranches"
 	 * @generated
 	 */
-	EList<Author> getContributors();
+	EList<tools.vitruv.framework.versioning.author.Author> getContributors();
 
 	/**
 	 * Returns the value of the '<em><b>Child Branches</b></em>' reference list.

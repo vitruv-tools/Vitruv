@@ -1,12 +1,15 @@
 /**
  */
-package tools.vitruv.framework.versioning.commit.util;
+package tools.vitruv.framework.versioning.author.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
-import tools.vitruv.framework.versioning.commit.*;
+
+import tools.vitruv.framework.versioning.Named;
+
+import tools.vitruv.framework.versioning.author.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,17 +21,17 @@ import tools.vitruv.framework.versioning.commit.*;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see tools.vitruv.framework.versioning.commit.CommitPackage
+ * @see tools.vitruv.framework.versioning.author.AuthorPackage
  * @generated
  */
-public class CommitSwitch<T> extends Switch<T> {
+public class AuthorSwitch<T> extends Switch<T> {
 	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected static CommitPackage modelPackage;
+	protected static AuthorPackage modelPackage;
 
 	/**
 	 * Creates an instance of the switch.
@@ -36,9 +39,9 @@ public class CommitSwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CommitSwitch() {
+	public AuthorSwitch() {
 		if (modelPackage == null) {
-			modelPackage = CommitPackage.eINSTANCE;
+			modelPackage = AuthorPackage.eINSTANCE;
 		}
 	}
 
@@ -65,40 +68,22 @@ public class CommitSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case CommitPackage.MERGE_COMMIT: {
-				MergeCommit mergeCommit = (MergeCommit)theEObject;
-				T result = caseMergeCommit(mergeCommit);
-				if (result == null) result = caseCommit(mergeCommit);
-				if (result == null) result = caseSigned(mergeCommit);
+			case AuthorPackage.AUTHOR: {
+				Author author = (Author)theEObject;
+				T result = caseAuthor(author);
+				if (result == null) result = caseNamed(author);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CommitPackage.SIMPLE_COMMIT: {
-				SimpleCommit simpleCommit = (SimpleCommit)theEObject;
-				T result = caseSimpleCommit(simpleCommit);
-				if (result == null) result = caseCommit(simpleCommit);
-				if (result == null) result = caseSigned(simpleCommit);
+			case AuthorPackage.SIGNATURE: {
+				Signature signature = (Signature)theEObject;
+				T result = caseSignature(signature);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CommitPackage.COMMIT: {
-				Commit commit = (Commit)theEObject;
-				T result = caseCommit(commit);
-				if (result == null) result = caseSigned(commit);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case CommitPackage.COMMIT_MESSAGE: {
-				CommitMessage commitMessage = (CommitMessage)theEObject;
-				T result = caseCommitMessage(commitMessage);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case CommitPackage.INITIAL_COMMIT: {
-				InitialCommit initialCommit = (InitialCommit)theEObject;
-				T result = caseInitialCommit(initialCommit);
-				if (result == null) result = caseCommit(initialCommit);
-				if (result == null) result = caseSigned(initialCommit);
+			case AuthorPackage.SIGNED: {
+				Signed signed = (Signed)theEObject;
+				T result = caseSigned(signed);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -107,77 +92,32 @@ public class CommitSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Merge Commit</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Author</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Merge Commit</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Author</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseMergeCommit(MergeCommit object) {
+	public T caseAuthor(Author object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Simple Commit</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Signature</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Simple Commit</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Signature</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSimpleCommit(SimpleCommit object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Commit</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Commit</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseCommit(Commit object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Message</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Message</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseCommitMessage(CommitMessage object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Initial Commit</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Initial Commit</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseInitialCommit(InitialCommit object) {
+	public T caseSignature(Signature object) {
 		return null;
 	}
 
@@ -192,7 +132,22 @@ public class CommitSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSigned(tools.vitruv.framework.versioning.author.Signed object) {
+	public T caseSigned(Signed object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Named</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Named</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNamed(Named object) {
 		return null;
 	}
 
@@ -212,4 +167,4 @@ public class CommitSwitch<T> extends Switch<T> {
 		return null;
 	}
 
-} //CommitSwitch
+} //AuthorSwitch

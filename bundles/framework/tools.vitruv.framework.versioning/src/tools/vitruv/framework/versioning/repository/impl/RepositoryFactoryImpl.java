@@ -1,6 +1,6 @@
 /**
  */
-package tools.vitruv.framework.versioning.impl;
+package tools.vitruv.framework.versioning.repository.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-import tools.vitruv.framework.versioning.*;
+import tools.vitruv.framework.versioning.repository.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,24 +18,24 @@ import tools.vitruv.framework.versioning.*;
  * <!-- end-user-doc -->
  * @generated
  */
-public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFactory {
+public class RepositoryFactoryImpl extends EFactoryImpl implements RepositoryFactory {
 	/**
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static VersioningFactory init() {
+	public static RepositoryFactory init() {
 		try {
-			VersioningFactory theVersioningFactory = (VersioningFactory)EPackage.Registry.INSTANCE.getEFactory(VersioningPackage.eNS_URI);
-			if (theVersioningFactory != null) {
-				return theVersioningFactory;
+			RepositoryFactory theRepositoryFactory = (RepositoryFactory)EPackage.Registry.INSTANCE.getEFactory(RepositoryPackage.eNS_URI);
+			if (theRepositoryFactory != null) {
+				return theRepositoryFactory;
 			}
 		}
 		catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
-		return new VersioningFactoryImpl();
+		return new RepositoryFactoryImpl();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VersioningFactoryImpl() {
+	public RepositoryFactoryImpl() {
 		super();
 	}
 
@@ -56,7 +56,8 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case VersioningPackage.ROOT: return createRoot();
+			case RepositoryPackage.TAG: return createTag();
+			case RepositoryPackage.REPOSITORY: return createRepository();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -67,9 +68,9 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Root createRoot() {
-		RootImpl root = new RootImpl();
-		return root;
+	public Tag createTag() {
+		TagImpl tag = new TagImpl();
+		return tag;
 	}
 
 	/**
@@ -77,8 +78,18 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VersioningPackage getVersioningPackage() {
-		return (VersioningPackage)getEPackage();
+	public Repository createRepository() {
+		RepositoryImpl repository = new RepositoryImpl();
+		return repository;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RepositoryPackage getRepositoryPackage() {
+		return (RepositoryPackage)getEPackage();
 	}
 
 	/**
@@ -88,8 +99,8 @@ public class VersioningFactoryImpl extends EFactoryImpl implements VersioningFac
 	 * @generated
 	 */
 	@Deprecated
-	public static VersioningPackage getPackage() {
-		return VersioningPackage.eINSTANCE;
+	public static RepositoryPackage getPackage() {
+		return RepositoryPackage.eINSTANCE;
 	}
 
-} //VersioningFactoryImpl
+} //RepositoryFactoryImpl

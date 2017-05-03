@@ -9,10 +9,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import tools.vitruv.framework.versioning.Author;
-import tools.vitruv.framework.versioning.VersioningPackage;
-
+import tools.vitruv.framework.versioning.author.AuthorPackage;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 import tools.vitruv.framework.versioning.branch.UserBranch;
@@ -40,7 +37,7 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	 * @generated
 	 * @ordered
 	 */
-	protected Author owner;
+	protected tools.vitruv.framework.versioning.author.Author owner;
 
 	/**
 	 * The cached value of the '{@link #getBranchedFrom() <em>Branched From</em>}' reference.
@@ -76,10 +73,10 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Author getOwner() {
+	public tools.vitruv.framework.versioning.author.Author getOwner() {
 		if (owner != null && owner.eIsProxy()) {
 			InternalEObject oldOwner = (InternalEObject)owner;
-			owner = (Author)eResolveProxy(oldOwner);
+			owner = (tools.vitruv.framework.versioning.author.Author)eResolveProxy(oldOwner);
 			if (owner != oldOwner) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BranchPackage.USER_BRANCH__OWNER, oldOwner, owner));
@@ -93,7 +90,7 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Author basicGetOwner() {
+	public tools.vitruv.framework.versioning.author.Author basicGetOwner() {
 		return owner;
 	}
 
@@ -102,8 +99,8 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetOwner(Author newOwner, NotificationChain msgs) {
-		Author oldOwner = owner;
+	public NotificationChain basicSetOwner(tools.vitruv.framework.versioning.author.Author newOwner, NotificationChain msgs) {
+		tools.vitruv.framework.versioning.author.Author oldOwner = owner;
 		owner = newOwner;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, BranchPackage.USER_BRANCH__OWNER, oldOwner, newOwner);
@@ -117,13 +114,13 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setOwner(Author newOwner) {
+	public void setOwner(tools.vitruv.framework.versioning.author.Author newOwner) {
 		if (newOwner != owner) {
 			NotificationChain msgs = null;
 			if (owner != null)
-				msgs = ((InternalEObject)owner).eInverseRemove(this, VersioningPackage.AUTHOR__OWNED_BRANCHES, Author.class, msgs);
+				msgs = ((InternalEObject)owner).eInverseRemove(this, AuthorPackage.AUTHOR__OWNED_BRANCHES, tools.vitruv.framework.versioning.author.Author.class, msgs);
 			if (newOwner != null)
-				msgs = ((InternalEObject)newOwner).eInverseAdd(this, VersioningPackage.AUTHOR__OWNED_BRANCHES, Author.class, msgs);
+				msgs = ((InternalEObject)newOwner).eInverseAdd(this, AuthorPackage.AUTHOR__OWNED_BRANCHES, tools.vitruv.framework.versioning.author.Author.class, msgs);
 			msgs = basicSetOwner(newOwner, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
@@ -201,8 +198,8 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 		switch (featureID) {
 			case BranchPackage.USER_BRANCH__OWNER:
 				if (owner != null)
-					msgs = ((InternalEObject)owner).eInverseRemove(this, VersioningPackage.AUTHOR__OWNED_BRANCHES, Author.class, msgs);
-				return basicSetOwner((Author)otherEnd, msgs);
+					msgs = ((InternalEObject)owner).eInverseRemove(this, AuthorPackage.AUTHOR__OWNED_BRANCHES, tools.vitruv.framework.versioning.author.Author.class, msgs);
+				return basicSetOwner((tools.vitruv.framework.versioning.author.Author)otherEnd, msgs);
 			case BranchPackage.USER_BRANCH__BRANCHED_FROM:
 				if (branchedFrom != null)
 					msgs = ((InternalEObject)branchedFrom).eInverseRemove(this, BranchPackage.BRANCH__CHILD_BRANCHES, Branch.class, msgs);
@@ -254,7 +251,7 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case BranchPackage.USER_BRANCH__OWNER:
-				setOwner((Author)newValue);
+				setOwner((tools.vitruv.framework.versioning.author.Author)newValue);
 				return;
 			case BranchPackage.USER_BRANCH__BRANCHED_FROM:
 				setBranchedFrom((Branch)newValue);
@@ -272,7 +269,7 @@ public class UserBranchImpl extends BranchImpl implements UserBranch {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case BranchPackage.USER_BRANCH__OWNER:
-				setOwner((Author)null);
+				setOwner((tools.vitruv.framework.versioning.author.Author)null);
 				return;
 			case BranchPackage.USER_BRANCH__BRANCHED_FROM:
 				setBranchedFrom((Branch)null);

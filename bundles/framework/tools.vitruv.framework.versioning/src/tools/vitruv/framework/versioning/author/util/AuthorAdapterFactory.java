@@ -1,6 +1,6 @@
 /**
  */
-package tools.vitruv.framework.versioning.util;
+package tools.vitruv.framework.versioning.author.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -9,24 +9,26 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.framework.versioning.*;
+import tools.vitruv.framework.versioning.Named;
+
+import tools.vitruv.framework.versioning.author.*;
 
 /**
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see tools.vitruv.framework.versioning.VersioningPackage
+ * @see tools.vitruv.framework.versioning.author.AuthorPackage
  * @generated
  */
-public class VersioningAdapterFactory extends AdapterFactoryImpl {
+public class AuthorAdapterFactory extends AdapterFactoryImpl {
 	/**
 	 * The cached model package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected static VersioningPackage modelPackage;
+	protected static AuthorPackage modelPackage;
 
 	/**
 	 * Creates an instance of the adapter factory.
@@ -34,9 +36,9 @@ public class VersioningAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VersioningAdapterFactory() {
+	public AuthorAdapterFactory() {
 		if (modelPackage == null) {
-			modelPackage = VersioningPackage.eINSTANCE;
+			modelPackage = AuthorPackage.eINSTANCE;
 		}
 	}
 
@@ -65,15 +67,23 @@ public class VersioningAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VersioningSwitch<Adapter> modelSwitch =
-		new VersioningSwitch<Adapter>() {
+	protected AuthorSwitch<Adapter> modelSwitch =
+		new AuthorSwitch<Adapter>() {
+			@Override
+			public Adapter caseAuthor(Author object) {
+				return createAuthorAdapter();
+			}
+			@Override
+			public Adapter caseSignature(Signature object) {
+				return createSignatureAdapter();
+			}
+			@Override
+			public Adapter caseSigned(Signed object) {
+				return createSignedAdapter();
+			}
 			@Override
 			public Adapter caseNamed(Named object) {
 				return createNamedAdapter();
-			}
-			@Override
-			public Adapter caseRoot(Root object) {
-				return createRootAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -96,6 +106,48 @@ public class VersioningAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.author.Author <em>Author</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.versioning.author.Author
+	 * @generated
+	 */
+	public Adapter createAuthorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.author.Signature <em>Signature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.versioning.author.Signature
+	 * @generated
+	 */
+	public Adapter createSignatureAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.author.Signed <em>Signed</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.versioning.author.Signed
+	 * @generated
+	 */
+	public Adapter createSignedAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.Named <em>Named</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -106,20 +158,6 @@ public class VersioningAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createNamedAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.Root <em>Root</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see tools.vitruv.framework.versioning.Root
-	 * @generated
-	 */
-	public Adapter createRootAdapter() {
 		return null;
 	}
 
@@ -135,4 +173,4 @@ public class VersioningAdapterFactory extends AdapterFactoryImpl {
 		return null;
 	}
 
-} //VersioningAdapterFactory
+} //AuthorAdapterFactory

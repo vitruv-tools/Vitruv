@@ -3,7 +3,6 @@ package tools.vitruv.framework.versioning.commit;
 
 import org.eclipse.emf.common.util.EList;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.versioning.Signed;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +25,7 @@ import tools.vitruv.framework.versioning.Signed;
  * @model abstract="true"
  * @generated
  */
-public interface Commit extends Signed {
+public interface Commit extends tools.vitruv.framework.versioning.author.Signed {
 	/**
 	 * Returns the value of the '<em><b>Checksum</b></em>' attribute.
 	 * The default value is <code>"1000"</code>.

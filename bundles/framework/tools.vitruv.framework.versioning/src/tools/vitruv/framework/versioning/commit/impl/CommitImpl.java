@@ -25,7 +25,6 @@ import tools.vitruv.framework.versioning.commit.CommitPackage;
 import tools.vitruv.framework.versioning.commit.MergeCommit;
 
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
-import tools.vitruv.framework.versioning.impl.SignedImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,7 +44,7 @@ import tools.vitruv.framework.versioning.impl.SignedImpl;
  *
  * @generated
  */
-public abstract class CommitImpl extends SignedImpl implements Commit {
+public abstract class CommitImpl extends tools.vitruv.framework.versioning.author.impl.SignedImpl implements Commit {
 	/**
 	 * The default value of the '{@link #getChecksum() <em>Checksum</em>}' attribute.
 	 * <!-- begin-user-doc -->

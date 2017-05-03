@@ -6,8 +6,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
-import tools.vitruv.framework.versioning.VersioningPackage;
+import tools.vitruv.framework.versioning.author.AuthorPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -75,7 +74,7 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT__SIGNATURE = VersioningPackage.SIGNED__SIGNATURE;
+	int COMMIT__SIGNATURE = AuthorPackage.SIGNED__SIGNATURE;
 
 	/**
 	 * The feature id for the '<em><b>Checksum</b></em>' attribute.
@@ -84,7 +83,7 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT__CHECKSUM = VersioningPackage.SIGNED_FEATURE_COUNT + 0;
+	int COMMIT__CHECKSUM = AuthorPackage.SIGNED_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Changes</b></em>' containment reference list.
@@ -93,7 +92,7 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT__CHANGES = VersioningPackage.SIGNED_FEATURE_COUNT + 1;
+	int COMMIT__CHANGES = AuthorPackage.SIGNED_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Commitmessage</b></em>' reference.
@@ -102,7 +101,7 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT__COMMITMESSAGE = VersioningPackage.SIGNED_FEATURE_COUNT + 2;
+	int COMMIT__COMMITMESSAGE = AuthorPackage.SIGNED_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Commits Branched From This</b></em>' reference list.
@@ -111,7 +110,7 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT__COMMITS_BRANCHED_FROM_THIS = VersioningPackage.SIGNED_FEATURE_COUNT + 3;
+	int COMMIT__COMMITS_BRANCHED_FROM_THIS = AuthorPackage.SIGNED_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Commits Merged From This</b></em>' reference list.
@@ -120,7 +119,7 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT__COMMITS_MERGED_FROM_THIS = VersioningPackage.SIGNED_FEATURE_COUNT + 4;
+	int COMMIT__COMMITS_MERGED_FROM_THIS = AuthorPackage.SIGNED_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Identifier</b></em>' attribute.
@@ -129,7 +128,7 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT__IDENTIFIER = VersioningPackage.SIGNED_FEATURE_COUNT + 5;
+	int COMMIT__IDENTIFIER = AuthorPackage.SIGNED_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Commit</em>' class.
@@ -138,7 +137,7 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT_FEATURE_COUNT = VersioningPackage.SIGNED_FEATURE_COUNT + 6;
+	int COMMIT_FEATURE_COUNT = AuthorPackage.SIGNED_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Commit</em>' class.
@@ -147,7 +146,7 @@ public interface CommitPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMMIT_OPERATION_COUNT = VersioningPackage.SIGNED_OPERATION_COUNT + 0;
+	int COMMIT_OPERATION_COUNT = AuthorPackage.SIGNED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.versioning.commit.impl.MergeCommitImpl <em>Merge Commit</em>}' class.

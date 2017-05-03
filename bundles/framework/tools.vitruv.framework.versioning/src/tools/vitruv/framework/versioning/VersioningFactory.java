@@ -22,40 +22,13 @@ public interface VersioningFactory extends EFactory {
 	VersioningFactory eINSTANCE = tools.vitruv.framework.versioning.impl.VersioningFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Author</em>'.
+	 * Returns a new object of class '<em>Root</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Author</em>'.
+	 * @return a new object of class '<em>Root</em>'.
 	 * @generated
 	 */
-	Author createAuthor();
-
-	/**
-	 * Returns a new object of class '<em>Tag</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Tag</em>'.
-	 * @generated
-	 */
-	Tag createTag();
-
-	/**
-	 * Returns a new object of class '<em>Signature</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Signature</em>'.
-	 * @generated
-	 */
-	Signature createSignature();
-
-	/**
-	 * Returns a new object of class '<em>Repository</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Repository</em>'.
-	 * @generated
-	 */
-	Repository createRepository();
+	Root createRoot();
 
 	/**
 	 * Returns the package supported by this factory.
