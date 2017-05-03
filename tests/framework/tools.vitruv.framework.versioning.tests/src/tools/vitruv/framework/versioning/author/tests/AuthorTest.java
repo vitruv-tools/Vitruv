@@ -11,15 +11,15 @@ import org.eclipse.emf.common.util.EList;
 
 import junit.textui.TestRunner;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.versioning.repository.Repository;
-import tools.vitruv.framework.versioning.repository.RepositoryFactory;
+import tools.vitruv.framework.versioning.Root;
+import tools.vitruv.framework.versioning.VersioningFactory;
 import tools.vitruv.framework.versioning.author.Author;
-import tools.vitruv.framework.versioning.author.AuthorFactory;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.UserBranch;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
+import tools.vitruv.framework.versioning.repository.Repository;
 import tools.vitruv.framework.versioning.tests.NamedTest;
 
 /**
@@ -38,7 +38,7 @@ import tools.vitruv.framework.versioning.tests.NamedTest;
  * @generated
  */
 public class AuthorTest extends NamedTest {
-
+	private Root root;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -76,8 +76,9 @@ public class AuthorTest extends NamedTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		final Author author =AuthorFactory.eINSTANCE.createAuthor();
-		final Repository repository = RepositoryFactory.eINSTANCE.createRepository();
+		this.root = VersioningFactory.eINSTANCE.createRoot();
+		final Author author = root.createAuthor("Name", "email");
+		final Repository repository = root.createRepository();
 		author.switchToRepository(repository);
 		setFixture(author);
 	}
@@ -152,11 +153,10 @@ public class AuthorTest extends NamedTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.author.Author#switchToRepository(tools.vitruv.framework.versioning.repository.Repository)
-	 * @generated
 	 */
 	public void testSwitchToRepository__Repository() {
 		final Author author = getFixture();
-		final Repository repository = RepositoryFactory.eINSTANCE.createRepository();
+		final Repository repository = this.root.createRepository();
 		author.switchToRepository(repository);
 		assertThat(author.getCurrentRepository(), equalTo(repository));
 		assertThat(author.getCurrentBranch(), equalTo(repository.getMaster()));

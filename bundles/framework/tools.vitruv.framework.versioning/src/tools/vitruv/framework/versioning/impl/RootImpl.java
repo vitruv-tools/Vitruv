@@ -23,7 +23,10 @@ import tools.vitruv.framework.versioning.VersioningPackage;
 
 import tools.vitruv.framework.versioning.author.Author;
 import tools.vitruv.framework.versioning.author.AuthorFactory;
+import tools.vitruv.framework.versioning.branch.BranchFactory;
+import tools.vitruv.framework.versioning.commit.CommitFactory;
 import tools.vitruv.framework.versioning.repository.Repository;
+import tools.vitruv.framework.versioning.repository.RepositoryFactory;
 
 /**
  * <!-- begin-user-doc -->
@@ -118,12 +121,15 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public Repository createRepository() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		final Repository repository = RepositoryFactory.eINSTANCE.createRepository();
+		repository.setInitialCommit(CommitFactory.eINSTANCE.createInitialCommit());
+		repository.setMaster(BranchFactory.eINSTANCE.createMasterBranch());
+		repository.getBranches().add(repository.getMaster());
+		repository.getCommits().add(repository.getInitialCommit());
+		this.getRepositories().add(repository);
+		return repository;
 	}
 
 	/**

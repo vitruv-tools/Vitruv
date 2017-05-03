@@ -20,11 +20,9 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.framework.versioning.branch.Branch;
-import tools.vitruv.framework.versioning.branch.BranchFactory;
 import tools.vitruv.framework.versioning.branch.MasterBranch;
 
 import tools.vitruv.framework.versioning.commit.Commit;
-import tools.vitruv.framework.versioning.commit.CommitFactory;
 import tools.vitruv.framework.versioning.commit.InitialCommit;
 
 import tools.vitruv.framework.versioning.repository.Repository;
@@ -102,13 +100,10 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
 	 */
 	protected RepositoryImpl() {
 		super();
-		this.setInitialCommit(CommitFactory.eINSTANCE.createInitialCommit());
-		this.setMaster(BranchFactory.eINSTANCE.createMasterBranch());
-		this.getBranches().add(this.getMaster());
-		this.getCommits().add(this.getInitialCommit());
 	}
 
 	/**

@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 
 import junit.textui.TestRunner;
 import tools.vitruv.framework.versioning.author.Author;
+import tools.vitruv.framework.versioning.repository.Repository;
 import tools.vitruv.framework.versioning.Root;
 import tools.vitruv.framework.versioning.VersioningFactory;
 
@@ -122,11 +123,17 @@ public class RootTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.Root#createRepository()
-	 * @generated
 	 */
 	public void testCreateRepository() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Root root = getFixture();
+		final Repository repository = root.createRepository();
+		assertThat(root.getRepositories(), hasItem(repository));
+		Assert.assertNotNull(repository.getMaster());
+		Assert.assertNotNull(repository.getInitialCommit());
+		assertThat(repository.getTags().size(), equalTo(0));
+		assertThat(repository.getCommits().size(), equalTo(1));
+		assertThat(repository.getCommits(), hasItem(repository.getInitialCommit()));
+		assertThat(repository.getBranches().size(), equalTo(1));
+		assertThat(repository.getBranches(), hasItem(repository.getMaster()));
 	}
 } //RootTest

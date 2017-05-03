@@ -5,6 +5,7 @@ package tools.vitruv.framework.versioning.commit.tests;
 import tools.vitruv.framework.versioning.commit.Commit;
 
 import static org.junit.Assert.assertThat;
+import tools.vitruv.framework.versioning.author.tests.SignedTest;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 
@@ -20,7 +21,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
  * </p>
  * @generated
  */
-public abstract class CommitTest extends tools.vitruv.framework.versioning.author.tests.SignedTest {
+public abstract class CommitTest extends SignedTest {
 
 	/**
 	 * Constructs a new Commit test case with the given name.
