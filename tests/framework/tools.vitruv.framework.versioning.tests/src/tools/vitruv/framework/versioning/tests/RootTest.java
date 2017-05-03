@@ -130,10 +130,12 @@ public class RootTest extends TestCase {
 		assertThat(root.getRepositories(), hasItem(repository));
 		Assert.assertNotNull(repository.getMaster());
 		Assert.assertNotNull(repository.getInitialCommit());
+		Assert.assertNotNull(repository.getMaster().getCurrentHeadCommit());
 		assertThat(repository.getTags().size(), equalTo(0));
 		assertThat(repository.getCommits().size(), equalTo(1));
 		assertThat(repository.getCommits(), hasItem(repository.getInitialCommit()));
 		assertThat(repository.getBranches().size(), equalTo(1));
 		assertThat(repository.getBranches(), hasItem(repository.getMaster()));
+		assertThat(repository.getMaster().getCurrentHeadCommit(), equalTo(repository.getInitialCommit()));
 	}
 } //RootTest

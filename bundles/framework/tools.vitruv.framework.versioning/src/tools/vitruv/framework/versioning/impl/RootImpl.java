@@ -24,7 +24,9 @@ import tools.vitruv.framework.versioning.VersioningPackage;
 import tools.vitruv.framework.versioning.author.Author;
 import tools.vitruv.framework.versioning.author.AuthorFactory;
 import tools.vitruv.framework.versioning.branch.BranchFactory;
+import tools.vitruv.framework.versioning.branch.MasterBranch;
 import tools.vitruv.framework.versioning.commit.CommitFactory;
+import tools.vitruv.framework.versioning.commit.InitialCommit;
 import tools.vitruv.framework.versioning.repository.Repository;
 import tools.vitruv.framework.versioning.repository.RepositoryFactory;
 
@@ -119,15 +121,17 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * 
 	 */
 	public Repository createRepository() {
 		final Repository repository = RepositoryFactory.eINSTANCE.createRepository();
-		repository.setInitialCommit(CommitFactory.eINSTANCE.createInitialCommit());
-		repository.setMaster(BranchFactory.eINSTANCE.createMasterBranch());
-		repository.getBranches().add(repository.getMaster());
-		repository.getCommits().add(repository.getInitialCommit());
+		final MasterBranch masterBranch = BranchFactory.eINSTANCE.createMasterBranch();
+		final InitialCommit initialCommit = CommitFactory.eINSTANCE.createInitialCommit();
+		repository.setInitialCommit(initialCommit);
+		masterBranch.setCurrentHeadCommit(initialCommit);
+		repository.setMaster(masterBranch);
+		repository.getBranches().add(masterBranch);
+		repository.getCommits().add(initialCommit);
 		this.getRepositories().add(repository);
 		return repository;
 	}

@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.junit.Assert;
 
 import junit.textui.TestRunner;
 import tools.vitruv.framework.change.echange.EChange;
@@ -132,6 +133,8 @@ public class AuthorTest extends NamedTest {
 		assertThat(author.getOwnedBranches(), hasItem(branch));
 		assertThat(masterBranch.getChildBranches(), hasItem(branch));
 		assertThat(masterBranch.getChildBranches().size(), equalTo(1));
+		assertThat(branch.getCurrentHeadCommit(), equalTo(masterBranch.getCurrentHeadCommit()));
+		Assert.assertNotNull(branch.getCurrentHeadCommit());
 	}
 
 	/**

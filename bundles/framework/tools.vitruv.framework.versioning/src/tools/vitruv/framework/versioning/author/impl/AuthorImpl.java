@@ -303,6 +303,7 @@ public class AuthorImpl extends NamedImpl implements Author {
 		branch.setBranchedFrom(this.getCurrentBranch());
 		branch.getContributors().add(this);
 		branch.setOwner(this);
+		branch.setCurrentHeadCommit(this.getCurrentBranch().getCurrentHeadCommit());
 		this.getCurrentRepository().getBranches().add(branch);
 		return branch;
 	}
