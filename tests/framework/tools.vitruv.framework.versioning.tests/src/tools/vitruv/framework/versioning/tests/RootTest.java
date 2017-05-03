@@ -3,6 +3,7 @@
 package tools.vitruv.framework.versioning.tests;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Assert;
@@ -10,7 +11,6 @@ import junit.framework.TestCase;
 
 import junit.textui.TestRunner;
 import tools.vitruv.framework.versioning.author.Author;
-import tools.vitruv.framework.versioning.repository.Repository;
 import tools.vitruv.framework.versioning.Root;
 import tools.vitruv.framework.versioning.VersioningFactory;
 
@@ -22,6 +22,7 @@ import tools.vitruv.framework.versioning.VersioningFactory;
  * The following operations are tested:
  * <ul>
  *   <li>{@link tools.vitruv.framework.versioning.Root#createAuthor(java.lang.String, java.lang.String) <em>Create Author</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.Root#createRepository() <em>Create Repository</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -112,6 +113,20 @@ public class RootTest extends TestCase {
 		assertThat(author.getContributedBranches().size(), equalTo(0));
 		assertThat(author.getEmail(), equalTo(email));
 		assertThat(author.getName(), equalTo(name));
+		assertThat(root.getAuthors(), hasItem(author));
 		Assert.assertNull(author.getCurrentRepository());
+	}
+
+	/**
+	 * Tests the '{@link tools.vitruv.framework.versioning.Root#createRepository() <em>Create Repository</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.versioning.Root#createRepository()
+	 * @generated
+	 */
+	public void testCreateRepository() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 } //RootTest
