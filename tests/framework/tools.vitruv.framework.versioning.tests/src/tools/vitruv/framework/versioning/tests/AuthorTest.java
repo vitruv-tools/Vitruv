@@ -133,12 +133,13 @@ public class AuthorTest extends NamedTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.Author#switchToBranch(tools.vitruv.framework.versioning.branch.Branch)
-	 * @generated
 	 */
 	public void testSwitchToBranch__Branch() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Author author = getFixture();
+		final Branch branch = author.createBranch("Test");
+		author.switchToBranch(branch);
+		assertThat(author.getCurrentBranch(), equalTo(branch));
+		assertThat(author.getContributedBranches(), hasItem(branch));
 	}
 
 	private void testCommit(final Commit commit, final String message, final int changesLength) {

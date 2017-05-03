@@ -319,12 +319,12 @@ public class AuthorImpl extends NamedImpl implements Author {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public void switchToBranch(Branch targetBranch) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		this.setCurrentBranch(targetBranch);
+		if (!this.getContributedBranches().contains(targetBranch)) {
+			this.getContributedBranches().add(targetBranch);
+		}
 	}
 
 	/**
