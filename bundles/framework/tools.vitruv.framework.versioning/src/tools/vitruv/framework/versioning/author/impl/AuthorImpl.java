@@ -5,6 +5,7 @@ package tools.vitruv.framework.versioning.author.impl;
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -26,10 +27,13 @@ import tools.vitruv.framework.versioning.author.Author;
 import tools.vitruv.framework.versioning.author.AuthorPackage;
 
 import tools.vitruv.framework.versioning.branch.Branch;
+import tools.vitruv.framework.versioning.branch.BranchFactory;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 import tools.vitruv.framework.versioning.branch.UserBranch;
 
 import tools.vitruv.framework.versioning.commit.Commit;
+import tools.vitruv.framework.versioning.commit.CommitFactory;
+import tools.vitruv.framework.versioning.commit.CommitMessage;
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
 
 import tools.vitruv.framework.versioning.impl.NamedImpl;
@@ -280,45 +284,47 @@ public class AuthorImpl extends NamedImpl implements Author {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public SimpleCommit createSimpleCommit(String message, Commit parent, EList<EChange> changes) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		final SimpleCommit simpleCommit = CommitFactory.eINSTANCE.createSimpleCommit();
+		addCommitMessageToCommit(simpleCommit, message);
+		addCommitToCollections(simpleCommit);
+		simpleCommit.setParent(parent);
+		return simpleCommit;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public UserBranch createBranch(String branchName) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		final UserBranch branch = BranchFactory.eINSTANCE.createUserBranch();
+		branch.setName(branchName);
+		branch.setBranchedFrom(this.getCurrentBranch());
+		branch.getContributors().add(this);
+		branch.setOwner(this);
+		this.getCurrentRepository().getBranches().add(branch);
+		return branch;
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public void switchToBranch(Branch targetBranch) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		this.setCurrentBranch(targetBranch);
+		if (!this.getContributedBranches().contains(targetBranch)) {
+			this.getContributedBranches().add(targetBranch);
+		}
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public void switchToRepository(Repository repository) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		this.setCurrentRepository(repository);
+		this.setCurrentBranch(repository.getMaster());
 	}
 
 	/**
@@ -507,4 +513,23 @@ public class AuthorImpl extends NamedImpl implements Author {
 		return result.toString();
 	}
 
+	/**
+	 * @param commit
+	 * @param message
+	 */
+	private void addCommitMessageToCommit(final Commit commit, final String message) {
+		final CommitMessage commitMessage = CommitFactory.eINSTANCE.createCommitMessage();
+		commitMessage.setAuthor(this);
+		commitMessage.setDate(new Date());
+		commitMessage.setMessage(message);
+		commit.setCommitmessage(commitMessage);
+	}
+
+	/**
+	 * @param commit
+	 */
+	private void addCommitToCollections(final Commit commit) {
+		this.getCommits().add(commit);
+		this.getCurrentRepository().getCommits().add(commit);
+	}
 } //AuthorImpl

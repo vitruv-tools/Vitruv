@@ -22,7 +22,7 @@ import tools.vitruv.framework.versioning.Root;
 import tools.vitruv.framework.versioning.VersioningPackage;
 
 import tools.vitruv.framework.versioning.author.Author;
-
+import tools.vitruv.framework.versioning.author.AuthorFactory;
 import tools.vitruv.framework.versioning.repository.Repository;
 
 /**
@@ -106,12 +106,12 @@ public class RootImpl extends MinimalEObjectImpl.Container implements Root {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public Author createAuthor(String name, String email) {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		final Author author = AuthorFactory.eINSTANCE.createAuthor();
+		author.setName(name);
+		author.setEmail(email);
+		return author;
 	}
 
 	/**
