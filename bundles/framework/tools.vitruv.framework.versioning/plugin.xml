@@ -37,6 +37,22 @@
             class="tools.vitruv.framework.versioning.branch.BranchPackage"
             genModel="model/versioning.genmodel"/>
    </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated versioning -->
+      <package
+            uri="http://tools.vitruv/versioning/1.0/author"
+            class="tools.vitruv.framework.versioning.author.AuthorPackage"
+            genModel="model/versioning.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated versioning -->
+      <package
+            uri="http://tools.vitruv/versioning/1.0/repository"
+            class="tools.vitruv.framework.versioning.repository.RepositoryPackage"
+            genModel="model/versioning.genmodel"/>
+   </extension>
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated model -->
       <package
