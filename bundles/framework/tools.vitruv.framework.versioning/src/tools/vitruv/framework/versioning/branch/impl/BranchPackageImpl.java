@@ -17,12 +17,16 @@ import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 
 import tools.vitruv.framework.versioning.VersioningPackage;
 
+import tools.vitruv.framework.versioning.author.AuthorPackage;
+import tools.vitruv.framework.versioning.author.impl.AuthorPackageImpl;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchDiff;
 import tools.vitruv.framework.versioning.branch.BranchDiffCreator;
 import tools.vitruv.framework.versioning.branch.BranchFactory;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 
+import tools.vitruv.framework.versioning.branch.MasterBranch;
+import tools.vitruv.framework.versioning.branch.UserBranch;
 import tools.vitruv.framework.versioning.commit.CommitPackage;
 
 import tools.vitruv.framework.versioning.commit.impl.CommitPackageImpl;
@@ -32,6 +36,8 @@ import tools.vitruv.framework.versioning.conflict.ConflictPackage;
 import tools.vitruv.framework.versioning.conflict.impl.ConflictPackageImpl;
 
 import tools.vitruv.framework.versioning.impl.VersioningPackageImpl;
+import tools.vitruv.framework.versioning.repository.RepositoryPackage;
+import tools.vitruv.framework.versioning.repository.impl.RepositoryPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -53,6 +59,20 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 	 * @generated
 	 */
 	private EClass branchDiffEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass userBranchEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass masterBranchEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -111,6 +131,8 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 		VersioningPackageImpl theVersioningPackage = (VersioningPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(VersioningPackage.eNS_URI) instanceof VersioningPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(VersioningPackage.eNS_URI) : VersioningPackage.eINSTANCE);
 		ConflictPackageImpl theConflictPackage = (ConflictPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ConflictPackage.eNS_URI) instanceof ConflictPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ConflictPackage.eNS_URI) : ConflictPackage.eINSTANCE);
 		CommitPackageImpl theCommitPackage = (CommitPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CommitPackage.eNS_URI) instanceof CommitPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CommitPackage.eNS_URI) : CommitPackage.eINSTANCE);
+		AuthorPackageImpl theAuthorPackage = (AuthorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AuthorPackage.eNS_URI) instanceof AuthorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AuthorPackage.eNS_URI) : AuthorPackage.eINSTANCE);
+		RepositoryPackageImpl theRepositoryPackage = (RepositoryPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RepositoryPackage.eNS_URI) instanceof RepositoryPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RepositoryPackage.eNS_URI) : RepositoryPackage.eINSTANCE);
 		EcorePackageImpl theEcorePackage = (EcorePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI) instanceof EcorePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI) : EcorePackage.eINSTANCE);
 		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
 
@@ -119,6 +141,8 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 		theVersioningPackage.createPackageContents();
 		theConflictPackage.createPackageContents();
 		theCommitPackage.createPackageContents();
+		theAuthorPackage.createPackageContents();
+		theRepositoryPackage.createPackageContents();
 		theEcorePackage.createPackageContents();
 		theEChangePackage.createPackageContents();
 
@@ -127,6 +151,8 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 		theVersioningPackage.initializePackageContents();
 		theConflictPackage.initializePackageContents();
 		theCommitPackage.initializePackageContents();
+		theAuthorPackage.initializePackageContents();
+		theRepositoryPackage.initializePackageContents();
 		theEcorePackage.initializePackageContents();
 		theEChangePackage.initializePackageContents();
 
@@ -234,6 +260,42 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getUserBranch() {
+		return userBranchEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getUserBranch_Owner() {
+		return (EReference)userBranchEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getUserBranch_BranchedFrom() {
+		return (EReference)userBranchEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getMasterBranch() {
+		return masterBranchEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getBranch() {
 		return branchEClass;
 	}
@@ -252,7 +314,7 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getBranch_Owner() {
+	public EReference getBranch_Contributors() {
 		return (EReference)branchEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -261,26 +323,8 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getBranch_Contributors() {
-		return (EReference)branchEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getBranch_BranchedFrom() {
-		return (EReference)branchEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EReference getBranch_ChildBranches() {
-		return (EReference)branchEClass.getEStructuralFeatures().get(4);
+		return (EReference)branchEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -323,11 +367,15 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 		createEReference(branchDiffEClass, BRANCH_DIFF__TARGET);
 		createEReference(branchDiffEClass, BRANCH_DIFF__LAST_COMMON_ANCESTOR);
 
+		userBranchEClass = createEClass(USER_BRANCH);
+		createEReference(userBranchEClass, USER_BRANCH__OWNER);
+		createEReference(userBranchEClass, USER_BRANCH__BRANCHED_FROM);
+
+		masterBranchEClass = createEClass(MASTER_BRANCH);
+
 		branchEClass = createEClass(BRANCH);
 		createEReference(branchEClass, BRANCH__CURRENT_HEAD_COMMIT);
-		createEReference(branchEClass, BRANCH__OWNER);
 		createEReference(branchEClass, BRANCH__CONTRIBUTORS);
-		createEReference(branchEClass, BRANCH__BRANCHED_FROM);
 		createEReference(branchEClass, BRANCH__CHILD_BRANCHES);
 	}
 
@@ -356,6 +404,7 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 
 		// Obtain other dependent packages
 		CommitPackage theCommitPackage = (CommitPackage)EPackage.Registry.INSTANCE.getEPackage(CommitPackage.eNS_URI);
+		AuthorPackage theAuthorPackage = (AuthorPackage)EPackage.Registry.INSTANCE.getEPackage(AuthorPackage.eNS_URI);
 		VersioningPackage theVersioningPackage = (VersioningPackage)EPackage.Registry.INSTANCE.getEPackage(VersioningPackage.eNS_URI);
 
 		// Create type parameters
@@ -363,28 +412,34 @@ public class BranchPackageImpl extends EPackageImpl implements BranchPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		userBranchEClass.getESuperTypes().add(this.getBranch());
+		masterBranchEClass.getESuperTypes().add(this.getBranch());
 		branchEClass.getESuperTypes().add(theVersioningPackage.getNamed());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(branchDiffCreatorEClass, BranchDiffCreator.class, "BranchDiffCreator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getBranchDiffCreator_Source(), this.getBranch(), null, "source", null, 1, 1, BranchDiffCreator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBranchDiffCreator_Target(), this.getBranch(), null, "target", null, 1, 1, BranchDiffCreator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBranchDiffCreator_Source(), this.getUserBranch(), null, "source", null, 1, 1, BranchDiffCreator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBranchDiffCreator_Target(), this.getUserBranch(), null, "target", null, 1, 1, BranchDiffCreator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getBranchDiffCreator__CreateVersionDiff(), this.getBranchDiff(), "createVersionDiff", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(branchDiffEClass, BranchDiff.class, "BranchDiff", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getBranchDiff_SourceCommits(), theCommitPackage.getCommit(), null, "sourceCommits", null, 0, -1, BranchDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBranchDiff_TargetCommits(), theCommitPackage.getCommit(), null, "targetCommits", null, 0, -1, BranchDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBranchDiff_Source(), this.getBranch(), null, "source", null, 1, 1, BranchDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBranchDiff_Target(), this.getBranch(), null, "target", null, 1, 1, BranchDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBranchDiff_Source(), this.getUserBranch(), null, "source", null, 1, 1, BranchDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBranchDiff_Target(), this.getUserBranch(), null, "target", null, 1, 1, BranchDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBranchDiff_LastCommonAncestor(), theCommitPackage.getCommit(), null, "lastCommonAncestor", null, 1, 1, BranchDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(userBranchEClass, UserBranch.class, "UserBranch", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getUserBranch_Owner(), theAuthorPackage.getAuthor(), theAuthorPackage.getAuthor_OwnedBranches(), "owner", null, 1, 1, UserBranch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getUserBranch_BranchedFrom(), this.getBranch(), this.getBranch_ChildBranches(), "branchedFrom", null, 1, 1, UserBranch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(masterBranchEClass, MasterBranch.class, "MasterBranch", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(branchEClass, Branch.class, "Branch", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getBranch_CurrentHeadCommit(), theCommitPackage.getCommit(), null, "currentHeadCommit", null, 1, 1, Branch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBranch_Owner(), theVersioningPackage.getAuthor(), theVersioningPackage.getAuthor_OwnedBranches(), "owner", null, 1, 1, Branch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBranch_Contributors(), theVersioningPackage.getAuthor(), theVersioningPackage.getAuthor_ContributedBranches(), "contributors", null, 1, -1, Branch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBranch_BranchedFrom(), this.getBranch(), this.getBranch_ChildBranches(), "branchedFrom", null, 1, 1, Branch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBranch_ChildBranches(), this.getBranch(), this.getBranch_BranchedFrom(), "childBranches", null, 0, -1, Branch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBranch_Contributors(), theAuthorPackage.getAuthor(), theAuthorPackage.getAuthor_ContributedBranches(), "contributors", null, 0, -1, Branch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBranch_ChildBranches(), this.getUserBranch(), this.getUserBranch_BranchedFrom(), "childBranches", null, 0, -1, Branch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 	}
 
 } //BranchPackageImpl

@@ -8,9 +8,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
-
-import tools.vitruv.framework.versioning.Signed;
-
+import tools.vitruv.framework.versioning.author.Signed;
 import tools.vitruv.framework.versioning.commit.*;
 
 /**
@@ -184,13 +182,13 @@ public class CommitAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.Signed <em>Signed</em>}'.
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.versioning.author.Signed <em>Signed</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see tools.vitruv.framework.versioning.Signed
+	 * @see tools.vitruv.framework.versioning.author.Signed
 	 * @generated
 	 */
 	public Adapter createSignedAdapter() {

@@ -6,7 +6,6 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
@@ -14,19 +13,19 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.framework.change.echange.EChange;
 
+import tools.vitruv.framework.versioning.author.impl.SignedImpl;
 import tools.vitruv.framework.versioning.commit.Commit;
 import tools.vitruv.framework.versioning.commit.CommitMessage;
 import tools.vitruv.framework.versioning.commit.CommitPackage;
 import tools.vitruv.framework.versioning.commit.MergeCommit;
 
 import tools.vitruv.framework.versioning.commit.SimpleCommit;
-import tools.vitruv.framework.versioning.impl.SignedImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -68,7 +67,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	protected long checksum = CHECKSUM_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getChanges() <em>Changes</em>}' reference list.
+	 * The cached value of the '{@link #getChanges() <em>Changes</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getChanges()
@@ -130,23 +129,10 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
+	 * @generated
 	 */
 	protected CommitImpl() {
 		super();
-		this.identifier = (int) (Math.random() * Integer.MAX_VALUE + 1);
-		this.commitsBranchedFromThis = new BasicEList<SimpleCommit>();
-	}
-
-	/**
-	 * @param changes
-	 * @param commitmessage
-	 */
-	public CommitImpl(EList<EChange> changes, CommitMessage commitmessage) {
-		this();
-		this.changes = changes;
-		this.commitmessage = commitmessage;
-		commitmessage.getAuthor().getCommits().add(this);
 	}
 
 	/**
@@ -175,7 +161,7 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 */
 	public EList<EChange> getChanges() {
 		if (changes == null) {
-			changes = new EObjectResolvingEList<EChange>(EChange.class, this, CommitPackage.COMMIT__CHANGES);
+			changes = new EObjectContainmentEList<EChange>(EChange.class, this, CommitPackage.COMMIT__CHANGES);
 		}
 		return changes;
 	}
@@ -204,6 +190,18 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	 */
 	public CommitMessage basicGetCommitmessage() {
 		return commitmessage;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setCommitmessage(CommitMessage newCommitmessage) {
+		CommitMessage oldCommitmessage = commitmessage;
+		commitmessage = newCommitmessage;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT__COMMITMESSAGE, oldCommitmessage, commitmessage));
 	}
 
 	/**
@@ -242,14 +240,6 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 */
-	public void addNextCommit(SimpleCommit simpleCommit) {
-		this.commitsBranchedFromThis.add(simpleCommit);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -272,6 +262,8 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case CommitPackage.COMMIT__CHANGES:
+				return ((InternalEList<?>)getChanges()).basicRemove(otherEnd, msgs);
 			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
 				return ((InternalEList<?>)getCommitsBranchedFromThis()).basicRemove(otherEnd, msgs);
 			case CommitPackage.COMMIT__COMMITS_MERGED_FROM_THIS:
@@ -315,6 +307,13 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case CommitPackage.COMMIT__CHANGES:
+				getChanges().clear();
+				getChanges().addAll((Collection<? extends EChange>)newValue);
+				return;
+			case CommitPackage.COMMIT__COMMITMESSAGE:
+				setCommitmessage((CommitMessage)newValue);
+				return;
 			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
 				getCommitsBranchedFromThis().clear();
 				getCommitsBranchedFromThis().addAll((Collection<? extends SimpleCommit>)newValue);
@@ -335,6 +334,12 @@ public abstract class CommitImpl extends SignedImpl implements Commit {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case CommitPackage.COMMIT__CHANGES:
+				getChanges().clear();
+				return;
+			case CommitPackage.COMMIT__COMMITMESSAGE:
+				setCommitmessage((CommitMessage)null);
+				return;
 			case CommitPackage.COMMIT__COMMITS_BRANCHED_FROM_THIS:
 				getCommitsBranchedFromThis().clear();
 				return;

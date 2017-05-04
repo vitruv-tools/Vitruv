@@ -31,6 +31,7 @@ public class VersioningTests extends TestSuite {
 	 */
 	public static Test suite() {
 		TestSuite suite = new VersioningTests("versioning Tests");
+		suite.addTestSuite(RootTest.class);
 		return suite;
 	}
 

@@ -5,8 +5,7 @@ package tools.vitruv.framework.versioning.commit;
 import java.util.Date;
 
 import org.eclipse.emf.ecore.EObject;
-
-import tools.vitruv.framework.versioning.Author;
+import tools.vitruv.framework.versioning.author.Author;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,11 +35,22 @@ public interface CommitMessage extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Date</em>' attribute.
+	 * @see #setDate(Date)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommitMessage_Date()
-	 * @model required="true" changeable="false"
+	 * @model required="true"
 	 * @generated
 	 */
 	Date getDate();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.CommitMessage#getDate <em>Date</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Date</em>' attribute.
+	 * @see #getDate()
+	 * @generated
+	 */
+	void setDate(Date value);
 
 	/**
 	 * Returns the value of the '<em><b>Message</b></em>' attribute.
@@ -51,11 +61,22 @@ public interface CommitMessage extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Message</em>' attribute.
+	 * @see #setMessage(String)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommitMessage_Message()
-	 * @model required="true" changeable="false"
+	 * @model required="true"
 	 * @generated
 	 */
 	String getMessage();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.CommitMessage#getMessage <em>Message</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Message</em>' attribute.
+	 * @see #getMessage()
+	 * @generated
+	 */
+	void setMessage(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Author</b></em>' reference.
@@ -66,10 +87,21 @@ public interface CommitMessage extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Author</em>' reference.
+	 * @see #setAuthor(Author)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommitMessage_Author()
-	 * @model required="true" changeable="false"
+	 * @model required="true"
 	 * @generated
 	 */
 	Author getAuthor();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.CommitMessage#getAuthor <em>Author</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Author</em>' reference.
+	 * @see #getAuthor()
+	 * @generated
+	 */
+	void setAuthor(Author value);
 
 } // CommitMessage

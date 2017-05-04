@@ -1,29 +1,29 @@
 /**
  */
-package tools.vitruv.framework.versioning.tests;
+package tools.vitruv.framework.versioning.repository.tests;
 
 import junit.framework.TestCase;
 
 import junit.textui.TestRunner;
 
-import tools.vitruv.framework.versioning.Signature;
-import tools.vitruv.framework.versioning.VersioningFactory;
+import tools.vitruv.framework.versioning.repository.Repository;
+import tools.vitruv.framework.versioning.repository.RepositoryFactory;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Signature</b></em>'.
+ * A test case for the model object '<em><b>Repository</b></em>'.
  * <!-- end-user-doc -->
  * @generated
  */
-public class SignatureTest extends TestCase {
+public class RepositoryTest extends TestCase {
 
 	/**
-	 * The fixture for this Signature test case.
+	 * The fixture for this Repository test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Signature fixture = null;
+	protected Repository fixture = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -31,36 +31,36 @@ public class SignatureTest extends TestCase {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(SignatureTest.class);
+		TestRunner.run(RepositoryTest.class);
 	}
 
 	/**
-	 * Constructs a new Signature test case with the given name.
+	 * Constructs a new Repository test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SignatureTest(String name) {
+	public RepositoryTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Sets the fixture for this Signature test case.
+	 * Sets the fixture for this Repository test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void setFixture(Signature fixture) {
+	protected void setFixture(Repository fixture) {
 		this.fixture = fixture;
 	}
 
 	/**
-	 * Returns the fixture for this Signature test case.
+	 * Returns the fixture for this Repository test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Signature getFixture() {
+	protected Repository getFixture() {
 		return fixture;
 	}
 
@@ -72,7 +72,7 @@ public class SignatureTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(VersioningFactory.eINSTANCE.createSignature());
+		setFixture(RepositoryFactory.eINSTANCE.createRepository());
 	}
 
 	/**
@@ -86,4 +86,4 @@ public class SignatureTest extends TestCase {
 		setFixture(null);
 	}
 
-} //SignatureTest
+} //RepositoryTest

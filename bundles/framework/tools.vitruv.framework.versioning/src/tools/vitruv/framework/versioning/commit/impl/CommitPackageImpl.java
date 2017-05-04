@@ -17,6 +17,8 @@ import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 
 import tools.vitruv.framework.versioning.VersioningPackage;
 
+import tools.vitruv.framework.versioning.author.AuthorPackage;
+import tools.vitruv.framework.versioning.author.impl.AuthorPackageImpl;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 
 import tools.vitruv.framework.versioning.branch.impl.BranchPackageImpl;
@@ -34,6 +36,8 @@ import tools.vitruv.framework.versioning.conflict.ConflictPackage;
 import tools.vitruv.framework.versioning.conflict.impl.ConflictPackageImpl;
 
 import tools.vitruv.framework.versioning.impl.VersioningPackageImpl;
+import tools.vitruv.framework.versioning.repository.RepositoryPackage;
+import tools.vitruv.framework.versioning.repository.impl.RepositoryPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -127,6 +131,8 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		VersioningPackageImpl theVersioningPackage = (VersioningPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(VersioningPackage.eNS_URI) instanceof VersioningPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(VersioningPackage.eNS_URI) : VersioningPackage.eINSTANCE);
 		ConflictPackageImpl theConflictPackage = (ConflictPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ConflictPackage.eNS_URI) instanceof ConflictPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ConflictPackage.eNS_URI) : ConflictPackage.eINSTANCE);
 		BranchPackageImpl theBranchPackage = (BranchPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BranchPackage.eNS_URI) instanceof BranchPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BranchPackage.eNS_URI) : BranchPackage.eINSTANCE);
+		AuthorPackageImpl theAuthorPackage = (AuthorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AuthorPackage.eNS_URI) instanceof AuthorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AuthorPackage.eNS_URI) : AuthorPackage.eINSTANCE);
+		RepositoryPackageImpl theRepositoryPackage = (RepositoryPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RepositoryPackage.eNS_URI) instanceof RepositoryPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RepositoryPackage.eNS_URI) : RepositoryPackage.eINSTANCE);
 		EcorePackageImpl theEcorePackage = (EcorePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI) instanceof EcorePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI) : EcorePackage.eINSTANCE);
 		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
 
@@ -135,6 +141,8 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		theVersioningPackage.createPackageContents();
 		theConflictPackage.createPackageContents();
 		theBranchPackage.createPackageContents();
+		theAuthorPackage.createPackageContents();
+		theRepositoryPackage.createPackageContents();
 		theEcorePackage.createPackageContents();
 		theEChangePackage.createPackageContents();
 
@@ -143,6 +151,8 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		theVersioningPackage.initializePackageContents();
 		theConflictPackage.initializePackageContents();
 		theBranchPackage.initializePackageContents();
+		theAuthorPackage.initializePackageContents();
+		theRepositoryPackage.initializePackageContents();
 		theEcorePackage.initializePackageContents();
 		theEChangePackage.initializePackageContents();
 
@@ -373,7 +383,7 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		VersioningPackage theVersioningPackage = (VersioningPackage)EPackage.Registry.INSTANCE.getEPackage(VersioningPackage.eNS_URI);
+		AuthorPackage theAuthorPackage = (AuthorPackage)EPackage.Registry.INSTANCE.getEPackage(AuthorPackage.eNS_URI);
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
 
 		// Create type parameters
@@ -383,7 +393,7 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		// Add supertypes to classes
 		mergeCommitEClass.getESuperTypes().add(this.getCommit());
 		simpleCommitEClass.getESuperTypes().add(this.getCommit());
-		commitEClass.getESuperTypes().add(theVersioningPackage.getSigned());
+		commitEClass.getESuperTypes().add(theAuthorPackage.getSigned());
 		initialCommitEClass.getESuperTypes().add(this.getCommit());
 
 		// Initialize classes, features, and operations; add parameters
@@ -391,20 +401,20 @@ public class CommitPackageImpl extends EPackageImpl implements CommitPackage {
 		initEReference(getMergeCommit_CommitsMergedToThis(), this.getCommit(), this.getCommit_CommitsMergedFromThis(), "commitsMergedToThis", null, 2, 2, MergeCommit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(simpleCommitEClass, SimpleCommit.class, "SimpleCommit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSimpleCommit_Parent(), this.getCommit(), this.getCommit_CommitsBranchedFromThis(), "parent", null, 1, 1, SimpleCommit.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSimpleCommit_Parent(), this.getCommit(), this.getCommit_CommitsBranchedFromThis(), "parent", null, 1, 1, SimpleCommit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(commitEClass, Commit.class, "Commit", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCommit_Checksum(), ecorePackage.getELong(), "checksum", "1000", 1, 1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEReference(getCommit_Changes(), theEChangePackage.getEChange(), null, "changes", null, 1, -1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCommit_Commitmessage(), this.getCommitMessage(), null, "commitmessage", null, 1, 1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCommit_Changes(), theEChangePackage.getEChange(), null, "changes", null, 1, -1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCommit_Commitmessage(), this.getCommitMessage(), null, "commitmessage", null, 1, 1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCommit_CommitsBranchedFromThis(), this.getSimpleCommit(), this.getSimpleCommit_Parent(), "commitsBranchedFromThis", null, 0, -1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCommit_CommitsMergedFromThis(), this.getMergeCommit(), this.getMergeCommit_CommitsMergedToThis(), "commitsMergedFromThis", null, 0, -1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCommit_Identifier(), ecorePackage.getEInt(), "identifier", "2000", 1, 1, Commit.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(commitMessageEClass, CommitMessage.class, "CommitMessage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCommitMessage_Date(), ecorePackage.getEDate(), "date", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getCommitMessage_Message(), ecorePackage.getEString(), "message", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCommitMessage_Author(), theVersioningPackage.getAuthor(), null, "author", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCommitMessage_Date(), ecorePackage.getEDate(), "date", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCommitMessage_Message(), ecorePackage.getEString(), "message", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCommitMessage_Author(), theAuthorPackage.getAuthor(), null, "author", null, 1, 1, CommitMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(initialCommitEClass, InitialCommit.class, "InitialCommit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 	}

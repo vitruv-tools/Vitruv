@@ -1,6 +1,6 @@
 /**
  */
-package tools.vitruv.framework.versioning.impl;
+package tools.vitruv.framework.versioning.repository.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -9,12 +9,16 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.framework.versioning.Signature;
-import tools.vitruv.framework.versioning.Signed;
-import tools.vitruv.framework.versioning.Tag;
-import tools.vitruv.framework.versioning.VersioningPackage;
+import tools.vitruv.framework.versioning.author.AuthorPackage;
+import tools.vitruv.framework.versioning.author.Signature;
+import tools.vitruv.framework.versioning.author.Signed;
 
 import tools.vitruv.framework.versioning.commit.Commit;
+
+import tools.vitruv.framework.versioning.impl.NamedImpl;
+
+import tools.vitruv.framework.versioning.repository.RepositoryPackage;
+import tools.vitruv.framework.versioning.repository.Tag;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,8 +28,8 @@ import tools.vitruv.framework.versioning.commit.Commit;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.versioning.impl.TagImpl#getSignature <em>Signature</em>}</li>
- *   <li>{@link tools.vitruv.framework.versioning.impl.TagImpl#getCommit <em>Commit</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.repository.impl.TagImpl#getSignature <em>Signature</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.repository.impl.TagImpl#getCommit <em>Commit</em>}</li>
  * </ul>
  *
  * @generated
@@ -67,7 +71,7 @@ public class TagImpl extends NamedImpl implements Tag {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return VersioningPackage.Literals.TAG;
+		return RepositoryPackage.Literals.TAG;
 	}
 
 	/**
@@ -81,7 +85,7 @@ public class TagImpl extends NamedImpl implements Tag {
 			signature = (Signature)eResolveProxy(oldSignature);
 			if (signature != oldSignature) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, VersioningPackage.TAG__SIGNATURE, oldSignature, signature));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RepositoryPackage.TAG__SIGNATURE, oldSignature, signature));
 			}
 		}
 		return signature;
@@ -105,7 +109,7 @@ public class TagImpl extends NamedImpl implements Tag {
 		Signature oldSignature = signature;
 		signature = newSignature;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, VersioningPackage.TAG__SIGNATURE, oldSignature, signature));
+			eNotify(new ENotificationImpl(this, Notification.SET, RepositoryPackage.TAG__SIGNATURE, oldSignature, signature));
 	}
 
 	/**
@@ -119,7 +123,7 @@ public class TagImpl extends NamedImpl implements Tag {
 			commit = (Commit)eResolveProxy(oldCommit);
 			if (commit != oldCommit) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, VersioningPackage.TAG__COMMIT, oldCommit, commit));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, RepositoryPackage.TAG__COMMIT, oldCommit, commit));
 			}
 		}
 		return commit;
@@ -143,7 +147,7 @@ public class TagImpl extends NamedImpl implements Tag {
 		Commit oldCommit = commit;
 		commit = newCommit;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, VersioningPackage.TAG__COMMIT, oldCommit, commit));
+			eNotify(new ENotificationImpl(this, Notification.SET, RepositoryPackage.TAG__COMMIT, oldCommit, commit));
 	}
 
 	/**
@@ -154,10 +158,10 @@ public class TagImpl extends NamedImpl implements Tag {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case VersioningPackage.TAG__SIGNATURE:
+			case RepositoryPackage.TAG__SIGNATURE:
 				if (resolve) return getSignature();
 				return basicGetSignature();
-			case VersioningPackage.TAG__COMMIT:
+			case RepositoryPackage.TAG__COMMIT:
 				if (resolve) return getCommit();
 				return basicGetCommit();
 		}
@@ -172,10 +176,10 @@ public class TagImpl extends NamedImpl implements Tag {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case VersioningPackage.TAG__SIGNATURE:
+			case RepositoryPackage.TAG__SIGNATURE:
 				setSignature((Signature)newValue);
 				return;
-			case VersioningPackage.TAG__COMMIT:
+			case RepositoryPackage.TAG__COMMIT:
 				setCommit((Commit)newValue);
 				return;
 		}
@@ -190,10 +194,10 @@ public class TagImpl extends NamedImpl implements Tag {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case VersioningPackage.TAG__SIGNATURE:
+			case RepositoryPackage.TAG__SIGNATURE:
 				setSignature((Signature)null);
 				return;
-			case VersioningPackage.TAG__COMMIT:
+			case RepositoryPackage.TAG__COMMIT:
 				setCommit((Commit)null);
 				return;
 		}
@@ -208,9 +212,9 @@ public class TagImpl extends NamedImpl implements Tag {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case VersioningPackage.TAG__SIGNATURE:
+			case RepositoryPackage.TAG__SIGNATURE:
 				return signature != null;
-			case VersioningPackage.TAG__COMMIT:
+			case RepositoryPackage.TAG__COMMIT:
 				return commit != null;
 		}
 		return super.eIsSet(featureID);
@@ -225,7 +229,7 @@ public class TagImpl extends NamedImpl implements Tag {
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == Signed.class) {
 			switch (derivedFeatureID) {
-				case VersioningPackage.TAG__SIGNATURE: return VersioningPackage.SIGNED__SIGNATURE;
+				case RepositoryPackage.TAG__SIGNATURE: return AuthorPackage.SIGNED__SIGNATURE;
 				default: return -1;
 			}
 		}
@@ -241,7 +245,7 @@ public class TagImpl extends NamedImpl implements Tag {
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == Signed.class) {
 			switch (baseFeatureID) {
-				case VersioningPackage.SIGNED__SIGNATURE: return VersioningPackage.TAG__SIGNATURE;
+				case AuthorPackage.SIGNED__SIGNATURE: return RepositoryPackage.TAG__SIGNATURE;
 				default: return -1;
 			}
 		}

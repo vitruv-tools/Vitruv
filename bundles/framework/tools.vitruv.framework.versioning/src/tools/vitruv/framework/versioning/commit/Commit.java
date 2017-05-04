@@ -3,7 +3,7 @@ package tools.vitruv.framework.versioning.commit;
 
 import org.eclipse.emf.common.util.EList;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.versioning.Signed;
+import tools.vitruv.framework.versioning.author.Signed;
 
 /**
  * <!-- begin-user-doc -->
@@ -44,7 +44,7 @@ public interface Commit extends Signed {
 	long getChecksum();
 
 	/**
-	 * Returns the value of the '<em><b>Changes</b></em>' reference list.
+	 * Returns the value of the '<em><b>Changes</b></em>' containment reference list.
 	 * The list contents are of type {@link tools.vitruv.framework.change.echange.EChange}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -52,9 +52,9 @@ public interface Commit extends Signed {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Changes</em>' reference list.
+	 * @return the value of the '<em>Changes</em>' containment reference list.
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_Changes()
-	 * @model required="true" changeable="false"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<EChange> getChanges();
@@ -68,11 +68,22 @@ public interface Commit extends Signed {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Commitmessage</em>' reference.
+	 * @see #setCommitmessage(CommitMessage)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getCommit_Commitmessage()
-	 * @model required="true" changeable="false"
+	 * @model required="true"
 	 * @generated
 	 */
 	CommitMessage getCommitmessage();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.Commit#getCommitmessage <em>Commitmessage</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Commitmessage</em>' reference.
+	 * @see #getCommitmessage()
+	 * @generated
+	 */
+	void setCommitmessage(CommitMessage value);
 
 	/**
 	 * Returns the value of the '<em><b>Commits Branched From This</b></em>' reference list.

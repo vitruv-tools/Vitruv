@@ -6,9 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
-
-import tools.vitruv.framework.versioning.Signed;
-
+import tools.vitruv.framework.versioning.author.Signed;
 import tools.vitruv.framework.versioning.commit.*;
 
 /**

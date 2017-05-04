@@ -194,7 +194,7 @@ public interface BranchPackage extends EPackage {
 	 * @see tools.vitruv.framework.versioning.branch.impl.BranchPackageImpl#getBranch()
 	 * @generated
 	 */
-	int BRANCH = 2;
+	int BRANCH = 4;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -215,31 +215,13 @@ public interface BranchPackage extends EPackage {
 	int BRANCH__CURRENT_HEAD_COMMIT = VersioningPackage.NAMED_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Owner</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BRANCH__OWNER = VersioningPackage.NAMED_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Contributors</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BRANCH__CONTRIBUTORS = VersioningPackage.NAMED_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Branched From</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BRANCH__BRANCHED_FROM = VersioningPackage.NAMED_FEATURE_COUNT + 3;
+	int BRANCH__CONTRIBUTORS = VersioningPackage.NAMED_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Child Branches</b></em>' reference list.
@@ -248,7 +230,7 @@ public interface BranchPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BRANCH__CHILD_BRANCHES = VersioningPackage.NAMED_FEATURE_COUNT + 4;
+	int BRANCH__CHILD_BRANCHES = VersioningPackage.NAMED_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Branch</em>' class.
@@ -257,7 +239,7 @@ public interface BranchPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BRANCH_FEATURE_COUNT = VersioningPackage.NAMED_FEATURE_COUNT + 5;
+	int BRANCH_FEATURE_COUNT = VersioningPackage.NAMED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Branch</em>' class.
@@ -267,6 +249,153 @@ public interface BranchPackage extends EPackage {
 	 * @ordered
 	 */
 	int BRANCH_OPERATION_COUNT = VersioningPackage.NAMED_OPERATION_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.versioning.branch.impl.UserBranchImpl <em>User Branch</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.versioning.branch.impl.UserBranchImpl
+	 * @see tools.vitruv.framework.versioning.branch.impl.BranchPackageImpl#getUserBranch()
+	 * @generated
+	 */
+	int USER_BRANCH = 2;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_BRANCH__NAME = BRANCH__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Current Head Commit</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_BRANCH__CURRENT_HEAD_COMMIT = BRANCH__CURRENT_HEAD_COMMIT;
+
+	/**
+	 * The feature id for the '<em><b>Contributors</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_BRANCH__CONTRIBUTORS = BRANCH__CONTRIBUTORS;
+
+	/**
+	 * The feature id for the '<em><b>Child Branches</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_BRANCH__CHILD_BRANCHES = BRANCH__CHILD_BRANCHES;
+
+	/**
+	 * The feature id for the '<em><b>Owner</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_BRANCH__OWNER = BRANCH_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Branched From</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_BRANCH__BRANCHED_FROM = BRANCH_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>User Branch</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_BRANCH_FEATURE_COUNT = BRANCH_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>User Branch</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_BRANCH_OPERATION_COUNT = BRANCH_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.versioning.branch.impl.MasterBranchImpl <em>Master Branch</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.versioning.branch.impl.MasterBranchImpl
+	 * @see tools.vitruv.framework.versioning.branch.impl.BranchPackageImpl#getMasterBranch()
+	 * @generated
+	 */
+	int MASTER_BRANCH = 3;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MASTER_BRANCH__NAME = BRANCH__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Current Head Commit</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MASTER_BRANCH__CURRENT_HEAD_COMMIT = BRANCH__CURRENT_HEAD_COMMIT;
+
+	/**
+	 * The feature id for the '<em><b>Contributors</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MASTER_BRANCH__CONTRIBUTORS = BRANCH__CONTRIBUTORS;
+
+	/**
+	 * The feature id for the '<em><b>Child Branches</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MASTER_BRANCH__CHILD_BRANCHES = BRANCH__CHILD_BRANCHES;
+
+	/**
+	 * The number of structural features of the '<em>Master Branch</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MASTER_BRANCH_FEATURE_COUNT = BRANCH_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Master Branch</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MASTER_BRANCH_OPERATION_COUNT = BRANCH_OPERATION_COUNT + 0;
 
 
 	/**
@@ -377,6 +506,48 @@ public interface BranchPackage extends EPackage {
 	EReference getBranchDiff_LastCommonAncestor();
 
 	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.branch.UserBranch <em>User Branch</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>User Branch</em>'.
+	 * @see tools.vitruv.framework.versioning.branch.UserBranch
+	 * @generated
+	 */
+	EClass getUserBranch();
+
+	/**
+	 * Returns the meta object for the reference '{@link tools.vitruv.framework.versioning.branch.UserBranch#getOwner <em>Owner</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Owner</em>'.
+	 * @see tools.vitruv.framework.versioning.branch.UserBranch#getOwner()
+	 * @see #getUserBranch()
+	 * @generated
+	 */
+	EReference getUserBranch_Owner();
+
+	/**
+	 * Returns the meta object for the reference '{@link tools.vitruv.framework.versioning.branch.UserBranch#getBranchedFrom <em>Branched From</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Branched From</em>'.
+	 * @see tools.vitruv.framework.versioning.branch.UserBranch#getBranchedFrom()
+	 * @see #getUserBranch()
+	 * @generated
+	 */
+	EReference getUserBranch_BranchedFrom();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.branch.MasterBranch <em>Master Branch</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Master Branch</em>'.
+	 * @see tools.vitruv.framework.versioning.branch.MasterBranch
+	 * @generated
+	 */
+	EClass getMasterBranch();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.branch.Branch <em>Branch</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -398,17 +569,6 @@ public interface BranchPackage extends EPackage {
 	EReference getBranch_CurrentHeadCommit();
 
 	/**
-	 * Returns the meta object for the reference '{@link tools.vitruv.framework.versioning.branch.Branch#getOwner <em>Owner</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Owner</em>'.
-	 * @see tools.vitruv.framework.versioning.branch.Branch#getOwner()
-	 * @see #getBranch()
-	 * @generated
-	 */
-	EReference getBranch_Owner();
-
-	/**
 	 * Returns the meta object for the reference list '{@link tools.vitruv.framework.versioning.branch.Branch#getContributors <em>Contributors</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -418,17 +578,6 @@ public interface BranchPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getBranch_Contributors();
-
-	/**
-	 * Returns the meta object for the reference '{@link tools.vitruv.framework.versioning.branch.Branch#getBranchedFrom <em>Branched From</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Branched From</em>'.
-	 * @see tools.vitruv.framework.versioning.branch.Branch#getBranchedFrom()
-	 * @see #getBranch()
-	 * @generated
-	 */
-	EReference getBranch_BranchedFrom();
 
 	/**
 	 * Returns the meta object for the reference list '{@link tools.vitruv.framework.versioning.branch.Branch#getChildBranches <em>Child Branches</em>}'.
@@ -549,6 +698,42 @@ public interface BranchPackage extends EPackage {
 		EReference BRANCH_DIFF__LAST_COMMON_ANCESTOR = eINSTANCE.getBranchDiff_LastCommonAncestor();
 
 		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.branch.impl.UserBranchImpl <em>User Branch</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.versioning.branch.impl.UserBranchImpl
+		 * @see tools.vitruv.framework.versioning.branch.impl.BranchPackageImpl#getUserBranch()
+		 * @generated
+		 */
+		EClass USER_BRANCH = eINSTANCE.getUserBranch();
+
+		/**
+		 * The meta object literal for the '<em><b>Owner</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference USER_BRANCH__OWNER = eINSTANCE.getUserBranch_Owner();
+
+		/**
+		 * The meta object literal for the '<em><b>Branched From</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference USER_BRANCH__BRANCHED_FROM = eINSTANCE.getUserBranch_BranchedFrom();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.branch.impl.MasterBranchImpl <em>Master Branch</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.versioning.branch.impl.MasterBranchImpl
+		 * @see tools.vitruv.framework.versioning.branch.impl.BranchPackageImpl#getMasterBranch()
+		 * @generated
+		 */
+		EClass MASTER_BRANCH = eINSTANCE.getMasterBranch();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.branch.impl.BranchImpl <em>Branch</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -567,28 +752,12 @@ public interface BranchPackage extends EPackage {
 		EReference BRANCH__CURRENT_HEAD_COMMIT = eINSTANCE.getBranch_CurrentHeadCommit();
 
 		/**
-		 * The meta object literal for the '<em><b>Owner</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference BRANCH__OWNER = eINSTANCE.getBranch_Owner();
-
-		/**
 		 * The meta object literal for the '<em><b>Contributors</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference BRANCH__CONTRIBUTORS = eINSTANCE.getBranch_Contributors();
-
-		/**
-		 * The meta object literal for the '<em><b>Branched From</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference BRANCH__BRANCHED_FROM = eINSTANCE.getBranch_BranchedFrom();
 
 		/**
 		 * The meta object literal for the '<em><b>Child Branches</b></em>' reference list feature.

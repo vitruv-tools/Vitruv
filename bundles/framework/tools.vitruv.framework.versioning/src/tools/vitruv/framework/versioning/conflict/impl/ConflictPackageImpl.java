@@ -19,6 +19,8 @@ import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 
 import tools.vitruv.framework.versioning.VersioningPackage;
 
+import tools.vitruv.framework.versioning.author.AuthorPackage;
+import tools.vitruv.framework.versioning.author.impl.AuthorPackageImpl;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 
 import tools.vitruv.framework.versioning.branch.impl.BranchPackageImpl;
@@ -37,6 +39,8 @@ import tools.vitruv.framework.versioning.conflict.MultiChangeConflict;
 import tools.vitruv.framework.versioning.conflict.SimpleChangeConflict;
 
 import tools.vitruv.framework.versioning.impl.VersioningPackageImpl;
+import tools.vitruv.framework.versioning.repository.RepositoryPackage;
+import tools.vitruv.framework.versioning.repository.impl.RepositoryPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -137,6 +141,8 @@ public class ConflictPackageImpl extends EPackageImpl implements ConflictPackage
 		VersioningPackageImpl theVersioningPackage = (VersioningPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(VersioningPackage.eNS_URI) instanceof VersioningPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(VersioningPackage.eNS_URI) : VersioningPackage.eINSTANCE);
 		CommitPackageImpl theCommitPackage = (CommitPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CommitPackage.eNS_URI) instanceof CommitPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CommitPackage.eNS_URI) : CommitPackage.eINSTANCE);
 		BranchPackageImpl theBranchPackage = (BranchPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BranchPackage.eNS_URI) instanceof BranchPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BranchPackage.eNS_URI) : BranchPackage.eINSTANCE);
+		AuthorPackageImpl theAuthorPackage = (AuthorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AuthorPackage.eNS_URI) instanceof AuthorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AuthorPackage.eNS_URI) : AuthorPackage.eINSTANCE);
+		RepositoryPackageImpl theRepositoryPackage = (RepositoryPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RepositoryPackage.eNS_URI) instanceof RepositoryPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RepositoryPackage.eNS_URI) : RepositoryPackage.eINSTANCE);
 		EcorePackageImpl theEcorePackage = (EcorePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI) instanceof EcorePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI) : EcorePackage.eINSTANCE);
 		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
 
@@ -145,6 +151,8 @@ public class ConflictPackageImpl extends EPackageImpl implements ConflictPackage
 		theVersioningPackage.createPackageContents();
 		theCommitPackage.createPackageContents();
 		theBranchPackage.createPackageContents();
+		theAuthorPackage.createPackageContents();
+		theRepositoryPackage.createPackageContents();
 		theEcorePackage.createPackageContents();
 		theEChangePackage.createPackageContents();
 
@@ -153,6 +161,8 @@ public class ConflictPackageImpl extends EPackageImpl implements ConflictPackage
 		theVersioningPackage.initializePackageContents();
 		theCommitPackage.initializePackageContents();
 		theBranchPackage.initializePackageContents();
+		theAuthorPackage.initializePackageContents();
+		theRepositoryPackage.initializePackageContents();
 		theEcorePackage.initializePackageContents();
 		theEChangePackage.initializePackageContents();
 

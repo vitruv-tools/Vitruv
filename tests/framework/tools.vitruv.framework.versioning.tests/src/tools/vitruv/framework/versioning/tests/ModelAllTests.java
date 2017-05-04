@@ -6,7 +6,9 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import junit.textui.TestRunner;
+import tools.vitruv.framework.versioning.author.tests.AuthorTests;
 import tools.vitruv.framework.versioning.commit.tests.CommitTests;
+import tools.vitruv.framework.versioning.repository.tests.RepositoryTests;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,7 +33,10 @@ public class ModelAllTests extends TestSuite {
 	 */
 	public static Test suite() {
 		TestSuite suite = new ModelAllTests("Model Tests");
+		suite.addTest(VersioningTests.suite());
 		suite.addTest(CommitTests.suite());
+		suite.addTest(RepositoryTests.suite());
+		suite.addTest(AuthorTests.suite());
 		// suite.addTest(ConflictTests.suite());
 		// suite.addTest(BranchTests.suite());
 		return suite;

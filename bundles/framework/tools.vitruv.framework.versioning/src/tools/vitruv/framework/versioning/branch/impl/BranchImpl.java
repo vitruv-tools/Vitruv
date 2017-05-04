@@ -13,16 +13,14 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
-import tools.vitruv.framework.versioning.Author;
-import tools.vitruv.framework.versioning.VersioningPackage;
-
+import tools.vitruv.framework.versioning.author.Author;
+import tools.vitruv.framework.versioning.author.AuthorPackage;
 import tools.vitruv.framework.versioning.branch.Branch;
 import tools.vitruv.framework.versioning.branch.BranchPackage;
 
+import tools.vitruv.framework.versioning.branch.UserBranch;
 import tools.vitruv.framework.versioning.commit.Commit;
 
 import tools.vitruv.framework.versioning.impl.NamedImpl;
@@ -36,9 +34,7 @@ import tools.vitruv.framework.versioning.impl.NamedImpl;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.versioning.branch.impl.BranchImpl#getCurrentHeadCommit <em>Current Head Commit</em>}</li>
- *   <li>{@link tools.vitruv.framework.versioning.branch.impl.BranchImpl#getOwner <em>Owner</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.branch.impl.BranchImpl#getContributors <em>Contributors</em>}</li>
- *   <li>{@link tools.vitruv.framework.versioning.branch.impl.BranchImpl#getBranchedFrom <em>Branched From</em>}</li>
  *   <li>{@link tools.vitruv.framework.versioning.branch.impl.BranchImpl#getChildBranches <em>Child Branches</em>}</li>
  * </ul>
  *
@@ -56,16 +52,6 @@ public class BranchImpl extends NamedImpl implements Branch {
 	protected Commit currentHeadCommit;
 
 	/**
-	 * The cached value of the '{@link #getOwner() <em>Owner</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOwner()
-	 * @generated
-	 * @ordered
-	 */
-	protected Author owner;
-
-	/**
 	 * The cached value of the '{@link #getContributors() <em>Contributors</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -76,16 +62,6 @@ public class BranchImpl extends NamedImpl implements Branch {
 	protected EList<Author> contributors;
 
 	/**
-	 * The cached value of the '{@link #getBranchedFrom() <em>Branched From</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getBranchedFrom()
-	 * @generated
-	 * @ordered
-	 */
-	protected Branch branchedFrom;
-
-	/**
 	 * The cached value of the '{@link #getChildBranches() <em>Child Branches</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -93,7 +69,7 @@ public class BranchImpl extends NamedImpl implements Branch {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Branch> childBranches;
+	protected EList<UserBranch> childBranches;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -157,69 +133,9 @@ public class BranchImpl extends NamedImpl implements Branch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Author getOwner() {
-		if (owner != null && owner.eIsProxy()) {
-			InternalEObject oldOwner = (InternalEObject)owner;
-			owner = (Author)eResolveProxy(oldOwner);
-			if (owner != oldOwner) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BranchPackage.BRANCH__OWNER, oldOwner, owner));
-			}
-		}
-		return owner;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Author basicGetOwner() {
-		return owner;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetOwner(Author newOwner, NotificationChain msgs) {
-		Author oldOwner = owner;
-		owner = newOwner;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, BranchPackage.BRANCH__OWNER, oldOwner, newOwner);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setOwner(Author newOwner) {
-		if (newOwner != owner) {
-			NotificationChain msgs = null;
-			if (owner != null)
-				msgs = ((InternalEObject)owner).eInverseRemove(this, VersioningPackage.AUTHOR__OWNED_BRANCHES, Author.class, msgs);
-			if (newOwner != null)
-				msgs = ((InternalEObject)newOwner).eInverseAdd(this, VersioningPackage.AUTHOR__OWNED_BRANCHES, Author.class, msgs);
-			msgs = basicSetOwner(newOwner, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BranchPackage.BRANCH__OWNER, newOwner, newOwner));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<Author> getContributors() {
 		if (contributors == null) {
-			contributors = new EObjectWithInverseResolvingEList.ManyInverse<Author>(Author.class, this, BranchPackage.BRANCH__CONTRIBUTORS, VersioningPackage.AUTHOR__CONTRIBUTED_BRANCHES);
+			contributors = new EObjectWithInverseResolvingEList.ManyInverse<Author>(Author.class, this, BranchPackage.BRANCH__CONTRIBUTORS, AuthorPackage.AUTHOR__CONTRIBUTED_BRANCHES);
 		}
 		return contributors;
 	}
@@ -229,69 +145,9 @@ public class BranchImpl extends NamedImpl implements Branch {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Branch getBranchedFrom() {
-		if (branchedFrom != null && branchedFrom.eIsProxy()) {
-			InternalEObject oldBranchedFrom = (InternalEObject)branchedFrom;
-			branchedFrom = (Branch)eResolveProxy(oldBranchedFrom);
-			if (branchedFrom != oldBranchedFrom) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BranchPackage.BRANCH__BRANCHED_FROM, oldBranchedFrom, branchedFrom));
-			}
-		}
-		return branchedFrom;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Branch basicGetBranchedFrom() {
-		return branchedFrom;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetBranchedFrom(Branch newBranchedFrom, NotificationChain msgs) {
-		Branch oldBranchedFrom = branchedFrom;
-		branchedFrom = newBranchedFrom;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, BranchPackage.BRANCH__BRANCHED_FROM, oldBranchedFrom, newBranchedFrom);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setBranchedFrom(Branch newBranchedFrom) {
-		if (newBranchedFrom != branchedFrom) {
-			NotificationChain msgs = null;
-			if (branchedFrom != null)
-				msgs = ((InternalEObject)branchedFrom).eInverseRemove(this, BranchPackage.BRANCH__CHILD_BRANCHES, Branch.class, msgs);
-			if (newBranchedFrom != null)
-				msgs = ((InternalEObject)newBranchedFrom).eInverseAdd(this, BranchPackage.BRANCH__CHILD_BRANCHES, Branch.class, msgs);
-			msgs = basicSetBranchedFrom(newBranchedFrom, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, BranchPackage.BRANCH__BRANCHED_FROM, newBranchedFrom, newBranchedFrom));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<Branch> getChildBranches() {
+	public EList<UserBranch> getChildBranches() {
 		if (childBranches == null) {
-			childBranches = new EObjectWithInverseResolvingEList<Branch>(Branch.class, this, BranchPackage.BRANCH__CHILD_BRANCHES, BranchPackage.BRANCH__BRANCHED_FROM);
+			childBranches = new EObjectWithInverseResolvingEList<UserBranch>(UserBranch.class, this, BranchPackage.BRANCH__CHILD_BRANCHES, BranchPackage.USER_BRANCH__BRANCHED_FROM);
 		}
 		return childBranches;
 	}
@@ -305,16 +161,8 @@ public class BranchImpl extends NamedImpl implements Branch {
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case BranchPackage.BRANCH__OWNER:
-				if (owner != null)
-					msgs = ((InternalEObject)owner).eInverseRemove(this, VersioningPackage.AUTHOR__OWNED_BRANCHES, Author.class, msgs);
-				return basicSetOwner((Author)otherEnd, msgs);
 			case BranchPackage.BRANCH__CONTRIBUTORS:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getContributors()).basicAdd(otherEnd, msgs);
-			case BranchPackage.BRANCH__BRANCHED_FROM:
-				if (branchedFrom != null)
-					msgs = ((InternalEObject)branchedFrom).eInverseRemove(this, BranchPackage.BRANCH__CHILD_BRANCHES, Branch.class, msgs);
-				return basicSetBranchedFrom((Branch)otherEnd, msgs);
 			case BranchPackage.BRANCH__CHILD_BRANCHES:
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getChildBranches()).basicAdd(otherEnd, msgs);
 		}
@@ -329,12 +177,8 @@ public class BranchImpl extends NamedImpl implements Branch {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case BranchPackage.BRANCH__OWNER:
-				return basicSetOwner(null, msgs);
 			case BranchPackage.BRANCH__CONTRIBUTORS:
 				return ((InternalEList<?>)getContributors()).basicRemove(otherEnd, msgs);
-			case BranchPackage.BRANCH__BRANCHED_FROM:
-				return basicSetBranchedFrom(null, msgs);
 			case BranchPackage.BRANCH__CHILD_BRANCHES:
 				return ((InternalEList<?>)getChildBranches()).basicRemove(otherEnd, msgs);
 		}
@@ -352,14 +196,8 @@ public class BranchImpl extends NamedImpl implements Branch {
 			case BranchPackage.BRANCH__CURRENT_HEAD_COMMIT:
 				if (resolve) return getCurrentHeadCommit();
 				return basicGetCurrentHeadCommit();
-			case BranchPackage.BRANCH__OWNER:
-				if (resolve) return getOwner();
-				return basicGetOwner();
 			case BranchPackage.BRANCH__CONTRIBUTORS:
 				return getContributors();
-			case BranchPackage.BRANCH__BRANCHED_FROM:
-				if (resolve) return getBranchedFrom();
-				return basicGetBranchedFrom();
 			case BranchPackage.BRANCH__CHILD_BRANCHES:
 				return getChildBranches();
 		}
@@ -378,19 +216,13 @@ public class BranchImpl extends NamedImpl implements Branch {
 			case BranchPackage.BRANCH__CURRENT_HEAD_COMMIT:
 				setCurrentHeadCommit((Commit)newValue);
 				return;
-			case BranchPackage.BRANCH__OWNER:
-				setOwner((Author)newValue);
-				return;
 			case BranchPackage.BRANCH__CONTRIBUTORS:
 				getContributors().clear();
 				getContributors().addAll((Collection<? extends Author>)newValue);
 				return;
-			case BranchPackage.BRANCH__BRANCHED_FROM:
-				setBranchedFrom((Branch)newValue);
-				return;
 			case BranchPackage.BRANCH__CHILD_BRANCHES:
 				getChildBranches().clear();
-				getChildBranches().addAll((Collection<? extends Branch>)newValue);
+				getChildBranches().addAll((Collection<? extends UserBranch>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -407,14 +239,8 @@ public class BranchImpl extends NamedImpl implements Branch {
 			case BranchPackage.BRANCH__CURRENT_HEAD_COMMIT:
 				setCurrentHeadCommit((Commit)null);
 				return;
-			case BranchPackage.BRANCH__OWNER:
-				setOwner((Author)null);
-				return;
 			case BranchPackage.BRANCH__CONTRIBUTORS:
 				getContributors().clear();
-				return;
-			case BranchPackage.BRANCH__BRANCHED_FROM:
-				setBranchedFrom((Branch)null);
 				return;
 			case BranchPackage.BRANCH__CHILD_BRANCHES:
 				getChildBranches().clear();
@@ -433,12 +259,8 @@ public class BranchImpl extends NamedImpl implements Branch {
 		switch (featureID) {
 			case BranchPackage.BRANCH__CURRENT_HEAD_COMMIT:
 				return currentHeadCommit != null;
-			case BranchPackage.BRANCH__OWNER:
-				return owner != null;
 			case BranchPackage.BRANCH__CONTRIBUTORS:
 				return contributors != null && !contributors.isEmpty();
-			case BranchPackage.BRANCH__BRANCHED_FROM:
-				return branchedFrom != null;
 			case BranchPackage.BRANCH__CHILD_BRANCHES:
 				return childBranches != null && !childBranches.isEmpty();
 		}

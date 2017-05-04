@@ -30,11 +30,22 @@ public interface SimpleCommit extends Commit {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parent</em>' reference.
+	 * @see #setParent(Commit)
 	 * @see tools.vitruv.framework.versioning.commit.CommitPackage#getSimpleCommit_Parent()
 	 * @see tools.vitruv.framework.versioning.commit.Commit#getCommitsBranchedFromThis
-	 * @model opposite="commitsBranchedFromThis" required="true" changeable="false"
+	 * @model opposite="commitsBranchedFromThis" required="true"
 	 * @generated
 	 */
 	Commit getParent();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.commit.SimpleCommit#getParent <em>Parent</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Parent</em>' reference.
+	 * @see #getParent()
+	 * @generated
+	 */
+	void setParent(Commit value);
 
 } // SimpleCommit

@@ -1,6 +1,6 @@
 /**
  */
-package tools.vitruv.framework.versioning;
+package tools.vitruv.framework.versioning.author;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -13,10 +13,10 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.versioning.Signature#getSigner <em>Signer</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.author.Signature#getSigner <em>Signer</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.framework.versioning.VersioningPackage#getSignature()
+ * @see tools.vitruv.framework.versioning.author.AuthorPackage#getSignature()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface Signature extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Signer</em>' reference.
 	 * @see #setSigner(Author)
-	 * @see tools.vitruv.framework.versioning.VersioningPackage#getSignature_Signer()
+	 * @see tools.vitruv.framework.versioning.author.AuthorPackage#getSignature_Signer()
 	 * @model required="true"
 	 * @generated
 	 */
 	Author getSigner();
 
 	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.versioning.Signature#getSigner <em>Signer</em>}' reference.
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.author.Signature#getSigner <em>Signer</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Signer</em>' reference.

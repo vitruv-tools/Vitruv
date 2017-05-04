@@ -2,20 +2,10 @@
  */
 package tools.vitruv.framework.versioning.commit.tests;
 
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.versioning.Author;
 import tools.vitruv.framework.versioning.commit.Commit;
-import tools.vitruv.framework.versioning.commit.InitialCommit;
-import tools.vitruv.framework.versioning.commit.impl.InitialCommitImpl;
-import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl;
-import tools.vitruv.framework.versioning.impl.AuthorImpl;
-import tools.vitruv.framework.versioning.tests.SignedTest;
 
 import static org.junit.Assert.assertThat;
-
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
-
+import tools.vitruv.framework.versioning.author.tests.SignedTest;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 
@@ -62,15 +52,6 @@ public abstract class CommitTest extends SignedTest {
 	 */
 	public void testGetChecksum() {
 		assertThat(getFixture().getChecksum(), equalTo(1000L));
-	}
-
-	public void testAddNextCommit__SimpleCommit() {
-		final Author author = new AuthorImpl("test", "name");
-		final InitialCommit parentCommit = new InitialCommitImpl(author);
-		assertThat(parentCommit.getCommitsBranchedFromThis().size(), equalTo(0));
-		final EList<EChange> changes = new BasicEList<EChange>();
-		new SimpleCommitImpl(changes,"test", author, parentCommit);
-		assertThat(parentCommit.getCommitsBranchedFromThis().size(), equalTo(1));
 	}
 
 } //CommitTest

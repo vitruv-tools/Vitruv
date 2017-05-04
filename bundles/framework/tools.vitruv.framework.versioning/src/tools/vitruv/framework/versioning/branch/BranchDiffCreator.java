@@ -31,12 +31,12 @@ public interface BranchDiffCreator extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Source</em>' reference.
-	 * @see #setSource(Branch)
+	 * @see #setSource(UserBranch)
 	 * @see tools.vitruv.framework.versioning.branch.BranchPackage#getBranchDiffCreator_Source()
 	 * @model required="true"
 	 * @generated
 	 */
-	Branch getSource();
+	UserBranch getSource();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.versioning.branch.BranchDiffCreator#getSource <em>Source</em>}' reference.
@@ -46,7 +46,7 @@ public interface BranchDiffCreator extends EObject {
 	 * @see #getSource()
 	 * @generated
 	 */
-	void setSource(Branch value);
+	void setSource(UserBranch value);
 
 	/**
 	 * Returns the value of the '<em><b>Target</b></em>' reference.
@@ -57,12 +57,12 @@ public interface BranchDiffCreator extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target</em>' reference.
-	 * @see #setTarget(Branch)
+	 * @see #setTarget(UserBranch)
 	 * @see tools.vitruv.framework.versioning.branch.BranchPackage#getBranchDiffCreator_Target()
 	 * @model required="true"
 	 * @generated
 	 */
-	Branch getTarget();
+	UserBranch getTarget();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.versioning.branch.BranchDiffCreator#getTarget <em>Target</em>}' reference.
@@ -72,7 +72,7 @@ public interface BranchDiffCreator extends EObject {
 	 * @see #getTarget()
 	 * @generated
 	 */
-	void setTarget(Branch value);
+	void setTarget(UserBranch value);
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -1,6 +1,10 @@
 /**
  */
-package tools.vitruv.framework.versioning;
+package tools.vitruv.framework.versioning.repository;
+
+import tools.vitruv.framework.versioning.Named;
+
+import tools.vitruv.framework.versioning.author.Signed;
 
 import tools.vitruv.framework.versioning.commit.Commit;
 
@@ -13,10 +17,10 @@ import tools.vitruv.framework.versioning.commit.Commit;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.versioning.Tag#getCommit <em>Commit</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.repository.Tag#getCommit <em>Commit</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.framework.versioning.VersioningPackage#getTag()
+ * @see tools.vitruv.framework.versioning.repository.RepositoryPackage#getTag()
  * @model
  * @generated
  */
@@ -31,14 +35,14 @@ public interface Tag extends Named, Signed {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Commit</em>' reference.
 	 * @see #setCommit(Commit)
-	 * @see tools.vitruv.framework.versioning.VersioningPackage#getTag_Commit()
+	 * @see tools.vitruv.framework.versioning.repository.RepositoryPackage#getTag_Commit()
 	 * @model required="true"
 	 * @generated
 	 */
 	Commit getCommit();
 
 	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.versioning.Tag#getCommit <em>Commit</em>}' reference.
+	 * Sets the value of the '{@link tools.vitruv.framework.versioning.repository.Tag#getCommit <em>Commit</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Commit</em>' reference.

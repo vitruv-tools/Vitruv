@@ -66,56 +66,20 @@ public class VersioningSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case VersioningPackage.AUTHOR: {
-				Author author = (Author)theEObject;
-				T result = caseAuthor(author);
-				if (result == null) result = caseNamed(author);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case VersioningPackage.NAMED: {
 				Named named = (Named)theEObject;
 				T result = caseNamed(named);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case VersioningPackage.TAG: {
-				Tag tag = (Tag)theEObject;
-				T result = caseTag(tag);
-				if (result == null) result = caseNamed(tag);
-				if (result == null) result = caseSigned(tag);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case VersioningPackage.SIGNED: {
-				Signed signed = (Signed)theEObject;
-				T result = caseSigned(signed);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case VersioningPackage.SIGNATURE: {
-				Signature signature = (Signature)theEObject;
-				T result = caseSignature(signature);
+			case VersioningPackage.ROOT: {
+				Root root = (Root)theEObject;
+				T result = caseRoot(root);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			default: return defaultCase(theEObject);
 		}
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Author</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Author</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseAuthor(Author object) {
-		return null;
 	}
 
 	/**
@@ -134,47 +98,17 @@ public class VersioningSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Tag</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Root</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Tag</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Root</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseTag(Tag object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Signed</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Signed</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSigned(Signed object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Signature</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Signature</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSignature(Signature object) {
+	public T caseRoot(Root object) {
 		return null;
 	}
 

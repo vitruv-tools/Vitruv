@@ -1,6 +1,6 @@
 /**
  */
-package tools.vitruv.framework.versioning.impl;
+package tools.vitruv.framework.versioning.author.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -10,9 +10,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import tools.vitruv.framework.versioning.Signature;
-import tools.vitruv.framework.versioning.Signed;
-import tools.vitruv.framework.versioning.VersioningPackage;
+import tools.vitruv.framework.versioning.author.AuthorPackage;
+import tools.vitruv.framework.versioning.author.Signature;
+import tools.vitruv.framework.versioning.author.Signed;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +22,7 @@ import tools.vitruv.framework.versioning.VersioningPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.versioning.impl.SignedImpl#getSignature <em>Signature</em>}</li>
+ *   <li>{@link tools.vitruv.framework.versioning.author.impl.SignedImpl#getSignature <em>Signature</em>}</li>
  * </ul>
  *
  * @generated
@@ -54,7 +54,7 @@ public abstract class SignedImpl extends MinimalEObjectImpl.Container implements
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return VersioningPackage.Literals.SIGNED;
+		return AuthorPackage.Literals.SIGNED;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public abstract class SignedImpl extends MinimalEObjectImpl.Container implements
 			signature = (Signature)eResolveProxy(oldSignature);
 			if (signature != oldSignature) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, VersioningPackage.SIGNED__SIGNATURE, oldSignature, signature));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, AuthorPackage.SIGNED__SIGNATURE, oldSignature, signature));
 			}
 		}
 		return signature;
@@ -92,7 +92,7 @@ public abstract class SignedImpl extends MinimalEObjectImpl.Container implements
 		Signature oldSignature = signature;
 		signature = newSignature;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, VersioningPackage.SIGNED__SIGNATURE, oldSignature, signature));
+			eNotify(new ENotificationImpl(this, Notification.SET, AuthorPackage.SIGNED__SIGNATURE, oldSignature, signature));
 	}
 
 	/**
@@ -103,7 +103,7 @@ public abstract class SignedImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case VersioningPackage.SIGNED__SIGNATURE:
+			case AuthorPackage.SIGNED__SIGNATURE:
 				if (resolve) return getSignature();
 				return basicGetSignature();
 		}
@@ -118,7 +118,7 @@ public abstract class SignedImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case VersioningPackage.SIGNED__SIGNATURE:
+			case AuthorPackage.SIGNED__SIGNATURE:
 				setSignature((Signature)newValue);
 				return;
 		}
@@ -133,7 +133,7 @@ public abstract class SignedImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case VersioningPackage.SIGNED__SIGNATURE:
+			case AuthorPackage.SIGNED__SIGNATURE:
 				setSignature((Signature)null);
 				return;
 		}
@@ -148,7 +148,7 @@ public abstract class SignedImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case VersioningPackage.SIGNED__SIGNATURE:
+			case AuthorPackage.SIGNED__SIGNATURE:
 				return signature != null;
 		}
 		return super.eIsSet(featureID);

@@ -1,11 +1,13 @@
 /**
  */
-package tools.vitruv.framework.versioning.tests;
+package tools.vitruv.framework.versioning.repository.tests;
 
 import junit.textui.TestRunner;
 
-import tools.vitruv.framework.versioning.Tag;
-import tools.vitruv.framework.versioning.VersioningFactory;
+import tools.vitruv.framework.versioning.repository.RepositoryFactory;
+import tools.vitruv.framework.versioning.repository.Tag;
+
+import tools.vitruv.framework.versioning.tests.NamedTest;
 
 /**
  * <!-- begin-user-doc -->
@@ -53,7 +55,7 @@ public class TagTest extends NamedTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(VersioningFactory.eINSTANCE.createTag());
+		setFixture(RepositoryFactory.eINSTANCE.createTag());
 	}
 
 	/**

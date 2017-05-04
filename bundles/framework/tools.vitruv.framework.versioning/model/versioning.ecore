@@ -1,28 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="versioning" nsURI="http://tools.vitruv/versioning/1.0" nsPrefix="tools.vitruv.framework.versioning">
-  <eClassifiers xsi:type="ecore:EClass" name="Author" eSuperTypes="#//Named">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="email" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBranches" upperBound="-1"
-        eType="#//branch/Branch" eOpposite="#//branch/Branch/owner"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="contributedBranches" upperBound="-1"
-        eType="#//branch/Branch" eOpposite="#//branch/Branch/contributors"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="commits" upperBound="-1"
-        eType="#//commit/Commit" changeable="false"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Named" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Tag" eSuperTypes="#//Named #//Signed">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="commit" lowerBound="1"
-        eType="#//commit/Commit"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Signed" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signature" eType="#//Signature"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Signature">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signer" lowerBound="1"
-        eType="#//Author"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Root">
+    <eOperations name="createAuthor" lowerBound="1" eType="#//author/Author">
+      <eParameters name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="email" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="createRepository" lowerBound="1" eType="#//repository/Repository"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="repositories" upperBound="-1"
+        eType="#//repository/Repository" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="authors" upperBound="-1"
+        eType="#//author/Author" containment="true"/>
   </eClassifiers>
   <eSubpackages name="conflict" nsURI="http://tools.vitruv/versioning/1.0/conflict"
       nsPrefix="tools.vitruv.framework.versioning">
@@ -66,17 +57,17 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SimpleCommit" eSuperTypes="#//commit/Commit">
       <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
-          eType="#//commit/Commit" changeable="false" eOpposite="#//commit/Commit/commitsBranchedFromThis"/>
+          eType="#//commit/Commit" eOpposite="#//commit/Commit/commitsBranchedFromThis"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Commit" abstract="true" eSuperTypes="#//Signed">
+    <eClassifiers xsi:type="ecore:EClass" name="Commit" abstract="true" eSuperTypes="#//author/Signed">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="checksum" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" changeable="false"
           defaultValueLiteral="1000" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="changes" lowerBound="1"
           upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"
-          changeable="false"/>
+          containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitmessage" lowerBound="1"
-          eType="#//commit/CommitMessage" changeable="false"/>
+          eType="#//commit/CommitMessage"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitsBranchedFromThis"
           upperBound="-1" eType="#//commit/SimpleCommit" eOpposite="#//commit/SimpleCommit/parent"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitsMergedFromThis"
@@ -87,12 +78,11 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="CommitMessage">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="date" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate" changeable="false"/>
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-          changeable="false"/>
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="author" lowerBound="1"
-          eType="#//Author" changeable="false"/>
+          eType="#//author/Author"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="InitialCommit" eSuperTypes="#//commit/Commit"/>
   </eSubpackages>
@@ -100,9 +90,9 @@
     <eClassifiers xsi:type="ecore:EClass" name="BranchDiffCreator">
       <eOperations name="createVersionDiff" eType="#//branch/BranchDiff"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
-          eType="#//branch/Branch"/>
+          eType="#//branch/UserBranch"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
-          eType="#//branch/Branch"/>
+          eType="#//branch/UserBranch"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="BranchDiff">
       <eStructuralFeatures xsi:type="ecore:EReference" name="sourceCommits" upperBound="-1"
@@ -110,23 +100,80 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="targetCommits" upperBound="-1"
           eType="#//commit/Commit"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
-          eType="#//branch/Branch"/>
+          eType="#//branch/UserBranch"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
-          eType="#//branch/Branch"/>
+          eType="#//branch/UserBranch"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="lastCommonAncestor" lowerBound="1"
           eType="#//commit/Commit"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UserBranch" eSuperTypes="#//branch/Branch">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1"
+          eType="#//author/Author" eOpposite="#//author/Author/ownedBranches"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="branchedFrom" lowerBound="1"
+          eType="#//branch/Branch" eOpposite="#//branch/Branch/childBranches"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MasterBranch" eSuperTypes="#//branch/Branch"/>
     <eClassifiers xsi:type="ecore:EClass" name="Branch" eSuperTypes="#//Named">
       <eStructuralFeatures xsi:type="ecore:EReference" name="currentHeadCommit" lowerBound="1"
           eType="#//commit/Commit"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1"
-          eType="#//Author" eOpposite="#//Author/ownedBranches"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="contributors" lowerBound="1"
-          upperBound="-1" eType="#//Author" eOpposite="#//Author/contributedBranches"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="branchedFrom" lowerBound="1"
-          eType="#//branch/Branch" eOpposite="#//branch/Branch/childBranches"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="contributors" upperBound="-1"
+          eType="#//author/Author" eOpposite="#//author/Author/contributedBranches"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="childBranches" upperBound="-1"
-          eType="#//branch/Branch" eOpposite="#//branch/Branch/branchedFrom"/>
+          eType="#//branch/UserBranch" eOpposite="#//branch/UserBranch/branchedFrom"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="author" nsURI="http://tools.vitruv/versioning/1.0/author" nsPrefix="tools.vitruv.framework.versioning.author">
+    <eClassifiers xsi:type="ecore:EClass" name="Author" eSuperTypes="#//Named">
+      <eOperations name="createSimpleCommit" eType="#//commit/SimpleCommit">
+        <eParameters name="message" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eParameters name="parent" lowerBound="1" eType="#//commit/Commit"/>
+        <eParameters name="changes" upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
+      </eOperations>
+      <eOperations name="createBranch" eType="#//branch/UserBranch">
+        <eParameters name="branchName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
+      <eOperations name="switchToBranch">
+        <eParameters name="targetBranch" lowerBound="1" eType="#//branch/Branch"/>
+      </eOperations>
+      <eOperations name="switchToRepository">
+        <eParameters name="repository" lowerBound="1" eType="#//repository/Repository"/>
+      </eOperations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="email" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBranches" upperBound="-1"
+          eType="#//branch/UserBranch" eOpposite="#//branch/UserBranch/owner"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="contributedBranches"
+          upperBound="-1" eType="#//branch/Branch" eOpposite="#//branch/Branch/contributors"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="commits" upperBound="-1"
+          eType="#//commit/Commit"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="currentRepository" eType="#//repository/Repository"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="currentBranch" eType="#//branch/Branch"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Signature">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="signer" lowerBound="1"
+          eType="#//author/Author"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Signed" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="signature" eType="#//author/Signature"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="repository" nsURI="http://tools.vitruv/versioning/1.0/repository"
+      nsPrefix="tools.vitruv.framework.versioning.repository">
+    <eClassifiers xsi:type="ecore:EClass" name="Tag" eSuperTypes="#//Named #//author/Signed">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="commit" lowerBound="1"
+          eType="#//commit/Commit"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Repository">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="tags" upperBound="-1"
+          eType="#//repository/Tag" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="commits" upperBound="-1"
+          eType="#//commit/Commit"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="branches" upperBound="-1"
+          eType="#//branch/Branch" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="initialCommit" lowerBound="1"
+          eType="#//commit/InitialCommit" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="master" lowerBound="1"
+          eType="#//branch/MasterBranch"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
