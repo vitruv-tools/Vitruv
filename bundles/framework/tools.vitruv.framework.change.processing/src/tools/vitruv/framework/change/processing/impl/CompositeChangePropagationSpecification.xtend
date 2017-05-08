@@ -78,8 +78,8 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	private def getAllProcessors() {
 		val processors = new ArrayList<ChangePropagationSpecification>();
 		// processor arrays can be null when calling setUserInteracting from the super constructor
-		if (changePreprocessors != null) processors += changePreprocessors;
-		if (changeMainprocessors != null) processors += changeMainprocessors;
+		if (changePreprocessors !== null) processors += changePreprocessors;
+		if (changeMainprocessors !== null) processors += changeMainprocessors;
 		return processors;
 	}
 	

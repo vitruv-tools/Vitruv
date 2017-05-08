@@ -47,7 +47,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 	}
 
 	override synchronized List<List<VitruviusChange>> propagateChange(VitruviusChange change) {
-		if (change == null || !change.containsConcreteChange()) {
+		if (change === null || !change.containsConcreteChange()) {
 			logger.info('''The change does not contain any changes to synchronize: «change»''')
 			return Collections.emptyList()
 		}

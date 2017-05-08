@@ -59,10 +59,10 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	
 	
 	public override void addReaction(String sourceFileName, Reaction reaction) {
-		if (project == null) {
+		if (project === null) {
 			throw new IllegalStateException("Project must be set");
 		}
-		if (reaction == null) {
+		if (reaction === null) {
 			throw new IllegalArgumentException("Reaction must not be null");
 		}
 		val reactionsSegment = getCorrespondingReactionsSegmentInTempResource(sourceFileName, reaction.reactionsSegment);
@@ -81,7 +81,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 						foundSegment = segment;
 					}	
 				}
-				if (foundSegment == null) {
+				if (foundSegment === null) {
 					foundSegment = addReactionsSegment(reactionsFile, reactionsSegment, sourceFileName);
 				}
 				
@@ -106,14 +106,14 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	}
 	
 	public def override addReactions(Resource reactionsResource) {
-		if (reactionsResource == null || !(reactionsResource.contents.get(0) instanceof ReactionsFile)) {
+		if (reactionsResource === null || !(reactionsResource.contents.get(0) instanceof ReactionsFile)) {
 			throw new IllegalArgumentException("The given resource is not a reactions file");
 		}
 		this.resources.add(reactionsResource);
 	}
 	
 	public override void generateEnvironment(IFileSystemAccess2 fsa) {
-		if (project == null) {
+		if (project === null) {
 			throw new IllegalStateException("Project must be set");
 		}
 		prepareGeneration();

@@ -38,11 +38,11 @@ class BranchTest extends VersioningTest {
 //		
 		
 		
-	try {
-		resource.save(null)
-	} catch (IOException exc) {
-		throw new RuntimeException("auto-generated try/catch", exc)
-	}
+//	try {
+//		resource.save(null)
+//	} catch (IOException exc) {
+//		throw new RuntimeException("auto-generated try/catch", exc)
+//	}
 //	assertThat(commit.changes, hasItem(resolvedChange))
 //		assertIsStateAfter(createdObject)
 //		

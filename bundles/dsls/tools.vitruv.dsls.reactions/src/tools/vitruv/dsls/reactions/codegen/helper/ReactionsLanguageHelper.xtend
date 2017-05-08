@@ -46,7 +46,7 @@ final class ReactionsLanguageHelper {
 	
 	public static def VitruvDomainProvider<?> getDomainProviderForReference(DomainReference domainReference) {
 		val referencedDomainProvider = VitruvDomainProvider.getDomainProviderFromExtensionPoint(domainReference.domain)
-	    if (referencedDomainProvider == null) {
+	    if (referencedDomainProvider === null) {
 	    	throw new IllegalStateException("Given domain reference references no existing domain");
 	    }
 	    return referencedDomainProvider;
@@ -55,7 +55,7 @@ final class ReactionsLanguageHelper {
 	static def Pair<VitruvDomain, VitruvDomain> getSourceTargetPair(ReactionsSegment reactionsSegment) {
 		val sourceDomain = reactionsSegment.fromDomain.domainForReference;
 		val targetDomain = reactionsSegment.toDomain.domainForReference;
-		if (sourceDomain != null && targetDomain != null) {
+		if (sourceDomain !== null && targetDomain !== null) {
 			return new Pair<VitruvDomain, VitruvDomain>(sourceDomain, targetDomain);
 		} else {
 			return null;

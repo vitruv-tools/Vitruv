@@ -11,7 +11,7 @@ public final class PersistenceHelper {
 	
 	public static def EObject getModelRoot(EObject modelObject) {
 		var result = modelObject;
-		while (result.eContainer() != null) {
+		while (result.eContainer() !== null) {
 			result = result.eContainer();
 		}
 		return result;

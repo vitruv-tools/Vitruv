@@ -63,5 +63,6 @@ class RootTest {
 		val authorA = root.createAuthor("Author", "NAme")
 		authorA.switchToRepository(repo)
 		authorA.createBranch("feature/test")
+		
 	}
 }

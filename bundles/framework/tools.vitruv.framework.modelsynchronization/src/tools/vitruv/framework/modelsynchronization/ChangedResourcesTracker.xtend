@@ -31,7 +31,7 @@ package class ChangedResourcesTracker {
 	}
 	
 	public def void addInvolvedModelResource(Resource resource) {
-		if (resource == null) {
+		if (resource === null) {
 			return;
 		}
 		this.involvedModelResources += resource;
