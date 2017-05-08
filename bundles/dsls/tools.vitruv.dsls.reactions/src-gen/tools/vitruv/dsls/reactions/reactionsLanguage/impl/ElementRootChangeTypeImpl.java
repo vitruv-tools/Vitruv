@@ -20,24 +20,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class ElementRootChangeTypeImpl extends MinimalEObjectImpl.Container implements ElementRootChangeType
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected ElementRootChangeTypeImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.ELEMENT_ROOT_CHANGE_TYPE;
-  }
+		return ReactionsLanguagePackage.Literals.ELEMENT_ROOT_CHANGE_TYPE;
+	}
 
 } //ElementRootChangeTypeImpl

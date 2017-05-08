@@ -18,24 +18,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class ElementCompoundChangeTypeImpl extends ElementChangeTypeImpl implements ElementCompoundChangeType
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected ElementCompoundChangeTypeImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.ELEMENT_COMPOUND_CHANGE_TYPE;
-  }
+		return ReactionsLanguagePackage.Literals.ELEMENT_COMPOUND_CHANGE_TYPE;
+	}
 
 } //ElementCompoundChangeTypeImpl

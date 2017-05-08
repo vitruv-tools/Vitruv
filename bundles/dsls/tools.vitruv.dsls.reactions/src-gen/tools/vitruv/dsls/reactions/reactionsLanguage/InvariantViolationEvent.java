@@ -24,29 +24,29 @@ import org.eclipse.emf.ecore.EClass;
 public interface InvariantViolationEvent extends Trigger
 {
   /**
-   * Returns the value of the '<em><b>Violation</b></em>' reference.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Violation</b></em>' reference.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Violation</em>' reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Violation</em>' reference.
-   * @see #setViolation(EClass)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getInvariantViolationEvent_Violation()
-   * @model
-   * @generated
-   */
+	 * @return the value of the '<em>Violation</em>' reference.
+	 * @see #setViolation(EClass)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getInvariantViolationEvent_Violation()
+	 * @model
+	 * @generated
+	 */
   EClass getViolation();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.InvariantViolationEvent#getViolation <em>Violation</em>}' reference.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.InvariantViolationEvent#getViolation <em>Violation</em>}' reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Violation</em>' reference.
-   * @see #getViolation()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Violation</em>' reference.
+	 * @see #getViolation()
+	 * @generated
+	 */
   void setViolation(EClass value);
 
 } // InvariantViolationEvent

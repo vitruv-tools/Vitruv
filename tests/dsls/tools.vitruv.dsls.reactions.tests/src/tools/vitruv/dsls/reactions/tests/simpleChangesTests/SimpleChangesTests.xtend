@@ -40,11 +40,11 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 	
 	protected override setup() {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot();
-		root.setId(TEST_SOURCE_MODEL_NAME);
+		val root = AllElementTypesFactory.eINSTANCE.createRoot;
+		root.id = TEST_SOURCE_MODEL_NAME
 		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root);
-		prepareTestModel();
-		assertModelsEqual();
+		prepareTestModel
+		assertModelsEqual
 	}
 	
 	override protected cleanup() {
@@ -53,7 +53,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	private def prepareTestModel() {
 		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
-		container.setId("NonRootObjectContainer");
+		container.id = "NonRootObjectContainer";
 		rootElement.nonRootObjectContainerHelper = container;
 		for (nonRootId : nonContainmentNonRootIds) {
 			val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();

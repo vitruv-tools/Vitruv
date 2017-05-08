@@ -20,24 +20,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class MatcherStatementImpl extends MinimalEObjectImpl.Container implements MatcherStatement
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected MatcherStatementImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.MATCHER_STATEMENT;
-  }
+		return ReactionsLanguagePackage.Literals.MATCHER_STATEMENT;
+	}
 
 } //MatcherStatementImpl

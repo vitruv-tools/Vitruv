@@ -25,55 +25,55 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 public interface ModelElementChange extends ConcreteModelChange
 {
   /**
-   * Returns the value of the '<em><b>Element Type</b></em>' containment reference.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Element Type</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Element Type</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Element Type</em>' containment reference.
-   * @see #setElementType(MetaclassReference)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getModelElementChange_ElementType()
-   * @model containment="true"
-   * @generated
-   */
+	 * @return the value of the '<em>Element Type</em>' containment reference.
+	 * @see #setElementType(MetaclassReference)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getModelElementChange_ElementType()
+	 * @model containment="true"
+	 * @generated
+	 */
   MetaclassReference getElementType();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange#getElementType <em>Element Type</em>}' containment reference.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange#getElementType <em>Element Type</em>}' containment reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Element Type</em>' containment reference.
-   * @see #getElementType()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Element Type</em>' containment reference.
+	 * @see #getElementType()
+	 * @generated
+	 */
   void setElementType(MetaclassReference value);
 
   /**
-   * Returns the value of the '<em><b>Change Type</b></em>' containment reference.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Change Type</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Change Type</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Change Type</em>' containment reference.
-   * @see #setChangeType(ElementChangeType)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getModelElementChange_ChangeType()
-   * @model containment="true"
-   * @generated
-   */
+	 * @return the value of the '<em>Change Type</em>' containment reference.
+	 * @see #setChangeType(ElementChangeType)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getModelElementChange_ChangeType()
+	 * @model containment="true"
+	 * @generated
+	 */
   ElementChangeType getChangeType();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange#getChangeType <em>Change Type</em>}' containment reference.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange#getChangeType <em>Change Type</em>}' containment reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Change Type</em>' containment reference.
-   * @see #getChangeType()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Change Type</em>' containment reference.
+	 * @see #getChangeType()
+	 * @generated
+	 */
   void setChangeType(ElementChangeType value);
 
 } // ModelElementChange

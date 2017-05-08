@@ -28,135 +28,135 @@ import org.eclipse.emf.ecore.EObject;
 public interface Reaction extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Documentation</b></em>' attribute.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Documentation</b></em>' attribute.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Documentation</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Documentation</em>' attribute.
-   * @see #setDocumentation(String)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_Documentation()
-   * @model
-   * @generated
-   */
+	 * @return the value of the '<em>Documentation</em>' attribute.
+	 * @see #setDocumentation(String)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_Documentation()
+	 * @model
+	 * @generated
+	 */
   String getDocumentation();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getDocumentation <em>Documentation</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getDocumentation <em>Documentation</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Documentation</em>' attribute.
-   * @see #getDocumentation()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Documentation</em>' attribute.
+	 * @see #getDocumentation()
+	 * @generated
+	 */
   void setDocumentation(String value);
 
   /**
-   * Returns the value of the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Name</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Name</em>' attribute.
-   * @see #setName(String)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_Name()
-   * @model
-   * @generated
-   */
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_Name()
+	 * @model
+	 * @generated
+	 */
   String getName();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getName <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Name</em>' attribute.
-   * @see #getName()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>Trigger</b></em>' containment reference.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Trigger</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Trigger</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Trigger</em>' containment reference.
-   * @see #setTrigger(Trigger)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_Trigger()
-   * @model containment="true"
-   * @generated
-   */
+	 * @return the value of the '<em>Trigger</em>' containment reference.
+	 * @see #setTrigger(Trigger)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_Trigger()
+	 * @model containment="true"
+	 * @generated
+	 */
   Trigger getTrigger();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getTrigger <em>Trigger</em>}' containment reference.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getTrigger <em>Trigger</em>}' containment reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Trigger</em>' containment reference.
-   * @see #getTrigger()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Trigger</em>' containment reference.
+	 * @see #getTrigger()
+	 * @generated
+	 */
   void setTrigger(Trigger value);
 
   /**
-   * Returns the value of the '<em><b>Call Routine</b></em>' containment reference.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Call Routine</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Call Routine</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Call Routine</em>' containment reference.
-   * @see #setCallRoutine(ReactionRoutineCall)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_CallRoutine()
-   * @model containment="true"
-   * @generated
-   */
+	 * @return the value of the '<em>Call Routine</em>' containment reference.
+	 * @see #setCallRoutine(ReactionRoutineCall)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_CallRoutine()
+	 * @model containment="true"
+	 * @generated
+	 */
   ReactionRoutineCall getCallRoutine();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getCallRoutine <em>Call Routine</em>}' containment reference.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getCallRoutine <em>Call Routine</em>}' containment reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Call Routine</em>' containment reference.
-   * @see #getCallRoutine()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Call Routine</em>' containment reference.
+	 * @see #getCallRoutine()
+	 * @generated
+	 */
   void setCallRoutine(ReactionRoutineCall value);
 
   /**
-   * Returns the value of the '<em><b>Reactions Segment</b></em>' container reference.
-   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getReactions <em>Reactions</em>}'.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Reactions Segment</b></em>' container reference.
+	 * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getReactions <em>Reactions</em>}'.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Reactions Segment</em>' container reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Reactions Segment</em>' container reference.
-   * @see #setReactionsSegment(ReactionsSegment)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_ReactionsSegment()
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getReactions
-   * @model opposite="reactions" required="true" transient="false"
-   * @generated
-   */
+	 * @return the value of the '<em>Reactions Segment</em>' container reference.
+	 * @see #setReactionsSegment(ReactionsSegment)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getReaction_ReactionsSegment()
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment#getReactions
+	 * @model opposite="reactions" required="true" transient="false"
+	 * @generated
+	 */
   ReactionsSegment getReactionsSegment();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getReactionsSegment <em>Reactions Segment</em>}' container reference.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.Reaction#getReactionsSegment <em>Reactions Segment</em>}' container reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Reactions Segment</em>' container reference.
-   * @see #getReactionsSegment()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Reactions Segment</em>' container reference.
+	 * @see #getReactionsSegment()
+	 * @generated
+	 */
   void setReactionsSegment(ReactionsSegment value);
 
 } // Reaction

@@ -18,24 +18,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class ElementCreationChangeTypeImpl extends ElementExistenceChangeTypeImpl implements ElementCreationChangeType
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected ElementCreationChangeTypeImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.ELEMENT_CREATION_CHANGE_TYPE;
-  }
+		return ReactionsLanguagePackage.Literals.ELEMENT_CREATION_CHANGE_TYPE;
+	}
 
 } //ElementCreationChangeTypeImpl

@@ -18,24 +18,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class ArbitraryModelChangeImpl extends ModelChangeImpl implements ArbitraryModelChange
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected ArbitraryModelChangeImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.ARBITRARY_MODEL_CHANGE;
-  }
+		return ReactionsLanguagePackage.Literals.ARBITRARY_MODEL_CHANGE;
+	}
 
 } //ArbitraryModelChangeImpl

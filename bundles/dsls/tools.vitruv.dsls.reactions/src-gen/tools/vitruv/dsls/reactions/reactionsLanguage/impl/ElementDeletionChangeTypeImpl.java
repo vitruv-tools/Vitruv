@@ -18,24 +18,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class ElementDeletionChangeTypeImpl extends ElementExistenceChangeTypeImpl implements ElementDeletionChangeType
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected ElementDeletionChangeTypeImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.ELEMENT_DELETION_CHANGE_TYPE;
-  }
+		return ReactionsLanguagePackage.Literals.ELEMENT_DELETION_CHANGE_TYPE;
+	}
 
 } //ElementDeletionChangeTypeImpl

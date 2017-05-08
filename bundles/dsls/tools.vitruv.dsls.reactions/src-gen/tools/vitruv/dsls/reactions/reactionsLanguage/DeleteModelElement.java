@@ -23,29 +23,29 @@ package tools.vitruv.dsls.reactions.reactionsLanguage;
 public interface DeleteModelElement extends ActionStatement
 {
   /**
-   * Returns the value of the '<em><b>Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Element</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Element</em>' containment reference.
-   * @see #setElement(ExistingElementReference)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getDeleteModelElement_Element()
-   * @model containment="true"
-   * @generated
-   */
+	 * @return the value of the '<em>Element</em>' containment reference.
+	 * @see #setElement(ExistingElementReference)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getDeleteModelElement_Element()
+	 * @model containment="true"
+	 * @generated
+	 */
   ExistingElementReference getElement();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.DeleteModelElement#getElement <em>Element</em>}' containment reference.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.DeleteModelElement#getElement <em>Element</em>}' containment reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Element</em>' containment reference.
-   * @see #getElement()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Element</em>' containment reference.
+	 * @see #getElement()
+	 * @generated
+	 */
   void setElement(ExistingElementReference value);
 
 } // DeleteModelElement

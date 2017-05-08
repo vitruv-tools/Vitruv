@@ -18,24 +18,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class ExecutionCodeBlockImpl extends CodeBlockImpl implements ExecutionCodeBlock
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected ExecutionCodeBlockImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.EXECUTION_CODE_BLOCK;
-  }
+		return ReactionsLanguagePackage.Literals.EXECUTION_CODE_BLOCK;
+	}
 
 } //ExecutionCodeBlockImpl

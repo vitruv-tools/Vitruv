@@ -40,169 +40,162 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput;
 public class RoutineInputImpl extends MinimalEObjectImpl.Container implements RoutineInput
 {
   /**
-   * The cached value of the '{@link #getModelInputElements() <em>Model Input Elements</em>}' containment reference list.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getModelInputElements() <em>Model Input Elements</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getModelInputElements()
-   * @generated
-   * @ordered
-   */
+	 * @see #getModelInputElements()
+	 * @generated
+	 * @ordered
+	 */
   protected EList<NamedMetaclassReference> modelInputElements;
 
   /**
-   * The cached value of the '{@link #getJavaInputElements() <em>Java Input Elements</em>}' containment reference list.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getJavaInputElements() <em>Java Input Elements</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getJavaInputElements()
-   * @generated
-   * @ordered
-   */
+	 * @see #getJavaInputElements()
+	 * @generated
+	 * @ordered
+	 */
   protected EList<NamedJavaElement> javaInputElements;
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected RoutineInputImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.ROUTINE_INPUT;
-  }
+		return ReactionsLanguagePackage.Literals.ROUTINE_INPUT;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EList<NamedMetaclassReference> getModelInputElements()
   {
-    if (modelInputElements == null)
-    {
-      modelInputElements = new EObjectContainmentEList<NamedMetaclassReference>(NamedMetaclassReference.class, this, ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS);
-    }
-    return modelInputElements;
-  }
+		if (modelInputElements == null) {
+			modelInputElements = new EObjectContainmentEList<NamedMetaclassReference>(NamedMetaclassReference.class, this, ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS);
+		}
+		return modelInputElements;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EList<NamedJavaElement> getJavaInputElements()
   {
-    if (javaInputElements == null)
-    {
-      javaInputElements = new EObjectContainmentEList<NamedJavaElement>(NamedJavaElement.class, this, ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
-    }
-    return javaInputElements;
-  }
+		if (javaInputElements == null) {
+			javaInputElements = new EObjectContainmentEList<NamedJavaElement>(NamedJavaElement.class, this, ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
+		}
+		return javaInputElements;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    switch (featureID)
-    {
-      case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
-        return ((InternalEList<?>)getModelInputElements()).basicRemove(otherEnd, msgs);
-      case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
-        return ((InternalEList<?>)getJavaInputElements()).basicRemove(otherEnd, msgs);
-    }
-    return super.eInverseRemove(otherEnd, featureID, msgs);
-  }
+		switch (featureID) {
+			case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
+				return ((InternalEList<?>)getModelInputElements()).basicRemove(otherEnd, msgs);
+			case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
+				return ((InternalEList<?>)getJavaInputElements()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (featureID)
-    {
-      case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
-        return getModelInputElements();
-      case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
-        return getJavaInputElements();
-    }
-    return super.eGet(featureID, resolve, coreType);
-  }
+		switch (featureID) {
+			case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
+				return getModelInputElements();
+			case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
+				return getJavaInputElements();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
-    switch (featureID)
-    {
-      case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
-        getModelInputElements().clear();
-        getModelInputElements().addAll((Collection<? extends NamedMetaclassReference>)newValue);
-        return;
-      case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
-        getJavaInputElements().clear();
-        getJavaInputElements().addAll((Collection<? extends NamedJavaElement>)newValue);
-        return;
-    }
-    super.eSet(featureID, newValue);
-  }
+		switch (featureID) {
+			case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
+				getModelInputElements().clear();
+				getModelInputElements().addAll((Collection<? extends NamedMetaclassReference>)newValue);
+				return;
+			case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
+				getJavaInputElements().clear();
+				getJavaInputElements().addAll((Collection<? extends NamedJavaElement>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public void eUnset(int featureID)
   {
-    switch (featureID)
-    {
-      case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
-        getModelInputElements().clear();
-        return;
-      case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
-        getJavaInputElements().clear();
-        return;
-    }
-    super.eUnset(featureID);
-  }
+		switch (featureID) {
+			case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
+				getModelInputElements().clear();
+				return;
+			case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
+				getJavaInputElements().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public boolean eIsSet(int featureID)
   {
-    switch (featureID)
-    {
-      case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
-        return modelInputElements != null && !modelInputElements.isEmpty();
-      case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
-        return javaInputElements != null && !javaInputElements.isEmpty();
-    }
-    return super.eIsSet(featureID);
-  }
+		switch (featureID) {
+			case ReactionsLanguagePackage.ROUTINE_INPUT__MODEL_INPUT_ELEMENTS:
+				return modelInputElements != null && !modelInputElements.isEmpty();
+			case ReactionsLanguagePackage.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS:
+				return javaInputElements != null && !javaInputElements.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //RoutineInputImpl

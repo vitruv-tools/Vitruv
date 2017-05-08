@@ -26,19 +26,19 @@ import org.eclipse.emf.ecore.EObject;
 public interface Matcher extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Matcher Statements</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.reactions.reactionsLanguage.MatcherStatement}.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Matcher Statements</b></em>' containment reference list.
+	 * The list contents are of type {@link tools.vitruv.dsls.reactions.reactionsLanguage.MatcherStatement}.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Matcher Statements</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Matcher Statements</em>' containment reference list.
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getMatcher_MatcherStatements()
-   * @model containment="true"
-   * @generated
-   */
+	 * @return the value of the '<em>Matcher Statements</em>' containment reference list.
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getMatcher_MatcherStatements()
+	 * @model containment="true"
+	 * @generated
+	 */
   EList<MatcherStatement> getMatcherStatements();
 
 } // Matcher

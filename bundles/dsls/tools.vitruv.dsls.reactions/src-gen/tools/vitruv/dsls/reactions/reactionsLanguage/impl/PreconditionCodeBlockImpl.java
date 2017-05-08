@@ -18,24 +18,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class PreconditionCodeBlockImpl extends CodeBlockImpl implements PreconditionCodeBlock
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected PreconditionCodeBlockImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.PRECONDITION_CODE_BLOCK;
-  }
+		return ReactionsLanguagePackage.Literals.PRECONDITION_CODE_BLOCK;
+	}
 
 } //PreconditionCodeBlockImpl

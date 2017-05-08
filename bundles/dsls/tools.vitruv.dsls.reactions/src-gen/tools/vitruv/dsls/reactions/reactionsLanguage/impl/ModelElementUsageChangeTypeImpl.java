@@ -18,24 +18,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class ModelElementUsageChangeTypeImpl extends ElementChangeTypeImpl implements ModelElementUsageChangeType
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected ModelElementUsageChangeTypeImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.MODEL_ELEMENT_USAGE_CHANGE_TYPE;
-  }
+		return ReactionsLanguagePackage.Literals.MODEL_ELEMENT_USAGE_CHANGE_TYPE;
+	}
 
 } //ModelElementUsageChangeTypeImpl

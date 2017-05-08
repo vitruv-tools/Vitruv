@@ -18,24 +18,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement;
 public class RoutineCallStatementImpl extends RoutineCallBlockImpl implements RoutineCallStatement
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected RoutineCallStatementImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.ROUTINE_CALL_STATEMENT;
-  }
+		return ReactionsLanguagePackage.Literals.ROUTINE_CALL_STATEMENT;
+	}
 
 } //RoutineCallStatementImpl

@@ -24,29 +24,29 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference;
 public interface ModelAttributeChange extends ConcreteModelChange
 {
   /**
-   * Returns the value of the '<em><b>Feature</b></em>' containment reference.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Feature</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Feature</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Feature</em>' containment reference.
-   * @see #setFeature(MetaclassEAttributeReference)
-   * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getModelAttributeChange_Feature()
-   * @model containment="true"
-   * @generated
-   */
+	 * @return the value of the '<em>Feature</em>' containment reference.
+	 * @see #setFeature(MetaclassEAttributeReference)
+	 * @see tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage#getModelAttributeChange_Feature()
+	 * @model containment="true"
+	 * @generated
+	 */
   MetaclassEAttributeReference getFeature();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange#getFeature <em>Feature</em>}' containment reference.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange#getFeature <em>Feature</em>}' containment reference.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Feature</em>' containment reference.
-   * @see #getFeature()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Feature</em>' containment reference.
+	 * @see #getFeature()
+	 * @generated
+	 */
   void setFeature(MetaclassEAttributeReference value);
 
 } // ModelAttributeChange

@@ -18,24 +18,24 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage;
 public class ModelAttributeInsertedChangeImpl extends ModelAttributeChangeImpl implements ModelAttributeInsertedChange
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected ModelAttributeInsertedChangeImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return ReactionsLanguagePackage.Literals.MODEL_ATTRIBUTE_INSERTED_CHANGE;
-  }
+		return ReactionsLanguagePackage.Literals.MODEL_ATTRIBUTE_INSERTED_CHANGE;
+	}
 
 } //ModelAttributeInsertedChangeImpl
