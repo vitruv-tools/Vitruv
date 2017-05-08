@@ -17,3 +17,4 @@ target/
 
 # Custom
 EvaluationData
+**/.polyglot.build.properties
