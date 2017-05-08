@@ -18,7 +18,7 @@ class VitruviusProjectBuilderApplicator {
 	}
 	
 	public def void addToProject(IProject project, String vmodelName, List<String> fileExtensions) {
-        if (project != null) {
+        if (project !== null) {
             try {
                 // verify already registered builders
                 if (hasBuilder(project)) {
@@ -54,7 +54,7 @@ class VitruviusProjectBuilderApplicator {
 	
 	
 	public def void removeBuilderFromProject(IProject project) {
-        if (project != null) {
+        if (project !== null) {
             try {
                 val IProjectDescription description = project.getDescription();
                 val List<ICommand> commands = new ArrayList<ICommand>();
