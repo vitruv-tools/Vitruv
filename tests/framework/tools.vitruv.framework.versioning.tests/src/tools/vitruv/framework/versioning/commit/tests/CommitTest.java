@@ -50,6 +50,7 @@ public abstract class CommitTest extends SignedTest {
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.commit.Commit#getChecksum()
 	 */
+	@SuppressWarnings("boxing")
 	public void testGetChecksum() {
 		assertThat(getFixture().getChecksum(), equalTo(1000L));
 	}

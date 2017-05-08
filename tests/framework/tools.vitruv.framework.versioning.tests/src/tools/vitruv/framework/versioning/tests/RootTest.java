@@ -105,6 +105,7 @@ public class RootTest extends TestCase {
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.Root#createAuthor(java.lang.String, java.lang.String)
 	 */
+	@SuppressWarnings("boxing")
 	public void testCreateAuthor__String_String() {
 		final Root root = getFixture();
 		final String name= "TestName";
@@ -124,6 +125,7 @@ public class RootTest extends TestCase {
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.Root#createRepository()
 	 */
+	@SuppressWarnings("boxing")
 	public void testCreateRepository() {
 		final Root root = getFixture();
 		final Repository repository = root.createRepository();

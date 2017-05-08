@@ -78,8 +78,8 @@ public class AuthorTest extends NamedTest {
 	@Override
 	protected void setUp() throws Exception {
 		this.root = VersioningFactory.eINSTANCE.createRoot();
-		final Author author = root.createAuthor("Name", "email");
-		final Repository repository = root.createRepository();
+		final Author author = this.root.createAuthor("Name", "email");
+		final Repository repository = this.root.createRepository();
 		author.switchToRepository(repository);
 		setFixture(author);
 	}
@@ -105,7 +105,7 @@ public class AuthorTest extends NamedTest {
 		final Author author = getFixture();
 		final String commitMessage = "Test message";
 		final InitialCommit parent = author.getCurrentRepository().getInitialCommit();
-		final EList<EChange> changes = new BasicEList<EChange>();
+		final EList<EChange> changes = new BasicEList<>();
 		final SimpleCommit commit = author.createSimpleCommit(commitMessage, parent, changes);
 		testCommit(commit, commitMessage, 0);
 		assertThat(commit.getParent(), equalTo(parent));
@@ -118,6 +118,7 @@ public class AuthorTest extends NamedTest {
 	 * <!-- end-user-doc -->
 	 * @see tools.vitruv.framework.versioning.author.Author#createBranch(java.lang.String)
 	 */
+	@SuppressWarnings("boxing")
 	public void testCreateBranch__String() {
 		final Author author = getFixture();
 		final Repository repo = author.getCurrentRepository();
@@ -165,6 +166,7 @@ public class AuthorTest extends NamedTest {
 		assertThat(author.getCurrentBranch(), equalTo(repository.getMaster()));
 	}
 	
+	@SuppressWarnings("boxing")
 	private void testCommit(final Commit commit, final String message, final int changesLength) {
 		final Author author = getFixture();
 		final Repository repo = author.getCurrentRepository();
