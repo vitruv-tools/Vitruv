@@ -28,14 +28,14 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	AtomicEMFChangeRecorder changeRecorder
 
 	override final void beforeTest() {
-		super.beforeTest()
+		super.beforeTest
 		this.changeRecorder = new AtomicEMFChangeRecorder(true)
 		setup()
 	}
 
 	override final void afterTest() {
-		if (changeRecorder.isRecording()) {
-			changeRecorder.endRecording()
+		if (changeRecorder.isRecording) {
+			changeRecorder.endRecording
 		}
 		cleanup()
 	}
@@ -54,10 +54,10 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	def protected abstract void cleanup()
 
 	def private void propagateChanges(VURI vuri) {
-		val List<TransactionalChange> changes = this.changeRecorder.endRecording()
-		var CompositeContainerChange compositeChange = VitruviusChangeFactory::getInstance().
+		val List<TransactionalChange> changes = this.changeRecorder.endRecording
+		var CompositeContainerChange compositeChange = VitruviusChangeFactory::getInstance.
 			createCompositeChange(changes)
-		this.getVirtualModel().propagateChange(compositeChange)
+		this.virtualModel.propagateChange(compositeChange)
 	}
 
 	def private void startRecordingChanges(Resource resource) {
@@ -70,7 +70,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	 * @param objectthe {@link EObject} to record changes for
 	 */
 	def protected void startRecordingChanges(EObject object) {
-		startRecordingChanges(object.eResource())
+		startRecordingChanges(object.eResource)
 	}
 
 	/** 
@@ -82,7 +82,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	 * @throws IOException
 	 */
 	def protected void saveAndSynchronizeChanges(EObject object) throws IOException {
-		var Resource resource = object.eResource()
+		var Resource resource = object.eResource
 		EcoreResourceBridge::saveResource(resource)
 		this.propagateChanges(VURI::getInstance(resource))
 		this.startRecordingChanges(resource)
@@ -98,11 +98,11 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	 */
 	def protected void createAndSynchronizeModel(String modelPathInProject, EObject rootElement) throws IOException {
 		if (StringUtils::isEmpty(modelPathInProject) || rootElement === null) {
-			throw new IllegalArgumentException()
+			throw new IllegalArgumentException
 		}
 		var Resource resource = createModelResource(modelPathInProject)
 		this.startRecordingChanges(resource)
-		resource.getContents().add(rootElement)
+		resource.contents.add(rootElement)
 		saveAndSynchronizeChanges(rootElement)
 	}
 
@@ -114,7 +114,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	 */
 	def protected void deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
 		if (StringUtils::isEmpty(modelPathInProject)) {
-			throw new IllegalArgumentException()
+			throw new IllegalArgumentException
 		}
 		var Resource resource = getModelResource(modelPathInProject)
 		var VURI vuri = VURI::getInstance(resource)

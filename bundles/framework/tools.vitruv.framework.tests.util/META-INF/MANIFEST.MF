@@ -21,7 +21,11 @@ Require-Bundle: tools.vitruv.framework.vsum,
  org.eclipse.jdt.launching,
  tools.vitruv.framework.userinteraction;visibility:=reexport,
  tools.vitruv.framework.tuid,
- tools.vitruv.framework.modelsynchronization
+ tools.vitruv.framework.modelsynchronization,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Export-Package: tools.vitruv.framework.tests,
  tools.vitruv.framework.tests.util
 Bundle-Vendor: vitruv.tools

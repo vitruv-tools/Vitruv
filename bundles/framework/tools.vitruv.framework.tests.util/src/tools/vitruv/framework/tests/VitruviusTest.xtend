@@ -18,16 +18,16 @@ import tools.vitruv.framework.tuid.TuidManager
  * @author Heiko Klare
  */
 abstract class VitruviusTest {
-	@Rule public TestName testName = new TestName()
+	@Rule public TestName testName = new TestName
 	IProject currentTestProject
 	Function<String, IProject> testProjectCreator
 
 	@BeforeClass def static void setUpAllTests() {
-		TestUtil::initializeLogger()
+		TestUtil::initializeLogger
 	}
 
 	new() {
-		this.testProjectCreator = VitruviusTestinitializeTestProject
+		this.testProjectCreator = [s|VitruviusTest::initializeTestProject(s)]
 	}
 
 	/** 
@@ -45,8 +45,8 @@ abstract class VitruviusTest {
 	 * gets called.
 	 */
 	@Before def void beforeTest() {
-		TuidManager::getInstance().reinitialize()
-		var String testMethodName = testName.getMethodName()
+		TuidManager::getInstance.reinitialize
+		var String testMethodName = testName.methodName
 		this.currentTestProject = testProjectCreator.apply(testMethodName)
 	}
 

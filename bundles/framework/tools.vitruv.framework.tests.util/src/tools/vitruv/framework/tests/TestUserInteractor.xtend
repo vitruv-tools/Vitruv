@@ -35,11 +35,11 @@ class TestUserInteractor implements UserInteracting {
 		this.minWaittime = minWaittime
 		this.maxWaittime = maxWaittime
 		this.waitTimeRange = maxWaittime - minWaittime
-		this.concurrentIntLinkedQueue = new ConcurrentLinkedQueue<Integer>()
-		this.concurrentStringLinkedQueue = new ConcurrentLinkedQueue<String>()
-		this.concurrentURILinkedQueue = new ConcurrentLinkedQueue<URI>()
-		this.random = new Random()
-		this.messageLog = new ArrayList<String>()
+		this.concurrentIntLinkedQueue = new ConcurrentLinkedQueue<Integer>
+		this.concurrentStringLinkedQueue = new ConcurrentLinkedQueue<String>
+		this.concurrentURILinkedQueue = new ConcurrentLinkedQueue<URI>
+		this.random = new Random
+		this.messageLog = new ArrayList<String>
 	}
 
 	new() {
@@ -47,17 +47,17 @@ class TestUserInteractor implements UserInteracting {
 	}
 
 	def void addNextSelections(Integer... nextSelections) {
-		this.concurrentIntLinkedQueue.clear()
+		this.concurrentIntLinkedQueue.clear
 		this.concurrentIntLinkedQueue.addAll(Arrays::asList(nextSelections))
 	}
 
 	def void addNextSelections(String... nextSelections) {
-		this.concurrentStringLinkedQueue.clear()
+		this.concurrentStringLinkedQueue.clear
 		this.concurrentStringLinkedQueue.addAll(Arrays::asList(nextSelections))
 	}
 
 	def void addNextSelections(URI... nextSelections) {
-		this.concurrentURILinkedQueue.clear()
+		this.concurrentURILinkedQueue.clear
 		this.concurrentURILinkedQueue.addAll(Arrays::asList(nextSelections))
 	}
 
@@ -74,10 +74,10 @@ class TestUserInteractor implements UserInteracting {
 			}
 
 			def private int selectFromMessage(int maxLength) {
-				this.simulateUserThinktime()
+				this.simulateUserThinktime
 				var int currentSelection
-				if (!this.concurrentIntLinkedQueue.isEmpty()) {
-					currentSelection = this.concurrentIntLinkedQueue.poll()
+				if (!this.concurrentIntLinkedQueue.isEmpty) {
+					currentSelection = this.concurrentIntLinkedQueue.poll
 					if (currentSelection >= maxLength) {
 						logger.warn(
 							"currentSelection>maxLength - could lead to array out of bounds exception later on.")
@@ -85,7 +85,7 @@ class TestUserInteractor implements UserInteracting {
 				} else {
 					throw new IllegalStateException("No user interaction integer selection specified")
 				}
-				logger.info('''«typeof(TestUserInteractor).getSimpleName()» selected «currentSelection»'''.toString)
+				logger.info('''«typeof(TestUserInteractor).simpleName» selected «currentSelection»'''.toString)
 				return currentSelection
 			}
 
@@ -102,31 +102,31 @@ class TestUserInteractor implements UserInteracting {
 			}
 
 			override String getTextInput(String msg) {
-				this.simulateUserThinktime()
+				this.simulateUserThinktime
 				var String text = ""
-				if (!this.concurrentStringLinkedQueue.isEmpty()) {
-					text = this.concurrentStringLinkedQueue.poll()
+				if (!this.concurrentStringLinkedQueue.isEmpty) {
+					text = this.concurrentStringLinkedQueue.poll
 				} else {
 					throw new IllegalStateException("No user interaction integer selection specified")
 				}
-				logger.info('''«typeof(TestUserInteractor).getSimpleName()» selecteded «text»'''.toString)
+				logger.info('''«typeof(TestUserInteractor).simpleName» selecteded «text»'''.toString)
 				return text
 			}
 
 			override URI selectURI(String message) {
-				if (this.concurrentURILinkedQueue.isEmpty()) {
+				if (this.concurrentURILinkedQueue.isEmpty) {
 					throw new IllegalStateException(
-						'''No URI found in «typeof(TestUserInteractor).getSimpleName()» for message «message»'''.
+						'''No URI found in «typeof(TestUserInteractor).simpleName» for message «message»'''.
 							toString)
 						}
-						val URI result = this.concurrentURILinkedQueue.poll()
+						val URI result = this.concurrentURILinkedQueue.poll
 						logger.info(
-							'''«typeof(TestUserInteractor).getSimpleName()» selected «result.toString()»'''.toString)
+							'''«typeof(TestUserInteractor).simpleName» selected «result.toString»'''.toString)
 						return result
 					}
 
 					def boolean isResourceQueueEmpty() {
-						return this.concurrentURILinkedQueue.isEmpty()
+						return this.concurrentURILinkedQueue.isEmpty
 					}
 
 					def Collection<String> getMessageLog() {

@@ -62,7 +62,7 @@ final class TestUtil {
 			finalProjectName = addTimestampToProjectNameAndMakeUnique(finalProjectName)
 		}
 		var IProject testProject = TestUtil::getProjectByName(finalProjectName)
-		if (testProject.exists()) {
+		if (testProject.exists) {
 			throw new IllegalStateException("Project already exists")
 		}
 		return initializeProject(testProject)
@@ -74,7 +74,7 @@ final class TestUtil {
 		var String countedProjectName = timestampedProjectName
 		// If project exists, add an index
 		var int counter = 1
-		while (testProject.exists()) {
+		while (testProject.exists) {
 			countedProjectName = '''«timestampedProjectName»--«counter++»'''.toString
 			testProject = TestUtil::getProjectByName(countedProjectName)
 		}
@@ -84,21 +84,21 @@ final class TestUtil {
 	def private static IProject initializeProject(IProject testProject) throws CoreException {
 		// copied from:
 		// https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
-		testProject.create(new NullProgressMonitor())
-		testProject.open(new NullProgressMonitor())
-		val IProjectDescription description = testProject.getDescription()
-		description.setNatureIds((#[JavaCore::NATURE_ID] as String[]))
+		testProject.create(new NullProgressMonitor)
+		testProject.open(new NullProgressMonitor)
+		val IProjectDescription description = testProject.description
+		description.natureIds = (#[JavaCore::NATURE_ID] as String[])
 		testProject.setDescription(description, null)
 		val IJavaProject javaProject = JavaCore::create(testProject)
 		val IFolder binFolder = testProject.getFolder("bin")
 		binFolder.create(false, true, null)
-		javaProject.setOutputLocation(binFolder.getFullPath(), null)
-		val List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>()
-		val IVMInstall vmInstall = JavaRuntime::getDefaultVMInstall()
+		javaProject.setOutputLocation(binFolder.fullPath, null)
+		val List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>
+		val IVMInstall vmInstall = JavaRuntime::getDefaultVMInstall
 		if (null !== vmInstall) {
 			val LibraryLocation[] locations = JavaRuntime::getLibraryLocations(vmInstall)
 			for (LibraryLocation element : locations) {
-				entries.add(JavaCore::newLibraryEntry(element.getSystemLibraryPath(), null, null))
+				entries.add(JavaCore::newLibraryEntry(element.systemLibraryPath, null, null))
 			}
 		}
 		// add libs to project class path
@@ -106,13 +106,13 @@ final class TestUtil {
 		val IFolder sourceFolder = testProject.getFolder("src")
 		sourceFolder.create(false, true, null)
 		val IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder)
-		val IClasspathEntry[] oldEntries = javaProject.getRawClasspath()
+		val IClasspathEntry[] oldEntries = javaProject.rawClasspath
 		val IClasspathEntry[] newEntries = newArrayOfSize(oldEntries.length + 1)
 		java.lang.System::arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length)
 		{
 			val _wrVal_newEntries = newEntries
 			val _wrIndx_newEntries = oldEntries.length
-			_wrVal_newEntries.set(_wrIndx_newEntries, JavaCore::newSourceEntry(root.getPath()))
+			_wrVal_newEntries.set(_wrIndx_newEntries, JavaCore::newSourceEntry(root.path))
 		}
 		javaProject.setRawClasspath(newEntries, null)
 		return testProject
@@ -130,7 +130,7 @@ final class TestUtil {
 	 */
 	def static InternalVirtualModel createVirtualModel(String vsumName, boolean addTimestampAndMakeNameUnique,
 		Iterable<VitruvDomain> metamodels) {
-		return createVirtualModel(vsumName, addTimestampAndMakeNameUnique, metamodels, Collections::emptyList())
+		return createVirtualModel(vsumName, addTimestampAndMakeNameUnique, metamodels, Collections::emptyList)
 	}
 
 	/** 
@@ -149,7 +149,7 @@ final class TestUtil {
 		if (addTimestampAndMakeNameUnique) {
 			finalVsumName = addTimestampToProjectNameAndMakeUnique(vsumName)
 		}
-		var VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration()
+		var VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration
 		for (VitruvDomain metamodel : metamodels) {
 			vmodelConfig.addMetamodel(metamodel)
 		}
@@ -170,12 +170,12 @@ final class TestUtil {
 	 */
 	def static VitruvDomain createVitruvDomain(String name, EPackage metamodelRootPackage, String fileExt) {
 		val VitruvDomain domain = new AbstractVitruvDomain(name, metamodelRootPackage,
-			new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt)
+			new AttributeTuidCalculatorAndResolver(metamodelRootPackage.nsURI), fileExt)
 		return domain
 	}
 
 	def private static String addTimestampToString(String originalString) {
-		val String timestamp = new Date(System::currentTimeMillis()).toString().replace(" ", "_").replace(":", "_")
+		val String timestamp = new Date(System::currentTimeMillis).toString.replace(" ", "_").replace(":", "_")
 		val String stringWithTimeStamp = '''«originalString»_«timestamp»'''.toString
 		return stringWithTimeStamp
 	}
@@ -185,23 +185,23 @@ final class TestUtil {
 	 * is specified, it is used to determine the logger level.
 	 */
 	def static void initializeLogger() {
-		Logger::getRootLogger().setLevel(Level::ERROR)
-		Logger::getRootLogger().removeAllAppenders()
-		Logger::getRootLogger().addAppender(
+		Logger::rootLogger.level = Level::ERROR
+		Logger::rootLogger.removeAllAppenders
+		Logger::rootLogger.addAppender(
 			new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")))
 		var String outputLevelProperty = System::getProperty("logOutputLevel")
 		if (outputLevelProperty !== null) {
-			if (!Logger::getRootLogger().getAllAppenders().hasMoreElements()) {
-				Logger::getRootLogger().addAppender(new ConsoleAppender())
+			if (!Logger::rootLogger.allAppenders.hasMoreElements()) {
+				Logger::rootLogger.addAppender(new ConsoleAppender)
 			}
-			Logger::getRootLogger().setLevel(Level::toLevel(outputLevelProperty))
+			Logger::rootLogger.level = Level::toLevel(outputLevelProperty)
 		} else {
-			Logger::getRootLogger().setLevel(Level::ERROR)
+			Logger::rootLogger.level = Level::ERROR
 		}
 	}
 
 	def static IProject getProjectByName(String projectName) {
-		val IProject iProject = ResourcesPlugin::getWorkspace().getRoot().getProject(projectName)
+		val IProject iProject = ResourcesPlugin::workspace.root.getProject(projectName)
 		return iProject
 	}
 }
