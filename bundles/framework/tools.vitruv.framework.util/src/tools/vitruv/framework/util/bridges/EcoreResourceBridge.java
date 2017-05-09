@@ -235,7 +235,9 @@ public final class EcoreResourceBridge {
 	}
 
 	/**
-	 * Saves the given resource with the given options.
+	 * Saves the given resource with the given options. Requires that the
+	 * resource URI is either a file URI or a platform URI. Resources with other
+	 * URI types (e.g. with a "pathmap" prefix) will not be saved
 	 *
 	 * @param resource
 	 *            the resource to be saved
@@ -245,7 +247,9 @@ public final class EcoreResourceBridge {
 	 *             if an error occurred during saving
 	 */
 	public static void saveResource(final Resource resource, final Map<?, ?> saveOptions) throws IOException {
-		resource.save(saveOptions);
+		if (resource.getURI().isPlatform() || resource.getURI().isFile()) {
+			resource.save(saveOptions);
+		}
 	}
 
 	public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet) {
@@ -256,24 +260,24 @@ public final class EcoreResourceBridge {
 			final Map<Object, Object> loadOptions) {
 		Resource resource = null;
 		try {
-			if (EMFBridge.existsResourceAtUri(resourceURI)) {
-				resource = resourceSet.getResource(resourceURI, true);
+			URI normalizedURI = resourceURI;
+			if (!resourceURI.isFile() && !resourceURI.isPlatform()) {
+				normalizedURI = resourceSet.getURIConverter().normalize(resourceURI);
 			}
-			
+
+			if (EMFBridge.existsResourceAtUri(normalizedURI)) {
+				resource = resourceSet.getResource(normalizedURI, true);
+			}
+
 			if (resource == null) {
-				Resource oldResource = resourceSet.getResource(resourceURI, false);
+				Resource oldResource = resourceSet.getResource(normalizedURI, false);
 				if (oldResource != null) {
 					oldResource.delete(null);
 				}
-				resource = resourceSet.createResource(resourceURI);
+				resource = resourceSet.createResource(normalizedURI);
 			} else {
 				resource.load(loadOptions);
 			}
-
-			// Fixes issue caused by JaMoPP: If a model is transitively loaded
-			// (e.g. because of an import) the URI starts with pathmap instead of
-			// the usual URI. If you try to load this model again the URI remains wrong.
-			resource.setURI(resourceURI);
 		} catch (final IOException e) {
 			// soften
 			throw new RuntimeException(e);
