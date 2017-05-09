@@ -93,7 +93,11 @@ package class EMFModelChangeTransformationUtil {
 	}
 	
 	def private static boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject, EStructuralFeature feature) {
-        return feature.isChangeable() && !feature.isDerived() && !feature.isTransient() && feature != eObject.eContainingFeature();
+		// Ensure that its not the containing feature by checking if the value equals the container value.
+		// Checking if the feature is the eContainingFeature is not correct because the eObject can be contained
+		// in a reference that it declares itself (e.g. a package contained in a packagedElements reference can also 
+		// have that packagedElements reference if is of the same type)
+        return feature.isChangeable() && !feature.isDerived() && !feature.isTransient() && eObject.eContainer != eObject.eGet(feature);
 	}
 	
 	def private static boolean valueIsNonDefault(EObject eObject, EStructuralFeature feature) {
