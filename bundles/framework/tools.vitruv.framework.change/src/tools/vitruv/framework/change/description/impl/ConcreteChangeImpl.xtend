@@ -18,12 +18,12 @@ import tools.vitruv.framework.util.datatypes.VURI
 
 class ConcreteChangeImpl extends AbstractConcreteChange {
     public new(EChange eChange, VURI vuri) {
-    	super(vuri);
-        this.eChange = eChange;
+    	super(vuri)
+        this.eChange = eChange
     }
 
     public override String toString() {
-        return ConcreteChangeImpl.getSimpleName() + ": VURI: " + this.URI + " EChange: " + this.eChange;
+        return ConcreteChangeImpl.getSimpleName + ": VURI: " + this.URI + " EChange: " + this.eChange
     }
 
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {

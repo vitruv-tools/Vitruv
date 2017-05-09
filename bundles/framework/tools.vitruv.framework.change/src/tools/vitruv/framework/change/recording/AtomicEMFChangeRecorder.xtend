@@ -139,7 +139,7 @@ class AtomicEMFChangeRecorder {
 	/**
 	 * A change recorder that restarts after each change notification to get atomic change descriptions.
 	 */
-	ChangeRecorder changeRecorder = new ChangeRecorder() {
+	ChangeRecorder changeRecorder = new ChangeRecorder {
 		private Collection<?> rootObjects
 		private boolean isDisposed = false
 		

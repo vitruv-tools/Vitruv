@@ -38,12 +38,12 @@ package class EMFModelChangeTransformationUtil {
 	def static <A extends EObject> List<AdditiveAttributeEChange<?, Object>> createAdditiveEChangeForAttribute(A affectedEObject, EAttribute affectedAttribute) {
 		if (affectedAttribute.many) {
 			val newValues = affectedEObject.getFeatureValues(affectedAttribute)
-			val resultChanges = new ArrayList<AdditiveAttributeEChange<?, Object>>();
+			val resultChanges = new ArrayList<AdditiveAttributeEChange<?, Object>>()
 			for (var index = 0; index < newValues.size; index++) {
 
-				resultChanges += TypeInferringAtomicEChangeFactory.instance.createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValues.get(index));
+				resultChanges += TypeInferringAtomicEChangeFactory.instance.createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValues.get(index))
 			}
-			return resultChanges;
+			return resultChanges
 		} else {
 			val oldValue = affectedAttribute.defaultValue
 			val newValue = affectedEObject.getFeatureValue(affectedAttribute)
@@ -54,15 +54,15 @@ package class EMFModelChangeTransformationUtil {
 	
 	
 	def static List<EChange> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference, boolean forceCreate) {
-		val result = new ArrayList<EChange>(); 
+		val result = new ArrayList<EChange>; 
 		if (reference.isMany) {
 			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
-				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, false);
+				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, false)
 			}
 		} else {
-			result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), false);
+			result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), false)
 		}
-		return result;
+		return result
 	}
 	
 	def static boolean isRootAfterChange(EObject eObject, EObject newContainer) {
@@ -70,7 +70,7 @@ package class EMFModelChangeTransformationUtil {
 	}
 	
 	def static boolean wasRootBeforeChange(EObject eObject) {
-		val oldContainer = eObject.eContainer()
+		val oldContainer = eObject.eContainer
 		return isRootContainer(oldContainer)
 	}
 	
@@ -91,7 +91,7 @@ package class EMFModelChangeTransformationUtil {
 	
 
 	def static private boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject, EStructuralFeature feature) {
-        return feature.isChangeable() && !feature.isDerived() && !feature.isTransient() && feature != eObject.eContainingFeature();
+        return feature.isChangeable && !feature.isDerived && !feature.isTransient && feature != eObject.eContainingFeature
 	}
 	
 	def static private boolean valueIsNonDefault(EObject eObject, EStructuralFeature feature) {
@@ -121,7 +121,7 @@ package class EMFModelChangeTransformationUtil {
 	def static EChange createInsertRootChange(EObject rootToInsert, EObject oldRootContainer, Resource oldRootResource, Resource newResource, int index) {
 		val isCreate = isCreate(oldRootContainer, oldRootResource)
 		if (isCreate) {
-			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertRootChange(rootToInsert, newResource, index);
+			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertRootChange(rootToInsert, newResource, index)
 		} else {
 			return TypeInferringAtomicEChangeFactory.instance.createInsertRootChange(rootToInsert, newResource, index)
 		}
@@ -138,9 +138,9 @@ package class EMFModelChangeTransformationUtil {
 	def static EChange createRemoveRootChange(EObject rootToRemove, EObject newRootContainer, Resource newRootResource, Resource oldResource, int index) {
 		val isDelete = isDelete(newRootContainer, newRootResource)
 		if (isDelete) {
-			return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteRootChange(rootToRemove, oldResource, index);
+			return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteRootChange(rootToRemove, oldResource, index)
 		} else {
-			return TypeInferringAtomicEChangeFactory.instance.createRemoveRootChange(rootToRemove, oldResource, index);
+			return TypeInferringAtomicEChangeFactory.instance.createRemoveRootChange(rootToRemove, oldResource, index)
 		}
 	}
 	
@@ -149,9 +149,9 @@ package class EMFModelChangeTransformationUtil {
 		val oldResource = referenceValue.eResource
 		val isCreate = forceCreate || (isContainment && oldResource === null)
 		if (isCreate) {
-			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertNonRootChange(affectedEObject, affectedReference, referenceValue, index);
+			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertNonRootChange(affectedEObject, affectedReference, referenceValue, index)
 		} else {
-			return TypeInferringAtomicEChangeFactory.instance.createInsertReferenceChange(affectedEObject, affectedReference, referenceValue, index);
+			return TypeInferringAtomicEChangeFactory.instance.createInsertReferenceChange(affectedEObject, affectedReference, referenceValue, index)
 		}
 	}
 	
@@ -159,9 +159,9 @@ package class EMFModelChangeTransformationUtil {
 		val isContainment = affectedReference.containment
 		val isDelete = isContainment && isDelete(newContainer, newResource)
 		if (isDelete) {
-			return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteNonRootChange(affectedEObject, affectedReference, referenceValue, index);
+			return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteNonRootChange(affectedEObject, affectedReference, referenceValue, index)
 		} else {
-			return TypeInferringAtomicEChangeFactory.instance.createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index);
+			return TypeInferringAtomicEChangeFactory.instance.createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index)
 		}
 	}
 	
@@ -176,7 +176,7 @@ package class EMFModelChangeTransformationUtil {
 				return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);				
 			}
 		} else {
-			return TypeInferringAtomicEChangeFactory.instance.createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);
+			return TypeInferringAtomicEChangeFactory.instance.createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue)
 		}
 	}
 	
@@ -195,11 +195,11 @@ package class EMFModelChangeTransformationUtil {
 	
 
 	def static createExplicitUnsetEAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, List<SubtractiveAttributeEChange<EObject, Object>> changes) {
-		return TypeInferringCompoundEChangeFactory.instance.createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, changes);
+		return TypeInferringCompoundEChangeFactory.instance.createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, changes)
 	}
 	
 	def static EChange createExplicitUnsetEReferenceChange(EObject affectedEObject, EReference affectedReference, List<EChange> changes) {
-		return TypeInferringCompoundEChangeFactory.instance.createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, changes);
+		return TypeInferringCompoundEChangeFactory.instance.createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, changes)
 	}
 	
 }
