@@ -191,7 +191,7 @@ final class TestUtil {
 			new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")))
 		var String outputLevelProperty = System::getProperty("logOutputLevel")
 		if (outputLevelProperty !== null) {
-			if (!Logger::rootLogger.allAppenders.hasMoreElements()) {
+			if (!Logger::rootLogger.allAppenders.hasMoreElements) {
 				Logger::rootLogger.addAppender(new ConsoleAppender)
 			}
 			Logger::rootLogger.level = Level::toLevel(outputLevelProperty)

@@ -30,14 +30,14 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	override final void beforeTest() {
 		super.beforeTest
 		this.changeRecorder = new AtomicEMFChangeRecorder(true)
-		setup()
+		setup
 	}
 
 	override final void afterTest() {
-		if (changeRecorder.isRecording) {
+		if (changeRecorder.recording) {
 			changeRecorder.endRecording
 		}
-		cleanup()
+		cleanup
 	}
 
 	/** 

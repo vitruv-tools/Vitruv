@@ -76,7 +76,7 @@ class TestUserInteractor implements UserInteracting {
 			def private int selectFromMessage(int maxLength) {
 				this.simulateUserThinktime
 				var int currentSelection
-				if (!this.concurrentIntLinkedQueue.isEmpty) {
+				if (!this.concurrentIntLinkedQueue.empty) {
 					currentSelection = this.concurrentIntLinkedQueue.poll
 					if (currentSelection >= maxLength) {
 						logger.warn(
@@ -104,7 +104,7 @@ class TestUserInteractor implements UserInteracting {
 			override String getTextInput(String msg) {
 				this.simulateUserThinktime
 				var String text = ""
-				if (!this.concurrentStringLinkedQueue.isEmpty) {
+				if (!this.concurrentStringLinkedQueue.empty) {
 					text = this.concurrentStringLinkedQueue.poll
 				} else {
 					throw new IllegalStateException("No user interaction integer selection specified")
@@ -114,23 +114,21 @@ class TestUserInteractor implements UserInteracting {
 			}
 
 			override URI selectURI(String message) {
-				if (this.concurrentURILinkedQueue.isEmpty) {
+				if (this.concurrentURILinkedQueue.empty) {
 					throw new IllegalStateException(
-						'''No URI found in «typeof(TestUserInteractor).simpleName» for message «message»'''.
-							toString)
-						}
-						val URI result = this.concurrentURILinkedQueue.poll
-						logger.info(
-							'''«typeof(TestUserInteractor).simpleName» selected «result.toString»'''.toString)
-						return result
-					}
-
-					def boolean isResourceQueueEmpty() {
-						return this.concurrentURILinkedQueue.isEmpty
-					}
-
-					def Collection<String> getMessageLog() {
-						return this.messageLog
-					}
+						'''No URI found in «typeof(TestUserInteractor).simpleName» for message «message»'''.toString)
 				}
-				
+				val URI result = this.concurrentURILinkedQueue.poll
+				logger.info('''«typeof(TestUserInteractor).simpleName» selected «result.toString»'''.toString)
+				return result
+			}
+
+			def boolean isResourceQueueEmpty() {
+				return this.concurrentURILinkedQueue.empty
+			}
+
+			def Collection<String> getMessageLog() {
+				return this.messageLog
+			}
+		}
+		
