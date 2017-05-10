@@ -278,6 +278,13 @@ public final class EcoreResourceBridge {
 			} else {
 				resource.load(loadOptions);
 			}
+
+			// Fixes issue caused by JaMoPP: If a model is transitively loaded
+			// (e.g. because of an import) the URI starts with pathmap instead
+			// of
+			// the usual URI. If you try to load this model again the URI
+			// remains wrong.
+			resource.setURI(normalizedURI);
 		} catch (final IOException e) {
 			// soften
 			throw new RuntimeException(e);
