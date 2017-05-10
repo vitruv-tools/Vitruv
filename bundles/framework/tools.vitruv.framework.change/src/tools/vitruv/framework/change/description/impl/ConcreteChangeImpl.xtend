@@ -17,42 +17,41 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.VURI
 
 class ConcreteChangeImpl extends AbstractConcreteChange {
-    public new(EChange eChange, VURI vuri) {
-    	super(vuri)
-        this.eChange = eChange
-    }
+	public new(EChange eChange, VURI vuri) {
+		super(vuri)
+		this.eChange = eChange
+	}
 
-    public override String toString() {
-        return ConcreteChangeImpl.getSimpleName + ": VURI: " + this.URI + " EChange: " + this.eChange
-    }
+	public override String toString() {
+		'''«ConcreteChangeImpl.simpleName»: VURI: «this.URI» EChange: «this.eChange»'''
+	}
 
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		this.eChange = this.eChange.resolveBefore(resourceSet)
-		this.registerOldObjectTuidsForUpdate(this.eChange.affectedEObjects)
-		this.eChange.applyForward
-		this.updateTuids
+		eChange = this.eChange.resolveBefore(resourceSet)
+		registerOldObjectTuidsForUpdate(this.eChange.affectedEObjects)
+		eChange.applyForward
+		updateTuids
 	}
-	
+
 	private def void registerOldObjectTuidsForUpdate(List<EObject> objects) {
-		val tuidManager = TuidManager.instance
-		for (object : objects) {
-			tuidManager.registerObjectUnderModification(object)
-		}
+		val tuidManager = TuidManager::instance
+		objects?.forEach[tuidManager.registerObjectUnderModification(it)]
 	}
-	
+
 	private def void updateTuids() {
-		TuidManager.instance.updateTuidsOfRegisteredObjects
-		TuidManager.instance.flushRegisteredObjectsUnderModification
+		TuidManager::instance.updateTuidsOfRegisteredObjects
+		TuidManager::instance.flushRegisteredObjectsUnderModification
 	}
-	
+
+	private def dispatch List<EObject> getAffectedEObjects(Void x) {
+	}
+
 	private def dispatch List<EObject> getAffectedEObjects(CompoundEChange eChange) {
-		var List<EObject> objects = new BasicEList<EObject>
-		for (atomicChange : eChange.atomicChanges) {
-			objects.addAll(atomicChange.getAffectedEObjects)
-		}
+		val List<EObject> objects = new BasicEList<EObject>
+		eChange?.atomicChanges?.forEach[objects.addAll(it.getAffectedEObjects)]
 		return objects
 	}
-	
+
 	private def dispatch List<EObject> getAffectedEObjects(InsertRootEObject<EObject> eChange) {
 		return #[eChange.newValue]
 	}
@@ -60,23 +59,23 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
 	private def dispatch List<EObject> getAffectedEObjects(RemoveRootEObject<EObject> eChange) {
 		return #[eChange.oldValue]
 	}
-	
+
 	private def dispatch List<EObject> getAffectedEObjects(InsertEReference<EObject, EObject> eChange) {
 		return #[eChange.newValue, eChange.affectedEObject]
 	}
-	
+
 	private def dispatch List<EObject> getAffectedEObjects(RemoveEReference<EObject, EObject> eChange) {
 		return #[eChange.oldValue, eChange.affectedEObject]
 	}
-	
+
 	private def dispatch List<EObject> getAffectedEObjects(ReplaceSingleValuedEReference<EObject, EObject> eChange) {
 		return #[eChange.oldValue, eChange.newValue, eChange.affectedEObject]
 	}
-	
+
 	private def dispatch List<EObject> getAffectedEObjects(FeatureEChange<EObject, ?> eChange) {
 		return #[eChange.affectedEObject]
 	}
-	
+
 	private def dispatch List<EObject> getAffectedEObjects(EObjectExistenceEChange<EObject> eChange) {
 		return #[eChange.affectedEObject]
 	}
