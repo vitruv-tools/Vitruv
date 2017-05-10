@@ -19,7 +19,7 @@ import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertH
 class CreateAndInsertRootTest extends EChangeTest {
 	protected var Root newRootObject = null
 	protected var Root newRootObject2 = null
-	protected var EList<EObject> resourceContent = null;
+	protected var EList<EObject> resourceContent = null
 
 	
 	/**
@@ -28,9 +28,9 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 */
 	@Before
 	override public void beforeTest() {
-		super.beforeTest()
-		newRootObject = AllElementTypesFactory.eINSTANCE.createRoot()
-		newRootObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
+		super.beforeTest
+		newRootObject = AllElementTypesFactory::eINSTANCE.createRoot
+		newRootObject2 = AllElementTypesFactory::eINSTANCE.createRoot
 		resourceContent = resource.contents
 		assertIsStateBefore
 	}
@@ -104,9 +104,9 @@ class CreateAndInsertRootTest extends EChangeTest {
 		// Apply 1
 		resolvedChange.assertApplyForward
 	
-		Assert.assertEquals(resourceContent.size, 2)
-		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertEquals(resourceContent.size, 2)
+		Assert::assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
+		Assert::assertTrue(stagingArea.empty)
 		
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore(resourceSet)
@@ -141,10 +141,10 @@ class CreateAndInsertRootTest extends EChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertEquals(resourceContent.size, 2)
-		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertFalse(resourceContent.contains(resolvedChange2.createChange.affectedEObject))		
-		Assert.assertTrue(stagingArea.empty)	
+		Assert::assertEquals(resourceContent.size, 2)
+		Assert::assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
+		Assert::assertFalse(resourceContent.contains(resolvedChange2.createChange.affectedEObject))		
+		Assert::assertTrue(stagingArea.empty)	
 		
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -166,37 +166,37 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(resourceContent.size, 1)
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertEquals(resourceContent.size, 1)
+		Assert::assertTrue(stagingArea.empty)
 	}
 	
 	/**
 	 * Model is in state after the changes
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(resourceContent.size, 3)
+		Assert::assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertTrue(stagingArea.empty)
 	}
 	
 	/**
 	 * Change is not resolved.
 	 */
 	def private static void assertIsNotResolved(CreateAndInsertRoot<Root> change, Root newRoot) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.createChange.isResolved)
-		Assert.assertFalse(change.insertChange.isResolved)
-		Assert.assertNotSame(change.createChange.affectedEObject, newRoot)
-		Assert.assertNotSame(change.insertChange.newValue, newRoot)
-		Assert.assertNotSame(change.createChange.affectedEObject, change.insertChange.newValue)
+		Assert::assertFalse(change.resolved)
+		Assert::assertFalse(change.createChange.resolved)
+		Assert::assertFalse(change.insertChange.resolved)
+		Assert::assertNotSame(change.createChange.affectedEObject, newRoot)
+		Assert::assertNotSame(change.insertChange.newValue, newRoot)
+		Assert::assertNotSame(change.createChange.affectedEObject, change.insertChange.newValue)
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
 	def private static void assertIsResolved(CreateAndInsertRoot<Root> change, Root newRoot) {
-		Assert.assertTrue(change.isResolved)
+		Assert::assertTrue(change.resolved)
 		change.createChange.affectedEObject.assertEqualsOrCopy(newRoot)
 		change.insertChange.newValue.assertEqualsOrCopy(newRoot)
 	}

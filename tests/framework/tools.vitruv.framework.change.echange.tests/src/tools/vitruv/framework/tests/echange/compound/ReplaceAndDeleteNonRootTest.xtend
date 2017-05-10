@@ -17,7 +17,7 @@ import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertH
 /**
  * Test class for the concrete {@link ReplaceAndDeleteNonRoot} EChange,
  * which removes a non root EObject from a single valued containment reference
- * and delets it.
+ * and deletes it.
  */
 class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	protected var Root affectedEObject = null
@@ -28,8 +28,8 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	override public void beforeTest() {
 		super.beforeTest
 		affectedEObject = rootObject
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
-		oldNonRootObject = AllElementTypesFactory.eINSTANCE.createNonRoot
+		affectedFeature = AllElementTypesPackage::Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
+		oldNonRootObject = AllElementTypesFactory::eINSTANCE.createNonRoot
 		prepareStateBefore
 	}
 	
@@ -156,30 +156,30 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertNull(affectedEObject.eGet(affectedFeature))
+		Assert::assertNull(affectedEObject.eGet(affectedFeature))
 	}
 	
 	/**
 	 * Change is not resolved.
 	 */
 	def private static void assertIsNotResolved(ReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedEObject, NonRoot oldValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.deleteChange.isResolved)
-		Assert.assertFalse(change.removeChange.isResolved)
-		Assert.assertNotSame(change.deleteChange.affectedEObject, oldValue)
-		Assert.assertNotSame(change.removeChange.oldValue, oldValue)
-		Assert.assertNotSame(change.removeChange.affectedEObject, affectedEObject)
-		Assert.assertNotSame(change.deleteChange.affectedEObject, change.removeChange.newValue)		
+		Assert::assertFalse(change.resolved)
+		Assert::assertFalse(change.deleteChange.resolved)
+		Assert::assertFalse(change.removeChange.resolved)
+		Assert::assertNotSame(change.deleteChange.affectedEObject, oldValue)
+		Assert::assertNotSame(change.removeChange.oldValue, oldValue)
+		Assert::assertNotSame(change.removeChange.affectedEObject, affectedEObject)
+		Assert::assertNotSame(change.deleteChange.affectedEObject, change.removeChange.newValue)		
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
 	def private static void assertIsResolved(ReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedEObject, NonRoot oldValue) {
-		Assert.assertTrue(change.isResolved)	
+		Assert::assertTrue(change.resolved)	
 		change.removeChange.newValue.assertEqualsOrCopy(oldValue)
 		change.deleteChange.affectedEObject.assertEqualsOrCopy(oldValue)
-		Assert.assertSame(change.removeChange.affectedEObject, affectedEObject)	
+		Assert::assertSame(change.removeChange.affectedEObject, affectedEObject)	
 	}
 	
 	/**

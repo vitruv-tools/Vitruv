@@ -55,8 +55,8 @@ class RemoveFromStagingAreaCommandTest extends StagingAreaCommandTest {
 	 */
 	def private assertRemovedObjectFromStagingArea(RemoveFromStagingAreaCommand command, StagingArea stagingArea, EObject object) {
 		stagingArea.add(object)
-		Assert.assertFalse(stagingArea.empty)
+		Assert::assertFalse(stagingArea.empty)
 		command.assertExecuteCommand
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertTrue(stagingArea.empty)
 	}
 }

@@ -63,14 +63,14 @@ import java.io.File
 		} catch (IOException exc) {
 			throw new RuntimeException("auto-generated try/catch", exc)
 		}
-		fileUri = URI.createFileURI(modelFile.absolutePath)
+		fileUri = URI::createFileURI(modelFile.absolutePath)
  		
  		// Create model
  		resourceSet = new ResourceSetImpl
  		resourceSet.resourceFactoryRegistry.extensionToFactoryMap.put(METAMODEL, new XMIResourceFactoryImpl)
  		resource = resourceSet.createResource(fileUri)
  		
- 		rootObject = AllElementTypesFactory.eINSTANCE.createRoot
+ 		rootObject = AllElementTypesFactory::eINSTANCE.createRoot
  		resource.contents.add(rootObject)
  		
  		try {
@@ -80,11 +80,11 @@ import java.io.File
 		}
  		
  		// Create staging area for resource set 1
- 		stagingArea = StagingArea.getStagingArea(resourceSet)
+ 		stagingArea = StagingArea::getStagingArea(resourceSet)
  		
  		// Factorys for creating changes
- 		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory.instance
- 		compoundFactory = TypeInferringUnresolvingCompoundEChangeFactory.instance
+ 		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory::instance
+ 		compoundFactory = TypeInferringUnresolvingCompoundEChangeFactory::instance
  	}
  	
  	/**
