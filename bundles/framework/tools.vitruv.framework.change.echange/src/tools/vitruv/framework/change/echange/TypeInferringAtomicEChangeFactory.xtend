@@ -99,7 +99,7 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
 		A affectedEObject, Resource resource) {
-		change.stagingArea = StagingArea.getStagingArea(resource)
+		change.stagingArea = StagingArea::getStagingArea(resource)
 		change.affectedEObject = affectedEObject
 	}
 

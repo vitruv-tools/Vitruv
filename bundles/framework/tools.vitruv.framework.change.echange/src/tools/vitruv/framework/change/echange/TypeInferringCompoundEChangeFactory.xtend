@@ -57,9 +57,7 @@ class TypeInferringCompoundEChangeFactory {
 	 */
 	def protected <A extends EObject, T extends Object> setUnsetAttributeChangeSubtractiveChanges(
 		ExplicitUnsetEAttribute<A, T> change, List<SubtractiveAttributeEChange<A, T>> changes) {
-		for (c : changes) {
-			change.subtractiveChanges.add(c)
-		}
+		changes.forEach[c|change.subtractiveChanges.add(c)]
 	}
 
 	/**
@@ -69,9 +67,7 @@ class TypeInferringCompoundEChangeFactory {
 	 */
 	def protected <A extends EObject> setUnsetReferenceChangeEChanges(ExplicitUnsetEReference<A> change,
 		List<EChange> changes) {
-		for (c : changes) {
-			change.changes.add(c)
-		}
+		changes.forEach[c|change.changes.add(c)]
 	}
 
 	/**
