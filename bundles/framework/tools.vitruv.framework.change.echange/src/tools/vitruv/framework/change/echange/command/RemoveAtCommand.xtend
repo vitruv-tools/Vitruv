@@ -26,7 +26,7 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * @param index Index at which the value is removed in the EList.
 	 */
 	new(EditingDomain editingDomain, EObject owner, EStructuralFeature feature, Object value, int index) {
-		super(editingDomain, owner, feature, Collections.singleton(value))
+		super(editingDomain, owner, feature, Collections::singleton(value))
 		this.index = index
 	}
 
@@ -38,7 +38,7 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * @param index The Index at which the value is removed in the EList.
 	 */
 	new(EditingDomain editingDomain, EList<?> ownerList, Object value, int index) {
-		super(editingDomain, ownerList, Collections.singleton(value))
+		super(editingDomain, ownerList, Collections::singleton(value))
 		this.index = index
 	}
 

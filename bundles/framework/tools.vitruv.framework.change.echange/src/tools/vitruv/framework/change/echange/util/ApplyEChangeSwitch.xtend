@@ -28,9 +28,9 @@ public class ApplyEChangeSwitch {
 		
 		var List<Command> commands
 		if (applyForward) {
-			commands = ApplyForwardCommandSwitch.getCommands(change)
+			commands = ApplyForwardCommandSwitch::getCommands(change)
 		} else {
-			commands = ApplyBackwardCommandSwitch.getCommands(change)
+			commands = ApplyBackwardCommandSwitch::getCommands(change)
 		}
 
 		if (commands !== null) {

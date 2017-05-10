@@ -24,7 +24,7 @@ class CompoundEChangeResolver {
 	 * 								the compound change.
 	 */	
 	def private static boolean resolveCompoundEChange(CompoundEChange change, ResourceSet resourceSet, boolean resolveBefore, boolean revertAfterResolving) {
-		if (!AtomicEChangeResolver.resolveEChange(change, resourceSet, resolveBefore) 
+		if (!AtomicEChangeResolver::resolveEChange(change, resourceSet, resolveBefore) 
 			|| !resolveAtomicChanges(change, resourceSet, resolveBefore, revertAfterResolving)) {
 			return false
 		}
@@ -50,11 +50,11 @@ class CompoundEChangeResolver {
 		
 		val appliedChanges = new BasicEList<EChange>		
 		for (AtomicEChange c : atomicChanges) {
-			if (!AtomicEChangeResolver.resolve(c, resourceSet, resolveBefore) 
-				|| !ApplyEChangeSwitch.applyEChange(c, resolveBefore)) {
+			if (!AtomicEChangeResolver::resolve(c, resourceSet, resolveBefore) 
+				|| !ApplyEChangeSwitch::applyEChange(c, resolveBefore)) {
 				// Error resolving or applying => revert all applied changes
 				for (EChange changed : appliedChanges.reverseView) {
-					ApplyEChangeSwitch.applyEChange(changed, !resolveBefore)
+					ApplyEChangeSwitch::applyEChange(changed, !resolveBefore)
 				}
 				return false
 			} else {
@@ -64,7 +64,7 @@ class CompoundEChangeResolver {
 		
 		// Revert all changes which were made resolving the compound change.
 		if (revertAfterResolving) {
-			ApplyEChangeSwitch.applyEChange(change, !resolveBefore)
+			ApplyEChangeSwitch::applyEChange(change, !resolveBefore)
 		}
 		return true		
 	}
@@ -102,7 +102,7 @@ class CompoundEChangeResolver {
 			return false
 		}
 			
-		change.affectedEObject = EChangeUtil.resolveProxy(change.affectedEObject, resourceSet)
+		change.affectedEObject = EChangeUtil::resolveProxy(change.affectedEObject, resourceSet)
 
 		if (change.affectedEObject === null || change.affectedEObject.eIsProxy) {
 			return false

@@ -54,7 +54,7 @@ class AtomicEChangeResolver {
 			return false
 		}
 
-		change.affectedEObject = EChangeUtil.resolveProxy(change.affectedEObject, resourceSet) as A
+		change.affectedEObject = EChangeUtil::resolveProxy(change.affectedEObject, resourceSet) as A
 
 		if (change.affectedFeature === null || change.affectedEObject === null || change.affectedEObject.eIsProxy) {
 			return false
@@ -81,11 +81,11 @@ class AtomicEChangeResolver {
 		}
 		if (!change.affectedFeature.containment) {
 			// Non containment => New object is already in resource
-			return EChangeUtil.resolveProxy(value, resourceSet)			
+			return EChangeUtil::resolveProxy(value, resourceSet)			
 		}
 		if (!isInserted) {
 			// Before => New object is in staging area.
-			return StagingArea.getStagingArea(resourceSet).peek
+			return StagingArea::getStagingArea(resourceSet).peek
 		} else {
 			// After => New object is in containment reference.
 			if (change.affectedFeature.many) {
@@ -115,12 +115,12 @@ class AtomicEChangeResolver {
 			return false
 		}
 		// Get the staging area where the created object will placed in or deleted from.
-		change.stagingArea = StagingArea.getStagingArea(resourceSet)
+		change.stagingArea = StagingArea::getStagingArea(resourceSet)
 
 		// Resolve the affected object
 		if (newObject) {
 			// Create new one
-			change.affectedEObject = EcoreUtil.copy(change.affectedEObject)
+			change.affectedEObject = EcoreUtil::copy(change.affectedEObject)
 			(change.affectedEObject as InternalEObject).eSetProxyURI(null)
 		} else {
 			// Object still exists
@@ -147,7 +147,7 @@ class AtomicEChangeResolver {
 			return false
 		}
 		// Get resource where the root object will be inserted / removed.
-		change.resource = resourceSet.getResource(URI.createURI(change.uri), false)
+		change.resource = resourceSet.getResource(URI::createURI(change.uri), false)
 
 		if (change.resource === null) {
 			return false
@@ -174,7 +174,7 @@ class AtomicEChangeResolver {
 			}
 		} else {
 			// Root object is in staging area
-			return StagingArea.getStagingArea(resourceSet).peek
+			return StagingArea::getStagingArea(resourceSet).peek
 		}
 		return value		
 	}

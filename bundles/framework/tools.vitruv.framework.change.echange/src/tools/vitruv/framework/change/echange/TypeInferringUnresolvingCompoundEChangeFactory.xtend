@@ -25,7 +25,7 @@ final class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferring
 	def public static TypeInferringUnresolvingCompoundEChangeFactory getInstance() {
 		if (instance === null) {
 			instance = new TypeInferringUnresolvingCompoundEChangeFactory(
-				TypeInferringUnresolvingAtomicEChangeFactory.instance)
+				TypeInferringUnresolvingAtomicEChangeFactory::instance)
 		}
 		return instance
 	}
