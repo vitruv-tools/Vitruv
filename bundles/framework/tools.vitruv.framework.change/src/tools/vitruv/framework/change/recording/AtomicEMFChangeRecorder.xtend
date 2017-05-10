@@ -105,8 +105,8 @@ class AtomicEMFChangeRecorder {
 		// Apply again and unresolve the results if necessary
 		for (c : eChanges) {
 			if (this.unresolveRecordedChanges) {
-				val EChange copy = EcoreUtil.copy(c)
-				EChangeUnresolver.unresolve(c)
+				val EChange copy = EcoreUtil::copy(c)
+				EChangeUnresolver::unresolve(c)
 				copy.applyForward
 			} else {
 				c.applyForward
@@ -125,13 +125,11 @@ class AtomicEMFChangeRecorder {
 		// The newly created object is in a resource after the change, so
 		// the correct staging area can be chosen, before the change
 		// is applied backward.
-		change.stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
+		change.stagingArea = StagingArea::getStagingArea(change.affectedEObject.eResource)
 	}
 	
 	def private dispatch void updateStagingArea(CompoundEChange change) {
-		for (a : change.atomicChanges) {
-			updateStagingArea(a)
-		}
+		change.atomicChanges.forEach[updateStagingArea(it)]
 	}
 	
 	
