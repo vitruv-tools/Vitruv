@@ -53,7 +53,7 @@ class EChangeResolver {
 	 */
 	def public static boolean resolve(EChange change, ResourceSet resourceSet, boolean resolveBefore,
 		boolean revertAfterResolving) {
-		if (change.isResolved) {
+		if (change.resolved) {
 			throw new IllegalArgumentException
 		}
 		if (!resolveChange(change, resourceSet, resolveBefore, revertAfterResolving)) {

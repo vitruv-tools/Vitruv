@@ -22,7 +22,7 @@ public class ApplyEChangeSwitch {
 	 * @throws RunTimeException			The change could not be applied.
 	 */
 	def public static boolean applyEChange(EChange change, boolean applyForward) {
-		if (!change.isResolved) {
+		if (!change.resolved) {
 			throw new IllegalStateException("The EChange is not resolved.")
 		}
 		
@@ -35,8 +35,8 @@ public class ApplyEChangeSwitch {
 
 		if (commands !== null) {
 			for (Command c : commands) {
-				if (c.canExecute()) {
-					c.execute()
+				if (c.canExecute) {
+					c.execute
 				} else {
 					throw new RuntimeException("EChange could not be applied.")
 				}

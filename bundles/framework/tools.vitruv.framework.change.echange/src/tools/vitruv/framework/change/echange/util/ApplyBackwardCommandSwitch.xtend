@@ -64,7 +64,7 @@ package class ApplyBackwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(InsertEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		val compoundCommand = new CompoundCommand()
+		val compoundCommand = new CompoundCommand
 
 		compoundCommand.append(new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue, change.index))
 		if (change.containment) {
@@ -81,7 +81,7 @@ package class ApplyBackwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		val compoundCommand = new CompoundCommand()
+		val compoundCommand = new CompoundCommand
 
 		if (change.containment) {
 			val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
@@ -98,7 +98,7 @@ package class ApplyBackwardCommandSwitch {
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
 		val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
-		val compoundCommand = new CompoundCommand()
+		val compoundCommand = new CompoundCommand
 
 		if (change.containment && change.oldValue !== null) {
 			compoundCommand.append(new RemoveFromStagingAreaCommand(editingDomain, stagingArea, change.oldValue))

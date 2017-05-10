@@ -36,7 +36,7 @@ class EChangeUtil {
 	public static def EditingDomain getEditingDomain(EObject object) {
 		val ed = AdapterFactoryEditingDomain.getEditingDomainFor(object)
 		if (ed === null) {
-			return new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), new BasicCommandStack());
+			return new AdapterFactoryEditingDomain(new ComposedAdapterFactory, new BasicCommandStack)
 		}
 		return ed
 	}

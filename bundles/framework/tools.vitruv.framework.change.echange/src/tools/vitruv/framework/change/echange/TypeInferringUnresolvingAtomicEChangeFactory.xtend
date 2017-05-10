@@ -30,7 +30,7 @@ final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAt
 	 */
 	def public static TypeInferringUnresolvingAtomicEChangeFactory getInstance() {
 		if (instance === null) {
-			instance = new TypeInferringUnresolvingAtomicEChangeFactory()
+			instance = new TypeInferringUnresolvingAtomicEChangeFactory
 		}
 		return instance
 	}

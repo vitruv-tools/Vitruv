@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.echange.util;
+package tools.vitruv.framework.change.echange.util
 
 import java.util.ArrayList
 import java.util.List
@@ -66,7 +66,7 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(InsertEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		val compoundCommand = new CompoundCommand()
+		val compoundCommand = new CompoundCommand
 		if (change.containment) {
 			// Remove from staging area first
 			val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
@@ -83,7 +83,7 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		val compoundCommand = new CompoundCommand()
+		val compoundCommand = new CompoundCommand
 
 		compoundCommand.append(new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue,
 				change.index))
@@ -103,7 +103,7 @@ package class ApplyForwardCommandSwitch {
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
 		val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
-		val compoundCommand = new CompoundCommand()
+		val compoundCommand = new CompoundCommand
 
 		if (change.containment && change.newValue !== null) {
 			compoundCommand.append(new RemoveFromStagingAreaCommand(editingDomain, stagingArea, change.newValue))

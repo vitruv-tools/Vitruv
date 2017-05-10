@@ -40,7 +40,7 @@ final class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferring
 		ExplicitUnsetEAttribute<A, T> change, List<SubtractiveAttributeEChange<A, T>> changes) {
 		for (c : changes) {
 			c.unresolve
-			change.subtractiveChanges.add(c);
+			change.subtractiveChanges.add(c)
 		}
 	}
 
@@ -48,7 +48,7 @@ final class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferring
 		List<EChange> changes) {
 		for (c : changes) {
 			c.unresolve
-			change.changes.add(c);
+			change.changes.add(c)
 		}
 	}
 }

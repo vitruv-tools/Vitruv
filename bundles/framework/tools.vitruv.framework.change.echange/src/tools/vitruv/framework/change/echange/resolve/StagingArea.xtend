@@ -31,7 +31,7 @@ final public class StagingArea {
 		}
 		
 		if (stagingAreas.get(resourceSet) === null) {
-			stagingAreas.put(resourceSet, new StagingArea())
+			stagingAreas.put(resourceSet, new StagingArea)
 		}
 		return stagingAreas.get(resourceSet)
 	}
@@ -51,7 +51,7 @@ final public class StagingArea {
 	}
 	
 	private new() {
-		this.stagingAreaContent = new ResourceImpl()
+		this.stagingAreaContent = new ResourceImpl
 	}
 	
 	/**
