@@ -18,11 +18,13 @@ import tools.vitruv.framework.tuid.TuidManager
  * @author Heiko Klare
  */
 abstract class VitruviusTest {
-	@Rule public TestName testName = new TestName
+	@Rule 
+	public TestName testName = new TestName
 	IProject currentTestProject
 	Function<String, IProject> testProjectCreator
 
-	@BeforeClass def static void setUpAllTests() {
+	@BeforeClass 
+	def static void setUpAllTests() {
 		TestUtil::initializeLogger
 	}
 
@@ -44,7 +46,8 @@ abstract class VitruviusTest {
 	 * workspace. When overwriting this method, ensure that the super method
 	 * gets called.
 	 */
-	@Before def void beforeTest() {
+	@Before 
+	def void beforeTest() {
 		TuidManager::getInstance.reinitialize
 		var String testMethodName = testName.methodName
 		this.currentTestProject = testProjectCreator.apply(testMethodName)

@@ -14,8 +14,8 @@ package class ChangedResourcesTracker {
 	private final Set<Resource> involvedModelResources
 	
 	new() {
-		this.sourceModelResources = newHashSet()
-		this.involvedModelResources = newHashSet()
+		this.sourceModelResources = newHashSet
+		this.involvedModelResources = newHashSet
 	}
 
 
