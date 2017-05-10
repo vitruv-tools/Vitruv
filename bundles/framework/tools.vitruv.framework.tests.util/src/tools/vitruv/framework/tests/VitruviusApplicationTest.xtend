@@ -54,15 +54,14 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	def protected abstract void cleanup()
 
 	def private void propagateChanges(VURI vuri) {
-		val List<TransactionalChange> changes = this.changeRecorder.endRecording
-		var CompositeContainerChange compositeChange = VitruviusChangeFactory::getInstance.
-			createCompositeChange(changes)
-		this.virtualModel.propagateChange(compositeChange)
+		val List<TransactionalChange> changes = changeRecorder.endRecording
+		val CompositeContainerChange compositeChange = VitruviusChangeFactory::instance.createCompositeChange(changes)
+		virtualModel.propagateChange(compositeChange)
 	}
 
 	def private void startRecordingChanges(Resource resource) {
-		var VURI vuri = VURI::getInstance(resource)
-		this.changeRecorder.beginRecording(vuri, Collections::singleton(resource))
+		val VURI vuri = VURI::getInstance(resource)
+		changeRecorder.beginRecording(vuri, Collections::singleton(resource))
 	}
 
 	/** 
@@ -84,8 +83,8 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	def protected void saveAndSynchronizeChanges(EObject object) throws IOException {
 		var Resource resource = object.eResource
 		EcoreResourceBridge::saveResource(resource)
-		this.propagateChanges(VURI::getInstance(resource))
-		this.startRecordingChanges(resource)
+		propagateChanges(VURI::getInstance(resource))
+		startRecordingChanges(resource)
 	}
 
 	/** 
@@ -100,8 +99,8 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 		if (StringUtils::isEmpty(modelPathInProject) || rootElement === null) {
 			throw new IllegalArgumentException
 		}
-		var Resource resource = createModelResource(modelPathInProject)
-		this.startRecordingChanges(resource)
+		val Resource resource = createModelResource(modelPathInProject)
+		startRecordingChanges(resource)
 		resource.contents.add(rootElement)
 		saveAndSynchronizeChanges(rootElement)
 	}
@@ -116,8 +115,8 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 		if (StringUtils::isEmpty(modelPathInProject)) {
 			throw new IllegalArgumentException
 		}
-		var Resource resource = getModelResource(modelPathInProject)
-		var VURI vuri = VURI::getInstance(resource)
+		val Resource resource = getModelResource(modelPathInProject)
+		val VURI vuri = VURI::getInstance(resource)
 		resource.delete(Collections::EMPTY_MAP)
 		propagateChanges(vuri)
 	}

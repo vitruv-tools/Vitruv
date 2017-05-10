@@ -41,7 +41,8 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 
 	@After def abstract void afterTest()
 
-	@Before override void beforeTest() {
+	@Before 
+	override void beforeTest() {
 		super.beforeTest
 		this.resourceSet = new ResourceSetImpl
 		var String testMethodName = testName.methodName
@@ -49,7 +50,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	}
 
 	def private void createVirtualModel(String testName) {
-		var String currentTestProjectVsumName = '''«testName»_vsum_'''.toString
+		var String currentTestProjectVsumName = '''«testName»_vsum_'''
 		var Iterable<VitruvDomain> domains = this.vitruvDomains
 		this.virtualModel = TestUtil::createVirtualModel(currentTestProjectVsumName, true, domains,
 			createChangePropagationSpecifications())
@@ -76,7 +77,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	}
 
 	def private String getPlatformModelPath(String modelPathWithinProject) {
-		return '''«this.currentTestProject.name»/«modelPathWithinProject»'''.toString
+		return '''«currentTestProject.name»/«modelPathWithinProject»'''
 	}
 
 	def private VURI getModelVuri(String modelPathWithinProject) {

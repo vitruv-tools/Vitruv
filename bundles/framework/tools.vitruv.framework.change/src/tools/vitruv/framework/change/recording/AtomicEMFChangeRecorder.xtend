@@ -48,12 +48,12 @@ class AtomicEMFChangeRecorder {
 		this.modelVURI = modelVURI
 		this.elementsToObserve.clear
 		this.elementsToObserve += elementsToObserve
-		this.changeDescriptions = new ArrayList<ChangeDescription>
+		changeDescriptions = new ArrayList<ChangeDescription>
 		changeRecorder.beginRecording(elementsToObserve)
 	}
 	
 	def List<TransactionalChange> endRecording() {
-		if (!isRecording) {
+		if (!recording) {
 			throw new IllegalStateException
 		}
 		changeRecorder.endRecording

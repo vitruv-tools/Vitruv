@@ -28,8 +28,8 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
 
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
 		eChange = this.eChange.resolveBefore(resourceSet)
-		registerOldObjectTuidsForUpdate(this.eChange.affectedEObjects)
-		eChange.applyForward
+		registerOldObjectTuidsForUpdate(eChange.affectedEObjects)
+		eChange?.applyForward
 		updateTuids
 	}
 
