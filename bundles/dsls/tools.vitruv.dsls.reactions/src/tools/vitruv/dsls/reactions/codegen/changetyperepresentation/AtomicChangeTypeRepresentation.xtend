@@ -46,11 +46,11 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 	}
 
 	public def boolean hasAffectedElement() {
-		return affectedElementClass != null;
+		return affectedElementClass !== null;
 	}
 	
 	public def boolean hasAffectedFeature() {
-		return affectedFeature != null;
+		return affectedFeature !== null;
 	}
 	
 	public def boolean hasOldValue() {
@@ -75,10 +75,10 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 
 	public def Iterable<AccessibleElement> generatePropertiesParameterList() {
 		val result = <AccessibleElement>newArrayList();
-		if (affectedElementClass != null) {
+		if (affectedElementClass !== null) {
 			result.add(new AccessibleElement(affectedElementAttribute, affectedElementClass));
 		}
-		if (affectedFeature != null) {
+		if (affectedFeature !== null) {
 			result.add(new AccessibleElement(affectedFeatureAttribute, affectedFeature.eClass.instanceClass));
 		}
 		if (hasOldValue) {
@@ -95,10 +95,10 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 
 	public def StringConcatenationClient generatePropertiesAssignmentCode(String typedChangeVariableName) {
 		'''
-			«IF affectedElementClass != null»
+			«IF affectedElementClass !== null»
 				«affectedElementClass» «affectedElementAttribute» = «typedChangeVariableName».get«affectedElementAttribute.toFirstUpper»();
 			«ENDIF»
-			«IF affectedFeature != null»
+			«IF affectedFeature !== null»
 				«affectedFeature.eClass.instanceClass» «affectedFeatureAttribute» = «typedChangeVariableName».get«affectedFeatureAttribute.toFirstUpper»();
 			«ENDIF»
 			«IF hasOldValue»

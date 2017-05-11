@@ -31,7 +31,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	
 	@Before
 	override public void beforeTest() {
-		super.beforeTest()
+		super.beforeTest
 		affectedEObject = rootObject	
 	}
 
@@ -161,7 +161,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Starts a test with a single valued attribute and sets the state before.
 	 */
 	def private void isSingleValuedAttributeTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE
+		affectedFeature = AllElementTypesPackage::Literals.ROOT__SINGLE_VALUED_UNSETTABLE_EATTRIBUTE
 		prepareStateBefore
 	}
 	
@@ -169,7 +169,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Starts a test with a multi valued attribute and sets the state before. 
 	 */
 	def private void isMultiValuedAttributeTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE	
+		affectedFeature = AllElementTypesPackage::Literals.ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE	
 		attributeContent = affectedEObject.eGet(affectedFeature) as EList<Integer>
 		prepareStateBefore
 	}
@@ -199,13 +199,13 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Model is in state before the single or multi valued unset change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertTrue(affectedEObject.eIsSet(affectedFeature))
+		Assert::assertTrue(affectedEObject.eIsSet(affectedFeature))
 		if (!affectedFeature.many) {
-			Assert.assertEquals(affectedEObject.eGet(affectedFeature), OLD_VALUE)
+			Assert::assertEquals(affectedEObject.eGet(affectedFeature), OLD_VALUE)
 		} else {
-			Assert.assertEquals(attributeContent.get(0), OLD_VALUE)
-			Assert.assertEquals(attributeContent.get(1), OLD_VALUE_2)
-			Assert.assertEquals(attributeContent.get(2), OLD_VALUE_3)			
+			Assert::assertEquals(attributeContent.get(0), OLD_VALUE)
+			Assert::assertEquals(attributeContent.get(1), OLD_VALUE_2)
+			Assert::assertEquals(attributeContent.get(2), OLD_VALUE_3)			
 		}
 	}
 	
@@ -213,18 +213,18 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Model is in state after the single or multi valued unset change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertFalse(affectedEObject.eIsSet(affectedFeature))
+		Assert::assertFalse(affectedEObject.eIsSet(affectedFeature))
 	}
 	
 	/**
 	 * Change is not resolved.
 	 */
 	def private static assertIsNotResolved(ExplicitUnsetEAttribute<Root, Integer> change, Root affectedRootObject) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertNotSame(change.affectedEObject, affectedRootObject)
+		Assert::assertFalse(change.resolved)
+		Assert::assertNotSame(change.affectedEObject, affectedRootObject)
 		for (c : change.atomicChanges) {
-			Assert.assertFalse(c.isResolved)
-			Assert.assertNotSame((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject, affectedRootObject)
+			Assert::assertFalse(c.resolved)
+			Assert::assertNotSame((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject, affectedRootObject)
 		}
 	}
 	
@@ -232,11 +232,11 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Change is resolved.
 	 */
 	def private static assertIsResolved(ExplicitUnsetEAttribute<Root, Integer> change, Root affectedRootObject) {
-		Assert.assertNotNull(change)
-		Assert.assertTrue(change.isResolved)
-		Assert.assertSame(change.affectedEObject, affectedRootObject)
+		Assert::assertNotNull(change)
+		Assert::assertTrue(change.resolved)
+		Assert::assertSame(change.affectedEObject, affectedRootObject)
 		for (c : change.atomicChanges) {
-			Assert.assertSame((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject, affectedRootObject)
+			Assert::assertSame((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject, affectedRootObject)
 		}		
 	}
 	

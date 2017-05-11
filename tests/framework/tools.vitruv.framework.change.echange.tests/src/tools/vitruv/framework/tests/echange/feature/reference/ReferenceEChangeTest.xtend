@@ -22,10 +22,10 @@ public abstract class ReferenceEChangeTest extends EChangeTest {
 	 */
 	@Before
 	override public void beforeTest() {
-		super.beforeTest()
+		super.beforeTest
 		affectedEObject = rootObject
-		newValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
-		newValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot()
+		newValue = AllElementTypesFactory::eINSTANCE.createNonRoot
+		newValue2 = AllElementTypesFactory::eINSTANCE.createNonRoot
 		resourceContent = resource.contents
 	}
 	

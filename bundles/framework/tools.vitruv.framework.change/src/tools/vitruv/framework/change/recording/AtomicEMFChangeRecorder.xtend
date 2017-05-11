@@ -19,8 +19,8 @@ import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.util.datatypes.VURI
 
 class AtomicEMFChangeRecorder {
-	var List<ChangeDescription> changeDescriptions;
-	var VURI modelVURI;
+	var List<ChangeDescription> changeDescriptions
+	var VURI modelVURI
 	var Collection<Notifier> elementsToObserve
 	var boolean unresolveRecordedChanges
 	
@@ -38,54 +38,54 @@ class AtomicEMFChangeRecorder {
 	 * 			by unresolved changes, which referenced EObjects are proxy objects.
 	 */
 	new(boolean unresolveRecordedChanges) {
-		this.elementsToObserve = new ArrayList<Notifier>();
-		changeRecorder.setRecordingTransientFeatures(false)
-		changeRecorder.setResolveProxies(true)
+		this.elementsToObserve = new ArrayList<Notifier>
+		changeRecorder.recordingTransientFeatures = false
+		changeRecorder.resolveProxies = true
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 	}
 	
 	def void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {
-		this.modelVURI = modelVURI;
-		this.elementsToObserve.clear();
-		this.elementsToObserve += elementsToObserve;
-		this.changeDescriptions = new ArrayList<ChangeDescription>();
+		this.modelVURI = modelVURI
+		this.elementsToObserve.clear
+		this.elementsToObserve += elementsToObserve
+		changeDescriptions = new ArrayList<ChangeDescription>
 		changeRecorder.beginRecording(elementsToObserve)
 	}
 	
 	def List<TransactionalChange> endRecording() {
-		if (!isRecording) {
-			throw new IllegalStateException();
+		if (!recording) {
+			throw new IllegalStateException
 		}
-		changeRecorder.endRecording();
-		changeDescriptions.reverseView.forEach[applyAndReverse];
-		var transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList;
+		changeRecorder.endRecording
+		changeDescriptions.reverseView.forEach[applyAndReverse]
+		var transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList
 		correctChanges(transactionalChanges)
 		return transactionalChanges
 	}
 	
 	private def createModelChange(ChangeDescription changeDescription) {
-		if (!(changeDescription.objectChanges.isEmpty && changeDescription.resourceChanges.isEmpty)) {
-			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI);
-			changeDescription.applyAndReverse()
-			//result.applyForward();
-			return result;
+		if (!(changeDescription.objectChanges.empty && changeDescription.resourceChanges.empty)) {
+			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI)
+			changeDescription.applyAndReverse
+			//result.applyForward
+			return result
 		}
-		changeDescription.applyAndReverse()
-		return null;
+		changeDescription.applyAndReverse
+		return null
 	}
 	
 	def List<TransactionalChange> restartRecording() {
-		val modelChanges = endRecording()
+		val modelChanges = endRecording
 		beginRecording(modelVURI, elementsToObserve)
-		return modelChanges;
+		return modelChanges
 	}
 	
 	def boolean isRecording() {
-		return changeRecorder.isRecording()
+		return changeRecorder.recording
 	}
 	
 	def void dispose() {
-		changeRecorder.dispose()
+		changeRecorder.dispose
 	}
 	
 	
@@ -96,10 +96,7 @@ class AtomicEMFChangeRecorder {
 	 * correcting the wrong changes.
 	 */		
 	def private void correctChanges(List<TransactionalChange> changes) {
-		var eChanges = changes.map [
-			val echanges = it.EChanges;
-			return echanges;
-		].flatten.toList;
+		var eChanges = changes.map[EChanges].flatten.toList
 		// Roll back
 		for (c : eChanges.reverseView) {
 			updateStagingArea(c) // corrects the missing or wrong staging area of CreateEObject changes.
@@ -108,8 +105,8 @@ class AtomicEMFChangeRecorder {
 		// Apply again and unresolve the results if necessary
 		for (c : eChanges) {
 			if (this.unresolveRecordedChanges) {
-				val EChange copy = EcoreUtil.copy(c)
-				EChangeUnresolver.unresolve(c)
+				val EChange copy = EcoreUtil::copy(c)
+				EChangeUnresolver::unresolve(c)
 				copy.applyForward
 			} else {
 				c.applyForward
@@ -125,16 +122,14 @@ class AtomicEMFChangeRecorder {
 	}
 	
 	def private dispatch void updateStagingArea(CreateEObject<EObject> change) {
-		// The newly created object is in an resource after the change, so
+		// The newly created object is in a resource after the change, so
 		// the correct staging area can be chosen, before the change
 		// is applied backward.
-		change.stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
+		change.stagingArea = StagingArea::getStagingArea(change.affectedEObject.eResource)
 	}
 	
 	def private dispatch void updateStagingArea(CompoundEChange change) {
-		for (a : change.atomicChanges) {
-			updateStagingArea(a)
-		}
+		change.atomicChanges.forEach[updateStagingArea(it)]
 	}
 	
 	
@@ -142,35 +137,35 @@ class AtomicEMFChangeRecorder {
 	/**
 	 * A change recorder that restarts after each change notification to get atomic change descriptions.
 	 */
-	ChangeRecorder changeRecorder = new ChangeRecorder() {
-		private Collection<?> rootObjects;
-		private boolean isDisposed = false;
+	ChangeRecorder changeRecorder = new ChangeRecorder {
+		private Collection<?> rootObjects
+		private boolean isDisposed = false
 		
 		override dispose() {
-			this.isDisposed = true;
-			super.dispose()
+			this.isDisposed = true
+			super.dispose
 		}
 		
 		override notifyChanged(Notification notification) {
 			if (isRecording && !isDisposed) {
-				super.notifyChanged(notification);
-				endRecording();
-				beginRecording(rootObjects);
+				super.notifyChanged(notification)
+				endRecording
+				beginRecording(rootObjects)
 			}
 		}
 		
 		override beginRecording(Collection<?> rootObjects) {
 			if (!isDisposed) { 
-				this.rootObjects = rootObjects;
-				super.beginRecording(rootObjects);
+				this.rootObjects = rootObjects
+				super.beginRecording(rootObjects)
 			}
 		}
 		
 		override endRecording() {
 			if (!isDisposed) { 
-				changeDescriptions += super.endRecording();
+				changeDescriptions += super.endRecording
 			}
-			return changeDescription;
+			return changeDescription
 		}
 	}
 	

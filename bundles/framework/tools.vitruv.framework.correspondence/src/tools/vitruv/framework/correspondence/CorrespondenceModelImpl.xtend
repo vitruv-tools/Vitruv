@@ -83,7 +83,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	def private registerTuidList(List<Tuid> tuidList) {
 		for (Tuid tuid : tuidList) {
 			var tuidLists = this.tuid2tuidListsMap.get(tuid)
-			if (tuidLists == null) {
+			if (tuidLists === null) {
 				tuidLists = new HashSet<List<Tuid>>()
 				this.tuid2tuidListsMap.put(tuid,tuidLists)
 			}
@@ -98,7 +98,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	
 	override calculateTuidFromEObject(EObject eObject) {
 		val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
-		 if (null == metamodel){
+		 if (null === metamodel){
 		 	return null 
 		 }
          return metamodel.calculateTuid(eObject)
@@ -107,10 +107,10 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	@Deprecated
 	override calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
 		 val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
-		 if(null == metamodel){
+		 if(null === metamodel){
 		 	return null 
 		 }
-		 if(null == virtualRootObject || null == prefix){
+		 if(null === virtualRootObject || null === prefix){
 		 	logger.info("virtualRootObject or prefix is null. Using standard calculation method for EObject " + eObject)
          	return metamodel.calculateTuid(eObject)
      	}
@@ -134,7 +134,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		 val correspondences = getCorrespondences(aEObjects)
 		 for (Correspondence correspondence : correspondences) {
 		 	val correspondingBs = if (correspondence.^as.containsAll(aEObjects)) correspondence.bs else correspondence.^as
-		 	if (correspondingBs != null && correspondingBs.equals(bEObjects)) {
+		 	if (correspondingBs !== null && correspondingBs.equals(bEObjects)) {
 		 		return correspondence;
 		 	}
 		 }
@@ -235,7 +235,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	override boolean hasCorrespondences(List<EObject> eObjects) {
 		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		var Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids)
-		return correspondences != null && correspondences.size() > 0
+		return correspondences !== null && correspondences.size() > 0
 	}
 
 	def private Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
@@ -417,7 +417,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	override getAllCorrespondencesWithoutDependencies() {
-		this.correspondences.correspondences.filter[it.dependsOn == null || it.dependsOn.size == 0].toSet
+		this.correspondences.correspondences.filter[it.dependsOn === null || it.dependsOn.size == 0].toSet
 	}
 	
 	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
@@ -483,7 +483,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 * @return oldCurrentTuidAndStringAndMapEntriesTriple
 	 */
 	override performPreAction(Tuid oldCurrentTuid) {
-		if (tuidUpdateData != null) {
+		if (tuidUpdateData !== null) {
 			throw new IllegalStateException("Two update calls were running at the same time");
 		}
 		// The Tuid is used as key in this map. Therefore the entry has to be removed before
@@ -507,7 +507,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		// The correspondence model is an EMF-based model, so modifications have to be
 		// performed within a transaction.
 		this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain([ |
-			if (tuidUpdateData == null) {
+			if (tuidUpdateData === null) {
 				throw new IllegalStateException("Update was not started before performing post action");
 			}
 			val oldTuidList2Correspondences = tuidUpdateData;

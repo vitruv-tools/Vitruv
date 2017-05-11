@@ -14,14 +14,14 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import java.io.File
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import java.util.ArrayList
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
 
 /** 
  * @author langhamm
  */
 abstract class ChangeDescription2ChangeTransformationTest {
-	var protected AtomicEmfChangeRecorder changeRecorder
+	var protected AtomicEMFChangeRecorder changeRecorder
 	var protected Root rootElement
 	var private List<EChange> changes
 	var rs = new ResourceSetImpl
@@ -54,7 +54,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	 */
 	@Before
 	def void beforeTest() {
-		this.changeRecorder = new AtomicEmfChangeRecorder()
+		this.changeRecorder = new AtomicEMFChangeRecorder()
 		this.rootElement = createRootInResource(1);
 	}
 
@@ -71,7 +71,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def List<EChange> getChanges() {
-		if (this.changes == null) {
+		if (this.changes === null) {
 			this.changes = endRecording()
 		}
 		return this.changes

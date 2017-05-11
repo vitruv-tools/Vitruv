@@ -1937,7 +1937,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
 
 
     // $ANTLR start "ruleModelAttributeChange"
-    // InternalReactionsLanguage.g:650:1: ruleModelAttributeChange returns [EObject current=null] : (otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassFeatureReference ) ) ) ;
+    // InternalReactionsLanguage.g:650:1: ruleModelAttributeChange returns [EObject current=null] : (otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassEAttributeReference ) ) ) ;
     public final EObject ruleModelAttributeChange() throws RecognitionException {
         EObject current = null;
 
@@ -1952,11 +1952,11 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
         	enterRule();
 
         try {
-            // InternalReactionsLanguage.g:656:2: ( (otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassFeatureReference ) ) ) )
-            // InternalReactionsLanguage.g:657:2: (otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassFeatureReference ) ) )
+            // InternalReactionsLanguage.g:656:2: ( (otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassEAttributeReference ) ) ) )
+            // InternalReactionsLanguage.g:657:2: (otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassEAttributeReference ) ) )
             {
-            // InternalReactionsLanguage.g:657:2: (otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassFeatureReference ) ) )
-            // InternalReactionsLanguage.g:658:3: otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassFeatureReference ) )
+            // InternalReactionsLanguage.g:657:2: (otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassEAttributeReference ) ) )
+            // InternalReactionsLanguage.g:658:3: otherlv_0= 'attribute' ( ( () otherlv_2= 'insert in' ) | ( () otherlv_4= 'remove from' ) | ( () otherlv_6= 'replaced at' ) ) ( (lv_feature_7_0= ruleMetaclassEAttributeReference ) )
             {
             otherlv_0=(Token)match(input,23,FOLLOW_19); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -2087,19 +2087,19 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
 
             }
 
-            // InternalReactionsLanguage.g:705:3: ( (lv_feature_7_0= ruleMetaclassFeatureReference ) )
-            // InternalReactionsLanguage.g:706:4: (lv_feature_7_0= ruleMetaclassFeatureReference )
+            // InternalReactionsLanguage.g:705:3: ( (lv_feature_7_0= ruleMetaclassEAttributeReference ) )
+            // InternalReactionsLanguage.g:706:4: (lv_feature_7_0= ruleMetaclassEAttributeReference )
             {
-            // InternalReactionsLanguage.g:706:4: (lv_feature_7_0= ruleMetaclassFeatureReference )
-            // InternalReactionsLanguage.g:707:5: lv_feature_7_0= ruleMetaclassFeatureReference
+            // InternalReactionsLanguage.g:706:4: (lv_feature_7_0= ruleMetaclassEAttributeReference )
+            // InternalReactionsLanguage.g:707:5: lv_feature_7_0= ruleMetaclassEAttributeReference
             {
             if ( state.backtracking==0 ) {
 
-              					newCompositeNode(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_2_0());
+              					newCompositeNode(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassEAttributeReferenceParserRuleCall_2_0());
               				
             }
             pushFollow(FOLLOW_2);
-            lv_feature_7_0=ruleMetaclassFeatureReference();
+            lv_feature_7_0=ruleMetaclassEAttributeReference();
 
             state._fsp--;
             if (state.failed) return current;
@@ -2112,7 +2112,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
               						current,
               						"feature",
               						lv_feature_7_0,
-              						"tools.vitruv.dsls.mirbase.MirBase.MetaclassFeatureReference");
+              						"tools.vitruv.dsls.mirbase.MirBase.MetaclassEAttributeReference");
               					afterParserOrEnumRuleCall();
               				
             }
@@ -9499,28 +9499,28 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
     // $ANTLR end "ruleClassicallyNamedModelElement"
 
 
-    // $ANTLR start "entryRuleMetaclassFeatureReference"
-    // InternalReactionsLanguage.g:3235:1: entryRuleMetaclassFeatureReference returns [EObject current=null] : iv_ruleMetaclassFeatureReference= ruleMetaclassFeatureReference EOF ;
-    public final EObject entryRuleMetaclassFeatureReference() throws RecognitionException {
+    // $ANTLR start "entryRuleMetaclassEAttributeReference"
+    // InternalReactionsLanguage.g:3235:1: entryRuleMetaclassEAttributeReference returns [EObject current=null] : iv_ruleMetaclassEAttributeReference= ruleMetaclassEAttributeReference EOF ;
+    public final EObject entryRuleMetaclassEAttributeReference() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleMetaclassFeatureReference = null;
+        EObject iv_ruleMetaclassEAttributeReference = null;
 
 
         try {
-            // InternalReactionsLanguage.g:3235:66: (iv_ruleMetaclassFeatureReference= ruleMetaclassFeatureReference EOF )
-            // InternalReactionsLanguage.g:3236:2: iv_ruleMetaclassFeatureReference= ruleMetaclassFeatureReference EOF
+            // InternalReactionsLanguage.g:3235:69: (iv_ruleMetaclassEAttributeReference= ruleMetaclassEAttributeReference EOF )
+            // InternalReactionsLanguage.g:3236:2: iv_ruleMetaclassEAttributeReference= ruleMetaclassEAttributeReference EOF
             {
             if ( state.backtracking==0 ) {
-               newCompositeNode(grammarAccess.getMetaclassFeatureReferenceRule()); 
+               newCompositeNode(grammarAccess.getMetaclassEAttributeReferenceRule()); 
             }
             pushFollow(FOLLOW_1);
-            iv_ruleMetaclassFeatureReference=ruleMetaclassFeatureReference();
+            iv_ruleMetaclassEAttributeReference=ruleMetaclassEAttributeReference();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
-               current =iv_ruleMetaclassFeatureReference; 
+               current =iv_ruleMetaclassEAttributeReference; 
             }
             match(input,EOF,FOLLOW_2); if (state.failed) return current;
 
@@ -9536,12 +9536,12 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
         }
         return current;
     }
-    // $ANTLR end "entryRuleMetaclassFeatureReference"
+    // $ANTLR end "entryRuleMetaclassEAttributeReference"
 
 
-    // $ANTLR start "ruleMetaclassFeatureReference"
-    // InternalReactionsLanguage.g:3242:1: ruleMetaclassFeatureReference returns [EObject current=null] : (this_MetaclassReference_0= ruleMetaclassReference[$current] otherlv_1= '[' ( ( ruleValidID ) ) otherlv_3= ']' ) ;
-    public final EObject ruleMetaclassFeatureReference() throws RecognitionException {
+    // $ANTLR start "ruleMetaclassEAttributeReference"
+    // InternalReactionsLanguage.g:3242:1: ruleMetaclassEAttributeReference returns [EObject current=null] : (this_MetaclassReference_0= ruleMetaclassReference[$current] otherlv_1= '[' ( ( ruleValidID ) ) otherlv_3= ']' ) ;
+    public final EObject ruleMetaclassEAttributeReference() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_1=null;
@@ -9562,9 +9562,9 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
             if ( state.backtracking==0 ) {
 
               			if (current==null) {
-              				current = createModelElement(grammarAccess.getMetaclassFeatureReferenceRule());
+              				current = createModelElement(grammarAccess.getMetaclassEAttributeReferenceRule());
               			}
-              			newCompositeNode(grammarAccess.getMetaclassFeatureReferenceAccess().getMetaclassReferenceParserRuleCall_0());
+              			newCompositeNode(grammarAccess.getMetaclassEAttributeReferenceAccess().getMetaclassReferenceParserRuleCall_0());
               		
             }
             pushFollow(FOLLOW_51);
@@ -9581,7 +9581,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
             otherlv_1=(Token)match(input,64,FOLLOW_5); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			newLeafNode(otherlv_1, grammarAccess.getMetaclassFeatureReferenceAccess().getLeftSquareBracketKeyword_1());
+              			newLeafNode(otherlv_1, grammarAccess.getMetaclassEAttributeReferenceAccess().getLeftSquareBracketKeyword_1());
               		
             }
             // InternalReactionsLanguage.g:3265:3: ( ( ruleValidID ) )
@@ -9593,13 +9593,13 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
             if ( state.backtracking==0 ) {
 
               					if (current==null) {
-              						current = createModelElement(grammarAccess.getMetaclassFeatureReferenceRule());
+              						current = createModelElement(grammarAccess.getMetaclassEAttributeReferenceRule());
               					}
               				
             }
             if ( state.backtracking==0 ) {
 
-              					newCompositeNode(grammarAccess.getMetaclassFeatureReferenceAccess().getFeatureEStructuralFeatureCrossReference_2_0());
+              					newCompositeNode(grammarAccess.getMetaclassEAttributeReferenceAccess().getFeatureEAttributeCrossReference_2_0());
               				
             }
             pushFollow(FOLLOW_52);
@@ -9621,7 +9621,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
             otherlv_3=(Token)match(input,65,FOLLOW_2); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			newLeafNode(otherlv_3, grammarAccess.getMetaclassFeatureReferenceAccess().getRightSquareBracketKeyword_3());
+              			newLeafNode(otherlv_3, grammarAccess.getMetaclassEAttributeReferenceAccess().getRightSquareBracketKeyword_3());
               		
             }
 
@@ -9645,7 +9645,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalAntlrParser
         }
         return current;
     }
-    // $ANTLR end "ruleMetaclassFeatureReference"
+    // $ANTLR end "ruleMetaclassEAttributeReference"
 
 
     // $ANTLR start "entryRuleMetaclassEReferenceReference"

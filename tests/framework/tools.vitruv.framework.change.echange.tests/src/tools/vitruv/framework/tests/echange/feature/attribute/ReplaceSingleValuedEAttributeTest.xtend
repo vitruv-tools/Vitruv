@@ -28,9 +28,9 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
   	
  	@Before
  	override public void beforeTest() {
- 		super.beforeTest()
+ 		super.beforeTest
  		affectedEObject = rootObject
- 		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
+ 		affectedFeature = AllElementTypesPackage::Literals.IDENTIFIED__ID
  		oldValue = DEFAULT_ROOT_NAME
  		newValue = "New Root ID"
  		prepareStateBefore
@@ -93,9 +93,9 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 @Test
 	 def public void invalidAttributeTest() {
 	 	// NonRoot element has no int attribute.
-	 	val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
+	 	val affectedNonRootEObject = AllElementTypesFactory::eINSTANCE.createNonRoot
 	 	resource.contents.add(affectedNonRootEObject)
-	 	val affectedRootFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_EATTRIBUTE
+	 	val affectedRootFeature = AllElementTypesPackage::Literals.ROOT__SINGLE_VALUED_EATTRIBUTE
 	 	val oldIntValue = DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE
 	 	val newIntValue = 500
 	 	
@@ -104,7 +104,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	(affectedNonRootEObject, affectedRootFeature, oldIntValue, newIntValue).resolveBefore(resourceSet)
 	 	
 	 	// NonRoot has no such feature
-	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature), -1)	
+	 	Assert::assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature), -1)	
 	 	
 	 	// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -123,10 +123,10 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	val resolvedChange = atomicFactory.<Root, Integer>createReplaceSingleAttributeChange
 	 		(affectedEObject, affectedFeature, oldIntValue, newIntValue).
 	 		resolveBefore(resourceSet)
-	 	Assert.assertTrue(resolvedChange.isResolved)
+	 	Assert::assertTrue(resolvedChange.resolved)
 	 		
 	 	// Type of attribute is String not Integer
-	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EString")
+	 	Assert::assertEquals(affectedFeature.EAttributeType.name, "EString")
 	 	
 	 	// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -146,7 +146,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 * Set state after the change
 	 */
 	def private void prepareStateAfter() {
-  		rootObject.setId(newValue)
+  		rootObject.id = newValue
   		assertIsStateAfter 	
 	}
 	
@@ -154,14 +154,14 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(affectedEObject.eGet(affectedFeature), oldValue)
+		Assert::assertEquals(affectedEObject.eGet(affectedFeature), oldValue)
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(affectedEObject.eGet(affectedFeature), newValue)
+		Assert::assertEquals(affectedEObject.eGet(affectedFeature), newValue)
 	}
 	 
 	/**

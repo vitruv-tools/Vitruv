@@ -10,9 +10,11 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8,
  JavaSE-1.8
 Export-Package: org.eclipse.emf.ecore.tests,
  tools.vitruv.framework.change.echange.tests,
+ tools.vitruv.framework.versioning.author.tests,
  tools.vitruv.framework.versioning.branch.tests,
  tools.vitruv.framework.versioning.commit.tests,
  tools.vitruv.framework.versioning.conflict.tests,
+ tools.vitruv.framework.versioning.repository.tests,
  tools.vitruv.framework.versioning.tests
 Require-Bundle: org.junit;bundle-version="4.12.0";visibility:=reexport,
  org.eclipse.xtend.lib;bundle-version="2.12.0",

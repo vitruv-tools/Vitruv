@@ -25,9 +25,9 @@ class RemoveAtCommandTest extends CommandTest {
 	
 	@Before
 	def public void beforeTest() {
-		owner = AllElementTypesFactory.eINSTANCE.createRoot
-		feature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_EATTRIBUTE
-		editingDomain = EChangeUtil.getEditingDomain(owner)
+		owner = AllElementTypesFactory::eINSTANCE.createRoot
+		feature = AllElementTypesPackage::Literals.ROOT__MULTI_VALUED_EATTRIBUTE
+		editingDomain = EChangeUtil::getEditingDomain(owner)
 		list = owner.eGet(feature) as EList<Integer>
 		for (var i = 0; i < 10; i++) {
 			list.add(i)
@@ -94,10 +94,10 @@ class RemoveAtCommandTest extends CommandTest {
 	 */
 	def private static RemoveAtCommand assertIsRemoveAtCommand(Command command, EList<?> list, Object value, int index) {
 		var RemoveAtCommand removeAtCommand = command.assertIsInstanceOf(RemoveAtCommand)
-		Assert.assertSame(removeAtCommand.ownerList, list)
-		Assert.assertTrue(removeAtCommand.collection.contains(value))
-		Assert.assertEquals(removeAtCommand.collection.size, 1)
-		Assert.assertEquals(removeAtCommand.index, index)
+		Assert::assertSame(removeAtCommand.ownerList, list)
+		Assert::assertTrue(removeAtCommand.collection.contains(value))
+		Assert::assertEquals(removeAtCommand.collection.size, 1)
+		Assert::assertEquals(removeAtCommand.index, index)
 		return removeAtCommand
 	}
 	
@@ -107,9 +107,9 @@ class RemoveAtCommandTest extends CommandTest {
 	def private static void assertRemovedCorrectValueFrom(RemoveAtCommand command, EList<?> list) {
 		var value = command.collection.get(0)
 		var size = list.size
-		Assert.assertEquals(list.get(command.index), value)
+		Assert::assertEquals(list.get(command.index), value)
 		command.assertExecuteCommand
-		Assert.assertFalse(list.contains(value))
-		Assert.assertEquals(list.size, size - 1)
+		Assert::assertFalse(list.contains(value))
+		Assert::assertEquals(list.size, size - 1)
 	}
 }

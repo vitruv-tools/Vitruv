@@ -15,7 +15,7 @@ public class RemoveAtCommand extends RemoveCommand {
 	/**
 	 * Index at which the value is removed in the list.
 	 */
-	var private int index;
+	var private int index
 
 	/**
 	 * Constructor for a RemoveAtCommand, which removes an entry of an EList feature at a specific index.
@@ -26,8 +26,8 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * @param index Index at which the value is removed in the EList.
 	 */
 	new(EditingDomain editingDomain, EObject owner, EStructuralFeature feature, Object value, int index) {
-		super(editingDomain, owner, feature, Collections.singleton(value));
-		this.index = index;
+		super(editingDomain, owner, feature, Collections::singleton(value))
+		this.index = index
 	}
 
 	/**
@@ -38,8 +38,8 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * @param index The Index at which the value is removed in the EList.
 	 */
 	new(EditingDomain editingDomain, EList<?> ownerList, Object value, int index) {
-		super(editingDomain, ownerList, Collections.singleton(value));
-		this.index = index;
+		super(editingDomain, ownerList, Collections::singleton(value))
+		this.index = index
 	}
 
 	/**
@@ -47,27 +47,27 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * @return The index
 	 */
 	def public int getIndex() {
-		return this.index;
+		return this.index
 	}
 
 	override public void doExecute() {
-		ownerList.remove(index);
+		ownerList.remove(index)
 	}
 
 	override public boolean prepare() {
-		var result = super.prepare() && 0 <= index && index < ownerList.size() && (collection.size() == 1);
+		var result = super.prepare && 0 <= index && index < ownerList.size && (collection.size == 1)
 		if (!result) {
-			return false;
+			return false
 		}
 		// Check if get(index) == object		
 		return ownerList.get(index).equals(collection.get(0))
 	}
 
 	override void doUndo() {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException
 	}
 
 	override public void doRedo() {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException
 	}
 }

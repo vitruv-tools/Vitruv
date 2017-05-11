@@ -33,7 +33,7 @@ class MappingLanguageGeneratorNameProvider {
 	}
 
 	public def getMappingName(Mapping mapping) {
-		if ((mapping.name == null) || (mapping.name.empty)) {
+		if ((mapping.name === null) || (mapping.name.empty)) {
 			mapping.name = mapping.nextAnonymousMappingName.toString
 		}
 

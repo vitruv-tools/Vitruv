@@ -16,6 +16,6 @@ class CallHierarchyHaving extends Loggable {
 	}
 	
 	public def String getCalledByString() {
-		return '''(«this.class.simpleName»)«IF calledBy != null» called by «calledBy.calledByString»«ENDIF»''';
+		return '''(«this.class.simpleName»)«IF calledBy !== null» called by «calledBy.calledByString»«ENDIF»''';
 	}
 }

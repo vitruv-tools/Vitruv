@@ -51,13 +51,13 @@ class ChangeAssertHelper {
 
 	public static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
 		val newValueInChange = eChange.newValue
-		var condition = newValue == null && newValueInChange == null;
+		var condition = newValue === null && newValueInChange === null;
 		if (newValue instanceof EObject && newValueInChange instanceof EObject) {
 			val newEObject = newValue as EObject
 			var newEObjectInChange = newValueInChange as EObject
 			condition = EcoreUtil.equals(newEObject, newEObjectInChange)
 		} else if (!condition) {
-			condition = newValue != null && newValue.equals(newValueInChange)
+			condition = newValue !== null && newValue.equals(newValueInChange)
 		}
 		Assert.assertTrue(
 			"new value in change ' " + newValueInChange + "' must be the same than the given new value '" + newValue +

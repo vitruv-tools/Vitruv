@@ -58,7 +58,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
 			as InsertRootEObject<Root>	
 		resolvedChange.assertIsResolved(newRootObject, resource)
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -96,9 +96,9 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		// Apply forward 1
 		resolvedChange.assertApplyForward
 		
-		Assert.assertTrue(stagingArea.empty)
-		Assert.assertEquals(resourceContent.size, 2)
-		Assert.assertTrue(newRootObject == resourceContent.get(1))
+		Assert::assertTrue(stagingArea.empty)
+		Assert::assertEquals(resourceContent.size, 2)
+		Assert::assertTrue(newRootObject == resourceContent.get(1))
 		
 		// Prepare staging area for the second object
 		prepareStagingArea(newRootObject2)
@@ -142,7 +142,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertEquals(resourceContent.size, 2)	
+		Assert::assertEquals(resourceContent.size, 2)	
 		assertEqualsOrCopy(newRootObject, resourceContent.get(1))
 		assertEqualsOrCopy(newRootObject2, stagingArea.peek)
 			
@@ -164,7 +164,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		// Set state before
 		prepareStagingArea(newRootObject)
 		var index = 5
-		Assert.assertTrue(resourceContent.size < index)
+		Assert::assertTrue(resourceContent.size < index)
 		
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(newRootObject, index).resolveBefore(resourceSet)
@@ -179,16 +179,16 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertFalse(stagingArea.empty)
-		Assert.assertEquals(resourceContent.size, 1)
+		Assert::assertFalse(stagingArea.empty)
+		Assert::assertEquals(resourceContent.size, 1)
 	}
 	
 	/**
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertTrue(stagingArea.empty)
-		Assert.assertEquals(resourceContent.size, 3)
+		Assert::assertTrue(stagingArea.empty)
+		Assert::assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))		
 	}
@@ -197,18 +197,18 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * Change is not resolved.
 	 */
 	def private static void assertIsNotResolved(InsertRootEObject<Root> change, Root newValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertNotSame(change.newValue, newValue)
-		Assert.assertNull(change.resource)
+		Assert::assertFalse(change.resolved)
+		Assert::assertNotSame(change.newValue, newValue)
+		Assert::assertNull(change.resource)
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
 	def private static void assertIsResolved(InsertRootEObject<Root> change, Root newValue, Resource resource) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertSame(change.newValue, newValue)
-		Assert.assertSame(change.resource, resource)	
+		Assert::assertTrue(change.resolved)
+		Assert::assertSame(change.newValue, newValue)
+		Assert::assertSame(change.resource, resource)	
 	}
 
 	/**

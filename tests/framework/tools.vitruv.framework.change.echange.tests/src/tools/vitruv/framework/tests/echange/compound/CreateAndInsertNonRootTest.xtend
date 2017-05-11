@@ -24,7 +24,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Before
 	override public void beforeTest() {
 		super.beforeTest
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
+		affectedFeature = AllElementTypesPackage::Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
 		assertIsStateBefore
 	}
@@ -97,9 +97,9 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		resolvedChange.assertApplyForward
 		
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertEquals(referenceContent.size, 1)
+		Assert::assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
+		Assert::assertTrue(stagingArea.empty)
 		
 		// Create and resolve and apply change 2	
 		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(resourceSet)
@@ -133,10 +133,10 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertFalse(referenceContent.contains(resolvedChange2.createChange.affectedEObject))	
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
+		Assert::assertFalse(referenceContent.contains(resolvedChange2.createChange.affectedEObject))	
+		Assert::assertEquals(referenceContent.size, 1)
+		Assert::assertTrue(stagingArea.empty)
 			
 		// Apply backward 1	
 		resolvedChange.assertApplyBackward
@@ -158,18 +158,18 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(referenceContent.size, 0)
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertEquals(referenceContent.size, 0)
+		Assert::assertTrue(stagingArea.empty)
 	}
 	
 	/**
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(referenceContent.size, 2)
+		Assert::assertEquals(referenceContent.size, 2)
 		newValue.assertEqualsOrCopy(referenceContent.get(0))
 		newValue2.assertEqualsOrCopy(referenceContent.get(1))
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -177,13 +177,13 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsNotResolved(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
 		NonRoot newNonRoot) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.createChange.isResolved)
-		Assert.assertFalse(change.insertChange.isResolved)
-		Assert.assertNotSame(change.createChange.affectedEObject, newNonRoot)
-		Assert.assertNotSame(change.insertChange.newValue, newNonRoot)
-		Assert.assertNotSame(change.insertChange.affectedEObject, affectedEObject)
-		Assert.assertNotSame(change.createChange.affectedEObject, change.insertChange.newValue)
+		Assert::assertFalse(change.resolved)
+		Assert::assertFalse(change.createChange.resolved)
+		Assert::assertFalse(change.insertChange.resolved)
+		Assert::assertNotSame(change.createChange.affectedEObject, newNonRoot)
+		Assert::assertNotSame(change.insertChange.newValue, newNonRoot)
+		Assert::assertNotSame(change.insertChange.affectedEObject, affectedEObject)
+		Assert::assertNotSame(change.createChange.affectedEObject, change.insertChange.newValue)
 	}
 	
 	/**
@@ -191,10 +191,10 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsResolved(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
 		NonRoot newNonRoot) {
-		Assert.assertTrue(change.isResolved)
+		Assert::assertTrue(change.resolved)
 		change.insertChange.newValue.assertEqualsOrCopy(newNonRoot)
 		change.createChange.affectedEObject.assertEqualsOrCopy(newNonRoot)
-		Assert.assertSame(change.insertChange.affectedEObject, affectedEObject)	
+		Assert::assertSame(change.insertChange.affectedEObject, affectedEObject)	
 	}
 		
 	/**

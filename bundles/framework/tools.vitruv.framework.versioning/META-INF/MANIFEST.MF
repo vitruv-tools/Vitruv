@@ -3,7 +3,16 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.framework.versioning;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: tools.vitruv.framework.versioning,
+Export-Package: org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.impl,
+ org.eclipse.emf.ecore.util,
+ tools.vitruv.framework.change.echange,
+ tools.vitruv.framework.change.echange.impl,
+ tools.vitruv.framework.change.echange.util,
+ tools.vitruv.framework.versioning,
+ tools.vitruv.framework.versioning.author,
+ tools.vitruv.framework.versioning.author.impl,
+ tools.vitruv.framework.versioning.author.util,
  tools.vitruv.framework.versioning.branch,
  tools.vitruv.framework.versioning.branch.impl,
  tools.vitruv.framework.versioning.branch.util,
@@ -14,6 +23,9 @@ Export-Package: tools.vitruv.framework.versioning,
  tools.vitruv.framework.versioning.conflict.impl,
  tools.vitruv.framework.versioning.conflict.util,
  tools.vitruv.framework.versioning.impl,
+ tools.vitruv.framework.versioning.repository,
+ tools.vitruv.framework.versioning.repository.impl,
+ tools.vitruv.framework.versioning.repository.util,
  tools.vitruv.framework.versioning.util
 Bundle-Version: 0.1.0.qualifier
 Bundle-ClassPath: .

@@ -13,24 +13,24 @@ import tools.vitruv.framework.util.datatypes.VURI
  * right before the change described by the recorded {@link ChangeDescription}.
  */
 class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	private final ChangeDescription changeDescription;
-	private final VURI vuri;
-	private var boolean canBeBackwardsApplied;
+	private final ChangeDescription changeDescription
+	private final VURI vuri
+	private var boolean canBeBackwardsApplied
 	
     public new(ChangeDescription changeDescription, VURI vuri) {
-    	this.changeDescription = changeDescription;
-        this.vuri = vuri;
-        this.canBeBackwardsApplied = false;
-		extractChangeInformation();
+    	this.changeDescription = changeDescription
+        this.vuri = vuri
+        this.canBeBackwardsApplied = false
+		extractChangeInformation()
     }
 
 	private def void extractChangeInformation() {
-        val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform()
+        val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform
 		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
+			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri))
 		}
 		if (changes.empty) {
-			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
+			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri))
 		}
 	}
 
@@ -42,15 +42,15 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
     '''
         
 	override getURI() {
-		return vuri;
+		return vuri
 	}
 	
 	override containsConcreteChange() {
-		return true;
+		return true
 	}
 	
 	override validate() {
-		return true;
+		return true
 	}
 	
 	override applyBackward() throws IllegalStateException {
@@ -60,7 +60,7 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		for (c : changes.reverseView) {
 			c.applyBackward
 		}
-		this.canBeBackwardsApplied = false;
+		this.canBeBackwardsApplied = false
 	}
 	
 	override applyForward() throws IllegalStateException {
@@ -70,7 +70,7 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		for (c : changes) {
 			c.applyForward
 		}
-		this.canBeBackwardsApplied = true;
+		this.canBeBackwardsApplied = true
 	}
 	
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
@@ -80,6 +80,6 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		for (c : changes) {
 			c.resolveBeforeAndApplyForward(resourceSet)
 		}
-		this.canBeBackwardsApplied = true;
+		this.canBeBackwardsApplied = true
 	}
 }

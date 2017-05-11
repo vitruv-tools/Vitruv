@@ -23,9 +23,9 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	
 	@Before
 	override public void beforeTest() {
-		super.beforeTest()
-		newRootObject = AllElementTypesFactory.eINSTANCE.createRoot()
-		newRootObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
+		super.beforeTest
+		newRootObject = AllElementTypesFactory::eINSTANCE.createRoot
+		newRootObject2 = AllElementTypesFactory::eINSTANCE.createRoot
 		resourceContent = resourceSet.getResource(fileUri, false).contents
 		prepareStateBefore
 
@@ -101,10 +101,10 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		// Apply 1
 		resolvedChange.assertApplyForward
 		
-		Assert.assertEquals(resourceContent.size, 2)
-		Assert.assertFalse(resourceContent.contains(newRootObject))	
-		Assert.assertTrue(resourceContent.contains(newRootObject2))	
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertEquals(resourceContent.size, 2)
+		Assert::assertFalse(resourceContent.contains(newRootObject))	
+		Assert::assertTrue(resourceContent.contains(newRootObject2))	
+		Assert::assertTrue(stagingArea.empty)
 		
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 1).resolveBefore(resourceSet)
@@ -139,9 +139,9 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 
-		Assert.assertEquals(resourceContent.size, 2)
-		Assert.assertTrue(resourceContent.contains(newRootObject2))
-		Assert.assertTrue(stagingArea.empty)	
+		Assert::assertEquals(resourceContent.size, 2)
+		Assert::assertTrue(resourceContent.contains(newRootObject2))
+		Assert::assertTrue(stagingArea.empty)	
 			
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -172,37 +172,37 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(resourceContent.size, 3)
+		Assert::assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
-		Assert.assertTrue(stagingArea.empty)		
+		Assert::assertTrue(stagingArea.empty)		
 	}
 	
 	/** 
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(resourceContent.size, 1)
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertEquals(resourceContent.size, 1)
+		Assert::assertTrue(stagingArea.empty)
 	}
 
 	/**
 	 * Change is not resolved.
 	 */
 	def private static void assertIsNotResolved(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.removeChange.isResolved)
-		Assert.assertFalse(change.deleteChange.isResolved)
-		Assert.assertNotSame(change.removeChange.oldValue, affectedRootObject)
-		Assert.assertNotSame(change.deleteChange.affectedEObject, affectedRootObject)
-		Assert.assertNotSame(change.deleteChange.affectedEObject, change.removeChange.oldValue)
+		Assert::assertFalse(change.resolved)
+		Assert::assertFalse(change.removeChange.resolved)
+		Assert::assertFalse(change.deleteChange.resolved)
+		Assert::assertNotSame(change.removeChange.oldValue, affectedRootObject)
+		Assert::assertNotSame(change.deleteChange.affectedEObject, affectedRootObject)
+		Assert::assertNotSame(change.deleteChange.affectedEObject, change.removeChange.oldValue)
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
 	def private static void assertIsResolved(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
-		Assert.assertTrue(change.isResolved)
+		Assert::assertTrue(change.resolved)
 		change.removeChange.oldValue.assertEqualsOrCopy(affectedRootObject)
 		change.deleteChange.affectedEObject.assertEqualsOrCopy(affectedRootObject)
 	}

@@ -12,7 +12,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeV
 class EChangeAssertEquals {
 	def public dispatch static void assertEquals(EChange change, EChange change2) {
 		// Is needed so xtend creates the assertEquals(EChange, EChange) method.
-		Assert.assertTrue(false)
+		Assert::assertTrue(false)
 	}
 	
 	/**
@@ -20,10 +20,10 @@ class EChangeAssertEquals {
 	 */
 	def public dispatch static void assertEquals(ReplaceSingleValuedEAttribute<?, ?> change, EChange change2) {
 		var replaceChange = change2.assertIsInstanceOf(ReplaceSingleValuedEAttribute)
-		Assert.assertSame(change.affectedEObject, replaceChange.affectedEObject)
-		Assert.assertSame(change.affectedFeature, replaceChange.affectedFeature)
-		Assert.assertEquals(change.oldValue, replaceChange.oldValue)
-		Assert.assertEquals(change.newValue, replaceChange.newValue)
+		Assert::assertSame(change.affectedEObject, replaceChange.affectedEObject)
+		Assert::assertSame(change.affectedFeature, replaceChange.affectedFeature)
+		Assert::assertEquals(change.oldValue, replaceChange.oldValue)
+		Assert::assertEquals(change.newValue, replaceChange.newValue)
 	}
 	
 	/**
@@ -31,9 +31,9 @@ class EChangeAssertEquals {
 	 */	
 	def public dispatch static void assertEquals(InsertEAttributeValue<?, ?> change, EChange change2) {
 		var insertChange = change2.assertIsInstanceOf(InsertEAttributeValue)
-		Assert.assertSame(change.affectedEObject, insertChange.affectedEObject)
-		Assert.assertSame(change.affectedFeature, insertChange.affectedFeature)
-		Assert.assertEquals(change.newValue, insertChange.newValue)	
+		Assert::assertSame(change.affectedEObject, insertChange.affectedEObject)
+		Assert::assertSame(change.affectedFeature, insertChange.affectedFeature)
+		Assert::assertEquals(change.newValue, insertChange.newValue)	
 	}
 	
 	/**
@@ -41,13 +41,13 @@ class EChangeAssertEquals {
 	 */	
 	def public dispatch static void assertEquals(RemoveEAttributeValue<?, ?> change, EChange change2) {
 		var removeChange = change2.assertIsInstanceOf(RemoveEAttributeValue)
-		Assert.assertSame(change.affectedEObject, removeChange.affectedEObject)
-		Assert.assertSame(change.affectedFeature, removeChange.affectedFeature)	
-		Assert.assertEquals(change.oldValue, removeChange.oldValue)	
+		Assert::assertSame(change.affectedEObject, removeChange.affectedEObject)
+		Assert::assertSame(change.affectedFeature, removeChange.affectedFeature)	
+		Assert::assertEquals(change.oldValue, removeChange.oldValue)	
 	}
 	
 	def private static <T> T assertIsInstanceOf(EChange change, Class<T> type) {
-		Assert.assertTrue(type.isInstance(change))
+		Assert::assertTrue(type.isInstance(change))
 		return type.cast(change)
 	}
 }
