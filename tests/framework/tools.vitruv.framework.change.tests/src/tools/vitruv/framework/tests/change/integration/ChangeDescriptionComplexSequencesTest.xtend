@@ -65,4 +65,35 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		
 	}
 	
+	
+	@Test
+	def public void testInsertComplexTreeInContainment() {
+		// prepare
+		this.rootElement.recursiveRoot = null;
+		
+		startRecording
+		
+		// test
+		val secondRoot = AllElementTypesFactory.eINSTANCE.createRoot();
+		val nonRootObjectsContainer = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
+		secondRoot.nonRootObjectContainerHelper = nonRootObjectsContainer;
+		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
+		secondRoot.singleValuedNonContainmentEReference = nonRoot;
+		nonRootObjectsContainer.nonRootObjectsContainment += nonRoot;
+		this.rootElement.recursiveRoot = secondRoot;
+				
+		// assert
+		changes.assertChangeCount(7);
+		changes.claimChange(0).assertSetSingleValuedEReference(rootElement, ROOT__RECURSIVE_ROOT, secondRoot, true, true);
+		changes.claimChange(1).assertReplaceSingleValuedEAttribute(secondRoot, IDENTIFIED__ID, null, secondRoot.id);
+		changes.claimChange(2).assertCreateAndReplaceAndDeleteNonRoot(null, nonRootObjectsContainer, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER,
+			secondRoot, true);
+		changes.claimChange(3).assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null, nonRootObjectsContainer.id);
+		changes.claimChange(4).assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
+			nonRoot, 0);
+		changes.claimChange(5).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
+		changes.claimChange(6).assertReplaceSingleValuedEReference(secondRoot, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
+			null, nonRoot, false);		
+	}
+	
 }

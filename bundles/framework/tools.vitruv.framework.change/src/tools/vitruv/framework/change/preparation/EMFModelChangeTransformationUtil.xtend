@@ -61,10 +61,10 @@ package class EMFModelChangeTransformationUtil {
 		val result = new ArrayList<EChange>(); 
 		if (reference.isMany) {
 			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
-				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, true);
+				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, forceCreate);
 			}
 		} else {
-				result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), true);
+				result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), forceCreate);
 		}
 		return result;
 	}
