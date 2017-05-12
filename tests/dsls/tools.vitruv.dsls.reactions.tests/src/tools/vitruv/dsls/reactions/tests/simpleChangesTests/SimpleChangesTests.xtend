@@ -182,9 +182,8 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	private def NonRoot setSingleValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val nonRootObject = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == id
+		val nonRootObject = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot |
+			nonRoot.id == id
 		)
 		rootObject.singleValuedNonContainmentEReference = nonRootObject
 		saveAndSynchronizeChanges(nonRootObject)
@@ -221,12 +220,12 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	// TODO HK (Change MM) Unset does not produce any change event at the moment
 	// @Test
 	public def void testUnsetSingleValuedEAttribute() {
-		SimpleChangesTestsExecutionMonitor.reinitialize()
+		SimpleChangesTestsExecutionMonitor.reinitialize
 		unsetSingleValuedEAttribute(rootElement)
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
 		compareMonitor.set(ChangeType::UnsetEAttribute)
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	// @Test
@@ -238,7 +237,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType::UnsetNonContainmentEReference)
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -249,7 +248,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType::UpdateSingleValuedEAttribute)
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -260,7 +259,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType::UpdateSingleValuedPrimitveTypeEAttribute)
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -273,7 +272,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType::CreateNonRootEObjectSingle)
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -287,7 +286,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		// compareMonitor.set(ChangeType::CreateNonRootEObjectSingle)
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -302,7 +301,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType::CreateEObject)
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -314,7 +313,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
 		assertEquals(nonContainmentNonRootIds.get(1), rootElement.singleValuedNonContainmentEReference.id)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -327,7 +326,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
 		assertEquals(nonContainmentNonRootIds.get(1), rootElement.singleValuedNonContainmentEReference.id)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -338,7 +337,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType::InsertEAttributeValue)
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -352,7 +351,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
 		assertEquals(2, rootElement.multiValuedEAttribute.get(0))
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -368,7 +367,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
 		assertEquals(3, rootElement.multiValuedEAttribute.get(1))
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -380,7 +379,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType::CreateEObject)
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -393,7 +392,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType::DeleteEObject)
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -410,7 +409,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
 		assertEquals("multiValuedContainmentNonRootTest2", rootElement.multiValuedContainmentEReference.last.id)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -420,7 +419,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
 		compareMonitor.set(ChangeType::InsertNonContainmentEReference)
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -433,7 +432,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val mon = SimpleChangesTestsExecutionMonitor::instance
 		compareMonitor.assertEqualWithStatic
 		assertEquals(compareMonitor, mon)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
@@ -453,7 +452,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertTrue(rootElement.multiValuedNonContainmentEReference.get(0).id == nonContainmentNonRootIds.get(0))
 		assertTrue(rootElement.multiValuedNonContainmentEReference.get(1).id == nonContainmentNonRootIds.get(2))
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	// TODO HK (Change MM) Permute operations are not supported by now? No EChange produced
@@ -467,7 +466,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
 		compareMonitor.set(ChangeType.PermuteNonContainmentEReference)
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor::instance)
-		assertModelsEqual()
+		assertModelsEqual
 	}
 
 	@Test
