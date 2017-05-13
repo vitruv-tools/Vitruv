@@ -10,12 +10,12 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import org.eclipse.emf.ecore.EObject
 
 package class ChangedResourcesTracker {
-	private final Set<Resource> sourceModelResources;
-	private final Set<Resource> involvedModelResources;
+	private final Set<Resource> sourceModelResources
+	private final Set<Resource> involvedModelResources
 	
 	new() {
-		this.sourceModelResources = newHashSet();
-		this.involvedModelResources = newHashSet();
+		this.sourceModelResources = newHashSet
+		this.involvedModelResources = newHashSet
 	}
 
 
@@ -26,15 +26,15 @@ package class ChangedResourcesTracker {
 		val involvedObjects = atomicChanges.map[
 			if (it instanceof FeatureEChange<?,?>) it.affectedEObject 
 				else if (it instanceof EObjectAddedEChange<?>) it.newValue 
-				else if (it instanceof EObjectSubtractedEChange<?>) it.oldValue].filter(EObject);
-		sourceModelResources += involvedObjects.map[eResource].filterNull.toList;
+				else if (it instanceof EObjectSubtractedEChange<?>) it.oldValue].filter(EObject)
+		sourceModelResources += involvedObjects.map[eResource].filterNull.toList
 	}
 	
 	public def void addInvolvedModelResource(Resource resource) {
-		if (resource == null) {
-			return;
+		if (resource === null) {
+			return
 		}
-		this.involvedModelResources += resource;
+		this.involvedModelResources += resource
 	}
 	
 	public def void markNonSourceResourceAsChanged() {
@@ -48,7 +48,7 @@ package class ChangedResourcesTracker {
 		// This will hopefully not be necessary anymore if we replay recorded changes in the VSUM isolated from their
 		// recording in editors.
 		val changedNonSourceResources = involvedModelResources
-			.filter[!sourceModelResources.exists[sourceResource | sourceResource.URI.equals(it.URI)]];
-		changedNonSourceResources.forEach[modified = true];
+			.filter[!sourceModelResources.exists[sourceResource | sourceResource.URI == it.URI]]
+		changedNonSourceResources.forEach[modified = true]
 	}
 }

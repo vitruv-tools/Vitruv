@@ -124,7 +124,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		}
 		if (atomicChangeType instanceof ElementReferenceChangeType) {
 			val featureType = atomicChangeType.feature?.feature?.EType as EClass;
-			if (elementType != null && featureType != null) {
+			if (elementType !== null && featureType !== null) {
 				if (!elementType.equals(featureType) && !elementType.EAllSuperTypes.contains(featureType) && !featureType.EAllSuperTypes.contains(elementType)) {
 					warning("Element of specified type cannot be contained in the specified features",
 						elementChange, ReactionsLanguagePackage.Literals.MODEL_ELEMENT_CHANGE__ELEMENT_TYPE

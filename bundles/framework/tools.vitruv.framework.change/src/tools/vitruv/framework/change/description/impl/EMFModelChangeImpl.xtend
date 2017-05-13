@@ -1,44 +1,38 @@
 package tools.vitruv.framework.change.description.impl
 
 import org.eclipse.emf.ecore.change.ChangeDescription
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.change.description.TransactionalChange
-import java.util.HashSet
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
+import tools.vitruv.framework.util.datatypes.VURI
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
  * right before the change described by the recorded {@link ChangeDescription}.
  */
 class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	private final ChangeDescription changeDescription;
-	private final VURI vuri;
-	private var boolean canBeBackwardsApplied;
+	private final ChangeDescription changeDescription
+	private final VURI vuri
+	private var boolean canBeBackwardsApplied
 	
     public new(ChangeDescription changeDescription, VURI vuri) {
-    	this.changeDescription = changeDescription;
-        this.vuri = vuri;
-        this.canBeBackwardsApplied = false;
-		extractChangeInformation();
+    	this.changeDescription = changeDescription
+        this.vuri = vuri
+        this.canBeBackwardsApplied = false
+		extractChangeInformation()
     }
 
 	private def void extractChangeInformation() {
-        val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform()
+        val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform
 		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
+			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri))
 		}
 		if (changes.empty) {
-			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
+			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri))
 		}
 	}
-
-    private def ChangeDescription getChangeDescription() {
-        return this.changeDescription;
-    }
 
     override String toString() '''
     	«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
@@ -48,56 +42,44 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
     '''
         
 	override getURI() {
-		return vuri;
+		return vuri
 	}
 	
 	override containsConcreteChange() {
-		return true;
+		return true
 	}
 	
 	override validate() {
-		return true;
+		return true
 	}
 	
 	override applyBackward() throws IllegalStateException {
 		if (!this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
 		}
-		applyChange();
-		this.canBeBackwardsApplied = false;
+		for (c : changes.reverseView) {
+			c.applyBackward
+		}
+		this.canBeBackwardsApplied = false
 	}
 	
 	override applyForward() throws IllegalStateException {
 		if (this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
-		applyChange();
-		this.canBeBackwardsApplied = true;
+		for (c : changes) {
+			c.applyForward
+		}
+		this.canBeBackwardsApplied = true
 	}
 	
-	private def applyChange() {
-		registerOldObjectTuidsForUpdate();
-		changeDescription.applyAndReverse();
-		updateTuids();
+	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+		if (this.canBeBackwardsApplied) {
+			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
+		}
+		for (c : changes) {
+			c.resolveBeforeAndApplyForward(resourceSet)
+		}
+		this.canBeBackwardsApplied = true
 	}
-	
-	private def void registerOldObjectTuidsForUpdate() {
-		val tuidManager = TuidManager.instance;
-		val objects = new HashSet<EObject>();
-        objects.addAll(getChangeDescription().getObjectChanges().keySet().filterNull);
-        objects.addAll(getChangeDescription().getObjectChanges().values().flatten.map[referenceValue].filterNull);
-		objects.addAll(getChangeDescription().getObjectsToDetach().filterNull);
-		objects.addAll(getChangeDescription().getObjectsToAttach().filterNull)
-		// Add container objects
-		val containerObjects = objects.map[eContainer].filterNull;
-		for (EObject object : objects + containerObjects) {
-			tuidManager.registerObjectUnderModification(object);
-        }
-    }
-
-    protected def void updateTuids() {
-        TuidManager.instance.updateTuidsOfRegisteredObjects();
-        TuidManager.instance.flushRegisteredObjectsUnderModification();
-    }
-	
 }

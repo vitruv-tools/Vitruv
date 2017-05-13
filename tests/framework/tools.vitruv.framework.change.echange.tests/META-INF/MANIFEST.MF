@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EChange Test
+Bundle-SymbolicName: tools.vitruv.framework.change.echange.tests
+Bundle-Version: 0.1.0.qualifier
+Bundle-Vendor: vitruv.tools
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ tools.vitruv.framework.tests.util.metamodels,
+ tools.vitruv.framework.change.echange,
+ tools.vitruv.framework.util,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.emf.edit,
+ tools.vitruv.framework.change

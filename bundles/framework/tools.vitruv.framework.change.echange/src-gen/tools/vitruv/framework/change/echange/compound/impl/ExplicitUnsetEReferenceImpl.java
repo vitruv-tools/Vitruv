@@ -4,8 +4,6 @@ package tools.vitruv.framework.change.echange.compound.impl;
 
 import com.google.common.collect.Iterables;
 
-import java.lang.Iterable;
-
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.Collection;
@@ -116,7 +114,6 @@ public class ExplicitUnsetEReferenceImpl<A extends EObject> extends ExplicitUnse
 	 * @generated
 	 */
 	public EList<AtomicEChange> getAtomicChanges() {
-		EList<EChange> _changes = this.getChanges();
 		final Function1<EChange, List<AtomicEChange>> _function = new Function1<EChange, List<AtomicEChange>>() {
 			public List<AtomicEChange> apply(final EChange it) {
 				List<AtomicEChange> _xifexpression = null;
@@ -136,9 +133,7 @@ public class ExplicitUnsetEReferenceImpl<A extends EObject> extends ExplicitUnse
 				return _xifexpression;
 			}
 		};
-		EList<List<AtomicEChange>> _map = XcoreEListExtensions.<EChange, List<AtomicEChange>>map(_changes, _function);
-		Iterable<AtomicEChange> _flatten = Iterables.<AtomicEChange>concat(_map);
-		return ECollections.<AtomicEChange>asEList(((AtomicEChange[])org.eclipse.xtext.xbase.lib.Conversions.unwrapArray(_flatten, AtomicEChange.class)));
+		return ECollections.<AtomicEChange>asEList(((AtomicEChange[])org.eclipse.xtext.xbase.lib.Conversions.unwrapArray(Iterables.<AtomicEChange>concat(XcoreEListExtensions.<EChange, List<AtomicEChange>>map(this.getChanges(), _function)), AtomicEChange.class)));
 	}
 
 	/**

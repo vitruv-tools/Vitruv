@@ -18,6 +18,10 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * A representation of the model object '<em><b>Move EObject</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -29,7 +33,7 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getMoveEObject()
- * @model
+ * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" BBounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface MoveEObject<A extends EObject, B extends EObject, T extends EObject> extends CompoundEChange {
@@ -141,7 +145,7 @@ public interface MoveEObject<A extends EObject, B extends EObject, T extends EOb
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" required="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> list = new <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>>();\nfinal <%tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange%><A> subWhereChange = this.getSubtractWhereChange();\nboolean _notEquals = (!<%com.google.common.base.Objects%>.equal(subWhereChange, null));\nif (_notEquals)\n{\n\tlist.add(subWhereChange);\n}\n<%tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange%><T> _subtractWhatChange = this.getSubtractWhatChange();\nlist.add(_subtractWhatChange);\nfinal <%tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange%><B> addWhereChange = this.getAddWhereChange();\nboolean _notEquals_1 = (!<%com.google.common.base.Objects%>.equal(addWhereChange, null));\nif (_notEquals_1)\n{\n\tlist.add(addWhereChange);\n}\n<%tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange%><T> _addWhatChange = this.getAddWhatChange();\nlist.add(_addWhatChange);\nreturn list;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt; list = new &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt;();\nfinal &lt;%tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange%&gt;&lt;A&gt; subWhereChange = this.getSubtractWhereChange();\nif ((subWhereChange != null))\n{\n\tlist.add(subWhereChange);\n}\nlist.add(this.getSubtractWhatChange());\nfinal &lt;%tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange%&gt;&lt;B&gt; addWhereChange = this.getAddWhereChange();\nif ((addWhereChange != null))\n{\n\tlist.add(addWhereChange);\n}\nlist.add(this.getAddWhatChange());\nreturn list;'"
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();

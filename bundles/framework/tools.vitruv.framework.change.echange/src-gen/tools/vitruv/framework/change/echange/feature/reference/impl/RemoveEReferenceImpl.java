@@ -15,8 +15,14 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.EChangePackage;
+
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
+import tools.vitruv.framework.change.echange.feature.FeatureEChange;
+import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.feature.list.impl.RemoveFromListEChangeImpl;
 
@@ -75,7 +81,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@SuppressWarnings("unchecked")
 	public T getOldValue() {
-		if (oldValue != null && oldValue.eIsProxy()) {
+		if (oldValue != null && ((EObject)oldValue).eIsProxy()) {
 			InternalEObject oldOldValue = (InternalEObject)oldValue;
 			oldValue = (T)eResolveProxy(oldOldValue);
 			if (oldValue != oldOldValue) {
@@ -112,8 +118,17 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isResolved() {
+		return (super.isResolved() && ((this.getOldValue() == null) || (!this.getOldValue().eIsProxy())));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean isContainment() {
-		return getAffectedFeature().isContainment();
+		return this.getAffectedFeature().isContainment();
 	}
 
 	/**
@@ -183,14 +198,14 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == EObjectSubtractedEChange.class) {
+		if (baseClass == UpdateReferenceEChange.class) {
 			switch (derivedFeatureID) {
-				case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE: return EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectSubtractedEChange.class) {
 			switch (derivedFeatureID) {
+				case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE: return EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -209,14 +224,14 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == EObjectSubtractedEChange.class) {
+		if (baseClass == UpdateReferenceEChange.class) {
 			switch (baseFeatureID) {
-				case EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE: return ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectSubtractedEChange.class) {
 			switch (baseFeatureID) {
+				case EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE: return ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -235,14 +250,26 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == EObjectSubtractedEChange.class) {
+		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
-				default: return -1;
+				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		if (baseClass == FeatureEChange.class) {
+			switch (baseOperationID) {
+				case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED: return ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
 			}
 		}
 		if (baseClass == UpdateReferenceEChange.class) {
 			switch (baseOperationID) {
 				case ReferencePackage.UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT: return ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT;
+				default: return -1;
+			}
+		}
+		if (baseClass == EObjectSubtractedEChange.class) {
+			switch (baseOperationID) {
 				default: return -1;
 			}
 		}
@@ -262,6 +289,8 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
+			case ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED:
+				return isResolved();
 			case ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

@@ -32,7 +32,7 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 	}
 	
 	override setUserInteracting(UserInteracting userInteracting) {
-		if (userInteracting == null) {
+		if (userInteracting === null) {
 			throw new IllegalArgumentException("UserInteracting must not be null");
 		}
 		this.userInteracting = userInteracting;

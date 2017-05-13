@@ -2,7 +2,11 @@
  */
 package tools.vitruv.framework.change.echange.feature.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -10,6 +14,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
@@ -77,7 +84,7 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 */
 	@SuppressWarnings("unchecked")
 	public F getAffectedFeature() {
-		if (affectedFeature != null && affectedFeature.eIsProxy()) {
+		if (affectedFeature != null && ((EObject)affectedFeature).eIsProxy()) {
 			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
 			affectedFeature = (F)eResolveProxy(oldAffectedFeature);
 			if (affectedFeature != oldAffectedFeature) {
@@ -116,7 +123,7 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 */
 	@SuppressWarnings("unchecked")
 	public A getAffectedEObject() {
-		if (affectedEObject != null && affectedEObject.eIsProxy()) {
+		if (affectedEObject != null && ((EObject)affectedEObject).eIsProxy()) {
 			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
 			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
 			if (affectedEObject != oldAffectedEObject) {
@@ -146,6 +153,15 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 		affectedEObject = newAffectedEObject;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isResolved() {
+		return (((super.isResolved() && (this.getAffectedEObject() != null)) && (!this.getAffectedEObject().eIsProxy())) && (this.getAffectedFeature() != null));
 	}
 
 	/**
@@ -217,6 +233,36 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 				return affectedEObject != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+		if (baseClass == EChange.class) {
+			switch (baseOperationID) {
+				case EChangePackage.ECHANGE___IS_RESOLVED: return FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		return super.eDerivedOperationID(baseOperationID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED:
+				return isResolved();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 } //FeatureEChangeImpl

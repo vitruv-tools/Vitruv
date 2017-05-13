@@ -2,27 +2,21 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.framework.change.echange.eobject.impl.EObjectSubtractedEChangeImpl;
+import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange;
-import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,32 +26,21 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.SubtractiveReferenceEChangeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.SubtractiveReferenceEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.SubtractiveReferenceEChangeImpl#getOldValue <em>Old Value</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T extends EObject> extends EObjectSubtractedEChangeImpl<T> implements SubtractiveReferenceEChange<A, T> {
+public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T extends EObject> extends UpdateReferenceEChangeImpl<A> implements SubtractiveReferenceEChange<A, T> {
 	/**
-	 * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
+	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAffectedFeature()
+	 * @see #getOldValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected EReference affectedFeature;
-
-	/**
-	 * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAffectedEObject()
-	 * @generated
-	 * @ordered
-	 */
-	protected A affectedEObject;
+	protected T oldValue;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -83,55 +66,17 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAffectedFeature() {
-		if (affectedFeature != null && affectedFeature.eIsProxy()) {
-			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
-			affectedFeature = (EReference)eResolveProxy(oldAffectedFeature);
-			if (affectedFeature != oldAffectedFeature) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
-			}
-		}
-		return affectedFeature;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference basicGetAffectedFeature() {
-		return affectedFeature;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setAffectedFeature(EReference newAffectedFeature) {
-		EReference oldAffectedFeature = affectedFeature;
-		affectedFeature = newAffectedFeature;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@SuppressWarnings("unchecked")
-	public A getAffectedEObject() {
-		if (affectedEObject != null && affectedEObject.eIsProxy()) {
-			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
-			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
-			if (affectedEObject != oldAffectedEObject) {
+	public T getOldValue() {
+		if (oldValue != null && ((EObject)oldValue).eIsProxy()) {
+			InternalEObject oldOldValue = (InternalEObject)oldValue;
+			oldValue = (T)eResolveProxy(oldOldValue);
+			if (oldValue != oldOldValue) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE, oldOldValue, oldValue));
 			}
 		}
-		return affectedEObject;
+		return oldValue;
 	}
 
 	/**
@@ -139,8 +84,8 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public A basicGetAffectedEObject() {
-		return affectedEObject;
+	public T basicGetOldValue() {
+		return oldValue;
 	}
 
 	/**
@@ -148,20 +93,11 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAffectedEObject(A newAffectedEObject) {
-		A oldAffectedEObject = affectedEObject;
-		affectedEObject = newAffectedEObject;
+	public void setOldValue(T newOldValue) {
+		T oldOldValue = oldValue;
+		oldValue = newOldValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isContainment() {
-		return getAffectedFeature().isContainment();
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE, oldOldValue, oldValue));
 	}
 
 	/**
@@ -172,12 +108,9 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE:
-				if (resolve) return getAffectedFeature();
-				return basicGetAffectedFeature();
-			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT:
-				if (resolve) return getAffectedEObject();
-				return basicGetAffectedEObject();
+			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE:
+				if (resolve) return getOldValue();
+				return basicGetOldValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -191,11 +124,8 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE:
-				setAffectedFeature((EReference)newValue);
-				return;
-			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT:
-				setAffectedEObject((A)newValue);
+			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE:
+				setOldValue((T)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -209,11 +139,8 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE:
-				setAffectedFeature((EReference)null);
-				return;
-			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT:
-				setAffectedEObject((A)null);
+			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE:
+				setOldValue((T)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -227,10 +154,8 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE:
-				return affectedFeature != null;
-			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT:
-				return affectedEObject != null;
+			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE:
+				return oldValue != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -242,15 +167,14 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == FeatureEChange.class) {
+		if (baseClass == SubtractiveEChange.class) {
 			switch (derivedFeatureID) {
-				case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
-				case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectSubtractedEChange.class) {
 			switch (derivedFeatureID) {
+				case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE: return EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
 				default: return -1;
 			}
 		}
@@ -264,54 +188,18 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == FeatureEChange.class) {
+		if (baseClass == SubtractiveEChange.class) {
 			switch (baseFeatureID) {
-				case FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE: return ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE;
-				case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT: return ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectSubtractedEChange.class) {
 			switch (baseFeatureID) {
+				case EobjectPackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE: return ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE;
 				default: return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == FeatureEChange.class) {
-			switch (baseOperationID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateReferenceEChange.class) {
-			switch (baseOperationID) {
-				case ReferencePackage.UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT: return ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE___IS_CONTAINMENT;
-				default: return -1;
-			}
-		}
-		return super.eDerivedOperationID(baseOperationID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE___IS_CONTAINMENT:
-				return isContainment();
-		}
-		return super.eInvoke(operationID, arguments);
 	}
 
 } //SubtractiveReferenceEChangeImpl

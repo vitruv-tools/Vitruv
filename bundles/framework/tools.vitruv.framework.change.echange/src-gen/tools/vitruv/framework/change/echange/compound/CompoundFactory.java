@@ -86,6 +86,24 @@ public interface CompoundFactory extends EFactory {
 	<A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRoot();
 
 	/**
+	 * Returns a new object of class '<em>Create And Replace Non Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Create And Replace Non Root</em>'.
+	 * @generated
+	 */
+	<A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRoot();
+
+	/**
+	 * Returns a new object of class '<em>Replace And Delete Non Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Replace And Delete Non Root</em>'.
+	 * @generated
+	 */
+	<A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRoot();
+
+	/**
 	 * Returns a new object of class '<em>Create And Replace And Delete Non Root</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

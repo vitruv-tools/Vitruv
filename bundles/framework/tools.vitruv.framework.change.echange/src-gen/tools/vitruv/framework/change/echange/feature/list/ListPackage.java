@@ -4,6 +4,7 @@ package tools.vitruv.framework.change.echange.feature.list;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
@@ -105,6 +106,69 @@ public interface ListPackage extends EPackage {
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_AFTER__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___APPLY_FORWARD = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___APPLY_BACKWARD = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___APPLY_BACKWARD;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
 	 * The number of operations of the '<em>Update Single List Entry EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -158,6 +222,69 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_IN_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___APPLY_FORWARD = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___APPLY_BACKWARD = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___APPLY_BACKWARD;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___IS_RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -224,6 +351,69 @@ public interface ListPackage extends EPackage {
 	int REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___APPLY_FORWARD = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___APPLY_BACKWARD = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___APPLY_BACKWARD;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED;
+
+	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -240,6 +430,26 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '<em>EObj</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @see tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl#getEObj()
+	 * @generated
+	 */
+	int EOBJ = 3;
+
+	/**
+	 * The meta object id for the '<em>EFeat</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.EStructuralFeature
+	 * @see tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl#getEFeat()
+	 * @generated
+	 */
+	int EFEAT = 4;
 
 
 	/**
@@ -282,6 +492,28 @@ public interface ListPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRemoveFromListEChange();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EObj</em>'.
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
+	 * @generated
+	 */
+	EDataType getEObj();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EStructuralFeature <em>EFeat</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EFeat</em>'.
+	 * @see org.eclipse.emf.ecore.EStructuralFeature
+	 * @model instanceClass="org.eclipse.emf.ecore.EStructuralFeature"
+	 * @generated
+	 */
+	EDataType getEFeat();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -343,6 +575,26 @@ public interface ListPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REMOVE_FROM_LIST_ECHANGE = eINSTANCE.getRemoveFromListEChange();
+
+		/**
+		 * The meta object literal for the '<em>EObj</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.EObject
+		 * @see tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl#getEObj()
+		 * @generated
+		 */
+		EDataType EOBJ = eINSTANCE.getEObj();
+
+		/**
+		 * The meta object literal for the '<em>EFeat</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.EStructuralFeature
+		 * @see tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl#getEFeat()
+		 * @generated
+		 */
+		EDataType EFEAT = eINSTANCE.getEFeat();
 
 	}
 

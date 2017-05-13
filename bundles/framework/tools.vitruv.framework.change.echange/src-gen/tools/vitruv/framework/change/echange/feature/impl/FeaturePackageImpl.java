@@ -3,9 +3,13 @@
 package tools.vitruv.framework.change.echange.feature.impl;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -46,6 +50,20 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * @generated
 	 */
 	private EClass updateSingleValuedFeatureEChangeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eObjEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eFeatEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -95,6 +113,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 
 		// Initialize simple dependencies
 		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theFeaturePackage.createPackageContents();
@@ -143,6 +162,15 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getFeatureEChange__IsResolved() {
+		return featureEChangeEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUpdateMultiValuedFeatureEChange() {
 		return updateMultiValuedFeatureEChangeEClass;
 	}
@@ -154,6 +182,24 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 */
 	public EClass getUpdateSingleValuedFeatureEChange() {
 		return updateSingleValuedFeatureEChangeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEObj() {
+		return eObjEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEFeat() {
+		return eFeatEDataType;
 	}
 
 	/**
@@ -187,10 +233,15 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		featureEChangeEClass = createEClass(FEATURE_ECHANGE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_FEATURE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_EOBJECT);
+		createEOperation(featureEChangeEClass, FEATURE_ECHANGE___IS_RESOLVED);
 
 		updateMultiValuedFeatureEChangeEClass = createEClass(UPDATE_MULTI_VALUED_FEATURE_ECHANGE);
 
 		updateSingleValuedFeatureEChangeEClass = createEClass(UPDATE_SINGLE_VALUED_FEATURE_ECHANGE);
+
+		// Create data types
+		eObjEDataType = createEDataType(EOBJ);
+		eFeatEDataType = createEDataType(EFEAT);
 	}
 
 	/**
@@ -217,8 +268,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
 		// Create type parameters
 		ETypeParameter featureEChangeEClass_A = addETypeParameter(featureEChangeEClass, "A");
@@ -229,17 +280,17 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		ETypeParameter updateSingleValuedFeatureEChangeEClass_F = addETypeParameter(updateSingleValuedFeatureEChangeEClass, "F");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
+		EGenericType g1 = createEGenericType(this.getEObj());
 		featureEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
+		g1 = createEGenericType(this.getEFeat());
 		featureEChangeEClass_F.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		updateMultiValuedFeatureEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
+		g1 = createEGenericType(this.getEFeat());
 		updateMultiValuedFeatureEChangeEClass_F.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		updateSingleValuedFeatureEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
+		g1 = createEGenericType(this.getEFeat());
 		updateSingleValuedFeatureEChangeEClass_F.getEBounds().add(g1);
 
 		// Add supertypes to classes
@@ -264,9 +315,15 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		g1 = createEGenericType(featureEChangeEClass_A);
 		initEReference(getFeatureEChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEOperation(getFeatureEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+
 		initEClass(updateMultiValuedFeatureEChangeEClass, UpdateMultiValuedFeatureEChange.class, "UpdateMultiValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(updateSingleValuedFeatureEChangeEClass, UpdateSingleValuedFeatureEChange.class, "UpdateSingleValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Initialize data types
+		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(eFeatEDataType, EStructuralFeature.class, "EFeat", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

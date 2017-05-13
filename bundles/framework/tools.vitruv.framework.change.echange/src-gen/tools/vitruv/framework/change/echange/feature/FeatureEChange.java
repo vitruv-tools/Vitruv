@@ -12,6 +12,11 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * A representation of the model object '<em><b>EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which changes an attribute or reference of an EObject.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -21,22 +26,22 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange()
- * @model abstract="true"
+ * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.EObj" FBounds="tools.vitruv.framework.change.echange.feature.EFeat"
  * @generated
  */
 public interface FeatureEChange<A extends EObject, F extends EStructuralFeature> extends AtomicEChange {
 	/**
 	 * Returns the value of the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Affected Feature</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The affected attribute or reference.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Affected Feature</em>' reference.
 	 * @see #setAffectedFeature(EStructuralFeature)
 	 * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange_AffectedFeature()
-	 * @model required="true"
+	 * @model kind="reference" required="true"
 	 * @generated
 	 */
 	F getAffectedFeature();
@@ -54,15 +59,15 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	/**
 	 * Returns the value of the '<em><b>Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Affected EObject</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The affected EObject of the change.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Affected EObject</em>' reference.
 	 * @see #setAffectedEObject(EObject)
 	 * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange_AffectedEObject()
-	 * @model required="true"
+	 * @model kind="reference" required="true"
 	 * @generated
 	 */
 	A getAffectedEObject();
@@ -76,5 +81,20 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 * @generated
 	 */
 	void setAffectedEObject(A value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+	 * Needs to be true to apply the change.
+	 * @return	All proxy EObjects are resolved to concrete EObjects.
+	 * <!-- end-model-doc -->
+	 * @model kind="operation" unique="false"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((super.isResolved() &amp;&amp; (this.getAffectedEObject() != null)) &amp;&amp; (!this.getAffectedEObject().eIsProxy())) &amp;&amp; (this.getAffectedFeature() != null));'"
+	 * @generated
+	 */
+	boolean isResolved();
 
 } // FeatureEChange

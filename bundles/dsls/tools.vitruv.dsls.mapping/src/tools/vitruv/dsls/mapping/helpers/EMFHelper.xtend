@@ -22,7 +22,7 @@ class EMFHelper {
 			iterator = iterator.eContainer
 		}
 		
-		while (iterator != null) {
+		while (iterator !== null) {
 			result.add(iterator)
 			iterator = iterator.eContainer
 		}
@@ -32,7 +32,7 @@ class EMFHelper {
 	static def <T> T getContainerOfType(EObject obj, Class<T> containerType) {
 		var EObject iterator = obj;
 		
-		while (iterator != null) {
+		while (iterator !== null) {
 			if (containerType.isInstance(iterator))
 				return containerType.cast(iterator)
 			iterator = iterator.eContainer

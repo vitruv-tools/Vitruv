@@ -18,6 +18,11 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
  * A representation of the model object '<em><b>Create And Replace And Delete Non Root</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange creates a new EObject and replaces an existing one in a single valued containment reference. The old one will be deleted.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -28,7 +33,7 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getCreateAndReplaceAndDeleteNonRoot()
- * @model
+ * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface CreateAndReplaceAndDeleteNonRoot<A extends EObject, T extends EObject> extends CompoundEChange {
@@ -114,7 +119,7 @@ public interface CreateAndReplaceAndDeleteNonRoot<A extends EObject, T extends E
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" required="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>>();\n<%tools.vitruv.framework.change.echange.eobject.CreateEObject%><T> _createChange = this.getCreateChange();\nresult.add(_createChange);\n<%tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference%><A, T> _replaceChange = this.getReplaceChange();\nresult.add(_replaceChange);\n<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T> _deleteChange = this.getDeleteChange();\nresult.add(_deleteChange);\nreturn result;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt; result = new &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt;();\nresult.add(this.getCreateChange());\nresult.add(this.getReplaceChange());\nresult.add(this.getDeleteChange());\nreturn result;'"
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();

@@ -4,8 +4,11 @@ package tools.vitruv.framework.change.echange.feature.list.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -48,6 +51,20 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 	 * @generated
 	 */
 	private EClass removeFromListEChangeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eObjEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eFeatEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -97,6 +114,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 
 		// Initialize simple dependencies
 		FeaturePackage.eINSTANCE.eClass();
+		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theListPackage.createPackageContents();
@@ -154,6 +173,24 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getEObj() {
+		return eObjEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEFeat() {
+		return eFeatEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ListFactory getListFactory() {
 		return (ListFactory)getEFactoryInstance();
 	}
@@ -183,6 +220,10 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		insertInListEChangeEClass = createEClass(INSERT_IN_LIST_ECHANGE);
 
 		removeFromListEChangeEClass = createEClass(REMOVE_FROM_LIST_ECHANGE);
+
+		// Create data types
+		eObjEDataType = createEDataType(EOBJ);
+		eFeatEDataType = createEDataType(EFEAT);
 	}
 
 	/**
@@ -209,8 +250,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
 
 		// Create type parameters
@@ -224,19 +265,19 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		ETypeParameter removeFromListEChangeEClass_T = addETypeParameter(removeFromListEChangeEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
+		EGenericType g1 = createEGenericType(this.getEObj());
 		updateSingleListEntryEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
+		g1 = createEGenericType(this.getEFeat());
 		updateSingleListEntryEChangeEClass_F.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		insertInListEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
+		g1 = createEGenericType(this.getEFeat());
 		insertInListEChangeEClass_F.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		insertInListEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
+		g1 = createEGenericType(this.getEObj());
 		removeFromListEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
+		g1 = createEGenericType(this.getEFeat());
 		removeFromListEChangeEClass_F.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		removeFromListEChangeEClass_T.getEBounds().add(g1);
@@ -276,6 +317,10 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		initEClass(insertInListEChangeEClass, InsertInListEChange.class, "InsertInListEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(removeFromListEChangeEClass, RemoveFromListEChange.class, "RemoveFromListEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Initialize data types
+		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(eFeatEDataType, EStructuralFeature.class, "EFeat", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -4883,23 +4883,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
     // $ANTLR end "ruleClassicallyNamedModelElement"
 
 
-    // $ANTLR start "entryRuleMetaclassFeatureReference"
-    // InternalReactionsLanguage.g:1448:1: entryRuleMetaclassFeatureReference : ruleMetaclassFeatureReference EOF ;
-    public final void entryRuleMetaclassFeatureReference() throws RecognitionException {
+    // $ANTLR start "entryRuleMetaclassEAttributeReference"
+    // InternalReactionsLanguage.g:1448:1: entryRuleMetaclassEAttributeReference : ruleMetaclassEAttributeReference EOF ;
+    public final void entryRuleMetaclassEAttributeReference() throws RecognitionException {
         try {
-            // InternalReactionsLanguage.g:1449:1: ( ruleMetaclassFeatureReference EOF )
-            // InternalReactionsLanguage.g:1450:1: ruleMetaclassFeatureReference EOF
+            // InternalReactionsLanguage.g:1449:1: ( ruleMetaclassEAttributeReference EOF )
+            // InternalReactionsLanguage.g:1450:1: ruleMetaclassEAttributeReference EOF
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetaclassFeatureReferenceRule()); 
+               before(grammarAccess.getMetaclassEAttributeReferenceRule()); 
             }
             pushFollow(FOLLOW_1);
-            ruleMetaclassFeatureReference();
+            ruleMetaclassEAttributeReference();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetaclassFeatureReferenceRule()); 
+               after(grammarAccess.getMetaclassEAttributeReferenceRule()); 
             }
             match(input,EOF,FOLLOW_2); if (state.failed) return ;
 
@@ -4914,30 +4914,30 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "entryRuleMetaclassFeatureReference"
+    // $ANTLR end "entryRuleMetaclassEAttributeReference"
 
 
-    // $ANTLR start "ruleMetaclassFeatureReference"
-    // InternalReactionsLanguage.g:1457:1: ruleMetaclassFeatureReference : ( ( rule__MetaclassFeatureReference__Group__0 ) ) ;
-    public final void ruleMetaclassFeatureReference() throws RecognitionException {
+    // $ANTLR start "ruleMetaclassEAttributeReference"
+    // InternalReactionsLanguage.g:1457:1: ruleMetaclassEAttributeReference : ( ( rule__MetaclassEAttributeReference__Group__0 ) ) ;
+    public final void ruleMetaclassEAttributeReference() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:1461:2: ( ( ( rule__MetaclassFeatureReference__Group__0 ) ) )
-            // InternalReactionsLanguage.g:1462:2: ( ( rule__MetaclassFeatureReference__Group__0 ) )
+            // InternalReactionsLanguage.g:1461:2: ( ( ( rule__MetaclassEAttributeReference__Group__0 ) ) )
+            // InternalReactionsLanguage.g:1462:2: ( ( rule__MetaclassEAttributeReference__Group__0 ) )
             {
-            // InternalReactionsLanguage.g:1462:2: ( ( rule__MetaclassFeatureReference__Group__0 ) )
-            // InternalReactionsLanguage.g:1463:3: ( rule__MetaclassFeatureReference__Group__0 )
+            // InternalReactionsLanguage.g:1462:2: ( ( rule__MetaclassEAttributeReference__Group__0 ) )
+            // InternalReactionsLanguage.g:1463:3: ( rule__MetaclassEAttributeReference__Group__0 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetaclassFeatureReferenceAccess().getGroup()); 
+               before(grammarAccess.getMetaclassEAttributeReferenceAccess().getGroup()); 
             }
-            // InternalReactionsLanguage.g:1464:3: ( rule__MetaclassFeatureReference__Group__0 )
-            // InternalReactionsLanguage.g:1464:4: rule__MetaclassFeatureReference__Group__0
+            // InternalReactionsLanguage.g:1464:3: ( rule__MetaclassEAttributeReference__Group__0 )
+            // InternalReactionsLanguage.g:1464:4: rule__MetaclassEAttributeReference__Group__0
             {
             pushFollow(FOLLOW_2);
-            rule__MetaclassFeatureReference__Group__0();
+            rule__MetaclassEAttributeReference__Group__0();
 
             state._fsp--;
             if (state.failed) return ;
@@ -4945,7 +4945,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetaclassFeatureReferenceAccess().getGroup()); 
+               after(grammarAccess.getMetaclassEAttributeReferenceAccess().getGroup()); 
             }
 
             }
@@ -4965,7 +4965,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "ruleMetaclassFeatureReference"
+    // $ANTLR end "ruleMetaclassEAttributeReference"
 
 
     // $ANTLR start "entryRuleMetaclassEReferenceReference"
@@ -33203,23 +33203,23 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
     // $ANTLR end "rule__ClassicallyNamedModelElement__Group__1__Impl"
 
 
-    // $ANTLR start "rule__MetaclassFeatureReference__Group__0"
-    // InternalReactionsLanguage.g:9792:1: rule__MetaclassFeatureReference__Group__0 : rule__MetaclassFeatureReference__Group__0__Impl rule__MetaclassFeatureReference__Group__1 ;
-    public final void rule__MetaclassFeatureReference__Group__0() throws RecognitionException {
+    // $ANTLR start "rule__MetaclassEAttributeReference__Group__0"
+    // InternalReactionsLanguage.g:9792:1: rule__MetaclassEAttributeReference__Group__0 : rule__MetaclassEAttributeReference__Group__0__Impl rule__MetaclassEAttributeReference__Group__1 ;
+    public final void rule__MetaclassEAttributeReference__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:9796:1: ( rule__MetaclassFeatureReference__Group__0__Impl rule__MetaclassFeatureReference__Group__1 )
-            // InternalReactionsLanguage.g:9797:2: rule__MetaclassFeatureReference__Group__0__Impl rule__MetaclassFeatureReference__Group__1
+            // InternalReactionsLanguage.g:9796:1: ( rule__MetaclassEAttributeReference__Group__0__Impl rule__MetaclassEAttributeReference__Group__1 )
+            // InternalReactionsLanguage.g:9797:2: rule__MetaclassEAttributeReference__Group__0__Impl rule__MetaclassEAttributeReference__Group__1
             {
             pushFollow(FOLLOW_65);
-            rule__MetaclassFeatureReference__Group__0__Impl();
+            rule__MetaclassEAttributeReference__Group__0__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__MetaclassFeatureReference__Group__1();
+            rule__MetaclassEAttributeReference__Group__1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -33238,12 +33238,12 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetaclassFeatureReference__Group__0"
+    // $ANTLR end "rule__MetaclassEAttributeReference__Group__0"
 
 
-    // $ANTLR start "rule__MetaclassFeatureReference__Group__0__Impl"
-    // InternalReactionsLanguage.g:9804:1: rule__MetaclassFeatureReference__Group__0__Impl : ( ruleMetaclassReference ) ;
-    public final void rule__MetaclassFeatureReference__Group__0__Impl() throws RecognitionException {
+    // $ANTLR start "rule__MetaclassEAttributeReference__Group__0__Impl"
+    // InternalReactionsLanguage.g:9804:1: rule__MetaclassEAttributeReference__Group__0__Impl : ( ruleMetaclassReference ) ;
+    public final void rule__MetaclassEAttributeReference__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -33255,7 +33255,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             // InternalReactionsLanguage.g:9810:2: ruleMetaclassReference
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetaclassFeatureReferenceAccess().getMetaclassReferenceParserRuleCall_0()); 
+               before(grammarAccess.getMetaclassEAttributeReferenceAccess().getMetaclassReferenceParserRuleCall_0()); 
             }
             pushFollow(FOLLOW_2);
             ruleMetaclassReference();
@@ -33263,7 +33263,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetaclassFeatureReferenceAccess().getMetaclassReferenceParserRuleCall_0()); 
+               after(grammarAccess.getMetaclassEAttributeReferenceAccess().getMetaclassReferenceParserRuleCall_0()); 
             }
 
             }
@@ -33283,26 +33283,26 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetaclassFeatureReference__Group__0__Impl"
+    // $ANTLR end "rule__MetaclassEAttributeReference__Group__0__Impl"
 
 
-    // $ANTLR start "rule__MetaclassFeatureReference__Group__1"
-    // InternalReactionsLanguage.g:9819:1: rule__MetaclassFeatureReference__Group__1 : rule__MetaclassFeatureReference__Group__1__Impl rule__MetaclassFeatureReference__Group__2 ;
-    public final void rule__MetaclassFeatureReference__Group__1() throws RecognitionException {
+    // $ANTLR start "rule__MetaclassEAttributeReference__Group__1"
+    // InternalReactionsLanguage.g:9819:1: rule__MetaclassEAttributeReference__Group__1 : rule__MetaclassEAttributeReference__Group__1__Impl rule__MetaclassEAttributeReference__Group__2 ;
+    public final void rule__MetaclassEAttributeReference__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:9823:1: ( rule__MetaclassFeatureReference__Group__1__Impl rule__MetaclassFeatureReference__Group__2 )
-            // InternalReactionsLanguage.g:9824:2: rule__MetaclassFeatureReference__Group__1__Impl rule__MetaclassFeatureReference__Group__2
+            // InternalReactionsLanguage.g:9823:1: ( rule__MetaclassEAttributeReference__Group__1__Impl rule__MetaclassEAttributeReference__Group__2 )
+            // InternalReactionsLanguage.g:9824:2: rule__MetaclassEAttributeReference__Group__1__Impl rule__MetaclassEAttributeReference__Group__2
             {
             pushFollow(FOLLOW_8);
-            rule__MetaclassFeatureReference__Group__1__Impl();
+            rule__MetaclassEAttributeReference__Group__1__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__MetaclassFeatureReference__Group__2();
+            rule__MetaclassEAttributeReference__Group__2();
 
             state._fsp--;
             if (state.failed) return ;
@@ -33321,12 +33321,12 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetaclassFeatureReference__Group__1"
+    // $ANTLR end "rule__MetaclassEAttributeReference__Group__1"
 
 
-    // $ANTLR start "rule__MetaclassFeatureReference__Group__1__Impl"
-    // InternalReactionsLanguage.g:9831:1: rule__MetaclassFeatureReference__Group__1__Impl : ( '[' ) ;
-    public final void rule__MetaclassFeatureReference__Group__1__Impl() throws RecognitionException {
+    // $ANTLR start "rule__MetaclassEAttributeReference__Group__1__Impl"
+    // InternalReactionsLanguage.g:9831:1: rule__MetaclassEAttributeReference__Group__1__Impl : ( '[' ) ;
+    public final void rule__MetaclassEAttributeReference__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -33338,11 +33338,11 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             // InternalReactionsLanguage.g:9837:2: '['
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetaclassFeatureReferenceAccess().getLeftSquareBracketKeyword_1()); 
+               before(grammarAccess.getMetaclassEAttributeReferenceAccess().getLeftSquareBracketKeyword_1()); 
             }
             match(input,96,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetaclassFeatureReferenceAccess().getLeftSquareBracketKeyword_1()); 
+               after(grammarAccess.getMetaclassEAttributeReferenceAccess().getLeftSquareBracketKeyword_1()); 
             }
 
             }
@@ -33362,26 +33362,26 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetaclassFeatureReference__Group__1__Impl"
+    // $ANTLR end "rule__MetaclassEAttributeReference__Group__1__Impl"
 
 
-    // $ANTLR start "rule__MetaclassFeatureReference__Group__2"
-    // InternalReactionsLanguage.g:9846:1: rule__MetaclassFeatureReference__Group__2 : rule__MetaclassFeatureReference__Group__2__Impl rule__MetaclassFeatureReference__Group__3 ;
-    public final void rule__MetaclassFeatureReference__Group__2() throws RecognitionException {
+    // $ANTLR start "rule__MetaclassEAttributeReference__Group__2"
+    // InternalReactionsLanguage.g:9846:1: rule__MetaclassEAttributeReference__Group__2 : rule__MetaclassEAttributeReference__Group__2__Impl rule__MetaclassEAttributeReference__Group__3 ;
+    public final void rule__MetaclassEAttributeReference__Group__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:9850:1: ( rule__MetaclassFeatureReference__Group__2__Impl rule__MetaclassFeatureReference__Group__3 )
-            // InternalReactionsLanguage.g:9851:2: rule__MetaclassFeatureReference__Group__2__Impl rule__MetaclassFeatureReference__Group__3
+            // InternalReactionsLanguage.g:9850:1: ( rule__MetaclassEAttributeReference__Group__2__Impl rule__MetaclassEAttributeReference__Group__3 )
+            // InternalReactionsLanguage.g:9851:2: rule__MetaclassEAttributeReference__Group__2__Impl rule__MetaclassEAttributeReference__Group__3
             {
             pushFollow(FOLLOW_66);
-            rule__MetaclassFeatureReference__Group__2__Impl();
+            rule__MetaclassEAttributeReference__Group__2__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__MetaclassFeatureReference__Group__3();
+            rule__MetaclassEAttributeReference__Group__3();
 
             state._fsp--;
             if (state.failed) return ;
@@ -33400,30 +33400,30 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetaclassFeatureReference__Group__2"
+    // $ANTLR end "rule__MetaclassEAttributeReference__Group__2"
 
 
-    // $ANTLR start "rule__MetaclassFeatureReference__Group__2__Impl"
-    // InternalReactionsLanguage.g:9858:1: rule__MetaclassFeatureReference__Group__2__Impl : ( ( rule__MetaclassFeatureReference__FeatureAssignment_2 ) ) ;
-    public final void rule__MetaclassFeatureReference__Group__2__Impl() throws RecognitionException {
+    // $ANTLR start "rule__MetaclassEAttributeReference__Group__2__Impl"
+    // InternalReactionsLanguage.g:9858:1: rule__MetaclassEAttributeReference__Group__2__Impl : ( ( rule__MetaclassEAttributeReference__FeatureAssignment_2 ) ) ;
+    public final void rule__MetaclassEAttributeReference__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:9862:1: ( ( ( rule__MetaclassFeatureReference__FeatureAssignment_2 ) ) )
-            // InternalReactionsLanguage.g:9863:1: ( ( rule__MetaclassFeatureReference__FeatureAssignment_2 ) )
+            // InternalReactionsLanguage.g:9862:1: ( ( ( rule__MetaclassEAttributeReference__FeatureAssignment_2 ) ) )
+            // InternalReactionsLanguage.g:9863:1: ( ( rule__MetaclassEAttributeReference__FeatureAssignment_2 ) )
             {
-            // InternalReactionsLanguage.g:9863:1: ( ( rule__MetaclassFeatureReference__FeatureAssignment_2 ) )
-            // InternalReactionsLanguage.g:9864:2: ( rule__MetaclassFeatureReference__FeatureAssignment_2 )
+            // InternalReactionsLanguage.g:9863:1: ( ( rule__MetaclassEAttributeReference__FeatureAssignment_2 ) )
+            // InternalReactionsLanguage.g:9864:2: ( rule__MetaclassEAttributeReference__FeatureAssignment_2 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetaclassFeatureReferenceAccess().getFeatureAssignment_2()); 
+               before(grammarAccess.getMetaclassEAttributeReferenceAccess().getFeatureAssignment_2()); 
             }
-            // InternalReactionsLanguage.g:9865:2: ( rule__MetaclassFeatureReference__FeatureAssignment_2 )
-            // InternalReactionsLanguage.g:9865:3: rule__MetaclassFeatureReference__FeatureAssignment_2
+            // InternalReactionsLanguage.g:9865:2: ( rule__MetaclassEAttributeReference__FeatureAssignment_2 )
+            // InternalReactionsLanguage.g:9865:3: rule__MetaclassEAttributeReference__FeatureAssignment_2
             {
             pushFollow(FOLLOW_2);
-            rule__MetaclassFeatureReference__FeatureAssignment_2();
+            rule__MetaclassEAttributeReference__FeatureAssignment_2();
 
             state._fsp--;
             if (state.failed) return ;
@@ -33431,7 +33431,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetaclassFeatureReferenceAccess().getFeatureAssignment_2()); 
+               after(grammarAccess.getMetaclassEAttributeReferenceAccess().getFeatureAssignment_2()); 
             }
 
             }
@@ -33451,21 +33451,21 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetaclassFeatureReference__Group__2__Impl"
+    // $ANTLR end "rule__MetaclassEAttributeReference__Group__2__Impl"
 
 
-    // $ANTLR start "rule__MetaclassFeatureReference__Group__3"
-    // InternalReactionsLanguage.g:9873:1: rule__MetaclassFeatureReference__Group__3 : rule__MetaclassFeatureReference__Group__3__Impl ;
-    public final void rule__MetaclassFeatureReference__Group__3() throws RecognitionException {
+    // $ANTLR start "rule__MetaclassEAttributeReference__Group__3"
+    // InternalReactionsLanguage.g:9873:1: rule__MetaclassEAttributeReference__Group__3 : rule__MetaclassEAttributeReference__Group__3__Impl ;
+    public final void rule__MetaclassEAttributeReference__Group__3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:9877:1: ( rule__MetaclassFeatureReference__Group__3__Impl )
-            // InternalReactionsLanguage.g:9878:2: rule__MetaclassFeatureReference__Group__3__Impl
+            // InternalReactionsLanguage.g:9877:1: ( rule__MetaclassEAttributeReference__Group__3__Impl )
+            // InternalReactionsLanguage.g:9878:2: rule__MetaclassEAttributeReference__Group__3__Impl
             {
             pushFollow(FOLLOW_2);
-            rule__MetaclassFeatureReference__Group__3__Impl();
+            rule__MetaclassEAttributeReference__Group__3__Impl();
 
             state._fsp--;
             if (state.failed) return ;
@@ -33484,12 +33484,12 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetaclassFeatureReference__Group__3"
+    // $ANTLR end "rule__MetaclassEAttributeReference__Group__3"
 
 
-    // $ANTLR start "rule__MetaclassFeatureReference__Group__3__Impl"
-    // InternalReactionsLanguage.g:9884:1: rule__MetaclassFeatureReference__Group__3__Impl : ( ']' ) ;
-    public final void rule__MetaclassFeatureReference__Group__3__Impl() throws RecognitionException {
+    // $ANTLR start "rule__MetaclassEAttributeReference__Group__3__Impl"
+    // InternalReactionsLanguage.g:9884:1: rule__MetaclassEAttributeReference__Group__3__Impl : ( ']' ) ;
+    public final void rule__MetaclassEAttributeReference__Group__3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -33501,11 +33501,11 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             // InternalReactionsLanguage.g:9890:2: ']'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetaclassFeatureReferenceAccess().getRightSquareBracketKeyword_3()); 
+               before(grammarAccess.getMetaclassEAttributeReferenceAccess().getRightSquareBracketKeyword_3()); 
             }
             match(input,97,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetaclassFeatureReferenceAccess().getRightSquareBracketKeyword_3()); 
+               after(grammarAccess.getMetaclassEAttributeReferenceAccess().getRightSquareBracketKeyword_3()); 
             }
 
             }
@@ -33525,7 +33525,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetaclassFeatureReference__Group__3__Impl"
+    // $ANTLR end "rule__MetaclassEAttributeReference__Group__3__Impl"
 
 
     // $ANTLR start "rule__MetaclassEReferenceReference__Group__0"
@@ -71575,28 +71575,28 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
 
 
     // $ANTLR start "rule__ModelAttributeChange__FeatureAssignment_2"
-    // InternalReactionsLanguage.g:21881:1: rule__ModelAttributeChange__FeatureAssignment_2 : ( ruleMetaclassFeatureReference ) ;
+    // InternalReactionsLanguage.g:21881:1: rule__ModelAttributeChange__FeatureAssignment_2 : ( ruleMetaclassEAttributeReference ) ;
     public final void rule__ModelAttributeChange__FeatureAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalReactionsLanguage.g:21885:1: ( ( ruleMetaclassFeatureReference ) )
-            // InternalReactionsLanguage.g:21886:2: ( ruleMetaclassFeatureReference )
+            // InternalReactionsLanguage.g:21885:1: ( ( ruleMetaclassEAttributeReference ) )
+            // InternalReactionsLanguage.g:21886:2: ( ruleMetaclassEAttributeReference )
             {
-            // InternalReactionsLanguage.g:21886:2: ( ruleMetaclassFeatureReference )
-            // InternalReactionsLanguage.g:21887:3: ruleMetaclassFeatureReference
+            // InternalReactionsLanguage.g:21886:2: ( ruleMetaclassEAttributeReference )
+            // InternalReactionsLanguage.g:21887:3: ruleMetaclassEAttributeReference
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_2_0()); 
+               before(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassEAttributeReferenceParserRuleCall_2_0()); 
             }
             pushFollow(FOLLOW_2);
-            ruleMetaclassFeatureReference();
+            ruleMetaclassEAttributeReference();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_2_0()); 
+               after(grammarAccess.getModelAttributeChangeAccess().getFeatureMetaclassEAttributeReferenceParserRuleCall_2_0()); 
             }
 
             }
@@ -73741,9 +73741,9 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
     // $ANTLR end "rule__ClassicallyNamedModelElement__NameAssignment_1"
 
 
-    // $ANTLR start "rule__MetaclassFeatureReference__FeatureAssignment_2"
-    // InternalReactionsLanguage.g:22610:1: rule__MetaclassFeatureReference__FeatureAssignment_2 : ( ( ruleValidID ) ) ;
-    public final void rule__MetaclassFeatureReference__FeatureAssignment_2() throws RecognitionException {
+    // $ANTLR start "rule__MetaclassEAttributeReference__FeatureAssignment_2"
+    // InternalReactionsLanguage.g:22610:1: rule__MetaclassEAttributeReference__FeatureAssignment_2 : ( ( ruleValidID ) ) ;
+    public final void rule__MetaclassEAttributeReference__FeatureAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -73755,13 +73755,13 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             // InternalReactionsLanguage.g:22616:3: ( ruleValidID )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetaclassFeatureReferenceAccess().getFeatureEStructuralFeatureCrossReference_2_0()); 
+               before(grammarAccess.getMetaclassEAttributeReferenceAccess().getFeatureEAttributeCrossReference_2_0()); 
             }
             // InternalReactionsLanguage.g:22617:3: ( ruleValidID )
             // InternalReactionsLanguage.g:22618:4: ruleValidID
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMetaclassFeatureReferenceAccess().getFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1()); 
+               before(grammarAccess.getMetaclassEAttributeReferenceAccess().getFeatureEAttributeValidIDParserRuleCall_2_0_1()); 
             }
             pushFollow(FOLLOW_2);
             ruleValidID();
@@ -73769,13 +73769,13 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetaclassFeatureReferenceAccess().getFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1()); 
+               after(grammarAccess.getMetaclassEAttributeReferenceAccess().getFeatureEAttributeValidIDParserRuleCall_2_0_1()); 
             }
 
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMetaclassFeatureReferenceAccess().getFeatureEStructuralFeatureCrossReference_2_0()); 
+               after(grammarAccess.getMetaclassEAttributeReferenceAccess().getFeatureEAttributeCrossReference_2_0()); 
             }
 
             }
@@ -73795,7 +73795,7 @@ public class InternalReactionsLanguageParser extends AbstractInternalContentAssi
         }
         return ;
     }
-    // $ANTLR end "rule__MetaclassFeatureReference__FeatureAssignment_2"
+    // $ANTLR end "rule__MetaclassEAttributeReference__FeatureAssignment_2"
 
 
     // $ANTLR start "rule__MetaclassEReferenceReference__FeatureAssignment_2"

@@ -16,6 +16,11 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  * A representation of the model object '<em><b>Remove And Delete EObject</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which removes an EObject from a reference and deletes it.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -25,7 +30,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getRemoveAndDeleteEObject()
- * @model abstract="true"
+ * @model abstract="true" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubtractedEChange<T>> extends CompoundEChange {
@@ -85,7 +90,7 @@ public interface RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubt
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" required="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>>();\nC _removeChange = this.getRemoveChange();\nresult.add(_removeChange);\n<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T> _deleteChange = this.getDeleteChange();\nresult.add(_deleteChange);\nreturn result;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt; result = new &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt;();\nresult.add(this.getRemoveChange());\nresult.add(this.getDeleteChange());\nreturn result;'"
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();

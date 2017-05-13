@@ -2,11 +2,20 @@
  */
 package tools.vitruv.framework.change.echange.root.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.resource.Resource;
+
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
 
@@ -22,6 +31,8 @@ import tools.vitruv.framework.change.echange.root.RootPackage;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.root.impl.RootEChangeImpl#getUri <em>Uri</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.root.impl.RootEChangeImpl#getResource <em>Resource</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.root.impl.RootEChangeImpl#getIndex <em>Index</em>}</li>
  * </ul>
  *
  * @generated
@@ -35,7 +46,7 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String URI_EDEFAULT = "";
+	protected static final String URI_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getUri() <em>Uri</em>}' attribute.
@@ -46,6 +57,46 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * @ordered
 	 */
 	protected String uri = URI_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getResource() <em>Resource</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getResource()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Resource RESOURCE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getResource() <em>Resource</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getResource()
+	 * @generated
+	 * @ordered
+	 */
+	protected Resource resource = RESOURCE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getIndex() <em>Index</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int INDEX_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getIndex() <em>Index</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected int index = INDEX_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -92,11 +143,66 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Resource getResource() {
+		return resource;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setResource(Resource newResource) {
+		Resource oldResource = resource;
+		resource = newResource;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RootPackage.ROOT_ECHANGE__RESOURCE, oldResource, resource));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getIndex() {
+		return index;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIndex(int newIndex) {
+		int oldIndex = index;
+		index = newIndex;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, RootPackage.ROOT_ECHANGE__INDEX, oldIndex, index));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isResolved() {
+		return (super.isResolved() && (this.getResource() != null));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case RootPackage.ROOT_ECHANGE__URI:
 				return getUri();
+			case RootPackage.ROOT_ECHANGE__RESOURCE:
+				return getResource();
+			case RootPackage.ROOT_ECHANGE__INDEX:
+				return getIndex();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -111,6 +217,12 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		switch (featureID) {
 			case RootPackage.ROOT_ECHANGE__URI:
 				setUri((String)newValue);
+				return;
+			case RootPackage.ROOT_ECHANGE__RESOURCE:
+				setResource((Resource)newValue);
+				return;
+			case RootPackage.ROOT_ECHANGE__INDEX:
+				setIndex((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -127,6 +239,12 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 			case RootPackage.ROOT_ECHANGE__URI:
 				setUri(URI_EDEFAULT);
 				return;
+			case RootPackage.ROOT_ECHANGE__RESOURCE:
+				setResource(RESOURCE_EDEFAULT);
+				return;
+			case RootPackage.ROOT_ECHANGE__INDEX:
+				setIndex(INDEX_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -141,8 +259,42 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		switch (featureID) {
 			case RootPackage.ROOT_ECHANGE__URI:
 				return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
+			case RootPackage.ROOT_ECHANGE__RESOURCE:
+				return RESOURCE_EDEFAULT == null ? resource != null : !RESOURCE_EDEFAULT.equals(resource);
+			case RootPackage.ROOT_ECHANGE__INDEX:
+				return index != INDEX_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+		if (baseClass == EChange.class) {
+			switch (baseOperationID) {
+				case EChangePackage.ECHANGE___IS_RESOLVED: return RootPackage.ROOT_ECHANGE___IS_RESOLVED;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		return super.eDerivedOperationID(baseOperationID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case RootPackage.ROOT_ECHANGE___IS_RESOLVED:
+				return isResolved();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**
@@ -157,6 +309,10 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (uri: ");
 		result.append(uri);
+		result.append(", resource: ");
+		result.append(resource);
+		result.append(", index: ");
+		result.append(index);
 		result.append(')');
 		return result.toString();
 	}
