@@ -81,7 +81,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	 * @throws IOException
 	 */
 	def protected void saveAndSynchronizeChanges(EObject object) throws IOException {
-		var Resource resource = object.eResource
+		val resource = object.eResource
 		EcoreResourceBridge::saveResource(resource)
 		propagateChanges(VURI::getInstance(resource))
 		startRecordingChanges(resource)
@@ -99,7 +99,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 		if (StringUtils::isEmpty(modelPathInProject) || rootElement === null) {
 			throw new IllegalArgumentException
 		}
-		val Resource resource = createModelResource(modelPathInProject)
+		val resource = createModelResource(modelPathInProject)
 		startRecordingChanges(resource)
 		resource.contents.add(rootElement)
 		saveAndSynchronizeChanges(rootElement)
