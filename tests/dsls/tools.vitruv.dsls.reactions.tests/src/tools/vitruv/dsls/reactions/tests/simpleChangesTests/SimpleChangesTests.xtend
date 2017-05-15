@@ -56,11 +56,11 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
-		for (nonRootId : nonContainmentNonRootIds) {
+		nonContainmentNonRootIds.forEach[nonRootId|
 			val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
 			nonRoot.id = nonRootId
 			container.nonRootObjectsContainment.add(nonRoot)
-		}
+		]
 		saveAndSynchronizeChanges(rootElement)
 	}
 

@@ -14,7 +14,8 @@ import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider
 
 class ManualTests {
 	private static class Injections {
-		@Inject Provider<EclipseResourceFileSystemAccess2> fsaProv
+		@Inject
+		Provider<EclipseResourceFileSystemAccess2> fsaProv
 	}
 
 	@Ignore
