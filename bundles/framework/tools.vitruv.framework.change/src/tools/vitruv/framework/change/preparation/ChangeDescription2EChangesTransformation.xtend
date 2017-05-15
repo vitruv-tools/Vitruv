@@ -27,6 +27,7 @@ import java.util.Collections
 import org.eclipse.emf.ecore.change.ChangeDescription
 import java.util.ArrayList
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
+import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 
 public class ChangeDescription2EChangesTransformation {
 
@@ -164,19 +165,14 @@ public class ChangeDescription2EChangesTransformation {
 		}
 	}
 
-
-
-
 	def private void addChangeForAddResourceChange(ResourceChange resourceChange, ListChange listChange, Resource newResource) {
 		for (rootToAdd : listChange.referenceValues) {
 			var oldRootContainer = rootToAdd.eContainer
 			var oldRootResource = rootToAdd.eResource
-
 			var index = listChange.index
-			eChanges.add(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource,
-					newResource, index))
+			eChanges.add(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource, newResource, index))
 		}
-	}
+}
 
 	def private void addChangeForRemoveResourceChange(ResourceChange resourceChange, ListChange listChange,
 
@@ -198,14 +194,14 @@ public class ChangeDescription2EChangesTransformation {
 			val metaclass = eObject.eClass
 			for (feature : metaclass.EAllStructuralFeatures.filter(EAttribute)) {
 				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
-
+					val recursiveChanges = createAdditiveChangesForValue(eObject, feature);
 					eChanges.addAll(recursiveChanges);
 				}
 			}
 
 			for (feature : metaclass.EAllStructuralFeatures.filter(EReference).filter[isContainment]) {
 				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
-
+					val recursiveChanges = createAdditiveCreateChangesForValue(eObject, feature);
 					eChanges.addAll(recursiveChanges);
 
 					for (element : eObject.getReferencedElements(feature)) {
@@ -287,6 +283,7 @@ public class ChangeDescription2EChangesTransformation {
 				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedReference)
 				for (var index = elementsReferencedBeforeChange.size - 1; index >= 0; index--) {
 					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)
+					resultChanges.addAll(
 						createChangeForMultiReferenceChange(affectedEObject, affectedReference, index,
 							ChangeKind.REMOVE_LITERAL, #[elementReferencedBeforeChange]))
 				}
@@ -307,7 +304,7 @@ public class ChangeDescription2EChangesTransformation {
 			}
 			return #[change]
 		}
-	}
+}
 
 	def EChange createChangeForSingleReferenceChange(EObject affectedEObject, EReference affectedReference,
 		EObject newReferenceValue) {
@@ -319,7 +316,7 @@ public class ChangeDescription2EChangesTransformation {
 		int index, ChangeKind changeKind, List<EObject> referenceValues) {
 		switch changeKind {
 			case ChangeKind.ADD_LITERAL: referenceValues.mapFixed [
-
+				createInsertReferenceChange(affectedEObject, affectedReference, index, it, false)
 			]
 			case ChangeKind.REMOVE_LITERAL: createChangeForRemoveReferenceChange(affectedEObject, affectedReference,
 				index, affectedEObject.getReferenceValueList(affectedReference))
@@ -334,11 +331,12 @@ public class ChangeDescription2EChangesTransformation {
 		val referenceValue = referenceValues.get(index);
 		var newContainer = null//changeDescription.getNewContainer(referenceValue)
 		var newResource = null//changeDescription.getNewResource(referenceValue)
-
+		resultList.add(
+			EMFModelChangeTransformationUtil.createRemoveReferenceChange(affectedEObject, affectedReference, index,
 				referenceValue, newContainer, newResource))
 		// }
 		return resultList
-	}
+}
 
 	def private dispatch List<EChange> createChangesForFeatureChange(EObject affectedEObject,
 		EAttribute affectedAttribute, FeatureChange featureChange) {

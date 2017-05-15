@@ -10,10 +10,12 @@ import tools.vitruv.framework.tests.echange.command.RemoveFromStagingAreaCommand
 import tools.vitruv.framework.tests.echange.compound.CreateAndInsertNonRootTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndInsertRootTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndReplaceAndDeleteNonRootTest;
+import tools.vitruv.framework.tests.echange.compound.CreateAndReplaceNonRootTest;
 import tools.vitruv.framework.tests.echange.compound.ExplicitUnsetEAttributeTest;
 import tools.vitruv.framework.tests.echange.compound.ExplicitUnsetEReferenceTest;
 import tools.vitruv.framework.tests.echange.compound.RemoveAndDeleteNonRootTest;
 import tools.vitruv.framework.tests.echange.compound.RemoveAndDeleteRootTest;
+import tools.vitruv.framework.tests.echange.compound.ReplaceAndDeleteNonRootTest;
 import tools.vitruv.framework.tests.echange.eobject.CreateEObjectTest;
 import tools.vitruv.framework.tests.echange.eobject.DeleteEObjectTest;
 import tools.vitruv.framework.tests.echange.eobject.EObjectExistenceEChangeTest;
@@ -51,6 +53,8 @@ import tools.vitruv.framework.tests.echange.root.RemoveRootEObjectTest;
 	RemoveAndDeleteRootTest.class,
 	CreateAndInsertNonRootTest.class,
 	RemoveAndDeleteNonRootTest.class,
+	CreateAndReplaceNonRootTest.class,
+	ReplaceAndDeleteNonRootTest.class,
 	CreateAndReplaceAndDeleteNonRootTest.class,
 	
 	// Additional tests

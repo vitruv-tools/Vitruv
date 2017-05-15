@@ -52,7 +52,14 @@ package class EMFModelChangeTransformationUtil {
 		}
 	}
 	
+	def static EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
+		return getValueList(eObject, reference) as EList<EObject>
+	}
 	
+	def static EList<Object> getReferenceValueList(EObject eObject, EAttribute attribute) {
+		return getValueList(eObject, attribute) as EList<Object>
+	}
+		
 	def static List<EChange> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference, boolean forceCreate) {
 		val result = new ArrayList<EChange>(); 
 		if (reference.isMany) {
@@ -76,9 +83,9 @@ package class EMFModelChangeTransformationUtil {
 		return isRootContainer(oldContainer)
 	}
 	
-
+	def private static boolean isRootContainer(EObject container) {
 		return container == null //|| container instanceof ChangeDescription
-	}
+}
 	
 	def static boolean hasNonDefaultValue(EObject eObject) {
 		var hasNonDefaultValue = false
@@ -100,7 +107,7 @@ package class EMFModelChangeTransformationUtil {
         return feature.isChangeable() && !feature.isDerived() && !feature.isTransient() && eObject.eContainer != eObject.eGet(feature);
 	}
 	
-
+	def private static boolean valueIsNonDefault(EObject eObject, EStructuralFeature feature) {
 		val value = eObject.eGet(feature)
 		if (feature.many) {
 			val list = value as List<?>
@@ -115,13 +122,7 @@ package class EMFModelChangeTransformationUtil {
 		return isChangeableUnderivedPersistedNotContainingFeature(eObject, feature) && valueIsNonDefault(eObject, feature)
 	}
 	
-	def static EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
-		return getValueList(eObject, reference) as EList<EObject>
-	}
-	
-	def static EList<Object> getReferenceValueList(EObject eObject, EAttribute attribute) {
-		return getValueList(eObject, attribute) as EList<Object>
-	}
+
 	
 
 
@@ -223,7 +224,6 @@ package class EMFModelChangeTransformationUtil {
 	}
 	
 	def static EChange createExplicitUnsetEReferenceChange(EObject affectedEObject, EReference affectedReference, List<EChange> changes) {
-
 		return TypeInferringCompoundEChangeFactory.instance.createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, changes);
 	}
 	

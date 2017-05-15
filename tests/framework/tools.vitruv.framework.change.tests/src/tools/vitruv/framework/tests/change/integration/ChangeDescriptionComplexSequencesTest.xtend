@@ -7,6 +7,7 @@ import allElementTypes.AllElementTypesFactory
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
+import org.junit.Ignore
 
 class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTransformationTest {
 
@@ -65,7 +66,6 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		
 	}
 	
-	
 	@Test
 	def public void testInsertComplexTreeInContainment() {
 		// prepare
@@ -86,8 +86,7 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		changes.assertChangeCount(7);
 		changes.claimChange(0).assertSetSingleValuedEReference(rootElement, ROOT__RECURSIVE_ROOT, secondRoot, true, true);
 		changes.claimChange(1).assertReplaceSingleValuedEAttribute(secondRoot, IDENTIFIED__ID, null, secondRoot.id);
-		changes.claimChange(2).assertCreateAndReplaceAndDeleteNonRoot(null, nonRootObjectsContainer, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER,
-			secondRoot, true);
+		changes.claimChange(2).assertSetSingleValuedEReference(secondRoot, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER, nonRootObjectsContainer, true, true);
 		changes.claimChange(3).assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null, nonRootObjectsContainer.id);
 		changes.claimChange(4).assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
 			nonRoot, 0);
