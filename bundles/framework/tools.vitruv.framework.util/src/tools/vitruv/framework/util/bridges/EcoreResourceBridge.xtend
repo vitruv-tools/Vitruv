@@ -240,7 +240,7 @@ final class EcoreResourceBridge {
 	}
 
 	def static void registerGlobalMetamodelPackage(String nsURI, Object pckg) {
-		EPackage::Registry.INSTANCE.put(nsURI, pckg)
+		EPackage::Registry::INSTANCE.put(nsURI, pckg)
 	}
 
 	def static void registerExtensionFactoryOn(ResourceSet rs, Object resourceFactory, String... fileExtensions) {
@@ -250,7 +250,7 @@ final class EcoreResourceBridge {
 	}
 
 	def static void registerGlobalExtensionFactory(String fileExtension, Object resourceFactory) {
-		Resource::Factory.Registry::INSTANCE.extensionToFactoryMap.put(fileExtension, resourceFactory)
+		Resource::Factory::Registry::INSTANCE.extensionToFactoryMap.put(fileExtension, resourceFactory)
 	}
 
 	def static void registerDefaultXMIExtensionFactory(String fileExtension) {

@@ -13,21 +13,21 @@ import tools.vitruv.framework.util.bridges.EMFBridge
  * @author kramerm
  */
 class VURI implements Comparable<VURI> {
-	static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>()
+	static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>
 	org.eclipse.emf.common.util.URI emfURI
 
 	/** 
 	 * Multiton classes should not have a public or default constructor. 
 	 */
 	private new(String uriString) {
-		this.emfURI = EMFBridge.createURI(uriString)
+		this.emfURI = EMFBridge::createURI(uriString)
 	}
 
 	def static synchronized VURI getInstance(String key) {
 		var VURI instance = INSTANCES.get(key)
 		if (instance === null) {
 			instance = new VURI(key)
-			var String newKey = instance.toString()
+			var String newKey = instance.toString
 			var VURI oldInstance = INSTANCES.get(newKey)
 			if (oldInstance !== null) {
 				INSTANCES.put(key, oldInstance)
@@ -44,19 +44,19 @@ class VURI implements Comparable<VURI> {
 	}
 
 	def static VURI getInstance(Resource resource) {
-		return getInstance(resource.getURI())
+		getInstance(resource.URI)
 	}
 
 	def static VURI getInstance(URI uri) {
-		if (null === uri.toFileString()) {
-			return getInstance(uri.toString())
-		}
-		return getInstance(uri.toFileString())
+		if (null === uri.toFileString)
+			getInstance(uri.toString)
+		else
+			getInstance(uri.toFileString)
 	}
 
 	def static VURI getInstance(IResource iResource) {
-		var String[] keyStrSegments = iResource.getFullPath().segments()
-		var StringBuilder keyString = new StringBuilder()
+		val String[] keyStrSegments = iResource.fullPath.segments
+		val StringBuilder keyString = new StringBuilder
 		for (var int i = 0; i < keyStrSegments.length; i++) {
 			if (i > 0) {
 				keyString.append("/")
@@ -66,28 +66,28 @@ class VURI implements Comparable<VURI> {
 				keyStrSegments.get(_rdIndx_keyStrSegments)
 			})
 		}
-		return getInstance(keyString.toString())
+		getInstance(keyString.toString)
 	}
 
 	override String toString() {
-		return this.emfURI.toString()
+		emfURI.toString
 	}
 
 	def String toResolvedAbsolutePath() {
-		return CommonPlugin.resolve(this.emfURI).toFileString()
+		CommonPlugin::resolve(this.emfURI).toFileString
 	}
 
 	def URI getEMFUri() {
-		return this.emfURI
+		emfURI
 	}
 
 	def String getFileExtension() {
-		return this.emfURI.fileExtension()
+		emfURI.fileExtension
 	}
 
 	def String getLastSegment() {
-		var String lastSegment = this.emfURI.lastSegment()
-		return (if (lastSegment === null) "" else lastSegment )
+		var String lastSegment = this.emfURI.lastSegment
+		if (lastSegment === null) "" else lastSegment
 	}
 
 	/** 
@@ -97,10 +97,10 @@ class VURI implements Comparable<VURI> {
 	 * @return the new VURI with the replaced file extension
 	 */
 	def VURI replaceFileExtension(String newFileExt) {
-		return VURI.getInstance(this.emfURI.trimFileExtension().appendFileExtension(newFileExt))
+		VURI::getInstance(this.emfURI.trimFileExtension.appendFileExtension(newFileExt))
 	}
 
 	override int compareTo(VURI otherVURI) {
-		return this.emfURI.toString().compareTo(otherVURI.toString())
+		emfURI.toString.compareTo(otherVURI.toString)
 	}
 }
