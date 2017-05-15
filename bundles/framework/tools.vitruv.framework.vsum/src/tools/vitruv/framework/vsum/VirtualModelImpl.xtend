@@ -27,8 +27,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		modelConfiguration.metamodels.forEach[metamodelRepository.addDomain(it)]
 		modelRepository = new ModelRepositoryImpl(name, metamodelRepository)
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository
-		modelConfiguration.changePropagationSpecifications.forEach [ changePropagationSpecification |
-			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
+		modelConfiguration.changePropagationSpecifications.forEach [ 
+			changePropagationSpecificationRepository.putChangePropagationSpecification(it)
 		]
 		changePropagationSpecificationProvider = changePropagationSpecificationRepository
 		changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider,

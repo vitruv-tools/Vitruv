@@ -2,12 +2,9 @@ package tools.vitruv.framework.tests
 
 import java.io.IOException
 import java.util.Collections
-import java.util.List
 import org.apache.commons.lang.StringUtils
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.description.CompositeContainerChange
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
@@ -54,8 +51,8 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	def protected abstract void cleanup()
 
 	def private void propagateChanges(VURI vuri) {
-		val List<TransactionalChange> changes = changeRecorder.endRecording
-		val CompositeContainerChange compositeChange = VitruviusChangeFactory::instance.createCompositeChange(changes)
+		val changes = changeRecorder.endRecording
+		val compositeChange = VitruviusChangeFactory::instance.createCompositeChange(changes)
 		virtualModel.propagateChange(compositeChange)
 	}
 
