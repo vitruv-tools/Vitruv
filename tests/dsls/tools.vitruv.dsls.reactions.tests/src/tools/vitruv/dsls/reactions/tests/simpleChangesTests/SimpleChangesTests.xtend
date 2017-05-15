@@ -56,9 +56,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
-		nonContainmentNonRootIds.forEach[nonRootId|
+		nonContainmentNonRootIds.forEach [
 			val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
-			nonRoot.id = nonRootId
+			nonRoot.id = it
 			container.nonRootObjectsContainment.add(nonRoot)
 		]
 		saveAndSynchronizeChanges(rootElement)
@@ -102,11 +102,11 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		nonRootObject.id = id
 		rootObject.multiValuedContainmentEReference.add(nonRootObject)
 		saveAndSynchronizeChanges(nonRootObject)
-		return nonRootObject
+		nonRootObject
 	}
 
 	private def void replaceMultiValuedContainmentNonRootObject(Root rootObject, String oldId, String newId) {
-		val oldElement = rootObject.multiValuedContainmentEReference.findFirst(nonRoot|nonRoot.id == oldId)
+		val oldElement = rootObject.multiValuedContainmentEReference.findFirst[newId == id]
 		if (oldElement === null) {
 			throw new IllegalStateException("There is no element with the specified old element id.")
 		}
@@ -117,8 +117,8 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		saveAndSynchronizeChanges(rootObject)
 	}
 
-	private def removeMultiValuedContainmentNonRootObject(Root rootObject, String id) {
-		val objectToRemove = rootObject.multiValuedContainmentEReference.findFirst(nonRoot|nonRoot.id == id)
+	private def removeMultiValuedContainmentNonRootObject(Root rootObject, String idToSearch) {
+		val objectToRemove = rootObject.multiValuedContainmentEReference.findFirst[idToSearch == id]
 		if (objectToRemove === null) {
 			throw new IllegalStateException("There is no element with the specified element id.")
 		}
@@ -126,11 +126,8 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		saveAndSynchronizeChanges(rootObject)
 	}
 
-	private def void insertMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val nonRoot = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == id
-		)
+	private def void insertMultiValuedNonContainmentNonRootObject(Root rootObject, String idToSearch) {
+		val nonRoot = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[idToSearch == id]
 		if (nonRoot === null) {
 			throw new IllegalStateException("There is no element with the specified element id.")
 		}
@@ -139,14 +136,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	private def void replaceMultiValuedNonContainmentNonRootObject(Root rootObject, String oldId, String newId) {
-		val oldElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == oldId
-		)
-		val newElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == newId
-		)
+		val oldElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[id == oldId]
+
+		val newElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[id == newId]
 		if (oldElement === null) {
 			throw new IllegalStateException("There is no element with the specified old element id.")
 		}
@@ -161,11 +153,10 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		saveAndSynchronizeChanges(rootObject)
 	}
 
-	private def void removeMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val objectToRemove = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == id
-		)
+	private def void removeMultiValuedNonContainmentNonRootObject(Root rootObject, String idToSearch) {
+		val objectToRemove = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst [
+			id == idToSearch
+		]
 		if (objectToRemove === null) {
 			throw new IllegalStateException("There is no element with the specified element id.")
 		}
@@ -181,20 +172,20 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		saveAndSynchronizeChanges(rootObject)
 	}
 
-	private def NonRoot setSingleValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val nonRootObject = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot |
-			nonRoot.id == id
-		)
+	private def NonRoot setSingleValuedNonContainmentNonRootObject(Root rootObject, String idToSearch) {
+		val nonRootObject = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst [
+			id == idToSearch
+		]
 		rootObject.singleValuedNonContainmentEReference = nonRootObject
 		saveAndSynchronizeChanges(nonRootObject)
-		return nonRootObject
+		nonRootObject
 	}
 
 	private def NonRoot setSingleValuedContainmentNonRootObject(Root rootObject, String id) {
 		val nonRootObject = AllElementTypesFactory::eINSTANCE.createNonRoot
 		rootObject.singleValuedContainmentEReference = nonRootObject
 		setElementId(nonRootObject, id)
-		return nonRootObject
+		nonRootObject
 	}
 
 	private def void unsetSingleValuedContainmentNonRootObject(Root rootObject) {
