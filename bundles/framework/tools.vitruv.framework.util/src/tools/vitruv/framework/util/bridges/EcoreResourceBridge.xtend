@@ -46,7 +46,7 @@ final class EcoreResourceBridge {
 	 */
 	def static EObject getResourceContentRootFromVURIIfUnique(URI uri, ResourceSet resourceSet) {
 		val Resource emfResource = loadResourceAtURI(uri, resourceSet)
-		return getResourceContentRootIfUnique(emfResource)
+		getResourceContentRootIfUnique(emfResource)
 	}
 
 	/** 
@@ -56,8 +56,8 @@ final class EcoreResourceBridge {
 	 * @return the unique root element (if existing) otherwise {@code null}
 	 */
 	def static EObject getResourceContentRootIfUnique(Resource resource) {
-		val List<EObject> resourceContents = resource.getContents()
-		if (resourceContents.size() === 1) {
+		val List<EObject> resourceContents = resource.contents
+		if (resourceContents.size === 1) {
 			return resourceContents.get(0)
 		} else {
 			return null
@@ -96,7 +96,7 @@ final class EcoreResourceBridge {
 	def static <T extends EObject> T getUniqueContentRootIfCorrectlyTyped(Resource resource, String modelName,
 		Class<T> rootElementClass) {
 		val EObject rootElement = getUniqueContentRoot(resource, modelName)
-		return JavaBridge.dynamicCast(rootElement,
+		JavaBridge::dynamicCast(rootElement,
 			rootElementClass, '''root element '«»«rootElement»' of the «modelName» '«»«resource»'«»''')
 	}
 
@@ -113,10 +113,11 @@ final class EcoreResourceBridge {
 	 * the type of the root element
 	 * @return the root element
 	 */
-	@SuppressWarnings("unchecked") def static <T extends EObject> T getUniqueTypedRootEObject(Resource resource,
-		String modelName, Class<T> rootElementClass) {
+	@SuppressWarnings("unchecked")
+	def static <T extends EObject> T getUniqueTypedRootEObject(Resource resource, String modelName,
+		Class<T> rootElementClass) {
 		var T typedRootObject = null
-		for (EObject rootObject : resource.getContents()) {
+		for (EObject rootObject : resource.contents) {
 			if (rootElementClass.isInstance(rootObject)) {
 				if (typedRootObject !== null) {
 					throw new RuntimeException('''There are more than one root objects in «modelName», which match the given type.''')
@@ -127,7 +128,7 @@ final class EcoreResourceBridge {
 		if (typedRootObject === null) {
 			throw new RuntimeException('''The resource «modelName» does not contain a correctly typed root element.''')
 		}
-		return typedRootObject
+		typedRootObject
 	}
 
 	/** 
@@ -140,10 +141,10 @@ final class EcoreResourceBridge {
 	 * @return the root element
 	 */
 	def static EObject getFirstRootEObject(Resource resource, String modelName) {
-		if (resource.getContents().size() < 1) {
+		if (resource.contents.size < 1) {
 			throw new RuntimeException('''The resource «modelName» does not contain a root element.''')
 		}
-		return resource.getContents().get(0)
+		resource.contents.get(0)
 	}
 
 	/** 
@@ -152,12 +153,12 @@ final class EcoreResourceBridge {
 	 * @return a set containing all resource contents
 	 */
 	def static Set<EObject> getAllContentsSet(Resource resource) {
-		return EcoreBridge.getAllContentsSet(resource.getAllContents())
+		EcoreBridge::getAllContentsSet(resource.allContents)
 	}
 
 	/** 
 	 * Saves the given eObject as the only content of the model at the given
-	 * URI.<br/>
+	 * URI::<br/>
 	 * <br/>
 	 * <b>Attention</b>: If a resource already exists at the given URI it will
 	 * be overwritten!
@@ -180,8 +181,8 @@ final class EcoreResourceBridge {
 	 * @throws IOExceptionif an error occurred during saving
 	 */
 	def static void saveEObjectAsOnlyContent(EObject eObject, Resource resource) throws IOException {
-		resource.getContents().clear()
-		resource.getContents().add(eObject)
+		resource.contents.clear
+		resource.contents.add(eObject)
 		saveResource(resource)
 	}
 
@@ -191,7 +192,7 @@ final class EcoreResourceBridge {
 	 * @throws IOExceptionif an error occurred during saving
 	 */
 	def static void saveResource(Resource resource) throws IOException {
-		saveResource(resource, Collections.emptyMap())
+		saveResource(resource, Collections::emptyMap)
 	}
 
 	/** 
@@ -205,13 +206,13 @@ final class EcoreResourceBridge {
 	}
 
 	def static Resource loadResourceAtURI(URI resourceURI, ResourceSet resourceSet) {
-		return loadResourceAtURI(resourceURI, resourceSet, Collections.emptyMap())
+		loadResourceAtURI(resourceURI, resourceSet, Collections::emptyMap)
 	}
 
 	def static Resource loadResourceAtURI(URI resourceURI, ResourceSet resourceSet, Map<Object, Object> loadOptions) {
 		var Resource resource = null
 		try {
-			if (EMFBridge.existsResourceAtUri(resourceURI)) {
+			if (EMFBridge::existsResourceAtUri(resourceURI)) {
 				resource = resourceSet.getResource(resourceURI, true)
 			}
 			if (resource === null) {
@@ -226,36 +227,33 @@ final class EcoreResourceBridge {
 			// Fixes issue caused by JaMoPP: If a model is transitively loaded
 			// (e.g. because of an import) the URI starts with pathmap instead of
 			// the usual URI. If you try to load this model again the URI remains wrong.
-			resource.setURI(resourceURI)
+			resource.URI = resourceURI
 		} catch (IOException e) {
 			// soften
 			throw new RuntimeException(e)
 		}
-
-		return resource
+		resource
 	}
 
 	def static void registerMetamodelPackageOn(ResourceSet rs, Object pckg, String... nsURIs) {
-		for (String nsURI : nsURIs) {
-			rs.getPackageRegistry().put(nsURI, pckg)
-		}
+		nsURIs.forEach[rs.packageRegistry.put(it, pckg)]
 	}
 
 	def static void registerGlobalMetamodelPackage(String nsURI, Object pckg) {
-		EPackage.Registry.INSTANCE.put(nsURI, pckg)
+		EPackage::Registry.INSTANCE.put(nsURI, pckg)
 	}
 
 	def static void registerExtensionFactoryOn(ResourceSet rs, Object resourceFactory, String... fileExtensions) {
 		for (String fileExtension : fileExtensions) {
-			rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension, resourceFactory)
+			rs.resourceFactoryRegistry.extensionToFactoryMap.put(fileExtension, resourceFactory)
 		}
 	}
 
 	def static void registerGlobalExtensionFactory(String fileExtension, Object resourceFactory) {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(fileExtension, resourceFactory)
+		Resource::Factory.Registry::INSTANCE.extensionToFactoryMap.put(fileExtension, resourceFactory)
 	}
 
 	def static void registerDefaultXMIExtensionFactory(String fileExtension) {
-		registerGlobalExtensionFactory(fileExtension, new XMIResourceFactoryImpl())
+		registerGlobalExtensionFactory(fileExtension, new XMIResourceFactoryImpl)
 	}
 }
