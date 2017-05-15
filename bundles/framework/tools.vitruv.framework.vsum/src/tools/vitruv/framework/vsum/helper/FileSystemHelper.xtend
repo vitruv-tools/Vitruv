@@ -13,7 +13,6 @@ import java.util.Set
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IProject
-import org.eclipse.core.resources.IWorkspaceRoot
 import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.core.runtime.CoreException
 import org.eclipse.core.runtime.NullProgressMonitor
@@ -29,60 +28,58 @@ class FileSystemHelper {
 	}
 
 	def VURI getCorrespondencesVURI() {
-		var IFile correspondenceFile = getCorrespondenceIFile()
-		return VURI.getInstance(correspondenceFile)
+		val correspondenceFile = getCorrespondenceIFile
+		VURI::getInstance(correspondenceFile)
 	}
 
 	def void saveCorrespondenceModelMMURIs() {
-		var IFile correspondenceModelIFile = getCorrespondenceIFile()
+		val correspondenceModelIFile = getCorrespondenceIFile
 		// FIXME This does nothing reasonable anymore
-		var Set<VURI> mmURIsSet = new HashSet<VURI>()
-		// Arrays.asList(mmURIs));
-		saveVURISetToFile(mmURIsSet, correspondenceModelIFile.getLocation().toOSString())
+		val Set<VURI> mmURIsSet = new HashSet<VURI>
+		// Arrays::asList(mmURIs))
+		saveVURISetToFile(mmURIsSet, correspondenceModelIFile.location.toOSString)
 	}
 
 	def IFile getCorrespondenceIFile() {
-		var String fileName = getCorrespondenceFileName()
-		return getCorrespondenceIFile(fileName)
+		val fileName = getCorrespondenceFileName
+		getCorrespondenceIFile(fileName)
 	}
 
 	def IFile getCorrespondenceIFile(String fileName) {
-		var IFolder correspondenceFolder = getCorrespondenceFolder()
-		var IFile correspondenceFile = correspondenceFolder.getFile(fileName)
-		return correspondenceFile
+		val correspondenceFolder = getCorrespondenceFolder()
+		val correspondenceFile = correspondenceFolder.getFile(fileName)
+		correspondenceFile
 	}
 
 	def private static String getCorrespondenceFileName() {
-		var String fileExtSeparator = VitruviusConstants.getFileExtSeparator()
-		var String fileExt = VitruviusConstants.getCorrespondencesFileExt()
-		// VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
-		// Arrays.sort(copyOfMMURIs);
-		var String fileName = ""
+		val fileExtSeparator = VitruviusConstants::fileExtSeparator
+		val fileExt = VitruviusConstants::correspondencesFileExt
+		// VURI[] copyOfMMURIs = Arrays::copyOf(mmURIs, mmURIs.length)
+		// Arrays::sort(copyOfMMURIs)
+		var fileName = ""
 		// for (VURI uri : copyOfMMURIs) {
 		//
-		// String authority = uri.getEMFUri().authority();
+		// String authority = uri.eMFUri.authority
 		// if (authority != null) {
-		// int indexOfLastDot = authority.lastIndexOf('.');
+		// int indexOfLastDot = authority.lastIndexOf('.')
 		//
-		// fileName += authority.substring(indexOfLastDot + 1);
+		// fileName += authority.substring(indexOfLastDot + 1)
 		//
 		// }
-		// fileName += uri.toString().hashCode();
+		// fileName += uri.toString.hashCode()
 		// }
 		fileName = '''Correspondences«fileExtSeparator»«fileExt»'''
-		return fileName
+		fileName
 	}
 
 	def void saveVsumVURIsToFile(Set<VURI> vuris) {
-		var String fileName = getVsumMapFileName()
+		val fileName = getVsumMapFileName
 		saveVURISetToFile(vuris, fileName)
 	}
 
 	def private static void saveVURISetToFile(Set<VURI> vuris, String fileName) {
-		var Set<String> stringSet = new HashSet<String>(vuris.size())
-		for (VURI vuri : vuris) {
-			stringSet.add(vuri.getEMFUri().toString())
-		}
+		val Set<String> stringSet = new HashSet<String>(vuris.size)
+		vuris.forEach[stringSet.add(EMFUri.toString)]
 		saveObjectToFile(stringSet, fileName)
 	}
 
@@ -90,59 +87,56 @@ class FileSystemHelper {
 		try {
 			// TODO: this code could be optimized in a way that a new method is provide for sets of
 			// strings where only the new strings are appended to the file
-			var FileOutputStream fileOutputStream = new FileOutputStream(fileName)
-			var ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream)
+			val FileOutputStream fileOutputStream = new FileOutputStream(fileName)
+			val ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream)
 			oos.writeObject(object)
-			oos.flush()
-			oos.close()
+			oos.flush
+			oos.close
 		} catch (IOException e) {
 			throw new RuntimeException('''Could not save '«»«object»' to file '«»«fileName»':  «e»''')
 		}
-
 	}
 
 	def Set<VURI> loadVsumVURIsFromFile() {
-		var String fileName = getVsumMapFileName()
-		return loadVURISetFromFile(fileName)
+		val fileName = getVsumMapFileName
+		loadVURISetFromFile(fileName)
 	}
 
 	def private static Set<VURI> loadVURISetFromFile(String fileName) {
-		var Set<String> stringSet = loadStringSetFromFile(fileName)
-		var Set<VURI> vuris = new HashSet<VURI>(stringSet.size() * 2)
-		for (String str : stringSet) {
-			vuris.add(VURI.getInstance(str))
-		}
-		return vuris
+		val Set<String> stringSet = loadStringSetFromFile(fileName)
+		val Set<VURI> vuris = new HashSet<VURI>(stringSet.size * 2)
+		stringSet.forEach[vuris.add(VURI::getInstance(it))]
+		vuris
 	}
 
 	@SuppressWarnings("unchecked")
 	def private static Set<String> loadStringSetFromFile(String fileName) {
-		var Object obj = loadObjectFromFile(fileName)
+		val obj = loadObjectFromFile(fileName)
 		if (obj === null) {
-			return Collections.emptySet()
+			Collections::emptySet
 		} else if (obj instanceof Set<?>) {
-			return (obj as Set<String>)
+			obj as Set<String>
 		} else {
 			throw new RuntimeException('''The file with the name '«»«fileName»' does not contain a set of strings!''')
 		}
 	}
 
 	def static Object loadObjectFromFile(String fileName) {
-		return loadObjectFromFile(fileName, null)
+		loadObjectFromFile(fileName, null)
 	}
 
 	def static Object loadObjectFromFile(String fileName, ClassLoader cl) {
 		try {
-			var FileInputStream fileInputStream = new FileInputStream(fileName)
-			var ObjectInputStream ois = new ObjectInputStream(fileInputStream) {
+			val FileInputStream fileInputStream = new FileInputStream(fileName)
+			val ObjectInputStream ois = new ObjectInputStream(fileInputStream) {
 				override protected Class<?> resolveClass(
 					ObjectStreamClass desc) throws IOException, ClassNotFoundException {
 					try {
 						return super.resolveClass(desc)
 					} catch (ClassNotFoundException e) {
 						if (cl !== null) {
-							var String name = desc.getName()
-							return Class.forName(name, false, cl)
+							var String name = desc.name
+							return Class::forName(name, false, cl)
 						} else {
 							throw e
 						}
@@ -150,8 +144,8 @@ class FileSystemHelper {
 
 				}
 			}
-			var Object obj = ois.readObject()
-			ois.close()
+			var Object obj = ois.readObject
+			ois.close
 			return obj
 		} catch (FileNotFoundException e) {
 			return null
@@ -164,38 +158,37 @@ class FileSystemHelper {
 	}
 
 	def static IProject getProject(String projectName) {
-		var IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot()
-		return root.getProject(projectName)
+		val root = ResourcesPlugin::workspace.root
+		root.getProject(projectName)
 	}
 
 	def IProject getVsumProject() {
-		var IProject vsumProject = getProject(this.vsumName)
-		if (!vsumProject.exists()) {
+		val vsumProject = getProject(this.vsumName)
+		if (!vsumProject.exists) {
 			createProject(vsumProject)
-		} else if (!vsumProject.isAccessible()) {
+		} else if (!vsumProject.accessible) {
 			deleteAndRecreateProject(vsumProject)
 		}
-		return vsumProject
+		vsumProject
 	}
 
 	def private void deleteAndRecreateProject(IProject vsumProject) {
 		try {
-			vsumProject.delete(true, new NullProgressMonitor())
+			vsumProject.delete(true, new NullProgressMonitor)
 			createProject(vsumProject)
 		} catch (CoreException e) {
 			// soften
 			throw new RuntimeException(e)
 		}
-
 	}
 
 	def void createProject(IProject project) {
 		try {
 			project.create(null)
 			project.open(null)
-			// IProjectDescription description = project.getDescription();
-			// description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
-			// project.setDescription(description, null);
+			// IProjectDescription description = project.description
+			// description.natureIds = new String[] { VITRUVIUSNATURE::ID }
+			// project.setDescription(description, null)
 			createFolder(getCorrespondenceFolder(project))
 			createFolder(getVsumFolder(project))
 		} catch (CoreException e) {
@@ -206,7 +199,7 @@ class FileSystemHelper {
 	}
 
 	def private static IFolder getVsumFolder(IProject project) {
-		return project.getFolder(VsumConstants.VSUM_FOLDER_NAME)
+		project.getFolder(VsumConstants::VSUM_FOLDER_NAME)
 	}
 
 	def static void createFolder(IFolder folder) throws CoreException {
@@ -214,27 +207,27 @@ class FileSystemHelper {
 	}
 
 	def IFolder getCorrespondenceFolder() {
-		var IProject vsumProject = getVsumProject()
-		return getCorrespondenceFolder(vsumProject)
+		val vsumProject = getVsumProject
+		getCorrespondenceFolder(vsumProject)
 	}
 
 	def private IFolder getCorrespondenceFolder(IProject project) {
-		var IFolder correspondenceFolder = project.getFolder(VsumConstants.CORRESPONDENCE_FOLDER_NAME)
-		return correspondenceFolder
+		val correspondenceFolder = project.getFolder(VsumConstants::CORRESPONDENCE_FOLDER_NAME)
+		correspondenceFolder
 	}
 
 	def private String getVsumMapFileName() {
-		var IFile file = getVsumInstancesFile()
-		return file.getLocation().toOSString()
+		val file = getVsumInstancesFile
+		file.location.toOSString
 	}
 
 	def IFile getVsumInstancesFile() {
-		return getVsumInstancesFile("")
+		getVsumInstancesFile("")
 	}
 
 	def IFile getVsumInstancesFile(String prefix) {
-		var IFile file = getVsumProject().getFolder(VsumConstants.VSUM_FOLDER_NAME).getFile(prefix +
-			VsumConstants.VSUM_INSTANCES_FILE_NAME)
-		return file
+		val file = getVsumProject.getFolder(VsumConstants::VSUM_FOLDER_NAME).getFile(prefix +
+			VsumConstants::VSUM_INSTANCES_FILE_NAME)
+		file
 	}
 }
