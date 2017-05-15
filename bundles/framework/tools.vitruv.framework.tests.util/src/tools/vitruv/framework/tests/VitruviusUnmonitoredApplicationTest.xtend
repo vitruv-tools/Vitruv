@@ -39,49 +39,50 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 
 	def protected abstract Iterable<VitruvDomain> getVitruvDomains()
 
-	@After def abstract void afterTest()
+	@After
+	def abstract void afterTest()
 
-	@Before 
+	@Before
 	override void beforeTest() {
 		super.beforeTest
-		this.resourceSet = new ResourceSetImpl
+		resourceSet = new ResourceSetImpl
 		var String testMethodName = testName.methodName
 		createVirtualModel(testMethodName)
 	}
 
 	def private void createVirtualModel(String testName) {
 		var String currentTestProjectVsumName = '''«testName»_vsum_'''
-		var Iterable<VitruvDomain> domains = this.vitruvDomains
-		this.virtualModel = TestUtil::createVirtualModel(currentTestProjectVsumName, true, domains,
-			createChangePropagationSpecifications())
+		var Iterable<VitruvDomain> domains = vitruvDomains
+		virtualModel = TestUtil::createVirtualModel(currentTestProjectVsumName, true, domains,
+			createChangePropagationSpecifications)
 		// TODO HK Implement correctly: Should be obsolete when correspondence
 		// model is not MM-pair-specific any more
 		var Iterator<VitruvDomain> iterator = domains.iterator
 		var VitruvDomain firstMetamodel = iterator.next
-		var VitruvDomain secondMetamodel = if(iterator.hasNext) iterator.next else firstMetamodel
-		this.correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.URI, secondMetamodel.URI)
-		this.testUserInteractor = new TestUserInteractor
-		this.virtualModel.userInteractor = testUserInteractor
+		var VitruvDomain secondMetamodel = if (iterator.hasNext) iterator.next else firstMetamodel
+		correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.URI, secondMetamodel.URI)
+		testUserInteractor = new TestUserInteractor
+		virtualModel.userInteractor = testUserInteractor
 	}
 
 	def protected CorrespondenceModel getCorrespondenceModel() {
-		return correspondenceModel
+		correspondenceModel
 	}
 
 	def protected InternalVirtualModel getVirtualModel() {
-		return virtualModel
+		virtualModel
 	}
 
 	def protected TestUserInteractor getUserInteractor() {
-		return testUserInteractor
+		testUserInteractor
 	}
 
 	def private String getPlatformModelPath(String modelPathWithinProject) {
-		return '''«currentTestProject.name»/«modelPathWithinProject»'''
+		'''«currentTestProject.name»/«modelPathWithinProject»'''
 	}
 
 	def private VURI getModelVuri(String modelPathWithinProject) {
-		return VURI::getInstance(getPlatformModelPath(modelPathWithinProject))
+		VURI::getInstance(getPlatformModelPath(modelPathWithinProject))
 	}
 
 	/** 
@@ -93,11 +94,11 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * registered for resource with the given file extension
 	 */
 	def protected Resource createModelResource(String modelPathWithinProject) {
-		return resourceSet.createResource(getModelVuri(modelPathWithinProject).EMFUri)
+		resourceSet.createResource(getModelVuri(modelPathWithinProject).EMFUri)
 	}
 
 	def private Resource getModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
-		return resourceSet.getResource(getModelVuri(modelPathWithinProject).EMFUri, true)
+		resourceSet.getResource(getModelVuri(modelPathWithinProject).EMFUri, true)
 	}
 
 	/** 
@@ -107,7 +108,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * <code>null</code> if it could not be loaded
 	 */
 	def protected Resource getModelResource(URI modelUri) {
-		return resourceSet.getResource(modelUri, true)
+		resourceSet.getResource(modelUri, true)
 	}
 
 	/** 
@@ -119,7 +120,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * it could not be loaded
 	 */
 	def protected Resource getModelResource(String modelPathWithinProject) {
-		return getModelResource(modelPathWithinProject, this.resourceSet)
+		getModelResource(modelPathWithinProject, this.resourceSet)
 	}
 
 	def private EObject getFirstRootElement(String modelPathWithinProject, ResourceSet resourceSet) {
@@ -139,7 +140,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * @throws IllegalStateExceptionif the resource does not contain a root element
 	 */
 	def protected EObject getFirstRootElement(String modelPathWithinProject) {
-		return getFirstRootElement(modelPathWithinProject, this.resourceSet)
+		getFirstRootElement(modelPathWithinProject, this.resourceSet)
 	}
 
 	/** 
