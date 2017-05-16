@@ -10,7 +10,7 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
 	override removeChange(TransactionalChange change) {
 		if (change !== null && this.changes.contains(change)) {
 			if (changes.size == 1) {
-				val emptyChange = VitruviusChangeFactory.instance.createEmptyChange(change.URI)
+				val emptyChange = VitruviusChangeFactory::instance.createEmptyChange(change.URI)
 				this.changes += emptyChange;	
 			}
 		}

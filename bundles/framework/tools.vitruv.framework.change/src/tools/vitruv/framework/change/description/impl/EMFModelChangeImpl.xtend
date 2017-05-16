@@ -20,17 +20,15 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
     public new(ChangeDescription changeDescription, VURI vuri) {
     	this.changeDescription = changeDescription
         this.vuri = vuri
-        this.canBeBackwardsApplied = false
-		extractChangeInformation()
+        canBeBackwardsApplied = false
+		extractChangeInformation
     }
 
 	private def void extractChangeInformation() {
         val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform
-		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri))
-		}
+        eChanges.forEach[addChange(VitruviusChangeFactory::instance.createConcreteChange(it, vuri))]
 		if (changes.empty) {
-			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri))
+			addChange(VitruviusChangeFactory::instance.createEmptyChange(vuri))
 		}
 	}
 
@@ -42,44 +40,38 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
     '''
         
 	override getURI() {
-		return vuri
+		vuri
 	}
 	
 	override containsConcreteChange() {
-		return true
+		true
 	}
 	
 	override validate() {
-		return true
+		true
 	}
 	
 	override applyBackward() throws IllegalStateException {
-		if (!this.canBeBackwardsApplied) {
+		if (!canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
 		}
-		for (c : changes.reverseView) {
-			c.applyBackward
-		}
-		this.canBeBackwardsApplied = false
+		changes.reverseView.forEach[applyBackward]
+		canBeBackwardsApplied = false
 	}
 	
 	override applyForward() throws IllegalStateException {
-		if (this.canBeBackwardsApplied) {
+		if (canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
-		for (c : changes) {
-			c.applyForward
-		}
-		this.canBeBackwardsApplied = true
+		changes.forEach[applyForward]
+		canBeBackwardsApplied = true
 	}
 	
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		if (this.canBeBackwardsApplied) {
+		if (canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
-		for (c : changes) {
-			c.resolveBeforeAndApplyForward(resourceSet)
-		}
-		this.canBeBackwardsApplied = true
+		changes.forEach[resolveBeforeAndApplyForward(resourceSet)]
+		canBeBackwardsApplied = true
 	}
 }

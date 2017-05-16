@@ -46,7 +46,7 @@ class VitruviusChangeFactory {
 
 	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		val vuri = VURI::getInstance(changedFileResource)
-		val EChange eChange = if (kind == FileChangeKind.Create)
+		val EChange eChange = if (kind == FileChangeKind::Create)
 				generateFileCreateChange(changedFileResource)
 			else
 				generateFileDeleteChange(changedFileResource)
