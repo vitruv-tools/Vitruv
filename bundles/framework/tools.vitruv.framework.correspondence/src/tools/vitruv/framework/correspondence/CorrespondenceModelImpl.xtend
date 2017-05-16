@@ -364,33 +364,27 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 	
 	override EObject resolveEObjectFromTuid(Tuid tuid) {
-		var TuidAwareVitruvDomain metamodel = getMetamodelHavingTuid(tuid)
-		var VURI vuri = metamodel.getModelVURIContainingIdentifiedEObject(tuid)
-		var EObject rootEObject = null
+		val TuidAwareVitruvDomain domain = getMetamodelHavingTuid(tuid)
+		var VURI vuri = domain.getModelVURIContainingIdentifiedEObject(tuid)
 		var ModelInstance modelInstance = null
 		if (vuri !== null) {
 			modelInstance = this.modelProviding.getModel(vuri)
-			rootEObject = modelInstance.getFirstRootEObject()
 		}
 		var EObject resolvedEobject = null
 		try {
-			// if the tuid is cached because it has no resource the rootEObject is null
-			resolvedEobject = metamodel.
-				resolveEObjectFromRootAndFullTuid(rootEObject, tuid)
+			resolvedEobject = resolveEObjectInModelInstance(modelInstance, tuid);
 		} catch (IllegalArgumentException iae) {
 			// do nothing - just try the solving again
 		}
 		if (null === resolvedEobject && modelInstance !== null) {
 			// reload the model and try to solve it again
 			modelInstance.load(null, true)
-			rootEObject = modelInstance.getUniqueRootEObject()
-			resolvedEobject = metamodel.
-				resolveEObjectFromRootAndFullTuid(rootEObject, tuid)
+			resolvedEobject = resolveEObjectInModelInstance(modelInstance, tuid);
 			if (null === resolvedEobject) {
 				// if resolved EObject is still null throw an exception
 				// TODO think about something more lightweight than throwing an exception
 				throw new RuntimeException(
-					'''Could not resolve Tuid «tuid» in eObject «rootEObject» with VURI «vuri»'''.
+					'''Could not resolve Tuid «tuid» in eObjects «modelInstance.rootElements» with VURI «vuri»'''.
 						toString)
 			}
 
@@ -399,6 +393,15 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 			EcoreUtil::resolve(resolvedEobject, getResource())
 		}
 		return resolvedEobject
+	}
+	
+	private def EObject resolveEObjectInModelInstance(ModelInstance modelInstance, Tuid tuid) {
+		val TuidAwareVitruvDomain domain = getMetamodelHavingTuid(tuid)
+		// if the tuid is cached because it has no resource the rootEObject is null
+		var rootEObjects = if (modelInstance != null) modelInstance.rootElements + #[null] else #[null];
+		return rootEObjects.
+			map[domain.resolveEObjectFromRootAndFullTuid(it, tuid)].
+			findFirst[it != null];
 	}
 
 	def public void setChangeAfterLastSaveFlag() {
