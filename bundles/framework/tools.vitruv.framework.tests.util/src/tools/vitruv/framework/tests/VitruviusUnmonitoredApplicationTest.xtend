@@ -176,8 +176,8 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	def protected void assertPersistedModelsEqual(String firstModelPathWithinProject,
 		String secondModelPathWithinProject) {
 		val ResourceSet testResourceSet = new ResourceSetImpl
-		val EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet)
-		val EObject secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet)
+		val firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet)
+		val secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet)
 		assertTrue(EcoreUtil::equals(firstRoot, secondRoot))
 	}
 }

@@ -26,7 +26,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 
 	override final void beforeTest() {
 		super.beforeTest
-		this.changeRecorder = new AtomicEMFChangeRecorder(true)
+		changeRecorder = new AtomicEMFChangeRecorder(true)
 		setup
 	}
 
@@ -57,7 +57,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	}
 
 	def private void startRecordingChanges(Resource resource) {
-		val VURI vuri = VURI::getInstance(resource)
+		val vuri = VURI::getInstance(resource)
 		changeRecorder.beginRecording(vuri, Collections::singleton(resource))
 	}
 

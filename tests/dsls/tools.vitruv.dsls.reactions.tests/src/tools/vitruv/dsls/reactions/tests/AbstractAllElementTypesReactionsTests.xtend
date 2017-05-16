@@ -7,6 +7,6 @@ abstract class AbstractAllElementTypesReactionsTests extends VitruviusApplicatio
 	protected static val MODEL_FILE_EXTENSION = new AllElementTypesDomainProvider().domain.fileExtensions.get(0)
 
 	protected override getVitruvDomains() {
-		return #[new AllElementTypesDomainProvider().domain]
+		#[new AllElementTypesDomainProvider().domain]
 	}
 }
