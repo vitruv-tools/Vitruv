@@ -916,16 +916,6 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
-	 * The meta object id for the '<em>EObj</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getEObj()
-	 * @generated
-	 */
-	int EOBJ = 6;
-
-	/**
 	 * The meta object id for the '<em>Resource Set</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -933,7 +923,7 @@ public interface ReferencePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getResourceSet()
 	 * @generated
 	 */
-	int RESOURCE_SET = 7;
+	int RESOURCE_SET = 6;
 
 	/**
 	 * The meta object id for the '<em>Command</em>' data type.
@@ -943,7 +933,7 @@ public interface ReferencePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getCommand()
 	 * @generated
 	 */
-	int COMMAND = 8;
+	int COMMAND = 7;
 
 
 	/**
@@ -1045,17 +1035,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getReplaceSingleValuedEReference__IsResolved();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EObj</em>'.
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
-	 * @generated
-	 */
-	EDataType getEObj();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.ResourceSet <em>Resource Set</em>}'.
@@ -1193,16 +1172,6 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = eINSTANCE.getReplaceSingleValuedEReference__IsResolved();
-
-		/**
-		 * The meta object literal for the '<em>EObj</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EObject
-		 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getEObj()
-		 * @generated
-		 */
-		EDataType EOBJ = eINSTANCE.getEObj();
 
 		/**
 		 * The meta object literal for the '<em>Resource Set</em>' data type.

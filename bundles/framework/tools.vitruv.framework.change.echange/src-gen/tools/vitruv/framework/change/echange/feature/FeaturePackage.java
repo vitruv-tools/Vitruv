@@ -3,7 +3,6 @@
 package tools.vitruv.framework.change.echange.feature;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -388,27 +387,6 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT = FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '<em>EObj</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @see tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl#getEObj()
-	 * @generated
-	 */
-	int EOBJ = 3;
-
-	/**
-	 * The meta object id for the '<em>EFeat</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EStructuralFeature
-	 * @see tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl#getEFeat()
-	 * @generated
-	 */
-	int EFEAT = 4;
-
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -469,28 +447,6 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getUpdateSingleValuedFeatureEChange();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EObj</em>'.
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
-	 * @generated
-	 */
-	EDataType getEObj();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EStructuralFeature <em>EFeat</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EFeat</em>'.
-	 * @see org.eclipse.emf.ecore.EStructuralFeature
-	 * @model instanceClass="org.eclipse.emf.ecore.EStructuralFeature"
-	 * @generated
-	 */
-	EDataType getEFeat();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -568,26 +524,6 @@ public interface FeaturePackage extends EPackage {
 		 * @generated
 		 */
 		EClass UPDATE_SINGLE_VALUED_FEATURE_ECHANGE = eINSTANCE.getUpdateSingleValuedFeatureEChange();
-
-		/**
-		 * The meta object literal for the '<em>EObj</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EObject
-		 * @see tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl#getEObj()
-		 * @generated
-		 */
-		EDataType EOBJ = eINSTANCE.getEObj();
-
-		/**
-		 * The meta object literal for the '<em>EFeat</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EStructuralFeature
-		 * @see tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl#getEFeat()
-		 * @generated
-		 */
-		EDataType EFEAT = eINSTANCE.getEFeat();
 
 	}
 

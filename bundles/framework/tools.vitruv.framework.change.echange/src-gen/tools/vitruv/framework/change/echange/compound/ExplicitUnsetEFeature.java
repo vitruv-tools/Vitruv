@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature()
- * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.compound.EObj"
+ * @model abstract="true"
  * @generated
  */
 public interface ExplicitUnsetEFeature<A extends EObject, F extends EStructuralFeature> extends CompoundEChange {
@@ -39,7 +39,7 @@ public interface ExplicitUnsetEFeature<A extends EObject, F extends EStructuralF
 	 * @return the value of the '<em>Affected EObject</em>' reference.
 	 * @see #setAffectedEObject(EObject)
 	 * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature_AffectedEObject()
-	 * @model kind="reference" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
 	A getAffectedEObject();

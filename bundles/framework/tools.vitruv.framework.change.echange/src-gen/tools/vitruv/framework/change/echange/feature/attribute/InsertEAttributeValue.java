@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getInsertEAttributeValue()
- * @model ABounds="tools.vitruv.framework.change.echange.feature.attribute.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface InsertEAttributeValue<A extends EObject, T extends Object> extends InsertInListEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T> {

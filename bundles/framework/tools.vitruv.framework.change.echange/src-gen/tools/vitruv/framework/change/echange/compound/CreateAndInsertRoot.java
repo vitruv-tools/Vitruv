@@ -18,7 +18,7 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject;
  *
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getCreateAndInsertRoot()
- * @model TBounds="tools.vitruv.framework.change.echange.compound.EObj"
+ * @model
  * @generated
  */
 public interface CreateAndInsertRoot<T extends EObject> extends CreateAndInsertEObject<T, InsertRootEObject<T>> {

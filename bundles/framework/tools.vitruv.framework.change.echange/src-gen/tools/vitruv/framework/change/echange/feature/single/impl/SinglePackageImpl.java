@@ -3,12 +3,9 @@
 package tools.vitruv.framework.change.echange.feature.single.impl;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -16,11 +13,39 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
+import tools.vitruv.framework.change.echange.compound.CompoundPackage;
+
+import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
+
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
+import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+
+import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
+
+import tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl;
+
+import tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl;
+
+import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+
+import tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl;
+
+import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
+
+import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
 
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import tools.vitruv.framework.change.echange.feature.single.SingleFactory;
 import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+
+import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
+
+import tools.vitruv.framework.change.echange.root.RootPackage;
+
+import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,20 +60,6 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 	 * @generated
 	 */
 	private EClass replaceSingleValuedFeatureEChangeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType eObjEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType eFeatEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -97,13 +108,39 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		isInited = true;
 
 		// Initialize simple dependencies
-		FeaturePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
+
+		// Obtain or create and register interdependencies
+		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
+		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
+		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
+		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
+		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
+		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
+		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
+		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theSinglePackage.createPackageContents();
+		theAttributePackage.createPackageContents();
+		theFeaturePackage.createPackageContents();
+		theEChangePackage.createPackageContents();
+		theListPackage.createPackageContents();
+		theCompoundPackage.createPackageContents();
+		theReferencePackage.createPackageContents();
+		theEobjectPackage.createPackageContents();
+		theRootPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theSinglePackage.initializePackageContents();
+		theAttributePackage.initializePackageContents();
+		theFeaturePackage.initializePackageContents();
+		theEChangePackage.initializePackageContents();
+		theListPackage.initializePackageContents();
+		theCompoundPackage.initializePackageContents();
+		theReferencePackage.initializePackageContents();
+		theEobjectPackage.initializePackageContents();
+		theRootPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theSinglePackage.freeze();
@@ -146,24 +183,6 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getEObj() {
-		return eObjEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EDataType getEFeat() {
-		return eFeatEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public SingleFactory getSingleFactory() {
 		return (SingleFactory)getEFactoryInstance();
 	}
@@ -190,10 +209,6 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		replaceSingleValuedFeatureEChangeEClass = createEClass(REPLACE_SINGLE_VALUED_FEATURE_ECHANGE);
 		createEOperation(replaceSingleValuedFeatureEChangeEClass, REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_FROM_NON_DEFAULT_VALUE);
 		createEOperation(replaceSingleValuedFeatureEChangeEClass, REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_TO_NON_DEFAULT_VALUE);
-
-		// Create data types
-		eObjEDataType = createEDataType(EOBJ);
-		eFeatEDataType = createEDataType(EFEAT);
 	}
 
 	/**
@@ -230,9 +245,9 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		ETypeParameter replaceSingleValuedFeatureEChangeEClass_T = addETypeParameter(replaceSingleValuedFeatureEChangeEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(this.getEObj());
+		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
 		replaceSingleValuedFeatureEChangeEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(this.getEFeat());
+		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
 		replaceSingleValuedFeatureEChangeEClass_F.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEJavaObject());
 		replaceSingleValuedFeatureEChangeEClass_T.getEBounds().add(g1);
@@ -259,10 +274,6 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		initEOperation(getReplaceSingleValuedFeatureEChange__IsFromNonDefaultValue(), theEcorePackage.getEBoolean(), "isFromNonDefaultValue", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getReplaceSingleValuedFeatureEChange__IsToNonDefaultValue(), theEcorePackage.getEBoolean(), "isToNonDefaultValue", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		// Initialize data types
-		initEDataType(eObjEDataType, EObject.class, "EObj", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(eFeatEDataType, EStructuralFeature.class, "EFeat", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

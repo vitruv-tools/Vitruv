@@ -18,7 +18,7 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject;
  *
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getRemoveAndDeleteRoot()
- * @model TBounds="tools.vitruv.framework.change.echange.compound.EObj"
+ * @model
  * @generated
  */
 public interface RemoveAndDeleteRoot<T extends EObject> extends RemoveAndDeleteEObject<T, RemoveRootEObject<T>> {

@@ -23,15 +23,6 @@ public interface CompoundFactory extends EFactory {
 	CompoundFactory eINSTANCE = tools.vitruv.framework.change.echange.compound.impl.CompoundFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Move EObject</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Move EObject</em>'.
-	 * @generated
-	 */
-	<A extends EObject, B extends EObject, T extends EObject> MoveEObject<A, B, T> createMoveEObject();
-
-	/**
 	 * Returns a new object of class '<em>Explicit Unset EAttribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

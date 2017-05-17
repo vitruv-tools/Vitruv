@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.root.RootPackage#getInsertRootEObject()
- * @model TBounds="tools.vitruv.framework.change.echange.root.EObj"
+ * @model
  * @generated
  */
 public interface InsertRootEObject<T extends EObject> extends RootEChange, EObjectAddedEChange<T> {

@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.root.RootPackage#getRemoveRootEObject()
- * @model TBounds="tools.vitruv.framework.change.echange.root.EObj"
+ * @model
  * @generated
  */
 public interface RemoveRootEObject<T extends EObject> extends RootEChange, EObjectSubtractedEChange<T> {

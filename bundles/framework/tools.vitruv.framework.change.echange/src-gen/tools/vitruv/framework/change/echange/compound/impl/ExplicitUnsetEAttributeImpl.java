@@ -103,7 +103,7 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	 */
 	@SuppressWarnings("unchecked")
 	public A getAffectedEObject() {
-		if (affectedEObject != null && ((EObject)affectedEObject).eIsProxy()) {
+		if (affectedEObject != null && affectedEObject.eIsProxy()) {
 			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
 			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
 			if (affectedEObject != oldAffectedEObject) {

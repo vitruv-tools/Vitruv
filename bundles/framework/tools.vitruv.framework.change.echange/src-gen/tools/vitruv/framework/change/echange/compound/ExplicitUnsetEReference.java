@@ -28,7 +28,7 @@ import tools.vitruv.framework.change.echange.EChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEReference()
- * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj"
+ * @model
  * @generated
  */
 public interface ExplicitUnsetEReference<A extends EObject> extends ExplicitUnsetEFeature<A, EReference> {

@@ -24,7 +24,7 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getSubtractiveAttributeEChange()
- * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.attribute.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface SubtractiveAttributeEChange<A extends EObject, T extends Object> extends UpdateAttributeEChange<A>, SubtractiveEChange<T> {

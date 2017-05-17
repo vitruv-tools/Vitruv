@@ -61,7 +61,6 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case CompoundPackage.MOVE_EOBJECT: return createMoveEObject();
 			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE: return createExplicitUnsetEAttribute();
 			case CompoundPackage.EXPLICIT_UNSET_EREFERENCE: return createExplicitUnsetEReference();
 			case CompoundPackage.CREATE_AND_INSERT_ROOT: return createCreateAndInsertRoot();
@@ -88,8 +87,6 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 				return createCommandFromString(eDataType, initialValue);
 			case CompoundPackage.RESOURCE_SET:
 				return createResourceSetFromString(eDataType, initialValue);
-			case CompoundPackage.EOBJ:
-				return createEObjFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -107,21 +104,9 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 				return convertCommandToString(eDataType, instanceValue);
 			case CompoundPackage.RESOURCE_SET:
 				return convertResourceSetToString(eDataType, instanceValue);
-			case CompoundPackage.EOBJ:
-				return convertEObjToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject, B extends EObject, T extends EObject> MoveEObject<A, B, T> createMoveEObject() {
-		MoveEObjectImpl<A, B, T> moveEObject = new MoveEObjectImpl<A, B, T>();
-		return moveEObject;
 	}
 
 	/**
@@ -247,24 +232,6 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * @generated
 	 */
 	public String convertResourceSetToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EObject createEObjFromString(EDataType eDataType, String initialValue) {
-		return (EObject)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 

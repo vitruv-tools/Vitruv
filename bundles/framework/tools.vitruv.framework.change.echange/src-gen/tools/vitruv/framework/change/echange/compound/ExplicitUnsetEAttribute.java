@@ -23,7 +23,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
  *
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEAttribute()
- * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface ExplicitUnsetEAttribute<A extends EObject, T extends Object> extends CompoundSubtraction<T, SubtractiveAttributeEChange<A, T>>, ExplicitUnsetEFeature<A, EAttribute> {

@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.list.ListPackage#getInsertInListEChange()
- * @model abstract="true" ABounds="tools.vitruv.framework.change.echange.feature.list.EObj" FBounds="tools.vitruv.framework.change.echange.feature.list.EFeat" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface InsertInListEChange<A extends EObject, F extends EStructuralFeature, T extends Object> extends UpdateSingleListEntryEChange<A, F>, AdditiveEChange<T> {

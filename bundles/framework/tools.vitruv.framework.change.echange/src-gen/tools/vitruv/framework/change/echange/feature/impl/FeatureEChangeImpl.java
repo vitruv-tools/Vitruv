@@ -86,7 +86,7 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 */
 	@SuppressWarnings("unchecked")
 	public F getAffectedFeature() {
-		if (affectedFeature != null && ((EObject)affectedFeature).eIsProxy()) {
+		if (affectedFeature != null && affectedFeature.eIsProxy()) {
 			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
 			affectedFeature = (F)eResolveProxy(oldAffectedFeature);
 			if (affectedFeature != oldAffectedFeature) {
@@ -125,7 +125,7 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 */
 	@SuppressWarnings("unchecked")
 	public A getAffectedEObject() {
-		if (affectedEObject != null && ((EObject)affectedEObject).eIsProxy()) {
+		if (affectedEObject != null && affectedEObject.eIsProxy()) {
 			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
 			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
 			if (affectedEObject != oldAffectedEObject) {

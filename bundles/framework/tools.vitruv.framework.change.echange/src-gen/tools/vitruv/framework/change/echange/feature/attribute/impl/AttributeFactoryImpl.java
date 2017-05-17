@@ -3,7 +3,6 @@
 package tools.vitruv.framework.change.echange.feature.attribute.impl;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -70,36 +69,6 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public Object createFromString(EDataType eDataType, String initialValue) {
-		switch (eDataType.getClassifierID()) {
-			case AttributePackage.EOBJ:
-				return createEObjFromString(eDataType, initialValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String convertToString(EDataType eDataType, Object instanceValue) {
-		switch (eDataType.getClassifierID()) {
-			case AttributePackage.EOBJ:
-				return convertEObjToString(eDataType, instanceValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public <A extends EObject, T extends Object> InsertEAttributeValue<A, T> createInsertEAttributeValue() {
 		InsertEAttributeValueImpl<A, T> insertEAttributeValue = new InsertEAttributeValueImpl<A, T>();
 		return insertEAttributeValue;
@@ -123,24 +92,6 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
 	public <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A, T> createReplaceSingleValuedEAttribute() {
 		ReplaceSingleValuedEAttributeImpl<A, T> replaceSingleValuedEAttribute = new ReplaceSingleValuedEAttributeImpl<A, T>();
 		return replaceSingleValuedEAttribute;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EObject createEObjFromString(EDataType eDataType, String initialValue) {
-		return (EObject)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

@@ -74,8 +74,6 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case RootPackage.EOBJ:
-				return createEObjFromString(eDataType, initialValue);
 			case RootPackage.RESOURCE:
 				return createResourceFromString(eDataType, initialValue);
 			default:
@@ -91,8 +89,6 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case RootPackage.EOBJ:
-				return convertEObjToString(eDataType, instanceValue);
 			case RootPackage.RESOURCE:
 				return convertResourceToString(eDataType, instanceValue);
 			default:
@@ -118,24 +114,6 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
 	public <T extends EObject> RemoveRootEObject<T> createRemoveRootEObject() {
 		RemoveRootEObjectImpl<T> removeRootEObject = new RemoveRootEObjectImpl<T>();
 		return removeRootEObject;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EObject createEObjFromString(EDataType eDataType, String initialValue) {
-		return (EObject)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

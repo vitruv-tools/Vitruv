@@ -4,7 +4,6 @@ package tools.vitruv.framework.change.echange.feature.attribute;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
@@ -861,16 +860,6 @@ public interface AttributePackage extends EPackage {
 	 */
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
-	/**
-	 * The meta object id for the '<em>EObj</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getEObj()
-	 * @generated
-	 */
-	int EOBJ = 6;
-
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange <em>Update Attribute EChange</em>}'.
@@ -953,17 +942,6 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReplaceSingleValuedEAttribute();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EObj</em>'.
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
-	 * @generated
-	 */
-	EDataType getEObj();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1063,16 +1041,6 @@ public interface AttributePackage extends EPackage {
 		 * @generated
 		 */
 		EClass REPLACE_SINGLE_VALUED_EATTRIBUTE = eINSTANCE.getReplaceSingleValuedEAttribute();
-
-		/**
-		 * The meta object literal for the '<em>EObj</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EObject
-		 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getEObj()
-		 * @generated
-		 */
-		EDataType EOBJ = eINSTANCE.getEObj();
 
 	}
 

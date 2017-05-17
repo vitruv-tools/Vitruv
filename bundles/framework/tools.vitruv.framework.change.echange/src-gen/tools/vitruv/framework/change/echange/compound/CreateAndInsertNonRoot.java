@@ -18,7 +18,7 @@ import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
  *
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getCreateAndInsertNonRoot()
- * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
+ * @model
  * @generated
  */
 public interface CreateAndInsertNonRoot<A extends EObject, T extends EObject> extends CreateAndInsertEObject<T, InsertEReference<A, T>> {

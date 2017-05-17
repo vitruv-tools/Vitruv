@@ -81,14 +81,6 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CompoundPackage.MOVE_EOBJECT: {
-				MoveEObject<?, ?, ?> moveEObject = (MoveEObject<?, ?, ?>)theEObject;
-				T1 result = caseMoveEObject(moveEObject);
-				if (result == null) result = caseCompoundEChange(moveEObject);
-				if (result == null) result = caseEChange(moveEObject);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE: {
 				ExplicitUnsetEFeature<?, ?> explicitUnsetEFeature = (ExplicitUnsetEFeature<?, ?>)theEObject;
 				T1 result = caseExplicitUnsetEFeature(explicitUnsetEFeature);
@@ -226,21 +218,6 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseCompoundEChange(CompoundEChange object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Move EObject</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Move EObject</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public <A extends EObject, B extends EObject, T extends EObject> T1 caseMoveEObject(MoveEObject<A, B, T> object) {
 		return null;
 	}
 

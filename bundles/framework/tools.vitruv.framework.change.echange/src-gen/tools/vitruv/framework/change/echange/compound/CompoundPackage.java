@@ -161,142 +161,6 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ECHANGE_OPERATION_COUNT = EChangePackage.ECHANGE_OPERATION_COUNT + 4;
 
 	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.MoveEObjectImpl <em>Move EObject</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.compound.impl.MoveEObjectImpl
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getMoveEObject()
-	 * @generated
-	 */
-	int MOVE_EOBJECT = 1;
-
-	/**
-	 * The feature id for the '<em><b>Subtract Where Change</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT__SUBTRACT_WHERE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Subtract What Change</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT__SUBTRACT_WHAT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Add Where Change</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT__ADD_WHERE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Add What Change</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT__ADD_WHAT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 3;
-
-	/**
-	 * The number of structural features of the '<em>Move EObject</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 4;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___RESOLVE_BEFORE__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___RESOLVE_AFTER__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___APPLY_FORWARD = COMPOUND_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___APPLY_BACKWARD = COMPOUND_ECHANGE___APPLY_BACKWARD;
-
-	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Move EObject</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MOVE_EOBJECT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -304,7 +168,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getExplicitUnsetEFeature()
 	 * @generated
 	 */
-	int EXPLICIT_UNSET_EFEATURE = 2;
+	int EXPLICIT_UNSET_EFEATURE = 1;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -422,7 +286,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundSubtraction()
 	 * @generated
 	 */
-	int COMPOUND_SUBTRACTION = 5;
+	int COMPOUND_SUBTRACTION = 4;
 
 	/**
 	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
@@ -531,7 +395,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getExplicitUnsetEAttribute()
 	 * @generated
 	 */
-	int EXPLICIT_UNSET_EATTRIBUTE = 3;
+	int EXPLICIT_UNSET_EATTRIBUTE = 2;
 
 	/**
 	 * The feature id for the '<em><b>Subtractive Changes</b></em>' containment reference list.
@@ -658,7 +522,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getExplicitUnsetEReference()
 	 * @generated
 	 */
-	int EXPLICIT_UNSET_EREFERENCE = 4;
+	int EXPLICIT_UNSET_EREFERENCE = 3;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -794,7 +658,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCompoundAddition()
 	 * @generated
 	 */
-	int COMPOUND_ADDITION = 6;
+	int COMPOUND_ADDITION = 5;
 
 	/**
 	 * The feature id for the '<em><b>Additive Changes</b></em>' containment reference list.
@@ -903,7 +767,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertEObject()
 	 * @generated
 	 */
-	int CREATE_AND_INSERT_EOBJECT = 7;
+	int CREATE_AND_INSERT_EOBJECT = 6;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -1021,7 +885,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteEObject()
 	 * @generated
 	 */
-	int REMOVE_AND_DELETE_EOBJECT = 8;
+	int REMOVE_AND_DELETE_EOBJECT = 7;
 
 	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
@@ -1139,7 +1003,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertRoot()
 	 * @generated
 	 */
-	int CREATE_AND_INSERT_ROOT = 9;
+	int CREATE_AND_INSERT_ROOT = 8;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -1257,7 +1121,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteRoot()
 	 * @generated
 	 */
-	int REMOVE_AND_DELETE_ROOT = 10;
+	int REMOVE_AND_DELETE_ROOT = 9;
 
 	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
@@ -1375,7 +1239,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndInsertNonRoot()
 	 * @generated
 	 */
-	int CREATE_AND_INSERT_NON_ROOT = 11;
+	int CREATE_AND_INSERT_NON_ROOT = 10;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -1493,7 +1357,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getRemoveAndDeleteNonRoot()
 	 * @generated
 	 */
-	int REMOVE_AND_DELETE_NON_ROOT = 12;
+	int REMOVE_AND_DELETE_NON_ROOT = 11;
 
 	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
@@ -1611,7 +1475,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndReplaceNonRoot()
 	 * @generated
 	 */
-	int CREATE_AND_REPLACE_NON_ROOT = 13;
+	int CREATE_AND_REPLACE_NON_ROOT = 12;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -1729,7 +1593,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceAndDeleteNonRoot()
 	 * @generated
 	 */
-	int REPLACE_AND_DELETE_NON_ROOT = 14;
+	int REPLACE_AND_DELETE_NON_ROOT = 13;
 
 	/**
 	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
@@ -1847,7 +1711,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCreateAndReplaceAndDeleteNonRoot()
 	 * @generated
 	 */
-	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT = 15;
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT = 14;
 
 	/**
 	 * The feature id for the '<em><b>Create Change</b></em>' containment reference.
@@ -1974,7 +1838,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCommand()
 	 * @generated
 	 */
-	int COMMAND = 16;
+	int COMMAND = 15;
 
 	/**
 	 * The meta object id for the '<em>Resource Set</em>' data type.
@@ -1984,18 +1848,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getResourceSet()
 	 * @generated
 	 */
-	int RESOURCE_SET = 17;
-
-	/**
-	 * The meta object id for the '<em>EObj</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEObj()
-	 * @generated
-	 */
-	int EOBJ = 18;
-
+	int RESOURCE_SET = 16;
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CompoundEChange <em>EChange</em>}'.
@@ -2046,70 +1899,6 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet();
-
-	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.MoveEObject <em>Move EObject</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Move EObject</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject
-	 * @generated
-	 */
-	EClass getMoveEObject();
-
-	/**
-	 * Returns the meta object for the reference '{@link tools.vitruv.framework.change.echange.compound.MoveEObject#getSubtractWhereChange <em>Subtract Where Change</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Subtract Where Change</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject#getSubtractWhereChange()
-	 * @see #getMoveEObject()
-	 * @generated
-	 */
-	EReference getMoveEObject_SubtractWhereChange();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.MoveEObject#getSubtractWhatChange <em>Subtract What Change</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Subtract What Change</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject#getSubtractWhatChange()
-	 * @see #getMoveEObject()
-	 * @generated
-	 */
-	EReference getMoveEObject_SubtractWhatChange();
-
-	/**
-	 * Returns the meta object for the reference '{@link tools.vitruv.framework.change.echange.compound.MoveEObject#getAddWhereChange <em>Add Where Change</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Add Where Change</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject#getAddWhereChange()
-	 * @see #getMoveEObject()
-	 * @generated
-	 */
-	EReference getMoveEObject_AddWhereChange();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.MoveEObject#getAddWhatChange <em>Add What Change</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Add What Change</em>'.
-	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject#getAddWhatChange()
-	 * @see #getMoveEObject()
-	 * @generated
-	 */
-	EReference getMoveEObject_AddWhatChange();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.MoveEObject#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Atomic Changes</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject#getAtomicChanges()
-	 * @generated
-	 */
-	EOperation getMoveEObject__GetAtomicChanges();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature <em>Explicit Unset EFeature</em>}'.
@@ -2486,17 +2275,6 @@ public interface CompoundPackage extends EPackage {
 	EDataType getResourceSet();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EObj</em>'.
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
-	 * @generated
-	 */
-	EDataType getEObj();
-
-	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2560,56 +2338,6 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = eINSTANCE.getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet();
-
-		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.MoveEObjectImpl <em>Move EObject</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.compound.impl.MoveEObjectImpl
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getMoveEObject()
-		 * @generated
-		 */
-		EClass MOVE_EOBJECT = eINSTANCE.getMoveEObject();
-
-		/**
-		 * The meta object literal for the '<em><b>Subtract Where Change</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference MOVE_EOBJECT__SUBTRACT_WHERE_CHANGE = eINSTANCE.getMoveEObject_SubtractWhereChange();
-
-		/**
-		 * The meta object literal for the '<em><b>Subtract What Change</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference MOVE_EOBJECT__SUBTRACT_WHAT_CHANGE = eINSTANCE.getMoveEObject_SubtractWhatChange();
-
-		/**
-		 * The meta object literal for the '<em><b>Add Where Change</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference MOVE_EOBJECT__ADD_WHERE_CHANGE = eINSTANCE.getMoveEObject_AddWhereChange();
-
-		/**
-		 * The meta object literal for the '<em><b>Add What Change</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference MOVE_EOBJECT__ADD_WHAT_CHANGE = eINSTANCE.getMoveEObject_AddWhatChange();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation MOVE_EOBJECT___GET_ATOMIC_CHANGES = eINSTANCE.getMoveEObject__GetAtomicChanges();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
@@ -2930,16 +2658,6 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType RESOURCE_SET = eINSTANCE.getResourceSet();
-
-		/**
-		 * The meta object literal for the '<em>EObj</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EObject
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getEObj()
-		 * @generated
-		 */
-		EDataType EOBJ = eINSTANCE.getEObj();
 
 	}
 

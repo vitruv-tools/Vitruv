@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
+import tools.vitruv.framework.change.echange.compound.CompoundPackage;
+import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
 import tools.vitruv.framework.change.echange.eobject.CreateEObject;
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
@@ -25,7 +27,20 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectFactory;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
+import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
+import tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl;
+import tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl;
+import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+import tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl;
+import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
+import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
+import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
+import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 import tools.vitruv.framework.change.echange.resolve.StagingArea;
+import tools.vitruv.framework.change.echange.root.RootPackage;
+import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -130,13 +145,39 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		isInited = true;
 
 		// Initialize simple dependencies
-		EChangePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
+
+		// Obtain or create and register interdependencies
+		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
+		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
+		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
+		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
+		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
+		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
+		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
+		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theEobjectPackage.createPackageContents();
+		theAttributePackage.createPackageContents();
+		theFeaturePackage.createPackageContents();
+		theEChangePackage.createPackageContents();
+		theListPackage.createPackageContents();
+		theSinglePackage.createPackageContents();
+		theCompoundPackage.createPackageContents();
+		theReferencePackage.createPackageContents();
+		theRootPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theEobjectPackage.initializePackageContents();
+		theAttributePackage.initializePackageContents();
+		theFeaturePackage.initializePackageContents();
+		theEChangePackage.initializePackageContents();
+		theListPackage.initializePackageContents();
+		theSinglePackage.initializePackageContents();
+		theCompoundPackage.initializePackageContents();
+		theReferencePackage.initializePackageContents();
+		theRootPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEobjectPackage.freeze();
