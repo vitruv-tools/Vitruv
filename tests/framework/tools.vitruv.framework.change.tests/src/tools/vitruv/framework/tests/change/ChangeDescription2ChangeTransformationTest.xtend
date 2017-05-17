@@ -24,6 +24,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	var protected AtomicEmfChangeRecorder changeRecorder
 	var protected Root rootElement
 	var private List<EChange> changes
+	var private unresolveAndResolveRecordedEChanges = true
 	var rs = new ResourceSetImpl
 	val private List<File> filesToDelete = new ArrayList<File>();
 
@@ -54,7 +55,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	 */
 	@Before
 	def void beforeTest() {
-		this.changeRecorder = new AtomicEmfChangeRecorder()
+		this.changeRecorder = new AtomicEmfChangeRecorder(this.unresolveAndResolveRecordedEChanges)
 		this.rootElement = createRootInResource(1);
 	}
 
@@ -73,6 +74,14 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	protected def List<EChange> getChanges() {
 		if (this.changes == null) {
 			this.changes = endRecording()
+			if (this.unresolveAndResolveRecordedEChanges) {
+				for (var i = this.changes.length - 1; i >= 0; i--) {
+					this.changes.set(i, changes.get(i).resolveAfterAndApplyBackward(this.rs));
+				}	
+				for (change : this.changes) {
+					change.applyForward;
+				}
+			}
 		}
 		return this.changes
 	}
