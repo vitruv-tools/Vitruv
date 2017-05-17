@@ -17,6 +17,7 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.ModelRepository
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 class ChangePropagatorImpl implements ChangePropagator {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -94,8 +95,12 @@ class ChangePropagatorImpl implements ChangePropagator {
 	private def dispatch void propagateSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges, 
 		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 
-		this.modelProviding.applyChangeForwardOnModel(change)
-		
+		val changeApplicationFunction = [ResourceSet resourceSet |
+				modelProviding.getModel(change.getURI());
+                change.resolveBeforeAndApplyForward(resourceSet)
+                return;
+        	];
+		this.modelProviding.executeOnResourceSet(changeApplicationFunction);
 
 		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension);
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
