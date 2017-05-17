@@ -11,21 +11,21 @@ import tools.vitruv.extensions.dslsruntime.reactions.ReactionElementsHandler
 
 class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 	static val logger = Logger::getLogger(ReactionElementsHandlerImpl)
-	
+
 	val CorrespondenceModel correspondenceModel
 	val ChangePropagationResult transformationResult
-	
-	public new(CorrespondenceModel correspondenceModel, ChangePropagationResult transformationResult) {
+
+	new(CorrespondenceModel correspondenceModel, ChangePropagationResult transformationResult) {
 		this.correspondenceModel = correspondenceModel
 		this.transformationResult = transformationResult
 	}
-	
+
 	override void addCorrespondenceBetween(EObject firstElement, EObject secondElement, String tag) {
 		registerObjectUnderModification(firstElement)
 		registerObjectUnderModification(secondElement)
 		ReactionsCorrespondenceHelper::addCorrespondence(correspondenceModel, firstElement, secondElement, tag)
 	}
-	
+
 	override void deleteObject(EObject element) {
 		if (element === null) {
 			return
@@ -37,12 +37,12 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 		// may have to be resolved for removing correspondences as well and must therefore be up-to-date
 		TuidManager::instance.updateTuidsOfRegisteredObjects
 	}
-	
+
 	override void removeCorrespondenceBetween(EObject firstElement, EObject secondElement) {
-		ReactionsCorrespondenceHelper::removeCorrespondencesBetweenElements(correspondenceModel, 
-			firstElement, secondElement)
+		ReactionsCorrespondenceHelper::removeCorrespondencesBetweenElements(correspondenceModel, firstElement,
+			secondElement)
 	}
-	
+
 	override registerObjectUnderModification(EObject element) {
 		if (element !== null) {
 			TuidManager::instance.registerObjectUnderModification(element)
@@ -52,10 +52,10 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 
 		}
 	}
-	
+
 	override postprocessElements() {
 		// Modifications are finished, so update the Tuids
 		TuidManager::instance.updateTuidsOfRegisteredObjects
 	}
-	
+
 }

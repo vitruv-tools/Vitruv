@@ -37,7 +37,7 @@ final class ReactionsCorrespondenceHelper {
 		}
 	}
 
-	public static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceModel, EObject source) {
+	static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceModel, EObject source) {
 		val sourceTuid = correspondenceModel.getTuid(source)
 		val correspondenceModelView = correspondenceModel.reactionsView
 		val correspondences = correspondenceModelView.getCorrespondencesForTuids(#[sourceTuid])
@@ -46,7 +46,7 @@ final class ReactionsCorrespondenceHelper {
 		}
 	}
 
-	public static def ReactionsCorrespondence addCorrespondence(CorrespondenceModel correspondenceModel, EObject source,
+	static def ReactionsCorrespondence addCorrespondence(CorrespondenceModel correspondenceModel, EObject source,
 		EObject target, String tag) {
 		val correspondence = correspondenceModel.reactionsView.
 			createAndAddCorrespondence(#[source], #[target]) as ReactionsCorrespondence
@@ -54,8 +54,8 @@ final class ReactionsCorrespondenceHelper {
 		correspondence
 	}
 
-	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceModel correspondenceModel,
-		EObject source, String expectedTag, Class<T> type) {
+	static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceModel correspondenceModel, EObject source,
+		String expectedTag, Class<T> type) {
 		val tuid = correspondenceModel.getTuid(source)
 		return correspondenceModel.reactionsView.getCorrespondencesForTuids(#[tuid]).filter [
 			expectedTag.nullOrEmpty || tag == expectedTag
@@ -72,7 +72,7 @@ final class ReactionsCorrespondenceHelper {
 		correspondences
 	}
 
-	public static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
+	static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
 		String expectedTag, Function1<T, Boolean> preconditionMethod, CorrespondenceModel correspondenceModel) {
 		val nonNullPreconditionMethod = if (preconditionMethod !== null) preconditionMethod else [T input|true]
 		val targetElements = new ArrayList<T>
