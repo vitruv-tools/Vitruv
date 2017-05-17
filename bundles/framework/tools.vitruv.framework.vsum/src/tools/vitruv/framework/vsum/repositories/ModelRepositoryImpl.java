@@ -250,32 +250,13 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     }
 
     /**
-     * Returns the correspondenceModel for the mapping from the metamodel at the first VURI to the
-     * metamodel at the second VURI or the other way round
+     * Returns the correspondence model in this model repository
      *
-     * @return the found correspondenceModel or null if there is none
+     * @return the correspondence model
      */
     @Override
-    public CorrespondenceModel getCorrespondenceModel(final VURI mmAVURI, final VURI mmBVURI) {
+    public CorrespondenceModel getCorrespondenceModel() {
         return this.correspondenceModel;
-        // VitruvDomain mmA = this.metamodelRepository.getDomain(mmAVURI);
-        // VitruvDomain mmB = this.metamodelRepository.getDomain(mmBVURI);
-        // if (mmA == null || mmB == null) {
-        // throw new IllegalArgumentException("Metamodel is not contained in the metamodel
-        // repository");
-        // }
-        // VitruvDomainPair metamodelPair = new VitruvDomainPair(mmA, mmB);
-        // if (!existsCorrespondenceModel(metamodelPair)) {
-        // // Correspondence model does not exist, so create it
-        // createCorrespondenceModel(metamodelPair);
-        // }
-        // for (CorrespondenceModel correspondenceModel : this.correspondenceModels) {
-        // if (correspondenceModel.getMapping().equals(metamodelPair)) {
-        // return correspondenceModel;
-        // }
-        // }
-        // throw new IllegalStateException(
-        // "Correspondence model does not exist, although it was existing or created before");
     }
 
     private void loadVURIsOfVSMUModelInstances() {

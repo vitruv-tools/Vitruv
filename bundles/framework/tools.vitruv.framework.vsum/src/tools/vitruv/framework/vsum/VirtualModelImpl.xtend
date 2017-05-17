@@ -37,8 +37,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		VirtualModelManager.instance.putVirtualModel(this);
 	}
 	
-	override getCorrespondenceModel(VURI metamodel1, VURI metamodel2) {
-		this.modelRepository.getCorrespondenceModel(metamodel1, metamodel2);
+	override getCorrespondenceModel() {
+		this.modelRepository.getCorrespondenceModel();
 	}
 	
 	override getModelInstance(VURI modelVuri) {
