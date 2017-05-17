@@ -26,6 +26,5 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib.macro,
  org.eclipse.emf.common.ui,
  org.eclipse.emf.ecore.change,
- edu.kit.ipd.sdq.commons.util.emf,
- org.eclipse.emf.ecore.edit
+ edu.kit.ipd.sdq.commons.util.emf
 Bundle-Vendor: vitruv.tools
