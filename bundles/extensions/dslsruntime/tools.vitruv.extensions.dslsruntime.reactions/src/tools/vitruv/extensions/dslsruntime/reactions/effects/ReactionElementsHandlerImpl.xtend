@@ -10,44 +10,44 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionElementsHandler
 
 class ReactionElementsHandlerImpl implements ReactionElementsHandler {
-	private static val logger = Logger.getLogger(ReactionElementsHandlerImpl);
+	static val logger = Logger::getLogger(ReactionElementsHandlerImpl)
 	
-	private final CorrespondenceModel correspondenceModel;
-	private final ChangePropagationResult transformationResult;
+	val CorrespondenceModel correspondenceModel
+	val ChangePropagationResult transformationResult
 	
 	public new(CorrespondenceModel correspondenceModel, ChangePropagationResult transformationResult) {
-		this.correspondenceModel = correspondenceModel;
-		this.transformationResult = transformationResult;
+		this.correspondenceModel = correspondenceModel
+		this.transformationResult = transformationResult
 	}
 	
 	override void addCorrespondenceBetween(EObject firstElement, EObject secondElement, String tag) {
-		registerObjectUnderModification(firstElement);
-		registerObjectUnderModification(secondElement);
-		ReactionsCorrespondenceHelper.addCorrespondence(correspondenceModel, firstElement, secondElement, tag);
+		registerObjectUnderModification(firstElement)
+		registerObjectUnderModification(secondElement)
+		ReactionsCorrespondenceHelper::addCorrespondence(correspondenceModel, firstElement, secondElement, tag)
 	}
 	
 	override void deleteObject(EObject element) {
 		if (element === null) {
-			return;
+			return
 		}
-		ReactionsCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceModel, element);
-		logger.debug("Removing object " + element + " from container " + element.eContainer());
-		EcoreUtil.remove(element);
+		ReactionsCorrespondenceHelper::removeCorrespondencesOfObject(correspondenceModel, element)
+		logger.debug("Removing object " + element + " from container " + element.eContainer)
+		EcoreUtil::remove(element)
 		// If we delete an object, we have to update Tuids because Tuids of child elements 
 		// may have to be resolved for removing correspondences as well and must therefore be up-to-date
-		TuidManager.instance.updateTuidsOfRegisteredObjects();
+		TuidManager::instance.updateTuidsOfRegisteredObjects
 	}
 	
 	override void removeCorrespondenceBetween(EObject firstElement, EObject secondElement) {
-		ReactionsCorrespondenceHelper.removeCorrespondencesBetweenElements(correspondenceModel, 
-			firstElement, secondElement);
+		ReactionsCorrespondenceHelper::removeCorrespondencesBetweenElements(correspondenceModel, 
+			firstElement, secondElement)
 	}
 	
 	override registerObjectUnderModification(EObject element) {
 		if (element !== null) {
-			TuidManager.instance.registerObjectUnderModification(element);
+			TuidManager::instance.registerObjectUnderModification(element)
 			if (element.eContainer !== null) {
-				TuidManager.instance.registerObjectUnderModification(element.eContainer);
+				TuidManager::instance.registerObjectUnderModification(element.eContainer)
 			}
 
 		}
@@ -55,7 +55,7 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 	
 	override postprocessElements() {
 		// Modifications are finished, so update the Tuids
-		TuidManager.instance.updateTuidsOfRegisteredObjects();
+		TuidManager::instance.updateTuidsOfRegisteredObjects
 	}
 	
 }
