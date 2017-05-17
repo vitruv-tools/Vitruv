@@ -22,12 +22,12 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
 		this.eChange = eChange
 	}
 
-	public override String toString() {
-		'''«ConcreteChangeImpl.simpleName»: VURI: «this.URI» EChange: «this.eChange»'''
+	override String toString() {
+		'''«ConcreteChangeImpl.simpleName»: VURI: «URI» EChange: «eChange»'''
 	}
 
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		eChange = this.eChange.resolveBefore(resourceSet)
+		eChange = eChange.resolveBefore(resourceSet)
 		registerOldObjectTuidsForUpdate(eChange.affectedEObjects)
 		eChange?.applyForward
 		updateTuids

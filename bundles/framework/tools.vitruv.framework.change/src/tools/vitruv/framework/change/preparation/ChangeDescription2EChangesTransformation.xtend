@@ -106,13 +106,13 @@ public class ChangeDescription2EChangesTransformation {
 
 	new(ChangeDescription changeDescription) {
 		this.changeDescription = changeDescription
-		this.eChanges = new BasicEList<EChange>
+		eChanges = new BasicEList<EChange>
 	}
 
-	public def List<EChange> transform() {
-		if (changeDescription === null) {
-			return eChanges
-		} else {
+	def List<EChange> transform() {
+		if (changeDescription === null)
+			eChanges
+		else {
 
 			changeDescription.resourceChanges?.forEach[addChangeForResourceChange(it)]
 
@@ -133,8 +133,7 @@ public class ChangeDescription2EChangesTransformation {
 				recursivelyAddChangesForNonDefaultValues(objectToAttach)
 //				addChangeForObjectToAttach(objectToAttach, changeDescription.getNewContainer(objectToAttach))
 			}
-			//changeDescription.applyAndReverse
-
+			// changeDescription.applyAndReverse
 			// sort changes: first deletions, then additions, then containment, then non-containment
 			// val sortedEChanges = sortChanges(eChanges)
 			// now that we have model elements to describe the forward change,
@@ -142,7 +141,7 @@ public class ChangeDescription2EChangesTransformation {
 			// but we need the model itself to be in the state after the change.
 			// Therefore, we apply the change again which also reverts the change description that is no longer needed
 //			changeDescription.applyAndReverse
-			return eChanges
+			eChanges
 		}
 	}
 
@@ -156,15 +155,13 @@ public class ChangeDescription2EChangesTransformation {
 		}
 	}
 
-
-
-	def private void addChangeForAddResourceChange(ResourceChange resourceChange, ListChange listChange, Resource newResource) {
+	def private void addChangeForAddResourceChange(ResourceChange resourceChange, ListChange listChange,
+		Resource newResource) {
 		for (rootToAdd : listChange.referenceValues) {
 			var oldRootContainer = rootToAdd.eContainer
 			var oldRootResource = rootToAdd.eResource
 			var index = listChange.index
-			eChanges.add(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource,
-					newResource, index))
+			eChanges.add(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource, newResource, index))
 		}
 	}
 
@@ -174,10 +171,10 @@ public class ChangeDescription2EChangesTransformation {
 		// The resource is also in the state before the change was applied (like the model elements).
 		// Therefore, we are able to obtain the removed root Element from it.
 		val rootToRemove = resourceChange.resource.contents.get(rootElementListIndex)
-		var newRootContainer = null//changeDescription.getNewContainer(rootToRemove)
-		var newRootResource = null//changeDescription.getNewResource(rootToRemove)
-		eChanges.add(createRemoveRootChange(rootToRemove, newRootContainer, newRootResource,
-				oldResource, rootElementListIndex))
+		var newRootContainer = null // changeDescription.getNewContainer(rootToRemove)
+		var newRootResource = null // changeDescription.getNewResource(rootToRemove)
+		eChanges.add(
+			createRemoveRootChange(rootToRemove, newRootContainer, newRootResource, oldResource, rootElementListIndex))
 	}
 
 	def private void recursivelyAddChangesForNonDefaultValues(EObject eObject) {
@@ -195,9 +192,12 @@ public class ChangeDescription2EChangesTransformation {
 
 					val recursiveChanges = createAdditiveCreateChangesForValue(eObject, feature)
 					eChanges.addAll(recursiveChanges)
-					val additiveReferenceChanges = (recursiveChanges + recursiveChanges.filter(CompoundEChange).map[atomicChanges].flatten).filter(AdditiveReferenceEChange)
+					val additiveReferenceChanges = (recursiveChanges + recursiveChanges.filter(CompoundEChange).map [
+						atomicChanges
+					].flatten).filter(AdditiveReferenceEChange)
 					for (change : additiveReferenceChanges) {
-						if ((change as UpdateReferenceEChange<?>).affectedFeature.containment) recursivelyAddChangesForNonDefaultValues(change.newValue)
+						if ((change as UpdateReferenceEChange<?>).affectedFeature.
+							containment) recursivelyAddChangesForNonDefaultValues(change.newValue)
 					}
 				}
 			}
@@ -221,7 +221,6 @@ public class ChangeDescription2EChangesTransformation {
 //		}
 //		return !wasOrIsRoot
 //	}
-
 //	def private void recursivelyAddChangesForIndirectlyDeletedObjects(EObject parent) {
 //		for (containmentReference : parent.eClass.EAllContainments) {
 //			for (child : parent.getReferenceValueList(containmentReference)) {
@@ -232,7 +231,6 @@ public class ChangeDescription2EChangesTransformation {
 //			}
 //		}
 //	}
-
 	def private void addChangesForObjectChange(Entry<EObject, EList<FeatureChange>> entry) {
 		val affectedEObject = entry.key
 		val featureChanges = entry.value
@@ -252,59 +250,62 @@ public class ChangeDescription2EChangesTransformation {
 				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedReference)
 				for (var index = elementsReferencedBeforeChange.size - 1; index >= 0; index--) {
 					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)
-					resultChanges.addAll(createChangeForMultiReferenceChange(affectedEObject, affectedReference, index,
+					resultChanges.addAll(
+						createChangeForMultiReferenceChange(affectedEObject, affectedReference, index,
 							ChangeKind::REMOVE_LITERAL, #[elementReferencedBeforeChange]))
 				}
 			}
 			if (affectedReference.unsettable && !featureChange.set) {
 				val List<EChange> typedChanges = new ArrayList<EChange>
-				for (change : resultChanges) {
-					typedChanges.add(change)
-				}
-				return #[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, typedChanges)]
-			}
-			return resultChanges
+				resultChanges.forEach[typedChanges.add(it)]
+				#[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, typedChanges)]
+			} else
+				resultChanges
 		} else {
 			val EChange change = createChangeForSingleReferenceChange(affectedEObject, affectedReference,
 				featureChange.referenceValue)
-			if (affectedReference.unsettable && !featureChange.set) {
-				return #[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, #[change])]
-			}
-			return #[change]
+			if (affectedReference.unsettable && !featureChange.set)
+				#[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, #[change])]
+			else
+				#[change]
 		}
 	}
 
 	def EChange createChangeForSingleReferenceChange(EObject affectedEObject, EReference affectedReference,
 		EObject newReferenceValue) {
 		val oldReferenceValue = affectedEObject.getReferenceValueList(affectedReference).claimNotMany
-		return createReplaceSingleValuedReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, false)
+		createReplaceSingleValuedReferenceChange(affectedEObject, affectedReference, oldReferenceValue,
+			newReferenceValue, false)
 	}
 
 	def private List<EChange> createChangeForMultiReferenceChange(EObject affectedEObject, EReference affectedReference,
 		int index, ChangeKind changeKind, List<EObject> referenceValues) {
 		switch changeKind {
-			case ChangeKind::ADD_LITERAL: referenceValues.mapFixed [
+			case ChangeKind::ADD_LITERAL:
+				referenceValues.mapFixed [
 
-				createInsertReferenceChange(affectedEObject, affectedReference, index, it, false)
-			]
-			case ChangeKind::REMOVE_LITERAL: createChangeForRemoveReferenceChange(affectedEObject, affectedReference,
-				index, affectedEObject.getReferenceValueList(affectedReference))
-			default: Collections::emptyList
+					createInsertReferenceChange(affectedEObject, affectedReference, index, it, false)
+				]
+			case ChangeKind::REMOVE_LITERAL:
+				createChangeForRemoveReferenceChange(affectedEObject, affectedReference, index,
+					affectedEObject.getReferenceValueList(affectedReference))
+			default:
+				Collections::emptyList
 		}
 	}
 
 	def private List<EChange> createChangeForRemoveReferenceChange(EObject affectedEObject,
 		EReference affectedReference, int index, List<EObject> referenceValues) {
-		val resultList = newArrayList()
+		val resultList = newArrayList
 		// for (referenceValue : referenceValues) {
 		val referenceValue = referenceValues.get(index)
-		var newContainer = null//changeDescription.getNewContainer(referenceValue)
-		var newResource = null//changeDescription.getNewResource(referenceValue)
-
-		resultList.add(createRemoveReferenceChange(affectedEObject, affectedReference, index,
-				referenceValue, newContainer, newResource))
+		var newContainer = null // changeDescription.getNewContainer(referenceValue)
+		var newResource = null // changeDescription.getNewResource(referenceValue)
+		resultList.add(
+			createRemoveReferenceChange(affectedEObject, affectedReference, index, referenceValue, newContainer,
+				newResource))
 		// }
-		return resultList
+		resultList
 	}
 
 	def private dispatch List<EChange> createChangesForFeatureChange(EObject affectedEObject,
@@ -317,60 +318,56 @@ public class ChangeDescription2EChangesTransformation {
 			val elementsReferencedAfterChange = featureChange.referenceValue
 			if (elementsReferencedAfterChange === null && listChanges !== null && listChanges.empty) {
 				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedAttribute)
-				for (var index = elementsReferencedBeforeChange.size-1; index >= 0; index--) {
+				for (var index = elementsReferencedBeforeChange.size - 1; index >= 0; index--) {
 					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)
 
-					resultChanges.addAll(createChangeForMultiAttributeChange(affectedEObject, affectedAttribute, index,
+					resultChanges.addAll(
+						createChangeForMultiAttributeChange(affectedEObject, affectedAttribute, index,
 							ChangeKind::REMOVE_LITERAL, #[elementReferencedBeforeChange]))
 				}
 			}
 			if (affectedAttribute.unsettable && !featureChange.set) {
 				val subtractiveChanges = resultChanges.filter(SubtractiveAttributeEChange)
 				val List<SubtractiveAttributeEChange<EObject, Object>> typedChanges = new ArrayList<SubtractiveAttributeEChange<EObject, Object>>()
-				for (change : subtractiveChanges) {
-					typedChanges.add(change)
-				}
-				return #[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, typedChanges)]
-			}
-			return resultChanges
+				subtractiveChanges.forEach[change|typedChanges.add(change)]
+				#[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, typedChanges)]
+			} else
+				resultChanges
 		} else {
-			val SubtractiveAttributeEChange<EObject,Object> change = createChangeForSingleAttributeChange(affectedEObject, affectedAttribute, featureChange.value)
-			if (affectedAttribute.unsettable && !featureChange.set) {
-				return #[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, #[change])]
-			}
-			
-			return #[change]
+			val SubtractiveAttributeEChange<EObject, Object> change = createChangeForSingleAttributeChange(
+				affectedEObject, affectedAttribute, featureChange.value)
+			if (affectedAttribute.unsettable && !featureChange.set)
+				#[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, #[change])]
+			else
+				#[change]
 		}
 	}
 
-	def SubtractiveAttributeEChange<EObject, Object> createChangeForSingleAttributeChange(EObject affectedEObject, EAttribute affectedAttribute,
-		Object newValue) {
+	def SubtractiveAttributeEChange<EObject, Object> createChangeForSingleAttributeChange(EObject affectedEObject,
+		EAttribute affectedAttribute, Object newValue) {
 		val oldReferenceValue = affectedEObject.getReferenceValueList(affectedAttribute).claimNotMany
-
-		return createReplaceSingleValuedAttributeChange(affectedEObject, affectedAttribute, oldReferenceValue, newValue)
+		createReplaceSingleValuedAttributeChange(affectedEObject, affectedAttribute, oldReferenceValue, newValue)
 	}
 
 	def private List<EChange> createChangeForMultiAttributeChange(EObject affectedEObject, EAttribute affectedAttribute,
 		int index, ChangeKind changeKind, List<Object> values) {
 		switch changeKind {
-			case ChangeKind::ADD_LITERAL : {
+			case ChangeKind::ADD_LITERAL: {
 				val result = new ArrayList<EChange>
 				for (var i = 0; i < values.size; i++) {
-
 
 					result += createInsertAttributeChange(affectedEObject, affectedAttribute, index + i, values.get(i))
 				}
 				return result
 			}
-			case ChangeKind::REMOVE_LITERAL: 
+			case ChangeKind::REMOVE_LITERAL:
 				// Somehow, the change does not contain information about the removed values, so we cannot iterate them
-
 				#[createRemoveAttributeChange(affectedEObject, affectedAttribute, index,
 					affectedEObject.getReferenceValueList(affectedAttribute).get(index))]
-			default: Collections::emptyList
+			default:
+				Collections::emptyList
 		}
 	}
-
 
 //	def private static List<EChange> sortChanges(List<EChange> changes) {
 //		val deletions = new BasicEList

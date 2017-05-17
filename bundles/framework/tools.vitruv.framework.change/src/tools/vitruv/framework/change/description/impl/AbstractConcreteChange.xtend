@@ -7,38 +7,38 @@ import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractConcreteChange implements ConcreteChange {
 	protected EChange eChange
-	final VURI vuri
-	
+	val VURI vuri
+
 	new(VURI vuri) {
 		this.vuri = vuri
 	}
-	
+
 	override containsConcreteChange() {
-		return true
+		true
 	}
-	
+
 	override validate() {
-		return containsConcreteChange() && URI !== null
+		containsConcreteChange() && URI !== null
 	}
-	
+
 	override getEChanges() {
-		return new ArrayList<EChange>(#[eChange])
+		new ArrayList<EChange>(#[eChange])
 	}
-	
+
 	override getURI() {
-		return vuri
+		vuri
 	}
-		
+
 	override getEChange() {
-		return eChange
+		eChange
 	}
-	
+
 	override applyBackward() {
-		this.eChange.applyBackward
+		eChange.applyBackward
 	}
-	
+
 	override applyForward() {
-		this.eChange.applyForward
+		eChange.applyForward
 	}
-	
+
 }

@@ -14,10 +14,10 @@ import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.util.datatypes.VURI
 
 class VitruviusChangeFactory {
-	private static val logger = Logger::getLogger(VitruviusChangeFactory)
-	private static VitruviusChangeFactory instance
+	static val logger = Logger::getLogger(VitruviusChangeFactory)
+	static VitruviusChangeFactory instance
 
-	public enum FileChangeKind {
+	enum FileChangeKind {
 		Create,
 		Delete
 	}
@@ -25,7 +25,7 @@ class VitruviusChangeFactory {
 	private new() {
 	}
 
-	public static def VitruviusChangeFactory getInstance() {
+	static def VitruviusChangeFactory getInstance() {
 		if (instance === null) {
 			instance = new VitruviusChangeFactory
 		}
@@ -36,15 +36,15 @@ class VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+	def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
 		new EMFModelChangeImpl(changeDescription, vuri)
 	}
 
-	public def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
+	def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
 		new ConcreteChangeImpl(change, vuri)
 	}
 
-	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
+	def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		val vuri = VURI::getInstance(changedFileResource)
 		val EChange eChange = if (kind == FileChangeKind::Create)
 				generateFileCreateChange(changedFileResource)
@@ -53,19 +53,19 @@ class VitruviusChangeFactory {
 		new ConcreteChangeImpl(eChange, vuri)
 	}
 
-	public def CompositeContainerChange createCompositeContainerChange() {
+	def CompositeContainerChange createCompositeContainerChange() {
 		new CompositeContainerChangeImpl
 	}
 
-	public def CompositeTransactionalChange createCompositeTransactionalChange() {
+	def CompositeTransactionalChange createCompositeTransactionalChange() {
 		new CompositeTransactionalChangeImpl
 	}
 
-	public def TransactionalChange createEmptyChange(VURI vuri) {
+	def TransactionalChange createEmptyChange(VURI vuri) {
 		new EmptyChangeImpl(vuri)
 	}
 
-	public def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
+	def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
 		val compositeChange = new CompositeContainerChangeImpl
 		innerChanges.forEach[innerChange|compositeChange.addChange(innerChange)]
 		compositeChange

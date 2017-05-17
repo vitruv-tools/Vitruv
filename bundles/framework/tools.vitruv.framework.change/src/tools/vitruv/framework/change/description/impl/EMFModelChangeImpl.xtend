@@ -13,11 +13,11 @@ import tools.vitruv.framework.util.datatypes.VURI
  * right before the change described by the recorded {@link ChangeDescription}.
  */
 class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	private final ChangeDescription changeDescription
-	private final VURI vuri
-	private var boolean canBeBackwardsApplied
+	val ChangeDescription changeDescription
+	val VURI vuri
+	var boolean canBeBackwardsApplied
 
-	public new(ChangeDescription changeDescription, VURI vuri) {
+	new(ChangeDescription changeDescription, VURI vuri) {
 		this.changeDescription = changeDescription
 		this.vuri = vuri
 		canBeBackwardsApplied = false
@@ -25,7 +25,7 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 	}
 
 	private def void extractChangeInformation() {
-		val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform
+		val eChanges = new ChangeDescription2EChangesTransformation(changeDescription).transform
 		eChanges.forEach[addChange(VitruviusChangeFactory::instance.createConcreteChange(it, vuri))]
 		if (changes.empty) {
 			addChange(VitruviusChangeFactory::instance.createEmptyChange(vuri))
@@ -33,7 +33,7 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 	}
 
 	override String toString() '''
-		«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
+		«EMFModelChangeImpl.simpleName»: VURI «vuri», EChanges:
 			«FOR eChange : EChanges»
 				Inner change: «eChange»
 			«ENDFOR»
