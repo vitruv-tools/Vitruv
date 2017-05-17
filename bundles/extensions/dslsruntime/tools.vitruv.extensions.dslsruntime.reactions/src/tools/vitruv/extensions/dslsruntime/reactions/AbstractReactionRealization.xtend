@@ -12,12 +12,12 @@ abstract class AbstractReactionRealization extends CallHierarchyHaving implement
 	protected val UserInteracting userInteracting
 	protected ReactionExecutionState executionState
 
-	public new(UserInteracting userInteracting) {
+	new(UserInteracting userInteracting) {
 		this.userInteracting = userInteracting
 	}
 
 	override applyEvent(EChange change, CorrespondenceModel correspondenceModel) {
-		logger.debug("Called reactions " + class.simpleName + " with event: " + change)
+		logger.debug('''Called reactions «class.simpleName» with event: «change»''')
 
 		executionState = new ReactionExecutionState(userInteracting, correspondenceModel, new ChangePropagationResult)
 

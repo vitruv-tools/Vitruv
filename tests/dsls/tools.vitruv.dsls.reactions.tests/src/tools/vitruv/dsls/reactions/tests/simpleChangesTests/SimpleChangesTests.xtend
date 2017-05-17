@@ -210,7 +210,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 
 	// TODO HK (Change MM) Unset does not produce any change event at the moment
 	// @Test
-	public def void testUnsetSingleValuedEAttribute() {
+	def void testUnsetSingleValuedEAttribute() {
 		SimpleChangesTestsExecutionMonitor.reinitialize
 		unsetSingleValuedEAttribute(rootElement)
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
@@ -220,7 +220,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	// @Test
-	public def void testUnsetSingleValuedNonContainmentEReference() throws Throwable {
+	def void testUnsetSingleValuedNonContainmentEReference() throws Throwable {
 		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1))
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		unsetSingleValuedNonContainmentNonRootObject(rootElement)
@@ -232,7 +232,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testUpdateSingleValuedEAttribute() {
+	def void testUpdateSingleValuedEAttribute() {
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		setSingleValuedEAttribute(rootElement, -1)
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
@@ -243,7 +243,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testUpdateSingleValuedPrimitiveTypeEAttribute() {
+	def void testUpdateSingleValuedPrimitiveTypeEAttribute() {
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		setSingleValuedPrimitiveTypeEAttribute(rootElement, -1)
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
@@ -254,7 +254,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testCreateSingleValuedContainmentEReference() throws Throwable {
+	def void testCreateSingleValuedContainmentEReference() throws Throwable {
 		unsetSingleValuedContainmentNonRootObject(rootElement)
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRootTest")
@@ -267,7 +267,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testDeleteSingleValuedContainmentEReference() throws Throwable {
+	def void testDeleteSingleValuedContainmentEReference() throws Throwable {
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRoot")
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		unsetSingleValuedContainmentNonRootObject(rootElement)
@@ -281,7 +281,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testReplaceSingleValuedContainmentEReference() throws Throwable {
+	def void testReplaceSingleValuedContainmentEReference() throws Throwable {
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRoot")
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRootTest")
@@ -296,7 +296,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testSetSingleValuedNonContainmentEReference() throws Throwable {
+	def void testSetSingleValuedNonContainmentEReference() throws Throwable {
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1))
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
@@ -308,7 +308,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testReplaceSingleValuedNonContainmentEReference() throws Throwable {
+	def void testReplaceSingleValuedNonContainmentEReference() throws Throwable {
 		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(0))
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1))
@@ -321,7 +321,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testAddMultiValuedEAttribute() throws Throwable {
+	def void testAddMultiValuedEAttribute() throws Throwable {
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		addMultiValuedEAttribute(rootElement, 1)
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
@@ -332,7 +332,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testDeleteMultiValuedEAttribute() throws Throwable {
+	def void testDeleteMultiValuedEAttribute() throws Throwable {
 		addMultiValuedEAttribute(rootElement, 1)
 		addMultiValuedEAttribute(rootElement, 2)
 		SimpleChangesTestsExecutionMonitor::reinitialize
@@ -346,7 +346,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testReplaceMultiValuedEAttribute() throws Throwable {
+	def void testReplaceMultiValuedEAttribute() throws Throwable {
 		addMultiValuedEAttribute(rootElement, 1)
 		addMultiValuedEAttribute(rootElement, 2)
 		SimpleChangesTestsExecutionMonitor::reinitialize
@@ -362,7 +362,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testAddMultiValuedContainmentEReference() throws Throwable {
+	def void testAddMultiValuedContainmentEReference() throws Throwable {
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest")
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
@@ -374,7 +374,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testDeleteMultiValuedContainmentEReference() throws Throwable {
+	def void testDeleteMultiValuedContainmentEReference() throws Throwable {
 		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest")
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		removeMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest")
@@ -387,7 +387,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testReplaceMultiValuedContainmentEReference() throws Throwable {
+	def void testReplaceMultiValuedContainmentEReference() throws Throwable {
 		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest")
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		replaceMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest",
@@ -404,7 +404,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testInsertMultiValuedNonContainmentEReference() throws Throwable {
+	def void testInsertMultiValuedNonContainmentEReference() throws Throwable {
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(0))
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor
@@ -414,7 +414,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testRemoveMultiValuedNonContainmentEReference() throws Throwable {
+	def void testRemoveMultiValuedNonContainmentEReference() throws Throwable {
 		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1))
 		SimpleChangesTestsExecutionMonitor::reinitialize
 		removeMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1))
@@ -427,7 +427,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testReplaceMultiValuedNonContainmentEReference() throws Throwable {
+	def void testReplaceMultiValuedNonContainmentEReference() throws Throwable {
 		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(0))
 		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1))
 		SimpleChangesTestsExecutionMonitor::reinitialize
@@ -448,7 +448,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 
 	// TODO HK (Change MM) Permute operations are not supported by now? No EChange produced
 	// @Test
-	public def void testPermuteMultiValuedNonContainmentEReference() throws Throwable {
+	def void testPermuteMultiValuedNonContainmentEReference() throws Throwable {
 		for (nonRootId : nonContainmentNonRootIds) {
 			insertMultiValuedNonContainmentNonRootObject(rootElement, nonRootId)
 		}
@@ -461,7 +461,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testDeleteEachTestModel() throws Throwable {
+	def void testDeleteEachTestModel() throws Throwable {
 		assertModelExists(TEST_SOURCE_MODEL_NAME.projectModelPath)
 		deleteAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath)
 		assertModelNotExists(TEST_SOURCE_MODEL_NAME.projectModelPath)
@@ -469,7 +469,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testCreateFurtherModel() throws Throwable {
+	def void testCreateFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = FURTHER_SOURCE_TEST_MODEL_NAME
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root)
@@ -478,7 +478,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testDeleteFurtherModel() throws Throwable {
+	def void testDeleteFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = FURTHER_SOURCE_TEST_MODEL_NAME
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root)
