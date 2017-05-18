@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Families
-Bundle-SymbolicName: tools.vitruv.domains.families
+Bundle-SymbolicName: tools.vitruv.domains.families;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
