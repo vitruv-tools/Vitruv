@@ -55,6 +55,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 			throw new IllegalArgumentException('''Change contains changes from different models: «change»''')
 		}
 		startChangePropagation(change);
+		change.applyBackwardIfLegacy();
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		val propagationResult = new ChangePropagationResult();

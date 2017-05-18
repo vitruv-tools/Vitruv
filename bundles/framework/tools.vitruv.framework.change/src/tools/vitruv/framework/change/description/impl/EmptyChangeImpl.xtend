@@ -38,4 +38,9 @@ class EmptyChangeImpl implements TransactionalChange {
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
 		
 	}
+	
+	override applyBackwardIfLegacy() {
+		// Do nothing
+	}
+	
 }

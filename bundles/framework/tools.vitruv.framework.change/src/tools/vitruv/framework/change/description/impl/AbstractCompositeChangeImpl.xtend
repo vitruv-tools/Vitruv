@@ -86,11 +86,17 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 			change.applyForward();
 		}
 	}
-	
 		
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
 		for (c : changes) {
 			c.resolveBeforeAndApplyForward(resourceSet)
 		}
 	}
+	
+	override applyBackwardIfLegacy() {
+		for (change : changes.reverseView) {
+			change.applyBackwardIfLegacy();
+		}
+	}
+	
 }

@@ -41,4 +41,8 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		this.eChange.applyForward
 	}
 	
+	override applyBackwardIfLegacy() {
+		// Do nothing
+	}
+	
 }

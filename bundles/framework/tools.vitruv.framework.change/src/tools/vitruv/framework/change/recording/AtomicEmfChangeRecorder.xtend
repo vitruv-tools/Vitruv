@@ -59,15 +59,21 @@ class AtomicEmfChangeRecorder {
 		changeRecorder.endRecording();
 		changeDescriptions.reverseView.forEach[applyAndReverse];
 		var transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList;
-		correctChanges(transactionalChanges)
+		if (unresolveRecordedChanges)
+			correctChanges(transactionalChanges)
 		return transactionalChanges
 	}
 	
 	private def createModelChange(ChangeDescription changeDescription) {
 		if (!(changeDescription.objectChanges.isEmpty && changeDescription.resourceChanges.isEmpty)) {
-			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI);
-			changeDescription.applyAndReverse()
-			//result.applyForward();
+			var TransactionalChange result = null;
+			if (unresolveRecordedChanges) { 
+				result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI)
+				changeDescription.applyAndReverse()
+			} else {
+				result = VitruviusChangeFactory.instance.createLegacyEMFModelChange(changeDescription, modelVURI);
+				result.applyForward();
+			}
 			return result;
 		}
 		changeDescription.applyAndReverse()
@@ -107,13 +113,9 @@ class AtomicEmfChangeRecorder {
 		}
 		// Apply again and unresolve the results if necessary
 		for (c : eChanges) {
-			if (this.unresolveRecordedChanges) {
-				val EChange copy = EcoreUtil.copy(c)
-				EChangeUnresolver.unresolve(c)
-				copy.applyForward
-			} else {
-				c.applyForward
-			}
+			val EChange copy = EcoreUtil.copy(c)
+			EChangeUnresolver.unresolve(c)
+			copy.applyForward
 		}				
 	}
 	
