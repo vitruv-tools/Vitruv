@@ -16,15 +16,23 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import java.util.ArrayList
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import org.junit.runners.Parameterized.Parameters
+import org.junit.runners.Parameterized.Parameter
+import java.util.Collection
 
 /** 
  * @author langhamm
  */
+ @RunWith(Parameterized)
 abstract class ChangeDescription2ChangeTransformationTest {
 	var protected AtomicEmfChangeRecorder changeRecorder
 	var protected Root rootElement
 	var private List<EChange> changes
-	val protected boolean unresolveAndResolveRecordedEChanges
+	
+	@Parameter
+	public boolean unresolveAndResolveRecordedEChanges
 	var rs = new ResourceSetImpl
 	val private List<File> filesToDelete = new ArrayList<File>();
 
@@ -35,9 +43,13 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	public static val MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference"
 	public static val MULTI_VALUE_E_ATTRIBUTE_NAME = "multiValuedEAttribute"
 
+	@Parameters
+	public def static Collection<Boolean> data() {
+		return #[true, false];
+	}
+	
 	new() {
 		rs.resourceFactoryRegistry.extensionToFactoryMap.put("xmi", new XMIResourceFactoryImpl());
-		unresolveAndResolveRecordedEChanges = false;
 	}
 
 	protected def Root createRootInResource(int count) {
