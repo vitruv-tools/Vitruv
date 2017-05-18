@@ -1,0 +1,82 @@
+import "edu.kit.ipd.sdq.metamodels.persons" as persons
+import "edu.kit.ipd.sdq.metamodels.families" as families
+
+
+reactions: PersonsToFamilies
+in reaction to changes in persons
+execute actions in families
+
+reaction CreatedMale {
+	after element persons::Male created  and inserted as root
+	call createMaleMemberOfFamily(newValue)
+}
+
+routine createMaleMemberOfFamily(persons::Male person){
+	action{
+		val member = create families::Member and initialize {
+		member.firstName = person.fullName.split(" ").get(0)
+		}
+		add correspondence between person and member
+		//Erstmal wird immer eine neue Familie erstellt 
+		val family = create families::Family and initialize {
+			family.lastName = person.fullName.split(" ").get(1)
+			family.father = member
+		}
+		add correspondence between person and family
+	}
+}
+
+reaction CreatedFemale {
+	after element persons::Female created  and inserted as root
+	call createFemaleMemberOfFamily(newValue)
+}
+
+routine createFemaleMemberOfFamily(persons::Female person){
+	action{
+		val member = create families::Member and initialize {
+		member.firstName = person.fullName.split(" ").get(0)
+		}
+		add correspondence between person and member
+		//Erstmal wird immer eine neue Familie erstellt 
+		val family = create families::Family and initialize {
+			family.lastName = person.fullName.split(" ").get(1)
+			family.mother = member
+		}
+		add correspondence between person and family
+	}
+}
+
+reaction ChangedFullName {
+	after attribute replaced at persons::Person[fullName]
+	call changeNames(affectedEObject)
+}
+
+routine changeNames(persons::Person person){
+	match {
+		val family = retrieve families::Family corresponding to person
+		val member = retrieve families::Member corresponding to person
+	}
+	action{
+		update family {
+			family.lastName = person.fullName.split(" ").get(1)
+		}
+		update member {
+			member.firstName = person.fullName.split(" ").get(0)
+		}
+	}
+}
+
+reaction DeletePerson {
+	after element persons::Person deleted
+	call deleteMember(oldValue)
+}
+
+routine deleteMember(persons::Person person){
+	match{
+		val member = retrieve families::Member corresponding to person
+	}
+	
+	action{
+		delete member
+	}
+}
