@@ -17,5 +17,9 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.extensions.dslsruntime.reactions,
  tools.vitruv.extensions.dslsruntime.mapping,
  edu.kit.ipd.sdq.metamodels.families,
- edu.kit.ipd.sdq.metamodels.persons
+ edu.kit.ipd.sdq.metamodels.persons,
+ tools.vitruv.domains.persons,
+ tools.vitruv.domains.families
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: tools.vitruv.applications.familiespersons.persons2families
+

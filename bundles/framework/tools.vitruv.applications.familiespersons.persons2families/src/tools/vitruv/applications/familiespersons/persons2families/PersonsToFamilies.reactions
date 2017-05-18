@@ -3,8 +3,8 @@ import "edu.kit.ipd.sdq.metamodels.families" as families
 
 
 reactions: PersonsToFamilies
-in reaction to changes in persons
-execute actions in families
+in reaction to changes in Persons
+execute actions in Families
 
 reaction CreatedMale {
 	after element persons::Male created  and inserted as root
@@ -68,7 +68,7 @@ routine changeNames(persons::Person person){
 
 reaction DeletePerson {
 	after element persons::Person deleted
-	call deleteMember(oldValue)
+	call deleteMember(affectedEObject)
 }
 
 routine deleteMember(persons::Person person){
