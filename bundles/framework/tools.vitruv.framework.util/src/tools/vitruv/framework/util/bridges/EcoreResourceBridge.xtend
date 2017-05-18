@@ -195,14 +195,21 @@ final class EcoreResourceBridge {
 		saveResource(resource, Collections::emptyMap)
 	}
 
-	/** 
-	 * Saves the given resource with the given options.
-	 * @param resourcethe resource to be saved
-	 * @param saveOptionsthe options for saving the resource
-	 * @throws IOExceptionif an error occurred during saving
+	/**
+	 * Saves the given resource with the given options. Requires that the
+	 * resource URI is either a file URI or a platform URI. Resources with other
+	 * URI types (e.g. with a "pathmap" prefix) will not be saved
+	 * 
+	 * @param resource
+	 *            the resource to be saved
+	 * @param saveOptions
+	 *            the options for saving the resource
+	 * @throws IOException
+	 *             if an error occurred during saving
 	 */
 	def static void saveResource(Resource resource, Map<?, ?> saveOptions) throws IOException {
-		resource.save(saveOptions)
+		if (resource.URI.platform || resource.URI.file)
+			resource.save(saveOptions)
 	}
 
 	def static Resource loadResourceAtURI(URI resourceURI, ResourceSet resourceSet) {
@@ -212,22 +219,27 @@ final class EcoreResourceBridge {
 	def static Resource loadResourceAtURI(URI resourceURI, ResourceSet resourceSet, Map<Object, Object> loadOptions) {
 		var Resource resource = null
 		try {
-			if (EMFBridge::existsResourceAtUri(resourceURI)) {
-				resource = resourceSet.getResource(resourceURI, true)
-			}
+			var normalizedURI = resourceURI
+			if (!resourceURI.file && !resourceURI.platform)
+				normalizedURI = resourceSet.URIConverter.normalize(resourceURI)
+
+			if (EMFBridge::existsResourceAtUri(normalizedURI))
+				resource = resourceSet.getResource(normalizedURI, true)
+
 			if (resource === null) {
-				var Resource oldResource = resourceSet.getResource(resourceURI, false)
-				if (oldResource !== null) {
+				val oldResource = resourceSet.getResource(normalizedURI, false)
+				if (oldResource !== null)
 					oldResource.delete(null)
-				}
-				resource = resourceSet.createResource(resourceURI)
-			} else {
+				resource = resourceSet.createResource(normalizedURI)
+			} else
 				resource.load(loadOptions)
-			}
+
 			// Fixes issue caused by JaMoPP: If a model is transitively loaded
-			// (e.g. because of an import) the URI starts with pathmap instead of
-			// the usual URI. If you try to load this model again the URI remains wrong.
-			resource.URI = resourceURI
+			// (e.g. because of an import) the URI starts with pathmap instead
+			// of
+			// the usual URI. If you try to load this model again the URI
+			// remains wrong.
+			resource.setURI(normalizedURI)
 		} catch (IOException e) {
 			// soften
 			throw new RuntimeException(e)

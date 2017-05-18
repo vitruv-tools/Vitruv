@@ -42,7 +42,6 @@ package class EMFModelChangeTransformationUtil {
 			val newValues = affectedEObject.getFeatureValues(affectedAttribute)
 			val resultChanges = new ArrayList<AdditiveAttributeEChange<?, Object>>()
 			for (var index = 0; index < newValues.size; index++) {
-
 				resultChanges +=
 					TypeInferringAtomicEChangeFactory::instance.createInsertAttributeChange(affectedEObject,
 						affectedAttribute, index, newValues.get(index))
@@ -51,7 +50,6 @@ package class EMFModelChangeTransformationUtil {
 		} else {
 			val oldValue = affectedAttribute.defaultValue
 			val newValue = affectedEObject.getFeatureValue(affectedAttribute)
-
 			#[
 				TypeInferringAtomicEChangeFactory::instance.createReplaceSingleAttributeChange(affectedEObject,
 					affectedAttribute, oldValue, newValue)]
@@ -60,17 +58,17 @@ package class EMFModelChangeTransformationUtil {
 
 	def static List<EChange> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference,
 		boolean forceCreate) {
-		val result = new ArrayList<EChange>;
+		val result = new ArrayList<EChange>
 		if (reference.many) {
-			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
+			referencingEObject.getReferenceValueList(reference).forEach [
 				result +=
 					createInsertReferenceChange(referencingEObject, reference,
-						(referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, false)
-			}
+						(referencingEObject.eGet(reference) as EList<?>).indexOf(it), it, forceCreate)
+			]
 		} else {
 			result +=
 				createReplaceSingleValuedReferenceChange(referencingEObject, reference, null,
-					referencingEObject.getReferenceValueList(reference).get(0), false)
+					referencingEObject.getReferenceValueList(reference).get(0), forceCreate)
 		}
 		result
 	}
@@ -98,9 +96,13 @@ package class EMFModelChangeTransformationUtil {
 		hasNonDefaultValue
 	}
 
-	def static private boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject,
+	def private static boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject,
 		EStructuralFeature feature) {
-		feature.changeable && !feature.derived && !feature.transient && feature != eObject.eContainingFeature
+		// Ensure that its not the containing feature by checking if the value equals the container value.
+		// Checking if the feature is the eContainingFeature is not correct because the eObject can be contained
+		// in a reference that it declares itself (e.g. a package contained in a packagedElements reference can also 
+		// have that packagedElements reference if is of the same type)
+		feature.changeable && !feature.derived && !feature.transient && eObject.eContainer != eObject.eGet(feature)
 	}
 
 	def static private boolean valueIsNonDefault(EObject eObject, EStructuralFeature feature) {
