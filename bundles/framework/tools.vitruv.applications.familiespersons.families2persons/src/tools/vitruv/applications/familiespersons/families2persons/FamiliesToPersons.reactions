@@ -2,8 +2,8 @@ import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
 
 reactions: FamiliesToPersons
-in reaction to changes in families
-execute actions in persons
+in reaction to changes in Families
+execute actions in Persons
 
 reaction CreatedMember {
 	after element families::Member created  and inserted as root
@@ -26,7 +26,7 @@ routine createPerson(families::Member member){
 
 reaction DeletedMember {
 	after element families::Member deleted
-	call deletePerson(oldValue)
+	call deletePerson(affectedEObject)
 }
 
 routine deletePerson(families::Member member){
@@ -57,7 +57,7 @@ routine changeFullNameFromFirst(families::Member member){
 
 reaction ChangedLastName {
 	after attribute replaced at families::Family[lastName]
-	call changeFullNameFromLast
+	call changeFullNameFromLast(affectedEObject)
 }
 
 routine changeFullNameFromLast(families::Family family){
