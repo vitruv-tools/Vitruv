@@ -13,4 +13,5 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.tuid,
  edu.kit.ipd.sdq.metamodels.persons;bundle-version="0.1.0",
   org.apache.log4j
+Export-Package: tools.vitruv.domains.persons
 
