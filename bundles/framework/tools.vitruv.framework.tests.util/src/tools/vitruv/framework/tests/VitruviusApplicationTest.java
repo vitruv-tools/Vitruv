@@ -37,7 +37,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	@Override
 	public final void beforeTest() {
 		super.beforeTest();
-		this.changeRecorder = new AtomicEmfChangeRecorder(true);
+		this.changeRecorder = new AtomicEmfChangeRecorder(unresolveChanges());
 		setup();
 	}
 
@@ -47,6 +47,16 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			changeRecorder.endRecording();
 		}
 		cleanup();
+	}
+	
+	/**
+	 * Defines, if recorded changes shall be unresolved and resolved by the change propagation in the VSUM.
+	 * This defaults to <code>false</code>. If the used metamodel allows to use the
+	 * deresolution mechanism, overwrite this method an return <code>true</code>
+	 * @return <code>true</code> if recored changes shall be unresolved, <code>false</code> otherwise
+	 */
+	protected boolean unresolveChanges() {
+		return false;
 	}
 
 	/**
