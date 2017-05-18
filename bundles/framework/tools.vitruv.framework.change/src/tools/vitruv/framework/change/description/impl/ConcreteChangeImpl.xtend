@@ -22,12 +22,12 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
 		this.eChange = eChange
 	}
 
-	public override String toString() {
-		'''«ConcreteChangeImpl.simpleName»: VURI: «this.URI» EChange: «this.eChange»'''
+	override String toString() {
+		'''«ConcreteChangeImpl.simpleName»: VURI: «URI» EChange: «eChange»'''
 	}
 
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		eChange = this.eChange.resolveBefore(resourceSet)
+		eChange = eChange.resolveBefore(resourceSet)
 		registerOldObjectTuidsForUpdate(eChange.affectedEObjects)
 		eChange?.applyForward
 		updateTuids
@@ -49,34 +49,34 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
 	private def dispatch List<EObject> getAffectedEObjects(CompoundEChange eChange) {
 		val List<EObject> objects = new BasicEList<EObject>
 		eChange?.atomicChanges?.forEach[objects.addAll(it.getAffectedEObjects)]
-		return objects
+		objects
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(InsertRootEObject<EObject> eChange) {
-		return #[eChange.newValue]
+		#[eChange.newValue]
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(RemoveRootEObject<EObject> eChange) {
-		return #[eChange.oldValue]
+		#[eChange.oldValue]
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(InsertEReference<EObject, EObject> eChange) {
-		return #[eChange.newValue, eChange.affectedEObject]
+		#[eChange.newValue, eChange.affectedEObject]
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(RemoveEReference<EObject, EObject> eChange) {
-		return #[eChange.oldValue, eChange.affectedEObject]
+		#[eChange.oldValue, eChange.affectedEObject]
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(ReplaceSingleValuedEReference<EObject, EObject> eChange) {
-		return #[eChange.oldValue, eChange.newValue, eChange.affectedEObject]
+		#[eChange.oldValue, eChange.newValue, eChange.affectedEObject]
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(FeatureEChange<EObject, ?> eChange) {
-		return #[eChange.affectedEObject]
+		#[eChange.affectedEObject]
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(EObjectExistenceEChange<EObject> eChange) {
-		return #[eChange.affectedEObject]
+		#[eChange.affectedEObject]
 	}
 }

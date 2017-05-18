@@ -13,73 +13,68 @@ import tools.vitruv.framework.util.datatypes.VURI
  * right before the change described by the recorded {@link ChangeDescription}.
  */
 class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	private final ChangeDescription changeDescription
-	private final VURI vuri
-	private var boolean canBeBackwardsApplied
-	
-    public new(ChangeDescription changeDescription, VURI vuri) {
-    	this.changeDescription = changeDescription
-        this.vuri = vuri
-        this.canBeBackwardsApplied = false
-		extractChangeInformation()
-    }
+	val ChangeDescription changeDescription
+	val VURI vuri
+	var boolean canBeBackwardsApplied
+
+	new(ChangeDescription changeDescription, VURI vuri) {
+		this.changeDescription = changeDescription
+		this.vuri = vuri
+		canBeBackwardsApplied = false
+		extractChangeInformation
+	}
 
 	private def void extractChangeInformation() {
-        val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform
-		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri))
-		}
+		val eChanges = new ChangeDescription2EChangesTransformation(changeDescription).transform
+		eChanges.forEach[addChange(VitruviusChangeFactory::instance.createConcreteChange(it, vuri))]
 		if (changes.empty) {
-			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri))
+			addChange(VitruviusChangeFactory::instance.createEmptyChange(vuri))
 		}
 	}
 
-    override String toString() '''
-    	«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
-    		«FOR eChange : EChanges»
-    			Inner change: «eChange»
-    		«ENDFOR»
-    '''
-        
+	override String toString() '''
+		«EMFModelChangeImpl.simpleName»: VURI «vuri», EChanges:
+			«FOR eChange : EChanges»
+				Inner change: «eChange»
+			«ENDFOR»
+	'''
+
 	override getURI() {
-		return vuri
+		vuri
 	}
-	
+
 	override containsConcreteChange() {
-		return true
+		true
 	}
-	
+
 	override validate() {
-		return true
+		true
 	}
-	
+
 	override applyBackward() throws IllegalStateException {
-		if (!this.canBeBackwardsApplied) {
-			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
+		if (!canBeBackwardsApplied) {
+			throw new IllegalStateException("Change " + this +
+				" cannot be applied backwards as was not forward applied before.");
 		}
-		for (c : changes.reverseView) {
-			c.applyBackward
-		}
-		this.canBeBackwardsApplied = false
+		changes.reverseView.forEach[applyBackward]
+		canBeBackwardsApplied = false
 	}
-	
+
 	override applyForward() throws IllegalStateException {
-		if (this.canBeBackwardsApplied) {
-			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
+		if (canBeBackwardsApplied) {
+			throw new IllegalStateException("Change " + this +
+				" cannot be applied forwards as was not backwards applied before.");
 		}
-		for (c : changes) {
-			c.applyForward
-		}
-		this.canBeBackwardsApplied = true
+		changes.forEach[applyForward]
+		canBeBackwardsApplied = true
 	}
-	
+
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		if (this.canBeBackwardsApplied) {
-			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
+		if (canBeBackwardsApplied) {
+			throw new IllegalStateException("Change " + this +
+				" cannot be applied forwards as was not backwards applied before.");
 		}
-		for (c : changes) {
-			c.resolveBeforeAndApplyForward(resourceSet)
-		}
-		this.canBeBackwardsApplied = true
+		changes.forEach[resolveBeforeAndApplyForward(resourceSet)]
+		canBeBackwardsApplied = true
 	}
 }

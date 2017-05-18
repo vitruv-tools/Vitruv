@@ -23,7 +23,7 @@ class AtomicEMFChangeRecorder {
 	var VURI modelVURI
 	var Collection<Notifier> elementsToObserve
 	var boolean unresolveRecordedChanges
-	
+
 	/**
 	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
 	 * the recorded changes.
@@ -31,7 +31,7 @@ class AtomicEMFChangeRecorder {
 	new() {
 		this(false)
 	}
-	
+
 	/**
 	 * Constructor for AtomicEMFChangeRecorder
 	 * @param 	unresolveRecordedChanges The recorded changes will be replaced
@@ -43,7 +43,7 @@ class AtomicEMFChangeRecorder {
 		changeRecorder.resolveProxies = true
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 	}
-	
+
 	def void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {
 		this.modelVURI = modelVURI
 		this.elementsToObserve.clear
@@ -51,88 +51,85 @@ class AtomicEMFChangeRecorder {
 		changeDescriptions = new ArrayList<ChangeDescription>
 		changeRecorder.beginRecording(elementsToObserve)
 	}
-	
+
 	def List<TransactionalChange> endRecording() {
 		if (!recording) {
 			throw new IllegalStateException
 		}
 		changeRecorder.endRecording
 		changeDescriptions.reverseView.forEach[applyAndReverse]
-		var transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList
+		val transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList
 		correctChanges(transactionalChanges)
-		return transactionalChanges
+		transactionalChanges
 	}
-	
+
 	private def createModelChange(ChangeDescription changeDescription) {
 		if (!(changeDescription.objectChanges.empty && changeDescription.resourceChanges.empty)) {
-			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI)
+			val result = VitruviusChangeFactory::instance.createEMFModelChange(changeDescription, modelVURI)
 			changeDescription.applyAndReverse
-			//result.applyForward
-			return result
+			// result.applyForward
+			result
+		} else {
+			changeDescription.applyAndReverse
+			null	
 		}
-		changeDescription.applyAndReverse
-		return null
 	}
-	
+
 	def List<TransactionalChange> restartRecording() {
 		val modelChanges = endRecording
 		beginRecording(modelVURI, elementsToObserve)
-		return modelChanges
+		modelChanges
 	}
-	
+
 	def boolean isRecording() {
-		return changeRecorder.recording
+		changeRecorder.recording
 	}
-	
+
 	def void dispose() {
 		changeRecorder.dispose
 	}
-	
-	
+
 	/*
 	 * The recorder doesn't produce the correct changes, because all created changes of one change
 	 * description are resolved to the same state before all changes were applied. Every atomic change must be resolved 
 	 * directly to the state before itself is applied => roll everything back and re-apply all changes, while
 	 * correcting the wrong changes.
-	 */		
+	 */
 	def private void correctChanges(List<TransactionalChange> changes) {
 		var eChanges = changes.map[EChanges].flatten.toList
 		// Roll back
-		for (c : eChanges.reverseView) {
+		eChanges.reverseView.forEach [ c |
 			updateStagingArea(c) // corrects the missing or wrong staging area of CreateEObject changes.
 			c.applyBackward
-		}
+		]
 		// Apply again and unresolve the results if necessary
-		for (c : eChanges) {
-			if (this.unresolveRecordedChanges) {
-				val EChange copy = EcoreUtil::copy(c)
+		eChanges.forEach [ c |
+			if (unresolveRecordedChanges) {
+				val copy = EcoreUtil::copy(c)
 				EChangeUnresolver::unresolve(c)
 				copy.applyForward
-			} else {
+			} else
 				c.applyForward
-			}
-		}				
+		]
 	}
-	
+
 	/*
 	 * Updates the staging area to the current state of the model.
 	 */
 	def private dispatch void updateStagingArea(EChange change) {
 		// Is needed to create a dispatch method which is applicable for EChange base class.
 	}
-	
+
 	def private dispatch void updateStagingArea(CreateEObject<EObject> change) {
 		// The newly created object is in a resource after the change, so
 		// the correct staging area can be chosen, before the change
 		// is applied backward.
 		change.stagingArea = StagingArea::getStagingArea(change.affectedEObject.eResource)
 	}
-	
+
 	def private dispatch void updateStagingArea(CompoundEChange change) {
-		change.atomicChanges.forEach[updateStagingArea(it)]
+		change.atomicChanges.forEach[updateStagingArea]
 	}
-	
-	
 
 	/**
 	 * A change recorder that restarts after each change notification to get atomic change descriptions.
@@ -140,12 +137,12 @@ class AtomicEMFChangeRecorder {
 	ChangeRecorder changeRecorder = new ChangeRecorder {
 		private Collection<?> rootObjects
 		private boolean isDisposed = false
-		
+
 		override dispose() {
 			this.isDisposed = true
 			super.dispose
 		}
-		
+
 		override notifyChanged(Notification notification) {
 			if (isRecording && !isDisposed) {
 				super.notifyChanged(notification)
@@ -153,20 +150,20 @@ class AtomicEMFChangeRecorder {
 				beginRecording(rootObjects)
 			}
 		}
-		
+
 		override beginRecording(Collection<?> rootObjects) {
-			if (!isDisposed) { 
+			if (!isDisposed) {
 				this.rootObjects = rootObjects
 				super.beginRecording(rootObjects)
 			}
 		}
-		
+
 		override endRecording() {
-			if (!isDisposed) { 
+			if (!isDisposed) {
 				changeDescriptions += super.endRecording
 			}
-			return changeDescription
+			changeDescription
 		}
 	}
-	
+
 }

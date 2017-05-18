@@ -7,18 +7,18 @@ import tools.vitruv.extensions.dslsruntime.reactions.correspondenceFailHandler.C
 
 class CorrespondenceFailHandlerFactory {
 	static def CorrespondenceFailHandler createExceptionHandler() {
-		return new CorrespondenceFailException();
+		new CorrespondenceFailException
 	}
-	
+
 	static def CorrespondenceFailHandler createDefaultUserDialogHandler(boolean abortEffect) {
-		return new CorrespondenceFailDefaultDialog(abortEffect);
+		new CorrespondenceFailDefaultDialog(abortEffect)
 	}
-	
+
 	static def CorrespondenceFailHandler createCustomUserDialogHandler(boolean abortEffect, String message) {
-		return new CorrespondenceFailCustomDialog(abortEffect, message);	
+		new CorrespondenceFailCustomDialog(abortEffect, message)
 	}
-	
+
 	static def CorrespondenceFailHandler createDoNothingHandler(boolean abortEffect) {
-		return new CorrespondenceFailDoNothing(abortEffect);
+		new CorrespondenceFailDoNothing(abortEffect)
 	}
 }

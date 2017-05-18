@@ -39,49 +39,50 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 
 	def protected abstract Iterable<VitruvDomain> getVitruvDomains()
 
-	@After def abstract void afterTest()
+	@After
+	def abstract void afterTest()
 
-	@Before 
+	@Before
 	override void beforeTest() {
 		super.beforeTest
-		this.resourceSet = new ResourceSetImpl
-		var String testMethodName = testName.methodName
+		resourceSet = new ResourceSetImpl
+		val String testMethodName = testName.methodName
 		createVirtualModel(testMethodName)
 	}
 
 	def private void createVirtualModel(String testName) {
-		var String currentTestProjectVsumName = '''«testName»_vsum_'''
-		var Iterable<VitruvDomain> domains = this.vitruvDomains
-		this.virtualModel = TestUtil::createVirtualModel(currentTestProjectVsumName, true, domains,
-			createChangePropagationSpecifications())
+		val String currentTestProjectVsumName = '''«testName»_vsum_'''
+		val Iterable<VitruvDomain> domains = vitruvDomains
+		virtualModel = TestUtil::createVirtualModel(currentTestProjectVsumName, true, domains,
+			createChangePropagationSpecifications)
 		// TODO HK Implement correctly: Should be obsolete when correspondence
 		// model is not MM-pair-specific any more
-		var Iterator<VitruvDomain> iterator = domains.iterator
-		var VitruvDomain firstMetamodel = iterator.next
-		var VitruvDomain secondMetamodel = if(iterator.hasNext) iterator.next else firstMetamodel
-		this.correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.URI, secondMetamodel.URI)
-		this.testUserInteractor = new TestUserInteractor
-		this.virtualModel.userInteractor = testUserInteractor
+		val Iterator<VitruvDomain> iterator = domains.iterator
+		val VitruvDomain firstMetamodel = iterator.next
+		val VitruvDomain secondMetamodel = if (iterator.hasNext) iterator.next else firstMetamodel
+		correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.URI, secondMetamodel.URI)
+		testUserInteractor = new TestUserInteractor
+		virtualModel.userInteractor = testUserInteractor
 	}
 
 	def protected CorrespondenceModel getCorrespondenceModel() {
-		return correspondenceModel
+		correspondenceModel
 	}
 
 	def protected InternalVirtualModel getVirtualModel() {
-		return virtualModel
+		virtualModel
 	}
 
 	def protected TestUserInteractor getUserInteractor() {
-		return testUserInteractor
+		testUserInteractor
 	}
 
 	def private String getPlatformModelPath(String modelPathWithinProject) {
-		return '''«currentTestProject.name»/«modelPathWithinProject»'''
+		'''«currentTestProject.name»/«modelPathWithinProject»'''
 	}
 
 	def private VURI getModelVuri(String modelPathWithinProject) {
-		return VURI::getInstance(getPlatformModelPath(modelPathWithinProject))
+		VURI::getInstance(getPlatformModelPath(modelPathWithinProject))
 	}
 
 	/** 
@@ -93,11 +94,11 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * registered for resource with the given file extension
 	 */
 	def protected Resource createModelResource(String modelPathWithinProject) {
-		return resourceSet.createResource(getModelVuri(modelPathWithinProject).EMFUri)
+		resourceSet.createResource(getModelVuri(modelPathWithinProject).EMFUri)
 	}
 
 	def private Resource getModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
-		return resourceSet.getResource(getModelVuri(modelPathWithinProject).EMFUri, true)
+		resourceSet.getResource(getModelVuri(modelPathWithinProject).EMFUri, true)
 	}
 
 	/** 
@@ -107,7 +108,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * <code>null</code> if it could not be loaded
 	 */
 	def protected Resource getModelResource(URI modelUri) {
-		return resourceSet.getResource(modelUri, true)
+		resourceSet.getResource(modelUri, true)
 	}
 
 	/** 
@@ -119,11 +120,11 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * it could not be loaded
 	 */
 	def protected Resource getModelResource(String modelPathWithinProject) {
-		return getModelResource(modelPathWithinProject, this.resourceSet)
+		getModelResource(modelPathWithinProject, this.resourceSet)
 	}
 
 	def private EObject getFirstRootElement(String modelPathWithinProject, ResourceSet resourceSet) {
-		var List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).contents
+		val List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).contents
 		if (resourceContents.size < 1) {
 			throw new IllegalStateException("Model has no root")
 		}
@@ -139,7 +140,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * @throws IllegalStateExceptionif the resource does not contain a root element
 	 */
 	def protected EObject getFirstRootElement(String modelPathWithinProject) {
-		return getFirstRootElement(modelPathWithinProject, this.resourceSet)
+		getFirstRootElement(modelPathWithinProject, this.resourceSet)
 	}
 
 	/** 
@@ -149,7 +150,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * including the model file extension
 	 */
 	def protected void assertModelExists(String modelPathWithinProject) {
-		var boolean modelExists = EMFBridge::existsResourceAtUri(getModelVuri(modelPathWithinProject).EMFUri)
+		val modelExists = EMFBridge::existsResourceAtUri(getModelVuri(modelPathWithinProject).EMFUri)
 		assertTrue('''Model at «modelPathWithinProject» does not exist bust should'''.toString, modelExists)
 	}
 
@@ -160,7 +161,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * including the model file extension
 	 */
 	def protected void assertModelNotExists(String modelPathWithinProject) {
-		var boolean modelExists = EMFBridge::existsResourceAtUri(getModelVuri(modelPathWithinProject).EMFUri)
+		val modelExists = EMFBridge::existsResourceAtUri(getModelVuri(modelPathWithinProject).EMFUri)
 		assertFalse('''Model at «modelPathWithinProject» exists but should not'''.toString, modelExists)
 	}
 
@@ -174,9 +175,9 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 */
 	def protected void assertPersistedModelsEqual(String firstModelPathWithinProject,
 		String secondModelPathWithinProject) {
-		var ResourceSet testResourceSet = new ResourceSetImpl
-		var EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet)
-		var EObject secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet)
+		val ResourceSet testResourceSet = new ResourceSetImpl
+		val firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet)
+		val secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet)
 		assertTrue(EcoreUtil::equals(firstRoot, secondRoot))
 	}
 }

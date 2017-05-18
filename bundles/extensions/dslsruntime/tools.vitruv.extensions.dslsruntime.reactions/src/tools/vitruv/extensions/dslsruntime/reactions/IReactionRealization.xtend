@@ -5,6 +5,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ChangePropagationResult
 
 public interface IReactionRealization {
-	public def ChangePropagationResult applyEvent(EChange change, CorrespondenceModel correspondenceModel);
-	public def boolean checkPrecondition(EChange change);
+	public def ChangePropagationResult applyEvent(EChange change, CorrespondenceModel correspondenceModel)
+
+	public def boolean checkPrecondition(EChange change)
 }

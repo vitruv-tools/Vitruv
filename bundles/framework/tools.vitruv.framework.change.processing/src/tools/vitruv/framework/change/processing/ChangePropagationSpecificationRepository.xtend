@@ -7,31 +7,31 @@ import java.util.ArrayList
 import tools.vitruv.framework.domains.VitruvDomain
 
 class ChangePropagationSpecificationRepository implements ChangePropagationSpecificationProvider {
-	private Map<VitruvDomain, List<ChangePropagationSpecification>> metamodelToPropagationSpecifications;
+	var Map<VitruvDomain, List<ChangePropagationSpecification>> metamodelToPropagationSpecifications
 
-	public new() {
-		metamodelToPropagationSpecifications = new HashMap<VitruvDomain, List<ChangePropagationSpecification>>();
+	new() {
+		metamodelToPropagationSpecifications = new HashMap<VitruvDomain, List<ChangePropagationSpecification>>
 	}
-	
-	public override List<ChangePropagationSpecification> getChangePropagationSpecifications(VitruvDomain sourceDomain) {
-		val result = new ArrayList<ChangePropagationSpecification>();
+
+	override List<ChangePropagationSpecification> getChangePropagationSpecifications(VitruvDomain sourceDomain) {
+		val result = new ArrayList<ChangePropagationSpecification>
 		if (metamodelToPropagationSpecifications.containsKey(sourceDomain)) {
-			result.addAll(metamodelToPropagationSpecifications.get(sourceDomain));
+			result.addAll(metamodelToPropagationSpecifications.get(sourceDomain))
 		}
-		return result;
+		result
 	}
-	
-	public def void putChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
-		val changedDomain = changePropagationSpecification.sourceDomain;
-		if (!this.metamodelToPropagationSpecifications.containsKey(changedDomain)) {
-			this.metamodelToPropagationSpecifications.put(changedDomain, new ArrayList<ChangePropagationSpecification>());
+
+	def void putChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
+		val changedDomain = changePropagationSpecification.sourceDomain
+		if (!metamodelToPropagationSpecifications.containsKey(changedDomain)) {
+			metamodelToPropagationSpecifications.put(changedDomain, new ArrayList<ChangePropagationSpecification>)
 		}
-		val propagationSpecifications = this.metamodelToPropagationSpecifications.get(changedDomain);
-		propagationSpecifications.add(changePropagationSpecification);
+		val propagationSpecifications = metamodelToPropagationSpecifications.get(changedDomain)
+		propagationSpecifications.add(changePropagationSpecification)
 	}
-	
+
 	override iterator() {
-		return metamodelToPropagationSpecifications.values.flatten.toList.iterator();
+		metamodelToPropagationSpecifications.values.flatten.toList.iterator
 	}
-	
+
 }

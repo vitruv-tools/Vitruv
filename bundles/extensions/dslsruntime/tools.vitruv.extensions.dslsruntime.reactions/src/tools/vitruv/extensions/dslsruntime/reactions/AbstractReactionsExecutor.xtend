@@ -12,51 +12,49 @@ import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.domains.VitruvDomain
 
 abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpecification {
-	private final static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
+	static val LOGGER = Logger::getLogger(AbstractReactionsExecutor)
 
-	private Change2ReactionsMap changeToReactionsMap;
-	
-	new (UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(userInteracting, sourceDomain, targetDomain);
-		this.changeToReactionsMap = new Change2ReactionsMap();
-		this.setup();
+	Change2ReactionsMap changeToReactionsMap
+
+	new(UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+		super(userInteracting, sourceDomain, targetDomain)
+		changeToReactionsMap = new Change2ReactionsMap
+		setup
 	}
-	
+
 	protected def void addReaction(Class<? extends EChange> eventType, IReactionRealization reaction) {
-		this.changeToReactionsMap.addReaction(eventType, reaction);
+		changeToReactionsMap.addReaction(eventType, reaction)
 	}
-	
+
 	private def Iterable<IReactionRealization> getRelevantReactions(EChange change) {
-		return this.changeToReactionsMap.getReactions(change).filter[checkPrecondition(change)];
+		changeToReactionsMap.getReactions(change).filter[checkPrecondition(change)]
 	}
-	
+
 	public override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
-		return !change.relevantReactions.isEmpty
+		!change.relevantReactions.empty
 	}
-	
+
 	public override propagateChange(EChange event, CorrespondenceModel correspondenceModel) {
-		val propagationResult = new ChangePropagationResult();
+		val propagationResult = new ChangePropagationResult
 		if (event instanceof CompoundEChange) {
-			for (atomicChange : event.atomicChanges) {
-				propagationResult.integrateResult(propagateChange(atomicChange, correspondenceModel));
-			}
+			event.atomicChanges.forEach[propagationResult.integrateResult(propagateChange(it, correspondenceModel))]
 		}
-		val relevantReactionss = event.relevantReactions;
-		LOGGER.debug("Call relevant reactions");
-		for (reactions : relevantReactionss) {
-			LOGGER.debug(reactions.toString());
-			val currentPropagationResult = reactions.applyEvent(event, correspondenceModel)
-			propagationResult.integrateResult(currentPropagationResult);
-		}
-		return propagationResult;
+		val relevantReactionss = event.relevantReactions
+		LOGGER.debug("Call relevant reactions")
+		relevantReactionss.forEach [
+			LOGGER.debug(toString)
+			val currentPropagationResult = applyEvent(event, correspondenceModel)
+			propagationResult.integrateResult(currentPropagationResult)
+		]
+		propagationResult
 	}
-	
+
 	override setUserInteracting(UserInteracting userInteracting) {
-		super.setUserInteracting(userInteracting);
-		changeToReactionsMap = new Change2ReactionsMap();
-		setup();
+		super.userInteracting = userInteracting
+		changeToReactionsMap = new Change2ReactionsMap
+		setup
 	}
-	
-	protected abstract def void setup();
-	
+
+	protected abstract def void setup()
+
 }
