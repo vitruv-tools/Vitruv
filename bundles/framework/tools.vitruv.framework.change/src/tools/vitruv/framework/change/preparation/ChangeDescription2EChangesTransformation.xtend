@@ -157,12 +157,12 @@ public class ChangeDescription2EChangesTransformation {
 
 	def private void addChangeForAddResourceChange(ResourceChange resourceChange, ListChange listChange,
 		Resource newResource) {
-		for (rootToAdd : listChange.referenceValues) {
-			var oldRootContainer = rootToAdd.eContainer
-			var oldRootResource = rootToAdd.eResource
-			var index = listChange.index
-			eChanges.add(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource, newResource, index))
-		}
+		listChange.referenceValues.forEach [
+			val oldRootContainer = eContainer
+			val oldRootResource = eResource
+			val index = listChange.index
+			eChanges.add(createInsertRootChange(it, oldRootContainer, oldRootResource, newResource, index))
+		]
 	}
 
 	def private void addChangeForRemoveResourceChange(ResourceChange resourceChange, ListChange listChange,
@@ -180,13 +180,12 @@ public class ChangeDescription2EChangesTransformation {
 	def private void recursivelyAddChangesForNonDefaultValues(EObject eObject) {
 		if (eObject.hasNonDefaultValue) {
 			val metaclass = eObject.eClass
-			for (feature : metaclass.EAllStructuralFeatures.filter(EAttribute)) {
-				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
-
-					val recursiveChanges = createAdditiveChangesForValue(eObject, feature)
-					eChanges.addAll(recursiveChanges)
-				}
-			}
+			metaclass.EAllStructuralFeatures.filter(EAttribute).filter [feature|
+				eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)
+			].forEach [ feature |
+				val recursiveChanges = createAdditiveChangesForValue(eObject, feature)
+				eChanges.addAll(recursiveChanges)
+			]
 			for (feature : metaclass.EAllStructuralFeatures.filter(EReference)) {
 				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
 

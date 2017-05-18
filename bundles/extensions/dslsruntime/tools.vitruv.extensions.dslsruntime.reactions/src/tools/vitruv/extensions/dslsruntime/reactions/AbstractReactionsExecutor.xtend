@@ -41,11 +41,11 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 		}
 		val relevantReactionss = event.relevantReactions
 		LOGGER.debug("Call relevant reactions")
-		for (reactions : relevantReactionss) {
-			LOGGER.debug(reactions.toString)
-			val currentPropagationResult = reactions.applyEvent(event, correspondenceModel)
+		relevantReactionss.forEach [
+			LOGGER.debug(toString)
+			val currentPropagationResult = applyEvent(event, correspondenceModel)
 			propagationResult.integrateResult(currentPropagationResult)
-		}
+		]
 		propagationResult
 	}
 
