@@ -15,6 +15,7 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
+import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -39,11 +40,13 @@ class VitruviusChangeFactory {
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
 	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		return new EMFModelChangeImpl(changeDescription, vuri);
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
+		return new EMFModelChangeImpl(changes, vuri);
 	}
 	
 	public def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		return new LegacyEMFModelChangeImpl(changeDescription, vuri);
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
+		return new LegacyEMFModelChangeImpl(changeDescription, changes, vuri);
 	}
 	
 	public def ConcreteChange createConcreteChange(EChange change, VURI vuri) {

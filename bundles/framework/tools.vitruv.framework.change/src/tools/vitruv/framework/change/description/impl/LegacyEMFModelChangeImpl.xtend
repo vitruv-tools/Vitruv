@@ -4,12 +4,12 @@ import org.eclipse.emf.ecore.change.ChangeDescription
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.tuid.TuidManager
 import java.util.HashSet
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.echange.EChange
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
@@ -20,15 +20,14 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 	private final VURI vuri;
 	private var boolean canBeBackwardsApplied;
 	
-    public new(ChangeDescription changeDescription, VURI vuri) {
+    public new(ChangeDescription changeDescription, Iterable<EChange> eChanges, VURI vuri) {
     	this.changeDescription = changeDescription;
         this.vuri = vuri;
         this.canBeBackwardsApplied = false;
-		extractChangeInformation();
+		addChanges(eChanges);
     }
 
-	private def void extractChangeInformation() {
-        val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform()
+	private def void addChanges(Iterable<EChange> eChanges) {
 		for (eChange : eChanges) {
 			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
 		}
