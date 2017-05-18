@@ -1,11 +1,11 @@
 package tools.vitruv.applications.familiespersons.families2Persons.test
 
 import tools.vitruv.framework.tests.VitruviusApplicationTest
-import edu.kit.ipd.sdq.metamodels.persons.PersonsRoot
 import tools.vitruv.domains.persons.PersonsDomainProvider
 import tools.vitruv.domains.families.FamiliesDomainProvider
 import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
-import edu.kit.ipd.sdq.metamodels.families.FamiliesRoot
+import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
+import tools.vitruv.applications.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification
 
 class AbstractFamiliesToPersonsTest extends VitruviusApplicationTest {
 	private static val MODEL_FILE_EXTENSION = "families";
@@ -15,8 +15,8 @@ class AbstractFamiliesToPersonsTest extends VitruviusApplicationTest {
 		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
 	}
 	
-	protected def FamiliesRoot getRootElement() {
-		return MODEL_NAME.projectModelPath.firstRootElement as FamiliesRoot;
+	protected def FamilyRegister getRootElement() {
+		return MODEL_NAME.projectModelPath.firstRootElement as FamilyRegister;
 	}
 	
 	override protected createChangePropagationSpecifications() {
@@ -24,11 +24,11 @@ class AbstractFamiliesToPersonsTest extends VitruviusApplicationTest {
 	}
 	
 	override protected getVitruvDomains() {
-		return #[new FamiliesDomainProvider(), new PersonsDomainProvider()];
+		return #[new FamiliesDomainProvider().domain, new PersonsDomainProvider().domain];
 	}
 	
 	override protected setup() {
-		val rootObject = PersonsFactory.eINSTANCE.createPersonsRoot;
+		val rootObject = PersonsFactory.eINSTANCE.createPersonRegister;
 		createAndSynchronizeModel(MODEL_NAME.projectModelPath, rootObject);
 	}
 	

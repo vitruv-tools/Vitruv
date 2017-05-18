@@ -13,6 +13,8 @@ Require-Bundle: com.google.guava,
  tools.vitruv.domains.families,
  tools.vitruv.domains.persons,
  tools.vitruv.framework.tests.util;bundle-version="0.2.0",
- org.junit;bundle-version="4.8.1"
+ org.junit;bundle-version="4.8.1",
+ tools.vitruv.applications.familiespersons.persons2families,
+ tools.vitruv.framework.change.processing
 
 

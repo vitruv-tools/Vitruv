@@ -1,7 +1,6 @@
 package tools.vitruv.application.familiespersons.persons2families.test
 
 import org.junit.Test
-import static org.junit.Assert.*;
 import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
 
 class PersonsToFamiliesTest extends AbstractPersonsToFamiliesTest{
