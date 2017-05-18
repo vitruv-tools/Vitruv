@@ -29,7 +29,9 @@ class AtomicEChangeAssertHelper {
 	public def static assertEObjectExistenceChange(EChange change, EObject affectedEObject, StagingArea stagingArea) {
 		val eObjectExistingChange = assertObjectInstanceOf(change, EObjectExistenceEChange);
 		eObjectExistingChange.assertAffectedEObject(affectedEObject)
-		eObjectExistingChange.assertStagingArea(stagingArea)
+		if (stagingArea != null) {
+			eObjectExistingChange.assertStagingArea(stagingArea)
+		}
 	}
 	public def static assertCreateEObject(EChange change, EObject affectedEObject, StagingArea stagingArea) {
 		val createEObject = assertObjectInstanceOf(change, CreateEObject);
@@ -98,10 +100,10 @@ class AtomicEChangeAssertHelper {
 	}
 	
 	def static void assertSetSingleValuedEReference(EChange change,	EObject affectedEObject, EStructuralFeature affectedFeature, 
-			EObject expectedNewValue, boolean isContainment, boolean isCreate) {
+			EObject expectedNewValue, boolean isContainment, boolean isCreate, boolean unresolvedChanges) {
 		if (isContainment && isCreate) {
 			val createAndReplaceChange = change.assertObjectInstanceOf(CreateAndReplaceNonRoot)
-			createAndReplaceChange.assertCreateAndReplaceNonRoot(expectedNewValue, affectedEObject, affectedFeature)
+			createAndReplaceChange.assertCreateAndReplaceNonRoot(expectedNewValue, affectedEObject, affectedFeature, unresolvedChanges)
 		} else {
 			val replaceChange = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
 			replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, null, expectedNewValue, isContainment);

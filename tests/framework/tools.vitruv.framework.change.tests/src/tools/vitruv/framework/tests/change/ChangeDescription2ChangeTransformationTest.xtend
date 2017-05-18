@@ -24,7 +24,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	var protected AtomicEmfChangeRecorder changeRecorder
 	var protected Root rootElement
 	var private List<EChange> changes
-	var private unresolveAndResolveRecordedEChanges = true
+	val protected boolean unresolveAndResolveRecordedEChanges
 	var rs = new ResourceSetImpl
 	val private List<File> filesToDelete = new ArrayList<File>();
 
@@ -37,6 +37,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 
 	new() {
 		rs.resourceFactoryRegistry.extensionToFactoryMap.put("xmi", new XMIResourceFactoryImpl());
+		unresolveAndResolveRecordedEChanges = false;
 	}
 
 	protected def Root createRootInResource(int count) {
