@@ -16,18 +16,10 @@ import org.eclipse.emf.ecore.change.ListChange
 import org.eclipse.emf.ecore.change.ResourceChange
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
-import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
-import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 
 import static extension tools.vitruv.framework.change.preparation.EMFModelChangeTransformationUtil.*
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
-import java.util.Collections
-import org.eclipse.emf.ecore.change.ChangeDescription
-import java.util.ArrayList
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
-import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 
 public class ChangeDescription2EChangesTransformation {
 
