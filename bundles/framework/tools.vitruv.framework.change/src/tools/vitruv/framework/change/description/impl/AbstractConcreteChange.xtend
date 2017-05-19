@@ -4,8 +4,12 @@ import java.util.ArrayList
 import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
+import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 abstract class AbstractConcreteChange implements ConcreteChange {
+	private static val logger = Logger.getLogger(AbstractConcreteChange);
+	
 	protected EChange eChange;
 	final VURI vuri;
 	
@@ -34,11 +38,15 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 	
 	override applyBackward() {
-		this.eChange.applyBackward
+		logger.warn("The applyBackward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 	
 	override applyForward() {
-		this.eChange.applyForward
+		logger.warn("The applyForward method is not implemented for " + this.class.simpleName + " yet.");
+	}
+	
+	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+		logger.warn("The resolveBeforeAndapplyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 	
 	override applyBackwardIfLegacy() {

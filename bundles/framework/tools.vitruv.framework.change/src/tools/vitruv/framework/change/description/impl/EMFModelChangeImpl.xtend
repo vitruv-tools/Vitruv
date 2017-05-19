@@ -24,7 +24,7 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 
 	private def void addChanges(Iterable<EChange> eChanges) {
 		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
+			addChange(VitruviusChangeFactory.instance.createConcreteApplicableChange(eChange, vuri));
 		}
 		if (changes.empty) {
 			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
