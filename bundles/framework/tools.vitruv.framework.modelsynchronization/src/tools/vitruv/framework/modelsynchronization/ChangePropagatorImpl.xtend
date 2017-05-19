@@ -54,14 +54,13 @@ class ChangePropagatorImpl implements ChangePropagator {
 		if (!change.validate()) {
 			throw new IllegalArgumentException('''Change contains changes from different models: «change»''')
 		}
+		
 		startChangePropagation(change);
 		change.applyBackwardIfLegacy();
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		val propagationResult = new ChangePropagationResult();
-		
 		propagateSingleChange(change, result, propagationResult, changedResourcesTracker);
-		
 		changedResourcesTracker.markNonSourceResourceAsChanged();
 		executePropagationResult(propagationResult);
 		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
@@ -106,8 +105,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension);
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
-
-		}	
+		}
 	}
 	
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
