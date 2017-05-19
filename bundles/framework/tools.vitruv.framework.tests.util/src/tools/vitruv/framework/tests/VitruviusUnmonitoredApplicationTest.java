@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -61,13 +60,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		Iterable<VitruvDomain> domains = this.getVitruvDomains();
 		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, true, domains,
 				createChangePropagationSpecifications());
-		// TODO HK Implement correctly: Should be obsolete when correspondence
-		// model is not MM-pair-specific any more
-		Iterator<VitruvDomain> it = domains.iterator();
-		VitruvDomain firstMetamodel = it.next();
-		VitruvDomain secondMetamodel = it.hasNext() ? it.next() : firstMetamodel;
-		this.correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.getURI(),
-				secondMetamodel.getURI());
+		this.correspondenceModel = virtualModel.getCorrespondenceModel();
 		this.testUserInteractor = new TestUserInteractor();
 		this.getVirtualModel().setUserInteractor(testUserInteractor);
 	}

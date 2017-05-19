@@ -16,12 +16,9 @@ import org.eclipse.emf.ecore.change.ResourceChange
 import static extension tools.vitruv.framework.change.preparation.EMFModelChangeTransformationUtil.*
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import java.util.Collections
-import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
-import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import org.eclipse.emf.ecore.change.ChangeDescription
 import java.util.ArrayList
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 
 public class ChangeDescription2EChangesTransformation {
 
@@ -129,7 +126,8 @@ public class ChangeDescription2EChangesTransformation {
 			changeDescription.objectChanges?.forEach[addChangesForObjectChange(it)]
 
 			for (objectToAttach : changeDescription.getObjectsToAttach) {
-				recursivelyAddChangesForNonDefaultValues(objectToAttach)
+				recursivelyAddChangesForNonDefaultAttributesAndContainments(objectToAttach)
+				recursivelyAddChangesForNonDefaultReferences(objectToAttach)
 //				addChangeForObjectToAttach(objectToAttach, changeDescription.getNewContainer(objectToAttach))
 			}
 			//changeDescription.applyAndReverse
@@ -178,7 +176,7 @@ public class ChangeDescription2EChangesTransformation {
 				resourceURI))
 	}
 
-	def private void recursivelyAddChangesForNonDefaultValues(EObject eObject) {
+	def private void recursivelyAddChangesForNonDefaultAttributesAndContainments(EObject eObject) {
 		if (eObject.hasNonDefaultValue()) {
 			val metaclass = eObject.eClass
 			for (feature : metaclass.EAllStructuralFeatures.filter(EAttribute)) {
@@ -187,13 +185,35 @@ public class ChangeDescription2EChangesTransformation {
 					eChanges.addAll(recursiveChanges);
 				}
 			}
-			for (feature : metaclass.EAllStructuralFeatures.filter(EReference)) {
+			for (feature : metaclass.EAllStructuralFeatures.filter(EReference).filter[isContainment]) {
 				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
 					val recursiveChanges = EMFModelChangeTransformationUtil.createAdditiveCreateChangesForValue(eObject, feature);
 					eChanges.addAll(recursiveChanges);
-					val additiveReferenceChanges = (recursiveChanges + recursiveChanges.filter(CompoundEChange).map[atomicChanges].flatten).filter(AdditiveReferenceEChange)
-					for (change : additiveReferenceChanges) {
-						if ((change as UpdateReferenceEChange<?>).affectedFeature.containment) recursivelyAddChangesForNonDefaultValues(change.newValue as EObject);
+					for (element : eObject.getReferencedElements(feature)) {
+						recursivelyAddChangesForNonDefaultAttributesAndContainments(element);
+					}
+				}
+			}
+		}
+	}
+
+	def static private List<? extends EObject> getReferencedElements(EObject eObject, EReference reference) {
+		return if (reference.many) eObject.eGet(reference) as List<? extends EObject> else #[eObject.eGet(reference) as EObject];
+	}
+
+	def private void recursivelyAddChangesForNonDefaultReferences(EObject eObject) {
+		if (eObject.hasNonDefaultValue()) {
+			val metaclass = eObject.eClass
+			for (feature : metaclass.EAllStructuralFeatures.filter(EReference).filter[!containment]) {
+				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
+					val recursiveChanges = EMFModelChangeTransformationUtil.createAdditiveChangesForValue(eObject, feature);
+					eChanges.addAll(recursiveChanges);
+				}
+			}
+			for (feature : metaclass.EAllStructuralFeatures.filter(EReference).filter[containment]) {
+				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
+					for (element : eObject.getReferencedElements(feature)) {
+						recursivelyAddChangesForNonDefaultReferences(element);
 					}
 				}
 			}

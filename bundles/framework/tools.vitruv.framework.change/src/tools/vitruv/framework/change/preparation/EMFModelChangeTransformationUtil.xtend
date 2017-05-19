@@ -61,10 +61,10 @@ package class EMFModelChangeTransformationUtil {
 		val result = new ArrayList<EChange>(); 
 		if (reference.isMany) {
 			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
-				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, true);
+				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, forceCreate);
 			}
 		} else {
-				result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), true);
+				result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), forceCreate);
 		}
 		return result;
 	}
@@ -93,7 +93,11 @@ package class EMFModelChangeTransformationUtil {
 	}
 	
 	def private static boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject, EStructuralFeature feature) {
-        return feature.isChangeable() && !feature.isDerived() && !feature.isTransient() && feature != eObject.eContainingFeature();
+		// Ensure that its not the containing feature by checking if the value equals the container value.
+		// Checking if the feature is the eContainingFeature is not correct because the eObject can be contained
+		// in a reference that it declares itself (e.g. a package contained in a packagedElements reference can also 
+		// have that packagedElements reference if is of the same type)
+        return feature.isChangeable() && !feature.isDerived() && !feature.isTransient() && eObject.eContainer != eObject.eGet(feature);
 	}
 	
 	def private static boolean valueIsNonDefault(EObject eObject, EStructuralFeature feature) {

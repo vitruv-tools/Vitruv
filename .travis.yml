@@ -1,5 +1,5 @@
 language: java
-sudo: false
+sudo: required
 jdk:
   - oraclejdk8
 env:  
@@ -8,6 +8,11 @@ env:
 cache:  
   directories:  
    - $HOME/.m2  
+
+notifications:
+  email:
+    recipients:
+      - vitruv-build@ira.uni-karlsruhe.de
 
 # Handle git submodules yourself
 git:

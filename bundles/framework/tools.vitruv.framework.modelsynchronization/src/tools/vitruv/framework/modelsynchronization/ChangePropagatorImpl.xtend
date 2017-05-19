@@ -15,7 +15,6 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecificationPr
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.util.command.ChangePropagationResult
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.ModelRepository
 
@@ -103,7 +102,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 	
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
 			List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
-		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(VURI.getInstance(propagationSpecification.sourceDomain.metamodelRootPackage.nsURI), VURI.getInstance(propagationSpecification.targetDomain.metamodelRootPackage.nsURI));
+		val correspondenceModel = correspondenceProviding.getCorrespondenceModel();
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
