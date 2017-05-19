@@ -74,7 +74,8 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
             final boolean forceLoadByDoingUnloadBeforeLoad) {
         final ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
         try {
-            if (EMFBridge.existsResourceAtUri(modelURI.getEMFUri())) {
+            if (modelURI.getEMFUri().toString().startsWith("pathmap")
+                    || EMFBridge.existsResourceAtUri(modelURI.getEMFUri())) {
                 modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions(),
                         forceLoadByDoingUnloadBeforeLoad);
             }
