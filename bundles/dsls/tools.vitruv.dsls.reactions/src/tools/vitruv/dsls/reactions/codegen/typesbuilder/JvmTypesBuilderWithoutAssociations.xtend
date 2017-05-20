@@ -39,7 +39,7 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	/* @Nullable */
 	public def JvmOperation generateUnassociatedMethod(/* @Nullable */ String name, /* @Nullable */ JvmTypeReference returnType,
 			/* @Nullable */ Procedure1<? super JvmOperation> initializer) {
-		if(name == null) 
+		if(name === null) 
 			return null;
 		val result = typesFactory.createJvmOperation();
 		result.setSimpleName(name);
@@ -70,7 +70,7 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	/* @Nullable */	
 	public def JvmField generateUnassociatedField(/* @Nullable */ String name, /* @Nullable */ JvmTypeReference typeRef, 
 			/* @Nullable */ Procedure1<? super JvmField> initializer) {
-		if(name == null) 
+		if(name === null) 
 			return null;
 		val result = typesFactory.createJvmField();
 		result.setSimpleName(name);
@@ -90,7 +90,7 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	 */
 	/* @Nullable */
 	public override <T extends EObject> T associate(/* @Nullable */ EObject sourceElement, /* @Nullable */ T target) {
-		if(sourceElement != null && target != null && sourceElement.eResource != null && isValidSource(sourceElement))
+		if(sourceElement !== null && target !== null && sourceElement.eResource !== null && isValidSource(sourceElement))
 			associator.associate(sourceElement, target);
 		return target;
 	}
@@ -104,18 +104,18 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	
 	public def JvmGenericType generateUnassociatedClass(/* @Nullable */ String name, /* @Nullable */ Procedure1<? super JvmGenericType> initializer) {
 		val result = createJvmGenericType(name);
-		if (result == null)
+		if (result === null)
 			return null;
 		return initializeSafely(result, initializer);
 	}
 	
 	protected def JvmGenericType createJvmGenericType(/* @Nullable */ String name) {
-		if (name == null)
+		if (name === null)
 			return null;
 		val fullName = splitQualifiedName(name);
 		val result = typesFactory.createJvmGenericType();
 		result.setSimpleName(fullName.getSecond());
-		if (fullName.getFirst() != null)
+		if (fullName.getFirst() !== null)
 			result.setPackageName(fullName.getFirst());
 		result.setVisibility(JvmVisibility.PUBLIC);
 		return result;

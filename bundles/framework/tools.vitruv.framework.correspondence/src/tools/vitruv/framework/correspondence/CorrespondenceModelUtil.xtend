@@ -23,11 +23,11 @@ class CorrespondenceModelUtil {
 	 *         no correspondences.
 	 */
 	// FIXME ML is this method correct? Is there some cool Xtend feature which makes this method shorter? 
-	def public static Set<EObject> getCorrespondingEObjects(GenericCorrespondenceModel<?> ci, EObject eObject) {
+	def static Set<EObject> getCorrespondingEObjects(GenericCorrespondenceModel<?> ci, EObject eObject) {
 		val correspondingEObjects = ci.getCorrespondingEObjects(eObject.toList)
 		val eObjects = Sets.newHashSet
-		correspondingEObjects.forEach(list|eObjects.addAll(list))
-		return eObjects
+		correspondingEObjects.forEach[eObjects.addAll(it)]
+		eObjects
 	}
 
 	/**
@@ -39,8 +39,7 @@ class CorrespondenceModelUtil {
 	 * @param b
 	 * @return
 	 */
-	def public static Correspondence claimUniqueCorrespondence(CorrespondenceModel ci,
-		EObject eObject) {
+	def public static Correspondence claimUniqueCorrespondence(CorrespondenceModel ci, EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimOne
 	}
 
@@ -52,8 +51,7 @@ class CorrespondenceModelUtil {
 	 *            the object for which correspondences are to be returned
 	 * @return the correspondences for the specified object
 	 */
-	def public static Set<Correspondence> claimCorrespondences(CorrespondenceModel ci,
-		EObject eObject) {
+	def public static Set<Correspondence> claimCorrespondences(CorrespondenceModel ci, EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimNotEmpty as Set<Correspondence>
 	}
 
@@ -73,8 +71,8 @@ class CorrespondenceModelUtil {
 	 * @return the corresponding object of the specified type for the specified object if there is
 	 *         exactly one corresponding object of this type
 	 */
-	def public static <T, U extends Correspondence> Set<T> getCorrespondingEObjectsByType(GenericCorrespondenceModel<U> ci,
-		EObject eObject, Class<T> type) {
+	def public static <T, U extends Correspondence> Set<T> getCorrespondingEObjectsByType(
+		GenericCorrespondenceModel<U> ci, EObject eObject, Class<T> type) {
 		// return getCorrespondingEObjects(ci, eObject).filter[eObj | type.isInstance(eObj)].toSet
 		val Set<T> retSet = Sets.newHashSet
 		getCorrespondingEObjects(ci, eObject).forEach[if (type.isInstance(it)) {retSet.add(it as T)}]
@@ -97,8 +95,8 @@ class CorrespondenceModelUtil {
 	// return ci.allCorrespondencesWithoutDependencies.map[(it.^as + it.bs).filter(type)].flatten.toSet
 	}
 
-	def public static <T extends Correspondence> Set<T> getCorrespondencesBetweenEObjects(GenericCorrespondenceModel<T> ci,
-		Set<EObject> aS, Set<EObject> bS) {
+	def public static <T extends Correspondence> Set<T> getCorrespondencesBetweenEObjects(
+		GenericCorrespondenceModel<T> ci, Set<EObject> aS, Set<EObject> bS) {
 		val correspondencesThatInvolveAs = ci.getCorrespondencesThatInvolveAtLeast(aS)
 		val atuids = aS.mapFixed[ci.calculateTuidFromEObject(it)]
 		val btuids = bS.mapFixed[ci.calculateTuidFromEObject(it)]

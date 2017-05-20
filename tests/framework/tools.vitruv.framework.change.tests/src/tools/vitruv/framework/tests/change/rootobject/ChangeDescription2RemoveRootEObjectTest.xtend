@@ -4,10 +4,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
 
 class ChangeDescription2RemoveRootEObjectTest extends ChangeDescription2RootChangeTest {
-	
+
 	@Test
-	def void removeDeleteRootEObjectInResource(){
-		val resource = this.rootElement.eResource;
+	def void removeDeleteRootEObjectInResource() {
+		val resource = rootElement.eResource
 		// prepare
 		startRecording
 		// test
@@ -16,8 +16,8 @@ class ChangeDescription2RemoveRootEObjectTest extends ChangeDescription2RootChan
 		val isDelete = true
 		assertRemoveRoot(0, isDelete, resource)
 	}
-	
-	def private void removeRootEObjectInResource(){
-		EcoreUtil.delete(this.rootElement)
-	}	
+
+	def private void removeRootEObjectInResource() {
+		EcoreUtil::delete(rootElement)
+	}
 }

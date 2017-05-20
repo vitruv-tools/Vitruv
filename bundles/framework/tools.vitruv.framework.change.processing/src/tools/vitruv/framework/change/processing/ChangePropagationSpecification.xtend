@@ -7,9 +7,13 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.domains.VitruvDomain
 
 interface ChangePropagationSpecification {
-	def void setUserInteracting(UserInteracting userInteracting);
-	def VitruvDomain getSourceDomain();
-	def VitruvDomain getTargetDomain();
-	def boolean doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel);
-	def ChangePropagationResult propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel);
+	def void setUserInteracting(UserInteracting userInteracting)
+
+	def VitruvDomain getSourceDomain()
+
+	def VitruvDomain getTargetDomain()
+
+	def boolean doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel)
+
+	def ChangePropagationResult propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel)
 }

@@ -6,135 +6,140 @@ import java.util.HashSet
 import java.util.List
 import java.util.Set
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
-import tools.vitruv.framework.util.command.ChangePropagationResult
-import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.ModelRepository
-import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class ChangePropagatorImpl implements ChangePropagator {
-	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
-	final VitruvDomainRepository metamodelRepository;
+	static Logger logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
+	final VitruvDomainRepository metamodelRepository
 	final ModelRepository modelProviding
 	final ChangePropagationSpecificationProvider changePropagationProvider
 	final CorrespondenceProviding correspondenceProviding
 	Set<ChangePropagationListener> changePropagationListeners
-	
+
 	new(ModelRepository modelProviding, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding) {
 		this.modelProviding = modelProviding
 		this.changePropagationProvider = changePropagationProvider
 		this.correspondenceProviding = correspondenceProviding
-		this.changePropagationListeners = new HashSet<ChangePropagationListener>()
-		this.metamodelRepository = metamodelRepository;
+		changePropagationListeners = new HashSet<ChangePropagationListener>
+		this.metamodelRepository = metamodelRepository
 	}
 
 	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
-		if (propagationListener !== null) {
-			this.changePropagationListeners.add(propagationListener)
-		}
+		if (propagationListener !== null)
+			changePropagationListeners.add(propagationListener)
+
 	}
 
 	override void removeChangePropagationListener(ChangePropagationListener propagationListener) {
-		this.changePropagationListeners.remove(propagationListener)
+		changePropagationListeners.remove(propagationListener)
 	}
 
 	override synchronized List<List<VitruviusChange>> propagateChange(VitruviusChange change) {
-		if (change == null || !change.containsConcreteChange()) {
+		if (change === null || !change.containsConcreteChange) {
 			logger.info('''The change does not contain any changes to synchronize: «change»''')
-			return Collections.emptyList()
-		}
-		if (!change.validate()) {
+			Collections::emptyList
+		} else if (!change.validate) {
 			throw new IllegalArgumentException('''Change contains changes from different models: «change»''')
+		} else {
+			startChangePropagation(change)
+			val List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>
+			val changedResourcesTracker = new ChangedResourcesTracker
+			val propagationResult = new ChangePropagationResult
+
+			propagateSingleChange(change, result, propagationResult, changedResourcesTracker)
+
+			changedResourcesTracker.markNonSourceResourceAsChanged
+			executePropagationResult(propagationResult)
+			// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
+			// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
+			modelProviding.saveAllModels
+			finishChangePropagation(change)
+			return result
 		}
-		
-		startChangePropagation(change);
-		change.applyBackwardIfLegacy();
-		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
-		val changedResourcesTracker = new ChangedResourcesTracker();
-		val propagationResult = new ChangePropagationResult();
-		propagateSingleChange(change, result, propagationResult, changedResourcesTracker);
-		changedResourcesTracker.markNonSourceResourceAsChanged();
-		executePropagationResult(propagationResult);
+
+		startChangePropagation(change)
+		change.applyBackwardIfLegacy
+		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>
+		val changedResourcesTracker = new ChangedResourcesTracker
+		val propagationResult = new ChangePropagationResult
+		propagateSingleChange(change, result, propagationResult, changedResourcesTracker)
+		changedResourcesTracker.markNonSourceResourceAsChanged
+		executePropagationResult(propagationResult)
 		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
 		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
 		modelProviding.saveAllModels
 		finishChangePropagation(change)
-		return result
+		result
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
 		logger.info('''Started synchronizing change: «change»''')
-		for (ChangePropagationListener syncListener : this.changePropagationListeners) {
-			syncListener.startedChangePropagation()
-		}	
+		changePropagationListeners.forEach[startedChangePropagation]
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
-		for (ChangePropagationListener syncListener : this.changePropagationListeners) {
-			syncListener.finishedChangePropagation()
-		}
+		changePropagationListeners.forEach[finishedChangePropagation]
 		logger.info('''Finished synchronizing change: «change»''')
 	}
 
-	private def dispatch void propagateSingleChange(CompositeContainerChange change, List<List<VitruviusChange>> commandExecutionChanges,
-		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
-		for (VitruviusChange innerChange : ((change as CompositeContainerChange)).getChanges()) {
-			propagateSingleChange(innerChange, commandExecutionChanges, propagationResult, changedResourcesTracker)
-		}
+	private def dispatch void propagateSingleChange(CompositeContainerChange change,
+		List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult,
+		ChangedResourcesTracker changedResourcesTracker) {
+		change.changes.forEach [
+			propagateSingleChange(it, commandExecutionChanges, propagationResult, changedResourcesTracker)
+		]
 	}
 
-
-	private def dispatch void propagateSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges, 
-		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
-
-		val changeApplicationFunction = [ResourceSet resourceSet |
-				modelProviding.getModel(change.getURI());
-                change.resolveBeforeAndApplyForward(resourceSet)
-                return;
-        	];
-		this.modelProviding.executeOnResourceSet(changeApplicationFunction);
-
-		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension);
+	private def dispatch void propagateSingleChange(TransactionalChange change,
+		List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult,
+		ChangedResourcesTracker changedResourcesTracker) {
+		val changeApplicationFunction = [ ResourceSet resourceSet |
+			modelProviding.getModel(change.URI)
+			change.resolveBeforeAndApplyForward(resourceSet)
+			return
+		]
+		modelProviding.executeOnResourceSet(changeApplicationFunction)
+		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension)
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
-			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
+			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges,
+				propagationResult, changedResourcesTracker)
 		}
 	}
-	
-	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
-			List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
-		val correspondenceModel = correspondenceProviding.getCorrespondenceModel();
-		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
-		// each consistency repair routines that uses it,
-		// or: make them read only, i.e. give them a read-only interface!
-		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
-			return propagationSpecification.propagateChange(change, correspondenceModel);
-		])
-		modelProviding.executeRecordingCommandOnTransactionalDomain(command);
-					
-		// Store modification information
-		val changedEObjects = command.getAffectedObjects().filter(EObject)
-		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(it.eResource)];
-		changedResourcesTracker.addSourceResourceOfChange(change);
-		
-		propagationResult.integrateResult(command.transformationResult);
+
+	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change,
+		ChangePropagationSpecification propagationSpecification, List<List<VitruviusChange>> commandExecutionChanges,
+		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+
+		val changeApplicationFunction = [ ResourceSet resourceSet |
+			modelProviding.getModel(change.URI)
+			change.resolveBeforeAndApplyForward(resourceSet)
+			return
+		]
+		modelProviding.executeOnResourceSet(changeApplicationFunction)
+
+		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension)
+		changePropagationProvider.getChangePropagationSpecifications(changeDomain).forEach [
+			propagateChangeForChangePropagationSpecification(change, it, commandExecutionChanges, propagationResult,
+				changedResourcesTracker)
+		]
 	}
-	
+
 	def private void executePropagationResult(ChangePropagationResult changePropagationResult) {
-		if (null === changePropagationResult) {
-			logger.info("Current propagation result is null. Can not save new root EObjects.")
-			return;
-		}
-		val elementsToPersist = changePropagationResult.getElementToPersistenceMap();
-		for (element : elementsToPersist.keySet) {
-			modelProviding.persistRootElement(elementsToPersist.get(element), element);	
+		if (null === changePropagationResult)
+			logger.info("Current propagation result is null. Can not save new root EObjects::")
+		else {
+			val elementsToPersist = changePropagationResult.elementToPersistenceMap
+			elementsToPersist.keySet.forEach[modelProviding.persistRootElement(elementsToPersist.get(it), it)]
 		}
 	}
 }

@@ -36,11 +36,11 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		
 	@Before
 	override public void beforeTest() {
-		super.beforeTest()
+		super.beforeTest
 		affectedEObject = rootObject
-		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot
-		oldValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot
-		oldValue3 = AllElementTypesFactory.eINSTANCE.createNonRoot
+		oldValue = AllElementTypesFactory::eINSTANCE.createNonRoot
+		oldValue2 = AllElementTypesFactory::eINSTANCE.createNonRoot
+		oldValue3 = AllElementTypesFactory::eINSTANCE.createNonRoot
 	}
 
 	/**
@@ -272,7 +272,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * and sets the state before.
 	 */
 	def private void isSingleValuedNonContainmentTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE
+		affectedFeature = AllElementTypesPackage::Literals.ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE
 		prepareStateBefore
 	}
 	
@@ -281,7 +281,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * and sets the state before.
 	 */	
 	def private void isSingleValuedContainmentTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
+		affectedFeature = AllElementTypesPackage::Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		prepareStateBefore
 	}
 	
@@ -290,7 +290,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * and sets the state before.
 	 */	
 	def private void isMultiValuedNonContainmentTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE	
+		affectedFeature = AllElementTypesPackage::Literals.ROOT__MULTI_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE	
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
 		prepareStateBefore 
 	}
@@ -300,7 +300,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * and sets the state before.
 	 */	
 	def private void isMultiValuedContainmentTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE
+		affectedFeature = AllElementTypesPackage::Literals.ROOT__MULTI_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot> 
 		prepareStateBefore
 	}
@@ -351,8 +351,8 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * The model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertTrue(affectedEObject.eIsSet(affectedFeature))
-		if (!affectedFeature.isContainment) {
+		Assert::assertTrue(affectedEObject.eIsSet(affectedFeature))
+		if (!affectedFeature.containment) {
 			assertResourceIsStateBefore			
 		}
 		assertReferenceIsStateBefore
@@ -364,11 +364,11 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	def private void assertReferenceIsStateBefore() {
 		if (!affectedFeature.containment) {
 			if (!affectedFeature.many) {
-				Assert.assertEquals(oldValue, affectedEObject.eGet(affectedFeature))
+				Assert::assertEquals(oldValue, affectedEObject.eGet(affectedFeature))
 			} else {
-				Assert.assertEquals(oldValue, referenceContent.get(0))
-				Assert.assertEquals(oldValue2, referenceContent.get(1))
-				Assert.assertEquals(oldValue3, referenceContent.get(2))
+				Assert::assertEquals(oldValue, referenceContent.get(0))
+				Assert::assertEquals(oldValue2, referenceContent.get(1))
+				Assert::assertEquals(oldValue3, referenceContent.get(2))
 			}	
 		} else {
 			if (!affectedFeature.many) {
@@ -391,7 +391,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			oldValue2.assertEqualsOrCopy(resource.contents.get(2) as Identified)
 			oldValue3.assertEqualsOrCopy(resource.contents.get(3) as Identified)			
 		} else {
-			Assert.assertEquals(resource.contents.size, 1)	
+			Assert::assertEquals(resource.contents.size, 1)	
 		}
 	}
 	
@@ -399,7 +399,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertFalse(affectedEObject.eIsSet(affectedFeature))
+		Assert::assertFalse(affectedEObject.eIsSet(affectedFeature))
 		assertResourceIsStateAfter
 	}
 	
@@ -414,26 +414,26 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Change is not resolved.
 	 */
 	def private assertIsNotResolved(ExplicitUnsetEReference<Root> change) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertNotSame(change.affectedEObject, affectedEObject)
+		Assert::assertFalse(change.resolved)
+		Assert::assertNotSame(change.affectedEObject, affectedEObject)
 		for (c : change.changes) {
-			Assert.assertFalse(c.isResolved)
+			Assert::assertFalse(c.resolved)
 		}		
 		if (!affectedFeature.containment) {
 			if (!affectedFeature.many) {
-				Assert.assertNotSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue)
+				Assert::assertNotSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue)
 			} else {
-				Assert.assertNotSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue3)
-				Assert.assertNotSame((change.changes.get(1) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue2)
-				Assert.assertNotSame((change.changes.get(2) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue)
+				Assert::assertNotSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue3)
+				Assert::assertNotSame((change.changes.get(1) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue2)
+				Assert::assertNotSame((change.changes.get(2) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue)
 			}
 		} else {
 			if (!affectedFeature.many) {
-				Assert.assertNotSame((change.changes.get(0) as ReplaceAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue)
+				Assert::assertNotSame((change.changes.get(0) as ReplaceAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue)
 			} else {
-				Assert.assertNotSame((change.changes.get(0) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue3)
-				Assert.assertNotSame((change.changes.get(1) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue2)
-				Assert.assertNotSame((change.changes.get(2) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue)
+				Assert::assertNotSame((change.changes.get(0) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue3)
+				Assert::assertNotSame((change.changes.get(1) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue2)
+				Assert::assertNotSame((change.changes.get(2) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue)
 			}
 		} 
 	}
@@ -442,16 +442,16 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Change is resolved.
 	 */
 	def private assertIsResolved(ExplicitUnsetEReference<Root> change) {
-		Assert.assertNotNull(change)
-		Assert.assertSame(change.affectedEObject, affectedEObject)
-		Assert.assertTrue(change.isResolved)
+		Assert::assertNotNull(change)
+		Assert::assertSame(change.affectedEObject, affectedEObject)
+		Assert::assertTrue(change.resolved)
 		if (!affectedFeature.containment) {
 			if (!affectedFeature.many) {
-				Assert.assertSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue)
+				Assert::assertSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue)
 			} else {
-				Assert.assertSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue3)
-				Assert.assertSame((change.changes.get(1) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue2)
-				Assert.assertSame((change.changes.get(2) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue)				
+				Assert::assertSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue3)
+				Assert::assertSame((change.changes.get(1) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue2)
+				Assert::assertSame((change.changes.get(2) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue)				
 			}
 		} else {
 			if (!affectedFeature.many) {
@@ -498,12 +498,12 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved()
+		unresolvedChange.assertIsNotResolved
 		
 		// Resolve 1
 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
 			as ExplicitUnsetEReference<Root>
-		resolvedChange.assertIsResolved()
+		resolvedChange.assertIsResolved
 		
 		// Model should be unaffected
 		assertIsStateBefore
@@ -511,7 +511,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		// Resolve 2
 		var resolvedAndAppliedChange = unresolvedChange.resolveBeforeAndApplyForward(resourceSet)
 			as ExplicitUnsetEReference<Root>
-		resolvedAndAppliedChange.assertIsResolved()
+		resolvedAndAppliedChange.assertIsResolved
 		
 		// State after
 		assertIsStateAfter
@@ -526,7 +526,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved()
+		unresolvedChange.assertIsNotResolved
 		
 		// Set state after
 		prepareStateAfter
@@ -535,7 +535,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		// Resolve 1
 		var resolvedChange = unresolvedChange.resolveAfter(resourceSet)
 			as ExplicitUnsetEReference<Root>
-		resolvedChange.assertIsResolved()
+		resolvedChange.assertIsResolved
 		
 		// Model should be unaffected.
 		assertIsStateAfter	
@@ -543,7 +543,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		// Resolve 2
 		var resolvedAndAppliedChange = unresolvedChange.resolveAfterAndApplyBackward(resourceSet)
 			as ExplicitUnsetEReference<Root>
-		resolvedAndAppliedChange.assertIsResolved()
+		resolvedAndAppliedChange.assertIsResolved
 		
 		// State before
 		assertIsStateBefore	
@@ -561,7 +561,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			as ExplicitUnsetEReference<Root>
 			
 		// Apply forward
-		Assert.assertTrue(resolvedChange.applyForward)
+		Assert::assertTrue(resolvedChange.applyForward)
 		
 		// State after
 		assertIsStateAfter				
@@ -583,7 +583,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateAfter
 		
 		// Apply forward
-		Assert.assertTrue(resolvedChange.applyBackward)
+		Assert::assertTrue(resolvedChange.applyBackward)
 		
 		// State before
 		assertIsStateBefore			

@@ -30,11 +30,11 @@ public class EChangeUnresolver {
 	 * @return The proxy object of the given EObject.
 	 */
 	def static public <A extends EObject> A createProxy(A resolvedObject) {
-		if (resolvedObject != null) {
+		if (resolvedObject !== null) {
 			// TODO: Elbert S. Change when eobjects are removed recursively
-			val proxy = EcoreUtil.copy(resolvedObject) as InternalEObject
-			//val proxy = EcoreUtil.create(resolvedObject.eClass) as InternalEObject
-			proxy.eSetProxyURI(EcoreUtil.getURI(resolvedObject))
+			val proxy = EcoreUtil::copy(resolvedObject) as InternalEObject
+			//val proxy = EcoreUtil::create(resolvedObject::eClass) as InternalEObject
+			proxy.eSetProxyURI(EcoreUtil::getURI(resolvedObject))
 			return proxy as A			
 		}
 		return null

@@ -46,9 +46,9 @@ class AddToStagingAreaCommandTest extends StagingAreaCommandTest {
 	 * The command added the correct value to the correct staging area.
 	 */
 	def private assertAddedObjectToStagingArea(AddToStagingAreaCommand command, StagingArea stagingArea, EObject object) {
-		Assert.assertTrue(stagingArea.empty)
+		Assert::assertTrue(stagingArea.empty)
 		command.assertExecuteCommand
-		Assert.assertFalse(stagingArea.empty)
-		Assert.assertSame(stagingArea.poll, object)
+		Assert::assertFalse(stagingArea.empty)
+		Assert::assertSame(stagingArea.poll, object)
 	}
 }

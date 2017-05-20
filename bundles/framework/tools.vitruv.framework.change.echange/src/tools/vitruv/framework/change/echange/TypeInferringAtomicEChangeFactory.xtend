@@ -43,8 +43,8 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The singleton instance.
 	 */
 	def public static TypeInferringAtomicEChangeFactory getInstance() {
-		if (instance == null) {
-			instance = new TypeInferringAtomicEChangeFactory()
+		if (instance === null) {
+			instance = new TypeInferringAtomicEChangeFactory
 		}
 		return instance
 	}
@@ -99,8 +99,8 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
 		A affectedEObject, Resource resource) {
-		change.stagingArea = StagingArea.getStagingArea(resource)
-		change.affectedEObject = affectedEObject;
+		change.stagingArea = StagingArea::getStagingArea(resource)
+		change.affectedEObject = affectedEObject
 	}
 
 	/**
@@ -111,7 +111,7 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created InsertRootEObject EChange.
 	 */
 	def <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, Resource resource, int index) {
-		val c = RootFactory.eINSTANCE.createInsertRootEObject
+		val c = RootFactory::eINSTANCE.createInsertRootEObject
 		setNewValue(c, newValue)
 		setRootChangeFeatures(c, resource, index)
 		return c
@@ -125,7 +125,7 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created RemoveRootEObject EChange.
 	 */
 	def <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, Resource resource, int index) {
-		val c = RootFactory.eINSTANCE.createRemoveRootEObject
+		val c = RootFactory::eINSTANCE.createRemoveRootEObject
 		setOldValue(c, oldValue)
 		setRootChangeFeatures(c, resource, index)
 		return c
@@ -141,7 +141,7 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def <A extends EObject, T extends Object> InsertEAttributeValue<A, T> createInsertAttributeChange(A affectedEObject,
 		EAttribute affectedAttribute, int index, T newValue) {
-		val c = AttributeFactory.eINSTANCE.createInsertEAttributeValue()
+		val c = AttributeFactory::eINSTANCE.createInsertEAttributeValue
 		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
 		c.newValue = newValue
 		c.index = index
@@ -158,7 +158,7 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A, T> createReplaceSingleAttributeChange(
 		A affectedEObject, EAttribute affectedAttribute, T oldValue, T newValue) {
-		val c = AttributeFactory.eINSTANCE.createReplaceSingleValuedEAttribute
+		val c = AttributeFactory::eINSTANCE.createReplaceSingleValuedEAttribute
 		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
 		c.oldValue = oldValue
 		c.newValue = newValue
@@ -175,7 +175,7 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def <A extends EObject, T extends Object> RemoveEAttributeValue<A, T> createRemoveAttributeChange(A affectedEObject,
 		EAttribute affectedAttribute, int index, T oldValue) {
-		val c = AttributeFactory.eINSTANCE.createRemoveEAttributeValue()
+		val c = AttributeFactory::eINSTANCE.createRemoveEAttributeValue
 		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
 		c.oldValue = oldValue
 		c.index = index
@@ -192,7 +192,7 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def <A extends EObject, T extends EObject> InsertEReference<A, T> createInsertReferenceChange(A affectedEObject,
 		EReference affectedReference, T newValue, int index) {
-		val c = ReferenceFactory.eINSTANCE.createInsertEReference()
+		val c = ReferenceFactory::eINSTANCE.createInsertEReference
 		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
 		setNewValue(c, newValue)
 		c.index = index
@@ -209,7 +209,7 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A, T> createReplaceSingleReferenceChange(
 		A affectedEObject, EReference affectedReference, T oldValue, T newValue) {
-		val c = ReferenceFactory.eINSTANCE.createReplaceSingleValuedEReference
+		val c = ReferenceFactory::eINSTANCE.createReplaceSingleValuedEReference
 		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
 		setOldValue(c, oldValue)
 		setNewValue(c, newValue)
@@ -226,7 +226,7 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def <A extends EObject, T extends EObject> RemoveEReference<A, T> createRemoveReferenceChange(A affectedEObject,
 		EReference affectedReference, T oldValue, int index) {
-		val c = ReferenceFactory.eINSTANCE.createRemoveEReference()
+		val c = ReferenceFactory::eINSTANCE.createRemoveEReference
 		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
 		setOldValue(c, oldValue)
 		c.index = index
@@ -240,7 +240,7 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created CreateEObject EChange.
 	 */
 	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject, Resource resource) {
-		val c = EobjectFactory.eINSTANCE.createCreateEObject()
+		val c = EobjectFactory::eINSTANCE.createCreateEObject
 		setEObjectExistenceChange(c, affectedEObject, resource)
 		return c
 	}
@@ -252,7 +252,7 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created DeleteEObject EChange.
 	 */
 	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject, Resource resource) {
-		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
+		val c = EobjectFactory::eINSTANCE.createDeleteEObject
 		setEObjectExistenceChange(c, affectedEObject, resource)
 		return c
 	}

@@ -11,21 +11,21 @@ abstract class CommandTest {
 	 * Command is prepareable (can be executed)
 	 */
 	def protected static void assertIsPreparable(Command command) {
-		Assert.assertTrue(command.canExecute)
+		Assert::assertTrue(command.canExecute)
 	}
 	
 	/**
 	 * Command is not preparable (cannot be executed)
 	 */
 	def protected static void assertIsNotPreparable(Command command) {
-		Assert.assertFalse(command.canExecute)
+		Assert::assertFalse(command.canExecute)
 	}	
 	
 	/** 
 	 * Checks if a command can be executed and executes it.
 	 */
 	def protected static void assertExecuteCommand(Command command) {
-		Assert.assertTrue(command.canExecute)
+		Assert::assertTrue(command.canExecute)
 		command.execute
 	}	
 		
@@ -33,7 +33,7 @@ abstract class CommandTest {
 	 * Command is instance of a specific class.
 	 */
 	def protected static <T> T assertIsInstanceOf(Command command, Class<T> type) {
-		Assert.assertTrue(type.isInstance(command))
+		Assert::assertTrue(type.isInstance(command))
 		return type.cast(command)
 	}
 }

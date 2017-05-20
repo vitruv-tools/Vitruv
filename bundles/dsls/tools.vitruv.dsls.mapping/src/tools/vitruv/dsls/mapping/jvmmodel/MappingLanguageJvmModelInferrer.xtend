@@ -75,7 +75,7 @@ class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 					members += signatureConstraints.map [ signatureConstraint |
 						val imp = signatureConstraint.getPackage?.getImportsForPackage
 
-						if (imp == null)
+						if (imp === null)
 							return #[]
 
 						#[

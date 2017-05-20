@@ -14,15 +14,15 @@ import org.eclipse.emf.common.command.BasicCommandStack
 class EChangeUtil {
 	
 	/**
-	 * Wrapper method for {@link EcoreUtil.resolve} which is null-safe.
+	 * Wrapper method for {@link EcoreUtil::resolve} which is null-safe.
 	 * @param proxy The EObject which should be resolved.
 	 * @param resourceSet The resource set which contains the resource with 
 	 * 		the concrete EObject of the proxy.
 	 * @return The resolved EObject. If resolving the proxy fails, the proxy object itself.
 	 */
 	public static def resolveProxy(EObject proxy, ResourceSet resourceSet) {
-		if (proxy != null && resourceSet != null) {
-			return EcoreUtil.resolve(proxy, resourceSet)
+		if (proxy !== null && resourceSet !== null) {
+			return EcoreUtil::resolve(proxy, resourceSet)
 		}
 		return proxy
 	}
@@ -34,9 +34,9 @@ class EChangeUtil {
 	 * @return The editing domain of the object.
 	 */
 	public static def EditingDomain getEditingDomain(EObject object) {
-		val ed = AdapterFactoryEditingDomain.getEditingDomainFor(object)
-		if (ed == null) {
-			return new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), new BasicCommandStack());
+		val ed = AdapterFactoryEditingDomain::getEditingDomainFor(object)
+		if (ed === null) {
+			return new AdapterFactoryEditingDomain(new ComposedAdapterFactory, new BasicCommandStack)
 		}
 		return ed
 	}

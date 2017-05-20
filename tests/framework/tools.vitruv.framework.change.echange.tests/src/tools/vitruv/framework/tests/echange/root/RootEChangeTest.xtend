@@ -11,9 +11,9 @@ import tools.vitruv.framework.tests.echange.EChangeTest
  * Abstract class which is extended by the Root EChange test classes.
  */
 public abstract class RootEChangeTest extends EChangeTest {
-	protected var Root newRootObject = null;
-	protected var Root newRootObject2 = null;
-	protected var EList<EObject> resourceContent = null;
+	protected var Root newRootObject = null
+	protected var Root newRootObject2 = null
+	protected var EList<EObject> resourceContent = null
 	
 	/**
 	 * Calls setup of superclass and creates two new root elements 
@@ -21,9 +21,9 @@ public abstract class RootEChangeTest extends EChangeTest {
 	 */
 	@Before
 	override void beforeTest() {
-		super.beforeTest()
-		newRootObject = AllElementTypesFactory.eINSTANCE.createRoot()
-		newRootObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
+		super.beforeTest
+		newRootObject = AllElementTypesFactory::eINSTANCE.createRoot
+		newRootObject2 = AllElementTypesFactory::eINSTANCE.createRoot
 		resourceContent = resource.contents
 	}
 }

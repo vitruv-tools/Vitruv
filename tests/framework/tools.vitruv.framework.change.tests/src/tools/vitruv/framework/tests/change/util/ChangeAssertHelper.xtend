@@ -27,62 +27,64 @@ class ChangeAssertHelper {
 	private new() {
 	}
 
-	public static def <T> T assertObjectInstanceOf(Object object, Class<T> type) {
-		Assert.assertTrue("The object " + object.class.simpleName + " should be type of " + type.simpleName,
+	static def <T> T assertObjectInstanceOf(Object object, Class<T> type) {
+		Assert::assertTrue("The object " + object.class.simpleName + " should be type of " + type.simpleName,
 			type.isInstance(object))
-		return type.cast(object)
+		type.cast(object)
 	}
 
-	public static def <T extends AdditiveEChange<?>, SubtractiveEChange> assertOldAndNewValue(T eChange,
-		Object oldValue, Object newValue) {
+	static def <T extends AdditiveEChange<?>, SubtractiveEChange> assertOldAndNewValue(T eChange, Object oldValue,
+		Object newValue) {
 		eChange.assertOldValue(oldValue)
 		eChange.assertNewValue(newValue)
 	}
 
-	public static def assertOldValue(EChange eChange, Object oldValue) {
+	static def assertOldValue(EChange eChange, Object oldValue) {
 		if (oldValue instanceof EObject) {
 			assertEqualsOrCopy("old value must be the same or a copy than the given old value", oldValue,
-				(eChange as SubtractiveEChange<?>).oldValue as EObject)				
+				(eChange as SubtractiveEChange<?>).oldValue as EObject)
 		} else {
-			Assert.assertEquals("old value must be the same than the given old value", oldValue,
-				(eChange as SubtractiveEChange<?>).oldValue)			
+			Assert::assertEquals("old value must be the same than the given old value", oldValue,
+				(eChange as SubtractiveEChange<?>).oldValue)
 		}
 	}
 
-	public static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
+	static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
 		val newValueInChange = eChange.newValue
-		var condition = newValue == null && newValueInChange == null;
+		var condition = newValue === null && newValueInChange === null
 		if (newValue instanceof EObject && newValueInChange instanceof EObject) {
 			val newEObject = newValue as EObject
 			var newEObjectInChange = newValueInChange as EObject
-			condition = EcoreUtil.equals(newEObject, newEObjectInChange)
+			condition = EcoreUtil::equals(newEObject, newEObjectInChange)
 		} else if (!condition) {
-			condition = newValue != null && newValue.equals(newValueInChange)
+			condition = newValue !== null && newValue.equals(newValueInChange)
 		}
-		Assert.assertTrue(
+		Assert::assertTrue(
 			"new value in change ' " + newValueInChange + "' must be the same than the given new value '" + newValue +
 				"'!", condition)
 	}
 
-	public static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
+	static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
 		if (eChange instanceof FeatureEChange<?, ?>) {
-			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
-				expectedAffectedEObject, (eChange as FeatureEChange<?, ?>).affectedEObject)
+			assertEqualsOrCopy(
+				"The actual affected EObject is a different one than the expected affected EObject or its copy",
+				expectedAffectedEObject, eChange.affectedEObject)
 		} else if (eChange instanceof EObjectExistenceEChange<?>) {
-			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
-				expectedAffectedEObject, (eChange as EObjectExistenceEChange<?>).affectedEObject)
+			assertEqualsOrCopy(
+				"The actual affected EObject is a different one than the expected affected EObject or its copy",
+				expectedAffectedEObject, eChange.affectedEObject)
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException
 		}
 	}
 
-	public static def assertAffectedEFeature(EChange eChange, EStructuralFeature expectedEFeature) {
-		Assert.assertEquals(
+	static def assertAffectedEFeature(EChange eChange, EStructuralFeature expectedEFeature) {
+		Assert::assertEquals(
 			"The actual affected EStructuralFeature is a different one than the expected EStructuralFeature",
 			expectedEFeature, (eChange as FeatureEChange<?, ?>).affectedFeature)
 	}
 
-	public static def getFeatureByName(EObject eObject, String name) {
+	static def getFeatureByName(EObject eObject, String name) {
 		eObject.eClass.getEStructuralFeature(name)
 	}
 
@@ -91,27 +93,27 @@ class ChangeAssertHelper {
 	}
 
 	def static void assertContainment(UpdateReferenceEChange<?> updateEReference, boolean expectedValue) {
-		Assert.assertEquals("The containment information of the change " + updateEReference + " is wrong",
-			expectedValue, updateEReference.isContainment)
+		Assert::assertEquals("The containment information of the change " + updateEReference + " is wrong",
+			expectedValue, updateEReference.containment)
 	}
 
 	def static void assertUri(RootEChange rootChange, String expectedValue) {
-		Assert.assertEquals("Change " + rootChange + " shall have the uri " + URI.createFileURI(expectedValue).toString,
-			URI.createFileURI(expectedValue).toString, rootChange.uri)
+		Assert::assertEquals("Change " + rootChange + " shall have the uri " +
+			URI::createFileURI(expectedValue).toString, URI::createFileURI(expectedValue).toString, rootChange.uri)
 	}
-	
+
 	def static void assertResource(RootEChange rootChange, Resource resource) {
-		Assert.assertEquals("Change " + rootChange + " shall have the resource " + resource,
-			rootChange.resource, resource)
+		Assert::assertEquals("Change " + rootChange + " shall have the resource " + resource, rootChange.resource,
+			resource)
 	}
 
 	def static void assertStagingArea(EObjectExistenceEChange<?> existenceChange, StagingArea stagingArea) {
-		Assert.assertEquals("Change " + existenceChange + " shall have the staging area " + stagingArea,
+		Assert::assertEquals("Change " + existenceChange + " shall have the staging area " + stagingArea,
 			existenceChange.stagingArea, stagingArea)
 	}
-	
+
 	def static void assertIndex(UpdateSingleListEntryEChange<?, ?> change, int expectedIndex) {
-		Assert.assertEquals("The value is not at the correct index", expectedIndex, change.index)
+		Assert::assertEquals("The value is not at the correct index", expectedIndex, change.index)
 	}
 
 	def public static assertMoveEObject(EChange change, int atomicChanges) {
@@ -120,19 +122,17 @@ class ChangeAssertHelper {
 		val subtractiveReferenceChange = moveEObject.subtractWhatChange
 		val removeUpdateEReferenceChange = moveEObject.subtractWhereChange
 		val addEReferenceChange = moveEObject.addWhatChange
-		val addUpdateEReferenceChange = moveEObject.
-			addWhereChange
-		return new Quadruple<EObjectSubtractedEChange<?>, UpdateReferenceEChange<?>, EObjectAddedEChange<?>, UpdateReferenceEChange<?>>(
+		val addUpdateEReferenceChange = moveEObject.addWhereChange
+		new Quadruple<EObjectSubtractedEChange<?>, UpdateReferenceEChange<?>, EObjectAddedEChange<?>, UpdateReferenceEChange<?>>(
 			subtractiveReferenceChange, removeUpdateEReferenceChange, addEReferenceChange, addUpdateEReferenceChange)
-
 	}
 
 	def public static assertAtomicChanges(CompoundEChange eCompoundChange, int atomicChanges) {
-		Assert.assertEquals("Expected exactly " + atomicChanges + " changes in move EObject",
+		Assert::assertEquals("Expected exactly " + atomicChanges + " changes in move EObject",
 			eCompoundChange.atomicChanges.size, atomicChanges)
 	}
 
 	def public static assertEqualsOrCopy(String message, EObject object1, EObject object2) {
-		Assert.assertTrue(message, EcoreUtil.equals(object1, object2))
+		Assert::assertTrue(message, EcoreUtil::equals(object1, object2))
 	}
 }
