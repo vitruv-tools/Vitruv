@@ -36,15 +36,4 @@ public abstract class UpdateSingleValuedFeatureEChangeImpl<A extends EObject, F 
 		return FeaturePackage.Literals.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
-	 * @generated
-	 */
-	@Override
-	public void setAffectedFeature(F newAffectedFeature) {
-		super.setAffectedFeature(newAffectedFeature);
-	}
-
 } //UpdateSingleValuedFeatureEChangeImpl

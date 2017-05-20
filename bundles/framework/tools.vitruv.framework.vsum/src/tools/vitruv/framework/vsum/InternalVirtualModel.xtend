@@ -8,7 +8,7 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
 
 interface InternalVirtualModel extends VirtualModel {
-	def CorrespondenceModel getCorrespondenceModel(VURI metamodel1, VURI metamodel2)
+	def CorrespondenceModel getCorrespondenceModel()
 
 	def void save()
 

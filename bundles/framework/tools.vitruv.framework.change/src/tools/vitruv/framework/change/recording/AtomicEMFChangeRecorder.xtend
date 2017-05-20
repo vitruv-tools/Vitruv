@@ -38,7 +38,7 @@ class AtomicEMFChangeRecorder {
 	 * 			by unresolved changes, which referenced EObjects are proxy objects.
 	 */
 	new(boolean unresolveRecordedChanges) {
-		this.elementsToObserve = new ArrayList<Notifier>
+		elementsToObserve = new ArrayList<Notifier>
 		changeRecorder.recordingTransientFeatures = false
 		changeRecorder.resolveProxies = true
 		this.unresolveRecordedChanges = unresolveRecordedChanges
@@ -53,25 +53,27 @@ class AtomicEMFChangeRecorder {
 	}
 
 	def List<TransactionalChange> endRecording() {
-		if (!recording) {
+		if (!recording)
 			throw new IllegalStateException
-		}
 		changeRecorder.endRecording
 		changeDescriptions.reverseView.forEach[applyAndReverse]
 		val transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList
-		correctChanges(transactionalChanges)
+		if (unresolveRecordedChanges)
+			correctChanges(transactionalChanges)
 		transactionalChanges
 	}
 
 	private def createModelChange(ChangeDescription changeDescription) {
 		if (!(changeDescription.objectChanges.empty && changeDescription.resourceChanges.empty)) {
-			val result = VitruviusChangeFactory::instance.createEMFModelChange(changeDescription, modelVURI)
-			changeDescription.applyAndReverse
-			// result.applyForward
+			var TransactionalChange result = null
+			if (unresolveRecordedChanges) {
+				result = VitruviusChangeFactory::instance.createEMFModelChange(changeDescription, modelVURI)
+				changeDescription.applyAndReverse
+			} else {
+				result = VitruviusChangeFactory::instance.createLegacyEMFModelChange(changeDescription, modelVURI)
+				result.applyForward
+			}
 			result
-		} else {
-			changeDescription.applyAndReverse
-			null	
 		}
 	}
 
@@ -104,12 +106,9 @@ class AtomicEMFChangeRecorder {
 		]
 		// Apply again and unresolve the results if necessary
 		eChanges.forEach [ c |
-			if (unresolveRecordedChanges) {
-				val copy = EcoreUtil::copy(c)
-				EChangeUnresolver::unresolve(c)
-				copy.applyForward
-			} else
-				c.applyForward
+			val EChange copy = EcoreUtil::copy(c)
+			EChangeUnresolver::unresolve(c)
+			copy.applyForward
 		]
 	}
 

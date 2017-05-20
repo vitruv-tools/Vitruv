@@ -54,7 +54,10 @@ public abstract class ReplaceSingleValuedFeatureEChangeImpl<A extends EObject, F
 	 * @generated
 	 */
 	public boolean isFromNonDefaultValue() {
-		boolean _equals = Objects.equals(this.getOldValue(), this.getAffectedFeature().getDefaultValue());
+		T _oldValue = this.getOldValue();
+		F _affectedFeature = this.getAffectedFeature();
+		Object _defaultValue = _affectedFeature.getDefaultValue();
+		boolean _equals = Objects.equals(_oldValue, _defaultValue);
 		return (!_equals);
 	}
 
@@ -64,7 +67,10 @@ public abstract class ReplaceSingleValuedFeatureEChangeImpl<A extends EObject, F
 	 * @generated
 	 */
 	public boolean isToNonDefaultValue() {
-		boolean _equals = Objects.equals(this.getNewValue(), this.getAffectedFeature().getDefaultValue());
+		T _newValue = this.getNewValue();
+		F _affectedFeature = this.getAffectedFeature();
+		Object _defaultValue = _affectedFeature.getDefaultValue();
+		boolean _equals = Objects.equals(_newValue, _defaultValue);
 		return (!_equals);
 	}
 

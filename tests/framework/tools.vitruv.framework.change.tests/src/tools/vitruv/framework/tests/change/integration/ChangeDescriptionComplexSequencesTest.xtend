@@ -26,16 +26,16 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 
 		// assert
 		changes.assertChangeCount(4)
-		changes.claimChange(0).assertSetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			nonRoot, true, true)
+		changes.claimChange(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true, unresolveAndResolveRecordedEChanges)
 		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
-		changes.claimChange(2).assertUnsetSingleValuedEReference(rootElement,
-			ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, true, true)
-		changes.claimChange(3).assertSetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+		changes.claimChange(2).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
 			nonRoot, true, true)
-	// There is no 5th change setting the ID again, because the element is stored in a ChangeDescription in between, which means 
-	// that is always contained somewhere. When editing real models, such a problem will not arise
-	// changes.claimChange(4).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
+		changes.claimChange(3).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true, unresolveAndResolveRecordedEChanges)
+		// There is no 5th change setting the ID again, because the element is stored in a ChangeDescription in between, which means 
+		// that is always contained somewhere. When editing real models, such a problem will not arise
+		// changes.claimChange(4).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
 	}
 
 	@Test
@@ -54,14 +54,12 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		changes.assertChangeCount(4)
 		val containerChange = changes.claimChange(0)
 		containerChange.assertSetSingleValuedEReference(rootElement, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER,
-			nonRootObjectsContainer, true, true)
-		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null,
-			nonRootObjectsContainer.id)
+			nonRootObjectsContainer, true, true, unresolveAndResolveRecordedEChanges)
+		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null, nonRootObjectsContainer.id)
 		val nonRootChange = changes.claimChange(2)
-		nonRootChange.assertCreateAndInsertNonRoot(nonRootObjectsContainer,
-			NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT, nonRoot, 0)
+		nonRootChange.assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
+			nonRoot, 0, unresolveAndResolveRecordedEChanges)
 		changes.claimChange(3).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
-
 	}
 
 	@Test
@@ -82,18 +80,15 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 
 		// assert
 		changes.assertChangeCount(7)
-		changes.claimChange(0).assertSetSingleValuedEReference(rootElement, ROOT__RECURSIVE_ROOT, secondRoot, true,
-			true)
+		changes.claimChange(0).assertSetSingleValuedEReference(rootElement, ROOT__RECURSIVE_ROOT, secondRoot, true, true, unresolveAndResolveRecordedEChanges)
 		changes.claimChange(1).assertReplaceSingleValuedEAttribute(secondRoot, IDENTIFIED__ID, null, secondRoot.id)
-		changes.claimChange(2).assertCreateAndReplaceAndDeleteNonRoot(null, nonRootObjectsContainer,
-			ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER, secondRoot, true)
-		changes.claimChange(3).assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null,
-			nonRootObjectsContainer.id)
-		changes.claimChange(4).assertCreateAndInsertNonRoot(nonRootObjectsContainer,
-			NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT, nonRoot, 0)
+		changes.claimChange(2).assertSetSingleValuedEReference(secondRoot, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER, nonRootObjectsContainer, true, true, unresolveAndResolveRecordedEChanges)
+		changes.claimChange(3).assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null, nonRootObjectsContainer.id)
+		changes.claimChange(4).assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
+			nonRoot, 0, unresolveAndResolveRecordedEChanges)
 		changes.claimChange(5).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
-		changes.claimChange(6).assertReplaceSingleValuedEReference(secondRoot,
-			ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE, null, nonRoot, false)
+		changes.claimChange(6).assertReplaceSingleValuedEReference(secondRoot, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
+			null, nonRoot, false)
 	}
 
 }

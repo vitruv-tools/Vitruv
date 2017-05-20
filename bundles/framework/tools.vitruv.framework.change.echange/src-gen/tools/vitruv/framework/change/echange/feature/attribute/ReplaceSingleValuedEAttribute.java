@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedF
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getReplaceSingleValuedEAttribute()
- * @model ABounds="tools.vitruv.framework.change.echange.feature.attribute.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends ReplaceSingleValuedFeatureEChange<A, EAttribute, T>, AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T> {

@@ -21,7 +21,7 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.reference.ReferencePackage#getRemoveEReference()
- * @model ABounds="tools.vitruv.framework.change.echange.feature.reference.EObj" TBounds="tools.vitruv.framework.change.echange.feature.reference.EObj"
+ * @model
  * @generated
  */
 public interface RemoveEReference<A extends EObject, T extends EObject> extends RemoveFromListEChange<A, EReference, T>, SubtractiveReferenceEChange<A, T> {
@@ -35,7 +35,7 @@ public interface RemoveEReference<A extends EObject, T extends EObject> extends 
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (super.isResolved() &amp;&amp; ((this.getOldValue() == null) || (!this.getOldValue().eIsProxy())));'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (super.isResolved() && (<%com.google.common.base.Objects%>.equal(this.getOldValue(), null) || (!this.getOldValue().eIsProxy())));'"
 	 * @generated
 	 */
 	boolean isResolved();

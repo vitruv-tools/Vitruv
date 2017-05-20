@@ -11,6 +11,8 @@ import tools.vitruv.framework.util.datatypes.ClaimableHashMap
 import tools.vitruv.framework.util.datatypes.ClaimableMap
 import java.util.List
 import tools.vitruv.framework.util.datatypes.VURI
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.URIConverter
 
 /** 
  * Base class for Tuid calculators and resolvers. It handles the default parts of the Tuid like
@@ -238,15 +240,39 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 	 */
 	def private String getTuidWithoutRootObjectPrefix(EObject root, String extTuid) {
 		var String rootTuid = calculateTuidFromEObject(root)
-		if (!extTuid.startsWith(rootTuid)) {
-			LOGGER.warn('''Tuid «extTuid» is not in EObject «root»''')
+		var String normalizedExtTuid = extTuid;
+		if (root.eResource != null) {
+			val uriConverter = root.eResource.resourceSet.URIConverter
+			rootTuid = rootTuid.getUriNormalizedTuid(uriConverter);
+			normalizedExtTuid = extTuid.getUriNormalizedTuid(uriConverter);
+		}
+		if (!normalizedExtTuid.startsWith(rootTuid)) {
+			LOGGER.error('''Tuid «normalizedExtTuid» is not in EObject «root»''')
 			return null
 		}
-		var String identifyingTuidPart = extTuid.substring(rootTuid.length())
+		var String identifyingTuidPart = normalizedExtTuid.substring(rootTuid.length())
 		if (identifyingTuidPart.startsWith(VitruviusConstants.getTuidSegmentSeperator())) {
 			identifyingTuidPart = identifyingTuidPart.substring(VitruviusConstants.getTuidSegmentSeperator().length())
 		}
 		return identifyingTuidPart
+	}
+	
+	/**
+	 * Normalizes the URI segment of the given {@link Tuid}. It converts pathmap URIs into ordinary platform URIs.
+	 * It also converts the sometimes occurring plugin references via a resource reference (platform:/resource/platform:/resource)
+	 * into an ordinary plugin reference.
+	 * @param tuid the original {@link Tuid}
+	 * @param uriConverter the {@link URIConverter} to normalize the {@link URI} with.
+	 * @return The normalized and simplified {@link URI}.
+	 */
+	private static def String getUriNormalizedTuid(String tuid, URIConverter uriConverter) {
+		val String[] tuidSegments = tuid.split(VitruviusConstants.tuidSegmentSeperator);
+		if (tuidSegments.length < 2) {
+			throw new IllegalStateException("Tuid too short");
+		}
+		val uri = uriConverter.normalize(URI.createURI(tuidSegments.get(1).replace("platform:/resource/platform:/plugin", "platform:/plugin")));
+		val newTuid = tuid.replace(tuidSegments.get(1), uri.toString);
+		return newTuid
 	}
 
 	/** 

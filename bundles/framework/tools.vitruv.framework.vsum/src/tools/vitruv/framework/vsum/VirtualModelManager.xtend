@@ -13,7 +13,7 @@ final class VirtualModelManager {
 		nameToVirtualModelMap = newHashMap
 	}
 
-	public static def getInstance() {
+	static def getInstance() {
 		instance
 	}
 
@@ -32,7 +32,7 @@ final class VirtualModelManager {
 		}
 	}
 
-	public def putVirtualModel(InternalVirtualModel model) {
+	def putVirtualModel(InternalVirtualModel model) {
 		nameToVirtualModelMap.put(model.name, model)
 	}
 }

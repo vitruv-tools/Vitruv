@@ -25,7 +25,7 @@ public class ChangeDescription2EChangesTransformation {
 
 	// BEGIN LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
 	// --shadow bullshit-- = make the flat attach part of the change description deep by recursively creating changes for all non-default values (and listing the additional objects to attach, but without any effects)
-	// build a global result list that contains all "object changes" that changed a containment feature
+	// build a global result list that contains alrtl "object changes" that changed a containment feature
 	// for every object to attach: 
 	// recursively find all changes to non default values 
 	// create a change model element for the non-default value
@@ -127,6 +127,7 @@ public class ChangeDescription2EChangesTransformation {
 			changeDescription.objectChanges?.forEach[addChangesForObjectChange(it)]
 
 			for (objectToAttach : changeDescription.getObjectsToAttach) {
+
 				recursivelyAddChangesForNonDefaultAttributesAndContainments(objectToAttach)
 				recursivelyAddChangesForNonDefaultReferences(objectToAttach)
 //				addChangeForObjectToAttach(objectToAttach, changeDescription.getNewContainer(objectToAttach))
@@ -144,6 +145,7 @@ public class ChangeDescription2EChangesTransformation {
 	}
 
 	def private void addChangeForResourceChange(ResourceChange resourceChange) {
+
 		val resource = resourceChange.resource
 		for (listChange : resourceChange.listChanges) {
 			switch listChange.kind.value {
@@ -174,6 +176,7 @@ public class ChangeDescription2EChangesTransformation {
 		var newRootResource = null // changeDescription.getNewResource(rootToRemove)
 		eChanges.add(
 			createRemoveRootChange(rootToRemove, newRootContainer, newRootResource, oldResource, rootElementListIndex))
+
 	}
 
 	def private void recursivelyAddChangesForNonDefaultAttributesAndContainments(EObject eObject) {
@@ -187,8 +190,7 @@ public class ChangeDescription2EChangesTransformation {
 			]
 			for (feature : metaclass.EAllStructuralFeatures.filter(EReference).filter[isContainment]) {
 				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
-					val recursiveChanges = EMFModelChangeTransformationUtil.
-						createAdditiveCreateChangesForValue(eObject, feature)
+					val recursiveChanges = createAdditiveCreateChangesForValue(eObject, feature)
 					eChanges.addAll(recursiveChanges)
 					for (element : eObject.getReferencedElements(feature)) {
 						recursivelyAddChangesForNonDefaultAttributesAndContainments(element)
@@ -282,6 +284,10 @@ public class ChangeDescription2EChangesTransformation {
 			if (affectedReference.unsettable && !featureChange.set) {
 				val List<EChange> typedChanges = new ArrayList<EChange>
 				resultChanges.forEach[typedChanges.add(it)]
+			}
+			if (affectedReference.unsettable && !featureChange.set) {
+				val List<EChange> typedChanges = new ArrayList<EChange>
+				resultChanges.forEach[typedChanges.add(it)]
 				#[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, typedChanges)]
 			} else
 				resultChanges
@@ -307,7 +313,6 @@ public class ChangeDescription2EChangesTransformation {
 		switch changeKind {
 			case ChangeKind::ADD_LITERAL:
 				referenceValues.mapFixed [
-
 					createInsertReferenceChange(affectedEObject, affectedReference, index, it, false)
 				]
 			case ChangeKind::REMOVE_LITERAL:
@@ -326,8 +331,8 @@ public class ChangeDescription2EChangesTransformation {
 		var newContainer = null // changeDescription.getNewContainer(referenceValue)
 		var newResource = null // changeDescription.getNewResource(referenceValue)
 		resultList.add(
-			createRemoveReferenceChange(affectedEObject, affectedReference, index, referenceValue, newContainer,
-				newResource))
+			EMFModelChangeTransformationUtil::createRemoveReferenceChange(affectedEObject, affectedReference, index,
+				referenceValue, newContainer, newResource))
 		// }
 		resultList
 	}

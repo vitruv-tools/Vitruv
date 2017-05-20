@@ -2,6 +2,8 @@
  */
 package tools.vitruv.framework.change.echange.impl;
 
+import com.google.common.base.Objects;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.util.EList;
@@ -80,7 +82,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 */
 	public EChange resolveBeforeAndApplyForward(final ResourceSet resourceSet) {
 		final EChange resolvedChange = this.resolveBefore(resourceSet);
-		if (((resolvedChange != null) && resolvedChange.applyForward())) {
+		if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyForward())) {
 			return resolvedChange;
 		}
 		else {
@@ -95,7 +97,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 */
 	public EChange resolveAfterAndApplyBackward(final ResourceSet resourceSet) {
 		final EChange resolvedChange = this.resolveAfter(resourceSet);
-		if (((resolvedChange != null) && resolvedChange.applyBackward())) {
+		if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyBackward())) {
 			return resolvedChange;
 		}
 		else {

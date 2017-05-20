@@ -451,16 +451,6 @@ public interface RootPackage extends EPackage {
 	int REMOVE_ROOT_EOBJECT_OPERATION_COUNT = ROOT_ECHANGE_OPERATION_COUNT + 2;
 
 	/**
-	 * The meta object id for the '<em>EObj</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @see tools.vitruv.framework.change.echange.root.impl.RootPackageImpl#getEObj()
-	 * @generated
-	 */
-	int EOBJ = 3;
-
-	/**
 	 * The meta object id for the '<em>Resource</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -468,7 +458,7 @@ public interface RootPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.root.impl.RootPackageImpl#getResource()
 	 * @generated
 	 */
-	int RESOURCE = 4;
+	int RESOURCE = 3;
 
 
 	/**
@@ -563,17 +553,6 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getRemoveRootEObject__IsResolved();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EObj</em>'.
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
-	 * @generated
-	 */
-	EDataType getEObj();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.Resource <em>Resource</em>}'.
@@ -686,16 +665,6 @@ public interface RootPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation REMOVE_ROOT_EOBJECT___IS_RESOLVED = eINSTANCE.getRemoveRootEObject__IsResolved();
-
-		/**
-		 * The meta object literal for the '<em>EObj</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EObject
-		 * @see tools.vitruv.framework.change.echange.root.impl.RootPackageImpl#getEObj()
-		 * @generated
-		 */
-		EDataType EOBJ = eINSTANCE.getEObj();
 
 		/**
 		 * The meta object literal for the '<em>Resource</em>' data type.

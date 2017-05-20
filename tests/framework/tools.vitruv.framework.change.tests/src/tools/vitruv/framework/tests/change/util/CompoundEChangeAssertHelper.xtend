@@ -23,10 +23,10 @@ import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHel
 
 class CompoundEChangeAssertHelper {
 	def static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> assertCreateAndInsertNonRoot(
-		EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex) {
+			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex, boolean unresolvedChanges) {
 		val createAndInsert = change.assertObjectInstanceOf(CreateAndInsertNonRoot)
-		createAndInsert.createChange.assertCreateEObject(expectedNewValue,
-			StagingArea::getStagingArea(affectedEObject.eResource))
+		val stagingArea = if (unresolvedChanges) StagingArea::getStagingArea(affectedEObject.eResource) else null
+		createAndInsert.createChange.assertCreateEObject(expectedNewValue, stagingArea)
 		createAndInsert.insertChange.assertInsertEReference(affectedEObject, affectedFeature, expectedNewValue,
 			expectedIndex, true)
 		createAndInsert
@@ -56,12 +56,12 @@ class CompoundEChangeAssertHelper {
 	}
 
 	def static void assertCreateAndReplaceNonRoot(EChange change, EObject expectedNewValue,
-		EObject affectedEObject, EStructuralFeature affectedFeature) {
+		EObject affectedEObject, EStructuralFeature affectedFeature, boolean unresolvedChanges) {
 		val compositeChange = assertObjectInstanceOf(change, CreateAndReplaceNonRoot)
-		compositeChange.createChange.assertCreateEObject(expectedNewValue,
-			StagingArea::getStagingArea(affectedEObject.eResource))
-		compositeChange.insertChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, null,
-			expectedNewValue, true)
+		val stagingArea = if (unresolvedChanges) StagingArea::getStagingArea(affectedEObject.eResource) else null
+		compositeChange.createChange.assertCreateEObject(expectedNewValue, stagingArea)
+		compositeChange.insertChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature,
+			null, expectedNewValue, true)
 	}
 
 	def static void assertReplaceAndDeleteNonRoot(EChange change, EObject expectedOldValue,

@@ -44,16 +44,15 @@ class ChangeDescription2InsertEAttributeValueTest extends ChangeDescription2Chan
 
 	@Test
 	def testTreeInsertMultiValuedEAttribute() {
-		val recursiveRoot = AllElementTypesFactory::eINSTANCE.createRoot
+		val recursiveRoot = AllElementTypesFactory.eINSTANCE.createRoot
 		recursiveRoot.multiValuedEAttribute += 1
-		recursiveRoot.multiValuedEAttribute += 2;
-		startRecording()
+		recursiveRoot.multiValuedEAttribute += 2	
+		startRecording
 		rootElement.recursiveRoot = recursiveRoot
-
+		
 		changes.assertChangeCount(4)
-		changes.claimChange(0).assertCreateAndReplaceNonRoot(recursiveRoot, rootElement, ROOT__RECURSIVE_ROOT)
-		changes.claimChange(1).assertReplaceSingleValuedEAttribute(recursiveRoot, IDENTIFIED__ID, null,
-			recursiveRoot.id)
+		changes.claimChange(0).assertCreateAndReplaceNonRoot(recursiveRoot, rootElement, ROOT__RECURSIVE_ROOT, unresolveAndResolveRecordedEChanges)
+		changes.claimChange(1).assertReplaceSingleValuedEAttribute(recursiveRoot, IDENTIFIED__ID, null, recursiveRoot.id)
 		changes.claimChange(2).assertInsertEAttribute(recursiveRoot, ROOT__MULTI_VALUED_EATTRIBUTE, 1, 0)
 		changes.claimChange(3).assertInsertEAttribute(recursiveRoot, ROOT__MULTI_VALUED_EATTRIBUTE, 2, 1)
 	}

@@ -21,8 +21,8 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 
 		// assert
 		val changes = changes
-		changes.get(0).assertSetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot,
-			true, true)
+		changes.get(0).assertSetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			nonRoot, true, true, unresolveAndResolveRecordedEChanges)
 	}
 
 	@Test
@@ -79,7 +79,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		// assert
 		val changes = changes
 		changes.get(0).assertSetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
-			nonRoot, false, false)
+			nonRoot, false, false, unresolveAndResolveRecordedEChanges)
 	}
 
 	@Test

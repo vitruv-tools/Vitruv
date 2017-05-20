@@ -2,6 +2,8 @@
  */
 package tools.vitruv.framework.change.echange.root.impl;
 
+import com.google.common.base.Objects;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -186,7 +188,7 @@ public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootE
 	 * @generated
 	 */
 	public boolean isResolved() {
-		return (super.isResolved() && (this.getResource() != null));
+		return (super.isResolved() && (!Objects.equal(this.getResource(), null)));
 	}
 
 	/**

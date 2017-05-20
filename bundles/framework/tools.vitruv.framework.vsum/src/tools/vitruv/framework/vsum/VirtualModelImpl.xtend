@@ -15,19 +15,19 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
-	private val ModelRepositoryImpl modelRepository
-	private val VitruvDomainRepository metamodelRepository
-	private val ChangePropagator changePropagator
-	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
-	private val String name
+	val ModelRepositoryImpl modelRepository
+	val VitruvDomainRepository metamodelRepository
+	val ChangePropagator changePropagator
+	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
+	val String name
 
-	public new(String name, VirtualModelConfiguration modelConfiguration) {
+	new(String name, VirtualModelConfiguration modelConfiguration) {
 		this.name = name
 		metamodelRepository = new VitruvDomainRepositoryImpl
 		modelConfiguration.metamodels.forEach[metamodelRepository.addDomain(it)]
 		modelRepository = new ModelRepositoryImpl(name, metamodelRepository)
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository
-		modelConfiguration.changePropagationSpecifications.forEach [ 
+		modelConfiguration.changePropagationSpecifications.forEach [
 			changePropagationSpecificationRepository.putChangePropagationSpecification(it)
 		]
 		changePropagationSpecificationProvider = changePropagationSpecificationRepository
@@ -36,8 +36,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		VirtualModelManager::instance.putVirtualModel(this)
 	}
 
-	override getCorrespondenceModel(VURI metamodel1, VURI metamodel2) {
-		modelRepository.getCorrespondenceModel(metamodel1, metamodel2)
+	override getCorrespondenceModel() {
+		modelRepository.correspondenceModel
 	}
 
 	override getModelInstance(VURI modelVuri) {

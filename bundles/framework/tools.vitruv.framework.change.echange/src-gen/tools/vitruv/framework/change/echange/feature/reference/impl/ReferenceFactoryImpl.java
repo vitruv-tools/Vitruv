@@ -77,8 +77,6 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case ReferencePackage.EOBJ:
-				return createEObjFromString(eDataType, initialValue);
 			case ReferencePackage.RESOURCE_SET:
 				return createResourceSetFromString(eDataType, initialValue);
 			case ReferencePackage.COMMAND:
@@ -96,8 +94,6 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case ReferencePackage.EOBJ:
-				return convertEObjToString(eDataType, instanceValue);
 			case ReferencePackage.RESOURCE_SET:
 				return convertResourceSetToString(eDataType, instanceValue);
 			case ReferencePackage.COMMAND:
@@ -135,24 +131,6 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
 	public <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A, T> createReplaceSingleValuedEReference() {
 		ReplaceSingleValuedEReferenceImpl<A, T> replaceSingleValuedEReference = new ReplaceSingleValuedEReferenceImpl<A, T>();
 		return replaceSingleValuedEReference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EObject createEObjFromString(EDataType eDataType, String initialValue) {
-		return (EObject)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

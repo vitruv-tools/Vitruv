@@ -15,7 +15,6 @@ interface VitruviusChange extends URIHaving {
 	 * Returns whether the change contains any concrete change or consists only of composite ones.
 	 */
 	def boolean containsConcreteChange()
-
 	/** 
 	 * Validates the change by checking if at least one concrete change is contained and
 	 * the URIs of all contained changes are same. 
@@ -50,4 +49,6 @@ interface VitruviusChange extends URIHaving {
 	def void applyForward() throws IllegalStateException
 
 	def void resolveBeforeAndApplyForward(ResourceSet resourceSet)
+	
+	def void applyBackwardIfLegacy()
 }

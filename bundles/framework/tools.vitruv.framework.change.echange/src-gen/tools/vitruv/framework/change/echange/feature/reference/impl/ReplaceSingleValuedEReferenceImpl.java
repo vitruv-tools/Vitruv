@@ -2,6 +2,8 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
+import com.google.common.base.Objects;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -171,7 +173,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * @generated
 	 */
 	public boolean isResolved() {
-		return ((super.isResolved() && ((this.getOldValue() == null) || (!this.getOldValue().eIsProxy()))) && ((this.getNewValue() == null) || (!this.getNewValue().eIsProxy())));
+		return ((super.isResolved() && (Objects.equal(this.getOldValue(), null) || (!this.getOldValue().eIsProxy()))) && (Objects.equal(this.getNewValue(), null) || (!this.getNewValue().eIsProxy())));
 	}
 
 	/**
@@ -180,7 +182,8 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * @generated
 	 */
 	public boolean isContainment() {
-		return this.getAffectedFeature().isContainment();
+		EReference _affectedFeature = this.getAffectedFeature();
+		return _affectedFeature.isContainment();
 	}
 
 	/**

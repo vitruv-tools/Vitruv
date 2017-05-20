@@ -3,7 +3,6 @@
 package tools.vitruv.framework.change.echange.feature.single;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -204,26 +203,6 @@ public interface SinglePackage extends EPackage {
 	 */
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 4;
 
-	/**
-	 * The meta object id for the '<em>EObj</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @see tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl#getEObj()
-	 * @generated
-	 */
-	int EOBJ = 1;
-
-	/**
-	 * The meta object id for the '<em>EFeat</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EStructuralFeature
-	 * @see tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl#getEFeat()
-	 * @generated
-	 */
-	int EFEAT = 2;
-
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange <em>Replace Single Valued Feature EChange</em>}'.
@@ -254,28 +233,6 @@ public interface SinglePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getReplaceSingleValuedFeatureEChange__IsToNonDefaultValue();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EObj</em>'.
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
-	 * @generated
-	 */
-	EDataType getEObj();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EStructuralFeature <em>EFeat</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EFeat</em>'.
-	 * @see org.eclipse.emf.ecore.EStructuralFeature
-	 * @model instanceClass="org.eclipse.emf.ecore.EStructuralFeature"
-	 * @generated
-	 */
-	EDataType getEFeat();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -325,26 +282,6 @@ public interface SinglePackage extends EPackage {
 		 * @generated
 		 */
 		EOperation REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_TO_NON_DEFAULT_VALUE = eINSTANCE.getReplaceSingleValuedFeatureEChange__IsToNonDefaultValue();
-
-		/**
-		 * The meta object literal for the '<em>EObj</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EObject
-		 * @see tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl#getEObj()
-		 * @generated
-		 */
-		EDataType EOBJ = eINSTANCE.getEObj();
-
-		/**
-		 * The meta object literal for the '<em>EFeat</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EStructuralFeature
-		 * @see tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl#getEFeat()
-		 * @generated
-		 */
-		EDataType EFEAT = eINSTANCE.getEFeat();
 
 	}
 

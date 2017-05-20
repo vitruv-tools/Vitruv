@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getRemoveEAttributeValue()
- * @model ABounds="tools.vitruv.framework.change.echange.feature.attribute.EObj" TBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface RemoveEAttributeValue<A extends EObject, T extends Object> extends RemoveFromListEChange<A, EAttribute, T>, SubtractiveAttributeEChange<A, T> {

@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests
 
-import java.util.Iterator
 import java.util.List
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
@@ -17,6 +16,7 @@ import tools.vitruv.framework.tests.util.TestUtil
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
+
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
 
@@ -55,12 +55,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 		val Iterable<VitruvDomain> domains = vitruvDomains
 		virtualModel = TestUtil::createVirtualModel(currentTestProjectVsumName, true, domains,
 			createChangePropagationSpecifications)
-		// TODO HK Implement correctly: Should be obsolete when correspondence
-		// model is not MM-pair-specific any more
-		val Iterator<VitruvDomain> iterator = domains.iterator
-		val VitruvDomain firstMetamodel = iterator.next
-		val VitruvDomain secondMetamodel = if (iterator.hasNext) iterator.next else firstMetamodel
-		correspondenceModel = virtualModel.getCorrespondenceModel(firstMetamodel.URI, secondMetamodel.URI)
+		correspondenceModel = virtualModel.correspondenceModel
 		testUserInteractor = new TestUserInteractor
 		virtualModel.userInteractor = testUserInteractor
 	}

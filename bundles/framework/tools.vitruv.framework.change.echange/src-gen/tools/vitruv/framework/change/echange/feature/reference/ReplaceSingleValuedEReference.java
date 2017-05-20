@@ -24,7 +24,7 @@ import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedF
  *
  *
  * @see tools.vitruv.framework.change.echange.feature.reference.ReferencePackage#getReplaceSingleValuedEReference()
- * @model ABounds="tools.vitruv.framework.change.echange.feature.reference.EObj" TBounds="tools.vitruv.framework.change.echange.feature.reference.EObj"
+ * @model
  * @generated
  */
 public interface ReplaceSingleValuedEReference<A extends EObject, T extends EObject> extends ReplaceSingleValuedFeatureEChange<A, EReference, T>, AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T> {
@@ -38,7 +38,7 @@ public interface ReplaceSingleValuedEReference<A extends EObject, T extends EObj
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return ((super.isResolved() &amp;&amp; ((this.getOldValue() == null) || (!this.getOldValue().eIsProxy()))) &amp;&amp; ((this.getNewValue() == null) || (!this.getNewValue().eIsProxy())));'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return ((super.isResolved() && (<%com.google.common.base.Objects%>.equal(this.getOldValue(), null) || (!this.getOldValue().eIsProxy()))) && (<%com.google.common.base.Objects%>.equal(this.getNewValue(), null) || (!this.getNewValue().eIsProxy())));'"
 	 * @generated
 	 */
 	boolean isResolved();

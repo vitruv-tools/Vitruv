@@ -12,6 +12,9 @@ import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
+import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
+import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 
 class VitruviusChangeFactory {
 	static val logger = Logger::getLogger(VitruviusChangeFactory)
@@ -37,7 +40,17 @@ class VitruviusChangeFactory {
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
 	def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		new EMFModelChangeImpl(changeDescription, vuri)
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
+		new EMFModelChangeImpl(changes, vuri)
+	}
+
+	def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
+		new LegacyEMFModelChangeImpl(changeDescription, changes, vuri)
+	}
+
+	def ConcreteChange createConcreteApplicableChange(EChange change, VURI vuri) {
+		new ConcreteApplicableChangeImpl(change, vuri)
 	}
 
 	def ConcreteChange createConcreteChange(EChange change, VURI vuri) {

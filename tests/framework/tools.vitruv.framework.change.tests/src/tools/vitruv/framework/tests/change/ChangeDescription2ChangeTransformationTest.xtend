@@ -16,14 +16,23 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import java.util.ArrayList
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import org.junit.runners.Parameterized.Parameters
+import org.junit.runners.Parameterized.Parameter
+import java.util.Collection
 
 /** 
  * @author langhamm
  */
+@RunWith(Parameterized)
 abstract class ChangeDescription2ChangeTransformationTest {
 	var protected AtomicEMFChangeRecorder changeRecorder
 	var protected Root rootElement
 	var List<EChange> changes
+
+	@Parameter
+	public boolean unresolveAndResolveRecordedEChanges
 	var rs = new ResourceSetImpl
 	val List<File> filesToDelete = new ArrayList<File>
 
@@ -33,6 +42,11 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	public static val MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME = "multiValuedContainmentEReference"
 	public static val MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference"
 	public static val MULTI_VALUE_E_ATTRIBUTE_NAME = "multiValuedEAttribute"
+
+	@Parameters
+	public def static Collection<Boolean> data() {
+		return #[true, false];
+	}
 
 	new() {
 		rs.resourceFactoryRegistry.extensionToFactoryMap.put("xmi", new XMIResourceFactoryImpl)
@@ -54,7 +68,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	 */
 	@Before
 	def void beforeTest() {
-		changeRecorder = new AtomicEMFChangeRecorder
+		changeRecorder = new AtomicEMFChangeRecorder(unresolveAndResolveRecordedEChanges)
 		rootElement = createRootInResource(1)
 	}
 
@@ -71,6 +85,12 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	protected def List<EChange> getChanges() {
 		if (changes === null) {
 			changes = endRecording
+			if (unresolveAndResolveRecordedEChanges) {
+				for (var i = changes.length - 1; i >= 0; i--) {
+					changes.set(i, changes.get(i).resolveAfterAndApplyBackward(rs))
+				}
+				changes.forEach[applyForward]
+			}
 		}
 		changes
 	}

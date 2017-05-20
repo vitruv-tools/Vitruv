@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="feature" nsURI="http://tools.vitruv/EChange/Feature/1.0" nsPrefix="feature">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="modelName" value="Change"/>
+    <details key="commentFormatting" value="true"/>
+    <details key="featureMapWrapperInternalInterface" value=""/>
+    <details key="classNamePattern" value=""/>
+    <details key="basePackage" value="tools.vitruv.framework.change.echange"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureEChange" abstract="true" eSuperTypes="echange.ecore#//AtomicEChange">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which changes an attribute or reference of an EObject."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
+        <details key="body" value="return (((super.isResolved() &amp;&amp; (!&lt;%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null))) &amp;&amp; (!this.getAffectedEObject().eIsProxy())) &amp;&amp; (!&lt;%com.google.common.base.Objects%>.equal(this.getAffectedFeature(), null)));"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="affectedFeature" lowerBound="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;The affected attribute or reference."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//FeatureEChange/F"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObject" lowerBound="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;The affected EObject of the change."/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//FeatureEChange/A"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UpdateMultiValuedFeatureEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which changes a many valued attribute or reference."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//FeatureEChange">
+      <eTypeArguments eTypeParameter="#//UpdateMultiValuedFeatureEChange/A"/>
+      <eTypeArguments eTypeParameter="#//UpdateMultiValuedFeatureEChange/F"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleValuedFeatureEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which changes a single valued attribute or reference."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//FeatureEChange">
+      <eTypeArguments eTypeParameter="#//UpdateSingleValuedFeatureEChange/A"/>
+      <eTypeArguments eTypeParameter="#//UpdateSingleValuedFeatureEChange/F"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>

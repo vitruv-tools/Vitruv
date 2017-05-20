@@ -2,6 +2,8 @@
  */
 package tools.vitruv.framework.change.echange.feature.impl;
 
+import com.google.common.base.Objects;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -84,7 +86,7 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 */
 	@SuppressWarnings("unchecked")
 	public F getAffectedFeature() {
-		if (affectedFeature != null && ((EObject)affectedFeature).eIsProxy()) {
+		if (affectedFeature != null && affectedFeature.eIsProxy()) {
 			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
 			affectedFeature = (F)eResolveProxy(oldAffectedFeature);
 			if (affectedFeature != oldAffectedFeature) {
@@ -123,7 +125,7 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 */
 	@SuppressWarnings("unchecked")
 	public A getAffectedEObject() {
-		if (affectedEObject != null && ((EObject)affectedEObject).eIsProxy()) {
+		if (affectedEObject != null && affectedEObject.eIsProxy()) {
 			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
 			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
 			if (affectedEObject != oldAffectedEObject) {
@@ -161,7 +163,7 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * @generated
 	 */
 	public boolean isResolved() {
-		return (((super.isResolved() && (this.getAffectedEObject() != null)) && (!this.getAffectedEObject().eIsProxy())) && (this.getAffectedFeature() != null));
+		return (((super.isResolved() && (!Objects.equal(this.getAffectedEObject(), null))) && (!this.getAffectedEObject().eIsProxy())) && (!Objects.equal(this.getAffectedFeature(), null)));
 	}
 
 	/**

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="compound" nsURI="http://tools.vitruv/EChange/Compound/1.0" nsPrefix="compound">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="modelName" value="Change"/>
+    <details key="basePackage" value="tools.vitruv.framework.change.echange"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EDataType" name="Command" instanceClassName="org.eclipse.emf.common.command.Command"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="ResourceSet" instanceClassName="org.eclipse.emf.ecore.resource.ResourceSet"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CompoundEChange" abstract="true" eSuperTypes="echange.ecore#//EChange">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which is a sequence of several atomic changes."/>
+    </eAnnotations>
+    <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="ecore:EClass echange.ecore#//AtomicEChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Returns the atomic changes of the compound changes, in the same order as they are&#xA;resolved / applied."/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
+        <details key="body" value="&lt;%org.eclipse.emf.common.util.EList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> _atomicChanges = this.getAtomicChanges();&#xA;for (final &lt;%tools.vitruv.framework.change.echange.AtomicEChange%> change : _atomicChanges)&#xA;{&#xA;&#x9;boolean _isResolved = change.isResolved();&#xA;&#x9;boolean _not = (!_isResolved);&#xA;&#x9;if (_not)&#xA;&#x9;{&#xA;&#x9;&#x9;return false;&#xA;&#x9;}&#xA;}&#xA;return super.isResolved();"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="resolveBeforeAndApplyForward" unique="false" eType="ecore:EClass echange.ecore#//EChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Resolves the compound change like {@link resolveBefore}, but also applies the change forward.&#xA;If the change was already resolved, it returns the original change and applies it forward.&#xA;@param resourceSet &#x9;&#x9;&#x9;&#x9;The {@code ResourceSet} which contains the concrete EObjects the proxy objects of&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the unresolved should be resolved to.&#xA;@return &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Returns the resolved change if the change could be applied forward. The returned change&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;is a copy of the change or, if the change was already resolved, the original change.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;If the change could not be resolved and / or applied or the&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;resource set is {@code null}, it returns {@code null}&#xA;@throws IllegalStateException &#x9;The change is already resolved."/>
+        <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, true, false);"/>
+      </eAnnotations>
+      <eParameters name="resourceSet" unique="false" eType="#//ResourceSet"/>
+    </eOperations>
+    <eOperations name="resolveAfterAndApplyBackward" unique="false" eType="ecore:EClass echange.ecore#//EChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Resolves the compound change like {@link resolveAfter}, but also applies the change backward.&#xA;If the change was already resolved, it returns the original change and applies it backward.&#xA;@param resourceSet &#x9;&#x9;&#x9;&#x9;The {@code ResourceSet} which contains the concrete EObjects the proxy objects of&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the unresolved should be resolved to.&#xA;@return &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Returns the resolved change if the change could be applied backward. The returned change&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;is a copy of the change or, if the change was already resolved, the original change.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;If the change could not be resolved and / or applied or the resource set is {@code null},&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;it returns {@code null}&#xA;@throws IllegalStateException &#x9;The change is already resolved."/>
+        <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, false, false);"/>
+      </eAnnotations>
+      <eParameters name="resourceSet" unique="false" eType="#//ResourceSet"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExplicitUnsetEFeature" abstract="true"
+      eSuperTypes="#//CompoundEChange">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which unsets a single or many valued feature."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObject" lowerBound="1">
+      <eGenericType eTypeParameter="#//ExplicitUnsetEFeature/A"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="affectedFeature" lowerBound="1">
+      <eGenericType eTypeParameter="#//ExplicitUnsetEFeature/F"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExplicitUnsetEAttribute">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which unsets a single or many valued attribute."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="ecore:EClass echange.ecore#//AtomicEChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="final &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>();&#xA;&lt;%org.eclipse.emf.common.util.EList%>&lt;&lt;%tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange%>&lt;A, T>> _subtractiveChanges = this.getSubtractiveChanges();&#xA;result.addAll(_subtractiveChanges);&#xA;return result;"/>
+      </eAnnotations>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="#//CompoundSubtraction">
+      <eTypeArguments eTypeParameter="#//ExplicitUnsetEAttribute/T"/>
+      <eTypeArguments eClassifier="ecore:EClass attribute.ecore#//SubtractiveAttributeEChange">
+        <eTypeArguments eTypeParameter="#//ExplicitUnsetEAttribute/A"/>
+        <eTypeArguments eTypeParameter="#//ExplicitUnsetEAttribute/T"/>
+      </eTypeArguments>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="#//ExplicitUnsetEFeature">
+      <eTypeArguments eTypeParameter="#//ExplicitUnsetEAttribute/A"/>
+      <eTypeArguments eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EAttribute"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExplicitUnsetEReference">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which unsets a single or many valued reference."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eOperations name="getContainedChanges" lowerBound="1" upperBound="-1" eType="ecore:EClass echange.ecore#//EChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;Returns the changes this unset consists of. Can also be compound changes, e.g., a RemoveAndDeleteNonRoot"/>
+        <details key="body" value="return this.getChanges();"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="ecore:EClass echange.ecore#//AtomicEChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="&lt;%org.eclipse.emf.common.util.EList%>&lt;&lt;%tools.vitruv.framework.change.echange.EChange%>> _changes = this.getChanges();&#xA;final &lt;%org.eclipse.xtext.xbase.lib.Functions.Function1%>&lt;&lt;%tools.vitruv.framework.change.echange.EChange%>, &lt;%java.util.List%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>> _function = new &lt;%org.eclipse.xtext.xbase.lib.Functions.Function1%>&lt;&lt;%tools.vitruv.framework.change.echange.EChange%>, &lt;%java.util.List%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>>()&#xA;{&#xA;&#x9;public &lt;%java.util.List%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> apply(final &lt;%tools.vitruv.framework.change.echange.EChange%> it)&#xA;&#x9;{&#xA;&#x9;&#x9;&lt;%java.util.List%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> _xifexpression = null;&#xA;&#x9;&#x9;if ((it instanceof &lt;%tools.vitruv.framework.change.echange.AtomicEChange%>))&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;_xifexpression = java.util.Collections.&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>unmodifiableList(org.eclipse.xtext.xbase.lib.CollectionLiterals.&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>newArrayList(((&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>)it)));&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;else&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&lt;%org.eclipse.emf.common.util.EList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> _xifexpression_1 = null;&#xA;&#x9;&#x9;&#x9;if ((it instanceof &lt;%tools.vitruv.framework.change.echange.compound.CompoundEChange%>))&#xA;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;_xifexpression_1 = ((&lt;%tools.vitruv.framework.change.echange.compound.CompoundEChange%>)it).getAtomicChanges();&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;else&#xA;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;&#x9;throw new &lt;%java.lang.IllegalArgumentException%>();&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;_xifexpression = _xifexpression_1;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return _xifexpression;&#xA;&#x9;}&#xA;};&#xA;&lt;%org.eclipse.emf.common.util.EList%>&lt;&lt;%java.util.List%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>> _map = &lt;%org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions%>.&lt;&lt;%tools.vitruv.framework.change.echange.EChange%>, &lt;%java.util.List%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>>map(_changes, _function);&#xA;&lt;%java.lang.Iterable%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> _flatten = &lt;%com.google.common.collect.Iterables%>.&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>concat(_map);&#xA;return &lt;%org.eclipse.emf.common.util.ECollections%>.&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>asEList(((&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>[])org.eclipse.xtext.xbase.lib.Conversions.unwrapArray(_flatten, &lt;%tools.vitruv.framework.change.echange.AtomicEChange%>.class)));"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changes" lowerBound="1"
+        upperBound="-1" eType="ecore:EClass echange.ecore#//EChange" containment="true"
+        resolveProxies="false"/>
+    <eGenericSuperTypes eClassifier="#//ExplicitUnsetEFeature">
+      <eTypeArguments eTypeParameter="#//ExplicitUnsetEReference/A"/>
+      <eTypeArguments eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CompoundSubtraction" abstract="true"
+      eSuperTypes="#//CompoundEChange">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which replaces an EObject in an EList."/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="S">
+      <eBounds eClassifier="ecore:EClass echange.ecore#//SubtractiveEChange">
+        <eTypeArguments eTypeParameter="#//CompoundSubtraction/T"/>
+      </eBounds>
+    </eTypeParameters>
+    <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="ecore:EClass echange.ecore#//AtomicEChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="final &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>();&#xA;&lt;%org.eclipse.emf.common.util.EList%>&lt;S> _subtractiveChanges = this.getSubtractiveChanges();&#xA;result.addAll(_subtractiveChanges);&#xA;return result;"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subtractiveChanges" lowerBound="1"
+        upperBound="-1" containment="true" resolveProxies="false">
+      <eGenericType eTypeParameter="#//CompoundSubtraction/S"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CompoundAddition" abstract="true" eSuperTypes="#//CompoundEChange">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract change which combines several additive EChanges of the same type."/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="S">
+      <eBounds eClassifier="ecore:EClass echange.ecore#//AdditiveEChange">
+        <eTypeArguments eTypeParameter="#//CompoundAddition/T"/>
+      </eBounds>
+    </eTypeParameters>
+    <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="ecore:EClass echange.ecore#//AtomicEChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="final &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>();&#xA;&lt;%org.eclipse.emf.common.util.EList%>&lt;S> _additiveChanges = this.getAdditiveChanges();&#xA;result.addAll(_additiveChanges);&#xA;return result;"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="additiveChanges" lowerBound="1"
+        upperBound="-1" containment="true" resolveProxies="false">
+      <eGenericType eTypeParameter="#//CompoundAddition/S"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateAndInsertEObject" abstract="true"
+      eSuperTypes="#//CompoundEChange">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA; Abstract EChange which creates a new EObject and inserts it in a reference."/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="C">
+      <eBounds eClassifier="ecore:EClass eobject.ecore#//EObjectAddedEChange">
+        <eTypeArguments eTypeParameter="#//CreateAndInsertEObject/T"/>
+      </eBounds>
+    </eTypeParameters>
+    <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="ecore:EClass echange.ecore#//AtomicEChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="final &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>();&#xA;&lt;%tools.vitruv.framework.change.echange.eobject.CreateEObject%>&lt;T> _createChange = this.getCreateChange();&#xA;result.add(_createChange);&#xA;C _insertChange = this.getInsertChange();&#xA;result.add(_insertChange);&#xA;return result;"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createChange" lowerBound="1"
+        containment="true" resolveProxies="false">
+      <eGenericType eClassifier="ecore:EClass eobject.ecore#//CreateEObject">
+        <eTypeArguments eTypeParameter="#//CreateAndInsertEObject/T"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="insertChange" lowerBound="1"
+        containment="true" resolveProxies="false">
+      <eGenericType eTypeParameter="#//CreateAndInsertEObject/C"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveAndDeleteEObject" abstract="true"
+      eSuperTypes="#//CompoundEChange">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which removes an EObject from a reference and deletes it."/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="C">
+      <eBounds eClassifier="ecore:EClass eobject.ecore#//EObjectSubtractedEChange">
+        <eTypeArguments eTypeParameter="#//RemoveAndDeleteEObject/T"/>
+      </eBounds>
+    </eTypeParameters>
+    <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="ecore:EClass echange.ecore#//AtomicEChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="final &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>();&#xA;C _removeChange = this.getRemoveChange();&#xA;result.add(_removeChange);&#xA;&lt;%tools.vitruv.framework.change.echange.eobject.DeleteEObject%>&lt;T> _deleteChange = this.getDeleteChange();&#xA;result.add(_deleteChange);&#xA;return result;"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="removeChange" lowerBound="1"
+        containment="true" resolveProxies="false">
+      <eGenericType eTypeParameter="#//RemoveAndDeleteEObject/C"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteChange" lowerBound="1"
+        containment="true" resolveProxies="false">
+      <eGenericType eClassifier="ecore:EClass eobject.ecore#//DeleteEObject">
+        <eTypeArguments eTypeParameter="#//RemoveAndDeleteEObject/T"/>
+      </eGenericType>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateAndInsertRoot">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which creates and inserts a new root EObject in a resource."/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//CreateAndInsertEObject">
+      <eTypeArguments eTypeParameter="#//CreateAndInsertRoot/T"/>
+      <eTypeArguments eClassifier="ecore:EClass root.ecore#//InsertRootEObject">
+        <eTypeArguments eTypeParameter="#//CreateAndInsertRoot/T"/>
+      </eTypeArguments>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveAndDeleteRoot">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which removes an existing EObject from a resource and deletes it."/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//RemoveAndDeleteEObject">
+      <eTypeArguments eTypeParameter="#//RemoveAndDeleteRoot/T"/>
+      <eTypeArguments eClassifier="ecore:EClass root.ecore#//RemoveRootEObject">
+        <eTypeArguments eTypeParameter="#//RemoveAndDeleteRoot/T"/>
+      </eTypeArguments>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateAndInsertNonRoot">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which creates and inserts a new EObject into a containment reference."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//CreateAndInsertEObject">
+      <eTypeArguments eTypeParameter="#//CreateAndInsertNonRoot/T"/>
+      <eTypeArguments eClassifier="ecore:EClass reference.ecore#//InsertEReference">
+        <eTypeArguments eTypeParameter="#//CreateAndInsertNonRoot/A"/>
+        <eTypeArguments eTypeParameter="#//CreateAndInsertNonRoot/T"/>
+      </eTypeArguments>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveAndDeleteNonRoot">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which removes an existing EObject from a many valued containment reference and deletes it."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//RemoveAndDeleteEObject">
+      <eTypeArguments eTypeParameter="#//RemoveAndDeleteNonRoot/T"/>
+      <eTypeArguments eClassifier="ecore:EClass reference.ecore#//RemoveEReference">
+        <eTypeArguments eTypeParameter="#//RemoveAndDeleteNonRoot/A"/>
+        <eTypeArguments eTypeParameter="#//RemoveAndDeleteNonRoot/T"/>
+      </eTypeArguments>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateAndReplaceNonRoot">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which creates a new EObject and replaces null in a single valued reference."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//CreateAndInsertEObject">
+      <eTypeArguments eTypeParameter="#//CreateAndReplaceNonRoot/T"/>
+      <eTypeArguments eClassifier="ecore:EClass reference.ecore#//ReplaceSingleValuedEReference">
+        <eTypeArguments eTypeParameter="#//CreateAndReplaceNonRoot/A"/>
+        <eTypeArguments eTypeParameter="#//CreateAndReplaceNonRoot/T"/>
+      </eTypeArguments>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReplaceAndDeleteNonRoot">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which replaces an existing EObject with null in a single valued reference and deletes it."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//RemoveAndDeleteEObject">
+      <eTypeArguments eTypeParameter="#//ReplaceAndDeleteNonRoot/T"/>
+      <eTypeArguments eClassifier="ecore:EClass reference.ecore#//ReplaceSingleValuedEReference">
+        <eTypeArguments eTypeParameter="#//ReplaceAndDeleteNonRoot/A"/>
+        <eTypeArguments eTypeParameter="#//ReplaceAndDeleteNonRoot/T"/>
+      </eTypeArguments>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateAndReplaceAndDeleteNonRoot" eSuperTypes="#//CompoundEChange">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange creates a new EObject and replaces an existing one in a single valued containment reference. The old one will be deleted."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="ecore:EClass echange.ecore#//AtomicEChange">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="final &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new &lt;%org.eclipse.emf.common.util.BasicEList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>>();&#xA;&lt;%tools.vitruv.framework.change.echange.eobject.CreateEObject%>&lt;T> _createChange = this.getCreateChange();&#xA;result.add(_createChange);&#xA;&lt;%tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference%>&lt;A, T> _replaceChange = this.getReplaceChange();&#xA;result.add(_replaceChange);&#xA;&lt;%tools.vitruv.framework.change.echange.eobject.DeleteEObject%>&lt;T> _deleteChange = this.getDeleteChange();&#xA;result.add(_deleteChange);&#xA;return result;"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createChange" lowerBound="1"
+        containment="true" resolveProxies="false">
+      <eGenericType eClassifier="ecore:EClass eobject.ecore#//CreateEObject">
+        <eTypeArguments eTypeParameter="#//CreateAndReplaceAndDeleteNonRoot/T"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="replaceChange" lowerBound="1"
+        containment="true" resolveProxies="false">
+      <eGenericType eClassifier="ecore:EClass reference.ecore#//ReplaceSingleValuedEReference">
+        <eTypeArguments eTypeParameter="#//CreateAndReplaceAndDeleteNonRoot/A"/>
+        <eTypeArguments eTypeParameter="#//CreateAndReplaceAndDeleteNonRoot/T"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteChange" lowerBound="1"
+        containment="true" resolveProxies="false">
+      <eGenericType eClassifier="ecore:EClass eobject.ecore#//DeleteEObject">
+        <eTypeArguments eTypeParameter="#//CreateAndReplaceAndDeleteNonRoot/T"/>
+      </eGenericType>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>

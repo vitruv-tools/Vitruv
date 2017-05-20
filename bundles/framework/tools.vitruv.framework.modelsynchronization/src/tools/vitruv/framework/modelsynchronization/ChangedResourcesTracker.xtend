@@ -10,34 +10,34 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import org.eclipse.emf.ecore.EObject
 
 package class ChangedResourcesTracker {
-	private final Set<Resource> sourceModelResources
-	private final Set<Resource> involvedModelResources
+	val Set<Resource> sourceModelResources
+	val Set<Resource> involvedModelResources
 	
 	new() {
-		this.sourceModelResources = newHashSet
-		this.involvedModelResources = newHashSet
+		sourceModelResources = newHashSet
+		involvedModelResources = newHashSet
 	}
 
 
-	public def void addSourceResourceOfChange(TransactionalChange change) {
+	def void addSourceResourceOfChange(TransactionalChange change) {
 		val atomicChanges = change.EChanges.map[
 			if (it instanceof CompoundEChange) it.atomicChanges else #[it]
 		].flatten
 		val involvedObjects = atomicChanges.map[
 			if (it instanceof FeatureEChange<?,?>) it.affectedEObject 
 				else if (it instanceof EObjectAddedEChange<?>) it.newValue 
-				else if (it instanceof EObjectSubtractedEChange<?>) it.oldValue].filter(EObject)
-		sourceModelResources += involvedObjects.map[eResource].filterNull.toList
+				else if (it instanceof EObjectSubtractedEChange<?>) it.oldValue].filter(EObject);
+		sourceModelResources += involvedObjects.map[eResource].filterNull.toList;
 	}
 	
-	public def void addInvolvedModelResource(Resource resource) {
+	def void addInvolvedModelResource(Resource resource) {
 		if (resource === null) {
 			return
 		}
-		this.involvedModelResources += resource
+		involvedModelResources += resource;
 	}
 	
-	public def void markNonSourceResourceAsChanged() {
+	def void markNonSourceResourceAsChanged() {
 		// Some models are not marked as modified although they were actually modified by the consistency preservation
 		// Therefore, we have to mark them as modified manually
 		
@@ -48,7 +48,7 @@ package class ChangedResourcesTracker {
 		// This will hopefully not be necessary anymore if we replay recorded changes in the VSUM isolated from their
 		// recording in editors.
 		val changedNonSourceResources = involvedModelResources
-			.filter[!sourceModelResources.exists[sourceResource | sourceResource.URI == it.URI]]
+			.filter[!sourceModelResources.exists[sourceResource | sourceResource.URI.equals(it.URI)]]
 		changedNonSourceResources.forEach[modified = true]
 	}
 }
