@@ -21,6 +21,10 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
+	override protected boolean unresolveChanges() {
+		return true;
+	}
+	
 	override protected createChangePropagationSpecifications() {
 		return #[new AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes() {}];
 	}
@@ -409,6 +413,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType.InsertNonContainmentEReference);
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
+		
 	}
 	
 	@Test
