@@ -7,156 +7,155 @@ import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
-import static allElementTypes.AllElementTypesPackage.Literals.*
+import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescription2ChangeTransformationTest {
 	@Test
-	def void testReplaceSingleValuedEReferenceContainment() {
+	def public void testReplaceSingleValuedEReferenceContainment() {
 		// prepare 
 		startRecording
 
 		// test
-		val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
-		rootElement.singleValuedContainmentEReference = nonRoot
+		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
+		this.rootElement.singleValuedContainmentEReference = nonRoot
 
 		// assert
-		val changes = changes
-		changes.get(0).assertSetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+		val changes = getChanges()
+		changes.get(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
 			nonRoot, true, true, unresolveAndResolveRecordedEChanges)
 	}
 
 	@Test
-	def void testReplaceExistingSingleValuedEReferenceContainment() {
+	def public void testReplaceExistingSingleValuedEReferenceContainment() {
 		// prepare
 		val nonRoot = createAndAddNonRootToContainment(true)
 
 		// test
-		val replaceNonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
-		rootElement.singleValuedContainmentEReference = replaceNonRoot
+		val replaceNonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
+		this.rootElement.singleValuedContainmentEReference = replaceNonRoot
 
 		// assert
 		val changes = getChanges()
-		changes.get(0).assertCreateAndReplaceAndDeleteNonRoot(nonRoot, replaceNonRoot,
-			ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, rootElement, true)
+		changes.get(0).assertCreateAndReplaceAndDeleteNonRoot(nonRoot, replaceNonRoot, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+			this.rootElement, true)
 	}
-
+	
 	@Test
-	def void testReplaceExistingSingleValuedEReferenceContainmentWithDefault() {
+	def public void testReplaceExistingSingleValuedEReferenceContainmentWithDefault() {
 		// prepare
 		val nonRoot = createAndAddNonRootToContainment(false)
-		rootElement.singleValuedContainmentEReference = nonRoot
+		this.rootElement.singleValuedContainmentEReference = nonRoot
 		startRecording
-
-		// test
-		rootElement.singleValuedContainmentEReference = null
-		val changes = changes
-		changes.get(0).assertUnsetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+		
+		//test
+		this.rootElement.singleValuedContainmentEReference = null
+		val changes = getChanges()
+		changes.get(0).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
 			nonRoot, true, true)
 	}
 
 	@Test
-	def void testRemoveContainmentReferenceWithDelete() {
+	def public void testRemoveContainmentReferenceWithDelete() {
 		// prepare
 		val nonRoot = createAndAddNonRootToContainment(true)
-
+		
 		// test
-		EcoreUtil::delete(nonRoot)
-
+		EcoreUtil.delete(nonRoot)
+		
 		// assert
-		val changes = changes
-		changes.get(0).assertUnsetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+		val changes = getChanges()
+		changes.get(0).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
 			nonRoot, true, true)
 	}
 
 	@Test
-	def void testSetSingleValuedEReferenceNonContainment() {
+	def public void testSetSingleValuedEReferenceNonContainment() {
 		// prepare
 		val nonRoot = createAndAddNonRootToContainment(true)
 
 		// test
-		rootElement.singleValuedNonContainmentEReference = nonRoot
+		this.rootElement.singleValuedNonContainmentEReference = nonRoot
 
 		// assert
-		val changes = changes
-		changes.get(0).assertSetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
+		val changes = getChanges()
+		changes.get(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
 			nonRoot, false, false, unresolveAndResolveRecordedEChanges)
 	}
 
 	@Test
-	def void testReplaceExistingSingleValuedEReferenceNonContainment() {
+	def public void testReplaceExistingSingleValuedEReferenceNonContainment() {
 		// preapare
 		val nonRoot = createAndAddNonRootToRootContainer(false)
-		rootElement.singleValuedNonContainmentEReference = nonRoot
+		this.rootElement.singleValuedNonContainmentEReference = nonRoot
 		val replaceNonRoot = createAndAddNonRootToRootContainer(true)
-
+		
 		// test
-		rootElement.singleValuedNonContainmentEReference = replaceNonRoot
+		this.rootElement.singleValuedNonContainmentEReference = replaceNonRoot
 
 		// assert
-		val changes = changes
-		changes.get(0).assertReplaceSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
-			nonRoot, replaceNonRoot, false)
+		val changes = getChanges()
+		changes.get(0).assertReplaceSingleValuedEReference(this.rootElement,
+			ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, replaceNonRoot, false)
 	}
 
 	@Test
-	def void testRemoveNonContainmentReferenceWithDelete() {
+	def public void testRemoveNonContainmentReferenceWithDelete() {
 		// prepare
 		val nonRoot = createAndAddNonRootToContainment(false)
-		rootElement.singleValuedNonContainmentEReference = nonRoot
-		startRecording
-
+		this.rootElement.singleValuedNonContainmentEReference = nonRoot
+		startRecording;
+		
 		// test
-		EcoreUtil::delete(nonRoot)
-
+		EcoreUtil.delete(nonRoot)
+		
 		// assert
-		val changes = changes
-		changes.get(0).assertUnsetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
+		val changes = getChanges()
+		changes.get(0).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
 			nonRoot, false, false)
-		changes.get(1).assertUnsetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
+		changes.get(1).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
 			nonRoot, true, true)
 	}
 
 	@Test
-	def void testReplaceExistingSingleValuedEReferenceNonContainmentWithDefault() {
+	def public void testReplaceExistingSingleValuedEReferenceNonContainmentWithDefault() {
 		// prepare
-		val nonRoot = createAndAddNonRootToContainment(false)
-		rootElement.singleValuedNonContainmentEReference = nonRoot
-		startRecording
-
+		val nonRoot = createAndAddNonRootToContainment(false);
+		this.rootElement.singleValuedNonContainmentEReference = nonRoot;
+		startRecording;
+		
 		// test
-		rootElement.singleValuedNonContainmentEReference = null
-
+		this.rootElement.singleValuedNonContainmentEReference = null
+		
 		// assert
-		val changes = changes
-		changes.get(0).assertUnsetSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
+		val changes = getChanges()
+		changes.get(0).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
 			nonRoot, false, false)
 	}
-
+	
 	@Test
-	def void testUnsetExistingSingleValuedEReferenceContainment() {
-		val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
-		rootElement.singleValuedUnsettableContainmentEReference = nonRoot
-		startRecording
-
-		rootElement.eUnset(ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE)
-		changes.assertChangeCount(1)
+	def public void testUnsetExistingSingleValuedEReferenceContainment() {
+		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot;
+		this.rootElement.singleValuedUnsettableContainmentEReference = nonRoot;
+		startRecording;
+		
+		this.rootElement.eUnset(ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE)
+		changes.assertChangeCount(1);
 		val innerChanges = changes.claimChange(0).assertExplicitUnsetEReference.changes
-		innerChanges.assertChangeCount(1)
-		innerChanges.get(0).assertReplaceAndDeleteNonRoot(nonRoot, rootElement,
-			ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE)
+		innerChanges.assertChangeCount(1);
+		innerChanges.get(0).assertReplaceAndDeleteNonRoot(nonRoot, rootElement, ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE)
 	}
-
+	
 	@Test
-	def void testUnsetReplaceExistingSingleValuedEReferenceNonContainment() {
+	def public void testUnsetReplaceExistingSingleValuedEReferenceNonContainment() {
 		val nonRoot = createAndAddNonRootToRootContainer(false)
-		rootElement.singleValuedUnsettableNonContainmentEReference = nonRoot
-		startRecording
-
-		rootElement.eUnset(ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE)
-		changes.assertChangeCount(1)
+		this.rootElement.singleValuedUnsettableNonContainmentEReference = nonRoot;
+		startRecording;
+		
+		this.rootElement.eUnset(ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE)
+		changes.assertChangeCount(1);
 		val innerChanges = changes.claimChange(0).assertExplicitUnsetEReference.changes
-		innerChanges.assertChangeCount(1)
-		changes.claimChange(0).assertExplicitUnsetEReference.atomicChanges.assertChangeCount(1)
+		innerChanges.assertChangeCount(1);
+		changes.claimChange(0).assertExplicitUnsetEReference.atomicChanges.assertChangeCount(1);
 		innerChanges.get(0).assertReplaceSingleValuedEReference(rootElement,
 			ROOT__SINGLE_VALUED_UNSETTABLE_NON_CONTAINMENT_EREFERENCE, nonRoot, null, false)
 	}

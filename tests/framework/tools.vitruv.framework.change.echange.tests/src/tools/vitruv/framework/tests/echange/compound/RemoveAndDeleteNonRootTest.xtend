@@ -24,8 +24,8 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 
 	@Before
 	override public void beforeTest() {
-		super.beforeTest
-		affectedFeature = AllElementTypesPackage::Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
+		super.beforeTest()
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
 		prepareStateBefore
 	}
@@ -98,10 +98,10 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		// Apply forward 1
 		resolvedChange.assertApplyForward
 		
-		Assert::assertEquals(referenceContent.size, 1)
-		Assert::assertFalse(referenceContent.contains(newValue))
-		Assert::assertTrue(referenceContent.contains(newValue2))
-		Assert::assertTrue(stagingArea.empty)
+		Assert.assertEquals(referenceContent.size, 1)
+		Assert.assertFalse(referenceContent.contains(newValue))
+		Assert.assertTrue(referenceContent.contains(newValue2))
+		Assert.assertTrue(stagingArea.empty)
 	
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 0).resolveBefore(resourceSet)
@@ -136,9 +136,9 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert::assertEquals(referenceContent.size, 1)	
-		Assert::assertTrue(referenceContent.contains(newValue2))
-		Assert::assertTrue(stagingArea.empty)
+		Assert.assertEquals(referenceContent.size, 1)	
+		Assert.assertTrue(referenceContent.contains(newValue2))
+		Assert.assertTrue(stagingArea.empty)
 				
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -169,18 +169,18 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert::assertEquals(referenceContent.size, 2)
+		Assert.assertEquals(referenceContent.size, 2)
 		newValue.assertEqualsOrCopy(referenceContent.get(0))
 		newValue2.assertEqualsOrCopy(referenceContent.get(1))
-		Assert::assertTrue(stagingArea.empty)
+		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert::assertEquals(referenceContent.size, 0)
-		Assert::assertTrue(stagingArea.empty)		
+		Assert.assertEquals(referenceContent.size, 0)
+		Assert.assertTrue(stagingArea.empty)		
 	}
 
 	/**
@@ -188,12 +188,12 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsNotResolved(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
 		NonRoot removedNonRootObject) {
-		Assert::assertFalse(change.resolved)
-		Assert::assertFalse(change.removeChange.resolved)
-		Assert::assertFalse(change.deleteChange.resolved)
-		Assert::assertNotSame(change.removeChange.oldValue, removedNonRootObject)
-		Assert::assertNotSame(change.deleteChange.affectedEObject, removedNonRootObject)
-		Assert::assertNotSame(change.deleteChange.affectedEObject, change.removeChange.oldValue)
+		Assert.assertFalse(change.isResolved)
+		Assert.assertFalse(change.removeChange.isResolved)
+		Assert.assertFalse(change.deleteChange.isResolved)
+		Assert.assertNotSame(change.removeChange.oldValue, removedNonRootObject)
+		Assert.assertNotSame(change.deleteChange.affectedEObject, removedNonRootObject)
+		Assert.assertNotSame(change.deleteChange.affectedEObject, change.removeChange.oldValue)
 	}
 	
 	/**
@@ -201,10 +201,10 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsResolved(RemoveAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
 		NonRoot removedNonRootObject) {
-		Assert::assertTrue(change.resolved)
+		Assert.assertTrue(change.isResolved)
 		change.deleteChange.affectedEObject.assertEqualsOrCopy(removedNonRootObject)
 		change.removeChange.oldValue.assertEqualsOrCopy(removedNonRootObject)		
-		Assert::assertSame(change.removeChange.affectedEObject, affectedRootObject)	
+		Assert.assertSame(change.removeChange.affectedEObject, affectedRootObject)	
 		
 	}
 	

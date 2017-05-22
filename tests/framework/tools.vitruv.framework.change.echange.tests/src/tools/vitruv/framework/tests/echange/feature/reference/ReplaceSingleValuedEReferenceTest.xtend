@@ -23,8 +23,8 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 
 	@Before
 	override public void beforeTest() {
-		super.beforeTest
-		oldValue = AllElementTypesFactory::eINSTANCE.createNonRoot	
+		super.beforeTest()
+		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()	
 	}
 
 	/**
@@ -332,7 +332,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * Starts a test with a containment feature and sets state before.
 	 */
 	def private void isContainmentTest() {
-		affectedFeature = AllElementTypesPackage::Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		prepareReference(oldValue)
 		prepareStagingArea(newValue)
 	}
@@ -341,7 +341,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * Starts a test with a non containment feature and sets state before.
 	 */
 	def private void isNonContainmentTest() {
-		affectedFeature = AllElementTypesPackage::Literals.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE
 		prepareReference(oldValue)
 		prepareResource	
 	}
@@ -368,10 +368,10 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void assertIsStateBefore(NonRoot valueInStagingArea) {
 		resourceIsStateBefore
 		oldValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)
-		if (affectedFeature.containment && valueInStagingArea !== null) {
+		if (affectedFeature.containment && valueInStagingArea != null) {
 			valueInStagingArea.assertEqualsOrCopy(stagingArea.peek)
 		} else {
-			Assert::assertTrue(stagingArea.empty)
+			Assert.assertTrue(stagingArea.empty)
 		}
 	}
 	
@@ -380,12 +380,12 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private void resourceIsStateBefore() {
 		if (!affectedFeature.containment) {
-			Assert::assertEquals(resourceContent.size, 4)
+			Assert.assertEquals(resourceContent.size, 4)
 			newValue.assertEqualsOrCopy(resourceContent.get(1))
 			newValue2.assertEqualsOrCopy(resourceContent.get(2))
 			oldValue.assertEqualsOrCopy(resourceContent.get(3))			
 		} else {
-			Assert::assertEquals(resourceContent.size, 1)
+			Assert.assertEquals(resourceContent.size, 1)
 		}
 	}
 	
@@ -395,10 +395,10 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void assertIsStateAfter(NonRoot valueInStagingArea) {
 		resourceIsStateBefore
 		newValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)		
-		if (affectedFeature.containment && valueInStagingArea !== null) {
+		if (affectedFeature.containment && valueInStagingArea != null) {
 			valueInStagingArea.assertEqualsOrCopy(stagingArea.peek)
 		} else {
-			Assert::assertTrue(stagingArea.empty)
+			Assert.assertTrue(stagingArea.empty)
 		}
 	}
 	
@@ -407,10 +407,10 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsNotResolved(ReplaceSingleValuedEReference<Root, NonRoot> change, 
 		Root affectedEObject, NonRoot oldValue, NonRoot newValue) {
-		Assert::assertFalse(change.resolved)
-		Assert::assertNotSame(change.affectedEObject, affectedEObject)
-		Assert::assertNotSame(change.oldValue, oldValue)
-		Assert::assertNotSame(change.newValue, newValue)
+		Assert.assertFalse(change.isResolved)
+		Assert.assertNotSame(change.affectedEObject, affectedEObject)
+		Assert.assertNotSame(change.oldValue, oldValue)
+		Assert.assertNotSame(change.newValue, newValue)
 	}
 	
 	/**
@@ -418,10 +418,10 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsResolved(ReplaceSingleValuedEReference<Root, NonRoot> change, 
 		Root affectedEObject, NonRoot oldValue, NonRoot newValue) {
-		Assert::assertTrue(change.resolved)
-		Assert::assertSame(change.affectedEObject, affectedEObject)
-		Assert::assertSame(change.oldValue, oldValue)
-		Assert::assertSame(change.newValue, newValue)	
+		Assert.assertTrue(change.isResolved)
+		Assert.assertSame(change.affectedEObject, affectedEObject)
+		Assert.assertSame(change.oldValue, oldValue)
+		Assert.assertSame(change.newValue, newValue)	
 	}
 	
 	/**

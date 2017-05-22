@@ -7,4 +7,5 @@ import tools.vitruv.framework.change.description.VitruviusChange
  * together. They were recorded together and have to propagated to models completely or not at all.
  */
 interface TransactionalChange extends VitruviusChange {
+	
 }

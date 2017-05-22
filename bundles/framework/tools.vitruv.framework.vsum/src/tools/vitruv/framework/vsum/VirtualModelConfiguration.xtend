@@ -7,70 +7,66 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.domains.VitruvDomain
 
 class VirtualModelConfiguration {
-	private static val logger = Logger::getLogger(VirtualModelConfiguration)
-	private val List<VitruvDomain> metamodels
-	private val List<ChangePropagationSpecification> changePropagationSpecifications
-
+	private static val logger = Logger.getLogger(VirtualModelConfiguration);
+	private val List<VitruvDomain> metamodels;
+	private val List<ChangePropagationSpecification> changePropagationSpecifications;
+	
 	public new() {
-		this.metamodels = new ArrayList
-		this.changePropagationSpecifications = new ArrayList
+		this.metamodels = new ArrayList();
+		this.changePropagationSpecifications = new ArrayList();
 	}
-
+	
 	private def boolean checkForMetamodelConflict(VitruvDomain newMetamodel) {
 		for (existingMetamodel : metamodels) {
 			for (nsURI : newMetamodel.nsUris) {
 				if (existingMetamodel.nsUris.contains(nsURI)) {
-					logger.
-						error('''Model configuration already contains metamodel «existingMetamodel» registering nsURI: «nsURI»''')
-					return false
+					logger.error("Model configuration already contains metamodel " + existingMetamodel + " registering nsURI: " + nsURI);
+					return false;
 				}
 			}
 			for (fileExtension : newMetamodel.fileExtensions) {
 				if (existingMetamodel.fileExtensions.contains(fileExtension)) {
-					logger.
-						error('''Model configuration already contains metamodel «existingMetamodel» registering file extension: «fileExtension»''')
-					return false
+					logger.error("Model configuration already contains metamodel " + existingMetamodel + " registering file extension: " + fileExtension);
+					return false;
 				}
 			}
 		}
-		return true
+		return true;
 	}
-
+	
 	public def void addMetamodel(VitruvDomain metamodel) {
 		if (!checkForMetamodelConflict(metamodel)) {
-			throw new IllegalArgumentException(
-				"Given metamodel defines nsURI or file extension that another metamodel already defines")
+			throw new IllegalArgumentException("Given metamodel defines nsURI or file extension that another metamodel already defines");
 		}
-		metamodels += metamodel;
+		metamodels += metamodel;	
 	}
-
+	
 	private def boolean checkForTransformerConflict(ChangePropagationSpecification changePropagationSpecification) {
 		for (existingPropagationSpecification : changePropagationSpecifications) {
-			if (existingPropagationSpecification.sourceDomain.equals(changePropagationSpecification.sourceDomain) &&
-				existingPropagationSpecification.targetDomain.equals(changePropagationSpecification.targetDomain)) {
-				logger.error(
-					'''Model configuration already contains propagation specification 
-					«existingPropagationSpecification»  for the domain pair: 
-					«existingPropagationSpecification.sourceDomain» and «existingPropagationSpecification.targetDomain»''')
-				return false
+			if (existingPropagationSpecification.sourceDomain.equals(changePropagationSpecification.sourceDomain)
+				&& existingPropagationSpecification.targetDomain.equals(changePropagationSpecification.targetDomain)
+			) {
+				logger.error("Model configuration already contains propagation specification " + existingPropagationSpecification + " for the domain pair: " + existingPropagationSpecification.sourceDomain + " and " + existingPropagationSpecification.targetDomain
+				);
+				return false;
 			}
 		}
-		return true
+		return true;
 	}
-
+	
 	public def void addChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
 		if (!checkForTransformerConflict(changePropagationSpecification)) {
-			throw new IllegalArgumentException(
-				"Given propagation specification is defined for metamodel pair which another specification already defines")
+			throw new IllegalArgumentException("Given propagation specification is defined for metamodel pair which another specification already defines");
 		}
-		changePropagationSpecifications += changePropagationSpecification;
+		changePropagationSpecifications += changePropagationSpecification;	
 	}
-
+	
 	public def Iterable<VitruvDomain> getMetamodels() {
-		metamodels
+		return metamodels;
 	}
-
+	
 	public def Iterable<ChangePropagationSpecification> getChangePropagationSpecifications() {
-		changePropagationSpecifications
+		return changePropagationSpecifications;
 	}
 }
+

@@ -4,13 +4,13 @@ import org.junit.Test
 import org.junit.Ignore
 
 class ChangeDescription2MoveRootTest extends ChangeDescription2RootChangeTest {
-
+	
 	@Ignore
 	@Test
-	def void moveRootEObjectBetweenResources() {
-		val resource1 = rootElement.eResource
-		val resource2 = rootElement2.eResource
-		resource2.contents.clear
+	def void moveRootEObjectBetweenResources(){
+		val resource1 = this.rootElement.eResource;
+		val resource2 = this.rootElement2.eResource;
+		resource2.contents.clear();
 		// prepare
 		startRecording
 		// test 

@@ -5,34 +5,34 @@ import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.core.runtime.NullProgressMonitor
 
 final class VirtualModelManager {
-	private Map<String, InternalVirtualModel> nameToVirtualModelMap
-
-	private static val instance = new VirtualModelManager
-
+	private Map<String, InternalVirtualModel> nameToVirtualModelMap;
+	
+	private static val instance = new VirtualModelManager();
+	
 	private new() {
-		nameToVirtualModelMap = newHashMap
+		this.nameToVirtualModelMap = newHashMap();
 	}
-
-	static def getInstance() {
-		instance
+	
+	public static def getInstance() {
+		return instance;
 	}
-
+	
 	public def getVirtualModel(String name) {
 		if (nameToVirtualModelMap.containsKey(name)) {
-			nameToVirtualModelMap.get(name)
+			return nameToVirtualModelMap.get(name);
 		} else {
 			// get the workspace root 
-			val root = ResourcesPlugin::workspace.root
+			val root = ResourcesPlugin.getWorkspace().getRoot(); 
 			// get the project handle 
-			val project = root.getProject(name)
+			val project = root.getProject(name); 
 			// open up this newly-created project in Eclipse 
-			project.open(new NullProgressMonitor)
+			project.open(new NullProgressMonitor());
 			// TODO HK: Extract VSUM from project
-			throw new UnsupportedOperationException
+			throw new UnsupportedOperationException();
 		}
 	}
-
-	def putVirtualModel(InternalVirtualModel model) {
-		nameToVirtualModelMap.put(model.name, model)
+	
+	public def putVirtualModel(InternalVirtualModel model) {
+		nameToVirtualModelMap.put(model.name, model);
 	}
 }

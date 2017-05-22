@@ -22,88 +22,78 @@ import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAs
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 
 class CompoundEChangeAssertHelper {
-	def static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> assertCreateAndInsertNonRoot(
+	def public static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> assertCreateAndInsertNonRoot(
 			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex, boolean unresolvedChanges) {
 		val createAndInsert = change.assertObjectInstanceOf(CreateAndInsertNonRoot)
-		val stagingArea = if (unresolvedChanges) StagingArea::getStagingArea(affectedEObject.eResource) else null
-		createAndInsert.createChange.assertCreateEObject(expectedNewValue, stagingArea)
+		val stagingArea = if (unresolvedChanges) StagingArea.getStagingArea(affectedEObject.eResource) else null;
+		createAndInsert.createChange.assertCreateEObject(expectedNewValue, stagingArea);
 		createAndInsert.insertChange.assertInsertEReference(affectedEObject, affectedFeature, expectedNewValue,
-			expectedIndex, true)
-		createAndInsert
+			expectedIndex, true);
+		return createAndInsert
 	}
 
-	def static <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> assertRemoveAndDeleteNonRoot(
-		EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedOldValue,
-		int expectedOldIndex) {
+	def public static <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> assertRemoveAndDeleteNonRoot(
+			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedOldValue, int expectedOldIndex) {
 		val compositeChange = assertObjectInstanceOf(change, RemoveAndDeleteNonRoot)
-		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue,
-			StagingArea::getStagingArea(affectedEObject.eResource))
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(affectedEObject.eResource));
 		compositeChange.removeChange.assertRemoveEReference(affectedEObject, affectedFeature, expectedOldValue,
-			expectedOldIndex, true)
-		compositeChange
+			expectedOldIndex, true);
+		return compositeChange
 	}
-
+	
 	def static void assertCreateAndReplaceAndDeleteNonRoot(EChange change, EObject expectedOldValue,
-		EObject expectedNewValue, EStructuralFeature affectedFeature, EObject affectedEObject,
-		boolean isContainment) {
+			EObject expectedNewValue, EStructuralFeature affectedFeature, EObject affectedEObject, boolean isContainment) {
 		val compositeChange = change.assertObjectInstanceOf(CreateAndReplaceAndDeleteNonRoot)
-		compositeChange.createChange.assertCreateEObject(expectedNewValue,
-			StagingArea::getStagingArea(affectedEObject.eResource))
-		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue,
-			StagingArea::getStagingArea(affectedEObject.eResource))
-		compositeChange.replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature,
+		compositeChange.createChange.assertCreateEObject(expectedNewValue, StagingArea.getStagingArea(affectedEObject.eResource))
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(affectedEObject.eResource))
+		compositeChange.replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, 
 			expectedOldValue, expectedNewValue, isContainment)
 	}
-
+	
 	def static void assertCreateAndReplaceNonRoot(EChange change, EObject expectedNewValue,
 		EObject affectedEObject, EStructuralFeature affectedFeature, boolean unresolvedChanges) {
 		val compositeChange = assertObjectInstanceOf(change, CreateAndReplaceNonRoot)
-		val stagingArea = if (unresolvedChanges) StagingArea::getStagingArea(affectedEObject.eResource) else null
+		val stagingArea = if (unresolvedChanges) StagingArea.getStagingArea(affectedEObject.eResource) else null
 		compositeChange.createChange.assertCreateEObject(expectedNewValue, stagingArea)
 		compositeChange.insertChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature,
 			null, expectedNewValue, true)
 	}
-
+	
 	def static void assertReplaceAndDeleteNonRoot(EChange change, EObject expectedOldValue,
 		EObject affectedEObject, EStructuralFeature affectedFeature) {
 		val compositeChange = assertObjectInstanceOf(change, ReplaceAndDeleteNonRoot)
-		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue,
-			StagingArea::getStagingArea(affectedEObject.eResource))
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(affectedEObject.eResource))
 		compositeChange.removeChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature,
 			expectedOldValue, null, true)
 	}
 
-	def static void assertCreateAndInsertRootEObject(EChange change, EObject expectedNewValue, String uri,
-		Resource resource) {
+	def public static void assertCreateAndInsertRootEObject(EChange change, EObject expectedNewValue, String uri, Resource resource) {
 		val compositeChange = change.assertObjectInstanceOf(CreateAndInsertRoot)
-		compositeChange.createChange.assertCreateEObject(expectedNewValue,
-			StagingArea::getStagingArea(resource))
+		compositeChange.createChange.assertCreateEObject(expectedNewValue, StagingArea.getStagingArea(resource))
 		compositeChange.insertChange.assertInsertRootEObject(expectedNewValue, uri, resource)
 	}
 
-	def static void assertRemoveAndDeleteRootEObject(EChange change, EObject expectedOldValue, String uri,
-		Resource resource) {
+	def public static void assertRemoveAndDeleteRootEObject(EChange change, EObject expectedOldValue, String uri, Resource resource) {
 		val compositeChange = change.assertObjectInstanceOf(RemoveAndDeleteRoot)
-		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue,
-			StagingArea::getStagingArea(resource))
+		compositeChange.deleteChange.assertDeleteEObject(expectedOldValue, StagingArea.getStagingArea(resource))
 		compositeChange.removeChange.assertRemoveRootEObject(expectedOldValue, uri, resource)
 	}
 
-	def static <A extends EObject, T, S extends SubtractiveAttributeEChange<A, T>> ExplicitUnsetEAttribute<A, T> assertExplicitUnsetEAttribute(
-		EChange change) {
+	def public static <A extends EObject, T, S extends SubtractiveAttributeEChange<A, T>> ExplicitUnsetEAttribute<A, T> assertExplicitUnsetEAttribute(
+			EChange change) {
 		val unsetChange = change.assertObjectInstanceOf(ExplicitUnsetEAttribute)
-		Assert::assertEquals("atomic changes should be the same than the subtractive changes",
+		Assert.assertEquals("atomic changes should be the same than the subtractive changes",
 			unsetChange.atomicChanges, unsetChange.subtractiveChanges)
-		unsetChange
+		return unsetChange
 	}
-
-	def static <A extends EObject, T extends EObject, S extends SubtractiveReferenceEChange<A, T>> ExplicitUnsetEReference<A> assertExplicitUnsetEReference(
-		EChange change) {
+	
+	def public static <A extends EObject, T extends EObject, S extends SubtractiveReferenceEChange<A, T>> ExplicitUnsetEReference<A> assertExplicitUnsetEReference(
+			EChange change) {
 		val unsetChange = change.assertObjectInstanceOf(ExplicitUnsetEReference)
-		// Assert::assertEquals("atomic changes should be the same than the subtractive changes",
-		// unsetChange.atomicChanges, unsetChange.changes)
-		unsetChange
+		//Assert.assertEquals("atomic changes should be the same than the subtractive changes",
+			//unsetChange.atomicChanges, unsetChange.changes)
+		return unsetChange
 	}
-
+	
 }
 		

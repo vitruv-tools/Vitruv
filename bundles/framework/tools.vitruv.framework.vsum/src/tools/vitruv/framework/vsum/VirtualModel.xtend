@@ -5,9 +5,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.ModelInstance
 
 interface VirtualModel {
-	def String getName()
-
-	def void propagateChange(VitruviusChange change)
-
-	def ModelInstance getModelInstance(VURI modelVuri)
+	def String getName();
+	def void propagateChange(VitruviusChange change);
+	def ModelInstance getModelInstance(VURI modelVuri);
 }

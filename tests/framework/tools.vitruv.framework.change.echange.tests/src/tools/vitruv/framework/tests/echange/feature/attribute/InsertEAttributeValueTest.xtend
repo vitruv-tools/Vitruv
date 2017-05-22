@@ -47,8 +47,8 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	// Apply forward
 	 	resolvedChange.assertApplyForward
 	 	
-	 	Assert::assertEquals(attributeContent.size, 1)
-	 	Assert::assertEquals(attributeContent.get(0), NEW_VALUE)
+	 	Assert.assertEquals(attributeContent.size, 1)
+	 	Assert.assertEquals(attributeContent.get(0), NEW_VALUE)
 
 		// Create change and resolve 2
 		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2, 1).resolveBefore(resourceSet)
@@ -82,8 +82,8 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 	// Apply backward 2
 	 	resolvedChange2.assertApplyBackward	
 	 	
-		Assert::assertEquals(attributeContent.size, 1)
-	 	Assert::assertEquals(attributeContent.get(0), NEW_VALUE)
+		Assert.assertEquals(attributeContent.size, 1)
+	 	Assert.assertEquals(attributeContent.get(0), NEW_VALUE)
 	 	 	
 		// Apply backward 1
 		resolvedChange.assertApplyBackward 
@@ -98,16 +98,16 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	@Test(expected=RuntimeException)
 	def public void invalidIndexTest() {
 	 	var index = 5 // Valid index in empty list is only 0
-	 	Assert::assertTrue(attributeContent.empty) 
+	 	Assert.assertTrue(attributeContent.empty) 
 	 	
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(NEW_VALUE, index).resolveBefore(resourceSet)
 			as InsertEAttributeValue<Root, Integer>	 	
-	 	Assert::assertTrue(resolvedChange.resolved)
+	 	Assert.assertTrue(resolvedChange.isResolved)
 	 	
 	 	// Apply
-	 	Assert::assertFalse(resolvedChange.applyForward)
-	 	Assert::assertFalse(resolvedChange.applyBackward)
+	 	Assert.assertFalse(resolvedChange.applyForward)
+	 	Assert.assertFalse(resolvedChange.applyBackward)
 	}
 	 
 	/**
@@ -116,7 +116,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	@Test
 	def public void invalidAttributeTest() {
 	 	// NonRoot has no multivalued int attribute
-	 	val affectedNonRootEObject = AllElementTypesFactory::eINSTANCE.createNonRoot
+	 	val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
 	 	resource.contents.add(affectedNonRootEObject)
 	 	
 	 	// Resolving the change will be tested in EFeatureChange
@@ -125,7 +125,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 		resolveBefore(resourceSet)
 	 	
 	 	// NonRoot has no such feature
-		Assert::assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
+		Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
 	 	
 	 	resolvedChange.assertCannotBeAppliedForward	 	
 		resolvedChange.assertCannotBeAppliedBackward
@@ -144,7 +144,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 		resolveBefore(resourceSet)
 	 		
 	 	// Type of attribute is Integer not String
-	 	Assert::assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
+	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
 	 	
 	 	resolvedChange.assertCannotBeAppliedForward	 	
 		resolvedChange.assertCannotBeAppliedBackward
@@ -154,16 +154,16 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert::assertEquals(attributeContent.size, 0)
+		Assert.assertEquals(attributeContent.size, 0)
 	}
 	
 	/**
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert::assertEquals(attributeContent.size, 2)
-		Assert::assertEquals(attributeContent.get(0), NEW_VALUE)
-		Assert::assertEquals(attributeContent.get(1), NEW_VALUE_2)
+		Assert.assertEquals(attributeContent.size, 2)
+		Assert.assertEquals(attributeContent.get(0), NEW_VALUE)
+		Assert.assertEquals(attributeContent.get(1), NEW_VALUE_2)
 	}
 	 
 	/**

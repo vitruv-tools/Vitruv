@@ -8,47 +8,49 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.resource.ResourceSet
 
 abstract class AbstractConcreteChange implements ConcreteChange {
-	static val logger = Logger::getLogger(AbstractConcreteChange)
-	protected EChange eChange
-	val VURI vuri
-
+	private static val logger = Logger.getLogger(AbstractConcreteChange);
+	
+	protected EChange eChange;
+	final VURI vuri;
+	
 	new(VURI vuri) {
-		this.vuri = vuri
+		this.vuri = vuri;
 	}
-
+	
 	override containsConcreteChange() {
-		true
+		return true;
 	}
-
+	
 	override validate() {
-		containsConcreteChange() && URI !== null
+		return containsConcreteChange() && URI != null;
 	}
-
+	
 	override getEChanges() {
-		new ArrayList<EChange>(#[eChange])
+		return new ArrayList<EChange>(#[eChange]);
 	}
-
+	
 	override getURI() {
-		vuri
+		return vuri;
 	}
-
+		
 	override getEChange() {
-		eChange
+		return eChange;
 	}
-
+	
 	override applyBackward() {
-		logger.warn("The applyBackward method is not implemented for " + this.class.simpleName + " yet.")
+		logger.warn("The applyBackward method is not implemented for " + this.class.simpleName + " yet.");
 	}
-
+	
 	override applyForward() {
-		logger.warn("The applyForward method is not implemented for " + this.class.simpleName + " yet.")
+		logger.warn("The applyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}
-
+	
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		logger.warn("The resolveBeforeAndapplyForward method is not implemented for " + this.class.simpleName + " yet.")
+		logger.warn("The resolveBeforeAndapplyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}
-
+	
 	override applyBackwardIfLegacy() {
 		// Do nothing
 	}
+	
 }

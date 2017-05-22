@@ -71,20 +71,20 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(createdObject)
-		Assert::assertFalse(unresolvedChange.resolved)
+		Assert.assertFalse(unresolvedChange.isResolved)
 		
 		// Resolve
-		Assert::assertNull(unresolvedChange.resolveBefore(resourceSet) as CreateEObject<Root>)
-		Assert::assertNull(unresolvedChange.resolveAfter(resourceSet) as CreateEObject<Root>)		
+		Assert.assertNull(unresolvedChange.resolveBefore(resourceSet) as CreateEObject<Root>)
+		Assert.assertNull(unresolvedChange.resolveAfter(resourceSet) as CreateEObject<Root>)		
 	}
 	
 	/**
 	 * Change is not resolved.
 	 */
 	def private static void assertIsNotResolved(EObjectExistenceEChange<Root> change, Root affectedEObject) {
-		Assert::assertFalse(change.resolved)
-		Assert::assertNotSame(change.affectedEObject, affectedEObject)
-		Assert::assertNull(change.stagingArea)
+		Assert.assertFalse(change.isResolved)
+		Assert.assertNotSame(change.affectedEObject, affectedEObject)
+		Assert.assertNull(change.stagingArea)
 	}
 	
 	/**
@@ -92,23 +92,23 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 */
 	def private static void assertIsResolved(EObjectExistenceEChange<Root> change, Root affectedEObject, 
 		StagingArea stagingArea) {
-		Assert::assertTrue(change.resolved)
+		Assert.assertTrue(change.isResolved)
 		affectedEObject.assertEqualsOrCopy(change.affectedEObject)
-		Assert::assertSame(change.stagingArea, stagingArea)	
+		Assert.assertSame(change.stagingArea, stagingArea)	
 	}
 	
 	/**
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert::assertTrue(stagingArea.empty)		
+		Assert.assertTrue(stagingArea.empty)		
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert::assertFalse(stagingArea.empty)
+		Assert.assertFalse(stagingArea.empty)
 		createdObject.assertEqualsOrCopy(stagingArea.peek)
 	}
 	

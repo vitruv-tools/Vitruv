@@ -4,11 +4,11 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
 
 class AbstractRepairRoutinesFacade extends Loggable {
-	protected val ReactionExecutionState executionState
-	protected val CallHierarchyHaving calledBy
-
+	protected val ReactionExecutionState executionState;
+	protected val CallHierarchyHaving calledBy;
+	
 	public new(ReactionExecutionState executionState, CallHierarchyHaving calledBy) {
-		this.executionState = executionState
-		this.calledBy = calledBy
+		this.executionState = executionState;
+		this.calledBy = calledBy;
 	}
 }

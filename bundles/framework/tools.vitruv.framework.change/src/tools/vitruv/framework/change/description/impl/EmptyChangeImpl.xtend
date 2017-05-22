@@ -5,40 +5,42 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import org.eclipse.emf.ecore.resource.ResourceSet
 
 class EmptyChangeImpl implements TransactionalChange {
-	val VURI vuri
-
+	private val VURI vuri;
+	
 	new(VURI vuri) {
-		this.vuri = vuri
+		this.vuri = vuri;
 	}
-
+	
 	override containsConcreteChange() {
-		true
+		return true;
 	}
-
+	
 	override validate() {
-		true
+		return true;
 	}
-
+	
 	override getEChanges() {
-		#[]
+		return #[];
 	}
-
+	
 	override getURI() {
-		vuri
+		return vuri;
 	}
-
+	
 	override applyBackward() throws IllegalStateException {
 		// Nothing to be done
 	}
-
+	
 	override applyForward() throws IllegalStateException {
 		// Nothing to be done
 	}
-
+	
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+		
 	}
-
+	
 	override applyBackwardIfLegacy() {
 		// Do nothing
 	}
+	
 }

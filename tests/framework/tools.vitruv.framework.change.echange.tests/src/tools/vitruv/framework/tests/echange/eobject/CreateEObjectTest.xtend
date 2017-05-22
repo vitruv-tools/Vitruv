@@ -101,14 +101,14 @@ class CreateEObjectTest extends EObjectTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert::assertTrue(stagingArea.empty)
+		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter(Root object) {
-		Assert::assertFalse(stagingArea.empty)
+		Assert.assertFalse(stagingArea.empty)
 		object.assertEqualsOrCopy(stagingArea.peek)
 	}
 	

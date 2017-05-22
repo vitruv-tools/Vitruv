@@ -26,12 +26,12 @@ final public class StagingArea {
 	 * 		resource set is {@code null} it returns {@code null}
 	 */
 	def public static StagingArea getStagingArea(ResourceSet resourceSet) {
-		if (resourceSet === null) {
+		if (resourceSet == null) {
 			return null
 		}
 		
-		if (stagingAreas.get(resourceSet) === null) {
-			stagingAreas.put(resourceSet, new StagingArea)
+		if (stagingAreas.get(resourceSet) == null) {
+			stagingAreas.put(resourceSet, new StagingArea())
 		}
 		return stagingAreas.get(resourceSet)
 	}
@@ -44,14 +44,14 @@ final public class StagingArea {
 	 * 		If the resource is {@code null} it returns {@code null}
 	 */
 	def public static StagingArea getStagingArea(Resource resource) {
-		if (resource === null) {
+		if (resource == null) {
 			return null
 		}
 		return getStagingArea(resource.resourceSet)
 	}
 	
 	private new() {
-		this.stagingAreaContent = new ResourceImpl
+		this.stagingAreaContent = new ResourceImpl()
 	}
 	
 	/**

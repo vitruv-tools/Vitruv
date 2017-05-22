@@ -24,9 +24,9 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	
 	@Before
 	override public void beforeTest() {
-		super.beforeTest
-		oldValue = AllElementTypesFactory::eINSTANCE.createNonRoot
-		affectedFeature = AllElementTypesPackage::Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
+		super.beforeTest()
+		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		prepareStateBefore
 	}
 		
@@ -113,7 +113,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		
 		var NonRoot valueAfterChange2 = affectedEObject.eGet(affectedFeature) as NonRoot
 		valueAfterChange2.assertEqualsOrCopy(newValue2)
-		Assert::assertTrue(stagingArea.empty)			
+		Assert.assertTrue(stagingArea.empty)			
 	}
 	
 	/**
@@ -130,7 +130,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		prepareStateAfter
 				
 		// Apply backward
-		Assert::assertTrue(resolvedChange.applyBackward)
+		Assert.assertTrue(resolvedChange.applyBackward)
 		
 		// State before
 		assertIsStateBefore		
@@ -153,7 +153,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert::assertTrue(stagingArea.empty)
+		Assert.assertTrue(stagingArea.empty)
 		oldValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as NonRoot)		
 	}
 	
@@ -161,7 +161,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert::assertTrue(stagingArea.empty)
+		Assert.assertTrue(stagingArea.empty)
 		newValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as NonRoot)
 	}
 	
@@ -170,21 +170,21 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsNotResolved(CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
 		NonRoot oldNonRootObject, NonRoot newNonRootObject) {
-		Assert::assertFalse(change.resolved)
+		Assert.assertFalse(change.isResolved)
 		
-		Assert::assertFalse(change.createChange.resolved)
-		Assert::assertFalse(change.replaceChange.resolved)
-		Assert::assertFalse(change.deleteChange.resolved)
+		Assert.assertFalse(change.createChange.isResolved)
+		Assert.assertFalse(change.replaceChange.isResolved)
+		Assert.assertFalse(change.deleteChange.isResolved)
 		
-		Assert::assertNotSame(change.createChange.affectedEObject, newNonRootObject)
-		Assert::assertNotSame(change.replaceChange.newValue, newNonRootObject)
-		Assert::assertNotSame(change.replaceChange.oldValue, oldNonRootObject)
-		Assert::assertNotSame(change.deleteChange.affectedEObject, oldNonRootObject)
+		Assert.assertNotSame(change.createChange.affectedEObject, newNonRootObject)
+		Assert.assertNotSame(change.replaceChange.newValue, newNonRootObject)
+		Assert.assertNotSame(change.replaceChange.oldValue, oldNonRootObject)
+		Assert.assertNotSame(change.deleteChange.affectedEObject, oldNonRootObject)
 		
-		Assert::assertNotSame(change.replaceChange.affectedEObject, affectedRootObject)
+		Assert.assertNotSame(change.replaceChange.affectedEObject, affectedRootObject)
 		
-		Assert::assertNotSame(change.replaceChange.oldValue, change.deleteChange.affectedEObject)
-		Assert::assertNotSame(change.replaceChange.newValue, change.createChange.affectedEObject)
+		Assert.assertNotSame(change.replaceChange.oldValue, change.deleteChange.affectedEObject)
+		Assert.assertNotSame(change.replaceChange.newValue, change.createChange.affectedEObject)
 	}
 	
 	/**
@@ -192,12 +192,12 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsResolved(CreateAndReplaceAndDeleteNonRoot<Root, NonRoot> change, Root affectedRootObject,
 		NonRoot oldNonRootObject, NonRoot newNonRootObject) {
-		Assert::assertTrue(change.resolved)
+		Assert.assertTrue(change.isResolved)
 		change.createChange.affectedEObject.assertEqualsOrCopy(newNonRootObject)
 		change.replaceChange.oldValue.assertEqualsOrCopy(oldNonRootObject)
 		change.replaceChange.newValue.assertEqualsOrCopy(newNonRootObject)
 		change.deleteChange.affectedEObject.assertEqualsOrCopy(oldNonRootObject)
-		Assert::assertSame(change.replaceChange.affectedEObject, affectedRootObject)
+		Assert.assertSame(change.replaceChange.affectedEObject, affectedRootObject)
 	}	
 	
 	/**

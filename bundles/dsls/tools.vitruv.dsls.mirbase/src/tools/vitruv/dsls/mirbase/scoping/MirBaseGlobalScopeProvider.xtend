@@ -29,7 +29,7 @@ class MirBaseGlobalScopeProvider extends TypesAwareDefaultGlobalScopeProvider {
 	}
 	
 	private def getPackageScope() {
-		if (packageScope === null)
+		if (packageScope == null)
 			packageScope = new SimpleScope(IScope.NULLSCOPE,
 				EPackage.Registry.INSTANCE.keySet.map [
 					from |

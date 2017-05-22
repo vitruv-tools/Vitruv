@@ -29,7 +29,7 @@ class EChangeResolver {
 	 */
 	def public static EChange resolveCopy(EChange change, ResourceSet resourceSet, boolean resolveBefore,
 		boolean revertAfterResolving) {
-		var EChange copy = EcoreUtil::copy(change)
+		var EChange copy = EcoreUtil.copy(change)
 		if (resolve(copy, resourceSet, resolveBefore, revertAfterResolving)) {
 			return copy
 		} else {
@@ -53,7 +53,7 @@ class EChangeResolver {
 	 */
 	def public static boolean resolve(EChange change, ResourceSet resourceSet, boolean resolveBefore,
 		boolean revertAfterResolving) {
-		if (change.resolved) {
+		if (change.isResolved) {
 			throw new IllegalArgumentException
 		}
 		if (!resolveChange(change, resourceSet, resolveBefore, revertAfterResolving)) {
@@ -76,7 +76,7 @@ class EChangeResolver {
 	 */
 	def private static dispatch boolean resolveChange(AtomicEChange change, ResourceSet resourceSet,
 		boolean resolveBefore, boolean revertAfterResolving) {
-		AtomicEChangeResolver::resolve(change, resourceSet, resolveBefore)
+		AtomicEChangeResolver.resolve(change, resourceSet, resolveBefore)
 	}
 
 	/**
@@ -84,6 +84,6 @@ class EChangeResolver {
 	 */
 	def private static dispatch boolean resolveChange(CompoundEChange change, ResourceSet resourceSet,
 		boolean resolveBefore, boolean revertAfterResolving) {
-		CompoundEChangeResolver::resolve(change, resourceSet, resolveBefore, revertAfterResolving)
+		CompoundEChangeResolver.resolve(change, resourceSet, resolveBefore, revertAfterResolving)
 	}
 }

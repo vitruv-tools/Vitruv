@@ -15,7 +15,7 @@ import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertH
 class DeleteEObjectTest extends EObjectTest {	
 	@Before
 	override public void beforeTest() {
-		super.beforeTest
+		super.beforeTest()
 		prepareStateBefore(createdObject)
 	}
 	
@@ -117,7 +117,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore(Root stagingAreaObject) {
-		Assert::assertFalse(stagingArea.empty)
+		Assert.assertFalse(stagingArea.empty)
 		stagingAreaObject.assertEqualsOrCopy(stagingArea.peek)
 	}
 	
@@ -125,7 +125,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert::assertTrue(stagingArea.empty)
+		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**

@@ -36,24 +36,24 @@ import org.junit.After
  	
  	@Before
  	override public void beforeTest() {
- 		super.beforeTest
+ 		super.beforeTest()
  		affectedEObject = rootObject
- 		affectedFeature = AllElementTypesPackage::Literals.IDENTIFIED__ID
+ 		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
  		
  		// Load model in second resource
- 		resourceSet2 = new ResourceSetImpl
- 		resourceSet2.resourceFactoryRegistry.extensionToFactoryMap.put(METAMODEL, new XMIResourceFactoryImpl)
+ 		resourceSet2 = new ResourceSetImpl()
+ 		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
  		resource2 = resourceSet2.getResource(fileUri, true)
- 		rootObject2 = resource2.getEObject(EcoreUtil::getURI(rootObject).fragment) as Root
+ 		rootObject2 = resource2.getEObject(EcoreUtil.getURI(rootObject).fragment()) as Root
  		
  		// Create staging area for resource set 2
- 		stagingArea2 = StagingArea::getStagingArea(resourceSet2)
+ 		stagingArea2 = StagingArea.getStagingArea(resourceSet2)
  	}
  	
  	@After
  	override public void afterTest() {
  		stagingArea2.clear
- 		super.afterTest
+ 		super.afterTest()
  	}
 	 
  	/**
@@ -104,7 +104,7 @@ import org.junit.After
 		affectedEObject = prepareSecondRoot
 		
 		// second resource has no such root element
-		Assert::assertNull(resource2.getEObject(EcoreUtil::getURI(affectedEObject).fragment))
+		Assert.assertNull(resource2.getEObject(EcoreUtil.getURI(affectedEObject).fragment))
 		
 		// Create change 		
  		val unresolvedChange = createUnresolvedChange()
@@ -113,7 +113,7 @@ import org.junit.After
   		// Resolve
  		val resolvedChange = unresolvedChange.resolveBefore(resourceSet2)
  			as FeatureEChange<Root, EAttribute>
-		Assert::assertNull(resolvedChange)
+		Assert.assertNull(resolvedChange)
 	}
 
 	/**
@@ -140,13 +140,13 @@ import org.junit.After
  		
 		// Create change	
  		val unresolvedChange = createUnresolvedChange()
- 		Assert::assertFalse(unresolvedChange.resolved)
- 		Assert::assertNull(unresolvedChange.affectedEObject)
+ 		Assert.assertFalse(unresolvedChange.isResolved)
+ 		Assert.assertNull(unresolvedChange.affectedEObject)
  		
  		// Resolve		
  		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
  			as FeatureEChange<Root, EAttribute>
-		Assert::assertNull(resolvedChange)			
+		Assert.assertNull(resolvedChange)			
  	}
  	
  	/**
@@ -163,7 +163,7 @@ import org.junit.After
  		// Resolve
  		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
  			as FeatureEChange<Root, EAttribute>
- 	  	Assert::assertNull(resolvedChange)
+ 	  	Assert.assertNull(resolvedChange)
  	 }
  	 
  	 /**
@@ -178,7 +178,7 @@ import org.junit.After
  	  	// Resolve
  	  	val resolvedChange = unresolvedChange.resolveBefore(null) 
  	  		as FeatureEChange<Root, EAttribute>
- 	  	Assert::assertNull(resolvedChange)
+ 	  	Assert.assertNull(resolvedChange)
  	}
  	  
  	
@@ -186,7 +186,7 @@ import org.junit.After
 	 * Creates and inserts a new root element in the resource 1.
 	 */
 	def private Root prepareSecondRoot() {
-		val root = AllElementTypesFactory::eINSTANCE.createRoot
+		val root = AllElementTypesFactory.eINSTANCE.createRoot()
 		resource.contents.add(root)
 		return root		
 	}
@@ -196,9 +196,9 @@ import org.junit.After
 	 */ 	
 	def private static void assertIsNotResolved(FeatureEChange<Root, EAttribute> change, 
 		Root affectedEObject, EAttribute affectedFeature) {
-		Assert::assertFalse(change.resolved)
-		Assert::assertNotSame(change.affectedEObject, affectedEObject)
-		Assert::assertSame(change.affectedFeature, affectedFeature)				
+		Assert.assertFalse(change.isResolved)
+		Assert.assertNotSame(change.affectedEObject, affectedEObject)
+		Assert.assertSame(change.affectedFeature, affectedFeature)				
 	} 
 	
 	/**
@@ -206,9 +206,9 @@ import org.junit.After
 	 */
  	def private static void assertIsResolved(FeatureEChange<Root, EAttribute> change, 
 		Root affectedEObject, EAttribute affectedFeature) {
-		Assert::assertTrue(change.resolved)
-		Assert::assertSame(change.affectedEObject, affectedEObject)
-		Assert::assertSame(change.affectedFeature, affectedFeature)			
+		Assert.assertTrue(change.isResolved)
+		Assert.assertSame(change.affectedEObject, affectedEObject)
+		Assert.assertSame(change.affectedFeature, affectedFeature)			
 	} 
 
 	/**

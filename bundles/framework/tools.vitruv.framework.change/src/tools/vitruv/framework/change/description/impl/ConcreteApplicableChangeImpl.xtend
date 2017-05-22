@@ -17,66 +17,70 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.VURI
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
-    new(EChange eChange, VURI vuri) {
-    	super(eChange, vuri)
+    public new(EChange eChange, VURI vuri) {
+    	super(eChange, vuri);
     }
 
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		eChange = eChange.resolveBefore(resourceSet)
-		registerOldObjectTuidsForUpdate(eChange.affectedEObjects)
-		eChange.applyForward
-		updateTuids
+		this.eChange = this.eChange.resolveBefore(resourceSet)
+		this.registerOldObjectTuidsForUpdate(this.eChange.affectedEObjects)
+		this.eChange.applyForward
+		this.updateTuids
 	}
 	
 	override applyForward() {
-		eChange.applyForward
+		this.eChange.applyForward
 	}
 
 	override applyBackward() {
-		eChange.applyBackward
+		this.eChange.applyBackward
 	}
 	
 	private def void registerOldObjectTuidsForUpdate(List<EObject> objects) {
-		val tuidManager = TuidManager::instance
-		objects.forEach [tuidManager.registerObjectUnderModification(it)]
+		val tuidManager = TuidManager.instance
+		for (object : objects) {
+			tuidManager.registerObjectUnderModification(object)
+		}
 	}
 	
 	private def void updateTuids() {
-		TuidManager::instance.updateTuidsOfRegisteredObjects
-		TuidManager::instance.flushRegisteredObjectsUnderModification
+		TuidManager.instance.updateTuidsOfRegisteredObjects
+		TuidManager.instance.flushRegisteredObjectsUnderModification
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(CompoundEChange eChange) {
-		val List<EObject> objects = new BasicEList<EObject>
-		eChange.atomicChanges.forEach[objects.addAll(affectedEObjects)] 
-		objects
+		var List<EObject> objects = new BasicEList<EObject>
+		for (atomicChange : eChange.atomicChanges) {
+			objects.addAll(atomicChange.getAffectedEObjects)
+		}
+		return objects
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(InsertRootEObject<EObject> eChange) {
-		#[eChange.newValue]
+		return #[eChange.newValue]
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(RemoveRootEObject<EObject> eChange) {
-		#[eChange.oldValue]
+		return #[eChange.oldValue]
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(InsertEReference<EObject, EObject> eChange) {
-		#[eChange.newValue, eChange.affectedEObject]
+		return #[eChange.newValue, eChange.affectedEObject]
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(RemoveEReference<EObject, EObject> eChange) {
-		#[eChange.oldValue, eChange.affectedEObject]
+		return #[eChange.oldValue, eChange.affectedEObject]
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(ReplaceSingleValuedEReference<EObject, EObject> eChange) {
-		#[eChange.oldValue, eChange.newValue, eChange.affectedEObject]
+		return #[eChange.oldValue, eChange.newValue, eChange.affectedEObject]
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(FeatureEChange<EObject, ?> eChange) {
-		#[eChange.affectedEObject]
+		return #[eChange.affectedEObject]
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(EObjectExistenceEChange<EObject> eChange) {
-		#[eChange.affectedEObject]
+		return #[eChange.affectedEObject]
 	}
 }

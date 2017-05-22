@@ -10,16 +10,16 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import org.eclipse.emf.ecore.EObject
 
 package class ChangedResourcesTracker {
-	val Set<Resource> sourceModelResources
-	val Set<Resource> involvedModelResources
+	private final Set<Resource> sourceModelResources;
+	private final Set<Resource> involvedModelResources;
 	
 	new() {
-		sourceModelResources = newHashSet
-		involvedModelResources = newHashSet
+		this.sourceModelResources = newHashSet();
+		this.involvedModelResources = newHashSet();
 	}
 
 
-	def void addSourceResourceOfChange(TransactionalChange change) {
+	public def void addSourceResourceOfChange(TransactionalChange change) {
 		val atomicChanges = change.EChanges.map[
 			if (it instanceof CompoundEChange) it.atomicChanges else #[it]
 		].flatten
@@ -30,14 +30,14 @@ package class ChangedResourcesTracker {
 		sourceModelResources += involvedObjects.map[eResource].filterNull.toList;
 	}
 	
-	def void addInvolvedModelResource(Resource resource) {
-		if (resource === null) {
-			return
+	public def void addInvolvedModelResource(Resource resource) {
+		if (resource == null) {
+			return;
 		}
-		involvedModelResources += resource;
+		this.involvedModelResources += resource;
 	}
 	
-	def void markNonSourceResourceAsChanged() {
+	public def void markNonSourceResourceAsChanged() {
 		// Some models are not marked as modified although they were actually modified by the consistency preservation
 		// Therefore, we have to mark them as modified manually
 		
@@ -48,7 +48,7 @@ package class ChangedResourcesTracker {
 		// This will hopefully not be necessary anymore if we replay recorded changes in the VSUM isolated from their
 		// recording in editors.
 		val changedNonSourceResources = involvedModelResources
-			.filter[!sourceModelResources.exists[sourceResource | sourceResource.URI.equals(it.URI)]]
-		changedNonSourceResources.forEach[modified = true]
+			.filter[!sourceModelResources.exists[sourceResource | sourceResource.URI.equals(it.URI)]];
+		changedNonSourceResources.forEach[modified = true];
 	}
 }

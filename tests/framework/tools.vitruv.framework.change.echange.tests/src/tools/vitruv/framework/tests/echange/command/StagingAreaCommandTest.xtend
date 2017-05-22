@@ -22,11 +22,11 @@ abstract class StagingAreaCommandTest extends CommandTest {
 	
 	@Before
 	def public void beforeTest() {
-		this.resourceSet = new ResourceSetImpl
-		this.stagingArea = StagingArea::getStagingArea(resourceSet)
-		this.object = AllElementTypesFactory::eINSTANCE.createRoot
-		this.object2 = AllElementTypesFactory::eINSTANCE.createRoot
-		this.editingDomain = EChangeUtil::getEditingDomain(object)
+		this.resourceSet = new ResourceSetImpl()
+		this.stagingArea = StagingArea.getStagingArea(resourceSet)
+		this.object = AllElementTypesFactory.eINSTANCE.createRoot
+		this.object2 = AllElementTypesFactory.eINSTANCE.createRoot
+		this.editingDomain = EChangeUtil.getEditingDomain(object)
 	}
 	
 	@After

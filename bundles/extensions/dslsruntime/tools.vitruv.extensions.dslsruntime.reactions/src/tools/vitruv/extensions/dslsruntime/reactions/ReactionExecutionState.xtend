@@ -5,26 +5,25 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class ReactionExecutionState {
-	val UserInteracting userInteracting
-	val CorrespondenceModel correspondenceModel
-	val ChangePropagationResult transformationResult
-
-	new(UserInteracting userInteracting, CorrespondenceModel correspondenceModel,
-		ChangePropagationResult transformationResult) {
-		this.userInteracting = userInteracting
-		this.correspondenceModel = correspondenceModel
-		this.transformationResult = transformationResult
+	private val UserInteracting userInteracting;
+	private val CorrespondenceModel correspondenceModel;
+	private val ChangePropagationResult transformationResult;
+	
+	public new(UserInteracting userInteracting, CorrespondenceModel correspondenceModel, ChangePropagationResult transformationResult) {
+		this.userInteracting = userInteracting;
+		this.correspondenceModel = correspondenceModel;
+		this.transformationResult = transformationResult;
 	}
-
-	def UserInteracting getUserInteracting() {
-		userInteracting
+	
+	public def UserInteracting getUserInteracting() {
+		return this.userInteracting;
 	}
-
-	def CorrespondenceModel getCorrespondenceModel() {
-		correspondenceModel
+	
+	public def CorrespondenceModel getCorrespondenceModel() {
+		return this.correspondenceModel;
 	}
-
-	def ChangePropagationResult getTransformationResult() {
-		transformationResult
+	
+	public def ChangePropagationResult getTransformationResult() {
+		return transformationResult;
 	}
 }

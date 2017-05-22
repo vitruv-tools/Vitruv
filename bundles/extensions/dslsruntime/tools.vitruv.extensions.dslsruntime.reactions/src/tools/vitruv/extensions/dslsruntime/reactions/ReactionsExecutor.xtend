@@ -6,5 +6,5 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 interface ReactionsExecutor {
-	def List<Command> generateCommandsForEvent(EChange change, CorrespondenceModel correspondenceModel)
+	public def List<Command> generateCommandsForEvent(EChange change, CorrespondenceModel correspondenceModel);
 }

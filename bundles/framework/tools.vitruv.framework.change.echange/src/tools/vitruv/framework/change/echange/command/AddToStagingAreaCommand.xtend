@@ -30,14 +30,14 @@ class AddToStagingAreaCommand extends AbstractOverrideableCommand {
 	}
 	
 	override doRedo() {
-		throw new UnsupportedOperationException
+		throw new UnsupportedOperationException()
 	}
 	
 	override doUndo() {
-		throw new UnsupportedOperationException
+		throw new UnsupportedOperationException()
 	}
 
 	override public boolean prepare() {
-		return stagingArea !== null && object !== null
+		return stagingArea != null && object != null
 	}	
 }

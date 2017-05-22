@@ -9,99 +9,100 @@ import static allElementTypes.AllElementTypesPackage.Literals.*
 import org.junit.Assert
 
 class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2ChangeTransformationTest {
-
+	
 	/**
 	 * Remove attribute value from multi-valued EAttribute
 	 */
 	@Test
-	def testRemoveEAttributeValue() {
-		rootElement.multiValuedEAttribute.add(42)
-		rootElement.multiValuedEAttribute.add(55)
-		rootElement.multiValuedEAttribute.add(66)
+	def public testRemoveEAttributeValue() {
+		this.rootElement.multiValuedEAttribute.add(42)
+		this.rootElement.multiValuedEAttribute.add(55)
+		this.rootElement.multiValuedEAttribute.add(66)
 		// test
 		startRecording
 
 		// set to default/clear
-		rootElement.multiValuedEAttribute.remove(2)
-		rootElement.multiValuedEAttribute.remove(0)
-		rootElement.multiValuedEAttribute.remove(0)
+		this.rootElement.multiValuedEAttribute.remove(2)
+		this.rootElement.multiValuedEAttribute.remove(0)
+		this.rootElement.multiValuedEAttribute.remove(0)
 
-		changes.assertChangeCount(3)
-		changes.claimChange(0).assertRemoveEAttribute(rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2)
-		changes.claimChange(1).assertRemoveEAttribute(rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
-		changes.claimChange(2).assertRemoveEAttribute(rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 0)
+		changes.assertChangeCount(3);
+		changes.claimChange(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2)
+		changes.claimChange(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
+		changes.claimChange(2).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 0)
 	}
-
+	
 	/**
 	 * Clear several attributes in a multi-valued EAttribute
 	 */
 	@Test
-	def testClearEAttributeValue() {
-		rootElement.multiValuedEAttribute.add(42)
-		rootElement.multiValuedEAttribute.add(55)
+	def public testClearEAttributeValue() {
+		this.rootElement.multiValuedEAttribute.add(42)
+		this.rootElement.multiValuedEAttribute.add(55)
 		// test
 		startRecording
 
 		// set to default/clear
-		rootElement.multiValuedEAttribute.clear
+		this.rootElement.multiValuedEAttribute.clear
 
-		changes.assertChangeCount(2)
-		changes.claimChange(0).assertRemoveEAttribute(rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1)
-		changes.claimChange(1).assertRemoveEAttribute(rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
+		changes.assertChangeCount(2);
+		changes.claimChange(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1)
+		changes.claimChange(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
 	}
-
+	
 	/**
 	 * Remove attribute value from unsettable multi-valued EAttribute (should not be an unset)
 	 */
 	@Test
-	def testRemoveUnsettableEAttributeValue() {
-		Assert::assertFalse(rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE))
-		rootElement.multiValuedUnsettableEAttribute.add(42)
-		Assert::assertTrue(rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE))
+	def public testRemoveUnsettableEAttributeValue() {
+		Assert.assertFalse(this.rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE));
+		this.rootElement.multiValuedUnsettableEAttribute.add(42)
+		Assert.assertTrue(this.rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE));
 		// test
 		startRecording
 
 		// set to default/clear
-		rootElement.multiValuedUnsettableEAttribute.remove(0)
+		this.rootElement.multiValuedUnsettableEAttribute.remove(0)
 
-		changes.assertChangeCount(1)
-		changes.claimChange(0).assertRemoveEAttribute(rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
-		Assert::assertTrue(rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE))
+		changes.assertChangeCount(1);
+		changes.claimChange(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		Assert.assertTrue(this.rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE));
 	}
 
+
 	@Test
-	def testUnsetEAttributeValue() {
-		rootElement.multiValuedUnsettableEAttribute.add(42)
+	def public testUnsetEAttributeValue() {
+		this.rootElement.multiValuedUnsettableEAttribute.add(42)
 		// test
 		startRecording
 
 		// unset 
-		rootElement.eUnset(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
+		this.rootElement.eUnset(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
 
-		changes.assertChangeCount(1)
+		changes.assertChangeCount(1);
 		val subtractiveChanges = changes.claimChange(0).assertExplicitUnsetEAttribute.subtractiveChanges
-		subtractiveChanges.assertChangeCount(1)
-		subtractiveChanges.get(0).assertRemoveEAttribute(rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		subtractiveChanges.assertChangeCount(1);
+		subtractiveChanges.get(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
 	}
-
+	
 	@Test
-	def testUnsetEAttributeValuesWithSeveralValues() {
-		Assert::assertFalse(rootElement.setMultiValuedUnsettableEAttribute)
-		rootElement.multiValuedUnsettableEAttribute.add(42)
-		Assert::assertTrue(rootElement.setMultiValuedUnsettableEAttribute)
-		rootElement.multiValuedUnsettableEAttribute.add(22)
+	def public testUnsetEAttributeValuesWithSeveralValues() {
+		Assert.assertFalse(rootElement.isSetMultiValuedUnsettableEAttribute);
+		this.rootElement.multiValuedUnsettableEAttribute.add(42)
+		Assert.assertTrue(rootElement.isSetMultiValuedUnsettableEAttribute);
+		this.rootElement.multiValuedUnsettableEAttribute.add(22)
 		// test
 		startRecording
 
 		// unset
-		Assert::assertTrue(rootElement.setMultiValuedUnsettableEAttribute);
-		rootElement.eUnset(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
-		Assert::assertFalse(rootElement.setMultiValuedUnsettableEAttribute)
-		changes.assertChangeCount(1)
+		Assert.assertTrue(rootElement.isSetMultiValuedUnsettableEAttribute); 
+		this.rootElement.eUnset(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
+		Assert.assertFalse(rootElement.isSetMultiValuedUnsettableEAttribute);
+		changes.assertChangeCount(1);
 		val subtractiveChanges = changes.claimChange(0).assertExplicitUnsetEAttribute.subtractiveChanges
-		subtractiveChanges.assertChangeCount(2)
-		subtractiveChanges.get(0).assertRemoveEAttribute(rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
-		subtractiveChanges.get(1).assertRemoveEAttribute(rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		subtractiveChanges.assertChangeCount(2);
+		subtractiveChanges.get(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
+		subtractiveChanges.get(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
 	}
-
+	
 }

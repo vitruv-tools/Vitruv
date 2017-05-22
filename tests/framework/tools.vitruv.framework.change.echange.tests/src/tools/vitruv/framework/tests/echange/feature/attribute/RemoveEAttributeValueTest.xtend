@@ -48,8 +48,8 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Apply forward
 		resolvedChange.assertApplyForward
 			
-		Assert::assertEquals(attributeContent.size, 1)
-		Assert::assertEquals(attributeContent.get(0), NEW_VALUE_2)
+		Assert.assertEquals(attributeContent.size, 1)
+		Assert.assertEquals(attributeContent.get(0), NEW_VALUE_2)
 		
 		// Create change and resolve 2
 		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2, 0).resolveBefore(resourceSet)
@@ -84,8 +84,8 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert::assertEquals(attributeContent.size, 1)
-		Assert::assertEquals(attributeContent.get(0), NEW_VALUE_2)
+		Assert.assertEquals(attributeContent.size, 1)
+		Assert.assertEquals(attributeContent.get(0), NEW_VALUE_2)
 				
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -104,7 +104,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(NEW_VALUE, index).resolveBefore(resourceSet)
 			as RemoveEAttributeValue<Root, String>	
-		Assert::assertTrue(resolvedChange.resolved)
+		Assert.assertTrue(resolvedChange.isResolved)
 	
 		// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -116,17 +116,17 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 */
 	@Test
 	def public void invalidAttributeTest() {
-		val affectedNonRootEObject = AllElementTypesFactory::eINSTANCE.createNonRoot
+		val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
 	 	resource.contents.add(affectedNonRootEObject)
 		
 		// Create change and resolve
 		val resolvedChange = atomicFactory.<NonRoot, Integer>createRemoveAttributeChange
 			(affectedNonRootEObject, affectedFeature, 0, NEW_VALUE).
 			resolveBefore(resourceSet)
-		Assert::assertTrue(resolvedChange.resolved)	
+		Assert.assertTrue(resolvedChange.isResolved)	
 			
 		// NonRoot has no such feature
-	 	Assert::assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
+	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
 	 	
 	 	// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -144,10 +144,10 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		val resolvedChange = atomicFactory.<Root, String>createRemoveAttributeChange
 			(affectedEObject, affectedFeature, 0, newInvalidValue).
 			resolveBefore(resourceSet)
-		Assert::assertTrue(resolvedChange.resolved)
+		Assert.assertTrue(resolvedChange.isResolved)
 		
 		// Type of attribute is Integer not String
-	 	Assert::assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
+	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
 	 	
 	 	// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -167,16 +167,16 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Model is in state before the changes. 
 	 */
 	def private void assertIsStateBefore() {
-		Assert::assertEquals(attributeContent.size, 2)
-		Assert::assertEquals(attributeContent.get(0), NEW_VALUE)
-		Assert::assertEquals(attributeContent.get(1), NEW_VALUE_2)
+		Assert.assertEquals(attributeContent.size, 2)
+		Assert.assertEquals(attributeContent.get(0), NEW_VALUE)
+		Assert.assertEquals(attributeContent.get(1), NEW_VALUE_2)
 	}
 	
 	/**
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert::assertEquals(attributeContent.size, 0)
+		Assert.assertEquals(attributeContent.size, 0)
 	}
 	
 	/**

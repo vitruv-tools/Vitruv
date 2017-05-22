@@ -15,61 +15,64 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
-	val ModelRepositoryImpl modelRepository
-	val VitruvDomainRepository metamodelRepository
-	val ChangePropagator changePropagator
-	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
-	val String name
-
-	new(String name, VirtualModelConfiguration modelConfiguration) {
-		this.name = name
-		metamodelRepository = new VitruvDomainRepositoryImpl
-		modelConfiguration.metamodels.forEach[metamodelRepository.addDomain(it)]
-		modelRepository = new ModelRepositoryImpl(name, metamodelRepository)
-		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository
-		modelConfiguration.changePropagationSpecifications.forEach [
-			changePropagationSpecificationRepository.putChangePropagationSpecification(it)
-		]
-		changePropagationSpecificationProvider = changePropagationSpecificationRepository
-		changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider,
-			metamodelRepository, modelRepository)
-		VirtualModelManager::instance.putVirtualModel(this)
+	private val ModelRepositoryImpl modelRepository;
+	private val VitruvDomainRepository metamodelRepository;
+	private val ChangePropagator changePropagator;
+	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
+	private val String name;
+	
+	public new(String name, VirtualModelConfiguration modelConfiguration) {
+		this.name = name;
+		metamodelRepository = new VitruvDomainRepositoryImpl();
+		for (metamodel : modelConfiguration.metamodels) {
+			metamodelRepository.addDomain(metamodel);
+		}
+		this.modelRepository = new ModelRepositoryImpl(name, metamodelRepository);
+		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository();
+		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
+			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
+		}
+		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
+		this.changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider, metamodelRepository, modelRepository);
+		VirtualModelManager.instance.putVirtualModel(this);
 	}
-
+	
 	override getCorrespondenceModel() {
-		modelRepository.correspondenceModel
+		this.modelRepository.getCorrespondenceModel();
 	}
-
+	
 	override getModelInstance(VURI modelVuri) {
-		modelRepository.getModel(modelVuri)
+		return this.modelRepository.getModel(modelVuri);
 	}
-
+	
 	override save() {
-		modelRepository.saveAllModels
+		this.modelRepository.saveAllModels();
 	}
-
+	
 	override persistRootElement(VURI persistenceVuri, EObject rootElement) {
-		modelRepository.persistRootElement(persistenceVuri, rootElement)
+		this.modelRepository.persistRootElement(persistenceVuri, rootElement);
 	}
-
+	
 	override executeCommand(Callable<Void> command) {
-		modelRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command)
+		this.modelRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command);
 	}
-
+	
 	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
-		changePropagator.addChangePropagationListener(changePropagationListener)
+		changePropagator.addChangePropagationListener(changePropagationListener);
 	}
-
+	
 	override propagateChange(VitruviusChange change) {
 		// Save is done by the change propagator because it has to be performed before finishing sync
-		changePropagator.propagateChange(change)
+		changePropagator.propagateChange(change);
 	}
-
+	
 	override setUserInteractor(UserInteracting userInteractor) {
-		changePropagationSpecificationProvider.forEach[userInteracting = userInteractor]
+		for (propagationSpecification : this.changePropagationSpecificationProvider) {
+			propagationSpecification.userInteracting = userInteractor;
+		}
 	}
-
+	
 	override String getName() {
-		name
+		return name;
 	}
 }

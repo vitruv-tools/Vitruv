@@ -5,36 +5,37 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.domains.VitruvDomain
 
 abstract class AbstractChangePropagationSpecification implements ChangePropagationSpecification {
-	var UserInteracting userInteracting
-	var VitruvDomain sourceDomain
-	var VitruvDomain targetDomain
-
+	private var UserInteracting userInteracting;
+	private var VitruvDomain sourceDomain;
+	private var VitruvDomain targetDomain;
+	
 	new(UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		setUserInteracting(userInteracting)
-		setVitruvDomains(sourceDomain, targetDomain)
+		setUserInteracting(userInteracting);
+		setVitruvDomains(sourceDomain, targetDomain);
 	}
-
+	
 	protected def UserInteracting getUserInteracting() {
-		userInteracting
+		return userInteracting;
 	}
-
+	
 	private def setVitruvDomains(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		this.sourceDomain = sourceDomain
-		this.targetDomain = targetDomain
+		this.sourceDomain = sourceDomain;
+		this.targetDomain = targetDomain;
 	}
-
+	
 	override getSourceDomain() {
-		sourceDomain
+		return sourceDomain;
 	}
-
+	
 	override getTargetDomain() {
-		targetDomain
+		return targetDomain;
 	}
-
+	
 	override setUserInteracting(UserInteracting userInteracting) {
-		if (userInteracting === null) {
-			throw new IllegalArgumentException("UserInteracting must not be null")
+		if (userInteracting == null) {
+			throw new IllegalArgumentException("UserInteracting must not be null");
 		}
-		this.userInteracting = userInteracting
+		this.userInteracting = userInteracting;
 	}
+	
 }

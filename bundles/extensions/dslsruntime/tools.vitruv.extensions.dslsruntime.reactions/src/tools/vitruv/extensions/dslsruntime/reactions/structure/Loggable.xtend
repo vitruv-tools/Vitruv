@@ -1,17 +1,15 @@
 package tools.vitruv.extensions.dslsruntime.reactions.structure
 
 import org.apache.log4j.Logger
-import org.apache.log4j.Level
 
 class Loggable {
-	val Logger LOGGER
-
-	new() {
-		LOGGER = Logger::getLogger(this.class)
-		LOGGER.level = Level::DEBUG
+	private val Logger LOGGER;
+	
+	public new() {
+		LOGGER = Logger.getLogger(this.class);
 	}
-
+	
 	protected def Logger getLogger() {
-		LOGGER
+		return LOGGER;
 	}
 }

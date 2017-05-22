@@ -17,8 +17,6 @@ import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChan
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.resolve.StagingArea
 import org.eclipse.emf.ecore.EObject
-import java.io.IOException
-import java.io.File
 
 /**
  * Default class for testing EChange changes.
@@ -45,7 +43,7 @@ import java.io.File
  	protected static val STAGING_AREA_FILE_NAME = "stagingArea"
  	
  	@Rule
-	public TemporaryFolder testFolder = new TemporaryFolder
+	public TemporaryFolder testFolder = new TemporaryFolder()
 	
 	/**
 	 * Sets up a new model and the two model instances before every test.
@@ -57,34 +55,25 @@ import java.io.File
  	@Before
  	def void beforeTest() {
  		// Setup Files
-		var File modelFile
-		try {
-			modelFile = testFolder.newFile(MODEL_FILE_NAME + "." + METAMODEL)
-		} catch (IOException exc) {
-			throw new RuntimeException("auto-generated try/catch", exc)
-		}
-		fileUri = URI::createFileURI(modelFile.absolutePath)
+ 		var modelFile = testFolder.newFile(MODEL_FILE_NAME + "." + METAMODEL)
+		fileUri = URI.createFileURI(modelFile.getAbsolutePath())
  		
  		// Create model
- 		resourceSet = new ResourceSetImpl
- 		resourceSet.resourceFactoryRegistry.extensionToFactoryMap.put(METAMODEL, new XMIResourceFactoryImpl)
+ 		resourceSet = new ResourceSetImpl()
+ 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
  		resource = resourceSet.createResource(fileUri)
  		
- 		rootObject = AllElementTypesFactory::eINSTANCE.createRoot
- 		resource.contents.add(rootObject)
+ 		rootObject = AllElementTypesFactory.eINSTANCE.createRoot()
+ 		resource.getContents().add(rootObject)
  		
- 		try {
-			resource.save(null)
-		} catch (IOException exc) {
-			throw new RuntimeException("auto-generated try/catch", exc)
-		}
+ 		resource.save(null)
  		
  		// Create staging area for resource set 1
- 		stagingArea = StagingArea::getStagingArea(resourceSet)
+ 		stagingArea = StagingArea.getStagingArea(resourceSet)
  		
  		// Factorys for creating changes
- 		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory::instance
- 		compoundFactory = TypeInferringUnresolvingCompoundEChangeFactory::instance
+ 		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory.instance
+ 		compoundFactory = TypeInferringUnresolvingCompoundEChangeFactory.instance
  	}
  	
  	/**
@@ -104,7 +93,7 @@ import java.io.File
 	 * 		Clears and sets the 0th element.
 	 */
 	protected def void prepareStagingArea(EObject object) {
-		if (object !== null) {
+		if (object != null) {
 			stagingArea.add(object)			
 		}
 	}

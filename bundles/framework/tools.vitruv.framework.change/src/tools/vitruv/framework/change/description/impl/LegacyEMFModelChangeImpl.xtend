@@ -16,93 +16,96 @@ import tools.vitruv.framework.change.echange.EChange
  * right before the change described by the recorded {@link ChangeDescription}.
  */
 class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	val ChangeDescription changeDescription
-	val VURI vuri
-	var boolean canBeBackwardsApplied
+	private final ChangeDescription changeDescription;
+	private final VURI vuri;
+	private var boolean canBeBackwardsApplied;
 	
     public new(ChangeDescription changeDescription, Iterable<EChange> eChanges, VURI vuri) {
-    	this.changeDescription = changeDescription
-        this.vuri = vuri
-        canBeBackwardsApplied = false
-		addChanges(eChanges)
+    	this.changeDescription = changeDescription;
+        this.vuri = vuri;
+        this.canBeBackwardsApplied = false;
+		addChanges(eChanges);
     }
 
 	private def void addChanges(Iterable<EChange> eChanges) {
-		eChanges.forEach [addChange(VitruviusChangeFactory::instance.createConcreteChange(it, vuri))]
-		if (changes.empty) 
-			addChange(VitruviusChangeFactory::instance.createEmptyChange(vuri))
+		for (eChange : eChanges) {
+			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
+		}
+		if (changes.empty) {
+			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
+		}
 	}
 
     private def ChangeDescription getChangeDescription() {
-        changeDescription
+        return this.changeDescription;
     }
 
     override String toString() '''
-    	«EMFModelChangeImpl.simpleName»: VURI vuri», EChanges:
+    	«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
     		«FOR eChange : EChanges»
     			Inner change: «eChange»
     		«ENDFOR»
     '''
         
 	override getURI() {
-		vuri
+		return vuri;
 	}
 	
 	override containsConcreteChange() {
-		true
+		return true;
 	}
 	
 	override validate() {
-		true
+		return true;
 	}
 	
 	override applyBackward() throws IllegalStateException {
-		if (!canBeBackwardsApplied) {
+		if (!this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
 		}
-		applyChange
-		canBeBackwardsApplied = false
+		applyChange();
+		this.canBeBackwardsApplied = false;
 	}
 	
 	override applyForward() throws IllegalStateException {
-		if (canBeBackwardsApplied) {
+		if (this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
-		applyChange
-		canBeBackwardsApplied = true
+		applyChange();
+		this.canBeBackwardsApplied = true;
 	}
 	
 	private def applyChange() {
-		registerOldObjectTuidsForUpdate
-		changeDescription.applyAndReverse
-		updateTuids
+		registerOldObjectTuidsForUpdate();
+		changeDescription.applyAndReverse();
+		updateTuids();
 	}
 	
 	private def void registerOldObjectTuidsForUpdate() {
-		val tuidManager = TuidManager::instance
-		val objects = new HashSet<EObject>
-        objects.addAll(getChangeDescription.objectChanges.keySet.filterNull)
-        objects.addAll(getChangeDescription.objectChanges.values.flatten.map[referenceValue].filterNull)
-		objects.addAll(getChangeDescription.objectsToDetach.filterNull)
-		objects.addAll(getChangeDescription.objectsToAttach.filterNull)
+		val tuidManager = TuidManager.instance;
+		val objects = new HashSet<EObject>();
+        objects.addAll(getChangeDescription().getObjectChanges().keySet().filterNull);
+        objects.addAll(getChangeDescription().getObjectChanges().values().flatten.map[referenceValue].filterNull);
+		objects.addAll(getChangeDescription().getObjectsToDetach().filterNull);
+		objects.addAll(getChangeDescription().getObjectsToAttach().filterNull)
 		// Add container objects
-		val containerObjects = objects.map[eContainer].filterNull
+		val containerObjects = objects.map[eContainer].filterNull;
 		for (EObject object : objects + containerObjects) {
-			tuidManager.registerObjectUnderModification(object)
+			tuidManager.registerObjectUnderModification(object);
         }
     }
 
     protected def void updateTuids() {
-        TuidManager::instance.updateTuidsOfRegisteredObjects
-        TuidManager::instance.flushRegisteredObjectsUnderModification
+        TuidManager.instance.updateTuidsOfRegisteredObjects();
+        TuidManager.instance.flushRegisteredObjectsUnderModification();
     }
     
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		applyForward
+		applyForward();
 	}
 	
 	override void applyBackwardIfLegacy() {
-		applyBackward
+		this.applyBackward();
 	}
 				
 }
