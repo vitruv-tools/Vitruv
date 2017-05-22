@@ -2,6 +2,10 @@ package tools.vitruv.applications.familiespersons.families2Persons.test
 
 import edu.kit.ipd.sdq.metamodels.families.FamiliesFactory
 import org.junit.Test
+import org.eclipse.emf.ecore.EObject
+import java.util.Set
+import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
+import static org.junit.Assert.*
 
 class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	private static val FAMILY_NAME = "Mustermann";
@@ -9,6 +13,7 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	private static val FIRST_NAME_SON = "Sohn";
 	private static val FIRST_NAME_DAUGHTER = "Tochter";
 	private static val FIRST_NAME_MOTHER = "Erika"
+	private static val NEW_NAME = "Hans"
 	private static val PERSONS_PATH = "model/persons.person";
 
 	@Test
@@ -16,6 +21,10 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 		val familyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister
 		saveAndSynchronizeChanges(familyRegister);
 		assertModelExists(PERSONS_PATH);
+	}
+
+	@Test
+	public def void testDeleteFamilyRegister() {
 	}
 
 	@Test
@@ -27,20 +36,6 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 		member.firstName = FIRST_NAME_FATHER;
 		member.familyFather = family;
 		family.father = member;
-		saveAndSynchronizeChanges(family);
-		saveAndSynchronizeChanges(member);
-		assertModelExists(PERSONS_PATH);
-	}
-
-	@Test
-	public def void testCreateFamilyMother() {
-		val family = FamiliesFactory.eINSTANCE.createFamily();
-		family.lastName = FAMILY_NAME;
-		rootElement.families.add(family);
-		val member = FamiliesFactory.eINSTANCE.createMember();
-		member.firstName = FIRST_NAME_MOTHER;
-		member.familyMother = family;
-		family.mother = member;
 		saveAndSynchronizeChanges(family);
 		saveAndSynchronizeChanges(member);
 		assertModelExists(PERSONS_PATH);
@@ -61,6 +56,20 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	}
 
 	@Test
+	public def void testCreateFamilyMother() {
+		val family = FamiliesFactory.eINSTANCE.createFamily();
+		family.lastName = FAMILY_NAME;
+		rootElement.families.add(family);
+		val member = FamiliesFactory.eINSTANCE.createMember();
+		member.firstName = FIRST_NAME_MOTHER;
+		member.familyMother = family;
+		family.mother = member;
+		saveAndSynchronizeChanges(family);
+		saveAndSynchronizeChanges(member);
+		assertModelExists(PERSONS_PATH);
+	}
+
+	@Test
 	public def void testCreateFamilyDaughter() {
 		val family = FamiliesFactory.eINSTANCE.createFamily();
 		family.lastName = FAMILY_NAME;
@@ -72,5 +81,43 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 		saveAndSynchronizeChanges(family);
 		saveAndSynchronizeChanges(member);
 		assertModelExists(PERSONS_PATH);
+	}
+
+	@Test
+	public def void testDeleteMember() {
+		val family = FamiliesFactory.eINSTANCE.createFamily();
+		family.lastName = FAMILY_NAME;
+		rootElement.families.add(family);
+		val member = FamiliesFactory.eINSTANCE.createMember();
+		member.firstName = FIRST_NAME_DAUGHTER;
+		member.familyDaughter = family;
+		family.daughters.add(member);
+		saveAndSynchronizeChanges(family);
+		saveAndSynchronizeChanges(member);
+
+		family.daughters.remove(member);
+		saveAndSynchronizeChanges(family);
+		assertModelNotExists(PERSONS_PATH)
+	}
+
+	@Test
+	public def void testChangeFirstName() {
+		val family = FamiliesFactory.eINSTANCE.createFamily();
+		family.lastName = FAMILY_NAME;
+		rootElement.families.add(family);
+		val member = FamiliesFactory.eINSTANCE.createMember();
+		member.firstName = FIRST_NAME_DAUGHTER;
+		member.familyDaughter = family;
+		family.daughters.add(member);
+		saveAndSynchronizeChanges(family);
+		saveAndSynchronizeChanges(member);
+		val Set<EObject> corrObjs = CorrespondenceModelUtil.getCorrespondingEObjects(this.correspondenceModel, member);
+		assertTrue(corrObjs.length == 1)
+		val corrMember = corrObjs.get(0)
+	// Ist als EObject vorhanden, kann auch nicht explizit casten.
+	}
+
+	@Test
+	public def void testChangeLastName() {
 	}
 }

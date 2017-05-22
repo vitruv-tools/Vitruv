@@ -5,7 +5,7 @@ reactions: FamiliesToPersons
 in reaction to changes in Families
 execute actions in Persons
 
-reaction CreateFamilyRegister {
+reaction CreatedFamilyRegister {
 	after element families::FamilyRegister created and inserted as root
 	call createPersonRegister(newValue)
 }
@@ -16,6 +16,21 @@ routine createPersonRegister(families::FamilyRegister familyRegister){
 			
 		}
 		add correspondence between personRegister and familyRegister 
+	}
+}
+
+reaction DeletedFamilyRegister{
+	after element families::FamilyRegister deleted
+	call deletePersonRegister(affectedEObject)
+}
+
+routine deletePersonRegister(families::FamilyRegister familyRegister){
+	match{
+		val personRegister = retrieve persons::PersonRegister corresponding to familyRegister
+	}
+	
+	action{
+		delete personRegister
 	}
 }
 
