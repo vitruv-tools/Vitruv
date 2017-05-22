@@ -5,27 +5,84 @@ reactions: FamiliesToPersons
 in reaction to changes in Families
 execute actions in Persons
 
-reaction CreatedMember {
-	after element families::Member created  and inserted as root
-	call createPerson(newValue)
+reaction CreateFamilyRegister {
+	after element families::FamilyRegister created and inserted as root
+	call createPersonRegister(newValue)
 }
 
-routine createPerson(families::Member member){
+routine createPersonRegister(families::FamilyRegister familyRegister){
 	action{
-		    //Sollte vorher überprüft werden ob wirklich männlich
+		val personRegister = create persons::PersonRegister and initialize{
+			
+		}
+		add correspondence between personRegister and familyRegister 
+	}
+}
+
+
+reaction CreatedFather {
+	after element families::Member created  and inserted in families::Family[father]
+	call createFather(newValue)
+}
+
+
+routine createFather(families::Member member){
+	action{
 			val person = create persons::Male and initialize {
 			person.fullName = member.firstName +" "+member.familyFather.lastName
-			if(member.familySon != null || member.familyFather != null ){
-				
-			}
 		}
 		add correspondence between member and person
 		add correspondence between member.familyFather and person
 	}
 }
 
+reaction CreatedSon {
+	after element families::Member created  and inserted in families::Family[sons]
+	call createSon(newValue)
+}
+
+routine createSon(families::Member member){
+	action{
+			val person = create persons::Male and initialize {
+			person.fullName = member.firstName +" "+member.familyFather.lastName
+		}
+		add correspondence between member and person
+		add correspondence between member.familySon and person
+	}
+}
+
+reaction CreatedMother {
+	after element families::Member created  and inserted in families::Family[mother]
+	call createMother(newValue)
+}
+
+
+routine createMother(families::Member member){
+	action{
+			val person = create persons::Female and initialize {
+			person.fullName = member.firstName +" "+member.familyFather.lastName
+		}
+		add correspondence between member and person
+		add correspondence between member.familyMother and person
+	}
+}
+
+reaction CreatedDaughter {
+	after element families::Member created  and inserted in families::Family[daughters]
+	call createDaughter(newValue)
+}
+routine createDaughter(families::Member member){
+	action{
+			val person = create persons::Female and initialize {
+			person.fullName = member.firstName +" "+member.familyFather.lastName
+		}
+		add correspondence between member and person
+		add correspondence between member.familyDaughter and person
+	}
+}
+
 reaction DeletedMember {
-	after element families::Member deleted
+	after element families::Member deleted 
 	call deletePerson(affectedEObject)
 }
 
@@ -38,6 +95,18 @@ routine deletePerson(families::Member member){
 		delete person
 	}
 }
+
+//reaction DeletedFamily {
+//	after element families::Family deleted
+//	call deletePersonsOfFamily(affectedEObject)
+//}
+
+//routine deletePersonsOfFamily(families::Family family){
+//	match{
+//		val father = retrieve persons::Person corresponding to family[]
+// Wie kriege ich hier alle Familienmitglieder
+//	}
+//}
 
 reaction ChangedFirstName {
 	after attribute replaced at families::Member[firstName]
