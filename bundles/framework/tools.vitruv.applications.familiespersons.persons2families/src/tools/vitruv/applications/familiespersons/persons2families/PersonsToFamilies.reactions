@@ -6,8 +6,37 @@ reactions: PersonsToFamilies
 in reaction to changes in Persons
 execute actions in Families
 
+reaction CreatedPersonRegister{
+	after element persons::PersonRegister created and inserted as root
+	call createFamilyRegister(newValue)
+}
+
+routine createFamilyRegister(persons::PersonRegister personRegister){
+	action{
+		val familyRegister = create families::FamilyRegister and initialize{
+		}
+		add correspondence between familyRegister and personRegister
+	}
+}
+
+reaction DeletedPersonRegister{
+	after element persons::PersonRegister deleted
+	call deleteFamilyRegister(affectedEObject)
+}
+
+routine deleteFamilyRegister(persons::PersonRegister personsRegister){
+	match{
+		val familyRegister = retrieve persons::PersonRegister corresponding to personsRegister
+	}
+	
+	action{
+		delete familyRegister
+	}
+}
+
+
 reaction CreatedMale {
-	after element persons::Male created  and inserted as root
+	after element persons::Male created  and inserted in persons::PersonRegister[persons]
 	call createMaleMemberOfFamily(newValue)
 }
 
@@ -27,7 +56,7 @@ routine createMaleMemberOfFamily(persons::Male person){
 }
 
 reaction CreatedFemale {
-	after element persons::Female created  and inserted as root
+	after element persons::Female created  and inserted in persons::PersonRegister[persons]
 	call createFemaleMemberOfFamily(newValue)
 }
 
