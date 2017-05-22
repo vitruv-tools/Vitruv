@@ -16,26 +16,26 @@ import allElementTypes.AllElementTypesPackage
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
-	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
-	private static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
-	private static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
-	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
+	protected static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
+	protected static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
+	protected static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
+	protected static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
 	override protected createChangePropagationSpecifications() {
 		return #[new AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes() {}];
 	}
 	
-	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
+	protected String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
 	
-	private def Root getRootElement() {
+	protected def Root getRootElement() {
 		return TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root;
 	}
 	
-	private def String getProjectModelPath(String modelName) {
+	protected def String getProjectModelPath(String modelName) {
 		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
 	}
 	
-	private def assertModelsEqual() {
+	protected def assertModelsEqual() {
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 	}
 	
