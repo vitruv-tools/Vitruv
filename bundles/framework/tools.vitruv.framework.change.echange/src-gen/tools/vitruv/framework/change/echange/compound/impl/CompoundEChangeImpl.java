@@ -64,23 +64,6 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isResolved() {
-		EList<AtomicEChange> _atomicChanges = this.getAtomicChanges();
-		for (final AtomicEChange change : _atomicChanges) {
-			boolean _isResolved = change.isResolved();
-			boolean _not = (!_isResolved);
-			if (_not) {
-				return false;
-			}
-		}
-		return super.isResolved();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EChange resolveBeforeAndApplyForward(final ResourceSet resourceSet) {
 		return EChangeResolver.resolveCopy(this, resourceSet, true, false);
 	}
@@ -103,7 +86,6 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
 		if (baseClass == EChange.class) {
 			switch (baseOperationID) {
-				case EChangePackage.ECHANGE___IS_RESOLVED: return CompoundPackage.COMPOUND_ECHANGE___IS_RESOLVED;
 				case EChangePackage.ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
 				case EChangePackage.ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET: return CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
 				default: return super.eDerivedOperationID(baseOperationID, baseClass);
@@ -122,8 +104,6 @@ public abstract class CompoundEChangeImpl extends EChangeImpl implements Compoun
 		switch (operationID) {
 			case CompoundPackage.COMPOUND_ECHANGE___GET_ATOMIC_CHANGES:
 				return getAtomicChanges();
-			case CompoundPackage.COMPOUND_ECHANGE___IS_RESOLVED:
-				return isResolved();
 			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET:
 				return resolveBeforeAndApplyForward((ResourceSet)arguments.get(0));
 			case CompoundPackage.COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET:

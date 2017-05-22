@@ -260,15 +260,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getInsertEReference__IsResolved() {
-		return insertEReferenceEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getRemoveEReference() {
 		return removeEReferenceEClass;
 	}
@@ -278,26 +269,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getRemoveEReference__IsResolved() {
-		return removeEReferenceEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getReplaceSingleValuedEReference() {
 		return replaceSingleValuedEReferenceEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getReplaceSingleValuedEReference__IsResolved() {
-		return replaceSingleValuedEReferenceEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -354,13 +327,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		subtractiveReferenceEChangeEClass = createEClass(SUBTRACTIVE_REFERENCE_ECHANGE);
 
 		insertEReferenceEClass = createEClass(INSERT_EREFERENCE);
-		createEOperation(insertEReferenceEClass, INSERT_EREFERENCE___IS_RESOLVED);
 
 		removeEReferenceEClass = createEClass(REMOVE_EREFERENCE);
-		createEOperation(removeEReferenceEClass, REMOVE_EREFERENCE___IS_RESOLVED);
 
 		replaceSingleValuedEReferenceEClass = createEClass(REPLACE_SINGLE_VALUED_EREFERENCE);
-		createEOperation(replaceSingleValuedEReferenceEClass, REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED);
 
 		// Create data types
 		resourceSetEDataType = createEDataType(RESOURCE_SET);
@@ -517,15 +487,9 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
 		initEClass(insertEReferenceEClass, InsertEReference.class, "InsertEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getInsertEReference__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
 		initEClass(removeEReferenceEClass, RemoveEReference.class, "RemoveEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getRemoveEReference__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
 		initEClass(replaceSingleValuedEReferenceEClass, ReplaceSingleValuedEReference.class, "ReplaceSingleValuedEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEOperation(getReplaceSingleValuedEReference__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		// Initialize data types
 		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

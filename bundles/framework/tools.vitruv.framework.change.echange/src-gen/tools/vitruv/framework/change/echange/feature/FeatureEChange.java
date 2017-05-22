@@ -82,19 +82,4 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 */
 	void setAffectedEObject(A value);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * *
-	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
-	 * Needs to be true to apply the change.
-	 * @return	All proxy EObjects are resolved to concrete EObjects.
-	 * <!-- end-model-doc -->
-	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return (((super.isResolved() && (!<%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null))) && (!this.getAffectedEObject().eIsProxy())) && (!<%com.google.common.base.Objects%>.equal(this.getAffectedFeature(), null)));'"
-	 * @generated
-	 */
-	boolean isResolved();
-
 } // FeatureEChange

@@ -10,12 +10,6 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract EChange which inserts or removes a root element."/>
     </eAnnotations>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
-        <details key="body" value="return (super.isResolved() &amp;&amp; (!&lt;%com.google.common.base.Objects%>.equal(this.getResource(), null)));"/>
-      </eAnnotations>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="uri" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;The uri of the resource."/>
@@ -40,12 +34,6 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
-        <details key="body" value="return ((super.isResolved() &amp;&amp; (!&lt;%com.google.common.base.Objects%>.equal(this.getNewValue(), null))) &amp;&amp; (!this.getNewValue().eIsProxy()));"/>
-      </eAnnotations>
-    </eOperations>
     <eGenericSuperTypes eClassifier="#//RootEChange"/>
     <eGenericSuperTypes eClassifier="ecore:EClass eobject.ecore#//EObjectAddedEChange">
       <eTypeArguments eTypeParameter="#//InsertRootEObject/T"/>
@@ -58,12 +46,6 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
-        <details key="body" value="return ((super.isResolved() &amp;&amp; (!&lt;%com.google.common.base.Objects%>.equal(this.getOldValue(), null))) &amp;&amp; (!this.getOldValue().eIsProxy()));"/>
-      </eAnnotations>
-    </eOperations>
     <eGenericSuperTypes eClassifier="#//RootEChange"/>
     <eGenericSuperTypes eClassifier="ecore:EClass eobject.ecore#//EObjectSubtractedEChange">
       <eTypeArguments eTypeParameter="#//RemoveRootEObject/T"/>

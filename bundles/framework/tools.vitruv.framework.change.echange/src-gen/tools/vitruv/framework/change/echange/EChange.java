@@ -32,7 +32,7 @@ public interface EChange extends EObject {
 	 * @return	All proxy EObjects are resolved to concrete EObjects.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return true;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return tools.vitruv.framework.change.echange.resolve.ResolutionChecker.isResolved(this);'"
 	 * @generated
 	 */
 	boolean isResolved();

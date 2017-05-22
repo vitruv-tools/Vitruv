@@ -54,7 +54,7 @@ public abstract class EChangeImpl extends MinimalEObjectImpl.Container implement
 	 * @generated
 	 */
 	public boolean isResolved() {
-		return true;
+		return tools.vitruv.framework.change.echange.resolve.ResolutionChecker.isResolved(this);
 	}
 
 	/**

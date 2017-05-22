@@ -16,12 +16,6 @@
         <details key="documentation" value="*&#xA;Returns the atomic changes of the compound changes, in the same order as they are&#xA;resolved / applied."/>
       </eAnnotations>
     </eOperations>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
-        <details key="body" value="&lt;%org.eclipse.emf.common.util.EList%>&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%>> _atomicChanges = this.getAtomicChanges();&#xA;for (final &lt;%tools.vitruv.framework.change.echange.AtomicEChange%> change : _atomicChanges)&#xA;{&#xA;&#x9;boolean _isResolved = change.isResolved();&#xA;&#x9;boolean _not = (!_isResolved);&#xA;&#x9;if (_not)&#xA;&#x9;{&#xA;&#x9;&#x9;return false;&#xA;&#x9;}&#xA;}&#xA;return super.isResolved();"/>
-      </eAnnotations>
-    </eOperations>
     <eOperations name="resolveBeforeAndApplyForward" unique="false" eType="ecore:EClass echange.ecore#//EChange">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;Resolves the compound change like {@link resolveBefore}, but also applies the change forward.&#xA;If the change was already resolved, it returns the original change and applies it forward.&#xA;@param resourceSet &#x9;&#x9;&#x9;&#x9;The {@code ResourceSet} which contains the concrete EObjects the proxy objects of&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the unresolved should be resolved to.&#xA;@return &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Returns the resolved change if the change could be applied forward. The returned change&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;is a copy of the change or, if the change was already resolved, the original change.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;If the change could not be resolved and / or applied or the&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;resource set is {@code null}, it returns {@code null}&#xA;@throws IllegalStateException &#x9;The change is already resolved."/>

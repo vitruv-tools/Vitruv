@@ -43,21 +43,6 @@ public interface CompoundEChange extends EChange {
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * *
-	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
-	 * Needs to be true to apply the change.
-	 * @return	All proxy EObjects are resolved to concrete EObjects.
-	 * <!-- end-model-doc -->
-	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='<%org.eclipse.emf.common.util.EList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> _atomicChanges = this.getAtomicChanges();\nfor (final <%tools.vitruv.framework.change.echange.AtomicEChange%> change : _atomicChanges)\n{\n\tboolean _isResolved = change.isResolved();\n\tboolean _not = (!_isResolved);\n\tif (_not)\n\t{\n\t\treturn false;\n\t}\n}\nreturn super.isResolved();'"
-	 * @generated
-	 */
-	boolean isResolved();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * *
 	 * Resolves the compound change like {@link resolveBefore}, but also applies the change forward.
 	 * If the change was already resolved, it returns the original change and applies it forward.
 	 * @param resourceSet 				The {@code ResourceSet} which contains the concrete EObjects the proxy objects of

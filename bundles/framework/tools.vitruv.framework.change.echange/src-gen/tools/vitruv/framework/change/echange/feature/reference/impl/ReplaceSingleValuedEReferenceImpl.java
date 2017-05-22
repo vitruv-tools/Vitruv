@@ -2,8 +2,6 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
-import com.google.common.base.Objects;
-
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -16,17 +14,9 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.EChangePackage;
-
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
-
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-import tools.vitruv.framework.change.echange.feature.FeaturePackage;
-
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange;
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
@@ -165,15 +155,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		oldValue = newOldValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE, oldOldValue, oldValue));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isResolved() {
-		return ((super.isResolved() && (Objects.equal(this.getOldValue(), null) || (!this.getOldValue().eIsProxy()))) && (Objects.equal(this.getNewValue(), null) || (!this.getNewValue().eIsProxy())));
 	}
 
 	/**
@@ -338,18 +319,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 */
 	@Override
 	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == EChange.class) {
-			switch (baseOperationID) {
-				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED;
-				default: return super.eDerivedOperationID(baseOperationID, baseClass);
-			}
-		}
-		if (baseClass == FeatureEChange.class) {
-			switch (baseOperationID) {
-				case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED;
-				default: return super.eDerivedOperationID(baseOperationID, baseClass);
-			}
-		}
 		if (baseClass == UpdateReferenceEChange.class) {
 			switch (baseOperationID) {
 				case ReferencePackage.UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT;
@@ -387,8 +356,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED:
-				return isResolved();
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

@@ -70,12 +70,6 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
-        <details key="body" value="return (super.isResolved() &amp;&amp; (&lt;%com.google.common.base.Objects%>.equal(this.getNewValue(), null) || (!this.getNewValue().eIsProxy())));"/>
-      </eAnnotations>
-    </eOperations>
     <eGenericSuperTypes eClassifier="ecore:EClass list.ecore#//InsertInListEChange">
       <eTypeArguments eTypeParameter="#//InsertEReference/A"/>
       <eTypeArguments eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
@@ -96,12 +90,6 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
-        <details key="body" value="return (super.isResolved() &amp;&amp; (&lt;%com.google.common.base.Objects%>.equal(this.getOldValue(), null) || (!this.getOldValue().eIsProxy())));"/>
-      </eAnnotations>
-    </eOperations>
     <eGenericSuperTypes eClassifier="ecore:EClass list.ecore#//RemoveFromListEChange">
       <eTypeArguments eTypeParameter="#//RemoveEReference/A"/>
       <eTypeArguments eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
@@ -122,12 +110,6 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
-        <details key="body" value="return ((super.isResolved() &amp;&amp; (&lt;%com.google.common.base.Objects%>.equal(this.getOldValue(), null) || (!this.getOldValue().eIsProxy()))) &amp;&amp; (&lt;%com.google.common.base.Objects%>.equal(this.getNewValue(), null) || (!this.getNewValue().eIsProxy())));"/>
-      </eAnnotations>
-    </eOperations>
     <eGenericSuperTypes eClassifier="ecore:EClass single.ecore#//ReplaceSingleValuedFeatureEChange">
       <eTypeArguments eTypeParameter="#//ReplaceSingleValuedEReference/A"/>
       <eTypeArguments eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>

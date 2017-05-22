@@ -101,6 +101,15 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT = FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_REFERENCE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -153,15 +162,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_REFERENCE_ECHANGE___APPLY_BACKWARD = FeaturePackage.FEATURE_ECHANGE___APPLY_BACKWARD;
-
-	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_REFERENCE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -228,6 +228,15 @@ public interface ReferencePackage extends EPackage {
 	int ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
+
+	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -280,15 +289,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_REFERENCE_ECHANGE___APPLY_BACKWARD = UPDATE_REFERENCE_ECHANGE___APPLY_BACKWARD;
-
-	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -364,6 +364,15 @@ public interface ReferencePackage extends EPackage {
 	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
+
+	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -416,15 +425,6 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_REFERENCE_ECHANGE___APPLY_BACKWARD = UPDATE_REFERENCE_ECHANGE___APPLY_BACKWARD;
-
-	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -509,6 +509,15 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EREFERENCE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE___IS_RESOLVED;
+
+	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -581,22 +590,13 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE___IS_CONTAINMENT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EREFERENCE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Insert EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
+	int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
@@ -652,6 +652,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EREFERENCE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
@@ -726,22 +735,13 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE___IS_CONTAINMENT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Remove EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
+	int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
@@ -797,6 +797,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
@@ -898,22 +907,13 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Replace Single Valued EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 2;
+	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '<em>Resource Set</em>' data type.
@@ -987,16 +987,6 @@ public interface ReferencePackage extends EPackage {
 	EClass getInsertEReference();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference#isResolved() <em>Is Resolved</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Is Resolved</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.InsertEReference#isResolved()
-	 * @generated
-	 */
-	EOperation getInsertEReference__IsResolved();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference <em>Remove EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1007,16 +997,6 @@ public interface ReferencePackage extends EPackage {
 	EClass getRemoveEReference();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#isResolved() <em>Is Resolved</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Is Resolved</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.RemoveEReference#isResolved()
-	 * @generated
-	 */
-	EOperation getRemoveEReference__IsResolved();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference <em>Replace Single Valued EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1025,16 +1005,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReplaceSingleValuedEReference();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#isResolved() <em>Is Resolved</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Is Resolved</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference#isResolved()
-	 * @generated
-	 */
-	EOperation getReplaceSingleValuedEReference__IsResolved();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.ResourceSet <em>Resource Set</em>}'.
@@ -1130,14 +1100,6 @@ public interface ReferencePackage extends EPackage {
 		EClass INSERT_EREFERENCE = eINSTANCE.getInsertEReference();
 
 		/**
-		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation INSERT_EREFERENCE___IS_RESOLVED = eINSTANCE.getInsertEReference__IsResolved();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1148,14 +1110,6 @@ public interface ReferencePackage extends EPackage {
 		EClass REMOVE_EREFERENCE = eINSTANCE.getRemoveEReference();
 
 		/**
-		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REMOVE_EREFERENCE___IS_RESOLVED = eINSTANCE.getRemoveEReference__IsResolved();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1164,14 +1118,6 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass REPLACE_SINGLE_VALUED_EREFERENCE = eINSTANCE.getReplaceSingleValuedEReference();
-
-		/**
-		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = eINSTANCE.getReplaceSingleValuedEReference__IsResolved();
 
 		/**
 		 * The meta object literal for the '<em>Resource Set</em>' data type.

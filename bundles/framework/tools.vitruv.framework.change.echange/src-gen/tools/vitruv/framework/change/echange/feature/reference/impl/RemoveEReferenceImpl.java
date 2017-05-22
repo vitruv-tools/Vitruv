@@ -2,8 +2,6 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
-import com.google.common.base.Objects;
-
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -16,16 +14,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.EChangePackage;
-
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
-
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-import tools.vitruv.framework.change.echange.feature.FeaturePackage;
-
 import tools.vitruv.framework.change.echange.feature.list.impl.RemoveFromListEChangeImpl;
 
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
@@ -113,15 +103,6 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 		oldValue = newOldValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE, oldOldValue, oldValue));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isResolved() {
-		return (super.isResolved() && (Objects.equal(this.getOldValue(), null) || (!this.getOldValue().eIsProxy())));
 	}
 
 	/**
@@ -253,18 +234,6 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == EChange.class) {
-			switch (baseOperationID) {
-				case EChangePackage.ECHANGE___IS_RESOLVED: return ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED;
-				default: return super.eDerivedOperationID(baseOperationID, baseClass);
-			}
-		}
-		if (baseClass == FeatureEChange.class) {
-			switch (baseOperationID) {
-				case FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED: return ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED;
-				default: return super.eDerivedOperationID(baseOperationID, baseClass);
-			}
-		}
 		if (baseClass == UpdateReferenceEChange.class) {
 			switch (baseOperationID) {
 				case ReferencePackage.UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT: return ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT;
@@ -292,8 +261,6 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case ReferencePackage.REMOVE_EREFERENCE___IS_RESOLVED:
-				return isResolved();
 			case ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT:
 				return isContainment();
 		}

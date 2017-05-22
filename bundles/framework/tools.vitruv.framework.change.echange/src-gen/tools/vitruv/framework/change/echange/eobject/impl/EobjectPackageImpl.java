@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
@@ -256,15 +255,6 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEObjectExistenceEChange__IsResolved() {
-		return eObjectExistenceEChangeEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getCreateEObject() {
 		return createEObjectEClass;
 	}
@@ -333,7 +323,6 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		eObjectExistenceEChangeEClass = createEClass(EOBJECT_EXISTENCE_ECHANGE);
 		createEReference(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT);
 		createEAttribute(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA);
-		createEOperation(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED);
 
 		createEObjectEClass = createEClass(CREATE_EOBJECT);
 
@@ -369,7 +358,6 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 
 		// Obtain other dependent packages
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
 		// Create type parameters
 		ETypeParameter eObjectAddedEChangeEClass_T = addETypeParameter(eObjectAddedEChangeEClass, "T");
@@ -422,8 +410,6 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		g1 = createEGenericType(eObjectExistenceEChangeEClass_A);
 		initEReference(getEObjectExistenceEChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, EObjectExistenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEObjectExistenceEChange_StagingArea(), this.getStagingArea(), "stagingArea", null, 0, 1, EObjectExistenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEOperation(getEObjectExistenceEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
