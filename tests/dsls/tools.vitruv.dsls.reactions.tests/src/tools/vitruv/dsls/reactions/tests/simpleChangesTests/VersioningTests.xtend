@@ -9,12 +9,45 @@ import org.junit.Test
 import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.datatypes.VURI
-import org.junit.Ignore
+import java.util.ArrayList
+import tools.vitruv.framework.change.description.TransactionalChange
 
 class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
 	static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget"
 	val nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
+
+	protected override setup() {
+		val root = AllElementTypesFactory::eINSTANCE.createRoot
+		root.id = TEST_SOURCE_MODEL_NAME
+		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		container.id = "NonRootObjectContainer"
+		rootElement.nonRootObjectContainerHelper = container
+		nonContainmentNonRootIds.forEach [
+			val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
+			nonRoot.id = it
+			container.nonRootObjectsContainment.add(nonRoot)
+		]
+		val recorder = new AtomicEmfChangeRecorder
+		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
+		val resourceVuri = VURI::getInstance(resourcePlatformPath)
+		val modelInstance = virtualModel.getModelInstance(resourceVuri)
+
+		recorder.beginRecording(resourceVuri, Collections::singleton(modelInstance.resource))
+
+		saveAndSynchronizeChanges(rootElement)
+
+		assertModelsEqual
+
+		val changes = new ArrayList<TransactionalChange>
+
+		virtualModel.executeCommand [|
+			changes += recorder.endRecording
+			null
+		]
+		Assert::assertNotEquals(0, changes.length)
+	}
 
 	private def String getProjectModelPath(String modelName) {
 		'''model/«modelName».«MODEL_FILE_EXTENSION»'''
@@ -33,38 +66,10 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath)
 	}
 
-	protected override setup() {
-		val root = AllElementTypesFactory::eINSTANCE.createRoot
-		root.id = TEST_SOURCE_MODEL_NAME
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
-		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
-		container.id = "NonRootObjectContainer"
-		rootElement.nonRootObjectContainerHelper = container
-		nonContainmentNonRootIds.forEach [
-			val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
-			nonRoot.id = it
-			container.nonRootObjectsContainment.add(nonRoot)
-		]
-		val recorder = new AtomicEmfChangeRecorder
-		val resource = getModelResource(TEST_TARGET_MODEL_NAME.projectModelPath)
-		val vuri = VURI::getInstance(resource)
-		recorder.beginRecording(vuri, Collections::singleton(resource))
-		// Changes matchen ?
-		// SaveAndSynchonize aufspalten => 
-		// bisher alles im CompositeChange 
-		//
-		saveAndSynchronizeChanges(rootElement)
-		assertModelsEqual
-		val changes = recorder.endRecording
-		
-		Assert::assertNotEquals(0, changes.length)
-	}
-
 	override protected cleanup() {
 		// Do nothing
 	}
-	
-	@Ignore
+
 	@Test
 	def void test1() {
 		Assert::assertTrue(true)
