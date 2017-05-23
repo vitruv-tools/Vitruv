@@ -19,15 +19,15 @@
       nsPrefix="tools.vitruv.framework.versioning">
     <eClassifiers xsi:type="ecore:EClass" name="SimpleChangeConflict" eSuperTypes="#//conflict/Conflict">
       <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChange" lowerBound="1"
-          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
+          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="targetChange" lowerBound="1"
-          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
+          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MultiChangeConflict" eSuperTypes="#//conflict/Conflict">
       <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChanges" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
+          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="targetChanges" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
+          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ConflictDetector">
       <eOperations name="detectConflicts" upperBound="-1" eType="#//conflict/Conflict">
@@ -64,7 +64,7 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" changeable="false"
           defaultValueLiteral="1000" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="changes" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"
+          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"
           containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitmessage" lowerBound="1"
           eType="#//commit/CommitMessage"/>
@@ -127,7 +127,7 @@
       <eOperations name="createSimpleCommit" eType="#//commit/SimpleCommit">
         <eParameters name="message" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
         <eParameters name="parent" lowerBound="1" eType="#//commit/Commit"/>
-        <eParameters name="changes" upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel-gen/EChange.ecore#//EChange"/>
+        <eParameters name="changes" upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"/>
       </eOperations>
       <eOperations name="createBranch" eType="#//branch/UserBranch">
         <eParameters name="branchName" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
