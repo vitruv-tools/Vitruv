@@ -68,6 +68,7 @@ routine createFemaleMemberOfFamily(persons::Female person){
 		add correspondence between person and member
 		//Erstmal wird immer eine neue Familie erstellt 
 		val family = create families::Family and initialize {
+//			correspondenceModel.getCorrespondingEObjects(nuii).f
 			family.lastName = person.fullName.split(" ").get(1)
 			family.mother = member
 		}

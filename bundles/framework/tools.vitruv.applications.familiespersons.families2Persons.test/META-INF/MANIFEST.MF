@@ -15,4 +15,5 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.tests.util;bundle-version="0.2.0",
  tools.vitruv.applications.familiespersons.families2persons,
  org.junit;bundle-version="4.8.1",
- tools.vitruv.framework.change.processing
+ tools.vitruv.framework.change.processing,
+ org.apache.log4j
