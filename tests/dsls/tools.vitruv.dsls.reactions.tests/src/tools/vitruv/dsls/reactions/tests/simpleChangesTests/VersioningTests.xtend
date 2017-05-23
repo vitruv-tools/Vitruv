@@ -99,6 +99,15 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		Assert::assertNotEquals(0, changes.length)
 	}
 	
+	@Test
+	def repoTest() {
+		val root = AllElementTypesFactory::eINSTANCE.createRoot
+		root.id = TEST_SOURCE_MODEL_NAME
+		val facade = new VersioningFacade
+		facade.createModel(TEST_SOURCE_MODEL_NAME.projectModelPath,root)
+			
+	}
+	
 	
 	
 
