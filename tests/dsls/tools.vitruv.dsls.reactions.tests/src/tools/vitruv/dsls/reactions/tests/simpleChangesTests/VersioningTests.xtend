@@ -11,6 +11,8 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.datatypes.VURI
 import java.util.ArrayList
 import tools.vitruv.framework.change.description.TransactionalChange
+import java.util.List
+import tools.vitruv.framework.versioning.VersioningFacade
 
 class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
@@ -18,35 +20,6 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	val nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
 
 	protected override setup() {
-		val root = AllElementTypesFactory::eINSTANCE.createRoot
-		root.id = TEST_SOURCE_MODEL_NAME
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
-		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
-		container.id = "NonRootObjectContainer"
-		rootElement.nonRootObjectContainerHelper = container
-		nonContainmentNonRootIds.forEach [
-			val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
-			nonRoot.id = it
-			container.nonRootObjectsContainment.add(nonRoot)
-		]
-		val recorder = new AtomicEmfChangeRecorder
-		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
-		val resourceVuri = VURI::getInstance(resourcePlatformPath)
-		val modelInstance = virtualModel.getModelInstance(resourceVuri)
-
-		recorder.beginRecording(resourceVuri, Collections::singleton(modelInstance.resource))
-
-		saveAndSynchronizeChanges(rootElement)
-
-		assertModelsEqual
-
-		val changes = new ArrayList<TransactionalChange>
-
-		virtualModel.executeCommand [|
-			changes += recorder.endRecording
-			null
-		]
-		Assert::assertNotEquals(0, changes.length)
 	}
 
 	private def String getProjectModelPath(String modelName) {
@@ -71,8 +44,62 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	def void test1() {
-		Assert::assertTrue(true)
+	def test1() {
+		val root = AllElementTypesFactory::eINSTANCE.createRoot
+		root.id = TEST_SOURCE_MODEL_NAME
+		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		container.id = "NonRootObjectContainer"
+		rootElement.nonRootObjectContainerHelper = container
+		nonContainmentNonRootIds.forEach [
+			val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
+			nonRoot.id = it
+			container.nonRootObjectsContainment.add(nonRoot)
+		]
+		val recorder = new AtomicEmfChangeRecorder
+		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
+		val resourceVuri = VURI::getInstance(resourcePlatformPath)
+		val modelInstance = virtualModel.getModelInstance(resourceVuri)
+		recorder.beginRecording(resourceVuri, Collections::singleton(modelInstance.resource))
+
+		saveAndSynchronizeChanges(rootElement)
+
+		assertModelsEqual
+
+		val List<TransactionalChange> changes = new ArrayList<TransactionalChange>
+
+		virtualModel.executeCommand [|
+			changes += recorder.endRecording
+			null
+		]
+		Assert::assertNotEquals(0, changes.length)
 	}
+	
+	@Test
+	def testAddPathToRecorded() {
+		val root = AllElementTypesFactory::eINSTANCE.createRoot
+		root.id = TEST_SOURCE_MODEL_NAME
+		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		container.id = "NonRootObjectContainer"
+		rootElement.nonRootObjectContainerHelper = container
+		nonContainmentNonRootIds.forEach [
+			val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
+			nonRoot.id = it
+			container.nonRootObjectsContainment.add(nonRoot)
+		]
+		val facade = new VersioningFacade
+		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
+		facade.addPathToRecorded(resourcePlatformPath,virtualModel)
+
+		saveAndSynchronizeChanges(rootElement)
+
+		assertModelsEqual
+		val changes = facade.getChanges(resourcePlatformPath)
+		Assert::assertNotEquals(0, changes.length)
+	}
+	
+	
+	
 
 }
