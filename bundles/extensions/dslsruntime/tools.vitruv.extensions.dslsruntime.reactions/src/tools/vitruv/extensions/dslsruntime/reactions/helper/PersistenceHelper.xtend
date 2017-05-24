@@ -49,7 +49,6 @@ public final class PersistenceHelper {
 			if (packageInfoFound) {
 				shortenedUri = shortenedUri.trimSegments(1);
 			}
-			println(shortenedUri)
 			return shortenedUri 
 			
 		} else {

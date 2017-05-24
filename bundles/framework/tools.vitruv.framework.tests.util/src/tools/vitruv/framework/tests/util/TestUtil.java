@@ -69,8 +69,7 @@ public final class TestUtil {
 	 *             if project with given name already exists and its not
 	 *             specified to make name unique
 	 */
-	public static IProject createProject(String projectName, boolean addTimestampAndMakeNameUnique)
-			throws CoreException {
+	public static IProject createPlatformProject(String projectName, boolean addTimestampAndMakeNameUnique) {
 		String finalProjectName = projectName;
 		if (addTimestampAndMakeNameUnique) {
 			finalProjectName = addTimestampToProjectNameAndMakeUnique(finalProjectName);
@@ -81,9 +80,13 @@ public final class TestUtil {
 			throw new IllegalStateException("Project already exists");
 		}
 
-		return initializeProject(testProject);
+		try {
+			return initializeProject(testProject);
+		} catch (CoreException e) {
+			throw new IllegalStateException("Project could not be created");
+		}
 	}
-
+	
 	private static File addTimestampToProjectNameAndMakeUnique(File projectFolder) {
 		String timestampedProjectName = addTimestampToString(projectFolder.toString());
 		File timestampedProjectFolder = new File(timestampedProjectName);
@@ -200,7 +203,7 @@ public final class TestUtil {
 	public static InternalVirtualModel createVirtualModel(final String virtualModelName, boolean addTimestampAndMakeNameUnique,
 			final Iterable<VitruvDomain> metamodels,
 			final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-		File projectFolder = createVsumProjectFolder(virtualModelName, addTimestampAndMakeNameUnique);
+		File projectFolder = createProjectFolder(virtualModelName, addTimestampAndMakeNameUnique);
 		
 		VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
 		for (VitruvDomain metamodel : metamodels) {
@@ -213,7 +216,7 @@ public final class TestUtil {
 		return vmodel;
 	}
 	
-	private static File createVsumProjectFolder(String virtualModelName, boolean addTimestampAndMakeNameUnique) {
+	public static File createProjectFolder(String projectName, boolean addTimestampAndMakeNameUnique) {
 		String testWorkspacePath = System.getProperty(VM_ARGUMENT_TEST_WORKSPACE_PATH);
 		File testWorkspace = null;
 		if (testWorkspacePath == null) {
@@ -224,7 +227,7 @@ public final class TestUtil {
 		if (!testWorkspace.exists()) {
 			testWorkspace.mkdir();	
 		}
-		File projectFolder = new File(testWorkspace, virtualModelName);
+		File projectFolder = new File(testWorkspace, projectName);
 		if (addTimestampAndMakeNameUnique) {
 			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder);
 		}

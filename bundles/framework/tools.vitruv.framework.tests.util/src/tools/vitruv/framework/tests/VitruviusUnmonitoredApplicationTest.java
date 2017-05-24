@@ -1,5 +1,6 @@
 package tools.vitruv.framework.tests;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -77,12 +78,12 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		return testUserInteractor;
 	}
 
-	private String getPlatformModelPath(final String modelPathWithinProject) {
-		return this.getCurrentTestProject().getName() + "/" + modelPathWithinProject;
+	private File getPlatformModelPath(final String modelPathWithinProject) {
+		return new File(this.getCurrentTestProjectFolder(), modelPathWithinProject);
 	}
 
-	private VURI getModelVuri(String modelPathWithinProject) {
-		return VURI.getInstance(getPlatformModelPath(modelPathWithinProject));
+	protected VURI getModelVuri(String modelPathWithinProject) {
+		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(getPlatformModelPath(modelPathWithinProject)));
 	}
 
 	/**

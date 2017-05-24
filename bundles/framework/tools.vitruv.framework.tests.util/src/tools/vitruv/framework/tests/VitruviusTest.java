@@ -1,11 +1,8 @@
 package tools.vitruv.framework.tests;
 
-import static org.junit.Assert.fail;
-
+import java.io.File;
 import java.util.function.Function;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -25,8 +22,8 @@ public abstract class VitruviusTest {
 	@Rule
 	public TestName testName = new TestName();
 
-	private IProject currentTestProject;
-	private Function<String, IProject> testProjectCreator;
+	private File folder;
+	private Function<String, File> testProjectCreator;
 
 	@BeforeClass
 	public static void setUpAllTests() {
@@ -44,7 +41,7 @@ public abstract class VitruviusTest {
 	 * @param testProjectCreator
 	 *            - the new test project creator
 	 */
-	protected void setTestProjectCreator(Function<String, IProject> testProjectCreator) {
+	protected void setTestProjectCreator(Function<String, File> testProjectCreator) {
 		this.testProjectCreator = testProjectCreator;
 	}
 
@@ -57,29 +54,23 @@ public abstract class VitruviusTest {
 	public void beforeTest() {
 		TuidManager.getInstance().reinitialize();
 		String testMethodName = testName.getMethodName();
-		this.currentTestProject = testProjectCreator.apply(testMethodName);
+		this.folder = testProjectCreator.apply(testMethodName);
 	}
 
 	/**
-	 * Initializes a test project in the test workspace with the given name,
-	 * extended by a timestamp.
+	 * Initializes a test project with the given name extended by a timestamp in the temporary files folder or in the folder
+	 * specified by the VM argument.
 	 * 
 	 * @param testName
 	 *            - the name of the test project
-	 * @return the created test project
+	 * @return the created test project folder
 	 */
-	private static IProject initializeTestProject(final String testName) {
-		IProject testProject = null;
-		try {
-			testProject = TestUtil.createProject(testName, true);
-		} catch (CoreException e) {
-			fail("Exception during creation of test project");
-		}
-		return testProject;
+	private static File initializeTestProject(final String testName) {
+		return TestUtil.createProjectFolder(testName, true);
 	}
 
-	protected IProject getCurrentTestProject() {
-		return currentTestProject;
+	protected File getCurrentTestProjectFolder() {
+		return folder;
 	}
 
 }

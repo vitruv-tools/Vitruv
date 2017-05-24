@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -165,14 +166,14 @@ public class SimpleVsumTest extends VsumTest {
     @Test
     public void testMockupModelInstantiation() {
         InternalVirtualModel vsum = createDefaultVirtualModel();
-        String model1URIString = getDefaultUMLInstanceURI();
-        String model2URIString = getDefaultUMLInstanceURI();
-        createMockupModels(model1URIString, model2URIString, vsum);
+        URI model1URI = getDefaultUMLInstanceURI();
+        URI model2URI = getDefaultUMLInstanceURI();
+        createMockupModels(model1URI, model2URI, vsum);
 
-        VURI model1URI = VURI.getInstance(model1URIString);
-        VURI model2URI = VURI.getInstance(model2URIString);
-        ModelInstance model1 = vsum.getModelInstance(model1URI);
-        ModelInstance model2 = vsum.getModelInstance(model2URI);
+        VURI model1VURI = VURI.getInstance(model1URI);
+        VURI model2VURI = VURI.getInstance(model2URI);
+        ModelInstance model1 = vsum.getModelInstance(model1VURI);
+        ModelInstance model2 = vsum.getModelInstance(model2VURI);
         EList<EObject> contents1 = model1.getResource().getContents();
         assertNotNull(contents1);
         EObject root1 = contents1.get(0);
