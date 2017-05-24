@@ -28,6 +28,7 @@ import com.google.common.io.Files;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
@@ -180,7 +181,7 @@ public final class TestUtil {
 		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
 			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
 		}
-		final InternalVirtualModel vmodel = new VirtualModelImpl(projectFolder, vmodelConfig);
+		final InternalVirtualModel vmodel = new VirtualModelImpl(projectFolder, new TestUserInteractor(), vmodelConfig);
 		return vmodel;
 	}
 	
@@ -203,20 +204,12 @@ public final class TestUtil {
 	public static InternalVirtualModel createVirtualModel(final String virtualModelName, boolean addTimestampAndMakeNameUnique,
 			final Iterable<VitruvDomain> metamodels,
 			final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-		File projectFolder = createProjectFolder(virtualModelName, addTimestampAndMakeNameUnique);
-		
-		VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
-		for (VitruvDomain metamodel : metamodels) {
-			vmodelConfig.addMetamodel(metamodel);
-		}
-		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
-			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
-		}
-		final InternalVirtualModel vmodel = new VirtualModelImpl(projectFolder, vmodelConfig);
-		return vmodel;
+		File testWorkspace = createTestWorkspace();
+		return createVirtualModel(new File(testWorkspace, virtualModelName), 
+				addTimestampAndMakeNameUnique, metamodels, changePropagationSpecifications);
 	}
 	
-	public static File createProjectFolder(String projectName, boolean addTimestampAndMakeNameUnique) {
+	private static File createTestWorkspace() {
 		String testWorkspacePath = System.getProperty(VM_ARGUMENT_TEST_WORKSPACE_PATH);
 		File testWorkspace = null;
 		if (testWorkspacePath == null) {
@@ -227,6 +220,11 @@ public final class TestUtil {
 		if (!testWorkspace.exists()) {
 			testWorkspace.mkdir();	
 		}
+		return testWorkspace;
+	}
+	
+	public static File createProjectFolder(String projectName, boolean addTimestampAndMakeNameUnique) {
+		File testWorkspace = createTestWorkspace();
 		File projectFolder = new File(testWorkspace, projectName);
 		if (addTimestampAndMakeNameUnique) {
 			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder);

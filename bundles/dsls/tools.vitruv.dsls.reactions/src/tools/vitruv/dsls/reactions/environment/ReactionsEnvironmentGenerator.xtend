@@ -18,7 +18,6 @@ import java.io.File
 import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.resource.DerivedStateAwareResource
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
-import tools.vitruv.framework.userinteraction.impl.UserInteractor
 import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
@@ -199,8 +198,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		 */
 		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangePropagationSpecification)» {
 			public «changePropagationSpecificationNameGenerator.simpleName»() {
-				super(new «UserInteractor.name»(),
-					new «ih.typeRef(modelPair.first.providerForDomain.class)»().getDomain(), 
+				super(new «ih.typeRef(modelPair.first.providerForDomain.class)»().getDomain(), 
 					new «ih.typeRef(modelPair.second.providerForDomain.class)»().getDomain());
 				setup();
 			}
@@ -211,7 +209,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 			 */
 			protected void setup() {
 				«FOR executorName : executorsNames»
-					this.addChangeMainprocessor(new «executorName»(getUserInteracting()));
+					this.addChangeMainprocessor(new «executorName»());
 				«ENDFOR»		
 			}
 			

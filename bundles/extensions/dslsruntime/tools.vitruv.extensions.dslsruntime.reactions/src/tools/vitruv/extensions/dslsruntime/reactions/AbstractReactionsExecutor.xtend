@@ -16,8 +16,8 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 
 	private Change2ReactionsMap changeToReactionsMap;
 	
-	new (UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(userInteracting, sourceDomain, targetDomain);
+	new (VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+		super(sourceDomain, targetDomain);
 		this.changeToReactionsMap = new Change2ReactionsMap();
 		this.setup();
 	}

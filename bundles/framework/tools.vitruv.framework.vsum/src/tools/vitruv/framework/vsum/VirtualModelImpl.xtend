@@ -22,7 +22,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
 	private val File folder;
 	
-	public new(File folder, VirtualModelConfiguration modelConfiguration) {
+	public new(File folder, UserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
 		this.folder = folder;
 		metamodelRepository = new VitruvDomainRepositoryImpl();
 		for (metamodel : modelConfiguration.metamodels) {
@@ -31,6 +31,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.modelRepository = new ModelRepositoryImpl(folder, metamodelRepository);
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository();
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
+			changePropagationSpecification.userInteracting = userInteracting;
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;

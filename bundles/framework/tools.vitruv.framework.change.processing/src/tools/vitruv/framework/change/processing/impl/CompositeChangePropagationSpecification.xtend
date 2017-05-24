@@ -16,8 +16,8 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	private val List<ChangePropagationSpecification> changePreprocessors;
 	private val List<ChangePropagationSpecification> changeMainprocessors;
 
-	new(UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(userInteracting, sourceDomain, targetDomain);
+	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+		super(sourceDomain, targetDomain);
 		changePreprocessors = new ArrayList<ChangePropagationSpecification>();
 		changeMainprocessors = new ArrayList<ChangePropagationSpecification>();
 	}
