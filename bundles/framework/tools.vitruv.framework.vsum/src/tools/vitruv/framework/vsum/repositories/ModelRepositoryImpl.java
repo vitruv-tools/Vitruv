@@ -1,5 +1,6 @@
 package tools.vitruv.framework.vsum.repositories;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,21 +43,21 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     private final Map<VURI, ModelInstance> modelInstances;
     private InternalCorrespondenceModel correspondenceModel;
     private final FileSystemHelper fileSystemHelper;
-    private final String vsumName;
+    private final File folder;
 
-    public ModelRepositoryImpl(final String vsumName, final VitruvDomainRepository metamodelRepository) {
-        this(vsumName, metamodelRepository, null);
+    public ModelRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository) {
+        this(folder, metamodelRepository, null);
     }
 
-    public ModelRepositoryImpl(final String vsumName, final VitruvDomainRepository metamodelRepository,
+    public ModelRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository,
             final ClassLoader classLoader) {
         this.metamodelRepository = metamodelRepository;
-        this.vsumName = vsumName;
+        this.folder = folder;
 
         this.resourceSet = new ResourceSetImpl();
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
-        this.fileSystemHelper = new FileSystemHelper(vsumName);
+        this.fileSystemHelper = new FileSystemHelper(this.folder);
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
@@ -160,7 +161,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
     @Override
     public void saveAllModels() {
-        logger.debug("Saving all models of model repository for VSUM: " + this.vsumName);
+        logger.debug("Saving all models of model repository for VSUM: " + this.folder);
         saveAllChangedModels();
         saveAllChangedCorrespondenceModels();
     }
