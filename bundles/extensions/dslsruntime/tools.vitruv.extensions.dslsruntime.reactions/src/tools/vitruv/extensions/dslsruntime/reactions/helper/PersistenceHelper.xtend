@@ -5,6 +5,7 @@ import org.eclipse.core.resources.IFile
 import tools.vitruv.framework.util.bridges.EMFBridge
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
+import java.io.File
 
 public final class PersistenceHelper {
 	private new() {}
@@ -22,10 +23,38 @@ public final class PersistenceHelper {
 	}
 
 	private static def URI getURIOfElementProject(EObject element) {
-		val IFile sourceModelFile = EMFBridge.getIFileForEMFUri(element.eResource().URI);
-		val IProject projectSourceModel = sourceModelFile.getProject();
-		var String srcFolderPath = projectSourceModel.getFullPath().toString();
-		return URI.createPlatformResourceURI(srcFolderPath, true);
+		val elementUri = element.eResource().URI;
+		if (elementUri.isPlatform) {
+			val IFile sourceModelFile = EMFBridge.getIFileForEMFUri(elementUri);
+			val IProject projectSourceModel = sourceModelFile.getProject();
+			var String srcFolderPath = projectSourceModel.getFullPath().toString();
+			return URI.createPlatformResourceURI(srcFolderPath, true);
+		} else if (elementUri.isFile) {
+			// FIXME HK This is a prototypical implementation: It is not easy
+			// to extract the project from a file URI.
+			var shortenedUri = elementUri.trimSegments(1);
+			var nextLevel = true;
+			var packageInfoFound = false;
+			while (nextLevel) {
+				shortenedUri = shortenedUri.trimSegments(1);
+				val files = new File(shortenedUri.toFileString).listFiles; 
+				nextLevel = false;
+				for (file : files) {
+					if (file.name == "package-info.java") {
+						nextLevel = true;
+						packageInfoFound = true;
+					}
+				}
+			}
+			if (packageInfoFound) {
+				shortenedUri = shortenedUri.trimSegments(1);
+			}
+			println(shortenedUri)
+			return shortenedUri 
+			
+		} else {
+			throw new UnsupportedOperationException("Other URI types than file and platform are currently not supported");
+		}
 	}
 
 	private static def URI appendPathToURI(URI baseURI, String relativePath) {
