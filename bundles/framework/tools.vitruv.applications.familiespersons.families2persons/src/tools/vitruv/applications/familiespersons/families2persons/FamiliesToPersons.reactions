@@ -36,15 +36,21 @@ routine deletePersonRegister(families::FamilyRegister familyRegister){
 
 
 reaction CreatedFather {
-	after element families::Member created  and inserted in families::Family[father]
+	after element families::Member replaced at families::Family[father]
 	call createFather(newValue)
 }
 
 
 routine createFather(families::Member member){
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+	}
 	action{
-			val person = create persons::Male and initialize {
+		val person = create persons::Male and initialize {
 			person.fullName = member.firstName +" "+member.familyFather.lastName
+		}
+		update personsRegister {
+			personsRegister.persons += person;
 		}
 		add correspondence between member and person
 		add correspondence between member.familyFather and person
