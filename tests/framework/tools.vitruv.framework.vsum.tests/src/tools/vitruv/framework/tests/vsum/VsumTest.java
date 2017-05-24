@@ -50,7 +50,7 @@ public abstract class VsumTest extends VitruviusTest {
             new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eINSTANCE.getNsURI(), "id"), PCM_FILE_EXT);
 
     protected File getCurrentProjectModelFolder() {
-        return new File(getCurrentProjectFolderName(), "model");
+        return new File(getCurrentTestProjectFolder(), "model");
     }
 
     protected URI getDefaultPcmInstanceURI() {
