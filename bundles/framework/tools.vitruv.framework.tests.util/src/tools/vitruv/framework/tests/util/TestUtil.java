@@ -28,9 +28,9 @@ import com.google.common.io.Files;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
+import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
@@ -168,7 +168,8 @@ public final class TestUtil {
 	 */
 	public static InternalVirtualModel createVirtualModel(final File virtualModelFolder, boolean addTimestampAndMakeNameUnique,
 			final Iterable<VitruvDomain> metamodels,
-			final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
+			final Iterable<ChangePropagationSpecification> changePropagationSpecifications,
+			final UserInteracting userInteracting) {
 		File projectFolder = virtualModelFolder;
 		if (addTimestampAndMakeNameUnique) {
 			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder);
@@ -181,7 +182,7 @@ public final class TestUtil {
 		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
 			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
 		}
-		final InternalVirtualModel vmodel = new VirtualModelImpl(projectFolder, new TestUserInteractor(), vmodelConfig);
+		final InternalVirtualModel vmodel = new VirtualModelImpl(projectFolder, userInteracting, vmodelConfig);
 		return vmodel;
 	}
 	
@@ -203,10 +204,11 @@ public final class TestUtil {
 	 */
 	public static InternalVirtualModel createVirtualModel(final String virtualModelName, boolean addTimestampAndMakeNameUnique,
 			final Iterable<VitruvDomain> metamodels,
-			final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
+			final Iterable<ChangePropagationSpecification> changePropagationSpecifications,
+			final UserInteracting userInteracting) {
 		File testWorkspace = createTestWorkspace();
 		return createVirtualModel(new File(testWorkspace, virtualModelName), 
-				addTimestampAndMakeNameUnique, metamodels, changePropagationSpecifications);
+				addTimestampAndMakeNameUnique, metamodels, changePropagationSpecifications, userInteracting);
 	}
 	
 	private static File createTestWorkspace() {

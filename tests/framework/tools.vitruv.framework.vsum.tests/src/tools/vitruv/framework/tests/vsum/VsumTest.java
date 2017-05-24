@@ -17,6 +17,7 @@ import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusTest;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
@@ -133,7 +134,8 @@ public abstract class VsumTest extends VitruviusTest {
         List<VitruvDomain> vitruvDomains = new ArrayList<VitruvDomain>();
         vitruvDomains.add(UmlDomain);
         vitruvDomains.add(PcmDomain);
-        return TestUtil.createVirtualModel(vsumName, true, vitruvDomains, Collections.emptyList());
+        return TestUtil.createVirtualModel(vsumName, true, vitruvDomains, Collections.emptyList(),
+                new TestUserInteractor());
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {
