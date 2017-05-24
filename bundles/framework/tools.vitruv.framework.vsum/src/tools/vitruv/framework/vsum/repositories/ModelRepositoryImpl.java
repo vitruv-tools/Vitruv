@@ -57,6 +57,14 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
         this.resourceSet = new ResourceSetImpl();
         this.resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+        Map<String, Object> globalExtensionToFactoryMap = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
+        for (String extension : globalExtensionToFactoryMap.keySet()) {
+            this.resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(extension,
+                    globalExtensionToFactoryMap.get(extension));
+        }
+        if (this.resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().isEmpty()) {
+
+        }
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.fileSystemHelper = new FileSystemHelper(this.folder);
