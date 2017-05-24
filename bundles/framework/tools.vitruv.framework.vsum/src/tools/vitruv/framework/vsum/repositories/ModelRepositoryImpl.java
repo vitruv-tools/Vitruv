@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
@@ -55,6 +56,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         this.folder = folder;
 
         this.resourceSet = new ResourceSetImpl();
+        this.resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.fileSystemHelper = new FileSystemHelper(this.folder);
