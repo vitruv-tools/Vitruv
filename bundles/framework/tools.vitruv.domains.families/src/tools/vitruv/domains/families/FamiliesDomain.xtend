@@ -7,10 +7,11 @@ import tools.vitruv.domains.families.tuid.FamiliesTuidCalculatorAndResolver
 
 class FamiliesDomain extends AbstractVitruvDomain {
 	private static final String METAMODEL_NAME = "Families";
+	private static val FILE_EXTENSION = "families"
 	public static val NAMESPACE_URIS = FamiliesPackage.eINSTANCE.nsURIsRecursive;
 
 	package new() {
-		super(METAMODEL_NAME, FamiliesPackage.eINSTANCE, generateTuidCalculator());
+		super(METAMODEL_NAME, FamiliesPackage.eINSTANCE, generateTuidCalculator(), FILE_EXTENSION);
 	}
 
 	def protected static TuidCalculatorAndResolver generateTuidCalculator() {
