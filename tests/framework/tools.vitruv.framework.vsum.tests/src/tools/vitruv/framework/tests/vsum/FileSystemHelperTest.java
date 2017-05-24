@@ -20,7 +20,7 @@ public class FileSystemHelperTest extends VsumTest {
     @Test
     public void testSaveAndLoadVURIs() {
         final int nrOfVURIs = 1000;
-        Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentProjectFolderName(), nrOfVURIs);
+        Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentTestProjectFolder(), nrOfVURIs);
 
         long start = System.currentTimeMillis();
         // save to disk

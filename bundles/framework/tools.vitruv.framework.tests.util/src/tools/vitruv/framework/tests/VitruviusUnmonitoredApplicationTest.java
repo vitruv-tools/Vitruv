@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.After;
 import org.junit.Before;
 
@@ -52,6 +53,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	public void beforeTest() {
 		super.beforeTest();
 		this.resourceSet = new ResourceSetImpl();
+		this.resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 		String testMethodName = testName.getMethodName();
 		createVirtualModel(testMethodName);
 	}
@@ -191,6 +193,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 */
 	protected void assertPersistedModelsEqual(String firstModelPathWithinProject, String secondModelPathWithinProject) {
 		ResourceSet testResourceSet = new ResourceSetImpl();
+		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 		EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet);
 		EObject secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet);
 		assertTrue(EcoreUtil.equals(firstRoot, secondRoot));
