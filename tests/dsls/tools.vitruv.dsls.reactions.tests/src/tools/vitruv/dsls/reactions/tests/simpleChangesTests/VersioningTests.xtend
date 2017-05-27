@@ -103,8 +103,8 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	def repoTest() {
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
-		val facade = new VersioningFacade
-		facade.createModel(TEST_SOURCE_MODEL_NAME.projectModelPath,root)
+//		val facade = new VersioningFacade
+//		facade.createModel(TEST_SOURCE_MODEL_NAME.projectModelPath,root)
 			
 	}
 	
