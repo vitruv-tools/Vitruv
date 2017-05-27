@@ -7,6 +7,7 @@ import java.io.File
 
 interface VirtualModel {
 	def File getFolder();
+	def String getName();
 	def void propagateChange(VitruviusChange change);
 	def ModelInstance getModelInstance(VURI modelVuri);
 }
