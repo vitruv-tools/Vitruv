@@ -15,7 +15,7 @@
     <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
-        <details key="body" value="return true;"/>
+        <details key="body" value="return tools.vitruv.framework.change.echange.resolve.ResolutionChecker.isResolved(this);"/>
       </eAnnotations>
     </eOperations>
     <eOperations name="resolveBefore" unique="false" eType="#//EChange">

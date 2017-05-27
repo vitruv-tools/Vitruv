@@ -5,7 +5,6 @@ package tools.vitruv.framework.change.echange.root;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
@@ -107,6 +106,15 @@ public interface RootPackage extends EPackage {
 	int ROOT_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE___IS_RESOLVED;
+
+	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -161,22 +169,13 @@ public interface RootPackage extends EPackage {
 	int ROOT_ECHANGE___APPLY_BACKWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_BACKWARD;
 
 	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ROOT_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
-
-	/**
 	 * The number of operations of the '<em>EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 1;
+	int ROOT_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.root.impl.InsertRootEObjectImpl <em>Insert Root EObject</em>}' class.
@@ -232,6 +231,15 @@ public interface RootPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___IS_RESOLVED = ROOT_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
@@ -297,22 +305,13 @@ public interface RootPackage extends EPackage {
 	int INSERT_ROOT_EOBJECT___GET_NEW_VALUE = ROOT_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_ROOT_EOBJECT___IS_RESOLVED = ROOT_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Insert Root EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INSERT_ROOT_EOBJECT_OPERATION_COUNT = ROOT_ECHANGE_OPERATION_COUNT + 2;
+	int INSERT_ROOT_EOBJECT_OPERATION_COUNT = ROOT_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.root.impl.RemoveRootEObjectImpl <em>Remove Root EObject</em>}' class.
@@ -368,6 +367,15 @@ public interface RootPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___IS_RESOLVED = ROOT_ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Resolve Before</em>' operation.
@@ -433,22 +441,13 @@ public interface RootPackage extends EPackage {
 	int REMOVE_ROOT_EOBJECT___GET_OLD_VALUE = ROOT_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_ROOT_EOBJECT___IS_RESOLVED = ROOT_ECHANGE_OPERATION_COUNT + 1;
-
-	/**
 	 * The number of operations of the '<em>Remove Root EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_ROOT_EOBJECT_OPERATION_COUNT = ROOT_ECHANGE_OPERATION_COUNT + 2;
+	int REMOVE_ROOT_EOBJECT_OPERATION_COUNT = ROOT_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '<em>Resource</em>' data type.
@@ -505,16 +504,6 @@ public interface RootPackage extends EPackage {
 	EAttribute getRootEChange_Index();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RootEChange#isResolved() <em>Is Resolved</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Is Resolved</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.root.RootEChange#isResolved()
-	 * @generated
-	 */
-	EOperation getRootEChange__IsResolved();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.root.InsertRootEObject <em>Insert Root EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -525,16 +514,6 @@ public interface RootPackage extends EPackage {
 	EClass getInsertRootEObject();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.InsertRootEObject#isResolved() <em>Is Resolved</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Is Resolved</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.root.InsertRootEObject#isResolved()
-	 * @generated
-	 */
-	EOperation getInsertRootEObject__IsResolved();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.root.RemoveRootEObject <em>Remove Root EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -543,16 +522,6 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRemoveRootEObject();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.root.RemoveRootEObject#isResolved() <em>Is Resolved</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Is Resolved</em>' operation.
-	 * @see tools.vitruv.framework.change.echange.root.RemoveRootEObject#isResolved()
-	 * @generated
-	 */
-	EOperation getRemoveRootEObject__IsResolved();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.Resource <em>Resource</em>}'.
@@ -623,14 +592,6 @@ public interface RootPackage extends EPackage {
 		EAttribute ROOT_ECHANGE__INDEX = eINSTANCE.getRootEChange_Index();
 
 		/**
-		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation ROOT_ECHANGE___IS_RESOLVED = eINSTANCE.getRootEChange__IsResolved();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.root.impl.InsertRootEObjectImpl <em>Insert Root EObject</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -641,14 +602,6 @@ public interface RootPackage extends EPackage {
 		EClass INSERT_ROOT_EOBJECT = eINSTANCE.getInsertRootEObject();
 
 		/**
-		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation INSERT_ROOT_EOBJECT___IS_RESOLVED = eINSTANCE.getInsertRootEObject__IsResolved();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.root.impl.RemoveRootEObjectImpl <em>Remove Root EObject</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -657,14 +610,6 @@ public interface RootPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REMOVE_ROOT_EOBJECT = eINSTANCE.getRemoveRootEObject();
-
-		/**
-		 * The meta object literal for the '<em><b>Is Resolved</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation REMOVE_ROOT_EOBJECT___IS_RESOLVED = eINSTANCE.getRemoveRootEObject__IsResolved();
 
 		/**
 		 * The meta object literal for the '<em>Resource</em>' data type.

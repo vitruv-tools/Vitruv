@@ -19,7 +19,6 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.resource.Resource.IOWrappedException
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
@@ -241,7 +240,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	def private Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
 		try {
 			correspondencesResource.load(this.saveCorrespondenceOptions)
-		} catch (IOWrappedException e) {
+		} catch (IOException e) {
 			if (e.cause instanceof Exception) {
 				logger.trace(
 					"Could not load correspondence resource - creating new correspondence instance resource."

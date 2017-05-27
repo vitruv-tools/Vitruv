@@ -24,7 +24,7 @@ public class FileSystemHelperTest extends VsumTest {
 
         long start = System.currentTimeMillis();
         // save to disk
-        FileSystemHelper fsHelper = new FileSystemHelper(VSUM_NAME);
+        FileSystemHelper fsHelper = new FileSystemHelper(getCurrentTestProject().getLocation().toFile());
         fsHelper.saveVsumVURIsToFile(vuris);
         long durationForSave = System.currentTimeMillis() - start;
         long startLoad = System.currentTimeMillis();

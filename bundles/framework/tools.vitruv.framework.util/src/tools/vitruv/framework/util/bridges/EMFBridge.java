@@ -11,6 +11,7 @@
 package tools.vitruv.framework.util.bridges;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -175,7 +176,8 @@ public final class EMFBridge {
 	}
 
 	public static IFolder createFolderInProjectIfNecessary(IProject project, String folderName) {
-		String[] folderNames = folderName.split(File.separator);
+		Pattern pattern = Pattern.compile(Pattern.quote(File.separator));
+		String[] folderNames = pattern.split(folderName);
 		IContainer currentContainer = project;
 		IFolder folder = null;
 		for (int i = 0; i < folderNames.length; i++) {

@@ -5,11 +5,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.ISelection;
@@ -111,22 +107,7 @@ public abstract class IntegrationHandler<T> extends AbstractHandler {
      */
     private void cleanUpIntegration() {
 
-        // Delete vitruvius.meta project
-        final IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        final IWorkspaceRoot root = workspace.getRoot();
-        // FIXME Find the correct VSUM Project
-        final IProject metaFiles = root.getProject(vsum.getName());
-        try {
-            metaFiles.delete(true, null);
-        } catch (final CoreException e) {
-            e.printStackTrace();
-        }
-        try {
-            root.refreshLocal(0, null);
-        } catch (final CoreException e) {
-            e.printStackTrace();
-        }
-
+        vsum.getFolder().delete();
         LogManager.shutdown();
 
     }

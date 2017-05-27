@@ -1,6 +1,7 @@
 package tools.vitruv.framework.tests.vsum;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -129,7 +130,7 @@ public abstract class VsumTest extends VitruviusTest {
         List<VitruvDomain> vitruvDomains = new ArrayList<VitruvDomain>();
         vitruvDomains.add(UmlDomain);
         vitruvDomains.add(PcmDomain);
-        return TestUtil.createVirtualModel(vsumName, true, vitruvDomains);
+        return TestUtil.createVirtualModel(vsumName, true, vitruvDomains, Collections.emptyList());
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {

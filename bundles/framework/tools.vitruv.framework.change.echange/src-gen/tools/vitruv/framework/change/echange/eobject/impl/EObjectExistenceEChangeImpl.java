@@ -2,23 +2,12 @@
  */
 package tools.vitruv.framework.change.echange.eobject.impl;
 
-import com.google.common.base.Objects;
-
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.EChangePackage;
-
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
@@ -155,15 +144,6 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isResolved() {
-		return (((super.isResolved() && (!Objects.equal(this.getAffectedEObject(), null))) && (!this.getAffectedEObject().eIsProxy())) && (!Objects.equal(this.getStagingArea(), null)));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -227,36 +207,6 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 				return STAGING_AREA_EDEFAULT == null ? stagingArea != null : !STAGING_AREA_EDEFAULT.equals(stagingArea);
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == EChange.class) {
-			switch (baseOperationID) {
-				case EChangePackage.ECHANGE___IS_RESOLVED: return EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED;
-				default: return super.eDerivedOperationID(baseOperationID, baseClass);
-			}
-		}
-		return super.eDerivedOperationID(baseOperationID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED:
-				return isResolved();
-		}
-		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

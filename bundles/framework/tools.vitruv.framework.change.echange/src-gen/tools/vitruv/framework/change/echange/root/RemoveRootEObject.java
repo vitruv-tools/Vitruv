@@ -23,19 +23,5 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  * @generated
  */
 public interface RemoveRootEObject<T extends EObject> extends RootEChange, EObjectSubtractedEChange<T> {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * <!-- begin-model-doc -->
-	 * *
-	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
-	 * Needs to be true to apply the change.
-	 * @return	All proxy EObjects are resolved to concrete EObjects.
-	 * <!-- end-model-doc -->
-	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return ((super.isResolved() && (!<%com.google.common.base.Objects%>.equal(this.getOldValue(), null))) && (!this.getOldValue().eIsProxy()));'"
-	 * @generated
-	 */
-	boolean isResolved();
 
 } // RemoveRootEObject

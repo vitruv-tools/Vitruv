@@ -109,14 +109,18 @@ class AtomicEmfChangeRecorder {
 		// Roll back
 		for (c : eChanges.reverseView) {
 			updateStagingArea(c) // corrects the missing or wrong staging area of CreateEObject changes.
-			c.applyBackward
+			if (c.isResolved) {
+				c.applyBackward
+			}
 		}
 		// Apply again and unresolve the results if necessary
 		for (c : eChanges) {
 			val EChange copy = EcoreUtil.copy(c)
 			EChangeUnresolver.unresolve(c)
-			copy.applyForward
-		}				
+			if (copy.isResolved) {
+				copy.applyForward
+			}
+		}
 	}
 	
 	/*

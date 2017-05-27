@@ -18,12 +18,6 @@
     <eTypeParameters name="F">
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
     </eTypeParameters>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
-        <details key="body" value="return (((super.isResolved() &amp;&amp; (!&lt;%com.google.common.base.Objects%>.equal(this.getAffectedEObject(), null))) &amp;&amp; (!this.getAffectedEObject().eIsProxy())) &amp;&amp; (!&lt;%com.google.common.base.Objects%>.equal(this.getAffectedFeature(), null)));"/>
-      </eAnnotations>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="affectedFeature" lowerBound="1">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;The affected attribute or reference."/>

@@ -4,7 +4,6 @@ package tools.vitruv.framework.change.echange.feature.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
@@ -185,15 +184,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getFeatureEChange__IsResolved() {
-		return featureEChangeEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getUpdateMultiValuedFeatureEChange() {
 		return updateMultiValuedFeatureEChangeEClass;
 	}
@@ -238,7 +228,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		featureEChangeEClass = createEClass(FEATURE_ECHANGE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_FEATURE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_EOBJECT);
-		createEOperation(featureEChangeEClass, FEATURE_ECHANGE___IS_RESOLVED);
 
 		updateMultiValuedFeatureEChangeEClass = createEClass(UPDATE_MULTI_VALUED_FEATURE_ECHANGE);
 
@@ -315,8 +304,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		initEReference(getFeatureEChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(featureEChangeEClass_A);
 		initEReference(getFeatureEChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEOperation(getFeatureEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(updateMultiValuedFeatureEChangeEClass, UpdateMultiValuedFeatureEChange.class, "UpdateMultiValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

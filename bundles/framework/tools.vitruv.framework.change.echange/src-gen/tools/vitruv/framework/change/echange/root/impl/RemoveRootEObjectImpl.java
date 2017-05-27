@@ -2,29 +2,18 @@
  */
 package tools.vitruv.framework.change.echange.root.impl;
 
-import com.google.common.base.Objects;
-
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.EChangePackage;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject;
-import tools.vitruv.framework.change.echange.root.RootEChange;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 
 /**
@@ -107,15 +96,6 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 		oldValue = newOldValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE, oldOldValue, oldValue));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isResolved() {
-		return ((super.isResolved() && (!Objects.equal(this.getOldValue(), null))) && (!this.getOldValue().eIsProxy()));
 	}
 
 	/**
@@ -218,53 +198,6 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == EChange.class) {
-			switch (baseOperationID) {
-				case EChangePackage.ECHANGE___IS_RESOLVED: return RootPackage.REMOVE_ROOT_EOBJECT___IS_RESOLVED;
-				default: return super.eDerivedOperationID(baseOperationID, baseClass);
-			}
-		}
-		if (baseClass == RootEChange.class) {
-			switch (baseOperationID) {
-				case RootPackage.ROOT_ECHANGE___IS_RESOLVED: return RootPackage.REMOVE_ROOT_EOBJECT___IS_RESOLVED;
-				default: return super.eDerivedOperationID(baseOperationID, baseClass);
-			}
-		}
-		if (baseClass == SubtractiveEChange.class) {
-			switch (baseOperationID) {
-				case EChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE: return RootPackage.REMOVE_ROOT_EOBJECT___GET_OLD_VALUE;
-				default: return -1;
-			}
-		}
-		if (baseClass == EObjectSubtractedEChange.class) {
-			switch (baseOperationID) {
-				default: return -1;
-			}
-		}
-		return super.eDerivedOperationID(baseOperationID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case RootPackage.REMOVE_ROOT_EOBJECT___IS_RESOLVED:
-				return isResolved();
-		}
-		return super.eInvoke(operationID, arguments);
 	}
 
 } //RemoveRootEObjectImpl
