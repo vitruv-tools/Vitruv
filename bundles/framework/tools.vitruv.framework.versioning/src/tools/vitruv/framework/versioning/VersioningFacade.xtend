@@ -10,36 +10,38 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.tests.ChangeObserver
-import org.eclipse.xtend.lib.annotations.Accessors
 
 class VersioningFacade implements ChangeObserver {
 	val InternalVirtualModel virtualModel
-	@Accessors(PUBLIC_GETTER)
-	val List<List<TransactionalChange>> changeUpdates
 
-	val Map<String, AtomicEmfChangeRecorder> pathsToRecorders
+	val Map<VURI, AtomicEmfChangeRecorder> pathsToRecorders
+	val List<SourceTargetPair> sourceTargetPairs
+	val List<ChangeMatch> changesMatches
 
 	new(InternalVirtualModel virtualModel) {
 		pathsToRecorders = new HashMap
 		this.virtualModel = virtualModel
-		changeUpdates = new ArrayList<List<TransactionalChange>>
+		sourceTargetPairs = new ArrayList
+		changesMatches = new ArrayList
 	}
 
-	def void addPathToRecorded(String path) {
-		val recorder = new AtomicEmfChangeRecorder
-		val resourceVuri = VURI::getInstance(path)
+	def void addPathToRecorded(VURI resourceVuri) {
 		val modelInstance = virtualModel.getModelInstance(resourceVuri)
-		pathsToRecorders.put(path, recorder)
+		if (null !== pathsToRecorders.get(resourceVuri))
+			throw new IllegalStateException('''VURI«resourceVuri» has already been observed''')
+		val recorder = new AtomicEmfChangeRecorder
+		pathsToRecorders.put(resourceVuri, recorder)
 		recorder.beginRecording(resourceVuri, Collections::singleton(modelInstance.resource))
 	}
 
-	def void clearChangeUpdates() {
-		changeUpdates.clear
+	def void recordOriginalAndCorrespondentChanges(VURI orignal, List<VURI> targets) {
+		targets.forEach[addPathToRecorded]
+		sourceTargetPairs.add(new SourceTargetPair(orignal, targets))
 	}
-	
-	def List<TransactionalChange> getChanges(String path) {
+
+	def List<TransactionalChange> getChanges(VURI vuri) {
 		val changes = new ArrayList<TransactionalChange>
-		val recorder = pathsToRecorders.get(path)
+		val recorder = pathsToRecorders.get(vuri)
 		virtualModel.executeCommand [|
 			changes += recorder.endRecording
 			return null
@@ -47,8 +49,13 @@ class VersioningFacade implements ChangeObserver {
 		changes
 	}
 
-	override update(List<TransactionalChange> changes) {
-		changeUpdates.add(changes)
+	override update(VURI vuri, TransactionalChange change) {
+		sourceTargetPairs.filter[source == vuri].forEach [ pair |
+			val Map<VURI, List<TransactionalChange>> targetToCorrespondentChanges = new HashMap
+			pair.targets.forEach[targetToCorrespondentChanges.put(it, getChanges(it))]
+			changesMatches.add(new ChangeMatch(vuri, change, targetToCorrespondentChanges))
+		]
+
 	}
 
 }
