@@ -104,11 +104,36 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	def repoTest() {
+	def synchronizeTest() {
+		// Create model 
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
-//		val facade = new VersioningFacade
-//		facade.createModel(TEST_SOURCE_MODEL_NAME.projectModelPath,root)
+		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+		
+		// Setup facade 
+		val facade = new VersioningFacade(virtualModel)
+		registerObserver(facade)
+		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
+		facade.addPathToRecorded(resourcePlatformPath)
+		Assert::assertEquals(0, facade.changeUpdates.length)
+		
+		// Create container and synchronize 
+		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		container.id = "NonRootObjectContainer"
+		rootElement.nonRootObjectContainerHelper = container
+		saveAndSynchronizeChanges(rootElement)
+		Assert::assertEquals(1, facade.changeUpdates.length)
+		
+		Assert::assertEquals(1, facade.changeUpdates.last.length)
+		
+		nonContainmentNonRootIds.forEach[
+			createAndAddNonRoot(it, container)
+			saveAndSynchronizeChanges(root)
+			assertModelsEqual
+			Assert::assertEquals(1, facade.changeUpdates.last.length)
+		]
+		Assert::assertEquals(4, facade.changeUpdates.length)
+		
 	}
 
 }
