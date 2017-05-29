@@ -10,12 +10,14 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.tests.ChangeObserver
+import org.eclipse.xtend.lib.annotations.Accessors
 
 class VersioningFacade implements ChangeObserver {
 	val InternalVirtualModel virtualModel
 
 	val Map<VURI, AtomicEmfChangeRecorder> pathsToRecorders
 	val List<SourceTargetPair> sourceTargetPairs
+	@Accessors(PUBLIC_GETTER)
 	val List<ChangeMatch> changesMatches
 
 	new(InternalVirtualModel virtualModel) {
