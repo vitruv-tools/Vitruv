@@ -14,6 +14,8 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import java.util.List
 import tools.vitruv.framework.versioning.VersioningFacade
 import allElementTypes.NonRootObjectContainerHelper
+import static org.junit.Assert.assertThat
+import static org.hamcrest.CoreMatchers.is
 
 class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
@@ -89,17 +91,14 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		nonContainmentNonRootIds.forEach[createAndAddNonRoot(it, container)]
 		val facade = new VersioningFacade(virtualModel)
 		registerObserver(facade)
-		Assert::assertEquals(0, facade.changeUpdates.length)
 		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
-		facade.addPathToRecorded(resourcePlatformPath)
+		val resourceVuri = VURI::getInstance(resourcePlatformPath)
+		facade.addPathToRecorded(resourceVuri)
 
 		saveAndSynchronizeChanges(rootElement)
-		Assert::assertEquals(1, facade.changeUpdates.length)
-		val originalChanges = facade.changeUpdates.get(0)
-		Assert::assertEquals(4, originalChanges.length)
 
 		assertModelsEqual
-		val changes = facade.getChanges(resourcePlatformPath)
+		val changes = facade.getChanges(resourceVuri)
 		Assert::assertEquals(4, changes.length)
 	}
 
@@ -109,31 +108,59 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
 		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
-		
+
 		// Setup facade 
 		val facade = new VersioningFacade(virtualModel)
 		registerObserver(facade)
 		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
-		facade.addPathToRecorded(resourcePlatformPath)
-		Assert::assertEquals(0, facade.changeUpdates.length)
-		
+		val resourceVuri = VURI::getInstance(resourcePlatformPath)
+		facade.addPathToRecorded(resourceVuri)
+
 		// Create container and synchronize 
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		saveAndSynchronizeChanges(rootElement)
-		Assert::assertEquals(1, facade.changeUpdates.length)
-		
-		Assert::assertEquals(1, facade.changeUpdates.last.length)
-		
-		nonContainmentNonRootIds.forEach[
+
+		nonContainmentNonRootIds.forEach [
 			createAndAddNonRoot(it, container)
 			saveAndSynchronizeChanges(root)
 			assertModelsEqual
-			Assert::assertEquals(1, facade.changeUpdates.last.length)
 		]
-		Assert::assertEquals(4, facade.changeUpdates.length)
-		
+	}
+
+	@Test
+	def void recordOriginalAndCorrespondentChanges() {
+		// Create model 
+		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
+		val sourcePath = TEST_SOURCE_MODEL_NAME.projectModelPath
+		val root = AllElementTypesFactory::eINSTANCE.createRoot
+		root.id = TEST_SOURCE_MODEL_NAME
+		createAndSynchronizeModel(sourcePath, root)
+
+		// Setup facade 
+		val facade = new VersioningFacade(virtualModel)
+		registerObserver(facade)
+		val targetVURI = VURI::getInstance(targetPath)
+		val sourceVURI = VURI::getInstance(sourcePath)
+		facade.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
+
+		// Create container and synchronize 
+		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		container.id = "NonRootObjectContainer"
+		rootElement.nonRootObjectContainerHelper = container
+		saveAndSynchronizeChanges(rootElement)
+
+		// Create and add non roots
+		nonContainmentNonRootIds.forEach [
+			createAndAddNonRoot(it, container)
+			saveAndSynchronizeChanges(root)
+			assertModelsEqual
+		]
+		assertThat(facade.changesMatches.length, is(4))
+		assertThat(facade.changesMatches.forall[originalVURI == sourceVURI], is(true))
+		assertThat(facade.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
+		assertThat(facade.changesMatches.forall[targetToCorrespondentChanges.get(targetVURI).length == 1], is(true))
 	}
 
 }
