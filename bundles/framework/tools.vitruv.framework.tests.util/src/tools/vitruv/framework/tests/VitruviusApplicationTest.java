@@ -39,7 +39,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	public final void beforeTest() {
 		super.beforeTest();
 		this.changeRecorder = new AtomicEmfChangeRecorder(unresolveChanges());
-		observers = new ArrayList<ChangeObserver>();
+		observers = new ArrayList<>();
 		setup();
 	}
 
@@ -75,21 +75,24 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	protected abstract void cleanup();
 	
 	
+	@Override
 	public void registerObserver(final ChangeObserver observer) {
 		observers.add(observer);
 	}
 	
+	@Override
 	public void unRegisterObserver(final ChangeObserver observer) {
 		observers.remove(observer);
 	}
 	
-	public void notifyObservers(final List<TransactionalChange> changes) {
-		observers.forEach(observer -> observer.update(changes));
+	@Override
+	public void notifyObservers(final VURI vuri, final List<TransactionalChange> changes) {
+		observers.forEach(observer -> observer.update(vuri, changes));
 	}
 	
 	private void propagateChanges(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
-		notifyObservers(changes);
+		notifyObservers(vuri, changes);
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		this.getVirtualModel().propagateChange(compositeChange);
 	}
