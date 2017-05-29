@@ -9,9 +9,9 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import tools.vitruv.framework.change.description.CompositeContainerChange;
+//import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
-import tools.vitruv.framework.change.description.VitruviusChangeFactory;
+//import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -86,15 +86,17 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	}
 	
 	@Override
-	public void notifyObservers(final VURI vuri, final List<TransactionalChange> changes) {
-		observers.forEach(observer -> observer.update(vuri, changes));
+	public void notifyObservers(final VURI vuri, final TransactionalChange change) {
+		observers.forEach(observer -> observer.update(vuri, change));
 	}
 	
 	private void propagateChanges(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
-		notifyObservers(vuri, changes);
-		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-		this.getVirtualModel().propagateChange(compositeChange);
+		changes.forEach(change -> {
+			notifyObservers(vuri, change);	
+//			CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance().createCompositeChange(Collections.singleton(change)); 
+			this.getVirtualModel().propagateChange(change);
+		});
 	}
 
 	private void startRecordingChanges(Resource resource) {
