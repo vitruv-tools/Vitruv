@@ -1,6 +1,7 @@
 package tools.vitruv.framework.tests;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,14 +31,15 @@ import tools.vitruv.framework.util.datatypes.VURI;
  *
  */
 
-public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
-
+public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest implements ChangeObservable{
+	private List<ChangeObserver> observers;
 	private AtomicEmfChangeRecorder changeRecorder;
 
 	@Override
 	public final void beforeTest() {
 		super.beforeTest();
 		this.changeRecorder = new AtomicEmfChangeRecorder(unresolveChanges());
+		observers = new ArrayList<ChangeObserver>();
 		setup();
 	}
 
@@ -71,9 +73,23 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * clean up actions.
 	 */
 	protected abstract void cleanup();
-
+	
+	
+	public void registerObserver(final ChangeObserver observer) {
+		observers.add(observer);
+	}
+	
+	public void unRegisterObserver(final ChangeObserver observer) {
+		observers.remove(observer);
+	}
+	
+	public void notifyObservers(final List<TransactionalChange> changes) {
+		observers.forEach(observer -> observer.update(changes));
+	}
+	
 	private void propagateChanges(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
+		notifyObservers(changes);
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		this.getVirtualModel().propagateChange(compositeChange);
 	}
