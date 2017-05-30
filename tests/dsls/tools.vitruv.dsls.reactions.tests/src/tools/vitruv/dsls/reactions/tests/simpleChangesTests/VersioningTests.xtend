@@ -132,11 +132,11 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	@Test
 	def void recordOriginalAndCorrespondentChanges() {
 		// Create model 
+		val sourcePath = '''«currentTestProject.name»/«TEST_SOURCE_MODEL_NAME.projectModelPath»'''
 		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
-		val sourcePath = TEST_SOURCE_MODEL_NAME.projectModelPath
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
-		createAndSynchronizeModel(sourcePath, root)
+		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
 
 		// Setup facade 
 		val facade = new VersioningFacade(virtualModel)
@@ -150,6 +150,7 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		saveAndSynchronizeChanges(rootElement)
+		assertThat(facade.changesMatches.length, is(1))
 
 		// Create and add non roots
 		nonContainmentNonRootIds.forEach [
@@ -160,7 +161,8 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		assertThat(facade.changesMatches.length, is(4))
 		assertThat(facade.changesMatches.forall[originalVURI == sourceVURI], is(true))
 		assertThat(facade.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
-		assertThat(facade.changesMatches.forall[targetToCorrespondentChanges.get(targetVURI).length == 1], is(true))
+		assertThat(facade.changesMatches.forall[targetToCorrespondentChanges.size == 1], is(true))
+		
 	}
 
 }
