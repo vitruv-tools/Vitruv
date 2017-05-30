@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import java.util.Set
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 import static org.junit.Assert.*
+import edu.kit.ipd.sdq.metamodels.persons.Person
 
 class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	private static val FAMILY_NAME = "Mustermann";
@@ -111,10 +112,11 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 		family.daughters.add(member);
 		saveAndSynchronizeChanges(family);
 		saveAndSynchronizeChanges(member);
-		val Set<EObject> corrObjs = CorrespondenceModelUtil.getCorrespondingEObjects(this.correspondenceModel, member);
-		assertTrue(corrObjs.length == 1)
+		member.firstName = FIRST_NAME_MOTHER
+		val Iterable<Person> corrObjs = CorrespondenceModelUtil.getCorrespondingEObjects(this.correspondenceModel, member).filter(Person);
+		assertEquals(corrObjs.length, 1)
 		val corrMember = corrObjs.get(0)
-	// Ist als EObject vorhanden, kann auch nicht explizit casten.
+		assertEquals(corrMember.fullName.split(" ").get(0), FIRST_NAME_MOTHER)
 	}
 
 	@Test
