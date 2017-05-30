@@ -93,7 +93,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
 		changes.forEach(change -> {
 			notifyObservers(vuri, change);	
-			// TODO Patrick Stoeckle: Check, if CompositeContainerChange creation is necessary
+			// TODO PS Check, if CompositeContainerChange creation is necessary
 			// CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance().createCompositeChange(Collections.singleton(change)); 
 			this.getVirtualModel().propagateChange(change);
 		});
