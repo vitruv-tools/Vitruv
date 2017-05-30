@@ -11,8 +11,11 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.tests.ChangeObserver
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.apache.log4j.Logger
+import org.apache.log4j.Level
 
 class VersioningFacade implements ChangeObserver {
+	val logger = Logger::getLogger(VersioningFacade)
 	val InternalVirtualModel virtualModel
 
 	val Map<VURI, AtomicEmfChangeRecorder> pathsToRecorders
@@ -21,6 +24,7 @@ class VersioningFacade implements ChangeObserver {
 	val List<ChangeMatch> changesMatches
 
 	new(InternalVirtualModel virtualModel) {
+		logger.level = Level::DEBUG
 		pathsToRecorders = new HashMap
 		this.virtualModel = virtualModel
 		sourceTargetPairs = new ArrayList
@@ -28,12 +32,12 @@ class VersioningFacade implements ChangeObserver {
 	}
 
 	def void addPathToRecorded(VURI resourceVuri) {
-		val modelInstance = virtualModel.getModelInstance(resourceVuri)
 		if (null !== pathsToRecorders.get(resourceVuri))
 			throw new IllegalStateException('''VURI«resourceVuri» has already been observed''')
 		val recorder = new AtomicEmfChangeRecorder
 		pathsToRecorders.put(resourceVuri, recorder)
-		recorder.beginRecording(resourceVuri, Collections::singleton(modelInstance.resource))
+		logger.debug('''Start recording on VURI «resourceVuri»''')
+		recorder.startRecordingOn(resourceVuri)
 	}
 
 	def void recordOriginalAndCorrespondentChanges(VURI orignal, List<VURI> targets) {
@@ -48,14 +52,23 @@ class VersioningFacade implements ChangeObserver {
 			changes += recorder.endRecording
 			return null
 		]
+		logger.debug('''Restart recording on VURI «vuri»''')
+		recorder.startRecordingOn(vuri)
 		changes
+	}
+
+	private def startRecordingOn(AtomicEmfChangeRecorder recorder, VURI vuri) {
+		val modelInstance = virtualModel.getModelInstance(vuri)
+		recorder.beginRecording(vuri, Collections::singleton(modelInstance.resource))
 	}
 
 	override update(VURI vuri, TransactionalChange change) {
 		sourceTargetPairs.filter[source == vuri].forEach [ pair |
 			val Map<VURI, List<TransactionalChange>> targetToCorrespondentChanges = new HashMap
 			pair.targets.forEach[targetToCorrespondentChanges.put(it, getChanges(it))]
-			changesMatches.add(new ChangeMatch(vuri, change, targetToCorrespondentChanges))
+			val match = new ChangeMatch(vuri, change, targetToCorrespondentChanges)
+			logger.debug('''New match added: «match»''')
+			changesMatches += match
 		]
 
 	}
