@@ -34,7 +34,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
 public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest implements ChangeObservable{
 	private List<ChangeObserver> observers;
 	private AtomicEmfChangeRecorder changeRecorder;
-
+		
 	@Override
 	public final void beforeTest() {
 		super.beforeTest();
@@ -49,6 +49,21 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			changeRecorder.endRecording();
 		}
 		cleanup();
+	}
+	
+	@Override
+	public final void registerObserver(final ChangeObserver observer) {
+		observers.add(observer);
+	}
+	
+	@Override
+	public final void unRegisterObserver(final ChangeObserver observer) {
+		observers.remove(observer);
+	}
+	
+	@Override
+	public final void notifyObservers(final VURI vuri, final TransactionalChange change) {
+		observers.forEach(observer -> observer.update(vuri, change));
 	}
 	
 	/**
@@ -73,28 +88,13 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * clean up actions.
 	 */
 	protected abstract void cleanup();
-	
-	
-	@Override
-	public void registerObserver(final ChangeObserver observer) {
-		observers.add(observer);
-	}
-	
-	@Override
-	public void unRegisterObserver(final ChangeObserver observer) {
-		observers.remove(observer);
-	}
-	
-	@Override
-	public void notifyObservers(final VURI vuri, final TransactionalChange change) {
-		observers.forEach(observer -> observer.update(vuri, change));
-	}
-	
+		
 	private void propagateChanges(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
 		changes.forEach(change -> {
 			notifyObservers(vuri, change);	
-//			CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance().createCompositeChange(Collections.singleton(change)); 
+			// TODO Patrick Stoeckle: Check, if CompositeContainerChange creation is necessary
+			// CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance().createCompositeChange(Collections.singleton(change)); 
 			this.getVirtualModel().propagateChange(change);
 		});
 	}
