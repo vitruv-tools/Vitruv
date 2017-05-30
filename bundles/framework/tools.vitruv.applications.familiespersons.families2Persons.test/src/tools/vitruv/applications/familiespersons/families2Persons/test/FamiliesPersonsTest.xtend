@@ -15,7 +15,7 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	private static val FIRST_NAME_DAUGHTER = "Tochter";
 	private static val FIRST_NAME_MOTHER = "Erika"
 	private static val NEW_NAME = "Hans"
-	private static val PERSONS_PATH = "model/persons.person";
+	private static val PERSONS_PATH = "model/persons.persons";
 
 	@Test
 	public def void testCreateFamilyRegister() {

@@ -13,7 +13,7 @@ reaction CreatedFamilyRegister {
 routine createPersonRegister(families::FamilyRegister familyRegister){
 	action{
 		val personRegister = create persons::PersonRegister and initialize{
-			persistProjectRelative(familyRegister, personRegister, "model/persons.person")
+			persistProjectRelative(familyRegister, personRegister, "model/persons.persons")
 		}
 		add correspondence between personRegister and familyRegister 
 	}

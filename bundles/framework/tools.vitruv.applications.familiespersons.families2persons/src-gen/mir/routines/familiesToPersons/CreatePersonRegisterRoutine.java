@@ -30,7 +30,7 @@ public class CreatePersonRegisterRoutine extends AbstractRepairRoutineRealizatio
     }
     
     public void updatePersonRegisterElement(final FamilyRegister familyRegister, final PersonRegister personRegister) {
-      this.persistProjectRelative(familyRegister, personRegister, "model/persons.person");
+      this.persistProjectRelative(familyRegister, personRegister, "model/persons.persons");
     }
   }
   
