@@ -63,15 +63,20 @@ reaction CreatedSon {
 }
 
 routine createSon(families::Member member){
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+	}
 	action{
-			val person = create persons::Male and initialize {
-			person.fullName = member.firstName +" "+member.familyFather.lastName
+		val person = create persons::Male and initialize {
+			person.fullName = member.firstName +" "+member.familySon.lastName
+		}
+		update personsRegister {
+			personsRegister.persons += person;
 		}
 		add correspondence between member and person
 		add correspondence between member.familySon and person
 	}
 }
-
 reaction CreatedMother {
 	after element families::Member created  and inserted in families::Family[mother]
 	call createMother(newValue)
@@ -79,9 +84,15 @@ reaction CreatedMother {
 
 
 routine createMother(families::Member member){
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+	}
 	action{
-			val person = create persons::Female and initialize {
-			person.fullName = member.firstName +" "+member.familyFather.lastName
+		val person = create persons::Female and initialize {
+			person.fullName = member.firstName +" "+member.familyMother.lastName
+		}
+		update personsRegister {
+			personsRegister.persons += person;
 		}
 		add correspondence between member and person
 		add correspondence between member.familyMother and person
@@ -93,9 +104,15 @@ reaction CreatedDaughter {
 	call createDaughter(newValue)
 }
 routine createDaughter(families::Member member){
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+	}
 	action{
-			val person = create persons::Female and initialize {
-			person.fullName = member.firstName +" "+member.familyFather.lastName
+		val person = create persons::Male and initialize {
+			person.fullName = member.firstName +" "+member.familyDaughter.lastName
+		}
+		update personsRegister {
+			personsRegister.persons += person;
 		}
 		add correspondence between member and person
 		add correspondence between member.familyDaughter and person
