@@ -1,3 +1,0 @@
-[submodule "bundles/commons"]
-	path = bundles/commons
-	url = git@github.com:kit-sdq/SDQ-Commons.git
