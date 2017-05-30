@@ -1,10 +1,12 @@
 package tools.vitruv.framework.versioning
 
-import org.eclipse.xtend.lib.annotations.Data
-import tools.vitruv.framework.change.description.TransactionalChange
 import java.util.List
-import tools.vitruv.framework.util.datatypes.VURI
 import java.util.Map
+
+import org.eclipse.xtend.lib.annotations.Data
+
+import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.util.datatypes.VURI
 
 @Data
 class ChangeMatch {
