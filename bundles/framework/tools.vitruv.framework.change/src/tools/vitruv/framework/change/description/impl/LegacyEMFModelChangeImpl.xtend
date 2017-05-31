@@ -17,7 +17,7 @@ import java.io.Serializable
  * right before the change described by the recorded {@link ChangeDescription}.
  */
 class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange, Serializable {
-	private final ChangeDescription changeDescription;
+	private final transient ChangeDescription changeDescription;
 	private final transient VURI vuri;
 	private var boolean canBeBackwardsApplied;
 	

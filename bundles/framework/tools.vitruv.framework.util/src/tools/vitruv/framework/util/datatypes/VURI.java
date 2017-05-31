@@ -18,9 +18,6 @@ import tools.vitruv.framework.util.bridges.EMFBridge;
  *
  */
 public class VURI implements Comparable<VURI>, Serializable {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>();
