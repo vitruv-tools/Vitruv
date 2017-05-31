@@ -15,14 +15,14 @@ import org.junit.rules.TemporaryFolder
 
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.ChangeMatch
-import tools.vitruv.framework.versioning.VersioningFacade
-import tools.vitruv.framework.versioning.impl.VersioningFacadeImpl
 
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.SourceTargetRecorder
+import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
 
-class VersioningFacadeTest extends AbstractVersioningTest {
-	var VersioningFacade facade
+class SourceTargetRecorderTest extends AbstractVersioningTest {
+	var SourceTargetRecorder sourceTargetRecorder
 
 	@Rule
 	public val tempFolder = new TemporaryFolder
@@ -30,13 +30,13 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 	override setup() {
 		super.setup
 		// Setup facade 
-		facade = new VersioningFacadeImpl(virtualModel)
-		facade.registerObserver
+		sourceTargetRecorder = new SourceTargetRecorderImpl(virtualModel)
+		sourceTargetRecorder.registerObserver
 	}
 
 	override cleanup() {
 		super.cleanup
-		facade = null
+		sourceTargetRecorder = null
 	}
 
 	@Test
@@ -48,12 +48,12 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 
 		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
 		val resourceVuri = VURI::getInstance(resourcePlatformPath)
-		(facade as VersioningFacadeImpl).addPathToRecorded(resourceVuri)
+		(sourceTargetRecorder as SourceTargetRecorderImpl).addPathToRecorded(resourceVuri)
 
 		rootElement.saveAndSynchronizeChanges
 
 		assertModelsEqual
-		val changes = (facade as VersioningFacadeImpl).getChanges(resourceVuri)
+		val changes = (sourceTargetRecorder as SourceTargetRecorderImpl).getChanges(resourceVuri)
 		Assert::assertEquals(4, changes.length)
 	}
 
@@ -61,7 +61,7 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 	def testSingleChangeSynchronization() {
 		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
 		val resourceVuri = VURI::getInstance(resourcePlatformPath)
-		(facade as VersioningFacadeImpl).addPathToRecorded(resourceVuri)
+		(sourceTargetRecorder as SourceTargetRecorderImpl).addPathToRecorded(resourceVuri)
 
 		// Create container and synchronize 
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
@@ -84,14 +84,14 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 		val targetVURI = VURI::getInstance(targetPath)
 		val sourceVURI = VURI::getInstance(sourcePath)
 
-		facade.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
+		sourceTargetRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
 		// Create container and synchronize 
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(facade.changesMatches.length, is(1))
+		assertThat(sourceTargetRecorder.changesMatches.length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
@@ -99,10 +99,10 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 			rootElement.saveAndSynchronizeChanges
 			assertModelsEqual
 		]
-		assertThat(facade.changesMatches.length, is(4))
-		assertThat(facade.changesMatches.forall[sourceVURI == originalVURI], is(true))
-		assertThat(facade.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
-		assertThat(facade.changesMatches.forall[1 == targetToCorrespondentChanges.size], is(true))
+		assertThat(sourceTargetRecorder.changesMatches.length, is(4))
+		assertThat(sourceTargetRecorder.changesMatches.forall[sourceVURI == originalVURI], is(true))
+		assertThat(sourceTargetRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
+		assertThat(sourceTargetRecorder.changesMatches.forall[1 == targetToCorrespondentChanges.size], is(true))
 	}
 
 	@Test
@@ -113,23 +113,23 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 		val targetVURI = VURI::getInstance(targetPath)
 		val sourceVURI = VURI::getInstance(sourcePath)
 
-		facade.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
+		sourceTargetRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
 		// Create container and synchronize 
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(facade.changesMatches.length, is(1))
+		assertThat(sourceTargetRecorder.changesMatches.length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(facade.changesMatches.length, is(4))
-		assertThat(facade.changesMatches.forall[sourceVURI == originalVURI], is(true))
-		assertThat(facade.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
-		assertThat(facade.changesMatches.forall[1 == targetToCorrespondentChanges.size], is(true))
+		assertThat(sourceTargetRecorder.changesMatches.length, is(4))
+		assertThat(sourceTargetRecorder.changesMatches.forall[sourceVURI == originalVURI], is(true))
+		assertThat(sourceTargetRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
+		assertThat(sourceTargetRecorder.changesMatches.forall[1 == targetToCorrespondentChanges.size], is(true))
 	}
 
 	@Test
@@ -140,20 +140,20 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 		val targetVURI = VURI::getInstance(targetPath)
 		val sourceVURI = VURI::getInstance(sourcePath)
 
-		facade.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
+		sourceTargetRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
 		// Create container and synchronize 
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(facade.changesMatches.length, is(1))
+		assertThat(sourceTargetRecorder.changesMatches.length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		val changeMatches = facade.changesMatches
+		val changeMatches = sourceTargetRecorder.changesMatches
 		assertThat(changeMatches.length, is(4))
 
 		// Serialize change matches 

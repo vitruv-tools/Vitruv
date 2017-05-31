@@ -17,17 +17,17 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.SourceTargetPair
-import tools.vitruv.framework.versioning.VersioningFacade
 import tools.vitruv.framework.vsum.InternalVirtualModel
+import tools.vitruv.framework.versioning.SourceTargetRecorder
 
-class VersioningFacadeImpl implements VersioningFacade {
+class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	@Accessors(PUBLIC_GETTER)
 	val List<ChangeMatch> changesMatches
 	val Map<VURI, AtomicEmfChangeRecorder> pathsToRecorders
 	val List<SourceTargetPair> sourceTargetPairs
 	val InternalVirtualModel virtualModel
 
-	val logger = Logger::getLogger(VersioningFacadeImpl)
+	val logger = Logger::getLogger(SourceTargetRecorderImpl)
 
 	new(InternalVirtualModel virtualModel) {
 		changesMatches = new ArrayList
