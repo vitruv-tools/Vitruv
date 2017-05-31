@@ -32,18 +32,18 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	def testRecordingWithExecuteCommand() {
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
-		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(it, container)]
+		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		val recorder = new AtomicEmfChangeRecorder
 		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
 		val resourceVuri = VURI::getInstance(resourcePlatformPath)
 		val modelInstance = virtualModel.getModelInstance(resourceVuri)
 		recorder.beginRecording(resourceVuri, Collections::singleton(modelInstance.resource))
 
-		saveAndSynchronizeChanges(rootElement)
+		rootElement.saveAndSynchronizeChanges
 
 		assertModelsEqual
 
@@ -60,18 +60,18 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 	def testFacadeAddPathToRecorded() {
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
-		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(it, container)]
+		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		val facade = new VersioningFacadeImpl(virtualModel)
-		registerObserver(facade)
+		facade.registerObserver
 		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
 		val resourceVuri = VURI::getInstance(resourcePlatformPath)
 		facade.addPathToRecorded(resourceVuri)
 
-		saveAndSynchronizeChanges(rootElement)
+		rootElement.saveAndSynchronizeChanges
 
 		assertModelsEqual
 		val changes = facade.getChanges(resourceVuri)
@@ -83,11 +83,11 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		// Create model 
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
 
 		// Setup facade 
 		val facade = new VersioningFacadeImpl(virtualModel)
-		registerObserver(facade)
+		facade.registerObserver
 		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
 		val resourceVuri = VURI::getInstance(resourcePlatformPath)
 		facade.addPathToRecorded(resourceVuri)
@@ -96,11 +96,11 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
-		saveAndSynchronizeChanges(rootElement)
+		rootElement.saveAndSynchronizeChanges
 
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
-			createAndAddNonRoot(it, container)
-			saveAndSynchronizeChanges(root)
+			createAndAddNonRoot(container)
+			root.saveAndSynchronizeChanges
 			assertModelsEqual
 		]
 	}
@@ -116,7 +116,7 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		// Create model 
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
 
 		// Setup facade 
 		val VersioningFacade facade = new VersioningFacadeImpl(virtualModel)
@@ -128,15 +128,51 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
-		saveAndSynchronizeChanges(rootElement)
+		rootElement.saveAndSynchronizeChanges
 		assertThat(facade.changesMatches.length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
-			createAndAddNonRoot(it, container)
-			saveAndSynchronizeChanges(root)
+			createAndAddNonRoot(container)
+			root.saveAndSynchronizeChanges
 			assertModelsEqual
 		]
+		assertThat(facade.changesMatches.length, is(4))
+		assertThat(facade.changesMatches.forall[originalVURI == sourceVURI], is(true))
+		assertThat(facade.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
+		assertThat(facade.changesMatches.forall[targetToCorrespondentChanges.size == 1], is(true))
+	}
+
+	@Test
+	def void testFacadeRecordOriginalAndCorrespondentChanges2() {
+		// Paths and VURIs
+		val sourcePath = '''«currentTestProject.name»/«TEST_SOURCE_MODEL_NAME.projectModelPath»'''
+		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
+		val targetVURI = VURI::getInstance(targetPath)
+		val sourceVURI = VURI::getInstance(sourcePath)
+
+		// Create model 
+		val root = AllElementTypesFactory::eINSTANCE.createRoot
+		root.id = TEST_SOURCE_MODEL_NAME
+		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
+
+		// Setup facade 
+		val VersioningFacade facade = new VersioningFacadeImpl(virtualModel)
+		facade.registerObserver
+
+		facade.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
+
+		// Create container and synchronize 
+		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		container.id = "NonRootObjectContainer"
+		rootElement.nonRootObjectContainerHelper = container
+		rootElement.saveAndSynchronizeChanges
+		assertThat(facade.changesMatches.length, is(1))
+
+		// Create and add non roots
+		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
+		root.saveAndSynchronizeChanges
+		assertModelsEqual
 		assertThat(facade.changesMatches.length, is(4))
 		assertThat(facade.changesMatches.forall[originalVURI == sourceVURI], is(true))
 		assertThat(facade.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
