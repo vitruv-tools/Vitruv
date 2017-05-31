@@ -10,14 +10,15 @@ import java.util.HashSet
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.EChange
+import java.io.Serializable
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
  * right before the change described by the recorded {@link ChangeDescription}.
  */
-class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
+class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange, Serializable {
 	private final ChangeDescription changeDescription;
-	private final VURI vuri;
+	private final transient VURI vuri;
 	private var boolean canBeBackwardsApplied;
 	
     public new(ChangeDescription changeDescription, Iterable<EChange> eChanges, VURI vuri) {

@@ -1,8 +1,10 @@
 package tools.vitruv.framework.versioning
 
+import java.io.Serializable
 import java.util.List
 import java.util.Map
 
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.Data
 
 import tools.vitruv.framework.change.description.TransactionalChange
@@ -16,7 +18,9 @@ import tools.vitruv.framework.util.datatypes.VURI
  * @since 2017-05-30
  */
 @Data
-class ChangeMatch {
+class ChangeMatch implements Serializable {
+	@Accessors(PUBLIC_GETTER)
+	static val serialVersionUID = 1L
 	VURI originalVURI
 	TransactionalChange originalChange
 	Map<VURI, List<TransactionalChange>> targetToCorrespondentChanges

@@ -15,6 +15,7 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.change.echange;visibility:=reexport
 Export-Package: tools.vitruv.framework.change.description,
+ tools.vitruv.framework.change.description.impl,
  tools.vitruv.framework.change.preparation,
  tools.vitruv.framework.change.recording
 Bundle-Vendor: vitruv.tools

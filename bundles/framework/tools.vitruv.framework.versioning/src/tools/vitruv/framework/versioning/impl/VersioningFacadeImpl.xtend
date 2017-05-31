@@ -45,7 +45,7 @@ class VersioningFacadeImpl implements VersioningFacade {
 	}
 
 	override update(VURI vuri, TransactionalChange change) {
-		sourceTargetPairs.filter[source == vuri].forEach [ pair |
+		sourceTargetPairs.filter[vuri == source].forEach [ pair |
 			val targetToCorrespondentChanges = pair.targets.stream.collect(Collectors::toMap(Function::identity, [
 				getChanges
 			]))
