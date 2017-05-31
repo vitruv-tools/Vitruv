@@ -21,9 +21,6 @@ import static org.junit.Assert.assertThat
 class VersioningFacadeTest extends AbstractVersioningTest {
 	@Test
 	def testRecordingWithExecuteCommand() {
-		val root = AllElementTypesFactory::eINSTANCE.createRoot
-		root.id = TEST_SOURCE_MODEL_NAME
-		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
@@ -49,9 +46,6 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 
 	@Test
 	def testFacadeAddPathToRecorded() {
-		val root = AllElementTypesFactory::eINSTANCE.createRoot
-		root.id = TEST_SOURCE_MODEL_NAME
-		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
@@ -71,11 +65,6 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 
 	@Test
 	def testSingleChangeSynchronization() {
-		// Create model 
-		val root = AllElementTypesFactory::eINSTANCE.createRoot
-		root.id = TEST_SOURCE_MODEL_NAME
-		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
-
 		// Setup facade 
 		val facade = new VersioningFacadeImpl(virtualModel)
 		facade.registerObserver
@@ -91,7 +80,7 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
 			createAndAddNonRoot(container)
-			root.saveAndSynchronizeChanges
+			rootElement.saveAndSynchronizeChanges
 			assertModelsEqual
 		]
 	}
@@ -103,11 +92,6 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
 		val targetVURI = VURI::getInstance(targetPath)
 		val sourceVURI = VURI::getInstance(sourcePath)
-
-		// Create model 
-		val root = AllElementTypesFactory::eINSTANCE.createRoot
-		root.id = TEST_SOURCE_MODEL_NAME
-		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
 
 		// Setup facade 
 		val VersioningFacade facade = new VersioningFacadeImpl(virtualModel)
@@ -125,7 +109,7 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
 			createAndAddNonRoot(container)
-			root.saveAndSynchronizeChanges
+			rootElement.saveAndSynchronizeChanges
 			assertModelsEqual
 		]
 		assertThat(facade.changesMatches.length, is(4))
@@ -142,11 +126,6 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 		val targetVURI = VURI::getInstance(targetPath)
 		val sourceVURI = VURI::getInstance(sourcePath)
 
-		// Create model 
-		val root = AllElementTypesFactory::eINSTANCE.createRoot
-		root.id = TEST_SOURCE_MODEL_NAME
-		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
-
 		// Setup facade 
 		val VersioningFacade facade = new VersioningFacadeImpl(virtualModel)
 		facade.registerObserver
@@ -162,7 +141,7 @@ class VersioningFacadeTest extends AbstractVersioningTest {
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
-		root.saveAndSynchronizeChanges
+		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
 		assertThat(facade.changesMatches.length, is(4))
 		assertThat(facade.changesMatches.forall[sourceVURI == originalVURI], is(true))

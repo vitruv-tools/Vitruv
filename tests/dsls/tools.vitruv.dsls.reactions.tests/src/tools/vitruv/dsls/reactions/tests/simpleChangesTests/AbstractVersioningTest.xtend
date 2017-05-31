@@ -12,7 +12,10 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 	protected static val NON_CONTAINMENT_NON_ROOT_IDS = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
 
 	protected final override setup() {
-		// Do nothing 
+		// Create model 
+		val root = AllElementTypesFactory::eINSTANCE.createRoot
+		root.id = TEST_SOURCE_MODEL_NAME
+		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
 	}
 
 	protected final override cleanup() {
