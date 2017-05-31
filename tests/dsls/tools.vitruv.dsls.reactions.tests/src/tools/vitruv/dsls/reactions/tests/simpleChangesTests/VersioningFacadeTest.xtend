@@ -1,33 +1,24 @@
 package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
 import allElementTypes.AllElementTypesFactory
-import allElementTypes.NonRootObjectContainerHelper
-import allElementTypes.Root
 
 import java.util.ArrayList
 import java.util.Collections
 import java.util.List
 
-import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
-
 import org.junit.Assert
 import org.junit.Test
+
+import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.VersioningFacade
+import tools.vitruv.framework.versioning.impl.VersioningFacadeImpl
 
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
-import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
-import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.versioning.impl.VersioningFacadeImpl
-import tools.vitruv.framework.versioning.VersioningFacade
-
-class VersioningTests extends AbstractAllElementTypesReactionsTests {
-	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
-	static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget"
-	static val NON_CONTAINMENT_NON_ROOT_IDS = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
-
+class VersioningFacadeTest extends AbstractVersioningTest {
 	@Test
 	def testRecordingWithExecuteCommand() {
 		val root = AllElementTypesFactory::eINSTANCE.createRoot
@@ -138,13 +129,13 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 			assertModelsEqual
 		]
 		assertThat(facade.changesMatches.length, is(4))
-		assertThat(facade.changesMatches.forall[originalVURI == sourceVURI], is(true))
+		assertThat(facade.changesMatches.forall[sourceVURI == originalVURI], is(true))
 		assertThat(facade.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
-		assertThat(facade.changesMatches.forall[targetToCorrespondentChanges.size == 1], is(true))
+		assertThat(facade.changesMatches.forall[1 == targetToCorrespondentChanges.size], is(true))
 	}
 
 	@Test
-	def void testFacadeRecordOriginalAndCorrespondentChanges2() {
+	def void testFacadeRecordOriginalAndCorrespondentChangesSingleSaveAndSynchronize() {
 		// Paths and VURIs
 		val sourcePath = '''«currentTestProject.name»/«TEST_SOURCE_MODEL_NAME.projectModelPath»'''
 		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
@@ -174,39 +165,8 @@ class VersioningTests extends AbstractAllElementTypesReactionsTests {
 		root.saveAndSynchronizeChanges
 		assertModelsEqual
 		assertThat(facade.changesMatches.length, is(4))
-		assertThat(facade.changesMatches.forall[originalVURI == sourceVURI], is(true))
+		assertThat(facade.changesMatches.forall[sourceVURI == originalVURI], is(true))
 		assertThat(facade.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
-		assertThat(facade.changesMatches.forall[targetToCorrespondentChanges.size == 1], is(true))
-	}
-
-	override protected setup() {
-		// Do nothing 
-	}
-
-	override protected cleanup() {
-		// Do nothing
-	}
-
-	override protected createChangePropagationSpecifications() {
-		#[new AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes {
-		}]
-	}
-
-	private def String getProjectModelPath(String modelName) {
-		'''model/«modelName».«MODEL_FILE_EXTENSION»'''
-	}
-
-	private def getRootElement() {
-		TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root
-	}
-
-	private def assertModelsEqual() {
-		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath)
-	}
-
-	private def void createAndAddNonRoot(String id, NonRootObjectContainerHelper container) {
-		val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
-		nonRoot.id = id
-		container.nonRootObjectsContainment.add(nonRoot)
+		assertThat(facade.changesMatches.forall[1 == targetToCorrespondentChanges.size], is(true))
 	}
 }
