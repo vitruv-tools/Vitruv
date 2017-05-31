@@ -60,7 +60,7 @@ class VersioningFacadeImpl implements VersioningFacade {
 			throw new IllegalStateException('''VURI«resourceVuri» has already been observed''')
 		val recorder = new AtomicEmfChangeRecorder
 		pathsToRecorders.put(resourceVuri, recorder)
-		recorder.startRecordingOn(resourceVuri)
+		recorder.startRecordingOn(resourceVuri, false)
 	}
 
 	def List<TransactionalChange> getChanges(VURI vuri) {
@@ -70,12 +70,12 @@ class VersioningFacadeImpl implements VersioningFacade {
 			changes += recorder.endRecording
 			return null
 		]
-		recorder.startRecordingOn(vuri)
+		recorder.startRecordingOn(vuri, true)
 		changes
 	}
 
-	private def startRecordingOn(AtomicEmfChangeRecorder recorder, VURI vuri) {
-		logger.debug('''«if (recorder.recording) "Restart" else "Start"» recording on VURI «vuri»''')
+	private def startRecordingOn(AtomicEmfChangeRecorder recorder, VURI vuri, boolean restart) {
+		logger.debug('''«if (restart) "Restart" else "Start"» recording on VURI «vuri»''')
 		val modelInstance = virtualModel.getModelInstance(vuri)
 		recorder.beginRecording(vuri, Collections::singleton(modelInstance.resource))
 	}
