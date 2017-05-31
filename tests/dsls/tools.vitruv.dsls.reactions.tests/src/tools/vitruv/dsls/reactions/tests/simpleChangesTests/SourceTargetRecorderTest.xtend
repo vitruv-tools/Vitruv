@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
+import tools.vitruv.framework.versioning.VersioningXtendFactory
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	var SourceTargetRecorder sourceTargetRecorder
@@ -30,7 +31,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	override setup() {
 		super.setup
 		// Setup facade 
-		sourceTargetRecorder = new SourceTargetRecorderImpl(virtualModel)
+		sourceTargetRecorder = VersioningXtendFactory::instance.createSourceTargetRecorder(virtualModel)
 		sourceTargetRecorder.registerObserver
 	}
 
@@ -101,7 +102,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		]
 		assertThat(sourceTargetRecorder.changesMatches.length, is(4))
 		assertThat(sourceTargetRecorder.changesMatches.forall[sourceVURI == originalVURI], is(true))
-		assertThat(sourceTargetRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
+		assertThat(sourceTargetRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)],
+			is(true))
 		assertThat(sourceTargetRecorder.changesMatches.forall[1 == targetToCorrespondentChanges.size], is(true))
 	}
 
@@ -128,7 +130,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		assertModelsEqual
 		assertThat(sourceTargetRecorder.changesMatches.length, is(4))
 		assertThat(sourceTargetRecorder.changesMatches.forall[sourceVURI == originalVURI], is(true))
-		assertThat(sourceTargetRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
+		assertThat(sourceTargetRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)],
+			is(true))
 		assertThat(sourceTargetRecorder.changesMatches.forall[1 == targetToCorrespondentChanges.size], is(true))
 	}
 
