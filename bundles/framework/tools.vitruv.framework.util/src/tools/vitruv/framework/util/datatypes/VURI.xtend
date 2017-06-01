@@ -3,10 +3,13 @@ package tools.vitruv.framework.util.datatypes
 import java.io.Serializable
 import java.util.HashMap
 import java.util.Map
+
 import org.eclipse.core.resources.IResource
 import org.eclipse.emf.common.CommonPlugin
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtend.lib.annotations.Accessors
+
 import tools.vitruv.framework.util.bridges.EMFBridge
 
 /** 
@@ -14,84 +17,88 @@ import tools.vitruv.framework.util.bridges.EMFBridge
  * @author kramerm
  */
 class VURI implements Comparable<VURI>, Serializable {
-	static final long serialVersionUID = 1L
-	static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>()
+	@Accessors(PUBLIC_GETTER)
+	static val serialVersionUID = 1L
+	static val Map<String, VURI> INSTANCES = new HashMap<String, VURI>
+	@Accessors(PUBLIC_GETTER)
 	transient org.eclipse.emf.common.util.URI emfURI
 
 	/** 
 	 * Multiton classes should not have a public or default constructor. 
 	 */
 	private new(String uriString) {
-		this.emfURI = EMFBridge::createURI(uriString)
+		emfURI = EMFBridge::createURI(uriString)
+	}
+
+	override compareTo(VURI otherVURI) {
+		emfURI.toString.compareTo(otherVURI.toString)
+	}
+
+	override toString() {
+		emfURI.toString
 	}
 
 	def static synchronized VURI getInstance(String key) {
-		var VURI instance = INSTANCES.get(key)
-		if (instance === null) {
-			instance = new VURI(key)
-			var String newKey = instance.toString()
-			var VURI oldInstance = INSTANCES.get(newKey)
-			if (oldInstance !== null) {
+		if (!INSTANCES.containsKey(key)) {
+			val instance = new VURI(key)
+			val newKey = instance.toString
+			if (INSTANCES.containsKey(newKey)) {
+				val VURI oldInstance = INSTANCES.get(newKey)
 				INSTANCES.put(key, oldInstance)
-				return oldInstance
+				oldInstance
 			} else {
 				// we also have to map the actual string representation of the
 				// key after the vuri
-				// was
 				// created because a prefix may be prepended to the key while
 				// the VURI is created
 				INSTANCES.put(newKey, instance)
+				INSTANCES.put(key, instance)
+				instance
 			}
-			INSTANCES.put(key, instance)
-		}
-		return instance
+		} else
+			INSTANCES.get(key)
 	}
 
 	def static VURI getInstance(Resource resource) {
-		return getInstance(resource.getURI())
+		resource.URI.getInstance
 	}
 
 	def static VURI getInstance(URI uri) {
-		if (null === uri.toFileString()) {
-			return getInstance(uri.toString())
-		}
-		return getInstance(uri.toFileString())
+		if (null === uri.toFileString)
+			uri.toString.getInstance
+		else
+			uri.toFileString.getInstance
 	}
 
 	def static VURI getInstance(IResource iResource) {
-		var String[] keyStrSegments = iResource.getFullPath().segments()
-		var StringBuilder keyString = new StringBuilder()
-		for (var int i = 0; i < keyStrSegments.length; i++) {
-			if (i > 0) {
+		val keyStrSegments = iResource.fullPath.segments
+		val keyString = new StringBuilder
+		keyStrSegments.forEach [ x, i |
+			if (i > 0)
 				keyString.append("/")
-			}
-			keyString.append({
-				val _rdIndx_keyStrSegments = i
-				keyStrSegments.get(_rdIndx_keyStrSegments)
-			})
-		}
-		return getInstance(keyString.toString())
-	}
-
-	override String toString() {
-		return this.emfURI.toString()
+			keyString.append(x)
+		]
+		getInstance(keyString.toString)
 	}
 
 	def String toResolvedAbsolutePath() {
-		return CommonPlugin::resolve(this.emfURI).toFileString()
+		CommonPlugin::resolve(emfURI).toFileString
 	}
 
 	def URI getEMFUri() {
-		return this.emfURI
+		emfURI
 	}
 
 	def String getFileExtension() {
-		return this.emfURI.fileExtension()
+		emfURI.fileExtension
 	}
 
 	def String getLastSegment() {
-		var String lastSegment = this.emfURI.lastSegment()
-		return (if (lastSegment === null) "" else lastSegment )
+		val lastSegment = emfURI.lastSegment
+		if (null === lastSegment)
+			""
+		else
+			lastSegment
 	}
 
 	/** 
@@ -101,10 +108,6 @@ class VURI implements Comparable<VURI>, Serializable {
 	 * @return the new VURI with the replaced file extension
 	 */
 	def VURI replaceFileExtension(String newFileExt) {
-		return VURI::getInstance(this.emfURI.trimFileExtension().appendFileExtension(newFileExt))
-	}
-
-	override int compareTo(VURI otherVURI) {
-		return this.emfURI.toString().compareTo(otherVURI.toString())
+		VURI::getInstance(emfURI.trimFileExtension.appendFileExtension(newFileExt))
 	}
 }
