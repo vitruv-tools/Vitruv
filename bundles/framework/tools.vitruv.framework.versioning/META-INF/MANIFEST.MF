@@ -21,7 +21,7 @@ Export-Package: tools.vitruv.framework.versioning,
  tools.vitruv.framework.versioning.repository.impl,
  tools.vitruv.framework.versioning.repository.util,
  tools.vitruv.framework.versioning.util
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 0.1.1.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
