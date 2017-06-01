@@ -18,83 +18,73 @@ class VURITest {
 
 	@Test
 	def void testCreateVURIs() {
-		var int nrOfVURIs = 10
-		var Set<VURI> vuriSet = new HashSet<VURI>()
-		var Set<String> stringSet = new HashSet<String>()
-		for (var int i = 0; i < nrOfVURIs; {
-			i = i + 1
-		}) {
-			var String testKey = '''testKey_«i»'''
+		val nrOfVURIs = 10
+		val Set<VURI> vuriSet = new HashSet<VURI>
+		val Set<String> stringSet = new HashSet<String>
+		for (i : 0 ..< nrOfVURIs) {
+			val String testKey = '''testKey_«i»'''
 			stringSet.add(testKey)
-			vuriSet.add(VURI.getInstance(testKey))
+			vuriSet.add(VURI::getInstance(testKey))
 		}
-		var Set<VURI> vuriCompareSet = new HashSet<VURI>()
-		for (String str : stringSet) {
-			vuriCompareSet.add(VURI.getInstance(str))
-		}
+		val Set<VURI> vuriCompareSet = new HashSet<VURI>
+		stringSet.forEach[vuriCompareSet.add(VURI::getInstance(it))]
 		assertEquals("VURI compare set does not match original VURI set", vuriSet, vuriCompareSet)
 	}
 
 	@Test
 	def void testPlatformResourceKey() {
-		var String testKeyWithPlatformRes = '''«VitruviusConstants.getPlatformResourcePrefix()»testResource'''
-		var VURI orgVURI = testWithKey(testKeyWithPlatformRes)
-		ensureStartsWithPlatformResource(orgVURI)
-		assertEquals("Platform resource string does not equal the EMF URI string of the VURI",
-			orgVURI.getEMFUri().toString(), testKeyWithPlatformRes)
+		val testKeyWithPlatformRes = '''«VitruviusConstants::platformResourcePrefix»testResource'''
+		val orgVURI = testKeyWithPlatformRes.testWithKey
+		orgVURI.ensureStartsWithPlatformResource
+		assertEquals("Platform resource string does not equal the EMF URI string of the VURI", orgVURI.EMFUri.toString,
+			testKeyWithPlatformRes)
 	}
 
 	@Test
 	def void testStringToPlatformResourceTest() {
-		var String testKey = "testKey"
-		var VURI vuri = testWithKey(testKey)
-		ensureStartsWithPlatformResource(vuri)
+		val testKey = "testKey"
+		val vuri = testKey.testWithKey
+		vuri.ensureStartsWithPlatformResource
 	}
 
 	@Test
 	def void testHTTPKey() {
-		var String testHttpKey = "http://www.test.org"
-		var VURI vuri = testWithKey(testHttpKey)
-		ensureEquals(testHttpKey, vuri.getEMFUri().toString())
+		val testHttpKey = "http://www.test.org"
+		val vuri = testHttpKey.testWithKey
+		testHttpKey.ensureEquals(vuri.EMFUri.toString)
 	}
 
 	@Test
 	def void testPlatformDependentAbsolutePathKey() {
 		// creating file URIs is platform specific so we can not write a test for another operating
 		// system than the one which runs the Java VM
-		var String absolutePath = "/Test/bla"
-		if (SystemUtils.IS_OS_WINDOWS) {
-			absolutePath = "C:\\Test\\bla"
-		}
-		var VURI vuri = testWithKey(absolutePath)
-		ensureEquals(absolutePath.toLowerCase(), vuri.getEMFUri().toFileString().toLowerCase())
+		val absolutePath = if (SystemUtils.IS_OS_WINDOWS) "C:\\Test\\bla" else "/Test/bla"
+		val vuri = absolutePath.testWithKey
+		ensureEquals(absolutePath.toLowerCase, vuri.EMFUri.toFileString.toLowerCase)
 	}
 
 	@Test
 	def void testPlatformDependentAbsolutePathUri() {
 		// creating file URIs is platform specific so we can not write a test for another operating
 		// system than the one which runs the Java VM
-		var String absolutePath = "/Test/bla"
-		if (SystemUtils.IS_OS_WINDOWS) {
-			absolutePath = "C:\\Test\\bla"
-		}
-		var URI absolutePathUri = URI.createFileURI(absolutePath)
-		var VURI absolutePathVURI = VURI.getInstance(absolutePathUri)
-		assertEquals(absolutePathUri, absolutePathVURI.getEMFUri())
+		val absolutePath = if (SystemUtils.IS_OS_WINDOWS) "C:\\Test\\bla" else "/Test/bla"
+		val absolutePathUri = URI::createFileURI(absolutePath)
+		val absolutePathVURI = VURI::getInstance(absolutePathUri)
+		assertEquals(absolutePathUri, absolutePathVURI.EMFUri)
 	}
 
 	def private VURI testWithKey(String testKeyWithPlatformRes) {
-		var VURI vuriOrg = VURI.getInstance(testKeyWithPlatformRes)
-		var VURI vuriCompare = VURI.getInstance(testKeyWithPlatformRes)
-		var VURI vuriEmfCompare = VURI.getInstance(vuriOrg.getEMFUri())
+		val vuriOrg = VURI::getInstance(testKeyWithPlatformRes)
+		val vuriCompare = VURI::getInstance(testKeyWithPlatformRes)
+		val vuriEmfCompare = VURI::getInstance(vuriOrg.getEMFUri())
 		assertEquals("Original VURI is not the same VURI as vuriCompare", vuriOrg, vuriCompare)
 		assertEquals("Original VURI is not the same VURI as vuriEmfCompare", vuriOrg, vuriEmfCompare)
-		return vuriOrg
+		vuriOrg
 	}
 
 	def private void ensureStartsWithPlatformResource(VURI orgVURI) {
 		assertTrue("VURI does not start with platform resource",
-			orgVURI.getEMFUri().toString().startsWith(VitruviusConstants.getPlatformResourcePrefix()))
+			orgVURI.EMFUri.toString.startsWith(VitruviusConstants::platformResourcePrefix))
 	}
 
 	def private void ensureEquals(String orgString, String compString) {
