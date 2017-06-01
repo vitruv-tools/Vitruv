@@ -5,6 +5,7 @@ import java.util.List
 import java.util.Set
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
+import org.eclipse.emf.common.util.EList
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -49,6 +50,9 @@ reaction CreatedMale {
 }
 
 routine createMaleMemberOfFamily(persons::Male person){
+	match{
+		val familiesRegister = retrieve families::FamilyRegister corresponding to person.eContainer
+	}
 	action{
 		val member = create families::Member and initialize {
 		member.firstName = person.fullName.split(" ").get(0)
@@ -57,8 +61,7 @@ routine createMaleMemberOfFamily(persons::Male person){
 		
 		call{
 		// Let user select the family
-		var Set<Family> collectionFamilies = new HashSet
-//		collectionFamilies = Wie bekomme ich alle Families? Habe kein Zugriff auf FamiliesRoot. 
+		var EList<Family> collectionFamilies = familiesRegister.families 
 		val List<String> familiesNames = new ArrayList<String>(collectionFamilies.size)
 		for (Family f: collectionFamilies) {
 //			if(f.lastName.equals(person.fullName.split(" ").get(1))){
@@ -77,16 +80,21 @@ routine createMaleMemberOfFamily(persons::Male person){
 		var List<String> collectionRoles = new ArrayList
 		collectionRoles += #["Father", "Son"]
 		val String selectMsgRoles = "Please select whether the person is a father or a son."
-		val int selectedRole = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsg, collectionRoles)
+		val int selectedRole = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsgRoles, collectionRoles)
 		if(selectedRole == 0){
 			selectedFamily.father = member			
 		} else {
 			selectedFamily.sons.add(member)
 		}
-			
+		addCorr(person, selectedFamily)			
 		}
-		add correspondence between person and selectedFamily
 		
+	}
+}
+
+routine addCorr(persons::Person person,families::Family family){
+	action{
+		add correspondence between person and family
 	}
 }
 
@@ -96,6 +104,9 @@ reaction CreatedFemale {
 }
 
 routine createFemaleMemberOfFamily(persons::Female person){
+	match{
+		val familyRegister = retrieve families::FamilyRegister corresponding to person.eContainer
+	}
 	action{
 		val member = create families::Member and initialize {
 		member.firstName = person.fullName.split(" ").get(0)
@@ -105,8 +116,7 @@ routine createFemaleMemberOfFamily(persons::Female person){
 	
 		call{
 		// Let user select the family
-		var Set<Family> collectionFamilies = new HashSet
-//		collectionFamilies = Wie bekomme ich alle Families? Habe kein Zugriff auf FamiliesRoot. 
+		var EList<Family> collectionFamilies = familyRegister.families
 		val List<String> familiesNames = new ArrayList<String>(collectionFamilies.size)
 		for (Family f: collectionFamilies) {
 //			if(f.lastName.equals(person.fullName.split(" ").get(1))){
@@ -125,17 +135,14 @@ routine createFemaleMemberOfFamily(persons::Female person){
 		var List<String> collectionRoles = new ArrayList
 		collectionRoles += #["Mother", "Daughter"]
 		val String selectMsgRoles = "Please select whether the person is a mother or a daughter."
-		val int selectedRole = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsg, collectionRoles)
+		val int selectedRole = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsgRoles, collectionRoles)
 		if(selectedRole == 0){
 			selectedFamily.mother = member			
 		} else {
 			selectedFamily.daughters.add(member)
 		}
-			
-		}
-		add correspondence between person and selectedFamily
-		
-	}
+		addCorr(person, selectedFamily)	
+		}		
 	}
 }
 
