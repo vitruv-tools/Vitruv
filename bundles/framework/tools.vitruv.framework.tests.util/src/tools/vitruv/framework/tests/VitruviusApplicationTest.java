@@ -1,6 +1,7 @@
 package tools.vitruv.framework.tests;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,9 +9,9 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import tools.vitruv.framework.change.description.CompositeContainerChange;
+//import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
-import tools.vitruv.framework.change.description.VitruviusChangeFactory;
+//import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -30,14 +31,15 @@ import tools.vitruv.framework.util.datatypes.VURI;
  *
  */
 
-public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
-
+public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest implements ChangeObservable{
+	private List<ChangeObserver> observers;
 	private AtomicEmfChangeRecorder changeRecorder;
-
+		
 	@Override
 	public final void beforeTest() {
 		super.beforeTest();
 		this.changeRecorder = new AtomicEmfChangeRecorder(unresolveChanges());
+		observers = new ArrayList<>();
 		setup();
 	}
 
@@ -47,6 +49,21 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			changeRecorder.endRecording();
 		}
 		cleanup();
+	}
+	
+	@Override
+	public final void registerObserver(final ChangeObserver observer) {
+		observers.add(observer);
+	}
+	
+	@Override
+	public final void unRegisterObserver(final ChangeObserver observer) {
+		observers.remove(observer);
+	}
+	
+	@Override
+	public final void notifyObservers(final VURI vuri, final TransactionalChange change) {
+		observers.forEach(observer -> observer.update(vuri, change));
 	}
 	
 	/**
@@ -71,11 +88,15 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * clean up actions.
 	 */
 	protected abstract void cleanup();
-
+		
 	private void propagateChanges(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
-		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-		this.getVirtualModel().propagateChange(compositeChange);
+		changes.forEach(change -> {
+			notifyObservers(vuri, change);	
+			// TODO PS Check, if CompositeContainerChange creation is necessary
+			// CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance().createCompositeChange(Collections.singleton(change)); 
+			this.getVirtualModel().propagateChange(change);
+		});
 	}
 
 	private void startRecordingChanges(Resource resource) {

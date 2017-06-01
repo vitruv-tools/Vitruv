@@ -47,6 +47,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	@After
 	public abstract void afterTest();
 
+	@Override
 	@Before
 	public void beforeTest() {
 		super.beforeTest();

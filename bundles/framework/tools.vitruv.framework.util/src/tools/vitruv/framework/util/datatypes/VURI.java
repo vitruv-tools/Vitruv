@@ -1,5 +1,6 @@
 package tools.vitruv.framework.util.datatypes;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,10 +17,12 @@ import tools.vitruv.framework.util.bridges.EMFBridge;
  * @author kramerm
  *
  */
-public class VURI implements Comparable<VURI> {
-    private static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>();
+public class VURI implements Comparable<VURI>, Serializable {
+	private static final long serialVersionUID = 1L;
 
-    private org.eclipse.emf.common.util.URI emfURI;
+	private static final Map<String, VURI> INSTANCES = new HashMap<String, VURI>();
+
+    private transient org.eclipse.emf.common.util.URI emfURI;
 
     /** Multiton classes should not have a public or default constructor. */
     private VURI(final String uriString) {

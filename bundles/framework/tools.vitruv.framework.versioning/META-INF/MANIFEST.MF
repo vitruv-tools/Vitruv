@@ -54,9 +54,9 @@ Require-Bundle: org.eclipse.core.runtime,
  tools.vitruv.framework.userinteraction,
  tools.vitruv.framework.metamodel,
  tools.vitruv.framework.tuid,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.10.0",
+ org.eclipse.xtend.lib;bundle-version="2.10.0",
+ org.eclipse.xtend.lib.macro;bundle-version="2.10.0",
  tools.vitruv.framework.change,
  tools.vitruv.framework.vsum
 Bundle-ActivationPolicy: lazy
