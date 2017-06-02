@@ -10,14 +10,18 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Accessors
 
-import tools.vitruv.framework.util.bridges.EMFBridge
 import java.io.ObjectOutputStream
 import java.io.IOException
 import java.io.ObjectInputStream
 
+import tools.vitruv.framework.util.bridges.EMFBridge
+
 /** 
  * Implements the multiton design pattern.
+ * To xtend: Patrick Stoeckle
+ * 
  * @author kramerm
+ * @version 0.2.0
  */
 class VURI implements Comparable<VURI>, Serializable {
 	@Accessors(PUBLIC_GETTER)
