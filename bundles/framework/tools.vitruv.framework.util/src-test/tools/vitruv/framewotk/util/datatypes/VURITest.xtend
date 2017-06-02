@@ -10,8 +10,20 @@ import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.datatypes.VURI
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
+import java.io.FileOutputStream
+import java.io.ObjectOutputStream
+import java.io.FileInputStream
+import java.io.ObjectInputStream
+import static org.hamcrest.CoreMatchers.equalTo
+import static org.junit.Assert.assertThat
+import java.io.IOException
 
 class VURITest {
+	@Rule
+	public val tempFolder = new TemporaryFolder
+
 	@Before
 	def void setUp() throws Exception {
 	}
@@ -73,10 +85,40 @@ class VURITest {
 		assertEquals(absolutePathUri, absolutePathVURI.EMFUri)
 	}
 
+	@Test
+	def void testSerialization() {
+		val testKey = "testKey"
+		val vuri = testKey.testWithKey
+		val serializationPath = '''vuri.ser'''
+		try {
+			val yourFile = tempFolder.newFile(serializationPath)
+
+			val fileOut = new FileOutputStream(yourFile, false)
+			val out = new ObjectOutputStream(fileOut)
+			out.writeObject(vuri)
+			out.close
+			fileOut.close
+
+			val fileIn = new FileInputStream(yourFile)
+			val in = new ObjectInputStream(fileIn)
+			try {
+				val desVuri = in.readObject as VURI
+				assertThat(vuri, equalTo(desVuri))
+			} catch (ClassNotFoundException exc) {
+				throw new RuntimeException("auto-generated try/catch", exc)
+			}
+			in.close
+			fileIn.close
+
+		} catch (IOException exc) {
+			throw new RuntimeException("auto-generated try/catch", exc)
+		}
+	}
+
 	def private VURI testWithKey(String testKeyWithPlatformRes) {
 		val vuriOrg = VURI::getInstance(testKeyWithPlatformRes)
 		val vuriCompare = VURI::getInstance(testKeyWithPlatformRes)
-		val vuriEmfCompare = VURI::getInstance(vuriOrg.getEMFUri())
+		val vuriEmfCompare = VURI::getInstance(vuriOrg.EMFUri)
 		assertEquals("Original VURI is not the same VURI as vuriCompare", vuriOrg, vuriCompare)
 		assertEquals("Original VURI is not the same VURI as vuriEmfCompare", vuriOrg, vuriEmfCompare)
 		vuriOrg
@@ -84,7 +126,7 @@ class VURITest {
 
 	def private void ensureStartsWithPlatformResource(VURI orgVURI) {
 		assertTrue("VURI does not start with platform resource",
-			orgVURI.EMFUri.toString.startsWith(VitruviusConstants::platformResourcePrefix))
+			orgVURI.emfURI.toString.startsWith(VitruviusConstants::platformResourcePrefix))
 	}
 
 	def private void ensureEquals(String orgString, String compString) {

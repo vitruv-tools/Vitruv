@@ -11,6 +11,9 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import tools.vitruv.framework.util.bridges.EMFBridge
+import java.io.ObjectOutputStream
+import java.io.IOException
+import java.io.ObjectInputStream
 
 /** 
  * Implements the multiton design pattern.
@@ -31,11 +34,19 @@ class VURI implements Comparable<VURI>, Serializable {
 	}
 
 	override compareTo(VURI otherVURI) {
-		emfURI.toString.compareTo(otherVURI.toString)
+		toString.compareTo(otherVURI.toString)
 	}
 
 	override toString() {
 		emfURI.toString
+	}
+
+	def dispatch equals(Object o) {
+		false
+	}
+
+	def dispatch equals(VURI v) {
+		toString == v.toString
 	}
 
 	def static synchronized VURI getInstance(String key) {
@@ -109,5 +120,16 @@ class VURI implements Comparable<VURI>, Serializable {
 	 */
 	def VURI replaceFileExtension(String newFileExt) {
 		VURI::getInstance(emfURI.trimFileExtension.appendFileExtension(newFileExt))
+	}
+
+	// Needed for serialization
+	private def void writeObject(ObjectOutputStream stream) throws IOException {
+		stream.writeObject(emfURI.toString)
+	}
+
+	// Needed for deserialization
+	private def void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		val emfURIString = stream.readObject as String
+		emfURI = EMFBridge::createURI(emfURIString)
 	}
 }
