@@ -18,9 +18,9 @@ import tools.vitruv.framework.util.datatypes.VURI
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
  * right before the change described by the recorded {@link ChangeDescription}.
  * 
- * @author 
+ * @author
  * @version 0.2.0
- * @since 
+ * @since
  */
 class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange, Serializable {
 	val transient ChangeDescription changeDescription
@@ -36,9 +36,9 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 
 	override toString() '''
 		«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
-			«FOR eChange : EChanges»
-				Inner change: «eChange»
-			«ENDFOR»
+		        «FOR eChange : EChanges»
+		        	Inner change: «eChange»
+		        «ENDFOR»
 	'''
 
 	override getURI() {
@@ -90,7 +90,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 	}
 
 	private def registerOldObjectTuidsForUpdate() {
-		val tuidManager = TuidManager.instance
+		val tuidManager = TuidManager::instance
 		val objects = new HashSet<EObject>
 		objects.addAll(changeDescription.objectChanges.keySet.filterNull)
 		objects.addAll(changeDescription.objectChanges.values.flatten.map[referenceValue].filterNull)
