@@ -33,10 +33,9 @@ class VitruviusChangeFactory {
 	}
 
 	static def VitruviusChangeFactory getInstance() {
-		if (instance === null) {
+		if (instance === null)
 			instance = new VitruviusChangeFactory
-		}
-		return instance
+		instance
 	}
 
 	/**
@@ -45,51 +44,47 @@ class VitruviusChangeFactory {
 	 */
 	def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
 		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
-		return new EMFModelChangeImpl(changes, vuri)
+		new EMFModelChangeImpl(changes, vuri)
 	}
 
 	def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
 		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
-		return new LegacyEMFModelChangeImpl(changeDescription, changes, vuri)
+		new LegacyEMFModelChangeImpl(changeDescription, changes, vuri)
 	}
 
 	def ConcreteChange createConcreteApplicableChange(EChange change, VURI vuri) {
-		return new ConcreteApplicableChangeImpl(change, vuri)
+		new ConcreteApplicableChangeImpl(change, vuri)
 	}
 
 	def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
-		return new ConcreteChangeImpl(change, vuri)
+		new ConcreteChangeImpl(change, vuri)
 	}
 
 	def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		val vuri = VURI::getInstance(changedFileResource)
-		var EChange eChange = null
-		if (kind == FileChangeKind::Create) {
-			eChange = generateFileCreateChange(changedFileResource)
-		} else {
-			eChange = generateFileDeleteChange(changedFileResource)
-		}
-		return new ConcreteChangeImpl(eChange, vuri)
+		val eChange = if (kind == FileChangeKind::Create)
+				generateFileCreateChange(changedFileResource)
+			else
+				generateFileDeleteChange(changedFileResource)
+		new ConcreteChangeImpl(eChange, vuri)
 	}
 
 	def CompositeContainerChange createCompositeContainerChange() {
-		return new CompositeContainerChangeImpl
+		new CompositeContainerChangeImpl
 	}
 
 	def CompositeTransactionalChange createCompositeTransactionalChange() {
-		return new CompositeTransactionalChangeImpl
+		new CompositeTransactionalChangeImpl
 	}
 
 	def TransactionalChange createEmptyChange(VURI vuri) {
-		return new EmptyChangeImpl(vuri)
+		new EmptyChangeImpl(vuri)
 	}
 
 	def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
 		val compositeChange = new CompositeContainerChangeImpl
-		for (innerChange : innerChanges) {
-			compositeChange.addChange(innerChange)
-		}
-		return compositeChange
+		innerChanges.forEach[compositeChange.addChange(it)]
+		compositeChange
 	}
 
 	private def EChange generateFileCreateChange(Resource resource) {
@@ -98,23 +93,23 @@ class VitruviusChangeFactory {
 		if (1 == resource.contents.size)
 			rootElement = resource.contents.get(0)
 		else if (1 < resource.contents.size)
-			throw new RuntimeException(
-				"The requested model instance resource '" + resource + "' has to contain at most one root element " +
-					"in order to be added to the VSUM without an explicit import!")
-				else { // resource.contents.size === null --> no element in newModelInstance
-					logger.info("Empty model file created: " + VURI::getInstance(resource) +
-						". Propagation of 'root element created' not triggered.")
-					return null
-				}
+				throw new RuntimeException(
+		"The requested model instance resource '" + resource + "' has to contain at most one root element " +
+			"in order to be added to the VSUM without an explicit import!")
+		else { // resource.contents.size === null --> no element in newModelInstance
+			logger.info("Empty model file created: " + VURI::getInstance(resource) +
+				". Propagation of 'root element created' not triggered.")
+			return null
+		}
 		val CreateAndInsertRoot<EObject> createRootEObj = TypeInferringCompoundEChangeFactory::instance.
 			createCreateAndInsertRootChange(rootElement, resource, index)
-		return createRootEObj;
+		createRootEObj
 	}
 
 	private def EChange generateFileDeleteChange(Resource resource) {
 		if (0 < resource.contents.size) {
 			val index = 0
-			val EObject rootElement = resource.contents.get(index)
+			val rootElement = resource.contents.get(index)
 			val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory::instance.
 				createRemoveAndDeleteRootChange(rootElement, resource, index)
 			return deleteRootObj
