@@ -4,6 +4,9 @@ import java.util.ArrayList
 import java.util.Collection
 import java.util.List
 
+import org.apache.log4j.Level
+import org.apache.log4j.Logger
+
 import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.EObject
@@ -18,10 +21,11 @@ import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.change.echange.resolve.StagingArea
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+import tools.vitruv.framework.util.datatypes.VURI
 
 class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
+	static val logger = Logger::getLogger(AtomicEmfChangeRecorderImpl)
 	var List<ChangeDescription> changeDescriptions
 	var VURI modelVURI
 	var Collection<Notifier> elementsToObserve
@@ -45,6 +49,9 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		changeRecorder.setRecordingTransientFeatures(false)
 		changeRecorder.setResolveProxies(true)
 		this.unresolveRecordedChanges = unresolveRecordedChanges
+
+		// TODO PS Remove 
+		logger.level = Level::DEBUG
 	}
 
 	override void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {
@@ -56,6 +63,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	}
 
 	override List<TransactionalChange> endRecording() {
+		logger.debug('''End recording, unresolveRecordedChangesL: «unresolveRecordedChanges»''')
 		if (!isRecording)
 			throw new IllegalStateException
 		changeRecorder.endRecording
