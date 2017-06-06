@@ -55,7 +55,7 @@ class TypeInferringCompoundEChangeFactoryImpl implements TypeInferringCompoundEC
 	def protected <A extends EObject, T extends Object> setUnsetAttributeChangeSubtractiveChanges(
 		ExplicitUnsetEAttribute<A, T> change, List<SubtractiveAttributeEChange<A, T>> changes) {
 		for (c : changes) {
-			change.subtractiveChanges.add(c);
+			change.subtractiveChanges.add(c)
 		}
 	}
 
@@ -67,82 +67,82 @@ class TypeInferringCompoundEChangeFactoryImpl implements TypeInferringCompoundEC
 	def protected <A extends EObject> setUnsetReferenceChangeEChanges(ExplicitUnsetEReference<A> change,
 		List<EChange> changes) {
 		for (c : changes) {
-			change.changes.add(c);
+			change.changes.add(c)
 		}
 	}
 
 	override <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(T affectedEObject,
 		Resource resource, int index) {
-		val c = CompoundFactory.eINSTANCE.createCreateAndInsertRoot();
-		c.createChange = atomicFactory.createCreateEObjectChange(affectedEObject, resource);
-		c.insertChange = atomicFactory.createInsertRootChange(affectedEObject, resource, index);
-		return c
+		val c = CompoundFactory::eINSTANCE.createCreateAndInsertRoot
+		c.createChange = atomicFactory.createCreateEObjectChange(affectedEObject, resource)
+		c.insertChange = atomicFactory.createInsertRootChange(affectedEObject, resource, index)
+		c
 	}
 
 	override <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRootChange(T affectedEObject,
 		Resource resource, int index) {
-		val c = CompoundFactory.eINSTANCE.createRemoveAndDeleteRoot();
-		c.deleteChange = atomicFactory.createDeleteEObjectChange(affectedEObject, resource);
-		c.removeChange = atomicFactory.createRemoveRootChange(affectedEObject, resource, index);
-		return c
+		val c = CompoundFactory::eINSTANCE.createRemoveAndDeleteRoot
+		c.deleteChange = atomicFactory.createDeleteEObjectChange(affectedEObject, resource)
+		c.removeChange = atomicFactory.createRemoveRootChange(affectedEObject, resource, index)
+		c
 	}
 
 	override <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> createCreateAndInsertNonRootChange(
 		A affectedEObject, EReference reference, T newValue, int index) {
-		val c = CompoundFactory.eINSTANCE.createCreateAndInsertNonRoot();
-		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource);
-		c.insertChange = atomicFactory.createInsertReferenceChange(affectedEObject, reference, newValue, index);
-		return c
+		val c = CompoundFactory::eINSTANCE.createCreateAndInsertNonRoot
+		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource)
+		c.insertChange = atomicFactory.createInsertReferenceChange(affectedEObject, reference, newValue, index)
+		c
 	}
 
 	override <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRootChange(
 		A affectedEObject, EReference reference, T oldValue, int index) {
-		val c = CompoundFactory.eINSTANCE.createRemoveAndDeleteNonRoot()
+		val c = CompoundFactory::eINSTANCE.createRemoveAndDeleteNonRoot
 		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.eResource)
 		c.removeChange = atomicFactory.createRemoveReferenceChange(affectedEObject, reference, oldValue, index)
-		return c
+		c
 	}
 
 	override <A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRootChange(
 		A affectedEObject, EReference reference, T newValue) {
-		val c = CompoundFactory.eINSTANCE.createCreateAndReplaceNonRoot()
+		val c = CompoundFactory::eINSTANCE.createCreateAndReplaceNonRoot
 		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource)
 		c.insertChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, null, newValue)
-		return c
+		c
 	}
 
 	override <A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRootChange(
 		A affectedEObject, EReference reference, T oldValue) {
-		val c = CompoundFactory.eINSTANCE.createReplaceAndDeleteNonRoot()
+		val c = CompoundFactory::eINSTANCE.createReplaceAndDeleteNonRoot
 		c.removeChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, oldValue, null)
 		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.
 			eResource)
-		return c
+		c
 	}
 
 	override <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A, T> createCreateAndReplaceAndDeleteNonRootChange(
 		A affectedEObject, EReference reference, T oldValue, T newValue) {
-		val c = CompoundFactory.eINSTANCE.createCreateAndReplaceAndDeleteNonRoot();
-		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.eResource);
-		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource);
+		val c = CompoundFactory::eINSTANCE.createCreateAndReplaceAndDeleteNonRoot
+		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.eResource)
+		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource)
 		c.replaceChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, oldValue,
-			newValue);
-		return c
+			newValue)
+		c
 	}
 
 	override <A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttributeChange(
 		A affectedEObject, EAttribute affectedAttribute, List<SubtractiveAttributeEChange<A, T>> changes) {
-		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEAttribute()
+		val c = CompoundFactory::eINSTANCE.createExplicitUnsetEAttribute
 		c.setUnsetChangeFeatures(affectedEObject, affectedAttribute)
 		c.setUnsetAttributeChangeSubtractiveChanges(changes)
-		return c
+		c
 	}
 
 	override <A extends EObject, T extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReferenceChange(
 		A affectedEObject, EReference affectedReference, List<EChange> changes) {
-		val c = CompoundFactory.eINSTANCE.createExplicitUnsetEReference();
+		val c = CompoundFactory::eINSTANCE.createExplicitUnsetEReference
 		c.setUnsetChangeFeatures(affectedEObject, affectedReference)
 		c.setUnsetReferenceChangeEChanges(changes)
-		return c;
+		c
 	}
 }
