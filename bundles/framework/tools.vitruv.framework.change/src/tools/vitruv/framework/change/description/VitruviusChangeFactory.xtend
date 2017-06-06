@@ -7,7 +7,7 @@ import tools.vitruv.framework.change.echange.EChange
 import org.eclipse.emf.ecore.resource.Resource
 
 interface VitruviusChangeFactory {
-	VitruviusChangeFactory factoryInstance = VitruviusChangeFactoryImpl.init
+	VitruviusChangeFactory factoryInstance = VitruviusChangeFactoryImpl::init
 
 	public enum FileChangeKind {
 		Create,
