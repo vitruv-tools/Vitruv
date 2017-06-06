@@ -21,15 +21,7 @@ import tools.vitruv.framework.change.echange.impl.TypeInferringCompoundEChangeFa
 
 interface TypeInferringCompoundEChangeFactory {
 
-	static TypeInferringCompoundEChangeFactory factoryInstance = TypeInferringCompoundEChangeFactoryImpl::init
-
-	/**
-	 * Get the singleton instance of the factory.
-	 * @return The singleton instance.
-	 */
-	def static TypeInferringCompoundEChangeFactory getInstance() {
-		factoryInstance
-	}
+	static TypeInferringCompoundEChangeFactory instance = TypeInferringCompoundEChangeFactoryImpl::init
 
 	/**
 	 * Creates a new {@link CreateAndInsertRoot} EChange.
