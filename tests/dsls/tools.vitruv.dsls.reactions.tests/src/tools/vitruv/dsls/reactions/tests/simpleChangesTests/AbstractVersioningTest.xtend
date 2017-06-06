@@ -6,15 +6,12 @@ import allElementTypes.Root
 import java.util.ArrayList
 import java.util.Collections
 import java.util.List
-
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
-
 import org.junit.Assert
 import org.junit.Test
-
 import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTests {
@@ -44,7 +41,7 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
-		val recorder = new AtomicEmfChangeRecorder
+		val recorder = new AtomicEmfChangeRecorderImpl
 		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
 		val resourceVuri = VURI::getInstance(resourcePlatformPath)
 		val modelInstance = virtualModel.getModelInstance(resourceVuri)

@@ -19,6 +19,7 @@ import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.SourceTargetPair
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.versioning.SourceTargetRecorder
+import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 
 class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	@Accessors(PUBLIC_GETTER)
@@ -58,7 +59,7 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	def void addPathToRecorded(VURI resourceVuri) {
 		if (pathsToRecorders.containsKey(resourceVuri))
 			throw new IllegalStateException('''VURI«resourceVuri» has already been observed''')
-		val recorder = new AtomicEmfChangeRecorder
+		val recorder = new AtomicEmfChangeRecorderImpl
 		pathsToRecorders.put(resourceVuri, recorder)
 		recorder.startRecordingOn(resourceVuri, false)
 	}

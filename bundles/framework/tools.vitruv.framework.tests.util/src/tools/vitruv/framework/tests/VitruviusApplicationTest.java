@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import tools.vitruv.framework.change.description.TransactionalChange;
 //import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
+import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 
@@ -38,7 +39,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	@Override
 	public final void beforeTest() {
 		super.beforeTest();
-		this.changeRecorder = new AtomicEmfChangeRecorder(unresolveChanges());
+		this.changeRecorder = new AtomicEmfChangeRecorderImpl(unresolveChanges());
 		observers = new ArrayList<>();
 		setup();
 	}
