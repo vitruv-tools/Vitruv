@@ -1,21 +1,18 @@
 package tools.vitruv.framework.change.description
 
-import tools.vitruv.framework.change.description.impl.VitruviusChangeFactoryImpl
-import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.change.ChangeDescription
-import tools.vitruv.framework.change.echange.EChange
 import org.eclipse.emf.ecore.resource.Resource
 
+import tools.vitruv.framework.change.description.impl.VitruviusChangeFactoryImpl
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.util.datatypes.VURI
+
 interface VitruviusChangeFactory {
-	VitruviusChangeFactory factoryInstance = VitruviusChangeFactoryImpl::init
+	VitruviusChangeFactory instance = VitruviusChangeFactoryImpl::init
 
 	public enum FileChangeKind {
 		Create,
 		Delete
-	}
-
-	static def VitruviusChangeFactory getInstance() {
-		factoryInstance
 	}
 
 	/**
