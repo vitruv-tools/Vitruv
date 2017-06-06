@@ -93,10 +93,11 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	private void propagateChanges(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
 		changes.forEach(change -> {
-			notifyObservers(vuri, change);	
 			// TODO PS Check, if CompositeContainerChange creation is necessary
 			// CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance().createCompositeChange(Collections.singleton(change)); 
 			this.getVirtualModel().propagateChange(change);
+			// PS NotifyObservers has to be called after change propagation
+			notifyObservers(vuri, change);	
 		});
 	}
 
