@@ -35,7 +35,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 	}
 
 	override toString() '''
-		«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
+		Legacy: «EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
 		        «FOR eChange : EChanges»
 		        	Inner change: «eChange»
 		        «ENDFOR»
