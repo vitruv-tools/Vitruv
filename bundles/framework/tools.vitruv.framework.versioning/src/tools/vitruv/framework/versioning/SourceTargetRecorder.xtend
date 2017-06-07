@@ -27,5 +27,5 @@ interface SourceTargetRecorder extends ChangeObserver {
 	 * Returns the change matches.
 	 * @return the change matches which are recorded until this moment
 	 */
-	def List<ChangeMatch> getChangesMatches()
+	def List<ChangeMatch> getChangeMatches(VURI source)
 }

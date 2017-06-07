@@ -1,18 +1,15 @@
 package tools.vitruv.framework.versioning.impl
 
 import java.util.ArrayList
+import java.util.Collection
 import java.util.Collections
 import java.util.HashMap
 import java.util.List
 import java.util.Map
 import java.util.function.Function
 import java.util.stream.Collectors
-
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
-
-import org.eclipse.xtend.lib.annotations.Accessors
-
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
@@ -23,11 +20,10 @@ import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.vsum.InternalVirtualModel
 
 class SourceTargetRecorderImpl implements SourceTargetRecorder {
-	@Accessors(PUBLIC_GETTER)
-	val List<ChangeMatch> changesMatches
-	val Map<VURI, AtomicEmfChangeRecorder> pathsToRecorders
-	val List<SourceTargetPair> sourceTargetPairs
+	val Collection<SourceTargetPair> sourceTargetPairs
 	val InternalVirtualModel virtualModel
+	val Map<VURI, AtomicEmfChangeRecorder> pathsToRecorders
+	val Map<VURI, List<ChangeMatch>> changesMatches
 	val boolean unresolveRecordedChanges
 
 	val logger = Logger::getLogger(SourceTargetRecorderImpl)
@@ -37,7 +33,7 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	}
 
 	new(InternalVirtualModel virtualModel, boolean unresolveRecordedChanges) {
-		changesMatches = new ArrayList
+		changesMatches = new HashMap
 		pathsToRecorders = new HashMap
 		sourceTargetPairs = new ArrayList
 		this.virtualModel = virtualModel
@@ -48,6 +44,8 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	}
 
 	override void recordOriginalAndCorrespondentChanges(VURI orignal, List<VURI> targets) {
+		val List<ChangeMatch> matches = new ArrayList
+		changesMatches.put(orignal, matches)
 		targets.forEach[addPathToRecorded]
 		sourceTargetPairs.add(new SourceTargetPair(orignal, targets))
 	}
@@ -59,8 +57,12 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 			]))
 			val match = new ChangeMatch(vuri, change, targetToCorrespondentChanges)
 			logger.debug('''New match added: «match»''')
-			changesMatches += match
+			changesMatches.get(vuri).add(match)
 		]
+	}
+
+	override getChangeMatches(VURI source) {
+		changesMatches.get(source)
 	}
 
 	def void addPathToRecorded(VURI resourceVuri) {

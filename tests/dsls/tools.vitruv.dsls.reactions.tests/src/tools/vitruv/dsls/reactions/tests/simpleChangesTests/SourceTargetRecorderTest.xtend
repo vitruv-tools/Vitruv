@@ -23,7 +23,6 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
 //import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 //import tools.vitruv.framework.change.description.VitruviusChangeFactory
-
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	var SourceTargetRecorder stRecorder
 
@@ -98,7 +97,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(stRecorder.changesMatches.length, is(1))
+		val changesMatches = stRecorder.getChangeMatches(sourceVURI)
+		assertThat(changesMatches.length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
@@ -106,13 +106,13 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 			rootElement.saveAndSynchronizeChanges
 			assertModelsEqual
 		]
-		assertThat(stRecorder.changesMatches.length, is(4))
-		assertThat(stRecorder.changesMatches.forall[sourceVURI == originalVURI], is(true))
-		assertThat(stRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
-		val message = stRecorder.changesMatches.filter[0 == targetToCorrespondentChanges.get(targetVURI).length].map [
+		assertThat(changesMatches.length, is(4))
+		assertThat(changesMatches.forall[sourceVURI == originalVURI], is(true))
+		assertThat(changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
+		val message = changesMatches.filter[0 == targetToCorrespondentChanges.get(targetVURI).length].map [
 			toString
 		].reduce[p1, p2|p1 + p2]
-		assertThat(message, stRecorder.changesMatches.forall [
+		assertThat(message, changesMatches.forall [
 			0 < targetToCorrespondentChanges.get(targetVURI).length
 		], is(true))
 	}
@@ -132,19 +132,21 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(stRecorder.changesMatches.length, is(1))
+
+		val changesMatches = stRecorder.getChangeMatches(sourceVURI)
+		assertThat(changesMatches.length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(stRecorder.changesMatches.length, is(4))
-		assertThat(stRecorder.changesMatches.forall[sourceVURI == originalVURI], is(true))
-		assertThat(stRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
-		val message = stRecorder.changesMatches.filter[0 == targetToCorrespondentChanges.get(targetVURI).length].map [
+		assertThat(changesMatches.length, is(4))
+		assertThat(changesMatches.forall[sourceVURI == originalVURI], is(true))
+		assertThat(changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
+		val message = changesMatches.filter[0 == targetToCorrespondentChanges.get(targetVURI).length].map [
 			toString
 		].reduce[p1, p2|p1 + p2]
-		assertThat(message, stRecorder.changesMatches.forall [
+		assertThat(message, changesMatches.forall [
 			0 < targetToCorrespondentChanges.get(targetVURI).length
 		], is(true))
 
@@ -165,13 +167,13 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(stRecorder.changesMatches.length, is(1))
+		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(stRecorder.changesMatches.length, is(4))
+		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(4))
 
 		// Create new source
 		val newTestSourceModelName = "EachTestModelSource2"
@@ -184,11 +186,11 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		newRoot.id = newTestSourceModelName
 		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
 
-		val changeMatches = stRecorder.changesMatches
+		val changeMatches = stRecorder.getChangeMatches(sourceVURI)
 		assertThat(changeMatches.length, is(4))
-		val copiedChanges = changeMatches.map[originalChange]
-			.filter[it instanceof EMFModelChangeImpl]
-			.map[VitruviusChangeFactory::instance.createEMFModelChange(it as EMFModelChangeImpl, newSourceVURI)]
+		val copiedChanges = changeMatches.map[originalChange].filter[it instanceof EMFModelChangeImpl].map [
+			VitruviusChangeFactory::instance.createEMFModelChange(it as EMFModelChangeImpl, newSourceVURI)
+		]
 		assertThat(copiedChanges.length, is(4))
 		copiedChanges.forEach[virtualModel.propagateChange(it)]
 		assertThat(copiedChanges.length, is(4))
@@ -209,13 +211,13 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(stRecorder.changesMatches.length, is(1))
+		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		val changeMatches = stRecorder.changesMatches
+		val changeMatches = stRecorder.getChangeMatches(sourceVURI)
 		assertThat(changeMatches.length, is(4))
 
 		// Serialize change matches 
