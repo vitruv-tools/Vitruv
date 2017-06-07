@@ -2,26 +2,23 @@ package tools.vitruv.framework.change.description.impl
 
 import org.apache.log4j.Logger
 
-import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.Resource
 
-import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
-import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
-import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
-import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
-import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
-import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
-import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
+import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
-import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
+import tools.vitruv.framework.change.preparation.impl.ChangeDescription2EChangesTransformationImpl
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.description.VitruviusChange
 
+/**
+ * @version 0.2.0
+ * @since 2017-06-06
+ */
 class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	static val logger = Logger::getLogger(VitruviusChangeFactory)
 
@@ -32,18 +29,21 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 		new VitruviusChangeFactoryImpl
 	}
 
-
 	/**
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
 	override createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
+		val changes = new ChangeDescription2EChangesTransformationImpl().transform(changeDescription)
 		new EMFModelChangeImpl(changes, vuri)
 	}
 
+	override createEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri) {
+		new EMFModelChangeImpl(changeToCopy.EChanges, vuri)
+	}
+
 	override createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
+		val changes = new ChangeDescription2EChangesTransformationImpl().transform(changeDescription)
 		new LegacyEMFModelChangeImpl(changeDescription, changes, vuri)
 	}
 
