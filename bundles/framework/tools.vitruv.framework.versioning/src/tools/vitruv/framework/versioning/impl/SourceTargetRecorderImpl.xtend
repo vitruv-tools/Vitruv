@@ -2,24 +2,25 @@ package tools.vitruv.framework.versioning.impl
 
 import java.util.ArrayList
 import java.util.Collections
-import java.util.function.Function
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import java.util.function.Function
 import java.util.stream.Collectors
 
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
+
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.SourceTargetPair
-import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.versioning.SourceTargetRecorder
-import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
+import tools.vitruv.framework.vsum.InternalVirtualModel
 
 class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	@Accessors(PUBLIC_GETTER)
@@ -27,14 +28,20 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	val Map<VURI, AtomicEmfChangeRecorder> pathsToRecorders
 	val List<SourceTargetPair> sourceTargetPairs
 	val InternalVirtualModel virtualModel
+	val boolean unresolveRecordedChanges
 
 	val logger = Logger::getLogger(SourceTargetRecorderImpl)
 
 	new(InternalVirtualModel virtualModel) {
+		this(virtualModel, false)
+	}
+
+	new(InternalVirtualModel virtualModel, boolean unresolveRecordedChanges) {
 		changesMatches = new ArrayList
 		pathsToRecorders = new HashMap
 		sourceTargetPairs = new ArrayList
 		this.virtualModel = virtualModel
+		this.unresolveRecordedChanges = unresolveRecordedChanges
 
 		// TODO PS Remove Level::DEBUG
 		logger.level = Level::DEBUG
@@ -59,7 +66,7 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	def void addPathToRecorded(VURI resourceVuri) {
 		if (pathsToRecorders.containsKey(resourceVuri))
 			throw new IllegalStateException('''VURI«resourceVuri» has already been observed''')
-		val recorder = new AtomicEmfChangeRecorderImpl
+		val recorder = new AtomicEmfChangeRecorderImpl(unresolveRecordedChanges)
 		pathsToRecorders.put(resourceVuri, recorder)
 		recorder.startRecordingOn(resourceVuri, false)
 	}

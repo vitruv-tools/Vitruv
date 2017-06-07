@@ -1,26 +1,28 @@
 package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
 import allElementTypes.AllElementTypesFactory
-
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.List
-
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.ChangeMatch
+import tools.vitruv.framework.versioning.SourceTargetRecorder
+import tools.vitruv.framework.versioning.VersioningXtendFactory
+import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
 
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.SourceTargetRecorder
-import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
-import tools.vitruv.framework.versioning.VersioningXtendFactory
+import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
+
+//import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
+//import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	var SourceTargetRecorder stRecorder
@@ -38,6 +40,10 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	override cleanup() {
 		super.cleanup
 		stRecorder = null
+	}
+
+	override unresolveChanges() {
+		true
 	}
 
 	@Test
@@ -103,7 +109,12 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		assertThat(stRecorder.changesMatches.length, is(4))
 		assertThat(stRecorder.changesMatches.forall[sourceVURI == originalVURI], is(true))
 		assertThat(stRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
-		assertThat(stRecorder.changesMatches.forall[1 == targetToCorrespondentChanges.size], is(true))
+		val message = stRecorder.changesMatches.filter[0 == targetToCorrespondentChanges.get(targetVURI).length].map [
+			toString
+		].reduce[p1, p2|p1 + p2]
+		assertThat(message, stRecorder.changesMatches.forall [
+			0 < targetToCorrespondentChanges.get(targetVURI).length
+		], is(true))
 	}
 
 	@Test
@@ -128,6 +139,15 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
 		assertThat(stRecorder.changesMatches.length, is(4))
+		assertThat(stRecorder.changesMatches.forall[sourceVURI == originalVURI], is(true))
+		assertThat(stRecorder.changesMatches.forall[null !== targetToCorrespondentChanges.get(targetVURI)], is(true))
+		val message = stRecorder.changesMatches.filter[0 == targetToCorrespondentChanges.get(targetVURI).length].map [
+			toString
+		].reduce[p1, p2|p1 + p2]
+		assertThat(message, stRecorder.changesMatches.forall [
+			0 < targetToCorrespondentChanges.get(targetVURI).length
+		], is(true))
+
 	}
 
 	@Test
@@ -153,18 +173,25 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		assertModelsEqual
 		assertThat(stRecorder.changesMatches.length, is(4))
 
-//		// Create new source
-//		val newTestSourceModelName = "EachTestModelSource2"
+		// Create new source
+		val newTestSourceModelName = "EachTestModelSource2"
 //		val newTestTargetModelName = "EachTestModelTarget2"
-//		val newSourcePath = '''«currentTestProject.name»/«newTestSourceModelName.projectModelPath»'''
+		val newSourcePath = '''«currentTestProject.name»/«newTestSourceModelName.projectModelPath»'''
 //		val newTargetPath = '''«currentTestProject.name»/«newTestTargetModelName.projectModelPath»'''
-////		val newTargetVURI = VURI::getInstance(newTargetPath)
-////		val newSourceVURI = VURI::getInstance(newSourcePath)
-////		val newRoot = AllElementTypesFactory::eINSTANCE.createRoot
-////		newRoot.id = newTestSourceModelName
-////		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
-////		
-////		val changeMatches = stRecorder.changesMatches
+//		val newTargetVURI = VURI::getInstance(newTargetPath)
+		val newSourceVURI = VURI::getInstance(newSourcePath)
+		val newRoot = AllElementTypesFactory::eINSTANCE.createRoot
+		newRoot.id = newTestSourceModelName
+		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
+
+		val changeMatches = stRecorder.changesMatches
+		assertThat(changeMatches.length, is(4))
+		val copiedChanges = changeMatches.map[originalChange]
+			.filter[it instanceof EMFModelChangeImpl]
+			.map[VitruviusChangeFactory::instance.createEMFModelChange(it as EMFModelChangeImpl, newSourceVURI)]
+		assertThat(copiedChanges.length, is(4))
+		copiedChanges.forEach[virtualModel.propagateChange(it)]
+		assertThat(copiedChanges.length, is(4))
 	}
 
 	@Test

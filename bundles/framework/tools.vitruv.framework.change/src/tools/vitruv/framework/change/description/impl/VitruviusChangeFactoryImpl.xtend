@@ -1,11 +1,9 @@
 package tools.vitruv.framework.change.description.impl
 
 import org.apache.log4j.Logger
-
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.Resource
-
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
@@ -14,6 +12,7 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.change.preparation.impl.ChangeDescription2EChangesTransformationImpl
 import tools.vitruv.framework.util.datatypes.VURI
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * @version 0.2.0
@@ -39,7 +38,8 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	}
 
 	override createEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri) {
-		new EMFModelChangeImpl(changeToCopy.EChanges, vuri)
+		val echanges = changeToCopy.EChanges.map[EcoreUtil::copy(it)]
+		new EMFModelChangeImpl(echanges, vuri)
 	}
 
 	override createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
