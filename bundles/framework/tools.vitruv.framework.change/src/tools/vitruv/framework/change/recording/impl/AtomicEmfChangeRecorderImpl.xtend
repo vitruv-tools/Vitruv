@@ -51,7 +51,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 
 		// TODO PS Remove 
-		logger.level = Level::DEBUG
+		logger.level = Level::INFO
 	}
 
 	override void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {

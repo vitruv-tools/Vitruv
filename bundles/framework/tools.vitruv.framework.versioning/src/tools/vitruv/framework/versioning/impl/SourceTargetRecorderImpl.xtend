@@ -20,13 +20,13 @@ import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.vsum.InternalVirtualModel
 
 class SourceTargetRecorderImpl implements SourceTargetRecorder {
+	static val logger = Logger::getLogger(SourceTargetRecorderImpl)
+
 	val Collection<SourceTargetPair> sourceTargetPairs
 	val InternalVirtualModel virtualModel
 	val Map<VURI, AtomicEmfChangeRecorder> pathsToRecorders
 	val Map<VURI, List<ChangeMatch>> changesMatches
 	val boolean unresolveRecordedChanges
-
-	val logger = Logger::getLogger(SourceTargetRecorderImpl)
 
 	new(InternalVirtualModel virtualModel) {
 		this(virtualModel, false)
@@ -51,11 +51,24 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	}
 
 	override update(VURI vuri, TransactionalChange change) {
-		sourceTargetPairs.filter[vuri == source].forEach [ pair |
+		logger.warn('''vuri       «vuri»''')
+		logger.warn('''change.Uri «change.URI»''')
+		sourceTargetPairs.filter[change.URI == source].forEach [ pair |
 			val targetToCorrespondentChanges = pair.targets.stream.collect(Collectors::toMap(Function::identity, [
 				getChanges
 			]))
+			if (pair.source == change.URI)
+				logger.debug("OK!")
+			else
+				logger.warn('''
+					
+					source     «pair.source», 
+					vuri       «vuri»
+					change.Uri «change.URI»
+				''')
+
 			val match = new ChangeMatch(vuri, change, targetToCorrespondentChanges)
+
 			logger.debug('''New match added: «match»''')
 			changesMatches.get(vuri).add(match)
 		]
