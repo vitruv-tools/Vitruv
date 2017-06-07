@@ -67,7 +67,7 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 					change.Uri «change.URI»
 				''')
 
-			val match = new ChangeMatch(vuri, change, targetToCorrespondentChanges)
+			val match = new ChangeMatch(pair.source, change, targetToCorrespondentChanges)
 
 			logger.debug('''New match added: «match»''')
 			changesMatches.get(vuri).add(match)
