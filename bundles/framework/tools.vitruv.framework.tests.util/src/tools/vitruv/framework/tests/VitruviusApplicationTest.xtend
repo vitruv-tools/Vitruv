@@ -4,6 +4,8 @@ import java.io.IOException
 import java.util.ArrayList
 import java.util.Collection
 import java.util.Collections
+import java.util.HashMap
+import java.util.Map
 import org.apache.commons.lang.StringUtils
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
@@ -26,18 +28,17 @@ import tools.vitruv.framework.util.datatypes.VURI
  */
 abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest implements ChangeObservable {
 	Collection<ChangeObserver> observers
-	AtomicEmfChangeRecorder changeRecorder
+	Map<VURI, AtomicEmfChangeRecorder> uriToChangeRecorder
 
 	override final beforeTest() {
 		super.beforeTest
-		changeRecorder = new AtomicEmfChangeRecorderImpl(unresolveChanges)
+		uriToChangeRecorder = new HashMap
 		observers = new ArrayList
 		setup
 	}
 
 	override final afterTest() {
-		if (changeRecorder.recording)
-			changeRecorder.endRecording
+		uriToChangeRecorder.filter[a, recorder|recorder.recording].forEach[a, recorder|recorder.endRecording]
 		cleanup
 	}
 
@@ -132,7 +133,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	}
 
 	def private propagateChanges(VURI vuri) {
-		val changes = changeRecorder.endRecording
+		val changes = uriToChangeRecorder.get(vuri).endRecording
 		changes.forEach([
 // TODO PS Check, if CompositeContainerChange creation is necessary
 // CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance.createCompositeChange(Collections.singleton(change));
@@ -144,6 +145,9 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 
 	def private startRecordingChanges(Resource resource) {
 		val vuri = VURI::getInstance(resource)
-		changeRecorder.beginRecording(vuri, Collections::singleton(resource))
+		val AtomicEmfChangeRecorder recorder = new AtomicEmfChangeRecorderImpl(unresolveChanges)
+		uriToChangeRecorder.put(vuri, recorder)
+		recorder.beginRecording(vuri, Collections::singleton(resource))
+
 	}
 }
