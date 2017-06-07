@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests
 
-import static org.junit.Assert.fail
 import java.util.function.Function
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.runtime.CoreException
@@ -10,8 +9,9 @@ import org.junit.Rule
 import org.junit.rules.TestName
 import tools.vitruv.framework.tests.util.TestUtil
 import tools.vitruv.framework.tuid.TuidManager
+import static org.junit.Assert.fail
 
-/** 
+/**
  * Basic test class for all Vitruvius tests that require a test project within
  * the test workspace. The class creates a test project for each test case
  * within the workspace of the Eclipse test instance.
@@ -19,20 +19,47 @@ import tools.vitruv.framework.tuid.TuidManager
  */
 abstract class VitruviusTest {
 	@Rule
-	public TestName testName = new TestName()
+	public TestName testName = new TestName
 	IProject currentTestProject
 	Function<String, IProject> testProjectCreator
 
 	@BeforeClass
 	def static void setUpAllTests() {
-		TestUtil::initializeLogger()
+		TestUtil::initializeLogger
+	}
+
+	/**
+	 * Initializes a test project in the test workspace with the given name,
+	 * extended by a timestamp.
+	 * @param testName- the name of the test project
+	 * @return the created test project
+	 */
+	def static IProject initializeTestProject(String testName) {
+		return try {
+			TestUtil::createProject(testName, true)
+		} catch (CoreException e) {
+			fail("Exception during creation of test project")
+			null
+		}
 	}
 
 	new() {
 		testProjectCreator = [s|VitruviusTest::initializeTestProject(s)]
 	}
 
-	/** 
+	/**
+	 * Initializes each test case and creates the test project in the test
+	 * workspace. When overwriting this method, ensure that the super method
+	 * gets called.
+	 */
+	@Before
+	def void beforeTest() {
+		TuidManager::instance.reinitialize
+		val testMethodName = testName.getMethodName
+		currentTestProject = testProjectCreator.apply(testMethodName)
+	}
+
+	/**
 	 * Overwrites the default creator for initializing the test project with the
 	 * given one
 	 * @param testProjectCreator- the new test project creator
@@ -41,36 +68,7 @@ abstract class VitruviusTest {
 		this.testProjectCreator = testProjectCreator
 	}
 
-	/** 
-	 * Initializes each test case and creates the test project in the test
-	 * workspace. When overwriting this method, ensure that the super method
-	 * gets called.
-	 */
-	@Before
-	def void beforeTest() {
-		TuidManager::getInstance().reinitialize()
-		var String testMethodName = testName.getMethodName()
-		this.currentTestProject = testProjectCreator.apply(testMethodName)
-	}
-
-	/** 
-	 * Initializes a test project in the test workspace with the given name,
-	 * extended by a timestamp.
-	 * @param testName- the name of the test project
-	 * @return the created test project
-	 */
-	def private static IProject initializeTestProject(String testName) {
-		var IProject testProject = null
-		try {
-			testProject = TestUtil::createProject(testName, true)
-		} catch (CoreException e) {
-			fail("Exception during creation of test project")
-		}
-
-		return testProject
-	}
-
 	def protected IProject getCurrentTestProject() {
-		return currentTestProject
+		currentTestProject
 	}
 }
