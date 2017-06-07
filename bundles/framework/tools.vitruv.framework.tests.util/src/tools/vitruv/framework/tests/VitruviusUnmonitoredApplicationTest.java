@@ -17,6 +17,7 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tests.util.TestUtil;
+import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
@@ -53,7 +54,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	public void beforeTest() {
 		super.beforeTest();
 		this.resourceSet = new ResourceSetImpl();
-		this.resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet);
 		String testMethodName = testName.getMethodName();
 		createVirtualModel(testMethodName);
 	}
@@ -194,6 +195,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	protected void assertPersistedModelsEqual(String firstModelPathWithinProject, String secondModelPathWithinProject) {
 		ResourceSet testResourceSet = new ResourceSetImpl();
 		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		ResourceSetUtil.addExistingFactoriesToResourceSet(testResourceSet);
 		EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet);
 		EObject secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet);
 		assertTrue(EcoreUtil.equals(firstRoot, secondRoot));

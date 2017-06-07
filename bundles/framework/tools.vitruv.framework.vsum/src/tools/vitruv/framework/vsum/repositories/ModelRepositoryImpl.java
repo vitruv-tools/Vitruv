@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
@@ -27,6 +26,7 @@ import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.repository.ModelRepository;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
 import tools.vitruv.framework.tuid.TuidManager;
+import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
@@ -56,15 +56,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         this.folder = folder;
 
         this.resourceSet = new ResourceSetImpl();
-        this.resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-        Map<String, Object> globalExtensionToFactoryMap = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap();
-        for (String extension : globalExtensionToFactoryMap.keySet()) {
-            this.resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(extension,
-                    globalExtensionToFactoryMap.get(extension));
-        }
-        if (this.resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().isEmpty()) {
-
-        }
+        ResourceSetUtil.addExistingFactoriesToResourceSet(this.resourceSet);
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.fileSystemHelper = new FileSystemHelper(this.folder);
