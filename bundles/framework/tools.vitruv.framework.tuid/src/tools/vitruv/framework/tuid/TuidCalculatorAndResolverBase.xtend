@@ -137,7 +137,8 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 	def private Integer claimCacheKey(String tuid) {
 		var Integer key = getCacheKeyForTuidString(tuid)
 		if (key === null) {
-			throw new IllegalArgumentException('''Cannot get the cache key for the tuid '«»«tuid»' because it is not of the form '{marker}{key}...'!''')
+			LOGGER.warn(''' TUID «tuid» is not in the cache''');
+			return null;
 		} else {
 			return key
 		}
@@ -210,6 +211,10 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 		var root = root_finalParam_
 		if (root === null) {
 			root = claimRootFromCache(tuid)
+			if (root == null) {
+				LOGGER.warn('''No EObject found for Tuid: «tuid» in the cache''')
+				return null;
+			}
 		}
 		var String identifier = getTuidWithoutRootObjectPrefix(root, tuid)
 		if (identifier === null) {
