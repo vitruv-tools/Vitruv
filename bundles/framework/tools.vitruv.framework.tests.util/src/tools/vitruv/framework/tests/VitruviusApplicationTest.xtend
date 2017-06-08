@@ -138,6 +138,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 // TODO PS Check, if CompositeContainerChange creation is necessary
 // CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance.createCompositeChange(Collections.singleton(change));
 			virtualModel.propagateChange(it)
+			// TODO PS Changes vorher kopieren, da nach propagate resolved
 // PS NotifyObservers has to be called after change propagation
 			notifyObservers(vuri, it)
 		])

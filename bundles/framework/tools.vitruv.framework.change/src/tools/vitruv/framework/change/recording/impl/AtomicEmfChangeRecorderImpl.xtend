@@ -51,7 +51,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 
 		// TODO PS Remove 
-		logger.level = Level::INFO
+		logger.level = Level::DEBUG
 	}
 
 	override void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {
@@ -63,7 +63,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	}
 
 	override List<TransactionalChange> endRecording() {
-		logger.debug('''End recording, unresolveRecordedChangesL: «unresolveRecordedChanges»''')
+		logger.debug('''End recording, unresolveRecordedChanges: «unresolveRecordedChanges»''')
 		if (!isRecording)
 			throw new IllegalStateException
 		changeRecorder.endRecording

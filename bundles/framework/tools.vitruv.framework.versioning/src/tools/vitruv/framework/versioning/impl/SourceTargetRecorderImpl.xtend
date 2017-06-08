@@ -29,7 +29,7 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	val boolean unresolveRecordedChanges
 
 	new(InternalVirtualModel virtualModel) {
-		this(virtualModel, false)
+		this(virtualModel, true)
 	}
 
 	new(InternalVirtualModel virtualModel, boolean unresolveRecordedChanges) {

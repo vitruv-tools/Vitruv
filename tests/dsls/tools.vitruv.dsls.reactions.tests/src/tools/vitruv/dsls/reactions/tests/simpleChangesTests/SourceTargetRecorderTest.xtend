@@ -188,10 +188,14 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 
 		val changeMatches = stRecorder.getChangeMatches(sourceVURI)
 		assertThat(changeMatches.length, is(4))
+		changeMatches.
 		val copiedChanges = changeMatches.map[originalChange].filter[it instanceof EMFModelChangeImpl].map [
 			VitruviusChangeFactory::instance.createEMFModelChange(it as EMFModelChangeImpl, newSourceVURI)
 		]
 		assertThat(copiedChanges.length, is(4))
+		// EcoreUtil::copy => koennte resolven 
+		// Resource problematisch: Proxy URI ersetzten 
+		// Fur Test ersetzen 
 		copiedChanges.forEach[virtualModel.propagateChange(it)]
 		assertThat(copiedChanges.length, is(4))
 	}
