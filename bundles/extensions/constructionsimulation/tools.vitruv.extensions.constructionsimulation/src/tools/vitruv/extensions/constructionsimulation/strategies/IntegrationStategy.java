@@ -66,7 +66,7 @@ public abstract class IntegrationStategy {
     private void propagateChanges(final List<VitruviusChange> changes, final VirtualModel vmodel) {
 
         try {
-        	VitruviusChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
+        	VitruviusChange compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changes);
             vmodel.propagateChange(compositeChange);
         } catch (final Exception e) {
             e.printStackTrace();

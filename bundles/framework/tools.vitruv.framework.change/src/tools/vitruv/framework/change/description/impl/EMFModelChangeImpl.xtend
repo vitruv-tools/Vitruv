@@ -2,86 +2,78 @@ package tools.vitruv.framework.change.description.impl
 
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.ResourceSet
+
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.util.datatypes.VURI
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
  * right before the change described by the recorded {@link ChangeDescription}.
  */
 class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	private final VURI vuri;
-	private var boolean canBeBackwardsApplied;
-	
-    public new(Iterable<EChange> eChanges, VURI vuri) {
-        this.vuri = vuri;
-        this.canBeBackwardsApplied = false;
-		addChanges(eChanges);
-    }
+	val VURI vuri
+	var boolean canBeBackwardsApplied
+
+	new(Iterable<EChange> eChanges, VURI vuri) {
+		this.vuri = vuri
+		canBeBackwardsApplied = false
+		addChanges(eChanges)
+	}
 
 	private def void addChanges(Iterable<EChange> eChanges) {
-		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteApplicableChange(eChange, vuri));
-		}
-		if (changes.empty) {
-			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
-		}
+		eChanges.map[VitruviusChangeFactory::instance.createConcreteApplicableChange(it, vuri)].forEach[addChange]
+		if (changes.empty)
+			addChange(VitruviusChangeFactory::instance.createEmptyChange(vuri))
 	}
 
-    override String toString() '''
-    	«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
-    		«FOR eChange : EChanges»
-    			Inner change: «eChange»
-    		«ENDFOR»
-    '''
-        
+	override toString() '''
+		«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
+		        «FOR eChange : EChanges»
+		        	Inner change: «eChange»
+		        «ENDFOR»
+	'''
+
 	override getURI() {
-		return vuri;
+		vuri
 	}
-	
+
 	override containsConcreteChange() {
-		return true;
+		true
 	}
-	
+
 	override validate() {
-		return true;
+		true
 	}
-	
+
 	override applyBackward() throws IllegalStateException {
-		if (!this.canBeBackwardsApplied) {
-			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
-		}
-		for (c : changes.reverseView) {
-			c.applyBackward
-		}
-		this.canBeBackwardsApplied = false;
+		if (!canBeBackwardsApplied)
+			throw new IllegalStateException("Change " + this +
+				" cannot be applied backwards as was not forward applied before.");
+		changes.reverseView.forEach[applyBackward]
+		canBeBackwardsApplied = false
 	}
-	
+
 	override applyForward() throws IllegalStateException {
-		if (this.canBeBackwardsApplied) {
-			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
-		}
-		for (c : changes) {
-			c.applyForward
-		}
-		this.canBeBackwardsApplied = true;
+		if (canBeBackwardsApplied)
+			throw new IllegalStateException("Change " + this +
+				" cannot be applied forwards as was not backwards applied before.");
+		changes.forEach[applyForward]
+		canBeBackwardsApplied = true
 	}
-	
+
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		if (this.canBeBackwardsApplied) {
-			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
-		}
-		for (c : changes) {
-			c.resolveBeforeAndApplyForward(resourceSet)
-		}
-		this.canBeBackwardsApplied = true;
+		if (canBeBackwardsApplied)
+			throw new IllegalStateException("Change " + this +
+				" cannot be applied forwards as was not backwards applied before.");
+		changes.forEach[resolveBeforeAndApplyForward(resourceSet)]
+		canBeBackwardsApplied = true
 	}
-	
+
 	override applyBackwardIfLegacy() {
-		// Do nothing
+// Do nothing
 	}
-	
+
 }

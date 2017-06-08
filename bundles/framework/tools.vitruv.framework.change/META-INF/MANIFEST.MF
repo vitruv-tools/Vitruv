@@ -17,5 +17,6 @@ Require-Bundle: org.apache.log4j,
 Export-Package: tools.vitruv.framework.change.description,
  tools.vitruv.framework.change.description.impl,
  tools.vitruv.framework.change.preparation,
- tools.vitruv.framework.change.recording
+ tools.vitruv.framework.change.recording,
+ tools.vitruv.framework.change.recording.impl
 Bundle-Vendor: vitruv.tools

@@ -21,7 +21,7 @@ Export-Package: tools.vitruv.framework.versioning,
  tools.vitruv.framework.versioning.repository.impl,
  tools.vitruv.framework.versioning.repository.util,
  tools.vitruv.framework.versioning.util
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 0.1.1.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -45,19 +45,9 @@ Require-Bundle: org.eclipse.core.runtime,
  tools.vitruv.extensions.dslsruntime.reactions,
  tools.vitruv.extensions.dslsruntime.mapping,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
- tools.vitruv.framework.vsum,
  tools.vitruv.framework.change.echange,
- tools.vitruv.framework.change,
- tools.vitruv.framework.change.processing,
- tools.vitruv.framework.correspondence,
- tools.vitruv.framework.modelsynchronization,
- tools.vitruv.framework.userinteraction,
- tools.vitruv.framework.metamodel,
- tools.vitruv.framework.tuid,
- org.eclipse.xtext.xbase.lib;bundle-version="2.10.0",
- org.eclipse.xtend.lib;bundle-version="2.10.0",
- org.eclipse.xtend.lib.macro;bundle-version="2.10.0",
- tools.vitruv.framework.change,
- tools.vitruv.framework.vsum
+ org.eclipse.xtext.xbase.lib;resolution:=optional,
+ org.eclipse.xtend.lib;resolution:=optional,
+ org.eclipse.xtend.lib.macro
 Bundle-ActivationPolicy: lazy
 
