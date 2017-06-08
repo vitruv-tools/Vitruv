@@ -233,7 +233,8 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 	}
 
 	def private EObject claimRootFromCache(String tuid) {
-		var int key = claimCacheKey(tuid)
+		var key = claimCacheKey(tuid)
+		if (key == null) return null;
 		return this.cachedResourcelessRoots.claimValueForKey(key)
 	}
 
