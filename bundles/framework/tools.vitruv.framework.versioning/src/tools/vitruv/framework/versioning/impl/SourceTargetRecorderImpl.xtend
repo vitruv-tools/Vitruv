@@ -51,24 +51,11 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	}
 
 	override update(VURI vuri, TransactionalChange change) {
-		logger.warn('''vuri       «vuri»''')
-		logger.warn('''change.Uri «change.URI»''')
 		sourceTargetPairs.filter[change.URI == source].forEach [ pair |
 			val targetToCorrespondentChanges = pair.targets.stream.collect(Collectors::toMap(Function::identity, [
 				getChanges
 			]))
-			if (pair.source == change.URI)
-				logger.debug("OK!")
-			else
-				logger.warn('''
-					
-					source     «pair.source», 
-					vuri       «vuri»
-					change.Uri «change.URI»
-				''')
-
 			val match = new ChangeMatch(pair.source, change, targetToCorrespondentChanges)
-
 			logger.debug('''New match added: «match»''')
 			changesMatches.get(vuri).add(match)
 		]

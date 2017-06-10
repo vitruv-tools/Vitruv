@@ -14,6 +14,8 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -134,14 +136,20 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 
 	def private propagateChanges(VURI vuri) {
 		val changes = uriToChangeRecorder.get(vuri).endRecording
-		changes.forEach([
+		changes.forEach[
 // TODO PS Check, if CompositeContainerChange creation is necessary
 // CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance.createCompositeChange(Collections.singleton(change));
-			virtualModel.propagateChange(it)
+			val copiedChange = VitruviusChangeFactory::instance.copy(it as EMFModelChangeImpl)
+			 
+			virtualModel.propagateChange(it) 
 			// TODO PS Changes vorher kopieren, da nach propagate resolved
-// PS NotifyObservers has to be called after change propagation
-			notifyObservers(vuri, it)
-		])
+			// Aufpassen: Bei Transactional aufpassen, da kein Deep Copy 
+			// ConcreteChanges copieren 
+			// Einfach nur EChanges kopieren
+			
+			// PS NotifyObservers has to be called after change propagation
+			notifyObservers(vuri, copiedChange)
+		]
 	}
 
 	def private startRecordingChanges(Resource resource) {
