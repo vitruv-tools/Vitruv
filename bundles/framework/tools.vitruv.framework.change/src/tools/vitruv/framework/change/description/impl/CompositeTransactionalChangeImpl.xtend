@@ -7,11 +7,9 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	override removeChange(TransactionalChange change) {
-		if (change !== null && changes.contains(change)) {
-			if (changes.size === 1) {
-				val emptyChange = VitruviusChangeFactory::instance.createEmptyChange(change.URI)
-				changes += emptyChange
-			}
+		if (change !== null && changes.contains(change) && changes.size === 1) {
+			val emptyChange = VitruviusChangeFactory::instance.createEmptyChange(change.URI)
+			changes += emptyChange
 		}
 		super.removeChange(change)
 	}
