@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.ConflictDetector
 
 class ConflictTest extends AbstractVersioningTest {
 	static val newTestSourceModelName = "Further_Source_Test_Model"
@@ -83,6 +84,12 @@ class ConflictTest extends AbstractVersioningTest {
 
 		assertModelsEqual
 		assertMappedModelsAreEqual
+
+		val sourceChanges = stRecorder.getChangeMatches(sourceVURI)
+		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
+		val conflictDetector = new ConflictDetector(sourceChanges, targetChanges)
+
+		conflictDetector.detectConlicts
 	}
 
 	private def checkChangeMatchesLength(int l1, int l2) {
