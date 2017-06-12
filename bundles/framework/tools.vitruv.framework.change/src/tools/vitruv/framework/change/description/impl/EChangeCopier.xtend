@@ -44,9 +44,11 @@ class EChangeCopier<A extends EObject> {
 	}
 
 	private dispatch def EChange copyThisShit(ReplaceSingleValuedEAttribute replaceSingleValuedEAttribute) {
-		logger.debug("EChange copyThisShit(ReplaceSingleValuedEAttribute replaceSingleValuedEAttribute)")
-		logger.debug(replaceSingleValuedEAttribute)
-		return copyCre(replaceSingleValuedEAttribute)
+		return null
+//		
+//		logger.debug("EChange copyThisShit(ReplaceSingleValuedEAttribute replaceSingleValuedEAttribute)")
+//		logger.debug(replaceSingleValuedEAttribute)
+//		return copyCre(replaceSingleValuedEAttribute)
 	}
 
 	private def <T extends Object> EChange copyCre(ReplaceSingleValuedEAttribute<A, T> replaceSingleValuedEAttribute) {
@@ -83,8 +85,5 @@ class EChangeCopier<A extends EObject> {
 		} else
 			TypeInferringUnresolvingCompoundEChangeFactory::instance.
 				createCreateAndReplaceNonRootChange(affectedEObject, affectedFeature, newValue)
-
-//			def <A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRootChange(
-//		A affectedEObject, EReference reference, T newValue)
 	}
 }

@@ -35,6 +35,10 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 		}]
 	}
 
+	protected def VURI calculateVURI(String path) {
+		VURI::getInstance('''«currentTestProject.name»/«path.projectModelPath»''')
+	}
+
 	@Test
 	def testRecordingWithExecuteCommand() {
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper

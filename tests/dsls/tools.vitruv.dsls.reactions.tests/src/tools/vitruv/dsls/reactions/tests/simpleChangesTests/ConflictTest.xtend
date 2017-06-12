@@ -81,9 +81,4 @@ class ConflictTest extends AbstractVersioningTest {
 		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(l1))
 		assertThat(stRecorder.getChangeMatches(newSourceVURI).length, is(l2))
 	}
-
-	private def calculateVURI(String path) {
-		VURI::getInstance('''«currentTestProject.name»/«path.projectModelPath»''')
-	}
-
 }

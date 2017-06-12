@@ -48,7 +48,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	override <A extends EObject> createEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri, A source, A target) {
 		val echangeCopier = new EChangeCopier(source, target)
 		val oldEChanges = changeToCopy.EChanges
-		val echanges = oldEChanges.map[echangeCopier.copyEChange(it)]
+		val echanges = oldEChanges.map[echangeCopier.copyEChange(it)].filterNull
 		val change = new EMFModelChangeImpl(echanges, vuri)
 		return change
 	}

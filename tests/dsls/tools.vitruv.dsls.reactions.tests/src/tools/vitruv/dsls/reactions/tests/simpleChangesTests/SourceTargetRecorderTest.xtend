@@ -10,21 +10,19 @@ import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.versioning.VersioningXtendFactory
 import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
 
-import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.equalTo
+import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
-//import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
-//import tools.vitruv.framework.change.description.VitruviusChangeFactory
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	var SourceTargetRecorder stRecorder
 
@@ -87,10 +85,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	@Test
 	def void testRecordOriginalAndCorrespondentChanges() {
 		// Paths and VURIs
-		val sourcePath = '''«currentTestProject.name»/«TEST_SOURCE_MODEL_NAME.projectModelPath»'''
-		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
-		val targetVURI = VURI::getInstance(targetPath)
-		val sourceVURI = VURI::getInstance(sourcePath)
+		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
+		val sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
 
 		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
@@ -122,10 +118,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	@Test
 	def void testRecordOriginalAndCorrespondentChangesSingleSaveAndSynchronize() {
 		// Paths and VURIs
-		val sourcePath = '''«currentTestProject.name»/«TEST_SOURCE_MODEL_NAME.projectModelPath»'''
-		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
-		val targetVURI = VURI::getInstance(targetPath)
-		val sourceVURI = VURI::getInstance(sourcePath)
+		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
+		val sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
 
 		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
@@ -157,10 +151,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	@Test
 	def void echangesShouldBeUnresolved() {
 		// Paths and VURIs
-		val sourcePath = '''«currentTestProject.name»/«TEST_SOURCE_MODEL_NAME.projectModelPath»'''
-		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
-		val targetVURI = VURI::getInstance(targetPath)
-		val sourceVURI = VURI::getInstance(sourcePath)
+		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
+		val sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
 
 		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
@@ -185,30 +177,28 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	@Test
 	def void testReapply() {
 		// Paths and VURIs
-		val sourcePath = '''«currentTestProject.name»/«TEST_SOURCE_MODEL_NAME.projectModelPath»'''
-		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
-		val targetVURI = VURI::getInstance(targetPath)
-		val sourceVURI = VURI::getInstance(sourcePath)
+		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
+		val sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
 
 		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
 		// Create container and synchronize 
 		assertThat(rootElement.eContents.length, is(0))
+		assertThat(rootElement.nonRootObjectContainerHelper, equalTo(null))
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = "NonRootObjectContainer"
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(rootElement.eContents.length, is(1))
 
+		assertThat(rootElement.eContents.length, is(1))
+		assertThat(rootElement.nonRootObjectContainerHelper, not(equalTo(null)))
 		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(1))
 
 		// Create new source
 		val newTestSourceModelName = "EachTestModelSource2"
 //		val newTestTargetModelName = "EachTestModelTarget2"
-		val newSourcePath = '''«currentTestProject.name»/«newTestSourceModelName.projectModelPath»'''
-//		val newTargetPath = '''«currentTestProject.name»/«newTestTargetModelName.projectModelPath»'''
-//		val newTargetVURI = VURI::getInstance(newTargetPath)
-		val newSourceVURI = VURI::getInstance(newSourcePath)
+//		val newTargetVURI = newTestTargetModelName.calculateVURI
+		val newSourceVURI = newTestSourceModelName.calculateVURI
 		val newRoot = AllElementTypesFactory::eINSTANCE.createRoot
 		newRoot.id = newTestSourceModelName
 		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
@@ -222,6 +212,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		virtualModel.propagateChange(newChange)
 		assertThat(newRoot.nonRootObjectContainerHelper, not(equalTo(null)))
 		assertThat(rootElement.eContents.length, is(1))
+		assertThat(newRoot.eContents.length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
@@ -245,10 +236,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	@Test
 	def void testSezializeChangeMatches() {
 		// Paths and VURIs
-		val sourcePath = '''«currentTestProject.name»/«TEST_SOURCE_MODEL_NAME.projectModelPath»'''
-		val targetPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
-		val targetVURI = VURI::getInstance(targetPath)
-		val sourceVURI = VURI::getInstance(sourcePath)
+		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
+		val sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
 
 		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
