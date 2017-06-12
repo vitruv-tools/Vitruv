@@ -1,28 +1,26 @@
 package tools.vitruv.framework.change.description.impl
 
 import java.util.ArrayList
-import java.util.LinkedList
 import java.util.List
-
 import org.eclipse.emf.ecore.resource.ResourceSet
-
 import tools.vitruv.framework.change.description.CompositeChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
 	val List<C> changes
-
+	
 	new() {
-		changes = new LinkedList<C>
+		// TODO PS Change back to LinkedList
+		changes = new ArrayList<C>
 	}
 
 	new(List<? extends C> changes) {
-		this.changes = new LinkedList<C>(changes)
+		this.changes = new ArrayList<C>(changes)
 	}
 
 	override List<C> getChanges() {
-		new LinkedList<C>(this.changes)
+		new ArrayList<C>(this.changes)
 	}
 
 	override addChange(C change) {
@@ -66,10 +64,10 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	}
 
 	override getEChanges() {
-		changes.fold(
+		changes.map[EChanges].fold(
 			new ArrayList<EChange>,
-			[ eChangeList, change |
-				eChangeList.addAll(change.EChanges)
+			[ eChangeList, echanges |
+				eChangeList += echanges
 				return eChangeList
 			]
 		)

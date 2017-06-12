@@ -1,24 +1,30 @@
 package tools.vitruv.framework.change.description.impl
 
-import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import java.util.ArrayList
+import java.util.Collection
 import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
-import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
+import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
+import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 class EChangeCopier<A extends EObject> {
 	static val logger = Logger::getLogger(VitruviusChangeFactory)
+
+	val Collection<EObject> elements
 
 	val A source
 	val A target
 
 	new(A source, A target) {
-		this.source = source
-		this.target = target
+		this.source = EChangeUnresolver::createProxy(source)
+		this.target = EChangeUnresolver::createProxy(target)
+		elements = new ArrayList<EObject>
 	}
 
 	def EChange copyEChange(EChange e) {
@@ -48,10 +54,12 @@ class EChangeCopier<A extends EObject> {
 		val affectedAttribute = replaceSingleValuedEAttribute.affectedFeature
 		val oldValue = replaceSingleValuedEAttribute.oldValue
 		val newValue = replaceSingleValuedEAttribute.newValue
-//		def <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A, T> createReplaceSingleAttributeChange(
-//		A affectedEObject, EAttribute affectedAttribute, T oldValue, T newValue)
+		val real = elements.findFirst[it == affectedEObject]
+		if (real ===
+			null)
+			throw new IllegalStateException('''There is no element corresponding to «affectedEObject» already inserted in the model''')
 		return TypeInferringUnresolvingAtomicEChangeFactory::instance.createReplaceSingleAttributeChange(
-			affectedEObject,
+			real,
 			affectedAttribute,
 			oldValue,
 			newValue
@@ -67,8 +75,11 @@ class EChangeCopier<A extends EObject> {
 		logger.debug(source.eResource)
 		if (affectedEObject == source) {
 			logger.debug("Heureka!!!!!!!")
-			return TypeInferringUnresolvingCompoundEChangeFactory::instance.
+			val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
 				createCreateAndReplaceNonRootChange(target, affectedFeature, newValue)
+			val testNewValue = change.insertChange.newValue
+			elements += testNewValue
+			return change
 		} else
 			TypeInferringUnresolvingCompoundEChangeFactory::instance.
 				createCreateAndReplaceNonRootChange(affectedEObject, affectedFeature, newValue)
