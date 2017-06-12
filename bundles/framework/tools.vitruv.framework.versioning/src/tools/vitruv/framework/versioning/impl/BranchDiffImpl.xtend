@@ -1,7 +1,9 @@
-package tools.vitruv.framework.versioning
+package tools.vitruv.framework.versioning.impl
 
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Data
+import tools.vitruv.framework.versioning.BranchDiff
+import tools.vitruv.framework.versioning.ChangeMatch
 
 /**
  * Data class to save changes in 
@@ -11,7 +13,7 @@ import org.eclipse.xtend.lib.annotations.Data
  * @since 2017-06-12
  */
 @Data
-package class ChangePair {
+class BranchDiffImpl implements BranchDiff {
 	List<ChangeMatch> baseChanges
 	List<ChangeMatch> compareChanges
 }

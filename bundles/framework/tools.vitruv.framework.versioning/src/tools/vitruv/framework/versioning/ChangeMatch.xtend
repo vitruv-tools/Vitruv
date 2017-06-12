@@ -3,25 +3,20 @@ package tools.vitruv.framework.versioning
 import java.io.Serializable
 import java.util.List
 import java.util.Map
-
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtend.lib.annotations.Data
-
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.datatypes.VURI
 
 /**
  * Data class to track original and correspondent changes.
  * 
- * @author Patrick Stoeckle
+ * @author Patrick Stoeckle <p.stoeckle@gmx.net>
  * @version 0.1.0
- * @since 2017-05-30
+ * @since 2017-06-12
  */
-@Data
-class ChangeMatch implements Serializable {
-	@Accessors(PUBLIC_GETTER)
-	static val serialVersionUID = 1L
-	VURI originalVURI
-	TransactionalChange originalChange
-	Map<VURI, List<TransactionalChange>> targetToCorrespondentChanges
+interface ChangeMatch extends Serializable {
+	def VURI getOriginalVURI()
+
+	def TransactionalChange getOriginalChange()
+
+	def Map<VURI, List<TransactionalChange>> getTargetToCorrespondentChanges()
 }

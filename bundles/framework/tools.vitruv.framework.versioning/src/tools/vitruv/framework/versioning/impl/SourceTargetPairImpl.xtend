@@ -1,7 +1,9 @@
-package tools.vitruv.framework.versioning
+package tools.vitruv.framework.versioning.impl
 
 import java.util.Collection
+import org.eclipse.xtend.lib.annotations.Data
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.SourceTargetPair
 
 /**
  * Data class to store the relationship of source and correspondent targets of consistency preserving 
@@ -9,10 +11,10 @@ import tools.vitruv.framework.util.datatypes.VURI
  * 
  * @author Patrick Stoeckle <p.stoeckle@gmx.net>
  * @version 0.1.0
- * @since 2017-06-12
+ * @since 2017-05-30
  */
-interface SourceTargetPair {
-	def VURI getSource()
-
-	def Collection<VURI> getTargets()
+@Data
+class SourceTargetPairImpl implements SourceTargetPair {
+	VURI source
+	Collection<VURI> targets
 }

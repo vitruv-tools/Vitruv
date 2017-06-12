@@ -9,7 +9,7 @@ import tools.vitruv.framework.util.datatypes.VURI
  * Interface to track changes on different {@link VURI}s. Instationeions of this interface are registerred as {@link ChangeObserver}
  * and track changes of an original and the correspondent changes at several targets. 
  * 
- * @author Patrick Stoeckle
+ * @author Patrick Stoeckle <p.stoeckle@gmx.net>
  * @version 0.1.0
  * @since 2017-05-30
  */
