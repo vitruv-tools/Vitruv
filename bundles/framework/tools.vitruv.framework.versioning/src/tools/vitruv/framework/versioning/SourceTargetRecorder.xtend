@@ -1,7 +1,7 @@
 package tools.vitruv.framework.versioning
 
+import java.util.Collection
 import java.util.List
-
 import tools.vitruv.framework.tests.ChangeObserver
 import tools.vitruv.framework.util.datatypes.VURI
 
@@ -21,7 +21,7 @@ interface SourceTargetRecorder extends ChangeObserver {
 	 * @param orignal source of the changes
 	 * @param targets the targets to be observed
 	 */
-	def void recordOriginalAndCorrespondentChanges(VURI orignal, List<VURI> targets)
+	def void recordOriginalAndCorrespondentChanges(VURI orignal, Collection<VURI> targets)
 
 	/**
 	 * Returns the change matches.

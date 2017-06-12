@@ -43,7 +43,7 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 		logger.level = Level::DEBUG
 	}
 
-	override void recordOriginalAndCorrespondentChanges(VURI orignal, List<VURI> targets) {
+	override void recordOriginalAndCorrespondentChanges(VURI orignal, Collection<VURI> targets) {
 		val List<ChangeMatch> matches = new ArrayList
 		changesMatches.put(orignal, matches)
 		targets.forEach[addPathToRecorded]
