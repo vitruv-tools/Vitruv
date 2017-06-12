@@ -64,7 +64,7 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 		Assert::assertEquals(4, changes.length)
 	}
 
-	protected final def String getProjectModelPath(String modelName) {
+	protected static final def String getProjectModelPath(String modelName) {
 		'''model/«modelName».«MODEL_FILE_EXTENSION»'''
 	}
 
@@ -72,7 +72,7 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 		TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root
 	}
 
-	protected final def assertModelsEqual() {
+	protected def assertModelsEqual() {
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath)
 	}
 
