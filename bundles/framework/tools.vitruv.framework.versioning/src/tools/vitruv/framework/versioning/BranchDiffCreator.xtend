@@ -1,6 +1,7 @@
 package tools.vitruv.framework.versioning
 
 import tools.vitruv.framework.versioning.impl.BranchDiffCreatorImpl
+import java.util.List
 
 /**
  * 
@@ -12,5 +13,5 @@ import tools.vitruv.framework.versioning.impl.BranchDiffCreatorImpl
 interface BranchDiffCreator {
 	BranchDiffCreator instance = BranchDiffCreatorImpl::init
 
-	def BranchDiff createVersionDiff()
+	def BranchDiff createVersionDiff(List<ChangeMatch> sourceChanges, List<ChangeMatch> targetChanges)
 }
