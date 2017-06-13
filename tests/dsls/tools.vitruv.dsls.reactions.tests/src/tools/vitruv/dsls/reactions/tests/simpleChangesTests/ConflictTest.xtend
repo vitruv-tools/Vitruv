@@ -143,8 +143,10 @@ class ConflictTest extends AbstractVersioningTest {
 		val sourceChanges = stRecorder.getChangeMatches(sourceVURI)
 		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
 
+		val Map<String, String> rootToRootMap = #{sourceVURI.EMFUri.toPlatformString(false) ->
+			newSourceVURI.EMFUri.toPlatformString(false)}
 		val branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
-		val ConflictDetector conflictDetector = new ConflictDetectorImpl
+		val ConflictDetector conflictDetector = new ConflictDetectorImpl(rootToRootMap)
 		val conflict = conflictDetector.detectConlicts(branchDiff)
 		assertThat(conflict.levenshteinDistance, is(0))
 	}
