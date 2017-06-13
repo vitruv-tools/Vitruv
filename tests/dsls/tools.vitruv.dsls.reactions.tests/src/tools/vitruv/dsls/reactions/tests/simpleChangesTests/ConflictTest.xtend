@@ -93,7 +93,8 @@ class ConflictTest extends AbstractVersioningTest {
 			newSourceVURI.EMFUri.toPlatformString(false)}
 		val branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
 		val ConflictDetector conflictDetector = new ConflictDetectorImpl(rootToRootMap)
-		conflictDetector.detectConlicts(branchDiff)
+		val conflict = conflictDetector.detectConlicts(branchDiff)
+		assertThat(conflict.levenshteinDistance, is(1))
 	}
 
 	@Test
@@ -144,7 +145,8 @@ class ConflictTest extends AbstractVersioningTest {
 
 		val branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
 		val ConflictDetector conflictDetector = new ConflictDetectorImpl
-		conflictDetector.detectConlicts(branchDiff)
+		val conflict = conflictDetector.detectConlicts(branchDiff)
+		assertThat(conflict.levenshteinDistance, is(0))
 	}
 
 	private def checkChangeMatchesLength(int l1, int l2) {
