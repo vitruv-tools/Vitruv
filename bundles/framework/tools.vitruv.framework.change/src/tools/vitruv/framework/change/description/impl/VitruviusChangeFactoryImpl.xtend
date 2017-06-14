@@ -1,5 +1,6 @@
 package tools.vitruv.framework.change.description.impl
 
+import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.ChangeDescription
@@ -12,7 +13,6 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.change.preparation.impl.ChangeDescription2EChangesTransformationImpl
 import tools.vitruv.framework.util.datatypes.VURI
-import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * @version 0.2.0
@@ -25,6 +25,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	}
 
 	static def VitruviusChangeFactory init() {
+		logger.level = Level::DEBUG
 		new VitruviusChangeFactoryImpl
 	}
 
@@ -37,9 +38,19 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 		new EMFModelChangeImpl(changes, vuri)
 	}
 
-	override createEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri) {
-		val echanges = changeToCopy.EChanges.map[EcoreUtil::copy(it)]
-		new EMFModelChangeImpl(echanges, vuri)
+	override copy(EMFModelChangeImpl changeToCopy) {
+		val echanges = changeToCopy.EChanges
+		if (!echanges.forall[!resolved])
+			logger.debug("There are some resolved changes!")
+		new EMFModelChangeImpl(echanges, changeToCopy.URI)
+	}
+
+	override <A extends EObject> createEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri, A source, A target) {
+		val echangeCopier = new EChangeCopier(source, target)
+		val oldEChanges = changeToCopy.EChanges
+		val echanges = oldEChanges.map[echangeCopier.copyEChange(it)].filterNull
+		val change = new EMFModelChangeImpl(echanges, vuri)
+		return change
 	}
 
 	override createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {

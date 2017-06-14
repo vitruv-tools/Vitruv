@@ -6,7 +6,7 @@ import tools.vitruv.framework.versioning.impl.VersioningXtendFactoryImpl
 /**
  * Factory for the versioning xtend classes. 
  * 
- * @author Patrick Stoeckle
+ * @author Patrick Stoeckle <p.stoeckle@gmx.net>
  * @version 0.1.0
  * @since 2017-05-31
  */

@@ -14,6 +14,8 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -134,14 +136,28 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 
 	def private propagateChanges(VURI vuri) {
 		val changes = uriToChangeRecorder.get(vuri).endRecording
-		changes.forEach([
-// TODO PS Check, if CompositeContainerChange creation is necessary
-// CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance.createCompositeChange(Collections.singleton(change));
-			virtualModel.propagateChange(it)
-			// TODO PS Changes vorher kopieren, da nach propagate resolved
-// PS NotifyObservers has to be called after change propagation
-			notifyObservers(vuri, it)
-		])
+		changes.forEach [
+			if (it instanceof EMFModelChangeImpl) {
+				// TODO PS Changes vorher kopieren, da nach propagate resolved
+				// Aufpassen: Bei Transactional aufpassen, da kein Deep Copy 
+				// ConcreteChanges copieren 
+				// Einfach nur EChanges kopieren
+				val copiedChange = VitruviusChangeFactory::instance.copy(it)
+				testChange(false)
+				copiedChange.testChange(false)
+				virtualModel.propagateChange(it)
+				testChange(true)
+				copiedChange.testChange(false)
+				// PS NotifyObservers has to be called after change propagation
+				notifyObservers(vuri, copiedChange)
+			} else {
+				// TODO PS Check, if CompositeContainerChange creation is necessary
+				// CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance.createCompositeChange(Collections.singleton(change));
+				virtualModel.propagateChange(it)
+				notifyObservers(vuri, it)
+			}
+
+		]
 	}
 
 	def private startRecordingChanges(Resource resource) {
@@ -150,5 +166,12 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 		uriToChangeRecorder.put(vuri, recorder)
 		recorder.beginRecording(vuri, Collections::singleton(resource))
 
+	}
+
+	private static def testChange(EMFModelChangeImpl emfModelChange, boolean shouldEchangesBeResolved) {
+		val current = emfModelChange.EChanges.
+			forall[if (shouldEchangesBeResolved) resolved else !resolved]
+		if (!current)
+			throw new IllegalStateException('''The echanges of «emfModelChange» are «if(shouldEchangesBeResolved) "not" else ""» resolved''')
 	}
 }

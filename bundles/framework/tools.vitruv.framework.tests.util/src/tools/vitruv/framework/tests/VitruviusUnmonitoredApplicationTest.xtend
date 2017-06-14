@@ -166,7 +166,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * @param secondModelPathWithinProject- the path to the second resource within the project folder,
 	 * including the model file extension
 	 */
-	def protected void assertPersistedModelsEqual(String firstModelPathWithinProject,
+	protected def void assertPersistedModelsEqual(String firstModelPathWithinProject,
 		String secondModelPathWithinProject) {
 		val testResourceSet = new ResourceSetImpl
 		val firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet)

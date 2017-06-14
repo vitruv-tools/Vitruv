@@ -43,32 +43,19 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 		logger.level = Level::DEBUG
 	}
 
-	override void recordOriginalAndCorrespondentChanges(VURI orignal, List<VURI> targets) {
+	override void recordOriginalAndCorrespondentChanges(VURI orignal, Collection<VURI> targets) {
 		val List<ChangeMatch> matches = new ArrayList
 		changesMatches.put(orignal, matches)
 		targets.forEach[addPathToRecorded]
-		sourceTargetPairs.add(new SourceTargetPair(orignal, targets))
+		sourceTargetPairs.add(new SourceTargetPairImpl(orignal, targets))
 	}
 
 	override update(VURI vuri, TransactionalChange change) {
-		logger.warn('''vuri       «vuri»''')
-		logger.warn('''change.Uri «change.URI»''')
 		sourceTargetPairs.filter[change.URI == source].forEach [ pair |
 			val targetToCorrespondentChanges = pair.targets.stream.collect(Collectors::toMap(Function::identity, [
 				getChanges
 			]))
-			if (pair.source == change.URI)
-				logger.debug("OK!")
-			else
-				logger.warn('''
-					
-					source     «pair.source», 
-					vuri       «vuri»
-					change.Uri «change.URI»
-				''')
-
-			val match = new ChangeMatch(pair.source, change, targetToCorrespondentChanges)
-
+			val match = new ChangeMatchImpl(pair.source, change, targetToCorrespondentChanges)
 			logger.debug('''New match added: «match»''')
 			changesMatches.get(vuri).add(match)
 		]
