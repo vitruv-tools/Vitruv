@@ -94,7 +94,7 @@ class ConflictTest extends AbstractVersioningTest {
 		val branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
 		val ConflictDetector conflictDetector = new ConflictDetectorImpl(rootToRootMap)
 		val conflict = conflictDetector.detectConlicts(branchDiff)
-		assertThat(conflict.levenshteinDistance, is(1))
+		assertThat(conflict.originalChangesLevenshteinDistance, is(1))
 	}
 
 	@Test
@@ -148,7 +148,7 @@ class ConflictTest extends AbstractVersioningTest {
 		val branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
 		val ConflictDetector conflictDetector = new ConflictDetectorImpl(rootToRootMap)
 		val conflict = conflictDetector.detectConlicts(branchDiff)
-		assertThat(conflict.levenshteinDistance, is(0))
+		assertThat(conflict.originalChangesLevenshteinDistance, is(0))
 	}
 
 	private def checkChangeMatchesLength(int l1, int l2) {

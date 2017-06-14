@@ -5,5 +5,6 @@ import tools.vitruv.framework.versioning.Conflict
 
 @Data
 class ConflictImpl implements Conflict {
-	int levenshteinDistance
+	int originalChangesLevenshteinDistance
+
 }
