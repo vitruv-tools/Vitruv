@@ -3,27 +3,28 @@ package tools.vitruv.framework.change.description.impl
 import java.util.ArrayList
 import java.util.Collection
 import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
-import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
+import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
 
-class EChangeCopier<A extends EObject> {
+class EChangeCopier {
 	static val logger = Logger::getLogger(VitruviusChangeFactory)
 
 	val Collection<EObject> elements
 
-	val A source
-	val A target
+	val URI source
+	val URI target
 
-	new(A source, A target) {
-		this.source = EChangeUnresolver::createProxy(source)
-		this.target = EChangeUnresolver::createProxy(target)
+	new(URI source, URI target) {
+		this.source = source
+		this.target = target
 		elements = new ArrayList<EObject>
 	}
 
@@ -51,8 +52,9 @@ class EChangeCopier<A extends EObject> {
 //		return copyCre(replaceSingleValuedEAttribute)
 	}
 
-	private def <T extends Object> EChange copyCre(ReplaceSingleValuedEAttribute<A, T> replaceSingleValuedEAttribute) {
-		val affectedEObject = replaceSingleValuedEAttribute.affectedEObject
+	private def <A extends EObject, T extends Object> EChange copyCre(
+		ReplaceSingleValuedEAttribute<A, T> replaceSingleValuedEAttribute) {
+		val affectedEObject = replaceSingleValuedEAttribute.affectedEObject as InternalEObject
 		val affectedAttribute = replaceSingleValuedEAttribute.affectedFeature
 		val oldValue = replaceSingleValuedEAttribute.oldValue
 		val newValue = replaceSingleValuedEAttribute.newValue
@@ -68,22 +70,32 @@ class EChangeCopier<A extends EObject> {
 		)
 	}
 
-	private def <T extends EObject> copyCre(CreateAndReplaceNonRoot<A, T> createAndReplaceNonRoot) {
-		val affectedEObject = createAndReplaceNonRoot.insertChange.affectedEObject
+	private def <A extends EObject, T extends EObject> EChange copyCre(
+		CreateAndReplaceNonRoot<A, T> createAndReplaceNonRoot) {
+		val affectedEObject = createAndReplaceNonRoot.insertChange.affectedEObject as InternalEObject
+		val proxyUri = affectedEObject.eProxyURI
+		val proxyUriString = proxyUri.toString
+		val sourceUriString = source.toString
+		val containsSource = proxyUriString.contains(sourceUriString)
+		var InternalEObject newAffectedEObject = null
+		if (containsSource) {
+			newAffectedEObject = EcoreUtil::copy(affectedEObject)
+			val targetURIString = target.toString
+			val newProxyUriString = proxyUriString.replace(sourceUriString, targetURIString)
+			val newProxyUri = URI.createURI(newProxyUriString)
+			newAffectedEObject.eSetProxyURI(newProxyUri)
+			if (newProxyUri == target)
+				logger.debug("I've got no roots! :)!")
+		} else {
+			logger.warn('''AffectedEObject «affectedEObject» lies not under «source»''')
+			newAffectedEObject = affectedEObject
+		}
+
 		val affectedFeature = createAndReplaceNonRoot.insertChange.affectedFeature
 		val newValue = createAndReplaceNonRoot.insertChange.newValue
 		logger.debug("WHO")
-		logger.debug(affectedEObject)
-		logger.debug(source.eResource)
-		if (affectedEObject == source) {
-			logger.debug("Heureka!!!!!!!")
-			val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
-				createCreateAndReplaceNonRootChange(target, affectedFeature, newValue)
-			val testNewValue = change.insertChange.newValue
-			elements += testNewValue
-			return change
-		} else
-			TypeInferringUnresolvingCompoundEChangeFactory::instance.
-				createCreateAndReplaceNonRootChange(affectedEObject, affectedFeature, newValue)
+		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
+			createCreateAndReplaceNonRootChange(newAffectedEObject, affectedFeature, newValue)
+		return change
 	}
 }

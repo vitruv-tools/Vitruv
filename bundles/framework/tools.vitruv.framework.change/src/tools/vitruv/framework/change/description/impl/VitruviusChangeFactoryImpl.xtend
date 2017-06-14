@@ -13,6 +13,7 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.change.preparation.impl.ChangeDescription2EChangesTransformationImpl
 import tools.vitruv.framework.util.datatypes.VURI
+import org.eclipse.emf.common.util.URI
 
 /**
  * @version 0.2.0
@@ -45,7 +46,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 		new EMFModelChangeImpl(echanges, changeToCopy.URI)
 	}
 
-	override <A extends EObject> createEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri, A source, A target) {
+	override createEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri, URI source, URI target) {
 		val echangeCopier = new EChangeCopier(source, target)
 		val oldEChanges = changeToCopy.EChanges
 		val echanges = oldEChanges.map[echangeCopier.copyEChange(it)].filterNull

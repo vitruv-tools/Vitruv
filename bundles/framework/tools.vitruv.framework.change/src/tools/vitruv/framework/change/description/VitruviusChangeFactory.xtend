@@ -1,6 +1,6 @@
 package tools.vitruv.framework.change.description
 
-import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
@@ -34,8 +34,7 @@ interface VitruviusChangeFactory {
 	 * @param vuri
 	 * @return
 	 */
-	def <A extends EObject> TransactionalChange createEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri,
-		A source, A target)
+	def TransactionalChange createEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri, URI source, URI target)
 
 	def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri)
 

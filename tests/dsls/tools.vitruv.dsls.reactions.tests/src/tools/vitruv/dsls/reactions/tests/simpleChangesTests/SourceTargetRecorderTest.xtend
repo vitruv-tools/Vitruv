@@ -206,8 +206,9 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		assertThat(newRoot.eContents.length, is(0))
 		assertThat(newRoot.nonRootObjectContainerHelper, equalTo(null))
 		val change = stRecorder.getChangeMatches(sourceVURI).get(0)
-		val newChange = VitruviusChangeFactory::instance.createEMFModelChange(
-			change.originalChange as EMFModelChangeImpl, newSourceVURI, rootElement, newRoot)
+		val oChange = change.originalChange
+		val newChange = VitruviusChangeFactory::instance.createEMFModelChange(oChange as EMFModelChangeImpl,
+			newSourceVURI, sourceVURI.EMFUri, newSourceVURI.EMFUri)
 
 		virtualModel.propagateChange(newChange)
 		assertThat(newRoot.nonRootObjectContainerHelper, not(equalTo(null)))
