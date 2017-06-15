@@ -1,69 +1,29 @@
 package tools.vitruv.framework.versioning
 
-import java.util.ArrayList
 import java.util.List
 import java.util.Optional
 
-class Node<T> {
-	T vertex
-	List<Edge<T>> edges
-	Node<T> parent
-	boolean isVisited
+interface Node<T> {
 
-	new(T vertex) {
-		this.vertex = vertex
-		this.edges = new ArrayList()
-	}
+	def List<Edge<T>> getEdges()
 
-	def T vertex() {
-		return vertex
-	}
+	def Node<T> getParent()
 
-	def boolean addEdge(Node<T> node, int weight) {
-		if (hasEdge(node)) {
-			return false
-		}
-		var Edge<T> newEdge = new Edge(this, node, weight)
-		return edges.add(newEdge)
-	}
+	def Optional<Edge<T>> findEdge(Node<T> node)
 
-	def boolean removeEdge(Node<T> node) {
-		var Optional<Edge<T>> optional = findEdge(node)
-		if (optional.isPresent()) {
-			return edges.remove(optional.get())
-		}
-		return false
-	}
+	def T getVertex()
 
-	def boolean hasEdge(Node<T> node) {
-		return findEdge(node).isPresent()
-	}
+	def boolean addEdge(Node<T> node, int weight)
 
-	def private Optional<Edge<T>> findEdge(Node<T> node) {
-		return edges.stream().filter([edge|edge.isBetween(this, node)]).findFirst()
-	}
+	def boolean hasEdge(Node<T> node)
 
-	def List<Edge<T>> edges() {
-		return edges
-	}
+	def boolean isVisited()
 
-	def int getEdgeCount() {
-		return edges.size()
-	}
+	def boolean removeEdge(Node<T> node)
 
-	def Node<T> parent() {
-		return parent
-	}
+	def int getEdgeCount()
 
-	def boolean isVisited() {
-		return isVisited
-	}
+	def void setParent(Node<T> parent)
 
-	def void setVisited(boolean isVisited) {
-		this.isVisited = isVisited
-	}
-
-	def void setParent(Node<T> parent) {
-		this.parent = parent
-	}
+	def void setVisited(boolean isVisited)
 }
