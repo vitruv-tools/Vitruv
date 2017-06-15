@@ -9,7 +9,7 @@ import tools.vitruv.framework.change.echange.EChange
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
 	val List<C> changes
-	
+
 	new() {
 		// TODO PS Change back to LinkedList
 		changes = new ArrayList<C>
