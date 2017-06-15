@@ -1,5 +1,7 @@
 package tools.vitruv.framework.versioning
 
+import tools.vitruv.framework.change.echange.EChange
+
 /**
  * 
  * 
@@ -9,4 +11,6 @@ package tools.vitruv.framework.versioning
  */
 interface Conflict {
 	def int getOriginalChangesLevenshteinDistance()
+
+	def Graph<EChange> getEChangeDependencyGraph()
 }

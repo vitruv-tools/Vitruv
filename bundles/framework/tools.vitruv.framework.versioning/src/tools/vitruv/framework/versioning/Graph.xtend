@@ -5,28 +5,28 @@ import java.util.List
 interface Graph<T> {
 	/**
 	 * Adds a vertex to the graph.
-	 * @param vertexvertex to add
+	 * @param vertex vertex to add
 	 */
 	def boolean addVertex(T vertex)
 
 	/**
 	 * Adds a directed edge between two vertices in the graph.
-	 * @param vertex1vertex where the (directed) edge begins
-	 * @param vertex2vertex where the (directed) edge ends
+	 * @param vertex1 vertex where the (directed) edge begins
+	 * @param vertex2 vertex where the (directed) edge ends
 	 */
 	def boolean addEdge(T vertex1, T vertex2)
 
 	/**
 	 * Adds a weighted directed edge between two vertices in the graph.
-	 * @param vertex1vertex where the (directed) edge begins
-	 * @param vertex2vertex where the (directed) edge ends
-	 * @param weightweight of the edge
+	 * @param vertex1 vertex where the (directed) edge begins
+	 * @param vertex2 vertex where the (directed) edge ends
+	 * @param weight weight of the edge
 	 */
 	def boolean addEdge(T vertex1, T vertex2, int weight)
 
 	/**
 	 * Remove a vertex from the graph.
-	 * @param vertexvertex to be removed
+	 * @param vertex vertex to be removed
 	 * @return true if the vertex was removed, false if no such vertex was
 	 * found.
 	 */
@@ -34,8 +34,8 @@ interface Graph<T> {
 
 	/**
 	 * Method to remove a directed edge between two vertices in the graph.
-	 * @param vertex1vertex where the (directed) edge begins
-	 * @param vertex2vertex where the (directed) edge ends
+	 * @param vertex1 vertex where the (directed) edge begins
+	 * @param vertex2 vertex where the (directed) edge ends
 	 * @return true if the edge was removed, false if no such edge was found.
 	 */
 	def boolean removeEdge(T vertex1, T vertex2)
@@ -54,23 +54,23 @@ interface Graph<T> {
 
 	/**
 	 * Method to check if a vertex exists in the graph.
-	 * @param vertexvertex which is to be checked
+	 * @param vertex vertex which is to be checked
 	 * @return returns true if the graph contains the vertex, false otherwise
 	 */
 	def boolean containsVertex(T vertex)
 
 	/**
 	 * Method to check if an edge exists in the graph.
-	 * @param vertex1vertex where the (directed) edge begins
-	 * @param vertex2vertex where the (directed) edge ends
+	 * @param vertex1 vertex where the (directed) edge begins
+	 * @param vertex2 vertex where the (directed) edge ends
 	 * @return returns true if the graph contains the edge, false otherwise
 	 */
 	def boolean containsEdge(T vertex1, T vertex2)
 
 	/**
 	 * Method to get the shortest path from startVertex to endVertex.
-	 * @param startVertexvertex where the path begins
-	 * @param endVertexvertex where the path ends
+	 * @param startVertex vertex where the path begins
+	 * @param endVertex vertex where the path ends
 	 * @return list of vertices in the shortest path from startVertex to
 	 * endVertex, null if no such path exists.
 	 */

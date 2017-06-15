@@ -36,7 +36,7 @@ class ApplyEChangeSwitch {
 				if (canExecute)
 					execute
 				else
-					throw new RuntimeException('''EChange «it»could not be applied. ''')
+					throw new RuntimeException('''EChange «change» could not be applied. ''')
 			]
 			return true
 		}

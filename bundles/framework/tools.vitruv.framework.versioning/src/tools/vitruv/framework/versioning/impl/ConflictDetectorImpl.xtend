@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.InternalEObject
 import tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl
 import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
 import tools.vitruv.framework.versioning.DistanceCalculator
+import tools.vitruv.framework.versioning.Graph
 
 class ConflictDetectorImpl implements ConflictDetector {
 	static val logger = Logger::getLogger(ConflictDetectorImpl)
@@ -42,8 +43,9 @@ class ConflictDetectorImpl implements ConflictDetector {
 		findMatchesInChangeMatches
 		val comparison = [EChange a, EChange b|compareEchange(a, b)]
 		val distance = DistanceCalculator::instance.levenshteinDistance(baseEchanges, compareEchanges, comparison)
+		val Graph<EChange> dependencyGraph = new GraphImpl
 		cleanup
-		new ConflictImpl(distance)
+		new ConflictImpl(distance, dependencyGraph)
 	}
 
 	private def void checkLength() {
