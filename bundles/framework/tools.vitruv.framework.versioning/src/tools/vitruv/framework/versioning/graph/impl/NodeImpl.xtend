@@ -1,20 +1,20 @@
-package tools.vitruv.framework.versioning.impl
+package tools.vitruv.framework.versioning.graph.impl
 
 import java.util.ArrayList
 import java.util.List
 import java.util.Optional
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.versioning.Edge
-import tools.vitruv.framework.versioning.Node
+import tools.vitruv.framework.versioning.graph.Node
+import tools.vitruv.framework.versioning.graph.Edge
 
 class NodeImpl<T> implements Node<T> {
 	@Accessors(PUBLIC_GETTER)
 	val T vertex
 	@Accessors(PUBLIC_GETTER)
 	val List<Edge<T>> edges
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER])
 	Node<T> parent
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
+	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER])
 	boolean visited
 
 	new(T vertex) {
@@ -47,5 +47,9 @@ class NodeImpl<T> implements Node<T> {
 
 	override int getEdgeCount() {
 		edges.size
+	}
+
+	override toString() {
+		'''Node with «vertex»'''
 	}
 }

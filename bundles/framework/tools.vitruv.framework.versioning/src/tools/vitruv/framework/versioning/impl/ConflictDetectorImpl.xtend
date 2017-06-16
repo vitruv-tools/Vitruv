@@ -5,19 +5,19 @@ import java.util.List
 import java.util.Map
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
 import tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceNonRootImpl
+import tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl
 import tools.vitruv.framework.versioning.BranchDiff
 import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.ConflictDetector
-import org.eclipse.emf.ecore.InternalEObject
-
-import tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl
-import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
 import tools.vitruv.framework.versioning.DistanceCalculator
-import tools.vitruv.framework.versioning.Graph
+import org.graphstream.graph.Graph
+import org.graphstream.graph.implementations.SingleGraph
 
 class ConflictDetectorImpl implements ConflictDetector {
 	static val logger = Logger::getLogger(ConflictDetectorImpl)
@@ -43,7 +43,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 		findMatchesInChangeMatches
 		val comparison = [EChange a, EChange b|compareEchange(a, b)]
 		val distance = DistanceCalculator::instance.levenshteinDistance(baseEchanges, compareEchanges, comparison)
-		val Graph<EChange> dependencyGraph = new GraphImpl
+		val Graph dependencyGraph = new SingleGraph("Conflict")
 		cleanup
 		new ConflictImpl(distance, dependencyGraph)
 	}

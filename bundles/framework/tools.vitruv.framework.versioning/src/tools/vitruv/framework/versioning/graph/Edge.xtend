@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning
+package tools.vitruv.framework.versioning.graph
 
 interface Edge<T> {
 	def Node<T> getFromNode()

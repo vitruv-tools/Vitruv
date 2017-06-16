@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.impl
+package tools.vitruv.framework.versioning.graph.impl
 
 import java.util.ArrayList
 import java.util.Collections
@@ -7,14 +7,30 @@ import java.util.LinkedList
 import java.util.List
 import java.util.Map
 import java.util.Queue
-import tools.vitruv.framework.versioning.Graph
-import tools.vitruv.framework.versioning.Node
+import org.apache.log4j.Logger
+import org.apache.log4j.Level
+import tools.vitruv.framework.versioning.graph.Graph
+import tools.vitruv.framework.versioning.graph.Node
 
 class GraphImpl<T> implements Graph<T> {
+	static val logger = Logger::getLogger(GraphImpl)
 	val Map<T, Node<T>> adjacencyList
 
 	new() {
 		adjacencyList = new HashMap
+	}
+
+	override getEdges() {
+		logger.level = Level::DEBUG
+		val x = nodes.map[n|n.edges].flatten.toList
+		x.forEach [
+			logger.debug(it)
+		]
+		return x
+	}
+
+	override getNodes() {
+		adjacencyList.values
 	}
 
 	override addVertex(T vertex) {
@@ -62,7 +78,7 @@ class GraphImpl<T> implements Graph<T> {
 	}
 
 	override edgeCount() {
-		val x = adjacencyList.values().stream().mapToInt[it.edgeCount].sum
+		val x = nodes.stream().mapToInt[it.edgeCount].sum
 		return x
 	}
 
@@ -132,4 +148,5 @@ class GraphImpl<T> implements Graph<T> {
 			]
 		}
 	}
+
 }

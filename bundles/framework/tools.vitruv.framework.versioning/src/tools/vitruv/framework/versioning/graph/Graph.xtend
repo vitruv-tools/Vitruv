@@ -1,6 +1,7 @@
-package tools.vitruv.framework.versioning
+package tools.vitruv.framework.versioning.graph
 
 import java.util.List
+import java.util.Collection
 
 interface Graph<T> {
 	/**
@@ -79,4 +80,7 @@ interface Graph<T> {
 
 	def Node<T> getNode(T value)
 
+	def Collection<Edge<T>> getEdges()
+
+	def Collection<Node<T>> getNodes()
 }

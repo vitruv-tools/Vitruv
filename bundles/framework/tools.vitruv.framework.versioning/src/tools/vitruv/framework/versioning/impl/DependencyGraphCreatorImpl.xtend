@@ -14,21 +14,25 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.versioning.DependencyGraphCreator
-import tools.vitruv.framework.versioning.Graph
+import org.graphstream.graph.Graph
+import org.graphstream.graph.implementations.SingleGraph
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
+	static val transactionalIdentifier = "transactional"
+	static val affectedIdentifier = "transactional"
 	static val logger = Logger::getLogger(ConflictDetectorImpl)
-	Graph<EChange> graph
+	Graph graph
 	List<EChange> echanges
 
 	override createDependencyGraph(List<TransactionalChange> changes) {
 		setup
 
-		changes.forEach[EChanges.forEach[echange|graph.addVertex(echange)]]
+		changes.forEach[EChanges.forEach[echange|graph.addNode(echange.toString)]]
 		changes.forEach[addEgdesForTransactionChange]
 		echanges = changes.map[EChanges].flatten.toList
 		echanges.forEach[addEdge]
 		val finalGraph = graph
+//		graph.display
 		teardown
 		finalGraph
 	}
@@ -40,26 +44,48 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 			val otherEchanges = tChange.EChanges.filter[it !== echange]
 			if (eChangesLength - 1 !== otherEchanges.length)
 				logger.warn('''Error by filtering EChange list''')
-			otherEchanges.forEach[graph.addEdge(echange, it)]
+			otherEchanges.forEach[addTransactionalEdge(echange, it)]
 		]
 		if ((oldEdgeCount + (eChangesLength * (eChangesLength - 1))) !== graph.edgeCount)
 			logger.warn('''Not all edges added!''')
+	}
+
+	private static def String createTransactionalEdgeName(EChange e1, EChange e2) {
+		'''«transactionalIdentifier»: «e1» to «e2»'''
+	}
+
+	private static def String createAffectedEdgeName(EChange e1, EChange e2) {
+		'''«affectedIdentifier»: «e1» to «e2»'''
+	}
+
+	private def addTransactionalEdge(EChange e1, EChange e2) {
+		addEChangeEdge(createTransactionalEdgeName(e1, e2), e1, e2)
+	}
+
+	private def addEChangeEdge(String n, EChange e1, EChange e2) {
+		graph.addEdge(n, e1.toString, e2.toString)
+	}
+
+	private def addAffectedEdge(EChange e1, EChange e2) {
+		addEChangeEdge(createAffectedEdgeName(e1, e2), e1, e2)
+	}
+
+	private def boolean transactionalEdgeExists(EChange e1, EChange e2) {
+		val edge = graph.getEdge(createTransactionalEdgeName(e1, e2))
+		return null !== edge
 	}
 
 	private def addEdge(EChange e) {
 		logger.debug('''CreateAndReplaceNonRoot «e»''')
 		val affectedObjects = determineAffectedObjects(e)
 		echanges.filter [
-			!graph.containsEdge(e, it)
+			!transactionalEdgeExists(e, it)
 		].filter[it !== e].forEach [
 			val affectedByTheOther = determineAffectedObjects
 			val conflictedObjects = affectedByTheOther.filter[affectedObjects.contains(it)].length
-			val edgeAlreadyInGraph = graph.containsEdge(e, it)
-			if (edgeAlreadyInGraph)
-				logger.warn("Error while filtering!")
 			if (conflictedObjects > 0) {
 				logger.debug('''«e» modifies the same objects as «it»''')
-				graph.addEdge(e, it)
+				addAffectedEdge(e, it)
 			}
 		]
 	}
@@ -101,7 +127,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 
 	private def setup() {
 		logger.debug("Start setup")
-		graph = new GraphImpl
+		graph = new SingleGraph("Tutorial 1")
 		logger.debug("End setup")
 	}
 

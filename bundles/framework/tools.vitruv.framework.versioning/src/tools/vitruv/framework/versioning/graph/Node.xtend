@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning
+package tools.vitruv.framework.versioning.graph
 
 import java.util.List
 import java.util.Optional
