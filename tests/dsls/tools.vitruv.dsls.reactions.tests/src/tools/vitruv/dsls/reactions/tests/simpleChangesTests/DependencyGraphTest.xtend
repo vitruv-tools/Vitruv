@@ -5,6 +5,8 @@ import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.impl.DependencyGraphCreatorImpl
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import org.graphstream.graph.Edge
+import java.util.Collection
 
 class DependencyGraphTest extends NoConflict {
 	@Test
@@ -13,8 +15,10 @@ class DependencyGraphTest extends NoConflict {
 		val DependencyGraphCreator dependencyGraphCreator = new DependencyGraphCreatorImpl
 		val graph = dependencyGraphCreator.createDependencyGraph(changes)
 
-		assertThat(graph.vertexCount, is(8))
-		assertThat(graph.edgeCount, is(8))
+//		assertThat(graph.vertexCount, is(8))
+		val Collection<Edge> edges = graph.edgeSet
+		val transactionalEdges = edges.filter[id.contains("transactional")]
+		assertThat(transactionalEdges.size, is(4))
 	}
 
 }
