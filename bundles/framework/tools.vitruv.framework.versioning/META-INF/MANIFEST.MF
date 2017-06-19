@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.framework.versioning;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.graphstream.graph,
- tools.vitruv.framework.versioning,
+Export-Package: tools.vitruv.framework.versioning,
  tools.vitruv.framework.versioning.author,
  tools.vitruv.framework.versioning.author.impl,
  tools.vitruv.framework.versioning.author.util,
@@ -23,8 +22,7 @@ Export-Package: org.graphstream.graph,
  tools.vitruv.framework.versioning.repository.util,
  tools.vitruv.framework.versioning.util
 Bundle-Version: 0.1.1.qualifier
-Bundle-ClassPath: .,
- jars/gs-core-1.3.jar
+Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
@@ -50,6 +48,7 @@ Require-Bundle: org.eclipse.core.runtime,
  tools.vitruv.framework.change.echange,
  org.eclipse.xtext.xbase.lib;resolution:=optional,
  org.eclipse.xtend.lib;resolution:=optional,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ org.graphstream;bundle-version="1.3.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 

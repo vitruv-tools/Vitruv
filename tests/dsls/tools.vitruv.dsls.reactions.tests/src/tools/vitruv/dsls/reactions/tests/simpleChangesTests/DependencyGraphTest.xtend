@@ -1,12 +1,12 @@
 package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
+import java.util.Collection
+import org.graphstream.graph.Edge
 import org.junit.Test
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.impl.DependencyGraphCreatorImpl
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
-import org.graphstream.graph.Edge
-import java.util.Collection
 
 class DependencyGraphTest extends NoConflict {
 	@Test

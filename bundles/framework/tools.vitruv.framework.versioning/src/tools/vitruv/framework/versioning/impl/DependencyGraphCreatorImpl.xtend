@@ -6,7 +6,8 @@ import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.graphstream.graph.Graph
-import org.graphstream.graph.implementations.MultiGraph
+import org.graphstream.graph.Node
+import org.graphstream.graph.implementations.SingleGraph
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.EChange
@@ -16,7 +17,6 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.versioning.DependencyGraphCreator
-import org.graphstream.graph.Node
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static val transactionalIdentifier = "transactional"
@@ -143,7 +143,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 
 	private def setup() {
 		logger.debug("Start setup")
-		graph = new MultiGraph("Test 1")
+		graph = new SingleGraph("Test 1")
 		logger.debug("End setup")
 	}
 
