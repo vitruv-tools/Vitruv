@@ -19,6 +19,7 @@ class DependencyGraphTest extends NoConflict {
 		val Collection<Edge> edges = graph.edgeSet
 		val transactionalEdges = edges.filter[id.contains("transactional")]
 		assertThat(transactionalEdges.size, is(8))
+		
 	}
 
 }

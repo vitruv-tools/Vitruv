@@ -13,12 +13,15 @@ import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import org.graphstream.graph.Edge
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EAttribute
 
 //import org.apache.log4j.Logger
 class GraphManagerImpl implements GraphManager {
 //	static val logger = Logger::getLogger(ConflictDetectorImpl)
 	static val transactionalIdentifier = "transactional"
 	static val affectedIdentifier = "affected"
+	static val uiLabel = "ui.label"
 	@Accessors(PUBLIC_GETTER)
 	val Graph graph
 
@@ -34,6 +37,18 @@ class GraphManagerImpl implements GraphManager {
 		'''contains'''
 	}
 
+	private static def String getAffectedEdgeLabel(EObject ob) {
+		'''«ob.toString.substring(0)»'''
+	}
+
+	private static dispatch def String getShortString(EObject e) {
+		e.toString
+	}
+
+	private static dispatch def String getShortString(EAttribute e) {
+		'''«e.name»'''
+	}
+
 	private static def String createAffectedEdgeName(EChange e1, EChange e2) {
 		'''«affectedIdentifier»: «e1» to «e2»'''
 	}
@@ -43,7 +58,7 @@ class GraphManagerImpl implements GraphManager {
 	}
 
 	private static dispatch def String getNodeLabel(TransactionalChange e) {
-		'''TransactionalChange@«Integer.toHexString(e.hashCode)»'''
+		'''TC'''
 	}
 
 	private static dispatch def String getNodeLabel(ReplaceSingleValuedEReference<?, ?> e) {
@@ -51,7 +66,7 @@ class GraphManagerImpl implements GraphManager {
 	}
 
 	private static dispatch def String getNodeLabel(ReplaceSingleValuedEAttribute<?, ?> e) {
-		'''ReplaceSingleValuedEAttribute@«Integer.toHexString(e.hashCode)», newValue: «e.newValue»'''
+		'''replace «e.affectedFeature.shortString»  with "«e.newValue»" at «e.affectedEObject.class.name»'''
 	}
 
 	private static dispatch def String getNodeLabel(CreateAndInsertNonRoot<?, ?> e) {
@@ -85,7 +100,7 @@ class GraphManagerImpl implements GraphManager {
 
 	private dispatch def void addNodeImpl(TransactionalChange e) {
 		val node = graph.addNode(e.nodeId)
-		node.addAttribute("ui.label", e.nodeLabel)
+		node.addAttribute(uiLabel, e.nodeLabel)
 		e.EChanges.forEach [
 			addNodeImpl
 			addTransactionalEdge(e, it)
@@ -95,7 +110,7 @@ class GraphManagerImpl implements GraphManager {
 
 	private dispatch def void addNodeImpl(EChange e) {
 		val node = graph.addNode(e.nodeId)
-		node.addAttribute("ui.label", e.nodeLabel)
+		node.addAttribute(uiLabel, e.nodeLabel)
 	}
 
 	override checkIfEdgeExists(EChange e1, EChange e2) {
@@ -105,13 +120,9 @@ class GraphManagerImpl implements GraphManager {
 		return x
 	}
 
-	private def addTransactionalEdge(TransactionalChange t, EChange e) {
-		val edge = addChangeEdge(getTransactionalEdgeId(t, e), t, e, true)
-		edge.addAttribute("ui.label", getTransactionalEdgeLabel(t, e))
-	}
-
-	override addAffectedEdge(EChange e1, EChange e2) {
-		addChangeEdge(createAffectedEdgeName(e1, e2), e1, e2, true)
+	override addAffectedEdge(EChange e1, EChange e2, EObject affectedObject) {
+		val edge = addChangeEdge(createAffectedEdgeName(e1, e2), e1, e2, false)
+		edge.addAttribute(uiLabel, affectedObject.affectedEdgeLabel)
 	}
 
 	private def dispatch Edge addChangeEdge(String n, TransactionalChange e1, EChange e2, boolean directed) {
@@ -129,4 +140,10 @@ class GraphManagerImpl implements GraphManager {
 	private dispatch def Node getNode(TransactionalChange t) {
 		graph.getNode(t.nodeId)
 	}
+
+	private def addTransactionalEdge(TransactionalChange t, EChange e) {
+		val edge = addChangeEdge(getTransactionalEdgeId(t, e), t, e, true)
+		edge.addAttribute(uiLabel, getTransactionalEdgeLabel(t, e))
+	}
+
 }

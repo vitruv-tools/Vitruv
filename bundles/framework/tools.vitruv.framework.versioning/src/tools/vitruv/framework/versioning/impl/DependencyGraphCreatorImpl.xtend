@@ -22,13 +22,12 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	List<EChange> echanges
 
 	override createDependencyGraph(List<TransactionalChange> changes) {
-		setup
 
 		changes.forEach[addNode]
+		graph.display
 		echanges = changes.map[EChanges].flatten.toList
 		echanges.forEach[addAffectedEdgeForEchange]
-		teardown
-		graph.display
+
 		graph.addAttribute("ui.screenshot", "./test.png")
 		graph
 	}
@@ -38,10 +37,11 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		val affectedObjects = determineAffectedObjects(e)
 		echanges.filter[it !== e && !checkIfEdgeExists(e)].forEach [
 			val affectedByTheOther = determineAffectedObjects
-			val conflictedObjects = affectedByTheOther.filter[affectedObjects.contains(it)].length
-			if (conflictedObjects > 0) {
-				logger.debug('''«e» modifies the same objects as «it»''')
-				addAffectedEdge(e, it)
+			val conflictedObjects = affectedByTheOther.filter[affectedObjects.contains(it)].toList
+			if (!conflictedObjects.empty) {
+				if (conflictedObjects.size > 1)
+					logger.warn('''There are «conflictedObjects.size» conflicted objects''')
+				addAffectedEdge(e, it, conflictedObjects.get(0))
 			}
 		]
 	}
@@ -52,7 +52,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 
 	private dispatch def determineAffectedObjects(AtomicEChange e) {
 		logger.debug('''AtomicEChange «e»''')
-		return new ArrayList
+		new ArrayList
 	}
 
 	private dispatch def determineAffectedObjects(CreateEObject<?> e) {
@@ -81,13 +81,4 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 			toList
 	}
 
-	private def setup() {
-		logger.debug("Start setup")
-		logger.debug("End setup")
-	}
-
-	private def teardown() {
-		logger.debug("Start teardown")
-		logger.debug("End teardown")
-	}
 }

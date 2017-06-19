@@ -1,5 +1,6 @@
 package tools.vitruv.framework.versioning
 
+import org.eclipse.emf.ecore.EObject
 import org.graphstream.graph.Graph
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
@@ -14,7 +15,7 @@ interface GraphManager {
 
 	def boolean checkIfEdgeExists(EChange e1, EChange e2)
 
-	def void addAffectedEdge(EChange e1, EChange e2)
+	def void addAffectedEdge(EChange e1, EChange e2, EObject affectedObject)
 
 	def Graph getGraph()
 }
