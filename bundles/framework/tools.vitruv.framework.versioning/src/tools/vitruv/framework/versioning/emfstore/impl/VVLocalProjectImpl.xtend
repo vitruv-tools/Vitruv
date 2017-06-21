@@ -1,17 +1,21 @@
 package tools.vitruv.framework.versioning.emfstore.impl
 
-import tools.vitruv.framework.versioning.emfstore.VVFactory
-import tools.vitruv.framework.versioning.emfstore.VVLocalProject
-import tools.vitruv.framework.versioning.emfstore.VVServer
-import tools.vitruv.framework.versioning.emfstore.VVRemoteProject
-import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.ArrayList
+import java.util.Date
+import java.util.List
+import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.xbase.lib.Functions.Function1
 import tools.vitruv.framework.versioning.commit.CommitFactory
-import java.util.Date
+import tools.vitruv.framework.versioning.conflict.Conflict
+import tools.vitruv.framework.versioning.emfstore.VVFactory
+import tools.vitruv.framework.versioning.emfstore.VVLocalProject
 import tools.vitruv.framework.versioning.emfstore.VVModelElementId
 import tools.vitruv.framework.versioning.emfstore.VVModelElementIdUtil
+import tools.vitruv.framework.versioning.emfstore.VVRemoteProject
+import tools.vitruv.framework.versioning.emfstore.VVServer
 
 class VVLocalProjectImpl extends VVProjectImpl implements VVLocalProject {
 
@@ -38,10 +42,6 @@ class VVLocalProjectImpl extends VVProjectImpl implements VVLocalProject {
 		return commit
 	}
 
-	override update() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 	override delete() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
@@ -60,6 +60,15 @@ class VVLocalProjectImpl extends VVProjectImpl implements VVLocalProject {
 
 	override getModelElement(VVModelElementId modelElementId) {
 		modelElements.findFirst[VVModelElementIdUtil::instance.getModelElementId(it).id == modelElementId.id]
+	}
+
+	override update() {
+		update([c| ])
+	}
+
+	override update(Function1<List<Conflict>, Boolean> conflictCallback) {
+		val List<Conflict> conflicts = new ArrayList
+		conflictCallback.apply(conflicts)
 	}
 
 }

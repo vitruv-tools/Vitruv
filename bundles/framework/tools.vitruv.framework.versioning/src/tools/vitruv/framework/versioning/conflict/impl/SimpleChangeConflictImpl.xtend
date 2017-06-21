@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.conflict.ConflictPackage
 import tools.vitruv.framework.versioning.conflict.SimpleChangeConflict
+import tools.vitruv.framework.versioning.ChangeMatch
 
 /** 
  * <!-- begin-user-doc -->
@@ -32,7 +33,7 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	 * @generated
 	 * @ordered
 	 */
-	protected EChange sourceChange
+	protected ChangeMatch sourceChange
 	/** 
 	 * The cached value of the '{@link #getTargetChange() <em>Target Change</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -41,7 +42,7 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	 * @generated
 	 * @ordered
 	 */
-	protected EChange targetChange
+	protected ChangeMatch targetChange
 
 	/** 
 	 * <!-- begin-user-doc -->
@@ -66,14 +67,15 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	override EChange getSourceChange() {
+	override ChangeMatch getSourceChange() {
 		if (sourceChange !== null && sourceChange.eIsProxy()) {
 			var InternalEObject oldSourceChange = (sourceChange as InternalEObject)
 			sourceChange = eResolveProxy(oldSourceChange) as EChange
 			if (sourceChange !== oldSourceChange) {
-				if (eNotificationRequired()) eNotify(
-					new ENotificationImpl(this, Notification.RESOLVE,
-						ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE, oldSourceChange, sourceChange))
+				if (eNotificationRequired())
+					eNotify(
+						new ENotificationImpl(this, Notification.RESOLVE,
+							ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE, oldSourceChange, sourceChange))
 			}
 		}
 		return sourceChange
@@ -96,9 +98,10 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	override void setSourceChange(EChange newSourceChange) {
 		var EChange oldSourceChange = sourceChange
 		sourceChange = newSourceChange
-		if (eNotificationRequired()) eNotify(
-			new ENotificationImpl(this, Notification.SET, ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE,
-				oldSourceChange, sourceChange))
+		if (eNotificationRequired())
+			eNotify(
+				new ENotificationImpl(this, Notification.SET, ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE,
+					oldSourceChange, sourceChange))
 	}
 
 	/** 
@@ -111,9 +114,10 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 			var InternalEObject oldTargetChange = (targetChange as InternalEObject)
 			targetChange = eResolveProxy(oldTargetChange) as EChange
 			if (targetChange !== oldTargetChange) {
-				if (eNotificationRequired()) eNotify(
-					new ENotificationImpl(this, Notification.RESOLVE,
-						ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE, oldTargetChange, targetChange))
+				if (eNotificationRequired())
+					eNotify(
+						new ENotificationImpl(this, Notification.RESOLVE,
+							ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE, oldTargetChange, targetChange))
 			}
 		}
 		return targetChange
@@ -136,9 +140,10 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	override void setTargetChange(EChange newTargetChange) {
 		var EChange oldTargetChange = targetChange
 		targetChange = newTargetChange
-		if (eNotificationRequired()) eNotify(
-			new ENotificationImpl(this, Notification.SET, ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE,
-				oldTargetChange, targetChange))
+		if (eNotificationRequired())
+			eNotify(
+				new ENotificationImpl(this, Notification.SET, ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE,
+					oldTargetChange, targetChange))
 	}
 
 	/** 

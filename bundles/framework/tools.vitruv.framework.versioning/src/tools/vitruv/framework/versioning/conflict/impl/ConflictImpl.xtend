@@ -10,6 +10,11 @@ import tools.vitruv.framework.versioning.conflict.Conflict
 import tools.vitruv.framework.versioning.conflict.ConflictPackage
 import tools.vitruv.framework.versioning.conflict.ConflictSolvability
 import tools.vitruv.framework.versioning.conflict.ConflictType
+import org.graphstream.graph.Graph
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.graphstream.graph.implementations.SingleGraph
+import java.util.Set
+import tools.vitruv.framework.versioning.ChangeMatch
 
 /** 
  * <!-- begin-user-doc -->
@@ -62,6 +67,27 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 	 */
 	protected ConflictSolvability solvability = SOLVABILITY_EDEFAULT
 
+	@Accessors(PUBLIC_GETTER)
+	protected int originalChangesLevenshteinDistance
+	@Accessors(PUBLIC_GETTER)
+	protected Graph eChangeDependencyGraph
+
+	override setEChangeDependencyGraph(Graph newGraph) {
+		var oldType = eChangeDependencyGraph
+		eChangeDependencyGraph = if (newGraph === null) new SingleGraph("") else newGraph
+		if (eNotificationRequired())
+			eNotify(
+				new ENotificationImpl(this, Notification.SET, ConflictPackage.CONFLICT__TYPE, oldType,
+					eChangeDependencyGraph))
+	}
+
+	override setOriginalChangesLevenshteinDistance(int distance) {
+		var oldType = originalChangesLevenshteinDistance
+		originalChangesLevenshteinDistance = distance
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ConflictPackage.CONFLICT__TYPE, oldType, distance))
+	}
+
 	/** 
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -97,8 +123,8 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 	override void setType(ConflictType newType) {
 		var ConflictType oldType = type
 		type = if (newType === null) TYPE_EDEFAULT else newType
-		if (eNotificationRequired()) eNotify(
-			new ENotificationImpl(this, Notification.SET, ConflictPackage.CONFLICT__TYPE, oldType, type))
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ConflictPackage.CONFLICT__TYPE, oldType, type))
 	}
 
 	/** 
@@ -118,9 +144,10 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 	override void setSolvability(ConflictSolvability newSolvability) {
 		var ConflictSolvability oldSolvability = solvability
 		solvability = if (newSolvability === null) SOLVABILITY_EDEFAULT else newSolvability
-		if (eNotificationRequired()) eNotify(
-			new ENotificationImpl(this, Notification.SET, ConflictPackage.CONFLICT__SOLVABILITY, oldSolvability,
-				solvability))
+		if (eNotificationRequired())
+			eNotify(
+				new ENotificationImpl(this, Notification.SET, ConflictPackage.CONFLICT__SOLVABILITY, oldSolvability,
+					solvability))
 	}
 
 	/** 
@@ -213,5 +240,11 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 		result.append(solvability)
 		result.append(Character.valueOf(')').charValue)
 		return result.toString()
-	} // ConflictImpl
+	}
+
+	override resolveConflict(Set<ChangeMatch> acceptedLocalChangeMatches, Set<ChangeMatch> rejectedRemoteOperations) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+// ConflictImpl
 }

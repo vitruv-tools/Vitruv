@@ -3,6 +3,7 @@
 package tools.vitruv.framework.versioning.conflict
 
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.ChangeMatch
 
 /** 
  * <!-- begin-user-doc -->
@@ -34,7 +35,7 @@ interface SimpleChangeConflict extends Conflict {
 	 * @model required="true"
 	 * @generated
 	 */
-	def EChange getSourceChange()
+	def ChangeMatch getSourceChange()
 
 	/** 
 	 * Sets the value of the '{@link tools.vitruv.framework.versioning.conflict.SimpleChangeConflict#getSourceChange <em>Source Change</em>}' reference.
@@ -44,7 +45,7 @@ interface SimpleChangeConflict extends Conflict {
 	 * @see #getSourceChange()
 	 * @generated
 	 */
-	def void setSourceChange(EChange value)
+	def void setSourceChange(ChangeMatch value)
 
 	/** 
 	 * Returns the value of the '<em><b>Target Change</b></em>' reference.
@@ -60,7 +61,7 @@ interface SimpleChangeConflict extends Conflict {
 	 * @model required="true"
 	 * @generated
 	 */
-	def EChange getTargetChange()
+	def ChangeMatch getTargetChange()
 
 	/** 
 	 * Sets the value of the '{@link tools.vitruv.framework.versioning.conflict.SimpleChangeConflict#getTargetChange <em>Target Change</em>}' reference.
@@ -70,6 +71,6 @@ interface SimpleChangeConflict extends Conflict {
 	 * @see #getTargetChange()
 	 * @generated
 	 */
-	def void setTargetChange(EChange value)
+	def void setTargetChange(ChangeMatch value)
 // SimpleChangeConflict
 }

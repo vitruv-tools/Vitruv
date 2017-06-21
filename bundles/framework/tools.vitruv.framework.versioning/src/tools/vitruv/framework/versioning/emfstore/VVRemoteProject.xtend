@@ -1,6 +1,7 @@
 package tools.vitruv.framework.versioning.emfstore
 
 import tools.vitruv.framework.versioning.commit.Commit
+import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 
 interface VVRemoteProject extends VVProject {
 	def VVLocalProject getLocalProject()
@@ -15,6 +16,6 @@ interface VVRemoteProject extends VVProject {
 
 	def void delete()
 
-	def void pushCommit(Commit lastCommit, Commit newCommit)
+	def void pushCommit(Commit lastCommit, Commit newCommit)throws CommitNotExceptedException
 
 }

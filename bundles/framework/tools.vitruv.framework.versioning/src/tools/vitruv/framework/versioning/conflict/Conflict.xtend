@@ -2,7 +2,10 @@
  */
 package tools.vitruv.framework.versioning.conflict
 
+import java.util.Set
 import org.eclipse.emf.ecore.EObject
+import org.graphstream.graph.Graph
+import tools.vitruv.framework.versioning.ChangeMatch
 
 /** 
  * <!-- begin-user-doc -->
@@ -20,6 +23,14 @@ import org.eclipse.emf.ecore.EObject
  * @generated
  */
 interface Conflict extends EObject {
+	def int getOriginalChangesLevenshteinDistance()
+
+	def void setOriginalChangesLevenshteinDistance(int distance)
+
+	def Graph getEChangeDependencyGraph()
+
+	def void setEChangeDependencyGraph(Graph dependencyGraph)
+
 	/** 
 	 * Returns the value of the '<em><b>Type</b></em>' attribute.
 	 * The literals are from the enumeration {@link tools.vitruv.framework.versioning.conflict.ConflictType}.
@@ -77,5 +88,7 @@ interface Conflict extends EObject {
 	 * @generated
 	 */
 	def void setSolvability(ConflictSolvability value)
+
+	def void resolveConflict(Set<ChangeMatch> acceptedLocalChangeMatches, Set<ChangeMatch> rejectedRemoteOperations)
 // Conflict
 }

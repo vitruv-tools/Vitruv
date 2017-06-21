@@ -1,5 +1,7 @@
 package tools.vitruv.framework.versioning
 
+import tools.vitruv.framework.versioning.conflict.Conflict
+
 /**
  * 
  * 

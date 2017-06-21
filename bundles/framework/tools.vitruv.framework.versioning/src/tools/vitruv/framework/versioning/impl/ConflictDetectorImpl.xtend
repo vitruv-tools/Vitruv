@@ -18,6 +18,7 @@ import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DistanceCalculator
 import org.graphstream.graph.Graph
 import org.graphstream.graph.implementations.SingleGraph
+import tools.vitruv.framework.versioning.conflict.ConflictFactory
 
 class ConflictDetectorImpl implements ConflictDetector {
 	static val logger = Logger::getLogger(ConflictDetectorImpl)
@@ -45,7 +46,10 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val distance = DistanceCalculator::instance.levenshteinDistance(baseEchanges, compareEchanges, comparison)
 		val Graph dependencyGraph = new SingleGraph("Conflict")
 		cleanup
-		new ConflictImpl(distance, dependencyGraph)
+		val conflict = ConflictFactory::eINSTANCE.createSimpleChangeConflict
+		conflict.EChangeDependencyGraph = dependencyGraph
+		conflict.originalChangesLevenshteinDistance = distance
+		return conflict
 	}
 
 	private def void checkLength() {
