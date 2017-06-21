@@ -58,6 +58,15 @@ interface CommitFactory extends EFactory {
 	def InitialCommit createInitialCommit()
 
 	/** 
+	 * Returns a new object of class '<em>Change Match</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Change Match</em>'.
+	 * @generated
+	 */
+	def ChangeMatch createChangeMatch()
+
+	/** 
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

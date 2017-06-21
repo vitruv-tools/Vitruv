@@ -1,7 +1,8 @@
+/** 
+ */
 package tools.vitruv.framework.versioning.commit
 
 import org.eclipse.emf.common.util.EList
-import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.author.Signed
 
 /** 
@@ -42,10 +43,10 @@ interface Commit extends Signed {
 
 	/** 
 	 * Returns the value of the '<em><b>Changes</b></em>' containment reference list.
-	 * The list contents are of type {@link tools.vitruv.framework.change.echange.EChange}.
+	 * The list contents are of type {@link tools.vitruv.framework.versioning.commit.ChangeMatch}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Changes</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Changes</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -54,7 +55,7 @@ interface Commit extends Signed {
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	def EList<EChange> getChanges()
+	def EList<ChangeMatch> getChanges()
 
 	/** 
 	 * Returns the value of the '<em><b>Commitmessage</b></em>' reference.

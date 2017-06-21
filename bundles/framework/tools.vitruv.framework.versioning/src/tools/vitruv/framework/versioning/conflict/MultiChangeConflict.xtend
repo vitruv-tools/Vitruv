@@ -3,7 +3,7 @@
 package tools.vitruv.framework.versioning.conflict
 
 import org.eclipse.emf.common.util.EList
-import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 /** 
  * <!-- begin-user-doc -->
@@ -23,7 +23,7 @@ import tools.vitruv.framework.change.echange.EChange
 interface MultiChangeConflict extends Conflict {
 	/** 
 	 * Returns the value of the '<em><b>Source Changes</b></em>' reference list.
-	 * The list contents are of type {@link tools.vitruv.framework.change.echange.EChange}.
+	 * The list contents are of type {@link tools.vitruv.framework.versioning.commit.ChangeMatch}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Source Changes</em>' reference list isn't clear,
@@ -35,11 +35,11 @@ interface MultiChangeConflict extends Conflict {
 	 * @model required="true"
 	 * @generated
 	 */
-	def EList<EChange> getSourceChanges()
+	def EList<ChangeMatch> getSourceChanges()
 
 	/** 
 	 * Returns the value of the '<em><b>Target Changes</b></em>' reference list.
-	 * The list contents are of type {@link tools.vitruv.framework.change.echange.EChange}.
+	 * The list contents are of type {@link tools.vitruv.framework.versioning.commit.ChangeMatch}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Target Changes</em>' reference list isn't clear,
@@ -51,6 +51,6 @@ interface MultiChangeConflict extends Conflict {
 	 * @model required="true"
 	 * @generated
 	 */
-	def EList<EChange> getTargetChanges()
+	def EList<ChangeMatch> getTargetChanges()
 // MultiChangeConflict
 }

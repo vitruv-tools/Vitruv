@@ -168,7 +168,7 @@ class ConflictFactoryImpl extends EFactoryImpl implements ConflictFactory {
 	 * @generated
 	 */
 	def String convertConflictTypeToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue.toString()
+		return instanceValue?.toString()
 	}
 
 	/** 
@@ -190,7 +190,7 @@ class ConflictFactoryImpl extends EFactoryImpl implements ConflictFactory {
 	 * @generated
 	 */
 	def String convertConflictSolvabilityToString(EDataType eDataType, Object instanceValue) {
-		instanceValue.toString()
+		return instanceValue?.toString()
 	}
 
 	/** 

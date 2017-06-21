@@ -80,13 +80,29 @@ interface ConflictPackage extends EPackage {
 	 */
 	int CONFLICT__SOLVABILITY = 1
 	/** 
+	 * The feature id for the '<em><b>Original Changes Levenshtein Distance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE = 2
+	/** 
 	 * The number of structural features of the '<em>Conflict</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONFLICT_FEATURE_COUNT = 2
+	int CONFLICT_FEATURE_COUNT = 3
+	/** 
+	 * The operation id for the '<em>Resolve Conflict</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONFLICT___RESOLVE_CONFLICT__ELIST_ELIST = 0
 	/** 
 	 * The number of operations of the '<em>Conflict</em>' class.
 	 * <!-- begin-user-doc -->
@@ -94,7 +110,7 @@ interface ConflictPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONFLICT_OPERATION_COUNT = 0
+	int CONFLICT_OPERATION_COUNT = 1
 	/** 
 	 * The meta object id for the '{@link tools.vitruv.framework.versioning.conflict.impl.SimpleChangeConflictImpl <em>Simple Change Conflict</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -121,6 +137,14 @@ interface ConflictPackage extends EPackage {
 	 */
 	int SIMPLE_CHANGE_CONFLICT__SOLVABILITY = CONFLICT__SOLVABILITY
 	/** 
+	 * The feature id for the '<em><b>Original Changes Levenshtein Distance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SIMPLE_CHANGE_CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE = CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE
+	/** 
 	 * The feature id for the '<em><b>Source Change</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -144,6 +168,14 @@ interface ConflictPackage extends EPackage {
 	 * @ordered
 	 */
 	int SIMPLE_CHANGE_CONFLICT_FEATURE_COUNT = CONFLICT_FEATURE_COUNT + 2
+	/** 
+	 * The operation id for the '<em>Resolve Conflict</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SIMPLE_CHANGE_CONFLICT___RESOLVE_CONFLICT__ELIST_ELIST = CONFLICT___RESOLVE_CONFLICT__ELIST_ELIST
 	/** 
 	 * The number of operations of the '<em>Simple Change Conflict</em>' class.
 	 * <!-- begin-user-doc -->
@@ -178,6 +210,14 @@ interface ConflictPackage extends EPackage {
 	 */
 	int MULTI_CHANGE_CONFLICT__SOLVABILITY = CONFLICT__SOLVABILITY
 	/** 
+	 * The feature id for the '<em><b>Original Changes Levenshtein Distance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTI_CHANGE_CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE = CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE
+	/** 
 	 * The feature id for the '<em><b>Source Changes</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -201,6 +241,14 @@ interface ConflictPackage extends EPackage {
 	 * @ordered
 	 */
 	int MULTI_CHANGE_CONFLICT_FEATURE_COUNT = CONFLICT_FEATURE_COUNT + 2
+	/** 
+	 * The operation id for the '<em>Resolve Conflict</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MULTI_CHANGE_CONFLICT___RESOLVE_CONFLICT__ELIST_ELIST = CONFLICT___RESOLVE_CONFLICT__ELIST_ELIST
 	/** 
 	 * The number of operations of the '<em>Multi Change Conflict</em>' class.
 	 * <!-- begin-user-doc -->
@@ -378,6 +426,27 @@ interface ConflictPackage extends EPackage {
 	def EAttribute getConflict_Solvability()
 
 	/** 
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.versioning.conflict.Conflict#getOriginalChangesLevenshteinDistance <em>Original Changes Levenshtein Distance</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Original Changes Levenshtein Distance</em>'.
+	 * @see tools.vitruv.framework.versioning.conflict.Conflict#getOriginalChangesLevenshteinDistance()
+	 * @see #getConflict()
+	 * @generated
+	 */
+	def EAttribute getConflict_OriginalChangesLevenshteinDistance()
+
+	/** 
+	 * Returns the meta object for the '{@link tools.vitruv.framework.versioning.conflict.Conflict#resolveConflict(org.eclipse.emf.common.util.EList, org.eclipse.emf.common.util.EList) <em>Resolve Conflict</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Resolve Conflict</em>' operation.
+	 * @see tools.vitruv.framework.versioning.conflict.Conflict#resolveConflict(org.eclipse.emf.common.util.EList, org.eclipse.emf.common.util.EList)
+	 * @generated
+	 */
+	def EOperation getConflict__ResolveConflict__EList_EList()
+
+	/** 
 	 * Returns the meta object for enum '{@link tools.vitruv.framework.versioning.conflict.ConflictType <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -506,6 +575,21 @@ interface ConflictPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONFLICT__SOLVABILITY = eINSTANCE.getConflict_Solvability()
+		/** 
+		 * The meta object literal for the '<em><b>Original Changes Levenshtein Distance</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE = eINSTANCE.
+			getConflict_OriginalChangesLevenshteinDistance()
+		/** 
+		 * The meta object literal for the '<em><b>Resolve Conflict</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CONFLICT___RESOLVE_CONFLICT__ELIST_ELIST = eINSTANCE.getConflict__ResolveConflict__EList_EList()
 		/** 
 		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.conflict.ConflictType <em>Type</em>}' enum.
 		 * <!-- begin-user-doc -->

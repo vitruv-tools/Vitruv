@@ -270,6 +270,24 @@ class ConflictPackageImpl extends EPackageImpl implements ConflictPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	override EAttribute getConflict_OriginalChangesLevenshteinDistance() {
+		return (conflictEClass.getEStructuralFeatures().get(2) as EAttribute)
+	}
+
+	/** 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	override EOperation getConflict__ResolveConflict__EList_EList() {
+		return conflictEClass.getEOperations().get(0)
+	}
+
+	/** 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	override EEnum getConflictType() {
 		return conflictTypeEEnum
 	}
@@ -321,6 +339,8 @@ class ConflictPackageImpl extends EPackageImpl implements ConflictPackage {
 		conflictEClass = createEClass(CONFLICT)
 		createEAttribute(conflictEClass, CONFLICT__TYPE)
 		createEAttribute(conflictEClass, CONFLICT__SOLVABILITY)
+		createEAttribute(conflictEClass, CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE)
+		createEOperation(conflictEClass, CONFLICT___RESOLVE_CONFLICT__ELIST_ELIST)
 		// Create enums
 		conflictTypeEEnum = createEEnum(CONFLICT_TYPE)
 		conflictSolvabilityEEnum = createEEnum(CONFLICT_SOLVABILITY)
@@ -348,8 +368,8 @@ class ConflictPackageImpl extends EPackageImpl implements ConflictPackage {
 		setNsPrefix(eNS_PREFIX)
 		setNsURI(eNS_URI)
 		// Obtain other dependent packages
-		var EChangePackage theEChangePackage = (EPackage.Registry.INSTANCE.getEPackage(
-			EChangePackage.eNS_URI) as EChangePackage)
+		var CommitPackage theCommitPackage = (EPackage.Registry.INSTANCE.getEPackage(
+			CommitPackage.eNS_URI) as CommitPackage)
 		var BranchPackage theBranchPackage = (EPackage.Registry.INSTANCE.getEPackage(
 			BranchPackage.eNS_URI) as BranchPackage)
 		// Create type parameters
@@ -360,18 +380,18 @@ class ConflictPackageImpl extends EPackageImpl implements ConflictPackage {
 		// Initialize classes, features, and operations; add parameters
 		initEClass(simpleChangeConflictEClass, SimpleChangeConflict, "SimpleChangeConflict", !IS_ABSTRACT,
 			!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS)
-		initEReference(getSimpleChangeConflict_SourceChange(), theEChangePackage.getEChange(), null, "sourceChange",
+		initEReference(getSimpleChangeConflict_SourceChange(), theCommitPackage.getChangeMatch(), null, "sourceChange",
 			null, 1, 1, SimpleChangeConflict, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 			IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED)
-		initEReference(getSimpleChangeConflict_TargetChange(), theEChangePackage.getEChange(), null, "targetChange",
+		initEReference(getSimpleChangeConflict_TargetChange(), theCommitPackage.getChangeMatch(), null, "targetChange",
 			null, 1, 1, SimpleChangeConflict, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 			IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED)
 		initEClass(multiChangeConflictEClass, MultiChangeConflict, "MultiChangeConflict", !IS_ABSTRACT, !IS_INTERFACE,
 			IS_GENERATED_INSTANCE_CLASS)
-		initEReference(getMultiChangeConflict_SourceChanges(), theEChangePackage.getEChange(), null, "sourceChanges",
+		initEReference(getMultiChangeConflict_SourceChanges(), theCommitPackage.getChangeMatch(), null, "sourceChanges",
 			null, 1, -1, MultiChangeConflict, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 			IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED)
-		initEReference(getMultiChangeConflict_TargetChanges(), theEChangePackage.getEChange(), null, "targetChanges",
+		initEReference(getMultiChangeConflict_TargetChanges(), theCommitPackage.getChangeMatch(), null, "targetChanges",
 			null, 1, -1, MultiChangeConflict, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 			IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED)
 		initEClass(conflictDetectorEClass, ConflictDetector, "ConflictDetector", !IS_ABSTRACT, !IS_INTERFACE,
@@ -384,6 +404,13 @@ class ConflictPackageImpl extends EPackageImpl implements ConflictPackage {
 			!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED)
 		initEAttribute(getConflict_Solvability(), this.getConflictSolvability(), "solvability", null, 0, 1, Conflict,
 			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED)
+		initEAttribute(getConflict_OriginalChangesLevenshteinDistance(), ecorePackage.getEInt(),
+			"originalChangesLevenshteinDistance", null, 0, 1, Conflict, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+			!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED)
+		op = initEOperation(getConflict__ResolveConflict__EList_EList(), null, "resolveConflict", 0, 1, IS_UNIQUE,
+			IS_ORDERED)
+		addEParameter(op, theCommitPackage.getChangeMatch(), "acceptedLocalChangeMatches", 0, -1, IS_UNIQUE, IS_ORDERED)
+		addEParameter(op, theCommitPackage.getChangeMatch(), "rejectedRemoteOperations", 0, -1, IS_UNIQUE, IS_ORDERED)
 		// Initialize enums and add enum literals
 		initEEnum(conflictTypeEEnum, ConflictType, "ConflictType")
 		addEEnumLiteral(conflictTypeEEnum, ConflictType.NAMING)

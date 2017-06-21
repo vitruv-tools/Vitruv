@@ -7,6 +7,7 @@ import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.versioning.author.Signed
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.commit.CommitMessage
 import tools.vitruv.framework.versioning.commit.CommitPackage
@@ -86,6 +87,10 @@ class CommitAdapterFactory extends AdapterFactoryImpl {
 
 		override Adapter caseInitialCommit(InitialCommit object) {
 			return createInitialCommitAdapter()
+		}
+
+		override Adapter caseChangeMatch(ChangeMatch object) {
+			return createChangeMatchAdapter()
 		}
 
 		override Adapter caseSigned(Signed object) {
@@ -176,6 +181,20 @@ class CommitAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	def Adapter createInitialCommitAdapter() {
+		return null
+	}
+
+	/** 
+	 * Creates a new adapter for an object of class '{@link ChangeMatch <em>Change Match</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see ChangeMatch
+	 * @generated
+	 */
+	def Adapter createChangeMatchAdapter() {
 		return null
 	}
 

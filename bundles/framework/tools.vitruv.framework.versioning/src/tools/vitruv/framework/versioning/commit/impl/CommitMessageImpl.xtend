@@ -83,23 +83,12 @@ class CommitMessageImpl extends MinimalEObjectImpl.Container implements CommitMe
 	}
 
 	/** 
-	 * @param message 
-	 * @param author
-	 */
-	new(String message, Author author) {
-		super()
-		this.message = message
-		this.author = author
-		this.date = new Date()
-	}
-
-	/** 
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	override protected EClass eStaticClass() {
-		return CommitPackage::Literals::COMMIT_MESSAGE
+		return CommitPackage.Literals.COMMIT_MESSAGE
 	}
 
 	/** 
@@ -120,7 +109,7 @@ class CommitMessageImpl extends MinimalEObjectImpl.Container implements CommitMe
 		var Date oldDate = date
 		date = newDate
 		if (eNotificationRequired()) eNotify(
-			new ENotificationImpl(this, Notification::SET, CommitPackage::COMMIT_MESSAGE__DATE, oldDate, date))
+			new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT_MESSAGE__DATE, oldDate, date))
 	}
 
 	/** 
@@ -141,7 +130,7 @@ class CommitMessageImpl extends MinimalEObjectImpl.Container implements CommitMe
 		var String oldMessage = message
 		message = newMessage
 		if (eNotificationRequired()) eNotify(
-			new ENotificationImpl(this, Notification::SET, CommitPackage::COMMIT_MESSAGE__MESSAGE, oldMessage, message))
+			new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT_MESSAGE__MESSAGE, oldMessage, message))
 	}
 
 	/** 
@@ -155,7 +144,7 @@ class CommitMessageImpl extends MinimalEObjectImpl.Container implements CommitMe
 			author = eResolveProxy(oldAuthor) as Author
 			if (author !== oldAuthor) {
 				if (eNotificationRequired()) eNotify(
-					new ENotificationImpl(this, Notification::RESOLVE, CommitPackage::COMMIT_MESSAGE__AUTHOR, oldAuthor,
+					new ENotificationImpl(this, Notification.RESOLVE, CommitPackage.COMMIT_MESSAGE__AUTHOR, oldAuthor,
 						author))
 			}
 		}
@@ -180,7 +169,7 @@ class CommitMessageImpl extends MinimalEObjectImpl.Container implements CommitMe
 		var Author oldAuthor = author
 		author = newAuthor
 		if (eNotificationRequired()) eNotify(
-			new ENotificationImpl(this, Notification::SET, CommitPackage::COMMIT_MESSAGE__AUTHOR, oldAuthor, author))
+			new ENotificationImpl(this, Notification.SET, CommitPackage.COMMIT_MESSAGE__AUTHOR, oldAuthor, author))
 	}
 
 	/** 
@@ -191,13 +180,13 @@ class CommitMessageImpl extends MinimalEObjectImpl.Container implements CommitMe
 	override Object eGet(int featureID, boolean resolve, boolean coreType) {
 
 		switch (featureID) {
-			case CommitPackage::COMMIT_MESSAGE__DATE: {
+			case CommitPackage.COMMIT_MESSAGE__DATE: {
 				return getDate()
 			}
-			case CommitPackage::COMMIT_MESSAGE__MESSAGE: {
+			case CommitPackage.COMMIT_MESSAGE__MESSAGE: {
 				return getMessage()
 			}
-			case CommitPackage::COMMIT_MESSAGE__AUTHOR: {
+			case CommitPackage.COMMIT_MESSAGE__AUTHOR: {
 				if (resolve) return getAuthor()
 				return basicGetAuthor()
 			}
@@ -213,15 +202,15 @@ class CommitMessageImpl extends MinimalEObjectImpl.Container implements CommitMe
 	override void eSet(int featureID, Object newValue) {
 
 		switch (featureID) {
-			case CommitPackage::COMMIT_MESSAGE__DATE: {
+			case CommitPackage.COMMIT_MESSAGE__DATE: {
 				setDate((newValue as Date))
 				return
 			}
-			case CommitPackage::COMMIT_MESSAGE__MESSAGE: {
+			case CommitPackage.COMMIT_MESSAGE__MESSAGE: {
 				setMessage((newValue as String))
 				return
 			}
-			case CommitPackage::COMMIT_MESSAGE__AUTHOR: {
+			case CommitPackage.COMMIT_MESSAGE__AUTHOR: {
 				setAuthor((newValue as Author))
 				return
 			}
@@ -237,15 +226,15 @@ class CommitMessageImpl extends MinimalEObjectImpl.Container implements CommitMe
 	override void eUnset(int featureID) {
 
 		switch (featureID) {
-			case CommitPackage::COMMIT_MESSAGE__DATE: {
+			case CommitPackage.COMMIT_MESSAGE__DATE: {
 				setDate(DATE_EDEFAULT)
 				return
 			}
-			case CommitPackage::COMMIT_MESSAGE__MESSAGE: {
+			case CommitPackage.COMMIT_MESSAGE__MESSAGE: {
 				setMessage(MESSAGE_EDEFAULT)
 				return
 			}
-			case CommitPackage::COMMIT_MESSAGE__AUTHOR: {
+			case CommitPackage.COMMIT_MESSAGE__AUTHOR: {
 				setAuthor((null as Author))
 				return
 			}
@@ -261,13 +250,13 @@ class CommitMessageImpl extends MinimalEObjectImpl.Container implements CommitMe
 	override boolean eIsSet(int featureID) {
 
 		switch (featureID) {
-			case CommitPackage::COMMIT_MESSAGE__DATE: {
+			case CommitPackage.COMMIT_MESSAGE__DATE: {
 				return if (DATE_EDEFAULT === null) date !== null else !DATE_EDEFAULT.equals(date)
 			}
-			case CommitPackage::COMMIT_MESSAGE__MESSAGE: {
+			case CommitPackage.COMMIT_MESSAGE__MESSAGE: {
 				return if (MESSAGE_EDEFAULT === null) message !== null else !MESSAGE_EDEFAULT.equals(message)
 			}
-			case CommitPackage::COMMIT_MESSAGE__AUTHOR: {
+			case CommitPackage.COMMIT_MESSAGE__AUTHOR: {
 				return author !== null
 			}
 		}

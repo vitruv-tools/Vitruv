@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.util.Switch
 import tools.vitruv.framework.versioning.author.Signed
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.commit.CommitMessage
 import tools.vitruv.framework.versioning.commit.CommitPackage
@@ -105,6 +106,12 @@ class CommitSwitch<T> extends Switch<T> {
 				if (result === null) result = defaultCase(theEObject)
 				return result
 			}
+			case CommitPackage::CHANGE_MATCH: {
+				var ChangeMatch changeMatch = (theEObject as ChangeMatch)
+				var T result = caseChangeMatch(changeMatch)
+				if (result === null) result = defaultCase(theEObject)
+				return result
+			}
 			default: {
 				return defaultCase(theEObject)
 			}
@@ -183,6 +190,21 @@ class CommitSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	def T caseInitialCommit(InitialCommit object) {
+		return null
+	}
+
+	/** 
+	 * Returns the result of interpreting the object as an instance of '<em>Change Match</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Change Match</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	def T caseChangeMatch(ChangeMatch object) {
 		return null
 	}
 

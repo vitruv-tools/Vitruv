@@ -6,10 +6,9 @@ import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.impl.ENotificationImpl
-import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.conflict.ConflictPackage
 import tools.vitruv.framework.versioning.conflict.SimpleChangeConflict
-import tools.vitruv.framework.versioning.ChangeMatch
 
 /** 
  * <!-- begin-user-doc -->
@@ -70,12 +69,11 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	override ChangeMatch getSourceChange() {
 		if (sourceChange !== null && sourceChange.eIsProxy()) {
 			var InternalEObject oldSourceChange = (sourceChange as InternalEObject)
-			sourceChange = eResolveProxy(oldSourceChange) as EChange
+			sourceChange = eResolveProxy(oldSourceChange) as ChangeMatch
 			if (sourceChange !== oldSourceChange) {
-				if (eNotificationRequired())
-					eNotify(
-						new ENotificationImpl(this, Notification.RESOLVE,
-							ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE, oldSourceChange, sourceChange))
+				if (eNotificationRequired()) eNotify(
+					new ENotificationImpl(this, Notification.RESOLVE,
+						ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE, oldSourceChange, sourceChange))
 			}
 		}
 		return sourceChange
@@ -86,7 +84,7 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	def EChange basicGetSourceChange() {
+	def ChangeMatch basicGetSourceChange() {
 		return sourceChange
 	}
 
@@ -95,13 +93,12 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	override void setSourceChange(EChange newSourceChange) {
-		var EChange oldSourceChange = sourceChange
+	override void setSourceChange(ChangeMatch newSourceChange) {
+		var ChangeMatch oldSourceChange = sourceChange
 		sourceChange = newSourceChange
-		if (eNotificationRequired())
-			eNotify(
-				new ENotificationImpl(this, Notification.SET, ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE,
-					oldSourceChange, sourceChange))
+		if (eNotificationRequired()) eNotify(
+			new ENotificationImpl(this, Notification.SET, ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE,
+				oldSourceChange, sourceChange))
 	}
 
 	/** 
@@ -109,15 +106,14 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	override EChange getTargetChange() {
+	override ChangeMatch getTargetChange() {
 		if (targetChange !== null && targetChange.eIsProxy()) {
 			var InternalEObject oldTargetChange = (targetChange as InternalEObject)
-			targetChange = eResolveProxy(oldTargetChange) as EChange
+			targetChange = eResolveProxy(oldTargetChange) as ChangeMatch
 			if (targetChange !== oldTargetChange) {
-				if (eNotificationRequired())
-					eNotify(
-						new ENotificationImpl(this, Notification.RESOLVE,
-							ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE, oldTargetChange, targetChange))
+				if (eNotificationRequired()) eNotify(
+					new ENotificationImpl(this, Notification.RESOLVE,
+						ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE, oldTargetChange, targetChange))
 			}
 		}
 		return targetChange
@@ -128,7 +124,7 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	def EChange basicGetTargetChange() {
+	def ChangeMatch basicGetTargetChange() {
 		return targetChange
 	}
 
@@ -137,13 +133,12 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	override void setTargetChange(EChange newTargetChange) {
-		var EChange oldTargetChange = targetChange
+	override void setTargetChange(ChangeMatch newTargetChange) {
+		var ChangeMatch oldTargetChange = targetChange
 		targetChange = newTargetChange
-		if (eNotificationRequired())
-			eNotify(
-				new ENotificationImpl(this, Notification.SET, ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE,
-					oldTargetChange, targetChange))
+		if (eNotificationRequired()) eNotify(
+			new ENotificationImpl(this, Notification.SET, ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE,
+				oldTargetChange, targetChange))
 	}
 
 	/** 
@@ -175,11 +170,11 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 
 		switch (featureID) {
 			case ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE: {
-				setSourceChange((newValue as EChange))
+				setSourceChange((newValue as ChangeMatch))
 				return
 			}
 			case ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE: {
-				setTargetChange((newValue as EChange))
+				setTargetChange((newValue as ChangeMatch))
 				return
 			}
 		}
@@ -195,11 +190,11 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 
 		switch (featureID) {
 			case ConflictPackage.SIMPLE_CHANGE_CONFLICT__SOURCE_CHANGE: {
-				setSourceChange((null as EChange))
+				setSourceChange((null as ChangeMatch))
 				return
 			}
 			case ConflictPackage.SIMPLE_CHANGE_CONFLICT__TARGET_CHANGE: {
-				setTargetChange((null as EChange))
+				setTargetChange((null as ChangeMatch))
 				return
 			}
 		}

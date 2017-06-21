@@ -19,15 +19,15 @@
       nsPrefix="tools.vitruv.framework.versioning">
     <eClassifiers xsi:type="ecore:EClass" name="SimpleChangeConflict" eSuperTypes="#//conflict/Conflict">
       <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChange" lowerBound="1"
-          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"/>
+          eType="#//commit/ChangeMatch"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="targetChange" lowerBound="1"
-          eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"/>
+          eType="#//commit/ChangeMatch"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MultiChangeConflict" eSuperTypes="#//conflict/Conflict">
       <eStructuralFeatures xsi:type="ecore:EReference" name="sourceChanges" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"/>
+          upperBound="-1" eType="#//commit/ChangeMatch"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="targetChanges" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"/>
+          upperBound="-1" eType="#//commit/ChangeMatch"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ConflictDetector">
       <eOperations name="detectConflicts" upperBound="-1" eType="#//conflict/Conflict">
@@ -35,8 +35,14 @@
       </eOperations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Conflict" abstract="true">
+      <eOperations name="resolveConflict">
+        <eParameters name="acceptedLocalChangeMatches" upperBound="-1" eType="#//commit/ChangeMatch"/>
+        <eParameters name="rejectedRemoteOperations" upperBound="-1" eType="#//commit/ChangeMatch"/>
+      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//conflict/ConflictType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="solvability" eType="#//conflict/ConflictSolvability"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="originalChangesLevenshteinDistance"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="ConflictType">
       <eLiterals name="NAMING"/>
@@ -64,8 +70,7 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" changeable="false"
           defaultValueLiteral="1000" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="changes" lowerBound="1"
-          upperBound="-1" eType="ecore:EClass ../../tools.vitruv.framework.change.echange/metamodel/echange.ecore#//EChange"
-          containment="true"/>
+          upperBound="-1" eType="#//commit/ChangeMatch" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitmessage" lowerBound="1"
           eType="#//commit/CommitMessage"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="commitsBranchedFromThis"
@@ -85,6 +90,7 @@
           eType="#//author/Author"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="InitialCommit" eSuperTypes="#//commit/Commit"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ChangeMatch"/>
   </eSubpackages>
   <eSubpackages name="branch" nsURI="http://tools.vitruv/versioning/1.0/branch" nsPrefix="tools.vitruv.framework.versioning.branch">
     <eClassifiers xsi:type="ecore:EClass" name="BranchDiffCreator">

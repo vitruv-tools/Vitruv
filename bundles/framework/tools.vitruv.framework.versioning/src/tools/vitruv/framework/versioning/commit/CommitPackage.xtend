@@ -442,6 +442,31 @@ interface CommitPackage extends EPackage {
 	 * @ordered
 	 */
 	int INITIAL_COMMIT_OPERATION_COUNT = COMMIT_OPERATION_COUNT + 0
+	/** 
+	 * The meta object id for the '{@link tools.vitruv.framework.versioning.commit.impl.ChangeMatchImpl <em>Change Match</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.versioning.commit.impl.ChangeMatchImpl
+	 * @see tools.vitruv.framework.versioning.commit.impl.CommitPackageImpl#getChangeMatch()
+	 * @generated
+	 */
+	int CHANGE_MATCH = 5
+	/** 
+	 * The number of structural features of the '<em>Change Match</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CHANGE_MATCH_FEATURE_COUNT = 0
+	/** 
+	 * The number of operations of the '<em>Change Match</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CHANGE_MATCH_OPERATION_COUNT = 0
 
 	/** 
 	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.commit.MergeCommit <em>Merge Commit</em>}'.
@@ -615,6 +640,16 @@ interface CommitPackage extends EPackage {
 	def EClass getInitialCommit()
 
 	/** 
+	 * Returns the meta object for class '{@link tools.vitruv.framework.versioning.commit.ChangeMatch <em>Change Match</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Change Match</em>'.
+	 * @see tools.vitruv.framework.versioning.commit.ChangeMatch
+	 * @generated
+	 */
+	def EClass getChangeMatch()
+
+	/** 
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -758,6 +793,15 @@ interface CommitPackage extends EPackage {
 		 * @see tools.vitruv.framework.versioning.commit.impl.CommitPackageImpl#getInitialCommit()
 		 * @generated
 		 */
-		EClass INITIAL_COMMIT = eINSTANCE.getInitialCommit() // CommitPackage
+		EClass INITIAL_COMMIT = eINSTANCE.getInitialCommit()
+		/** 
+		 * The meta object literal for the '{@link tools.vitruv.framework.versioning.commit.impl.ChangeMatchImpl <em>Change Match</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.versioning.commit.impl.ChangeMatchImpl
+		 * @see tools.vitruv.framework.versioning.commit.impl.CommitPackageImpl#getChangeMatch()
+		 * @generated
+		 */
+		EClass CHANGE_MATCH = eINSTANCE.getChangeMatch() // CommitPackage
 	}
 }

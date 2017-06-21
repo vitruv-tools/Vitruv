@@ -47,6 +47,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val Graph dependencyGraph = new SingleGraph("Conflict")
 		cleanup
 		val conflict = ConflictFactory::eINSTANCE.createSimpleChangeConflict
+
 		conflict.EChangeDependencyGraph = dependencyGraph
 		conflict.originalChangesLevenshteinDistance = distance
 		return conflict

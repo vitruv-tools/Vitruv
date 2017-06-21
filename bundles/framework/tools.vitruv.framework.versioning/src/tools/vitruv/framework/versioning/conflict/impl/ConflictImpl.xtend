@@ -2,19 +2,20 @@
  */
 package tools.vitruv.framework.versioning.conflict.impl
 
+import java.lang.reflect.InvocationTargetException
 import org.eclipse.emf.common.notify.Notification
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.impl.ENotificationImpl
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.conflict.Conflict
 import tools.vitruv.framework.versioning.conflict.ConflictPackage
 import tools.vitruv.framework.versioning.conflict.ConflictSolvability
 import tools.vitruv.framework.versioning.conflict.ConflictType
-import org.graphstream.graph.Graph
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.graphstream.graph.Graph
 import org.graphstream.graph.implementations.SingleGraph
-import java.util.Set
-import tools.vitruv.framework.versioning.ChangeMatch
 
 /** 
  * <!-- begin-user-doc -->
@@ -26,10 +27,12 @@ import tools.vitruv.framework.versioning.ChangeMatch
  * <ul>
  * <li>{@link tools.vitruv.framework.versioning.conflict.impl.ConflictImpl#getType <em>Type</em>}</li>
  * <li>{@link tools.vitruv.framework.versioning.conflict.impl.ConflictImpl#getSolvability <em>Solvability</em>}</li>
+ * <li>{@link tools.vitruv.framework.versioning.conflict.impl.ConflictImpl#getOriginalChangesLevenshteinDistance <em>Original Changes Levenshtein Distance</em>}</li>
  * </ul>
  * @generated
  */
 abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conflict {
+
 	/** 
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -66,9 +69,24 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 	 * @ordered
 	 */
 	protected ConflictSolvability solvability = SOLVABILITY_EDEFAULT
-
-	@Accessors(PUBLIC_GETTER)
-	protected int originalChangesLevenshteinDistance
+	/** 
+	 * The default value of the '{@link #getOriginalChangesLevenshteinDistance() <em>Original Changes Levenshtein Distance</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOriginalChangesLevenshteinDistance()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE_EDEFAULT = 0
+	/** 
+	 * The cached value of the '{@link #getOriginalChangesLevenshteinDistance() <em>Original Changes Levenshtein Distance</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOriginalChangesLevenshteinDistance()
+	 * @generated
+	 * @ordered
+	 */
+	protected int originalChangesLevenshteinDistance = ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE_EDEFAULT
 	@Accessors(PUBLIC_GETTER)
 	protected Graph eChangeDependencyGraph
 
@@ -76,16 +94,8 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 		var oldType = eChangeDependencyGraph
 		eChangeDependencyGraph = if (newGraph === null) new SingleGraph("") else newGraph
 		if (eNotificationRequired())
-			eNotify(
-				new ENotificationImpl(this, Notification.SET, ConflictPackage.CONFLICT__TYPE, oldType,
-					eChangeDependencyGraph))
-	}
-
-	override setOriginalChangesLevenshteinDistance(int distance) {
-		var oldType = originalChangesLevenshteinDistance
-		originalChangesLevenshteinDistance = distance
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ConflictPackage.CONFLICT__TYPE, oldType, distance))
+			eNotify(new ENotificationImpl(this, Notification.SET, ConflictPackage.CONFLICT__TYPE, oldType,
+				eChangeDependencyGraph))
 	}
 
 	/** 
@@ -155,6 +165,42 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	override int getOriginalChangesLevenshteinDistance() {
+		return originalChangesLevenshteinDistance
+	}
+
+	/** 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	override void setOriginalChangesLevenshteinDistance(int newOriginalChangesLevenshteinDistance) {
+		var int oldOriginalChangesLevenshteinDistance = originalChangesLevenshteinDistance
+		originalChangesLevenshteinDistance = newOriginalChangesLevenshteinDistance
+		if (eNotificationRequired())
+			eNotify(
+				new ENotificationImpl(this, Notification.SET,
+					ConflictPackage.CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE,
+					oldOriginalChangesLevenshteinDistance, originalChangesLevenshteinDistance))
+	}
+
+	/** 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	override void resolveConflict(EList<ChangeMatch> acceptedLocalChangeMatches,
+		EList<ChangeMatch> rejectedRemoteOperations) {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException()
+	}
+
+	/** 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	override Object eGet(int featureID, boolean resolve, boolean coreType) {
 
 		switch (featureID) {
@@ -163,6 +209,9 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 			}
 			case ConflictPackage.CONFLICT__SOLVABILITY: {
 				return getSolvability()
+			}
+			case ConflictPackage.CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE: {
+				return getOriginalChangesLevenshteinDistance()
 			}
 		}
 		return super.eGet(featureID, resolve, coreType)
@@ -182,6 +231,10 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 			}
 			case ConflictPackage.CONFLICT__SOLVABILITY: {
 				setSolvability((newValue as ConflictSolvability))
+				return
+			}
+			case ConflictPackage.CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE: {
+				setOriginalChangesLevenshteinDistance((newValue as Integer))
 				return
 			}
 		}
@@ -204,6 +257,10 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 				setSolvability(SOLVABILITY_EDEFAULT)
 				return
 			}
+			case ConflictPackage.CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE: {
+				setOriginalChangesLevenshteinDistance(ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE_EDEFAULT)
+				return
+			}
 		}
 		super.eUnset(featureID)
 	}
@@ -222,8 +279,28 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 			case ConflictPackage.CONFLICT__SOLVABILITY: {
 				return solvability !== SOLVABILITY_EDEFAULT
 			}
+			case ConflictPackage.CONFLICT__ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE: {
+				return originalChangesLevenshteinDistance !== ORIGINAL_CHANGES_LEVENSHTEIN_DISTANCE_EDEFAULT
+			}
 		}
 		return super.eIsSet(featureID)
+	}
+
+	/** 
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	override Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+
+		switch (operationID) {
+			case ConflictPackage.CONFLICT___RESOLVE_CONFLICT__ELIST_ELIST: {
+				resolveConflict((arguments.get(0) as EList<ChangeMatch>), (arguments.get(1) as EList<ChangeMatch>))
+				return null
+			}
+		}
+		return super.eInvoke(operationID, arguments)
 	}
 
 	/** 
@@ -238,13 +315,9 @@ abstract class ConflictImpl extends MinimalEObjectImpl.Container implements Conf
 		result.append(type)
 		result.append(", solvability: ")
 		result.append(solvability)
+		result.append(", originalChangesLevenshteinDistance: ")
+		result.append(originalChangesLevenshteinDistance)
 		result.append(Character.valueOf(')').charValue)
 		return result.toString()
-	}
-
-	override resolveConflict(Set<ChangeMatch> acceptedLocalChangeMatches, Set<ChangeMatch> rejectedRemoteOperations) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
-// ConflictImpl
+	} // ConflictImpl
 }

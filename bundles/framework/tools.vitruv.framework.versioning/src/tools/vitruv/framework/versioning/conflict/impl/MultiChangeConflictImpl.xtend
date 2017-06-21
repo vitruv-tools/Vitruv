@@ -6,7 +6,7 @@ import java.util.Collection
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.util.EObjectResolvingEList
-import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.conflict.ConflictPackage
 import tools.vitruv.framework.versioning.conflict.MultiChangeConflict
 
@@ -32,7 +32,7 @@ class MultiChangeConflictImpl extends ConflictImpl implements MultiChangeConflic
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<EChange> sourceChanges
+	protected EList<ChangeMatch> sourceChanges
 	/** 
 	 * The cached value of the '{@link #getTargetChanges() <em>Target Changes</em>}' reference list.
 	 * <!-- begin-user-doc -->
@@ -41,7 +41,7 @@ class MultiChangeConflictImpl extends ConflictImpl implements MultiChangeConflic
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<EChange> targetChanges
+	protected EList<ChangeMatch> targetChanges
 
 	/** 
 	 * <!-- begin-user-doc -->
@@ -66,9 +66,9 @@ class MultiChangeConflictImpl extends ConflictImpl implements MultiChangeConflic
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	override EList<EChange> getSourceChanges() {
+	override EList<ChangeMatch> getSourceChanges() {
 		if (sourceChanges === null) {
-			sourceChanges = new EObjectResolvingEList<EChange>(EChange, this,
+			sourceChanges = new EObjectResolvingEList<ChangeMatch>(ChangeMatch, this,
 				ConflictPackage.MULTI_CHANGE_CONFLICT__SOURCE_CHANGES)
 		}
 		return sourceChanges
@@ -79,9 +79,9 @@ class MultiChangeConflictImpl extends ConflictImpl implements MultiChangeConflic
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	override EList<EChange> getTargetChanges() {
+	override EList<ChangeMatch> getTargetChanges() {
 		if (targetChanges === null) {
-			targetChanges = new EObjectResolvingEList<EChange>(EChange, this,
+			targetChanges = new EObjectResolvingEList<ChangeMatch>(ChangeMatch, this,
 				ConflictPackage.MULTI_CHANGE_CONFLICT__TARGET_CHANGES)
 		}
 		return targetChanges
@@ -116,12 +116,12 @@ class MultiChangeConflictImpl extends ConflictImpl implements MultiChangeConflic
 		switch (featureID) {
 			case ConflictPackage.MULTI_CHANGE_CONFLICT__SOURCE_CHANGES: {
 				getSourceChanges().clear()
-				getSourceChanges().addAll((newValue as Collection<? extends EChange>))
+				getSourceChanges().addAll((newValue as Collection<? extends ChangeMatch>))
 				return
 			}
 			case ConflictPackage.MULTI_CHANGE_CONFLICT__TARGET_CHANGES: {
 				getTargetChanges().clear()
-				getTargetChanges().addAll((newValue as Collection<? extends EChange>))
+				getTargetChanges().addAll((newValue as Collection<? extends ChangeMatch>))
 				return
 			}
 		}
