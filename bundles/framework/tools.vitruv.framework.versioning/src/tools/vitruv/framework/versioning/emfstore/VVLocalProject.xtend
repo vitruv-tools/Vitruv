@@ -1,17 +1,15 @@
 package tools.vitruv.framework.versioning.emfstore
 
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.common.util.EList
+import tools.vitruv.framework.versioning.commit.Commit
+import tools.vitruv.framework.versioning.emfstore.VVObjectContainer
 
-interface VVLocalProject extends VVProject {
-
-	def EList<EObject> getModelElements()
+interface VVLocalProject extends VVProject, VVObjectContainer<VVModelElementId> {
 
 	def VVRemoteProject getRemoteProject()
 
 	def void setRemoteProject(VVRemoteProject remote)
 
-	def VVCommit commit(String s)
+	def Commit commit(String s)
 
 	def VVRemoteProject shareProject(VVServer server)
 

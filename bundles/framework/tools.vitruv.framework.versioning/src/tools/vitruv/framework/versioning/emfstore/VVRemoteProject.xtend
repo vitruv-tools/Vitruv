@@ -1,5 +1,7 @@
 package tools.vitruv.framework.versioning.emfstore
 
+import tools.vitruv.framework.versioning.commit.Commit
+
 interface VVRemoteProject extends VVProject {
 	def VVLocalProject getLocalProject()
 
@@ -12,5 +14,7 @@ interface VVRemoteProject extends VVProject {
 	def VVLocalProject checkout(String name)
 
 	def void delete()
+
+	def void pushCommit(Commit lastCommit, Commit newCommit)
 
 }

@@ -40,7 +40,15 @@ class EMFStoreBaseline {
 		league.players += #[player1, player2]
 		demoProject.commit("My message")
 		demoProjectCopy.update
-		val leagueCopy = demoProject.modelElements.get(0) as League
+		var leagueCopy = demoProject.modelElements.get(0) as League
+		assertThat(league.name, equalTo(leagueCopy.name))
+		assertThat(league.players.size, is(leagueCopy.players.size))
+
+		leagueCopy = demoProjectCopy.getModelElement(demoProject.getModelElementId(league)) as League
+		league.name = "Superbowling League"
+		demoProject.commit("New message")
+		demoProjectCopy.update
+
 		assertThat(league.name, equalTo(leagueCopy.name))
 		assertThat(league.players.size, is(leagueCopy.players.size))
 	}
