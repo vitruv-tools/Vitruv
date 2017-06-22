@@ -4,6 +4,7 @@ import java.util.Collection
 import java.util.List
 import tools.vitruv.framework.tests.ChangeObserver
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 /**
  * Interface to track changes on different {@link VURI}s. Instationeions of this interface are registerred as {@link ChangeObserver}

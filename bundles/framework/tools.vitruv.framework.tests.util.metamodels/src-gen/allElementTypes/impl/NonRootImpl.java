@@ -40,6 +40,8 @@ public class NonRootImpl extends IdentifiedImpl implements NonRoot {
 			final NonRootImpl containerHelper = (NonRootImpl) o;
 			// TODO PS HACK
 			final int beginIndex = 7;
+			if (this.id == null)
+				return this.hashCode() == o.hashCode();
 			final String thisId = this.id.substring(beginIndex);
 			final String otherId = containerHelper.getId().substring(beginIndex);
 			final boolean equal = thisId.equals(otherId);

@@ -16,7 +16,6 @@ import tools.vitruv.framework.change.description.impl.EChangeCopierImpl
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceNonRootImpl
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.versioning.VersioningXtendFactory
 import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
@@ -26,6 +25,7 @@ import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	var SourceTargetRecorder stRecorder
