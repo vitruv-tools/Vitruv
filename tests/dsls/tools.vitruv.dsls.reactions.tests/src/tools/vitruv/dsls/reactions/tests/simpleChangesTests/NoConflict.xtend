@@ -6,16 +6,17 @@ import java.util.Map
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
+
+import tools.vitruv.framework.versioning.BranchDiff
 import tools.vitruv.framework.versioning.BranchDiffCreator
-import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetector
+import tools.vitruv.framework.versioning.conflict.Conflict
 import tools.vitruv.framework.versioning.impl.ConflictDetectorImpl
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.BranchDiff
 
 class NoConflict extends ConflictTest {
 	protected BranchDiff branchDiff
@@ -70,6 +71,7 @@ class NoConflict extends ConflictTest {
 		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
 		branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
 		conflict = conflictDetector.detectConlicts(branchDiff)
+
 	}
 
 	@Test

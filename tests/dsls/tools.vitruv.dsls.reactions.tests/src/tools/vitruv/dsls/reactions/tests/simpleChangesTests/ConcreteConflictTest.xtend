@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
 
-class Conflict extends ConflictTest {
+class ConcreteConflictTest extends ConflictTest {
 	static val alternativeContainerId = "TOTALLY_DIFFERENT"
 
 	@Test

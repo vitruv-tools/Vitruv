@@ -1,17 +1,24 @@
 package tools.vitruv.framework.tests.versioning
 
-import org.junit.Test
-import tools.vitruv.framework.versioning.emfstore.VVWorkspaceProvider
-import tools.vitruv.framework.versioning.emfstore.VVFactory
+import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.emfstore.bowling.BowlingFactory
 import org.eclipse.emf.emfstore.bowling.League
+import org.junit.Test
+import tools.vitruv.framework.versioning.commit.ChangeMatch
+import tools.vitruv.framework.versioning.conflict.SimpleChangeConflict
+import tools.vitruv.framework.versioning.emfstore.VVFactory
+import tools.vitruv.framework.versioning.emfstore.VVWorkspaceProvider
+import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 
 class EMFStoreBaseline {
+	static val logger = Logger::getLogger(EMFStoreBaseline)
+
 	@Test
 	def void emfHelloWorldExample() {
 		val server = VVFactory::instance.createServer
@@ -76,11 +83,28 @@ class EMFStoreBaseline {
 		try {
 			demoProjectCopy.commit("Commit2")
 		} catch (CommitNotExceptedException e) {
+			logger.debug(e)
 			demoProject.update [ conflicts |
-				val conflict = conflicts.get(0)
-				
+				val conflict = conflicts.get(0) as SimpleChangeConflict
+				val EList<ChangeMatch> accepted = new BasicEList
+				accepted += conflict.sourceChange
+				val EList<ChangeMatch> rejected = new BasicEList
+				rejected += conflict.targetChange
+				conflict.resolveConflict(accepted, rejected)
 				return true
 			]
+			demoProjectCopy.commit("Commit 3");
+
+			// After having merged the two projects update local project 1
+			demoProject.update();
+
+			assertThat(league.name, equalTo(leagueCopy.name))
+			assertThat(league.players.size, is(leagueCopy.players.size))
+
+			System.out.println("\nLeague name in demoProject  is now: " + league.getName()); // $NON-NLS-1$
+			System.out.println("\nLeague name in demoProjectCopy  is now: " + leagueCopy.getName()); // $NON-NLS-1$
+			System.out.println("\nPlayer name in demoProject is now: " + league.getPlayers().get(0).getName()); // $NON-NLS-1$
+			System.out.println("\nPlayer name in demoProjectCopy is now: " + leagueCopy.getPlayers().get(0).getName()); // $NON-NLS-1$
 		}
 	}
 }
