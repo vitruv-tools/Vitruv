@@ -24,6 +24,8 @@ Require-Bundle: org.junit;bundle-version="4.12.0";visibility:=reexport,
  org.eclipse.emf.common,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.emfstore.examplemodel;bundle-version="1.8.0",
+ org.apache.log4j;bundle-version="1.2.15"
 Bundle-ActivationPolicy: lazy
 

@@ -6,14 +6,16 @@ import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.List
+import org.eclipse.emf.common.util.URI
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.description.EChangeCopier
+import tools.vitruv.framework.change.description.impl.EChangeCopierImpl
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
+import tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceNonRootImpl
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.versioning.VersioningXtendFactory
 import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
@@ -22,6 +24,8 @@ import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	var SourceTargetRecorder stRecorder
@@ -205,15 +209,9 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 
 		assertThat(newRoot.eContents.length, is(0))
 		assertThat(newRoot.nonRootObjectContainerHelper, equalTo(null))
-		val change = stRecorder.getChangeMatches(sourceVURI).get(0)
-		val newChange = VitruviusChangeFactory::instance.createEMFModelChange(
-			change.originalChange as EMFModelChangeImpl, newSourceVURI, rootElement, newRoot)
-
-		virtualModel.propagateChange(newChange)
-		assertThat(newRoot.nonRootObjectContainerHelper, not(equalTo(null)))
-		assertThat(rootElement.eContents.length, is(1))
-		assertThat(newRoot.eContents.length, is(1))
-
+//		assertThat(newRoot.nonRootObjectContainerHelper, not(equalTo(null)))
+//		assertThat(rootElement.eContents.length, is(1))
+//		assertThat(newRoot.eContents.length, is(1))
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
@@ -222,14 +220,37 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 
 		val changeMatches = stRecorder.getChangeMatches(sourceVURI)
 		assertThat(changeMatches.length, is(4))
-		val copiedChanges = changeMatches.map[originalChange].filter[it instanceof EMFModelChangeImpl].map[]
+		val originalChanges = changeMatches.map[originalChange]
+		assertThat(originalChanges.length, is(4))
+		val newRootUri = URI::createURI(newSourceVURI.EMFUri.toString + "#/")
+		val EChangeCopier eChangeCopier = new EChangeCopierImpl(sourceVURI.EMFUri, newSourceVURI.EMFUri, #{
+			newRootUri -> EChangeUnresolver::createProxy(newRoot)
+		})
+		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
+			it as EMFModelChangeImpl
+		].map[eChangeCopier.copyEMFModelChange(it, newSourceVURI)]
+		assertThat(copiedChanges.length, is(4))
 //		assertThat(copiedChanges.length, is(4))
 		// EcoreUtil::copy => koennte resolven 
 		// Resource problematisch: Proxy URI ersetzten 
 		// Fur Test ersetzen 
-		copiedChanges.forEach [
-			virtualModel.propagateChange(it)
+		val originalChange1 = originalChanges.get(0)
+		assertThat(originalChange1, not(equalTo(null)))
+		originalChange1.EChanges.filter[it instanceof CreateAndReplaceNonRootImpl<?, ?>].map [
+			it as CreateAndReplaceNonRootImpl<?, ?>
+		].forEach [
+			val affectedEObject = insertChange.affectedEObject
+			assertThat(affectedEObject, equalTo(rootElement))
 		]
+
+		val change1 = copiedChanges.get(0)
+		change1.EChanges.filter[it instanceof CreateAndReplaceNonRootImpl<?, ?>].map [
+			it as CreateAndReplaceNonRootImpl<?, ?>
+		].forEach [
+			val affectedEObject = insertChange.affectedEObject
+			assertThat(affectedEObject, equalTo(newRoot))
+		]
+		virtualModel.propagateChange(change1)
 		assertThat(copiedChanges.length, is(4))
 	}
 

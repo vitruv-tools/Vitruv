@@ -1,17 +1,16 @@
 package tools.vitruv.framework.change.echange.util
 
 import tools.vitruv.framework.change.echange.EChange
-import org.eclipse.emf.common.command.Command
-import java.util.List
 
 /**
- * Utility class for applying an EChanges. The xcore-model doesn't provide 
- * private methods and to provide a clean EChange interface, the apply 
+ * Utility class for applying an EChanges:: The xcore-model doesn't provide
+ * private methods and to provide a clean EChange interface, the apply
  * method for applying forward and backward is placed in this utility class.
  */
-public class ApplyEChangeSwitch {
-	private new() {}
-	
+class ApplyEChangeSwitch {
+	private new() {
+	}
+
 	/**
 	 * Applies a given {@link EChange}. The change needs to be resolved.
 	 * @param change					The {@link EChange} which will be applied.
@@ -21,28 +20,25 @@ public class ApplyEChangeSwitch {
 	 * @throws IllegalStateException	The change is already resolved.
 	 * @throws RunTimeException			The change could not be applied.
 	 */
-	def public static boolean applyEChange(EChange change, boolean applyForward) {
-		if (!change.isResolved) {
-			throw new IllegalStateException("The EChange is not resolved.")
-		}
-		
-		var List<Command> commands
-		if (applyForward) {
-			commands = ApplyForwardCommandSwitch.getCommands(change)
-		} else {
-			commands = ApplyBackwardCommandSwitch.getCommands(change)
-		}
+	static def boolean applyEChange(EChange change, boolean applyForward) {
+		if (!change.resolved)
+			throw new IllegalStateException('''The EChange «change»could not be applied. ''')
 
-		if (commands != null) {
-			for (Command c : commands) {
-				if (c.canExecute()) {
-					c.execute()
-				} else {
-					throw new RuntimeException("EChange could not be applied.")
-				}
-			}
+		val commands = if (applyForward)
+				ApplyForwardCommandSwitch::getCommands(change)
+			else
+				ApplyBackwardCommandSwitch::getCommands(change)
+
+		if (commands === null)
+			throw new RuntimeException("EChange could not be applied.")
+		else {
+			commands.forEach [
+				if (canExecute)
+					execute
+				else
+					throw new RuntimeException('''EChange «change» could not be applied. ''')
+			]
 			return true
 		}
-		throw new RuntimeException("EChange could not be applied.")
 	}
 }

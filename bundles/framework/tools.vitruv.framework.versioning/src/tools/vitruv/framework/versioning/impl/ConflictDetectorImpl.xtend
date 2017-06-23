@@ -5,18 +5,20 @@ import java.util.List
 import java.util.Map
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceNonRootImpl
-import tools.vitruv.framework.versioning.BranchDiff
-import tools.vitruv.framework.versioning.ChangeMatch
-import tools.vitruv.framework.versioning.ConflictDetector
-import org.eclipse.emf.ecore.InternalEObject
-
-import tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl
 import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
+import tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceNonRootImpl
+import tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl
+import tools.vitruv.framework.versioning.BranchDiff
+import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DistanceCalculator
+import org.graphstream.graph.Graph
+import org.graphstream.graph.implementations.SingleGraph
+import tools.vitruv.framework.versioning.conflict.ConflictFactory
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 class ConflictDetectorImpl implements ConflictDetector {
 	static val logger = Logger::getLogger(ConflictDetectorImpl)
@@ -42,8 +44,13 @@ class ConflictDetectorImpl implements ConflictDetector {
 		findMatchesInChangeMatches
 		val comparison = [EChange a, EChange b|compareEchange(a, b)]
 		val distance = DistanceCalculator::instance.levenshteinDistance(baseEchanges, compareEchanges, comparison)
+		val Graph dependencyGraph = new SingleGraph("Conflict")
 		cleanup
-		new ConflictImpl(distance)
+		val conflict = ConflictFactory::eINSTANCE.createSimpleChangeConflict
+
+		conflict.EChangeDependencyGraph = dependencyGraph
+		conflict.originalChangesLevenshteinDistance = distance
+		return conflict
 	}
 
 	private def void checkLength() {

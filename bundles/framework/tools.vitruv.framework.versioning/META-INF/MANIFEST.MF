@@ -16,6 +16,9 @@ Export-Package: tools.vitruv.framework.versioning,
  tools.vitruv.framework.versioning.conflict,
  tools.vitruv.framework.versioning.conflict.impl,
  tools.vitruv.framework.versioning.conflict.util,
+ tools.vitruv.framework.versioning.emfstore,
+ tools.vitruv.framework.versioning.emfstore.impl,
+ tools.vitruv.framework.versioning.exceptions,
  tools.vitruv.framework.versioning.impl,
  tools.vitruv.framework.versioning.repository,
  tools.vitruv.framework.versioning.repository.impl,
@@ -28,7 +31,7 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j,
  com.google.guava,
- org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore;visibility:=reexport,
  tools.vitruv.framework.util,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.tests.util,
@@ -48,6 +51,7 @@ Require-Bundle: org.eclipse.core.runtime,
  tools.vitruv.framework.change.echange,
  org.eclipse.xtext.xbase.lib;resolution:=optional,
  org.eclipse.xtend.lib;resolution:=optional,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ org.graphstream;bundle-version="1.3.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 

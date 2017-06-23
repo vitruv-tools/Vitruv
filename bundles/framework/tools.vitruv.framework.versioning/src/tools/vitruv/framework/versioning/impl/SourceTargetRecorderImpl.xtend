@@ -14,10 +14,11 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.SourceTargetPair
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.vsum.InternalVirtualModel
+import tools.vitruv.framework.versioning.commit.ChangeMatch
+import tools.vitruv.framework.versioning.commit.CommitFactory
 
 class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	static val logger = Logger::getLogger(SourceTargetRecorderImpl)
@@ -55,7 +56,10 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 			val targetToCorrespondentChanges = pair.targets.stream.collect(Collectors::toMap(Function::identity, [
 				getChanges
 			]))
-			val match = new ChangeMatchImpl(pair.source, change, targetToCorrespondentChanges)
+			val match = CommitFactory::eINSTANCE.createChangeMatch
+			match.originalChange = change
+			match.originalVURI = pair.source
+			match.targetToCorrespondentChanges = targetToCorrespondentChanges
 			logger.debug('''New match added: «match»''')
 			changesMatches.get(vuri).add(match)
 		]
