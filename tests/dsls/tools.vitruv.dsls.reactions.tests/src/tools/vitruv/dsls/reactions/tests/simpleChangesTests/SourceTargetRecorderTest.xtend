@@ -225,13 +225,10 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		assertThat(changeMatches.length, is(4))
 		val originalChanges = changeMatches.map[originalChange]
 		assertThat(originalChanges.length, is(4))
-		val newRootUri = URI::createURI(newSourceVURI.EMFUri.toString + "#/")
-		val EChangeCopier eChangeCopier = new EChangeCopierImpl(sourceVURI.EMFUri, newSourceVURI.EMFUri, #{
-			newRootUri -> EChangeUnresolver::createProxy(newRoot)
-		})
+		val EChangeCopier eChangeCopier = new EChangeCopierImpl(sourceVURI.EMFUri, newSourceVURI.EMFUri)
 		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
 			it as EMFModelChangeImpl
-		].map[eChangeCopier.copyEMFModelChange(it, newSourceVURI)].flatten.toList
+		].map[eChangeCopier.copyEMFModelChangeToList(it, newSourceVURI)].flatten.toList
 		assertThat(copiedChanges.length, is(8))
 //		assertThat(copiedChanges.length, is(4))
 		// EcoreUtil::copy => koennte resolven 
@@ -257,6 +254,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 			virtualModel.propagateChange(copiedChanges.get(3 + i * 2))
 			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i)
 		}
+
 	}
 
 	@Test
@@ -304,7 +302,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	}
 
 	private def assertThatNonRootObjectContainerIsCreated() {
-		assertThat(resourceRoot.filter [
+		assertThat(resourceRootIterator.filter [
 			id == newTestSourceModelName
 		].exists [
 			null !== nonRootObjectContainerHelper && nonRootObjectContainerName != nonRootObjectContainerHelper.id
@@ -312,7 +310,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	}
 
 	private def assertThatNonRootObjectContainerHasRightId() {
-		assertThat(resourceRoot.filter [
+		assertThat(resourceRootIterator.filter [
 			id == newTestSourceModelName
 		].exists [
 			nonRootObjectContainerName == nonRootObjectContainerHelper.id &&
@@ -321,7 +319,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	}
 
 	private def assertThatNonRootObjectHasBeenInsertedInContainer(int numberOfInsertedElement) {
-		assertThat(resourceRoot.filter [
+		assertThat(resourceRootIterator.filter [
 			id == newTestSourceModelName
 		].filter [
 			nonRootObjectContainerName == nonRootObjectContainerHelper.id
@@ -333,7 +331,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	}
 
 	private def assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(int numberOfInsertedElement) {
-		assertThat(resourceRoot.filter [
+		assertThat(resourceRootIterator.filter [
 			id == newTestSourceModelName
 		].filter [
 			nonRootObjectContainerName == nonRootObjectContainerHelper.id
@@ -351,7 +349,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		return resourceSet
 	}
 
-	private def getResourceRoot() {
+	private def getResourceRootIterator() {
 		resourceSet.allContents.filter[it instanceof Root].map[it as Root]
 	}
 }

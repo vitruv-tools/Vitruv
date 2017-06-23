@@ -16,5 +16,7 @@ interface EChangeCopier {
 	 * @param vuri
 	 * @return
 	 */
-	def List<TransactionalChange> copyEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri)
+	def List<TransactionalChange> copyEMFModelChangeToList(EMFModelChangeImpl changeToCopy, VURI vuri)
+	def TransactionalChange copyEMFModelChangeToSingleChange(EMFModelChangeImpl changeToCopy, VURI vuri)
+	
 }
