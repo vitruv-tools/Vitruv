@@ -25,6 +25,7 @@ import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.VirtualModelConfiguration
 import tools.vitruv.framework.vsum.VirtualModelImpl
+import tools.vitruv.framework.vsum.VSUMFactory
 
 /**
  * Utility class for all Vitruvius test cases
@@ -149,7 +150,7 @@ final class TestUtil {
 		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
 			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification)
 		}
-		val vmodel = new VirtualModelImpl(projectFolder, vmodelConfig)
+		val vmodel = VSUMFactory::instance.createVirtualModel(projectFolder, vmodelConfig)
 		return vmodel
 	}
 
@@ -221,7 +222,8 @@ final class TestUtil {
 	def static void initializeLogger() {
 		Logger::rootLogger.level = Level::ERROR
 		Logger::rootLogger.removeAllAppenders
-		Logger::rootLogger.addAppender(new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")))
+		Logger::rootLogger.addAppender(
+			new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")))
 		val outputLevelProperty = System::getProperty(VM_ARGUMENT_LOG_OUTPUT_LEVEL)
 		if (outputLevelProperty !== null) {
 			if (!Logger.rootLogger.allAppenders.hasMoreElements) {

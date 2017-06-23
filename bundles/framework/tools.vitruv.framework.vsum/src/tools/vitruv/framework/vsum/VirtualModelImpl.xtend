@@ -22,7 +22,7 @@ import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 class VirtualModelImpl implements InternalVirtualModel {
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator
-	val ModelRepositoryImpl modelRepository
+	protected val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository metamodelRepository
 
 	@Accessors(PUBLIC_GETTER)
