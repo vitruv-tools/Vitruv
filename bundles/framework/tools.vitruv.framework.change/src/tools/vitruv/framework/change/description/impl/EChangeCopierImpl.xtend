@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.EChangeCopier
+import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
@@ -15,8 +16,9 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
+import tools.vitruv.framework.util.datatypes.VURI
+import org.apache.log4j.Level
 
 class EChangeCopierImpl implements EChangeCopier {
 	static val logger = Logger::getLogger(EChangeCopierImpl)
@@ -25,6 +27,7 @@ class EChangeCopierImpl implements EChangeCopier {
 	val Map<URI, EObject> objectsAlreadyThere
 
 	new(URI source, URI target, Map<URI, EObject> objectsAlreadyThere) {
+		logger.level = Level::DEBUG
 		this.source = source
 		this.target = target
 		this.objectsAlreadyThere = new HashMap
@@ -39,9 +42,10 @@ class EChangeCopierImpl implements EChangeCopier {
 
 	override copyEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri) {
 		val oldEChanges = changeToCopy.EChanges
-		val echanges = oldEChanges.map[copyThisShit].filterNull
-		val change = new EMFModelChangeImpl(echanges, vuri)
-		return change
+		val newChanges = oldEChanges.map[copyThisShit].filterNull.map [
+			new EMFModelChangeImpl(#[it], vuri) as TransactionalChange
+		].toList()
+		return newChanges
 	}
 
 	private dispatch def EChange copyThisShit(EChange e) {
@@ -54,7 +58,7 @@ class EChangeCopierImpl implements EChangeCopier {
 		CreateAndInsertNonRootImpl<?, ?> createAndInsertNonRoot) {
 		val affectedEObject = createAndInsertNonRoot.insertChange.affectedEObject as InternalEObject
 		val InternalEObject newAffectedEObject = adjust(affectedEObject)
-		val affectedFeature = EcoreUtil::copy(createAndInsertNonRoot.insertChange.affectedFeature)
+		val affectedFeature = createAndInsertNonRoot.insertChange.affectedFeature
 		val newValue = createAndInsertNonRoot.insertChange.newValue
 		val index = createAndInsertNonRoot.insertChange.index
 		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
@@ -65,31 +69,31 @@ class EChangeCopierImpl implements EChangeCopier {
 	private dispatch def CreateAndReplaceNonRoot<?, ?> copyThisShit(
 		CreateAndReplaceNonRoot<?, ?> createAndReplaceNonRoot) {
 		val affectedEObject = createAndReplaceNonRoot.insertChange.affectedEObject as InternalEObject
-		val InternalEObject newAffectedEObject = EChangeUnresolver::createProxy(adjust(affectedEObject))
+		val InternalEObject newAffectedEObject = adjust(affectedEObject)
 		val affectedFeature = createAndReplaceNonRoot.insertChange.affectedFeature
 		val newValue = EcoreUtil::copy(createAndReplaceNonRoot.insertChange.newValue)
 		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
 			createCreateAndReplaceNonRootChange(newAffectedEObject, affectedFeature, newValue)
-		val testNewValue = change.insertChange.newValue as InternalEObject
-		val proxyURI = URI::createURI(source.toString + testNewValue.eProxyURI.toString)
-		objectsAlreadyThere.put(proxyURI, testNewValue)
 		return change
 	}
 
 	private dispatch def ReplaceSingleValuedEAttribute<?, ?> copyThisShit(
 		ReplaceSingleValuedEAttribute<?, ?> replaceSingleValuedEAttribute) {
 		val affectedEObject = replaceSingleValuedEAttribute.affectedEObject as InternalEObject
-		val InternalEObject newAffectedEObject = adjust(affectedEObject)
-		val affectedAttribute = EcoreUtil::copy(replaceSingleValuedEAttribute.affectedFeature)
+		val InternalEObject newAffectedEObject = EChangeUnresolver::createProxy(adjust(affectedEObject))
+		val isProx = affectedEObject.eIsProxy
+		if (isProx)
+			logger.debug(affectedEObject.eProxyURI)
+		val affectedAttribute = replaceSingleValuedEAttribute.affectedFeature
 		val oldValue = replaceSingleValuedEAttribute.oldValue
 		val newValue = replaceSingleValuedEAttribute.newValue
-		TypeInferringUnresolvingAtomicEChangeFactory::instance.createReplaceSingleAttributeChange(
+		val x= TypeInferringUnresolvingAtomicEChangeFactory::instance.createReplaceSingleAttributeChange(
 			newAffectedEObject,
 			affectedAttribute,
 			oldValue,
 			newValue
 		)
-		return null
+		return x
 	}
 
 	private def InternalEObject adjust(InternalEObject affectedEObject) {
@@ -107,7 +111,7 @@ class EChangeCopierImpl implements EChangeCopier {
 			if (contains) {
 				newAffectedEObject = objectsAlreadyThere.get(newProxyUri) as InternalEObject
 			} else {
-				newAffectedEObject = EcoreUtil::copy(affectedEObject)
+				newAffectedEObject = EChangeUnresolver::createProxy(EcoreUtil::copy(affectedEObject))
 				newAffectedEObject.eSetProxyURI(newProxyUri)
 			}
 		} else {

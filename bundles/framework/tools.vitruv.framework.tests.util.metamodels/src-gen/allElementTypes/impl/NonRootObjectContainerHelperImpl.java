@@ -144,19 +144,4 @@ public class NonRootObjectContainerHelperImpl extends IdentifiedImpl implements 
 		}
 		return super.eIsSet(featureID);
 	}
-	@Override
-	 public boolean equals(Object o) {
-	         if (null != o && o instanceof NonRootObjectContainerHelper) {
-	                 final NonRootObjectContainerHelper containerHelper = (NonRootObjectContainerHelper) o;
-	                 // TODO PS HACK
-	                 final int beginIndex = 7;
-	                 if(null ==id) 
-	                	 return hashCode() == o.hashCode();
-	                 final String thisId = this.id.substring(beginIndex);
-	                 final String otherId = containerHelper.getId().substring(beginIndex);
-	                 final boolean equal = thisId.equals(otherId);
-	                 return equal;
-	         } else
-	                 return false;
-	 }
 } //NonRootObjectContainerHelperImpl

@@ -1,5 +1,6 @@
 package tools.vitruv.framework.change.description
 
+import java.util.List
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.util.datatypes.VURI
 
@@ -15,5 +16,5 @@ interface EChangeCopier {
 	 * @param vuri
 	 * @return
 	 */
-	def TransactionalChange copyEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri)
+	def List<TransactionalChange> copyEMFModelChange(EMFModelChangeImpl changeToCopy, VURI vuri)
 }
