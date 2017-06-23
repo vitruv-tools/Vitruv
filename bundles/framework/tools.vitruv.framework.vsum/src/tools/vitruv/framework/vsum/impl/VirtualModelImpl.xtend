@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum
+package tools.vitruv.framework.vsum.impl
 
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
@@ -14,6 +14,9 @@ import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import java.io.File
+import tools.vitruv.framework.vsum.InternalVirtualModel
+import tools.vitruv.framework.vsum.VirtualModelConfiguration
+import tools.vitruv.framework.vsum.VirtualModelManager
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ModelRepositoryImpl modelRepository;
@@ -21,7 +24,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private val ChangePropagator changePropagator;
 	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
 	private val File folder;
-	
+
 	public new(File folder, VirtualModelConfiguration modelConfiguration) {
 		this.folder = folder;
 		metamodelRepository = new VitruvDomainRepositoryImpl();
@@ -34,45 +37,46 @@ class VirtualModelImpl implements InternalVirtualModel {
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
-		this.changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider, metamodelRepository, modelRepository);
+		this.changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider,
+			metamodelRepository, modelRepository);
 		VirtualModelManager.instance.putVirtualModel(this);
 	}
-	
+
 	override getCorrespondenceModel() {
 		this.modelRepository.getCorrespondenceModel();
 	}
-	
+
 	override getModelInstance(VURI modelVuri) {
 		return this.modelRepository.getModel(modelVuri);
 	}
-	
+
 	override save() {
 		this.modelRepository.saveAllModels();
 	}
-	
+
 	override persistRootElement(VURI persistenceVuri, EObject rootElement) {
 		this.modelRepository.persistRootElement(persistenceVuri, rootElement);
 	}
-	
+
 	override executeCommand(Callable<Void> command) {
 		this.modelRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command);
 	}
-	
+
 	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
 		changePropagator.addChangePropagationListener(changePropagationListener);
 	}
-	
+
 	override propagateChange(VitruviusChange change) {
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		changePropagator.propagateChange(change);
 	}
-	
+
 	override setUserInteractor(UserInteracting userInteractor) {
 		for (propagationSpecification : this.changePropagationSpecificationProvider) {
 			propagationSpecification.userInteracting = userInteractor;
 		}
 	}
-	
+
 	override File getFolder() {
 		return folder;
 	}
