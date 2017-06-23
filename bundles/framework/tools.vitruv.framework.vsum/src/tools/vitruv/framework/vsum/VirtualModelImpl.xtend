@@ -3,6 +3,7 @@ package tools.vitruv.framework.vsum
 import java.io.File
 import java.util.concurrent.Callable
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
@@ -19,10 +20,12 @@ import tools.vitruv.framework.vsum.VirtualModelManager
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
+	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
+	val ChangePropagator changePropagator
 	val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository metamodelRepository
-	val ChangePropagator changePropagator
-	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
+
+	@Accessors(PUBLIC_GETTER)
 	val File folder
 
 	new(File folder, VirtualModelConfiguration modelConfiguration) {
@@ -31,35 +34,35 @@ class VirtualModelImpl implements InternalVirtualModel {
 		for (metamodel : modelConfiguration.metamodels) {
 			metamodelRepository.addDomain(metamodel)
 		}
-		this.modelRepository = new ModelRepositoryImpl(folder, metamodelRepository)
+		modelRepository = new ModelRepositoryImpl(folder, metamodelRepository)
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
-		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository
-		this.changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider,
+		changePropagationSpecificationProvider = changePropagationSpecificationRepository
+		changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider,
 			metamodelRepository, modelRepository)
-		VirtualModelManager.instance.putVirtualModel(this)
+		VirtualModelManager::instance.putVirtualModel(this)
 	}
 
 	override getCorrespondenceModel() {
-		this.modelRepository.correspondenceModel
+		modelRepository.correspondenceModel
 	}
 
 	override getModelInstance(VURI modelVuri) {
-		return this.modelRepository.getModel(modelVuri)
+		modelRepository.getModel(modelVuri)
 	}
 
 	override save() {
-		this.modelRepository.saveAllModels
+		modelRepository.saveAllModels
 	}
 
 	override persistRootElement(VURI persistenceVuri, EObject rootElement) {
-		this.modelRepository.persistRootElement(persistenceVuri, rootElement)
+		modelRepository.persistRootElement(persistenceVuri, rootElement)
 	}
 
 	override executeCommand(Callable<Void> command) {
-		this.modelRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command)
+		modelRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command)
 	}
 
 	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
@@ -72,12 +75,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override setUserInteractor(UserInteracting userInteractor) {
-		for (propagationSpecification : this.changePropagationSpecificationProvider) {
+		for (propagationSpecification : changePropagationSpecificationProvider) {
 			propagationSpecification.userInteracting = userInteractor
 		}
-	}
-
-	override File getFolder() {
-		return folder
 	}
 }
