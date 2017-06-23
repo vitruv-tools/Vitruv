@@ -10,13 +10,12 @@ import java.util.Set
 import java.util.concurrent.Callable
 import java.util.function.Consumer
 import org.apache.log4j.Logger
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.transaction.TransactionalEditingDomain
-import tools.vitruv.framework.correspondence.CorrespondenceModel
+import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
@@ -34,12 +33,13 @@ import tools.vitruv.framework.vsum.helper.FileSystemHelper
 
 class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 	static val Logger logger = Logger::getLogger(ModelRepositoryImpl.simpleName)
+	@Accessors(PUBLIC_GETTER)
+	InternalCorrespondenceModel correspondenceModel
+	val File folder
+	val FileSystemHelper fileSystemHelper
+	val Map<VURI, ModelInstance> modelInstances
 	val ResourceSet resourceSet
 	val VitruvDomainRepository metamodelRepository
-	val Map<VURI, ModelInstance> modelInstances
-	InternalCorrespondenceModel correspondenceModel
-	val FileSystemHelper fileSystemHelper
-	val File folder
 
 	new(File folder, VitruvDomainRepository metamodelRepository) {
 		this(folder, metamodelRepository, null)
@@ -65,9 +65,8 @@ class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 	def ModelInstance getAndLoadModelInstanceOriginal(VURI modelURI, boolean forceLoadByDoingUnloadBeforeLoad) {
 		val ModelInstance modelInstance = getModelInstanceOriginal(modelURI)
 		try {
-			if (modelURI.EMFUri.toString.startsWith("pathmap") || EMFBridge.existsResourceAtUri(modelURI.EMFUri)) {
+			if (modelURI.EMFUri.toString.startsWith("pathmap") || EMFBridge::existsResourceAtUri(modelURI.EMFUri))
 				modelInstance.load(getMetamodelByURI(modelURI).defaultLoadOptions, forceLoadByDoingUnloadBeforeLoad)
-			}
 		} catch (RuntimeException re) {
 // could not load model instance --> this should only be the case when the
 // model is not existing yet
@@ -77,37 +76,37 @@ class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 		return modelInstance
 	}
 
-	override ModelInstance getModel(VURI modelURI) {
-		return getAndLoadModelInstanceOriginal(modelURI, false)
+	override getModel(VURI modelURI) {
+		getAndLoadModelInstanceOriginal(modelURI, false)
 	}
 
-	override void forceReloadModelIfExisting(VURI modelURI) {
+	override forceReloadModelIfExisting(VURI modelURI) {
 		if (existsModelInstance(modelURI))
 			getAndLoadModelInstanceOriginal(modelURI, true)
 	}
 
 	def ModelInstance getModelInstanceOriginal(VURI modelURI) {
-		var ModelInstance modelInstance = this.modelInstances.get(modelURI)
+		var modelInstance = modelInstances.get(modelURI)
 		if (modelInstance === null) {
 			createRecordingCommandAndExecuteCommandOnTransactionalDomain([ // case 2 or 3
-				var ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI)
+				val internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI)
 				ModelRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance)
 				saveVURIsOfVsumModelInstances()
 				return null
 			])
-			modelInstance = this.modelInstances.get(modelURI)
+			modelInstance = modelInstances.get(modelURI)
 		}
 		return modelInstance
 	}
 
-	def private boolean existsModelInstance(VURI modelURI) {
-		this.modelInstances.containsKey(modelURI)
+	private def boolean existsModelInstance(VURI modelURI) {
+		modelInstances.containsKey(modelURI)
 	}
 
-	def private void saveModelInstance(ModelInstance modelInstance) {
+	private def void saveModelInstance(ModelInstance modelInstance) {
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain([
-			var VitruvDomain metamodel = getMetamodelByURI(modelInstance.URI)
-			var Resource resourceToSave = modelInstance.resource
+			val metamodel = getMetamodelByURI(modelInstance.URI)
+			val resourceToSave = modelInstance.resource
 			try {
 				EcoreResourceBridge.saveResource(resourceToSave, metamodel.defaultSaveOptions)
 			} catch (IOException e) {
@@ -117,8 +116,8 @@ class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 		])
 	}
 
-	override void persistRootElement(VURI vuri, EObject rootEObject) {
-		val ModelInstance modelInstance = getModel(vuri)
+	override persistRootElement(VURI vuri, EObject rootEObject) {
+		val modelInstance = getModel(vuri)
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain([
 			TuidManager.instance.registerObjectUnderModification(rootEObject)
 			val Resource resource = modelInstance.resource
@@ -131,15 +130,15 @@ class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 		])
 	}
 
-	override void saveAllModels() {
-		logger.debug('''Saving all models of model repository for VSUM: «this.folder»''')
-		saveAllChangedModels()
-		saveAllChangedCorrespondenceModels()
+	override saveAllModels() {
+		logger.debug('''Saving all models of model repository for VSUM: «folder»''')
+		saveAllChangedModels
+		saveAllChangedCorrespondenceModels
 	}
 
-	def private void deleteEmptyModels() {
-		var List<VURI> vurisToDelete = new ArrayList<VURI>
-		for (ModelInstance modelInstance : this.modelInstances.values) {
+	private def void deleteEmptyModels() {
+		val List<VURI> vurisToDelete = new ArrayList<VURI>
+		for (ModelInstance modelInstance : modelInstances.values) {
 			if (modelInstance.rootElements.empty)
 				vurisToDelete.add(modelInstance.URI)
 		}
@@ -148,10 +147,10 @@ class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 		}
 	}
 
-	def private void saveAllChangedModels() {
-		deleteEmptyModels()
-		for (ModelInstance modelInstance : this.modelInstances.values) {
-			var Resource resourceToSave = modelInstance.resource
+	private def void saveAllChangedModels() {
+		deleteEmptyModels
+		for (ModelInstance modelInstance : modelInstances.values) {
+			val resourceToSave = modelInstance.resource
 			if (resourceToSave.modified) {
 				logger.debug('''  Saving resource: «resourceToSave»''')
 				saveModelInstance(modelInstance)
@@ -159,7 +158,7 @@ class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 		}
 	}
 
-	def private void saveAllChangedCorrespondenceModels() {
+	private def void saveAllChangedCorrespondenceModels() {
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain([
 			logger.debug('''  Saving correspondence model: «ModelRepositoryImpl.this.correspondenceModel.resource»''')
 			ModelRepositoryImpl.this.correspondenceModel.saveModel
@@ -169,70 +168,61 @@ class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 	}
 
 	def ModelInstance getOrCreateUnregisteredModelInstance(VURI modelURI) {
-		var String fileExtension = modelURI.fileExtension
-		var VitruvDomain metamodel = this.metamodelRepository.getDomain(fileExtension)
-		if (metamodel ===
-			null) {
+		val fileExtension = modelURI.fileExtension
+		val metamodel = metamodelRepository.getDomain(fileExtension)
+		if (null ===
+			metamodel)
 			throw new RuntimeException('''Cannot create a new model instance at the uri '«»«modelURI»' because no metamodel is registered for the file extension '«»«fileExtension»'!''')
-		}
+
 		return loadModelInstance(modelURI, metamodel)
 	}
 
 	def ModelInstance loadModelInstance(VURI modelURI, VitruvDomain metamodel) {
-		var URI emfURI = modelURI.EMFUri
-		var Resource modelResource = EcoreResourceBridge::loadResourceAtURI(emfURI, this.resourceSet,
-			metamodel.defaultLoadOptions)
-		var ModelInstance modelInstance = new ModelInstance(modelURI, modelResource)
+		val emfURI = modelURI.EMFUri
+		val modelResource = EcoreResourceBridge::loadResourceAtURI(emfURI, resourceSet, metamodel.defaultLoadOptions)
+		val modelInstance = new ModelInstance(modelURI, modelResource)
 		return modelInstance
 	}
 
-	def private void initializeCorrespondenceModel() {
+	private def void initializeCorrespondenceModel() {
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain([
 			{
-				var VURI correspondencesVURI = this.fileSystemHelper.correspondencesVURI
+				val correspondencesVURI = fileSystemHelper.correspondencesVURI
 				var Resource correspondencesResource = null
 				if (EMFBridge.existsResourceAtUri(correspondencesVURI.EMFUri)) {
-					logger.debug('''Loading correspondence model from: «this.fileSystemHelper.correspondencesVURI»''')
-					correspondencesResource = this.resourceSet.getResource(correspondencesVURI.EMFUri, true)
+					logger.debug('''Loading correspondence model from: «fileSystemHelper.correspondencesVURI»''')
+					correspondencesResource = resourceSet.getResource(correspondencesVURI.EMFUri, true)
 				} else {
-					correspondencesResource = this.resourceSet.createResource(correspondencesVURI.EMFUri)
+					correspondencesResource = resourceSet.createResource(correspondencesVURI.EMFUri)
 				}
-				this.correspondenceModel = new CorrespondenceModelImpl(this, this.metamodelRepository,
-					correspondencesVURI, correspondencesResource)
+				correspondenceModel = new CorrespondenceModelImpl(this, metamodelRepository, correspondencesVURI,
+					correspondencesResource)
 				return null
 			}
 		])
 	}
 
-	/**
-	 * Returns the correspondence model in this model repository
-	 * @return the correspondence model
-	 */
-	override CorrespondenceModel getCorrespondenceModel() {
-		return this.correspondenceModel
-	}
-
-	def private void loadVURIsOfVSMUModelInstances() {
-		var Set<VURI> vuris = this.fileSystemHelper.loadVsumVURIsFromFile
+	private def void loadVURIsOfVSMUModelInstances() {
+		val Set<VURI> vuris = fileSystemHelper.loadVsumVURIsFromFile
 		for (VURI vuri : vuris) {
-			var VitruvDomain metamodel = getMetamodelByURI(vuri)
-			var ModelInstance modelInstance = loadModelInstance(vuri, metamodel)
-			this.modelInstances.put(vuri, modelInstance)
+			val metamodel = getMetamodelByURI(vuri)
+			val modelInstance = loadModelInstance(vuri, metamodel)
+			modelInstances.put(vuri, modelInstance)
 		}
 	}
 
-	def private void saveVURIsOfVsumModelInstances() {
-		this.fileSystemHelper.saveVsumVURIsToFile(this.modelInstances.keySet)
+	private def void saveVURIsOfVsumModelInstances() {
+		fileSystemHelper.saveVsumVURIsToFile(modelInstances.keySet)
 	}
 
 	def VitruvDomain getMetamodelByURI(VURI uri) {
-		var String fileExtension = uri.fileExtension
-		return this.metamodelRepository.getDomain(fileExtension)
+		val fileExtension = uri.fileExtension
+		return metamodelRepository.getDomain(fileExtension)
 	}
 
 // private void loadAndMapCorrepondenceInstances() {
-// for (Metamodel metamodel : this.metamodelManaging) {
-// for (Metamodel metamodel2 : this.metamodelManaging) {
+// for (Metamodel metamodel : metamodelManaging) {
+// for (Metamodel metamodel2 : metamodelManaging) {
 // if (metamodel != metamodel2
 // && getCorrespondenceModel(metamodel.uRI, metamodel2.uRI) === null) {
 // createCorrespondenceModel(new MetamodelPair(metamodel, metamodel2))
@@ -240,14 +230,13 @@ class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 // }
 // }
 // }
-	def private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
-		if (null === TransactionalEditingDomain::Factory.INSTANCE.getEditingDomain(this.resourceSet)) {
-			TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resourceSet)
-		}
-		return TransactionalEditingDomain::Factory.INSTANCE.getEditingDomain(this.resourceSet)
+	private def synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
+		if (null === TransactionalEditingDomain::Factory.INSTANCE.getEditingDomain(resourceSet))
+			TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(resourceSet)
+		return TransactionalEditingDomain::Factory.INSTANCE.getEditingDomain(resourceSet)
 	}
 
-	def private void deleteModel(VURI vuri) {
+	private def void deleteModel(VURI vuri) {
 		val ModelInstance modelInstance = getModelInstanceOriginal(vuri)
 		val Resource resource = modelInstance.resource
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain([
@@ -262,15 +251,15 @@ class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 		])
 	}
 
-	override void createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable) {
-		EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(callable, getTransactionalEditingDomain())
+	override createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable) {
+		EMFCommandBridge::createAndExecuteVitruviusRecordingCommand(callable, transactionalEditingDomain)
 	}
 
-	override void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command) {
-		EMFCommandBridge.executeVitruviusRecordingCommand(getTransactionalEditingDomain(), command)
+	override executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command) {
+		EMFCommandBridge::executeVitruviusRecordingCommand(transactionalEditingDomain, command)
 	}
 
-	override void executeOnResourceSet(Consumer<ResourceSet> function) {
+	override executeOnResourceSet(Consumer<ResourceSet> function) {
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain([
 			function.accept(ModelRepositoryImpl.this.resourceSet)
 			return null
