@@ -16,6 +16,7 @@ import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 class EChangeCopierImpl implements EChangeCopier {
 	static val logger = Logger::getLogger(EChangeCopierImpl)
@@ -64,8 +65,8 @@ class EChangeCopierImpl implements EChangeCopier {
 	private dispatch def CreateAndReplaceNonRoot<?, ?> copyThisShit(
 		CreateAndReplaceNonRoot<?, ?> createAndReplaceNonRoot) {
 		val affectedEObject = createAndReplaceNonRoot.insertChange.affectedEObject as InternalEObject
-		val InternalEObject newAffectedEObject = adjust(affectedEObject)
-		val affectedFeature = EcoreUtil::copy(createAndReplaceNonRoot.insertChange.affectedFeature)
+		val InternalEObject newAffectedEObject = EChangeUnresolver::createProxy(adjust(affectedEObject))
+		val affectedFeature = createAndReplaceNonRoot.insertChange.affectedFeature
 		val newValue = EcoreUtil::copy(createAndReplaceNonRoot.insertChange.newValue)
 		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
 			createCreateAndReplaceNonRootChange(newAffectedEObject, affectedFeature, newValue)
