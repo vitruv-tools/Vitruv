@@ -20,7 +20,6 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelImpl
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.framework.domains.repository.ModelRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.bridges.EMFBridge
@@ -29,15 +28,17 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.helper.FileSystemHelper
 
-class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
+class ModelRepositoryImpl implements InternalModelRepository, CorrespondenceProviding {
 	static val Logger logger = Logger::getLogger(ModelRepositoryImpl.simpleName)
 	@Accessors(PUBLIC_GETTER)
 	InternalCorrespondenceModel correspondenceModel
 	val File folder
 	val FileSystemHelper fileSystemHelper
 	val Map<VURI, ModelInstance> modelInstances
+	@Accessors(PUBLIC_GETTER)
 	val ResourceSet resourceSet
 	val VitruvDomainRepository metamodelRepository
 

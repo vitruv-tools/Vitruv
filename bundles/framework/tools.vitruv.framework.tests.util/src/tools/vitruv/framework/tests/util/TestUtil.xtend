@@ -22,10 +22,9 @@ import tools.vitruv.framework.domains.AbstractVitruvDomain
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 import tools.vitruv.framework.vsum.InternalVirtualModel
+import tools.vitruv.framework.vsum.VSUMFactory
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.VirtualModelConfiguration
-import tools.vitruv.framework.vsum.VirtualModelImpl
-import tools.vitruv.framework.vsum.VSUMFactory
 
 /**
  * Utility class for all Vitruvius test cases
@@ -174,7 +173,7 @@ final class TestUtil {
 		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
 			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification)
 		}
-		val vmodel = new VirtualModelImpl(projectFolder, vmodelConfig)
+		val vmodel = VSUMFactory::instance.createVirtualModel(projectFolder, vmodelConfig)
 		return vmodel
 	}
 
