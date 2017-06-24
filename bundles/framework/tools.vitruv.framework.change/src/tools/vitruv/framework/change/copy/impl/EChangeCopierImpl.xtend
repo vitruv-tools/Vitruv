@@ -1,12 +1,13 @@
-package tools.vitruv.framework.change.description.impl
+package tools.vitruv.framework.change.copy.impl
 
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.description.EChangeCopier
-import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.copy.EChangeCopier
+import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
@@ -16,28 +17,27 @@ import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRoo
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.util.datatypes.VURI
+import java.util.List
 
 class EChangeCopierImpl implements EChangeCopier {
 	static val logger = Logger::getLogger(EChangeCopierImpl)
-	val String source
-	val String target
+	val List<Pair<String, String>> replacePairs
 
-	new(URI source, URI target) {
+	new(List<Pair<String, String>> replacePairs) {
 		logger.level = Level::DEBUG
-		this.source = source.toString
-		this.target = target.toString
+		this.replacePairs = replacePairs
 	}
 
-	override copyEMFModelChangeToList(EMFModelChangeImpl changeToCopy, VURI vuri) {
+	override copyEMFModelChangeToList(VitruviusChange changeToCopy, VURI vuri) {
 		val newChanges = changeToCopy.copiedEChangeIterator.map [
-			new EMFModelChangeImpl(#[it], vuri) as TransactionalChange
+			VitruviusChangeFactory::instance.createEMFModelChange(#[it], vuri) as VitruviusChange
 		].toList
 		return newChanges
 	}
 
-	override copyEMFModelChangeToSingleChange(EMFModelChangeImpl changeToCopy, VURI vuri) {
+	override copyEMFModelChangeToSingleChange(VitruviusChange changeToCopy, VURI vuri) {
 		val newEchanges = changeToCopy.copiedEChangeIterator.toList
-		val newChange = new EMFModelChangeImpl(newEchanges, vuri)
+		val newChange = VitruviusChangeFactory::instance.createEMFModelChange(newEchanges, vuri)
 		return newChange
 	}
 
@@ -88,12 +88,13 @@ class EChangeCopierImpl implements EChangeCopier {
 
 	private def adjust(InternalEObject affectedEObject) {
 		val proxyUriString = affectedEObject.eProxyURI.toString
-		val containsSource = proxyUriString.contains(source)
+		val containsSource = replacePairs.exists[proxyUriString.contains(key)]
 		if (!containsSource) {
-			logger.error('''AffectedEObject «affectedEObject» lies not under «source»''')
+			logger.error('''AffectedEObject «affectedEObject» lies not under any source of «replacePairs»''')
 			return affectedEObject
 		}
-		val newProxyUriString = proxyUriString.replace(source, target)
+		val pair = replacePairs.findFirst[proxyUriString.contains(key)]
+		val newProxyUriString = proxyUriString.replace(pair.key, pair.value)
 		val newProxyUri = URI::createURI(newProxyUriString)
 		var InternalEObject newAffectedEObject = EChangeUnresolver::createProxy(EcoreUtil::copy(affectedEObject))
 		newAffectedEObject.eSetProxyURI(newProxyUri)
@@ -101,7 +102,7 @@ class EChangeCopierImpl implements EChangeCopier {
 
 	}
 
-	private def getCopiedEChangeIterator(EMFModelChangeImpl changeToCopy) {
-		changeToCopy.EChanges.map[copyThisEChange].filterNull
+	private def getCopiedEChangeIterator(VitruviusChange changeToCopy) {
+		changeToCopy.getEChanges.map[copyThisEChange].filterNull
 	}
 }

@@ -1,5 +1,6 @@
 package tools.vitruv.framework.change.description.impl
 
+import java.util.List
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -41,8 +42,12 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	override copy(EMFModelChangeImpl changeToCopy) {
 		val echanges = changeToCopy.EChanges
 		if (!echanges.forall[!resolved])
-			logger.debug("There are some resolved changes!")
-		new EMFModelChangeImpl(echanges, changeToCopy.URI)
+			logger.error("There are some resolved changes!")
+		return new EMFModelChangeImpl(echanges, changeToCopy.URI)
+	}
+
+	override createEMFModelChange(List<EChange> echanges, VURI vuri) {
+		new EMFModelChangeImpl(echanges, vuri)
 	}
 
 	override createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {

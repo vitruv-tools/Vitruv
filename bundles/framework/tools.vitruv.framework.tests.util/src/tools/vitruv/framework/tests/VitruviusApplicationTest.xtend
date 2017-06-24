@@ -138,10 +138,8 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 		val changes = uriToChangeRecorder.get(vuri).endRecording
 		changes.forEach [
 			if (it instanceof EMFModelChangeImpl) {
-				// TODO PS Changes vorher kopieren, da nach propagate resolved
-				// Aufpassen: Bei Transactional aufpassen, da kein Deep Copy 
-				// ConcreteChanges copieren 
-				// Einfach nur EChanges kopieren
+				// PS Create a copy of the change to send an unresolved 
+				// change to the observers
 				val copiedChange = VitruviusChangeFactory::instance.copy(it)
 				testChange(false)
 				copiedChange.testChange(false)

@@ -9,16 +9,12 @@ import java.io.ObjectOutputStream
 import java.util.List
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
-import org.eclipse.emf.common.util.URI
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import tools.vitruv.framework.change.description.EChangeCopier
-import tools.vitruv.framework.change.description.impl.EChangeCopierImpl
+import tools.vitruv.framework.change.copy.ChangeCopyFactory
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
-import tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceNonRootImpl
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.versioning.VersioningXtendFactory
@@ -32,11 +28,12 @@ import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
 
+
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	static val logger = Logger::getLogger(SourceTargetRecorderTest)
 	static val newTestSourceModelName = "EachTestModelSource2"
 	static val nonRootObjectContainerName = "NonRootObjectContainer"
-	var SourceTargetRecorder stRecorder
+	SourceTargetRecorder stRecorder
 
 	@Rule
 	public val tempFolder = new TemporaryFolder
@@ -225,23 +222,12 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		assertThat(changeMatches.length, is(4))
 		val originalChanges = changeMatches.map[originalChange]
 		assertThat(originalChanges.length, is(4))
-		val EChangeCopier eChangeCopier = new EChangeCopierImpl(sourceVURI.EMFUri, newSourceVURI.EMFUri)
+		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
+		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#[pair])
 		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
 			it as EMFModelChangeImpl
 		].map[eChangeCopier.copyEMFModelChangeToList(it, newSourceVURI)].flatten.toList
 		assertThat(copiedChanges.length, is(8))
-//		assertThat(copiedChanges.length, is(4))
-		// EcoreUtil::copy => koennte resolven 
-		// Resource problematisch: Proxy URI ersetzten 
-		// Fur Test ersetzen 
-		val originalChange1 = originalChanges.get(0)
-		assertThat(originalChange1, not(equalTo(null)))
-		originalChange1.EChanges.filter[it instanceof CreateAndReplaceNonRootImpl<?, ?>].map [
-			it as CreateAndReplaceNonRootImpl<?, ?>
-		].forEach [
-			val affectedEObject = insertChange.affectedEObject
-			assertThat(affectedEObject, equalTo(rootElement))
-		]
 
 		virtualModel.propagateChange(copiedChanges.get(0))
 		assertThatNonRootObjectContainerIsCreated

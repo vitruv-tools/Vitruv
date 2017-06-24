@@ -6,6 +6,7 @@ import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.VitruviusChangeFactoryImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
+import java.util.List
 
 /**
  * 
@@ -26,6 +27,8 @@ interface VitruviusChangeFactory {
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
 	def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri)
+
+	def TransactionalChange createEMFModelChange(List<EChange> echanges, VURI vuri)
 
 	def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri)
 
