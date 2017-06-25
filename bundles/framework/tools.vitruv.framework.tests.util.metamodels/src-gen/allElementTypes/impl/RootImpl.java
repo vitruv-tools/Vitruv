@@ -1069,13 +1069,4 @@ public class RootImpl extends IdentifiedImpl implements Root {
 		result.append(')');
 		return result.toString();
 	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof RootImpl) {
-			final RootImpl otherRootImpl = (RootImpl) o;
-			return otherRootImpl.id == this.id;
-		} else 
-			return false;
-	}
 } //RootImpl
