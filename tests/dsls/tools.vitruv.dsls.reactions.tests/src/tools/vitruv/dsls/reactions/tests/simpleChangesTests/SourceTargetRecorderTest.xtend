@@ -25,13 +25,12 @@ import tools.vitruv.framework.vsum.InternalTestVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
-import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	static val logger = Logger::getLogger(SourceTargetRecorderTest)
 	static val newTestSourceModelName = "EachTestModelSource2"
+	static val newTestTargetModelName = "EachTestModelTarget2"
 	static val nonRootObjectContainerName = "NonRootObjectContainer"
 	SourceTargetRecorder stRecorder
 
@@ -185,7 +184,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	}
 
 	@Test
-	def void testReapply() {
+	def void testReapplyAsList() {
 		// Paths and VURIs
 		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
 		val sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
@@ -201,12 +200,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		rootElement.saveAndSynchronizeChanges
 
 		assertThat(rootElement.eContents.length, is(1))
-		assertThat(rootElement.nonRootObjectContainerHelper, not(equalTo(null)))
 		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(1))
 
-		// Create new source
-//		val newTestTargetModelName = "EachTestModelTarget2"
-//		val newTargetVURI = newTestTargetModelName.calculateVURI
 		val newSourceVURI = newTestSourceModelName.calculateVURI
 		val newRoot = AllElementTypesFactory::eINSTANCE.createRoot
 		newRoot.id = newTestSourceModelName
@@ -240,7 +235,59 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 			virtualModel.propagateChange(copiedChanges.get(3 + i * 2))
 			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i)
 		}
+		resourceSet.resources.forEach[save(#{})]
+		logger.debug("hi")
+	}
 
+	@Test
+	def void testReapply() {
+		// Paths and VURIs
+		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
+		val sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
+
+		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
+
+		// Create container and synchronize 
+		assertThat(rootElement.eContents.length, is(0))
+		assertThat(rootElement.nonRootObjectContainerHelper, equalTo(null))
+		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		container.id = "NonRootObjectContainer"
+		rootElement.nonRootObjectContainerHelper = container
+		rootElement.saveAndSynchronizeChanges
+
+		assertThat(rootElement.eContents.length, is(1))
+		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(1))
+
+		val newSourceVURI = newTestSourceModelName.calculateVURI
+		val newRoot = AllElementTypesFactory::eINSTANCE.createRoot
+		newRoot.id = newTestSourceModelName
+		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
+
+		// Create and add non roots
+		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
+		rootElement.saveAndSynchronizeChanges
+		assertModelsEqual
+		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(4))
+
+		val changeMatches = stRecorder.getChangeMatches(sourceVURI)
+		assertThat(changeMatches.length, is(4))
+		val originalChanges = changeMatches.map[originalChange]
+		assertThat(originalChanges.length, is(4))
+		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
+		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#[pair])
+		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
+			it as EMFModelChangeImpl
+		].map[eChangeCopier.copyEMFModelChangeToSingleChange(it, newSourceVURI)].toList
+		assertThat(copiedChanges.length, is(4))
+
+		virtualModel.propagateChange(copiedChanges.get(0))
+		assertThatNonRootObjectContainerHasRightId
+
+		for (i : 0 ..< 3) {
+			virtualModel.propagateChange(copiedChanges.get(i + 1))
+			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i, true)
+		}
+		resourceSet.resources.forEach[save(#{})]
 	}
 
 	@Test
@@ -288,26 +335,20 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	}
 
 	private def assertThatNonRootObjectContainerIsCreated() {
-		assertThat(resourceRootIterator.filter [
-			id == newTestSourceModelName
-		].exists [
+		assertThat("Container has not been created", sourceRootIterator.exists [
 			null !== nonRootObjectContainerHelper && nonRootObjectContainerName != nonRootObjectContainerHelper.id
 		], is(true))
 	}
 
 	private def assertThatNonRootObjectContainerHasRightId() {
-		assertThat(resourceRootIterator.filter [
-			id == newTestSourceModelName
-		].exists [
+		assertThat(sourceRootIterator.exists [
 			nonRootObjectContainerName == nonRootObjectContainerHelper.id &&
 				nonRootObjectContainerHelper.eContents.size === 0
 		], is(true))
 	}
 
 	private def assertThatNonRootObjectHasBeenInsertedInContainer(int numberOfInsertedElement) {
-		assertThat(resourceRootIterator.filter [
-			id == newTestSourceModelName
-		].filter [
+		assertThat(sourceRootIterator.filter [
 			nonRootObjectContainerName == nonRootObjectContainerHelper.id
 		].map[nonRootObjectContainerHelper].filter[nonRootObjectsContainment.size === numberOfInsertedElement + 1].map [
 			nonRootObjectsContainment.get(numberOfInsertedElement)
@@ -317,15 +358,24 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	}
 
 	private def assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(int numberOfInsertedElement) {
-		assertThat(resourceRootIterator.filter [
-			id == newTestSourceModelName
-		].filter [
-			nonRootObjectContainerName == nonRootObjectContainerHelper.id
-		].map[nonRootObjectContainerHelper].filter[nonRootObjectsContainment.size === numberOfInsertedElement + 1].map [
-			nonRootObjectsContainment.get(numberOfInsertedElement)
-		].exists [
-			id == NON_CONTAINMENT_NON_ROOT_IDS.get(numberOfInsertedElement)
-		], is(true))
+		assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(numberOfInsertedElement, false)
+	}
+
+	private def assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(int numberOfInsertedElement,
+		boolean testTarget) {
+		val x = [ Iterable<Root> iter |
+			iter.filter [
+				nonRootObjectContainerName == nonRootObjectContainerHelper.id
+			].map[nonRootObjectContainerHelper].filter[nonRootObjectsContainment.size === numberOfInsertedElement + 1].
+				map [
+					nonRootObjectsContainment.get(numberOfInsertedElement)
+				].exists [
+					id == NON_CONTAINMENT_NON_ROOT_IDS.get(numberOfInsertedElement)
+				]
+		]
+		assertThat(x.apply(sourceRootIterator), is(true))
+		if (testTarget)
+			assertThat(x.apply(targetRootIterator), is(true))
 	}
 
 	private def getResourceSet() {
@@ -335,7 +385,20 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		return resourceSet
 	}
 
-	private def getResourceRootIterator() {
-		resourceSet.allContents.filter[it instanceof Root].map[it as Root]
+	private def getSourceRootIterator() {
+		newTestSourceModelName.rootIterator
 	}
+
+	private def getTargetRootIterator() {
+		newTestTargetModelName.rootIterator
+	}
+
+	private def getRootIterator(String name) {
+		resourceSet.resources.filter[URI.toString.contains(name)].map[contents].flatten.filter [
+			it instanceof Root
+		].map[it as Root].filter [
+			id == newTestSourceModelName
+		]
+	}
+
 }

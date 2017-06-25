@@ -64,7 +64,7 @@ class EChangeCopierImpl implements EChangeCopier {
 		val affectedEObject = insertChange.affectedEObject as InternalEObject
 		val newAffectedEObject = adjust(affectedEObject)
 		val affectedFeature = insertChange.affectedFeature
-		val newValue = EcoreUtil::copy(insertChange.newValue)
+		val newValue = insertChange.newValue
 		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
 			createCreateAndReplaceNonRootChange(newAffectedEObject, affectedFeature, newValue)
 		return change
