@@ -26,10 +26,10 @@ import tools.vitruv.framework.util.datatypes.VURI
 
 class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	static val logger = Logger::getLogger(AtomicEmfChangeRecorderImpl)
-	var List<ChangeDescription> changeDescriptions
-	var VURI modelVURI
-	var Collection<Notifier> elementsToObserve
-	var boolean unresolveRecordedChanges
+	List<ChangeDescription> changeDescriptions
+	VURI modelVURI
+	Collection<Notifier> elementsToObserve
+	boolean unresolveRecordedChanges
 
 	/**
 	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
@@ -46,15 +46,15 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	 */
 	new(boolean unresolveRecordedChanges) {
 		elementsToObserve = new ArrayList<Notifier>
-		changeRecorder.setRecordingTransientFeatures(false)
-		changeRecorder.setResolveProxies(true)
+		changeRecorder.recordingTransientFeatures = false
+		changeRecorder.resolveProxies = true
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 
-		// TODO PS Remove 
+		// TODO PS Remove
 		logger.level = Level::INFO
 	}
 
-	override void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {
+	override beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {
 		this.modelVURI = modelVURI
 		this.elementsToObserve.clear
 		this.elementsToObserve += elementsToObserve
@@ -62,16 +62,18 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		changeRecorder.beginRecording(elementsToObserve)
 	}
 
-	override List<TransactionalChange> endRecording() {
+	override endRecording() {
 		logger.debug('''End recording, unresolveRecordedChanges: «unresolveRecordedChanges»''')
-		if (!isRecording)
+		if (!recording)
 			throw new IllegalStateException
 		changeRecorder.endRecording
 		changeDescriptions.reverseView.forEach[applyAndReverse]
 		val transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList
 		if (unresolveRecordedChanges)
-			correctChanges(transactionalChanges)
-		transactionalChanges
+			correctChanges(transactionalChanges.immutableCopy)
+		if (transactionalChanges.map[EChanges].flatten.exists[resolved])
+			throw new IllegalStateException("A changed was resolved")
+		return transactionalChanges
 	}
 
 	private def createModelChange(ChangeDescription changeDescription) {
@@ -90,17 +92,17 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		null
 	}
 
-	override List<TransactionalChange> restartRecording() {
+	override restartRecording() {
 		val modelChanges = endRecording
 		beginRecording(modelVURI, elementsToObserve)
 		modelChanges
 	}
 
-	override boolean isRecording() {
+	override isRecording() {
 		changeRecorder.recording
 	}
 
-	override void dispose() {
+	override dispose() {
 		changeRecorder.dispose
 	}
 
@@ -110,41 +112,38 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	 * directly to the state before itself is applied => roll everything back and re-apply all changes, while
 	 * correcting the wrong changes.
 	 */
-	def private void correctChanges(List<TransactionalChange> changes) {
-		var eChanges = changes.map [
-			val echanges = it.EChanges
-			return echanges
-		].flatten.toList
-// Roll back
-		for (c : eChanges.reverseView) {
-			updateStagingArea(c) // corrects the missing or wrong staging area of CreateEObject changes.
-			if (c.resolved)
-				c.applyBackward
-		}
-// Apply again and unresolve the results if necessary
-		for (c : eChanges) {
-			val EChange copy = EcoreUtil::copy(c)
-			EChangeUnresolver.unresolve(c)
+	private def void correctChanges(List<TransactionalChange> changes) {
+		val eChanges = changes.map[EChanges].flatten.toList
+		// Roll back
+		eChanges.reverseView.forEach [
+			updateStagingArea // corrects the missing or wrong staging area of CreateEObject changes.
+			if (resolved)
+				applyBackward
+		]
+		// Apply again and unresolve the results if necessary
+		eChanges.forEach [ c |
+			val copy = EcoreUtil::copy(c)
+			EChangeUnresolver::unresolve(c)
 			if (copy.resolved)
 				copy.applyForward
-		}
+		]
 	}
 
 	/*
 	 * Updates the staging area to the current state of the model.
 	 */
-	def private dispatch void updateStagingArea(EChange change) {
-// Is needed to create a dispatch method which is applicable for EChange base class.
+	private def dispatch void updateStagingArea(EChange change) {
+		// Is needed to create a dispatch method which is applicable for EChange base class.
 	}
 
-	def private dispatch void updateStagingArea(CreateEObject<EObject> change) {
-// The newly created object is in an resource after the change, so
-// the correct staging area can be chosen, before the change
-// is applied backward.
+	private def dispatch void updateStagingArea(CreateEObject<EObject> change) {
+		// The newly created object is in an resource after the change, so
+		// the correct staging area can be chosen, before the change
+		// is applied backward.
 		change.stagingArea = StagingArea::getStagingArea(change.affectedEObject.eResource)
 	}
 
-	def private dispatch void updateStagingArea(CompoundEChange change) {
+	private def dispatch void updateStagingArea(CompoundEChange change) {
 		change.atomicChanges.forEach[updateStagingArea]
 	}
 
