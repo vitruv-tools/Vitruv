@@ -2,21 +2,20 @@ package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
-import java.util.Map
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
-
 import tools.vitruv.framework.versioning.BranchDiff
 import tools.vitruv.framework.versioning.BranchDiffCreator
-import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.conflict.Conflict
-import tools.vitruv.framework.versioning.impl.ConflictDetectorImpl
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
+import java.util.Map
+import tools.vitruv.framework.versioning.ConflictDetector
+import tools.vitruv.framework.versioning.impl.ConflictDetectorImpl
 
 class NoConflict extends ConflictTest {
 	protected BranchDiff branchDiff
