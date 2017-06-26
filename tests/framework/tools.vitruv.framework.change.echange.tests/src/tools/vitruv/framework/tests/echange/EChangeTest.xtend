@@ -20,7 +20,7 @@ import tools.vitruv.framework.change.echange.resolve.StagingArea
 
 /**
  * Default class for testing EChange changes.
- * Prepares two temporary model instances of the allelementtypes metamodel which 
+ * Prepares two temporary model instances of the allelementtypes metamodel which
  * can be modified by the EChange tests. The model is stored in one temporary file.
  */
 abstract class EChangeTest {
@@ -43,11 +43,11 @@ abstract class EChangeTest {
 	protected static val STAGING_AREA_FILE_NAME = "stagingArea"
 
 	@Rule
-	public TemporaryFolder testFolder = new TemporaryFolder()
+	public TemporaryFolder testFolder = new TemporaryFolder
 
 	/**
 	 * Sets up a new model and the two model instances before every test.
-	 * The model is stored in a temporary file with filename {@link MODEL_FILE_NAME} 
+	 * The model is stored in a temporary file with filename {@link MODEL_FILE_NAME}
 	 * with extension {@link METAMODEL}. The folder is accessible by the attribute {@link testFolder}.
 	 * The two model instances are stored in the two {@link ResourceSet} attributes {@link resourceSet1} and
 	 * {@link resourceSet2}.
@@ -56,24 +56,24 @@ abstract class EChangeTest {
 	def void beforeTest() {
 		// Setup Files
 		val modelFile = testFolder.newFile(MODEL_FILE_NAME + "." + METAMODEL)
-		fileUri = URI.createFileURI(modelFile.getAbsolutePath())
+		fileUri = URI::createFileURI(modelFile.absolutePath)
 
 		// Create model
-		resourceSet = new ResourceSetImpl()
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
+		resourceSet = new ResourceSetImpl
+		resourceSet.resourceFactoryRegistry.extensionToFactoryMap.put(METAMODEL, new XMIResourceFactoryImpl)
 		resource = resourceSet.createResource(fileUri)
 
-		rootObject = AllElementTypesFactory.eINSTANCE.createRoot()
-		resource.getContents().add(rootObject)
+		rootObject = AllElementTypesFactory::eINSTANCE.createRoot
+		resource.contents.add(rootObject)
 
 		resource.save(null)
 
-		// Create staging area for resource set 1
-		stagingArea = StagingArea.getStagingArea(resourceSet)
+// Create staging area for resource set 1
+		stagingArea = StagingArea::getStagingArea(resourceSet)
 
-		// Factorys for creating changes
-		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory.instance
-		compoundFactory = TypeInferringUnresolvingCompoundEChangeFactory.instance
+// Factorys for creating changes
+		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory::instance
+		compoundFactory = TypeInferringUnresolvingCompoundEChangeFactory::instance
 	}
 
 	/**
@@ -87,14 +87,13 @@ abstract class EChangeTest {
 
 	/**
 	 * Prepares the staging area and the object which is in progress
-	 * for a test. Inserts a new element to the staging area which will 
+	 * for a test. Inserts a new element to the staging area which will
 	 * be used in the test.
-	 * @param object The EObject which will be inserted in the staging area. 
+	 * @param object The EObject which will be inserted in the staging area.
 	 * 		Clears and sets the 0th element.
 	 */
 	protected def void prepareStagingArea(EObject object) {
-		if (object !== null) {
+		if (object !== null)
 			stagingArea.add(object)
-		}
 	}
 }
