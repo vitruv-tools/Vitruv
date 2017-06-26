@@ -1,41 +1,32 @@
 package tools.vitruv.framework.versioning.impl
 
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
 import org.graphstream.graph.Node
 import org.graphstream.graph.implementations.SingleGraph
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.versioning.GraphManager
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
-import org.graphstream.graph.Edge
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EAttribute
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.versioning.GraphManager
+import tools.vitruv.framework.versioning.EdgeType
 
-//import org.apache.log4j.Logger
 class GraphManagerImpl implements GraphManager {
-//	static val logger = Logger::getLogger(ConflictDetectorImpl)
-//	static val transactionalIdentifier = "transactional"
 	static val affectedIdentifier = "affected"
 	static val uiLabel = "ui.label"
-	@Accessors(PUBLIC_GETTER)
-	val Graph graph
+	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
+	Graph graph
 
 	static def GraphManager init() {
 		new GraphManagerImpl
 	}
 
-//	private static def String getTransactionalEdgeId(TransactionalChange t, EChange e) {
-//		'''«transactionalIdentifier»: «t» to «e»'''
-//	}
-//
-//	private static def String getTransactionalEdgeLabel(TransactionalChange t, EChange e) {
-//		'''contains'''
-//	}
 	private static def String getAffectedEdgeLabel(EObject ob) {
 		'''«ob.toString.substring(0)»'''
 	}
@@ -116,6 +107,14 @@ class GraphManagerImpl implements GraphManager {
 		return x
 	}
 
+	override checkIfEdgeExists(EChange e1, EChange e2, EdgeType type) {
+		val edgeExists = checkIfEdgeExists(e1, e2)
+		if (!edgeExists)
+			return false
+		val edge = e1.node.getEdgeBetween(e2.node)
+		return edge.id.contains(type.toString)
+	}
+
 	override addAffectedEdge(EChange e1, EChange e2, EObject affectedObject) {
 		val edge = addChangeEdge(createAffectedEdgeName(e1, e2), e1, e2, false)
 		edge.addAttribute(uiLabel, affectedObject.affectedEdgeLabel)
@@ -135,6 +134,10 @@ class GraphManagerImpl implements GraphManager {
 
 	private dispatch def Node getNode(TransactionalChange t) {
 		graph.getNode(t.nodeId)
+	}
+	
+	override edgesWithType(EdgeType t) {
+		graph.edgeSet.filter[id.contains(t.toString)]
 	}
 
 //	private def addTransactionalEdge(TransactionalChange t, EChange e) {
