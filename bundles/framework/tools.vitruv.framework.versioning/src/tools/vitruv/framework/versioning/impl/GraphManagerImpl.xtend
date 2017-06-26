@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EAttribute
 //import org.apache.log4j.Logger
 class GraphManagerImpl implements GraphManager {
 //	static val logger = Logger::getLogger(ConflictDetectorImpl)
-	static val transactionalIdentifier = "transactional"
+//	static val transactionalIdentifier = "transactional"
 	static val affectedIdentifier = "affected"
 	static val uiLabel = "ui.label"
 	@Accessors(PUBLIC_GETTER)
@@ -29,14 +29,13 @@ class GraphManagerImpl implements GraphManager {
 		new GraphManagerImpl
 	}
 
-	private static def String getTransactionalEdgeId(TransactionalChange t, EChange e) {
-		'''«transactionalIdentifier»: «t» to «e»'''
-	}
-
-	private static def String getTransactionalEdgeLabel(TransactionalChange t, EChange e) {
-		'''contains'''
-	}
-
+//	private static def String getTransactionalEdgeId(TransactionalChange t, EChange e) {
+//		'''«transactionalIdentifier»: «t» to «e»'''
+//	}
+//
+//	private static def String getTransactionalEdgeLabel(TransactionalChange t, EChange e) {
+//		'''contains'''
+//	}
 	private static def String getAffectedEdgeLabel(EObject ob) {
 		'''«ob.toString.substring(0)»'''
 	}
@@ -90,9 +89,7 @@ class GraphManagerImpl implements GraphManager {
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer")
 	}
 
-	override addNode(VitruviusChange e) {
-		addNodeImpl(e)
-	}
+	override addNode(EChange e) { addNodeImpl(e) }
 
 	private dispatch def addNodeImpl(VitruviusChange e) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
@@ -103,8 +100,7 @@ class GraphManagerImpl implements GraphManager {
 		node.addAttribute(uiLabel, e.nodeLabel)
 		e.EChanges.forEach [
 			addNodeImpl
-			addTransactionalEdge(e, it)
-
+//			addTransactionalEdge(e, it)
 		]
 	}
 
@@ -141,9 +137,8 @@ class GraphManagerImpl implements GraphManager {
 		graph.getNode(t.nodeId)
 	}
 
-	private def addTransactionalEdge(TransactionalChange t, EChange e) {
-		val edge = addChangeEdge(getTransactionalEdgeId(t, e), t, e, true)
-		edge.addAttribute(uiLabel, getTransactionalEdgeLabel(t, e))
-	}
-
+//	private def addTransactionalEdge(TransactionalChange t, EChange e) {
+//		val edge = addChangeEdge(getTransactionalEdgeId(t, e), t, e, true)
+//		edge.addAttribute(uiLabel, getTransactionalEdgeLabel(t, e))
+//	}
 }

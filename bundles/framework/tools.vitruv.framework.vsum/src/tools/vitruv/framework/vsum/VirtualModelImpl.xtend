@@ -31,9 +31,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	new(File folder, VirtualModelConfiguration modelConfiguration) {
 		this.folder = folder
 		metamodelRepository = new VitruvDomainRepositoryImpl
-		for (metamodel : modelConfiguration.metamodels) {
-			metamodelRepository.addDomain(metamodel)
-		}
+		modelConfiguration.metamodels.forEach[metamodelRepository.addDomain(it)]
 		modelRepository = new ModelRepositoryImpl(folder, metamodelRepository)
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
