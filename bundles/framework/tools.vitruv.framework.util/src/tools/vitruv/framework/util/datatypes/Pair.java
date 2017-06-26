@@ -19,7 +19,9 @@ package tools.vitruv.framework.util.datatypes;
  * @param <B>
  *            the type of the second element
  * @author Max E. Kramer
+ * @deprecated {@link edu.kit.ipd.sdq.commons.util.java.Pair}
  */
+@Deprecated
 public class Pair<A, B> {
     /** The first element. */
     private final A first;

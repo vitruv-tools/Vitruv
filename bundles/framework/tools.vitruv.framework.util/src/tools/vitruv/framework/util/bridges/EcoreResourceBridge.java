@@ -252,10 +252,14 @@ public final class EcoreResourceBridge {
 		}
 	}
 
+	/** @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil#loadResourceAtURI(URI, ResourceSet)}*/
+	@Deprecated
 	public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet) {
 		return loadResourceAtURI(resourceURI, resourceSet, Collections.emptyMap());
 	}
 
+	/** @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil#loadResourceAtURI(URI, ResourceSet, Map)}*/
+	@Deprecated
 	public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet,
 			final Map<Object, Object> loadOptions) {
 		Resource resource = null;

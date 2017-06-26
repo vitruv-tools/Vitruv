@@ -22,7 +22,9 @@ package tools.vitruv.framework.util.datatypes;
  * @param <D>
  *            the type of the fourth element
  * @author Max E. Kramer
+ * @deprecated {@link edu.kit.ipd.sdq.commons.util.java.Quadruple}
  */
+@Deprecated
 public class Quadruple<A, B, C, D> extends Triple<A, B, C> {
     /** The fourth element. */
     private final D fourth;

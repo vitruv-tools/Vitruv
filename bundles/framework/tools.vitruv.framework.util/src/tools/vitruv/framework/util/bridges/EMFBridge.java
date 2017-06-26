@@ -11,6 +11,7 @@
 package tools.vitruv.framework.util.bridges;
 
 import java.io.File;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IContainer;
@@ -24,6 +25,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.util.VitruviusConstants;
 
@@ -67,7 +69,9 @@ public final class EMFBridge {
 	 * @param iResource
 	 *            an Eclipse resource
 	 * @return a platform resource URI for the resource
+	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IResourceUtil#getEMFPlatformURI(IResource) a}
 	 */
+	@Deprecated
 	public static URI getEMFPlatformUriForIResource(final IResource iResource) {
 		return URI.createPlatformResourceURI(iResource.getFullPath().toString(), true);
 	}
@@ -78,7 +82,9 @@ public final class EMFBridge {
 	 * @param uri
 	 *            an EMF URI
 	 * @return a new Eclipse path for the given URI
+	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil#getIPathForEMFUri(URI)}
 	 */
+	@Deprecated
 	public static IPath getIPathForEMFUri(final URI uri) {
 		if (uri.isPlatform()) {
 			return new Path(uri.toPlatformString(true));
@@ -95,7 +101,9 @@ public final class EMFBridge {
 	 * @param uri
 	 *            an EMF URI
 	 * @return an Eclipse file for the given URI
+	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil#getIFileForEMFUri(URI)}
 	 */
+	@Deprecated
 	public static IFile getIFileForEMFUri(final URI uri) {
 		if (uri.isPlatform()) {
 			IPath path = getIPathForEMFUri(uri);
@@ -110,7 +118,9 @@ public final class EMFBridge {
 	 * @param uri
 	 *            an EMF URI
 	 * @return true if a resource exists at the {@link URI}, false otherwise
+	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil#existsResourceAtUri(URI)}
 	 */
+	@Deprecated
 	public static boolean existsResourceAtUri(final URI uri) {
 		if (uri.isPlatform()) {
 			return getIFileForEMFUri(uri).exists();

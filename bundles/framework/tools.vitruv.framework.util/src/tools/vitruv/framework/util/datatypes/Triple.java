@@ -20,7 +20,9 @@ package tools.vitruv.framework.util.datatypes;
  * @param <C>
  *            the type of the third element
  * @author Max E. Kramer
+ * @deprecated {@link edu.kit.ipd.sdq.commons.util.java.Triple}
  */
+@Deprecated
 public class Triple<A, B, C> extends Pair<A, B> {
     /** The third element. */
     private final C third;
