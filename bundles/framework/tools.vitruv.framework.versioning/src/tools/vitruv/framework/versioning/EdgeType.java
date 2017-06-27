@@ -1,7 +1,9 @@
 package tools.vitruv.framework.versioning;
 
 public enum EdgeType {
-	REQUIRES("requires");
+	REQUIRES("requires"),
+	TRIGGERS("triggers");
+	
 	private final String name;
 
 	private EdgeType(String s) {

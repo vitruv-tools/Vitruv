@@ -1,9 +1,10 @@
 package tools.vitruv.framework.versioning
 
 import java.util.List
-import tools.vitruv.framework.change.description.TransactionalChange
 import org.graphstream.graph.Graph
+import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.versioning.impl.DependencyGraphCreatorImpl
+import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 interface DependencyGraphCreator {
 	static def DependencyGraphCreator createDependencyGraphCreator() {
@@ -11,4 +12,6 @@ interface DependencyGraphCreator {
 	}
 
 	def Graph createDependencyGraph(List<TransactionalChange> echanges)
+
+	def Graph createDependencyGraphFromChangeMatches(List<ChangeMatch> changeMatches)
 }

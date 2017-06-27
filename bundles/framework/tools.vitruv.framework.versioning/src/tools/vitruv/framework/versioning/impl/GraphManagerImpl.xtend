@@ -14,11 +14,10 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.versioning.GraphManager
 import tools.vitruv.framework.versioning.EdgeType
+import tools.vitruv.framework.versioning.GraphManager
 
 class GraphManagerImpl implements GraphManager {
-	static val affectedIdentifier = "affected"
 	static val uiLabel = "ui.label"
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	Graph graph
@@ -27,12 +26,12 @@ class GraphManagerImpl implements GraphManager {
 		new GraphManagerImpl
 	}
 
-	private static def String getAffectedEdgeLabel(EObject ob) {
-		'''«ob.toString.substring(0)»'''
+	private static def String getEdgeLabel(EdgeType type) {
+		'''«type.toString»'''
 	}
 
-	private static def String getRequiresEdgeLabel() {
-		'''«EdgeType.REQUIRES.toString»'''
+	private static def String createEdgeName(EChange e1, EChange e2, EdgeType type) {
+		'''«e1» «type.toString» «e2»'''
 	}
 
 	private static dispatch def String getShortString(EObject e) {
@@ -41,14 +40,6 @@ class GraphManagerImpl implements GraphManager {
 
 	private static dispatch def String getShortString(EAttribute e) {
 		'''«e.name»'''
-	}
-
-	private static def String createAffectedEdgeName(EChange e1, EChange e2) {
-		'''«affectedIdentifier»: «e1» to «e2»'''
-	}
-
-	private static def String createRequiresEdgeName(EChange e1, EChange e2) {
-		'''«e1» «EdgeType.REQUIRES.toString» «e2»'''
 	}
 
 	private static dispatch def String getNodeLabel(EChange e) {
@@ -64,7 +55,7 @@ class GraphManagerImpl implements GraphManager {
 	}
 
 	private static dispatch def String getNodeLabel(ReplaceSingleValuedEAttribute<?, ?> e) {
-		'''replace «e.affectedFeature.shortString»  with "«e.newValue»" at «e.affectedEObject.class.name»'''
+		'''replace «e.affectedFeature.shortString»  with "«e.newValue»"'''
 	}
 
 	private static dispatch def String getNodeLabel(CreateAndInsertNonRoot<?, ?> e) {
@@ -88,7 +79,9 @@ class GraphManagerImpl implements GraphManager {
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer")
 	}
 
-	override addNode(EChange e) { addNodeImpl(e) }
+	override addNode(EChange e) {
+		addNodeImpl(e)
+	}
 
 	private dispatch def addNodeImpl(VitruviusChange e) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
@@ -108,6 +101,15 @@ class GraphManagerImpl implements GraphManager {
 		node.addAttribute(uiLabel, e.nodeLabel)
 	}
 
+	override getLeaves() {
+		graph.nodeSet.filter[leave]
+	}
+
+	private def boolean isLeave(Node node) {
+		val x = node.leavingEdgeSet.forall[!isType(EdgeType.REQUIRES)]
+		return x
+	}
+
 	override checkIfEdgeExists(EChange e1, EChange e2) {
 		val node1 = e1.node
 		val node2 = e2.node
@@ -115,17 +117,16 @@ class GraphManagerImpl implements GraphManager {
 		return x
 	}
 
+	private def boolean isType(Edge edge, EdgeType type) {
+		edge.id.contains(type.toString)
+	}
+
 	override checkIfEdgeExists(EChange e1, EChange e2, EdgeType type) {
 		val edgeExists = checkIfEdgeExists(e1, e2)
 		if (!edgeExists)
 			return false
 		val edge = e1.node.getEdgeBetween(e2.node)
-		return edge.id.contains(type.toString)
-	}
-
-	override addAffectedEdge(EChange e1, EChange e2, EObject affectedObject) {
-		val edge = addChangeEdge(createAffectedEdgeName(e1, e2), e1, e2, false)
-		edge.addAttribute(uiLabel, affectedObject.affectedEdgeLabel)
+		return edge.isType(type)
 	}
 
 	private def dispatch Edge addChangeEdge(String n, TransactionalChange e1, EChange e2, boolean directed) {
@@ -136,12 +137,8 @@ class GraphManagerImpl implements GraphManager {
 		graph.addEdge(n, e1.nodeId, e2.nodeId, directed)
 	}
 
-	private dispatch def Node getNode(EChange e) {
+	override getNode(EChange e) {
 		graph.getNode(e.nodeId)
-	}
-
-	private dispatch def Node getNode(TransactionalChange t) {
-		graph.getNode(t.nodeId)
 	}
 
 	override edgesWithType(EdgeType t) {
@@ -151,19 +148,24 @@ class GraphManagerImpl implements GraphManager {
 	override addEdge(EChange e1, EChange e2, EdgeType type) {
 		switch (type) {
 			case REQUIRES: {
-				addRequiresEdge(e1, e2)
+				addDirectedEdge(e1, e2, type)
+			}
+			case TRIGGERS: {
+				addDirectedEdge(e1, e2, type)
 			}
 			default: {
+				throw new UnsupportedOperationException
 			}
 		}
 	}
 
-	private def addRequiresEdge(EChange e1, EChange e2) {
-		val edge = addChangeEdge(createRequiresEdgeName(e1, e2), e1, e2, true)
-		edge.addAttribute(uiLabel, requiresEdgeLabel)
+	private def void setType(Edge edge, EdgeType type) {
+		edge.addAttribute(uiLabel, type.edgeLabel)
 	}
-//	private def addTransactionalEdge(TransactionalChange t, EChange e) {
-//		val edge = addChangeEdge(getTransactionalEdgeId(t, e), t, e, true)
-//		edge.addAttribute(uiLabel, getTransactionalEdgeLabel(t, e))
-//	}
+
+	private def addDirectedEdge(EChange e1, EChange e2, EdgeType type) {
+		val edge = addChangeEdge(createEdgeName(e1, e2, type), e1, e2, true)
+		edge.type = type
+	}
+
 }
