@@ -7,16 +7,14 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.GraphManager
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
+import tools.vitruv.framework.versioning.EChangeRequireManager
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	extension GraphManager gm = GraphManager::newManager
+	extension EChangeRequireManager erm = EChangeRequireManager::newManager
 	static val logger = Logger::getLogger(ConflictDetectorImpl)
 	List<EChange> echanges
 
@@ -55,45 +53,9 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 			exists[!resolved])
 			throw new IllegalStateException('''«unresolvedToResolvedMap.values.filter[!resolved].size» of «unresolvedToResolvedMap.values.size» were not resolved''')
 
-//		echanges.forEach[addAffectedEdgeForEchange]
 		graph.display
 		graph.addAttribute("ui.screenshot", "./test.png")
 		graph
-	}
-
-//	private def addAffectedEdgeForEchange(EChange e) {
-//		logger.debug('''EChange «e»''')
-//		val affectedObjects = determineAffectedObjects(e)
-//		echanges.filter[it !== e && !checkIfEdgeExists(e)].forEach [
-//			val affectedByTheOther = determineAffectedObjects
-//			val conflictedObjects = affectedByTheOther.filter[affectedObjects.contains(it)].toList
-//			if (!conflictedObjects.empty) {
-//				if (conflictedObjects.size > 1)
-//					logger.warn('''There are «conflictedObjects.size» conflicted objects''')
-//				addAffectedEdge(e, it, conflictedObjects.get(0))
-//			}
-//		]
-//	}
-	private static dispatch def boolean checkForRequireEdge(EChange e1, EChange e2) {
-		return false
-	}
-
-	private static dispatch def checkForRequireEdge(CreateAndReplaceNonRoot<?, ?> e1,
-		ReplaceSingleValuedEAttribute<?, ?> e2) {
-		val x = e1.createChange.affectedEObject === e2.affectedEObject
-		return x
-	}
-
-	private static dispatch def checkForRequireEdge(CreateAndInsertEObject<?, ?> e1,
-		ReplaceSingleValuedEAttribute<?, ?> e2) {
-		val x = e1.createChange.affectedEObject === e2.affectedEObject
-		return x
-	}
-
-	private static dispatch def checkForRequireEdge(CreateAndReplaceNonRoot<?, ?> e1,
-		CreateAndInsertEObject<?, ? extends InsertEReference<?, ?>> e2) {
-		val x = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
-		return x
 	}
 
 }
