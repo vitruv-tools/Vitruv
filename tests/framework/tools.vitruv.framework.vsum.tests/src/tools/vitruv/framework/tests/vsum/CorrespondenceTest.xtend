@@ -27,6 +27,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.util.datatypes.ModelInstance
+import org.eclipse.emf.common.util.URI
 
 class CorrespondenceTest extends VsumTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -160,7 +161,7 @@ class CorrespondenceTest extends VsumTest {
 		testAllClaimersAndGettersForEObjectCorrespondences(repo2, pkg2, corresp2, repo2pkg2)
 	}
 
-	def private <T extends EObject> T testLoadObject(InternalVirtualModel vsum, String uri, Class<T> clazz) {
+	def private <T extends EObject> T testLoadObject(InternalVirtualModel vsum, URI uri, Class<T> clazz) {
 		var VURI vURI = VURI.getInstance(uri)
 		var ModelInstance instance = vsum.getModelInstance(vURI)
 		var T obj = instance.getUniqueRootEObjectIfCorrectlyTyped(clazz)

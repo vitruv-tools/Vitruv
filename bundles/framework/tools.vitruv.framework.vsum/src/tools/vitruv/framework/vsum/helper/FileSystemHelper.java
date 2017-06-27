@@ -1,5 +1,6 @@
 package tools.vitruv.framework.vsum.helper;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,66 +12,47 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
-
 import tools.vitruv.framework.util.VitruviusConstants;
+import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VsumConstants;
 
 public class FileSystemHelper {
-    private final String vsumName;
+    private final File vsumProjectFolder;
 
-    public FileSystemHelper(final String vsumName) {
-        this.vsumName = vsumName;
+    public FileSystemHelper(final File vsumProjectFolder) {
+        this.vsumProjectFolder = vsumProjectFolder;
+        createFolderIfNotExisting(vsumProjectFolder);
+        createFolderInFolder(getVsumProjectFolder(), VsumConstants.CORRESPONDENCE_FOLDER_NAME);
+        createFolderInFolder(getVsumProjectFolder(), VsumConstants.VSUM_FOLDER_NAME);
     }
 
     public VURI getCorrespondencesVURI() {
-        IFile correspondenceFile = getCorrespondenceIFile();
-        return VURI.getInstance(correspondenceFile);
+        File correspondenceFile = getCorrespondenceFile();
+        return VURI.getInstance(EMFBridge.getEmfFileUriForFile(correspondenceFile));
     }
 
     public void saveCorrespondenceModelMMURIs() {
-        IFile correspondenceModelIFile = getCorrespondenceIFile();
+        File correspondenceModelFile = getCorrespondenceFile();
         // FIXME This does nothing reasonable anymore
         Set<VURI> mmURIsSet = new HashSet<VURI>();// Arrays.asList(mmURIs));
-        saveVURISetToFile(mmURIsSet, correspondenceModelIFile.getLocation().toOSString());
+        saveVURISetToFile(mmURIsSet, correspondenceModelFile.getAbsolutePath());
     }
 
-    public IFile getCorrespondenceIFile() {
+    public File getCorrespondenceFile() {
         String fileName = getCorrespondenceFileName();
-        return getCorrespondenceIFile(fileName);
+        return getCorrespondenceFile(fileName);
     }
 
-    public IFile getCorrespondenceIFile(final String fileName) {
-        IFolder correspondenceFolder = getCorrespondenceFolder();
-        IFile correspondenceFile = correspondenceFolder.getFile(fileName);
+    public File getCorrespondenceFile(final String fileName) {
+        File correspondenceFile = getFileInFolder(getCorrespondenceFolder(), fileName);
         return correspondenceFile;
     }
 
     private static String getCorrespondenceFileName() {
         String fileExtSeparator = VitruviusConstants.getFileExtSeparator();
         String fileExt = VitruviusConstants.getCorrespondencesFileExt();
-        // VURI[] copyOfMMURIs = Arrays.copyOf(mmURIs, mmURIs.length);
-        // Arrays.sort(copyOfMMURIs);
-        String fileName = "";
-        // for (VURI uri : copyOfMMURIs) {
-        //
-        // String authority = uri.getEMFUri().authority();
-        // if (authority != null) {
-        // int indexOfLastDot = authority.lastIndexOf('.');
-        //
-        // fileName += authority.substring(indexOfLastDot + 1);
-        //
-        // }
-        // fileName += uri.toString().hashCode();
-        // }
-        fileName = "Correspondences" + fileExtSeparator + fileExt;
+        String fileName = "Correspondences" + fileExtSeparator + fileExt;
         return fileName;
     }
 
@@ -163,78 +145,78 @@ public class FileSystemHelper {
         }
     }
 
-    public static IProject getProject(final String projectName) {
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        return root.getProject(projectName);
+    public static File getProject(final String projectPath) {
+        return new File(projectPath);
     }
 
-    public IProject getVsumProject() {
-        IProject vsumProject = getProject(this.vsumName);
-        if (!vsumProject.exists()) {
-            createProject(vsumProject);
-        } else if (!vsumProject.isAccessible()) {
-            deleteAndRecreateProject(vsumProject);
-        }
-        return vsumProject;
-
+    public File getVsumProjectFolder() {
+        return this.vsumProjectFolder;
     }
 
-    private void deleteAndRecreateProject(final IProject vsumProject) {
-        try {
-            vsumProject.delete(true, new NullProgressMonitor());
-            createProject(vsumProject);
-        } catch (CoreException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
+    // private void deleteAndRecreateProject(final IProject vsumProject) {
+    // try {
+    // vsumProject.delete(true, new NullProgressMonitor());
+    // createProject(vsumProject);
+    // } catch (CoreException e) {
+    // // soften
+    // throw new RuntimeException(e);
+    // }
+    // }
+
+    // public void createProject(final IProject project) {
+    // try {
+    // project.create(null);
+    // project.open(null);
+    // // IProjectDescription description = project.getDescription();
+    // // description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
+    // // project.setDescription(description, null);
+    // createFolder(getCorrespondenceFolder(project));
+    // createFolder(getVsumFolder(project));
+    // } catch (CoreException e) {
+    // // soften
+    // throw new RuntimeException(e);
+    // }
+    // }
+
+    private File getVsumFolder() {
+        return getFolderInFolder(getVsumProjectFolder(), VsumConstants.VSUM_FOLDER_NAME);
     }
 
-    public void createProject(final IProject project) {
-        try {
-            project.create(null);
-            project.open(null);
-            // IProjectDescription description = project.getDescription();
-            // description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
-            // project.setDescription(description, null);
-            createFolder(getCorrespondenceFolder(project));
-            createFolder(getVsumFolder(project));
-        } catch (CoreException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static IFolder getVsumFolder(final IProject project) {
-        return project.getFolder(VsumConstants.VSUM_FOLDER_NAME);
-    }
-
-    public static void createFolder(final IFolder folder) throws CoreException {
-        folder.create(false, true, null);
-    }
-
-    public IFolder getCorrespondenceFolder() {
-        IProject vsumProject = getVsumProject();
-        return getCorrespondenceFolder(vsumProject);
-    }
-
-    private IFolder getCorrespondenceFolder(final IProject project) {
-        IFolder correspondenceFolder = project.getFolder(VsumConstants.CORRESPONDENCE_FOLDER_NAME);
-        return correspondenceFolder;
+    private File getCorrespondenceFolder() {
+        return getFolderInFolder(getVsumProjectFolder(), VsumConstants.CORRESPONDENCE_FOLDER_NAME);
     }
 
     private String getVsumMapFileName() {
-        IFile file = getVsumInstancesFile();
-        return file.getLocation().toOSString();
+        File file = getVsumInstancesFile();
+        return file.getAbsolutePath();
     }
 
-    public IFile getVsumInstancesFile() {
-        return getVsumInstancesFile("");
+    public File getVsumInstancesFile() {
+        return getFileInFolder(getVsumFolder(), VsumConstants.VSUM_INSTANCES_FILE_NAME);
     }
 
-    public IFile getVsumInstancesFile(final String prefix) {
-        IFile file = getVsumProject().getFolder(VsumConstants.VSUM_FOLDER_NAME)
-                .getFile(prefix + VsumConstants.VSUM_INSTANCES_FILE_NAME);
-        return file;
+    private File getFolderInFolder(final File parentFolder, final String folderName) {
+        File innerFolder = new File(parentFolder, folderName);
+        if (!innerFolder.exists() || !innerFolder.isDirectory()) {
+            throw new IllegalStateException("Folder " + folderName + " does not exist");
+        }
+        return innerFolder;
+    }
+
+    private File getFileInFolder(final File folder, final String fileName) {
+        File innerFile = new File(folder, fileName);
+        return innerFile;
+    }
+
+    private void createFolderInFolder(final File parentFolder, final String folderName) {
+        File innerFolder = new File(parentFolder, folderName);
+        createFolderIfNotExisting(innerFolder);
+    }
+
+    private void createFolderIfNotExisting(final File folder) {
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
     }
 
 }

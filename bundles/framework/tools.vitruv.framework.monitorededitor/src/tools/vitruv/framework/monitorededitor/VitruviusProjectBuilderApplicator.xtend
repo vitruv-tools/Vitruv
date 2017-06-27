@@ -9,6 +9,7 @@ import java.util.ArrayList
 import java.util.Arrays
 import org.eclipse.core.runtime.CoreException
 import java.util.HashMap
+import java.io.File
 
 class VitruviusProjectBuilderApplicator {
 	private val String builderId;
@@ -17,7 +18,7 @@ class VitruviusProjectBuilderApplicator {
 		this.builderId = builderId;
 	}
 	
-	public def void addToProject(IProject project, String vmodelName, List<String> fileExtensions) {
+	public def void addToProject(IProject project, File vmodelFolder, List<String> fileExtensions) {
         if (project != null) {
             try {
                 // verify already registered builders
@@ -31,7 +32,7 @@ class VitruviusProjectBuilderApplicator {
                 val ICommand buildCommand = description.newCommand();
                 buildCommand.setBuilderName(this.builderId);
                 val Map<String, String> builderArguments = new HashMap<String, String>();
-                builderArguments.put(VitruviusProjectBuilder.ARGUMENT_VMODEL_NAME, vmodelName);
+                builderArguments.put(VitruviusProjectBuilder.ARGUMENT_VMODEL_NAME, vmodelFolder.toString);
                 var String fileExtensionsString = "";
                 for (fileExtension : fileExtensions) {
                     fileExtensionsString += fileExtension + ", ";

@@ -13,23 +13,25 @@ import tools.vitruv.framework.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
+import java.io.File
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ModelRepositoryImpl modelRepository;
 	private val VitruvDomainRepository metamodelRepository;
 	private val ChangePropagator changePropagator;
 	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
-	private val String name;
+	private val File folder;
 	
-	public new(String name, VirtualModelConfiguration modelConfiguration) {
-		this.name = name;
+	public new(File folder, UserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
+		this.folder = folder;
 		metamodelRepository = new VitruvDomainRepositoryImpl();
 		for (metamodel : modelConfiguration.metamodels) {
 			metamodelRepository.addDomain(metamodel);
 		}
-		this.modelRepository = new ModelRepositoryImpl(name, metamodelRepository);
+		this.modelRepository = new ModelRepositoryImpl(folder, metamodelRepository);
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository();
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
+			changePropagationSpecification.userInteracting = userInteracting;
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
@@ -72,7 +74,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 	}
 	
-	override String getName() {
-		return name;
+	override File getFolder() {
+		return folder;
 	}
 }

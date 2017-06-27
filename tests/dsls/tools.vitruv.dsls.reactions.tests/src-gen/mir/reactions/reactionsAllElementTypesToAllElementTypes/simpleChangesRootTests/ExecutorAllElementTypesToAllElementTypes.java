@@ -2,13 +2,11 @@ package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesRoo
 
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor;
 import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider;
-import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 public class ExecutorAllElementTypesToAllElementTypes extends AbstractReactionsExecutor {
-  public ExecutorAllElementTypesToAllElementTypes(final UserInteracting userInteracting) {
-    super(userInteracting,
-    	new AllElementTypesDomainProvider().getDomain(), 
+  public ExecutorAllElementTypesToAllElementTypes() {
+    super(new AllElementTypesDomainProvider().getDomain(), 
     	new AllElementTypesDomainProvider().getDomain());
   }
   

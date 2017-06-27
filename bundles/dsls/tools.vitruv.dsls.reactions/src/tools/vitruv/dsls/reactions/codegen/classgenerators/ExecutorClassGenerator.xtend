@@ -22,11 +22,8 @@ class ExecutorClassGenerator extends ClassGenerator {
 		reactionsSegment.toClass(executorNameGenerator.qualifiedName) [
 			superTypes += typeRef(AbstractReactionsExecutor);
 			members += toConstructor() [
-				val userInteractingParameter = generateUserInteractingParameter;
-				parameters += userInteractingParameter;
 				body = '''
-				super(«userInteractingParameter.name»,
-					new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), 
+				super(new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), 
 					new «reactionsSegment.toDomain.domainProviderForReference.class»().getDomain());'''
 			]
 			members += toMethod("setup", typeRef(Void.TYPE)) [

@@ -9,8 +9,7 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 	private var VitruvDomain sourceDomain;
 	private var VitruvDomain targetDomain;
 	
-	new(UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		setUserInteracting(userInteracting);
+	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		setVitruvDomains(sourceDomain, targetDomain);
 	}
 	
@@ -32,9 +31,6 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 	}
 	
 	override setUserInteracting(UserInteracting userInteracting) {
-		if (userInteracting == null) {
-			throw new IllegalArgumentException("UserInteracting must not be null");
-		}
 		this.userInteracting = userInteracting;
 	}
 	

@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 
+import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 
@@ -77,7 +77,7 @@ public class TestUserInteractor implements UserInteracting {
     public int selectFromMessage(final UserInteractionType type, final String message,
             final String... selectionDescriptions) {
         logger.info("selectFromMessage: " + message + " Type: " + type + " Choices: "
-                + StringUtils.join(selectionDescriptions, ", "));
+                + StringUtil.join(selectionDescriptions, ", "));
         return this.selectFromMessage(selectionDescriptions.length);
     }
 

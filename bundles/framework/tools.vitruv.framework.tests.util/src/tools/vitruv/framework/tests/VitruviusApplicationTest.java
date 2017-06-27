@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
@@ -123,7 +123,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * @throws IOException
 	 */
 	protected void createAndSynchronizeModel(String modelPathInProject, EObject rootElement) throws IOException {
-		if (StringUtils.isEmpty(modelPathInProject) || rootElement == null) {
+		if (StringUtil.isEmpty(modelPathInProject) || rootElement == null) {
 			throw new IllegalArgumentException();
 		}
 		Resource resource = createModelResource(modelPathInProject);
@@ -141,7 +141,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * @throws IOException
 	 */
 	protected void deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
-		if (StringUtils.isEmpty(modelPathInProject)) {
+		if (StringUtil.isEmpty(modelPathInProject)) {
 			throw new IllegalArgumentException();
 		}
 		Resource resource = getModelResource(modelPathInProject);
