@@ -1,21 +1,19 @@
 package tools.vitruv.framework.versioning.impl
 
 import java.util.ArrayList
-import java.util.Collection
 import java.util.List
+import java.util.Map
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
+import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.GraphManager
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import tools.vitruv.framework.versioning.EdgeType
+import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	extension GraphManager gm = GraphManager::newManager
@@ -34,20 +32,29 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		]
 		if (echanges.exists[resolved])
 			throw new IllegalStateException("A change was resolved")
-		val unresolvedChanges = new ArrayList
+		val Map<EChange, EChange> unresolvedToResolvedMap = newHashMap
 		echanges.forEach [
-			unresolvedChanges += resolveAfter(resourceSet)
+			unresolvedToResolvedMap.put(it, resolveAfter(resourceSet))
 		]
-		unresolvedChanges.reverseView.forEach[applyBackward]
-		unresolvedChanges.forEach[applyForward]
-		logger.debug('''«unresolvedChanges.size»''')
-		logger.debug('''«unresolvedChanges.filterNull.length»''')
-		if (unresolvedChanges.empty)
-			throw new IllegalStateException("No resolved changes")
-		if (unresolvedChanges.
-			exists[!resolved])
-			throw new IllegalStateException('''«unresolvedChanges.filter[!resolved].size» of «unresolvedChanges.size» were not resolved''')
 		echanges.forEach[addNode]
+		echanges.forEach [ echange |
+			val resolved = unresolvedToResolvedMap.get(echange)
+			echanges.filter[it !== echange].forEach [ otherEchange |
+				val otherResolved = unresolvedToResolvedMap.get(otherEchange)
+				val isParent = checkForRequireEdge(resolved, otherResolved)
+				if (isParent)
+					addEdge(otherEchange, echange, EdgeType.REQUIRES)
+			]
+		]
+
+		logger.debug('''«unresolvedToResolvedMap.values.size»''')
+		logger.debug('''«unresolvedToResolvedMap.values.filterNull.length»''')
+		if (unresolvedToResolvedMap.values.empty)
+			throw new IllegalStateException("No resolved changes")
+		if (unresolvedToResolvedMap.values.
+			exists[!resolved])
+			throw new IllegalStateException('''«unresolvedToResolvedMap.values.filter[!resolved].size» of «unresolvedToResolvedMap.values.size» were not resolved''')
+
 //		echanges.forEach[addAffectedEdgeForEchange]
 		graph.display
 		graph.addAttribute("ui.screenshot", "./test.png")
@@ -67,39 +74,26 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 //			}
 //		]
 //	}
-	private dispatch def determineAffectedObjects(EChange e) {
-		logger.debug('''Echange «e»''')
+	private static dispatch def boolean checkForRequireEdge(EChange e1, EChange e2) {
+		return false
 	}
 
-	private dispatch def determineAffectedObjects(AtomicEChange e) {
-		logger.debug('''AtomicEChange «e»''')
-		new ArrayList
+	private static dispatch def checkForRequireEdge(CreateAndReplaceNonRoot<?, ?> e1,
+		ReplaceSingleValuedEAttribute<?, ?> e2) {
+		val x = e1.createChange.affectedEObject === e2.affectedEObject
+		return x
 	}
 
-	private dispatch def determineAffectedObjects(CreateEObject<?> e) {
-		logger.debug('''CreateEObject «e»''')
-		#[e.affectedEObject]
+	private static dispatch def checkForRequireEdge(CreateAndInsertEObject<?, ?> e1,
+		ReplaceSingleValuedEAttribute<?, ?> e2) {
+		val x = e1.createChange.affectedEObject === e2.affectedEObject
+		return x
 	}
 
-	private dispatch def determineAffectedObjects(InsertEReference<?, ?> e) {
-		logger.debug('''InsertEReference «e»''')
-		#[e.affectedEObject]
-	}
-
-	private dispatch def determineAffectedObjects(ReplaceSingleValuedEAttribute<?, ?> e) {
-		logger.debug('''ReplaceSingleValuedEAttribute «e»''')
-		#[e.affectedEObject]
-	}
-
-	private dispatch def determineAffectedObjects(ReplaceSingleValuedEReference<?, ?> e) {
-		logger.debug('''ReplaceSingleValuedEReference «e»''')
-		#[e.affectedEObject]
-	}
-
-	private dispatch def Collection<EObject> determineAffectedObjects(CompoundEChange e) {
-		logger.debug('''CompoundEChange «e»''')
-		e.eContents.filter[it instanceof AtomicEChange].map[it as AtomicEChange].map[determineAffectedObjects].flatten.
-			toList
+	private static dispatch def checkForRequireEdge(CreateAndReplaceNonRoot<?, ?> e1,
+		CreateAndInsertEObject<?, ? extends InsertEReference<?, ?>> e2) {
+		val x = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
+		return x
 	}
 
 }

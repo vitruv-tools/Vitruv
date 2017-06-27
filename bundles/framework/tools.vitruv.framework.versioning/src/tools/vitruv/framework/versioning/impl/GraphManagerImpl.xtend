@@ -31,6 +31,10 @@ class GraphManagerImpl implements GraphManager {
 		'''«ob.toString.substring(0)»'''
 	}
 
+	private static def String getRequiresEdgeLabel() {
+		'''«EdgeType.REQUIRES.toString»'''
+	}
+
 	private static dispatch def String getShortString(EObject e) {
 		e.toString
 	}
@@ -41,6 +45,10 @@ class GraphManagerImpl implements GraphManager {
 
 	private static def String createAffectedEdgeName(EChange e1, EChange e2) {
 		'''«affectedIdentifier»: «e1» to «e2»'''
+	}
+
+	private static def String createRequiresEdgeName(EChange e1, EChange e2) {
+		'''«e1» «EdgeType.REQUIRES.toString» «e2»'''
 	}
 
 	private static dispatch def String getNodeLabel(EChange e) {
@@ -135,11 +143,25 @@ class GraphManagerImpl implements GraphManager {
 	private dispatch def Node getNode(TransactionalChange t) {
 		graph.getNode(t.nodeId)
 	}
-	
+
 	override edgesWithType(EdgeType t) {
 		graph.edgeSet.filter[id.contains(t.toString)]
 	}
 
+	override addEdge(EChange e1, EChange e2, EdgeType type) {
+		switch (type) {
+			case REQUIRES: {
+				addRequiresEdge(e1, e2)
+			}
+			default: {
+			}
+		}
+	}
+
+	private def addRequiresEdge(EChange e1, EChange e2) {
+		val edge = addChangeEdge(createRequiresEdgeName(e1, e2), e1, e2, true)
+		edge.addAttribute(uiLabel, requiresEdgeLabel)
+	}
 //	private def addTransactionalEdge(TransactionalChange t, EChange e) {
 //		val edge = addChangeEdge(getTransactionalEdgeId(t, e), t, e, true)
 //		edge.addAttribute(uiLabel, getTransactionalEdgeLabel(t, e))

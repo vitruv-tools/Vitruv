@@ -11,7 +11,9 @@ interface GraphManager {
 		GraphManagerImpl::init
 	}
 
-	def void addNode(EChange e)
+	def Graph getGraph()
+
+	def Iterable<Edge> edgesWithType(EdgeType t)
 
 	def boolean checkIfEdgeExists(EChange e1, EChange e2)
 
@@ -19,9 +21,9 @@ interface GraphManager {
 
 	def void addAffectedEdge(EChange e1, EChange e2, EObject affectedObject)
 
-	def Graph getGraph()
+	def void addEdge(EChange fromEchange, EChange toEChange, EdgeType type)
+
+	def void addNode(EChange e)
 
 	def void setGraph(Graph graph)
-
-	def Iterable<Edge> edgesWithType(EdgeType t)
 }
