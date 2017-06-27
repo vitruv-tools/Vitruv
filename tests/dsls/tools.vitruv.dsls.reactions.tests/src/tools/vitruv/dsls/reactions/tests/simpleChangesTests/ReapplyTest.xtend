@@ -2,19 +2,18 @@ package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
-import org.apache.log4j.Logger
 import org.junit.Test
 import tools.vitruv.framework.change.copy.ChangeCopyFactory
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.InternalTestVirtualModel
+import tools.vitruv.framework.util.datatypes.VURI
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
 class ReapplyTest extends SourceTargetRecorderTest {
-	static val logger = Logger::getLogger(ReapplyTest)
 	static val newTestSourceModelName = "EachTestModelSource2"
 	static val newTestTargetModelName = "EachTestModelTarget2"
 
@@ -66,7 +65,7 @@ class ReapplyTest extends SourceTargetRecorderTest {
 			virtualModel.propagateChange(copiedChanges.get(i + 1))
 			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i, true)
 		}
-		resourceSet.resources.forEach[save(#{})]
+		newSourceVURI.saveSecondSourceModel
 	}
 
 	@Test
@@ -121,8 +120,14 @@ class ReapplyTest extends SourceTargetRecorderTest {
 			virtualModel.propagateChange(copiedChanges.get(3 + i * 2))
 			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i)
 		}
-		resourceSet.resources.forEach[save(#{})]
-		logger.debug("hi")
+		newSourceVURI.saveSecondSourceModel
+	}
+
+	private def saveSecondSourceModel(VURI vuri) {
+		val modelInstance = virtualModel.getModelInstance(vuri)
+		val resource = modelInstance.resource
+		resource.modified = true
+		virtualModel.save
 	}
 
 	private def assertThatNonRootObjectContainerIsCreated() {
