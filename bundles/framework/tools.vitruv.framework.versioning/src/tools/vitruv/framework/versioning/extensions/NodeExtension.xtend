@@ -1,7 +1,7 @@
-package tools.vitruv.framework.versioning
+package tools.vitruv.framework.versioning.extensions
 
-import tools.vitruv.framework.versioning.impl.NodeExtensionImpl
 import org.graphstream.graph.Node
+import tools.vitruv.framework.versioning.extensions.impl.NodeExtensionImpl
 
 interface NodeExtension {
 	static def NodeExtension newManager() {

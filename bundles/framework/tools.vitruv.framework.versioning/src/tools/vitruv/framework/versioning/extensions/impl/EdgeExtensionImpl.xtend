@@ -1,9 +1,9 @@
-package tools.vitruv.framework.versioning.impl
+package tools.vitruv.framework.versioning.extensions.impl
 
-import tools.vitruv.framework.versioning.EdgeExtension
 import org.graphstream.graph.Edge
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.EdgeTypeExtension
+import tools.vitruv.framework.versioning.extensions.EdgeExtension
+import tools.vitruv.framework.versioning.extensions.EdgeTypeExtension
 
 class EdgeExtensionImpl implements EdgeExtension {
 	static extension EdgeTypeExtension = EdgeTypeExtension::newManager

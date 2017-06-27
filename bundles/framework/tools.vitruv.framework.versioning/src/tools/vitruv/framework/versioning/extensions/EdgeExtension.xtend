@@ -1,7 +1,8 @@
-package tools.vitruv.framework.versioning
+package tools.vitruv.framework.versioning.extensions
 
-import tools.vitruv.framework.versioning.impl.EdgeExtensionImpl
 import org.graphstream.graph.Edge
+import tools.vitruv.framework.versioning.EdgeType
+import tools.vitruv.framework.versioning.extensions.impl.EdgeExtensionImpl
 
 interface EdgeExtension {
 	static def EdgeExtension newManager() {

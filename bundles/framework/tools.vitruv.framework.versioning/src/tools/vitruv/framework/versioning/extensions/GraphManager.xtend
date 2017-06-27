@@ -1,10 +1,11 @@
-package tools.vitruv.framework.versioning
+package tools.vitruv.framework.versioning.extensions
 
 import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.versioning.impl.GraphManagerImpl
 import org.graphstream.graph.Node
+import tools.vitruv.framework.versioning.EdgeType
+import tools.vitruv.framework.versioning.extensions.impl.GraphManagerImpl
 
 interface GraphManager {
 	static def GraphManager getNewManager() {

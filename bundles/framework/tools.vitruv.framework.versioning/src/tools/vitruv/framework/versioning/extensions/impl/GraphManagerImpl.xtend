@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.impl
+package tools.vitruv.framework.versioning.extensions.impl
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.graphstream.graph.Edge
@@ -6,13 +6,13 @@ import org.graphstream.graph.Graph
 import org.graphstream.graph.implementations.SingleGraph
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.GraphManager
-import tools.vitruv.framework.versioning.EChangeGraphStringUtil
-import tools.vitruv.framework.versioning.NodeExtension
-import tools.vitruv.framework.versioning.EdgeExtension
+import tools.vitruv.framework.versioning.extensions.EChangeExtension
+import tools.vitruv.framework.versioning.extensions.EdgeExtension
+import tools.vitruv.framework.versioning.extensions.GraphManager
+import tools.vitruv.framework.versioning.extensions.NodeExtension
 
 class GraphManagerImpl implements GraphManager {
-	static extension EChangeGraphStringUtil = EChangeGraphStringUtil::newManager
+	static extension EChangeExtension = EChangeExtension::newManager
 	static extension EdgeExtension = EdgeExtension::newManager
 	static extension NodeExtension = NodeExtension::newManager
 

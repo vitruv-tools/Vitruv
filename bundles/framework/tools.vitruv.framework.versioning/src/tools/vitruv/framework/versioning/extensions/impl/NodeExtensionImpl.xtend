@@ -1,9 +1,9 @@
-package tools.vitruv.framework.versioning.impl
+package tools.vitruv.framework.versioning.extensions.impl
 
-import tools.vitruv.framework.versioning.NodeExtension
 import org.graphstream.graph.Node
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.EdgeExtension
+import tools.vitruv.framework.versioning.extensions.EdgeExtension
+import tools.vitruv.framework.versioning.extensions.NodeExtension
 
 class NodeExtensionImpl implements NodeExtension {
 	static val uiLabel = "ui.label"

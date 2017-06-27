@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.impl
+package tools.vitruv.framework.versioning.extensions.impl
 
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -7,12 +7,12 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.versioning.EChangeGraphStringUtil
 import tools.vitruv.framework.versioning.EdgeType
+import tools.vitruv.framework.versioning.extensions.EChangeExtension
 
-class EChangeGraphStringUtilImpl implements EChangeGraphStringUtil {
-	static def EChangeGraphStringUtil init() {
-		new EChangeGraphStringUtilImpl
+class EChangeExtensionImpl implements EChangeExtension {
+	static def EChangeExtension init() {
+		new EChangeExtensionImpl
 	}
 
 	private static def String getShortString(EObject e) { e.shortStringImpl }

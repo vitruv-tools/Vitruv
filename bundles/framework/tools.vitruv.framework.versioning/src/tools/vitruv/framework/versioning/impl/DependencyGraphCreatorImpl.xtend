@@ -6,16 +6,16 @@ import java.util.Map
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.versioning.DependencyGraphCreator
-import tools.vitruv.framework.versioning.GraphManager
-import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.EChangeRequireManager
-import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.DependencyGraphCreator
+import tools.vitruv.framework.versioning.EdgeType
+import tools.vitruv.framework.versioning.commit.ChangeMatch
+import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
+import tools.vitruv.framework.versioning.extensions.GraphManager
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	extension GraphManager gm = GraphManager::newManager
-	extension EChangeRequireManager erm = EChangeRequireManager::newManager
+	extension EChangeRequireExtension erm = EChangeRequireExtension::newManager
 	List<EChange> echanges
 
 	override createDependencyGraph(List<TransactionalChange> changes) {

@@ -1,15 +1,15 @@
-package tools.vitruv.framework.versioning.impl
+package tools.vitruv.framework.versioning.extensions.impl
 
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
-import tools.vitruv.framework.versioning.EChangeRequireManager
+import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 
-class EChangeRequireManagerImpl implements EChangeRequireManager {
-	static def EChangeRequireManager init() {
-		new EChangeRequireManagerImpl
+class EChangeRequireExtensionImpl implements EChangeRequireExtension {
+	static def EChangeRequireExtension init() {
+		new EChangeRequireExtensionImpl
 	}
 
 	private static dispatch def boolean checkForRequireEdgeImpl(EChange e1, EChange e2) {
