@@ -11,7 +11,7 @@ class DependencyGraphTest extends NoConflict {
 	extension GraphManager gm = GraphManager::newManager
 
 	@Test
-	def testGraph() {
+	def testRequireEdges() {
 		val changes = branchDiff.baseChanges.map[originalChange].toList
 		val echanges = changes.map[EChanges].flatten.toList
 		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
@@ -26,6 +26,35 @@ class DependencyGraphTest extends NoConflict {
 		assertThat(checkIfEdgeExists(echanges.get(3), echanges.get(2)), is(true))
 		assertThat(checkIfEdgeExists(echanges.get(5), echanges.get(4)), is(true))
 		assertThat(checkIfEdgeExists(echanges.get(7), echanges.get(6)), is(true))
+	}
+
+	@Test
+	def testRequireEdgesChangeMatches() {
+		val originalEChanges = branchDiff.baseChanges.map[originalChange].map[EChanges].flatten.toList
+		val targetEChanges = branchDiff.baseChanges.map[it.targetToCorrespondentChanges.values].flatten.flatten.map [
+			EChanges
+		].flatten.toList
+		assertThat(originalEChanges.length, is(targetEChanges.length))
+		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
+		graph = dependencyGraphCreator.createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
+//		assertThat(graph.vertexCount, is(8))
+		val requiresEdges = edgesWithType(EdgeType.REQUIRES)
+		assertThat(requiresEdges.size, is(14))
+		assertThat(checkIfEdgeExists(originalEChanges.get(1), originalEChanges.get(0)), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(2), originalEChanges.get(0)), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(4), originalEChanges.get(0)), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(6), originalEChanges.get(0)), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(3), originalEChanges.get(2)), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(5), originalEChanges.get(4)), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(7), originalEChanges.get(6)), is(true))
+		
+		assertThat(checkIfEdgeExists(targetEChanges.get(1), targetEChanges.get(0)), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(2), targetEChanges.get(0)), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(4), targetEChanges.get(0)), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(6), targetEChanges.get(0)), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(3), targetEChanges.get(2)), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(5), targetEChanges.get(4)), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(7), targetEChanges.get(6)), is(true))
 	}
 
 }
