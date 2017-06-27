@@ -7,7 +7,7 @@ import tools.vitruv.framework.versioning.extensions.NodeExtension
 
 class NodeExtensionImpl implements NodeExtension {
 	static val uiLabel = "ui.label"
-	static extension EdgeExtension ee = EdgeExtension::newManager
+	static extension EdgeExtension = EdgeExtension::newManager
 
 	static def NodeExtension init() {
 		new NodeExtensionImpl
@@ -17,8 +17,7 @@ class NodeExtensionImpl implements NodeExtension {
 	}
 
 	override isLeave(Node node) {
-		val x = node.leavingEdgeSet.forall[!isType(EdgeType.REQUIRES)]
-		return x
+		node.leavingEdgeSet.forall[!isType(EdgeType::REQUIRES)]
 	}
 
 	override setLabel(Node node, String label) {
