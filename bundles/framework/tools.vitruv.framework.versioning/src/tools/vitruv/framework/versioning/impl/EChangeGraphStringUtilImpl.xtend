@@ -17,8 +17,6 @@ class EChangeGraphStringUtilImpl implements EChangeGraphStringUtil {
 
 	private static def String getShortString(EObject e) { e.shortStringImpl }
 
-	private static def String getEdgeLabelImpl(EdgeType type) { type.toString }
-
 	private static def String createEdgeNameImpl(EChange e1, EChange e2, EdgeType type) {
 		'''«e1» «type.toString» «e2»'''
 	}
@@ -55,8 +53,6 @@ class EChangeGraphStringUtilImpl implements EChangeGraphStringUtil {
 	}
 
 	override createEdgeName(EChange e1, EChange e2, EdgeType type) { createEdgeNameImpl(e1, e2, type) }
-
-	override getEdgeLabel(EdgeType type) { type.edgeLabelImpl }
 
 	override getNodeId(EChange e) { e.toString }
 

@@ -3,30 +3,24 @@ package tools.vitruv.framework.versioning.impl
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
-import org.graphstream.graph.Node
 import org.graphstream.graph.implementations.SingleGraph
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.GraphManager
 import tools.vitruv.framework.versioning.EChangeGraphStringUtil
+import tools.vitruv.framework.versioning.NodeExtension
+import tools.vitruv.framework.versioning.EdgeExtension
 
 class GraphManagerImpl implements GraphManager {
 	static extension EChangeGraphStringUtil = EChangeGraphStringUtil::newManager
-	static val uiLabel = "ui.label"
+	static extension EdgeExtension = EdgeExtension::newManager
+	static extension NodeExtension = NodeExtension::newManager
+
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	Graph graph
 
 	static def GraphManager init() {
 		new GraphManagerImpl
-	}
-
-	private static def boolean isLeave(Node node) {
-		val x = node.leavingEdgeSet.forall[!isType(EdgeType.REQUIRES)]
-		return x
-	}
-
-	private static def boolean isType(Edge edge, EdgeType type) {
-		edge.id.contains(type.toString)
 	}
 
 	private new() {
@@ -36,7 +30,7 @@ class GraphManagerImpl implements GraphManager {
 
 	override addNode(EChange e) {
 		val node = graph.addNode(e.nodeId)
-		node.addAttribute(uiLabel, e.nodeLabel)
+		node.label = e.nodeLabel
 	}
 
 	override getLeaves() {
@@ -80,10 +74,6 @@ class GraphManagerImpl implements GraphManager {
 		}
 	}
 
-	private static def void setType(Edge edge, EdgeType type) {
-		edge.addAttribute(uiLabel, type.edgeLabel)
-	}
-
 	private def addDirectedEdge(EChange e1, EChange e2, EdgeType type) {
 		val edge = addChangeEdge(createEdgeName(e1, e2, type), e1, e2, true)
 		edge.type = type
@@ -91,6 +81,10 @@ class GraphManagerImpl implements GraphManager {
 
 	private def Edge addChangeEdge(String n, EChange e1, EChange e2, boolean directed) {
 		graph.addEdge(n, e1.nodeId, e2.nodeId, directed)
+	}
+
+	override calculateComponentNumber() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 }

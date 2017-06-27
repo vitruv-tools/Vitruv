@@ -28,4 +28,6 @@ interface GraphManager {
 	def void addNode(EChange e)
 
 	def void setGraph(Graph graph)
+
+	def int calculateComponentNumber()
 }

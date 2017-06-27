@@ -10,8 +10,6 @@ interface EChangeGraphStringUtil {
 
 	def String createEdgeName(EChange e1, EChange e2, EdgeType type)
 
-	def String getEdgeLabel(EdgeType type)
-
 	def String getNodeId(EChange e)
 
 	def String getNodeLabel(EChange e)

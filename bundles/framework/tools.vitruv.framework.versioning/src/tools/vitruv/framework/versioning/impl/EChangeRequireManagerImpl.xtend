@@ -12,15 +12,8 @@ class EChangeRequireManagerImpl implements EChangeRequireManager {
 		new EChangeRequireManagerImpl
 	}
 
-	private new() {
-	}
-
-	override checkForRequireEdge(EChange parent, EChange child) {
-		checkForRequireEdgeImpl(parent, child)
-	}
-
 	private static dispatch def boolean checkForRequireEdgeImpl(EChange e1, EChange e2) {
-		return false
+		false
 	}
 
 	private static dispatch def checkForRequireEdgeImpl(CreateAndReplaceNonRoot<?, ?> e1,
@@ -40,4 +33,12 @@ class EChangeRequireManagerImpl implements EChangeRequireManager {
 		val x = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
 		return x
 	}
+
+	private new() {
+	}
+
+	override checkForRequireEdge(EChange parent, EChange child) {
+		checkForRequireEdgeImpl(parent, child)
+	}
+
 }
