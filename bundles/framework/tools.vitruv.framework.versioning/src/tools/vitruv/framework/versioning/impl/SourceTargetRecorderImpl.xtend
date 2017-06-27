@@ -21,7 +21,7 @@ import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.commit.CommitFactory
 
 class SourceTargetRecorderImpl implements SourceTargetRecorder {
-	static val logger = Logger::getLogger(SourceTargetRecorderImpl)
+	static extension Logger = Logger::getLogger(SourceTargetRecorderImpl)
 
 	val Collection<SourceTargetPair> sourceTargetPairs
 	val InternalVirtualModel virtualModel
@@ -41,7 +41,7 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 
 		// TODO PS Remove Level::DEBUG
-		logger.level = Level::DEBUG
+		level = Level::DEBUG
 	}
 
 	override void recordOriginalAndCorrespondentChanges(VURI orignal, Collection<VURI> targets) {
@@ -60,7 +60,7 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 			match.originalChange = change
 			match.originalVURI = pair.source
 			match.targetToCorrespondentChanges = targetToCorrespondentChanges
-			logger.debug('''New match added: «match»''')
+			debug('''New match added: «match»''')
 			changesMatches.get(vuri).add(match)
 		]
 	}
@@ -89,7 +89,7 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	}
 
 	private def startRecordingOn(AtomicEmfChangeRecorder recorder, VURI vuri, boolean restart) {
-		logger.debug('''«if (restart) "Restart" else "Start"» recording on VURI «vuri»''')
+		debug('''«if (restart) "Restart" else "Start"» recording on VURI «vuri»''')
 		val modelInstance = virtualModel.getModelInstance(vuri)
 		recorder.beginRecording(vuri, Collections::singleton(modelInstance.resource))
 	}

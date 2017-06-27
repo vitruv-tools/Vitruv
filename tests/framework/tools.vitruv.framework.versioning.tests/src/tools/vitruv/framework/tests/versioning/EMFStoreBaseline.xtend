@@ -17,7 +17,7 @@ import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
 class EMFStoreBaseline {
-	static val logger = Logger::getLogger(EMFStoreBaseline)
+	static extension Logger = Logger::getLogger(EMFStoreBaseline)
 
 	@Test
 	def void emfHelloWorldExample() {
@@ -83,7 +83,7 @@ class EMFStoreBaseline {
 		try {
 			demoProjectCopy.commit("Commit2")
 		} catch (CommitNotExceptedException e) {
-			logger.debug(e)
+			debug(e)
 			demoProject.update [ conflicts |
 				val conflict = conflicts.get(0) as SimpleChangeConflict
 				val EList<ChangeMatch> accepted = new BasicEList

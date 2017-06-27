@@ -7,6 +7,8 @@ import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.graphstream.graph.Graph
+import org.graphstream.graph.implementations.SingleGraph
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
@@ -15,13 +17,11 @@ import tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingl
 import tools.vitruv.framework.versioning.BranchDiff
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DistanceCalculator
-import org.graphstream.graph.Graph
-import org.graphstream.graph.implementations.SingleGraph
-import tools.vitruv.framework.versioning.conflict.ConflictFactory
 import tools.vitruv.framework.versioning.commit.ChangeMatch
+import tools.vitruv.framework.versioning.conflict.ConflictFactory
 
 class ConflictDetectorImpl implements ConflictDetector {
-	static val logger = Logger::getLogger(ConflictDetectorImpl)
+	static extension Logger = Logger::getLogger(ConflictDetectorImpl)
 	BranchDiff diff
 	List<EChange> baseEchanges
 	List<EChange> compareEchanges
@@ -37,7 +37,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 
 	override detectConlicts(BranchDiff branchDiff) {
 		// TODO PS Remove 
-		logger.level = Level::DEBUG
+		level = Level::DEBUG
 		this.diff = branchDiff
 		setup
 		checkLength
@@ -55,22 +55,22 @@ class ConflictDetectorImpl implements ConflictDetector {
 
 	private def void checkLength() {
 		if (diff.baseChanges.length === diff.compareChanges.length) {
-			logger.debug('''The change sequences have the same length: «diff.baseChanges.length»''')
+			debug('''The change sequences have the same length: «diff.baseChanges.length»''')
 		} else {
-			logger.debug(diff.baseChanges.length)
-			logger.debug(diff.compareChanges.length)
+			debug(diff.baseChanges.length)
+			debug(diff.compareChanges.length)
 		}
 	}
 
 	private def void findMatchesInChangeMatches() {
 		val List<Pair<ChangeMatch, ChangeMatch>> matches = new ArrayList
 		diff.baseChanges.forEach[processBaseChange(originalChange)]
-		logger.debug('''The are potential «matches.length» matches''')
+		debug('''The are potential «matches.length» matches''')
 	}
 
 	private def processBaseChange(TransactionalChange originalChange) {
 		if (originalChange.EChanges.empty)
-			logger.debug("No Echange contained")
+			debug("No Echange contained")
 		else {
 			originalChange.EChanges.forEach [ baseEChange |
 				val correspondentChange = compareEchanges.findFirst[baseEChange == it]
@@ -81,21 +81,21 @@ class ConflictDetectorImpl implements ConflictDetector {
 	}
 
 	private def void setup() {
-		logger.debug('''Start setup''')
+		debug('''Start setup''')
 		baseEchanges = diff.baseChanges.map[originalChange.EChanges].flatten.toList
 		compareEchanges = diff.compareChanges.map[originalChange.EChanges].flatten.toList
 
-		logger.debug('''Base has «baseEchanges.length» EChanges''')
-		logger.debug('''Compare has «compareEchanges.length» EChanges''')
-		logger.debug('''End setup''')
+		debug('''Base has «baseEchanges.length» EChanges''')
+		debug('''Compare has «compareEchanges.length» EChanges''')
+		debug('''End setup''')
 	}
 
 	private def void cleanup() {
-		logger.debug('''Start cleanup''')
+		debug('''Start cleanup''')
 		baseEchanges = null
 		compareEchanges = null
 		diff = null
-		logger.debug('''End cleanup''')
+		debug('''End cleanup''')
 	}
 
 	private dispatch def boolean compareEchange(EChange e1, EChange e2) {

@@ -71,8 +71,6 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		val transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList
 		if (unresolveRecordedChanges)
 			correctChanges(transactionalChanges.immutableCopy)
-		if (transactionalChanges.map[EChanges].flatten.exists[resolved])
-			throw new IllegalStateException("A changed was resolved")
 		return transactionalChanges
 	}
 
@@ -89,13 +87,13 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 			return result
 		}
 		changeDescription.applyAndReverse
-		null
+		return null
 	}
 
 	override restartRecording() {
 		val modelChanges = endRecording
 		beginRecording(modelVURI, elementsToObserve)
-		modelChanges
+		return modelChanges
 	}
 
 	override isRecording() {

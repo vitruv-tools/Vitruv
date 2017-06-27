@@ -1,14 +1,16 @@
 package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
 import org.junit.Test
+
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.GraphManager
+import tools.vitruv.framework.versioning.extensions.GraphManager
+
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
 class DependencyGraphTest extends NoConflict {
-	extension GraphManager gm = GraphManager::newManager
+	static extension GraphManager = GraphManager::newManager
 
 	@Test
 	def testRequireEdges() {

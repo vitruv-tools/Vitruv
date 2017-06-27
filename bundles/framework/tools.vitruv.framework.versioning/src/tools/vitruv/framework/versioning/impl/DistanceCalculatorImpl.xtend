@@ -6,7 +6,7 @@ import org.eclipse.xtext.xbase.lib.Functions.Function2
 import tools.vitruv.framework.versioning.DistanceCalculator
 
 class DistanceCalculatorImpl implements DistanceCalculator {
-	static val logger = Logger::getLogger(ConflictDetectorImpl)
+	static extension Logger = Logger::getLogger(DistanceCalculatorImpl)
 
 	static def DistanceCalculator init() {
 		new DistanceCalculatorImpl
@@ -20,7 +20,7 @@ class DistanceCalculatorImpl implements DistanceCalculator {
 		Collection<T> sequence2,
 		Function2<T, T, Boolean> compareFunction
 	) {
-		logger.debug("Start calculating levenshtein distance")
+		debug("Start calculating levenshtein distance")
 		val len0 = sequence1.length + 1
 		val len1 = sequence2.length + 1
 
@@ -61,7 +61,7 @@ class DistanceCalculatorImpl implements DistanceCalculator {
 		}
 
 		// the distance is the cost for transforming all letters in both strings        
-		logger.debug('''Levenshtein distance is «cost.get(len0 - 1)»''')
+		debug('''Levenshtein distance is «cost.get(len0 - 1)»''')
 		return cost.get(len0 - 1)
 	}
 
