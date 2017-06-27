@@ -1,11 +1,11 @@
 package tools.vitruv.framework.versioning.extensions
 
-import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
 import tools.vitruv.framework.change.echange.EChange
-import org.graphstream.graph.Node
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.impl.GraphManagerImpl
+import org.graphstream.graph.Node
+import org.graphstream.graph.Edge
 
 interface GraphManager {
 	static def GraphManager getNewManager() {
@@ -16,13 +16,13 @@ interface GraphManager {
 
 	def Iterable<Edge> edgesWithType(EdgeType t)
 
-	def Iterable<Node> getLeaves()
-
 	def Node getNode(EChange e)
 
 	def boolean checkIfEdgeExists(EChange e1, EChange e2)
 
 	def boolean checkIfEdgeExists(EChange e1, EChange e2, EdgeType type)
+
+	def int calculateComponentNumber()
 
 	def void addEdge(EChange fromEchange, EChange toEChange, EdgeType type)
 
@@ -30,5 +30,5 @@ interface GraphManager {
 
 	def void setGraph(Graph graph)
 
-	def int calculateComponentNumber()
+	def Iterable<Node> getLeaves()
 }

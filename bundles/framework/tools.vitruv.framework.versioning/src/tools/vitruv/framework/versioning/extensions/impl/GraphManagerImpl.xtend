@@ -1,21 +1,20 @@
 package tools.vitruv.framework.versioning.extensions.impl
 
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.xbase.lib.Functions.Function1
+import org.graphstream.algorithm.ConnectedComponents
 import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
+import org.graphstream.graph.Node
 import org.graphstream.graph.implementations.SingleGraph
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.extensions.EChangeExtension
 import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.GraphManager
-import tools.vitruv.framework.versioning.extensions.NodeExtension
 
 class GraphManagerImpl implements GraphManager {
-	static extension EChangeExtension = EChangeExtension::newManager
 	static extension EdgeExtension = EdgeExtension::newManager
-	static extension NodeExtension = NodeExtension::newManager
-
+	static extension GraphExtension = GraphExtension::newManager
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	Graph graph
 
@@ -23,68 +22,48 @@ class GraphManagerImpl implements GraphManager {
 		new GraphManagerImpl
 	}
 
+	private static def Graph cloneGraph(Graph oldgraph, Function1<Node, Boolean> nodePredicate,
+		Function1<Edge, Boolean> edgePredicate) {
+		val newGraph = new SingleGraph("T")
+
+		oldgraph.nodeSet.filter[nodePredicate.apply(it)].forEach[newGraph.addNode(id)]
+		oldgraph.edgeSet.filter[edgePredicate.apply(it)].forEach [
+			val newSourceNode = newGraph.getNode(sourceNode.id)
+			val newTargetNode = newGraph.getNode(targetNode.id)
+			newGraph.addEdge(id, newSourceNode, newTargetNode)
+		]
+		return newGraph
+	}
+
 	private new() {
 		graph = new SingleGraph("Test")
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer")
 	}
 
-	override addNode(EChange e) {
-		val node = graph.addNode(e.nodeId)
-		node.label = e.nodeLabel
-	}
-
-	override getLeaves() {
-		graph.nodeSet.filter[leave]
-	}
-
 	override checkIfEdgeExists(EChange e1, EChange e2) {
-		val node1 = e1.node
-		val node2 = e2.node
-		val x = node1.hasEdgeBetween(node2)
-		return x
+		graph.checkIfEdgeExists(e1, e2)
 	}
 
 	override checkIfEdgeExists(EChange e1, EChange e2, EdgeType type) {
-		val edgeExists = checkIfEdgeExists(e1, e2)
-		if (!edgeExists)
-			return false
-		val edge = e1.node.getEdgeBetween(e2.node)
-		return edge.isType(type)
-	}
-
-	override getNode(EChange e) {
-		graph.getNode(e.nodeId)
-	}
-
-	override edgesWithType(EdgeType t) {
-		graph.edgeSet.filter[id.contains(t.toString)]
+		graph.checkIfEdgeExists(e1, e2, type)
 	}
 
 	override addEdge(EChange e1, EChange e2, EdgeType type) {
-		switch (type) {
-			case REQUIRES: {
-				addDirectedEdge(e1, e2, type)
-			}
-			case TRIGGERS: {
-				addDirectedEdge(e1, e2, type)
-			}
-			default: {
-				throw new UnsupportedOperationException
-			}
-		}
-	}
-
-	private def addDirectedEdge(EChange e1, EChange e2, EdgeType type) {
-		val edge = addChangeEdge(createEdgeName(e1, e2, type), e1, e2, true)
-		edge.type = type
-	}
-
-	private def Edge addChangeEdge(String n, EChange e1, EChange e2, boolean directed) {
-		graph.addEdge(n, e1.nodeId, e2.nodeId, directed)
+		graph.addEdge(e1, e2, type)
 	}
 
 	override calculateComponentNumber() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		val newGraph = graph.cloneGraph([true], [isType(EdgeType.REQUIRES)])
+		val cc = new ConnectedComponents
+		cc.init(newGraph)
+		return cc.connectedComponentsCount
 	}
 
+	override getNode(EChange e) { graph.getNode(e) }
+
+	override addNode(EChange e) { graph.addNode(e) }
+
+	override edgesWithType(EdgeType t) { graph.edgesWithType(t) }
+
+	override getLeaves() { graph.leaves }
 }
