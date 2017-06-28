@@ -8,6 +8,7 @@ import tools.vitruv.framework.versioning.extensions.NodeExtension
 import tools.vitruv.framework.versioning.extensions.impl.GraphExtension
 import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import org.graphstream.graph.Edge
+import tools.vitruv.framework.versioning.extensions.EChangeNode
 
 class GraphExtensionImpl implements GraphExtension {
 	static extension EChangeExtension = EChangeExtension::newManager
@@ -22,8 +23,9 @@ class GraphExtensionImpl implements GraphExtension {
 	}
 
 	override addNode(Graph graph, EChange e) {
-		val node = graph.addNode(e.nodeId)
+		val EChangeNode node = graph.addNode(e.nodeId)
 		node.label = e.nodeLabel
+		node.EChange = e
 	}
 
 	override getLeaves(Graph graph) {

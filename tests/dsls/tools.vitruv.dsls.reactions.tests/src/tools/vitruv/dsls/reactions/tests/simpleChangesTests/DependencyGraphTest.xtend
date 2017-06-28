@@ -8,9 +8,21 @@ import tools.vitruv.framework.versioning.extensions.GraphManager
 
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.extensions.EChangeNode
+import java.util.Collection
 
 class DependencyGraphTest extends NoConflict {
 	static extension GraphManager = GraphManager::newManager
+
+	@Test
+	def void testEChangeNode() {
+		val changes = branchDiff.baseChanges.map[originalChange].toList
+		val echanges = changes.map[EChanges].flatten.toList
+		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
+		graph = dependencyGraphCreator.createDependencyGraph(changes)
+		val Collection<EChangeNode> nodeSet = graph.nodeSet
+		echanges.forEach[echange|nodeSet.exists[echange === EChange]]
+	}
 
 	@Test
 	def testRequireEdges() {

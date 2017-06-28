@@ -37,6 +37,7 @@ class GraphManagerImpl implements GraphManager {
 
 	private new() {
 		graph = new SingleGraph("Test")
+		graph.nodeFactory = new EChangeNodeFactoryImpl
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer")
 	}
 
@@ -61,7 +62,9 @@ class GraphManagerImpl implements GraphManager {
 
 	override getNode(EChange e) { graph.getNode(e) }
 
-	override addNode(EChange e) { graph.addNode(e) }
+	override addNode(EChange e) {
+		graph.addNode(e)
+	}
 
 	override edgesWithType(EdgeType t) { graph.edgesWithType(t) }
 
