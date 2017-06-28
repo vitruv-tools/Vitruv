@@ -54,7 +54,7 @@ class EChangeExtensionImpl implements EChangeExtension {
 
 	override createEdgeName(EChange e1, EChange e2, EdgeType type) { createEdgeNameImpl(e1, e2, type) }
 
-	override getNodeId(EChange e) { e.toString }
+	override getNodeId(EChange e) { e?.toString }
 
 	override getNodeLabel(EChange e) { e.nodeLabelImpl }
 

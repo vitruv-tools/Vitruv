@@ -5,6 +5,7 @@ import org.graphstream.graph.Graph
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.impl.GraphManagerImpl
+import java.util.Collection
 
 interface GraphManager {
 	static def GraphManager getNewManager() {
@@ -30,4 +31,6 @@ interface GraphManager {
 	def void setGraph(Graph graph)
 
 	def Iterable<EChangeNode> getLeaves()
+
+	def Collection<Graph> getSubgraphs()
 }

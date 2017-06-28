@@ -17,7 +17,8 @@ class NodeExtensionImpl implements NodeExtension {
 	}
 
 	override isLeave(Node node) {
-		node.leavingEdgeSet.forall[!isType(EdgeType::REQUIRES)]
+		val x = node.enteringEdgeSet.forall[!isType(EdgeType::PROVIDES)]
+		return x
 	}
 
 	override setLabel(Node node, String label) {

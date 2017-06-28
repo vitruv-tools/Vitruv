@@ -1,15 +1,12 @@
 package tools.vitruv.framework.versioning.extensions.impl
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.graphstream.algorithm.ConnectedComponents
-import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
-import org.graphstream.graph.Node
-import org.graphstream.graph.implementations.SingleGraph
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EdgeExtension
+import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.versioning.extensions.GraphManager
 
 class GraphManagerImpl implements GraphManager {
@@ -22,22 +19,8 @@ class GraphManagerImpl implements GraphManager {
 		new GraphManagerImpl
 	}
 
-	private static def Graph cloneGraph(Graph oldgraph, Function1<Node, Boolean> nodePredicate,
-		Function1<Edge, Boolean> edgePredicate) {
-		val newGraph = new SingleGraph("T")
-
-		oldgraph.nodeSet.filter[nodePredicate.apply(it)].forEach[newGraph.addNode(id)]
-		oldgraph.edgeSet.filter[edgePredicate.apply(it)].forEach [
-			val newSourceNode = newGraph.getNode(sourceNode.id)
-			val newTargetNode = newGraph.getNode(targetNode.id)
-			newGraph.addEdge(id, newSourceNode, newTargetNode)
-		]
-		return newGraph
-	}
-
 	private new() {
-		graph = new SingleGraph("Test")
-		graph.nodeFactory = new EChangeNodeFactoryImpl
+		graph = GraphExtension::createNewEChangeGraph
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer")
 	}
 
@@ -54,19 +37,20 @@ class GraphManagerImpl implements GraphManager {
 	}
 
 	override calculateComponentNumber() {
-		val newGraph = graph.cloneGraph([true], [isType(EdgeType.REQUIRES)])
+		val newGraph = graph.cloneGraph([true], [isType(EdgeType::PROVIDES)])
 		val cc = new ConnectedComponents
 		cc.init(newGraph)
 		return cc.connectedComponentsCount
 	}
 
-	override getNode(EChange e) { graph.getNode(e) }
-
-	override addNode(EChange e) {
-		graph.addNode(e)
-	}
+	override addNode(EChange e) { graph.addNode(e) }
 
 	override edgesWithType(EdgeType t) { graph.edgesWithType(t) }
 
 	override getLeaves() { graph.leaves }
+
+	override getNode(EChange e) { graph.getNode(e) }
+
+	override getSubgraphs() { graph.subgraphs }
+
 }
