@@ -133,4 +133,10 @@ class GraphExtensionImpl implements GraphExtension {
 		]
 		return currentGraphs
 	}
+
+	override savePicture(Graph graph) {
+		graph.display
+		graph.addAttribute("ui.screenshot", '''./test_«graph.id».png''')
+	}
+
 }

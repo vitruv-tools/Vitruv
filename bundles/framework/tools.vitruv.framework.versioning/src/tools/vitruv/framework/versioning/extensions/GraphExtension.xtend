@@ -44,4 +44,6 @@ interface GraphExtension {
 		Function1<Edge, Boolean> edgePredicate)
 
 	def Collection<Graph> getSubgraphs(Graph graph)
+
+	def void savePicture(Graph graph)
 }

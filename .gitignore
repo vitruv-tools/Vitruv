@@ -18,3 +18,4 @@ target/
 # Custom
 EvaluationData
 **/.polyglot.build.properties
+tests/dsls/tools.vitruv.dsls.reactions.tests/*.png

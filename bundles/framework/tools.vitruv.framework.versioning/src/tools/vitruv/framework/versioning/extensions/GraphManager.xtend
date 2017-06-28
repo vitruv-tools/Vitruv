@@ -33,4 +33,7 @@ interface GraphManager {
 	def Iterable<EChangeNode> getLeaves()
 
 	def Collection<Graph> getSubgraphs()
+
+	def void savePicture()
+
 }

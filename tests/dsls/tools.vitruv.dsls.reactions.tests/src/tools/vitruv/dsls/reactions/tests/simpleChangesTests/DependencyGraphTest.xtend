@@ -30,15 +30,15 @@ class DependencyGraphTest extends NoConflict {
 		val echanges = changes.map[EChanges].flatten.toList
 		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
 		graph = dependencyGraphCreator.createDependencyGraph(changes)
-		val requiresEdges = edgesWithType(EdgeType.REQUIRES)
+		val requiresEdges = edgesWithType(EdgeType.PROVIDES)
 		assertThat(requiresEdges.size, is(7))
-		assertThat(checkIfEdgeExists(echanges.get(1), echanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(echanges.get(2), echanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(echanges.get(4), echanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(echanges.get(6), echanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(echanges.get(3), echanges.get(2), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(echanges.get(5), echanges.get(4), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(echanges.get(7), echanges.get(6), EdgeType.REQUIRES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(0), echanges.get(1), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(0), echanges.get(2), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(0), echanges.get(4), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(0), echanges.get(6), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(2), echanges.get(3), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(4), echanges.get(5), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(6), echanges.get(7), EdgeType.PROVIDES), is(true))
 		assertThat(leaves.length, is(1))
 		assertThat(leaves.toList.get(0), is(echanges.get(0).node))
 		assertThat(calculateComponentNumber, is(1))
@@ -50,13 +50,19 @@ class DependencyGraphTest extends NoConflict {
 		val echanges = changes.map[EChanges].flatten.toList
 		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
 		graph = dependencyGraphCreator.createDependencyGraph(changes.drop(1).toList)
-		val requiresEdges = edgesWithType(EdgeType.REQUIRES)
+		val requiresEdges = edgesWithType(EdgeType.PROVIDES)
 		assertThat(requiresEdges.size, is(3))
-		assertThat(checkIfEdgeExists(echanges.get(3), echanges.get(2), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(echanges.get(5), echanges.get(4), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(echanges.get(7), echanges.get(6), EdgeType.REQUIRES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(2), echanges.get(3), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(4), echanges.get(5), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(echanges.get(6), echanges.get(7), EdgeType.PROVIDES), is(true))
 		assertThat(leaves.length, is(3))
 		assertThat(calculateComponentNumber, is(3))
+		val currentSubgraphs = subgraphs
+		assertThat(currentSubgraphs.length, is(3))
+		currentSubgraphs.forEach [ g |
+			assertThat(g.length, is(2))
+		]
+
 	}
 
 	@Test
@@ -68,23 +74,23 @@ class DependencyGraphTest extends NoConflict {
 		assertThat(originalEChanges.length, is(targetEChanges.length))
 		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
 		graph = dependencyGraphCreator.createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
-		val requiresEdges = edgesWithType(EdgeType.REQUIRES)
+		val requiresEdges = edgesWithType(EdgeType.PROVIDES)
 		assertThat(requiresEdges.size, is(14))
-		assertThat(checkIfEdgeExists(originalEChanges.get(1), originalEChanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(originalEChanges.get(2), originalEChanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(originalEChanges.get(4), originalEChanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(originalEChanges.get(6), originalEChanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(originalEChanges.get(3), originalEChanges.get(2), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(originalEChanges.get(5), originalEChanges.get(4), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(originalEChanges.get(7), originalEChanges.get(6), EdgeType.REQUIRES), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(0), originalEChanges.get(1), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(0), originalEChanges.get(2), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(0), originalEChanges.get(4), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(0), originalEChanges.get(6), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(2), originalEChanges.get(3), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(4), originalEChanges.get(5), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(originalEChanges.get(6), originalEChanges.get(7), EdgeType.PROVIDES), is(true))
 
-		assertThat(checkIfEdgeExists(targetEChanges.get(1), targetEChanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(targetEChanges.get(2), targetEChanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(targetEChanges.get(4), targetEChanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(targetEChanges.get(6), targetEChanges.get(0), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(targetEChanges.get(3), targetEChanges.get(2), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(targetEChanges.get(5), targetEChanges.get(4), EdgeType.REQUIRES), is(true))
-		assertThat(checkIfEdgeExists(targetEChanges.get(7), targetEChanges.get(6), EdgeType.REQUIRES), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(0), targetEChanges.get(1), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(0), targetEChanges.get(2), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(0), targetEChanges.get(4), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(0), targetEChanges.get(6), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(2), targetEChanges.get(3), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(4), targetEChanges.get(5), EdgeType.PROVIDES), is(true))
+		assertThat(checkIfEdgeExists(targetEChanges.get(6), targetEChanges.get(7), EdgeType.PROVIDES), is(true))
 
 		originalEChanges.forEach [ c, i |
 			val otherEdge = targetEChanges.get(i)

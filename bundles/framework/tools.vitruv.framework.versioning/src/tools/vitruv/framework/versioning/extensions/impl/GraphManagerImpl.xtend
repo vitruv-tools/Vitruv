@@ -53,4 +53,6 @@ class GraphManagerImpl implements GraphManager {
 
 	override getSubgraphs() { graph.subgraphs }
 
+	override savePicture() { graph.savePicture }
+
 }

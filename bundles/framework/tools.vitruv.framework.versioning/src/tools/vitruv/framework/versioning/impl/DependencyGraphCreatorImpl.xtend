@@ -14,8 +14,8 @@ import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 import tools.vitruv.framework.versioning.extensions.GraphManager
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
-	extension GraphManager gm = GraphManager::newManager
-	extension EChangeRequireExtension erm = EChangeRequireExtension::newManager
+	static extension EChangeRequireExtension = EChangeRequireExtension::newManager
+	extension GraphManager = GraphManager::newManager
 	List<EChange> echanges
 
 	override createDependencyGraph(List<TransactionalChange> changes) {
@@ -43,8 +43,8 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 					addEdge(echange, otherEchange, EdgeType::PROVIDES)
 			]
 		]
-		graph.display
-		graph.addAttribute("ui.screenshot", "./test.png")
+		// P
+		savePicture
 		return graph
 	}
 
