@@ -60,7 +60,8 @@ class DependencyGraphTest extends NoConflict {
 		val currentSubgraphs = subgraphs
 		assertThat(currentSubgraphs.length, is(3))
 		currentSubgraphs.forEach [ g |
-			assertThat(g.length, is(2))
+			assertThat(g.nodeSet.size, is(2))
+			assertThat(g.edgeSet.size, is(1))
 		]
 
 	}
