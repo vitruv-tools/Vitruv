@@ -4,10 +4,10 @@ import org.graphstream.graph.Edge
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.EdgeTypeExtension
+import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class EdgeExtensionImpl implements EdgeExtension {
 	static extension EdgeTypeExtension = EdgeTypeExtension::newManager
-	static val uiLabel = "ui.label"
 
 	static def EdgeExtension init() {
 		new EdgeExtensionImpl
@@ -17,7 +17,8 @@ class EdgeExtensionImpl implements EdgeExtension {
 	}
 
 	override setType(Edge edge, EdgeType type) {
-		edge.addAttribute(uiLabel, type.edgeLabel)
+		edge.addAttribute(GraphStreamConstants::uiLabel, type.edgeLabel)
+		edge.addAttribute(GraphStreamConstants::uiClass, type.toString)
 	}
 
 	override isType(Edge edge, EdgeType type) {

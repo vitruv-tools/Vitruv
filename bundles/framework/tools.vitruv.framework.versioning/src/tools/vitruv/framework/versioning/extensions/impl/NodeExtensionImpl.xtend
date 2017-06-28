@@ -4,9 +4,9 @@ import org.graphstream.graph.Node
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.NodeExtension
+import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class NodeExtensionImpl implements NodeExtension {
-	static val uiLabel = "ui.label"
 	static extension EdgeExtension = EdgeExtension::newManager
 
 	static def NodeExtension init() {
@@ -17,12 +17,10 @@ class NodeExtensionImpl implements NodeExtension {
 	}
 
 	override isLeave(Node node) {
-		val x = node.enteringEdgeSet.forall[!isType(EdgeType::PROVIDES)]
-		return x
+		node.enteringEdgeSet.forall[!isType(EdgeType::PROVIDES)]
 	}
 
 	override setLabel(Node node, String label) {
-		node.addAttribute(uiLabel, label)
+		node.addAttribute(GraphStreamConstants::uiLabel, label)
 	}
-
 }

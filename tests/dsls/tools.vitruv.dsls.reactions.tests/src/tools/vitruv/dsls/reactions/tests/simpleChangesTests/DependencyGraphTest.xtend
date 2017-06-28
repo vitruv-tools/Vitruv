@@ -94,7 +94,7 @@ class DependencyGraphTest extends NoConflict {
 
 		originalEChanges.forEach [ c, i |
 			val otherEdge = targetEChanges.get(i)
-			assertThat('''No edge between «c» and «otherEdge»''', checkIfEdgeExists(c, otherEdge, EdgeType.TRIGGERS),
+			assertThat('''No edge between «c» and «otherEdge»''', checkIfEdgeExists(c, otherEdge, EdgeType::TRIGGERS),
 				is(true))
 		]
 		assertThat(leaves.length, is(2))

@@ -8,6 +8,7 @@ import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.versioning.extensions.GraphManager
+import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class GraphManagerImpl implements GraphManager {
 	static extension EdgeExtension = EdgeExtension::newManager
@@ -21,7 +22,7 @@ class GraphManagerImpl implements GraphManager {
 
 	private new() {
 		graph = GraphExtension::createNewEChangeGraph
-		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer")
+		System.setProperty(GraphStreamConstants::renderer, GraphStreamConstants::currentRenderer)
 	}
 
 	override checkIfEdgeExists(EChange e1, EChange e2) {

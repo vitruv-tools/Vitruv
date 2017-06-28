@@ -1,11 +1,13 @@
 package tools.vitruv.framework.versioning.extensions.impl
 
 import java.util.Collection
-import org.apache.log4j.Level
-import org.apache.log4j.Logger
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
+import org.graphstream.stream.file.FileSinkImages
+import org.graphstream.stream.file.FileSinkImages.LayoutPolicy
+import org.graphstream.stream.file.FileSinkImages.OutputType
+import org.graphstream.stream.file.FileSinkImages.Resolutions
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeExtension
@@ -16,9 +18,8 @@ import tools.vitruv.framework.versioning.extensions.NodeExtension
 
 class GraphExtensionImpl implements GraphExtension {
 	static extension EChangeExtension = EChangeExtension::newManager
-	static extension NodeExtension = NodeExtension::newManager
 	static extension EdgeExtension = EdgeExtension::newManager
-	static extension Logger = Logger::getLogger(GraphExtensionImpl)
+	static extension NodeExtension = NodeExtension::newManager
 
 	static def GraphExtension init() {
 		new GraphExtensionImpl
@@ -100,25 +101,7 @@ class GraphExtensionImpl implements GraphExtension {
 
 	override getSubgraphs(Graph graph) {
 		val requiredGraph = graph.cloneGraph([true], [isType(EdgeType::PROVIDES)])
-		val edgesLength = requiredGraph.edgeSet.size
-		val nodeLength = requiredGraph.nodeSet.size
-		if (nodeLength !== graph.nodeSet.size)
-			throw new IllegalStateException('''Length was «nodeLength» but should be «graph.nodeSet.size»''')
-		if (edgesLength !== graph.edgeSet.size)
-			throw new IllegalStateException('''Length was «edgesLength» but should be «graph.edgeSet.size»''')
-		level = Level::DEBUG
-		requiredGraph.edgeSet.forEach [ edge, i |
-			debug('''Edge «i»''')
-			debug(edge.id)
-			debug(edge.sourceNode.id)
-			debug(edge.targetNode.id)
-			debug(edge.isType(EdgeType::PROVIDES))
-			debug(edge.sourceNode.leave)
-			debug(edge.targetNode.leave)
-		]
 		val currentLeaves = requiredGraph.leaves
-		if (currentLeaves.length !== graph.leaves.length)
-			throw new IllegalStateException('''Length was «currentLeaves.length» but should be «graph.leaves.length»''')
 		val Collection<Graph> currentGraphs = newArrayList
 		currentLeaves.forEach [ leave |
 			val g = createNewEChangeGraph
@@ -135,8 +118,9 @@ class GraphExtensionImpl implements GraphExtension {
 	}
 
 	override savePicture(Graph graph) {
-		graph.display
-		graph.addAttribute("ui.screenshot", '''./test_«graph.id».png''')
+		val fsi = new FileSinkImages(OutputType.PNG, Resolutions.HD720)
+		fsi.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE)
+		graph.write(fsi, '''./test_«graph.id»_write.png''')
 	}
 
 }
