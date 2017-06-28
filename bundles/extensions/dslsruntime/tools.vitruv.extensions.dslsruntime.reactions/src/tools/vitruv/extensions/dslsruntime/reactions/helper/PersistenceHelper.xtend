@@ -5,7 +5,6 @@ import org.eclipse.core.resources.IFile
 import tools.vitruv.framework.util.bridges.EMFBridge
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
-import java.io.File
 
 public final class PersistenceHelper {
 	private new() {}
@@ -32,21 +31,14 @@ public final class PersistenceHelper {
 		} else if (elementUri.isFile) {
 			// FIXME HK This is a prototypical implementation: It is not easy
 			// to extract the project from a file URI.
-			var shortenedUri = elementUri.trimSegments(1);
-			var nextLevel = true;
-			var packageInfoFound = false;
-			while (nextLevel) {
+			var shortenedUri = elementUri//.trimSegments(1);
+			val possibleDirectories = #["src", "src-gen", "xtend-gen", "model", "models", "code"];
+			while (!possibleDirectories.contains(shortenedUri.lastSegment)
+				&& !shortenedUri.lastSegment.contains("CEST")) {
 				shortenedUri = shortenedUri.trimSegments(1);
-				val files = new File(shortenedUri.toFileString).listFiles; 
-				nextLevel = false;
-				for (file : files) {
-					if (file.name == "package-info.java") {
-						nextLevel = true;
-						packageInfoFound = true;
-					}
-				}
 			}
-			if (packageInfoFound) {
+			// We are not in the test root folder yet, so trim another segment as we are in one of the possible directories
+			if (!shortenedUri.lastSegment.contains("CEST")) {
 				shortenedUri = shortenedUri.trimSegments(1);
 			}
 			return shortenedUri 
