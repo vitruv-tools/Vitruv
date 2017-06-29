@@ -99,8 +99,6 @@ class CorrespondenceTest extends VsumTest {
 		var Set<Correspondence> correspondences = correspondenceModel.getCorrespondences(repo.toList)
 		assertEquals("Only one correspondence is expected for the repository.", 1, correspondences.size())
 		for (Correspondence correspondence : correspondences) {
-			assertTrue("Correspondence is not from the type EObjectCorrespondence",
-				correspondence instanceof Correspondence)
 			var Correspondence eoc = correspondence
 			LOGGER.
 				info('''EObject with Tuid: «eoc.ATuids» corresponds to EObject with Tuid: «eoc.BTuids»''')

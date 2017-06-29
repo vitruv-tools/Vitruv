@@ -86,7 +86,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 
 	private def dispatch void propagateSingleChange(CompositeContainerChange change, List<List<VitruviusChange>> commandExecutionChanges,
 		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
-		for (VitruviusChange innerChange : ((change as CompositeContainerChange)).getChanges()) {
+		for (VitruviusChange innerChange : change.getChanges()) {
 			propagateSingleChange(innerChange, commandExecutionChanges, propagationResult, changedResourcesTracker)
 		}
 	}

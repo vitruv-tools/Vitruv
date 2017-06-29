@@ -221,7 +221,7 @@ class AtomicEChangeResolver {
 		
 		change.newValue = change.resolveReferenceValue(change.newValue, resourceSet, !resolveBefore, change.index)
 
-		if (change.newValue != null && (change.newValue as EObject).eIsProxy) {
+		if (change.newValue != null && change.newValue.eIsProxy) {
 			return false
 		}
 		return true
@@ -243,7 +243,7 @@ class AtomicEChangeResolver {
 		
 		change.oldValue = change.resolveReferenceValue(change.oldValue, resourceSet, resolveBefore, change.index)
 
-		if (change.oldValue != null && (change.oldValue as EObject).eIsProxy) {
+		if (change.oldValue != null && change.oldValue.eIsProxy) {
 			return false
 		}
 		return true
@@ -266,8 +266,8 @@ class AtomicEChangeResolver {
 		change.newValue = change.resolveReferenceValue(change.newValue, resourceSet, !resolveBefore, -1)
 		change.oldValue = change.resolveReferenceValue(change.oldValue, resourceSet, resolveBefore, -1)
 
-		if ((change.newValue != null && (change.newValue as EObject).eIsProxy) ||
-			(change.oldValue != null && (change.oldValue as EObject).eIsProxy)) {
+		if ((change.newValue != null && change.newValue.eIsProxy) ||
+			(change.oldValue != null && change.oldValue.eIsProxy)) {
 			return false
 		}
 		return true

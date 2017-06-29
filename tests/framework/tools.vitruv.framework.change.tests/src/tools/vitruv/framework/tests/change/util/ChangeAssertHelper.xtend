@@ -67,10 +67,10 @@ class ChangeAssertHelper {
 	public static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
 		if (eChange instanceof FeatureEChange<?, ?>) {
 			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
-				expectedAffectedEObject, (eChange as FeatureEChange<?, ?>).affectedEObject)
+				expectedAffectedEObject, eChange.affectedEObject)
 		} else if (eChange instanceof EObjectExistenceEChange<?>) {
 			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
-				expectedAffectedEObject, (eChange as EObjectExistenceEChange<?>).affectedEObject)
+				expectedAffectedEObject, eChange.affectedEObject)
 		} else {
 			throw new IllegalArgumentException();
 		}

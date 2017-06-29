@@ -252,15 +252,11 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		if (correspondences === null) {
 			correspondences = CorrespondenceFactory::eINSTANCE.createCorrespondences()
 			correspondencesResource.getContents().add(correspondences)
-		} else if (correspondences instanceof Correspondences) {
-			registerLoadedCorrespondences(correspondences as Correspondences)
 		} else {
-			throw new RuntimeException(
-				'''The unique root object '«»«correspondences»' of the correspondence model '«»«getURI()»' is not correctly typed!'''.
-					toString)
+			registerLoadedCorrespondences(correspondences)
 		}
 		correspondences.setCorrespondenceModel(this)
-		return correspondences as Correspondences
+		return correspondences
 	}
 
 	def private void registerCorrespondenceForTuids(Correspondence correspondence) {

@@ -74,7 +74,7 @@ class AtomicEChangeAssertHelper {
 	def public static assertInsertEAttribute(EChange change, EObject affectedEObject, EStructuralFeature affectedFeature,
 			Object expectedNewValue, int expectedIndex) {
 		val insertEAttributValue = assertObjectInstanceOf(change, InsertEAttributeValue)
-		insertEAttributValue.assertAffectedEObject(insertEAttributValue.affectedEObject as EObject)
+		insertEAttributValue.assertAffectedEObject(insertEAttributValue.affectedEObject)
 		insertEAttributValue.assertNewValue(expectedNewValue)
 		insertEAttributValue.assertIndex(expectedIndex)
 		insertEAttributValue.assertAffectedEFeature(affectedFeature)
