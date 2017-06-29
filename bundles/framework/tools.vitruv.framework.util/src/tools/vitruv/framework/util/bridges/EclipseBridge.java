@@ -32,7 +32,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 
-import tools.vitruv.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.commons.util.java.Pair;
 
 /**
  * A utility class hiding details of the Eclipse API for recurring tasks that are not

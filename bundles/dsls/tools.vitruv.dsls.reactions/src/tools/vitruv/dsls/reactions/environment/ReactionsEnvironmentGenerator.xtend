@@ -3,7 +3,7 @@ package tools.vitruv.dsls.reactions.environment;
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
 import tools.vitruv.dsls.reactions.helper.XtendImportHelper
-import tools.vitruv.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.commons.util.java.Pair;
 import java.util.Map
 import java.util.HashMap
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory

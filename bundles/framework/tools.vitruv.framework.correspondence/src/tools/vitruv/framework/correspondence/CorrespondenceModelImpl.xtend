@@ -6,7 +6,7 @@ import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.ClaimableHashMap
 import tools.vitruv.framework.util.datatypes.ClaimableMap
-import tools.vitruv.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.commons.util.java.Pair
 import java.io.IOException
 import java.util.ArrayList
 import java.util.HashMap

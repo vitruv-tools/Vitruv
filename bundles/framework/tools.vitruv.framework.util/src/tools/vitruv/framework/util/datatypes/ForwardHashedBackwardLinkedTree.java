@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import edu.kit.ipd.sdq.commons.util.java.Pair;
 
 /**
  * A data structure that stores for every value of type {@link T} a unique sequence of

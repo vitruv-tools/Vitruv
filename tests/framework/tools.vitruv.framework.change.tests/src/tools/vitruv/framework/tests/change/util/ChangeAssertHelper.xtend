@@ -20,7 +20,7 @@ import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryE
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.util.datatypes.Quadruple
+import edu.kit.ipd.sdq.commons.util.java.Quadruple
 
 class ChangeAssertHelper {
 

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import edu.kit.ipd.sdq.commons.util.java.Pair;
 
 /**
  * A map that recursively maps {@link K keys} to {@link V values} so that an ordered sequence of

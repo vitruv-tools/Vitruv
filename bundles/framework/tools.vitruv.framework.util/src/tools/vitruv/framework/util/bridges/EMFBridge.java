@@ -11,7 +11,6 @@
 package tools.vitruv.framework.util.bridges;
 
 import java.io.File;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IContainer;
@@ -25,7 +24,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.util.VitruviusConstants;
 

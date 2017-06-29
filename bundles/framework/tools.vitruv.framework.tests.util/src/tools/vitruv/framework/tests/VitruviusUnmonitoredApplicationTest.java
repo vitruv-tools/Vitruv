@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.After;
 import org.junit.Before;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
@@ -164,7 +165,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 *            including the model file extension
 	 */
 	protected void assertModelExists(String modelPathWithinProject) {
-		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
+		boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
 		assertTrue("Model at " + modelPathWithinProject + " does not exist bust should", modelExists);
 	}
 
@@ -177,7 +178,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 *            including the model file extension
 	 */
 	protected void assertModelNotExists(String modelPathWithinProject) {
-		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
+		boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
 		assertFalse("Model at " + modelPathWithinProject + " exists but should not", modelExists);
 	}
 

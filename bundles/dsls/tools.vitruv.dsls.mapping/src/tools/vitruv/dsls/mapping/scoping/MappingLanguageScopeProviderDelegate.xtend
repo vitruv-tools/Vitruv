@@ -10,7 +10,7 @@ import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMapping
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathBase
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathTail
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
-import tools.vitruv.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.commons.util.java.Pair
 import java.util.Iterator
 import java.util.List
 import org.apache.log4j.Logger

@@ -13,7 +13,7 @@ import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMapping
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathBase
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathTail
 import tools.vitruv.dsls.mapping.mappingLanguage.Signature
-import tools.vitruv.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.commons.util.java.Pair
 import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject

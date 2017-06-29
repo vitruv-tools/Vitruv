@@ -2,7 +2,6 @@ package tools.vitruv.dsls.mapping.helpers
 
 import org.eclipse.xtext.generator.IFileSystemAccess
 import java.util.Collection
-import tools.vitruv.framework.util.VitruviusConstants
 
 /**
  * Helper class containing methods for setting up the plugin project to generate

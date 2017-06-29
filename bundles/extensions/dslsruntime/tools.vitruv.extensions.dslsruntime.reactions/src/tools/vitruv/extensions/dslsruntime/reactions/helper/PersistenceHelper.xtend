@@ -2,9 +2,9 @@ package tools.vitruv.extensions.dslsruntime.reactions.helper
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.core.resources.IFile
-import tools.vitruv.framework.util.bridges.EMFBridge
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 
 public final class PersistenceHelper {
 	private new() {}
@@ -24,7 +24,7 @@ public final class PersistenceHelper {
 	private static def URI getURIOfElementProject(EObject element) {
 		val elementUri = element.eResource().URI;
 		if (elementUri.isPlatform) {
-			val IFile sourceModelFile = EMFBridge.getIFileForEMFUri(elementUri);
+			val IFile sourceModelFile = URIUtil.getIFileForEMFUri(elementUri);
 			val IProject projectSourceModel = sourceModelFile.getProject();
 			var String srcFolderPath = projectSourceModel.getFullPath().toString();
 			return URI.createPlatformResourceURI(srcFolderPath, true);

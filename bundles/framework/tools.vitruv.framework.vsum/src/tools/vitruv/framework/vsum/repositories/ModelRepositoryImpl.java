@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
@@ -27,7 +28,6 @@ import tools.vitruv.framework.domains.repository.ModelRepository;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.ResourceSetUtil;
-import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
@@ -78,7 +78,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         final ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
         try {
             if (modelURI.getEMFUri().toString().startsWith("pathmap")
-                    || EMFBridge.existsResourceAtUri(modelURI.getEMFUri())) {
+                    || URIUtil.existsResourceAtUri(modelURI.getEMFUri())) {
                 modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions(),
                         forceLoadByDoingUnloadBeforeLoad);
             }
@@ -216,8 +216,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
     private ModelInstance loadModelInstance(final VURI modelURI, final VitruvDomain metamodel) {
         URI emfURI = modelURI.getEMFUri();
-        Resource modelResource = EcoreResourceBridge.loadResourceAtURI(emfURI, this.resourceSet,
-                metamodel.getDefaultLoadOptions());
+        Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet, metamodel.getDefaultLoadOptions());
         ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
         return modelInstance;
     }
@@ -226,7 +225,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
             VURI correspondencesVURI = this.fileSystemHelper.getCorrespondencesVURI();
             Resource correspondencesResource = null;
-            if (EMFBridge.existsResourceAtUri(correspondencesVURI.getEMFUri())) {
+            if (URIUtil.existsResourceAtUri(correspondencesVURI.getEMFUri())) {
                 logger.debug("Loading correspondence model from: " + this.fileSystemHelper.getCorrespondencesVURI());
                 correspondencesResource = this.resourceSet.getResource(correspondencesVURI.getEMFUri(), true);
             } else {
