@@ -61,6 +61,8 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 					<optimize>true</optimize>
+					<argLine>-Xmx4096m</argLine>
+					<argLine>-Xms2048m</argLine>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -116,6 +118,10 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<argLine>-Xmx4096m</argLine>
+					<argLine>-Xms2048m</argLine>
+				</configuration>
 			</plugin>
 			
 			<!-- Creates source versions of bundles -->
