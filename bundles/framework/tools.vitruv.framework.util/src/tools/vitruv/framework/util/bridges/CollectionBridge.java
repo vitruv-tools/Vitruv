@@ -103,30 +103,4 @@ public final class CollectionBridge {
 		return list;
 	}
 	
-    
-	public static final <T> String toStringWithSeparator(Iterable<T> objects, String separator) {
-		Function1<T, String> toString = new Function1<T, String>() {
-			public String apply(T o) { return o.toString(); };
-		};
-		return toStringWithSeparator(objects, separator, toString);
-	}
-	
-	/**
-	 *	TODO replace calls to this method with calls to org.eclipse.xtext.xbase.lib.IterableExtensions#join(Iterable, CharSequence, Functions.Function1)
-	 *	and remove this method 
-	 */
-	@Deprecated
-	public static final <T> String toStringWithSeparator(Iterable<T> objects, String separator, Function1<? super T, String> transformation) {
-		String s = "";
-		boolean firstObject = true;
-		for (T o : objects) {
-			if (firstObject) {
-				firstObject = false;
-			} else {
-				s += separator;
-			}
-			s += transformation.apply(o);
-		}
-		return s;
-	}
 }

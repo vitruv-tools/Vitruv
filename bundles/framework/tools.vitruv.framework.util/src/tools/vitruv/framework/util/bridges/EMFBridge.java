@@ -14,13 +14,9 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
@@ -58,75 +54,6 @@ public final class EMFBridge {
 	 */
 	public static URI getEmfFileUriForFile(final File file) {
 		return URI.createFileURI(file.getAbsolutePath());
-	}
-
-	/**
-	 * Creates and returns an EMF platform resource URI for the given Eclipse
-	 * resource.
-	 *
-	 * @param iResource
-	 *            an Eclipse resource
-	 * @return a platform resource URI for the resource
-	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IResourceUtil#getEMFPlatformURI(IResource) a}
-	 */
-	@Deprecated
-	public static URI getEMFPlatformUriForIResource(final IResource iResource) {
-		return URI.createPlatformResourceURI(iResource.getFullPath().toString(), true);
-	}
-
-	/**
-	 * Creates and returns a new Eclipse path for the given EMF URI.
-	 *
-	 * @param uri
-	 *            an EMF URI
-	 * @return a new Eclipse path for the given URI
-	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil#getIPathForEMFUri(URI)}
-	 */
-	@Deprecated
-	public static IPath getIPathForEMFUri(final URI uri) {
-		if (uri.isPlatform()) {
-			return new Path(uri.toPlatformString(true));
-		} else if (uri.isFile()) {
-			return new Path(uri.toFileString());
-		}
-		throw new UnsupportedOperationException(
-				"Getting the path is currently only implemented for file and platform URIs.");
-	}
-
-	/**
-	 * Returns an Eclipse file for the given EMF URI.
-	 *
-	 * @param uri
-	 *            an EMF URI
-	 * @return an Eclipse file for the given URI
-	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil#getIFileForEMFUri(URI)}
-	 */
-	@Deprecated
-	public static IFile getIFileForEMFUri(final URI uri) {
-		if (uri.isPlatform()) {
-			IPath path = getIPathForEMFUri(uri);
-			return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-		}
-		throw new UnsupportedOperationException("Getting the IFile is currently only implemented for platform URIs.");
-	}
-
-	/**
-	 * Return whether a resource exists at the specified {@link URI}.
-	 * 
-	 * @param uri
-	 *            an EMF URI
-	 * @return true if a resource exists at the {@link URI}, false otherwise
-	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil#existsResourceAtUri(URI)}
-	 */
-	@Deprecated
-	public static boolean existsResourceAtUri(final URI uri) {
-		if (uri.isPlatform()) {
-			return getIFileForEMFUri(uri).exists();
-		} else if (uri.isFile()) {
-			return new File(uri.toFileString()).exists();
-		}
-		throw new UnsupportedOperationException(
-				"Checking if a resource at an URI exists is currently only implemented for file and platform URIs.");
 	}
 
 	/**
