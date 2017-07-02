@@ -1,0 +1,5 @@
+/src-gen/
+/xtend-gen/
+/model/generated/
+/plugin.xml
+/.antlr-generator-3.2.0-patch.jar

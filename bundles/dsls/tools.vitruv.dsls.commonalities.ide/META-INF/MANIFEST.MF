@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: tools.vitruv.dsls.commonalities.ide
+Bundle-Vendor: vitruv.tools
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: tools.vitruv.dsls.commonalities.ide; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: tools.vitruv.dsls.commonalities,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime,
+ tools.vitruv.dsls.mirbase;bundle-version="0.2.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: tools.vitruv.dsls.commonalities.ide.contentassist.antlr.internal,
+ tools.vitruv.dsls.commonalities.ide.contentassist.antlr
+

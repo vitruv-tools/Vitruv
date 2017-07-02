@@ -1,0 +1,11 @@
+grammar tools.vitruv.dsls.commonalities.CommonalitiesLanguage with tools.vitruv.dsls.mirbase.MirBase
+
+generate commonalitiesLanguage "http://www.vitruv.tools/dsls/commonalities/CommonalitiesLanguage"
+
+CommonalitiesFile:
+	imports += Import*
+;
+
+Import:
+	'import'
+;
