@@ -32,7 +32,7 @@ class TypeInferringCompoundEChangeFactory {
 	 * @return The singleton instance.
 	 */
 	def public static TypeInferringCompoundEChangeFactory getInstance() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new TypeInferringCompoundEChangeFactory(TypeInferringAtomicEChangeFactory.instance)
 		}
 		return instance

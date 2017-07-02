@@ -86,7 +86,7 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 		 */
 		protected def persistProjectRelative(EObject alreadyPersistedObject, EObject elementToPersist,
 			String persistencePath) {
-			if (alreadyPersistedObject == null || elementToPersist == null || persistencePath == null) {
+			if (alreadyPersistedObject === null || elementToPersist === null || persistencePath === null) {
 				throw new IllegalArgumentException(
 					"correspondenceSource, element and persistancePath must be specified");
 			}

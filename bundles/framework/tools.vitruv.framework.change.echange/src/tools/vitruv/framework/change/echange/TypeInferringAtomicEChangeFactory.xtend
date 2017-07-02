@@ -43,7 +43,7 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The singleton instance.
 	 */
 	def public static TypeInferringAtomicEChangeFactory getInstance() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new TypeInferringAtomicEChangeFactory()
 		}
 		return instance

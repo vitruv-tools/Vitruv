@@ -17,7 +17,7 @@ class Change2ReactionsMap {
 	}
 	
 	public def addReaction(Class<? extends EChange> eventType, IReactionRealization reaction) {
-		if (this.change2reactionsMap.get(eventType) == null) {
+		if (this.change2reactionsMap.get(eventType) === null) {
 			this.change2reactionsMap.put(eventType, (new ArrayList<IReactionRealization>()))
 		}
 		this.change2reactionsMap.get(eventType).add(reaction);
@@ -27,16 +27,16 @@ class Change2ReactionsMap {
 		val result = new HashSet<IReactionRealization>();
 		var dependantInterfaces = newLinkedList(event.class.interfaces);
 		var superClass = event.class as Class<?>;
-		while (superClass != null) {
+		while (superClass !== null) {
 			val currentReactions = this.change2reactionsMap.get(superClass);
-			if (currentReactions != null) result.addAll(currentReactions);
+			if (currentReactions !== null) result.addAll(currentReactions);
 			dependantInterfaces.addAll(superClass.interfaces);
 			superClass = superClass.superclass;
 		} 
 		while (!dependantInterfaces.empty) {
 			val currentInterface = dependantInterfaces.remove(0);
 			val currentReactions = this.change2reactionsMap.get(currentInterface);
-			if (currentReactions != null) result.addAll(currentReactions);
+			if (currentReactions !== null) result.addAll(currentReactions);
 			dependantInterfaces.addAll(currentInterface.interfaces);
 		}
 				

@@ -7,7 +7,7 @@ final class SimpleChangesTestsExecutionMonitor {
 	private static var SimpleChangesTestsExecutionMonitor INSTANCE;
 	
 	public static def getInstance() {
-		if (INSTANCE == null) {
+		if (INSTANCE === null) {
 			INSTANCE = new SimpleChangesTestsExecutionMonitor();
 		}
 		return INSTANCE;

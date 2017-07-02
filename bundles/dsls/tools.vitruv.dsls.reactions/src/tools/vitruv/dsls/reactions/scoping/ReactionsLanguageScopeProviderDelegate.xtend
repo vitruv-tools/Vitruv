@@ -50,7 +50,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 	}
 	
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
-		if (featureReference?.metaclass != null) {
+		if (featureReference?.metaclass !== null) {
 			val changeType = featureReference.eContainer;
 			val multiplicityFilterFunction = if (changeType instanceof ElementReplacementChangeType) {
 				[EStructuralFeature feat | !feat.many];
@@ -75,7 +75,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 
 	def createQualifiedEClassScopeWithSpecialInputTypes(MetamodelImport metamodelImport) {
 		val classifierDescriptions = 
-			if (metamodelImport == null || metamodelImport.package == null) {
+			if (metamodelImport === null || metamodelImport.package === null) {
 				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false),
 					createEObjectDescription(InputTypesPackage.Literals.STRING, false),
 					createEObjectDescription(InputTypesPackage.Literals.INTEGER, false),

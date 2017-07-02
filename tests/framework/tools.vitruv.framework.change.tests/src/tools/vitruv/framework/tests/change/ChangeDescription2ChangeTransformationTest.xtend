@@ -85,7 +85,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def List<EChange> getChanges() {
-		if (this.changes == null) {
+		if (this.changes === null) {
 			this.changes = endRecording()
 			if (this.unresolveAndResolveRecordedEChanges) {
 				for (var i = this.changes.length - 1; i >= 0; i--) {

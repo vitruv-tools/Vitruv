@@ -111,7 +111,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	private def void replaceMultiValuedContainmentNonRootObject(Root rootObject, String oldId, String newId) {
 		val oldElement = rootObject.multiValuedContainmentEReference.findFirst(nonRoot | nonRoot.id == oldId);
-		if (oldElement == null) {
+		if (oldElement === null) {
 			throw new IllegalStateException("There is no element with the specified old element id.");
 		}
 		val oldIndex = rootObject.multiValuedContainmentEReference.indexOf(oldElement);
@@ -123,7 +123,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	private def removeMultiValuedContainmentNonRootObject(Root rootObject, String id) {
 		val objectToRemove = rootObject.multiValuedContainmentEReference.findFirst(nonRoot | nonRoot.id == id);
-		if (objectToRemove == null) {
+		if (objectToRemove === null) {
 			throw new IllegalStateException("There is no element with the specified element id.");
 		}
 		rootObject.multiValuedContainmentEReference.remove(objectToRemove);
@@ -132,7 +132,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	private def void insertMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
 		val nonRoot = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == id);
-		if (nonRoot == null) {
+		if (nonRoot === null) {
 			throw new IllegalStateException("There is no element with the specified element id.");
 		}
 		rootObject.multiValuedNonContainmentEReference.add(nonRoot);
@@ -142,10 +142,10 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private def void replaceMultiValuedNonContainmentNonRootObject(Root rootObject, String oldId, String newId) {
 		val oldElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == oldId);
 		val newElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == newId);
-		if (oldElement == null) {
+		if (oldElement === null) {
 			throw new IllegalStateException("There is no element with the specified old element id.");
 		}
-		if (newElement == null) {
+		if (newElement === null) {
 			throw new IllegalStateException("There is no element with the specified new element id.");
 		}
 		val oldIndex = rootObject.multiValuedNonContainmentEReference.indexOf(oldElement);
@@ -158,7 +158,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	private def void removeMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
 		val objectToRemove = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == id);
-		if (objectToRemove == null) {
+		if (objectToRemove === null) {
 			throw new IllegalStateException("There is no element with the specified element id.");
 		}
 		if (!rootObject.multiValuedNonContainmentEReference.contains(objectToRemove)) {

@@ -22,7 +22,7 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 	
 	override validate() {
-		return containsConcreteChange() && URI != null;
+		return containsConcreteChange() && URI !== null;
 	}
 	
 	override getEChanges() {

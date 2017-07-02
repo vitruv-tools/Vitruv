@@ -33,13 +33,13 @@ class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 					newReq
 				]
 
-		mappingFile.eAllContents.filter(Mapping).filter[parentMapping != null].forEach [
+		mappingFile.eAllContents.filter(Mapping).filter[parentMapping !== null].forEach [
 			val parentName = if ((parentMapping.name ?: "").empty)
 					"parent"
 				else
 					parentMapping.toSensibleDefaultName
 			
-//			if ((it.requires ?: #[]).exists[req|req.mapping == null]) {
+//			if ((it.requires ?: #[]).exists[req|req.mapping === null]) {
 //				throw new IllegalStateException
 //			}
 			
@@ -56,11 +56,11 @@ class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 			
 		]
 
-		mappingFile.eAllContents.filter(NamedMetaclassReference).filter[name == null || name.isEmpty].forEach [
+		mappingFile.eAllContents.filter(NamedMetaclassReference).filter[name === null || name.isEmpty].forEach [
 			it.name = MappingLanguageHelper.toSensibleDefaultName(it)
 		]
 
-		mappingFile.eAllContents.filter(RequiredMapping).filter[name == null || name.isEmpty].forEach [
+		mappingFile.eAllContents.filter(RequiredMapping).filter[name === null || name.isEmpty].forEach [
 			it.name = MappingLanguageHelper.toSensibleDefaultName(it)
 		]
 		

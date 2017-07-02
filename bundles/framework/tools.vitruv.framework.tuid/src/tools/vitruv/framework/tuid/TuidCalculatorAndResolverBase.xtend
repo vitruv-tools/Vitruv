@@ -211,7 +211,7 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 		var root = root_finalParam_
 		if (root === null) {
 			root = claimRootFromCache(tuid)
-			if (root == null) {
+			if (root === null) {
 				LOGGER.warn('''No EObject found for Tuid: «tuid» in the cache''')
 				return null;
 			}
@@ -234,7 +234,7 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 
 	def private EObject claimRootFromCache(String tuid) {
 		var key = claimCacheKey(tuid)
-		if (key == null) return null;
+		if (key === null) return null;
 		return this.cachedResourcelessRoots.claimValueForKey(key)
 	}
 
@@ -247,7 +247,7 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 	def private String getTuidWithoutRootObjectPrefix(EObject root, String extTuid) {
 		var String rootTuid = calculateTuidFromEObject(root)
 		var String normalizedExtTuid = extTuid;
-		if (root.eResource != null) {
+		if (root.eResource !== null) {
 			val uriConverter = root.eResource.resourceSet.URIConverter
 			rootTuid = rootTuid.getUriNormalizedTuid(uriConverter);
 			normalizedExtTuid = extTuid.getUriNormalizedTuid(uriConverter);

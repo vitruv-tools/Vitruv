@@ -93,7 +93,7 @@ import org.eclipse.emf.ecore.EObject
 	 * 		Clears and sets the 0th element.
 	 */
 	protected def void prepareStagingArea(EObject object) {
-		if (object != null) {
+		if (object !== null) {
 			stagingArea.add(object)			
 		}
 	}

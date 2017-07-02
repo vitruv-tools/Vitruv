@@ -62,7 +62,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Reaction reaction) {
 		val reactionNode = createEObjectNode(parentNode, reaction);
-		if (reaction.documentation != null) {
+		if (reaction.documentation !== null) {
 			createEStructuralFeatureNode(reactionNode, reaction,
 				ReactionsLanguagePackage.Literals.REACTION__DOCUMENTATION,
 				imageDispatcher.invoke(reaction.documentation),
@@ -70,11 +70,11 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 		val triggerNode = createEStructuralFeatureNode(reactionNode, reaction, 
 			ReactionsLanguagePackage.Literals.REACTION__TRIGGER,
-			imageDispatcher.invoke(reaction.trigger), "trigger", reaction.trigger == null);
-		if (reaction.trigger != null) {
+			imageDispatcher.invoke(reaction.trigger), "trigger", reaction.trigger === null);
+		if (reaction.trigger !== null) {
 			createChildren(triggerNode, reaction.trigger);
 		}
-		if (reaction.trigger?.precondition != null) {
+		if (reaction.trigger?.precondition !== null) {
 			createChildren(triggerNode, reaction.trigger.precondition)
 		}
 	}
@@ -92,21 +92,21 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //		val changeType = event.changeType;
 //		switch (changeType) {
 //			ElementFeatureChangeType:
-//				if (changeType.feature != null) {
+//				if (changeType.feature !== null) {
 //					createEObjectNode(parentNode, changeType.feature.metaclass);
-//					if (changeType.feature.feature != null) {
+//					if (changeType.feature.feature !== null) {
 //						createEObjectNode(parentNode, changeType.feature.feature);
 //					}
 //				}
 //			ElementRootChangeType:
-//				if (event.elementType != null) {
+//				if (event.elementType !== null) {
 //					createEObjectNode(parentNode, event.elementType.metaclass);
 //				}
 //		}
 //	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Routine routine) {
-		if (routine.matcher != null) {
+		if (routine.matcher !== null) {
 			for (element : routine.matcher.matcherStatements) {
 				createEObjectNode(parentNode, element);	
 			}

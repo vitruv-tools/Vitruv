@@ -5,11 +5,11 @@ import org.eclipse.emf.ecore.EClass
 
 class ReactionElementsCompletionChecker {
 	public def boolean isComplete(RetrieveModelElement retrieveElement) {
-		return retrieveElement?.correspondenceSource?.code != null && retrieveElement.metaclass.complete;
+		return retrieveElement?.correspondenceSource?.code !== null && retrieveElement.metaclass.complete;
 	}
 	
 	public def boolean isComplete(EClass eClass) {
-		return eClass?.instanceClass != null;
+		return eClass?.instanceClass !== null;
 	}
 	
 }

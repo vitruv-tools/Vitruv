@@ -30,7 +30,7 @@ class VitruviusChangeFactory {
 	private new() {}
 	
 	public static def VitruviusChangeFactory getInstance() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new VitruviusChangeFactory();
 		}
 		return instance;
@@ -98,7 +98,7 @@ class VitruviusChangeFactory {
             throw new RuntimeException(
                     "The requested model instance resource '" + resource + "' has to contain at most one root element "
                             + "in order to be added to the VSUM without an explicit import!");
-        } else { // resource.getContents().size() == null --> no element in newModelInstance
+        } else { // resource.getContents().size() === null --> no element in newModelInstance
             logger.info("Empty model file created: " + VURI.getInstance(resource)
                     + ". Propagation of 'root element created' not triggered.");
             return null;

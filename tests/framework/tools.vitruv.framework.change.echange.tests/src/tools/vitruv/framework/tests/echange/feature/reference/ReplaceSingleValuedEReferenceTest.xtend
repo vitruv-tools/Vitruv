@@ -368,7 +368,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void assertIsStateBefore(NonRoot valueInStagingArea) {
 		resourceIsStateBefore
 		oldValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)
-		if (affectedFeature.containment && valueInStagingArea != null) {
+		if (affectedFeature.containment && valueInStagingArea !== null) {
 			valueInStagingArea.assertEqualsOrCopy(stagingArea.peek)
 		} else {
 			Assert.assertTrue(stagingArea.empty)
@@ -395,7 +395,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void assertIsStateAfter(NonRoot valueInStagingArea) {
 		resourceIsStateBefore
 		newValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)		
-		if (affectedFeature.containment && valueInStagingArea != null) {
+		if (affectedFeature.containment && valueInStagingArea !== null) {
 			valueInStagingArea.assertEqualsOrCopy(stagingArea.peek)
 		} else {
 			Assert.assertTrue(stagingArea.empty)
