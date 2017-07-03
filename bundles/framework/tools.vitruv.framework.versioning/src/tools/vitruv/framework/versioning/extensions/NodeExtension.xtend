@@ -11,4 +11,5 @@ interface NodeExtension {
 	def boolean isLeave(Node node)
 
 	def void setLabel(Node node, String label)
+
 }

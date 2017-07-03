@@ -46,4 +46,6 @@ interface GraphExtension {
 	def Collection<Graph> getSubgraphs(Graph graph)
 
 	def void savePicture(Graph graph)
+
+	def void add(Graph graph, Graph graphToAdd)
 }

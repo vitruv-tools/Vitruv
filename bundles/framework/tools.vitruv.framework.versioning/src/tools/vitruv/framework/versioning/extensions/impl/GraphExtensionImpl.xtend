@@ -69,6 +69,9 @@ class GraphExtensionImpl implements GraphExtension {
 			case TRIGGERS: {
 				graph.addDirectedEdge(fromEchange, toEChange, type)
 			}
+			case ISOMORPHIC: {
+				graph.addUndirectedEdge(fromEchange, toEChange, type)
+			}
 			default: {
 				throw new UnsupportedOperationException
 			}
@@ -76,7 +79,15 @@ class GraphExtensionImpl implements GraphExtension {
 	}
 
 	private def addDirectedEdge(Graph graph, EChange e1, EChange e2, EdgeType type) {
-		val edge = graph.addChangeEdge(createEdgeName(e1, e2, type), e1, e2, true)
+		graph.addEdge(e1, e2, type, true)
+	}
+
+	private def addUndirectedEdge(Graph graph, EChange e1, EChange e2, EdgeType type) {
+		graph.addEdge(e1, e2, type, false)
+	}
+
+	private def addEdge(Graph graph, EChange e1, EChange e2, EdgeType type, boolean directed) {
+		val edge = graph.addChangeEdge(createEdgeName(e1, e2, type), e1, e2, directed)
 		edge.type = type
 	}
 
@@ -121,6 +132,26 @@ class GraphExtensionImpl implements GraphExtension {
 		val fsi = new FileSinkImages(OutputType.PNG, Resolutions.HD720)
 		fsi.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE)
 		graph.write(fsi, '''./test_«graph.id»_write.png''')
+	}
+
+	override add(Graph graph, Graph graphToAdd) {
+		graphToAdd.<EChangeNode>nodeSet.forEach [
+			val newNode = graph.<EChangeNode>addNode(id)
+			attributeKeySet.forEach [ attKey |
+				val attribute = <String>getAttribute(attKey)
+				newNode.addAttribute(attKey, attribute)
+			]
+			newNode.EChange = EChange
+		]
+		graphToAdd.edgeSet.forEach [
+			val newSourceNode = graph.getNode(sourceNode.id)
+			val newTargetNode = graph.getNode(targetNode.id)
+			val edge = graph.addEdge(id, newSourceNode, newTargetNode, directed)
+			attributeKeySet.forEach [ attKey |
+				val attribute = <String>getAttribute(attKey)
+				edge.addAttribute(attKey, attribute)
+			]
+		]
 	}
 
 }

@@ -12,4 +12,6 @@ interface EdgeExtension {
 	def void setType(Edge edge, EdgeType type)
 
 	def boolean isType(Edge edge, EdgeType type)
+
+	def boolean isEChangeEdgeEqual(Edge e1, Edge e2)
 }
