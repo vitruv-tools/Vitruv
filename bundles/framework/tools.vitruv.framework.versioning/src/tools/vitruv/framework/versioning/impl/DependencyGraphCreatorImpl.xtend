@@ -11,15 +11,20 @@ import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
-import tools.vitruv.framework.versioning.extensions.GraphManager
+import tools.vitruv.framework.versioning.extensions.GraphExtension
+import org.graphstream.graph.Graph
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static extension EChangeRequireExtension = EChangeRequireExtension::newManager
-	extension GraphManager = GraphManager::newManager
+
+	extension GraphExtension = GraphExtension::newManager
 	List<EChange> echanges
+	Graph graph
 
 	override createDependencyGraph(List<TransactionalChange> changes) {
+		graph = GraphExtension::createNewEChangeGraph
 		createDependencyGraph(changes, true)
+		return graph
 	}
 
 	private def createDependencyGraph(List<TransactionalChange> changes, boolean print) {
@@ -31,7 +36,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		changes.forEach [
 			echanges += EChanges
 		]
-		echanges.forEach[addNode]
+		echanges.forEach[graph.addNode(it)]
 		if (echanges.exists[resolved])
 			throw new IllegalStateException("A change was resolved")
 		val Map<EChange, EChange> unresolvedToResolvedMap = newHashMap
@@ -44,15 +49,15 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 				val otherResolved = unresolvedToResolvedMap.get(otherEchange)
 				val isParent = checkForRequireEdge(resolved, otherResolved)
 				if (isParent)
-					addEdge(echange, otherEchange, EdgeType::PROVIDES)
+					graph.addEdge(echange, otherEchange, EdgeType::PROVIDES)
 			]
 		]
 		// TODO PS Remove
-		if (print) savePicture
-		return graph
+		if (print) graph.savePicture
 	}
 
 	override createDependencyGraphFromChangeMatches(List<ChangeMatch> changeMatches) {
+		graph = GraphExtension::createNewEChangeGraph
 		val originalChanges = changeMatches.map[originalChange].toList
 		createDependencyGraph(originalChanges, false)
 
@@ -68,12 +73,12 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 				c.targetToCorrespondentChanges.values.forEach [ transChanges |
 					transChanges.forEach [ transChange |
 						val triggeredEchange = transChange.EChanges.get(i)
-						addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
+						graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
 					]
 				]
 			]
 		]
-		savePicture
+		graph.savePicture
 		return graph
 	}
 

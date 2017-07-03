@@ -1,24 +1,18 @@
 package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
+import java.util.Collection
 import org.junit.Test
 
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.extensions.GraphManager
-
+import tools.vitruv.framework.versioning.extensions.EChangeNode
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.extensions.EChangeNode
-import java.util.Collection
 
-class DependencyGraphTest extends NoConflict {
-	static extension GraphManager = GraphManager::newManager
+class DependencyGraphTest extends AbstractGraphTest {
 
 	@Test
 	def void testEChangeNode() {
-		val changes = branchDiff.baseChanges.map[originalChange].toList
-		val echanges = changes.map[EChanges].flatten.toList
-		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
 		graph = dependencyGraphCreator.createDependencyGraph(changes)
 		val Collection<EChangeNode> nodeSet = graph.nodeSet
 		echanges.forEach[echange|nodeSet.exists[echange === EChange]]
@@ -26,11 +20,8 @@ class DependencyGraphTest extends NoConflict {
 
 	@Test
 	def testRequireEdges() {
-		val changes = branchDiff.baseChanges.map[originalChange].toList
-		val echanges = changes.map[EChanges].flatten.toList
-		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
 		graph = dependencyGraphCreator.createDependencyGraph(changes)
-		val requiresEdges = edgesWithType(EdgeType.PROVIDES)
+		val requiresEdges = edgesWithType(EdgeType::PROVIDES)
 		assertThat(requiresEdges.size, is(7))
 		assertThat(checkIfEdgeExists(echanges.get(0), echanges.get(1), EdgeType.PROVIDES), is(true))
 		assertThat(checkIfEdgeExists(echanges.get(0), echanges.get(2), EdgeType.PROVIDES), is(true))
@@ -46,9 +37,6 @@ class DependencyGraphTest extends NoConflict {
 
 	@Test
 	def testSeveralComponents() {
-		val changes = branchDiff.baseChanges.map[originalChange].toList
-		val echanges = changes.map[EChanges].flatten.toList
-		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
 		graph = dependencyGraphCreator.createDependencyGraph(changes.drop(1).toList)
 		val requiresEdges = edgesWithType(EdgeType.PROVIDES)
 		assertThat(requiresEdges.size, is(3))
