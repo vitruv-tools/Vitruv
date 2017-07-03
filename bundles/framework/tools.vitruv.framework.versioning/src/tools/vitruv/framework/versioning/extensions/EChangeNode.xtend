@@ -7,4 +7,6 @@ interface EChangeNode extends Node {
 	def EChange getEChange()
 
 	def void setEChange(EChange e)
+
+	def boolean isEChangeNodeEqual(EChangeNode node2)
 }
