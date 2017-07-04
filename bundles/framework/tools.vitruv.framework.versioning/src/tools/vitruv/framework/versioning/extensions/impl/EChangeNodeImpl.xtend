@@ -7,6 +7,8 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
+import tools.vitruv.framework.versioning.NodeType
+import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class EChangeNodeImpl extends SingleNode implements EChangeNode {
 	static extension EChangeCompareUtil = EChangeCompareUtil::newManager
@@ -24,6 +26,15 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 			node2.exists[edge2|isEChangeEdgeEqual(edge1, edge2)]
 		]
 		return echangeEqual && edgesEqual
+	}
+
+	override setType(NodeType type) {
+		val x = getAttribute(GraphStreamConstants::uiClass)
+		val String s = '''«x»«type.toString»'''
+		setAttribute(GraphStreamConstants::uiClass, s)
+		val newX = getAttribute(GraphStreamConstants::uiClass)
+		if (x == newX)
+			throw new IllegalArgumentException
 	}
 
 }
