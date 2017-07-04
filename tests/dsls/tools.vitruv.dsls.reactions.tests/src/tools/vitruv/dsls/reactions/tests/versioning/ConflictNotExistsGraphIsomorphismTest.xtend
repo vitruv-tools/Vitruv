@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.reactions.tests.versioning
 
 import org.junit.Test
-import tools.vitruv.dsls.reactions.tests.AbstractConflictNotExistsGraphTest
+import tools.vitruv.dsls.reactions.tests.AbstractConflictNotExistsTest
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
 import tools.vitruv.framework.versioning.extensions.EChangeNode
@@ -10,7 +10,7 @@ import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
-class ConflictNotExistsGraphIsomorphismTest extends AbstractConflictNotExistsGraphTest {
+class ConflictNotExistsGraphIsomorphismTest extends AbstractConflictNotExistsTest {
 
 	@Test
 	def void testEqual() {
