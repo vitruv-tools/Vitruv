@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.simpleChangesTests
+package tools.vitruv.dsls.reactions.tests.versioning
 
 import allElementTypes.AllElementTypesFactory
 import java.io.FileInputStream
@@ -9,9 +9,11 @@ import java.util.List
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.junit.Assert
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import tools.vitruv.dsls.reactions.tests.AbstractVersioningTest
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.versioning.VersioningXtendFactory
@@ -20,11 +22,9 @@ import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
 
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
-import tools.vitruv.dsls.reactions.tests.AbstractVersioningTest
-import org.junit.Ignore
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
-	static val logger = Logger::getLogger(SourceTargetRecorderTest)
+	static extension Logger = Logger::getLogger(SourceTargetRecorderTest)
 
 	static protected val nonRootObjectContainerName = "NonRootObjectContainer"
 	protected SourceTargetRecorder stRecorder
@@ -34,7 +34,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 
 	override setup() {
 		super.setup
-		logger.level = Level::DEBUG
+		level = Level::DEBUG
 		// Setup sourceTargetRecorder 
 		stRecorder = VersioningXtendFactory::instance.createSourceTargetRecorder(virtualModel)
 		stRecorder.registerObserver
@@ -177,6 +177,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		changesMatches.forEach[assertThat(originalChange.EChanges.forall[!resolved], is(true))]
 
 	}
+
 	@Ignore
 	@Test
 	def void testSezializeChangeMatches() {

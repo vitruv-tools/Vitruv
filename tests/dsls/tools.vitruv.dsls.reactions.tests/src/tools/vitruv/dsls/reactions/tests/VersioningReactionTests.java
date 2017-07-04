@@ -4,11 +4,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import tools.vitruv.dsls.reactions.tests.simpleChangesTests.ConflictExistsGraphIsomorphismTest;
-import tools.vitruv.dsls.reactions.tests.simpleChangesTests.ConflictNotExistsDependencyGraphTest;
-import tools.vitruv.dsls.reactions.tests.simpleChangesTests.ConflictNotExistsGraphIsomorphismTest;
-import tools.vitruv.dsls.reactions.tests.simpleChangesTests.ReapplyTest;
-import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SourceTargetRecorderTest;
+import tools.vitruv.dsls.reactions.tests.versioning.ConflictExistsGraphIsomorphismTest;
+import tools.vitruv.dsls.reactions.tests.versioning.ConflictNotExistsDependencyGraphTest;
+import tools.vitruv.dsls.reactions.tests.versioning.ConflictNotExistsGraphIsomorphismTest;
+import tools.vitruv.dsls.reactions.tests.versioning.ReapplyTest;
+import tools.vitruv.dsls.reactions.tests.versioning.SourceTargetRecorderTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ 

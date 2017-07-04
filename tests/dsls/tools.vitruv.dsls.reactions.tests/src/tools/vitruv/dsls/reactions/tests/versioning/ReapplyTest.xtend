@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.simpleChangesTests
+package tools.vitruv.dsls.reactions.tests.versioning
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
