@@ -6,6 +6,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.graphstream.graph.Graph
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
+import tools.vitruv.framework.versioning.NodeType
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 
@@ -47,6 +48,8 @@ class PrimitiveIsomorphismTesterImpl implements IsomorphismTesterAlgorithm {
 			]
 		].forEach [
 			nodes += it
+			val node = combinedGraph.getNode(EChange)
+			node.type = NodeType::UNPAIRED
 		]
 	}
 
@@ -74,7 +77,7 @@ class PrimitiveIsomorphismTesterImpl implements IsomorphismTesterAlgorithm {
 
 	private def boolean processNodePair(EChangeNode node1, EChangeNode node2) {
 		if (combinedGraph.checkIfEdgeExists(node1.EChange, node2.EChange, EdgeType::ISOMORPHIC))
-			return false
+			return true
 		if (isomorphism.containsKey(node1))
 			throw new IllegalStateException('''«node1» has to mappings: «node2» and «isomorphism.get(node1)»''')
 		isomorphism.put(node1, node2)

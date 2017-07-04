@@ -25,6 +25,10 @@ class ConflictNotExistsGraphIsomorphismTest extends AbstractConflictNotExistsGra
 		assertThat(combinedGraph.nodeSet.size, is(graph.nodeSet.size + otherGraph.nodeSet.size))
 		assertThat(combinedGraph.edgeSet.size >= graph.edgeSet.size + otherGraph.edgeSet.size, is(true))
 		val iso = tester.isomorphism
+		val unmatchedOfGraph1 = tester.unmatchedOfGraph1
+		val unmatchedOfGraph2 = tester.unmatchedOfGraph2
+		assertThat(unmatchedOfGraph1.empty, is(true))
+		assertThat(unmatchedOfGraph2.empty, is(true))
 		graph.<EChangeNode>nodeSet.forEach [ node1 |
 			val node2 = iso.get(node1)
 			assertThat(otherGraph.<EChangeNode>nodeSet.exists[node2 == it], is(true))
