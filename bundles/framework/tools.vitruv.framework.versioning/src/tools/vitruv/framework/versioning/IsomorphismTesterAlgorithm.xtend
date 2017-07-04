@@ -5,8 +5,13 @@ import org.graphstream.graph.Graph
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import java.util.Map
 import java.util.Set
+import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 
 interface IsomorphismTesterAlgorithm extends IsomorphismTester {
+	static def IsomorphismTesterAlgorithm createIsomorphismTester() {
+		new PrimitiveIsomorphismTesterImpl
+	}
+
 	def void init(Graph g1, Graph g2)
 
 	def void compute()

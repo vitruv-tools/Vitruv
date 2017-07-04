@@ -15,24 +15,54 @@ import tools.vitruv.framework.versioning.extensions.GraphExtension
 import org.graphstream.graph.Graph
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
-	static extension EChangeRequireExtension = EChangeRequireExtension::newManager
+	static extension EChangeRequireExtension = EChangeRequireExtension::instance
+	static extension GraphExtension = GraphExtension::instance
 
-	extension GraphExtension = GraphExtension::newManager
-	List<EChange> echanges
-	Graph graph
+	static def DependencyGraphCreator init() {
+		new DependencyGraphCreatorImpl
+	}
+
+	private new() {
+	}
 
 	override createDependencyGraph(List<TransactionalChange> changes) {
-		graph = GraphExtension::createNewEChangeGraph
-		createDependencyGraph(changes, true)
+		val graph = GraphExtension::createNewEChangeGraph
+		createDependencyGraph(graph, changes, true)
 		return graph
 	}
 
-	private def createDependencyGraph(List<TransactionalChange> changes, boolean print) {
+	override createDependencyGraphFromChangeMatches(List<ChangeMatch> changeMatches) {
+		val graph = GraphExtension::createNewEChangeGraph
+		val originalChanges = changeMatches.map[originalChange].toList
+		createDependencyGraph(graph, originalChanges, false)
+
+		val List<VURI> vuris = changeMatches.get(0).targetToCorrespondentChanges.keySet.toList
+		vuris.forEach [ vuri |
+			val targetChanges = changeMatches.map [ c |
+				c.targetToCorrespondentChanges.get(vuri)
+			].flatten.toList
+			createDependencyGraph(graph, targetChanges, false)
+		]
+		changeMatches.forEach [ c |
+			c.originalChange.EChanges.forEach [ echange, i |
+				c.targetToCorrespondentChanges.values.forEach [ transChanges |
+					transChanges.forEach [ transChange |
+						val triggeredEchange = transChange.EChanges.get(i)
+						graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
+					]
+				]
+			]
+		]
+		graph.savePicture
+		return graph
+	}
+
+	private def createDependencyGraph(Graph graph, List<TransactionalChange> changes, boolean print) {
 		val resourceSet = new ResourceSetImpl
 		// PS Do not use the java 8 or xtend function methods here.
 		// Their laziness can cause problems while applying
 		// changes back or forward.
-		echanges = new ArrayList
+		val List<EChange> echanges = new ArrayList
 		changes.forEach [
 			echanges += EChanges
 		]
@@ -54,32 +84,6 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		]
 		// TODO PS Remove
 		if (print) graph.savePicture
-	}
-
-	override createDependencyGraphFromChangeMatches(List<ChangeMatch> changeMatches) {
-		graph = GraphExtension::createNewEChangeGraph
-		val originalChanges = changeMatches.map[originalChange].toList
-		createDependencyGraph(originalChanges, false)
-
-		val List<VURI> vuris = changeMatches.get(0).targetToCorrespondentChanges.keySet.toList
-		vuris.forEach [ vuri |
-			val targetChanges = changeMatches.map [ c |
-				c.targetToCorrespondentChanges.get(vuri)
-			].flatten.toList
-			createDependencyGraph(targetChanges, false)
-		]
-		changeMatches.forEach [ c |
-			c.originalChange.EChanges.forEach [ echange, i |
-				c.targetToCorrespondentChanges.values.forEach [ transChanges |
-					transChanges.forEach [ transChange |
-						val triggeredEchange = transChange.EChanges.get(i)
-						graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
-					]
-				]
-			]
-		]
-		graph.savePicture
-		return graph
 	}
 
 }

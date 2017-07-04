@@ -20,9 +20,9 @@ import java.util.Map
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class GraphExtensionImpl implements GraphExtension {
-	static extension EChangeExtension = EChangeExtension::newManager
-	static extension EdgeExtension = EdgeExtension::newManager
-	static extension NodeExtension = NodeExtension::newManager
+	static extension EChangeExtension = EChangeExtension::instance
+	static extension EdgeExtension = EdgeExtension::instance
+	static extension NodeExtension = NodeExtension::instance
 	static val Map<Graph, Integer> graphMap = newHashMap
 
 	static def GraphExtension init() {

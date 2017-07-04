@@ -11,8 +11,8 @@ import tools.vitruv.framework.versioning.NodeType
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class EChangeNodeImpl extends SingleNode implements EChangeNode {
-	static extension EChangeCompareUtil = EChangeCompareUtil::newManager
-	static extension EdgeExtension = EdgeExtension::newManager
+	static extension EChangeCompareUtil = EChangeCompareUtil::instance
+	static extension EdgeExtension = EdgeExtension::instance
 	@Accessors(PUBLIC_GETTER,PUBLIC_SETTER)
 	EChange eChange
 

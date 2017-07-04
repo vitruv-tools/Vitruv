@@ -8,9 +8,7 @@ import tools.vitruv.framework.versioning.extensions.impl.GraphManagerImpl
 import java.util.Collection
 
 interface GraphManager {
-	static def GraphManager getNewManager() {
-		GraphManagerImpl::init
-	}
+	static GraphManager instance = GraphManagerImpl::init
 
 	def Graph getGraph()
 

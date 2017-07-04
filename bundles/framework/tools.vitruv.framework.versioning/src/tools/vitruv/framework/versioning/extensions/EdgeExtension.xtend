@@ -5,9 +5,7 @@ import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.impl.EdgeExtensionImpl
 
 interface EdgeExtension {
-	static def EdgeExtension newManager() {
-		EdgeExtensionImpl::init
-	}
+	static EdgeExtension instance = EdgeExtensionImpl::init
 
 	def void setType(Edge edge, EdgeType type)
 

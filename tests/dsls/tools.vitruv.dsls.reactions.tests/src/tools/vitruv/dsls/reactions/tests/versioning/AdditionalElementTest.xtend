@@ -2,17 +2,17 @@ package tools.vitruv.dsls.reactions.tests.versioning
 
 import java.util.Set
 import org.junit.Test
-
-import tools.vitruv.dsls.reactions.tests.AbstractConflictExistsTest
+import tools.vitruv.dsls.reactions.tests.AbstractAdditionalElementTest
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
+
 import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
-class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
+class AdditionalElementTest extends AbstractAdditionalElementTest {
 	@Test
 	def void testOnlyOriginalEChanges() {
 		graph = createDependencyGraph(changes)
@@ -28,7 +28,7 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		assertThat(combinedGraph.edgeSet.size >= graph.edgeSet.size + otherGraph.edgeSet.size, is(true))
 		val unmatchedOfGraph1 = tester.unmatchedOfGraph1
 		val unmatchedOfGraph2 = tester.unmatchedOfGraph2
-		assertThat(unmatchedOfGraph1.size, is(2))
+		assertThat(unmatchedOfGraph1.size, is(0))
 		assertThat(unmatchedOfGraph2.size, is(2))
 		val testEchanges = [ Set<EChangeNode> nodes, Iterable<EChange> eChanges |
 			nodes.map[EChange].forEach [
@@ -57,7 +57,7 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		assertThat(combinedGraph.edgeSet.size >= graph.edgeSet.size + otherGraph.edgeSet.size, is(true))
 		val unmatchedOfGraph1 = tester.unmatchedOfGraph1
 		val unmatchedOfGraph2 = tester.unmatchedOfGraph2
-		assertThat(unmatchedOfGraph1.size, is(4))
+		assertThat(unmatchedOfGraph1.size, is(0))
 		assertThat(unmatchedOfGraph2.size, is(4))
 		val testEchanges = [ Set<EChangeNode> nodes, Iterable<EChange> eChanges |
 			nodes.map[EChange].forEach [
@@ -68,10 +68,5 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		val allCompareEChanges = otherEChanges + otherCorrespondentEChanges
 		testEchanges.apply(unmatchedOfGraph1, allBaseEChanges)
 		testEchanges.apply(unmatchedOfGraph2, allCompareEChanges)
-	}
-
-	@Test
-	def void testConflictDetector() {
-		
 	}
 }

@@ -3,7 +3,6 @@ package tools.vitruv.dsls.reactions.tests.versioning
 import java.util.Collection
 import org.junit.Test
 import tools.vitruv.dsls.reactions.tests.AbstractConflictNotExistsTest
-import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 
@@ -14,14 +13,14 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 
 	@Test
 	def void testEChangeNode() {
-		graph = dependencyGraphCreator.createDependencyGraph(changes)
+		graph = createDependencyGraph(changes)
 		val Collection<EChangeNode> nodeSet = graph.nodeSet
 		echanges.forEach[echange|nodeSet.exists[echange === EChange]]
 	}
 
 	@Test
 	def testRequireEdges() {
-		graph = dependencyGraphCreator.createDependencyGraph(changes)
+		graph = createDependencyGraph(changes)
 		val requiresEdges = graph.edgesWithType(EdgeType::PROVIDES)
 		assertThat(requiresEdges.size, is(7))
 		assertThat(graph.checkIfEdgeExists(echanges.get(0), echanges.get(1), EdgeType.PROVIDES), is(true))
@@ -38,8 +37,8 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 
 	@Test
 	def testSeveralComponents() {
-		graph = dependencyGraphCreator.createDependencyGraph(changes.drop(1).toList)
-		val requiresEdges = graph.edgesWithType(EdgeType.PROVIDES)
+		graph = createDependencyGraph(changes.drop(1).toList)
+		val requiresEdges = graph.edgesWithType(EdgeType::PROVIDES)
 		assertThat(requiresEdges.size, is(3))
 		assertThat(graph.checkIfEdgeExists(echanges.get(2), echanges.get(3), EdgeType.PROVIDES), is(true))
 		assertThat(graph.checkIfEdgeExists(echanges.get(4), echanges.get(5), EdgeType.PROVIDES), is(true))
@@ -62,8 +61,7 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 			EChanges
 		].flatten.toList
 		assertThat(originalEChanges.length, is(targetEChanges.length))
-		val dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
-		graph = dependencyGraphCreator.createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
+		graph = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
 		val requiresEdges = graph.edgesWithType(EdgeType.PROVIDES)
 		assertThat(requiresEdges.size, is(14))
 		assertThat(graph.checkIfEdgeExists(originalEChanges.get(0), originalEChanges.get(1), EdgeType.PROVIDES),

@@ -7,7 +7,7 @@ import tools.vitruv.framework.versioning.extensions.NodeExtension
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class NodeExtensionImpl implements NodeExtension {
-	static extension EdgeExtension = EdgeExtension::newManager
+	static extension EdgeExtension = EdgeExtension::instance
 
 	static def NodeExtension init() {
 		new NodeExtensionImpl

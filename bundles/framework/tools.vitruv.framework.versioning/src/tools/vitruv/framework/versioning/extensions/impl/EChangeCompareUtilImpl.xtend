@@ -33,16 +33,17 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 	}
 
 	private static def Boolean containerIsRootAndMapped(String containerString, InternalEObject affectedContainer2) {
+		val affectedContainerPlatformString2 = affectedContainer2.eProxyURI.toPlatformString(false)
 		rootToRootMap.filter [
-			val x = containerString.contains(key) || containerString.contains(value)
-			return x
-		].map[
+			val toDirection = containerString.contains(key) && affectedContainerPlatformString2.contains(value)
+			val fromDirection = containerString.contains(value) && affectedContainerPlatformString2.contains(key)
+			return toDirection || fromDirection
+		].map [
 			val x = if (containerString.contains(key)) it else new Pair(value, key)
 			return x
 		].map [
-			val affectedContainerPlatformString2 = affectedContainer2.eProxyURI.toPlatformString(false)
 			if (!affectedContainerPlatformString2.contains(value))
-				throw new IllegalStateException('''No lying under root''')
+				throw new IllegalStateException('''«affectedContainerPlatformString2» is not lying under root«value»''')
 			val s = affectedContainerPlatformString2.replace(value, key)
 			val x = containerString == s
 			return x

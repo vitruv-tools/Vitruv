@@ -7,9 +7,7 @@ import tools.vitruv.framework.versioning.impl.DependencyGraphCreatorImpl
 import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 interface DependencyGraphCreator {
-	static def DependencyGraphCreator createDependencyGraphCreator() {
-		new DependencyGraphCreatorImpl
-	}
+	static DependencyGraphCreator instance = DependencyGraphCreatorImpl::init
 
 	def Graph createDependencyGraph(List<TransactionalChange> echanges)
 

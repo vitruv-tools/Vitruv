@@ -3,17 +3,16 @@ package tools.vitruv.dsls.reactions.tests.versioning
 import allElementTypes.AllElementTypesFactory
 import java.util.Map
 import org.junit.Test
+import tools.vitruv.dsls.reactions.tests.AbstractConflictTest
 import tools.vitruv.framework.versioning.BranchDiffCreator
-import tools.vitruv.framework.versioning.ConflictDetector
-import tools.vitruv.framework.versioning.impl.ConflictDetectorImpl
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-import tools.vitruv.dsls.reactions.tests.AbstractConflictTest
 
 class ConcreteConflictTest extends AbstractConflictTest {
+
 	static val alternativeContainerId = "TOTALLY_DIFFERENT"
 
 	@Test
@@ -62,8 +61,8 @@ class ConcreteConflictTest extends AbstractConflictTest {
 		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
 		val Map<String, String> rootToRootMap = #{sourceVURI.EMFUri.toPlatformString(false) ->
 			newSourceVURI.EMFUri.toPlatformString(false)}
+		addMap(rootToRootMap)
 		val branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
-		val ConflictDetector conflictDetector = new ConflictDetectorImpl(rootToRootMap)
 		val conflict = conflictDetector.detectConlicts(branchDiff)
 		assertThat(conflict.originalChangesLevenshteinDistance, is(1))
 	}

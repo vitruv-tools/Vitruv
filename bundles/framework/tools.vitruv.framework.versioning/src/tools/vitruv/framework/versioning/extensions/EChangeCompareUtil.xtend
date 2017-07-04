@@ -4,9 +4,7 @@ import tools.vitruv.framework.versioning.extensions.impl.EChangeCompareUtilImpl
 import tools.vitruv.framework.change.echange.EChange
 
 interface EChangeCompareUtil {
-	static def EChangeCompareUtil newManager() {
-		EChangeCompareUtilImpl::init
-	}
+	static EChangeCompareUtil instance = EChangeCompareUtilImpl::init
 
 	def boolean isEChangeEqual(EChange e1, EChange e2)
 

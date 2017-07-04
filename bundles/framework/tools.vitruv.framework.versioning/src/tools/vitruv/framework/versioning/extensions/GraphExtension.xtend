@@ -12,9 +12,7 @@ import java.util.UUID
 import tools.vitruv.framework.versioning.extensions.impl.EChangeGraphImpl
 
 interface GraphExtension {
-	static def GraphExtension newManager() {
-		GraphExtensionImpl::init
-	}
+	static GraphExtension instance = GraphExtensionImpl::init
 
 	static def Graph createNewEChangeGraph() {
 		val id = UUID.randomUUID.toString

@@ -10,7 +10,7 @@ import tools.vitruv.framework.versioning.extensions.GraphManager
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class GraphManagerImpl implements GraphManager {
-	static extension GraphExtension = GraphExtension::newManager
+	static extension GraphExtension = GraphExtension::instance
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	Graph graph
 

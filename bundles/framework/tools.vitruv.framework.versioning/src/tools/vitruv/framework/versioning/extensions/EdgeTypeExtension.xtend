@@ -4,9 +4,7 @@ import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.impl.EdgeTypeExtensionImpl
 
 interface EdgeTypeExtension {
-	static def EdgeTypeExtension newManager() {
-		EdgeTypeExtensionImpl::init
-	}
+	static EdgeTypeExtension instance = EdgeTypeExtensionImpl::init
 
 	def String getEdgeLabel(EdgeType type)
 }

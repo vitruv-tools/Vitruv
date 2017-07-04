@@ -9,8 +9,8 @@ import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 
 class EdgeExtensionImpl implements EdgeExtension {
-	static extension EChangeCompareUtil = EChangeCompareUtil::newManager
-	static extension EdgeTypeExtension = EdgeTypeExtension::newManager
+	static extension EChangeCompareUtil = EChangeCompareUtil::instance
+	static extension EdgeTypeExtension = EdgeTypeExtension::instance
 
 	static def EdgeExtension init() {
 		new EdgeExtensionImpl

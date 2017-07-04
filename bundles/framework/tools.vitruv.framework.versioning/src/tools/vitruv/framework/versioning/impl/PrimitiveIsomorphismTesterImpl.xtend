@@ -11,7 +11,7 @@ import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 
 class PrimitiveIsomorphismTesterImpl implements IsomorphismTesterAlgorithm {
-	extension GraphExtension = GraphExtension::newManager
+	static extension GraphExtension = GraphExtension::instance
 	Graph graph1
 	Graph graph2
 	@Accessors(PUBLIC_GETTER)

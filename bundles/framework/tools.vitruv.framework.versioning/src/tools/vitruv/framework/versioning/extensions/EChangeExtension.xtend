@@ -5,9 +5,7 @@ import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.impl.EChangeExtensionImpl
 
 interface EChangeExtension {
-	static def EChangeExtension newManager() {
-		EChangeExtensionImpl::init
-	}
+	static EChangeExtension instance = EChangeExtensionImpl::init
 
 	def String createEdgeName(EChange e1, EChange e2, EdgeType type)
 
