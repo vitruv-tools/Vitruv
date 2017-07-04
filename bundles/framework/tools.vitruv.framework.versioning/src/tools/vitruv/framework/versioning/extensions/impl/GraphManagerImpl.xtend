@@ -1,17 +1,15 @@
 package tools.vitruv.framework.versioning.extensions.impl
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.graphstream.algorithm.ConnectedComponents
+
 import org.graphstream.graph.Graph
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.versioning.extensions.GraphManager
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class GraphManagerImpl implements GraphManager {
-	static extension EdgeExtension = EdgeExtension::newManager
 	static extension GraphExtension = GraphExtension::newManager
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	Graph graph
@@ -37,12 +35,7 @@ class GraphManagerImpl implements GraphManager {
 		graph.addEdge(e1, e2, type)
 	}
 
-	override calculateComponentNumber() {
-		val newGraph = graph.cloneGraph([true], [isType(EdgeType::PROVIDES)])
-		val cc = new ConnectedComponents
-		cc.init(newGraph)
-		return cc.connectedComponentsCount
-	}
+	override calculateComponentNumber() { graph.calculateComponentNumber }
 
 	override addNode(EChange e) { graph.addNode(e) }
 

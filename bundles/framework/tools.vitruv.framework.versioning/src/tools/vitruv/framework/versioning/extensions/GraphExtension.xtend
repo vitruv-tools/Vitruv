@@ -48,4 +48,6 @@ interface GraphExtension {
 	def void savePicture(Graph graph)
 
 	def void add(Graph graph, Graph graphToAdd)
+
+	def int calculateComponentNumber(Graph graph)
 }

@@ -2,6 +2,7 @@ package tools.vitruv.framework.versioning.extensions.impl
 
 import java.util.Collection
 import org.eclipse.xtext.xbase.lib.Functions.Function1
+import org.graphstream.algorithm.ConnectedComponents
 import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
 import org.graphstream.stream.file.FileSinkImages
@@ -152,6 +153,13 @@ class GraphExtensionImpl implements GraphExtension {
 				edge.addAttribute(attKey, attribute)
 			]
 		]
+	}
+
+	override calculateComponentNumber(Graph graph) {
+		val newGraph = graph.cloneGraph([true], [isType(EdgeType::PROVIDES)])
+		val cc = new ConnectedComponents
+		cc.init(newGraph)
+		return cc.connectedComponentsCount
 	}
 
 }
