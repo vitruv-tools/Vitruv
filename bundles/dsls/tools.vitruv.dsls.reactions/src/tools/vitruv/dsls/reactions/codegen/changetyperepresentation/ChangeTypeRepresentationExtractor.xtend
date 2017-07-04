@@ -60,7 +60,7 @@ final class ChangeTypeRepresentationExtractor {
 	}
 			
 	public static def dispatch ChangeTypeRepresentation extractChangeTypeRepresentation(ModelElementChange modelElementChange) {
-		if (modelElementChange?.changeType == null) {
+		if (modelElementChange?.changeType === null) {
 			return new AtomicChangeTypeRepresentation(EChange, null, null, false, false, null);
 		}
 		return generateChangeTypeRepresentation(modelElementChange.changeType, modelElementChange.elementType?.metaclass)
@@ -78,7 +78,7 @@ final class ChangeTypeRepresentationExtractor {
 				clazz = RootPackage.Literals.REMOVE_ROOT_EOBJECT
 		} 
 		val affectedEObject = null;
-		val affectedValue = if (elementClass != null) elementClass.instanceClass else EObject;
+		val affectedValue = if (elementClass !== null) elementClass.instanceClass else EObject;
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, !hasNewValue, hasNewValue, null);
 	}
 	
@@ -102,7 +102,7 @@ final class ChangeTypeRepresentationExtractor {
 			}
 		}
 		val affectedEObject = modelElementChange.feature.metaclass.instanceClass;
-		val affectedValue = if (elementClass != null) elementClass.instanceClass else modelElementChange.feature.feature.EType.instanceClass;
+		val affectedValue = if (elementClass !== null) elementClass.instanceClass else modelElementChange.feature.feature.EType.instanceClass;
 		val affectedFeature = modelElementChange.feature.feature; 
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature);
 	}
@@ -116,7 +116,7 @@ final class ChangeTypeRepresentationExtractor {
 			ElementDeletionChangeType:
 				clazz = EobjectPackage.Literals.DELETE_EOBJECT
 		}
-		val affectedEObject = if (elementClass != null) elementClass.instanceClass else EObject;
+		val affectedEObject = if (elementClass !== null) elementClass.instanceClass else EObject;
 		val affectedValue = null; 
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, false, false, null);
 	}

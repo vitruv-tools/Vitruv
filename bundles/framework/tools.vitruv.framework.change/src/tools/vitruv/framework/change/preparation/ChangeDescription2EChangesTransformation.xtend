@@ -107,7 +107,7 @@ public class ChangeDescription2EChangesTransformation {
 	}
 
 	public def List<EChange> transform() {
-		if (changeDescription == null) {
+		if (changeDescription === null) {
 			return eChanges
 		} else {
 
@@ -271,7 +271,7 @@ public class ChangeDescription2EChangesTransformation {
 					it.referenceValues)
 			].flatten.toList
 			val elementsReferencedAfterChange = featureChange.referenceValue
-			if (elementsReferencedAfterChange == null && listChanges != null && listChanges.isEmpty) {
+			if (elementsReferencedAfterChange === null && listChanges !== null && listChanges.isEmpty) {
 				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedReference)
 				for (var index = elementsReferencedBeforeChange.size - 1; index >= 0; index--) {
 					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)
@@ -338,7 +338,7 @@ public class ChangeDescription2EChangesTransformation {
 				createChangeForMultiAttributeChange(affectedEObject, affectedAttribute, it.index, it.kind, it.values)
 			].flatten.toList
 			val elementsReferencedAfterChange = featureChange.referenceValue
-			if (elementsReferencedAfterChange == null && listChanges != null && listChanges.isEmpty) {
+			if (elementsReferencedAfterChange === null && listChanges !== null && listChanges.isEmpty) {
 				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedAttribute)
 				for (var index = elementsReferencedBeforeChange.size-1; index >= 0; index--) {
 					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)

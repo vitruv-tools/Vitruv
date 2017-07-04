@@ -34,7 +34,7 @@ class AtomicEChangeResolver {
 	 * 						{@code false} if the model is in state after.
 	 */
 	def package static boolean resolveEChange(EChange change, ResourceSet resourceSet, boolean resolveBefore) {
-		if (resourceSet == null) {
+		if (resourceSet === null) {
 			return false
 		}
 		return true
@@ -50,13 +50,13 @@ class AtomicEChangeResolver {
 	 */
 	def private static <A extends EObject, F extends EStructuralFeature> boolean resolveFeatureEChange(
 		FeatureEChange<A, F> change, ResourceSet resourceSet, boolean resolveBefore) {
-		if (change.affectedEObject == null || !resolveEChange(change, resourceSet, true)) {
+		if (change.affectedEObject === null || !resolveEChange(change, resourceSet, true)) {
 			return false
 		}
 
 		change.affectedEObject = EChangeUtil.resolveProxy(change.affectedEObject, resourceSet) as A
 
-		if (change.affectedFeature == null || change.affectedEObject == null || change.affectedEObject.eIsProxy) {
+		if (change.affectedFeature === null || change.affectedEObject === null || change.affectedEObject.eIsProxy) {
 			return false
 		}
 		return true
@@ -76,7 +76,7 @@ class AtomicEChangeResolver {
 	 */
 	def private static <A extends EObject, T extends EObject> EObject resolveReferenceValue(UpdateReferenceEChange<A> change, T value,
 		ResourceSet resourceSet, boolean isInserted, int index) {
-		if (value == null) {
+		if (value === null) {
 			return null
 		}
 		if (!change.affectedFeature.containment) {
@@ -111,7 +111,7 @@ class AtomicEChangeResolver {
 	 */
 	def private static <A extends EObject> boolean resolveEObjectExistenceEChange(EObjectExistenceEChange<A> change,
 		ResourceSet resourceSet, boolean newObject) {
-		if (change.affectedEObject == null || !change.resolveEChange(resourceSet, true)) {
+		if (change.affectedEObject === null || !change.resolveEChange(resourceSet, true)) {
 			return false
 		}
 		// Get the staging area where the created object will placed in or deleted from.
@@ -127,7 +127,7 @@ class AtomicEChangeResolver {
 			change.affectedEObject = change.stagingArea.peek as A
 		}
 
-		if (change.affectedEObject == null || change.affectedEObject.eIsProxy || change.stagingArea == null) {
+		if (change.affectedEObject === null || change.affectedEObject.eIsProxy || change.stagingArea === null) {
 			return false
 		}
 		return true
@@ -149,7 +149,7 @@ class AtomicEChangeResolver {
 		// Get resource where the root object will be inserted / removed.
 		change.resource = resourceSet.getResource(URI.createURI(change.uri), false)
 
-		if (change.resource == null) {
+		if (change.resource === null) {
 			return false
 		}
 		return true
@@ -221,7 +221,7 @@ class AtomicEChangeResolver {
 		
 		change.newValue = change.resolveReferenceValue(change.newValue, resourceSet, !resolveBefore, change.index)
 
-		if (change.newValue != null && change.newValue.eIsProxy) {
+		if (change.newValue !== null && change.newValue.eIsProxy) {
 			return false
 		}
 		return true
@@ -243,7 +243,7 @@ class AtomicEChangeResolver {
 		
 		change.oldValue = change.resolveReferenceValue(change.oldValue, resourceSet, resolveBefore, change.index)
 
-		if (change.oldValue != null && change.oldValue.eIsProxy) {
+		if (change.oldValue !== null && change.oldValue.eIsProxy) {
 			return false
 		}
 		return true
@@ -266,8 +266,8 @@ class AtomicEChangeResolver {
 		change.newValue = change.resolveReferenceValue(change.newValue, resourceSet, !resolveBefore, -1)
 		change.oldValue = change.resolveReferenceValue(change.oldValue, resourceSet, resolveBefore, -1)
 
-		if ((change.newValue != null && change.newValue.eIsProxy) ||
-			(change.oldValue != null && change.oldValue.eIsProxy)) {
+		if ((change.newValue !== null && change.newValue.eIsProxy) ||
+			(change.oldValue !== null && change.oldValue.eIsProxy)) {
 			return false
 		}
 		return true
@@ -289,7 +289,7 @@ class AtomicEChangeResolver {
 
 		change.newValue = change.resolveRootValue(change.newValue, resourceSet, !resolveBefore)
 
-		if (change.newValue == null || change.newValue.eIsProxy) {
+		if (change.newValue === null || change.newValue.eIsProxy) {
 			return false
 		}
 		return true
@@ -311,7 +311,7 @@ class AtomicEChangeResolver {
 
 		change.oldValue = change.resolveRootValue(change.oldValue, resourceSet, resolveBefore)
 		
-		if (change.oldValue == null || change.oldValue.eIsProxy) {
+		if (change.oldValue === null || change.oldValue.eIsProxy) {
 			return false
 		}
 		return true

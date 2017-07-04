@@ -82,7 +82,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		«FOR parameterName : parameterStrings SEPARATOR ', '»«parameterName»«ENDFOR»'''
 		
 	public override JvmGenericType generateClass() {
-		if (routine == null) {
+		if (routine === null) {
 			return null;
 		}
 		
@@ -129,12 +129,12 @@ class RoutineClassGenerator extends ClassGenerator {
 	
 	private def dispatch StringConcatenationClient createStatements(CreateModelElement createElement) {
 		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.javaClass)
-		val initializeMethod = if (createElement.initializationBlock != null) 
+		val initializeMethod = if (createElement.initializationBlock !== null) 
 			generateUpdateElementMethod(createElement.name, createElement.initializationBlock, currentlyAccessibleElements);
-		val initializeMethodCall = if (initializeMethod != null) initializeMethod.userExecutionMethodCallString;
+		val initializeMethodCall = if (initializeMethod !== null) initializeMethod.userExecutionMethodCallString;
 		return '''
 			«getElementCreationCode(createElement)»
-			«IF initializeMethod != null»
+			«IF initializeMethod !== null»
 				«initializeMethodCall»;
 			«ENDIF»
 		'''
@@ -147,17 +147,17 @@ class RoutineClassGenerator extends ClassGenerator {
 			«IF !retrieveElement.name.nullOrEmpty»
 				«affectedElementClass.javaClass» «retrieveElement.name» = «retrieveStatement»;
 				«IF !retrieveElement.optional && !retrieveElement.abscence»
-					if («retrieveElement.name» == null) {
+					if («retrieveElement.name» === null) {
 						return;
 					}
 				«ENDIF»
 				registerObjectUnderModification(«retrieveElement.name»);
 			«ELSEIF retrieveElement.abscence»
-				if («retrieveStatement» != null) {
+				if («retrieveStatement» !== null) {
 					return;
 				}
 			«ELSE»
-				if («retrieveStatement» == null) {
+				if («retrieveStatement» === null) {
 					return;
 				} else {
 					registerObjectUnderModification(«retrieveStatement»);
@@ -203,8 +203,8 @@ class RoutineClassGenerator extends ClassGenerator {
 		val getFirstElementMethodCall = getFirstElementMethod.userExecutionMethodCallString;
 		val getSecondElementMethod = generateMethodGetElement(createCorrespondence.secondElement, currentlyAccessibleElements);
 		val getSecondElementMethodCall = getSecondElementMethod.userExecutionMethodCallString;
-		val tagMethod = if (createCorrespondence.tag != null) generateMethodGetCreateTag(createCorrespondence, currentlyAccessibleElements);
-		val tagMethodCall = if (tagMethod != null) tagMethod.userExecutionMethodCallString else '''""''';
+		val tagMethod = if (createCorrespondence.tag !== null) generateMethodGetCreateTag(createCorrespondence, currentlyAccessibleElements);
+		val tagMethodCall = if (tagMethod !== null) tagMethod.userExecutionMethodCallString else '''""''';
 		return '''
 			addCorrespondenceBetween(«getFirstElementMethodCall», «getSecondElementMethodCall», «tagMethodCall»);
 		'''
@@ -231,7 +231,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	protected def generateMethodExecuteEffect() {
 		val methodName = "executeRoutine";
 		val inputParameters = routine.generateInputParameters();
-		val matcherStatements = if (routine.matcher != null) routine.matcher.matcherStatements else #[];
+		val matcherStatements = if (routine.matcher !== null) routine.matcher.matcherStatements else #[];
 		val effectStatements = routine.action.actionStatements;
 		val matcherStatementsMap = <MatcherStatement, StringConcatenationClient>newHashMap();
 		CollectionBridge.mapFixed(matcherStatements, [matcherStatementsMap.put(it, createStatements(it))]);
@@ -259,7 +259,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 		
 	private def StringConcatenationClient getTagString(RetrieveModelElement retrieveElement) {
-		if (retrieveElement.tag != null) {
+		if (retrieveElement.tag !== null) {
 			val tagMethod = generateMethodGetRetrieveTag(retrieveElement, currentlyAccessibleElements);
 			return '''«tagMethod.userExecutionMethodCallString»'''
 		} else {
@@ -269,7 +269,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	
 	private def StringConcatenationClient getPreconditionChecker(RetrieveModelElement retrieveElement) {
 		val affectedElementClass = retrieveElement.javaClass;
-		if (retrieveElement.precondition == null) {
+		if (retrieveElement.precondition === null) {
 			return '''(«affectedElementClass» _element) -> true''';
 		}
 		val preconditionMethod = generateMethodCorrespondencePrecondition(retrieveElement, currentlyAccessibleElements);

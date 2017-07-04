@@ -124,7 +124,7 @@ class ConstraintLanguageGenerator {
 //		val target = constraint.target.context
 //		val feature = constraint.target.feature
 //
-//		'''«eRefGet(importHelper, getJavaExpressionThatReturns(localContext, target, mapping), feature)» != null'''
+//		'''«eRefGet(importHelper, getJavaExpressionThatReturns(localContext, target, mapping), feature)» !== null'''
 //	}
 
 	def dispatch checkSignatureConstraint(ImportHelper importHelper, Map<List<?>, String> localContext,
@@ -241,7 +241,7 @@ class ConstraintLanguageGenerator {
 
 		for (nextMapping : source.requires) {
 			val path = nextMapping.mapping.findMappingPath(target)
-			if (path != null)
+			if (path !== null)
 				return #[#[source], path].flatten.toList
 		}
 
@@ -293,8 +293,8 @@ class ConstraintLanguageGenerator {
 		val sourceMapping = constraint.getContainerOfType(Mapping).requireNonNull
 		val targetJava = getJavaExpressionThatReturns(localContext, target, sourceMapping)
 
-		val createContainmentExpression = if (constraint.source == null) {
-				constraint.relativeResource.claim[it != null]
+		val createContainmentExpression = if (constraint.source === null) {
+				constraint.relativeResource.claim[it !== null]
 
 				val sourceJava = constraint.relativeResourceSource?.apply [
 					getJavaExpressionThatReturns(localContext, it, sourceMapping)
@@ -303,12 +303,12 @@ class ConstraintLanguageGenerator {
 
 				'''
 					final «typeRef(VURI)» resourceVURI = «typeRef(MIRMappingHelper)».resolveIfRelative(«sourceJava», "«constraint.relativeResource»");
-					if ((resourceVURI != null) && (!«typeRef(EMFBridge)».doesResourceExist(resourceVURI.getEMFUri()))) {
+					if ((resourceVURI !== null) && (!«typeRef(EMFBridge)».doesResourceExist(resourceVURI.getEMFUri()))) {
 						state.getTransformationResult().addRootEObjectToSave(«targetJava», resourceVURI);
 					}
 				'''
 			} else {
-				constraint.relativeResource.claim[it == null]
+				constraint.relativeResource.claim[it === null]
 
 				val manipulatedVariable = constraint.source.context
 				val manipulatedVariableAsJavaExpression = getJavaExpressionThatReturns(localContext, manipulatedVariable, sourceMapping)

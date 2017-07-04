@@ -38,11 +38,11 @@ class MappingLanguageLinkingService extends DefaultLinkingService {
 	 */
 	def List<EObject> getEPackage(ILeafNode text) {
 		val nsUri = getMetamodelNsURI(text);
-		if (nsUri == null)
+		if (nsUri === null)
 			return Collections.emptyList();
 			
 		val resolvedEPackage = EPackage.Registry.INSTANCE.getEPackage(nsUri) as EObject
-		if (resolvedEPackage == null)	
+		if (resolvedEPackage === null)	
 			return Collections.emptyList();
 			
 		return #[resolvedEPackage]

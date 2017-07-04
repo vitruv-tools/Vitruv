@@ -55,11 +55,11 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	
 	def hasQualifiedName(EObject eObject) {
 		val qn = qualifiedNameProvider.getFullyQualifiedName(eObject);
-		return ((qn != null) && (!qn.empty));
+		return ((qn !== null) && (!qn.empty));
 	}
 	
 	def createEStructuralFeatureScope(Iterator<? extends EStructuralFeature> featuresIterator) {
-		if (featuresIterator != null) {
+		if (featuresIterator !== null) {
 			createScope(IScope.NULLSCOPE, featuresIterator, [
 				EObjectDescription.create(it.name, it)
 			])
@@ -98,7 +98,7 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 */
 	def getMetamodelImports(Resource res) {
 		var contents = res.getAllContentsOfEClass(MirBasePackage.eINSTANCE.getMetamodelImport, true).toList
-		val validImports = contents.filter(MetamodelImport).filter[package != null].map[it.name = it.name ?: it.package.name; it]
+		val validImports = contents.filter(MetamodelImport).filter[package !== null].map[it.name = it.name ?: it.package.name; it]
 
 		return validImports
 	}
@@ -134,7 +134,7 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 */
 	private def createQualifiedEClassScope(MetamodelImport metamodelImport, boolean includeAbstract, boolean includeEObject) {
 		val classifierDescriptions = 
-			if (metamodelImport == null || metamodelImport.package == null) {
+			if (metamodelImport === null || metamodelImport.package === null) {
 				if (includeEObject) {
 					#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false)];
 				} else {

@@ -35,7 +35,7 @@
 //
 //		val c2cTransforming = getChange2CommandTransforming(pluginName)
 //
-//		if (c2cTransforming == null) {
+//		if (c2cTransforming === null) {
 //			throw new InitializationError(
 //			'''
 //				Could not find «Change2CommandTransforming.name» for plugin "«pluginName»" for extension point "«Change2CommandTransforming.ID»".

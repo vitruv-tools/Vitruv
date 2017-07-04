@@ -29,7 +29,7 @@ class AtomicEChangeAssertHelper {
 	public def static assertEObjectExistenceChange(EChange change, EObject affectedEObject, StagingArea stagingArea) {
 		val eObjectExistingChange = assertObjectInstanceOf(change, EObjectExistenceEChange);
 		eObjectExistingChange.assertAffectedEObject(affectedEObject)
-		if (stagingArea != null) {
+		if (stagingArea !== null) {
 			eObjectExistingChange.assertStagingArea(stagingArea)
 		}
 	}

@@ -33,7 +33,7 @@ public class ApplyEChangeSwitch {
 			commands = ApplyBackwardCommandSwitch.getCommands(change)
 		}
 
-		if (commands != null) {
+		if (commands !== null) {
 			for (Command c : commands) {
 				if (c.canExecute()) {
 					c.execute()

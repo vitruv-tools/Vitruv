@@ -45,7 +45,7 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		val correspondences = getCorrespondences(aEObjects)
 		for (T correspondence : correspondences) {
 			val correspondingBs = correspondence.bs
-			if (correspondingBs != null && correspondingBs.equals(bEObjects)) {
+			if (correspondingBs !== null && correspondingBs.equals(bEObjects)) {
 				return correspondence;
 			}
 		}
@@ -92,7 +92,7 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 
 	override hasCorrespondences(List<EObject> eObjects) {
 		var Set<T> correspondences = this.getCorrespondences(eObjects);
-		return correspondences != null && correspondences.size() > 0
+		return correspondences !== null && correspondences.size() > 0
 	}
 
 	override hasCorrespondences() {
