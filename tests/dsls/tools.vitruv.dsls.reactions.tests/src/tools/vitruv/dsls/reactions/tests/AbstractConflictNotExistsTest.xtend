@@ -1,8 +1,7 @@
-package tools.vitruv.dsls.reactions.tests.simpleChangesTests
+package tools.vitruv.dsls.reactions.tests
 
 import allElementTypes.AllElementTypesFactory
 import java.util.Map
-import org.junit.Test
 import tools.vitruv.framework.versioning.BranchDiffCreator
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.impl.ConflictDetectorImpl
@@ -11,13 +10,10 @@ import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-import tools.vitruv.dsls.reactions.tests.AbstractConflictTest
 
-class ConcreteConflictTest extends AbstractConflictTest {
-	static val alternativeContainerId = "TOTALLY_DIFFERENT"
-
-	@Test
-	def void conflict() {
+abstract class AbstractConflictNotExistsTest extends AbstractConflictTest {
+	override setup() {
+		super.setup
 		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
 		sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
 
@@ -44,7 +40,7 @@ class ConcreteConflictTest extends AbstractConflictTest {
 		checkChangeMatchesLength(1, 0)
 
 		val container2 = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
-		container2.id = alternativeContainerId
+		container2.id = containerId
 		rootElement2.nonRootObjectContainerHelper = container2
 
 		checkChangeMatchesLength(1, 1)
@@ -57,14 +53,13 @@ class ConcreteConflictTest extends AbstractConflictTest {
 		checkChangeMatchesLength(4, 4)
 
 		assertModelsEqual
-
-		val sourceChanges = stRecorder.getChangeMatches(sourceVURI)
-		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
+		assertMappedModelsAreEqual
 		val Map<String, String> rootToRootMap = #{sourceVURI.EMFUri.toPlatformString(false) ->
 			newSourceVURI.EMFUri.toPlatformString(false)}
-		val branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
 		val ConflictDetector conflictDetector = new ConflictDetectorImpl(rootToRootMap)
-		val conflict = conflictDetector.detectConlicts(branchDiff)
-		assertThat(conflict.originalChangesLevenshteinDistance, is(1))
+		val sourceChanges = stRecorder.getChangeMatches(sourceVURI)
+		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
+		branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
+		conflict = conflictDetector.detectConlicts(branchDiff)
 	}
 }

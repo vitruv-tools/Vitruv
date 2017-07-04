@@ -20,6 +20,7 @@ import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
 
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import tools.vitruv.dsls.reactions.tests.AbstractVersioningTest
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	static val logger = Logger::getLogger(SourceTargetRecorderTest)
