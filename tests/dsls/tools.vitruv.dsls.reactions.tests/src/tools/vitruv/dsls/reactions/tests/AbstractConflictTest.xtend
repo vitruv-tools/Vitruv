@@ -2,14 +2,20 @@ package tools.vitruv.dsls.reactions.tests
 
 import allElementTypes.Root
 import java.util.Collection
+import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.graphstream.graph.Graph
+import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.BranchDiff
+import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.versioning.VersioningXtendFactory
 import tools.vitruv.framework.versioning.conflict.Conflict
+import tools.vitruv.framework.versioning.extensions.GraphExtension
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
@@ -20,6 +26,11 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected static val newTestSourceModelName = "Further_Source_Test_Model"
 	protected static val newTestTargetModelName = "Further_Target_Test_Model"
 	protected static val containerId = "NonRootObjectContainer"
+	protected DependencyGraphCreator dependencyGraphCreator
+	protected List<EChange> echanges
+	protected List<TransactionalChange> changes
+	protected Graph graph
+	protected static extension GraphExtension = GraphExtension::newManager
 	protected BranchDiff branchDiff
 	protected Collection<Root> roots
 	protected Conflict conflict

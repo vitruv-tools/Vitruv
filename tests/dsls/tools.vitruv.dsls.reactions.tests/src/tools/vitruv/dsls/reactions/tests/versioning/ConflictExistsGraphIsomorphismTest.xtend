@@ -1,18 +1,18 @@
 package tools.vitruv.dsls.reactions.tests.versioning
 
+import java.util.Set
 import org.junit.Test
-import tools.vitruv.dsls.reactions.tests.AbstractConflictExistsGraphTest
-import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
-import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 
+import tools.vitruv.dsls.reactions.tests.AbstractConflictExistsTest
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
+import tools.vitruv.framework.versioning.extensions.EChangeNode
+import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.versioning.extensions.EChangeNode
-import java.util.Set
 
-class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsGraphTest {
+class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 	@Test
 	def void testEqual() {
 		graph = dependencyGraphCreator.createDependencyGraph(changes)

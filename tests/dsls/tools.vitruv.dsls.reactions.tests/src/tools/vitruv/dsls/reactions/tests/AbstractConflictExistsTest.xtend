@@ -4,6 +4,7 @@ import allElementTypes.AllElementTypesFactory
 import java.util.Map
 import tools.vitruv.framework.versioning.BranchDiffCreator
 import tools.vitruv.framework.versioning.ConflictDetector
+import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.impl.ConflictDetectorImpl
 
 import static org.hamcrest.CoreMatchers.equalTo
@@ -64,6 +65,9 @@ abstract class AbstractConflictExistsTest extends AbstractConflictTest {
 		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
 		branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
 		conflict = conflictDetector.detectConlicts(branchDiff)
+		changes = branchDiff.baseChanges.map[originalChange].toList
+		echanges = changes.map[EChanges].flatten.toList
+		dependencyGraphCreator = DependencyGraphCreator::createDependencyGraphCreator
 
 	}
 
