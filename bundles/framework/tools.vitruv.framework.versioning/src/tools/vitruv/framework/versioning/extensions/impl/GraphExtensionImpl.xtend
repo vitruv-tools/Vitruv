@@ -16,11 +16,14 @@ import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.versioning.extensions.NodeExtension
+import java.util.Map
+import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class GraphExtensionImpl implements GraphExtension {
 	static extension EChangeExtension = EChangeExtension::newManager
 	static extension EdgeExtension = EdgeExtension::newManager
 	static extension NodeExtension = NodeExtension::newManager
+	static val Map<Graph, Integer> graphMap = newHashMap
 
 	static def GraphExtension init() {
 		new GraphExtensionImpl
@@ -136,6 +139,11 @@ class GraphExtensionImpl implements GraphExtension {
 	}
 
 	override add(Graph graph, Graph graphToAdd) {
+		val x = if (graphMap.containsKey(graph)) {
+				graphMap.remove(graph)
+			} else
+				0
+
 		graphToAdd.<EChangeNode>nodeSet.forEach [
 			val newNode = graph.<EChangeNode>addNode(id)
 			attributeKeySet.forEach [ attKey |
@@ -143,7 +151,9 @@ class GraphExtensionImpl implements GraphExtension {
 				newNode.addAttribute(attKey, attribute)
 			]
 			newNode.EChange = EChange
+			newNode.setAttribute(GraphStreamConstants::uiClass, '''graph«x»''')
 		]
+		graphMap.put(graph, x + 1)
 		graphToAdd.edgeSet.forEach [
 			val newSourceNode = graph.getNode(sourceNode.id)
 			val newTargetNode = graph.getNode(targetNode.id)
