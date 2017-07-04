@@ -8,5 +8,7 @@ interface EChangeCompareUtil {
 
 	def boolean isEChangeEqual(EChange e1, EChange e2)
 
+	def boolean isConflictingEachOther(EChange e1, EChange e2)
+
 	def void addPair(Pair<String, String> pair)
 }

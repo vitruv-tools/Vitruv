@@ -1,7 +1,6 @@
 package tools.vitruv.framework.versioning
 
 import tools.vitruv.framework.versioning.Conflict
-import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 interface SimpleChangeConflict extends Conflict {
 	def ChangeMatch getSourceChange()

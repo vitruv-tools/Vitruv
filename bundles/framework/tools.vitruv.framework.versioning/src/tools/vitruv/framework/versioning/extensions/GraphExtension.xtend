@@ -50,5 +50,5 @@ interface GraphExtension {
 
 	def int calculateComponentNumber(Graph graph)
 
-	def Graph getSubgraphContainingNodes(Graph graph, Set<EChangeNode> nodes)
+	def Graph getSubgraphContainingEChanges(Graph graph, Set<EChange> nodes)
 }

@@ -4,7 +4,6 @@ import java.util.List
 import org.graphstream.graph.Graph
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.versioning.impl.DependencyGraphCreatorImpl
-import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 interface DependencyGraphCreator {
 	static DependencyGraphCreator instance = DependencyGraphCreatorImpl::init

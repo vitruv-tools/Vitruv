@@ -9,10 +9,10 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 import org.graphstream.graph.Graph
+import tools.vitruv.framework.versioning.ChangeMatch
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static extension EChangeRequireExtension = EChangeRequireExtension::instance

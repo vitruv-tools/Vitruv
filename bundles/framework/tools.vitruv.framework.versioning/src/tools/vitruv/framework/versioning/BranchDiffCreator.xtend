@@ -2,7 +2,6 @@ package tools.vitruv.framework.versioning
 
 import tools.vitruv.framework.versioning.impl.BranchDiffCreatorImpl
 import java.util.List
-import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 /**
  * 

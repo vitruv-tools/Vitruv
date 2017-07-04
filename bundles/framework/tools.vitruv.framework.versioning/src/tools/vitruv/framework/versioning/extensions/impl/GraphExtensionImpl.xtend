@@ -140,8 +140,8 @@ class GraphExtensionImpl implements GraphExtension {
 		return cc.connectedComponentsCount
 	}
 
-	override getSubgraphContainingNodes(Graph graph, Set<EChangeNode> nodes) {
-		graph.cloneGraph([EChangeNode n|nodes.contains(n)], [isType(EdgeType::PROVIDES)])
+	override getSubgraphContainingEChanges(Graph graph, Set<EChange> nodes) {
+		graph.cloneGraph([EChangeNode n|nodes.contains(n.EChange)], [isType(EdgeType::PROVIDES)])
 	}
 
 	override savePicture(Graph graph) {

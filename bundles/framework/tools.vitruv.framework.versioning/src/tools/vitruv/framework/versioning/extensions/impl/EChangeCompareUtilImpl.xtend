@@ -10,7 +10,6 @@ import tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingl
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 
 class EChangeCompareUtilImpl implements EChangeCompareUtil {
-
 	static val Set<Pair<String, String>> rootToRootMap = newHashSet
 
 	static def EChangeCompareUtil init() {
@@ -26,6 +25,10 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 
 	override isEChangeEqual(EChange e1, EChange e2) {
 		compareEchange(e1, e2)
+	}
+
+	override isConflictingEachOther(EChange e1, EChange e2) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	private dispatch def boolean compareEchange(EChange e1, EChange e2) {

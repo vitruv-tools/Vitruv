@@ -3,7 +3,6 @@
 package tools.vitruv.framework.versioning
 
 import org.eclipse.emf.common.util.EList
-import tools.vitruv.framework.versioning.commit.ChangeMatch
 
 interface Conflict {
 	def ConflictType getType()

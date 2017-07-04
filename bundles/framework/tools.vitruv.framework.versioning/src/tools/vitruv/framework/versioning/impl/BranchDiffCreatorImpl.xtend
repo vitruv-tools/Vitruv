@@ -2,7 +2,7 @@ package tools.vitruv.framework.versioning.impl
 
 import tools.vitruv.framework.versioning.BranchDiffCreator
 import java.util.List
-import tools.vitruv.framework.versioning.commit.ChangeMatch
+import tools.vitruv.framework.versioning.ChangeMatch
 
 class BranchDiffCreatorImpl implements BranchDiffCreator {
 	static final def BranchDiffCreator init() {
