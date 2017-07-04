@@ -2,8 +2,8 @@ package tools.vitruv.framework.versioning.emfstore
 
 import java.util.List
 import org.eclipse.xtext.xbase.lib.Functions.Function1
+import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.commit.Commit
-import tools.vitruv.framework.versioning.conflict.Conflict
 import tools.vitruv.framework.versioning.emfstore.VVObjectContainer
 import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 

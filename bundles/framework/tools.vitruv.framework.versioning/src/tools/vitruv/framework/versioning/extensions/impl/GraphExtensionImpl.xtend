@@ -18,6 +18,7 @@ import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.versioning.extensions.NodeExtension
 import java.util.Map
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
+import java.util.Set
 
 class GraphExtensionImpl implements GraphExtension {
 	static extension EChangeExtension = EChangeExtension::instance
@@ -132,6 +133,17 @@ class GraphExtensionImpl implements GraphExtension {
 		return currentGraphs
 	}
 
+	override calculateComponentNumber(Graph graph) {
+		val newGraph = graph.cloneGraph([true], [isType(EdgeType::PROVIDES)])
+		val cc = new ConnectedComponents
+		cc.init(newGraph)
+		return cc.connectedComponentsCount
+	}
+
+	override getSubgraphContainingNodes(Graph graph, Set<EChangeNode> nodes) {
+		graph.cloneGraph([EChangeNode n|nodes.contains(n)], [isType(EdgeType::PROVIDES)])
+	}
+
 	override savePicture(Graph graph) {
 		val fsi = new FileSinkImages(OutputType.PNG, Resolutions.HD720)
 		fsi.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE)
@@ -163,13 +175,6 @@ class GraphExtensionImpl implements GraphExtension {
 				edge.addAttribute(attKey, attribute)
 			]
 		]
-	}
-
-	override calculateComponentNumber(Graph graph) {
-		val newGraph = graph.cloneGraph([true], [isType(EdgeType::PROVIDES)])
-		val cc = new ConnectedComponents
-		cc.init(newGraph)
-		return cc.connectedComponentsCount
 	}
 
 }

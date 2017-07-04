@@ -1,6 +1,6 @@
 package tools.vitruv.framework.versioning
 
-import tools.vitruv.framework.versioning.conflict.Conflict
+import java.util.List
 import java.util.Map
 import tools.vitruv.framework.versioning.impl.ConflictDetectorImpl
 
@@ -16,5 +16,5 @@ interface ConflictDetector {
 
 	def void addMap(Map<String, String> rootToRootMap)
 
-	def Conflict detectConlicts(BranchDiff branchDiff)
+	def List<Conflict> detectConlicts(BranchDiff branchDiff)
 }

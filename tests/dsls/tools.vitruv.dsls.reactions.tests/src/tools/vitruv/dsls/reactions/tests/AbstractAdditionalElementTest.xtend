@@ -34,7 +34,7 @@ abstract class AbstractAdditionalElementTest extends AbstractConflictTest {
 		val sourceChanges = stRecorder.getChangeMatches(sourceVURI)
 		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
 		branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
-		conflict = conflictDetector.detectConlicts(branchDiff)
+		conflicts = conflictDetector.detectConlicts(branchDiff)
 		changes = branchDiff.baseChanges.map[originalChange].toList
 		echanges = changes.map[EChanges].flatten.toList
 	}

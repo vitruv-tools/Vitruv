@@ -10,6 +10,7 @@ import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.impl.GraphExtensionImpl
 import java.util.UUID
 import tools.vitruv.framework.versioning.extensions.impl.EChangeGraphImpl
+import java.util.Set
 
 interface GraphExtension {
 	static GraphExtension instance = GraphExtensionImpl::init
@@ -48,4 +49,6 @@ interface GraphExtension {
 	def void add(Graph graph, Graph graphToAdd)
 
 	def int calculateComponentNumber(Graph graph)
+
+	def Graph getSubgraphContainingNodes(Graph graph, Set<EChangeNode> nodes)
 }

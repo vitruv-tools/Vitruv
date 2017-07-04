@@ -16,18 +16,18 @@ import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.versioning.VersioningXtendFactory
-import tools.vitruv.framework.versioning.conflict.Conflict
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.Conflict
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected BranchDiff branchDiff
 	protected Collection<Root> roots
-	protected Conflict conflict
+	protected List<Conflict> conflicts
 	protected Graph graph
 	protected List<EChange> echanges
 	protected List<TransactionalChange> changes

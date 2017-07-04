@@ -72,6 +72,8 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 
 	@Test
 	def void testConflictDetector() {
+		assertThat(conflicts.empty, is(false))
 		
 	}
+
 }

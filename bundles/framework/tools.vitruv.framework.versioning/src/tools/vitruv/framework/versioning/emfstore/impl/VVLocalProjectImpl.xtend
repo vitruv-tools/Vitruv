@@ -9,13 +9,13 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import tools.vitruv.framework.versioning.commit.CommitFactory
-import tools.vitruv.framework.versioning.conflict.Conflict
 import tools.vitruv.framework.versioning.emfstore.VVFactory
 import tools.vitruv.framework.versioning.emfstore.VVLocalProject
 import tools.vitruv.framework.versioning.emfstore.VVModelElementId
 import tools.vitruv.framework.versioning.emfstore.VVModelElementIdUtil
 import tools.vitruv.framework.versioning.emfstore.VVRemoteProject
 import tools.vitruv.framework.versioning.emfstore.VVServer
+import tools.vitruv.framework.versioning.Conflict
 
 class VVLocalProjectImpl extends VVProjectImpl implements VVLocalProject {
 
