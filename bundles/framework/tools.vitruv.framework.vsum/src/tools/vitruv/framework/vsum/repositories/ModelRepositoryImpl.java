@@ -143,7 +143,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
 
     @Override
     public void persistRootElement(final VURI vuri, final EObject rootEObject) {
-        final ModelInstance modelInstance = getModel(vuri);
+        final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
