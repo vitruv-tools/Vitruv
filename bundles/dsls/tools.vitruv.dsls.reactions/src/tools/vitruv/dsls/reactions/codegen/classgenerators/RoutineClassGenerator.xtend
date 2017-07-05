@@ -147,17 +147,17 @@ class RoutineClassGenerator extends ClassGenerator {
 			«IF !retrieveElement.name.nullOrEmpty»
 				«affectedElementClass.javaClass» «retrieveElement.name» = «retrieveStatement»;
 				«IF !retrieveElement.optional && !retrieveElement.abscence»
-					if («retrieveElement.name» === null) {
+					if («retrieveElement.name» == null) {
 						return;
 					}
 				«ENDIF»
 				registerObjectUnderModification(«retrieveElement.name»);
 			«ELSEIF retrieveElement.abscence»
-				if («retrieveStatement» !== null) {
+				if («retrieveStatement» != null) {
 					return;
 				}
 			«ELSE»
-				if («retrieveStatement» === null) {
+				if («retrieveStatement» == null) {
 					return;
 				} else {
 					registerObjectUnderModification(«retrieveStatement»);
