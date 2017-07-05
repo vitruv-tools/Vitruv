@@ -5,6 +5,8 @@ import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.NodeExtension
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
+import org.eclipse.xtext.xbase.lib.Functions.Function1
+import org.graphstream.graph.Edge
 
 class NodeExtensionImpl implements NodeExtension {
 	static extension EdgeExtension = EdgeExtension::instance
@@ -16,11 +18,20 @@ class NodeExtensionImpl implements NodeExtension {
 	private new() {
 	}
 
-	override isLeave(Node node) {
-		node.enteringEdgeSet.forall[!isType(EdgeType::PROVIDES)]
+	override isProvideLeave(Node node) {
+		node.determineIsLeave([Edge e|!e.isType(EdgeType::PROVIDES)])
 	}
 
 	override setLabel(Node node, String label) {
 		node.addAttribute(GraphStreamConstants::uiLabel, label)
 	}
+
+	override isLeave(Node node) {
+		node.determineIsLeave([Edge e|!e.isType(EdgeType::PROVIDES) && !e.isType(EdgeType::TRIGGERS)])
+	}
+
+	private static def determineIsLeave(Node node, Function1<Edge, Boolean> predicate) {
+		node.enteringEdgeSet.forall[predicate.apply(it)]
+	}
+
 }

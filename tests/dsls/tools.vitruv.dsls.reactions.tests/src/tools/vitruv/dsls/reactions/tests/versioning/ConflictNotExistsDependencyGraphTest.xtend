@@ -30,8 +30,8 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 		assertThat(graph.checkIfEdgeExists(echanges.get(2), echanges.get(3), EdgeType.PROVIDES), is(true))
 		assertThat(graph.checkIfEdgeExists(echanges.get(4), echanges.get(5), EdgeType.PROVIDES), is(true))
 		assertThat(graph.checkIfEdgeExists(echanges.get(6), echanges.get(7), EdgeType.PROVIDES), is(true))
-		assertThat(graph.leaves.length, is(1))
-		assertThat(graph.leaves.toList.get(0), is(graph.getNode(echanges.get(0))))
+		assertThat(graph.provideLeaves.length, is(1))
+		assertThat(graph.provideLeaves.toList.get(0), is(graph.getNode(echanges.get(0))))
 		assertThat(graph.calculateComponentNumber, is(1))
 	}
 
@@ -43,7 +43,7 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 		assertThat(graph.checkIfEdgeExists(echanges.get(2), echanges.get(3), EdgeType.PROVIDES), is(true))
 		assertThat(graph.checkIfEdgeExists(echanges.get(4), echanges.get(5), EdgeType.PROVIDES), is(true))
 		assertThat(graph.checkIfEdgeExists(echanges.get(6), echanges.get(7), EdgeType.PROVIDES), is(true))
-		assertThat(graph.leaves.length, is(3))
+		assertThat(graph.provideLeaves.length, is(3))
 		assertThat(graph.calculateComponentNumber, is(3))
 		val currentSubgraphs = graph.subgraphs
 		assertThat(currentSubgraphs.length, is(3))
@@ -92,8 +92,8 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 			assertThat('''No edge between «c» and «otherEdge»''',
 				graph.checkIfEdgeExists(c, otherEdge, EdgeType::TRIGGERS), is(true))
 		]
-		assertThat(graph.leaves.length, is(2))
-		assertThat(graph.leaves.toList.get(0), is(graph.getNode(originalEChanges.get(0))))
+		assertThat(graph.provideLeaves.length, is(2))
+		assertThat(graph.provideLeaves.toList.get(0), is(graph.getNode(originalEChanges.get(0))))
 		assertThat(graph.calculateComponentNumber, is(2))
 	}
 }

@@ -6,6 +6,8 @@ import tools.vitruv.framework.versioning.extensions.impl.NodeExtensionImpl
 interface NodeExtension {
 	static NodeExtension instance = NodeExtensionImpl::init
 
+	def boolean isProvideLeave(Node node)
+
 	def boolean isLeave(Node node)
 
 	def void setLabel(Node node, String label)

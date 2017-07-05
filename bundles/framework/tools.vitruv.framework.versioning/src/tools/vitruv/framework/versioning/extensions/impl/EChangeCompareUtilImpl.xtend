@@ -8,6 +8,7 @@ import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRoo
 import tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceNonRootImpl
 import tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
+import org.eclipse.emf.common.util.URI
 
 class EChangeCompareUtilImpl implements EChangeCompareUtil {
 	static val Set<Pair<String, String>> rootToRootMap = newHashSet
@@ -28,7 +29,51 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 	}
 
 	override isConflictingEachOther(EChange e1, EChange e2) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		isConflicting(e1, e2)
+	}
+
+	private static def String getComparableString(URI uri) {
+		uri.toString
+	}
+
+	private dispatch def boolean isConflicting(EChange e1, EChange e2) {
+		false
+	}
+
+	private dispatch def boolean isConflicting(CreateAndReplaceNonRootImpl<?, ?> e1,
+		CreateAndReplaceNonRootImpl<?, ?> e2) {
+		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
+		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
+		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
+		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
+		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
+			e2.insertChange.affectedEObject as InternalEObject)
+		val newValueIsEqual = EcoreUtil::equals(e1.insertChange.newValue, e2.insertChange.newValue)
+		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && !newValueIsEqual
+	}
+
+	private dispatch def boolean isConflicting(CreateAndInsertNonRootImpl<?, ?> e1,
+		CreateAndInsertNonRootImpl<?, ?> e2) {
+		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
+		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
+		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
+		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
+		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
+			e2.insertChange.affectedEObject as InternalEObject)
+		val indexEqual = e1.insertChange.index === e2.insertChange.index
+		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && indexEqual
+	}
+
+	private dispatch def boolean isConflicting(ReplaceSingleValuedEAttributeImpl<?, ?> e1,
+		ReplaceSingleValuedEAttributeImpl<?, ?> e2) {
+		val affectedObjectIsEqual = EcoreUtil::equals(e1.affectedEObject, e2.affectedEObject)
+		val affectedFeatureIsEqual = EcoreUtil::equals(e1.affectedFeature, e2.affectedFeature)
+		val newValueIsEqual = e1.newValue == e2.newValue
+		val affectedContainer1 = e1.affectedEObject as InternalEObject
+		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
+		val containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
+			e2.affectedEObject as InternalEObject)
+		return (affectedObjectIsEqual || containerIsRootAndMapped) && affectedFeatureIsEqual && !newValueIsEqual
 	}
 
 	private dispatch def boolean compareEchange(EChange e1, EChange e2) {
@@ -36,7 +81,7 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 	}
 
 	private static def Boolean containerIsRootAndMapped(String containerString, InternalEObject affectedContainer2) {
-		val affectedContainerPlatformString2 = affectedContainer2.eProxyURI.toPlatformString(false)
+		val affectedContainerPlatformString2 = affectedContainer2.eProxyURI.comparableString
 		rootToRootMap.filter [
 			val toDirection = containerString.contains(key) && affectedContainerPlatformString2.contains(value)
 			val fromDirection = containerString.contains(value) && affectedContainerPlatformString2.contains(key)
@@ -59,7 +104,7 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 		val affectedFeatureIsEqual = EcoreUtil::equals(e1.affectedFeature, e2.affectedFeature)
 		val newValueIsEqual = e1.newValue == e2.newValue
 		val affectedContainer1 = e1.affectedEObject as InternalEObject
-		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.toPlatformString(false)
+		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
 		val containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
 			e2.affectedEObject as InternalEObject)
 		return (affectedObjectIsEqual || containerIsRootAndMapped) && affectedFeatureIsEqual && newValueIsEqual
@@ -70,7 +115,7 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
-		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.toPlatformString(false)
+		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
 		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
 			e2.insertChange.affectedEObject as InternalEObject)
 		val newValueIsEqual = EcoreUtil::equals(e1.insertChange.newValue, e2.insertChange.newValue)
@@ -82,7 +127,7 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
-		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.toPlatformString(false)
+		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
 		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
 			e2.insertChange.affectedEObject as InternalEObject)
 		val newValueIsEqual = EcoreUtil::equals(e1.insertChange.newValue, e2.insertChange.newValue)

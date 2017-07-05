@@ -39,8 +39,16 @@ class GraphExtensionImpl implements GraphExtension {
 		node.EChange = e
 	}
 
+	override getProvideLeaves(Graph graph) {
+		graph.determineLeaves([EChangeNode n|n.provideLeave])
+	}
+
 	override getLeaves(Graph graph) {
-		graph.nodeSet.filter[leave]
+		graph.determineLeaves([EChangeNode n|n.leave])
+	}
+
+	private static def determineLeaves(Graph graph, Function1<EChangeNode, Boolean> nodePredicate) {
+		graph.<EChangeNode>nodeSet.filter[nodePredicate.apply(it)]
 	}
 
 	override getNode(Graph graph, EChange e) {
@@ -77,6 +85,9 @@ class GraphExtensionImpl implements GraphExtension {
 			case ISOMORPHIC: {
 				graph.addUndirectedEdge(fromEchange, toEChange, type)
 			}
+			case CONFLICTS: {
+				graph.addUndirectedEdge(fromEchange, toEChange, type)
+			}
 			default: {
 				throw new UnsupportedOperationException
 			}
@@ -107,7 +118,9 @@ class GraphExtensionImpl implements GraphExtension {
 			val EChangeNode node = newGraph.addNode(oldNode.id)
 			node.EChange = oldNode.EChange
 		]
-		oldgraph.edgeSet.filter[edgePredicate.apply(it)].forEach [
+		oldgraph.edgeSet.filter [
+			nodePredicate.apply(sourceNode) && nodePredicate.apply(targetNode)
+		].filter[edgePredicate.apply(it)].forEach [
 			val newSourceNode = newGraph.getNode(sourceNode.id)
 			val newTargetNode = newGraph.getNode(targetNode.id)
 			newGraph.addEdge(id, newSourceNode, newTargetNode, directed)
@@ -117,7 +130,7 @@ class GraphExtensionImpl implements GraphExtension {
 
 	override getSubgraphs(Graph graph) {
 		val requiredGraph = graph.cloneGraph([true], [isType(EdgeType::PROVIDES)])
-		val currentLeaves = requiredGraph.leaves
+		val currentLeaves = requiredGraph.provideLeaves
 		val Collection<Graph> currentGraphs = newArrayList
 		currentLeaves.forEach [ leave |
 			val g = createNewEChangeGraph
@@ -141,13 +154,19 @@ class GraphExtensionImpl implements GraphExtension {
 	}
 
 	override getSubgraphContainingEChanges(Graph graph, Set<EChange> nodes) {
-		graph.cloneGraph([EChangeNode n|nodes.contains(n.EChange)], [isType(EdgeType::PROVIDES)])
+		graph.cloneGraph([EChangeNode n|nodes.contains(n.EChange)], [
+			isType(EdgeType::PROVIDES) || isType(EdgeType::TRIGGERS)
+		])
+	}
+
+	override savePicture(Graph graph, String name) {
+		val fsi = new FileSinkImages(OutputType.PNG, Resolutions.HD720)
+		fsi.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE)
+		graph.write(fsi, '''./test_«name»_write.png''')
 	}
 
 	override savePicture(Graph graph) {
-		val fsi = new FileSinkImages(OutputType.PNG, Resolutions.HD720)
-		fsi.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE)
-		graph.write(fsi, '''./test_«graph.id»_write.png''')
+		graph.savePicture(graph.id)
 	}
 
 	override add(Graph graph, Graph graphToAdd) {

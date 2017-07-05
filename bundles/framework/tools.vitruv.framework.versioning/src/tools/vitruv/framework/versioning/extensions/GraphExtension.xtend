@@ -22,6 +22,8 @@ interface GraphExtension {
 
 	def Iterable<Edge> edgesWithType(Graph graph, EdgeType t)
 
+	def Iterable<EChangeNode> getProvideLeaves(Graph graph)
+
 	def Iterable<EChangeNode> getLeaves(Graph graph)
 
 	def EChangeNode getNode(Graph graph, EChange e)
@@ -45,6 +47,8 @@ interface GraphExtension {
 	def Collection<Graph> getSubgraphs(Graph graph)
 
 	def void savePicture(Graph graph)
+
+	def void savePicture(Graph graph, String name)
 
 	def void add(Graph graph, Graph graphToAdd)
 

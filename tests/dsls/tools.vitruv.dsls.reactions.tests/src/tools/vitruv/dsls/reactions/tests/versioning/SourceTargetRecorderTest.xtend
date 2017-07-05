@@ -17,11 +17,11 @@ import tools.vitruv.dsls.reactions.tests.AbstractVersioningTest
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.SourceTargetRecorder
 import tools.vitruv.framework.versioning.VersioningXtendFactory
-import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.impl.SourceTargetRecorderImpl
 
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.ChangeMatch
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	static extension Logger = Logger::getLogger(SourceTargetRecorderTest)

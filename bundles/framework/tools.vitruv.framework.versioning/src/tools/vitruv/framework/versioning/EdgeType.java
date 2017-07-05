@@ -1,7 +1,7 @@
 package tools.vitruv.framework.versioning;
 
 public enum EdgeType {
-	PROVIDES("provides"), TRIGGERS("triggers"), ISOMORPHIC("equivalent");
+	PROVIDES("provides"), TRIGGERS("triggers"), ISOMORPHIC("equivalent"), CONFLICTS("conflicts");
 
 	private final String name;
 

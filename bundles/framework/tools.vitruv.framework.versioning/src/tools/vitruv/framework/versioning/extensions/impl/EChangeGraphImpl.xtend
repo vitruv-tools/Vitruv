@@ -28,6 +28,12 @@ class EChangeGraphImpl extends SingleGraph {
 		edge.«EdgeType::TRIGGERS.toString» {
 			fill-color: black;
 		}
+		edge.«EdgeType::CONFLICTS.toString» {
+			fill-color: blue;
+		}
+		edge.«EdgeType::ISOMORPHIC.toString» {
+			fill-color: brown;
+		}
 	'''
 
 	new(String id) {

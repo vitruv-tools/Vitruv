@@ -10,7 +10,12 @@ import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.CoreMatchers.is
+import static org.hamcrest.CoreMatchers.not
+import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.MultiChangeConflict
+import tools.vitruv.framework.versioning.ConflictSolvability
+import tools.vitruv.framework.versioning.ConflictType
 
 class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 	@Test
@@ -73,7 +78,13 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 	@Test
 	def void testConflictDetector() {
 		assertThat(conflicts.empty, is(false))
-		
+		assertThat(conflicts.size, is(1))
+		val conflict = conflicts.filter[it instanceof MultiChangeConflict].map[it as MultiChangeConflict].get(0)
+		assertThat(conflict, not(equalTo(null)))
+		assertThat(conflict.solvability, is(ConflictSolvability::AUTOMATIC))
+		assertThat(conflict.type, is(ConflictType::INSERTING_IN_SAME_CONTANER))
+		assertThat(conflict.sourceChanges.size, is(4))
+		assertThat(conflict.targetChanges.size, is(4))
 	}
 
 }

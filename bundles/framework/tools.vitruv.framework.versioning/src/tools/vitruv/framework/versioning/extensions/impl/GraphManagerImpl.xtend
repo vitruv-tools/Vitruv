@@ -41,7 +41,7 @@ class GraphManagerImpl implements GraphManager {
 
 	override edgesWithType(EdgeType t) { graph.edgesWithType(t) }
 
-	override getLeaves() { graph.leaves }
+	override getLeaves() { graph.provideLeaves }
 
 	override getNode(EChange e) { graph.getNode(e) }
 
