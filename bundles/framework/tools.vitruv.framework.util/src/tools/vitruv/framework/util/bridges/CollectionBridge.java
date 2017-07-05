@@ -3,7 +3,6 @@ package tools.vitruv.framework.util.bridges;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -22,28 +21,6 @@ public final class CollectionBridge {
     /** Utility classes should not have a public or default constructor. */
     private CollectionBridge() {
     }
-	
-	public static final <T> Collection<T> claimNotEmpty(Collection<T> c) {
-	    if (c.size() == 0) {
-	        throw new RuntimeException("It was claimed that the collection '" + c + "' is not empty!");
-	    }
-	    return c;
-	}
-	
-	/**
-	 * @Deprecated Use {@link edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil#claimOne(Iterable)} instead.
-	 */
-	@Deprecated
-	public static final <T> T claimOne(Iterable<T> c) {
-		Iterator<T> iterator = c.iterator();
-		if (iterator.hasNext()) {
-			T one = iterator.next();
-	        if (!iterator.hasNext()) {
-	        	return one;
-	        }
-		}
-		throw new RuntimeException("It was claimed that the collection '" + c + "' contains exactly one element!");
-	}
 	
 	public static final <T> T claimNotMany(Collection<T> c) {
 	    int size = c.size();

@@ -21,7 +21,10 @@ import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
-import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
+import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toSet
+import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toList
+import static extension tools.vitruv.framework.util.bridges.CollectionBridge.claimNotMany
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import pcm_mockup.PInterface
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
