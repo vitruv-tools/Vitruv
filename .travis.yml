@@ -23,6 +23,7 @@ before_install:
     - sh -e /etc/init.d/xvfb start - sleep 10
     - git clone --depth 1 https://github.com/kit-sdq/BuildUtilities.git /tmp/BuildUtilities
     - . /tmp/BuildUtilities/travis-ci/installMaven.sh
+    - "echo \"export MAVEN_OPTS='-Dmaven.repo.local=$HOME/.m2/repository -Xmx2g -XX:MaxPermSize=2048m'\" > ~/.mavenrc"
 install: true
 
 script: mvn clean verify
