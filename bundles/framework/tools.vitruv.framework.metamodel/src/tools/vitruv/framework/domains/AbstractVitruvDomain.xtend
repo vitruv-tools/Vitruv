@@ -16,6 +16,7 @@ import java.util.ArrayList
 import org.eclipse.emf.ecore.EPackage
 import java.util.Collection
 import tools.vitruv.framework.domains.VitruvDomain
+import org.eclipse.emf.ecore.EClass
 
 class AbstractVitruvDomain extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener, VitruvDomain {
 	Collection<String> fileExtensions
@@ -111,9 +112,13 @@ class AbstractVitruvDomain extends AbstractURIHaving implements TuidCalculator, 
 	}
 
 	override boolean isInstanceOfDomainMetamodel(EObject eObject) {
-		if (null === eObject || null === eObject.eClass() || null === eObject.eClass().getEPackage() ||
-			null === eObject.eClass().getEPackage().getNsURI() ||
-			!this.nsURIs.contains(eObject.eClass().getEPackage().getNsURI())) {
+		if (eObject === null) {
+			return false;
+		}
+		val eClass = if (eObject instanceof EClass) eObject else eObject.eClass(); 
+		
+		if (null === eClass || null === eClass.getEPackage() ||	null === eClass.getEPackage().getNsURI() ||
+			!this.nsURIs.contains(eClass.getEPackage().getNsURI())) {
 			return false
 		}
 		return true
