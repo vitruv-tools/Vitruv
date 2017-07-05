@@ -6,7 +6,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.versioning.impl.DependencyGraphCreatorImpl
 
 interface DependencyGraphCreator {
-	static DependencyGraphCreator instance = DependencyGraphCreatorImpl::init
+	DependencyGraphCreator instance = DependencyGraphCreatorImpl::init
 
 	def Graph createDependencyGraph(List<TransactionalChange> echanges)
 
