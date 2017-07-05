@@ -30,6 +30,10 @@ public final class CollectionBridge {
 	    return c;
 	}
 	
+	/**
+	 * @Deprecated Use {@link edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil#claimOne(Iterable)} instead.
+	 */
+	@Deprecated
 	public static final <T> T claimOne(Iterable<T> c) {
 		Iterator<T> iterator = c.iterator();
 		if (iterator.hasNext()) {
