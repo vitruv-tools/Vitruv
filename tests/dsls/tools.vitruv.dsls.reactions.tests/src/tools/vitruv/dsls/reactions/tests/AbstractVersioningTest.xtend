@@ -1,10 +1,8 @@
 package tools.vitruv.dsls.reactions.tests
 
 import allElementTypes.AllElementTypesFactory
-import allElementTypes.NonRootObjectContainerHelper
-import allElementTypes.Root
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
-import tools.vitruv.framework.util.datatypes.VURI
+import allElementTypes.Root
 
 abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTests {
 	protected static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
@@ -27,25 +25,11 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 		}]
 	}
 
-	protected def VURI calculateVURI(String path) {
-		VURI::getInstance('''«currentTestProject.name»/«path.projectModelPath»''')
-	}
-
-	protected static final def String getProjectModelPath(String modelName) {
-		'''model/«modelName».«MODEL_FILE_EXTENSION»'''
-	}
-
-	protected final def getRootElement() {
-		TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root
-	}
-
 	protected def assertModelsEqual() {
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath)
 	}
 
-	protected final def void createAndAddNonRoot(String id, NonRootObjectContainerHelper container) {
-		val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
-		nonRoot.id = id
-		container.nonRootObjectsContainment.add(nonRoot)
+	protected final def getRootElement() {
+		TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root
 	}
 }

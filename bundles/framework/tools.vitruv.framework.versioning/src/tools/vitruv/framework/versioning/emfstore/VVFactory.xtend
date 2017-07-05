@@ -9,7 +9,7 @@ interface VVFactory {
 
 	def VVServer createServer()
 
-	def VVLocalProject createLocalProject()
+	def VVLocalProject createLocalProject(String name)
 
 	def VVRemoteProject createRemoteProject()
 }

@@ -1,33 +1,15 @@
-/** 
- */
 package tools.vitruv.framework.versioning.commit.impl
 
-import org.eclipse.emf.ecore.EClass
-import tools.vitruv.framework.versioning.commit.CommitPackage
 import tools.vitruv.framework.versioning.commit.InitialCommit
+import java.util.List
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.commit.CommitMessage
+import tools.vitruv.framework.versioning.commit.SimpleCommit
+import tools.vitruv.framework.versioning.commit.MergeCommit
 
-/** 
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Initial Commit</b></em>'.
- * <!-- end-user-doc -->
- * @generated
- */
 class InitialCommitImpl extends CommitImpl implements InitialCommit {
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected new() {
-		super()
+	new(List<EChange> changes, CommitMessage commitmessage, List<SimpleCommit> commitsBranchedFromThis,
+		List<MergeCommit> commitsMergedFromThis, int identifier) {
+		super(changes, commitmessage, commitsBranchedFromThis, commitsMergedFromThis, identifier)
 	}
-
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	override protected EClass eStaticClass() {
-		return CommitPackage.Literals.INITIAL_COMMIT
-	} // InitialCommitImpl
 }

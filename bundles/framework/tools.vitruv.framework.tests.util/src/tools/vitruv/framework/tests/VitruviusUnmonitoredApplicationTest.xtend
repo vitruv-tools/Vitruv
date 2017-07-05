@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.After
 import org.junit.Before
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
@@ -29,9 +30,13 @@ import static org.junit.Assert.assertTrue
  * @author Heiko Klare
  */
 abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
+	static extension VModelExtention = VModelExtention::instance
 	ResourceSet resourceSet
+	@Accessors(PROTECTED_GETTER)
 	TestUserInteractor testUserInteractor
+	@Accessors(PROTECTED_GETTER)
 	InternalVirtualModel virtualModel
+	@Accessors(PROTECTED_GETTER)
 	CorrespondenceModel correspondenceModel
 
 	def protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications()
@@ -51,7 +56,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 
 	def private createVirtualModel(String testName) {
 		val currentTestProjectVsumName = '''«testName»_vsum_'''
-		val domains = this.getVitruvDomains
+		val domains = vitruvDomains
 		virtualModel = TestUtil::createVirtualModel(currentTestProjectVsumName, true, domains,
 			createChangePropagationSpecifications)
 		correspondenceModel = virtualModel.getCorrespondenceModel
@@ -59,24 +64,12 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 		virtualModel.userInteractor = testUserInteractor
 	}
 
-	def protected CorrespondenceModel getCorrespondenceModel() {
-		correspondenceModel
-	}
-
-	def protected InternalVirtualModel getVirtualModel() {
-		virtualModel
-	}
-
-	def protected TestUserInteractor getUserInteractor() {
-		testUserInteractor
-	}
-
 	def String getPlatformModelPath(String modelPathWithinProject) {
-		'''«currentTestProject.getName»/«modelPathWithinProject»'''
+		currentTestProject.getPlatformModelPath(modelPathWithinProject)
 	}
 
 	def VURI getModelVuri(String modelPathWithinProject) {
-		VURI::getInstance(getPlatformModelPath(modelPathWithinProject))
+		currentTestProject.getModelVuri(modelPathWithinProject)
 	}
 
 	/**
@@ -88,11 +81,11 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * registered for resource with the given file extension
 	 */
 	def protected Resource createModelResource(String modelPathWithinProject) {
-		resourceSet.createResource(getModelVuri(modelPathWithinProject).EMFUri)
+		currentTestProject.createModelResource(resourceSet, modelPathWithinProject)
 	}
 
 	def Resource getModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
-		resourceSet.getResource(getModelVuri(modelPathWithinProject).EMFUri, true)
+		currentTestProject.getModelResource(modelPathWithinProject, resourceSet)
 	}
 
 	/**
@@ -102,7 +95,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * <code>null</code> if it could not be loaded
 	 */
 	def protected Resource getModelResource(URI modelUri) {
-		resourceSet.getResource(modelUri, true)
+		resourceSet.getModelResource(modelUri)
 	}
 
 	/**
@@ -114,14 +107,11 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * it could not be loaded
 	 */
 	def protected Resource getModelResource(String modelPathWithinProject) {
-		getModelResource(modelPathWithinProject, this.resourceSet)
+		currentTestProject.getModelResource(resourceSet, modelPathWithinProject)
 	}
 
 	def EObject getFirstRootElement(String modelPathWithinProject, ResourceSet resourceSet) {
-		val resourceContents = getModelResource(modelPathWithinProject, resourceSet).getContents
-		if (resourceContents.size < 1)
-			throw new IllegalStateException("Model has no root")
-		resourceContents.get(0)
+		currentTestProject.getFirstRootElement(modelPathWithinProject, resourceSet)
 	}
 
 	/**
@@ -133,7 +123,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * @throws IllegalStateExceptionif the resource does not contain a root element
 	 */
 	def protected EObject getFirstRootElement(String modelPathWithinProject) {
-		getFirstRootElement(modelPathWithinProject, this.resourceSet)
+		currentTestProject.getFirstRootElement(modelPathWithinProject, resourceSet)
 	}
 
 	/**

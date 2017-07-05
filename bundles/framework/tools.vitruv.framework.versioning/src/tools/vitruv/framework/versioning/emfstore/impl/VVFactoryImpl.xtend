@@ -7,6 +7,9 @@ class VVFactoryImpl implements VVFactory {
 		new VVFactoryImpl
 	}
 
+	private new() {
+	}
+
 	override createWorkspace() {
 		new VVWorkspaceImpl
 	}
@@ -15,12 +18,12 @@ class VVFactoryImpl implements VVFactory {
 		new VVServerImpl
 	}
 
-	override createLocalProject() {
-		new VVLocalProjectImpl
-	}
-
 	override createRemoteProject() {
 		new VVRemoteProjectImpl
+	}
+
+	override createLocalProject(String name) {
+		new VVLocalProjectImpl(name)
 	}
 
 }

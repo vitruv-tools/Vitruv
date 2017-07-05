@@ -1,78 +1,19 @@
-/** 
- */
 package tools.vitruv.framework.versioning.commit
 
-import org.eclipse.emf.ecore.EFactory
+import tools.vitruv.framework.versioning.commit.impl.CommitFactoryImpl
+import tools.vitruv.framework.change.echange.EChange
+import java.util.List
+import tools.vitruv.framework.versioning.author.Author
 
-/** 
- * <!-- begin-user-doc -->
- * The <b>Factory</b> for the model.
- * It provides a create method for each non-abstract class of the model.
- * <!-- end-user-doc -->
- * @see tools.vitruv.framework.versioning.commit.CommitPackage
- * @generated
- */
-interface CommitFactory extends EFactory {
-	/** 
-	 * The singleton instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	CommitFactory eINSTANCE = tools.vitruv.framework.versioning.commit.impl.CommitFactoryImpl::init()
+interface CommitFactory {
+	CommitFactory instance = CommitFactoryImpl::init
 
-	/** 
-	 * Returns a new object of class '<em>Merge Commit</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Merge Commit</em>'.
-	 * @generated
-	 */
 	def MergeCommit createMergeCommit()
 
-	/** 
-	 * Returns a new object of class '<em>Simple Commit</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Simple Commit</em>'.
-	 * @generated
-	 */
-	def SimpleCommit createSimpleCommit()
+	def SimpleCommit createSimpleCommit(List<EChange> changes, String message, Author author, Commit parent)
 
-	/** 
-	 * Returns a new object of class '<em>Message</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Message</em>'.
-	 * @generated
-	 */
-	def CommitMessage createCommitMessage()
+	def CommitMessage createCommitMessage(String message, Author author)
 
-	/** 
-	 * Returns a new object of class '<em>Initial Commit</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Initial Commit</em>'.
-	 * @generated
-	 */
 	def InitialCommit createInitialCommit()
 
-	/** 
-	 * Returns a new object of class '<em>Change Match</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Change Match</em>'.
-	 * @generated
-	 */
-	def ChangeMatch createChangeMatch()
-
-	/** 
-	 * Returns the package supported by this factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the package supported by this factory.
-	 * @generated
-	 */
-	def CommitPackage getCommitPackage()
-// CommitFactory
 }

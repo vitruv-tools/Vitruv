@@ -67,8 +67,6 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val theirConflictedChanges = naiveConflicts.map[it as SimpleChangeConflict].map[targetChange].toSet
 		val mySubgraph = graph1.getSubgraphContainingEChanges(myConflictedChanges)
 		val theirSubgraph = graph2.getSubgraphContainingEChanges(theirConflictedChanges)
-		mySubgraph.savePicture("mySubgraph")
-		theirSubgraph.savePicture("theirSubgraph")
 		val leaves1 = mySubgraph.leaves
 		val leaves2 = theirSubgraph.leaves
 		val List<Conflict> cleanedConflicts = new ArrayList

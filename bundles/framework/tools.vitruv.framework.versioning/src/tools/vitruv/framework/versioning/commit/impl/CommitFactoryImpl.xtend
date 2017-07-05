@@ -1,154 +1,40 @@
-/** 
- */
 package tools.vitruv.framework.versioning.commit.impl
 
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.impl.EFactoryImpl
-import org.eclipse.emf.ecore.plugin.EcorePlugin
-import tools.vitruv.framework.versioning.commit.ChangeMatch
 import tools.vitruv.framework.versioning.commit.CommitFactory
-import tools.vitruv.framework.versioning.commit.CommitMessage
-import tools.vitruv.framework.versioning.commit.CommitPackage
-import tools.vitruv.framework.versioning.commit.InitialCommit
-import tools.vitruv.framework.versioning.commit.MergeCommit
-import tools.vitruv.framework.versioning.commit.SimpleCommit
+import java.util.List
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.author.Author
+import java.util.Date
+import tools.vitruv.framework.versioning.commit.Commit
+import java.util.Random
 
-/** 
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
- * @generated
- */
-class CommitFactoryImpl extends EFactoryImpl implements CommitFactory {
-	/** 
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	def static CommitFactory init() {
-		try {
-			var CommitFactory theCommitFactory = (EPackage.Registry::INSTANCE.getEFactory(
-				CommitPackage::eNS_URI) as CommitFactory)
-			if (theCommitFactory !== null) {
-				return theCommitFactory
-			}
-		} catch (Exception exception) {
-			EcorePlugin::INSTANCE.log(exception)
-		}
+class CommitFactoryImpl implements CommitFactory {
+	static extension Random = new Random
 
-		return new CommitFactoryImpl()
+	static def CommitFactory init() {
+		new CommitFactoryImpl
 	}
 
-	/** 
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	new() {
-		super()
+	private new() {
 	}
 
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	override EObject create(EClass eClass) {
-
-		switch (eClass.getClassifierID()) {
-			case CommitPackage::MERGE_COMMIT: {
-				return createMergeCommit()
-			}
-			case CommitPackage::SIMPLE_COMMIT: {
-				return createSimpleCommit()
-			}
-			case CommitPackage::COMMIT_MESSAGE: {
-				return createCommitMessage()
-			}
-			case CommitPackage::INITIAL_COMMIT: {
-				return createInitialCommit()
-			}
-			case CommitPackage::CHANGE_MATCH: {
-				return createChangeMatch()
-			}
-			default: {
-				throw new IllegalArgumentException(
-					'''The class '«»«eClass.getName()»' is not a valid classifier'''.toString);
-			}
-		}
+	override createMergeCommit() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	override MergeCommit createMergeCommit() {
-		var MergeCommitImpl mergeCommit = new MergeCommitImpl()
-		return mergeCommit
+	override createInitialCommit() {
+		val commitMessage = createCommitMessage("Initial commit", null)
+		return new InitialCommitImpl(#[], commitMessage, newArrayList, newArrayList, nextInt)
 	}
 
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	override SimpleCommit createSimpleCommit() {
-		var SimpleCommitImpl simpleCommit = new SimpleCommitImpl()
-		return simpleCommit
+	override createCommitMessage(String message, Author author) {
+		new CommitMessageImpl(new Date, message, author)
 	}
 
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	override CommitMessage createCommitMessage() {
-		var CommitMessageImpl commitMessage = new CommitMessageImpl()
-		return commitMessage
+	override createSimpleCommit(List<EChange> changes, String message, Author author, Commit parent) {
+		val commitMessage = createCommitMessage(message, author)
+		return new SimpleCommitImpl(changes, commitMessage, newArrayList, newArrayList, nextInt, parent)
+
 	}
 
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	override InitialCommit createInitialCommit() {
-		var InitialCommitImpl initialCommit = new InitialCommitImpl()
-		return initialCommit
-	}
-
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	override ChangeMatch createChangeMatch() {
-		var ChangeMatchImpl changeMatch = new ChangeMatchImpl()
-		return changeMatch
-	}
-
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	override CommitPackage getCommitPackage() {
-		return (getEPackage() as CommitPackage)
-	}
-
-	/** 
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @deprecated
-	 * @generated
-	 */
-	@Deprecated
-	def static CommitPackage getPackage() {
-		return CommitPackage::eINSTANCE
-	} // CommitFactoryImpl
 }

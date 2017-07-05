@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.versioning
+package tools.vitruv.dsls.reactions.tests.versioning
 
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.BasicEList
@@ -6,8 +6,6 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.emfstore.bowling.BowlingFactory
 import org.eclipse.emf.emfstore.bowling.League
 import org.junit.Test
-import tools.vitruv.framework.versioning.commit.ChangeMatch
-import tools.vitruv.framework.versioning.conflict.SimpleChangeConflict
 import tools.vitruv.framework.versioning.emfstore.VVFactory
 import tools.vitruv.framework.versioning.emfstore.VVWorkspaceProvider
 import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
@@ -15,38 +13,71 @@ import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.ConflictDetector
+import tools.vitruv.framework.versioning.DependencyGraphCreator
+import tools.vitruv.framework.versioning.extensions.GraphExtension
+import tools.vitruv.framework.versioning.SourceTargetRecorder
+import tools.vitruv.framework.versioning.VersioningXtendFactory
+import tools.vitruv.framework.versioning.author.Author
+import tools.vitruv.framework.versioning.commit.CommitFactory
 
-class EMFStoreBaseline {
+class EMFStoreBaseline extends AbstractAllElementTypesReactionsTests {
+	static extension CommitFactory = CommitFactory::instance
+	protected static extension ConflictDetector conflictDetector = ConflictDetector::instance
+	protected static extension DependencyGraphCreator = DependencyGraphCreator::instance
+	protected static extension GraphExtension = GraphExtension::instance
+	protected SourceTargetRecorder stRecorder
+	protected VURI newSourceVURI
+	protected VURI sourceVURI
 	static extension Logger = Logger::getLogger(EMFStoreBaseline)
+
+	override protected setup() {
+	}
+
+	override protected cleanup() {
+	}
+
+	override protected createChangePropagationSpecifications() {
+		#[]
+	}
 
 	@Test
 	def void emfHelloWorldExample() {
-		val server = VVFactory::instance.createServer
-		val workspace = VVWorkspaceProvider::instance.workspace
-		workspace.addServer(server)
-		workspace.servers.filter[it !== server].forEach [ existingServer |
-			workspace.removeServer(existingServer)
-		]
-		val demoProject = workspace.createLocalProject("DemoProject")
-		workspace.localProjects.filter[it !== demoProject].forEach [ existingLocalProject |
-			existingLocalProject.delete
-		]
-		val remoteDemoProject = demoProject.shareProject(server)
-		server.remoteProjects.filter[id != remoteDemoProject.id].forEach [ existingRemoteProject |
-			existingRemoteProject.delete
-		]
-		val demoProjectCopy = demoProject.remoteProject.checkout("DemoProject Copy")
-
+		val author = Author::createAuthor("Author1")
+		val initialCommit = createInitialCommit
+		val demoProjectName = "DemoProject"
+		val demoProjectCopyName = "DemoProjectCopy"
+		sourceVURI = demoProjectName.calculateVURI
+		newSourceVURI = demoProjectCopyName.calculateVURI
+		val rootToRootMap = #{
+			sourceVURI.EMFUri.toPlatformString(false) -> newSourceVURI.EMFUri.toPlatformString(false)
+		}
+		addMap(rootToRootMap)
+		stRecorder = VersioningXtendFactory::instance.createSourceTargetRecorder(virtualModel)
+		stRecorder.registerObserver
 		val league = BowlingFactory::eINSTANCE.createLeague
 		league.name = "Superbowling League"
-		demoProject.modelElements += league
+		demoProjectName.projectModelPath.createAndSynchronizeModel(league)
+		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[])
+
+		val leagueCopy1 = BowlingFactory::eINSTANCE.createLeague
+		leagueCopy1.name = "Superbowling League"
+		demoProjectCopyName.projectModelPath.createAndSynchronizeModel(leagueCopy1)
+
 		val player1 = BowlingFactory::eINSTANCE.createPlayer
 		player1.name = "Maximilian"
-
 		val player2 = BowlingFactory::eINSTANCE.createPlayer
 		player2.name = "Ottgar"
 		league.players += #[player1, player2]
-		demoProject.commit("My message")
+		league.saveAndSynchronizeChanges
+		val changeMathes = stRecorder.getChangeMatches(sourceVURI)
+		assertThat(changeMathes.length, is(2))
+		val echanges = changeMathes.map[allEChanges].flatten.toList
+
+		val commit = author.createSimpleCommit("My message", initialCommit, echanges)
+		demoProject.commit()
 		demoProjectCopy.update
 		var leagueCopy = demoProject.modelElements.get(0) as League
 		assertThat(league.name, equalTo(leagueCopy.name))
@@ -107,4 +138,5 @@ class EMFStoreBaseline {
 			System.out.println("\nPlayer name in demoProjectCopy is now: " + leagueCopy.getPlayers().get(0).getName()); // $NON-NLS-1$
 		}
 	}
+
 }

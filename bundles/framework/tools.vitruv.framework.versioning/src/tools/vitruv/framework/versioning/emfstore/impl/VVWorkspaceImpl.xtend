@@ -9,6 +9,7 @@ import tools.vitruv.framework.versioning.emfstore.VVServer
 import tools.vitruv.framework.versioning.emfstore.VVWorkspace
 
 class VVWorkspaceImpl implements VVWorkspace {
+	static extension VVFactory v = VVFactory::instance
 	@Accessors(PUBLIC_GETTER)
 	List<VVServer> servers
 	@Accessors(PUBLIC_GETTER)
@@ -19,15 +20,14 @@ class VVWorkspaceImpl implements VVWorkspace {
 		localProjects = new ArrayList
 	}
 
-	override addServer(VVServer server) {
-		servers += server
-	}
-
 	override createLocalProject(String name) {
-		val localProject = VVFactory::instance.createLocalProject
-		localProject.name = name
+		val localProject = v.createLocalProject(name)
 		localProjects += localProject
 		return localProject
+	}
+
+	override addServer(VVServer server) {
+		servers += server
 	}
 
 	override removeServer(VVServer server) {
