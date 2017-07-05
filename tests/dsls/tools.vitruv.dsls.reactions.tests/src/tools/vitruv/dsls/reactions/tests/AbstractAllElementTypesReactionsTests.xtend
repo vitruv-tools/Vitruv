@@ -13,7 +13,7 @@ abstract class AbstractAllElementTypesReactionsTests extends VitruviusApplicatio
 		return #[new AllElementTypesDomainProvider().domain];
 	}
 
-	protected static final def String getProjectModelPath(String modelName) {
+	protected static def String getProjectModelPath(String modelName) {
 		'''model/«modelName».«MODEL_FILE_EXTENSION»'''
 	}
 

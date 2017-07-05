@@ -20,12 +20,17 @@ import tools.vitruv.framework.util.datatypes.VURI
 import java.util.List
 
 class EChangeCopierImpl implements EChangeCopier {
-	static val logger = Logger::getLogger(EChangeCopierImpl)
+	static extension Logger = Logger::getLogger(EChangeCopierImpl)
 	val List<Pair<String, String>> replacePairs
 
 	new(List<Pair<String, String>> replacePairs) {
-		logger.level = Level::DEBUG
+		level = Level::DEBUG
 		this.replacePairs = replacePairs
+	}
+
+	override copyEChanges(EChange changeToCopy, VURI vuri) {
+		val copiedEChange = copyThisEChange(changeToCopy)
+		return VitruviusChangeFactory::instance.createEMFModelChange(#[copiedEChange], vuri) as VitruviusChange
 	}
 
 	override copyEMFModelChangeToList(VitruviusChange changeToCopy, VURI vuri) {
@@ -90,7 +95,7 @@ class EChangeCopierImpl implements EChangeCopier {
 		val proxyUriString = affectedEObject.eProxyURI.toString
 		val containsSource = replacePairs.exists[proxyUriString.contains(key)]
 		if (!containsSource) {
-			logger.error('''AffectedEObject «affectedEObject» lies not under any source of «replacePairs»''')
+			error('''AffectedEObject «affectedEObject» lies not under any source of «replacePairs»''')
 			return affectedEObject
 		}
 		val pair = replacePairs.findFirst[proxyUriString.contains(key)]
@@ -105,4 +110,5 @@ class EChangeCopierImpl implements EChangeCopier {
 	private def getCopiedEChangeIterator(VitruviusChange changeToCopy) {
 		changeToCopy.getEChanges.map[copyThisEChange].filterNull
 	}
+
 }

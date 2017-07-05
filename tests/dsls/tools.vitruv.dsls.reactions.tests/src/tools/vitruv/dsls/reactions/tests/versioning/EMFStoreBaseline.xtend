@@ -3,28 +3,31 @@ package tools.vitruv.dsls.reactions.tests.versioning
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.emfstore.bowling.BowlingFactory
 import org.eclipse.emf.emfstore.bowling.League
+import org.junit.Ignore
 import org.junit.Test
-import tools.vitruv.framework.versioning.emfstore.VVFactory
+import tools.vitruv.dsls.reactions.tests.BowlingDomainProvider
+import tools.vitruv.framework.tests.VitruviusApplicationTest
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.ConflictDetector
+import tools.vitruv.framework.versioning.DependencyGraphCreator
+import tools.vitruv.framework.versioning.SourceTargetRecorder
+import tools.vitruv.framework.versioning.VersioningXtendFactory
+import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.emfstore.VVWorkspaceProvider
 import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
+import tools.vitruv.framework.versioning.extensions.GraphExtension
+import tools.vitruv.framework.versioning.repository.impl.RepositoryImpl
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
-import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.versioning.ConflictDetector
-import tools.vitruv.framework.versioning.DependencyGraphCreator
-import tools.vitruv.framework.versioning.extensions.GraphExtension
-import tools.vitruv.framework.versioning.SourceTargetRecorder
-import tools.vitruv.framework.versioning.VersioningXtendFactory
-import tools.vitruv.framework.versioning.author.Author
-import tools.vitruv.framework.versioning.commit.CommitFactory
+import tools.vitruv.framework.versioning.repository.Repository
 
-class EMFStoreBaseline extends AbstractAllElementTypesReactionsTests {
-	static extension CommitFactory = CommitFactory::instance
+class EMFStoreBaseline extends VitruviusApplicationTest {
+	protected static val MODEL_FILE_EXTENSION = new BowlingDomainProvider().domain.fileExtensions.get(0);
 	protected static extension ConflictDetector conflictDetector = ConflictDetector::instance
 	protected static extension DependencyGraphCreator = DependencyGraphCreator::instance
 	protected static extension GraphExtension = GraphExtension::instance
@@ -33,20 +36,36 @@ class EMFStoreBaseline extends AbstractAllElementTypesReactionsTests {
 	protected VURI sourceVURI
 	static extension Logger = Logger::getLogger(EMFStoreBaseline)
 
+	protected static def String getProjectModelPath(String modelName) {
+		'''model/«modelName».«MODEL_FILE_EXTENSION»'''
+	}
+
+	protected def VURI calculateVURI(String path) {
+		VURI::getInstance('''«currentTestProject.name»/«path.projectModelPath»''')
+	}
+
+	protected final override createChangePropagationSpecifications() {
+		#[]
+	}
+
+	protected override getVitruvDomains() {
+		return #[new BowlingDomainProvider().domain]
+	}
+
 	override protected setup() {
 	}
 
 	override protected cleanup() {
 	}
 
-	override protected createChangePropagationSpecifications() {
-		#[]
+	override unresolveChanges() {
+		true
 	}
 
 	@Test
 	def void emfHelloWorldExample() {
+		val Repository repo = new RepositoryImpl
 		val author = Author::createAuthor("Author1")
-		val initialCommit = createInitialCommit
 		val demoProjectName = "DemoProject"
 		val demoProjectCopyName = "DemoProjectCopy"
 		sourceVURI = demoProjectName.calculateVURI
@@ -68,30 +87,31 @@ class EMFStoreBaseline extends AbstractAllElementTypesReactionsTests {
 
 		val player1 = BowlingFactory::eINSTANCE.createPlayer
 		player1.name = "Maximilian"
+		league.players += player1
 		val player2 = BowlingFactory::eINSTANCE.createPlayer
 		player2.name = "Ottgar"
-		league.players += #[player1, player2]
+		league.players += player2
 		league.saveAndSynchronizeChanges
+
 		val changeMathes = stRecorder.getChangeMatches(sourceVURI)
-		assertThat(changeMathes.length, is(2))
 		val echanges = changeMathes.map[allEChanges].flatten.toList
 
-		val commit = author.createSimpleCommit("My message", initialCommit, echanges)
-		demoProject.commit()
-		demoProjectCopy.update
-		var leagueCopy = demoProject.modelElements.get(0) as League
+		val commit = author.createSimpleCommit("My message", repo.initialCommit, echanges)
+		repo.add(commit)
+		assertThat(repo.head, is(commit))
+		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
+		val copiedChanges = repo.getCopiedEChanges(newSourceVURI, pair)
+
+		copiedChanges.forEach[virtualModel.propagateChange(it)]
+		val leagueCopy = virtualModel.getModelInstance(newSourceVURI).firstRootEObject as League
 		assertThat(league.name, equalTo(leagueCopy.name))
 		assertThat(league.players.size, is(leagueCopy.players.size))
-
-		leagueCopy = demoProjectCopy.getModelElement(demoProject.getModelElementId(league)) as League
-		league.name = "Superbowling League"
-		demoProject.commit("New message")
-		demoProjectCopy.update
-
-		assertThat(league.name, equalTo(leagueCopy.name))
-		assertThat(league.players.size, is(leagueCopy.players.size))
+		league.players.forEach [ p1 |
+			assertThat(leagueCopy.players.exists[p2|EcoreUtil::equals(p1, p2)], is(true))
+		]
 	}
 
+	@Ignore
 	@Test
 	def void emfStoreMergingExample() {
 		emfHelloWorldExample
