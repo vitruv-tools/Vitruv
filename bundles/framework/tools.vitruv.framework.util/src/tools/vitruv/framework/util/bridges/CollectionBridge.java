@@ -1,12 +1,8 @@
 package tools.vitruv.framework.util.bridges;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 /**
 * A utility class providing additional methods for Java collections.<br/>
@@ -21,17 +17,6 @@ public final class CollectionBridge {
     /** Utility classes should not have a public or default constructor. */
     private CollectionBridge() {
     }
-	
-	public static final <T> T claimNotMany(Collection<T> c) {
-	    int size = c.size();
-		if (size > 1) {
-	        throw new RuntimeException("It was claimed that the collection '" + c + "' contains exactly one element!");
-	    } else if (size == 1) {
-	    	return c.iterator().next();
-	    } else {
-	    	return null;
-	    }
-	}
 	
 	public static final <T> List<T> toList(T o) {
 		return Collections.singletonList(o);
@@ -74,14 +59,6 @@ public final class CollectionBridge {
 			}
 			return null;
 		}
-	}
-	
-	public static final <T, R> List<R> mapFixed(Iterable<T> original, Function1<? super T, ? extends R> transformation) {
-		List<R> list = new ArrayList<>();
-		for (T o : original) {
-			list.add(transformation.apply(o));
-		}
-		return list;
 	}
 	
 }

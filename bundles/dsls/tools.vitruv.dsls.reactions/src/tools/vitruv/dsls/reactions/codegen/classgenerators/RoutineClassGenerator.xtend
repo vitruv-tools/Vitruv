@@ -7,7 +7,7 @@ import org.eclipse.xtext.common.types.JvmOperation
 import java.io.IOException
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmFormalParameter
-import tools.vitruv.framework.util.bridges.CollectionBridge
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmConstructor
@@ -234,9 +234,9 @@ class RoutineClassGenerator extends ClassGenerator {
 		val matcherStatements = if (routine.matcher !== null) routine.matcher.matcherStatements else #[];
 		val effectStatements = routine.action.actionStatements;
 		val matcherStatementsMap = <MatcherStatement, StringConcatenationClient>newHashMap();
-		CollectionBridge.mapFixed(matcherStatements, [matcherStatementsMap.put(it, createStatements(it))]);
+		matcherStatements.mapFixed[matcherStatementsMap.put(it, createStatements(it))];
 		val effectStatementsMap = <ActionStatement, StringConcatenationClient>newHashMap();
-		CollectionBridge.mapFixed(effectStatements, [effectStatementsMap.put(it, createStatements(it))]);
+		effectStatements.mapFixed[effectStatementsMap.put(it, createStatements(it))];
 		return generateUnassociatedMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PROTECTED;
 			exceptions += typeRef(IOException);
