@@ -5,5 +5,10 @@ Bundle-SymbolicName: tools.vitruv.framework.testutils.domains;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: tools.vitruv.framework.metamodel,
- tools.vitruv.framework.tests.util.metamodels
+ tools.vitruv.framework.tests.util.metamodels,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Export-Package: tools.vitruv.framework.testutils.domains
+
