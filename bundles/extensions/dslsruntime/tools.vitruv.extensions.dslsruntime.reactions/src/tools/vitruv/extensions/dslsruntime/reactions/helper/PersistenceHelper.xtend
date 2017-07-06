@@ -5,6 +5,7 @@ import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
+import java.util.TimeZone
 
 public final class PersistenceHelper {
 	private new() {}
@@ -33,12 +34,13 @@ public final class PersistenceHelper {
 			// to extract the project from a file URI.
 			var shortenedUri = elementUri//.trimSegments(1);
 			val possibleDirectories = #["src", "src-gen", "xtend-gen", "model", "models", "code"];
+			// Remove last segment as long as we are not in src directory or in the test project directory
 			while (!possibleDirectories.contains(shortenedUri.lastSegment)
-				&& !shortenedUri.lastSegment.contains("CEST")) {
+				&& !isUriTestProject(shortenedUri)) {
 				shortenedUri = shortenedUri.trimSegments(1);
 			}
 			// We are not in the test root folder yet, so trim another segment as we are in one of the possible directories
-			if (!shortenedUri.lastSegment.contains("CEST")) {
+			if (!isUriTestProject(shortenedUri)) {
 				shortenedUri = shortenedUri.trimSegments(1);
 			}
 			return shortenedUri 
@@ -46,6 +48,15 @@ public final class PersistenceHelper {
 		} else {
 			throw new UnsupportedOperationException("Other URI types than file and platform are currently not supported");
 		}
+	}
+	
+	private static def boolean isUriTestProject(URI uri) {
+		if (uri.lastSegment == null) {
+			throw new IllegalStateException("The URI " + uri + " is empty");
+		}
+		// TODO This is really hacky:
+		// Test projects contain the time zone identifier, so check for it 
+		return uri.lastSegment.contains(TimeZone.^default.ID);
 	}
 
 	private static def URI appendPathToURI(URI baseURI, String relativePath) {
