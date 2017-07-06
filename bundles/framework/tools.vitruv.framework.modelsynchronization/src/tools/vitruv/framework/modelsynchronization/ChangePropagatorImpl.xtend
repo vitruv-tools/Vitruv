@@ -20,12 +20,12 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
 
 class ChangePropagatorImpl implements ChangePropagator {
-	static val Logger logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
-	val VitruvDomainRepository metamodelRepository
-	val ModelRepository modelProviding
+	static extension Logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceProviding correspondenceProviding
-	Set<ChangePropagationListener> changePropagationListeners
+	val ModelRepository modelProviding
+	val Set<ChangePropagationListener> changePropagationListeners
+	val VitruvDomainRepository metamodelRepository
 
 	new(ModelRepository modelProviding, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding) {
@@ -38,7 +38,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 
 	override addChangePropagationListener(ChangePropagationListener propagationListener) {
 		if (propagationListener !== null)
-			changePropagationListeners.add(propagationListener)
+			changePropagationListeners += propagationListener
 	}
 
 	override removeChangePropagationListener(ChangePropagationListener propagationListener) {
@@ -46,8 +46,8 @@ class ChangePropagatorImpl implements ChangePropagator {
 	}
 
 	override synchronized List<List<VitruviusChange>> propagateChange(VitruviusChange change) {
-		if (change === null || !change.containsConcreteChange) {
-			logger.info('''The change does not contain any changes to synchronize: «change»''')
+		if (null === change || !change.containsConcreteChange) {
+			info('''The change does not contain any changes to synchronize: «change»''')
 			return Collections::emptyList
 		}
 		if (!change.validate)
@@ -69,21 +69,21 @@ class ChangePropagatorImpl implements ChangePropagator {
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
-		logger.info('''Started synchronizing change: «change»''')
+		info('''Started synchronizing change: «change»''')
 		changePropagationListeners.forEach[startedChangePropagation]
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
 		changePropagationListeners.forEach[finishedChangePropagation]
-		logger.info('''Finished synchronizing change: «change»''')
+		info('''Finished synchronizing change: «change»''')
 	}
 
 	private def dispatch void propagateSingleChange(CompositeContainerChange change,
 		List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult,
 		ChangedResourcesTracker changedResourcesTracker) {
-		for (VitruviusChange innerChange : change.changes) {
-			propagateSingleChange(innerChange, commandExecutionChanges, propagationResult, changedResourcesTracker)
-		}
+		change.changes.forEach [
+			propagateSingleChange(it, commandExecutionChanges, propagationResult, changedResourcesTracker)
+		]
 	}
 
 	private def dispatch void propagateSingleChange(TransactionalChange change,
@@ -95,13 +95,13 @@ class ChangePropagatorImpl implements ChangePropagator {
 			change.resolveBeforeAndApplyForward(resourceSet)
 			return
 		]
-		this.modelProviding.executeOnResourceSet(changeApplicationFunction)
+		modelProviding.executeOnResourceSet(changeApplicationFunction)
 
 		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension)
-		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
-			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges,
-				propagationResult, changedResourcesTracker)
-		}
+		changePropagationProvider.getChangePropagationSpecifications(changeDomain).forEach [
+			propagateChangeForChangePropagationSpecification(change, it, commandExecutionChanges, propagationResult,
+				changedResourcesTracker)
+		]
 	}
 
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change,
@@ -116,22 +116,20 @@ class ChangePropagatorImpl implements ChangePropagator {
 		])
 		modelProviding.executeRecordingCommandOnTransactionalDomain(command)
 
-// Store modification information
+		// Store modification information
 		val changedEObjects = command.affectedObjects.filter(EObject)
-		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(it.eResource)]
+		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(eResource)]
 		changedResourcesTracker.addSourceResourceOfChange(change)
 
 		propagationResult.integrateResult(command.transformationResult)
 	}
 
 	private def void executePropagationResult(ChangePropagationResult changePropagationResult) {
-		if (null === changePropagationResult) {
-			logger.info("Current propagation result is null. Can not save new root EObjects::")
-			return
-		}
-		val elementsToPersist = changePropagationResult.elementToPersistenceMap
-		for (element : elementsToPersist.keySet) {
-			modelProviding.persistRootElement(elementsToPersist.get(element), element)
+		if (null === changePropagationResult)
+			info("Current propagation result is null. Can not save new root EObjects::")
+		else {
+			val elementsToPersist = changePropagationResult.elementToPersistenceMap
+			elementsToPersist.keySet.forEach[modelProviding.persistRootElement(elementsToPersist.get(it), it)]
 		}
 	}
 }

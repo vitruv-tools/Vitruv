@@ -137,10 +137,12 @@ class ReapplyTest extends SourceTargetRecorderTest {
 	}
 
 	private def assertThatNonRootObjectContainerHasRightId() {
-		assertThat(sourceRootIterator.exists [
-			nonRootObjectContainerName == nonRootObjectContainerHelper.id &&
-				nonRootObjectContainerHelper.eContents.size === 0
-		], is(true))
+		#[newTestSourceModelName, newTestTargetModelName].map[new Pair(it, rootIterator)].forEach [
+			assertThat('''«key».nonRootObjectContainerHelper has not the right ID''', value.exists [
+				nonRootObjectContainerName == nonRootObjectContainerHelper.id &&
+					nonRootObjectContainerHelper.eContents.size === 0
+			], is(true))
+		]
 	}
 
 	private def assertThatNonRootObjectHasBeenInsertedInContainer(int numberOfInsertedElement) {

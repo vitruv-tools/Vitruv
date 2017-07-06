@@ -3,6 +3,7 @@ package tools.vitruv.dsls.reactions.tests
 import allElementTypes.AllElementTypesFactory
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
 import allElementTypes.Root
+import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTests {
 	protected static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
@@ -23,6 +24,14 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 	protected final override createChangePropagationSpecifications() {
 		#[new AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes {
 		}]
+	}
+
+	protected static def String getProjectModelPath(String modelName) {
+		'''model/«modelName».«MODEL_FILE_EXTENSION»'''
+	}
+
+	protected def VURI calculateVURI(String path) {
+		VURI::getInstance('''«currentTestProject.name»/«path.projectModelPath»''')
 	}
 
 	protected def assertModelsEqual() {
