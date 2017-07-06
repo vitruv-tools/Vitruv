@@ -6,6 +6,7 @@ import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 import java.util.TimeZone
+import java.util.Locale
 
 public final class PersistenceHelper {
 	private new() {}
@@ -51,12 +52,14 @@ public final class PersistenceHelper {
 	}
 	
 	private static def boolean isUriTestProject(URI uri) {
+		val lastSegment = uri.lastSegment;
 		if (uri.lastSegment == null) {
 			throw new IllegalStateException("The URI " + uri + " is empty");
 		}
 		// TODO This is really hacky:
-		// Test projects contain the time zone identifier, so check for it 
-		return uri.lastSegment.contains(TimeZone.^default.ID);
+		// Test projects contain the time zone identifier in short and English, so check for it
+		val timezoneID = TimeZone.^default.getDisplayName(true, TimeZone.SHORT, Locale.ENGLISH);
+		return lastSegment.contains(timezoneID);
 	}
 
 	private static def URI appendPathToURI(URI baseURI, String relativePath) {
