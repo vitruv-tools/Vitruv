@@ -2,10 +2,28 @@ grammar tools.vitruv.dsls.commonalities.CommonalitiesLanguage with tools.vitruv.
 
 generate commonalitiesLanguage "http://www.vitruv.tools/dsls/commonalities/CommonalitiesLanguage"
 
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+
 CommonalitiesFile:
 	imports += Import*
 ;
 
+/***********
+ * Imports *
+ ***********/
+ 
+ /*
+  * Concepts can reference metamodels or other concepts. Ecore models are best
+  * referenced by their URI, as this makes importing them platform independent.
+  * Concepts, on the other hand, are only meant to be used inside the project
+  * they are defined in. So referencing them by fully qualified name is
+  * perfectly fine.
+  * 
+  * In effect, there are two import parser rules: one for Metamodels, specified
+  * by a string (the URI) and one for concepts, specified by a fully qualified
+  * name.
+  */
 Import:
-	'import'
+	'import' ({MetamodelImport} element=[ecore::EPackage|STRING] | {ConceptImport} element=[CommonalitiesFile|QualifiedName]) ('as' alias=ValidID)?
 ;

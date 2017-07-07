@@ -21,11 +21,41 @@ class CommonalitiesLanguageParsingTest {
 	ParseHelper<CommonalitiesFile> parseHelper
 	
 	@Test
-	def void loadModel() {
-		val result = parseHelper.parse('''
-			import
-		''')
-		assertThat(result, is(notNullValue))
-		assertThat(result.eResource, hasNoErrors)
+	def void importDeclaration() {
+		'''
+		import 'http://www.eclipse.org/emf/2002/Ecore'
+		'''
+			.variation("'", '"')
+			.parseTest
 	}
+	
+	@Test
+	def void importDeclarationWithAlias() {
+		'''
+		import 'http://www.eclipse.org/emf/2002/Ecore' as ecore
+		'''
+			.variation("'", '"')
+			.parseTest
+	}
+	
+	def void parseTest(CharSequence... inputs) {
+		inputs.forEach [input | 
+			val result = parseHelper.parse(input)
+			val errorMessage = '''Could not parse:
+			
+			 «input»
+			 '''
+			assertThat(errorMessage, result, is(notNullValue))
+			assertThat(errorMessage, result.eResource, hasNoErrors)
+		]
+	}
+	
+	def CharSequence[] variation(CharSequence input, CharSequence find, CharSequence replace) {
+		#[
+			input,
+			input.toString.replace(find, replace)
+		]
+	}
+	
+	
 }
