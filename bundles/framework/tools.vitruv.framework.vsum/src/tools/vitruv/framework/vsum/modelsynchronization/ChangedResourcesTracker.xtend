@@ -1,4 +1,4 @@
-package tools.vitruv.framework.modelsynchronization
+package tools.vitruv.framework.vsum.modelsynchronization
 
 import org.eclipse.emf.ecore.resource.Resource
 import java.util.Set
@@ -20,7 +20,7 @@ package class ChangedResourcesTracker {
 
 
 	public def void addSourceResourceOfChange(TransactionalChange change) {
-		val atomicChanges = change.EChanges.map[
+		val atomicChanges = change.getEChanges.map[
 			if (it instanceof CompoundEChange) it.atomicChanges else #[it]
 		].flatten
 		val involvedObjects = atomicChanges.map[
@@ -48,7 +48,7 @@ package class ChangedResourcesTracker {
 		// This will hopefully not be necessary anymore if we replay recorded changes in the VSUM isolated from their
 		// recording in editors.
 		val changedNonSourceResources = involvedModelResources
-			.filter[!sourceModelResources.exists[sourceResource | sourceResource.URI.equals(it.URI)]];
+			.filter[!sourceModelResources.exists[sourceResource | sourceResource.getURI.equals(it.getURI)]];
 		changedNonSourceResources.forEach[modified = true];
 	}
 }

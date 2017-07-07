@@ -8,13 +8,13 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
-import tools.vitruv.framework.modelsynchronization.ChangePropagator
-import tools.vitruv.framework.modelsynchronization.ChangePropagatorImpl
-import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import java.io.File
-import tools.vitruv.framework.modelsynchronization.RealModelRepositoryImpl
+import tools.vitruv.framework.vsum.repositories.RealModelRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ModelRepositoryImpl modelRepository;

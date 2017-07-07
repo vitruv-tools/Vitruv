@@ -1,4 +1,4 @@
-package tools.vitruv.framework.modelsynchronization
+package tools.vitruv.framework.vsum.repositories
 
 import java.util.Set
 import org.eclipse.emf.ecore.EObject

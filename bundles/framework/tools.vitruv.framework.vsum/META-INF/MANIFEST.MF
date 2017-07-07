@@ -22,6 +22,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib.macro,
  org.eclipse.emf.ecore.xmi
 Export-Package: tools.vitruv.framework.vsum,
- tools.vitruv.framework.vsum.helper
+ tools.vitruv.framework.vsum.helper,
+ tools.vitruv.framework.vsum.modelsynchronization
 Bundle-Vendor: vitruv.tools
 

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.modelsynchronization;
+package tools.vitruv.framework.vsum.modelsynchronization;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.modelsynchronization
+package tools.vitruv.framework.vsum.modelsynchronization
 
 import java.util.ArrayList
 import java.util.Collections
@@ -20,6 +20,7 @@ import tools.vitruv.framework.domains.repository.ModelRepository
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import org.apache.log4j.Level
+import tools.vitruv.framework.vsum.repositories.RealModelRepositoryImpl
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -110,7 +111,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
         	];
 		this.resourceRepository.executeOnResourceSet(changeApplicationFunction);
 
-		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension);
+		val changeDomain = metamodelRepository.getDomain(change.getURI.fileExtension);
 		
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
