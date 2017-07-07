@@ -21,6 +21,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import org.apache.log4j.Level
 import tools.vitruv.framework.vsum.repositories.RealModelRepositoryImpl
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -53,7 +55,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.changePropagationListeners.remove(propagationListener)
 	}
 
-	override synchronized List<List<VitruviusChange>> propagateChange(VitruviusChange change) {
+	override synchronized List<PropagatedChange> propagateChange(VitruviusChange change) {
 		if (change === null || !change.containsConcreteChange()) {
 			logger.info('''The change does not contain any changes to synchronize: «change»''')
 			return Collections.emptyList()
@@ -64,7 +66,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		
 		startChangePropagation(change);
 		change.applyBackwardIfLegacy();
-		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
+		var List<PropagatedChange> result = new ArrayList<PropagatedChange>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		val propagationResult = new ChangePropagationResult();
 		propagateSingleChange(change, result, propagationResult, changedResourcesTracker);
@@ -75,6 +77,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
 		resourceRepository.saveAllModels
 		logger.debug(modelRepository);
+		result.forEach[
+			logger.debug('''Original change: «it.originalChange»
+  Consequential change: «it.consequentialChanges»''');
+		]
 		finishChangePropagation(change)
 		return result
 	}
@@ -93,17 +99,16 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		logger.info('''Finished synchronizing change: «change»''')
 	}
 
-	private def dispatch void propagateSingleChange(CompositeContainerChange change, List<List<VitruviusChange>> commandExecutionChanges,
+	private def dispatch void propagateSingleChange(CompositeContainerChange change, List<PropagatedChange> propagatedChanges,
 		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		for (VitruviusChange innerChange : change.getChanges()) {
-			propagateSingleChange(innerChange, commandExecutionChanges, propagationResult, changedResourcesTracker)
+			propagateSingleChange(innerChange, propagatedChanges, propagationResult, changedResourcesTracker)
 		}
 	}
 
-
-	private def dispatch void propagateSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges, 
+	private def dispatch void propagateSingleChange(TransactionalChange change, List<PropagatedChange> propagatedChanges, 
 		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
-
+		
 		val changeApplicationFunction = [ResourceSet resourceSet |
 				resourceRepository.getModel(change.getURI());
                 change.resolveBeforeAndApplyForward(resourceSet)
@@ -112,15 +117,18 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.resourceRepository.executeOnResourceSet(changeApplicationFunction);
 
 		val changeDomain = metamodelRepository.getDomain(change.getURI.fileExtension);
-		
+		val consequentialChanges = newArrayList();
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
-			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
+			consequentialChanges += propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult, changedResourcesTracker);
 		}
+		propagatedChanges.add(new PropagatedChange(change, VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges)));
 	}
 	
-	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
-			List<List<VitruviusChange>> commandExecutionChanges, ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+	private def List<VitruviusChange> propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
+			ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		val correspondenceModel = correspondenceProviding.getCorrespondenceModel();
+
+		val List<VitruviusChange> consequentialChanges = newArrayList();
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
@@ -128,8 +136,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			modelRepository.startRecording;
 			val propResult = propagationSpecification.propagateChange(change, correspondenceModel);
 			modelRepository.cleanupRootElements();
-			val recordingResult = modelRepository.endRecording;
-			recordingResult.forEach[logger.debug(it)];
+			consequentialChanges += modelRepository.endRecording;
+			consequentialChanges.forEach[logger.debug(it)];
 			return propResult;
 		
 		])
@@ -141,6 +149,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		changedResourcesTracker.addSourceResourceOfChange(change);
 		
 		propagationResult.integrateResult(command.transformationResult);
+		return consequentialChanges;
 	}
 	
 	def private void executePropagationResult(ChangePropagationResult changePropagationResult) {
