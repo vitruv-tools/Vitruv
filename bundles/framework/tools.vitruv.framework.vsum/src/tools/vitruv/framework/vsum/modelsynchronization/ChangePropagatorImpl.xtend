@@ -125,11 +125,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
-			//modelRepository.startRecording;
+			modelRepository.startRecording;
 			val propResult = propagationSpecification.propagateChange(change, correspondenceModel);
 			modelRepository.cleanupRootElements();
-			//val recordingResult =  modelRepository.endRecording;
-			//recordingResult.forEach[logger.debug(it)];
+			val recordingResult = modelRepository.endRecording;
+			recordingResult.forEach[logger.debug(it)];
 			return propResult;
 		
 		])
