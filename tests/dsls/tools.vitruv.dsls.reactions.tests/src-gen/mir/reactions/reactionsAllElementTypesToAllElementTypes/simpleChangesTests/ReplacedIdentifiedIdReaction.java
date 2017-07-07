@@ -1,6 +1,6 @@
 package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
-import allElementTypes.NonRoot;
+import allElementTypes.Identified;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -12,15 +12,15 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 @SuppressWarnings("all")
-class ReplacedNonRootIdReaction extends AbstractReactionRealization {
+class ReplacedIdentifiedIdReaction extends AbstractReactionRealization {
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<NonRoot, String> typedChange = (ReplaceSingleValuedEAttribute<NonRoot, String>)change;
-    NonRoot affectedEObject = typedChange.getAffectedEObject();
+    ReplaceSingleValuedEAttribute<Identified, String> typedChange = (ReplaceSingleValuedEAttribute<Identified, String>)change;
+    Identified affectedEObject = typedChange.getAffectedEObject();
     EAttribute affectedFeature = typedChange.getAffectedFeature();
     String oldValue = typedChange.getOldValue();
     String newValue = typedChange.getNewValue();
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootIdReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootIdReaction.ActionUserExecution(this.executionState, this);
+    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedIdentifiedIdReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedIdentifiedIdReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
   }
   
@@ -29,8 +29,8 @@ class ReplacedNonRootIdReaction extends AbstractReactionRealization {
   }
   
   private boolean checkChangeProperties(final EChange change) {
-    ReplaceSingleValuedEAttribute<NonRoot, String> relevantChange = (ReplaceSingleValuedEAttribute<NonRoot, String>)change;
-    if (!(relevantChange.getAffectedEObject() instanceof NonRoot)) {
+    ReplaceSingleValuedEAttribute<Identified, String> relevantChange = (ReplaceSingleValuedEAttribute<Identified, String>)change;
+    if (!(relevantChange.getAffectedEObject() instanceof Identified)) {
     	return false;
     }
     if (!relevantChange.getAffectedFeature().getName().equals("id")) {
@@ -63,8 +63,8 @@ class ReplacedNonRootIdReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final NonRoot affectedEObject, final EAttribute affectedFeature, final String oldValue, final String newValue, @Extension final RoutinesFacade _routinesFacade) {
-      _routinesFacade.replaceNonRootId(affectedEObject, newValue);
+    public void callRoutine1(final Identified affectedEObject, final EAttribute affectedFeature, final String oldValue, final String newValue, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.replaceIdentifiedId(affectedEObject, newValue);
     }
   }
 }
