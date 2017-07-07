@@ -14,6 +14,7 @@ import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import java.io.File
+import tools.vitruv.framework.modelsynchronization.RealModelRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ModelRepositoryImpl modelRepository;
@@ -35,7 +36,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
-		this.changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider, metamodelRepository, modelRepository);
+		this.changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider, metamodelRepository, modelRepository, new RealModelRepositoryImpl());
 		VirtualModelManager.instance.putVirtualModel(this);
 	}
 	

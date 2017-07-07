@@ -18,19 +18,25 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.ModelRepository
 import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.processing.ChangePropagationObserver
+import org.apache.log4j.Level
 
-class ChangePropagatorImpl implements ChangePropagator {
+class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
 	final VitruvDomainRepository metamodelRepository;
-	final ModelRepository modelProviding
+	final ModelRepository resourceRepository
 	final ChangePropagationSpecificationProvider changePropagationProvider
 	final CorrespondenceProviding correspondenceProviding
 	Set<ChangePropagationListener> changePropagationListeners
+	final RealModelRepositoryImpl modelRepository;
 	
-	new(ModelRepository modelProviding, ChangePropagationSpecificationProvider changePropagationProvider,
-		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding) {
-		this.modelProviding = modelProviding
+	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
+		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding, RealModelRepositoryImpl modelRepository) {
+		logger.level = Level.DEBUG;
+		this.resourceRepository = resourceRepository
+		this.modelRepository = modelRepository;
 		this.changePropagationProvider = changePropagationProvider
+		changePropagationProvider.forEach[it.registerObserver(this)]
 		this.correspondenceProviding = correspondenceProviding
 		this.changePropagationListeners = new HashSet<ChangePropagationListener>()
 		this.metamodelRepository = metamodelRepository;
@@ -63,9 +69,11 @@ class ChangePropagatorImpl implements ChangePropagator {
 		propagateSingleChange(change, result, propagationResult, changedResourcesTracker);
 		changedResourcesTracker.markNonSourceResourceAsChanged();
 		executePropagationResult(propagationResult);
+		modelRepository.cleanupRootElementsWithoutResource
 		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
 		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
-		modelProviding.saveAllModels
+		resourceRepository.saveAllModels
+		logger.debug(modelRepository);
 		finishChangePropagation(change)
 		return result
 	}
@@ -96,13 +104,14 @@ class ChangePropagatorImpl implements ChangePropagator {
 		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 
 		val changeApplicationFunction = [ResourceSet resourceSet |
-				modelProviding.getModel(change.getURI());
+				resourceRepository.getModel(change.getURI());
                 change.resolveBeforeAndApplyForward(resourceSet)
                 return;
         	];
-		this.modelProviding.executeOnResourceSet(changeApplicationFunction);
+		this.resourceRepository.executeOnResourceSet(changeApplicationFunction);
 
 		val changeDomain = metamodelRepository.getDomain(change.URI.fileExtension);
+		
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges, propagationResult, changedResourcesTracker);
 		}
@@ -115,9 +124,15 @@ class ChangePropagatorImpl implements ChangePropagator {
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
-			return propagationSpecification.propagateChange(change, correspondenceModel);
+			//modelRepository.startRecording;
+			val propResult = propagationSpecification.propagateChange(change, correspondenceModel);
+			modelRepository.cleanupRootElements();
+			//val recordingResult =  modelRepository.endRecording;
+			//recordingResult.forEach[logger.debug(it)];
+			return propResult;
+		
 		])
-		modelProviding.executeRecordingCommandOnTransactionalDomain(command);
+		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
 					
 		// Store modification information
 		val changedEObjects = command.getAffectedObjects().filter(EObject)
@@ -134,7 +149,12 @@ class ChangePropagatorImpl implements ChangePropagator {
 		}
 		val elementsToPersist = changePropagationResult.getElementToPersistenceMap();
 		for (element : elementsToPersist.keySet) {
-			modelProviding.persistRootElement(elementsToPersist.get(element), element);	
+			resourceRepository.persistRootElement(elementsToPersist.get(element), element);	
 		}
 	}
+	
+	override objectCreated(EObject createdObject) {
+		this.modelRepository.addRootElement(createdObject);
+	}
+	
 }
