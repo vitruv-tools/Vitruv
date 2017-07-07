@@ -338,6 +338,10 @@ public final class EclipseBridge {
         }
     }
 
+	/**
+	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IResourceUtil#getAbsolutePathString(IResource)}
+	 */
+	@Deprecated
     public static String getAbsolutePathString(final IResource resource) {
         return resource.getLocation().toOSString();
     }

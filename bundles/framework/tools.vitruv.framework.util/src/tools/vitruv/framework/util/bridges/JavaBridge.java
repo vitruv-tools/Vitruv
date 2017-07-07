@@ -203,7 +203,9 @@ public final class JavaBridge {
      * @param iterator
      *            an iterator
      * @return an iterable returning the iterator
+     * @deprecated {@link org.eclipse.xtext.xbase.lib.IteratorExtensions#toIterable(Iterator)}
      */
+    @Deprecated
     public static <T> Iterable<T> toIterable(final Iterator<T> iterator) {
         return new Iterable<T>() {
             @Override

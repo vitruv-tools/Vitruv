@@ -109,7 +109,11 @@ public final class EMFBridge {
 		char firstChar = uriString.charAt(0);
 		return Character.isLetter(firstChar) && uriString.regionMatches(1, ":\\", 0, 2);
 	}
-
+	
+	/**
+	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil#createFolderInProjectIfNecessary(IProject, String)}
+	 */
+	@Deprecated
 	public static IFolder createFolderInProjectIfNecessary(IProject project, String folderName) {
 		Pattern pattern = Pattern.compile(Pattern.quote(File.separator));
 		String[] folderNames = pattern.split(folderName);
