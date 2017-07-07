@@ -75,6 +75,14 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 		this.canBeBackwardsApplied = true;
 	}
 	
+	def applyForwardWithoutTuidUpdate() throws IllegalStateException {
+		if (this.canBeBackwardsApplied) {
+			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
+		}
+		changeDescription.applyAndReverse();
+		this.canBeBackwardsApplied = true;
+	}
+	
 	private def applyChange() {
 		registerOldObjectTuidsForUpdate();
 		changeDescription.applyAndReverse();
