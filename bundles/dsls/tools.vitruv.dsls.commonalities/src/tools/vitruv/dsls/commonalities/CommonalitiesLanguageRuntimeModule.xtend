@@ -3,9 +3,20 @@
  */
 package tools.vitruv.dsls.commonalities
 
+import tools.vitruv.dsls.commonalities.scoping.CommonalitiesGlobalScopeProvider
+import tools.vitruv.dsls.commonalities.scoping.CommonalitiesLanguageScopeProvider
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 class CommonalitiesLanguageRuntimeModule extends AbstractCommonalitiesLanguageRuntimeModule {
+	
+	override bindIGlobalScopeProvider() {
+		CommonalitiesGlobalScopeProvider
+	}
+	
+	override bindIScopeProvider() {
+		CommonalitiesLanguageScopeProvider
+	}
+	
 }

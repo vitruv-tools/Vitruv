@@ -36,10 +36,12 @@ Workflow {
 				classAnnotation = GeneratedClassAnnotation {}
 			}
 		}
+		
 		language = StandardLanguage {
 			name = "tools.vitruv.dsls.commonalities.CommonalitiesLanguage"
 			fileExtensions = "com"
 			referencedResource = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"
 		}
 	}
+	
 }
