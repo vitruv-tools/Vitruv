@@ -20,7 +20,9 @@ Require-Bundle: tools.vitruv.dsls.commonalities,
  org.eclipse.xtext.common.types.ui,
  org.eclipse.xtext.xbase.ui,
  org.eclipse.jdt.debug.ui,
- tools.vitruv.dsls.mirbase.ui
+ tools.vitruv.dsls.mirbase.ui,
+ org.eclipse.emf.ecore.edit;bundle-version="2.9.0",
+ edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.commonalities.ui.contentassist,

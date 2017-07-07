@@ -3,10 +3,58 @@
  */
 package tools.vitruv.dsls.commonalities.ui.contentassist
 
+import tools.vitruv.dsls.commonalities.commonalitiesLanguage.CommonalitiesFile
+import org.eclipse.xtext.Assignment
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
+import com.google.inject.Inject
+import tools.vitruv.dsls.commonalities.scoping.EPackageRegistryScope
+import java.util.regex.Pattern
+import org.eclipse.jface.viewers.StyledString
+import org.eclipse.jface.viewers.StyledString.Styler
+import java.util.function.Predicate
+import tools.vitruv.dsls.commonalities.ui.icon.IconProvider
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
  * on how to customize the content assistant.
  */
 class CommonalitiesLanguageProposalProvider extends AbstractCommonalitiesLanguageProposalProvider {
+
+	/**
+	 * Predicate deciding whether a part of a model URI looks like a version number
+	 */
+	final static Predicate<String> IS_MODEL_VERSION_PART = Pattern.compile('[0-9]+(\\.[0-9]+)*').asPredicate
+
+	@Inject EPackageRegistryScope epackages
+	@Inject IconProvider iconProvider
+
+	/**
+	 * Content assist for Metamodel URIs in a Metamodel import.
+	 */
+	def completeImport_Element(CommonalitiesFile model, Assignment assignment, ContentAssistContext context,
+		ICompletionProposalAcceptor acceptor) {
+		for (uri : epackages.availableEPackageUris) {
+			val Styler additionalStyle = StyledString.QUALIFIER_STYLER
+			val styledCompletion = new StyledString().append(uri.friendlyEPackageName).append(' - ', additionalStyle).
+				append(uri, additionalStyle)
+			val completionProposal = createCompletionProposal("'" + uri + "'", styledCompletion,
+				iconProvider.emfPackageIcon, context)
+			acceptor.accept(completionProposal)
+		}
+	}
+
+	/** 
+	 * Constructs a suitable, friendly name out of a metamodel URI. Chooses the last
+	 * part of the URI most of the time. However, some URIs contain a version number at
+	 * the end, which will be skipped in favor of the next part from behind.
+	 */
+	def private getFriendlyEPackageName(String ePackageURI) {
+		val uriParts = ePackageURI.split('/')
+		// starting from the end, skip over all parts that look like version numbers
+		var i = uriParts.length - 1;
+		for (; i >= 0 && IS_MODEL_VERSION_PART.test(uriParts.get(i)); i--) {
+		}
+		if (i >= 0) uriParts.get(i) else ePackageURI
+	}
 }
