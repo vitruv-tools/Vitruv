@@ -9,8 +9,10 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.apache.log4j.Logger
 import tools.vitruv.framework.domains.VitruvDomain
+import tools.vitruv.framework.change.processing.ChangePropagationObserver
+import org.eclipse.emf.ecore.EObject
 
-abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification {
+abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
 	private static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
 	
 	private val List<ChangePropagationSpecification> changePreprocessors;
@@ -30,6 +32,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changePreprocessors += changePropagationSpecifcation;
 		changePropagationSpecifcation.userInteracting = userInteracting;
+		changePropagationSpecifcation.registerObserver(this);
 	}
 	
 	/** 
@@ -40,6 +43,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changeMainprocessors += changePropagationSpecifcation;
 		changePropagationSpecifcation.userInteracting = userInteracting;
+		changePropagationSpecifcation.registerObserver(this);
 	}
 	
 	private def void assertMetamodelsCompatible(ChangePropagationSpecification potentialChangeProcessor) {
@@ -81,6 +85,10 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 		if (changePreprocessors !== null) processors += changePreprocessors;
 		if (changeMainprocessors !== null) processors += changeMainprocessors;
 		return processors;
+	}
+	
+	override objectCreated(EObject createdObject) {
+		notifyObjectCreated(createdObject)
 	}
 	
 }
