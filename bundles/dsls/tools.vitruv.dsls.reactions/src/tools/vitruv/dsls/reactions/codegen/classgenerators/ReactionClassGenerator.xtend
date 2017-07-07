@@ -53,19 +53,9 @@ class ReactionClassGenerator extends ClassGenerator {
 		reaction.toClass(reactionClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.DEFAULT;
 			superTypes += typeRef(AbstractReactionRealization);
-			addConstructor(it);
 			members += generatedMethods;
 			members += userExecutionClassGenerator.generateClass();
 		];
-	}
-	
-	protected def void addConstructor(JvmGenericType clazz) {
-		clazz.members += clazz.toConstructor [
-			visibility = JvmVisibility.PUBLIC;
-			val userInteractingParameter = generateUserInteractingParameter();
-			parameters += userInteractingParameter
-			body = '''super(«userInteractingParameter.name»);'''
-		]
 	}
 	
 	protected def generateMethodGetExpectedChangeType() {
