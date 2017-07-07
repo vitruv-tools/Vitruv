@@ -25,10 +25,10 @@ class RealModelRepositoryImpl {
 	
 	public def void addRootElement(EObject rootElement) {
 		this.rootElements += rootElement;
+		logger.debug("New root in repository " + rootElement);
 		if (isRecording) {
 			startRecordingForElement(rootElement);
 		}
-		logger.debug("New root in repository " + rootElement);
 	}
 	
 	public def void cleanupRootElements() {
@@ -69,6 +69,7 @@ class RealModelRepositoryImpl {
 		val result = newArrayList();
 		for (root : rootToRecorder.keySet) {
 			result += rootToRecorder.get(root).endRecording();
+			logger.debug("End recording for " + root);
 		}
 		rootToRecorder.clear();
 		isRecording = false;
@@ -79,10 +80,14 @@ class RealModelRepositoryImpl {
 		if (!rootElements.contains(element)) {
 			throw new IllegalStateException();
 		}
+		if (rootToRecorder.containsKey(element)) {
+			throw new IllegalStateException("Duplicate recording on element")
+		}
 		val recorder = new AtomicEmfChangeRecorder(false, false);
 		val vuri = if (element.eResource !== null) VURI.getInstance(element.eResource) else null;
 		recorder.beginRecording(vuri, #[element]);
 		rootToRecorder.put(element, recorder);
+		logger.debug("Start recording for " + element);
 	}
 	
 	private def void removeElementFromRecording(EObject element) {
@@ -91,6 +96,7 @@ class RealModelRepositoryImpl {
 			recorder.stopRecording;
 		}
 		rootToRecorder.remove(element);
+		logger.debug("Abort recording for " + element);
 	}
 	
 	override toString() '''
