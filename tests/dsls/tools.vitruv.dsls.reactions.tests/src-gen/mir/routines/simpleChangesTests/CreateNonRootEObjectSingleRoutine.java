@@ -80,6 +80,7 @@ public class CreateNonRootEObjectSingleRoutine extends AbstractRepairRoutineReal
     }
     registerObjectUnderModification(targetElement);
     NonRoot newNonRoot = AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
+    notifyObjectCreated(newNonRoot);
     userExecution.updateNewNonRootElement(sourceRoot, containedObject, targetElement, newNonRoot);
     
     // val updatedElement userExecution.getElement1(sourceRoot, containedObject, targetElement, newNonRoot);
