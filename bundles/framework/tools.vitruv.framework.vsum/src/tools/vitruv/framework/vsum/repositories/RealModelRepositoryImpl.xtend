@@ -101,7 +101,6 @@ class RealModelRepositoryImpl {
 	
 	override toString() '''
 		Model repository contents:
-		«FOR element : rootElements»  «element»
-		«ENDFOR»
-	'''
+			«FOR element : rootElements»
+				«element»«ENDFOR»'''
 }

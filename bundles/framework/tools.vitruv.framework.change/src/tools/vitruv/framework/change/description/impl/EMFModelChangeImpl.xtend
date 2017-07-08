@@ -34,9 +34,7 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
     override String toString() '''
     	«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
     		«FOR eChange : EChanges»
-    			Inner change: «eChange»
-    		«ENDFOR»
-    '''
+    			Inner change: «eChange»«ENDFOR»'''
         
 	override getURI() {
 		return vuri;

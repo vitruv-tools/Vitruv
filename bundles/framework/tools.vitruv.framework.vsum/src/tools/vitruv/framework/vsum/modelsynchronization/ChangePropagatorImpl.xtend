@@ -77,10 +77,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
 		resourceRepository.saveAllModels
 		logger.debug(modelRepository);
-		result.forEach[
-			logger.debug('''Original change: «it.originalChange»
-  Consequential change: «it.consequentialChanges»''');
-		]
+		logger.debug('''
+	Propagated changes:
+	«FOR propagatedChange : result»
+	Propagated Change:
+		Original change:
+			«propagatedChange.originalChange»
+		Consequential change: «propagatedChange.consequentialChanges»«ENDFOR»''');
 		finishChangePropagation(change)
 		return result
 	}
