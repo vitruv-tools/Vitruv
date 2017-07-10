@@ -24,18 +24,20 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.domains.repository.ModelRepository;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
+import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.ModelRepository;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
-public class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
+public class ResourceRepositoryImpl
+        implements ModelRepository, CorrespondenceProviding, VitruviusRecordingCommandExecutor {
     private static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
@@ -195,8 +197,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                logger.debug(
-                        "  Saving correspondence model: " + ResourceRepositoryImpl.this.correspondenceModel.getResource());
+                logger.debug("  Saving correspondence model: "
+                        + ResourceRepositoryImpl.this.correspondenceModel.getResource());
                 ResourceRepositoryImpl.this.correspondenceModel.saveModel();
                 ResourceRepositoryImpl.this.correspondenceModel.resetChangedAfterLastSave();
                 return null;
@@ -231,8 +233,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             } else {
                 correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
             }
-            this.correspondenceModel = new CorrespondenceModelImpl(this, this.metamodelRepository, correspondencesVURI,
-                    correspondencesResource);
+            this.correspondenceModel = new CorrespondenceModelImpl(new TuidResolverImpl(this.metamodelRepository, this),
+                    this, this.metamodelRepository, correspondencesVURI, correspondencesResource);
             return null;
         });
     }
@@ -320,5 +322,10 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                 return null;
             }
         });
+    }
+
+    @Override
+    public void executeRecordingCommand(final VitruviusRecordingCommand command) {
+        executeRecordingCommandOnTransactionalDomain(command);
     }
 }

@@ -14,9 +14,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.domains.repository.ModelRepository
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.framework.vsum.ModelRepository
 
 @Accessors(PUBLIC_GETTER)
 class MappingExecutionState {

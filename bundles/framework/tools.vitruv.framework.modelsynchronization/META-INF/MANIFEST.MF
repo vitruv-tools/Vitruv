@@ -15,6 +15,7 @@ Require-Bundle: org.apache.log4j,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ tools.vitruv.framework.vsum
 Export-Package: tools.vitruv.framework.modelsynchronization.blackboard
 Bundle-Vendor: vitruv.tools

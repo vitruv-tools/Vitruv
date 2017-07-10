@@ -16,13 +16,13 @@ import tools.vitruv.framework.correspondence.CorrespondenceProviding
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.domains.repository.ModelRepository
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import org.apache.log4j.Level
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
+import tools.vitruv.framework.vsum.ModelRepository
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
