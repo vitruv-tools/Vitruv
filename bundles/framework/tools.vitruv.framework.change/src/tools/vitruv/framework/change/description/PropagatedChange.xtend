@@ -6,4 +6,11 @@ import org.eclipse.xtend.lib.annotations.Data
 class PropagatedChange {
 	private val VitruviusChange originalChange;
 	private val VitruviusChange consequentialChanges;
+	
+	override toString() '''
+	Original change:
+		«originalChange»
+	Consequential change: «consequentialChanges»
+	'''
+		
 }

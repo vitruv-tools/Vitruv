@@ -81,9 +81,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	Propagated changes:
 	«FOR propagatedChange : result»
 	Propagated Change:
-		Original change:
-			«propagatedChange.originalChange»
-		Consequential change: «propagatedChange.consequentialChanges»«ENDFOR»''');
+		«propagatedChange»«ENDFOR»
+		''');
 		finishChangePropagation(change)
 		return result
 	}

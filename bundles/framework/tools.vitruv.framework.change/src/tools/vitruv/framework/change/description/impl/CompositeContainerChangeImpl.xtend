@@ -8,6 +8,8 @@ class CompositeContainerChangeImpl extends AbstractCompositeChangeImpl<Vitruvius
 	override toString() '''
 		Composite container change:
 			«FOR change : changes»
-				«change»«ENDFOR»'''
+				«change»
+			«ENDFOR»
+			'''
 	
 }
