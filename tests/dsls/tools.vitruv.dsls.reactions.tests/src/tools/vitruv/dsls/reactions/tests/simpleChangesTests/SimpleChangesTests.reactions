@@ -59,14 +59,14 @@ routine replaceSingleValuedEAttribute(minimal::Root rootElement, Integer value) 
 /*
  * UpdateSingleValuedEAttribute
  */
-reaction ReplacedNonRootId {
-	after attribute replaced at  minimal::NonRoot[id]
-	call replaceNonRootId(affectedEObject, newValue)
+reaction ReplacedIdentifiedId {
+	after attribute replaced at minimal::Identified[id]
+	call replaceIdentifiedId(affectedEObject, newValue)
 }
 
-routine replaceNonRootId(minimal::NonRoot nonRoot, String value) {
+routine replaceIdentifiedId(minimal::Identified identified, String value) {
 	match {
-		val targetElement = retrieve minimal::NonRoot corresponding to nonRoot
+		val targetElement = retrieve minimal::Identified corresponding to identified
 	}
 	action {
 		update targetElement {

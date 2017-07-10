@@ -295,7 +295,8 @@ class RoutineClassGenerator extends ClassGenerator {
 		val affectedElementClass = elementCreate.metaclass;
 		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
 		return '''
-			«affectedElementClass.javaClass» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();'''
+			«affectedElementClass.javaClass» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
+			notifyObjectCreated(«elementCreate.name»);'''
 	}
 	
 }

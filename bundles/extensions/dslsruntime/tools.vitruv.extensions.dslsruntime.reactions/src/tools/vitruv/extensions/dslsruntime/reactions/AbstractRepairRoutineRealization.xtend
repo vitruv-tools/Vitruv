@@ -14,6 +14,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
 import tools.vitruv.extensions.dslsruntime.reactions.effects.ReactionElementsHandlerImpl
+import tools.vitruv.framework.change.processing.ChangePropagationObservable
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
 	private extension val ReactionExecutionState executionState;
@@ -37,6 +38,10 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 
 	protected def CorrespondenceModel getCorrespondenceModel() {
 		return executionState.correspondenceModel;
+	}
+	
+	protected def void notifyObjectCreated(EObject createdObject) {
+		executionState.changePropagationObservable.notifyObjectCreated(createdObject);
 	}
 
 	protected def <T extends EObject> getCorrespondingElement(
@@ -66,11 +71,13 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 		protected final UserInteracting userInteracting;
 		protected final ChangePropagationResult transformationResult;
 		protected final CorrespondenceModel correspondenceModel;
+		protected final ChangePropagationObservable changePropagationObservable;
 
 		new(ReactionExecutionState executionState) {
 			this.userInteracting = executionState.userInteracting;
 			this.transformationResult = executionState.transformationResult;
 			this.correspondenceModel = executionState.correspondenceModel;
+			this.changePropagationObservable = executionState.changePropagationObservable;
 		}
 
 		/**

@@ -19,7 +19,8 @@ Require-Bundle: com.google.guava,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore,
  tools.vitruv.framework.correspondence,
- tools.vitruv.framework.modelsynchronization
+ tools.vitruv.framework.modelsynchronization,
+ tools.vitruv.framework.vsum
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.extensions.dslsruntime.mapping,
  tools.vitruv.extensions.dslsruntime.mapping.interfaces,

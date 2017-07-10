@@ -24,19 +24,21 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.domains.repository.ModelRepository;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
+import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.ModelRepository;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
-public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
-    private static final Logger logger = Logger.getLogger(ModelRepositoryImpl.class.getSimpleName());
+public class ResourceRepositoryImpl
+        implements ModelRepository, CorrespondenceProviding, VitruviusRecordingCommandExecutor {
+    private static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
     private final VitruvDomainRepository metamodelRepository;
@@ -46,11 +48,11 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
     private final FileSystemHelper fileSystemHelper;
     private final File folder;
 
-    public ModelRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository) {
+    public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository) {
         this(folder, metamodelRepository, null);
     }
 
-    public ModelRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository,
+    public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository,
             final ClassLoader classLoader) {
         this.metamodelRepository = metamodelRepository;
         this.folder = folder;
@@ -110,7 +112,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
                 public Void call() {
                     // case 2 or 3
                     ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
-                    ModelRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance);
+                    ResourceRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance);
                     saveVURIsOfVsumModelInstances();
                     return null;
                 }
@@ -195,10 +197,10 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                logger.debug(
-                        "  Saving correspondence model: " + ModelRepositoryImpl.this.correspondenceModel.getResource());
-                ModelRepositoryImpl.this.correspondenceModel.saveModel();
-                ModelRepositoryImpl.this.correspondenceModel.resetChangedAfterLastSave();
+                logger.debug("  Saving correspondence model: "
+                        + ResourceRepositoryImpl.this.correspondenceModel.getResource());
+                ResourceRepositoryImpl.this.correspondenceModel.saveModel();
+                ResourceRepositoryImpl.this.correspondenceModel.resetChangedAfterLastSave();
                 return null;
             }
         });
@@ -231,8 +233,8 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
             } else {
                 correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
             }
-            this.correspondenceModel = new CorrespondenceModelImpl(this, this.metamodelRepository, correspondencesVURI,
-                    correspondencesResource);
+            this.correspondenceModel = new CorrespondenceModelImpl(new TuidResolverImpl(this.metamodelRepository, this),
+                    this, this.metamodelRepository, correspondencesVURI, correspondencesResource);
             return null;
         });
     }
@@ -292,7 +294,7 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
                 try {
                     logger.debug("Deleting resource: " + resource);
                     resource.delete(null);
-                    ModelRepositoryImpl.this.modelInstances.remove(vuri);
+                    ResourceRepositoryImpl.this.modelInstances.remove(vuri);
                 } catch (final IOException e) {
                     logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
                 }
@@ -316,9 +318,14 @@ public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProvi
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() {
-                function.accept(ModelRepositoryImpl.this.resourceSet);
+                function.accept(ResourceRepositoryImpl.this.resourceSet);
                 return null;
             }
         });
+    }
+
+    @Override
+    public void executeRecordingCommand(final VitruviusRecordingCommand command) {
+        executeRecordingCommandOnTransactionalDomain(command);
     }
 }

@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
+import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
@@ -72,10 +73,10 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 */
 	protected abstract void cleanup();
 
-	private void propagateChanges(final VURI vuri) {
+	private List<PropagatedChange> propagateChanges(final VURI vuri) {
 		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-		this.getVirtualModel().propagateChange(compositeChange);
+		return this.getVirtualModel().propagateChange(compositeChange);
 	}
 
 	private void startRecordingChanges(Resource resource) {
@@ -101,13 +102,15 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * @param object
 	 *            the {@link EObject} to save and propagated recorded changes
 	 *            for
+	 * @return a list with the {@link PropagatedChange}s, containing the original and consequential changes
 	 * @throws IOException
 	 */
-	protected void saveAndSynchronizeChanges(EObject object) throws IOException {
+	protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) throws IOException {
 		Resource resource = object.eResource();
 		EcoreResourceBridge.saveResource(resource);
-		this.propagateChanges(VURI.getInstance(resource));
+		List<PropagatedChange> result = this.propagateChanges(VURI.getInstance(resource));
 		this.startRecordingChanges(resource);
+		return result;
 	}
 
 	/**

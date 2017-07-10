@@ -15,25 +15,25 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 	private final static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
 
 	private Change2ReactionsMap changeToReactionsMap;
-	
-	new (VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+
+	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		super(sourceDomain, targetDomain);
 		this.changeToReactionsMap = new Change2ReactionsMap();
 		this.setup();
 	}
-	
+
 	protected def void addReaction(Class<? extends EChange> eventType, IReactionRealization reaction) {
 		this.changeToReactionsMap.addReaction(eventType, reaction);
 	}
-	
+
 	private def Iterable<IReactionRealization> getRelevantReactions(EChange change) {
 		return this.changeToReactionsMap.getReactions(change).filter[checkPrecondition(change)];
 	}
-	
+
 	public override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
 		return !change.relevantReactions.isEmpty
 	}
-	
+
 	public override propagateChange(EChange event, CorrespondenceModel correspondenceModel) {
 		val propagationResult = new ChangePropagationResult();
 		if (event instanceof CompoundEChange) {
@@ -45,18 +45,20 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 		LOGGER.debug("Call relevant reactions");
 		for (reactions : relevantReactionss) {
 			LOGGER.debug(reactions.toString());
-			val currentPropagationResult = reactions.applyEvent(event, correspondenceModel)
+			val executionState = new ReactionExecutionState(userInteracting, correspondenceModel,
+				new ChangePropagationResult(), this);
+			val currentPropagationResult = reactions.applyEvent(event, executionState)
 			propagationResult.integrateResult(currentPropagationResult);
 		}
 		return propagationResult;
 	}
-	
+
 	override setUserInteracting(UserInteracting userInteracting) {
 		super.setUserInteracting(userInteracting);
 		changeToReactionsMap = new Change2ReactionsMap();
 		setup();
 	}
-	
+
 	protected abstract def void setup();
-	
+
 }

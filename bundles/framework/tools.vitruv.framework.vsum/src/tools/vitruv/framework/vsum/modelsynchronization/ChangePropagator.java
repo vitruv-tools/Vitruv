@@ -1,7 +1,8 @@
-package tools.vitruv.framework.modelsynchronization;
+package tools.vitruv.framework.vsum.modelsynchronization;
 
 import java.util.List;
 
+import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 
 public interface ChangePropagator {
@@ -12,7 +13,7 @@ public interface ChangePropagator {
      *            list of changes
      * @return TODO
      */
-    List<List<VitruviusChange>> propagateChange(VitruviusChange change);
+    List<PropagatedChange> propagateChange(VitruviusChange change);
 
     void addChangePropagationListener(ChangePropagationListener propagationListener);
 

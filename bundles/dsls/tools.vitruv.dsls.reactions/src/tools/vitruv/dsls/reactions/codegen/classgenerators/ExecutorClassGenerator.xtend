@@ -2,7 +2,6 @@ package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import org.eclipse.xtext.common.types.JvmVisibility
-import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
@@ -29,10 +28,9 @@ class ExecutorClassGenerator extends ClassGenerator {
 			members += toMethod("setup", typeRef(Void.TYPE)) [
 				visibility = JvmVisibility.PROTECTED;
 				body = '''
-					«UserInteracting.name» userInteracting = getUserInteracting();
 					«FOR reaction : reactionsSegment.reactions»
 						«val reactionsNameGenerator = reaction.reactionClassNameGenerator»
-						this.addReaction(«reactionsNameGenerator.qualifiedName».getExpectedChangeType(), new «reactionsNameGenerator.qualifiedName»(userInteracting));
+						this.addReaction(«reactionsNameGenerator.qualifiedName».getExpectedChangeType(), new «reactionsNameGenerator.qualifiedName»());
 					«ENDFOR»
 				'''
 			]

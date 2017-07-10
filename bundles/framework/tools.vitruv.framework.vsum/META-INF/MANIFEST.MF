@@ -14,7 +14,6 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.metamodel;visibility:=reexport,
  tools.vitruv.framework.correspondence,
  tools.vitruv.framework.change.processing,
- tools.vitruv.framework.modelsynchronization,
  tools.vitruv.framework.change,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
@@ -22,6 +21,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib.macro,
  org.eclipse.emf.ecore.xmi
 Export-Package: tools.vitruv.framework.vsum,
- tools.vitruv.framework.vsum.helper
+ tools.vitruv.framework.vsum.helper,
+ tools.vitruv.framework.vsum.modelsynchronization
 Bundle-Vendor: vitruv.tools
 
