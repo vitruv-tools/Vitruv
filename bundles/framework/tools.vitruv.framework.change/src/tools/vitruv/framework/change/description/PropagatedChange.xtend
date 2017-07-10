@@ -12,5 +12,10 @@ class PropagatedChange {
 		«originalChange»
 	Consequential change: «consequentialChanges»
 	'''
-		
+	
+	def applyBackward() {
+		consequentialChanges.applyBackward();
+		originalChange.applyBackward();
+	}
+	
 }

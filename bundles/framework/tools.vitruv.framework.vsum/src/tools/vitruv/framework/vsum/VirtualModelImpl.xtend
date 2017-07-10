@@ -15,6 +15,9 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import java.io.File
 import tools.vitruv.framework.vsum.repositories.RealModelRepositoryImpl
+import java.util.List
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.util.command.EMFCommandBridge
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ModelRepositoryImpl modelRepository;
@@ -66,7 +69,19 @@ class VirtualModelImpl implements InternalVirtualModel {
 	
 	override propagateChange(VitruviusChange change) {
 		// Save is done by the change propagator because it has to be performed before finishing sync
-		changePropagator.propagateChange(change);
+		return changePropagator.propagateChange(change);
+	}
+	
+	override reverseChanges(List<PropagatedChange> changes) {
+		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
+			changes.reverseView.forEach[applyBackward];
+			return null;
+		])
+		modelRepository.executeRecordingCommandOnTransactionalDomain(command);
+
+		val changedEObjects = command.getAffectedObjects().filter(EObject)
+		changedEObjects.map[eResource].filterNull.forEach[modified = true];
+		save();
 	}
 	
 	override setUserInteractor(UserInteracting userInteractor) {
