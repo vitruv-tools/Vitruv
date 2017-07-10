@@ -11,7 +11,7 @@ abstract class AbstractReactionRealization extends CallHierarchyHaving implement
 	protected ReactionExecutionState executionState;
 	
 	override applyEvent(EChange change, ReactionExecutionState reactionExecutionState) {
-		getLogger().debug("Called reactions " + this.getClass().getSimpleName() + " with event: " + change);
+		getLogger().debug("Called reaction " + this.getClass().getSimpleName() + " with event: " + change);
     	
     	this.executionState = reactionExecutionState;
     	this.userInteracting = reactionExecutionState.userInteracting;
