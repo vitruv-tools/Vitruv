@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl;
 
 import tools.vitruv.framework.util.bridges.EcoreBridge;
 
@@ -45,7 +46,7 @@ public class AttributeTuidCalculatorAndResolver extends HierarchicalTuidCalculat
 		for (String attributeName : this.attributeNames) {
 			final String attributeValue = EcoreBridge.getStringValueOfAttribute(obj, attributeName);
 			if (null != attributeValue) {
-				String subTuid = (obj.eContainingFeature() == null ? "<root>"
+				String subTuid = (obj.eContainingFeature() == null || obj.eContainer() instanceof ChangeDescriptionImpl ? "<root>"
 						: obj.eContainingFeature().getName()) + SUBDIVIDER + obj.eClass().getName() + SUBDIVIDER
 								+ attributeName + "=" + attributeValue;
 				return subTuid;
