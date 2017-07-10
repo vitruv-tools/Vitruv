@@ -11,8 +11,8 @@ import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
 import org.apache.log4j.Level
 
-class RealModelRepositoryImpl {
-	private val logger = Logger.getLogger(RealModelRepositoryImpl);
+class ModelRepositoryImpl {
+	private val logger = Logger.getLogger(ModelRepositoryImpl);
 	val Set<EObject> rootElements;
 	val Map<EObject, AtomicEmfChangeRecorder> rootToRecorder;
 	var boolean isRecording = false;
