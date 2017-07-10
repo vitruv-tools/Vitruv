@@ -20,6 +20,76 @@
    </license>
 
    <requires>
+      <import plugin="com.google.guava"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib"/>
+      <import plugin="org.eclipse.xtend.lib.macro"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import feature="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.xtext.builder"/>
+      <import plugin="org.eclipse.xtext"/>
+      <import plugin="org.eclipse.xtext.util"/>
+      <import plugin="tools.vitruv.framework.correspondence"/>
+      <import plugin="org.antlr.runtime"/>
+      <import plugin="org.eclipse.xtext.common.types"/>
+      <import feature="org.eclipse.xtext.xbase" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.mwe2.language"/>
+      <import plugin="org.eclipse.text"/>
+      <import plugin="tools.vitruv.framework.util"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="tools.vitruv.extensions.dslsruntime.mapping"/>
+      <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.framework.change.echange"/>
+      <import plugin="tools.vitruv.framework.tuid"/>
+      <import plugin="tools.vitruv.framework.modelsynchronization"/>
+      <import plugin="tools.vitruv.framework.change.processing"/>
+      <import plugin="org.eclipse.xtext.xtext.generator"/>
+      <import plugin="org.eclipse.xtext.ide"/>
+      <import plugin="org.eclipse.xtext.xbase.ide"/>
+      <import plugin="tools.vitruv.dsls.mirbase" version="0.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.editors" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui.shared"/>
+      <import plugin="org.eclipse.xtext.xbase.ui"/>
+      <import plugin="org.eclipse.xtext.common.types.ui"/>
+      <import plugin="org.eclipse.jdt.debug.ui"/>
+      <import plugin="org.eclipse.xtext.ui.codetemplates.ui"/>
+      <import plugin="org.eclipse.compare"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="tools.vitruv.dsls.mapping.ide" version="0.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.pde.core"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.xtext.generator"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.emf.common.ui"/>
+      <import plugin="org.eclipse.equinox.common" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.framework.metamodel"/>
+      <import plugin="tools.vitruv.extensions.dslsruntime.reactions"/>
+      <import plugin="tools.vitruv.framework.userinteraction"/>
+      <import plugin="tools.vitruv.dsls.reactions.ide" version="0.1.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase" version="2.10.0" match="greaterOrEqual"/>
       <import feature="tools.vitruv.extensions.dslsruntime.feature" version="0.2.0" match="greaterOrEqual"/>
       <import feature="tools.vitruv.framework.feature" version="0.2.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.xtext.ui" version="2.10.0" match="greaterOrEqual"/>
@@ -59,28 +129,7 @@
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.dsls.mapping.testframework"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.dsls.mapping.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="tools.vitruv.dsls.mapping.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.dsls.mapping.ui.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -108,21 +157,7 @@
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.dsls.mirbase.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="tools.vitruv.dsls.mirbase.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.dsls.mirbase.ui.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -143,21 +178,7 @@
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.dsls.reactions.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="tools.vitruv.dsls.reactions.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.dsls.reactions.ui.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
