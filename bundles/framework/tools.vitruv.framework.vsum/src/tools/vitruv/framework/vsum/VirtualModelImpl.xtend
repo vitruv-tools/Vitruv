@@ -20,8 +20,8 @@ import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
-	private val ResourceRepositoryImpl resourceRepository;
-	private val ModelRepositoryImpl modelRepository;
+	protected val ResourceRepositoryImpl resourceRepository;
+	val ModelRepositoryImpl modelRepository;
 	private val VitruvDomainRepository metamodelRepository;
 	private val ChangePropagator changePropagator;
 	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
@@ -87,6 +87,18 @@ class VirtualModelImpl implements InternalVirtualModel {
 		save();
 	}
 
+	override forwardChanges(List<PropagatedChange> changes) {
+		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
+			changes.forEach[applyForward]
+			return null
+		])
+		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)
+
+		val changedEObjects = command.affectedObjects.filter(EObject)
+		changedEObjects.map[eResource].filterNull.forEach[modified = true]
+		save
+	}
+
 	override setUserInteractor(UserInteracting userInteractor) {
 		for (propagationSpecification : this.changePropagationSpecificationProvider) {
 			propagationSpecification.userInteracting = userInteractor;
@@ -96,4 +108,5 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override File getFolder() {
 		return folder;
 	}
+
 }

@@ -7,24 +7,24 @@ import java.util.List
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeContainerChange
+import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.change.processing.ChangePropagationObserver
-import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.ModelRepository
+import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
-	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
+	static extension Logger = Logger::getLogger(ChangePropagatorImpl.getSimpleName())
 	final VitruvDomainRepository metamodelRepository;
 	final ModelRepository resourceRepository
 	final ChangePropagationSpecificationProvider changePropagationProvider
@@ -56,7 +56,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 		override synchronized List<PropagatedChange> propagateChange(VitruviusChange change) {
 			if (change === null || !change.containsConcreteChange()) {
-				logger.info('''The change does not contain any changes to synchronize: «change»''')
+				info('''The change does not contain any changes to synchronize: «change»''')
 				return Collections.emptyList()
 			}
 			if (!change.validate()) {
@@ -75,8 +75,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
 			// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
 			resourceRepository.saveAllModels
-			logger.debug(modelRepository);
-			logger.debug('''
+			debug(modelRepository);
+			debug('''
 				Propagated changes:
 				«FOR propagatedChange : result»
 					Propagated Change:
@@ -87,7 +87,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		}
 
 		private def void startChangePropagation(VitruviusChange change) {
-			logger.info('''Started synchronizing change: «change»''')
+			info('''Started synchronizing change: «change»''')
 			for (ChangePropagationListener syncListener : this.changePropagationListeners) {
 				syncListener.startedChangePropagation()
 			}
@@ -97,7 +97,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			for (ChangePropagationListener syncListener : this.changePropagationListeners) {
 				syncListener.finishedChangePropagation()
 			}
-			logger.info('''Finished synchronizing change: «change»''')
+			info('''Finished synchronizing change: «change»''')
 		}
 
 		private def dispatch void propagateSingleChange(CompositeContainerChange change,
@@ -111,7 +111,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			private def dispatch void propagateSingleChange(TransactionalChange change,
 				List<PropagatedChange> propagatedChanges, ChangePropagationResult propagationResult,
 				ChangedResourcesTracker changedResourcesTracker) {
-
 				val changeApplicationFunction = [ ResourceSet resourceSet |
 					resourceRepository.getModel(change.getURI());
 					change.resolveBeforeAndApplyForward(resourceSet)
@@ -120,16 +119,16 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 				this.resourceRepository.executeOnResourceSet(changeApplicationFunction);
 
 				val changeDomain = metamodelRepository.getDomain(change.getURI.fileExtension);
-				val consequentialChanges = newArrayList();
+				val consequentialChanges = newArrayList
 				for (propagationSpecification : changePropagationProvider.
 					getChangePropagationSpecifications(changeDomain)) {
 					consequentialChanges +=
 						propagateChangeForChangePropagationSpecification(change, propagationSpecification,
-							propagationResult, changedResourcesTracker);
+							propagationResult, changedResourcesTracker)
 				}
-				propagatedChanges.add(
-					new PropagatedChange(change,
-						VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges)));
+				val propagatedChange = new PropagatedChange(change,
+					VitruviusChangeFactory::instance.createCompositeChange(consequentialChanges))
+				propagatedChanges += propagatedChange
 			}
 
 			private def List<VitruviusChange> propagateChangeForChangePropagationSpecification(
@@ -146,7 +145,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 					val propResult = propagationSpecification.propagateChange(change, correspondenceModel);
 					modelRepository.cleanupRootElements();
 					consequentialChanges += modelRepository.endRecording;
-					consequentialChanges.forEach[logger.debug(it)];
+					consequentialChanges.forEach[debug(it)];
 					return propResult;
 
 				])
@@ -163,7 +162,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 			def private void executePropagationResult(ChangePropagationResult changePropagationResult) {
 				if (null === changePropagationResult) {
-					logger.info("Current propagation result is null. Can not save new root EObjects.")
+					info("Current propagation result is null. Can not save new root EObjects.")
 					return;
 				}
 				val elementsToPersist = changePropagationResult.getElementToPersistenceMap();

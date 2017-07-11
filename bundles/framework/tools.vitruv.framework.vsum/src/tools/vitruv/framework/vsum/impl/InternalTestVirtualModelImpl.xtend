@@ -13,7 +13,7 @@ class InternalTestVirtualModelImpl extends VirtualModelImpl implements InternalT
 	}
 
 	override getModelRepository() {
-		modelRepository
+		resourceRepository
 	}
 
 }

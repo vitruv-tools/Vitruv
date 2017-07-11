@@ -33,11 +33,11 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.ModelRepository;
+import tools.vitruv.framework.vsum.InternalModelRepository;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
 public class ResourceRepositoryImpl
-        implements ModelRepository, CorrespondenceProviding, VitruviusRecordingCommandExecutor {
+        implements InternalModelRepository, CorrespondenceProviding, VitruviusRecordingCommandExecutor {
     private static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
@@ -327,5 +327,10 @@ public class ResourceRepositoryImpl
     @Override
     public void executeRecordingCommand(final VitruviusRecordingCommand command) {
         executeRecordingCommandOnTransactionalDomain(command);
+    }
+
+    @Override
+    public ResourceSet getResourceSet() {
+        return this.resourceSet;
     }
 }

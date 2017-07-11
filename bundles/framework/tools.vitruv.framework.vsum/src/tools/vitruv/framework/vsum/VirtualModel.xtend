@@ -14,6 +14,8 @@ interface VirtualModel {
 
 	def void reverseChanges(List<PropagatedChange> changes)
 
+	def void forwardChanges(List<PropagatedChange> changes)
+
 	def ModelInstance getModelInstance(VURI modelVuri)
 
 }
