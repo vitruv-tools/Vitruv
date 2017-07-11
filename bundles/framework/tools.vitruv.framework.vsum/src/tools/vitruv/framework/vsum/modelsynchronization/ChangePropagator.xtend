@@ -1,8 +1,8 @@
-package tools.vitruv.framework.modelsynchronization
+package tools.vitruv.framework.vsum.modelsynchronization
 
 import java.util.List
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
 
 interface ChangePropagator {
 	/** 
