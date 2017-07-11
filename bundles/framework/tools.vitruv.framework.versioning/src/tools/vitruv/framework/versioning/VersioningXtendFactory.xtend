@@ -1,6 +1,5 @@
 package tools.vitruv.framework.versioning
 
-import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.versioning.impl.VersioningXtendFactoryImpl
 
 /**
@@ -13,5 +12,5 @@ import tools.vitruv.framework.versioning.impl.VersioningXtendFactoryImpl
 interface VersioningXtendFactory {
 	val VersioningXtendFactory instance = VersioningXtendFactoryImpl::init
 
-	def SourceTargetRecorder createSourceTargetRecorder(InternalVirtualModel virtualModel)
+	def SourceTargetRecorder createSourceTargetRecorder()
 }
