@@ -18,7 +18,6 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
-import org.apache.log4j.Level
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
@@ -35,7 +34,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding, ModelRepositoryImpl modelRepository) {
-		logger.level = Level.DEBUG;
 		this.resourceRepository = resourceRepository
 		this.modelRepository = modelRepository;
 		this.changePropagationProvider = changePropagationProvider
