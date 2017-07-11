@@ -1,5 +1,6 @@
 package tools.vitruv.framework.tests.util
 
+import com.google.common.io.Files
 import java.io.File
 import java.util.ArrayList
 import java.util.Date
@@ -22,16 +23,14 @@ import org.eclipse.jdt.core.JavaCore
 import org.eclipse.jdt.launching.IVMInstall
 import org.eclipse.jdt.launching.JavaRuntime
 import org.eclipse.jdt.launching.LibraryLocation
-import com.google.common.io.Files
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.AbstractVitruvDomain
+import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.vsum.VirtualModelConfiguration
-import tools.vitruv.framework.vsum.VirtualModelImpl
 
 /** 
  * Utility class for all Vitruvius test cases
@@ -164,7 +163,8 @@ final class TestUtil {
 		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
 			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification)
 		}
-		val InternalVirtualModel vmodel = new VirtualModelImpl(projectFolder, userInteracting, vmodelConfig)
+		val InternalVirtualModel vmodel = InternalVirtualModel::createInternalTestVirtualModel(projectFolder,
+			userInteracting, vmodelConfig)
 		return vmodel
 	}
 

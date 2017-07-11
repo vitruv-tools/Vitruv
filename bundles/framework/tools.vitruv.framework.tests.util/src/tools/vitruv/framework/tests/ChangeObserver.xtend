@@ -1,7 +1,8 @@
 package tools.vitruv.framework.tests
 
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.vsum.VirtualModel
 
 /**
  * Interface to listen for changes on {@link ChangeObservable}s.
@@ -11,5 +12,5 @@ import tools.vitruv.framework.util.datatypes.VURI
  * @since 2017-05-30
  */
 interface ChangeObserver {
-	def void update(VURI vuri, TransactionalChange change)
+	def void update(VURI vuri, PropagatedChange change, VirtualModel vm)
 }
