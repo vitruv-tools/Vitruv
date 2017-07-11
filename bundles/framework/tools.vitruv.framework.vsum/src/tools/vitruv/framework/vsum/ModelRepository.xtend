@@ -21,5 +21,5 @@ interface ModelRepository {
      * Executes the function on the {@link ResourceSet} of the model repository.
      * @param function The {@link Consumer} to be executed
      */
-    def VitruviusRecordingCommand executeOnResourceSet(Consumer<ResourceSet> function);
+    def void executeOnResourceSet(Consumer<ResourceSet> function);
 }

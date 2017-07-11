@@ -314,17 +314,14 @@ public class ResourceRepositoryImpl
     }
 
     @Override
-    public VitruviusRecordingCommand executeOnResourceSet(final Consumer<ResourceSet> function) {
-        VitruviusRecordingCommand recordingCommand = EMFCommandBridge
-                .createVitruviusRecordingCommand(new Callable<Void>() {
-                    @Override
-                    public Void call() {
-                        function.accept(ResourceRepositoryImpl.this.resourceSet);
-                        return null;
-                    }
-                });
-        executeRecordingCommand(recordingCommand);
-        return recordingCommand;
+    public void executeOnResourceSet(final Consumer<ResourceSet> function) {
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+            @Override
+            public Void call() {
+                function.accept(ResourceRepositoryImpl.this.resourceSet);
+                return null;
+            }
+        });
     }
 
     @Override
