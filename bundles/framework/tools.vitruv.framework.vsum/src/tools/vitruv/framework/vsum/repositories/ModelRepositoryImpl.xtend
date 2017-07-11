@@ -100,7 +100,9 @@ class ModelRepositoryImpl {
 	override toString() '''
 		Model repository contents:
 			«FOR element : rootElements»
-				«element»«ENDFOR»'''
+				«element», resource: «element.eResource?.URI»"
+			«ENDFOR»
+		'''
 				
 	
 }
