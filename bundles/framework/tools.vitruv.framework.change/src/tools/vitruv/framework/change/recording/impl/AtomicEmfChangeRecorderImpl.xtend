@@ -63,7 +63,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		changeRecorder.recordingTransientFeatures = false
 		changeRecorder.resolveProxies = true
 		this.unresolveRecordedChanges = unresolveRecordedChanges
-		this.updateTuids = updateTuids;
+		this.updateTuids = updateTuids
 		// TODO PS Remove
 		level = Level::INFO
 	}
@@ -114,7 +114,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	private def createModelChange(ChangeDescription changeDescription) {
 		var TransactionalChange result = null
 		if (unresolveRecordedChanges) {
-			result = VitruviusChangeFactory::instance.createEMFModelChange(changeDescription, modelVURI)
+			result = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(changeDescription, modelVURI)
 			changeDescription.applyAndReverse
 		} else {
 			result = VitruviusChangeFactory::instance.createLegacyEMFModelChange(changeDescription, modelVURI)

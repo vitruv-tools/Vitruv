@@ -2,7 +2,6 @@ package tools.vitruv.framework.change.description
 
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.VitruviusChangeFactoryImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
@@ -26,13 +25,13 @@ interface VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri)
+	def TransactionalChange createEMFModelChangeFromEChanges(ChangeDescription changeDescription, VURI vuri)
 
-	def TransactionalChange createEMFModelChange(List<EChange> echanges, VURI vuri)
+	def TransactionalChange createEMFModelChangeFromEChanges(List<EChange> echanges, VURI vuri)
 
 	def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri)
 
-	def EMFModelChangeImpl copy(EMFModelChangeImpl changeToCopy)
+	def TransactionalChange copy(TransactionalChange changeToCopy)
 
 	def ConcreteChange createConcreteApplicableChange(EChange change, VURI vuri)
 

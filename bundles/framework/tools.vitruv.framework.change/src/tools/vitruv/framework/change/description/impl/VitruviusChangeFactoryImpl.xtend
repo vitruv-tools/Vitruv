@@ -14,19 +14,20 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
+import tools.vitruv.framework.change.description.TransactionalChange
 
 /**
  * @version 0.2.0
  * @since 2017-06-06
  */
 class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
-	static val logger = Logger::getLogger(VitruviusChangeFactory)
+	static extension Logger = Logger::getLogger(VitruviusChangeFactory)
 
 	private new() {
 	}
 
 	static def VitruviusChangeFactory init() {
-		logger.level = Level::DEBUG
+		level = Level::DEBUG
 		new VitruviusChangeFactoryImpl
 	}
 
@@ -34,19 +35,19 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	override createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+	override createEMFModelChangeFromEChanges(ChangeDescription changeDescription, VURI vuri) {
 		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
 		new EMFModelChangeImpl(changes, vuri)
 	}
 
-	override copy(EMFModelChangeImpl changeToCopy) {
+	override copy(TransactionalChange changeToCopy) {
 		val echanges = changeToCopy.EChanges
 		if (!echanges.forall[!resolved])
-			logger.error("There are some resolved changes!")
+			error("There are some resolved changes!")
 		return new EMFModelChangeImpl(echanges, changeToCopy.URI)
 	}
 
-	override createEMFModelChange(List<EChange> echanges, VURI vuri) {
+	override createEMFModelChangeFromEChanges(List<EChange> echanges, VURI vuri) {
 		new EMFModelChangeImpl(echanges, vuri)
 	}
 
@@ -100,7 +101,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 				"The requested model instance resource '" + resource + "' has to contain at most one root element " +
 					"in order to be added to the VSUM without an explicit import!")
 				else { // resource.contents.size === null --> no element in newModelInstance
-					logger.info("Empty model file created: " + VURI::getInstance(resource) +
+					info("Empty model file created: " + VURI::getInstance(resource) +
 						". Propagation of 'root element created' not triggered.")
 					return null
 				}
@@ -117,7 +118,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 						createRemoveAndDeleteRootChange(rootElement, resource, index)
 					return deleteRootObj
 				}
-				logger.info("Deleted resource " + VURI::getInstance(resource) + " did not contain any EObject")
+				info("Deleted resource " + VURI::getInstance(resource) + " did not contain any EObject")
 				return null
 			}
 
