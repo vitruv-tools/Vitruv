@@ -25,33 +25,46 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.datatypes.VURI
 
 class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
-	static val logger = Logger::getLogger(AtomicEmfChangeRecorderImpl)
+	static extension Logger = Logger::getLogger(AtomicEmfChangeRecorderImpl)
 	List<ChangeDescription> changeDescriptions
 	VURI modelVURI
 	Collection<Notifier> elementsToObserve
 	boolean unresolveRecordedChanges
+	val boolean updateTuids
 
 	/**
 	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
-	 * the recorded changes.
+	 * the recorded changes, but updated Tuids.
 	 */
 	new() {
-		this(false)
+		this(false, true)
+	}
+	
+	/**
+	 * Constructors which updated Tuids
+	 * 
+	 * @param unresolveRecordedChanges -
+	 * 		The recorded changes will be replaced by unresolved changes, which referenced EObjects are proxy objects.
+	 */
+	new(boolean unresolveRecordedChanges) {
+		this(unresolveRecordedChanges, true)
 	}
 
 	/**
 	 * Constructor for AtomicEMFChangeRecorder
-	 * @param 	unresolveRecordedChanges The recorded changes will be replaced
-	 * 			by unresolved changes, which referenced EObjects are proxy objects.
+	 * @param unresolveRecordedChanges -
+	 * 		The recorded changes will be replaced by unresolved changes, which referenced EObjects are proxy objects.
+	 * @param updateTuids -
+	 * 		specifies whether TUIDs shall be updated or not.
 	 */
-	new(boolean unresolveRecordedChanges) {
+	new(boolean unresolveRecordedChanges, boolean updateTuids) {
 		elementsToObserve = new ArrayList<Notifier>
 		changeRecorder.recordingTransientFeatures = false
 		changeRecorder.resolveProxies = true
 		this.unresolveRecordedChanges = unresolveRecordedChanges
-
+		this.updateTuids = updateTuids;
 		// TODO PS Remove
-		logger.level = Level::INFO
+		level = Level::INFO
 	}
 
 	override beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {
@@ -62,32 +75,25 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		changeRecorder.beginRecording(elementsToObserve)
 	}
 
+	override stopRecording() {
+		if (!recording) {
+			throw new IllegalStateException
+		changeRecorder.endRecording
+	}
+
 	override endRecording() {
-		logger.debug('''End recording, unresolveRecordedChanges: «unresolveRecordedChanges»''')
+		debug('''End recording, unresolveRecordedChanges: «unresolveRecordedChanges»''')
 		if (!recording)
 			throw new IllegalStateException
 		changeRecorder.endRecording
-		changeDescriptions.reverseView.forEach[applyAndReverse]
-		val transactionalChanges = changeDescriptions.filterNull.map[createModelChange].filterNull.toList
+		// Only take those that do not contain only objectsToAttach (I don't know why)
+		val relevantChangeDescriptions = 
+			changeDescriptions.filter[!(objectChanges.empty && resourceChanges.empty)].toList
+		relevantChangeDescriptions.reverseView.forEach[applyAndReverse]
+		var transactionalChanges = relevantChangeDescriptions.filterNull.map[createModelChange].filterNull.toList
 		if (unresolveRecordedChanges)
-			correctChanges(transactionalChanges.immutableCopy)
+			correctChanges(transactionalChanges)
 		return transactionalChanges
-	}
-
-	private def createModelChange(ChangeDescription changeDescription) {
-		if (!(changeDescription.objectChanges.empty && changeDescription.resourceChanges.empty)) {
-			var TransactionalChange result = null
-			if (unresolveRecordedChanges) {
-				result = VitruviusChangeFactory::instance.createEMFModelChange(changeDescription, modelVURI)
-				changeDescription.applyAndReverse
-			} else {
-				result = VitruviusChangeFactory::instance.createLegacyEMFModelChange(changeDescription, modelVURI)
-				result.applyForward
-			}
-			return result
-		}
-		changeDescription.applyAndReverse
-		return null
 	}
 
 	override restartRecording() {
@@ -102,6 +108,22 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 
 	override dispose() {
 		changeRecorder.dispose
+	}
+
+	private def createModelChange(ChangeDescription changeDescription) {
+		var TransactionalChange result = null
+		if (unresolveRecordedChanges) {
+			result = VitruviusChangeFactory::instance.createEMFModelChange(changeDescription, modelVURI)
+			changeDescription.applyAndReverse
+		} else {
+			result = VitruviusChangeFactory::instance.createLegacyEMFModelChange(changeDescription, modelVURI)
+			if (updateTuids) {
+				result.applyForward
+			} else {
+				(result as LegacyEMFModelChangeImpl).applyForwardWithoutTuidUpdate
+			}
+		}
+		return result
 	}
 
 	/*
@@ -175,7 +197,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		override endRecording() {
 			if (!isDisposed)
 				changeDescriptions += super.endRecording
-			changeDescription
+			return changeDescription
 		}
 	}
 }

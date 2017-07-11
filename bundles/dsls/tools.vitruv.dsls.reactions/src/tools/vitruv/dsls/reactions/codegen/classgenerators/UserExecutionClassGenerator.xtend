@@ -136,7 +136,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	}
 	
 	protected def JvmOperation generateMethodCallRoutine(RoutineCallBlock routineCall, Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
-		if (routineCall.code == null) {
+		if (routineCall.code === null) {
 			return null;
 		}
 		val methodName = "callRoutine" + counterCallRoutineMethods++;

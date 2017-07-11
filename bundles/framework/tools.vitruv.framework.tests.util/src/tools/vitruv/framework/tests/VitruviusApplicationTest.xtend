@@ -1,23 +1,23 @@
 package tools.vitruv.framework.tests
 
 import java.io.IOException
-import java.util.ArrayList
-import java.util.Collection
 import java.util.Collections
-import java.util.HashMap
-import java.util.Map
-import org.apache.commons.lang.StringUtils
+import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil
+import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.VURI
+import java.util.Collection
+import java.util.Map
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
-/**
+/** 
  * Basic test class for all Vitruvius application tests that require a test
  * project and a VSUM project within the test workspace and use a monitor for
  * recording changes of models. The class creates a test project and a VSUM for
@@ -34,8 +34,8 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 
 	override final beforeTest() {
 		super.beforeTest
-		uriToChangeRecorder = new HashMap
-		observers = new ArrayList
+		uriToChangeRecorder = newHashMap
+		observers = newArrayList
 		setup
 	}
 
@@ -56,8 +56,8 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 		observers.forEach[update(vuri, change)]
 	}
 
-	/**
-	 * Defines, if recorded changes shall be unresolved and resolved by the change propagation in the VSUM::
+	/** 
+	 * Defines, if recorded changes shall be unresolved and resolved by the change propagation in the VSUM.
 	 * This defaults to <code>false</code>. If the used metamodel allows to use the
 	 * deresolution mechanism, overwrite this method an return <code>true</code>
 	 * @return <code>true</code> if recored changes shall be unresolved, <code>false</code> otherwise
@@ -66,43 +66,45 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 		false
 	}
 
-	/**
+	/** 
 	 * This method gets called at the beginning of each test case, after the
 	 * test project and VSUM have been initialized. It can be used, for example,
 	 * to initialize the test models.
 	 */
 	def protected abstract void setup()
 
-	/**
+	/** 
 	 * This method gets called at the end of each test case. It can be used for
 	 * clean up actions.
 	 */
 	def protected abstract void cleanup()
 
-	/**
+	/** 
 	 * Starts recording changes for the model of the given {@link EObject}
 	 * @param objectthe {@link EObject} to record changes for
 	 */
 	def protected void startRecordingChanges(EObject object) {
-		startRecordingChanges(object.eResource)
+		startRecordingChanges(object.eResource())
 	}
 
-	/**
+	/** 
 	 * The model containing the given {@link EObject} gets saved and changes
 	 * that were recorded for that model get propagated. Recording is restarted
 	 * afterwards.
 	 * @param objectthe {@link EObject} to save and propagated recorded changes
 	 * for
+	 * @return a list with the {@link PropagatedChange}s, containing the original and consequential changes
 	 * @throws IOException
 	 */
-	def protected void saveAndSynchronizeChanges(EObject object) throws IOException {
-		val resource = object.eResource
-		EcoreResourceBridge::saveResource(resource)
-		propagateChanges(VURI::getInstance(resource))
-		startRecordingChanges(resource)
+	def protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) throws IOException {
+		var Resource resource = object.eResource()
+		EcoreResourceBridge.saveResource(resource)
+		var List<PropagatedChange> result = this.propagateChanges(VURI.getInstance(resource))
+		this.startRecordingChanges(resource)
+		return result
 	}
 
-	/**
+	/** 
 	 * A model with the given root element at the given path within the test
 	 * project gets created. The changes for the insertion of the root element
 	 * are propagated and recording of further changes is started. No call to{@link #startRecordingChanges(EObject)} is necessary.
@@ -111,51 +113,49 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	 * @throws IOException
 	 */
 	def protected void createAndSynchronizeModel(String modelPathInProject, EObject rootElement) throws IOException {
-		if (StringUtils::isEmpty(modelPathInProject) || rootElement === null)
+		if (StringUtil.isEmpty(modelPathInProject) || rootElement === null)
 			throw new IllegalArgumentException
 		val resource = modelPathInProject.createModelResource
 		resource.startRecordingChanges
-		resource.getContents.add(rootElement)
-		rootElement.saveAndSynchronizeChanges
+		resource.contents += rootElement
+		saveAndSynchronizeChanges(rootElement)
 	}
 
-	/**
+	/** 
 	 * The model at the given path is deleted. The old root element is removed
 	 * and changes for that removal are propagated.
 	 * @param modelPathInProjectpath within project to remove model from
 	 * @throws IOException
 	 */
 	def protected void deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
-		if (StringUtils::isEmpty(modelPathInProject))
-			throw new IllegalArgumentException
-		val resource = modelPathInProject.getModelResource
-		val vuri = VURI::getInstance(resource)
-		resource.delete(Collections::EMPTY_MAP)
+		if (StringUtil.isEmpty(modelPathInProject)) {
+			throw new IllegalArgumentException()
+		}
+		var Resource resource = getModelResource(modelPathInProject)
+		var VURI vuri = VURI.getInstance(resource)
+		resource.delete(Collections.EMPTY_MAP)
 		vuri.propagateChanges
 	}
 
-	def private propagateChanges(VURI vuri) {
+	def private List<PropagatedChange> propagateChanges(VURI vuri) {
 		val changes = uriToChangeRecorder.get(vuri).endRecording
-		changes.forEach [
+		changes.map [
+			var List<PropagatedChange> propagatedChanges = null
 			if (it instanceof EMFModelChangeImpl) {
 				// PS Create a copy of the change to send an unresolved 
 				// change to the observers
 				val copiedChange = VitruviusChangeFactory::instance.copy(it)
-				testChange(false)
-				copiedChange.testChange(false)
-				virtualModel.propagateChange(it)
-				testChange(true)
-				copiedChange.testChange(false)
+				propagatedChanges = virtualModel.propagateChange(it)
 				// PS NotifyObservers has to be called after change propagation
 				notifyObservers(vuri, copiedChange)
 			} else {
 				// TODO PS Check, if CompositeContainerChange creation is necessary
 				// CompositeContainerChange compositeChange =VitruviusChangeFactory.getInstance.createCompositeChange(Collections.singleton(change));
-				virtualModel.propagateChange(it)
+				propagatedChanges = virtualModel.propagateChange(it)
 				notifyObservers(vuri, it)
 			}
-
-		]
+			return propagatedChanges
+		].flatten.toList
 	}
 
 	def private startRecordingChanges(Resource resource) {
@@ -163,13 +163,5 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 		val AtomicEmfChangeRecorder recorder = new AtomicEmfChangeRecorderImpl(unresolveChanges)
 		uriToChangeRecorder.put(vuri, recorder)
 		recorder.beginRecording(vuri, Collections::singleton(resource))
-
-	}
-
-	private static def testChange(EMFModelChangeImpl emfModelChange, boolean shouldEchangesBeResolved) {
-		val current = emfModelChange.EChanges.
-			forall[if (shouldEchangesBeResolved) resolved else !resolved]
-		if (!current)
-			throw new IllegalStateException('''The echanges of «emfModelChange» are «if(shouldEchangesBeResolved) "not" else ""» resolved''')
 	}
 }

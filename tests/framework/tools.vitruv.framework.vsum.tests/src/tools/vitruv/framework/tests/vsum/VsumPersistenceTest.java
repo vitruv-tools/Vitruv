@@ -21,7 +21,7 @@ public class VsumPersistenceTest extends VsumTest {
         // 1. create empty VSUM + store dummy model instances
         InternalVirtualModel vsum = createDefaultVirtualModel();
         int nrOfVURIs = 2;
-        Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentProjectFolderName(), nrOfVURIs);
+        Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentTestProjectFolder(), nrOfVURIs);
         // PersistentTestUtil.createResources(vuris);
         for (VURI vuri : vuris) {
             vsum.persistRootElement(vuri, Pcm_mockupFactory.eINSTANCE.createRepository());

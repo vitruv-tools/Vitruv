@@ -2,6 +2,7 @@ package tools.vitruv.framework.modelsynchronization
 
 import java.util.List
 import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
 
 interface ChangePropagator {
 	/** 

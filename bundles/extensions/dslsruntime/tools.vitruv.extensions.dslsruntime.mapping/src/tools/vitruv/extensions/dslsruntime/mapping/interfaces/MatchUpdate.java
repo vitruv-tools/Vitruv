@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 import tools.vitruv.extensions.dslsruntime.mapping.MappedCorrespondenceModel;
 import tools.vitruv.extensions.dslsruntime.mapping.interfaces.Candidate;
 import tools.vitruv.framework.correspondence.Correspondence;
-import tools.vitruv.framework.util.datatypes.Pair;
-import tools.vitruv.framework.util.datatypes.Triple;
+import edu.kit.ipd.sdq.commons.util.java.Pair;
+import edu.kit.ipd.sdq.commons.util.java.Triple;
 
 /**
  * Represents all changed mapping states for a set of candidates.

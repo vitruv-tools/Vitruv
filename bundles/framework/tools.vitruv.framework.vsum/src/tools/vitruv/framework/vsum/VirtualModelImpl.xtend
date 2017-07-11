@@ -2,8 +2,10 @@ package tools.vitruv.framework.vsum
 
 import java.io.File
 import java.util.concurrent.Callable
+import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
@@ -13,34 +15,40 @@ import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
+import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
+import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.VirtualModelConfiguration
 import tools.vitruv.framework.vsum.VirtualModelManager
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
+	protected val ModelRepositoryImpl modelRepository
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator
-	protected val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository metamodelRepository
+    val ResourceRepositoryImpl resourceRepository
 
-	@Accessors(PUBLIC_GETTER)
+    @Accessors(PUBLIC_GETTER)
 	val File folder
-
-	new(File folder, VirtualModelConfiguration modelConfiguration) {
-		this.folder = folder
+    
+    new(File folder, UserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
+        this.folder = folder
 		metamodelRepository = new VitruvDomainRepositoryImpl
 		modelConfiguration.metamodels.forEach[metamodelRepository.addDomain(it)]
-		modelRepository = new ModelRepositoryImpl(folder, metamodelRepository)
-		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository
+        modelRepository = new ModelRepositoryImpl
+        val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
+			changePropagationSpecification.userInteracting = userInteracting;
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
-		changePropagationSpecificationProvider = changePropagationSpecificationRepository
-		changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider,
-			metamodelRepository, modelRepository)
-		VirtualModelManager::instance.putVirtualModel(this)
+		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
+		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider, metamodelRepository, resourceRepository, modelRepository);
+		VirtualModelManager.instance.putVirtualModel(this);
 	}
 
 	override getCorrespondenceModel() {
@@ -48,19 +56,19 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override getModelInstance(VURI modelVuri) {
-		modelRepository.getModel(modelVuri)
+		resourceRepository.getModel(modelVuri)
 	}
 
 	override save() {
-		modelRepository.saveAllModels
+		resourceRepository.saveAllModels
 	}
 
 	override persistRootElement(VURI persistenceVuri, EObject rootElement) {
-		modelRepository.persistRootElement(persistenceVuri, rootElement)
+		resourceRepository.persistRootElement(persistenceVuri, rootElement)
 	}
 
 	override executeCommand(Callable<Void> command) {
-		modelRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command)
+		resourceRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command)
 	}
 
 	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
@@ -68,8 +76,20 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override propagateChange(VitruviusChange change) {
-// Save is done by the change propagator because it has to be performed before finishing sync
+		// Save is done by the change propagator because it has to be performed before finishing sync
 		changePropagator.propagateChange(change)
+	}
+	
+	override reverseChanges(List<PropagatedChange> changes) {
+		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
+			changes.reverseView.forEach[applyBackward];
+			return null;
+		])
+		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
+
+		val changedEObjects = command.getAffectedObjects().filter(EObject)
+		changedEObjects.map[eResource].filterNull.forEach[modified = true];
+		save();
 	}
 
 	override setUserInteractor(UserInteracting userInteractor) {

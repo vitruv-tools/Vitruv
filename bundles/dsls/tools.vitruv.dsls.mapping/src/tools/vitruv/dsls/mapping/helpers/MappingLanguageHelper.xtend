@@ -13,7 +13,7 @@ import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMapping
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathBase
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathTail
 import tools.vitruv.dsls.mapping.mappingLanguage.Signature
-import tools.vitruv.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.commons.util.java.Pair
 import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
@@ -35,7 +35,7 @@ class MappingLanguageHelper {
 		val constraints = mapping.constraints.map[it?.package]
 
 		constraints.zipAny(signatures).map [
-			claim[first == second || first == null || second == null]
+			claim[first == second || first === null || second === null]
 			first ?: second
 		]
 	}
@@ -49,7 +49,7 @@ class MappingLanguageHelper {
 	}
 
 	public static def getAllSignatureConstraints(Mapping mapping) {
-		mapping?.allConstraintExpressions.filter[getPackage != null]
+		mapping?.allConstraintExpressions.filter[getPackage !== null]
 			.groupBy[getPackage(it)]
 	}
 
@@ -90,7 +90,7 @@ class MappingLanguageHelper {
 	 */
 	public static def dispatch EPackage getPackage(ConstraintExpression expression) {
 		val signatureConstraintBlock = expression.getContainerOfType(SignatureConstraintBlock)
-		if (signatureConstraintBlock == null)
+		if (signatureConstraintBlock === null)
 			return null
 
 		val mapping = signatureConstraintBlock.eContainer as Mapping
@@ -131,14 +131,14 @@ class MappingLanguageHelper {
 	}
 
 	public static def RequiredMapping getLastMapping(RequiredMappingPathBase mappingPath) {
-		if (mappingPath.tail != null)
+		if (mappingPath.tail !== null)
 			return mappingPath.tail.lastMapping
 		else
 			return mappingPath.requiredMapping
 	}
 
 	public static def RequiredMapping getLastMapping(RequiredMappingPathTail mappingPath) {
-		if (mappingPath.tail != null)
+		if (mappingPath.tail !== null)
 			return mappingPath.tail.lastMapping
 		else
 			return mappingPath.requiredMapping
@@ -158,18 +158,18 @@ class MappingLanguageHelper {
 		val containment = eObject.eContainmentFeature
 		val container = eObject.eContainer
 
-		if (container == null || !containment.many)
+		if (container === null || !containment.many)
 			return baseName
 
 		val siblingsWithSameName = container.eGet(containment)?.requireCollectionType(EObject)?.filterNull.filter [
 			baseName.equals(it.baseName?.toFirstLower)
 		]
-		if ((siblingsWithSameName == null) || (siblingsWithSameName.size == 1))
+		if ((siblingsWithSameName === null) || (siblingsWithSameName.size == 1))
 			return baseName
 
 		val index = siblingsWithSameName.indexOf(eObject)
 
-		if (index == null)
+		if (index === null)
 			throw new IllegalArgumentException
 
 		return '''«baseName»_«index.toString»'''

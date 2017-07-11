@@ -23,6 +23,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
+
 /**
  * A utility class hiding details of the resources part of the Eclipse Modeling
  * Framework API related for recurring tasks that are not project-specific.<br/>
@@ -48,7 +50,7 @@ public final class EcoreResourceBridge {
 	 * @return the unique root element (if existing) otherwise {@code null}
 	 */
 	public static EObject getResourceContentRootFromVURIIfUnique(final URI uri, final ResourceSet resourceSet) {
-		final Resource emfResource = loadResourceAtURI(uri, resourceSet);
+		final Resource emfResource = URIUtil.loadResourceAtURI(uri, resourceSet);
 		return getResourceContentRootIfUnique(emfResource);
 	}
 
@@ -201,7 +203,7 @@ public final class EcoreResourceBridge {
 	 */
 	public static void saveEObjectAsOnlyContent(final EObject eObject, final URI resourceURI,
 			final ResourceSet resourceSet) throws IOException {
-		Resource resource = loadResourceAtURI(resourceURI, resourceSet);
+		Resource resource = URIUtil.loadResourceAtURI(resourceURI, resourceSet);
 		saveEObjectAsOnlyContent(eObject, resource);
 	}
 
@@ -250,46 +252,6 @@ public final class EcoreResourceBridge {
 		if (resource.getURI().isPlatform() || resource.getURI().isFile()) {
 			resource.save(saveOptions);
 		}
-	}
-
-	public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet) {
-		return loadResourceAtURI(resourceURI, resourceSet, Collections.emptyMap());
-	}
-
-	public static Resource loadResourceAtURI(final URI resourceURI, final ResourceSet resourceSet,
-			final Map<Object, Object> loadOptions) {
-		Resource resource = null;
-		try {
-			URI normalizedURI = resourceURI;
-			if (!resourceURI.isFile() && !resourceURI.isPlatform()) {
-				normalizedURI = resourceSet.getURIConverter().normalize(resourceURI);
-			}
-
-			if (EMFBridge.existsResourceAtUri(normalizedURI)) {
-				resource = resourceSet.getResource(normalizedURI, true);
-			}
-
-			if (resource == null) {
-				Resource oldResource = resourceSet.getResource(normalizedURI, false);
-				if (oldResource != null) {
-					oldResource.delete(null);
-				}
-				resource = resourceSet.createResource(normalizedURI);
-			} else {
-				resource.load(loadOptions);
-			}
-
-			// Fixes issue caused by JaMoPP: If a model is transitively loaded
-			// (e.g. because of an import) the URI starts with pathmap instead
-			// of
-			// the usual URI. If you try to load this model again the URI
-			// remains wrong.
-			resource.setURI(normalizedURI);
-		} catch (final IOException e) {
-			// soften
-			throw new RuntimeException(e);
-		}
-		return resource;
 	}
 
 	public static void registerMetamodelPackageOn(ResourceSet rs, Object pckg, String... nsURIs) {

@@ -21,6 +21,7 @@ import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver;
+import tools.vitruv.framework.userinteraction.impl.UserInteractor;
 import tools.vitruv.framework.util.bridges.JavaHelper;
 import tools.vitruv.framework.vsum.VirtualModel;
 
@@ -42,7 +43,7 @@ public final class MappingLanguageTestUtil {
 	 */
 	public static VirtualModel createEmptyVSUM(Collection<VitruvDomain> metamodels, Collection<ChangePropagationSpecification> transformer) {
 		File projectFolder = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/vitruvius.meta").toFile();
-		return TestUtil.createVirtualModel(projectFolder, true, metamodels, transformer);
+		return TestUtil.createVirtualModel(projectFolder, true, metamodels, transformer, new UserInteractor());
 	}
 
 	public static AbstractVitruvDomain createMetamodel(String name, EPackage rootPackage, TuidCalculatorAndResolver tuidCalculatorAndResolver, String... extensions) {

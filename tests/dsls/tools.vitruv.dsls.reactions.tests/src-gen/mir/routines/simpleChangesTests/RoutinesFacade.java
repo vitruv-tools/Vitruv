@@ -1,5 +1,6 @@
 package mir.routines.simpleChangesTests;
 
+import allElementTypes.Identified;
 import allElementTypes.NonRoot;
 import allElementTypes.NonRootObjectContainerHelper;
 import allElementTypes.Root;
@@ -26,9 +27,9 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     effect.applyRoutine();
   }
   
-  public void replaceNonRootId(final NonRoot nonRoot, final String value) {
-    mir.routines.simpleChangesTests.ReplaceNonRootIdRoutine effect = new mir.routines.simpleChangesTests.ReplaceNonRootIdRoutine(this.executionState, calledBy,
-    	nonRoot, value);
+  public void replaceIdentifiedId(final Identified identified, final String value) {
+    mir.routines.simpleChangesTests.ReplaceIdentifiedIdRoutine effect = new mir.routines.simpleChangesTests.ReplaceIdentifiedIdRoutine(this.executionState, calledBy,
+    	identified, value);
     effect.applyRoutine();
   }
   

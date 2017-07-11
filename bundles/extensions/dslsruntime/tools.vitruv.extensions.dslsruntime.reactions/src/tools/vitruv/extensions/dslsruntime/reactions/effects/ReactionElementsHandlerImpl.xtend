@@ -27,7 +27,7 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 	}
 	
 	override void deleteObject(EObject element) {
-		if (element == null) {
+		if (element === null) {
 			return;
 		}
 		ReactionsCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceModel, element);
@@ -44,9 +44,9 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 	}
 	
 	override registerObjectUnderModification(EObject element) {
-		if (element != null) {
+		if (element !== null) {
 			TuidManager.instance.registerObjectUnderModification(element);
-			if (element.eContainer != null) {
+			if (element.eContainer !== null) {
 				TuidManager.instance.registerObjectUnderModification(element.eContainer);
 			}
 

@@ -119,10 +119,9 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public Tuid createTuidFromString(EDataType eDataType, String initialValue) {
-		return (Tuid)super.createFromString(eDataType, initialValue);
+		return Tuid.getInstance(initialValue);
 	}
 
 	/**

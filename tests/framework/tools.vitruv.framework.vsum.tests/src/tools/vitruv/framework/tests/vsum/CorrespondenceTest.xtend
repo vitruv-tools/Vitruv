@@ -21,12 +21,15 @@ import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
-import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
+import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toSet
+import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toList
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import pcm_mockup.PInterface
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.util.datatypes.ModelInstance
+import org.eclipse.emf.common.util.URI
 
 class CorrespondenceTest extends VsumTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -98,8 +101,6 @@ class CorrespondenceTest extends VsumTest {
 		var Set<Correspondence> correspondences = correspondenceModel.getCorrespondences(repo.toList)
 		assertEquals("Only one correspondence is expected for the repository.", 1, correspondences.size())
 		for (Correspondence correspondence : correspondences) {
-			assertTrue("Correspondence is not from the type EObjectCorrespondence",
-				correspondence instanceof Correspondence)
 			var Correspondence eoc = correspondence
 			LOGGER.
 				info('''EObject with Tuid: «eoc.ATuids» corresponds to EObject with Tuid: «eoc.BTuids»''')
@@ -160,7 +161,7 @@ class CorrespondenceTest extends VsumTest {
 		testAllClaimersAndGettersForEObjectCorrespondences(repo2, pkg2, corresp2, repo2pkg2)
 	}
 
-	def private <T extends EObject> T testLoadObject(InternalVirtualModel vsum, String uri, Class<T> clazz) {
+	def private <T extends EObject> T testLoadObject(InternalVirtualModel vsum, URI uri, Class<T> clazz) {
 		var VURI vURI = VURI.getInstance(uri)
 		var ModelInstance instance = vsum.getModelInstance(vURI)
 		var T obj = instance.getUniqueRootEObjectIfCorrectlyTyped(clazz)

@@ -117,14 +117,24 @@ package class ApplyForwardCommandSwitch {
 			return #[compoundCommand]
 		}
 
-		/**
-		 * Dispatch method to create commands to apply a {@link InsertRootEObject} change forward.
-		 * @param object The change which commands should be created.
-		 */
-		def package dispatch static List<Command> getCommands(InsertRootEObject<EObject> change) {
-			val editingDomain = EChangeUtil.getEditingDomain(change.newValue)
-			// Will be automatically removed from resource because object can only be in one resource.	
-			return #[new AddCommand(editingDomain, change.resource.getContents, change.newValue, change.index)]
+		return #[compoundCommand]
+	}
+
+	/**
+	 * Dispatch method to create commands to apply a {@link ReplaceSingleValuedEReference} change forward.
+	 * @param object The change which commands should be created.
+	 */
+	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEReference<EObject, EObject> change) {
+		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
+		val compoundCommand = new CompoundCommand()
+
+		if (change.containment && change.newValue !== null) {
+			compoundCommand.append(new RemoveFromStagingAreaCommand(editingDomain, stagingArea, change.newValue))
+		}
+		compoundCommand.append(new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue))
+		if (change.containment && change.oldValue !== null) {
+			compoundCommand.append(new AddToStagingAreaCommand(editingDomain, stagingArea, change.oldValue))
 		}
 
 		/**

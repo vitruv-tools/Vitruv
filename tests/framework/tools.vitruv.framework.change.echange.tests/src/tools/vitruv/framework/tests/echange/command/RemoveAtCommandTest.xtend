@@ -68,7 +68,7 @@ class RemoveAtCommandTest extends CommandTest {
 		createRemoveAtCommand(list, -1, 0).assertIsNotPreparable // List doesn't contain the value
 		createRemoveAtCommand(list, 44, 0).assertIsNotPreparable // List doesn't contain the value
 		
-		createRemoveAtCommand(null, 0, 0).assertIsNotPreparable // List == null
+		createRemoveAtCommand(null, 0, 0).assertIsNotPreparable // List === null
 	}
 	
 	/**

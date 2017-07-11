@@ -3,7 +3,6 @@ package tools.vitruv.framework.tuid;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -173,7 +172,15 @@ public abstract class HierarchicalTuidCalculatorAndResolver<T extends EObject> e
         }
         // at this position parent is null || parent == virtualRootObject
         segments.push(prefix);
-        return StringUtils.join(segments, VitruviusConstants.getTuidSegmentSeperator());
+        
+        String finalString = "";
+        for (String segment : segments) {
+        	finalString = finalString + segment + VitruviusConstants.getTuidSegmentSeperator();
+        }
+        if (finalString.endsWith(VitruviusConstants.getTuidSegmentSeperator())) {
+        	finalString = finalString.substring(0, finalString.length() - VitruviusConstants.getTuidSegmentSeperator().length());
+        }
+        return finalString;
     }
 
     /**

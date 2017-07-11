@@ -1,11 +1,13 @@
 package tools.vitruv.framework.tests.vsum;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 
 import pcm_mockup.Component;
@@ -15,9 +17,11 @@ import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusTest;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
+import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
@@ -36,7 +40,7 @@ public abstract class VsumTest extends VitruviusTest {
     protected static final String UML_FILE_EXT = "uml_mockup";
 
     public String getCurrentProjectFolderName() {
-        return getCurrentTestProject().getName();
+        return getCurrentTestProjectFolder().getName();
     }
 
     private static final VitruvDomain UmlDomain = new AbstractVitruvDomain("UML", Uml_mockupPackage.eINSTANCE,
@@ -45,24 +49,24 @@ public abstract class VsumTest extends VitruviusTest {
     private static final VitruvDomain PcmDomain = new AbstractVitruvDomain("PCM", Pcm_mockupPackage.eINSTANCE,
             new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eINSTANCE.getNsURI(), "id"), PCM_FILE_EXT);
 
-    protected String getCurrentProjectModelFolder() {
-        return getCurrentProjectFolderName() + "/model/";
+    protected File getCurrentProjectModelFolder() {
+        return new File(getCurrentTestProjectFolder(), "model");
     }
 
-    protected String getDefaultPcmInstanceURI() {
-        return getCurrentProjectModelFolder() + "My.pcm_mockup";
+    protected URI getDefaultPcmInstanceURI() {
+        return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "My.pcm_mockup"));
     }
 
-    protected String getDefaultUMLInstanceURI() {
-        return getCurrentProjectModelFolder() + "My.uml_mockup";
+    protected URI getDefaultUMLInstanceURI() {
+        return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "My.uml_mockup"));
     }
 
-    protected String getAlternativePcmInstanceURI() {
-        return getCurrentProjectModelFolder() + "NewPCMInstance.pcm_mockup";
+    protected URI getAlternativePcmInstanceURI() {
+        return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "NewPCMInstance.pcm_mockup"));
     }
 
-    protected String getAlterantiveUMLInstanceURI() {
-        return getCurrentProjectModelFolder() + "NewUMLInstance.uml_mockup";
+    protected URI getAlterantiveUMLInstanceURI() {
+        return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "NewUMLInstance.uml_mockup"));
     }
 
     protected ModelInstance fillVsum(final InternalVirtualModel vsum) {
@@ -109,10 +113,10 @@ public abstract class VsumTest extends VitruviusTest {
         return mi;
     }
 
-    protected InternalVirtualModel createAlternativeVirtualModelAndModelInstances(final String pcmModelUriString,
-            final String umlModelUriString) {
+    protected InternalVirtualModel createAlternativeVirtualModelAndModelInstances(final URI pcmModelUri,
+            final URI umlModelUri) {
         InternalVirtualModel vsum = createVirtualModel(VSUM_NAME + "2");
-        createMockupModels(pcmModelUriString, umlModelUriString, vsum);
+        createMockupModels(pcmModelUri, umlModelUri, vsum);
         return vsum;
     }
 
@@ -130,21 +134,20 @@ public abstract class VsumTest extends VitruviusTest {
         List<VitruvDomain> vitruvDomains = new ArrayList<VitruvDomain>();
         vitruvDomains.add(UmlDomain);
         vitruvDomains.add(PcmDomain);
-        return TestUtil.createVirtualModel(vsumName, true, vitruvDomains, Collections.emptyList());
+        return TestUtil.createVirtualModel(vsumName, true, vitruvDomains, Collections.emptyList(),
+                new TestUserInteractor());
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {
         createMockupModels(getDefaultPcmInstanceURI(), getDefaultUMLInstanceURI(), vsum);
     }
 
-    protected void createMockupModels(final String pcmModelUriString, final String umlModelUriString,
-            final InternalVirtualModel vsum) {
-        createPcmMockupModel(pcmModelUriString, vsum);
-        createUmlMockupModel(umlModelUriString, vsum);
+    protected void createMockupModels(final URI pcmModelUri, final URI umlModelUri, final InternalVirtualModel vsum) {
+        createPcmMockupModel(VURI.getInstance(pcmModelUri), vsum);
+        createUmlMockupModel(VURI.getInstance(umlModelUri), vsum);
     }
 
-    private void createPcmMockupModel(final String modelURIString, final InternalVirtualModel vsum) {
-        VURI modelURI = VURI.getInstance(modelURIString);
+    private void createPcmMockupModel(final VURI modelURI, final InternalVirtualModel vsum) {
         ModelInstance model = vsum.getModelInstance(modelURI);
         final EList<EObject> contents = model.getResource().getContents();
         vsum.executeCommand(new Callable<Void>() {
@@ -160,8 +163,7 @@ public abstract class VsumTest extends VitruviusTest {
         vsum.save();// (modelURI);
     }
 
-    private void createUmlMockupModel(final String modelURIString, final InternalVirtualModel vsum) {
-        VURI modelURI = VURI.getInstance(modelURIString);
+    private void createUmlMockupModel(final VURI modelURI, final InternalVirtualModel vsum) {
         ModelInstance model = vsum.getModelInstance(modelURI);
         final EList<EObject> contents = model.getResource().getContents();
         vsum.executeCommand(new Callable<Void>() {

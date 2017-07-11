@@ -26,7 +26,7 @@ final class TuidManager {
 	}
 	
 	public def void addTuidUpdateListener(TuidUpdateListener updateListener) {
-		if (updateListener != null) {
+		if (updateListener !== null) {
 			tuidUpdateListener += updateListener;
 		}
 	}
@@ -36,7 +36,7 @@ final class TuidManager {
 	}
 	
 	public def void addTuidCalculator(TuidCalculator calculator) {
-		if (calculator != null) {
+		if (calculator !== null) {
 			tuidCalculator += calculator;
 		}
 	}
@@ -54,7 +54,7 @@ final class TuidManager {
 		var TuidCalculator resultCalculator = null;
 		for (potentialCalculator : tuidCalculator) {
 			if (potentialCalculator.canCalculateTuid(object)) {
-				if (resultCalculator != null) {
+				if (resultCalculator !== null) {
 					throw new IllegalStateException("There are two Tuid calculators registered that can handle the EObject: " + object + ", which are " + resultCalculator + " and " + potentialCalculator);
 				}
 				resultCalculator = potentialCalculator;
@@ -64,12 +64,12 @@ final class TuidManager {
 	}
 	
 	def private boolean hasTuidCalculator(EObject object) {
-		return object.tuidCalculator != null;
+		return object.tuidCalculator !== null;
 	}
 	
 	def private Tuid calculateTuid(EObject object) {
 		val tuidCalculator = object.tuidCalculator;
-		if (tuidCalculator != null) {
+		if (tuidCalculator !== null) {
 			return tuidCalculator.calculateTuid(object);
 		} else {
 			throw new IllegalArgumentException("No Tuid calculator registered for EObject: " + object);

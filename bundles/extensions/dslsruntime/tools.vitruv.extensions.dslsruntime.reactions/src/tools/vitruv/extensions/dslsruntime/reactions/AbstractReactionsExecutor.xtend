@@ -13,11 +13,10 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 
 abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpecification {
 	static extension Logger = Logger::getLogger(AbstractReactionsExecutor)
-
 	Change2ReactionsMap changeToReactionsMap
 
-	new(UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(userInteracting, sourceDomain, targetDomain)
+	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+		super(sourceDomain, targetDomain)
 		changeToReactionsMap = new Change2ReactionsMap
 		setup
 	}
@@ -45,7 +44,9 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 		debug("Call relevant reactions")
 		for (reactions : relevantReactionss) {
 			debug(reactions.toString)
-			val currentPropagationResult = reactions.applyEvent(event, correspondenceModel)
+			val executionState = new ReactionExecutionState(userInteracting, correspondenceModel,
+				new ChangePropagationResult, this)
+			val currentPropagationResult = reactions.applyEvent(event, executionState)
 			propagationResult.integrateResult(currentPropagationResult)
 		}
 		return propagationResult

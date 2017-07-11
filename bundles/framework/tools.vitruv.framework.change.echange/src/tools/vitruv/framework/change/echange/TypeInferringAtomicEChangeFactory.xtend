@@ -24,7 +24,7 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
  * Can be used by any transformation that creates change models.
  */
 interface TypeInferringAtomicEChangeFactory {
-	static TypeInferringAtomicEChangeFactory instance = TypeInferringAtomicEChangeFactoryImpl::init
+	TypeInferringAtomicEChangeFactory instance = TypeInferringAtomicEChangeFactoryImpl::init
 
 	/**
 	 * Creates a new {@link InsertRootEObject} EChange.

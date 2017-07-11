@@ -20,7 +20,7 @@ import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryE
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.util.datatypes.Quadruple
+import edu.kit.ipd.sdq.commons.util.java.Quadruple
 
 class ChangeAssertHelper {
 
@@ -51,13 +51,13 @@ class ChangeAssertHelper {
 
 	public static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
 		val newValueInChange = eChange.newValue
-		var condition = newValue == null && newValueInChange == null;
+		var condition = newValue === null && newValueInChange === null;
 		if (newValue instanceof EObject && newValueInChange instanceof EObject) {
 			val newEObject = newValue as EObject
 			var newEObjectInChange = newValueInChange as EObject
 			condition = EcoreUtil.equals(newEObject, newEObjectInChange)
 		} else if (!condition) {
-			condition = newValue != null && newValue.equals(newValueInChange)
+			condition = newValue !== null && newValue.equals(newValueInChange)
 		}
 		Assert.assertTrue(
 			"new value in change ' " + newValueInChange + "' must be the same than the given new value '" + newValue +
@@ -67,10 +67,10 @@ class ChangeAssertHelper {
 	public static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
 		if (eChange instanceof FeatureEChange<?, ?>) {
 			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
-				expectedAffectedEObject, (eChange as FeatureEChange<?, ?>).affectedEObject)
+				expectedAffectedEObject, eChange.affectedEObject)
 		} else if (eChange instanceof EObjectExistenceEChange<?>) {
 			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
-				expectedAffectedEObject, (eChange as EObjectExistenceEChange<?>).affectedEObject)
+				expectedAffectedEObject, eChange.affectedEObject)
 		} else {
 			throw new IllegalArgumentException();
 		}

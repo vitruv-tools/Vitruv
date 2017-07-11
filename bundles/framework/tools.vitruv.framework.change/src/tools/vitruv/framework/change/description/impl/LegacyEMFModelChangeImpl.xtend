@@ -82,7 +82,14 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 		TuidManager::instance.updateTuidsOfRegisteredObjects
 		TuidManager::instance.flushRegisteredObjectsUnderModification
 	}
-
+	
+	def applyForwardWithoutTuidUpdate() throws IllegalStateException {
+		if (canBeBackwardsApplied) 
+			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.")
+		changeDescription.applyAndReverse
+		canBeBackwardsApplied = true
+	}
+	
 	private def applyChange() {
 		registerOldObjectTuidsForUpdate
 		changeDescription.applyAndReverse

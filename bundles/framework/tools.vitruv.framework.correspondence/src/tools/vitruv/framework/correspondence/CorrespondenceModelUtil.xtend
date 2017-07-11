@@ -4,7 +4,8 @@ import com.google.common.collect.Sets
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 
-import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
+import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toList
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.correspondence.GenericCorrespondenceModel
 import tools.vitruv.framework.correspondence.Correspondence

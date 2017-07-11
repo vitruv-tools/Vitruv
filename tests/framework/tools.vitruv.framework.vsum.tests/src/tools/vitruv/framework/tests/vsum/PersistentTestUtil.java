@@ -2,6 +2,7 @@ package tools.vitruv.framework.tests.vsum;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import pcm_mockup.Pcm_mockupFactory;
+import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 
@@ -21,11 +23,11 @@ public class PersistentTestUtil {
 
     }
 
-    public static Set<VURI> createDummyVURIs(final String projectFolderName, final int nrOfVURIs) {
+    public static Set<VURI> createDummyVURIs(final File projectFolder, final int nrOfVURIs) {
         Set<VURI> vuris = new HashSet<VURI>();
         for (int i = 0; i < nrOfVURIs; ++i) {
-            vuris.add(VURI.getInstance(
-                    projectFolderName + "/dummyInstances/testInstance_" + i + "." + VsumTest.PCM_FILE_EXT));
+            vuris.add(VURI.getInstance(EMFBridge.getEmfFileUriForFile(
+                    new File(projectFolder, "/dummyInstances/testInstance_" + i + "." + VsumTest.PCM_FILE_EXT))));
         }
         return vuris;
     }

@@ -3,6 +3,6 @@ package tools.vitruv.framework.change.echange
 import tools.vitruv.framework.change.echange.impl.TypeInferringUnresolvingCompoundEChangeFactoryImpl
 
 interface TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferringCompoundEChangeFactory {
-	static TypeInferringUnresolvingCompoundEChangeFactory instance = TypeInferringUnresolvingCompoundEChangeFactoryImpl::
+	TypeInferringUnresolvingCompoundEChangeFactory instance = TypeInferringUnresolvingCompoundEChangeFactoryImpl::
 		init
 }

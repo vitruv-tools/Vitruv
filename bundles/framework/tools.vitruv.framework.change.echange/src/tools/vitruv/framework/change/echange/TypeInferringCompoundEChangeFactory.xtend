@@ -20,8 +20,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
 import tools.vitruv.framework.change.echange.impl.TypeInferringCompoundEChangeFactoryImpl
 
 interface TypeInferringCompoundEChangeFactory {
-
-	static TypeInferringCompoundEChangeFactory instance = TypeInferringCompoundEChangeFactoryImpl::init
+	TypeInferringCompoundEChangeFactory instance = TypeInferringCompoundEChangeFactoryImpl::init
 
 	/**
 	 * Creates a new {@link CreateAndInsertRoot} EChange.

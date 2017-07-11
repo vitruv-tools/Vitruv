@@ -86,10 +86,10 @@ final class Tuid implements Serializable {
 			val splitTuidString = split(tuidString)
 			var lastSegmentOrPrefix = SEGMENTS.getMaximalPrefix(splitTuidString)
 			var Tuid instance
-			val lastSegmentOrPrefixString = if (lastSegmentOrPrefix != null) {
+			val lastSegmentOrPrefixString = if (lastSegmentOrPrefix !== null) {
 					lastSegmentOrPrefix.toString(VitruviusConstants.getTuidSegmentSeperator());
 				}
-			if (lastSegmentOrPrefixString != null && lastSegmentOrPrefixString.equals(tuidString)) {
+			if (lastSegmentOrPrefixString !== null && lastSegmentOrPrefixString.equals(tuidString)) {
 				// the complete specified tuidString was already mapped
 				val instances = LAST_SEGMENT_2_Tuid_INSTANCES_MAP.get(lastSegmentOrPrefix);
 				if (instances.
@@ -118,7 +118,7 @@ final class Tuid implements Serializable {
 
 	private static def void mapSegmentToTuid(Segment segment, Tuid tuid) {
 		val segmentToTuidsListImmutable = LAST_SEGMENT_2_Tuid_INSTANCES_MAP.get(segment);
-		val segmentToTuidsList = if (segmentToTuidsListImmutable != null) {
+		val segmentToTuidsList = if (segmentToTuidsListImmutable !== null) {
 				new ArrayList(segmentToTuidsListImmutable);
 			} else {
 				new ArrayList<Tuid>();

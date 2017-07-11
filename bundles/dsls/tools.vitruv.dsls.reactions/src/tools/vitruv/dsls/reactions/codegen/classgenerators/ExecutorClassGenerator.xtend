@@ -2,7 +2,6 @@ package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import org.eclipse.xtext.common.types.JvmVisibility
-import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
@@ -22,20 +21,16 @@ class ExecutorClassGenerator extends ClassGenerator {
 		reactionsSegment.toClass(executorNameGenerator.qualifiedName) [
 			superTypes += typeRef(AbstractReactionsExecutor);
 			members += toConstructor() [
-				val userInteractingParameter = generateUserInteractingParameter;
-				parameters += userInteractingParameter;
 				body = '''
-				super(«userInteractingParameter.name»,
-					new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), 
+				super(new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), 
 					new «reactionsSegment.toDomain.domainProviderForReference.class»().getDomain());'''
 			]
 			members += toMethod("setup", typeRef(Void.TYPE)) [
 				visibility = JvmVisibility.PROTECTED;
 				body = '''
-					«UserInteracting.name» userInteracting = getUserInteracting();
 					«FOR reaction : reactionsSegment.reactions»
 						«val reactionsNameGenerator = reaction.reactionClassNameGenerator»
-						this.addReaction(«reactionsNameGenerator.qualifiedName».getExpectedChangeType(), new «reactionsNameGenerator.qualifiedName»(userInteracting));
+						this.addReaction(«reactionsNameGenerator.qualifiedName».getExpectedChangeType(), new «reactionsNameGenerator.qualifiedName»());
 					«ENDFOR»
 				'''
 			]

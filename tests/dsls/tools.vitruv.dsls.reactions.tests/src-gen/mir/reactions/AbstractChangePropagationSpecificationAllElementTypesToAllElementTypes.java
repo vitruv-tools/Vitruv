@@ -9,8 +9,7 @@ import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider;
  */
 public abstract class AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes extends CompositeChangePropagationSpecification {
 	public AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes() {
-		super(new tools.vitruv.framework.userinteraction.impl.UserInteractor(),
-			new AllElementTypesDomainProvider().getDomain(), 
+		super(new AllElementTypesDomainProvider().getDomain(), 
 			new AllElementTypesDomainProvider().getDomain());
 		setup();
 	}
@@ -20,8 +19,8 @@ public abstract class AbstractChangePropagationSpecificationAllElementTypesToAll
 	 * For adding further change processors overwrite this method and call the super method at the right place.
 	 */
 	protected void setup() {
-		this.addChangeMainprocessor(new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesRootTests.ExecutorAllElementTypesToAllElementTypes(getUserInteracting()));
-		this.addChangeMainprocessor(new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ExecutorAllElementTypesToAllElementTypes(getUserInteracting()));
+		this.addChangeMainprocessor(new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesRootTests.ExecutorAllElementTypesToAllElementTypes());
+		this.addChangeMainprocessor(new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ExecutorAllElementTypesToAllElementTypes());
 	}
 	
 }
