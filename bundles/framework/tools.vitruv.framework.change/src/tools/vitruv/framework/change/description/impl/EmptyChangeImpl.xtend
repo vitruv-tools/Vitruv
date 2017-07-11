@@ -43,4 +43,8 @@ class EmptyChangeImpl implements TransactionalChange {
 		// Do nothing
 	}
 	
+	override getAffectedEObjects() {
+		return #[]
+	}
+	
 }
