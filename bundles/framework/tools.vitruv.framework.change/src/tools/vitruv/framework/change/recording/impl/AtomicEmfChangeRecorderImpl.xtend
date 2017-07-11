@@ -23,6 +23,7 @@ import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 
 class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	static extension Logger = Logger::getLogger(AtomicEmfChangeRecorderImpl)
@@ -39,7 +40,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	new() {
 		this(false, true)
 	}
-	
+
 	/**
 	 * Constructors which updated Tuids
 	 * 
@@ -76,7 +77,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	}
 
 	override stopRecording() {
-		if (!recording) {
+		if (!recording)
 			throw new IllegalStateException
 		changeRecorder.endRecording
 	}
@@ -87,8 +88,8 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 			throw new IllegalStateException
 		changeRecorder.endRecording
 		// Only take those that do not contain only objectsToAttach (I don't know why)
-		val relevantChangeDescriptions = 
-			changeDescriptions.filter[!(objectChanges.empty && resourceChanges.empty)].toList
+		val relevantChangeDescriptions = changeDescriptions.filter[!(objectChanges.empty && resourceChanges.empty)].
+			toList
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse]
 		var transactionalChanges = relevantChangeDescriptions.filterNull.map[createModelChange].filterNull.toList
 		if (unresolveRecordedChanges)
@@ -170,7 +171,7 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	/**
 	 * A change recorder that restarts after each change notification to get atomic change descriptions.
 	 */
-	ChangeRecorder changeRecorder = new ChangeRecorder {
+	var ChangeRecorder changeRecorder = new ChangeRecorder {
 		Collection<?> rootObjects
 		var isDisposed = false
 

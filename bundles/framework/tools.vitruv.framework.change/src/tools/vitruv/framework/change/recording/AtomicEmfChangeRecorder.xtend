@@ -5,15 +5,14 @@ import java.util.List
 import org.eclipse.emf.common.notify.Notifier
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 
 interface AtomicEmfChangeRecorder {
 
 	def void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve)
-	
+
 	/** 
-	* Stops recording without returning a result 
-	*/
+	 * Stops recording without returning a result 
+	 */
 	def void stopRecording()
 
 	def List<TransactionalChange> endRecording()

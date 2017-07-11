@@ -12,8 +12,8 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
-import tools.vitruv.framework.change.preparation.impl.ChangeDescription2EChangesTransformationImpl
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 
 /**
  * @version 0.2.0
@@ -35,7 +35,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
 	override createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		val changes = new ChangeDescription2EChangesTransformationImpl().transform(changeDescription)
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
 		new EMFModelChangeImpl(changes, vuri)
 	}
 
@@ -51,7 +51,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	}
 
 	override createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		val changes = new ChangeDescription2EChangesTransformationImpl().transform(changeDescription)
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
 		new LegacyEMFModelChangeImpl(changeDescription, changes, vuri)
 	}
 
