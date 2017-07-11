@@ -114,8 +114,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
                 change.resolveBeforeAndApplyForward(resourceSet)
                 return;
         	];
-		this.resourceRepository.executeOnResourceSet(changeApplicationFunction);
-
+		val command = this.resourceRepository.executeOnResourceSet(changeApplicationFunction);
+		val changedEObjects = command.getAffectedObjects().filter(EObject)
+		changedEObjects.forEach[modelRepository.addRootElement(it)];
+		modelRepository.cleanupRootElements;
+		
 		val changeDomain = metamodelRepository.getDomain(change.getURI.fileExtension);
 		val consequentialChanges = newArrayList();
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
