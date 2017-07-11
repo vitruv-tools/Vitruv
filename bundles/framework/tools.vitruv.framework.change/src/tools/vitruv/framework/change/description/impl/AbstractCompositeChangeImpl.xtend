@@ -99,4 +99,8 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		}
 	}
 	
+	override getAffectedEObjects() {
+		return changes.fold(newArrayList, [list, element | list += element.affectedEObjects; return list]).filterNull;
+	}
+	
 }

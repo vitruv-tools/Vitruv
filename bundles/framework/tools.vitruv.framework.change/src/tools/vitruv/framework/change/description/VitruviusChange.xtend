@@ -4,6 +4,7 @@ import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.URIHaving
 import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.EObject
 
 /** 
  * Base interface for all kinds of changes in Vitruvius.
@@ -52,4 +53,6 @@ interface VitruviusChange extends URIHaving {
 	def void resolveBeforeAndApplyForward(ResourceSet resourceSet);
 	
 	def void applyBackwardIfLegacy();
+	
+	def Iterable<EObject> getAffectedEObjects();
 }
