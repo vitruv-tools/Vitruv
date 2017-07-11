@@ -46,8 +46,8 @@ abstract class VitruviusTest {
 	 */
 	@Before
 	def void beforeTest() {
-		TuidManager::getInstance().reinitialize()
-		var String testMethodName = testName.getMethodName()
+		TuidManager::instance.reinitialize()
+		val testMethodName = testName.methodName
 		this.folder = testProjectCreator.apply(testMethodName)
 	}
 

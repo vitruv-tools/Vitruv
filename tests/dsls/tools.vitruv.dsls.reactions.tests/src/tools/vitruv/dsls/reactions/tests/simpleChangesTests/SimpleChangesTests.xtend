@@ -2,11 +2,9 @@ package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.AllElementTypesPackage
-import allElementTypes.AllElementTypesPackage
 import allElementTypes.Identified
 import allElementTypes.NonRoot
 import allElementTypes.Root
-import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
 import org.eclipse.emf.common.util.ECollections
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -18,7 +16,6 @@ import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsEx
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
-
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
@@ -499,24 +496,28 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath)
 		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath)
 	}
-	
+
 	@Test
 	public def void testReverse() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
-		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
+			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
 		nonRoot.id = "testId";
 		root.singleValuedContainmentEReference = nonRoot;
 		val result = saveAndSynchronizeChanges(root);
 		this.virtualModel.reverseChanges(result);
-		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
+			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 		val testResourceSet = new ResourceSetImpl();
 		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-		val sourceModel = testResourceSet.getResource(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		val sourceModel = testResourceSet.getResource(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri,
+			true);
 		assertEquals(null, (sourceModel.contents.get(0) as Root).singleValuedContainmentEReference);
-		val targetModel = testResourceSet.getResource(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		val targetModel = testResourceSet.getResource(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri,
+			true);
 		assertEquals(null, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference);
 	}
 }

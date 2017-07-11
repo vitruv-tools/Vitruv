@@ -99,7 +99,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	def protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) throws IOException {
 		var Resource resource = object.eResource()
 		EcoreResourceBridge.saveResource(resource)
-		var List<PropagatedChange> result = this.propagateChanges(VURI.getInstance(resource))
+		var List<PropagatedChange> result = propagateChanges(VURI.getInstance(resource))
 		this.startRecordingChanges(resource)
 		return result
 	}

@@ -121,7 +121,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 		return getModelResource(modelPathWithinProject, this.resourceSet)
 	}
 
-	def private EObject getFirstRootElement(String modelPathWithinProject, ResourceSet resourceSet) {
+	def protected EObject getFirstRootElement(String modelPathWithinProject, ResourceSet resourceSet) {
 		var List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).getContents()
 		if (resourceContents.size() < 1) {
 			throw new IllegalStateException("Model has no root")

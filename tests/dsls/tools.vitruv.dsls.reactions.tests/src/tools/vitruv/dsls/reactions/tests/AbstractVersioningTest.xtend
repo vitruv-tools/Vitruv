@@ -31,7 +31,7 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 	}
 
 	protected def VURI calculateVURI(String path) {
-		VURI::getInstance('''«currentTestProject.name»/«path.projectModelPath»''')
+		VURI::getInstance('''«currentTestProjectFolder.name»/«path.projectModelPath»''')
 	}
 
 	protected def assertModelsEqual() {

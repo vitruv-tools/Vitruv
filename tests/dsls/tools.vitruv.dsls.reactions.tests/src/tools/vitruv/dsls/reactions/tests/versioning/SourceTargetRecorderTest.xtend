@@ -56,7 +56,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		rootElement.nonRootObjectContainerHelper = container
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 
-		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
+		val resourcePlatformPath = '''«currentTestProjectFolder.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
 		val resourceVuri = VURI::getInstance(resourcePlatformPath)
 		(stRecorder as SourceTargetRecorderImpl).addPathToRecorded(resourceVuri)
 
@@ -69,7 +69,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 
 	@Test
 	def testSingleChangeSynchronization() {
-		val resourcePlatformPath = '''«currentTestProject.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
+		val resourcePlatformPath = '''«currentTestProjectFolder.name»/«TEST_TARGET_MODEL_NAME.projectModelPath»'''
 		val resourceVuri = VURI::getInstance(resourcePlatformPath)
 		(stRecorder as SourceTargetRecorderImpl).addPathToRecorded(resourceVuri)
 

@@ -10,11 +10,10 @@ import tools.vitruv.framework.util.datatypes.VURI
 interface VirtualModel {
 	def File getFolder()
 
-	def List<PropagatedChange>  propagateChange(VitruviusChange change)
-	
+	def List<PropagatedChange> propagateChange(VitruviusChange change)
+
 	def void reverseChanges(List<PropagatedChange> changes)
 
 	def ModelInstance getModelInstance(VURI modelVuri)
-	
-	def ModelInstance getModelInstance(VURI modelVuri)
+
 }

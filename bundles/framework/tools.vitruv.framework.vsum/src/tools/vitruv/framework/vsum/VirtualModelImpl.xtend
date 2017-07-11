@@ -1,85 +1,80 @@
 package tools.vitruv.framework.vsum
 
-import java.io.File
-import java.util.concurrent.Callable
-import java.util.List
+import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.change.description.PropagatedChange
+import java.util.concurrent.Callable
 import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
-import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
-import tools.vitruv.framework.modelsynchronization.ChangePropagator
-import tools.vitruv.framework.modelsynchronization.ChangePropagatorImpl
-import tools.vitruv.framework.userinteraction.UserInteracting
-import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.vsum.InternalVirtualModel
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
+import java.io.File
+import java.util.List
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
-import tools.vitruv.framework.vsum.VirtualModelConfiguration
-import tools.vitruv.framework.vsum.VirtualModelManager
+import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
-	protected val ModelRepositoryImpl modelRepository
-	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
-	val ChangePropagator changePropagator
-	val VitruvDomainRepository metamodelRepository
-    val ResourceRepositoryImpl resourceRepository
+	private val ResourceRepositoryImpl resourceRepository;
+	private val ModelRepositoryImpl modelRepository;
+	private val VitruvDomainRepository metamodelRepository;
+	private val ChangePropagator changePropagator;
+	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
+	private val File folder;
 
-    @Accessors(PUBLIC_GETTER)
-	val File folder
-    
-    new(File folder, UserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
-        this.folder = folder
-		metamodelRepository = new VitruvDomainRepositoryImpl
-		modelConfiguration.metamodels.forEach[metamodelRepository.addDomain(it)]
-        modelRepository = new ModelRepositoryImpl
-        val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository
+	public new(File folder, UserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
+		this.folder = folder;
+		this.metamodelRepository = new VitruvDomainRepositoryImpl();
+		for (metamodel : modelConfiguration.metamodels) {
+			this.metamodelRepository.addDomain(metamodel);
+		}
+		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository);
+		this.modelRepository = new ModelRepositoryImpl();
+		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository();
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
 			changePropagationSpecification.userInteracting = userInteracting;
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
-		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider, metamodelRepository, resourceRepository, modelRepository);
+		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider,
+			metamodelRepository, resourceRepository, modelRepository);
 		VirtualModelManager.instance.putVirtualModel(this);
 	}
 
 	override getCorrespondenceModel() {
-		modelRepository.correspondenceModel
+		this.resourceRepository.getCorrespondenceModel();
 	}
 
 	override getModelInstance(VURI modelVuri) {
-		resourceRepository.getModel(modelVuri)
+		return this.resourceRepository.getModel(modelVuri);
 	}
 
 	override save() {
-		resourceRepository.saveAllModels
+		this.resourceRepository.saveAllModels();
 	}
 
 	override persistRootElement(VURI persistenceVuri, EObject rootElement) {
-		resourceRepository.persistRootElement(persistenceVuri, rootElement)
+		this.resourceRepository.persistRootElement(persistenceVuri, rootElement);
 	}
 
 	override executeCommand(Callable<Void> command) {
-		resourceRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command)
+		this.resourceRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command);
 	}
 
 	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
-		changePropagator.addChangePropagationListener(changePropagationListener)
+		changePropagator.addChangePropagationListener(changePropagationListener);
 	}
 
 	override propagateChange(VitruviusChange change) {
 		// Save is done by the change propagator because it has to be performed before finishing sync
-		changePropagator.propagateChange(change)
+		return changePropagator.propagateChange(change);
 	}
-	
+
 	override reverseChanges(List<PropagatedChange> changes) {
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
 			changes.reverseView.forEach[applyBackward];
@@ -93,8 +88,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override setUserInteractor(UserInteracting userInteractor) {
-		for (propagationSpecification : changePropagationSpecificationProvider) {
-			propagationSpecification.userInteracting = userInteractor
+		for (propagationSpecification : this.changePropagationSpecificationProvider) {
+			propagationSpecification.userInteracting = userInteractor;
 		}
+	}
+
+	override File getFolder() {
+		return folder;
 	}
 }
