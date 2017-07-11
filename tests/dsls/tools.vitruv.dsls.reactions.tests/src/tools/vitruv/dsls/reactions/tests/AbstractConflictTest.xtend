@@ -8,7 +8,6 @@ import java.util.Map
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.graphstream.graph.Graph
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.BranchDiff
@@ -23,6 +22,8 @@ import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
 import tools.vitruv.framework.versioning.Conflict
+import tools.vitruv.framework.change.description.VitruviusChange
+import org.eclipse.emf.common.util.URI
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected BranchDiff branchDiff
@@ -30,7 +31,7 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected List<Conflict> conflicts
 	protected Graph graph
 	protected List<EChange> echanges
-	protected List<TransactionalChange> changes
+	protected List<VitruviusChange> changes
 	protected Map<String, String> modelPairs
 	protected Root rootElement2
 	protected SourceTargetRecorder stRecorder
@@ -48,28 +49,34 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	override setup() {
 		super.setup
 		// Setup sourceTargetRecorder 
-		targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
-		sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
-		newTargetVURI = newTestTargetModelName.calculateVURI
-		newSourceVURI = newTestSourceModelName.calculateVURI
-		val rootToRootMap = #{
-			sourceVURI.EMFUri.toPlatformString(false) -> newSourceVURI.EMFUri.toPlatformString(false),
-			targetVURI.EMFUri.toPlatformString(false) -> newTargetVURI.EMFUri.toPlatformString(false)
-		}
-		addMap(rootToRootMap)
-		stRecorder = VersioningXtendFactory::instance.createSourceTargetRecorder(virtualModel)
+		sourceVURI = VURI::getInstance(rootElement.eResource)
+		targetVURI = VURI::getInstance(
+			URI::createURI(sourceVURI.EMFUri.toString.replace(TEST_SOURCE_MODEL_NAME, TEST_TARGET_MODEL_NAME)))
+
+		stRecorder = VersioningXtendFactory::instance.createSourceTargetRecorder()
 		stRecorder.registerObserver
 		modelPairs = #{
 			TEST_SOURCE_MODEL_NAME -> newTestSourceModelName,
 			TEST_TARGET_MODEL_NAME -> newTestTargetModelName
 		}
 
-		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 		rootElement2 = AllElementTypesFactory::eINSTANCE.createRoot
 		roots = #[rootElement, rootElement2]
 		rootElement2.id = newTestSourceModelName
 		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(rootElement2)
-		stRecorder.recordOriginalAndCorrespondentChanges(newSourceVURI, #[newTargetVURI])
+
+		newSourceVURI = VURI::getInstance(rootElement2.eResource)
+		val uri = URI::createURI(newSourceVURI.EMFUri.toString.replace(newTestSourceModelName, newTestTargetModelName))
+		newTargetVURI = VURI::getInstance(uri)
+
+		val rootToRootMap = #{
+			sourceVURI.EMFUri.toFileString -> newSourceVURI.EMFUri.toFileString,
+			targetVURI.EMFUri.toFileString -> newTargetVURI.EMFUri.toFileString
+		}
+		addMap(rootToRootMap)
+
+		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI)
+		stRecorder.recordOriginalAndCorrespondentChanges(newSourceVURI)
 		assertThat(newSourceVURI, not(equalTo(sourceVURI)))
 		assertThat(newTargetVURI, not(equalTo(targetVURI)))
 		assertThat(newSourceVURI.hashCode, not(is(sourceVURI.hashCode)))

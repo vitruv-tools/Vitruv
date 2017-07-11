@@ -41,7 +41,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	}
 
 	protected def VURI calculateVURI(String path) {
-		VURI::getInstance('''«currentTestProjectFolder.name»/«path.projectModelPath»''')
+		VURI::getInstance('''«testName.methodName»/«path.projectModelPath»''')
 	}
 
 	protected final override createChangePropagationSpecifications() {

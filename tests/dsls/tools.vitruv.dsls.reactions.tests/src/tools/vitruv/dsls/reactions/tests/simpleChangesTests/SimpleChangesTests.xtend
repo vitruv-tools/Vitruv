@@ -498,7 +498,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testReverse() {
+	def void testReverse() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
@@ -519,5 +519,6 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val targetModel = testResourceSet.getResource(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri,
 			true);
 		assertEquals(null, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference);
+		virtualModel.forwardChanges(result)
 	}
 }
