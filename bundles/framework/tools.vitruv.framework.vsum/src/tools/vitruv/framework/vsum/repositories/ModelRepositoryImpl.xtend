@@ -9,7 +9,6 @@ import java.util.Map
 import java.util.HashMap
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
-import org.apache.log4j.Level
 
 class ModelRepositoryImpl {
 	private val logger = Logger.getLogger(ModelRepositoryImpl);
@@ -20,7 +19,6 @@ class ModelRepositoryImpl {
 	new() {
 		rootElements = new HashSet<EObject>();
 		rootToRecorder = new HashMap<EObject, AtomicEmfChangeRecorder>();
-		logger.level = Level.DEBUG;
 	}
 	
 	public def void addRootElement(EObject rootElement) {
