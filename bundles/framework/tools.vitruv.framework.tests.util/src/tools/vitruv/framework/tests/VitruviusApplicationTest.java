@@ -74,7 +74,8 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	protected abstract void cleanup();
 
 	private List<PropagatedChange> propagateChanges(final VURI vuri) {
-		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
+		this.changeRecorder.endRecording();
+		final List<TransactionalChange> changes = unresolveChanges() ? changeRecorder.getUnresolvedChanges() : changeRecorder.getResolvedChanges();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		return this.getVirtualModel().propagateChange(compositeChange);
 	}

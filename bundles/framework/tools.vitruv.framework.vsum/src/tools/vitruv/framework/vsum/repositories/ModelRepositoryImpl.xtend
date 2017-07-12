@@ -66,7 +66,8 @@ class ModelRepositoryImpl {
 	public def endRecording() {
 		val result = newArrayList();
 		for (root : rootToRecorder.keySet) {
-			result += rootToRecorder.get(root).endRecording();
+			rootToRecorder.get(root).endRecording();
+			result += rootToRecorder.get(root).resolvedChanges;
 			logger.debug("End recording for " + root);
 		}
 		rootToRecorder.clear();

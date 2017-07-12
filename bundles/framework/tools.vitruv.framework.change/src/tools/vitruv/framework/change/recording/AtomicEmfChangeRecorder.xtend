@@ -25,7 +25,9 @@ class AtomicEmfChangeRecorder {
 	var Collection<Notifier> elementsToObserve
 	var boolean unresolveRecordedChanges
 	val boolean updateTuids;
-
+	var List<TransactionalChange> resolvedChanges;
+	var List<TransactionalChange> unresolvedChanges;
+	
 	/**
 	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
 	 * the recorded changes, but updated Tuids.
@@ -75,7 +77,7 @@ class AtomicEmfChangeRecorder {
 		changeRecorder.endRecording();
 	}
 
-	def List<TransactionalChange> endRecording() {
+	def void endRecording() {
 		if (!isRecording) {
 			throw new IllegalStateException();
 		}
@@ -83,16 +85,26 @@ class AtomicEmfChangeRecorder {
 		// Only take those that do not contain only objectsToAttach (I don't know why)
 		val relevantChangeDescriptions = 
 			changeDescriptions.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].toList
+		if (unresolveRecordedChanges) {
+			relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
+			unresolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(true, unresolveRecordedChanges && updateTuids)].filterNull.toList;
+			correctChanges(unresolvedChanges)
+		}
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
-		var transactionalChanges = relevantChangeDescriptions.filterNull.map[createModelChange].filterNull.toList;
-		if (unresolveRecordedChanges)
-			correctChanges(transactionalChanges)
-		return transactionalChanges
+		resolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(false, !unresolveRecordedChanges && updateTuids)].filterNull.toList;
+	}
+	
+	public def List<TransactionalChange> getUnresolvedChanges() {
+		return unresolvedChanges;
+	}
+	
+	public def List<TransactionalChange> getResolvedChanges() {
+		return resolvedChanges;
 	}
 
-	private def createModelChange(ChangeDescription changeDescription) {
+	private def createModelChange(ChangeDescription changeDescription, boolean unresolveChanges, boolean updateTuids) {
 		var TransactionalChange result = null;
-		if (unresolveRecordedChanges) {
+		if (unresolveChanges) {
 			result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI)
 			changeDescription.applyAndReverse()
 		} else {
@@ -104,12 +116,6 @@ class AtomicEmfChangeRecorder {
 			}
 		}
 		return result;
-	}
-
-	def List<TransactionalChange> restartRecording() {
-		val modelChanges = endRecording()
-		beginRecording(modelVURI, elementsToObserve)
-		return modelChanges;
 	}
 
 	def boolean isRecording() {

@@ -142,7 +142,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			consequentialChanges += modelRepository.endRecording;
 			consequentialChanges.forEach[logger.debug(it)];
 			return propResult;
-		
 		])
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
 					
