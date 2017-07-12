@@ -78,8 +78,9 @@ class GraphExtensionImpl implements GraphExtension {
 
 	override addEdge(Graph graph, EChange fromEchange, EChange toEChange, EdgeType type) {
 		switch (type) {
-			case PROVIDES: {
+			case REQUIRED: {
 				graph.addDirectedEdge(fromEchange, toEChange, type)
+				graph.addDirectedEdge(toEChange, fromEchange, type.inverse)
 			}
 			case TRIGGERS: {
 				graph.addDirectedEdge(fromEchange, toEChange, type)
@@ -131,7 +132,7 @@ class GraphExtensionImpl implements GraphExtension {
 	}
 
 	override getSubgraphs(Graph graph) {
-		val requiredGraph = graph.cloneGraph([true], [isType(EdgeType::PROVIDES)])
+		val requiredGraph = graph.cloneGraph([true], [isType(EdgeType::REQUIRED)])
 		val currentLeaves = requiredGraph.provideLeaves
 		val Collection<Graph> currentGraphs = newArrayList
 		currentLeaves.forEach [ leave |
@@ -149,7 +150,7 @@ class GraphExtensionImpl implements GraphExtension {
 	}
 
 	override calculateComponentNumber(Graph graph) {
-		val newGraph = graph.cloneGraph([true], [isType(EdgeType::PROVIDES)])
+		val newGraph = graph.cloneGraph([true], [isType(EdgeType::REQUIRED)])
 		val cc = new ConnectedComponents
 		cc.init(newGraph)
 		return cc.connectedComponentsCount
@@ -157,12 +158,14 @@ class GraphExtensionImpl implements GraphExtension {
 
 	override getSubgraphContainingEChanges(Graph graph, Set<EChange> nodes) {
 		graph.cloneGraph([EChangeNode n|nodes.contains(n.EChange)], [
-			isType(EdgeType::PROVIDES) || isType(EdgeType::TRIGGERS)
+			isType(EdgeType::REQUIRED) || isType(EdgeType::TRIGGERS)
 		])
 	}
 
 	override savePicture(Graph graph, String name) {
-		val isPrintActive = null !== System.getProperty(tools.vitruv.framework.versioning.extensions.impl.GraphExtensionImpl.VM_ARGUMENT_PRINT_PICTURES)
+		val isPrintActive = null !==
+			System.getProperty(
+				tools.vitruv.framework.versioning.extensions.impl.GraphExtensionImpl.VM_ARGUMENT_PRINT_PICTURES)
 		if (isPrintActive) {
 			val fsi = new FileSinkImages(OutputType.PNG, Resolutions.HD720)
 			fsi.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE)

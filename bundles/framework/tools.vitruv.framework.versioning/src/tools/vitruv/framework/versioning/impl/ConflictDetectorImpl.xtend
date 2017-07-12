@@ -14,23 +14,24 @@ import java.util.ArrayList
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.SimpleChangeConflict
-import tools.vitruv.framework.versioning.extensions.EChangeConflictUtil
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.MultiChangeConflict
+import tools.vitruv.framework.versioning.ConflictDetectionStrategy
 
 class ConflictDetectorImpl implements ConflictDetector {
-	static extension EChangeConflictUtil = EChangeConflictUtil::instance
 	static extension DependencyGraphCreator = DependencyGraphCreator::instance
 	static extension EChangeCompareUtil = EChangeCompareUtil::instance
 	static extension GraphExtension = GraphExtension::instance
 	static extension Logger = Logger::getLogger(ConflictDetectorImpl)
+	val ConflictDetectionStrategy conflictDetectionStrategy
 
 	static def ConflictDetector init() {
 		new ConflictDetectorImpl
 	}
 
 	private new() {
+		conflictDetectionStrategy = new ConflictDetectionStrategyImpl
 	}
 
 	override detectConlicts(BranchDiff branchDiff) {
@@ -51,14 +52,14 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val myUnpairedChanges = tester.unmatchedOfGraph1.map[EChange].toSet
 		val theirUnpairedChanges = tester.unmatchedOfGraph2.map[EChange].toSet
 		myUnpairedChanges.forEach [ myChange |
-			theirChanges.filter[isConflictingEachOther(myChange, it)].forEach [
+			theirChanges.filter[conflictDetectionStrategy.conflicts(myChange, it)].forEach [
 				processConflict(myChange, it, naiveConflicts)
 				combinedGraph.addEdge(myChange, it, EdgeType::CONFLICTS)
 			]
 		]
 		theirUnpairedChanges.forEach [ theirChange |
 			myChanges.filter[!combinedGraph.checkIfEdgeExists(theirChange, it, EdgeType::CONFLICTS)].filter [
-				isConflictingEachOther(theirChange, it)
+				conflictDetectionStrategy.conflicts(theirChange, it)
 			].forEach [
 				processConflict(it, theirChange, naiveConflicts)
 			]
@@ -92,8 +93,8 @@ class ConflictDetectorImpl implements ConflictDetector {
 	}
 
 	private def processConflict(EChange e1, EChange e2, List<Conflict> conflicts) {
-		val type = getConflictType(e1, e2)
-		val solvability = getConflictSolvability(e1, e2, type)
+		val type = conflictDetectionStrategy.getConflictType(e1, e2)
+		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
 		val conflict = SimpleChangeConflict::createSimpleChangeConflict(type, solvability, e1, e2)
 		conflicts += conflict
 	}
@@ -101,8 +102,8 @@ class ConflictDetectorImpl implements ConflictDetector {
 	private def processLeave(EChangeNode leave1, EChangeNode leave2, List<Conflict> conflicts) {
 		val e1 = leave1.EChange
 		val e2 = leave2.EChange
-		val type = getConflictType(e1, e2)
-		val solvability = getConflictSolvability(e1, e2, type)
+		val type = conflictDetectionStrategy.getConflictType(e1, e2)
+		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
 		if (leave1.breadthFirstIterator.size == 1 && leave2.breadthFirstIterator.size == 1) {
 			val conflict = SimpleChangeConflict::createSimpleChangeConflict(type, solvability, e1, e2)
 			conflicts += conflict

@@ -79,7 +79,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 				val otherResolved = unresolvedToResolvedMap.get(otherEchange)
 				val isParent = checkForRequireEdge(resolved, otherResolved)
 				if (isParent)
-					graph.addEdge(echange, otherEchange, EdgeType::PROVIDES)
+					graph.addEdge(echange, otherEchange, EdgeType::REQUIRED)
 			]
 		]
 		// TODO PS Remove

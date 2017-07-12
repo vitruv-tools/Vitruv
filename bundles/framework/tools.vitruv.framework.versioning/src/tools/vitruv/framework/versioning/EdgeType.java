@@ -1,7 +1,8 @@
 package tools.vitruv.framework.versioning;
 
 public enum EdgeType {
-	PROVIDES("provides"), TRIGGERS("triggers"), ISOMORPHIC("equivalent"), CONFLICTS("conflicts");
+	REQUIRED("required"), REQUIRES("requires"), TRIGGERS("triggers"), ISOMORPHIC("equivalent"), CONFLICTS(
+			"conflicts"), UNKNOWN("unknown");
 
 	private final String name;
 
@@ -17,5 +18,21 @@ public enum EdgeType {
 
 	public String toString() {
 		return name;
+	}
+
+	public EdgeType getInverse() {
+		EdgeType inverse;
+		switch (this) {
+		case REQUIRED:
+			inverse = REQUIRES;
+			break;
+		case REQUIRES:
+			inverse = REQUIRED;
+			break;
+		default:
+			inverse = UNKNOWN;
+			break;
+		}
+		return inverse;
 	}
 }

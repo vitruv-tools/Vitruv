@@ -22,13 +22,16 @@ class EChangeGraphImpl extends SingleGraph {
 		node.graph1«NodeType::UNPAIRED.toString» {
 			fill-color: orange;
 		}
-		edge.«EdgeType::PROVIDES.toString» {
+		edge.«EdgeType::REQUIRED.toString» {
+			visibility-mode: hidden;
+		}
+		edge.«EdgeType::REQUIRES.toString» {
 			fill-color: red;
 		}
 		edge.«EdgeType::TRIGGERS.toString» {
 			fill-color: black;
 		}
-		edge.«EdgeType::CONFLICTS.toString» {
+		edge.«EdgeType::CONFLICTS.toString» {	
 			fill-color: blue;
 		}
 		edge.«EdgeType::ISOMORPHIC.toString» {
