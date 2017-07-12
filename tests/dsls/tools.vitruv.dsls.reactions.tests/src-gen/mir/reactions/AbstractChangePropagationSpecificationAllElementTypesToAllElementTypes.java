@@ -19,8 +19,8 @@ public abstract class AbstractChangePropagationSpecificationAllElementTypesToAll
 	 * For adding further change processors overwrite this method and call the super method at the right place.
 	 */
 	protected void setup() {
-		this.addChangeMainprocessor(new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesRootTests.ExecutorAllElementTypesToAllElementTypes());
 		this.addChangeMainprocessor(new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ExecutorAllElementTypesToAllElementTypes());
+		this.addChangeMainprocessor(new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesRootTests.ExecutorAllElementTypesToAllElementTypes());
 	}
 	
 }

@@ -33,12 +33,6 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     effect.applyRoutine();
   }
   
-  public void replaceNonRootObjectContainerHelperId(final NonRootObjectContainerHelper nonRootObjectContainerHelper, final String value) {
-    mir.routines.simpleChangesTests.ReplaceNonRootObjectContainerHelperIdRoutine effect = new mir.routines.simpleChangesTests.ReplaceNonRootObjectContainerHelperIdRoutine(this.executionState, calledBy,
-    	nonRootObjectContainerHelper, value);
-    effect.applyRoutine();
-  }
-  
   public void insertNonRoot(final Root rootElement, final NonRoot insertedNonRoot) {
     mir.routines.simpleChangesTests.InsertNonRootRoutine effect = new mir.routines.simpleChangesTests.InsertNonRootRoutine(this.executionState, calledBy,
     	rootElement, insertedNonRoot);
