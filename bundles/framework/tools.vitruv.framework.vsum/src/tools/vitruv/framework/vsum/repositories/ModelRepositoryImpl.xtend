@@ -11,6 +11,11 @@ import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
 
 class ModelRepositoryImpl {
+	/**
+	 * Setting this VM argument, propagated changes get unresolved.
+	 * The necessary property setting is "-DunresolvePropagatedChanges"
+	 */
+	private static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
 	private val logger = Logger.getLogger(ModelRepositoryImpl);
 	val Set<EObject> rootElements;
 	val Map<EObject, AtomicEmfChangeRecorder> rootToRecorder;
@@ -67,7 +72,12 @@ class ModelRepositoryImpl {
 		val result = newArrayList();
 		for (root : rootToRecorder.keySet) {
 			rootToRecorder.get(root).endRecording();
-			result += rootToRecorder.get(root).resolvedChanges;
+			if (rootToRecorder.get(root).unresolvedChanges != null) {
+				result += rootToRecorder.get(root).unresolvedChanges;	
+			} else {
+				result += rootToRecorder.get(root).resolvedChanges;
+			}
+			
 			logger.debug("End recording for " + root);
 		}
 		rootToRecorder.clear();
@@ -82,7 +92,8 @@ class ModelRepositoryImpl {
 		if (rootToRecorder.containsKey(element)) {
 			throw new IllegalStateException("Duplicate recording on element")
 		}
-		val recorder = new AtomicEmfChangeRecorder(false, false);
+		val unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
+		val recorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges != null, false);
 		val vuri = if (element.eResource !== null) VURI.getInstance(element.eResource) else null;
 		recorder.beginRecording(vuri, #[element]);
 		rootToRecorder.put(element, recorder);
