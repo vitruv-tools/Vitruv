@@ -23,9 +23,13 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 
 	override update(VURI vuri, PropagatedChange change, VirtualModel vm) {
 		if (changesMatches.containsKey(vuri)) {
-			vm.reverseChanges(#[change])
+//			vm.reverseChanges(#[change])
+			if (change.originalChange.EChanges.exists[resolved])
+				throw new IllegalStateException
+			if (change.consequentialChanges.EChanges.exists[resolved])
+				throw new IllegalStateException
 			val match = ChangeMatch::createChangeMatch(change)
-			vm.forwardChanges(#[change])
+//			vm.forwardChanges(#[change])
 			val changeMatchesList = changesMatches.get(vuri)
 			changeMatchesList += match
 		}

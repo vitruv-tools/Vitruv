@@ -108,7 +108,6 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		val y = copiedChanges.get(1)
 		virtualModel.propagateChange(y)
 		assertThatNonRootObjectContainerHasRightId
-
 		for (i : 0 ..< 3) {
 			virtualModel.propagateChange(copiedChanges.get(2 + i * 2))
 			assertThatNonRootObjectHasBeenInsertedInContainer(i)

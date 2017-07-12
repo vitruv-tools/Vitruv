@@ -76,6 +76,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override reverseChanges(List<PropagatedChange> changes) {
+		
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
 			changes.reverseView.forEach[applyBackward];
 			return null;
