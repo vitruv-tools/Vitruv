@@ -74,9 +74,8 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 			targetVURI.EMFUri.toFileString -> newTargetVURI.EMFUri.toFileString
 		}
 		addMap(rootToRootMap)
+		#[sourceVURI, newSourceVURI].forEach[stRecorder.recordOriginalAndCorrespondentChanges(it)]
 
-		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI)
-		stRecorder.recordOriginalAndCorrespondentChanges(newSourceVURI)
 		assertThat(newSourceVURI, not(equalTo(sourceVURI)))
 		assertThat(newTargetVURI, not(equalTo(targetVURI)))
 		assertThat(newSourceVURI.hashCode, not(is(sourceVURI.hashCode)))

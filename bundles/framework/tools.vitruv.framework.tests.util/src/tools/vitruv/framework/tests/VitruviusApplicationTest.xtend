@@ -13,6 +13,8 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.ChangeCloner
+import tools.vitruv.framework.change.description.VitruviusChange
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -137,7 +139,17 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	private def List<PropagatedChange> propagateChanges(VURI vuri) {
 		val recorder = uriToChangeRecorder.get(vuri)
 		recorder.endRecording
-		val changes = if (unresolveChanges) recorder.unresolvedChanges else recorder.resolvedChanges
+		val changes = if (unresolveChanges)
+				recorder.unresolvedChanges
+			else
+				recorder.resolvedChanges
+		val ChangeCloner changeCloner = new ChangeCloner
+		val copiedChanges = changes.map [
+			changeCloner.clone(it)
+		]
+		val testForUnresolved = [List<? extends VitruviusChange> l|l.map[EChanges].flatten.exists[resolved]]
+		if (unresolveChanges && (testForUnresolved.apply(changes) || testForUnresolved.apply(copiedChanges)))
+			throw new IllegalStateException
 		val compositeChange = VitruviusChangeFactory::instance.createCompositeChange(changes)
 		val result = virtualModel.propagateChange(compositeChange)
 		result.forEach[notifyObservers(vuri, it)]
