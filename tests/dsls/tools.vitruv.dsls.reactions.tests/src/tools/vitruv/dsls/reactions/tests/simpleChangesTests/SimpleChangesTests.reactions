@@ -75,21 +75,6 @@ routine replaceIdentifiedId(minimal::Identified identified, String value) {
 	}
 }
 
-reaction ReplaceNonRootObjectContainerHelperId {
-	after attribute replaced at  minimal::NonRootObjectContainerHelper[id]
-	call replaceNonRootObjectContainerHelperId(affectedEObject, newValue)
-}
-
-routine replaceNonRootObjectContainerHelperId(minimal::NonRootObjectContainerHelper nonRootObjectContainerHelper, String value) {
-	match {
-		val targetElement = retrieve minimal::NonRootObjectContainerHelper corresponding to nonRootObjectContainerHelper
-	}
-	action {
-		update targetElement {
-			targetElement.id = value;
-		}
-	}
-}
 /*
  * CreateNonRootEObjectInList
  */
