@@ -88,6 +88,10 @@ class VitruviusChangeFactory {
 		}
 		return compositeChange;
 	}
+	
+	public def <T extends VitruviusChange> T clone(T originalChange) {
+		return new ChangeCloner().clone(originalChange) as T;
+	}
 		
 	private def EChange generateFileCreateChange(Resource resource) {
 		var EObject rootElement = null;
