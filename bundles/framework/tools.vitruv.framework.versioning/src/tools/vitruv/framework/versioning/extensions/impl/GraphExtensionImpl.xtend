@@ -21,10 +21,12 @@ import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 import java.util.Set
 
 class GraphExtensionImpl implements GraphExtension {
+
 	static extension EChangeExtension = EChangeExtension::instance
 	static extension EdgeExtension = EdgeExtension::instance
 	static extension NodeExtension = NodeExtension::instance
 	static val Map<Graph, Integer> graphMap = newHashMap
+	static val VM_ARGUMENT_PRINT_PICTURES = "printPictures"
 
 	static def GraphExtension init() {
 		new GraphExtensionImpl
@@ -160,9 +162,12 @@ class GraphExtensionImpl implements GraphExtension {
 	}
 
 	override savePicture(Graph graph, String name) {
-		val fsi = new FileSinkImages(OutputType.PNG, Resolutions.HD720)
-		fsi.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE)
-		graph.write(fsi, '''./test_«name»_write.png''')
+		val isPrintActive = null !== System.getProperty(tools.vitruv.framework.versioning.extensions.impl.GraphExtensionImpl.VM_ARGUMENT_PRINT_PICTURES)
+		if (isPrintActive) {
+			val fsi = new FileSinkImages(OutputType.PNG, Resolutions.HD720)
+			fsi.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE)
+			graph.write(fsi, '''./test_«name»_write.png''')
+		}
 	}
 
 	override savePicture(Graph graph) {

@@ -4,16 +4,15 @@ import java.util.ArrayList
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.change.description.TransactionalChange
+import org.graphstream.graph.Graph
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
-import org.graphstream.graph.Graph
-import tools.vitruv.framework.versioning.ChangeMatch
-import tools.vitruv.framework.change.description.VitruviusChange
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static extension EChangeRequireExtension = EChangeRequireExtension::instance
