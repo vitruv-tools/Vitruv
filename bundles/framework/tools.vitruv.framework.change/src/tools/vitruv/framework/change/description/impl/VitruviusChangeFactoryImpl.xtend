@@ -15,6 +15,7 @@ import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.description.ChangeCloner
 
 /**
  * @version 0.2.0

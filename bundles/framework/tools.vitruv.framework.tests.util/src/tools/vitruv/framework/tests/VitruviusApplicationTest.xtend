@@ -8,7 +8,6 @@ import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
@@ -138,7 +137,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	private def List<PropagatedChange> propagateChanges(VURI vuri) {
 		val recorder = uriToChangeRecorder.get(vuri)
 		recorder.endRecording
-		val changes = if(unresolveChanges) recorder.unresolvedChanges else recorder.resolvedChanges
+		val changes = if (unresolveChanges) recorder.unresolvedChanges else recorder.resolvedChanges
 		val compositeChange = VitruviusChangeFactory::instance.createCompositeChange(changes)
 		val result = virtualModel.propagateChange(compositeChange)
 		result.forEach[notifyObservers(vuri, it)]

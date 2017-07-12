@@ -111,14 +111,16 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			private def dispatch void propagateSingleChange(TransactionalChange change,
 				List<PropagatedChange> propagatedChanges, ChangePropagationResult propagationResult,
 				ChangedResourcesTracker changedResourcesTracker) {
-				val changeCopy = VitruviusChangeFactory::instance.copy(change)
 				val changeApplicationFunction = [ ResourceSet resourceSet |
 					resourceRepository.getModel(change.getURI());
 					change.resolveBeforeAndApplyForward(resourceSet)
 					return;
 				];
 				this.resourceRepository.executeOnResourceSet(changeApplicationFunction);
-
+				
+				change.affectedEObjects.forEach[modelRepository.addRootElement(it)];
+				modelRepository.cleanupRootElements;
+				
 				val changeDomain = metamodelRepository.getDomain(change.getURI.fileExtension);
 				val consequentialChanges = newArrayList
 				for (propagationSpecification : changePropagationProvider.
@@ -127,8 +129,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 						propagateChangeForChangePropagationSpecification(change, propagationSpecification,
 							propagationResult, changedResourcesTracker)
 				}
-				
-				val propagatedChange = new PropagatedChange(changeCopy,
+
+				val propagatedChange = new PropagatedChange(change,
 					VitruviusChangeFactory::instance.createCompositeChange(consequentialChanges))
 				propagatedChanges += propagatedChange
 			}

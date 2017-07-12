@@ -75,12 +75,12 @@ class ModelRepositoryImpl {
 		val result = newArrayList();
 		for (root : rootToRecorder.keySet) {
 			rootToRecorder.get(root).endRecording();
-			if (rootToRecorder.get(root).unresolvedChanges != null) {
+			if (rootToRecorder.get(root).unresolvedChanges !== null) {
 				result += rootToRecorder.get(root).unresolvedChanges
 			} else {
 				result += rootToRecorder.get(root).resolvedChanges
 			}
-			
+
 			debug("End recording for " + root);
 		}
 		rootToRecorder.clear();
@@ -96,7 +96,8 @@ class ModelRepositoryImpl {
 			throw new IllegalStateException("Duplicate recording on element")
 		}
 		val unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES)
-		val AtomicEmfChangeRecorder recorder = new AtomicEmfChangeRecorderImpl(unresolvePropagatedChanges != null, false)
+		val AtomicEmfChangeRecorder recorder = new AtomicEmfChangeRecorderImpl(unresolvePropagatedChanges !== null,
+			false)
 		val vuri = if (element.eResource !== null) VURI.getInstance(element.eResource) else null;
 		recorder.beginRecording(vuri, #[element])
 		rootToRecorder.put(element, recorder)
@@ -117,5 +118,5 @@ class ModelRepositoryImpl {
 			«FOR element : rootElements»
 				«element», resource: «element.eResource?.URI»"
 			«ENDFOR»
-		'''
+	'''
 }

@@ -65,15 +65,15 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 
 	override getAffectedEObjects() {
-		return this.eChange.affectedEObjects
+		eChange.affectedEObjects
 	}
 
-	private def dispatch Iterable<EObject> getAffectedEObjects(CompoundEChange eChange) {
+	private def dispatch List<EObject> getAffectedEObjects(CompoundEChange eChange) {
 		var List<EObject> objects = new BasicEList<EObject>
 		for (atomicChange : eChange.atomicChanges) {
 			objects.addAll(atomicChange.getAffectedEObjects)
 		}
-		return objects.filterNull
+		return objects.filterNull.toList
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(InsertRootEObject<EObject> eChange) {

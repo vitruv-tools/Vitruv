@@ -57,8 +57,6 @@ public abstract class VitruviusRecordingCommand extends RecordingCommand impleme
         // just log and rethrow
         throw (r);
     }
-<<<<<<< HEAD
-=======
     
     @Override
     public Collection<?> getAffectedObjects() {
@@ -73,5 +71,4 @@ public abstract class VitruviusRecordingCommand extends RecordingCommand impleme
 
         return affectedEObjects;
     }
->>>>>>> master
 }
