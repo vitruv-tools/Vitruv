@@ -25,7 +25,7 @@ interface VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	def TransactionalChange createEMFModelChangeFromEChanges(ChangeDescription changeDescription, VURI vuri)
+	def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri)
 
 	def TransactionalChange createEMFModelChangeFromEChanges(List<EChange> echanges, VURI vuri)
 
@@ -47,4 +47,5 @@ interface VitruviusChangeFactory {
 
 	def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges)
 
+	def <T extends VitruviusChange> T clone(T originalChange)
 }

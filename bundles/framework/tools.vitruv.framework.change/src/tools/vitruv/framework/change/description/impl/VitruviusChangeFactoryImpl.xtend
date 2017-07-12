@@ -35,7 +35,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	override createEMFModelChangeFromEChanges(ChangeDescription changeDescription, VURI vuri) {
+	override createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
 		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
 		new EMFModelChangeImpl(changes, vuri)
 	}
@@ -89,6 +89,10 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 		val compositeChange = new CompositeContainerChangeImpl
 		innerChanges.forEach[compositeChange.addChange(it)]
 		compositeChange
+	}
+
+	override <T extends VitruviusChange> clone(T originalChange) {
+		return new ChangeCloner().clone(originalChange) as T
 	}
 
 	private def EChange generateFileCreateChange(Resource resource) {

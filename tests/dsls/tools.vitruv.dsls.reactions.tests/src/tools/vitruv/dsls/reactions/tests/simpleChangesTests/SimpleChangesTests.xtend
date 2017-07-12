@@ -16,6 +16,12 @@ import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsEx
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
+import allElementTypes.AllElementTypesPackage
+import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
+import tools.vitruv.framework.change.description.CompositeContainerChange
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
@@ -520,5 +526,27 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 			true);
 		assertEquals(null, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference);
 		virtualModel.forwardChanges(result)
+	}
+	
+	
+	@Test
+	public def void testApplyBidirectional() {
+		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
+		startRecordingChanges(targetRoot);
+		val newId = "testId";
+		targetRoot.id = newId
+		val propagatedChanges = saveAndSynchronizeChanges(targetRoot);
+		assertEquals(1, propagatedChanges.size);
+		val compositePropagatedChange = propagatedChanges.get(0).consequentialChanges as CompositeContainerChange
+		assertTrue(compositePropagatedChange.EChanges.get(0) instanceof ReplaceSingleValuedEAttribute<?,?>)
+		val replaceChange = compositePropagatedChange.EChanges.get(0) as ReplaceSingleValuedEAttribute<?,?>
+		assertEquals(newId, replaceChange.newValue);
+		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
+		val testResourceSet = new ResourceSetImpl();
+		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		val sourceModel = testResourceSet.getResource(TEST_SOURCE_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		assertEquals(newId, (sourceModel.contents.get(0) as Root).id);
+		val targetModel = testResourceSet.getResource(TEST_TARGET_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		assertEquals(newId, (targetModel.contents.get(0) as Root).id);
 	}
 }

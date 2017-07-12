@@ -15,9 +15,11 @@ interface AtomicEmfChangeRecorder {
 	 */
 	def void stopRecording()
 
-	def List<TransactionalChange> endRecording()
+	def void endRecording()
 
-	def List<TransactionalChange> restartRecording()
+	def List<TransactionalChange> getUnresolvedChanges()
+
+	def List<TransactionalChange> getResolvedChanges()
 
 	def boolean isRecording()
 

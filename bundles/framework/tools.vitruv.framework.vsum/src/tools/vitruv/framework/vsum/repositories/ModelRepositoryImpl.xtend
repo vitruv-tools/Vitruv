@@ -15,6 +15,11 @@ import tools.vitruv.framework.util.datatypes.VURI
 
 class ModelRepositoryImpl {
 	static extension Logger = Logger::getLogger(ModelRepositoryImpl)
+	/**
+	 * Setting this VM argument, propagated changes get unresolved.
+	 * The necessary property setting is "-DunresolvePropagatedChanges"
+	 */
+	private static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
 	val Set<EObject> rootElements;
 	val Map<EObject, AtomicEmfChangeRecorder> rootToRecorder;
 	var boolean isRecording = false;
@@ -69,7 +74,13 @@ class ModelRepositoryImpl {
 	public def endRecording() {
 		val result = newArrayList();
 		for (root : rootToRecorder.keySet) {
-			result += rootToRecorder.get(root).endRecording();
+			rootToRecorder.get(root).endRecording();
+			if (rootToRecorder.get(root).unresolvedChanges != null) {
+				result += rootToRecorder.get(root).unresolvedChanges
+			} else {
+				result += rootToRecorder.get(root).resolvedChanges
+			}
+			
 			debug("End recording for " + root);
 		}
 		rootToRecorder.clear();
@@ -84,11 +95,12 @@ class ModelRepositoryImpl {
 		if (rootToRecorder.containsKey(element)) {
 			throw new IllegalStateException("Duplicate recording on element")
 		}
-		val AtomicEmfChangeRecorder recorder = new AtomicEmfChangeRecorderImpl(false, false);
+		val unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES)
+		val AtomicEmfChangeRecorder recorder = new AtomicEmfChangeRecorderImpl(unresolvePropagatedChanges != null, false)
 		val vuri = if (element.eResource !== null) VURI.getInstance(element.eResource) else null;
-		recorder.beginRecording(vuri, #[element]);
-		rootToRecorder.put(element, recorder);
-		debug("Start recording for " + element);
+		recorder.beginRecording(vuri, #[element])
+		rootToRecorder.put(element, recorder)
+		debug("Start recording for " + element)
 	}
 
 	private def void removeElementFromRecording(EObject element) {
@@ -101,8 +113,9 @@ class ModelRepositoryImpl {
 	}
 
 	override toString() '''
-	Model repository contents:
-		«FOR element : rootElements»
-		«element»«ENDFOR»'''
-
+		Model repository contents:
+			«FOR element : rootElements»
+				«element», resource: «element.eResource?.URI»"
+			«ENDFOR»
+		'''
 }

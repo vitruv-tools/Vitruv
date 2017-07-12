@@ -136,7 +136,9 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	}
 
 	private def List<PropagatedChange> propagateChanges(VURI vuri) {
-		val List<TransactionalChange> changes = uriToChangeRecorder.get(vuri).endRecording
+		val recorder = uriToChangeRecorder.get(vuri)
+		recorder.endRecording
+		val changes = if(unresolveChanges) recorder.unresolvedChanges else recorder.resolvedChanges
 		val compositeChange = VitruviusChangeFactory::instance.createCompositeChange(changes)
 		val result = virtualModel.propagateChange(compositeChange)
 		result.forEach[notifyObservers(vuri, it)]

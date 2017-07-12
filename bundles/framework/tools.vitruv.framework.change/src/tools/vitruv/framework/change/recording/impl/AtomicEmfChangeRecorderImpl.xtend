@@ -24,6 +24,7 @@ import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
+import org.eclipse.xtend.lib.annotations.Accessors
 
 class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	static extension Logger = Logger::getLogger(AtomicEmfChangeRecorderImpl)
@@ -32,6 +33,10 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	Collection<Notifier> elementsToObserve
 	boolean unresolveRecordedChanges
 	val boolean updateTuids
+	@Accessors(PUBLIC_GETTER)
+	List<TransactionalChange> resolvedChanges
+	@Accessors(PUBLIC_GETTER)
+	List<TransactionalChange> unresolvedChanges
 
 	/**
 	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
@@ -83,24 +88,23 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	}
 
 	override endRecording() {
-		debug('''End recording, unresolveRecordedChanges: «unresolveRecordedChanges»''')
 		if (!recording)
 			throw new IllegalStateException
 		changeRecorder.endRecording
 		// Only take those that do not contain only objectsToAttach (I don't know why)
-		val relevantChangeDescriptions = changeDescriptions.filter[!(objectChanges.empty && resourceChanges.empty)].
+		val relevantChangeDescriptions = changeDescriptions.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].
 			toList
+		if (unresolveRecordedChanges) {
+			relevantChangeDescriptions.reverseView.forEach[applyAndReverse]
+			unresolvedChanges = relevantChangeDescriptions.filterNull.map [
+				createModelChange(true, unresolveRecordedChanges && updateTuids)
+			].filterNull.toList
+			correctChanges(unresolvedChanges)
+		}
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse]
-		var transactionalChanges = relevantChangeDescriptions.filterNull.map[createModelChange].filterNull.toList
-		if (unresolveRecordedChanges)
-			correctChanges(transactionalChanges)
-		return transactionalChanges
-	}
-
-	override restartRecording() {
-		val modelChanges = endRecording
-		beginRecording(modelVURI, elementsToObserve)
-		return modelChanges
+		resolvedChanges = relevantChangeDescriptions.filterNull.map [
+			createModelChange(false, !unresolveRecordedChanges && updateTuids)
+		].filterNull.toList
 	}
 
 	override isRecording() {
@@ -111,10 +115,10 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		changeRecorder.dispose
 	}
 
-	private def createModelChange(ChangeDescription changeDescription) {
+	private def createModelChange(ChangeDescription changeDescription, boolean unresolveChanges, boolean updateTuids) {
 		var TransactionalChange result = null
-		if (unresolveRecordedChanges) {
-			result = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(changeDescription, modelVURI)
+		if (unresolveChanges) {
+			result = VitruviusChangeFactory::instance.createEMFModelChange(changeDescription, modelVURI)
 			changeDescription.applyAndReverse
 		} else {
 			result = VitruviusChangeFactory::instance.createLegacyEMFModelChange(changeDescription, modelVURI)
