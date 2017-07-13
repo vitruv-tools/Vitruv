@@ -133,5 +133,19 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+		 
+	<plugin
+         id="tools.vitruv.extensions.emf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+		 
+	<plugin
+         id="tools.vitruv.extensions.emf.monitorededitor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
