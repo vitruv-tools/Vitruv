@@ -47,12 +47,12 @@ public class CreateVsumWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		String name = projectNamePage.getEnteredName();
-		System.out.println("Name " + name);
+		logger.info("Vsum name: " + name);
 		Map<IProject, Set<VitruvDomain>> projectsToDomains = domainSelectionPage.getCheckedDomains();
 		Iterable<VitruvApplication> applications = applicationSelectionPage.getSelectedApplications();
 		for (IProject project : projectsToDomains.keySet()) {
 			for (VitruvDomain domain : projectsToDomains.get(project)) {
-				logger.info("Selected in project" + project.getName() + ": " + domain.getName());
+				logger.info("Selected in project " + project.getName() + ": " + domain.getName());
 			}
 		}
 		for (VitruvApplication application : applications) {
