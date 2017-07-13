@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Persons
-Bundle-SymbolicName: tools.vitruv.domains.persons;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: Vitruv Demo Domain Persons
+Bundle-SymbolicName: tools.vitruv.demo.domains.persons;singleton:=true
+Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
@@ -11,7 +11,7 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.metamodel;visibility:=reexport,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,
- edu.kit.ipd.sdq.metamodels.persons;bundle-version="0.1.0",
-  org.apache.log4j
+ edu.kit.ipd.sdq.metamodels.persons;visibility:=reexport,
+ org.apache.log4j
 Export-Package: tools.vitruv.domains.persons
 

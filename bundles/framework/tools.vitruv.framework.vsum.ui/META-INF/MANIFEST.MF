@@ -6,6 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: tools.vitruv.framework.vsum.ui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.core.resources;bundle-version="3.10.1"
+ org.eclipse.core.resources;bundle-version="3.10.1",
+ tools.vitruv.framework.applications,
+ tools.vitruv.framework.metamodel
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

@@ -5,7 +5,7 @@ Bundle-SymbolicName: tools.vitruv.framework.applications;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: tools.vitruv.framework.change.processing;visibility:=reexport,
- tools.vitruv.framework.metamodel,
+ tools.vitruv.framework.metamodel;visibility:=reexport,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
