@@ -28,6 +28,7 @@ import com.google.common.io.Files;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.userinteraction.UserInteracting;
@@ -249,7 +250,12 @@ public final class TestUtil {
 	public static VitruvDomain createVitruvDomain(final String name, final EPackage metamodelRootPackage,
 			final String fileExt) {
 		final VitruvDomain domain = new AbstractVitruvDomain(name, metamodelRootPackage,
-				new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt);
+				new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt) {
+			@Override
+			public VitruviusProjectBuilderApplicator getBuilderApplicator() {
+				return null;
+			}
+		};
 		return domain;
 	}
 
