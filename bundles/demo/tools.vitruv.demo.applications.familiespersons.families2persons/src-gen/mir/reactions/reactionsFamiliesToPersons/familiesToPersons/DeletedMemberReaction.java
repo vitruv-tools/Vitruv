@@ -9,14 +9,9 @@ import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
-import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 class DeletedMemberReaction extends AbstractReactionRealization {
-  public DeletedMemberReaction(final UserInteracting userInteracting) {
-    super(userInteracting);
-  }
-  
   public void executeReaction(final EChange change) {
     DeleteEObject<Member> typedChange = (DeleteEObject<Member>)change;
     Member affectedEObject = typedChange.getAffectedEObject();

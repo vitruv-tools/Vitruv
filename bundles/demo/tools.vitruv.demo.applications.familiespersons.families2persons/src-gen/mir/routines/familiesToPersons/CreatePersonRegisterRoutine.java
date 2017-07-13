@@ -48,6 +48,7 @@ public class CreatePersonRegisterRoutine extends AbstractRepairRoutineRealizatio
     getLogger().debug("   FamilyRegister: " + this.familyRegister);
     
     PersonRegister personRegister = PersonsFactoryImpl.eINSTANCE.createPersonRegister();
+    notifyObjectCreated(personRegister);
     userExecution.updatePersonRegisterElement(familyRegister, personRegister);
     
     addCorrespondenceBetween(userExecution.getElement1(familyRegister, personRegister), userExecution.getElement2(familyRegister, personRegister), "");

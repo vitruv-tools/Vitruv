@@ -10,8 +10,7 @@ import tools.vitruv.domains.persons.PersonsDomainProvider;
  */
 public abstract class AbstractChangePropagationSpecificationFamiliesToPersons extends CompositeChangePropagationSpecification {
 	public AbstractChangePropagationSpecificationFamiliesToPersons() {
-		super(new tools.vitruv.framework.userinteraction.impl.UserInteractor(),
-			new FamiliesDomainProvider().getDomain(), 
+		super(new FamiliesDomainProvider().getDomain(), 
 			new PersonsDomainProvider().getDomain());
 		setup();
 	}
@@ -21,7 +20,7 @@ public abstract class AbstractChangePropagationSpecificationFamiliesToPersons ex
 	 * For adding further change processors overwrite this method and call the super method at the right place.
 	 */
 	protected void setup() {
-		this.addChangeMainprocessor(new mir.reactions.reactionsFamiliesToPersons.familiesToPersons.ExecutorFamiliesToPersons(getUserInteracting()));
+		this.addChangeMainprocessor(new mir.reactions.reactionsFamiliesToPersons.familiesToPersons.ExecutorFamiliesToPersons());
 	}
 	
 }

@@ -90,6 +90,7 @@ public class CreateSonRoutine extends AbstractRepairRoutineRealization {
     }
     registerObjectUnderModification(personsRegister);
     Male person = PersonsFactoryImpl.eINSTANCE.createMale();
+    notifyObjectCreated(person);
     userExecution.updatePersonElement(member, personsRegister, person);
     
     // val updatedElement userExecution.getElement1(member, personsRegister, person);

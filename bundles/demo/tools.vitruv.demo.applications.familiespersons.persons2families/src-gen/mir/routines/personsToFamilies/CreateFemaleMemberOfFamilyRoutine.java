@@ -105,6 +105,7 @@ public class CreateFemaleMemberOfFamilyRoutine extends AbstractRepairRoutineReal
     }
     registerObjectUnderModification(familyRegister);
     Member member = FamiliesFactoryImpl.eINSTANCE.createMember();
+    notifyObjectCreated(member);
     userExecution.updateMemberElement(person, familyRegister, member);
     
     addCorrespondenceBetween(userExecution.getElement1(person, familyRegister, member), userExecution.getElement2(person, familyRegister, member), "");
