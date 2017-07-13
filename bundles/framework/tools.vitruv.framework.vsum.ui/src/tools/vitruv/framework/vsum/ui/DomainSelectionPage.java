@@ -4,12 +4,18 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -26,7 +32,7 @@ public class DomainSelectionPage extends WizardPage {
 	private static final String PAGENAME = "Vitruvius Project";
 	private static final String DESCRIPTION = "Create a new Vitruvius Project.";
 	private Map<IProject, Set<VitruvDomain>> selectedDomainsForProjects;
-
+	private Tree tree;
 	private Composite container;
 
 	protected DomainSelectionPage() {
@@ -45,26 +51,12 @@ public class DomainSelectionPage extends WizardPage {
 		Label label1 = new Label(container, SWT.NONE);
 		label1.setText("Select the Project and a required domain.");
 
-		IProject projects[] = getProjects();
-
-		final Tree tree = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		tree = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 
 		GridData treeGridData = new GridData(GridData.FILL_BOTH);
 		tree.setLayoutData(treeGridData);
 
-		Iterable<VitruvDomainProvider<?>> domainProviders = VitruvDomainProvider.getAllDomainProvidersFromExtensionPoint();
-
-		for (IProject project : projects) {
-			TreeItem t = new TreeItem(tree, SWT.CHECK);
-			t.setText(project.getName());
-			t.setData(project);
-			selectedDomainsForProjects.put(project, new HashSet<>());
-			for (VitruvDomainProvider<?> provider : domainProviders) {
-				TreeItem childItem = new TreeItem(t, SWT.CHECK);
-				childItem.setText(provider.getDomain().getName());
-				childItem.setData(provider.getDomain());
-			}
-		}
+		initializeProjectList();
 
 		tree.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -99,11 +91,52 @@ public class DomainSelectionPage extends WizardPage {
 				}
 			}
 		});
-
+		
+		final Text text = new Text(container, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		text.setText("MyProject");
+		final Button button = new Button(container, SWT.PUSH);
+		button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		button.setText("Create model project");
+		
+		text.addKeyListener(new KeyListener() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				button.setEnabled(!text.getText().isEmpty());
+			}
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				new ProjectCreator(text.getText()).createProject();
+				initializeProjectList();
+			}
+		});
+		
 		setControl(container);
 		setPageComplete(false);
 	}
 
+	private void initializeProjectList() {
+		tree.removeAll();
+		IProject projects[] = getProjects();
+		Iterable<VitruvDomainProvider<?>> domainProviders = VitruvDomainProvider.getAllDomainProvidersFromExtensionPoint();
+		for (IProject project : projects) {
+			TreeItem t = new TreeItem(tree, SWT.CHECK);
+			t.setText(project.getName());
+			t.setData(project);
+			selectedDomainsForProjects.put(project, new HashSet<>());
+			for (VitruvDomainProvider<?> provider : domainProviders) {
+				TreeItem childItem = new TreeItem(t, SWT.CHECK);
+				childItem.setText(provider.getDomain().getName());
+				childItem.setData(provider.getDomain());
+			}
+		}
+	}
+	
 	/**
 	 * Returns a HashMap of Projects, where every project is mapped to all of
 	 * it's selected domains, respectively.

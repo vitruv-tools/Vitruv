@@ -24,7 +24,7 @@ class VitruvInstanceCreator {
 		this.name = name;
 	}
 	
-	public def void createProjectAndVsum() {
+	public def void createVsumProject() {
 		TuidManager.instance.reinitialize();
         val virtualModel = createVirtualModel(name);
         virtualModel.userInteractor = new UserInteractor();
