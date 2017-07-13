@@ -2,19 +2,19 @@ package tools.vitruv.framework.versioning.impl
 
 import java.util.List
 import java.util.Map
-import tools.vitruv.framework.change.description.TransactionalChange
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtend.lib.annotations.Data
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.ChangeMatch
-import org.eclipse.xtend.lib.annotations.Data
-import org.eclipse.xtend.lib.annotations.Accessors
 
 @Data
 class ChangeMatchImpl implements ChangeMatch {
 	@Accessors(PUBLIC_GETTER)
 	static val serialVersionUID = 1L
 	VURI originalVURI
-	TransactionalChange originalChange
-	Map<VURI, List<TransactionalChange>> targetToCorrespondentChanges
+	VitruviusChange originalChange
+	Map<VURI, List<VitruviusChange>> targetToCorrespondentChanges
 
 	override getAllEChanges() {
 		val orig = originalChange.EChanges

@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests;
+package tools.vitruv.dsls.reactions.tests.versioning;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

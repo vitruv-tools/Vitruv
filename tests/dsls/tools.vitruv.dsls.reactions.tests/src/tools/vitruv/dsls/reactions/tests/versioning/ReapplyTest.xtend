@@ -16,14 +16,20 @@ import static org.junit.Assert.assertThat
 class ReapplyTest extends SourceTargetRecorderTest {
 	static val newTestSourceModelName = "EachTestModelSource2"
 	static val newTestTargetModelName = "EachTestModelTarget2"
+	VURI newSourceVURI
+	Root newRoot
+
+	override setup() {
+		super.setup
+		newRoot = AllElementTypesFactory::eINSTANCE.createRoot
+		newRoot.id = newTestSourceModelName
+		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
+		newSourceVURI = VURI::getInstance(newRoot.eResource)
+		stRecorder.recordOriginalAndCorrespondentChanges(newSourceVURI)
+	}
 
 	@Test
 	def void testReapply() {
-		// Paths and VURIs
-		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
-		val sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
-
-		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
 		// Create container and synchronize 
 		assertThat(rootElement.eContents.length, is(0))
@@ -32,22 +38,17 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		container.id = nonRootObjectContainerName
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-
+		val changeMatches = stRecorder.getChangeMatches(sourceVURI)
 		assertThat(rootElement.eContents.length, is(1))
-		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(1))
-
-		val newSourceVURI = newTestSourceModelName.calculateVURI
-		val newRoot = AllElementTypesFactory::eINSTANCE.createRoot
-		newRoot.id = newTestSourceModelName
-		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
+		assertThat(changeMatches.length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(4))
 
-		val changeMatches = stRecorder.getChangeMatches(sourceVURI)
+		assertThat(changeMatches.length, is(4))
+
 		assertThat(changeMatches.length, is(4))
 		val originalChanges = changeMatches.map[originalChange]
 		assertThat(originalChanges.length, is(4))
@@ -70,11 +71,6 @@ class ReapplyTest extends SourceTargetRecorderTest {
 
 	@Test
 	def void testReapplyAsList() {
-		// Paths and VURIs
-		val targetVURI = TEST_TARGET_MODEL_NAME.calculateVURI
-		val sourceVURI = TEST_SOURCE_MODEL_NAME.calculateVURI
-
-		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI, #[targetVURI])
 
 		// Create container and synchronize 
 		assertThat(rootElement.eContents.length, is(0))
@@ -83,23 +79,21 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		container.id = nonRootObjectContainerName
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-
+		val changeMatches = stRecorder.getChangeMatches(sourceVURI)
 		assertThat(rootElement.eContents.length, is(1))
-		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(1))
-
-		val newSourceVURI = newTestSourceModelName.calculateVURI
-		val newRoot = AllElementTypesFactory::eINSTANCE.createRoot
-		newRoot.id = newTestSourceModelName
-		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
+		assertThat(changeMatches.length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(4))
 
-		val changeMatches = stRecorder.getChangeMatches(sourceVURI)
 		assertThat(changeMatches.length, is(4))
+		changeMatches.forEach [ c |
+			c.originalChange.EChanges.forEach [ eChange |
+				assertThat(eChange.resolved, is(false))
+			]
+		]
 		val originalChanges = changeMatches.map[originalChange]
 		assertThat(originalChanges.length, is(4))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
@@ -108,12 +102,12 @@ class ReapplyTest extends SourceTargetRecorderTest {
 			it as EMFModelChangeImpl
 		].map[eChangeCopier.copyEMFModelChangeToList(it, newSourceVURI)].flatten.toList
 		assertThat(copiedChanges.length, is(8))
-
-		virtualModel.propagateChange(copiedChanges.get(0))
+		val x = copiedChanges.get(0)
+		virtualModel.propagateChange(x)
 		assertThatNonRootObjectContainerIsCreated
-		virtualModel.propagateChange(copiedChanges.get(1))
+		val y = copiedChanges.get(1)
+		virtualModel.propagateChange(y)
 		assertThatNonRootObjectContainerHasRightId
-
 		for (i : 0 ..< 3) {
 			virtualModel.propagateChange(copiedChanges.get(2 + i * 2))
 			assertThatNonRootObjectHasBeenInsertedInContainer(i)
@@ -137,15 +131,17 @@ class ReapplyTest extends SourceTargetRecorderTest {
 	}
 
 	private def assertThatNonRootObjectContainerHasRightId() {
-		assertThat(sourceRootIterator.exists [
-			nonRootObjectContainerName == nonRootObjectContainerHelper.id &&
-				nonRootObjectContainerHelper.eContents.size === 0
-		], is(true))
+		#[newTestSourceModelName, newTestTargetModelName].map[new Pair(it, rootIterator)].forEach [
+			assertThat('''«key».nonRootObjectContainerHelper has not the right ID''', value.exists [
+				nonRootObjectContainerName == nonRootObjectContainerHelper.id &&
+					nonRootObjectContainerHelper.eContents.size === 0
+			], is(true))
+		]
 	}
 
 	private def assertThatNonRootObjectHasBeenInsertedInContainer(int numberOfInsertedElement) {
 		assertThat(sourceRootIterator.filter [
-			nonRootObjectContainerName == nonRootObjectContainerHelper.id
+			nonRootObjectContainerName == nonRootObjectContainerHelper?.id
 		].map[nonRootObjectContainerHelper].filter[nonRootObjectsContainment.size === numberOfInsertedElement + 1].map [
 			nonRootObjectsContainment.get(numberOfInsertedElement)
 		].exists [

@@ -197,7 +197,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						public static void propagateAttributesFrom«imp.toFirstUpperName»(
 							«typeRef(mapping.correspondenceWrapperClassName)» «mapping.name.toFirstLower»,
 							«typeRef(MappingExecutionState)» state) {
-							«IF mapping.constraintsBody != null»
+							«IF mapping.constraintsBody !== null»
 								«FOR constraint : mapping.constraintsBody.expressions»
 									«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
 									state.record(«updateTuidJava»);
@@ -350,7 +350,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						public static void propagateAttributesFrom«imp.toFirstUpperName»(
 							«typeRef(mapping.correspondenceWrapperClassName)» «mapping.name.toFirstLower»,
 							«typeRef(MappingExecutionState)» state) {
-							«IF mapping.constraintsBody != null»
+							«IF mapping.constraintsBody !== null»
 								«FOR constraint : mapping.constraintsBody.expressions»
 									«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
 									state.record(«updateTuidJava»);

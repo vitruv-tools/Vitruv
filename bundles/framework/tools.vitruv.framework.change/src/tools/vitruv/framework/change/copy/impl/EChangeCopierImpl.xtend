@@ -18,6 +18,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.util.datatypes.VURI
 import java.util.List
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 
 class EChangeCopierImpl implements EChangeCopier {
 	static extension Logger = Logger::getLogger(EChangeCopierImpl)
@@ -30,24 +31,29 @@ class EChangeCopierImpl implements EChangeCopier {
 
 	override copyEChanges(EChange changeToCopy, VURI vuri) {
 		val copiedEChange = copyThisEChange(changeToCopy)
-		return VitruviusChangeFactory::instance.createEMFModelChange(#[copiedEChange], vuri) as VitruviusChange
+		return VitruviusChangeFactory::instance.
+			createEMFModelChangeFromEChanges(#[copiedEChange], vuri) as VitruviusChange
 	}
 
 	override copyEMFModelChangeToList(VitruviusChange changeToCopy, VURI vuri) {
 		val newChanges = changeToCopy.copiedEChangeIterator.map [
-			VitruviusChangeFactory::instance.createEMFModelChange(#[it], vuri) as VitruviusChange
+			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it], vuri) as VitruviusChange
 		].toList
 		return newChanges
 	}
 
 	override copyEMFModelChangeToSingleChange(VitruviusChange changeToCopy, VURI vuri) {
 		val newEchanges = changeToCopy.copiedEChangeIterator.toList
-		val newChange = VitruviusChangeFactory::instance.createEMFModelChange(newEchanges, vuri)
+		val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(newEchanges, vuri)
 		return newChange
 	}
 
 	private dispatch def EChange copyThisEChange(EChange e) {
 		throw new UnsupportedOperationException('''Copying EChange «e» is not supported yet!''')
+	}
+
+	private dispatch def CreateAndInsertRoot<?> copyThisEChange(CreateAndInsertRoot<?> createAndInsertNonRoot) {
+		return null
 	}
 
 	private dispatch def CreateAndInsertNonRoot<?, ?> copyThisEChange(
@@ -91,7 +97,9 @@ class EChangeCopierImpl implements EChangeCopier {
 		return x
 	}
 
-	private def adjust(InternalEObject affectedEObject) {
+	private def InternalEObject adjust(InternalEObject affectedEObject) {
+		if (!affectedEObject.eIsProxy)
+			return adjust(EChangeUnresolver::createProxy(affectedEObject))
 		val proxyUriString = affectedEObject.eProxyURI.toString
 		val containsSource = replacePairs.exists[proxyUriString.contains(key)]
 		if (!containsSource) {
@@ -104,11 +112,14 @@ class EChangeCopierImpl implements EChangeCopier {
 		var InternalEObject newAffectedEObject = EChangeUnresolver::createProxy(EcoreUtil::copy(affectedEObject))
 		newAffectedEObject.eSetProxyURI(newProxyUri)
 		return newAffectedEObject
-
 	}
 
 	private def getCopiedEChangeIterator(VitruviusChange changeToCopy) {
 		changeToCopy.getEChanges.map[copyThisEChange].filterNull
+	}
+
+	override copy(EChange e) {
+		copyThisEChange(e)
 	}
 
 }

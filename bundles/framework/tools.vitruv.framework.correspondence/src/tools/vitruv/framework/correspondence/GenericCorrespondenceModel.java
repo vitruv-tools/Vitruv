@@ -112,15 +112,7 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      */
     public Set<T> removeCorrespondencesAndDependendCorrespondences(T correspondence);
 
-    /**
-     * syntactic sugar for map[{@link #resolveEObjectFromTuid(Tuid)}]
-     *
-     * @param tuid
-     * @return
-     */
     public List<EObject> resolveEObjectsFromTuids(final List<Tuid> tuids);
-
-    public Set<List<EObject>> resolveEObjectsSetsFromTuidsSets(final Set<List<Tuid>> tuidLists);
 
     public EObject resolveEObjectFromTuid(final Tuid tuid);
     
@@ -151,8 +143,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
             Supplier<Correspondence> correspondenceCreator);
 
     public Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
-
-    EObject resolveEObjectFromRootAndFullTuid(EObject root, Tuid tuid);
 
     Set<T> getAllCorrespondencesWithoutDependencies();
 

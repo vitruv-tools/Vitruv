@@ -23,4 +23,6 @@ interface EChangeCopier {
 
 	def VitruviusChange copyEChanges(EChange changeToCopy, VURI vuri)
 
+	def EChange copy(EChange e)
+
 }

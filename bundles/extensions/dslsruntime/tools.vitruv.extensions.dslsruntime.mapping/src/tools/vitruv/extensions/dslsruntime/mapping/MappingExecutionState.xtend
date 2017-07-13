@@ -14,9 +14,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.domains.repository.ModelRepository
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.framework.vsum.ModelRepository
 
 @Accessors(PUBLIC_GETTER)
 class MappingExecutionState {
@@ -65,7 +65,7 @@ class MappingExecutionState {
 	public def updateAllTuidsOfCachedObjects() {
 		for (entry : oldTuidMap.entrySet) {
 			val eObject = entry.key
-			if (eObject != null) { // TODO: do this correctly
+			if (eObject !== null) { // TODO: do this correctly
 				val ciToTuids = entry.value
 				for (ciAndTuids : ciToTuids.entrySet) {
 					for (tuid : ciAndTuids.value) {
@@ -86,7 +86,7 @@ class MappingExecutionState {
 	}
 	
 	public def addResourceToSave(EObject eObject) {
-		if (eObject.eResource != null) {
+		if (eObject.eResource !== null) {
 			this.resourcesToSave.add(eObject.eResource)
 		}
 	}

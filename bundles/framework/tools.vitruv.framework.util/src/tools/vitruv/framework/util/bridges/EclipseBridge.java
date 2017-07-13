@@ -32,7 +32,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 
-import tools.vitruv.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.commons.util.java.Pair;
 
 /**
  * A utility class hiding details of the Eclipse API for recurring tasks that are not
@@ -338,6 +338,10 @@ public final class EclipseBridge {
         }
     }
 
+	/**
+	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IResourceUtil#getAbsolutePathString(IResource)}
+	 */
+	@Deprecated
     public static String getAbsolutePathString(final IResource resource) {
         return resource.getLocation().toOSString();
     }

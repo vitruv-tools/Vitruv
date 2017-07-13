@@ -86,7 +86,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def List<EChange> getChanges() {
-		if (this.changes == null) {
+		if (this.changes === null) {
 			this.changes = endRecording()
 			if (this.unresolveAndResolveRecordedEChanges) {
 				for (var i = this.changes.length - 1; i >= 0; i--) {
@@ -101,7 +101,12 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	public def List<EChange> endRecording() {
-		val changeDescriptions = changeRecorder.endRecording()
+		changeRecorder.endRecording()
+		val changeDescriptions = if (unresolveAndResolveRecordedEChanges) {
+			changeRecorder.unresolvedChanges
+		} else {
+			changeRecorder.resolvedChanges
+		}
 //		for (var i = changeDescriptions.size -1; i>= 0; i--) {
 //			changeDescriptions.get(i).changeDescription.applyAndReverse();
 //		}

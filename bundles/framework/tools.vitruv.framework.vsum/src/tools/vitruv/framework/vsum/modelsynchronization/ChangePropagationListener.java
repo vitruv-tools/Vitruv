@@ -1,4 +1,4 @@
-package tools.vitruv.framework.modelsynchronization;
+package tools.vitruv.framework.vsum.modelsynchronization;
 
 /**
  * Listener for the change propagation status.

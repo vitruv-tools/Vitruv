@@ -1,5 +1,6 @@
 package tools.vitruv.framework.change.echange.util;
 
+import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.common.command.CompoundCommand
@@ -7,6 +8,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.edit.command.AddCommand
 import org.eclipse.emf.edit.command.SetCommand
+import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.command.AddToStagingAreaCommand
 import tools.vitruv.framework.change.echange.command.RemoveAtCommand
 import tools.vitruv.framework.change.echange.command.RemoveFromStagingAreaCommand
@@ -105,12 +107,12 @@ package class ApplyForwardCommandSwitch {
 			val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
 			val compoundCommand = new CompoundCommand()
 
-			if (change.containment && change.newValue != null) {
+			if (change.containment && change.newValue !== null) {
 				compoundCommand.append(new RemoveFromStagingAreaCommand(editingDomain, stagingArea, change.newValue))
 			}
 			compoundCommand.append(
 				new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue))
-			if (change.containment && change.oldValue != null) {
+			if (change.containment && change.oldValue !== null) {
 				compoundCommand.append(new AddToStagingAreaCommand(editingDomain, stagingArea, change.oldValue))
 			}
 
@@ -161,7 +163,11 @@ package class ApplyForwardCommandSwitch {
 		 * @param object The change which commands should be created.
 		 */
 		def package dispatch static List<Command> getCommands(CompoundEChange change) {
-			change.atomicChanges.map[getCommands].flatten.toList
+			val commands = new ArrayList<Command>
+			for (AtomicEChange c : change.atomicChanges) {
+				commands.addAll(getCommands(c))
+			}
+			return commands
 		}
 
 		/**

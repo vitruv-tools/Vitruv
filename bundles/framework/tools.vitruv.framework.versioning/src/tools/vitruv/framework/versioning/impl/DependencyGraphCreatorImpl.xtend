@@ -4,15 +4,15 @@ import java.util.ArrayList
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.change.description.TransactionalChange
+import org.graphstream.graph.Graph
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
-import org.graphstream.graph.Graph
-import tools.vitruv.framework.versioning.ChangeMatch
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static extension EChangeRequireExtension = EChangeRequireExtension::instance
@@ -25,7 +25,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	private new() {
 	}
 
-	override createDependencyGraph(List<TransactionalChange> changes) {
+	override createDependencyGraph(List<VitruviusChange> changes) {
 		val graph = GraphExtension::createNewEChangeGraph
 		createDependencyGraph(graph, changes, true)
 		return graph
@@ -57,7 +57,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		return graph
 	}
 
-	private def createDependencyGraph(Graph graph, List<TransactionalChange> changes, boolean print) {
+	private def createDependencyGraph(Graph graph, List<VitruviusChange> changes, boolean print) {
 		val resourceSet = new ResourceSetImpl
 		// PS Do not use the java 8 or xtend function methods here.
 		// Their laziness can cause problems while applying
@@ -79,7 +79,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 				val otherResolved = unresolvedToResolvedMap.get(otherEchange)
 				val isParent = checkForRequireEdge(resolved, otherResolved)
 				if (isParent)
-					graph.addEdge(echange, otherEchange, EdgeType::PROVIDES)
+					graph.addEdge(echange, otherEchange, EdgeType::REQUIRED)
 			]
 		]
 		// TODO PS Remove

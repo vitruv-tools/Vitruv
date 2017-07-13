@@ -19,7 +19,7 @@ class NodeExtensionImpl implements NodeExtension {
 	}
 
 	override isProvideLeave(Node node) {
-		node.determineIsLeave([Edge e|!e.isType(EdgeType::PROVIDES)])
+		node.determineIsLeave([Edge e|!e.isType(EdgeType::REQUIRED)])
 	}
 
 	override setLabel(Node node, String label) {
@@ -27,7 +27,7 @@ class NodeExtensionImpl implements NodeExtension {
 	}
 
 	override isLeave(Node node) {
-		node.determineIsLeave([Edge e|!e.isType(EdgeType::PROVIDES) && !e.isType(EdgeType::TRIGGERS)])
+		node.determineIsLeave([Edge e|!e.isType(EdgeType::REQUIRED) && !e.isType(EdgeType::TRIGGERS)])
 	}
 
 	private static def determineIsLeave(Node node, Function1<Edge, Boolean> predicate) {

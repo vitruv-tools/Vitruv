@@ -1,7 +1,7 @@
 package tools.vitruv.framework.tests
 
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.PropagatedChange
 
 /**
  * Interface to register and notify {@link ChangeObserver}s.
@@ -15,5 +15,5 @@ interface ChangeObservable {
 
 	def void unRegisterObserver(ChangeObserver observer)
 
-	def void notifyObservers(VURI vuri, TransactionalChange change)
+	def void notifyObservers(VURI vuri, PropagatedChange change)
 }

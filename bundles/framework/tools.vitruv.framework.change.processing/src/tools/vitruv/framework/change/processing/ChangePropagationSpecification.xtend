@@ -6,7 +6,7 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.domains.VitruvDomain
 
-interface ChangePropagationSpecification {
+interface ChangePropagationSpecification extends ChangePropagationObservable {
 	def void setUserInteracting(UserInteracting userInteracting);
 	def VitruvDomain getSourceDomain();
 	def VitruvDomain getTargetDomain();

@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.mapping.helpers
 
 import tools.vitruv.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
-import tools.vitruv.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.commons.util.java.Pair
 import java.util.Collection
 import java.util.List
 import java.util.Map

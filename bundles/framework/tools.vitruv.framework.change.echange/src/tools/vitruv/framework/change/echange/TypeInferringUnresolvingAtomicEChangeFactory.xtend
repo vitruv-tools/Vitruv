@@ -10,7 +10,7 @@ import tools.vitruv.framework.change.echange.impl.TypeInferringUnresolvingAtomic
  * Can be used by any transformation that creates change models.
  */
 interface TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEChangeFactory {
-	static TypeInferringUnresolvingAtomicEChangeFactory instance = TypeInferringUnresolvingAtomicEChangeFactoryImpl::
+	TypeInferringUnresolvingAtomicEChangeFactory instance = TypeInferringUnresolvingAtomicEChangeFactoryImpl::
 		init
 
 }

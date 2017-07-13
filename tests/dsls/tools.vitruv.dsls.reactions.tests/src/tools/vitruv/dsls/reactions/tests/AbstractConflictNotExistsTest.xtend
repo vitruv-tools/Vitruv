@@ -2,6 +2,8 @@ package tools.vitruv.dsls.reactions.tests
 
 import allElementTypes.AllElementTypesFactory
 import tools.vitruv.framework.versioning.BranchDiffCreator
+import static org.hamcrest.CoreMatchers.is
+import static org.junit.Assert.assertThat
 
 abstract class AbstractConflictNotExistsTest extends AbstractConflictTest {
 	override setup() {
@@ -30,6 +32,11 @@ abstract class AbstractConflictNotExistsTest extends AbstractConflictTest {
 		assertMappedModelsAreEqual
 		val sourceChanges = stRecorder.getChangeMatches(sourceVURI)
 		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
+		sourceChanges.forEach [
+			originalChange.EChanges.forEach [ e |
+				assertThat(e.resolved, is(false))
+			]
+		]
 		branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
 		conflicts = conflictDetector.detectConlicts(branchDiff)
 		changes = branchDiff.baseChanges.map[originalChange].toList

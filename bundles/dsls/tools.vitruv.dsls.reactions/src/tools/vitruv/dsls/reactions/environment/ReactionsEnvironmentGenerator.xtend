@@ -3,7 +3,7 @@ package tools.vitruv.dsls.reactions.environment;
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
 import tools.vitruv.dsls.reactions.helper.XtendImportHelper
-import tools.vitruv.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.commons.util.java.Pair;
 import java.util.Map
 import java.util.HashMap
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
@@ -18,7 +18,6 @@ import java.io.File
 import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.resource.DerivedStateAwareResource
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
-import tools.vitruv.framework.userinteraction.impl.UserInteractor
 import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
@@ -59,10 +58,10 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	
 	
 	public override void addReaction(String sourceFileName, Reaction reaction) {
-		if (project == null) {
+		if (project === null) {
 			throw new IllegalStateException("Project must be set");
 		}
-		if (reaction == null) {
+		if (reaction === null) {
 			throw new IllegalArgumentException("Reaction must not be null");
 		}
 		val reactionsSegment = getCorrespondingReactionsSegmentInTempResource(sourceFileName, reaction.reactionsSegment);
@@ -81,7 +80,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 						foundSegment = segment;
 					}	
 				}
-				if (foundSegment == null) {
+				if (foundSegment === null) {
 					foundSegment = addReactionsSegment(reactionsFile, reactionsSegment, sourceFileName);
 				}
 				
@@ -106,14 +105,14 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 	}
 	
 	public def override addReactions(Resource reactionsResource) {
-		if (reactionsResource == null || !(reactionsResource.contents.get(0) instanceof ReactionsFile)) {
+		if (reactionsResource === null || !(reactionsResource.contents.get(0) instanceof ReactionsFile)) {
 			throw new IllegalArgumentException("The given resource is not a reactions file");
 		}
 		this.resources.add(reactionsResource);
 	}
 	
 	public override void generateEnvironment(IFileSystemAccess2 fsa) {
-		if (project == null) {
+		if (project === null) {
 			throw new IllegalStateException("Project must be set");
 		}
 		prepareGeneration();
@@ -199,8 +198,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		 */
 		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangePropagationSpecification)» {
 			public «changePropagationSpecificationNameGenerator.simpleName»() {
-				super(new «UserInteractor.name»(),
-					new «ih.typeRef(modelPair.first.providerForDomain.class)»().getDomain(), 
+				super(new «ih.typeRef(modelPair.first.providerForDomain.class)»().getDomain(), 
 					new «ih.typeRef(modelPair.second.providerForDomain.class)»().getDomain());
 				setup();
 			}
@@ -211,7 +209,7 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 			 */
 			protected void setup() {
 				«FOR executorName : executorsNames»
-					this.addChangeMainprocessor(new «executorName»(getUserInteracting()));
+					this.addChangeMainprocessor(new «executorName»());
 				«ENDFOR»		
 			}
 			

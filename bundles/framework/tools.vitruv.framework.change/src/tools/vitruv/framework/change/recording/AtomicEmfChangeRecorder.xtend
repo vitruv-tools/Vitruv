@@ -10,12 +10,18 @@ interface AtomicEmfChangeRecorder {
 
 	def void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve)
 
-	def List<TransactionalChange> endRecording()
+	/** 
+	 * Stops recording without returning a result 
+	 */
+	def void stopRecording()
 
-	def List<TransactionalChange> restartRecording()
+	def void endRecording()
+
+	def List<TransactionalChange> getUnresolvedChanges()
+
+	def List<TransactionalChange> getResolvedChanges()
 
 	def boolean isRecording()
 
 	def void dispose()
-
 }

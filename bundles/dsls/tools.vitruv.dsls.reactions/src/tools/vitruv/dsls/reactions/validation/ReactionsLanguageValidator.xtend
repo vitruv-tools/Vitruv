@@ -77,7 +77,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 //	@Check
 //	def checkEffects(Effect effect) {
-//		if (effect.impact.codeBlock == null && !effect.impact..filter(CorrespondingModelElementCreate).nullOrEmpty) {
+//		if (effect.impact.codeBlock === null && !effect.impact..filter(CorrespondingModelElementCreate).nullOrEmpty) {
 //			warning("Created elements must be initialized and inserted into the target model in the execute block.",
 //				ReactionsLanguagePackage.Literals.EFFECT__CODE_BLOCK);
 //		}
@@ -124,7 +124,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		}
 		if (atomicChangeType instanceof ElementReferenceChangeType) {
 			val featureType = atomicChangeType.feature?.feature?.EType as EClass;
-			if (elementType != null && featureType != null) {
+			if (elementType !== null && featureType !== null) {
 				if (!elementType.equals(featureType) && !elementType.EAllSuperTypes.contains(featureType) && !featureType.EAllSuperTypes.contains(elementType)) {
 					warning("Element of specified type cannot be contained in the specified features",
 						elementChange, ReactionsLanguagePackage.Literals.MODEL_ELEMENT_CHANGE__ELEMENT_TYPE

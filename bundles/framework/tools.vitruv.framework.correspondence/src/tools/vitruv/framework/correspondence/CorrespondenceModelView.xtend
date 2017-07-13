@@ -45,7 +45,7 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		val correspondences = getCorrespondences(aEObjects)
 		for (T correspondence : correspondences) {
 			val correspondingBs = correspondence.bs
-			if (correspondingBs != null && correspondingBs.equals(bEObjects)) {
+			if (correspondingBs !== null && correspondingBs.equals(bEObjects)) {
 				return correspondence;
 			}
 		}
@@ -92,7 +92,7 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 
 	override hasCorrespondences(List<EObject> eObjects) {
 		var Set<T> correspondences = this.getCorrespondences(eObjects);
-		return correspondences != null && correspondences.size() > 0
+		return correspondences !== null && correspondences.size() > 0
 	}
 
 	override hasCorrespondences() {
@@ -112,20 +112,8 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(tuids);
 	}
 
-	override resolveEObjectFromRootAndFullTuid(EObject root, Tuid tuid) {
-		correspondenceModelDelegate.resolveEObjectFromRootAndFullTuid(root, tuid);
-	}
-
 	override resolveEObjectFromTuid(Tuid tuid) {
 		correspondenceModelDelegate.resolveEObjectFromTuid(tuid);
-	}
-
-	override resolveEObjectsFromTuids(List<Tuid> tuids) {
-		correspondenceModelDelegate.resolveEObjectsFromTuids(tuids);
-	}
-
-	override resolveEObjectsSetsFromTuidsSets(Set<List<Tuid>> tuidLists) {
-		correspondenceModelDelegate.resolveEObjectsSetsFromTuidsSets(tuidLists);
 	}
 
 	// TODO re-design the CorrespondenceModel to avoid a functionality depending on the correpondenceType
@@ -157,6 +145,10 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 	
 	override getURI() {
 		return correspondenceModelDelegate.getURI;
+	}
+	
+	override resolveEObjectsFromTuids(List<Tuid> tuids) {
+		correspondenceModelDelegate.resolveEObjectsFromTuids(tuids);
 	}
 	
 }

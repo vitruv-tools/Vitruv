@@ -2,10 +2,10 @@ package tools.vitruv.extensions.dslsruntime.mapping;
 
 import org.eclipse.emf.common.util.URI;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.extensions.dslsruntime.mapping.MappingExecutionState;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard;
-import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 
@@ -18,7 +18,7 @@ public class DefaultContainmentMapping extends AbstractMappingRealization {
 			state.addObjectForTuidUpdate(objectToCreateContainmentFor);
 			
 			VURI userChosenVuri = null;
-			while ((userChosenVuri == null) || (EMFBridge.existsResourceAtUri(userChosenVuri.getEMFUri()))) {
+			while ((userChosenVuri == null) || (URIUtil.existsResourceAtUri(userChosenVuri.getEMFUri()))) {
 				final URI userChosenUri = state.getUserInteracting().selectURI(EcoreBridge.createSensibleString(objectToCreateContainmentFor));
 				if (userChosenUri != null) {
 					userChosenVuri = VURI.getInstance(userChosenUri);
