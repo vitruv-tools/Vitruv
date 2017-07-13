@@ -29,4 +29,8 @@ public class FamiliesPersonsApplication implements VitruvApplication {
 		return domains;
 	}
 
+	@Override
+	public String getName() {
+		return "Families-Persons";
+	}
 }

@@ -9,5 +9,6 @@ Require-Bundle: tools.vitruv.framework.change.processing;visibility:=reexport,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+  org.eclipse.core.runtime
 Export-Package: tools.vitruv.framework.applications
