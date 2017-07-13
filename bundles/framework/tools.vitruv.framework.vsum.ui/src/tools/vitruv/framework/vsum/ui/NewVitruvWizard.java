@@ -57,7 +57,7 @@ public class NewVitruvWizard extends Wizard implements INewWizard {
 		for (VitruvApplication application : applications) {
 			logger.info("Selected Application: " + application.getName());
 		}
-		new VitruvInstanceCreator(name, projectsToDomains, applications).createProjectAndVsum();
+		new VitruvInstanceCreator(name, projectsToDomains, applications).createVsumProject();
 		return true;
 	}
 
