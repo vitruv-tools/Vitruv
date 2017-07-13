@@ -3,7 +3,6 @@ package tools.vitruv.applications.familiespersons.families2Persons.test
 import tools.vitruv.framework.tests.VitruviusApplicationTest
 import tools.vitruv.domains.persons.PersonsDomainProvider
 import tools.vitruv.domains.families.FamiliesDomainProvider
-import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
 import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
 import tools.vitruv.applications.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification
 import edu.kit.ipd.sdq.metamodels.families.FamiliesFactory

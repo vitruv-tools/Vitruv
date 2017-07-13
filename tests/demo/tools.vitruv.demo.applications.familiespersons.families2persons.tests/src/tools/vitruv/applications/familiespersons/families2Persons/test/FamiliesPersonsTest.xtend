@@ -2,8 +2,6 @@ package tools.vitruv.applications.familiespersons.families2Persons.test
 
 import edu.kit.ipd.sdq.metamodels.families.FamiliesFactory
 import org.junit.Test
-import org.eclipse.emf.ecore.EObject
-import java.util.Set
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 import static org.junit.Assert.*
 import edu.kit.ipd.sdq.metamodels.persons.Person
@@ -14,7 +12,6 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	private static val FIRST_NAME_SON = "Sohn";
 	private static val FIRST_NAME_DAUGHTER = "Tochter";
 	private static val FIRST_NAME_MOTHER = "Erika"
-	private static val NEW_NAME = "Hans"
 	private static val PERSONS_PATH = "model/persons.persons";
 
 	@Test
