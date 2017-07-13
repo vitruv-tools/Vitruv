@@ -1,4 +1,4 @@
-package tools.vitruv.framework.monitorededitor
+package tools.vitruv.framework.domains
 
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.resources.IProjectDescription
@@ -12,6 +12,9 @@ import java.util.HashMap
 import java.io.File
 
 class VitruviusProjectBuilderApplicator {
+	public static final String ARGUMENT_VMODEL_NAME = "virtualModelName";
+	public static final String ARGUMENT_FILE_EXTENSIONS = "fileExtensions";
+	
 	private val String builderId;
 	
 	public new(String builderId) {
@@ -32,12 +35,12 @@ class VitruviusProjectBuilderApplicator {
                 val ICommand buildCommand = description.newCommand();
                 buildCommand.setBuilderName(this.builderId);
                 val Map<String, String> builderArguments = new HashMap<String, String>();
-                builderArguments.put(VitruviusProjectBuilder.ARGUMENT_VMODEL_NAME, vmodelFolder.toString);
+                builderArguments.put(ARGUMENT_VMODEL_NAME, vmodelFolder.toString);
                 var String fileExtensionsString = "";
                 for (fileExtension : fileExtensions) {
                     fileExtensionsString += fileExtension + ", ";
                 }
-                builderArguments.put(VitruviusProjectBuilder.ARGUMENT_FILE_EXTENSIONS, fileExtensionsString);
+                builderArguments.put(ARGUMENT_FILE_EXTENSIONS, fileExtensionsString);
                 buildCommand.setArguments(builderArguments);
                 val List<ICommand> commands = new ArrayList<ICommand>();
                 commands.addAll(Arrays.asList(description.getBuildSpec()));
@@ -88,5 +91,9 @@ class VitruviusProjectBuilderApplicator {
         }
 
         return false;
+    }
+    
+    public def String getBuilderId() {
+    	return builderId;
     }
 }

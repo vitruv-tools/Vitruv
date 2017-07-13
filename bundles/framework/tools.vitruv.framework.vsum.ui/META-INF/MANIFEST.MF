@@ -8,6 +8,14 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.10.1",
  tools.vitruv.framework.applications,
- tools.vitruv.framework.metamodel
+ tools.vitruv.framework.metamodel,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ tools.vitruv.framework.vsum,
+ tools.vitruv.framework.monitorededitor,
+ tools.vitruv.framework.tests.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+
