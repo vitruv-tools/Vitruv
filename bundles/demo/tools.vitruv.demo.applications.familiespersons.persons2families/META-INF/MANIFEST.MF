@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Demo Persons -> Families
 Bundle-SymbolicName: tools.vitruv.demo.applications.familiespersons.persons2families
 Bundle-Version: 0.2.0.qualifier
+Export-Package: tools.vitruv.applications.familiespersons.persons2families
 Require-Bundle: org.apache.log4j,
  com.google.guava,
  org.eclipse.emf.ecore,
@@ -17,7 +18,7 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.extensions.dslsruntime.reactions,
  tools.vitruv.extensions.dslsruntime.mapping,
  tools.vitruv.demo.domains.persons;visibility:=reexport,
- tools.vitruv.demo.domains.families;visibility:=reexport
+ tools.vitruv.demo.domains.families;visibility:=reexport,
+ edu.kit.ipd.sdq.metamodels.persons,
+ edu.kit.ipd.sdq.metamodels.families
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: tools.vitruv.applications.familiespersons.persons2families
-
