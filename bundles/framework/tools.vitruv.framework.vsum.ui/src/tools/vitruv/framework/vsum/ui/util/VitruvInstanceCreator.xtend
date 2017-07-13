@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.ui
+package tools.vitruv.framework.vsum.ui.util
 
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.vsum.InternalVirtualModel

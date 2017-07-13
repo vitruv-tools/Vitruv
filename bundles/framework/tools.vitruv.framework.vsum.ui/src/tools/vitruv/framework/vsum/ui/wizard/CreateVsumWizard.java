@@ -10,7 +10,7 @@ import org.eclipse.ui.IWorkbench;
 
 import tools.vitruv.framework.applications.VitruvApplication;
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.vsum.ui.VitruvInstanceCreator;
+import tools.vitruv.framework.vsum.ui.util.VitruvInstanceCreator;
 
 import java.util.Map;
 import java.util.Set;

@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomainProvider;
-import tools.vitruv.framework.vsum.ui.ProjectCreator;
+import tools.vitruv.framework.vsum.ui.util.ProjectCreator;
 
 import java.util.HashMap;
 import java.util.HashSet;
