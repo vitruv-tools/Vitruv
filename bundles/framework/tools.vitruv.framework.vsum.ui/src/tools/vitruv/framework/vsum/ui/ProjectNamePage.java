@@ -14,7 +14,7 @@ public class ProjectNamePage extends WizardPage implements KeyListener {
 
   private static final String PAGENAME = "Vitruvius Project";
   private static final String DESCRIPTION = "Create a new Vitruvius Project.";
-  private static final String LABELTEXT = "Projektname: ";
+  private static final String LABELTEXT = "Project name: ";
   
   private Text text;
   private String enteredName;

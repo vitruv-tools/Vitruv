@@ -2,7 +2,7 @@ package tools.vitruv.framework.vsum.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -11,17 +11,15 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import java.util.List;
-import java.util.Arrays;
+import tools.vitruv.framework.domains.VitruvDomainProvider;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -59,7 +57,7 @@ public class DomainSelectionPage extends WizardPage {
     tree.setLayoutData(treeGridData);
 
     IExtensionRegistry reg = Platform.getExtensionRegistry();
-    IExtensionPoint ep = reg.getExtensionPoint("tools.vitruv.framework.vsum.domain");
+    IExtensionPoint ep = reg.getExtensionPoint(VitruvDomainProvider.EXTENSION_POINT_ID);
     IExtension[] extensions = null;
     if (ep != null) {
       extensions = ep.getExtensions();
@@ -109,7 +107,11 @@ public class DomainSelectionPage extends WizardPage {
           setPageComplete(finished);
           
           //Pass data to ApplicationSelectionPage
-          applicationSelectionPage.displayCheckedDomains(map);
+          try {
+			applicationSelectionPage.displayCheckedDomains(map);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
         }
       }
     });
