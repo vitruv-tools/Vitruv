@@ -4,6 +4,7 @@ import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
 import tools.vitruv.framework.domains.AbstractVitruvDomain
 import edu.kit.ipd.sdq.metamodels.families.FamiliesPackage
 import tools.vitruv.domains.families.tuid.FamiliesTuidCalculatorAndResolver
+import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 
 class FamiliesDomain extends AbstractVitruvDomain {
 	private static final String METAMODEL_NAME = "Families";
@@ -18,4 +19,8 @@ class FamiliesDomain extends AbstractVitruvDomain {
 		return new FamiliesTuidCalculatorAndResolver(FamiliesPackage.eNS_URI);
 	}
 
+	override getBuilderApplicator() {
+		return new VitruviusEmfBuilderApplicator();
+	}
+	
 }

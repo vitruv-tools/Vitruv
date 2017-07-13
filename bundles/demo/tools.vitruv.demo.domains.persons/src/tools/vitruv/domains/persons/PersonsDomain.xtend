@@ -4,6 +4,7 @@ import edu.kit.ipd.sdq.metamodels.persons.PersonsPackage
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
 import tools.vitruv.framework.domains.AbstractVitruvDomain
 import tools.vitruv.domains.persons.tuid.PersonsTuidCalculatorAndResolver
+import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 
 class PersonsDomain extends AbstractVitruvDomain{
 	private static final String METAMODEL_NAME = "Persons";
@@ -18,4 +19,7 @@ class PersonsDomain extends AbstractVitruvDomain{
 		return new PersonsTuidCalculatorAndResolver(PersonsPackage.eNS_URI);
 	}
 	
+	override getBuilderApplicator() {
+		return new VitruviusEmfBuilderApplicator();
+	}
 }
