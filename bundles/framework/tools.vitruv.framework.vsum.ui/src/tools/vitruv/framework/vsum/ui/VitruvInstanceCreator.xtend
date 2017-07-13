@@ -14,17 +14,19 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import java.util.Set
 
 class VitruvInstanceCreator {
-	private Map<IProject, ? extends Set<VitruvDomain>> projectToDomains;
-	private Iterable<VitruvApplication> applications;
+	private final Map<IProject, ? extends Set<VitruvDomain>> projectToDomains;
+	private final Iterable<VitruvApplication> applications;
+	private final String name;
 	
-	new(Map<IProject, Set<VitruvDomain>> projectToDomains, Iterable<VitruvApplication> applications) {
+	new(String name, Map<IProject, Set<VitruvDomain>> projectToDomains, Iterable<VitruvApplication> applications) {
 		this.projectToDomains = projectToDomains;
-		this.applications = applications;	
+		this.applications = applications;
+		this.name = name;
 	}
 	
 	public def void createProjectAndVsum() {
 		TuidManager.instance.reinitialize();
-        val virtualModel = createVirtualModel("testProjectVsum");
+        val virtualModel = createVirtualModel(name);
         virtualModel.userInteractor = new UserInteractor();
         for (project : projectToDomains.keySet) {
         	for (domain : projectToDomains.get(project)) {

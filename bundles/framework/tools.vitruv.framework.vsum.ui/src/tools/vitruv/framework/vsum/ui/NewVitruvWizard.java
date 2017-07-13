@@ -1,5 +1,6 @@
 package tools.vitruv.framework.vsum.ui;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class NewVitruvWizard extends Wizard implements INewWizard {
-
+	private static Logger logger = Logger.getLogger(NewVitruvWizard.class);
 	private static final String WINDOWTITLE = "New Vitruvius Project";
 	protected ProjectNamePage projectNamePage;
 	protected DomainSelectionPage domainSelectionPage;
@@ -44,18 +45,19 @@ public class NewVitruvWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		System.out.println("Name " + projectNamePage.getEnteredName());
-		Map<IProject, Set<VitruvDomain>> map = domainSelectionPage.getCheckedDomains();
+		String name = projectNamePage.getEnteredName();
+		System.out.println("Name " + name);
+		Map<IProject, Set<VitruvDomain>> projectsToDomains = domainSelectionPage.getCheckedDomains();
 		Iterable<VitruvApplication> applications = applicationSelectionPage.getSelectedApplications();
-		for (IProject project : map.keySet()) {
-			for (VitruvDomain domain : map.get(project)) {
-				System.out.println("Selected in project" + project.getName() + ": " + domain.getName());
+		for (IProject project : projectsToDomains.keySet()) {
+			for (VitruvDomain domain : projectsToDomains.get(project)) {
+				logger.info("Selected in project" + project.getName() + ": " + domain.getName());
 			}
 		}
 		for (VitruvApplication application : applications) {
-			System.out.println("Selected Application: " + application.getName());
+			logger.info("Selected Application: " + application.getName());
 		}
-		new VitruvInstanceCreator(map, applications).createProjectAndVsum();
+		new VitruvInstanceCreator(name, projectsToDomains, applications).createProjectAndVsum();
 		return true;
 	}
 
