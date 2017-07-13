@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.ui;
+package tools.vitruv.framework.vsum.ui.wizard;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;

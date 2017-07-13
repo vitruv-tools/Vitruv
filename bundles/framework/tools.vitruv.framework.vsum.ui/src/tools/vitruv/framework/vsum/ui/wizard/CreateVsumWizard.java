@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.ui;
+package tools.vitruv.framework.vsum.ui.wizard;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
@@ -10,18 +10,19 @@ import org.eclipse.ui.IWorkbench;
 
 import tools.vitruv.framework.applications.VitruvApplication;
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.vsum.ui.VitruvInstanceCreator;
 
 import java.util.Map;
 import java.util.Set;
 
-public class NewVitruvWizard extends Wizard implements INewWizard {
-	private static Logger logger = Logger.getLogger(NewVitruvWizard.class);
+public class CreateVsumWizard extends Wizard implements INewWizard {
+	private static Logger logger = Logger.getLogger(CreateVsumWizard.class);
 	private static final String WINDOWTITLE = "New Vitruvius Project";
 	protected ProjectNamePage projectNamePage;
 	protected DomainSelectionPage domainSelectionPage;
 	protected ApplicationSelectionPage applicationSelectionPage;
 
-	public NewVitruvWizard() {
+	public CreateVsumWizard() {
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.ui;
+package tools.vitruv.framework.vsum.ui.wizard;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -20,7 +20,7 @@ public class ProjectNamePage extends WizardPage implements KeyListener {
 	private Text text;
 	private Composite container;
 
-	protected ProjectNamePage(NewVitruvWizard wizard) {
+	protected ProjectNamePage(CreateVsumWizard wizard) {
 		super(PAGENAME);
 		setTitle(PAGENAME);
 		setDescription(DESCRIPTION);
