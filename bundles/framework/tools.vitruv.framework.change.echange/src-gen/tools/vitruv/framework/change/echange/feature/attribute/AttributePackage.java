@@ -6,11 +6,11 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
-import tools.vitruv.framework.change.echange.EChangePackage;
-
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+
+import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -100,6 +100,69 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___APPLY_FORWARD = FeaturePackage.FEATURE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD = FeaturePackage.FEATURE_ECHANGE___APPLY_BACKWARD;
+
+	/**
 	 * The number of operations of the '<em>Update Attribute EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -125,7 +188,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 0;
+	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -134,7 +197,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 1;
+	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -143,7 +206,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 2;
+	int ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Additive Attribute EChange</em>' class.
@@ -152,7 +215,70 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 3;
+	int ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___APPLY_FORWARD = UPDATE_ATTRIBUTE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD = UPDATE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -161,7 +287,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_NEW_VALUE = EChangePackage.ADDITIVE_ECHANGE___GET_NEW_VALUE;
+	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_NEW_VALUE = UPDATE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Additive Attribute EChange</em>' class.
@@ -170,7 +296,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT = EChangePackage.ADDITIVE_ECHANGE_OPERATION_COUNT + 0;
+	int ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT = UPDATE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.SubtractiveAttributeEChangeImpl <em>Subtractive Attribute EChange</em>}' class.
@@ -189,7 +315,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 0;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -198,7 +324,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -207,7 +333,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 2;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Subtractive Attribute EChange</em>' class.
@@ -216,7 +342,70 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 3;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___APPLY_FORWARD = UPDATE_ATTRIBUTE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD = UPDATE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -225,7 +414,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_OLD_VALUE = EChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_OLD_VALUE = UPDATE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Subtractive Attribute EChange</em>' class.
@@ -234,7 +423,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_OPERATION_COUNT + 0;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT = UPDATE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.InsertEAttributeValueImpl <em>Insert EAttribute Value</em>}' class.
@@ -290,6 +479,69 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE_AFTER__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___APPLY_FORWARD = ListPackage.INSERT_IN_LIST_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___APPLY_BACKWARD = ListPackage.INSERT_IN_LIST_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -365,6 +617,69 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_AFTER__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___APPLY_FORWARD = ListPackage.REMOVE_FROM_LIST_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___APPLY_BACKWARD = ListPackage.REMOVE_FROM_LIST_ECHANGE___APPLY_BACKWARD;
+
+	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -399,7 +714,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -408,7 +723,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -417,7 +732,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -426,7 +741,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 0;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Replace Single Valued EAttribute</em>' class.
@@ -435,7 +750,70 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_AFTER__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___APPLY_FORWARD = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___APPLY_BACKWARD = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -444,7 +822,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE___GET_NEW_VALUE;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___GET_NEW_VALUE;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -453,7 +831,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 0;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___GET_OLD_VALUE;
 
 	/**
 	 * The operation id for the '<em>Is From Non Default Value</em>' operation.
@@ -462,7 +840,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_FROM_NON_DEFAULT_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 1;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_FROM_NON_DEFAULT_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_FROM_NON_DEFAULT_VALUE;
 
 	/**
 	 * The operation id for the '<em>Is To Non Default Value</em>' operation.
@@ -471,7 +849,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 2;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_TO_NON_DEFAULT_VALUE;
 
 	/**
 	 * The number of operations of the '<em>Replace Single Valued EAttribute</em>' class.
@@ -480,7 +858,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 3;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
 
 	/**

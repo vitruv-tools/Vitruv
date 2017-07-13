@@ -1,18 +1,47 @@
 @Ecore(nsURI="http://tools.vitruv/EChange/Feature/1.0")
-@GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
+@GenModel(modelName="Change", commentFormatting="true", featureMapWrapperInternalInterface="", classNamePattern="") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
 package tools.vitruv.framework.change.echange.feature
 
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EStructuralFeature
-import tools.vitruv.framework.change.echange.AtomicEChange
-
-abstract class FeatureEChange<A extends EObject , F extends EStructuralFeature> extends AtomicEChange {
-	refers F[1] affectedFeature
-	refers A[1] affectedEObject
-}
-
-abstract class UpdateMultiValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange<A, F> {
-}
-
-abstract class UpdateSingleValuedFeatureEChange<A extends EObject , F extends EStructuralFeature> extends FeatureEChange<A, F> {
-}
+//import org.eclipse.emf.ecore.EObject
+//import org.eclipse.emf.ecore.EStructuralFeature
+//import tools.vitruv.framework.change.echange.AtomicEChange
+//
+//type EObj wraps EObject
+//type EFeat wraps EStructuralFeature 
+//
+///**
+// * Abstract EChange which changes an attribute or reference of an EObject.
+// */
+//abstract class FeatureEChange<A extends EObj, F extends EFeat> extends AtomicEChange {
+//	/**
+//	 * The affected attribute or reference.
+//	 */
+//	refers F[1] affectedFeature
+//	
+//	/**
+//	 * The affected EObject of the change.
+//	 */
+//	refers A[1] affectedEObject
+//
+//	/**
+//	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+//	 * Needs to be true to apply the change.
+//	 * @return	All proxy EObjects are resolved to concrete EObjects.
+//	 */
+//	op boolean isResolved() {
+//		return super.isResolved && affectedEObject != null 
+//		&& !affectedEObject.eIsProxy && affectedFeature != null
+//	}
+//}
+//
+///**
+// * Abstract EChange which changes a many valued attribute or reference.
+// */
+//abstract class UpdateMultiValuedFeatureEChange<A extends EObj , F extends EFeat> extends FeatureEChange<A, F> {
+//}
+//
+///**
+// * Abstract EChange which changes a single valued attribute or reference.
+// */
+//abstract class UpdateSingleValuedFeatureEChange<A extends EObj , F extends EFeat> extends FeatureEChange<A, F> {
+//}

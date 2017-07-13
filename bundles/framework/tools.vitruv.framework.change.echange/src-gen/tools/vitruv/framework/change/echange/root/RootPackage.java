@@ -4,6 +4,7 @@ package tools.vitruv.framework.change.echange.root;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
@@ -78,13 +79,94 @@ public interface RootPackage extends EPackage {
 	int ROOT_ECHANGE__URI = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Resource</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE__RESOURCE = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Index</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE__INDEX = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROOT_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+	int ROOT_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___APPLY_FORWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROOT_ECHANGE___APPLY_BACKWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -115,6 +197,24 @@ public interface RootPackage extends EPackage {
 	int INSERT_ROOT_EOBJECT__URI = ROOT_ECHANGE__URI;
 
 	/**
+	 * The feature id for the '<em><b>Resource</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT__RESOURCE = ROOT_ECHANGE__RESOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Index</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT__INDEX = ROOT_ECHANGE__INDEX;
+
+	/**
 	 * The feature id for the '<em><b>New Value</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -131,6 +231,69 @@ public interface RootPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___IS_RESOLVED = ROOT_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___RESOLVE_BEFORE__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___RESOLVE_AFTER__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___APPLY_FORWARD = ROOT_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_ROOT_EOBJECT___APPLY_BACKWARD = ROOT_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -170,6 +333,24 @@ public interface RootPackage extends EPackage {
 	int REMOVE_ROOT_EOBJECT__URI = ROOT_ECHANGE__URI;
 
 	/**
+	 * The feature id for the '<em><b>Resource</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT__RESOURCE = ROOT_ECHANGE__RESOURCE;
+
+	/**
+	 * The feature id for the '<em><b>Index</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT__INDEX = ROOT_ECHANGE__INDEX;
+
+	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -188,6 +369,69 @@ public interface RootPackage extends EPackage {
 	int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = ROOT_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___IS_RESOLVED = ROOT_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___RESOLVE_BEFORE__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___RESOLVE_AFTER__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ROOT_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___APPLY_FORWARD = ROOT_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_ROOT_EOBJECT___APPLY_BACKWARD = ROOT_ECHANGE___APPLY_BACKWARD;
+
+	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -204,6 +448,16 @@ public interface RootPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_ROOT_EOBJECT_OPERATION_COUNT = ROOT_ECHANGE_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '<em>Resource</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.resource.Resource
+	 * @see tools.vitruv.framework.change.echange.root.impl.RootPackageImpl#getResource()
+	 * @generated
+	 */
+	int RESOURCE = 3;
 
 
 	/**
@@ -228,6 +482,28 @@ public interface RootPackage extends EPackage {
 	EAttribute getRootEChange_Uri();
 
 	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.root.RootEChange#getResource <em>Resource</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Resource</em>'.
+	 * @see tools.vitruv.framework.change.echange.root.RootEChange#getResource()
+	 * @see #getRootEChange()
+	 * @generated
+	 */
+	EAttribute getRootEChange_Resource();
+
+	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.root.RootEChange#getIndex <em>Index</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Index</em>'.
+	 * @see tools.vitruv.framework.change.echange.root.RootEChange#getIndex()
+	 * @see #getRootEChange()
+	 * @generated
+	 */
+	EAttribute getRootEChange_Index();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.root.InsertRootEObject <em>Insert Root EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -246,6 +522,17 @@ public interface RootPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getRemoveRootEObject();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.Resource <em>Resource</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Resource</em>'.
+	 * @see org.eclipse.emf.ecore.resource.Resource
+	 * @model instanceClass="org.eclipse.emf.ecore.resource.Resource"
+	 * @generated
+	 */
+	EDataType getResource();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -289,6 +576,22 @@ public interface RootPackage extends EPackage {
 		EAttribute ROOT_ECHANGE__URI = eINSTANCE.getRootEChange_Uri();
 
 		/**
+		 * The meta object literal for the '<em><b>Resource</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ROOT_ECHANGE__RESOURCE = eINSTANCE.getRootEChange_Resource();
+
+		/**
+		 * The meta object literal for the '<em><b>Index</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ROOT_ECHANGE__INDEX = eINSTANCE.getRootEChange_Index();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.root.impl.InsertRootEObjectImpl <em>Insert Root EObject</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -307,6 +610,16 @@ public interface RootPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REMOVE_ROOT_EOBJECT = eINSTANCE.getRemoveRootEObject();
+
+		/**
+		 * The meta object literal for the '<em>Resource</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.resource.Resource
+		 * @see tools.vitruv.framework.change.echange.root.impl.RootPackageImpl#getResource()
+		 * @generated
+		 */
+		EDataType RESOURCE = eINSTANCE.getResource();
 
 	}
 

@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.impl.BasicEObjectImpl
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.domains.repository.ModelRepository
+import tools.vitruv.framework.vsum.ModelRepository
 
 class MappingUtil {
 	public static def boolean isEChangeInPackage(EChange eChange, EPackage ePackage) {

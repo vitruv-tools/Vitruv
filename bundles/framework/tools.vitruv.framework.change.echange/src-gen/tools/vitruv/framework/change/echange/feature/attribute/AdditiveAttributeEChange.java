@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * A representation of the model object '<em><b>Additive Attribute EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which inserts a new value into an attribute.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -22,15 +27,15 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface AdditiveAttributeEChange<A extends EObject, T extends Object> extends AdditiveEChange<T>, UpdateAttributeEChange<A> {
+public interface AdditiveAttributeEChange<A extends EObject, T extends Object> extends UpdateAttributeEChange<A>, AdditiveEChange<T> {
 	/**
 	 * Returns the value of the '<em><b>New Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>New Value</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The value which will be inserted.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>New Value</em>' attribute.
 	 * @see #setNewValue(Object)
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getAdditiveAttributeEChange_NewValue()

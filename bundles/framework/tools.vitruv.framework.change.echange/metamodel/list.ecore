@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="list" nsURI="http://tools.vitruv/EChange/Feature/List/1.0" nsPrefix="list">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="modelName" value="Change"/>
+    <details key="basePackage" value="tools.vitruv.framework.change.echange.feature"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleListEntryEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which changes an EList."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" unique="false" lowerBound="1"
+        eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
+        defaultValueLiteral="0"/>
+    <eGenericSuperTypes eClassifier="ecore:EClass feature.ecore#//UpdateMultiValuedFeatureEChange">
+      <eTypeArguments eTypeParameter="#//UpdateSingleListEntryEChange/A"/>
+      <eTypeArguments eTypeParameter="#//UpdateSingleListEntryEChange/F"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InsertInListEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which inserts a value into an EList."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//UpdateSingleListEntryEChange">
+      <eTypeArguments eTypeParameter="#//InsertInListEChange/A"/>
+      <eTypeArguments eTypeParameter="#//InsertInListEChange/F"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//AdditiveEChange">
+      <eTypeArguments eTypeParameter="#//InsertInListEChange/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveFromListEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which removes a value from an EList."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//UpdateSingleListEntryEChange">
+      <eTypeArguments eTypeParameter="#//RemoveFromListEChange/A"/>
+      <eTypeArguments eTypeParameter="#//RemoveFromListEChange/F"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//SubtractiveEChange">
+      <eTypeArguments eTypeParameter="#//RemoveFromListEChange/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>

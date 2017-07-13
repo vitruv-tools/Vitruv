@@ -10,24 +10,20 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import tools.vitruv.framework.change.echange.EChangePackage;
-import tools.vitruv.framework.change.echange.SubtractiveEChange;
-
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
-
-import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
-
+import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange;
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange;
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 
-import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
-import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+import tools.vitruv.framework.change.echange.feature.single.impl.ReplaceSingleValuedFeatureEChangeImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,12 +33,23 @@ import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl#getNewValue <em>New Value</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl#getOldValue <em>Old Value</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObject> extends AdditiveReferenceEChangeImpl<A, T> implements ReplaceSingleValuedEReference<A, T> {
+public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObject> extends ReplaceSingleValuedFeatureEChangeImpl<A, EReference, T> implements ReplaceSingleValuedEReference<A, T> {
+	/**
+	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNewValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected T newValue;
+
 	/**
 	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -78,8 +85,47 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
+	public T getNewValue() {
+		if (newValue != null && ((EObject)newValue).eIsProxy()) {
+			InternalEObject oldNewValue = (InternalEObject)newValue;
+			newValue = (T)eResolveProxy(oldNewValue);
+			if (newValue != oldNewValue) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE, oldNewValue, newValue));
+			}
+		}
+		return newValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public T basicGetNewValue() {
+		return newValue;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNewValue(T newNewValue) {
+		T oldNewValue = newValue;
+		newValue = newNewValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE, oldNewValue, newValue));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
 	public T getOldValue() {
-		if (oldValue != null && oldValue.eIsProxy()) {
+		if (oldValue != null && ((EObject)oldValue).eIsProxy()) {
 			InternalEObject oldOldValue = (InternalEObject)oldValue;
 			oldValue = (T)eResolveProxy(oldOldValue);
 			if (oldValue != oldOldValue) {
@@ -116,17 +162,9 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isFromNonDefaultValue() {
-		return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isToNonDefaultValue() {
-		return !java.util.Objects.equals(getNewValue(), getAffectedFeature().getDefaultValue());
+	public boolean isContainment() {
+		EReference _affectedFeature = this.getAffectedFeature();
+		return _affectedFeature.isContainment();
 	}
 
 	/**
@@ -137,6 +175,9 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE:
+				if (resolve) return getNewValue();
+				return basicGetNewValue();
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE:
 				if (resolve) return getOldValue();
 				return basicGetOldValue();
@@ -153,6 +194,9 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE:
+				setNewValue((T)newValue);
+				return;
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE:
 				setOldValue((T)newValue);
 				return;
@@ -168,6 +212,9 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE:
+				setNewValue((T)null);
+				return;
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE:
 				setOldValue((T)null);
 				return;
@@ -183,6 +230,8 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE:
+				return newValue != null;
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE:
 				return oldValue != null;
 		}
@@ -196,7 +245,18 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == SubtractiveEChange.class) {
+		if (baseClass == UpdateReferenceEChange.class) {
+			switch (derivedFeatureID) {
+				default: return -1;
+			}
+		}
+		if (baseClass == EObjectAddedEChange.class) {
+			switch (derivedFeatureID) {
+				case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE: return EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
+				default: return -1;
+			}
+		}
+		if (baseClass == AdditiveReferenceEChange.class) {
 			switch (derivedFeatureID) {
 				default: return -1;
 			}
@@ -212,16 +272,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateSingleValuedFeatureEChange.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == ReplaceSingleValuedFeatureEChange.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -232,7 +282,18 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == SubtractiveEChange.class) {
+		if (baseClass == UpdateReferenceEChange.class) {
+			switch (baseFeatureID) {
+				default: return -1;
+			}
+		}
+		if (baseClass == EObjectAddedEChange.class) {
+			switch (baseFeatureID) {
+				case EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE;
+				default: return -1;
+			}
+		}
+		if (baseClass == AdditiveReferenceEChange.class) {
 			switch (baseFeatureID) {
 				default: return -1;
 			}
@@ -248,16 +309,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateSingleValuedFeatureEChange.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == ReplaceSingleValuedFeatureEChange.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -268,9 +319,19 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 */
 	@Override
 	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == SubtractiveEChange.class) {
+		if (baseClass == UpdateReferenceEChange.class) {
 			switch (baseOperationID) {
-				case EChangePackage.SUBTRACTIVE_ECHANGE___GET_OLD_VALUE: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___GET_OLD_VALUE;
+				case ReferencePackage.UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT;
+				default: return -1;
+			}
+		}
+		if (baseClass == EObjectAddedEChange.class) {
+			switch (baseOperationID) {
+				default: return -1;
+			}
+		}
+		if (baseClass == AdditiveReferenceEChange.class) {
+			switch (baseOperationID) {
 				default: return -1;
 			}
 		}
@@ -281,18 +342,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		}
 		if (baseClass == SubtractiveReferenceEChange.class) {
 			switch (baseOperationID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == UpdateSingleValuedFeatureEChange.class) {
-			switch (baseOperationID) {
-				default: return -1;
-			}
-		}
-		if (baseClass == ReplaceSingleValuedFeatureEChange.class) {
-			switch (baseOperationID) {
-				case SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_FROM_NON_DEFAULT_VALUE: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_FROM_NON_DEFAULT_VALUE;
-				case SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_TO_NON_DEFAULT_VALUE: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_TO_NON_DEFAULT_VALUE;
 				default: return -1;
 			}
 		}
@@ -307,10 +356,8 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_FROM_NON_DEFAULT_VALUE:
-				return isFromNonDefaultValue();
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_TO_NON_DEFAULT_VALUE:
-				return isToNonDefaultValue();
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT:
+				return isContainment();
 		}
 		return super.eInvoke(operationID, arguments);
 	}

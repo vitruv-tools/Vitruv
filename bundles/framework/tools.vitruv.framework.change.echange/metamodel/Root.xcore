@@ -2,17 +2,71 @@
 @GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
 package tools.vitruv.framework.change.echange.root
 
-import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.AtomicEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-
-abstract class RootEChange extends AtomicEChange {
-	String[1] uri = ""
-}
-
-class InsertRootEObject<T extends EObject> extends RootEChange, EObjectAddedEChange<T> {
-}
-
-class RemoveRootEObject<T extends EObject> extends RootEChange, EObjectSubtractedEChange<T> {
-}
+//import org.eclipse.emf.ecore.EObject
+//import org.eclipse.emf.ecore.resource.Resource
+//import tools.vitruv.framework.change.echange.AtomicEChange
+//import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+//import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+//
+//type EObj wraps EObject
+//type Resource wraps Resource
+//
+///**
+// * Abstract EChange which inserts or removes a root element.
+// */
+//abstract class RootEChange extends AtomicEChange {
+//	/**
+//	 * The uri of the resource.
+//	 */
+//	String uri
+//	
+//	/**
+//	 * The resource where the root element will be inserted or removed from. 
+//	 * Is only valid in resolved changes.
+//	 */
+//	Resource resource
+//	
+//	/**
+//	 * The index where the root element is inserted or removed.
+//	 */
+//	int index
+//	
+//	/**
+//	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+//	 * Needs to be true to apply the change.
+//	 * @return	All proxy EObjects are resolved to concrete EObjects.
+//	 */
+//	op boolean isResolved() {
+//		return super.isResolved && resource != null
+//	}
+//}
+//
+///**
+// * EChange which inserts a new root EObject into a resource. The object will
+// * be taken from the staging area and needs to be filled by {@link CreateEObject} change first.
+// */
+//class InsertRootEObject<T extends EObj> extends RootEChange, EObjectAddedEChange<T> {
+//	/**
+//	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+//	 * Needs to be true to apply the change.
+//	 * @return	All proxy EObjects are resolved to concrete EObjects.
+//	 */
+//	op boolean isResolved() {
+//		return super.isResolved && newValue != null && !newValue.eIsProxy
+//	}
+//}
+//
+///**
+// * EChange removes an existing root EObject from its resource and places it in the staging area.
+// * There it can be deleted or be taken by another change to reinsert it.
+// */
+//class RemoveRootEObject<T extends EObj> extends RootEChange, EObjectSubtractedEChange<T> {
+//	/**
+//	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+//	 * Needs to be true to apply the change.
+//	 * @return	All proxy EObjects are resolved to concrete EObjects.
+//	 */
+//	op boolean isResolved() {
+//		return super.isResolved && oldValue != null && !oldValue.eIsProxy()
+//	}
+//}

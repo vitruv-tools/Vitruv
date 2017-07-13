@@ -13,6 +13,14 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
+import tools.vitruv.framework.change.echange.compound.CompoundPackage;
+
+import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
+
+import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
+import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
 import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange;
@@ -24,9 +32,25 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
 import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange;
 
+import tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
 
+import tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl;
+
+import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
+
+import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+
+import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
+
+import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
+
+import tools.vitruv.framework.change.echange.root.RootPackage;
+
+import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -124,14 +148,39 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		isInited = true;
 
 		// Initialize simple dependencies
-		ListPackage.eINSTANCE.eClass();
-		SinglePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
+
+		// Obtain or create and register interdependencies
+		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
+		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
+		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
+		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
+		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
+		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
+		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
+		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theAttributePackage.createPackageContents();
+		theFeaturePackage.createPackageContents();
+		theEChangePackage.createPackageContents();
+		theListPackage.createPackageContents();
+		theSinglePackage.createPackageContents();
+		theCompoundPackage.createPackageContents();
+		theReferencePackage.createPackageContents();
+		theEobjectPackage.createPackageContents();
+		theRootPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theAttributePackage.initializePackageContents();
+		theFeaturePackage.initializePackageContents();
+		theEChangePackage.initializePackageContents();
+		theListPackage.initializePackageContents();
+		theSinglePackage.initializePackageContents();
+		theCompoundPackage.initializePackageContents();
+		theReferencePackage.initializePackageContents();
+		theEobjectPackage.initializePackageContents();
+		theRootPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theAttributePackage.freeze();
@@ -331,20 +380,20 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g2 = createEGenericType(theEcorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		updateAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getUpdateAttributeEChange());
+		g2 = createEGenericType(additiveAttributeEChangeEClass_A);
+		g1.getETypeArguments().add(g2);
+		additiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theEChangePackage.getAdditiveEChange());
 		g2 = createEGenericType(additiveAttributeEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		additiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getUpdateAttributeEChange());
-		g2 = createEGenericType(additiveAttributeEChangeEClass_A);
-		g1.getETypeArguments().add(g2);
-		additiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theEChangePackage.getSubtractiveEChange());
-		g2 = createEGenericType(subtractiveAttributeEChangeEClass_T);
+		g2 = createEGenericType(subtractiveAttributeEChangeEClass_A);
 		g1.getETypeArguments().add(g2);
 		subtractiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateAttributeEChange());
-		g2 = createEGenericType(subtractiveAttributeEChangeEClass_A);
+		g1 = createEGenericType(theEChangePackage.getSubtractiveEChange());
+		g2 = createEGenericType(subtractiveAttributeEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		subtractiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theListPackage.getInsertInListEChange());
@@ -375,6 +424,14 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		g2 = createEGenericType(removeEAttributeValueEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
+		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(theEcorePackage.getEAttribute());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
+		g1.getETypeArguments().add(g2);
+		replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getAdditiveAttributeEChange());
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -383,14 +440,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getSubtractiveAttributeEChange());
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
-		g1.getETypeArguments().add(g2);
-		replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
-		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theEcorePackage.getEAttribute());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
 		g1.getETypeArguments().add(g2);

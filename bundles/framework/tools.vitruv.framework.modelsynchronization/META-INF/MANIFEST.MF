@@ -12,10 +12,6 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.metamodel,
  tools.vitruv.framework.change.processing,
  org.eclipse.emf.transaction,
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
-Export-Package: tools.vitruv.framework.modelsynchronization,
- tools.vitruv.framework.modelsynchronization.blackboard
+ tools.vitruv.framework.vsum
+Export-Package: tools.vitruv.framework.modelsynchronization.blackboard
 Bundle-Vendor: vitruv.tools

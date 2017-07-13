@@ -19,6 +19,7 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import pcm_mockup.Component;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
@@ -207,7 +208,7 @@ public class TuidCacheTest {
     private void save(final EObject eObject, final String fileName) throws IOException {
         URI uri = URI.createFileURI(SystemUtils.getJavaIoTmpDir().getAbsolutePath() + "/" + fileName + ".pcm_mockup");
         ResourceSetImpl resourceSet = new ResourceSetImpl();
-        Resource resource = EcoreResourceBridge.loadResourceAtURI(uri, resourceSet);
+        Resource resource = URIUtil.loadResourceAtURI(uri, resourceSet);
         EObject root = EcoreUtil.getRootContainer(eObject);
         EcoreResourceBridge.saveEObjectAsOnlyContent(root, resource);
     }

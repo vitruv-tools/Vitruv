@@ -97,10 +97,10 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 			case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE: {
 				AdditiveReferenceEChange<?, ?> additiveReferenceEChange = (AdditiveReferenceEChange<?, ?>)theEObject;
 				T1 result = caseAdditiveReferenceEChange(additiveReferenceEChange);
-				if (result == null) result = caseEObjectAddedEChange(additiveReferenceEChange);
 				if (result == null) result = caseUpdateReferenceEChange(additiveReferenceEChange);
-				if (result == null) result = caseAdditiveEChange(additiveReferenceEChange);
+				if (result == null) result = caseEObjectAddedEChange(additiveReferenceEChange);
 				if (result == null) result = caseFeatureEChange(additiveReferenceEChange);
+				if (result == null) result = caseAdditiveEChange(additiveReferenceEChange);
 				if (result == null) result = caseAtomicEChange(additiveReferenceEChange);
 				if (result == null) result = caseEChange(additiveReferenceEChange);
 				if (result == null) result = defaultCase(theEObject);
@@ -109,10 +109,10 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 			case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE: {
 				SubtractiveReferenceEChange<?, ?> subtractiveReferenceEChange = (SubtractiveReferenceEChange<?, ?>)theEObject;
 				T1 result = caseSubtractiveReferenceEChange(subtractiveReferenceEChange);
-				if (result == null) result = caseEObjectSubtractedEChange(subtractiveReferenceEChange);
 				if (result == null) result = caseUpdateReferenceEChange(subtractiveReferenceEChange);
-				if (result == null) result = caseSubtractiveEChange(subtractiveReferenceEChange);
+				if (result == null) result = caseEObjectSubtractedEChange(subtractiveReferenceEChange);
 				if (result == null) result = caseFeatureEChange(subtractiveReferenceEChange);
+				if (result == null) result = caseSubtractiveEChange(subtractiveReferenceEChange);
 				if (result == null) result = caseAtomicEChange(subtractiveReferenceEChange);
 				if (result == null) result = caseEChange(subtractiveReferenceEChange);
 				if (result == null) result = defaultCase(theEObject);
@@ -124,8 +124,8 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseInsertInListEChange(insertEReference);
 				if (result == null) result = caseAdditiveReferenceEChange(insertEReference);
 				if (result == null) result = caseUpdateSingleListEntryEChange(insertEReference);
-				if (result == null) result = caseEObjectAddedEChange(insertEReference);
 				if (result == null) result = caseUpdateReferenceEChange(insertEReference);
+				if (result == null) result = caseEObjectAddedEChange(insertEReference);
 				if (result == null) result = caseUpdateMultiValuedFeatureEChange(insertEReference);
 				if (result == null) result = caseAdditiveEChange(insertEReference);
 				if (result == null) result = caseFeatureEChange(insertEReference);
@@ -140,8 +140,8 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseRemoveFromListEChange(removeEReference);
 				if (result == null) result = caseSubtractiveReferenceEChange(removeEReference);
 				if (result == null) result = caseUpdateSingleListEntryEChange(removeEReference);
-				if (result == null) result = caseEObjectSubtractedEChange(removeEReference);
 				if (result == null) result = caseUpdateReferenceEChange(removeEReference);
+				if (result == null) result = caseEObjectSubtractedEChange(removeEReference);
 				if (result == null) result = caseUpdateMultiValuedFeatureEChange(removeEReference);
 				if (result == null) result = caseSubtractiveEChange(removeEReference);
 				if (result == null) result = caseFeatureEChange(removeEReference);
@@ -153,15 +153,15 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: {
 				ReplaceSingleValuedEReference<?, ?> replaceSingleValuedEReference = (ReplaceSingleValuedEReference<?, ?>)theEObject;
 				T1 result = caseReplaceSingleValuedEReference(replaceSingleValuedEReference);
+				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseAdditiveReferenceEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseSubtractiveReferenceEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseEObjectAddedEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseUpdateReferenceEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseEObjectSubtractedEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseUpdateReferenceEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseEObjectAddedEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseEObjectSubtractedEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseFeatureEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseAtomicEChange(replaceSingleValuedEReference);
 				if (result == null) result = caseEChange(replaceSingleValuedEReference);

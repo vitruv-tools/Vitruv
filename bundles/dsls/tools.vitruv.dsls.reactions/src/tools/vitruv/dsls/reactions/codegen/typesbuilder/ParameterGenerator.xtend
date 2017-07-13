@@ -37,7 +37,7 @@ class ParameterGenerator {
 	}
 	
 	public def JvmFormalParameter generateModelElementParameter(EObject parameterContext, MetaclassReference metaclassReference, String elementName) {
-		if (metaclassReference?.metaclass != null) {
+		if (metaclassReference?.metaclass !== null) {
 			return parameterContext.generateParameter(elementName, metaclassReference.javaClass);
 		}	
 		return null;
@@ -56,7 +56,7 @@ class ParameterGenerator {
 	}
 	
 	public def generateParameter(EObject context, String parameterName, JvmTypeReference parameterType) {
-		if (parameterType == null) {
+		if (parameterType === null) {
 			return null;
 		}
 		return context.toParameter(parameterName, parameterType);
@@ -68,7 +68,7 @@ class ParameterGenerator {
 	}
 	
 	public def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
-		if (parameterClass == null) {
+		if (parameterClass === null) {
 			return null;
 		}
 		val typeParameters = new ArrayList<JvmTypeReference>(typeParameterClassNames.size);
@@ -125,7 +125,7 @@ class ParameterGenerator {
 			changeTypeParameters = changeRepresentation.genericTypeParameters	
 		}
 		val changeParameter = parameterContext.generateParameterFromClasses(CHANGE_PARAMETER_NAME, changeRepresentation.changeType, changeTypeParameters);
-		if (changeParameter != null) {
+		if (changeParameter !== null) {
 			return changeParameter;
 		}
 	}

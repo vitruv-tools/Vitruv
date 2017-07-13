@@ -2,7 +2,9 @@
  */
 package tools.vitruv.framework.change.echange.eobject;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -87,6 +89,69 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_ADDED_ECHANGE_FEATURE_COUNT = EChangePackage.ADDITIVE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___IS_RESOLVED = EChangePackage.ADDITIVE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ADDITIVE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___APPLY_FORWARD = EChangePackage.ADDITIVE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___APPLY_BACKWARD = EChangePackage.ADDITIVE_ECHANGE___APPLY_BACKWARD;
+
+	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -133,6 +198,69 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT = EChangePackage.SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___IS_RESOLVED = EChangePackage.SUBTRACTIVE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.SUBTRACTIVE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___APPLY_FORWARD = EChangePackage.SUBTRACTIVE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___APPLY_BACKWARD = EChangePackage.SUBTRACTIVE_ECHANGE___APPLY_BACKWARD;
+
+	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -170,13 +298,85 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Staging Area</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>EObject Existence EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___APPLY_FORWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___APPLY_BACKWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The number of operations of the '<em>EObject Existence EChange</em>' class.
@@ -207,6 +407,15 @@ public interface EobjectPackage extends EPackage {
 	int CREATE_EOBJECT__AFFECTED_EOBJECT = EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Staging Area</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT__STAGING_AREA = EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA;
+
+	/**
 	 * The number of structural features of the '<em>Create EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -214,6 +423,69 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_EOBJECT_FEATURE_COUNT = EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___IS_RESOLVED = EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___RESOLVE_BEFORE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___RESOLVE_AFTER__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___APPLY_FORWARD = EOBJECT_EXISTENCE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___APPLY_BACKWARD = EOBJECT_EXISTENCE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The number of operations of the '<em>Create EObject</em>' class.
@@ -244,6 +516,15 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT__AFFECTED_EOBJECT = EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Staging Area</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT__STAGING_AREA = EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA;
+
+	/**
 	 * The number of structural features of the '<em>Delete EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -253,6 +534,69 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT_FEATURE_COUNT = EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___IS_RESOLVED = EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Resolve Before</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___RESOLVE_BEFORE__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___RESOLVE_AFTER__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EOBJECT_EXISTENCE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
+
+	/**
+	 * The operation id for the '<em>Apply Forward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___APPLY_FORWARD = EOBJECT_EXISTENCE_ECHANGE___APPLY_FORWARD;
+
+	/**
+	 * The operation id for the '<em>Apply Backward</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___APPLY_BACKWARD = EOBJECT_EXISTENCE_ECHANGE___APPLY_BACKWARD;
+
+	/**
 	 * The number of operations of the '<em>Delete EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -260,6 +604,26 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int DELETE_EOBJECT_OPERATION_COUNT = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '<em>EObj</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getEObj()
+	 * @generated
+	 */
+	int EOBJ = 5;
+
+	/**
+	 * The meta object id for the '<em>Staging Area</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.resolve.StagingArea
+	 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getStagingArea()
+	 * @generated
+	 */
+	int STAGING_AREA = 6;
 
 
 	/**
@@ -326,6 +690,17 @@ public interface EobjectPackage extends EPackage {
 	EReference getEObjectExistenceEChange_AffectedEObject();
 
 	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getStagingArea <em>Staging Area</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Staging Area</em>'.
+	 * @see tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getStagingArea()
+	 * @see #getEObjectExistenceEChange()
+	 * @generated
+	 */
+	EAttribute getEObjectExistenceEChange_StagingArea();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject <em>Create EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -344,6 +719,28 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getDeleteEObject();
+
+	/**
+	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EObj</em>'.
+	 * @see org.eclipse.emf.ecore.EObject
+	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
+	 * @generated
+	 */
+	EDataType getEObj();
+
+	/**
+	 * Returns the meta object for data type '{@link tools.vitruv.framework.change.echange.resolve.StagingArea <em>Staging Area</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Staging Area</em>'.
+	 * @see tools.vitruv.framework.change.echange.resolve.StagingArea
+	 * @model instanceClass="tools.vitruv.framework.change.echange.resolve.StagingArea"
+	 * @generated
+	 */
+	EDataType getStagingArea();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -423,6 +820,14 @@ public interface EobjectPackage extends EPackage {
 		EReference EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT = eINSTANCE.getEObjectExistenceEChange_AffectedEObject();
 
 		/**
+		 * The meta object literal for the '<em><b>Staging Area</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA = eINSTANCE.getEObjectExistenceEChange_StagingArea();
+
+		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.eobject.impl.CreateEObjectImpl <em>Create EObject</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -441,6 +846,26 @@ public interface EobjectPackage extends EPackage {
 		 * @generated
 		 */
 		EClass DELETE_EOBJECT = eINSTANCE.getDeleteEObject();
+
+		/**
+		 * The meta object literal for the '<em>EObj</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.ecore.EObject
+		 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getEObj()
+		 * @generated
+		 */
+		EDataType EOBJ = eINSTANCE.getEObj();
+
+		/**
+		 * The meta object literal for the '<em>Staging Area</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.resolve.StagingArea
+		 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getStagingArea()
+		 * @generated
+		 */
+		EDataType STAGING_AREA = eINSTANCE.getStagingArea();
 
 	}
 

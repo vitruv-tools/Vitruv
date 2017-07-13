@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import edu.kit.ipd.sdq.commons.util.java.Pair;
 
 public class RecursiveHashMap<K, V> implements RecursiveMap<K, V> {
     private Map<K, RecursiveMap<K, V>> key2NextRecursiveMapMap;

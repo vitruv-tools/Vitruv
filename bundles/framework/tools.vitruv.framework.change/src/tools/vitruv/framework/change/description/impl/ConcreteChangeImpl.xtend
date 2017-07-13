@@ -10,23 +10,7 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
     }
 
     public override String toString() {
-        return ConcreteChangeImpl.getSimpleName() + ": VURI: " + this.URI + " EChange: " + this.eChange;
+        return this.class.getSimpleName() + ": VURI: " + this.URI + " EChange: " + this.eChange;
     }
 
-	override applyForward() {
-		super.applyForward();
-		// for (EChange eChange : recordedChange.getEChanges()) {
-        // if (eChange instanceof JavaFeatureEChange<?, ?>) {
-        // if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
-        // JavaFeatureEChange<?, ?> javaFeatureEChange = (JavaFeatureEChange<?, ?>) eChange;
-        // Tuid tuid = correspondenceModel
-        // .calculateTuidFromEObject(javaFeatureEChange.getOldAffectedEObject());
-        // if (tuid != null && javaFeatureEChange.getAffectedEObject() != null) {
-        // tuidMap.put(javaFeatureEChange.getAffectedEObject(), tuid);
-        // }
-        // }
-        // }
-        // }
-	}
-	
 }

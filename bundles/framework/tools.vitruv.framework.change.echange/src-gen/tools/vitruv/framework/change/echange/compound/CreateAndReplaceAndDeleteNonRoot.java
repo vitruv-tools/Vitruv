@@ -18,6 +18,11 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
  * A representation of the model object '<em><b>Create And Replace And Delete Non Root</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange creates a new EObject and replaces an existing one in a single valued containment reference. The old one will be deleted.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

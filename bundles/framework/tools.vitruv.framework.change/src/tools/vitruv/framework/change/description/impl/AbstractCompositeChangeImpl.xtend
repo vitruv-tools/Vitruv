@@ -1,11 +1,12 @@
 package tools.vitruv.framework.change.description.impl
 
-import java.util.List
-import java.util.LinkedList
-import tools.vitruv.framework.change.echange.EChange
 import java.util.ArrayList
-import tools.vitruv.framework.change.description.VitruviusChange
+import java.util.LinkedList
+import java.util.List
+import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeChange
+import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.echange.EChange
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
     List<C> changes;
@@ -23,11 +24,11 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
     }
 
     override addChange(C change) {
-		if (change != null) this.changes.add(change);
+		if (change !== null) this.changes.add(change);
     }
 	
 	override removeChange(C change) {
-		if (change != null) this.changes.remove(change);
+		if (change !== null) this.changes.remove(change);
 	}
 				
 	override containsConcreteChange() {
@@ -85,4 +86,21 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 			change.applyForward();
 		}
 	}
+		
+	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+		for (c : changes) {
+			c.resolveBeforeAndApplyForward(resourceSet)
+		}
+	}
+	
+	override applyBackwardIfLegacy() {
+		for (change : changes.reverseView) {
+			change.applyBackwardIfLegacy();
+		}
+	}
+	
+	override getAffectedEObjects() {
+		return changes.fold(newArrayList, [list, element | list += element.affectedEObjects; return list]).filterNull;
+	}
+	
 }

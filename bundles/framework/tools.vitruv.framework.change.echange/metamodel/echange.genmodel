@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.framework.change.echange/src-gen"
+    editDirectory="" editorDirectory="" modelPluginID="tools.vitruv.framework.change.echange"
+    modelName="Change" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="" importerID="org.eclipse.emf.ecore.xcore.importer" containmentProxies="true"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    operationReflection="true" importOrganizing="true">
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
+    <genAnnotations source="selectedPackages">
+      <details key="http://www.eclipse.org/emf/2002/Ecore" value="Ecore.xsd"/>
+    </genAnnotations>
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter.xmi">
+    <genAnnotations source="selectedPackages">
+      <details key="http://www.eclipse.org/emf/2002/Ecore" value="EcoreXMI.xsd"/>
+    </genAnnotations>
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <foreignModel>Attribute.xcore</foreignModel>
+  <foreignModel>Compound.xcore</foreignModel>
+  <foreignModel>EChange.xcore</foreignModel>
+  <foreignModel>EObject.xcore</foreignModel>
+  <foreignModel>Feature.xcore</foreignModel>
+  <foreignModel>List.xcore</foreignModel>
+  <foreignModel>Reference.xcore</foreignModel>
+  <foreignModel>Root.xcore</foreignModel>
+  <foreignModel>Single.xcore</foreignModel>
+  <modelPluginVariables>org.eclipse.xtext.xbase.lib</modelPluginVariables>
+  <modelPluginVariables>org.eclipse.emf.ecore.xcore.lib</modelPluginVariables>
+  <genPackages prefix="Attribute" basePackage="tools.vitruv.framework.change.echange.feature"
+      disposableProviderFactory="true" ecorePackage="attribute.ecore#/">
+    <genClasses image="false" ecoreClass="attribute.ecore#//UpdateAttributeEChange">
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//UpdateAttributeEChange/A"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="attribute.ecore#//AdditiveAttributeEChange">
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//AdditiveAttributeEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//AdditiveAttributeEChange/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute attribute.ecore#//AdditiveAttributeEChange/newValue"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="attribute.ecore#//SubtractiveAttributeEChange">
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//SubtractiveAttributeEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//SubtractiveAttributeEChange/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute attribute.ecore#//SubtractiveAttributeEChange/oldValue"/>
+    </genClasses>
+    <genClasses ecoreClass="attribute.ecore#//InsertEAttributeValue">
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//InsertEAttributeValue/A"/>
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//InsertEAttributeValue/T"/>
+    </genClasses>
+    <genClasses ecoreClass="attribute.ecore#//RemoveEAttributeValue">
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//RemoveEAttributeValue/A"/>
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//RemoveEAttributeValue/T"/>
+    </genClasses>
+    <genClasses ecoreClass="attribute.ecore#//ReplaceSingleValuedEAttribute">
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//ReplaceSingleValuedEAttribute/A"/>
+      <genTypeParameters ecoreTypeParameter="attribute.ecore#//ReplaceSingleValuedEAttribute/T"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Feature" basePackage="tools.vitruv.framework.change.echange"
+      disposableProviderFactory="true" ecorePackage="feature.ecore#/">
+    <genDataTypes ecoreDataType="feature.ecore#//EObj"/>
+    <genDataTypes ecoreDataType="feature.ecore#//EFeat"/>
+    <genClasses image="false" ecoreClass="feature.ecore#//FeatureEChange">
+      <genTypeParameters ecoreTypeParameter="feature.ecore#//FeatureEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="feature.ecore#//FeatureEChange/F"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference feature.ecore#//FeatureEChange/affectedFeature"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference feature.ecore#//FeatureEChange/affectedEObject"/>
+      <genOperations ecoreOperation="feature.ecore#//FeatureEChange/isResolved"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="feature.ecore#//UpdateMultiValuedFeatureEChange">
+      <genTypeParameters ecoreTypeParameter="feature.ecore#//UpdateMultiValuedFeatureEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="feature.ecore#//UpdateMultiValuedFeatureEChange/F"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="feature.ecore#//UpdateSingleValuedFeatureEChange">
+      <genTypeParameters ecoreTypeParameter="feature.ecore#//UpdateSingleValuedFeatureEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="feature.ecore#//UpdateSingleValuedFeatureEChange/F"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="EChange" basePackage="tools.vitruv.framework.change" disposableProviderFactory="true"
+      ecorePackage="echange.ecore#/">
+    <genDataTypes ecoreDataType="echange.ecore#//Command"/>
+    <genDataTypes ecoreDataType="echange.ecore#//ResourceSet"/>
+    <genClasses image="false" ecoreClass="echange.ecore#//EChange">
+      <genOperations ecoreOperation="echange.ecore#//EChange/isResolved"/>
+      <genOperations ecoreOperation="echange.ecore#//EChange/resolveBefore">
+        <genParameters ecoreParameter="echange.ecore#//EChange/resolveBefore/resourceSet"/>
+      </genOperations>
+      <genOperations ecoreOperation="echange.ecore#//EChange/resolveAfter">
+        <genParameters ecoreParameter="echange.ecore#//EChange/resolveAfter/resourceSet"/>
+      </genOperations>
+      <genOperations ecoreOperation="echange.ecore#//EChange/resolveBeforeAndApplyForward">
+        <genParameters ecoreParameter="echange.ecore#//EChange/resolveBeforeAndApplyForward/resourceSet"/>
+      </genOperations>
+      <genOperations ecoreOperation="echange.ecore#//EChange/resolveAfterAndApplyBackward">
+        <genParameters ecoreParameter="echange.ecore#//EChange/resolveAfterAndApplyBackward/resourceSet"/>
+      </genOperations>
+      <genOperations ecoreOperation="echange.ecore#//EChange/applyForward"/>
+      <genOperations ecoreOperation="echange.ecore#//EChange/applyBackward"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="echange.ecore#//AtomicEChange"/>
+    <genClasses image="false" ecoreClass="echange.ecore#//AdditiveEChange">
+      <genTypeParameters ecoreTypeParameter="echange.ecore#//AdditiveEChange/T"/>
+      <genOperations ecoreOperation="echange.ecore#//AdditiveEChange/getNewValue"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="echange.ecore#//SubtractiveEChange">
+      <genTypeParameters ecoreTypeParameter="echange.ecore#//SubtractiveEChange/T"/>
+      <genOperations ecoreOperation="echange.ecore#//SubtractiveEChange/getOldValue"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="List" basePackage="tools.vitruv.framework.change.echange.feature"
+      disposableProviderFactory="true" ecorePackage="list.ecore#/">
+    <genClasses image="false" ecoreClass="list.ecore#//UpdateSingleListEntryEChange">
+      <genTypeParameters ecoreTypeParameter="list.ecore#//UpdateSingleListEntryEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="list.ecore#//UpdateSingleListEntryEChange/F"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute list.ecore#//UpdateSingleListEntryEChange/index"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="list.ecore#//InsertInListEChange">
+      <genTypeParameters ecoreTypeParameter="list.ecore#//InsertInListEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="list.ecore#//InsertInListEChange/F"/>
+      <genTypeParameters ecoreTypeParameter="list.ecore#//InsertInListEChange/T"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="list.ecore#//RemoveFromListEChange">
+      <genTypeParameters ecoreTypeParameter="list.ecore#//RemoveFromListEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="list.ecore#//RemoveFromListEChange/F"/>
+      <genTypeParameters ecoreTypeParameter="list.ecore#//RemoveFromListEChange/T"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Single" basePackage="tools.vitruv.framework.change.echange.feature"
+      disposableProviderFactory="true" ecorePackage="single.ecore#/">
+    <genClasses image="false" ecoreClass="single.ecore#//ReplaceSingleValuedFeatureEChange">
+      <genTypeParameters ecoreTypeParameter="single.ecore#//ReplaceSingleValuedFeatureEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="single.ecore#//ReplaceSingleValuedFeatureEChange/F"/>
+      <genTypeParameters ecoreTypeParameter="single.ecore#//ReplaceSingleValuedFeatureEChange/T"/>
+      <genOperations ecoreOperation="single.ecore#//ReplaceSingleValuedFeatureEChange/isFromNonDefaultValue"/>
+      <genOperations ecoreOperation="single.ecore#//ReplaceSingleValuedFeatureEChange/isToNonDefaultValue"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Compound" basePackage="tools.vitruv.framework.change.echange"
+      disposableProviderFactory="true" ecorePackage="compound.ecore#/">
+    <genDataTypes ecoreDataType="compound.ecore#//Command"/>
+    <genDataTypes ecoreDataType="compound.ecore#//ResourceSet"/>
+    <genDataTypes ecoreDataType="compound.ecore#//EObj"/>
+    <genClasses image="false" ecoreClass="compound.ecore#//CompoundEChange">
+      <genOperations ecoreOperation="compound.ecore#//CompoundEChange/getAtomicChanges"/>
+      <genOperations ecoreOperation="compound.ecore#//CompoundEChange/isResolved"/>
+      <genOperations ecoreOperation="compound.ecore#//CompoundEChange/resolveBeforeAndApplyForward">
+        <genParameters ecoreParameter="compound.ecore#//CompoundEChange/resolveBeforeAndApplyForward/resourceSet"/>
+      </genOperations>
+      <genOperations ecoreOperation="compound.ecore#//CompoundEChange/resolveAfterAndApplyBackward">
+        <genParameters ecoreParameter="compound.ecore#//CompoundEChange/resolveAfterAndApplyBackward/resourceSet"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//MoveEObject">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//MoveEObject/A"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//MoveEObject/B"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//MoveEObject/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compound.ecore#//MoveEObject/subtractWhereChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//MoveEObject/subtractWhatChange"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compound.ecore#//MoveEObject/addWhereChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//MoveEObject/addWhatChange"/>
+      <genOperations ecoreOperation="compound.ecore#//MoveEObject/getAtomicChanges"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="compound.ecore#//ExplicitUnsetEFeature">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//ExplicitUnsetEFeature/A"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//ExplicitUnsetEFeature/F"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compound.ecore#//ExplicitUnsetEFeature/affectedEObject"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compound.ecore#//ExplicitUnsetEFeature/affectedFeature"/>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//ExplicitUnsetEAttribute">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//ExplicitUnsetEAttribute/A"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//ExplicitUnsetEAttribute/T"/>
+      <genOperations ecoreOperation="compound.ecore#//ExplicitUnsetEAttribute/getAtomicChanges"/>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//ExplicitUnsetEReference">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//ExplicitUnsetEReference/A"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//ExplicitUnsetEReference/changes"/>
+      <genOperations ecoreOperation="compound.ecore#//ExplicitUnsetEReference/getContainedChanges"/>
+      <genOperations ecoreOperation="compound.ecore#//ExplicitUnsetEReference/getAtomicChanges"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="compound.ecore#//CompoundSubtraction">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CompoundSubtraction/T"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CompoundSubtraction/S"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//CompoundSubtraction/subtractiveChanges"/>
+      <genOperations ecoreOperation="compound.ecore#//CompoundSubtraction/getAtomicChanges"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="compound.ecore#//CompoundAddition">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CompoundAddition/T"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CompoundAddition/S"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//CompoundAddition/additiveChanges"/>
+      <genOperations ecoreOperation="compound.ecore#//CompoundAddition/getAtomicChanges"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="compound.ecore#//CreateAndInsertEObject">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CreateAndInsertEObject/T"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CreateAndInsertEObject/C"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//CreateAndInsertEObject/createChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//CreateAndInsertEObject/insertChange"/>
+      <genOperations ecoreOperation="compound.ecore#//CreateAndInsertEObject/getAtomicChanges"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="compound.ecore#//RemoveAndDeleteEObject">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//RemoveAndDeleteEObject/T"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//RemoveAndDeleteEObject/C"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//RemoveAndDeleteEObject/removeChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//RemoveAndDeleteEObject/deleteChange"/>
+      <genOperations ecoreOperation="compound.ecore#//RemoveAndDeleteEObject/getAtomicChanges"/>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//CreateAndInsertRoot">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CreateAndInsertRoot/T"/>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//RemoveAndDeleteRoot">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//RemoveAndDeleteRoot/T"/>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//CreateAndInsertNonRoot">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CreateAndInsertNonRoot/A"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CreateAndInsertNonRoot/T"/>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//RemoveAndDeleteNonRoot">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//RemoveAndDeleteNonRoot/A"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//RemoveAndDeleteNonRoot/T"/>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//CreateAndReplaceNonRoot">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CreateAndReplaceNonRoot/A"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CreateAndReplaceNonRoot/T"/>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//ReplaceAndDeleteNonRoot">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//ReplaceAndDeleteNonRoot/A"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//ReplaceAndDeleteNonRoot/T"/>
+    </genClasses>
+    <genClasses ecoreClass="compound.ecore#//CreateAndReplaceAndDeleteNonRoot">
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CreateAndReplaceAndDeleteNonRoot/A"/>
+      <genTypeParameters ecoreTypeParameter="compound.ecore#//CreateAndReplaceAndDeleteNonRoot/T"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//CreateAndReplaceAndDeleteNonRoot/createChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//CreateAndReplaceAndDeleteNonRoot/replaceChange"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compound.ecore#//CreateAndReplaceAndDeleteNonRoot/deleteChange"/>
+      <genOperations ecoreOperation="compound.ecore#//CreateAndReplaceAndDeleteNonRoot/getAtomicChanges"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Reference" basePackage="tools.vitruv.framework.change.echange.feature"
+      disposableProviderFactory="true" ecorePackage="reference.ecore#/">
+    <genDataTypes ecoreDataType="reference.ecore#//EObj"/>
+    <genDataTypes ecoreDataType="reference.ecore#//ResourceSet"/>
+    <genDataTypes ecoreDataType="reference.ecore#//Command"/>
+    <genClasses image="false" ecoreClass="reference.ecore#//UpdateReferenceEChange">
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//UpdateReferenceEChange/A"/>
+      <genOperations ecoreOperation="reference.ecore#//UpdateReferenceEChange/isContainment"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="reference.ecore#//AdditiveReferenceEChange">
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//AdditiveReferenceEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//AdditiveReferenceEChange/T"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="reference.ecore#//SubtractiveReferenceEChange">
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//SubtractiveReferenceEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//SubtractiveReferenceEChange/T"/>
+    </genClasses>
+    <genClasses ecoreClass="reference.ecore#//InsertEReference">
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//InsertEReference/A"/>
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//InsertEReference/T"/>
+      <genOperations ecoreOperation="reference.ecore#//InsertEReference/isResolved"/>
+    </genClasses>
+    <genClasses ecoreClass="reference.ecore#//RemoveEReference">
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//RemoveEReference/A"/>
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//RemoveEReference/T"/>
+      <genOperations ecoreOperation="reference.ecore#//RemoveEReference/isResolved"/>
+    </genClasses>
+    <genClasses ecoreClass="reference.ecore#//ReplaceSingleValuedEReference">
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//ReplaceSingleValuedEReference/A"/>
+      <genTypeParameters ecoreTypeParameter="reference.ecore#//ReplaceSingleValuedEReference/T"/>
+      <genOperations ecoreOperation="reference.ecore#//ReplaceSingleValuedEReference/isResolved"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Eobject" basePackage="tools.vitruv.framework.change.echange"
+      disposableProviderFactory="true" ecorePackage="eobject.ecore#/">
+    <genDataTypes ecoreDataType="eobject.ecore#//EObj"/>
+    <genDataTypes ecoreDataType="eobject.ecore#//StagingArea"/>
+    <genClasses image="false" ecoreClass="eobject.ecore#//EObjectAddedEChange">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//EObjectAddedEChange/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectAddedEChange/newValue"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eobject.ecore#//EObjectSubtractedEChange">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//EObjectSubtractedEChange/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectSubtractedEChange/oldValue"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eobject.ecore#//EObjectExistenceEChange">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//EObjectExistenceEChange/A"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectExistenceEChange/affectedEObject"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eobject.ecore#//EObjectExistenceEChange/stagingArea"/>
+      <genOperations ecoreOperation="eobject.ecore#//EObjectExistenceEChange/isResolved"/>
+    </genClasses>
+    <genClasses ecoreClass="eobject.ecore#//CreateEObject">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//CreateEObject/A"/>
+    </genClasses>
+    <genClasses ecoreClass="eobject.ecore#//DeleteEObject">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//DeleteEObject/A"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Root" basePackage="tools.vitruv.framework.change.echange" disposableProviderFactory="true"
+      ecorePackage="root.ecore#/">
+    <genDataTypes ecoreDataType="root.ecore#//EObj"/>
+    <genDataTypes ecoreDataType="root.ecore#//Resource"/>
+    <genClasses image="false" ecoreClass="root.ecore#//RootEChange">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute root.ecore#//RootEChange/uri"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute root.ecore#//RootEChange/resource"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute root.ecore#//RootEChange/index"/>
+      <genOperations ecoreOperation="root.ecore#//RootEChange/isResolved"/>
+    </genClasses>
+    <genClasses ecoreClass="root.ecore#//InsertRootEObject">
+      <genTypeParameters ecoreTypeParameter="root.ecore#//InsertRootEObject/T"/>
+      <genOperations ecoreOperation="root.ecore#//InsertRootEObject/isResolved"/>
+    </genClasses>
+    <genClasses ecoreClass="root.ecore#//RemoveRootEObject">
+      <genTypeParameters ecoreTypeParameter="root.ecore#//RemoveRootEObject/T"/>
+      <genOperations ecoreOperation="root.ecore#//RemoveRootEObject/isResolved"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

@@ -10,6 +10,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * A representation of the model object '<em><b>Explicit Unset EFeature</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which unsets a single or many valued feature.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

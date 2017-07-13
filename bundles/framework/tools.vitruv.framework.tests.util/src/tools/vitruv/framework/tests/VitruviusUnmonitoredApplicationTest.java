@@ -1,5 +1,6 @@
 package tools.vitruv.framework.tests;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -8,13 +9,16 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.After;
 import org.junit.Before;
 
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tests.util.TestUtil;
+import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
@@ -51,6 +55,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	public void beforeTest() {
 		super.beforeTest();
 		this.resourceSet = new ResourceSetImpl();
+		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet);
 		String testMethodName = testName.getMethodName();
 		createVirtualModel(testMethodName);
 	}
@@ -58,11 +63,10 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	private void createVirtualModel(final String testName) {
 		String currentTestProjectVsumName = testName + "_vsum_";
 		Iterable<VitruvDomain> domains = this.getVitruvDomains();
-		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, true, domains,
-				createChangePropagationSpecifications());
-		this.correspondenceModel = virtualModel.getCorrespondenceModel();
 		this.testUserInteractor = new TestUserInteractor();
-		this.getVirtualModel().setUserInteractor(testUserInteractor);
+		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, true, domains,
+				createChangePropagationSpecifications(), testUserInteractor);
+		this.correspondenceModel = virtualModel.getCorrespondenceModel();
 	}
 
 	protected CorrespondenceModel getCorrespondenceModel() {
@@ -77,12 +81,12 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		return testUserInteractor;
 	}
 
-	private String getPlatformModelPath(final String modelPathWithinProject) {
-		return this.getCurrentTestProject().getName() + "/" + modelPathWithinProject;
+	private File getPlatformModelPath(final String modelPathWithinProject) {
+		return new File(this.getCurrentTestProjectFolder(), modelPathWithinProject);
 	}
 
-	private VURI getModelVuri(String modelPathWithinProject) {
-		return VURI.getInstance(getPlatformModelPath(modelPathWithinProject));
+	protected VURI getModelVuri(String modelPathWithinProject) {
+		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(getPlatformModelPath(modelPathWithinProject)));
 	}
 
 	/**
@@ -161,7 +165,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 *            including the model file extension
 	 */
 	protected void assertModelExists(String modelPathWithinProject) {
-		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
+		boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
 		assertTrue("Model at " + modelPathWithinProject + " does not exist bust should", modelExists);
 	}
 
@@ -174,7 +178,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 *            including the model file extension
 	 */
 	protected void assertModelNotExists(String modelPathWithinProject) {
-		boolean modelExists = EMFBridge.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
+		boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
 		assertFalse("Model at " + modelPathWithinProject + " exists but should not", modelExists);
 	}
 
@@ -191,6 +195,8 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 */
 	protected void assertPersistedModelsEqual(String firstModelPathWithinProject, String secondModelPathWithinProject) {
 		ResourceSet testResourceSet = new ResourceSetImpl();
+		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		ResourceSetUtil.addExistingFactoriesToResourceSet(testResourceSet);
 		EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet);
 		EObject secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet);
 		assertTrue(EcoreUtil.equals(firstRoot, secondRoot));

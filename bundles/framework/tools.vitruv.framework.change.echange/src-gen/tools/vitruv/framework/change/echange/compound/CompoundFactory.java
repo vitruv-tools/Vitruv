@@ -23,15 +23,6 @@ public interface CompoundFactory extends EFactory {
 	CompoundFactory eINSTANCE = tools.vitruv.framework.change.echange.compound.impl.CompoundFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Move EObject</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Move EObject</em>'.
-	 * @generated
-	 */
-	<A extends EObject, B extends EObject, T extends EObject> MoveEObject<A, B, T> createMoveEObject();
-
-	/**
 	 * Returns a new object of class '<em>Explicit Unset EAttribute</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -84,6 +75,24 @@ public interface CompoundFactory extends EFactory {
 	 * @generated
 	 */
 	<A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRoot();
+
+	/**
+	 * Returns a new object of class '<em>Create And Replace Non Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Create And Replace Non Root</em>'.
+	 * @generated
+	 */
+	<A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRoot();
+
+	/**
+	 * Returns a new object of class '<em>Replace And Delete Non Root</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Replace And Delete Non Root</em>'.
+	 * @generated
+	 */
+	<A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRoot();
 
 	/**
 	 * Returns a new object of class '<em>Create And Replace And Delete Non Root</em>'.

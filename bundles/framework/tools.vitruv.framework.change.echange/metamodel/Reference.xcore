@@ -2,31 +2,97 @@
 @GenModel(modelName="Change") //@GenModel(editDirectory="/tools.vitruv.framework.change.echange.edit/src", editorDirectory="/tools.vitruv.framework.change.echange.editor/src", modelName="Change", modelPluginClass="", editPluginClass="tools.vitruv.framework.change.provider.ChangeEditPlugin", editorPluginClass="tools.vitruv.framework.change.echange.presentation.ChangeEditorPlugin", testsDirectory="tools.vitruv.framework.change.echange.tests/src", testSuiteClass="tools.vitruv.framework.change.echange.tests.ChangeAllTests", importerID="org.eclipse.emf.importer.ecore", editorPluginID="tools.vitruv.framework.change.echange.editor", testsPluginID="tools.vitruv.framework.change.echange.tests")
 package tools.vitruv.framework.change.echange.feature.reference
 
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EReference
-import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-import tools.vitruv.framework.change.echange.feature.FeatureEChange
-import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
-import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
-import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
-
-abstract class UpdateReferenceEChange<A extends EObject> extends FeatureEChange<A, EReference> {
-	@GenModel(body="return getAffectedFeature().isContainment();")
-	op boolean[1] isContainment()
-}
-
-abstract class AdditiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectAddedEChange<T>, UpdateReferenceEChange<A> {
-}
-
-abstract class SubtractiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectSubtractedEChange<T>, UpdateReferenceEChange<A> {
-}
-
-class InsertEReference<A extends EObject, T extends EObject> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {
-}
-
-class RemoveEReference<A extends EObject, T extends EObject> extends RemoveFromListEChange<A, EReference, T>, SubtractiveReferenceEChange<A, T> {
-}
-
-class ReplaceSingleValuedEReference<A extends EObject, T extends EObject> extends AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EReference, T> {
-}
+//import org.eclipse.emf.common.command.Command
+//import org.eclipse.emf.ecore.EObject
+//import org.eclipse.emf.ecore.EReference
+//import org.eclipse.emf.ecore.resource.ResourceSet
+//import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+//import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+//import tools.vitruv.framework.change.echange.feature.FeatureEChange
+//import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
+//import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
+//import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
+//
+//type EObj wraps EObject
+//type ResourceSet wraps ResourceSet
+//type Command wraps Command
+//
+///**
+// * Abstract EChange which updates a reference with a new value.
+// */
+//abstract class UpdateReferenceEChange<A extends EObject> extends FeatureEChange<A, EReference> {
+//	/**
+//	 * The affected reference is a containment reference.
+//	 */
+//	op boolean[1] isContainment() {
+//		return getAffectedFeature().isContainment()
+//	}
+//}
+//
+///**
+// * Abstract EChange which inserts an EObject into a reference.
+// */
+//abstract class AdditiveReferenceEChange<A extends EObj, T extends EObj> extends UpdateReferenceEChange<A>, EObjectAddedEChange<T> {
+//}
+//
+///**
+// * Abstract EChange which removes an EObject from a reference.
+// */
+//abstract class SubtractiveReferenceEChange<A extends EObj, T extends EObj> extends UpdateReferenceEChange<A>, EObjectSubtractedEChange<T> {
+//
+//}
+//
+///**
+// * EChange which inserts an EObject into a many valued reference.
+// * If the reference is a containment reference, the inserted object will be taken from the staging area.
+// * There it must be placed by a {@link CreateEObject} EChange or by removing it from another reference.
+// */
+//class InsertEReference<A extends EObj, T extends EObj> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {
+//	/**
+//	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+//	 * Needs to be true to apply the change.
+//	 * @return	All proxy EObjects are resolved to concrete EObjects.
+//	 */
+//	op boolean isResolved() {
+//		return super.isResolved() && 
+//			(newValue == null || !newValue.eIsProxy())
+//	}
+//}
+//
+///**
+// * EChange which removes an EObject from a many valued reference.
+// * If the reference is a containment reference, the removed object will be placed in the staging area.
+// * There it can be deleted by a {@link DeleteEObject} EChange or reinserted by another change.
+// */
+//class RemoveEReference<A extends EObj, T extends EObj> extends RemoveFromListEChange<A, EReference, T>, SubtractiveReferenceEChange<A, T> {
+//	/**
+//	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+//	 * Needs to be true to apply the change.
+//	 * @return	All proxy EObjects are resolved to concrete EObjects.
+//	 */
+//	op boolean isResolved() {
+//		return super.isResolved() && 
+//			(oldValue == null || !oldValue.eIsProxy())
+//	}
+//}
+//
+///**
+// * EChange which replaces a single valued reference with a new EObject.
+// * If the reference is a containment reference, the new object will be taken from the staging
+// * area and the old one will be placed in it.
+// * The new object must be placed in the staging area by a {@link CreateEObject} EChange or by removing 
+// * it from another reference.
+// * The old one can be deleted by a {@link DeleteEObject} EChange or resinserted by another change.
+// */
+//class ReplaceSingleValuedEReference<A extends EObj, T extends EObj> extends  ReplaceSingleValuedFeatureEChange<A, EReference, T>, AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T> {
+//	/**
+//	 * Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.
+//	 * Needs to be true to apply the change.
+//	 * @return	All proxy EObjects are resolved to concrete EObjects.
+//	 */
+//	op boolean isResolved() {
+//		return super.isResolved() &&
+//			(oldValue == null || !oldValue.eIsProxy()) &&
+//			(newValue == null || !newValue.eIsProxy())
+//	}
+//}

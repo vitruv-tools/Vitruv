@@ -6,7 +6,7 @@ import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.ClaimableHashMap
 import tools.vitruv.framework.util.datatypes.ClaimableMap
-import tools.vitruv.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.commons.util.java.Pair
 import java.io.IOException
 import java.util.ArrayList
 import java.util.HashMap
@@ -19,10 +19,9 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.resource.Resource.IOWrappedException
 import org.eclipse.emf.ecore.util.EcoreUtil
 
-import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
 import tools.vitruv.framework.correspondence.Correspondences
 import tools.vitruv.framework.correspondence.Correspondence
@@ -31,24 +30,27 @@ import tools.vitruv.framework.correspondence.CorrespondenceFactory
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.ModelInstance
-import tools.vitruv.framework.domains.repository.ModelRepository
 import tools.vitruv.framework.domains.TuidAwareVitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor
+import tools.vitruv.framework.util.command.EMFCommandBridge
+import tools.vitruv.framework.tuid.TuidResolver
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
 	static final Logger logger = Logger::getLogger(typeof(CorrespondenceModelImpl).getSimpleName())
-	final ModelRepository modelProviding
+	final VitruviusRecordingCommandExecutor modelCommandExecutor
 	final VitruvDomainRepository domainRepository;
 	final Correspondences correspondences
 	final ClaimableMap<Tuid,Set<List<Tuid>>> tuid2tuidListsMap
 	protected final ClaimableMap<List<Tuid>, Set<Correspondence>> tuid2CorrespondencesMap
 	boolean changedAfterLastSave = false
 	final Map<String, String> saveCorrespondenceOptions
-
-	new(ModelRepository modelProviding, VitruvDomainRepository domainRepository, VURI correspondencesVURI, Resource correspondencesResource) {
+	final TuidResolver tuidResolver;
+	
+	new(TuidResolver tuidResolver, VitruviusRecordingCommandExecutor modelCommandExecutor, VitruvDomainRepository domainRepository, VURI correspondencesVURI, Resource correspondencesResource) {
 		super(correspondencesVURI, correspondencesResource)
-		this.modelProviding = modelProviding
+		this.modelCommandExecutor = modelCommandExecutor
 		// TODO MK use MutatingListFixing... when necessary (for both maps!)
 		this.tuid2tuidListsMap = new ClaimableHashMap<Tuid,Set<List<Tuid>>>()
 		this.tuid2CorrespondencesMap = new ClaimableHashMap<List<Tuid>, Set<Correspondence>>()
@@ -57,17 +59,18 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 			VitruviusConstants::getOptionProcessDanglingHrefDiscard())
 		this.correspondences = loadAndRegisterCorrespondences(correspondencesResource)
 		this.domainRepository = domainRepository;
+		this.tuidResolver = tuidResolver;
 		TuidManager.instance.addTuidUpdateListener(this);
 	}
 
 	override void addCorrespondence(Correspondence correspondence) {
-		this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain(
+		this.modelCommandExecutor.executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand(
 				[ |
 					addCorrespondenceToModel(correspondence)
 					registerCorrespondence(correspondence)
 					setChangeAfterLastSaveFlag()
 					return null
-				]);
+				]));
 	}
 
 	def private void registerCorrespondence(Correspondence correspondence) {
@@ -83,7 +86,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	def private registerTuidList(List<Tuid> tuidList) {
 		for (Tuid tuid : tuidList) {
 			var tuidLists = this.tuid2tuidListsMap.get(tuid)
-			if (tuidLists == null) {
+			if (tuidLists === null) {
 				tuidLists = new HashSet<List<Tuid>>()
 				this.tuid2tuidListsMap.put(tuid,tuidLists)
 			}
@@ -134,7 +137,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		 val correspondences = getCorrespondences(aEObjects)
 		 for (Correspondence correspondence : correspondences) {
 		 	val correspondingBs = if (correspondence.^as.containsAll(aEObjects)) correspondence.bs else correspondence.^as
-		 	if (correspondingBs != null && correspondingBs.equals(bEObjects)) {
+		 	if (correspondingBs !== null && correspondingBs.equals(bEObjects)) {
 		 		return correspondence;
 		 	}
 		 }
@@ -186,7 +189,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects) {
 		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		var Set<List<Tuid>> correspondingTuidLists = getCorrespondingTuids(correspondenceType, tuids)
-		return resolveEObjectsSetsFromTuidsSets(correspondingTuidLists)
+		return correspondingTuidLists.mapFixed[resolveEObjectsFromTuids(it)].toSet;
 	}
 	
 	def private Set<List<Tuid>> getCorrespondingTuids(Class<? extends Correspondence> correspondenceType, List<Tuid> tuids) {
@@ -219,10 +222,6 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		}
 	}
 
-	def private TuidAwareVitruvDomain getMetamodelHavingTuid(Tuid tuid) {
-		return this.domainRepository.getDomain(tuid)
-	}
-
 	override boolean hasCorrespondences() {
 		for (Set<Correspondence> correspondences : this.tuid2CorrespondencesMap.values()) {
 			if (!correspondences.isEmpty()) {
@@ -235,13 +234,13 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	override boolean hasCorrespondences(List<EObject> eObjects) {
 		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		var Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids)
-		return correspondences != null && correspondences.size() > 0
+		return correspondences !== null && correspondences.size() > 0
 	}
 
 	def private Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
 		try {
 			correspondencesResource.load(this.saveCorrespondenceOptions)
-		} catch (IOWrappedException e) {
+		} catch (IOException e) {
 			if (e.cause instanceof Exception) {
 				logger.trace(
 					"Could not load correspondence resource - creating new correspondence instance resource."
@@ -253,15 +252,11 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		if (correspondences === null) {
 			correspondences = CorrespondenceFactory::eINSTANCE.createCorrespondences()
 			correspondencesResource.getContents().add(correspondences)
-		} else if (correspondences instanceof Correspondences) {
-			registerLoadedCorrespondences(correspondences as Correspondences)
 		} else {
-			throw new RuntimeException(
-				'''The unique root object '«»«correspondences»' of the correspondence model '«»«getURI()»' is not correctly typed!'''.
-					toString)
+			registerLoadedCorrespondences(correspondences)
 		}
 		correspondences.setCorrespondenceModel(this)
-		return correspondences as Correspondences
+		return correspondences
 	}
 
 	def private void registerCorrespondenceForTuids(Correspondence correspondence) {
@@ -348,62 +343,14 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		this.changedAfterLastSave = false
 	}
 
-	override EObject resolveEObjectFromRootAndFullTuid(EObject root,
-		Tuid tuid) {
-		return getMetamodelHavingTuid(tuid).
-			resolveEObjectFromRootAndFullTuid(root, tuid)
-	}
-	
-	
 	override List<EObject> resolveEObjectsFromTuids(List<Tuid> tuids) {
-		return tuids.mapFixed[resolveEObjectFromTuid(it)].toList
+		tuids.mapFixed[tuidResolver.resolveEObjectFromTuid(it)];
 	}
-	
-	override Set<List<EObject>> resolveEObjectsSetsFromTuidsSets(Set<List<Tuid>> tuidLists) {
-		return tuidLists.mapFixed[resolveEObjectsFromTuids(it)].toSet
-	}
-	
+
 	override EObject resolveEObjectFromTuid(Tuid tuid) {
-		val TuidAwareVitruvDomain domain = getMetamodelHavingTuid(tuid)
-		var VURI vuri = domain.getModelVURIContainingIdentifiedEObject(tuid)
-		var ModelInstance modelInstance = null
-		if (vuri !== null) {
-			modelInstance = this.modelProviding.getModel(vuri)
-		}
-		var EObject resolvedEobject = null
-		try {
-			resolvedEobject = resolveEObjectInModelInstance(modelInstance, tuid);
-		} catch (IllegalArgumentException iae) {
-			// do nothing - just try the solving again
-		}
-		if (null === resolvedEobject && modelInstance !== null) {
-			// reload the model and try to solve it again
-			modelInstance.load(null, true)
-			resolvedEobject = resolveEObjectInModelInstance(modelInstance, tuid);
-			if (null === resolvedEobject) {
-				// if resolved EObject is still null throw an exception
-				// TODO think about something more lightweight than throwing an exception
-				throw new RuntimeException(
-					'''Could not resolve Tuid «tuid» in eObjects «modelInstance.rootElements» with VURI «vuri»'''.
-						toString)
-			}
-
-		}
-		if (null !== resolvedEobject && resolvedEobject.eIsProxy()) {
-			EcoreUtil::resolve(resolvedEobject, getResource())
-		}
-		return resolvedEobject
+		tuidResolver.resolveEObjectFromTuid(tuid);
 	}
 	
-	private def EObject resolveEObjectInModelInstance(ModelInstance modelInstance, Tuid tuid) {
-		val TuidAwareVitruvDomain domain = getMetamodelHavingTuid(tuid)
-		// if the tuid is cached because it has no resource the rootEObject is null
-		var rootEObjects = if (modelInstance != null) modelInstance.rootElements + #[null] else #[null];
-		return rootEObjects.
-			map[domain.resolveEObjectFromRootAndFullTuid(it, tuid)].
-			findFirst[it != null];
-	}
-
 	def public void setChangeAfterLastSaveFlag() {
 		this.changedAfterLastSave = true
 	}
@@ -420,7 +367,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	override getAllCorrespondencesWithoutDependencies() {
-		this.correspondences.correspondences.filter[it.dependsOn == null || it.dependsOn.size == 0].toSet
+		this.correspondences.correspondences.filter[it.dependsOn === null || it.dependsOn.size == 0].toSet
 	}
 	
 	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
@@ -486,7 +433,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 * @return oldCurrentTuidAndStringAndMapEntriesTriple
 	 */
 	override performPreAction(Tuid oldCurrentTuid) {
-		if (tuidUpdateData != null) {
+		if (tuidUpdateData !== null) {
 			throw new IllegalStateException("Two update calls were running at the same time");
 		}
 		// The Tuid is used as key in this map. Therefore the entry has to be removed before
@@ -509,8 +456,8 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	override void performPostAction(Tuid tuid) {
 		// The correspondence model is an EMF-based model, so modifications have to be
 		// performed within a transaction.
-		this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain([ |
-			if (tuidUpdateData == null) {
+		this.modelCommandExecutor.executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand([ |
+			if (tuidUpdateData === null) {
 				throw new IllegalStateException("Update was not started before performing post action");
 			}
 			val oldTuidList2Correspondences = tuidUpdateData;
@@ -528,7 +475,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 			tuidUpdateData = null;
 			setChangeAfterLastSaveFlag();
 			return null;
-		]);
+		]));
 	}
 
 }		

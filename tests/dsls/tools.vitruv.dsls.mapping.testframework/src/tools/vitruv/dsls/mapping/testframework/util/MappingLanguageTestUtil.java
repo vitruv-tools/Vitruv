@@ -3,9 +3,11 @@ package tools.vitruv.dsls.mapping.testframework.util;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EPackage;
 
 import com.google.inject.Binder;
@@ -19,6 +21,7 @@ import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver;
+import tools.vitruv.framework.userinteraction.impl.UserInteractor;
 import tools.vitruv.framework.util.bridges.JavaHelper;
 import tools.vitruv.framework.vsum.VirtualModel;
 
@@ -39,7 +42,8 @@ public final class MappingLanguageTestUtil {
 	 * @return the created VSUM
 	 */
 	public static VirtualModel createEmptyVSUM(Collection<VitruvDomain> metamodels, Collection<ChangePropagationSpecification> transformer) {
-		return TestUtil.createVirtualModel("vitruvius.meta", true, metamodels, transformer);
+		File projectFolder = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/vitruvius.meta").toFile();
+		return TestUtil.createVirtualModel(projectFolder, true, metamodels, transformer, new UserInteractor());
 	}
 
 	public static AbstractVitruvDomain createMetamodel(String name, EPackage rootPackage, TuidCalculatorAndResolver tuidCalculatorAndResolver, String... extensions) {

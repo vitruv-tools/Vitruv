@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="single" nsURI="http://tools.vitruv/EChange/Feature/Single/1.0"
+    nsPrefix="single">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="modelName" value="Change"/>
+    <details key="basePackage" value="tools.vitruv.framework.change.echange.feature"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="ReplaceSingleValuedFeatureEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which replaces a single valued attribute or reference."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eOperations name="isFromNonDefaultValue" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;The change don't replace the default value.&#xA;@return The change don't replace the default value."/>
+        <details key="body" value="T _oldValue = this.getOldValue();&#xA;F _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_oldValue, _defaultValue);&#xA;return (!_equals);"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="isToNonDefaultValue" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;The change don't replaces a value with the default value.&#xA;@return The change don't replaces a value with the default value."/>
+        <details key="body" value="T _newValue = this.getNewValue();&#xA;F _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_newValue, _defaultValue);&#xA;return (!_equals);"/>
+      </eAnnotations>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="ecore:EClass feature.ecore#//UpdateSingleValuedFeatureEChange">
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedFeatureEChange/A"/>
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedFeatureEChange/F"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//AdditiveEChange">
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedFeatureEChange/T"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//SubtractiveEChange">
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedFeatureEChange/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>

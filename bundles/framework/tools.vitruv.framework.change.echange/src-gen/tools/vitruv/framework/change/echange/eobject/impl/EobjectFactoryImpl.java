@@ -3,6 +3,7 @@
 package tools.vitruv.framework.change.echange.eobject.impl;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -11,6 +12,8 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import tools.vitruv.framework.change.echange.eobject.*;
+
+import tools.vitruv.framework.change.echange.resolve.StagingArea;
 
 /**
  * <!-- begin-user-doc -->
@@ -68,6 +71,40 @@ public class EobjectFactoryImpl extends EFactoryImpl implements EobjectFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public Object createFromString(EDataType eDataType, String initialValue) {
+		switch (eDataType.getClassifierID()) {
+			case EobjectPackage.EOBJ:
+				return createEObjFromString(eDataType, initialValue);
+			case EobjectPackage.STAGING_AREA:
+				return createStagingAreaFromString(eDataType, initialValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String convertToString(EDataType eDataType, Object instanceValue) {
+		switch (eDataType.getClassifierID()) {
+			case EobjectPackage.EOBJ:
+				return convertEObjToString(eDataType, instanceValue);
+			case EobjectPackage.STAGING_AREA:
+				return convertStagingAreaToString(eDataType, instanceValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public <A extends EObject> CreateEObject<A> createCreateEObject() {
 		CreateEObjectImpl<A> createEObject = new CreateEObjectImpl<A>();
 		return createEObject;
@@ -81,6 +118,42 @@ public class EobjectFactoryImpl extends EFactoryImpl implements EobjectFactory {
 	public <A extends EObject> DeleteEObject<A> createDeleteEObject() {
 		DeleteEObjectImpl<A> deleteEObject = new DeleteEObjectImpl<A>();
 		return deleteEObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject createEObjFromString(EDataType eDataType, String initialValue) {
+		return (EObject)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEObjToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public StagingArea createStagingAreaFromString(EDataType eDataType, String initialValue) {
+		return (StagingArea)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertStagingAreaToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

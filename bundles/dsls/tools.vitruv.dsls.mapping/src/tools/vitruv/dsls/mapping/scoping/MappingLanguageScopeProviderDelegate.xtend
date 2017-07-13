@@ -10,7 +10,7 @@ import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMapping
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathBase
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathTail
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
-import tools.vitruv.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.commons.util.java.Pair
 import java.util.Iterator
 import java.util.List
 import org.apache.log4j.Logger
@@ -39,7 +39,7 @@ class MappingLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate 
 
 	def <T extends EObject> IScope createPairScope(IScope parentScope, Iterator<Pair<String, T>> elements) {
 		createScope(parentScope, elements, [
-			if ((it.first != null) && (it.second != null))
+			if ((it.first !== null) && (it.second !== null))
 				EObjectDescription.create(it.first, it.second)
 			else
 				null
@@ -49,7 +49,7 @@ class MappingLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate 
 	def <T extends EObject> IScope createScope(IScope parentScope, Iterator<T> elements) {
 		createScope(parentScope, elements.filter[hasQualifiedName], [
 			val qn = qualifiedNameProvider.getFullyQualifiedName(it)
-			if ((qn != null) && (!qn.isEmpty))
+			if ((qn !== null) && (!qn.isEmpty))
 				EObjectDescription.create(qn, it)
 			else
 				null
@@ -77,7 +77,7 @@ class MappingLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate 
 	def IScope createRequiredMappingMappingScope(EObject context) {
 		val allMappings = context.getContainerOfType(MappingFile).eAllContents.filter(Mapping)
 		
-		createPairScope(IScope.NULLSCOPE, allMappings.map[namePair].filter[first != null && second != null])
+		createPairScope(IScope.NULLSCOPE, allMappings.map[namePair].filter[first !== null && second !== null])
 	}
 	
 	def IScope createMappingBaseScope(IScope parentScope, Mapping mapping) {
@@ -124,12 +124,12 @@ class MappingLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate 
 		val containerMapping = context.getContainerOfType(Mapping)
 		val mappingFile = context.getContainerOfType(MappingFile)
 		return createPairScope(IScope.NULLSCOPE,
-			(containerMapping.requires + mappingFile.defaultRequirements).map[namePair].filter[first != null && second != null].iterator)
+			(containerMapping.requires + mappingFile.defaultRequirements).map[namePair].filter[first !== null && second !== null].iterator)
 	}
 	
 	def createRequiredMappingPathTailScope(EObject context) {
 		if (context instanceof RequiredMappingPathTail) {
-			return createPairScope(IScope.NULLSCOPE, (context.eContainer.requiredMappings).map[namePair].filter[first != null && second != null].iterator)
+			return createPairScope(IScope.NULLSCOPE, (context.eContainer.requiredMappings).map[namePair].filter[first !== null && second !== null].iterator)
 		} else {
 			LOGGER.debug("Unexpected context for tail scope: " + context.toString)
 			return IScope.NULLSCOPE
@@ -154,7 +154,7 @@ class MappingLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate 
 		val containingMapping = object.getContainerOfType(Mapping).requireNonNull
 
 		var Mapping contextMapping
-		if (context?.requiredMappingPath == null) {
+		if (context?.requiredMappingPath === null) {
 //			LOGGER.debug("ContextVariable has no target mapping: " + context.toString)
 			contextMapping = containingMapping
 		} else {

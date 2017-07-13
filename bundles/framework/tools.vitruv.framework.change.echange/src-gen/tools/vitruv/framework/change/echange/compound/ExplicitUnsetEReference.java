@@ -15,6 +15,11 @@ import tools.vitruv.framework.change.echange.EChange;
  * A representation of the model object '<em><b>Explicit Unset EReference</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which unsets a single or many valued reference.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

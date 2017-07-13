@@ -9,15 +9,17 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.apache.log4j.Logger
 import tools.vitruv.framework.domains.VitruvDomain
+import tools.vitruv.framework.change.processing.ChangePropagationObserver
+import org.eclipse.emf.ecore.EObject
 
-abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification {
+abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
 	private static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
 	
 	private val List<ChangePropagationSpecification> changePreprocessors;
 	private val List<ChangePropagationSpecification> changeMainprocessors;
 
-	new(UserInteracting userInteracting, VitruvDomain sourceDomain, VitruvDomain targetDomain) {
-		super(userInteracting, sourceDomain, targetDomain);
+	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
+		super(sourceDomain, targetDomain);
 		changePreprocessors = new ArrayList<ChangePropagationSpecification>();
 		changeMainprocessors = new ArrayList<ChangePropagationSpecification>();
 	}
@@ -30,6 +32,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changePreprocessors += changePropagationSpecifcation;
 		changePropagationSpecifcation.userInteracting = userInteracting;
+		changePropagationSpecifcation.registerObserver(this);
 	}
 	
 	/** 
@@ -40,6 +43,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changeMainprocessors += changePropagationSpecifcation;
 		changePropagationSpecifcation.userInteracting = userInteracting;
+		changePropagationSpecifcation.registerObserver(this);
 	}
 	
 	private def void assertMetamodelsCompatible(ChangePropagationSpecification potentialChangeProcessor) {
@@ -78,9 +82,13 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	private def getAllProcessors() {
 		val processors = new ArrayList<ChangePropagationSpecification>();
 		// processor arrays can be null when calling setUserInteracting from the super constructor
-		if (changePreprocessors != null) processors += changePreprocessors;
-		if (changeMainprocessors != null) processors += changeMainprocessors;
+		if (changePreprocessors !== null) processors += changePreprocessors;
+		if (changeMainprocessors !== null) processors += changeMainprocessors;
 		return processors;
+	}
+	
+	override objectCreated(EObject createdObject) {
+		notifyObjectCreated(createdObject)
 	}
 	
 }

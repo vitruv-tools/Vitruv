@@ -14,10 +14,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
-
 import tools.vitruv.framework.change.echange.feature.list.impl.InsertInListEChangeImpl;
 
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange;
@@ -75,7 +73,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@SuppressWarnings("unchecked")
 	public T getNewValue() {
-		if (newValue != null && newValue.eIsProxy()) {
+		if (newValue != null && ((EObject)newValue).eIsProxy()) {
 			InternalEObject oldNewValue = (InternalEObject)newValue;
 			newValue = (T)eResolveProxy(oldNewValue);
 			if (newValue != oldNewValue) {
@@ -113,7 +111,8 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @generated
 	 */
 	public boolean isContainment() {
-		return getAffectedFeature().isContainment();
+		EReference _affectedFeature = this.getAffectedFeature();
+		return _affectedFeature.isContainment();
 	}
 
 	/**
@@ -183,14 +182,14 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == EObjectAddedEChange.class) {
+		if (baseClass == UpdateReferenceEChange.class) {
 			switch (derivedFeatureID) {
-				case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE: return EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectAddedEChange.class) {
 			switch (derivedFeatureID) {
+				case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE: return EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
 				default: return -1;
 			}
 		}
@@ -209,14 +208,14 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == EObjectAddedEChange.class) {
+		if (baseClass == UpdateReferenceEChange.class) {
 			switch (baseFeatureID) {
-				case EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE: return ReferencePackage.INSERT_EREFERENCE__NEW_VALUE;
 				default: return -1;
 			}
 		}
-		if (baseClass == UpdateReferenceEChange.class) {
+		if (baseClass == EObjectAddedEChange.class) {
 			switch (baseFeatureID) {
+				case EobjectPackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE: return ReferencePackage.INSERT_EREFERENCE__NEW_VALUE;
 				default: return -1;
 			}
 		}
@@ -235,14 +234,14 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@Override
 	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-		if (baseClass == EObjectAddedEChange.class) {
-			switch (baseOperationID) {
-				default: return -1;
-			}
-		}
 		if (baseClass == UpdateReferenceEChange.class) {
 			switch (baseOperationID) {
 				case ReferencePackage.UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT: return ReferencePackage.INSERT_EREFERENCE___IS_CONTAINMENT;
+				default: return -1;
+			}
+		}
+		if (baseClass == EObjectAddedEChange.class) {
+			switch (baseOperationID) {
 				default: return -1;
 			}
 		}

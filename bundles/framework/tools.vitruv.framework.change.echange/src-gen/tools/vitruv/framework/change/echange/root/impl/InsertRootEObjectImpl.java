@@ -3,7 +3,6 @@
 package tools.vitruv.framework.change.echange.root.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -11,7 +10,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
-
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
@@ -68,7 +66,7 @@ public class InsertRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 */
 	@SuppressWarnings("unchecked")
 	public T getNewValue() {
-		if (newValue != null && newValue.eIsProxy()) {
+		if (newValue != null && ((EObject)newValue).eIsProxy()) {
 			InternalEObject oldNewValue = (InternalEObject)newValue;
 			newValue = (T)eResolveProxy(oldNewValue);
 			if (newValue != oldNewValue) {

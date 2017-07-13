@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * A representation of the model object '<em><b>EObject Subtracted EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which removes an EObject from a resource or reference.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -19,7 +24,7 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectSubtractedEChange()
- * @model abstract="true"
+ * @model abstract="true" TBounds="tools.vitruv.framework.change.echange.eobject.EObj"
  * @generated
  */
 public interface EObjectSubtractedEChange<T extends EObject> extends SubtractiveEChange<T> {
@@ -34,7 +39,7 @@ public interface EObjectSubtractedEChange<T extends EObject> extends Subtractive
 	 * @return the value of the '<em>Old Value</em>' reference.
 	 * @see #setOldValue(EObject)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectSubtractedEChange_OldValue()
-	 * @model required="true"
+	 * @model kind="reference" required="true"
 	 * @generated
 	 */
 	T getOldValue();

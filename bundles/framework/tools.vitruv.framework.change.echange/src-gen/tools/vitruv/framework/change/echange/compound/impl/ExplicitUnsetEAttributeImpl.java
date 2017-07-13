@@ -4,10 +4,9 @@ package tools.vitruv.framework.change.echange.compound.impl;
 
 import java.lang.reflect.InvocationTargetException;
 
-import java.util.Collection;
+import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.common.notify.NotificationChain;
-
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -15,12 +14,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
-
-import org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions;
-
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
 
@@ -28,6 +24,7 @@ import tools.vitruv.framework.change.echange.compound.CompoundEChange;
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
 import tools.vitruv.framework.change.echange.compound.CompoundSubtraction;
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute;
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature;
 
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
 
@@ -39,21 +36,32 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEAttributeImpl#getSubtractiveChanges <em>Subtractive Changes</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEAttributeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEAttributeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> extends ExplicitUnsetEFeatureImpl<A, EAttribute> implements ExplicitUnsetEAttribute<A, T> {
+public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> extends CompoundSubtractionImpl<T, SubtractiveAttributeEChange<A, T>> implements ExplicitUnsetEAttribute<A, T> {
 	/**
-	 * The cached value of the '{@link #getSubtractiveChanges() <em>Subtractive Changes</em>}' containment reference list.
+	 * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSubtractiveChanges()
+	 * @see #getAffectedEObject()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<SubtractiveAttributeEChange<A, T>> subtractiveChanges;
+	protected A affectedEObject;
+
+	/**
+	 * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAffectedFeature()
+	 * @generated
+	 * @ordered
+	 */
+	protected EAttribute affectedFeature;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -77,19 +85,10 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
+	 * This is specialized for the more specific element type known in this context.
 	 * @generated
 	 */
 	@Override
-	public void setAffectedFeature(EAttribute newAffectedFeature) {
-		super.setAffectedFeature(newAffectedFeature);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<SubtractiveAttributeEChange<A, T>> getSubtractiveChanges() {
 		if (subtractiveChanges == null) {
 			subtractiveChanges = new EObjectContainmentEList<SubtractiveAttributeEChange<A, T>>(SubtractiveAttributeEChange.class, this, CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__SUBTRACTIVE_CHANGES);
@@ -102,14 +101,17 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<AtomicEChange> getAtomicChanges() {
-		EList<SubtractiveAttributeEChange<A, T>> _subtractiveChanges = this.getSubtractiveChanges();
-		final Function1<SubtractiveAttributeEChange<A, T>, AtomicEChange> _function = new Function1<SubtractiveAttributeEChange<A, T>, AtomicEChange>() {
-			public AtomicEChange apply(final SubtractiveAttributeEChange<A, T> it) {
-				return it;
+	@SuppressWarnings("unchecked")
+	public A getAffectedEObject() {
+		if (affectedEObject != null && affectedEObject.eIsProxy()) {
+			InternalEObject oldAffectedEObject = (InternalEObject)affectedEObject;
+			affectedEObject = (A)eResolveProxy(oldAffectedEObject);
+			if (affectedEObject != oldAffectedEObject) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
 			}
-		};
-		return XcoreEListExtensions.<SubtractiveAttributeEChange<A, T>, AtomicEChange>map(_subtractiveChanges, _function);
+		}
+		return affectedEObject;
 	}
 
 	/**
@@ -117,13 +119,70 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__SUBTRACTIVE_CHANGES:
-				return ((InternalEList<?>)getSubtractiveChanges()).basicRemove(otherEnd, msgs);
+	public A basicGetAffectedEObject() {
+		return affectedEObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAffectedEObject(A newAffectedEObject) {
+		A oldAffectedEObject = affectedEObject;
+		affectedEObject = newAffectedEObject;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT, oldAffectedEObject, affectedEObject));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAffectedFeature() {
+		if (affectedFeature != null && affectedFeature.eIsProxy()) {
+			InternalEObject oldAffectedFeature = (InternalEObject)affectedFeature;
+			affectedFeature = (EAttribute)eResolveProxy(oldAffectedFeature);
+			if (affectedFeature != oldAffectedFeature) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
+			}
 		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+		return affectedFeature;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute basicGetAffectedFeature() {
+		return affectedFeature;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAffectedFeature(EAttribute newAffectedFeature) {
+		EAttribute oldAffectedFeature = affectedFeature;
+		affectedFeature = newAffectedFeature;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE, oldAffectedFeature, affectedFeature));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<AtomicEChange> getAtomicChanges() {
+		final BasicEList<AtomicEChange> result = new BasicEList<AtomicEChange>();
+		EList<SubtractiveAttributeEChange<A, T>> _subtractiveChanges = this.getSubtractiveChanges();
+		result.addAll(_subtractiveChanges);
+		return result;
 	}
 
 	/**
@@ -134,8 +193,12 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__SUBTRACTIVE_CHANGES:
-				return getSubtractiveChanges();
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT:
+				if (resolve) return getAffectedEObject();
+				return basicGetAffectedEObject();
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE:
+				if (resolve) return getAffectedFeature();
+				return basicGetAffectedFeature();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -149,9 +212,11 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__SUBTRACTIVE_CHANGES:
-				getSubtractiveChanges().clear();
-				getSubtractiveChanges().addAll((Collection<? extends SubtractiveAttributeEChange<A, T>>)newValue);
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT:
+				setAffectedEObject((A)newValue);
+				return;
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE:
+				setAffectedFeature((EAttribute)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -165,8 +230,11 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__SUBTRACTIVE_CHANGES:
-				getSubtractiveChanges().clear();
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT:
+				setAffectedEObject((A)null);
+				return;
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE:
+				setAffectedFeature((EAttribute)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -180,8 +248,10 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__SUBTRACTIVE_CHANGES:
-				return subtractiveChanges != null && !subtractiveChanges.isEmpty();
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT:
+				return affectedEObject != null;
+			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE:
+				return affectedFeature != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -193,9 +263,10 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == CompoundSubtraction.class) {
+		if (baseClass == ExplicitUnsetEFeature.class) {
 			switch (derivedFeatureID) {
-				case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__SUBTRACTIVE_CHANGES: return CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES;
+				case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT: return CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT;
+				case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE: return CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE;
 				default: return -1;
 			}
 		}
@@ -209,9 +280,10 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == CompoundSubtraction.class) {
+		if (baseClass == ExplicitUnsetEFeature.class) {
 			switch (baseFeatureID) {
-				case CompoundPackage.COMPOUND_SUBTRACTION__SUBTRACTIVE_CHANGES: return CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__SUBTRACTIVE_CHANGES;
+				case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT: return CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT;
+				case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE: return CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE;
 				default: return -1;
 			}
 		}
@@ -234,6 +306,11 @@ public class ExplicitUnsetEAttributeImpl<A extends EObject, T extends Object> ex
 		if (baseClass == CompoundSubtraction.class) {
 			switch (baseOperationID) {
 				case CompoundPackage.COMPOUND_SUBTRACTION___GET_ATOMIC_CHANGES: return CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE___GET_ATOMIC_CHANGES;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		if (baseClass == ExplicitUnsetEFeature.class) {
+			switch (baseOperationID) {
 				default: return -1;
 			}
 		}

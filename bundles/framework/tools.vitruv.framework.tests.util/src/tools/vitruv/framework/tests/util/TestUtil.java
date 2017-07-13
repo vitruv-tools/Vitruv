@@ -1,7 +1,7 @@
 package tools.vitruv.framework.tests.util;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -24,10 +24,13 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.LibraryLocation;
 
+import com.google.common.io.Files;
+
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
+import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
@@ -42,6 +45,8 @@ import tools.vitruv.framework.vsum.VirtualModelImpl;
  */
 public final class TestUtil {
 
+	private static final String VM_ARGUMENT_LOG_OUTPUT_LEVEL = "logOutputLevel";
+	private static final String VM_ARGUMENT_TEST_WORKSPACE_PATH = "testWorkspacePath";
 	public static final String SOURCE_FOLDER = "src";
 
 	/**
@@ -65,8 +70,7 @@ public final class TestUtil {
 	 *             if project with given name already exists and its not
 	 *             specified to make name unique
 	 */
-	public static IProject createProject(String projectName, boolean addTimestampAndMakeNameUnique)
-			throws CoreException {
+	public static IProject createPlatformProject(String projectName, boolean addTimestampAndMakeNameUnique) {
 		String finalProjectName = projectName;
 		if (addTimestampAndMakeNameUnique) {
 			finalProjectName = addTimestampToProjectNameAndMakeUnique(finalProjectName);
@@ -77,9 +81,27 @@ public final class TestUtil {
 			throw new IllegalStateException("Project already exists");
 		}
 
-		return initializeProject(testProject);
+		try {
+			return initializeProject(testProject);
+		} catch (CoreException e) {
+			throw new IllegalStateException("Project could not be created");
+		}
 	}
+	
+	private static File addTimestampToProjectNameAndMakeUnique(File projectFolder) {
+		String timestampedProjectName = addTimestampToString(projectFolder.toString());
+		File timestampedProjectFolder = new File(timestampedProjectName);
 
+		String countedProjectName = timestampedProjectName;
+		// If project exists, add an index
+		int counter = 1;
+		while (timestampedProjectFolder.exists()) {
+			countedProjectName = timestampedProjectName + "--" + counter++;
+			timestampedProjectFolder = new File(countedProjectName);
+		}
+		return timestampedProjectFolder;
+	}
+	
 	private static String addTimestampToProjectNameAndMakeUnique(String projectName) {
 		String timestampedProjectName = addTimestampToString(projectName);
 		IProject testProject = TestUtil.getProjectByName(timestampedProjectName);
@@ -129,30 +151,11 @@ public final class TestUtil {
 	}
 
 	/**
-	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and an
-	 * empty set of {@link ChangePropagationSpecification}s.
-	 * 
-	 * @param vsumName
-	 *            - name of the VSUM
-	 * @param addTimestampAndMakeNameUnique
-	 *            - specifies if a timestamp shall be added to the name and if
-	 *            the name shall be made unique so that is does not conflict
-	 *            with an existing project
-	 * @param metamodels
-	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
-	 * @return the created {@link VirtualModel}
-	 */
-	public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestampAndMakeNameUnique,
-			final Iterable<VitruvDomain> metamodels) {
-		return createVirtualModel(vsumName, addTimestampAndMakeNameUnique, metamodels, Collections.emptyList());
-	}
-
-	/**
-	 * Creates a VSUM with the given name, {@link AbstractVitruvDomain}s and
+	 * Creates a VSUM in the given folder, with the given {@link AbstractVitruvDomain}s and
 	 * {@link ChangePropagationSpecification}s.
 	 * 
-	 * @param vsumName
-	 *            - name of the VSUM
+	 * @param virtualModelFolder
+	 *            - folder of the VSUM
 	 * @param addTimestampAndMakeNameUnique
 	 *            - specifies if a timestamp shall be added to the name and if
 	 *            the name shall be made unique so that is does not conflict
@@ -163,13 +166,15 @@ public final class TestUtil {
 	 *            - {@link ChangePropagationSpecification}s to add to the VSUM
 	 * @return the created {@link VirtualModel}
 	 */
-	public static InternalVirtualModel createVirtualModel(final String vsumName, boolean addTimestampAndMakeNameUnique,
+	public static InternalVirtualModel createVirtualModel(final File virtualModelFolder, boolean addTimestampAndMakeNameUnique,
 			final Iterable<VitruvDomain> metamodels,
-			final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
-		String finalVsumName = vsumName;
+			final Iterable<ChangePropagationSpecification> changePropagationSpecifications,
+			final UserInteracting userInteracting) {
+		File projectFolder = virtualModelFolder;
 		if (addTimestampAndMakeNameUnique) {
-			finalVsumName = addTimestampToProjectNameAndMakeUnique(vsumName);
+			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder);
 		}
+		
 		VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
 		for (VitruvDomain metamodel : metamodels) {
 			vmodelConfig.addMetamodel(metamodel);
@@ -177,8 +182,57 @@ public final class TestUtil {
 		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
 			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
 		}
-		final InternalVirtualModel vmodel = new VirtualModelImpl(finalVsumName, vmodelConfig);
+		final InternalVirtualModel vmodel = new VirtualModelImpl(projectFolder, userInteracting, vmodelConfig);
 		return vmodel;
+	}
+	
+	/**
+	 * Creates a VSUM with the given name in a temporary folder, {@link AbstractVitruvDomain}s and
+	 * {@link ChangePropagationSpecification}s.
+	 * 
+	 * @param virtualModelName
+	 *            - name of the VSUM folder in the temp files directory
+	 * @param addTimestampAndMakeNameUnique
+	 *            - specifies if a timestamp shall be added to the name and if
+	 *            the name shall be made unique so that is does not conflict
+	 *            with an existing project
+	 * @param metamodels
+	 *            - {@link AbstractVitruvDomain}s to add to the VSUM
+	 * @param changePropagationSpecifications
+	 *            - {@link ChangePropagationSpecification}s to add to the VSUM
+	 * @return the created {@link VirtualModel}
+	 */
+	public static InternalVirtualModel createVirtualModel(final String virtualModelName, boolean addTimestampAndMakeNameUnique,
+			final Iterable<VitruvDomain> metamodels,
+			final Iterable<ChangePropagationSpecification> changePropagationSpecifications,
+			final UserInteracting userInteracting) {
+		File testWorkspace = createTestWorkspace();
+		return createVirtualModel(new File(testWorkspace, virtualModelName), 
+				addTimestampAndMakeNameUnique, metamodels, changePropagationSpecifications, userInteracting);
+	}
+	
+	private static File createTestWorkspace() {
+		String testWorkspacePath = System.getProperty(VM_ARGUMENT_TEST_WORKSPACE_PATH);
+		File testWorkspace = null;
+		if (testWorkspacePath == null) {
+			testWorkspace = Files.createTempDir();
+		} else {
+			testWorkspace = new File(testWorkspacePath);
+		}
+		if (!testWorkspace.exists()) {
+			testWorkspace.mkdir();	
+		}
+		return testWorkspace;
+	}
+	
+	public static File createProjectFolder(String projectName, boolean addTimestampAndMakeNameUnique) {
+		File testWorkspace = createTestWorkspace();
+		File projectFolder = new File(testWorkspace, projectName);
+		if (addTimestampAndMakeNameUnique) {
+			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder);
+		}
+		projectFolder.mkdir();
+		return projectFolder;
 	}
 
 	/**
@@ -215,7 +269,7 @@ public final class TestUtil {
 		Logger.getRootLogger().removeAllAppenders();
 		Logger.getRootLogger()
 				.addAppender(new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
-		String outputLevelProperty = System.getProperty("logOutputLevel");
+		String outputLevelProperty = System.getProperty(VM_ARGUMENT_LOG_OUTPUT_LEVEL);
 		if (outputLevelProperty != null) {
 			if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
 				Logger.getRootLogger().addAppender(new ConsoleAppender());

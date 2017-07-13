@@ -11,6 +11,11 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * A representation of the model object '<em><b>Subtractive Attribute EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which removes a value from an attribute.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -22,15 +27,15 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface SubtractiveAttributeEChange<A extends EObject, T extends Object> extends SubtractiveEChange<T>, UpdateAttributeEChange<A> {
+public interface SubtractiveAttributeEChange<A extends EObject, T extends Object> extends UpdateAttributeEChange<A>, SubtractiveEChange<T> {
 	/**
 	 * Returns the value of the '<em><b>Old Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Old Value</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The value which will be removed.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Old Value</em>' attribute.
 	 * @see #setOldValue(Object)
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getSubtractiveAttributeEChange_OldValue()

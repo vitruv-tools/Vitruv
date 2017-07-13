@@ -33,7 +33,7 @@ class JavaGeneratorHelper {
 		val content = generatorFunction.apply(importHelper)
 
 		'''
-			«IF packageName != null»
+			«IF packageName !== null»
 				package «packageName»;
 			«ENDIF»
 			

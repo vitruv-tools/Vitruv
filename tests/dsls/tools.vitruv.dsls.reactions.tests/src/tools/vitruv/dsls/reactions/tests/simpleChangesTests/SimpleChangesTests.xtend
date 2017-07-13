@@ -14,12 +14,20 @@ import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
+import tools.vitruv.framework.change.description.CompositeContainerChange
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
 	private static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
 	private static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
+	
+	override protected boolean unresolveChanges() {
+		return true;
+	}
 	
 	override protected createChangePropagationSpecifications() {
 		return #[new AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes() {}];
@@ -107,7 +115,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	private def void replaceMultiValuedContainmentNonRootObject(Root rootObject, String oldId, String newId) {
 		val oldElement = rootObject.multiValuedContainmentEReference.findFirst(nonRoot | nonRoot.id == oldId);
-		if (oldElement == null) {
+		if (oldElement === null) {
 			throw new IllegalStateException("There is no element with the specified old element id.");
 		}
 		val oldIndex = rootObject.multiValuedContainmentEReference.indexOf(oldElement);
@@ -119,7 +127,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	private def removeMultiValuedContainmentNonRootObject(Root rootObject, String id) {
 		val objectToRemove = rootObject.multiValuedContainmentEReference.findFirst(nonRoot | nonRoot.id == id);
-		if (objectToRemove == null) {
+		if (objectToRemove === null) {
 			throw new IllegalStateException("There is no element with the specified element id.");
 		}
 		rootObject.multiValuedContainmentEReference.remove(objectToRemove);
@@ -128,7 +136,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	private def void insertMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
 		val nonRoot = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == id);
-		if (nonRoot == null) {
+		if (nonRoot === null) {
 			throw new IllegalStateException("There is no element with the specified element id.");
 		}
 		rootObject.multiValuedNonContainmentEReference.add(nonRoot);
@@ -138,10 +146,10 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private def void replaceMultiValuedNonContainmentNonRootObject(Root rootObject, String oldId, String newId) {
 		val oldElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == oldId);
 		val newElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == newId);
-		if (oldElement == null) {
+		if (oldElement === null) {
 			throw new IllegalStateException("There is no element with the specified old element id.");
 		}
-		if (newElement == null) {
+		if (newElement === null) {
 			throw new IllegalStateException("There is no element with the specified new element id.");
 		}
 		val oldIndex = rootObject.multiValuedNonContainmentEReference.indexOf(oldElement);
@@ -154,7 +162,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	private def void removeMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
 		val objectToRemove = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == id);
-		if (objectToRemove == null) {
+		if (objectToRemove === null) {
 			throw new IllegalStateException("There is no element with the specified element id.");
 		}
 		if (!rootObject.multiValuedNonContainmentEReference.contains(objectToRemove)) {
@@ -256,6 +264,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRootTest");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
+		compareMonitor.set(ChangeType.CreateEObject);
 		compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
@@ -268,6 +277,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
 		unsetSingleValuedContainmentNonRootObject(rootElement);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
+		compareMonitor.set(ChangeType.DeleteEObject);
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
 		//compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
 		compareMonitor.assertEqualWithStatic();
@@ -407,6 +417,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType.InsertNonContainmentEReference);
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
+		
 	}
 	
 	@Test
@@ -481,5 +492,47 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		deleteAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+	}
+	
+	@Test
+	public def void testReverse() {
+		val root = AllElementTypesFactory.eINSTANCE.createRoot();
+		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
+		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
+		nonRoot.id = "testId";
+		root.singleValuedContainmentEReference = nonRoot;
+		val result = saveAndSynchronizeChanges(root);
+		this.virtualModel.reverseChanges(result);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		val testResourceSet = new ResourceSetImpl();
+		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		val sourceModel = testResourceSet.getResource(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		assertEquals(null, (sourceModel.contents.get(0) as Root).singleValuedContainmentEReference);
+		val targetModel = testResourceSet.getResource(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		assertEquals(null, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference);
+	}
+	
+	
+	@Test
+	public def void testApplyBidirectional() {
+		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
+		startRecordingChanges(targetRoot);
+		val newId = "testId";
+		targetRoot.id = newId
+		val propagatedChanges = saveAndSynchronizeChanges(targetRoot);
+		assertEquals(1, propagatedChanges.size);
+		val compositePropagatedChange = propagatedChanges.get(0).consequentialChanges as CompositeContainerChange
+		assertTrue(compositePropagatedChange.EChanges.get(0) instanceof ReplaceSingleValuedEAttribute<?,?>)
+		val replaceChange = compositePropagatedChange.EChanges.get(0) as ReplaceSingleValuedEAttribute<?,?>
+		assertEquals(newId, replaceChange.newValue);
+		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
+		val testResourceSet = new ResourceSetImpl();
+		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		val sourceModel = testResourceSet.getResource(TEST_SOURCE_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		assertEquals(newId, (sourceModel.contents.get(0) as Root).id);
+		val targetModel = testResourceSet.getResource(TEST_TARGET_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		assertEquals(newId, (targetModel.contents.get(0) as Root).id);
 	}
 }

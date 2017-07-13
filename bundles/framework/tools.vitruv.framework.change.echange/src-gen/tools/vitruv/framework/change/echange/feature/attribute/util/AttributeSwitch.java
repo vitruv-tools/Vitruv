@@ -94,8 +94,8 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE: {
 				AdditiveAttributeEChange<?, ?> additiveAttributeEChange = (AdditiveAttributeEChange<?, ?>)theEObject;
 				T1 result = caseAdditiveAttributeEChange(additiveAttributeEChange);
-				if (result == null) result = caseAdditiveEChange(additiveAttributeEChange);
 				if (result == null) result = caseUpdateAttributeEChange(additiveAttributeEChange);
+				if (result == null) result = caseAdditiveEChange(additiveAttributeEChange);
 				if (result == null) result = caseFeatureEChange(additiveAttributeEChange);
 				if (result == null) result = caseAtomicEChange(additiveAttributeEChange);
 				if (result == null) result = caseEChange(additiveAttributeEChange);
@@ -105,8 +105,8 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE: {
 				SubtractiveAttributeEChange<?, ?> subtractiveAttributeEChange = (SubtractiveAttributeEChange<?, ?>)theEObject;
 				T1 result = caseSubtractiveAttributeEChange(subtractiveAttributeEChange);
-				if (result == null) result = caseSubtractiveEChange(subtractiveAttributeEChange);
 				if (result == null) result = caseUpdateAttributeEChange(subtractiveAttributeEChange);
+				if (result == null) result = caseSubtractiveEChange(subtractiveAttributeEChange);
 				if (result == null) result = caseFeatureEChange(subtractiveAttributeEChange);
 				if (result == null) result = caseAtomicEChange(subtractiveAttributeEChange);
 				if (result == null) result = caseEChange(subtractiveAttributeEChange);
@@ -146,13 +146,13 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: {
 				ReplaceSingleValuedEAttribute<?, ?> replaceSingleValuedEAttribute = (ReplaceSingleValuedEAttribute<?, ?>)theEObject;
 				T1 result = caseReplaceSingleValuedEAttribute(replaceSingleValuedEAttribute);
+				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseAdditiveAttributeEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseSubtractiveAttributeEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseUpdateAttributeEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseUpdateAttributeEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseFeatureEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseAtomicEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = caseEChange(replaceSingleValuedEAttribute);

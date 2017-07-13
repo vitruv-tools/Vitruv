@@ -80,10 +80,6 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 				return createCompoundEChangeAdapter();
 			}
 			@Override
-			public <A extends EObject, B extends EObject, T extends EObject> Adapter caseMoveEObject(MoveEObject<A, B, T> object) {
-				return createMoveEObjectAdapter();
-			}
-			@Override
 			public <A extends EObject, F extends EStructuralFeature> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> object) {
 				return createExplicitUnsetEFeatureAdapter();
 			}
@@ -128,6 +124,14 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 				return createRemoveAndDeleteNonRootAdapter();
 			}
 			@Override
+			public <A extends EObject, T extends EObject> Adapter caseCreateAndReplaceNonRoot(CreateAndReplaceNonRoot<A, T> object) {
+				return createCreateAndReplaceNonRootAdapter();
+			}
+			@Override
+			public <A extends EObject, T extends EObject> Adapter caseReplaceAndDeleteNonRoot(ReplaceAndDeleteNonRoot<A, T> object) {
+				return createReplaceAndDeleteNonRootAdapter();
+			}
+			@Override
 			public <A extends EObject, T extends EObject> Adapter caseCreateAndReplaceAndDeleteNonRoot(CreateAndReplaceAndDeleteNonRoot<A, T> object) {
 				return createCreateAndReplaceAndDeleteNonRootAdapter();
 			}
@@ -166,20 +170,6 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createCompoundEChangeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.MoveEObject <em>Move EObject</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject
-	 * @generated
-	 */
-	public Adapter createMoveEObjectAdapter() {
 		return null;
 	}
 
@@ -334,6 +324,34 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createRemoveAndDeleteNonRootAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot <em>Create And Replace Non Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
+	 * @generated
+	 */
+	public Adapter createCreateAndReplaceNonRootAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot <em>Replace And Delete Non Root</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
+	 * @generated
+	 */
+	public Adapter createReplaceAndDeleteNonRootAdapter() {
 		return null;
 	}
 

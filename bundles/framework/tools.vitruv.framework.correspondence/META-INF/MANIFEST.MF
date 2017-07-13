@@ -5,7 +5,6 @@ Bundle-SymbolicName: tools.vitruv.framework.correspondence;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j,
- org.apache.commons.lang,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,

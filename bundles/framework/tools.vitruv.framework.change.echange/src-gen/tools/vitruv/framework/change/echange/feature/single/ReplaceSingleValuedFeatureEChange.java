@@ -15,6 +15,11 @@ import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEC
  * A representation of the model object '<em><b>Replace Single Valued Feature EChange</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * Abstract EChange which replaces a single valued attribute or reference.
+ * <!-- end-model-doc -->
+ *
  *
  * @see tools.vitruv.framework.change.echange.feature.single.SinglePackage#getReplaceSingleValuedFeatureEChange()
  * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
@@ -24,8 +29,13 @@ public interface ReplaceSingleValuedFeatureEChange<A extends EObject, F extends 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The change don't replace the default value.
+	 * @return The change don't replace the default value.
+	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='T _oldValue = this.getOldValue();\nF _affectedFeature = this.getAffectedFeature();\n<%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();\nboolean _equals = <%java.util.Objects%>.equals(_oldValue, _defaultValue);\nreturn (!_equals);'"
 	 * @generated
 	 */
 	boolean isFromNonDefaultValue();
@@ -33,8 +43,13 @@ public interface ReplaceSingleValuedFeatureEChange<A extends EObject, F extends 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * *
+	 * The change don't replaces a value with the default value.
+	 * @return The change don't replaces a value with the default value.
+	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return !java.util.Objects.equals(getNewValue(), getAffectedFeature().getDefaultValue());'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='T _newValue = this.getNewValue();\nF _affectedFeature = this.getAffectedFeature();\n<%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();\nboolean _equals = <%java.util.Objects%>.equals(_newValue, _defaultValue);\nreturn (!_equals);'"
 	 * @generated
 	 */
 	boolean isToNonDefaultValue();

@@ -12,6 +12,11 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * A representation of the model object '<em><b>Subtraction</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * EChange which replaces an EObject in an EList.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

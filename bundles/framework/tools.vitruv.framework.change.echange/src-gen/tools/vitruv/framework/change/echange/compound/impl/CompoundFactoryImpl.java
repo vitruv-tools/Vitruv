@@ -2,13 +2,18 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
+import org.eclipse.emf.common.command.Command;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import tools.vitruv.framework.change.echange.compound.*;
 
@@ -56,13 +61,14 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case CompoundPackage.MOVE_EOBJECT: return createMoveEObject();
 			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE: return createExplicitUnsetEAttribute();
 			case CompoundPackage.EXPLICIT_UNSET_EREFERENCE: return createExplicitUnsetEReference();
 			case CompoundPackage.CREATE_AND_INSERT_ROOT: return createCreateAndInsertRoot();
 			case CompoundPackage.REMOVE_AND_DELETE_ROOT: return createRemoveAndDeleteRoot();
 			case CompoundPackage.CREATE_AND_INSERT_NON_ROOT: return createCreateAndInsertNonRoot();
 			case CompoundPackage.REMOVE_AND_DELETE_NON_ROOT: return createRemoveAndDeleteNonRoot();
+			case CompoundPackage.CREATE_AND_REPLACE_NON_ROOT: return createCreateAndReplaceNonRoot();
+			case CompoundPackage.REPLACE_AND_DELETE_NON_ROOT: return createReplaceAndDeleteNonRoot();
 			case CompoundPackage.CREATE_AND_REPLACE_AND_DELETE_NON_ROOT: return createCreateAndReplaceAndDeleteNonRoot();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -74,9 +80,33 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public <A extends EObject, B extends EObject, T extends EObject> MoveEObject<A, B, T> createMoveEObject() {
-		MoveEObjectImpl<A, B, T> moveEObject = new MoveEObjectImpl<A, B, T>();
-		return moveEObject;
+	@Override
+	public Object createFromString(EDataType eDataType, String initialValue) {
+		switch (eDataType.getClassifierID()) {
+			case CompoundPackage.COMMAND:
+				return createCommandFromString(eDataType, initialValue);
+			case CompoundPackage.RESOURCE_SET:
+				return createResourceSetFromString(eDataType, initialValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String convertToString(EDataType eDataType, Object instanceValue) {
+		switch (eDataType.getClassifierID()) {
+			case CompoundPackage.COMMAND:
+				return convertCommandToString(eDataType, instanceValue);
+			case CompoundPackage.RESOURCE_SET:
+				return convertResourceSetToString(eDataType, instanceValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
 	}
 
 	/**
@@ -144,9 +174,65 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public <A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRoot() {
+		CreateAndReplaceNonRootImpl<A, T> createAndReplaceNonRoot = new CreateAndReplaceNonRootImpl<A, T>();
+		return createAndReplaceNonRoot;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRoot() {
+		ReplaceAndDeleteNonRootImpl<A, T> replaceAndDeleteNonRoot = new ReplaceAndDeleteNonRootImpl<A, T>();
+		return replaceAndDeleteNonRoot;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A, T> createCreateAndReplaceAndDeleteNonRoot() {
 		CreateAndReplaceAndDeleteNonRootImpl<A, T> createAndReplaceAndDeleteNonRoot = new CreateAndReplaceAndDeleteNonRootImpl<A, T>();
 		return createAndReplaceAndDeleteNonRoot;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Command createCommandFromString(EDataType eDataType, String initialValue) {
+		return (Command)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertCommandToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ResourceSet createResourceSetFromString(EDataType eDataType, String initialValue) {
+		return (ResourceSet)super.createFromString(eDataType, initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertResourceSetToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

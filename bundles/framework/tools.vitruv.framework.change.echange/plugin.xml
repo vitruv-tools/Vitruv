@@ -11,7 +11,7 @@
       <package
             uri="http://tools.vitruv/EChange/EObject/1.0"
             class="tools.vitruv.framework.change.echange.eobject.EobjectPackage"
-            genModel="metamodel/EObject.xcore"/>
+            genModel="metamodel/echange.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -19,7 +19,7 @@
       <package
             uri="http://tools.vitruv/EChange/Compound/1.0"
             class="tools.vitruv.framework.change.echange.compound.CompoundPackage"
-            genModel="metamodel/Compound.xcore"/>
+            genModel="metamodel/echange.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -27,7 +27,7 @@
       <package
             uri="http://tools.vitruv/EChange/1.0"
             class="tools.vitruv.framework.change.echange.EChangePackage"
-            genModel="metamodel/EChange.xcore"/>
+            genModel="metamodel/echange.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -35,7 +35,7 @@
       <package
             uri="http://tools.vitruv/EChange/Feature/1.0"
             class="tools.vitruv.framework.change.echange.feature.FeaturePackage"
-            genModel="metamodel/Feature.xcore"/>
+            genModel="metamodel/echange.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -43,7 +43,7 @@
       <package
             uri="http://tools.vitruv/EChange/Feature/List/1.0"
             class="tools.vitruv.framework.change.echange.feature.list.ListPackage"
-            genModel="metamodel/List.xcore"/>
+            genModel="metamodel/echange.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -51,7 +51,7 @@
       <package
             uri="http://tools.vitruv/EChange/Feature/Reference/Containment/1.0"
             class="tools.vitruv.framework.change.echange.feature.reference.ReferencePackage"
-            genModel="metamodel/Reference.xcore"/>
+            genModel="metamodel/echange.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -59,7 +59,7 @@
       <package
             uri="http://tools.vitruv/EChange/Root/1.0"
             class="tools.vitruv.framework.change.echange.root.RootPackage"
-            genModel="metamodel/Root.xcore"/>
+            genModel="metamodel/echange.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -67,7 +67,7 @@
       <package
             uri="http://tools.vitruv/EChange/Feature/Single/1.0"
             class="tools.vitruv.framework.change.echange.feature.single.SinglePackage"
-            genModel="metamodel/Single.xcore"/>
+            genModel="metamodel/echange.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -75,7 +75,7 @@
       <package
             uri="http://tools.vitruv/EChange/Feature/Attribute/1.0"
             class="tools.vitruv.framework.change.echange.feature.attribute.AttributePackage"
-            genModel="metamodel/Attribute.xcore"/>
+            genModel="metamodel/echange.genmodel"/>
    </extension>
 
 </plugin>

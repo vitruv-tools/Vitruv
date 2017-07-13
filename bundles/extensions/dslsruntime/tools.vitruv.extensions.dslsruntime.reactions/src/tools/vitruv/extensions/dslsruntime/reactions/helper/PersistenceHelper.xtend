@@ -2,16 +2,18 @@ package tools.vitruv.extensions.dslsruntime.reactions.helper
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.core.resources.IFile
-import tools.vitruv.framework.util.bridges.EMFBridge
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
+import java.util.TimeZone
+import java.util.Locale
 
 public final class PersistenceHelper {
 	private new() {}
 	
 	public static def EObject getModelRoot(EObject modelObject) {
 		var result = modelObject;
-		while (result.eContainer() != null) {
+		while (result.eContainer() !== null) {
 			result = result.eContainer();
 		}
 		return result;
@@ -22,10 +24,42 @@ public final class PersistenceHelper {
 	}
 
 	private static def URI getURIOfElementProject(EObject element) {
-		val IFile sourceModelFile = EMFBridge.getIFileForEMFUri(element.eResource().URI);
-		val IProject projectSourceModel = sourceModelFile.getProject();
-		var String srcFolderPath = projectSourceModel.getFullPath().toString();
-		return URI.createPlatformResourceURI(srcFolderPath, true);
+		val elementUri = element.eResource().URI;
+		if (elementUri.isPlatform) {
+			val IFile sourceModelFile = URIUtil.getIFileForEMFUri(elementUri);
+			val IProject projectSourceModel = sourceModelFile.getProject();
+			var String srcFolderPath = projectSourceModel.getFullPath().toString();
+			return URI.createPlatformResourceURI(srcFolderPath, true);
+		} else if (elementUri.isFile) {
+			// FIXME HK This is a prototypical implementation: It is not easy
+			// to extract the project from a file URI.
+			var shortenedUri = elementUri//.trimSegments(1);
+			val possibleDirectories = #["src", "src-gen", "xtend-gen", "model", "models", "code"];
+			// Remove last segment as long as we are not in src directory or in the test project directory
+			while (!possibleDirectories.contains(shortenedUri.lastSegment)
+				&& !isUriTestProject(shortenedUri)) {
+				shortenedUri = shortenedUri.trimSegments(1);
+			}
+			// We are not in the test root folder yet, so trim another segment as we are in one of the possible directories
+			if (!isUriTestProject(shortenedUri)) {
+				shortenedUri = shortenedUri.trimSegments(1);
+			}
+			return shortenedUri 
+			
+		} else {
+			throw new UnsupportedOperationException("Other URI types than file and platform are currently not supported");
+		}
+	}
+	
+	private static def boolean isUriTestProject(URI uri) {
+		val lastSegment = uri.lastSegment;
+		if (uri.lastSegment == null) {
+			throw new IllegalStateException("The URI " + uri + " is empty");
+		}
+		// TODO This is really hacky:
+		// Test projects contain the time zone identifier in short and English, so check for it
+		val timezoneID = TimeZone.^default.getDisplayName(true, TimeZone.SHORT, Locale.ENGLISH);
+		return lastSegment.contains(timezoneID);
 	}
 
 	private static def URI appendPathToURI(URI baseURI, String relativePath) {

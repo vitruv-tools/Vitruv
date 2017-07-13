@@ -16,6 +16,11 @@ import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
  * A representation of the model object '<em><b>Create And Insert EObject</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ *  Abstract EChange which creates a new EObject and inserts it in a reference.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>

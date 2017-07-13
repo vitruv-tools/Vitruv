@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="root" nsURI="http://tools.vitruv/EChange/Root/1.0" nsPrefix="root">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="modelName" value="Change"/>
+    <details key="basePackage" value="tools.vitruv.framework.change.echange"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EDataType" name="Resource" instanceClassName="org.eclipse.emf.ecore.resource.Resource"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RootEChange" abstract="true" eSuperTypes="echange.ecore#//AtomicEChange">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which inserts or removes a root element."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uri" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;The uri of the resource."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resource" unique="false"
+        eType="#//Resource">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;The resource where the root element will be inserted or removed from.&#xA;Is only valid in resolved changes."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EInt">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;The index where the root element is inserted or removed."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InsertRootEObject">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which inserts a new root EObject into a resource. The object will&#xA;be taken from the staging area and needs to be filled by {@link CreateEObject} change first."/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//RootEChange"/>
+    <eGenericSuperTypes eClassifier="ecore:EClass eobject.ecore#//EObjectAddedEChange">
+      <eTypeArguments eTypeParameter="#//InsertRootEObject/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveRootEObject">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange removes an existing root EObject from its resource and places it in the staging area.&#xA;There it can be deleted or be taken by another change to reinsert it."/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//RootEChange"/>
+    <eGenericSuperTypes eClassifier="ecore:EClass eobject.ecore#//EObjectSubtractedEChange">
+      <eTypeArguments eTypeParameter="#//RemoveRootEObject/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>

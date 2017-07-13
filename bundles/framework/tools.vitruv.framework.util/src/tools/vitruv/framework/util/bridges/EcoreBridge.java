@@ -317,7 +317,9 @@ public final class EcoreBridge {
      * @return a direct and indirect content iterating iterable
      *
      * @see org.eclipse.emf.ecore.EObject#eAllContents() EObject.eAllContents()
+     * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil#getAllContents(EObject)}
      */
+    @Deprecated
     public static Iterable<EObject> getAllContents(final EObject eObject) {
         return JavaBridge.toIterable(eObject.eAllContents());
     }
@@ -330,7 +332,9 @@ public final class EcoreBridge {
      * @return a direct and indirect content iterating iterable
      *
      * @see org.eclipse.emf.ecore.Resource#eAllContents() Resource.eAllContents()
+     * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil#getAllContentsIterable(Resource)}
      */
+    @Deprecated
     public static Iterable<EObject> getAllContents(final Resource resource) {
         return JavaBridge.toIterable(resource.getAllContents());
     }

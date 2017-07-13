@@ -2,7 +2,10 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
+import org.eclipse.emf.common.command.Command;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -11,11 +14,29 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
+import tools.vitruv.framework.change.echange.EChangePackage;
+
+import tools.vitruv.framework.change.echange.compound.CompoundPackage;
+
+import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
+
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
+import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
 
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
+import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
+
+import tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl;
+
+import tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+
+import tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl;
 
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
@@ -27,6 +48,14 @@ import tools.vitruv.framework.change.echange.feature.reference.SubtractiveRefere
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 
 import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+
+import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
+
+import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
+
+import tools.vitruv.framework.change.echange.root.RootPackage;
+
+import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -78,6 +107,20 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	private EClass replaceSingleValuedEReferenceEClass = null;
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType resourceSetEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType commandEDataType = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -124,15 +167,39 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		isInited = true;
 
 		// Initialize simple dependencies
-		EobjectPackage.eINSTANCE.eClass();
-		ListPackage.eINSTANCE.eClass();
-		SinglePackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
+
+		// Obtain or create and register interdependencies
+		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
+		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
+		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
+		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
+		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
+		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
+		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
+		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theReferencePackage.createPackageContents();
+		theAttributePackage.createPackageContents();
+		theFeaturePackage.createPackageContents();
+		theEChangePackage.createPackageContents();
+		theListPackage.createPackageContents();
+		theSinglePackage.createPackageContents();
+		theCompoundPackage.createPackageContents();
+		theEobjectPackage.createPackageContents();
+		theRootPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theReferencePackage.initializePackageContents();
+		theAttributePackage.initializePackageContents();
+		theFeaturePackage.initializePackageContents();
+		theEChangePackage.initializePackageContents();
+		theListPackage.initializePackageContents();
+		theSinglePackage.initializePackageContents();
+		theCompoundPackage.initializePackageContents();
+		theEobjectPackage.initializePackageContents();
+		theRootPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theReferencePackage.freeze();
@@ -211,6 +278,24 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getResourceSet() {
+		return resourceSetEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getCommand() {
+		return commandEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ReferenceFactory getReferenceFactory() {
 		return (ReferenceFactory)getEFactoryInstance();
 	}
@@ -246,6 +331,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		removeEReferenceEClass = createEClass(REMOVE_EREFERENCE);
 
 		replaceSingleValuedEReferenceEClass = createEClass(REPLACE_SINGLE_VALUED_EREFERENCE);
+
+		// Create data types
+		resourceSetEDataType = createEDataType(RESOURCE_SET);
+		commandEDataType = createEDataType(COMMAND);
 	}
 
 	/**
@@ -322,20 +411,20 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		g2 = createEGenericType(theEcorePackage.getEReference());
 		g1.getETypeArguments().add(g2);
 		updateReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getUpdateReferenceEChange());
+		g2 = createEGenericType(additiveReferenceEChangeEClass_A);
+		g1.getETypeArguments().add(g2);
+		additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theEobjectPackage.getEObjectAddedEChange());
 		g2 = createEGenericType(additiveReferenceEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getUpdateReferenceEChange());
-		g2 = createEGenericType(additiveReferenceEChangeEClass_A);
-		g1.getETypeArguments().add(g2);
-		additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theEobjectPackage.getEObjectSubtractedEChange());
-		g2 = createEGenericType(subtractiveReferenceEChangeEClass_T);
+		g2 = createEGenericType(subtractiveReferenceEChangeEClass_A);
 		g1.getETypeArguments().add(g2);
 		subtractiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getUpdateReferenceEChange());
-		g2 = createEGenericType(subtractiveReferenceEChangeEClass_A);
+		g1 = createEGenericType(theEobjectPackage.getEObjectSubtractedEChange());
+		g2 = createEGenericType(subtractiveReferenceEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		subtractiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theListPackage.getInsertInListEChange());
@@ -366,6 +455,14 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		g2 = createEGenericType(removeEReferenceEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeEReferenceEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
+		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(theEcorePackage.getEReference());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
+		g1.getETypeArguments().add(g2);
+		replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getAdditiveReferenceEChange());
 		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -374,14 +471,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getSubtractiveReferenceEChange());
 		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
-		g1.getETypeArguments().add(g2);
-		replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theSinglePackage.getReplaceSingleValuedFeatureEChange());
-		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theEcorePackage.getEReference());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
 		g1.getETypeArguments().add(g2);
@@ -401,6 +490,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		initEClass(removeEReferenceEClass, RemoveEReference.class, "RemoveEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(replaceSingleValuedEReferenceEClass, ReplaceSingleValuedEReference.class, "ReplaceSingleValuedEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Initialize data types
+		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(commandEDataType, Command.class, "Command", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

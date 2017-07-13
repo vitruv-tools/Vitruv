@@ -4,6 +4,7 @@ package tools.vitruv.framework.change.echange.root.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.ETypeParameter;
@@ -11,10 +12,26 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.eclipse.emf.ecore.resource.Resource;
+
 import tools.vitruv.framework.change.echange.EChangePackage;
 
+import tools.vitruv.framework.change.echange.compound.CompoundPackage;
+import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
+import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
+import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
+import tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl;
+import tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl;
+import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+import tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl;
+import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
+import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
+import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
+import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject;
 import tools.vitruv.framework.change.echange.root.RootEChange;
@@ -48,6 +65,13 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * @generated
 	 */
 	private EClass removeRootEObjectEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType resourceEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -96,13 +120,39 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		isInited = true;
 
 		// Initialize simple dependencies
-		EobjectPackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
+
+		// Obtain or create and register interdependencies
+		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
+		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
+		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
+		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
+		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
+		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
+		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
+		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theRootPackage.createPackageContents();
+		theAttributePackage.createPackageContents();
+		theFeaturePackage.createPackageContents();
+		theEChangePackage.createPackageContents();
+		theListPackage.createPackageContents();
+		theSinglePackage.createPackageContents();
+		theCompoundPackage.createPackageContents();
+		theReferencePackage.createPackageContents();
+		theEobjectPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theRootPackage.initializePackageContents();
+		theAttributePackage.initializePackageContents();
+		theFeaturePackage.initializePackageContents();
+		theEChangePackage.initializePackageContents();
+		theListPackage.initializePackageContents();
+		theSinglePackage.initializePackageContents();
+		theCompoundPackage.initializePackageContents();
+		theReferencePackage.initializePackageContents();
+		theEobjectPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theRootPackage.freeze();
@@ -136,6 +186,24 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getRootEChange_Resource() {
+		return (EAttribute)rootEChangeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRootEChange_Index() {
+		return (EAttribute)rootEChangeEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getInsertRootEObject() {
 		return insertRootEObjectEClass;
 	}
@@ -147,6 +215,15 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 	 */
 	public EClass getRemoveRootEObject() {
 		return removeRootEObjectEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getResource() {
+		return resourceEDataType;
 	}
 
 	/**
@@ -179,10 +256,15 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		// Create classes and their features
 		rootEChangeEClass = createEClass(ROOT_ECHANGE);
 		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__URI);
+		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__RESOURCE);
+		createEAttribute(rootEChangeEClass, ROOT_ECHANGE__INDEX);
 
 		insertRootEObjectEClass = createEClass(INSERT_ROOT_EOBJECT);
 
 		removeRootEObjectEClass = createEClass(REMOVE_ROOT_EOBJECT);
+
+		// Create data types
+		resourceEDataType = createEDataType(RESOURCE);
 	}
 
 	/**
@@ -240,11 +322,16 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(rootEChangeEClass, RootEChange.class, "RootEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getRootEChange_Uri(), theEcorePackage.getEString(), "uri", "", 1, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRootEChange_Uri(), theEcorePackage.getEString(), "uri", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRootEChange_Resource(), this.getResource(), "resource", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRootEChange_Index(), theEcorePackage.getEInt(), "index", null, 0, 1, RootEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(insertRootEObjectEClass, InsertRootEObject.class, "InsertRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(removeRootEObjectEClass, RemoveRootEObject.class, "RemoveRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		// Initialize data types
+		initEDataType(resourceEDataType, Resource.class, "Resource", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

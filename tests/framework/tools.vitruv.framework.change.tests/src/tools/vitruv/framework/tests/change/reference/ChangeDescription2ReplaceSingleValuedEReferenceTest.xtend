@@ -10,7 +10,6 @@ import static extension tools.vitruv.framework.tests.change.util.CompoundEChange
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescription2ChangeTransformationTest {
-
 	@Test
 	def public void testReplaceSingleValuedEReferenceContainment() {
 		// prepare 
@@ -23,7 +22,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		// assert
 		val changes = getChanges()
 		changes.get(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			nonRoot, true, true)
+			nonRoot, true, true, unresolveAndResolveRecordedEChanges)
 	}
 
 	@Test
@@ -80,7 +79,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		// assert
 		val changes = getChanges()
 		changes.get(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
-			nonRoot, false, false)
+			nonRoot, false, false, unresolveAndResolveRecordedEChanges)
 	}
 
 	@Test
@@ -143,10 +142,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		changes.assertChangeCount(1);
 		val innerChanges = changes.claimChange(0).assertExplicitUnsetEReference.changes
 		innerChanges.assertChangeCount(1);
-		// FIXME HK Should be 2 changes!
-		changes.claimChange(0).assertExplicitUnsetEReference.atomicChanges.assertChangeCount(1);
-		innerChanges.get(0).assertReplaceSingleValuedEReference(rootElement, ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE,
-			nonRoot, null, true)
+		innerChanges.get(0).assertReplaceAndDeleteNonRoot(nonRoot, rootElement, ROOT__SINGLE_VALUED_UNSETTABLE_CONTAINMENT_EREFERENCE)
 	}
 	
 	@Test

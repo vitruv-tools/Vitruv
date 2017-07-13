@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
+import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
@@ -37,7 +38,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	@Override
 	public final void beforeTest() {
 		super.beforeTest();
-		this.changeRecorder = new AtomicEmfChangeRecorder();
+		this.changeRecorder = new AtomicEmfChangeRecorder(unresolveChanges());
 		setup();
 	}
 
@@ -47,6 +48,16 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			changeRecorder.endRecording();
 		}
 		cleanup();
+	}
+	
+	/**
+	 * Defines, if recorded changes shall be unresolved and resolved by the change propagation in the VSUM.
+	 * This defaults to <code>false</code>. If the used metamodel allows to use the
+	 * deresolution mechanism, overwrite this method an return <code>true</code>
+	 * @return <code>true</code> if recored changes shall be unresolved, <code>false</code> otherwise
+	 */
+	protected boolean unresolveChanges() {
+		return false;
 	}
 
 	/**
@@ -62,10 +73,11 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 */
 	protected abstract void cleanup();
 
-	private void propagateChanges(final VURI vuri) {
-		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
+	private List<PropagatedChange> propagateChanges(final VURI vuri) {
+		this.changeRecorder.endRecording();
+		final List<TransactionalChange> changes = unresolveChanges() ? changeRecorder.getUnresolvedChanges() : changeRecorder.getResolvedChanges();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-		this.getVirtualModel().propagateChange(compositeChange);
+		return this.getVirtualModel().propagateChange(compositeChange);
 	}
 
 	private void startRecordingChanges(Resource resource) {
@@ -91,13 +103,15 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * @param object
 	 *            the {@link EObject} to save and propagated recorded changes
 	 *            for
+	 * @return a list with the {@link PropagatedChange}s, containing the original and consequential changes
 	 * @throws IOException
 	 */
-	protected void saveAndSynchronizeChanges(EObject object) throws IOException {
+	protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) throws IOException {
 		Resource resource = object.eResource();
 		EcoreResourceBridge.saveResource(resource);
-		this.propagateChanges(VURI.getInstance(resource));
+		List<PropagatedChange> result = this.propagateChanges(VURI.getInstance(resource));
 		this.startRecordingChanges(resource);
+		return result;
 	}
 
 	/**
@@ -113,7 +127,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * @throws IOException
 	 */
 	protected void createAndSynchronizeModel(String modelPathInProject, EObject rootElement) throws IOException {
-		if (StringUtils.isEmpty(modelPathInProject) || rootElement == null) {
+		if (StringUtil.isEmpty(modelPathInProject) || rootElement == null) {
 			throw new IllegalArgumentException();
 		}
 		Resource resource = createModelResource(modelPathInProject);
@@ -131,7 +145,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * @throws IOException
 	 */
 	protected void deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
-		if (StringUtils.isEmpty(modelPathInProject)) {
+		if (StringUtil.isEmpty(modelPathInProject)) {
 			throw new IllegalArgumentException();
 		}
 		Resource resource = getModelResource(modelPathInProject);

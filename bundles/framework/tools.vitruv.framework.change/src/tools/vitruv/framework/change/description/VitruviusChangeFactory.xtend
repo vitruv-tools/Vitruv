@@ -1,20 +1,22 @@
 package tools.vitruv.framework.change.description
 
-import tools.vitruv.framework.util.datatypes.VURI
-import org.eclipse.emf.ecore.change.ChangeDescription
-import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
-import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
-import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
-import org.eclipse.emf.ecore.EObject
 import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.change.ChangeDescription
+import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
+import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
+import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
+import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
+import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
+import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -28,7 +30,7 @@ class VitruviusChangeFactory {
 	private new() {}
 	
 	public static def VitruviusChangeFactory getInstance() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new VitruviusChangeFactory();
 		}
 		return instance;
@@ -39,7 +41,17 @@ class VitruviusChangeFactory {
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
 	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		return new EMFModelChangeImpl(changeDescription, vuri);
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
+		return new EMFModelChangeImpl(changes, vuri);
+	}
+	
+	public def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
+		return new LegacyEMFModelChangeImpl(changeDescription, changes, vuri);
+	}
+	
+	public def ConcreteChange createConcreteApplicableChange(EChange change, VURI vuri) {
+		return new ConcreteApplicableChangeImpl(change, vuri);
 	}
 	
 	public def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
@@ -48,11 +60,13 @@ class VitruviusChangeFactory {
 	
 	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		val vuri = VURI.getInstance(changedFileResource);
+		var EChange eChange = null
 		if (kind == FileChangeKind.Create) {
-			return new ConcreteChangeImpl(generateFileCreateChange(changedFileResource), vuri);
+			eChange = generateFileCreateChange(changedFileResource);
 		} else {
-			return new ConcreteChangeImpl(generateFileDeleteChange(changedFileResource), vuri);
+			eChange = generateFileDeleteChange(changedFileResource);
 		}
+		return new ConcreteChangeImpl(eChange, vuri)
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {
@@ -74,28 +88,36 @@ class VitruviusChangeFactory {
 		}
 		return compositeChange;
 	}
+	
+	public def <T extends VitruviusChange> T clone(T originalChange) {
+		return new ChangeCloner().clone(originalChange) as T;
+	}
 		
 	private def EChange generateFileCreateChange(Resource resource) {
 		var EObject rootElement = null;
+		var index = 0
         if (1 == resource.getContents().size()) {
             rootElement = resource.getContents().get(0);
         } else if (1 < resource.getContents().size()) {
             throw new RuntimeException(
                     "The requested model instance resource '" + resource + "' has to contain at most one root element "
                             + "in order to be added to the VSUM without an explicit import!");
-        } else { // resource.getContents().size() == null --> no element in newModelInstance
+        } else { // resource.getContents().size() === null --> no element in newModelInstance
             logger.info("Empty model file created: " + VURI.getInstance(resource)
                     + ". Propagation of 'root element created' not triggered.");
             return null;
         }
-        val CreateAndInsertRoot<EObject> createRootEObj = TypeInferringCompoundEChangeFactory.createCreateAndInsertRootChange(rootElement, resource.URI.toString);
-        return createRootEObj;
+        val CreateAndInsertRoot<EObject> createRootEObj =  TypeInferringCompoundEChangeFactory.
+        	instance.createCreateAndInsertRootChange(rootElement, resource, index);
+        return createRootEObj; 
 	}
 	
-	private def generateFileDeleteChange(Resource resource) {
+	private def EChange generateFileDeleteChange(Resource resource) {
 		if (0 < resource.getContents().size()) {
-            val EObject rootElement = resource.getContents().get(0);
-            val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory.createRemoveAndDeleteRootChange(rootElement, resource.URI.toString);
+			val index = 0
+            val EObject rootElement = resource.getContents().get(index);
+            val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory.
+            	instance.createRemoveAndDeleteRootChange(rootElement, resource, index);
             return deleteRootObj;
         }
         logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");

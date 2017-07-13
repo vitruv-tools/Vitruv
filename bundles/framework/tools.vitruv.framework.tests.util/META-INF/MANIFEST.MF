@@ -4,7 +4,7 @@ Bundle-Name: Vitruvius Extension Test Utilities
 Bundle-SymbolicName: tools.vitruv.framework.tests.util
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: tools.vitruv.framework.vsum,
+Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.apache.log4j,
@@ -12,15 +12,15 @@ Require-Bundle: tools.vitruv.framework.vsum,
  org.junit,
  tools.vitruv.framework.util,
  org.eclipse.emf.ecore.change,
- org.apache.commons.codec,
  org.eclipse.emf.emfstore.common,
  tools.vitruv.framework.change,
- tools.vitruv.framework.change.processing,
+ tools.vitruv.framework.change.processing;visibility:=reexport,
  org.eclipse.emf.transaction,
  org.eclipse.jdt.core,
  org.eclipse.jdt.launching,
  tools.vitruv.framework.userinteraction;visibility:=reexport,
- tools.vitruv.framework.tuid
+ tools.vitruv.framework.tuid,
+ edu.kit.ipd.sdq.commons.util.java
 Export-Package: tools.vitruv.framework.tests,
  tools.vitruv.framework.tests.util
 Bundle-Vendor: vitruv.tools

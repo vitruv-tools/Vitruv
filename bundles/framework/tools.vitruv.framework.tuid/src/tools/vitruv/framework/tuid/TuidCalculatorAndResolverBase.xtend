@@ -137,7 +137,8 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 	def private Integer claimCacheKey(String tuid) {
 		var Integer key = getCacheKeyForTuidString(tuid)
 		if (key === null) {
-			throw new IllegalArgumentException('''Cannot get the cache key for the tuid '«»«tuid»' because it is not of the form '{marker}{key}...'!''')
+			LOGGER.warn(''' TUID «tuid» is not in the cache''');
+			return null;
 		} else {
 			return key
 		}
@@ -210,6 +211,10 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 		var root = root_finalParam_
 		if (root === null) {
 			root = claimRootFromCache(tuid)
+			if (root === null) {
+				LOGGER.warn('''No EObject found for Tuid: «tuid» in the cache''')
+				return null;
+			}
 		}
 		var String identifier = getTuidWithoutRootObjectPrefix(root, tuid)
 		if (identifier === null) {
@@ -228,7 +233,8 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 	}
 
 	def private EObject claimRootFromCache(String tuid) {
-		var int key = claimCacheKey(tuid)
+		var key = claimCacheKey(tuid)
+		if (key === null) return null;
 		return this.cachedResourcelessRoots.claimValueForKey(key)
 	}
 
@@ -241,7 +247,7 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 	def private String getTuidWithoutRootObjectPrefix(EObject root, String extTuid) {
 		var String rootTuid = calculateTuidFromEObject(root)
 		var String normalizedExtTuid = extTuid;
-		if (root.eResource != null) {
+		if (root.eResource !== null) {
 			val uriConverter = root.eResource.resourceSet.URIConverter
 			rootTuid = rootTuid.getUriNormalizedTuid(uriConverter);
 			normalizedExtTuid = extTuid.getUriNormalizedTuid(uriConverter);

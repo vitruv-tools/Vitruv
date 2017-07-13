@@ -6,8 +6,8 @@ import java.util.Set;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.domains.repository.ModelRepository;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
+import tools.vitruv.framework.vsum.ModelRepository;
 
 /*
  * @startuml doc-files/Blackboard.png

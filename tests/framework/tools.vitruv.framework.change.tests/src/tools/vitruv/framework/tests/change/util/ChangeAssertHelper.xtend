@@ -1,25 +1,26 @@
 package tools.vitruv.framework.tests.change.util
 
+import java.util.List
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.junit.Assert
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
-import tools.vitruv.framework.change.echange.compound.MoveEObject
-import tools.vitruv.framework.util.datatypes.Quadruple
-import java.util.List
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.junit.Assert
-
-import tools.vitruv.framework.change.echange.feature.FeatureEChange
-import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
-import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.compound.MoveEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.feature.FeatureEChange
+import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+import tools.vitruv.framework.change.echange.resolve.StagingArea
+import tools.vitruv.framework.change.echange.root.RootEChange
+import edu.kit.ipd.sdq.commons.util.java.Quadruple
 
 class ChangeAssertHelper {
 
@@ -39,19 +40,24 @@ class ChangeAssertHelper {
 	}
 
 	public static def assertOldValue(EChange eChange, Object oldValue) {
-		Assert.assertEquals("old value must be the same than the given old value", oldValue,
-			(eChange as SubtractiveEChange<?>).oldValue)
+		if (oldValue instanceof EObject) {
+			assertEqualsOrCopy("old value must be the same or a copy than the given old value", oldValue,
+				(eChange as SubtractiveEChange<?>).oldValue as EObject)				
+		} else {
+			Assert.assertEquals("old value must be the same than the given old value", oldValue,
+				(eChange as SubtractiveEChange<?>).oldValue)			
+		}
 	}
 
 	public static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
 		val newValueInChange = eChange.newValue
-		var condition = newValue == null && newValueInChange == null;
+		var condition = newValue === null && newValueInChange === null;
 		if (newValue instanceof EObject && newValueInChange instanceof EObject) {
 			val newEObject = newValue as EObject
 			var newEObjectInChange = newValueInChange as EObject
 			condition = EcoreUtil.equals(newEObject, newEObjectInChange)
 		} else if (!condition) {
-			condition = newValue != null && newValue.equals(newValueInChange)
+			condition = newValue !== null && newValue.equals(newValueInChange)
 		}
 		Assert.assertTrue(
 			"new value in change ' " + newValueInChange + "' must be the same than the given new value '" + newValue +
@@ -60,11 +66,11 @@ class ChangeAssertHelper {
 
 	public static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
 		if (eChange instanceof FeatureEChange<?, ?>) {
-			Assert.assertEquals("The actual affected EObject is a different one than the expected affected EObject",
-				expectedAffectedEObject, (eChange as FeatureEChange<?, ?>).affectedEObject)
+			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
+				expectedAffectedEObject, eChange.affectedEObject)
 		} else if (eChange instanceof EObjectExistenceEChange<?>) {
-			Assert.assertEquals("The actual affected EObject is a different one than the expected affected EObject",
-				expectedAffectedEObject, (eChange as EObjectExistenceEChange<?>).affectedEObject)
+			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
+				expectedAffectedEObject, eChange.affectedEObject)
 		} else {
 			throw new IllegalArgumentException();
 		}
@@ -93,7 +99,17 @@ class ChangeAssertHelper {
 		Assert.assertEquals("Change " + rootChange + " shall have the uri " + URI.createFileURI(expectedValue).toString,
 			URI.createFileURI(expectedValue).toString, rootChange.uri)
 	}
+	
+	def static void assertResource(RootEChange rootChange, Resource resource) {
+		Assert.assertEquals("Change " + rootChange + " shall have the resource " + resource,
+			rootChange.resource, resource)
+	}
 
+	def static void assertStagingArea(EObjectExistenceEChange<?> existenceChange, StagingArea stagingArea) {
+		Assert.assertEquals("Change " + existenceChange + " shall have the staging area " + stagingArea,
+			existenceChange.stagingArea, stagingArea)
+	}
+	
 	def static void assertIndex(UpdateSingleListEntryEChange<?, ?> change, int expectedIndex) {
 		Assert.assertEquals("The value is not at the correct index", expectedIndex, change.index)
 	}
@@ -116,4 +132,7 @@ class ChangeAssertHelper {
 			eCompoundChange.atomicChanges.size, atomicChanges)
 	}
 
+	def public static assertEqualsOrCopy(String message, EObject object1, EObject object2) {
+		Assert.assertTrue(message, EcoreUtil.equals(object1, object2))
+	}
 }

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="reference" nsURI="http://tools.vitruv/EChange/Feature/Reference/Containment/1.0"
+    nsPrefix="reference">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="modelName" value="Change"/>
+    <details key="basePackage" value="tools.vitruv.framework.change.echange.feature"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EDataType" name="ResourceSet" instanceClassName="org.eclipse.emf.ecore.resource.ResourceSet"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Command" instanceClassName="org.eclipse.emf.common.command.Command"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UpdateReferenceEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which updates a reference with a new value."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eOperations name="isContainment" unique="false" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="*&#xA;The affected reference is a containment reference."/>
+        <details key="body" value="&lt;%org.eclipse.emf.ecore.EReference%> _affectedFeature = this.getAffectedFeature();&#xA;return _affectedFeature.isContainment();"/>
+      </eAnnotations>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="ecore:EClass feature.ecore#//FeatureEChange">
+      <eTypeArguments eTypeParameter="#//UpdateReferenceEChange/A"/>
+      <eTypeArguments eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AdditiveReferenceEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which inserts an EObject into a reference."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//UpdateReferenceEChange">
+      <eTypeArguments eTypeParameter="#//AdditiveReferenceEChange/A"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass eobject.ecore#//EObjectAddedEChange">
+      <eTypeArguments eTypeParameter="#//AdditiveReferenceEChange/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SubtractiveReferenceEChange" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;Abstract EChange which removes an EObject from a reference."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//UpdateReferenceEChange">
+      <eTypeArguments eTypeParameter="#//SubtractiveReferenceEChange/A"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass eobject.ecore#//EObjectSubtractedEChange">
+      <eTypeArguments eTypeParameter="#//SubtractiveReferenceEChange/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InsertEReference">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which inserts an EObject into a many valued reference.&#xA;If the reference is a containment reference, the inserted object will be taken from the staging area.&#xA;There it must be placed by a {@link CreateEObject} EChange or by removing it from another reference."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="ecore:EClass list.ecore#//InsertInListEChange">
+      <eTypeArguments eTypeParameter="#//InsertEReference/A"/>
+      <eTypeArguments eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
+      <eTypeArguments eTypeParameter="#//InsertEReference/T"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="#//AdditiveReferenceEChange">
+      <eTypeArguments eTypeParameter="#//InsertEReference/A"/>
+      <eTypeArguments eTypeParameter="#//InsertEReference/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveEReference">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which removes an EObject from a many valued reference.&#xA;If the reference is a containment reference, the removed object will be placed in the staging area.&#xA;There it can be deleted by a {@link DeleteEObject} EChange or reinserted by another change."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="ecore:EClass list.ecore#//RemoveFromListEChange">
+      <eTypeArguments eTypeParameter="#//RemoveEReference/A"/>
+      <eTypeArguments eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
+      <eTypeArguments eTypeParameter="#//RemoveEReference/T"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="#//SubtractiveReferenceEChange">
+      <eTypeArguments eTypeParameter="#//RemoveEReference/A"/>
+      <eTypeArguments eTypeParameter="#//RemoveEReference/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReplaceSingleValuedEReference">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="*&#xA;EChange which replaces a single valued reference with a new EObject.&#xA;If the reference is a containment reference, the new object will be taken from the staging&#xA;area and the old one will be placed in it.&#xA;The new object must be placed in the staging area by a {@link CreateEObject} EChange or by removing&#xA;it from another reference.&#xA;The old one can be deleted by a {@link DeleteEObject} EChange or resinserted by another change."/>
+    </eAnnotations>
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="ecore:EClass single.ecore#//ReplaceSingleValuedFeatureEChange">
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedEReference/A"/>
+      <eTypeArguments eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EReference"/>
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedEReference/T"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="#//AdditiveReferenceEChange">
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedEReference/A"/>
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedEReference/T"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="#//SubtractiveReferenceEChange">
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedEReference/A"/>
+      <eTypeArguments eTypeParameter="#//ReplaceSingleValuedEReference/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>

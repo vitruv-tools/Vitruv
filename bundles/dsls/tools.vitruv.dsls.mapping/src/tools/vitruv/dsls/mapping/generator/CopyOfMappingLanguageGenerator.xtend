@@ -63,7 +63,7 @@
 //	
 //	def Collection<Reaction> doGenerate(MappingFile mappingFile, IFileSystemAccess fsa) {
 //		
-////		if (mappingFile.pluginName != null) {
+////		if (mappingFile.pluginName !== null) {
 ////			val contributorNames = mappingFile.imports.map[
 ////				EclipseBridge.getNameOfContributorOfExtension(
 ////					"org.eclipse.emf.ecore.generated_package",
@@ -406,7 +406,7 @@
 //					public static void propagateAttributesFrom«imp.toFirstUpperName»(
 //						«typeRef(mapping.correspondenceWrapperClassName)» «mapping.name.toFirstLower»,
 //						«typeRef(MappingExecutionState)» state) {
-//						«IF mapping.constraintsBody != null»
+//						«IF mapping.constraintsBody !== null»
 //							«FOR constraint : mapping.constraintsBody.expressions»
 //								«FOR updateTuidJava : clg.getEObjectsWithPossiblyChangedTuid(ih, #{#['this']->mapping.name.toFirstLower}, constraint, imp.package)»
 //								state.record(«updateTuidJava»);

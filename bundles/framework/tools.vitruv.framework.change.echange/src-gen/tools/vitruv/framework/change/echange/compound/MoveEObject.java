@@ -18,6 +18,10 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * A representation of the model object '<em><b>Move EObject</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * *
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -29,7 +33,7 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getMoveEObject()
- * @model
+ * @model ABounds="tools.vitruv.framework.change.echange.compound.EObj" BBounds="tools.vitruv.framework.change.echange.compound.EObj" TBounds="tools.vitruv.framework.change.echange.compound.EObj"
  * @generated
  */
 public interface MoveEObject<A extends EObject, B extends EObject, T extends EObject> extends CompoundEChange {

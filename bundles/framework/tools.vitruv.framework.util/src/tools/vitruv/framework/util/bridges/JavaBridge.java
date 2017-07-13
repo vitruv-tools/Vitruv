@@ -14,7 +14,6 @@ import java.io.File;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -204,7 +203,9 @@ public final class JavaBridge {
      * @param iterator
      *            an iterator
      * @return an iterable returning the iterator
+     * @deprecated {@link org.eclipse.xtext.xbase.lib.IteratorExtensions#toIterable(Iterator)}
      */
+    @Deprecated
     public static <T> Iterable<T> toIterable(final Iterator<T> iterator) {
         return new Iterable<T>() {
             @Override
@@ -212,23 +213,6 @@ public final class JavaBridge {
                 return iterator;
             }
         };
-    }
-
-    /**
-     * Currently unused method that adds the given classpath URLs to the classloader of the current
-     * thread.
-     *
-     * @param classpathURLs
-     *            the classpath URL to be added
-     */
-    @Deprecated
-    // TODO MK remove deprecated annotation from addClasspathURLsToCurrentThreadClassLoader once it
-    // is used again
-    public static void addClasspathURLsToCurrentThreadClassLoader(final Collection<URL> classpathURLs) {
-        final URL[] urls = classpathURLs.toArray(new URL[classpathURLs.size()]);
-        final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        final URLClassLoader urlClassLoader = new URLClassLoader(urls, contextClassLoader);
-        Thread.currentThread().setContextClassLoader(urlClassLoader);
     }
 
     /**
