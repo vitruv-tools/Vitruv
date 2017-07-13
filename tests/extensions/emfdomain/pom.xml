@@ -5,19 +5,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>tools.vitruv</groupId>
-		<artifactId>bundles</artifactId>
+		<artifactId>tests</artifactId>
 		<version>0.2.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
-	<artifactId>extensions</artifactId>
+	<artifactId>emf-tests</artifactId>
 	<packaging>pom</packaging>
-	<name>Extensions Modules</name>
+	<name>EMF Domain Test Modules</name>
 
 	<modules>
-		<module>dslsruntime</module>
-		<module>integration</module>
-		<module>constructionsimulation</module>
-		<module>emfdomain</module>
+		<module>tools.vitruv.domains.emf.monitorededitor.tests</module>
 	</modules>
-
+	
 </project>

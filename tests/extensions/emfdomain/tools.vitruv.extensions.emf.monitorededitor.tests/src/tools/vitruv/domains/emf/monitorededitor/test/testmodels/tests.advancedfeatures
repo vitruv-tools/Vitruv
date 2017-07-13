@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RootContainer xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://example.com/advancedfeatures">
+  <featureMapContaining/>
+  <referenceListContaining nonContainmentRefList="//@dummyDataContainerContaining/@dummyDataObjs.0 //@dummyDataContainerContaining/@dummyDataObjs.1"/>
+  <dummyDataContainerContaining>
+    <dummyDataObjs/>
+    <dummyDataObjs dummyData="1"/>
+    <dummyDataObjs dummyData="2"/>
+  </dummyDataContainerContaining>
+  <attributeListContaining>
+    <attrList>for</attrList>
+    <attrList>within</attrList>
+    <attrList>the</attrList>
+    <attrList>hollow</attrList>
+    <attrList>crown</attrList>
+  </attributeListContaining>
+</RootContainer>
