@@ -182,4 +182,8 @@ class AbstractVitruvDomain extends AbstractURIHaving implements TuidCalculator, 
 		return name;
 	}
 	
+	override getBuilderApplicator() {
+		return null;
+	}
+	
 }

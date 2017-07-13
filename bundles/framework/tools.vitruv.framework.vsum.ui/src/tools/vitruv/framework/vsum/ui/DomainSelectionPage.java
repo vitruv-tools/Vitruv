@@ -18,13 +18,14 @@ import tools.vitruv.framework.domains.VitruvDomainProvider;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class DomainSelectionPage extends WizardPage {
 
 	private static final String PAGENAME = "Vitruvius Project";
 	private static final String DESCRIPTION = "Create a new Vitruvius Project.";
-	private HashMap<IProject, HashSet<VitruvDomain>> selectedDomainsForProjects;
+	private Map<IProject, Set<VitruvDomain>> selectedDomainsForProjects;
 
 	private Composite container;
 
@@ -110,7 +111,7 @@ public class DomainSelectionPage extends WizardPage {
 	 * @return a HashMap that maps all project to their checked domains,
 	 *         respectively
 	 */
-	public HashMap<IProject, HashSet<VitruvDomain>> getCheckedDomains() {
+	public Map<IProject, Set<VitruvDomain>> getCheckedDomains() {
 		return selectedDomainsForProjects;
 	}
 

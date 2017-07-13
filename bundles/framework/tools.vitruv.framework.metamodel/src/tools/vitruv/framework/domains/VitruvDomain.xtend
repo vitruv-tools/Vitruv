@@ -14,4 +14,6 @@ interface VitruvDomain extends TuidAwareVitruvDomain {
 	def Map<Object, Object> getDefaultLoadOptions();
 	
 	def Map<Object, Object> getDefaultSaveOptions();
+	
+	def VitruviusProjectBuilderApplicator getBuilderApplicator();
 }

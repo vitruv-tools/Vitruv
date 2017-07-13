@@ -10,8 +10,8 @@ import org.eclipse.ui.IWorkbench;
 import tools.vitruv.framework.applications.VitruvApplication;
 import tools.vitruv.framework.domains.VitruvDomain;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class NewVitruvWizard extends Wizard implements INewWizard {
 
@@ -45,15 +45,17 @@ public class NewVitruvWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		System.out.println("Name " + projectNamePage.getEnteredName());
-		HashMap<IProject, HashSet<VitruvDomain>> map = domainSelectionPage.getCheckedDomains();
+		Map<IProject, Set<VitruvDomain>> map = domainSelectionPage.getCheckedDomains();
+		Iterable<VitruvApplication> applications = applicationSelectionPage.getSelectedApplications();
 		for (IProject project : map.keySet()) {
 			for (VitruvDomain domain : map.get(project)) {
 				System.out.println("Selected in project" + project.getName() + ": " + domain.getName());
 			}
 		}
-		for (VitruvApplication application : applicationSelectionPage.getSelectedApplications()) {
+		for (VitruvApplication application : applications) {
 			System.out.println("Selected Application: " + application.getName());
 		}
+		new VitruvInstanceCreator(map, applications).createProjectAndVsum();
 		return true;
 	}
 
