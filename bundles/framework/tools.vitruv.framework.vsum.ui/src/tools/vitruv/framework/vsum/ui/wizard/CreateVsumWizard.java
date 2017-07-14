@@ -21,7 +21,8 @@ public class CreateVsumWizard extends Wizard implements INewWizard {
 	protected ProjectNamePage projectNamePage;
 	protected DomainSelectionPage domainSelectionPage;
 	protected ApplicationSelectionPage applicationSelectionPage;
-
+	private boolean finished = false;
+	
 	public CreateVsumWizard() {
 	}
 
@@ -46,17 +47,23 @@ public class CreateVsumWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
+		// Avoid duplicate execution, when repeatedly hitting finish
+		if (finished) {
+			return true;
+		}
+		finished = true;
 		String name = projectNamePage.getEnteredName();
-		logger.info("Vsum name: " + name);
+		logger.info("Vitruvius wizard completed: ");
+		logger.info("  Vsum name: " + name);
 		Map<IProject, Set<VitruvDomain>> projectsToDomains = domainSelectionPage.getCheckedDomains();
 		Iterable<VitruvApplication> applications = applicationSelectionPage.getSelectedApplications();
 		for (IProject project : projectsToDomains.keySet()) {
 			for (VitruvDomain domain : projectsToDomains.get(project)) {
-				logger.info("Selected in project " + project.getName() + ": " + domain.getName());
+				logger.info("  Selected domain " + domain.getName() + " in project " + project.getName());
 			}
 		}
 		for (VitruvApplication application : applications) {
-			logger.info("Selected Application: " + application.getName());
+			logger.info("  Selected application: " + application.getName());
 		}
 		new VitruvInstanceCreator(name, projectsToDomains, applications).createVsumProject();
 		return true;

@@ -30,8 +30,11 @@ import java.util.Set;
 
 public class DomainSelectionPage extends WizardPage {
 
-	private static final String PAGENAME = "Vitruvius Project";
-	private static final String DESCRIPTION = "Create a new Vitruvius Project.";
+	private static final String DEFAULT_NEW_PROJECT_NAME = "MyProject";
+	private static final String CREATE_PROJECT_BUTTON_LABEL = "Create new project";
+	private static final String SELECTION_LABEL = "Select involved projects and their domains:";
+	private static final String PAGENAME = "Project and Domain Selection";
+	private static final String DESCRIPTION = "Select projects and their domains";
 	private Map<IProject, Set<VitruvDomain>> selectedDomainsForProjects;
 	private Tree tree;
 	private Composite container;
@@ -50,7 +53,7 @@ public class DomainSelectionPage extends WizardPage {
 		container.setLayout(layout);
 		layout.numColumns = 1;
 		Label label1 = new Label(container, SWT.NONE);
-		label1.setText("Select the Project and a required domain.");
+		label1.setText(SELECTION_LABEL);
 
 		tree = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 
@@ -65,15 +68,13 @@ public class DomainSelectionPage extends WizardPage {
 					TreeItem item = (TreeItem) event.item;
 					TreeItem parent = item.getParentItem();
 					if (item.getChecked()) {
-						// check a project automatically, when one of it's
-						// domains is checked
+						// check a project automatically, when one of it's domains is checked
 						if (null != parent) {
 							parent.setChecked(true);
 							selectedDomainsForProjects.get(parent.getData()).add((VitruvDomain) item.getData());
 						}
 					} else {
-						// all domains get deselected, when project is
-						// deselected.
+						// all domains get unselected, when project is unselected
 						if (null == parent) {
 							for (TreeItem child : item.getItems()) {
 								child.setChecked(false);
@@ -95,10 +96,10 @@ public class DomainSelectionPage extends WizardPage {
 		
 		final Text text = new Text(container, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		text.setText("MyProject");
+		text.setText(DEFAULT_NEW_PROJECT_NAME);
 		final Button button = new Button(container, SWT.PUSH);
 		button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		button.setText("Create model project");
+		button.setText(CREATE_PROJECT_BUTTON_LABEL);
 		
 		text.addKeyListener(new KeyListener() {
 			@Override

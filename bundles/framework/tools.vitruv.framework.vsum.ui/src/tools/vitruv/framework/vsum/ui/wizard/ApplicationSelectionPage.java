@@ -21,8 +21,9 @@ import java.util.List;
 
 public class ApplicationSelectionPage extends WizardPage {
 
-	private static final String PAGENAME = "Vitruvius Project";
-	private static final String DESCRIPTION = "Create a new Vitruvius Project.";
+	private static final String SELECTION_LABEL = "Select your applications:";
+	private static final String PAGENAME = "Application Selection";
+	private static final String DESCRIPTION = "Select applications for consistency preservation";
 
 	private Composite container;
 	private Collection<VitruvApplication> selectedApplications;
@@ -40,7 +41,7 @@ public class ApplicationSelectionPage extends WizardPage {
 	public void createControl(Composite parent) {
 		container = new Composite(parent, SWT.NONE);
 		Label label1 = new Label(container, SWT.NONE);
-		label1.setText("Select your applications:");
+		label1.setText(SELECTION_LABEL);
 		tree = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);

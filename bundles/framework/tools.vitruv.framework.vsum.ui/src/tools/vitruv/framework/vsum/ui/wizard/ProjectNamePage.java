@@ -12,9 +12,9 @@ import org.eclipse.swt.widgets.Text;
 
 public class ProjectNamePage extends WizardPage implements KeyListener {
 
-	private static final String PAGENAME = "Vitruvius Project";
-	private static final String DESCRIPTION = "Create a new Vitruvius Project.";
-	private static final String LABELTEXT = "Project name: ";
+	private static final String PAGENAME = "Project Name";
+	private static final String DESCRIPTION = "Specify Vitruvius project name";
+	private static final String LABELTEXT = "Vitruvius Project name: ";
 	private static final String DEFAULT_NAME = "MyVsumProject";
 
 	private Text text;
