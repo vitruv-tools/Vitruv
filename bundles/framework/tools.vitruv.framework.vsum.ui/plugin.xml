@@ -5,14 +5,14 @@
          point="org.eclipse.ui.newWizards">
       <category
             id="tools.vitruv.framework.vsum.ui.Vitruv"
-            name="Vitruvius">
+            name="Vitruv">
       </category>
       <wizard
             category="tools.vitruv.framework.vsum.ui.Vitruv"
             class="tools.vitruv.framework.vsum.ui.wizard.CreateVsumWizard"
             icon="resources/vitruvian.png"
             id="tools.vitruv.framework.vsum.ui.newvitruvwizard"
-            name="Vitruvius Project">
+            name="Vitruv Project">
       </wizard>
    </extension>
    <extension

@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class CreateVsumWizard extends Wizard implements INewWizard {
 	private static Logger logger = Logger.getLogger(CreateVsumWizard.class);
-	private static final String WINDOWTITLE = "New Vitruvius Project";
+	private static final String WINDOWTITLE = "New Vitruv Project";
 	protected ProjectNamePage projectNamePage;
 	protected DomainSelectionPage domainSelectionPage;
 	protected ApplicationSelectionPage applicationSelectionPage;
