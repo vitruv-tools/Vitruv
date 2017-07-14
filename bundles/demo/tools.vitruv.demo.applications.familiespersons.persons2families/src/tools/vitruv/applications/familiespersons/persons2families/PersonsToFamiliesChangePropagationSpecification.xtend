@@ -1,0 +1,7 @@
+package tools.vitruv.applications.familiespersons.persons2families
+
+import mir.reactions.AbstractChangePropagationSpecificationPersonsToFamilies
+
+class PersonsToFamiliesChangePropagationSpecification extends AbstractChangePropagationSpecificationPersonsToFamilies{
+	
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="tools.vitruv.domains.emf.builder.VitruviusEmfBuilder.id"
+         point="org.eclipse.core.resources.builders">
+      <builder>
+         <run
+               class="tools.vitruv.domains.emf.builder.VitruviusEmfBuilder">
+         </run>
+       </builder>
+   </extension>
+
+</plugin>

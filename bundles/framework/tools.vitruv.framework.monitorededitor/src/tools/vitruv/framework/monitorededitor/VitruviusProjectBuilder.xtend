@@ -12,12 +12,10 @@ import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.CoreException
 import java.util.Collection
 import java.io.File
+import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
 
 abstract class VitruviusProjectBuilder extends IncrementalProjectBuilder {
 	private static final Logger logger = Logger.getLogger(VitruviusProjectBuilder.getSimpleName())
-	
-	public static final String ARGUMENT_VMODEL_NAME = "virtualModelName";
-	public static final String ARGUMENT_FILE_EXTENSIONS = "fileExtensions";
 	
 	private Set<String> monitoredFileTypes
 	private VirtualModel virtualModel;
@@ -29,10 +27,10 @@ abstract class VitruviusProjectBuilder extends IncrementalProjectBuilder {
 	}
 	
 	private def void initializeBuilder() {
-		val vmodelFolderName = getCommand().getArguments().get(ARGUMENT_VMODEL_NAME);
+		val vmodelFolderName = getCommand().getArguments().get(VitruviusProjectBuilderApplicator.ARGUMENT_VMODEL_NAME);
 		this.virtualModel = VirtualModelManager.getInstance().getVirtualModel(new File(vmodelFolderName));
 
-		for (String fileExtension : getCommand().getArguments().get(ARGUMENT_FILE_EXTENSIONS).split(",").map[trim].filter[!nullOrEmpty]) {
+		for (String fileExtension : getCommand().getArguments().get(VitruviusProjectBuilderApplicator.ARGUMENT_FILE_EXTENSIONS).split(",").map[trim].filter[!nullOrEmpty]) {
 			monitoredFileTypes.add(fileExtension)
 		}
 		

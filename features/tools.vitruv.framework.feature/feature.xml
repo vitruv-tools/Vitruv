@@ -126,9 +126,30 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+		 
+	<plugin
+         id="tools.vitruv.framework.vsum.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="tools.vitruv.framework.applications"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+		 
+	<plugin
+         id="tools.vitruv.extensions.emf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+		 
+	<plugin
+         id="tools.vitruv.extensions.emf.monitorededitor"
          download-size="0"
          install-size="0"
          version="0.0.0"

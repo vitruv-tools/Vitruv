@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QMLContractType:Dimension xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:QMLContractType="http:///QMLContractType.ecore" xmlns:identifier="http://sdq.ipd.uka.de/Identifier/1.0" identifier:id="_YhNVUMioEeCp_vzD4x7GMA" entityName="maxCPUUtilization">
+  <type xsi:type="QMLContractType:DimensionTypeNumeric" identifier:id="_aTd9IsioEeCp_vzD4x7GMA">
+    <relationSemantics identifier:id="_cN5CcMioEeCp_vzD4x7GMA"/>
+    <range identifier:id="_coWJ0cioEeCp_vzD4x7GMA" upperLimit="1.0"/>
+  </type>
+</QMLContractType:Dimension>

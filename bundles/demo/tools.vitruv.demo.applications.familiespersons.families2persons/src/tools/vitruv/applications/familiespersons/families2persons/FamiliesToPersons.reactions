@@ -1,0 +1,180 @@
+import "edu.kit.ipd.sdq.metamodels.persons" as persons
+import "edu.kit.ipd.sdq.metamodels.families" as families
+
+reactions: FamiliesToPersons
+in reaction to changes in Families
+execute actions in Persons
+
+reaction CreatedFamilyRegister {
+	after element families::FamilyRegister created and inserted as root
+	call createPersonRegister(newValue)
+}
+
+routine createPersonRegister(families::FamilyRegister familyRegister){
+	action{
+		val personRegister = create persons::PersonRegister and initialize{
+			persistProjectRelative(familyRegister, personRegister, "model/persons.persons")
+		}
+		add correspondence between personRegister and familyRegister 
+	}
+}
+
+reaction DeletedFamilyRegister{
+	after element families::FamilyRegister deleted
+	call deletePersonRegister(affectedEObject)
+}
+
+routine deletePersonRegister(families::FamilyRegister familyRegister){
+	match{
+		val personRegister = retrieve persons::PersonRegister corresponding to familyRegister
+	}
+	
+	action{
+		delete personRegister
+	}
+}
+
+
+reaction CreatedFather {
+	after element families::Member replaced at families::Family[father]
+	call createFather(newValue)
+}
+
+
+routine createFather(families::Member member){
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+	}
+	action{
+		val person = create persons::Male and initialize {
+			person.fullName = member.firstName +" "+member.familyFather.lastName
+		}
+		update personsRegister {
+			personsRegister.persons += person;
+		}
+		add correspondence between member and person
+		add correspondence between member.familyFather and person
+	}
+}
+
+reaction CreatedSon {
+	after element families::Member created  and inserted in families::Family[sons]
+	call createSon(newValue)
+}
+
+routine createSon(families::Member member){
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+	}
+	action{
+		val person = create persons::Male and initialize {
+			person.fullName = member.firstName +" "+member.familySon.lastName
+		}
+		update personsRegister {
+			personsRegister.persons += person;
+		}
+		add correspondence between member and person
+		add correspondence between member.familySon and person
+	}
+}
+reaction CreatedMother {
+	after element families::Member created  and inserted in families::Family[mother]
+	call createMother(newValue)
+}
+
+
+routine createMother(families::Member member){
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+	}
+	action{
+		val person = create persons::Female and initialize {
+			person.fullName = member.firstName +" "+member.familyMother.lastName
+		}
+		update personsRegister {
+			personsRegister.persons += person;
+		}
+		add correspondence between member and person
+		add correspondence between member.familyMother and person
+	}
+}
+
+reaction CreatedDaughter {
+	after element families::Member created  and inserted in families::Family[daughters]
+	call createDaughter(newValue)
+}
+routine createDaughter(families::Member member){
+	match {
+		val personsRegister = retrieve persons::PersonRegister corresponding to member.eContainer.eContainer 
+	}
+	action{
+		val person = create persons::Male and initialize {
+			person.fullName = member.firstName +" "+member.familyDaughter.lastName
+		}
+		update personsRegister {
+			personsRegister.persons += person;
+		}
+		add correspondence between member and person
+		add correspondence between member.familyDaughter and person
+	}
+}
+
+reaction DeletedMember {
+	after element families::Member deleted 
+	call deletePerson(affectedEObject)
+}
+
+routine deletePerson(families::Member member){
+	match{
+		val person = retrieve persons::Person corresponding to member
+	}
+	
+	action{
+		delete person
+	}
+}
+
+//reaction DeletedFamily {
+//	after element families::Family deleted
+//	call deletePersonsOfFamily(affectedEObject)
+//}
+
+//routine deletePersonsOfFamily(families::Family family){
+//	match{
+//		val father = retrieve persons::Person corresponding to family[]
+// Wie kriege ich hier alle Familienmitglieder
+//	}
+//}
+
+reaction ChangedFirstName {
+	after attribute replaced at families::Member[firstName]
+	call changeFullNameFromFirst(affectedEObject) 
+}
+
+routine changeFullNameFromFirst(families::Member member){
+	match {
+		val person = retrieve persons::Person corresponding to member
+	}
+	action {
+		update person {
+			person.fullName = member.firstName + " " + member.familyFather.lastName 
+			}
+	}
+}
+
+reaction ChangedLastName {
+	after attribute replaced at families::Family[lastName]
+	call changeFullNameFromLast(affectedEObject)
+}
+
+routine changeFullNameFromLast(families::Family family){
+	match {
+		//Sollten mehrere sein
+		val person = retrieve persons::Person corresponding to family
+	}
+	action {
+		update person {
+			person.fullName = person.fullName.split(" ").get(0) + " " + family.lastName 
+			}
+	}
+}

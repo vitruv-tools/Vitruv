@@ -18,6 +18,7 @@ import com.google.inject.Module;
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver;
@@ -47,11 +48,21 @@ public final class MappingLanguageTestUtil {
 	}
 
 	public static AbstractVitruvDomain createMetamodel(String name, EPackage rootPackage, TuidCalculatorAndResolver tuidCalculatorAndResolver, String... extensions) {
-		return new AbstractVitruvDomain(name, rootPackage, tuidCalculatorAndResolver, extensions);
+		return new AbstractVitruvDomain(name, rootPackage, tuidCalculatorAndResolver, extensions) {
+			@Override
+			public VitruviusProjectBuilderApplicator getBuilderApplicator() {
+				return null;
+			}
+		};
 	}
 	
 	public static AbstractVitruvDomain createAttributeTuidMetamodel(String name, EPackage rootPackage, String... extensions) {
-		return new AbstractVitruvDomain(name, rootPackage, new AttributeTuidCalculatorAndResolver(rootPackage.getNsURI(), DEFAULT_ATTRIBUTE_NAMES), extensions);
+		return new AbstractVitruvDomain(name, rootPackage, new AttributeTuidCalculatorAndResolver(rootPackage.getNsURI(), DEFAULT_ATTRIBUTE_NAMES), extensions) {
+			@Override
+			public VitruviusProjectBuilderApplicator getBuilderApplicator() {
+				return null;
+			}
+		};
 	}
 	
 	public static Injector injector(Consumer<Binder> configure) {

@@ -18,7 +18,7 @@ import java.util.Collection
 import tools.vitruv.framework.domains.VitruvDomain
 import org.eclipse.emf.ecore.EClass
 
-class AbstractVitruvDomain extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener, VitruvDomain {
+abstract class AbstractVitruvDomain extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener, VitruvDomain {
 	Collection<String> fileExtensions
 	TuidCalculatorAndResolver tuidCalculatorAndResolver
 	Set<String> nsURIs
