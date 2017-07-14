@@ -56,8 +56,8 @@ public class DomainSelectionPage extends WizardPage {
 		label1.setText(SELECTION_LABEL);
 
 		tree = new Tree(container, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-
-		GridData treeGridData = new GridData(GridData.FILL_BOTH);
+		GridData treeGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		treeGridData.heightHint = 300;
 		tree.setLayoutData(treeGridData);
 
 		initializeProjectList();
