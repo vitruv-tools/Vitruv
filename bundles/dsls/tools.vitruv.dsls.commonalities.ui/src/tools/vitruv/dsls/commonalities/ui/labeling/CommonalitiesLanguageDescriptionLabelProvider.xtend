@@ -4,6 +4,8 @@
 package tools.vitruv.dsls.commonalities.ui.labeling
 
 import org.eclipse.xtext.xbase.ui.labeling.XbaseDescriptionLabelProvider
+import org.eclipse.xtext.resource.IEObjectDescription
+
 
 /**
  * Provides labels for IEObjectDescriptions and IResourceDescriptions.
@@ -12,13 +14,10 @@ import org.eclipse.xtext.xbase.ui.labeling.XbaseDescriptionLabelProvider
  */
 class CommonalitiesLanguageDescriptionLabelProvider extends XbaseDescriptionLabelProvider {
 
-	// Labels and icons can be computed like this:
-	
-//	override text(IEObjectDescription ele) {
-//		ele.name.toString
-//	}
-//	 
-//	override image(IEObjectDescription ele) {
-//		ele.EClass.name + '.gif'
-//	}
+	override text(IEObjectDescription description) {
+		switch(description.EClass) {
+			default:
+				super.text(description)			
+		}
+	}
 }

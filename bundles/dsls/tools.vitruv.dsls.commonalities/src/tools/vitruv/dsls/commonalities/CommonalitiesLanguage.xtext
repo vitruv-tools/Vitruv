@@ -24,6 +24,19 @@ CommonalitiesFile:
   * by a string (the URI) and one for concepts, specified by a fully qualified
   * name.
   */
+  
+PackageLikeImportReference:
+	CommonalityImportReference | MetapackageImportReference
+;
+
+MetapackageImportReference:
+	package = [ecore::EPackage|STRING]
+;
+  
+CommonalityImportReference:
+	commonality = [CommonalityFile|QualifiedName]
+;
+
 Import:
-	'import' ({MetamodelImport} element=[ecore::EPackage|STRING] | {ConceptImport} element=[CommonalitiesFile|QualifiedName]) ('as' alias=ValidID)?
+	'import' element = PackageLikeImportReference ('as' alias=ValidID)?
 ;

@@ -7,10 +7,8 @@ import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.emf.ecore.EPackage
 import java.util.HashMap
 import com.google.inject.Singleton
-import org.eclipse.emf.ecore.InternalEObject
-import org.eclipse.emf.ecore.EcoreFactory
 import org.eclipse.emf.common.util.URI
-import org.eclipse.xtext.EcoreUtil2
+import edu.kit.ipd.sdq.activextendannotations.Lazy
 
 @Singleton
 class EPackageRegistryScope implements IScope {
@@ -18,17 +16,21 @@ class EPackageRegistryScope implements IScope {
 	final HashMap<QualifiedName, EPackageDescription> descriptionCache = new HashMap
 
 	override getAllElements() {
-		allDescriptions.map[it]
+		allDescriptions.filter[exists].map[it]
 	}
 	
-	def getAvailableEPackageUris() {
+	def allEPackages() {
+		allDescriptions.filter[exists].map[describedEPackage]
+	}
+
+	def private getAvailableEPackageUris() {
 		EPackage.Registry.INSTANCE.keySet
 	}
-
+	
 	def private getAllDescriptions() {
-		availableEPackageUris.map[uri|getDescription(uri)]
+		availableEPackageUris.map[getDescription]
 	}
-
+	
 	def private getDescription(String uri) {
 		getDescription(QualifiedName.create(uri));
 	}
@@ -38,44 +40,52 @@ class EPackageRegistryScope implements IScope {
 	}
 
 	override getElements(QualifiedName name) {
-		return #[getDescription(name)]
+		val el = getSingleElement(name)
+		if (el === null) #[] else #[el]
 	}
 
 	override getElements(EObject object) {
-		allDescriptions.filter[it.matchesObject(object)].map[it]
+		allDescriptions.filter[matchingUri(object)].map[it]
 	}
 
 	override getSingleElement(QualifiedName name) {
-		getDescription(name);
+		if (!EPackage.Registry.INSTANCE.containsKey(name.toString)) return null
+		val package = getDescription(name)
+		if (package.exists) package else null
 	}
 
 	override getSingleElement(EObject object) {
-		allDescriptions.findFirst[it.matchesObject(object)]
+		allDescriptions.findFirst[matchingUri(object)]
 	}
 
 	private static class EPackageDescription implements IEObjectDescription {
 
-		final InternalEObject proxy
-		final QualifiedName uriName
+		val QualifiedName uriName
+		@Lazy val EPackage ePackage = EPackage::Registry.INSTANCE.getEPackage(uriName.toString)
 
 		new(QualifiedName name) {
-			val uri = name.toString
 			this.uriName = name
-
-			this.proxy = EcoreFactory.eINSTANCE.createEPackage as InternalEObject
-			this.proxy.eSetProxyURI(URI.createURI(uri))
+		}
+		
+		def exists() {
+			return EPackage !== null
 		}
 
 		override getEClass() {
-			proxy.eClass
+			EPackage.eClass
 		}
 
 		override getEObjectOrProxy() {
-			proxy
+			EPackage
 		}
+		
+		def getDescribedEPackage() {
+			EPackage
+		}
+		
 
 		override getEObjectURI() {
-			proxy.eProxyURI
+			URI.createURI(EPackage.nsURI)
 		}
 
 		override getQualifiedName() {
@@ -94,8 +104,14 @@ class EPackageRegistryScope implements IScope {
 			uriName
 		}
 
-		def private matchesObject(EObject object) {
-			return object == proxy || EcoreUtil2.getPlatformResourceOrNormalizedURI(object) == EObjectURI
+		def private matchingUri(EObject object) {
+			if (_ePackage_isInitialised && object == EPackage) return true
+			if (object instanceof EPackage) return object.nsURI == uriName.toString
+			return false			
+		}
+		
+		override toString() {
+			'''desciption: <«uriName»> («IF !_ePackage_isInitialised»not loaded«ELSE»«IF exists»present«ELSE»absent«ENDIF»«ENDIF»)'''
 		}
 	}
 }

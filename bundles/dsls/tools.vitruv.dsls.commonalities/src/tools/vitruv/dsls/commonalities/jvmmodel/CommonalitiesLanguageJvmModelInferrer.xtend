@@ -3,11 +3,9 @@
  */
 package tools.vitruv.dsls.commonalities.jvmmodel
 
-import com.google.inject.Inject
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import tools.vitruv.dsls.commonalities.commonalitiesLanguage.CommonalitiesFile
+import tools.vitruv.dsls.commonalities.commonalitiesLanguage.CommonalityFile
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -20,7 +18,7 @@ class CommonalitiesLanguageJvmModelInferrer extends AbstractModelInferrer {
 	/**
 	 * convenience API to build and initialize JVM types and their members.
 	 */
-	@Inject extension JvmTypesBuilder
+	/* @Inject extension JvmTypesBuilder*/
 
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -45,7 +43,7 @@ class CommonalitiesLanguageJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-	def dispatch void infer(CommonalitiesFile element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(CommonalityFile element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		// Here you explain how your model is mapped to Java elements, by writing the actual translation code.
 		
 		// An implementation for the initial hello world example could look like this:

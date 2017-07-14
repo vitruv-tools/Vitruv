@@ -9,16 +9,16 @@ import org.eclipse.xtext.testing.XtextRunner
 import org.eclipse.xtext.testing.util.ParseHelper
 import org.junit.Test
 import org.junit.runner.RunWith
-import tools.vitruv.dsls.commonalities.commonalitiesLanguage.CommonalitiesFile
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static tools.vitruv.dsls.commonalities.tests.matchers.EResourceMatchers.*;
+import tools.vitruv.dsls.commonalities.commonalitiesLanguage.CommonalityFile
 
 @RunWith(XtextRunner)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
 class CommonalitiesLanguageParsingTest {
 	@Inject
-	ParseHelper<CommonalitiesFile> parseHelper
+	ParseHelper<CommonalityFile> parseHelper
 	
 	@Test
 	def void importDeclaration() {
