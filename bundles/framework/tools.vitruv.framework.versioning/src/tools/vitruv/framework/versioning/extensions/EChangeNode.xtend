@@ -12,4 +12,8 @@ interface EChangeNode extends Node {
 	def void setType(NodeType type)
 
 	def boolean isEChangeNodeEqual(EChangeNode node2)
+
+	def boolean isTriggered()
+
+	def void setTriggered(boolean t)
 }

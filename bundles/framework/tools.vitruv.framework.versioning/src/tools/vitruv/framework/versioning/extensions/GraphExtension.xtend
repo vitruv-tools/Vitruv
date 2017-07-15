@@ -32,7 +32,7 @@ interface GraphExtension {
 
 	def void addEdge(Graph graph, EChange fromEchange, EChange toEChange, EdgeType type)
 
-	def void addNode(Graph graph, EChange e)
+	def EChangeNode addNode(Graph graph, EChange e)
 
 	def boolean checkIfEdgeExists(
 		Graph graph,

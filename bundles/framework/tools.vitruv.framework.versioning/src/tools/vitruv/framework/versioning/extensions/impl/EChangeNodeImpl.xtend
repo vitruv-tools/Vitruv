@@ -15,6 +15,8 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 	static extension EdgeExtension = EdgeExtension::instance
 	@Accessors(PUBLIC_GETTER,PUBLIC_SETTER)
 	EChange eChange
+	@Accessors(PUBLIC_GETTER,PUBLIC_SETTER)
+	boolean triggered
 
 	protected new(AbstractGraph graph, String id) {
 		super(graph, id)
@@ -36,5 +38,4 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 		if (x == newX)
 			throw new IllegalArgumentException
 	}
-
 }

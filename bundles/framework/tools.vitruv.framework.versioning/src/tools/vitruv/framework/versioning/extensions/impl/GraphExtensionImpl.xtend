@@ -39,6 +39,7 @@ class GraphExtensionImpl implements GraphExtension {
 		val EChangeNode node = graph.addNode(e.nodeId)
 		node.label = e.nodeLabel
 		node.EChange = e
+		return node
 	}
 
 	override getProvideLeaves(Graph graph) {
@@ -120,6 +121,7 @@ class GraphExtensionImpl implements GraphExtension {
 		oldgraph.<EChangeNode>nodeSet.filter[nodePredicate.apply(it)].forEach [ EChangeNode oldNode |
 			val EChangeNode node = newGraph.addNode(oldNode.id)
 			node.EChange = oldNode.EChange
+			node.triggered = oldNode.triggered
 		]
 		oldgraph.edgeSet.filter [
 			nodePredicate.apply(sourceNode) && nodePredicate.apply(targetNode)
