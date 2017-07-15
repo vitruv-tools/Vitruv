@@ -24,6 +24,8 @@ import static org.junit.Assert.assertThat
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.change.description.VitruviusChange
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.versioning.ModelMerger
+import tools.vitruv.framework.versioning.impl.ModelMergerImpl
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected BranchDiff branchDiff
@@ -39,9 +41,10 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected VURI newTargetVURI
 	protected VURI sourceVURI
 	protected VURI targetVURI
-	protected static extension ConflictDetector conflictDetector = ConflictDetector::instance
+	protected ConflictDetector conflictDetector = ConflictDetector::createConflictDetector
 	protected static extension DependencyGraphCreator = DependencyGraphCreator::instance
 	protected static extension GraphExtension = GraphExtension::instance
+	protected static extension ModelMerger = new ModelMergerImpl
 	protected static val containerId = "NonRootObjectContainer"
 	protected static val newTestSourceModelName = "Further_Source_Test_Model"
 	protected static val newTestTargetModelName = "Further_Target_Test_Model"
@@ -73,7 +76,7 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 			sourceVURI.EMFUri.toFileString -> newSourceVURI.EMFUri.toFileString,
 			targetVURI.EMFUri.toFileString -> newTargetVURI.EMFUri.toFileString
 		}
-		addMap(rootToRootMap)
+		conflictDetector.addMap(rootToRootMap)
 		#[sourceVURI, newSourceVURI].forEach[stRecorder.recordOriginalAndCorrespondentChanges(it)]
 
 		assertThat(newSourceVURI, not(equalTo(sourceVURI)))

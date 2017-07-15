@@ -38,7 +38,9 @@ abstract class AbstractConflictNotExistsTest extends AbstractConflictTest {
 			]
 		]
 		branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
-		conflicts = conflictDetector.detectConlicts(branchDiff)
+		conflictDetector.init(branchDiff)
+		conflictDetector.compute
+		conflicts = conflictDetector.conflicts
 		changes = branchDiff.baseChanges.map[originalChange].toList
 		echanges = changes.map[EChanges].flatten.toList
 	}

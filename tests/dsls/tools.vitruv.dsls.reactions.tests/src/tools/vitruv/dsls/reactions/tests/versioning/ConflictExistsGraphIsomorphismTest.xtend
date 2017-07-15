@@ -14,8 +14,12 @@ import static org.hamcrest.CoreMatchers.not
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
 import tools.vitruv.framework.versioning.MultiChangeConflict
-import tools.vitruv.framework.versioning.ConflictSolvability
 import tools.vitruv.framework.versioning.ConflictType
+import tools.vitruv.framework.versioning.ConflictSeverity
+import tools.vitruv.framework.versioning.Conflict
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.resource.ResourceSet
+import allElementTypes.NonRoot
 
 class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 	@Test
@@ -51,7 +55,9 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		val correspondentEChanges = branchDiff.baseChanges.map[targetToCorrespondentChanges.entrySet].flatten.
 			map[value].flatten.map[EChanges].flatten.toList
 		val otherCorrespondentEChanges = branchDiff.compareChanges.map[targetToCorrespondentChanges.entrySet].flatten.
-			map[value].flatten.map[EChanges].flatten.toList
+			map [
+				value
+			].flatten.map[EChanges].flatten.toList
 		val otherGraph = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
 		val IsomorphismTesterAlgorithm tester = new PrimitiveIsomorphismTesterImpl
 		tester.init(graph, otherGraph)
@@ -81,10 +87,33 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		assertThat(conflicts.size, is(1))
 		val conflict = conflicts.filter[it instanceof MultiChangeConflict].map[it as MultiChangeConflict].get(0)
 		assertThat(conflict, not(equalTo(null)))
-		assertThat(conflict.solvability, is(ConflictSolvability::AUTOMATIC))
+		assertThat(conflict.solvability, is(ConflictSeverity::SOFT))
 		assertThat(conflict.type, is(ConflictType::INSERTING_IN_SAME_CONTANER))
-		assertThat(conflict.sourceChanges.size, is(4))
-		assertThat(conflict.targetChanges.size, is(4))
+		assertThat(conflict.sourceChanges.size, is(2))
+		assertThat(conflict.targetChanges.size, is(2))
+		val conflictFreeEChanges = conflictDetector.conflictFreeEChanges
+		assertThat(conflictFreeEChanges.length, is(6))
 	}
 
+	@Test
+	def void testModelMerger() {
+		assertThat(conflicts.empty, is(false))
+		assertThat(conflicts.size, is(1))
+		val failingFunction = [ Conflict c |
+			assertThat("This method should never been called", true, is(false))
+			return #[]
+		]
+		val ResourceSet resourceSet = new ResourceSetImpl
+		val echanges = mergeModels(branchDiff, failingFunction)
+		assertThat(echanges.length, is(10))
+		assertThat(echanges.exists[resolved], is(false))
+		echanges.forEach [
+			resolveBeforeAndApplyForward(resourceSet)
+		]
+		assertThat(resourceSet.allContents.filter[it instanceof NonRoot].map[it as NonRoot].exists [
+			id == otherNonContainmentId
+		], is(true))
+		assertThat(resourceSet.allContents.filter[it instanceof NonRoot].size, is(4))
+
+	}
 }

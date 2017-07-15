@@ -96,4 +96,11 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 		assertThat(graph.provideLeaves.toList.get(0), is(graph.getNode(originalEChanges.get(0))))
 		assertThat(graph.calculateComponentNumber, is(2))
 	}
+
+	@Test
+	def void testConflictDetector() {
+		assertThat(conflicts.empty, is(true))
+		val conflictFreeEChanges = conflictDetector.conflictFreeEChanges
+		assertThat(conflictFreeEChanges.length, is(8))
+	}
 }
