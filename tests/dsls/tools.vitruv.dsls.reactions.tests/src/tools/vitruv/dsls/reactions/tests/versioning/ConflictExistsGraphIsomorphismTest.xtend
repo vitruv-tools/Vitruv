@@ -1,25 +1,25 @@
 package tools.vitruv.dsls.reactions.tests.versioning
 
+import allElementTypes.NonRoot
 import java.util.Set
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.Test
-
 import tools.vitruv.dsls.reactions.tests.AbstractConflictExistsTest
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.Conflict
+import tools.vitruv.framework.versioning.ConflictSeverity
+import tools.vitruv.framework.versioning.ConflictType
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
+import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
+
+import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
-import static org.hamcrest.CoreMatchers.equalTo
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.MultiChangeConflict
-import tools.vitruv.framework.versioning.ConflictType
-import tools.vitruv.framework.versioning.ConflictSeverity
-import tools.vitruv.framework.versioning.Conflict
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.resource.ResourceSet
-import allElementTypes.NonRoot
 
 class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 	@Test
