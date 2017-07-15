@@ -25,7 +25,6 @@ import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.change.description.VitruviusChange
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.versioning.ModelMerger
-import tools.vitruv.framework.versioning.impl.ModelMergerImpl
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected BranchDiff branchDiff
@@ -44,7 +43,7 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected ConflictDetector conflictDetector = ConflictDetector::createConflictDetector
 	protected static extension DependencyGraphCreator = DependencyGraphCreator::instance
 	protected static extension GraphExtension = GraphExtension::instance
-	protected static extension ModelMerger = new ModelMergerImpl
+	protected ModelMerger modelMerger
 	protected static val containerId = "NonRootObjectContainer"
 	protected static val newTestSourceModelName = "Further_Source_Test_Model"
 	protected static val newTestTargetModelName = "Further_Target_Test_Model"
@@ -67,7 +66,7 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 		roots = #[rootElement, rootElement2]
 		rootElement2.id = newTestSourceModelName
 		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(rootElement2)
-
+		modelMerger = ModelMerger::createModelMerger
 		newSourceVURI = VURI::getInstance(rootElement2.eResource)
 		val uri = URI::createURI(newSourceVURI.EMFUri.toString.replace(newTestSourceModelName, newTestTargetModelName))
 		newTargetVURI = VURI::getInstance(uri)

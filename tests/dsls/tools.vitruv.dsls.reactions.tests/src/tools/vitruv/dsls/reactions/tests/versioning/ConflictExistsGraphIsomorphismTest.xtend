@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
+import java.util.List
 
 class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 	@Test
@@ -103,17 +104,25 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 			assertThat("This method should never been called", true, is(false))
 			return #[]
 		]
-		val ResourceSet resourceSet = new ResourceSetImpl
-		val echanges = mergeModels(branchDiff, failingFunction)
-		assertThat(echanges.length, is(10))
-		assertThat(echanges.exists[resolved], is(false))
-		echanges.forEach [
-			resolveBeforeAndApplyForward(resourceSet)
+		val ResourceSet source = new ResourceSetImpl
+		modelMerger.init(branchDiff, failingFunction)
+		modelMerger.compute
+		val echanges = modelMerger.resultingSourceEChanges
+//		val targetEChanges = modelMerger.resultingSourceEChanges
+		val testOnResourceSet = [ ResourceSet resourceSet, List<EChange> es |
+			assertThat(es.length, is(10))
+			assertThat(es.exists[resolved], is(false))
+			es.forEach [
+				resolveBeforeAndApplyForward(resourceSet)
+			]
+
+			assertThat(resourceSet.allContents.filter[it instanceof NonRoot].map[it as NonRoot].exists [
+				id == otherNonContainmentId
+			], is(true))
+			assertThat(resourceSet.allContents.filter[it instanceof NonRoot].size, is(4))
 		]
-		assertThat(resourceSet.allContents.filter[it instanceof NonRoot].map[it as NonRoot].exists [
-			id == otherNonContainmentId
-		], is(true))
-		assertThat(resourceSet.allContents.filter[it instanceof NonRoot].size, is(4))
+
+		testOnResourceSet.apply(source, echanges)
 
 	}
 }
