@@ -3,6 +3,7 @@ package tools.vitruv.framework.versioning
 import java.util.List
 import java.util.Map
 import tools.vitruv.framework.versioning.impl.ConflictDetectorImpl
+import tools.vitruv.framework.change.echange.EChange
 
 /**
  * 
@@ -12,9 +13,17 @@ import tools.vitruv.framework.versioning.impl.ConflictDetectorImpl
  * @since 2017-06-12
  */
 interface ConflictDetector {
-	static ConflictDetector instance = ConflictDetectorImpl::init
+	static def ConflictDetector createConflictDetector() {
+		return new ConflictDetectorImpl
+	}
 
 	def void addMap(Map<String, String> rootToRootMap)
 
-	def List<Conflict> detectConlicts(BranchDiff branchDiff)
+	def void init(BranchDiff branchDiff)
+
+	def void compute()
+
+	def List<Conflict> getConflicts()
+
+	def List<EChange> getConflictFreeEChanges()
 }
