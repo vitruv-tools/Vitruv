@@ -27,21 +27,21 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 
 	override createDependencyGraph(List<VitruviusChange> changes) {
 		val graph = GraphExtension::createNewEChangeGraph
-		createDependencyGraph(graph, changes, true)
+		createDependencyGraph(graph, changes, true, false)
 		return graph
 	}
 
 	override createDependencyGraphFromChangeMatches(List<ChangeMatch> changeMatches) {
 		val graph = GraphExtension::createNewEChangeGraph
 		val originalChanges = changeMatches.map[originalChange].toList
-		createDependencyGraph(graph, originalChanges, false)
+		createDependencyGraph(graph, originalChanges, false, false)
 
 		val List<VURI> vuris = changeMatches.get(0).targetToCorrespondentChanges.keySet.toList
 		vuris.forEach [ vuri |
 			val targetChanges = changeMatches.map [ c |
 				c.targetToCorrespondentChanges.get(vuri)
 			].flatten.toList
-			createDependencyGraph(graph, targetChanges, false)
+			createDependencyGraph(graph, targetChanges, false, true)
 		]
 		changeMatches.forEach [ c |
 			c.originalChange.EChanges.forEach [ echange, i |
@@ -57,7 +57,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		return graph
 	}
 
-	private def createDependencyGraph(Graph graph, List<VitruviusChange> changes, boolean print) {
+	private def createDependencyGraph(Graph graph, List<VitruviusChange> changes, boolean print, boolean isTriggered) {
 		val resourceSet = new ResourceSetImpl
 		// PS Do not use the java 8 or xtend function methods here.
 		// Their laziness can cause problems while applying
@@ -66,7 +66,10 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		changes.forEach [
 			echanges += EChanges
 		]
-		echanges.forEach[graph.addNode(it)]
+		echanges.forEach [
+			val node = graph.addNode(it)
+			node.triggered = isTriggered
+		]
 		if (echanges.exists[resolved])
 			throw new IllegalStateException("A change was resolved")
 		val Map<EChange, EChange> unresolvedToResolvedMap = newHashMap
