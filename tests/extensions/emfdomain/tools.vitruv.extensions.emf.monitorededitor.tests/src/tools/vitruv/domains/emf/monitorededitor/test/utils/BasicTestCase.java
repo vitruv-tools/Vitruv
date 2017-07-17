@@ -11,10 +11,14 @@
 
 package tools.vitruv.domains.emf.monitorededitor.test.utils;
 
+import java.net.URL;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.URI;
 
 public class BasicTestCase {
+    public static final String PLUGIN_NAME = "tools.vitruv.extensions.emf.monitorededitor.tests";
 
     private static boolean hasLoggerBeenInitialized = false;
     protected Logger LOGGER = Logger.getLogger(BasicTestCase.class);
@@ -27,6 +31,10 @@ public class BasicTestCase {
                 Logger.getRootLogger().setLevel(Level.ALL);
             }
         }
+    }
+
+    public static URI getURI(URL modelURL) {
+        return URI.createPlatformPluginURI(PLUGIN_NAME + modelURL.getFile(), true);
     }
 
 }

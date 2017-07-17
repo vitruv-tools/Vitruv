@@ -24,7 +24,6 @@ import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Files;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.BasicTestCase;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecuted;
-import tools.vitruv.domains.emf.monitorededitor.test.utils.TestUtils;
 
 public class DefaultEditorPartAdapterFactoryImplTests extends BasicTestCase {
     private IEditorPartAdapterFactory factory;
@@ -66,7 +65,7 @@ public class DefaultEditorPartAdapterFactoryImplTests extends BasicTestCase {
     public void EMFTreeEditorAdapterProperties() throws URISyntaxException {
         IEditorPart emfEditor = eclipseMock.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
         IEditorPartAdapter adapter = factory.createAdapter(emfEditor);
-        assert TestUtils.isURIEqual(adapter.getEditedModelResource().getURI(), Files.EXAMPLEMODEL_ECORE);
+        assert adapter.getEditedModelResource().getURI().equals(getURI(Files.EXAMPLEMODEL_ECORE));
         assert adapter.getEditingDomain() != null;
         assert adapter.getEditorPart() == emfEditor;
     }
@@ -92,7 +91,7 @@ public class DefaultEditorPartAdapterFactoryImplTests extends BasicTestCase {
         IEditorPart gmfEditor = eclipseMock.openNewEMFDiagramEditorPart(Files.EXAMPLEMODEL_ECORE,
                 Files.EXAMPLEMODEL_ECOREDIAG);
         IEditorPartAdapter adapter = factory.createAdapter(gmfEditor);
-        assert TestUtils.isURIEqual(adapter.getEditedModelResource().getURI(), Files.EXAMPLEMODEL_ECORE);
+        assert adapter.getEditedModelResource().getURI().equals(getURI(Files.EXAMPLEMODEL_ECORE));
         assert adapter.getEditingDomain() != null;
         assert adapter.getEditorPart() == gmfEditor;
     }
