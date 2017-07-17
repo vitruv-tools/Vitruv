@@ -1,9 +1,10 @@
 package tools.vitruv.framework.versioning.extensions.impl
 
 import java.util.Collection
+import java.util.Map
+import java.util.Set
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.graphstream.algorithm.ConnectedComponents
-import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
 import org.graphstream.stream.file.FileSinkImages
 import org.graphstream.stream.file.FileSinkImages.LayoutPolicy
@@ -11,19 +12,16 @@ import org.graphstream.stream.file.FileSinkImages.OutputType
 import org.graphstream.stream.file.FileSinkImages.Resolutions
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
+import tools.vitruv.framework.versioning.extensions.EChangeEdge
 import tools.vitruv.framework.versioning.extensions.EChangeExtension
 import tools.vitruv.framework.versioning.extensions.EChangeNode
-import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
-import tools.vitruv.framework.versioning.extensions.NodeExtension
-import java.util.Map
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
-import java.util.Set
+import tools.vitruv.framework.versioning.extensions.NodeExtension
 
 class GraphExtensionImpl implements GraphExtension {
 
 	static extension EChangeExtension = EChangeExtension::instance
-	static extension EdgeExtension = EdgeExtension::instance
 	static extension NodeExtension = NodeExtension::instance
 	static val Map<Graph, Integer> graphMap = newHashMap
 	static val VM_ARGUMENT_PRINT_PICTURES = "printPictures"
@@ -73,7 +71,7 @@ class GraphExtensionImpl implements GraphExtension {
 		val edgeExists = graph.checkIfEdgeExists(e1, e2)
 		if (!edgeExists)
 			return false
-		val edge = graph.getNode(e1).getEdgeBetween(graph.getNode(e2))
+		val edge = graph.getNode(e1).<EChangeEdge>getEdgeBetween(graph.getNode(e2))
 		return edge.isType(type)
 	}
 
@@ -111,12 +109,12 @@ class GraphExtensionImpl implements GraphExtension {
 		edge.type = type
 	}
 
-	private def Edge addChangeEdge(Graph graph, String n, EChange e1, EChange e2, boolean directed) {
-		graph.addEdge(n, e1.nodeId, e2.nodeId, directed)
+	private def EChangeEdge addChangeEdge(Graph graph, String n, EChange e1, EChange e2, boolean directed) {
+		graph.<EChangeEdge>addEdge(n, e1.nodeId, e2.nodeId, directed)
 	}
 
 	override cloneGraph(Graph oldgraph, Function1<EChangeNode, Boolean> nodePredicate,
-		Function1<Edge, Boolean> edgePredicate) {
+		Function1<EChangeEdge, Boolean> edgePredicate) {
 		val newGraph = createNewEChangeGraph
 		oldgraph.<EChangeNode>nodeSet.filter[nodePredicate.apply(it)].forEach [ EChangeNode oldNode |
 			val EChangeNode node = newGraph.addNode(oldNode.id)
@@ -124,12 +122,13 @@ class GraphExtensionImpl implements GraphExtension {
 			node.triggered = oldNode.triggered
 			node.vuri = oldNode.vuri
 		]
-		oldgraph.edgeSet.filter [
+		oldgraph.<EChangeEdge>edgeSet.filter [
 			nodePredicate.apply(sourceNode) && nodePredicate.apply(targetNode)
 		].filter[edgePredicate.apply(it)].forEach [
 			val newSourceNode = newGraph.getNode(sourceNode.id)
 			val newTargetNode = newGraph.getNode(targetNode.id)
-			newGraph.addEdge(id, newSourceNode, newTargetNode, directed)
+			val edge = newGraph.<EChangeEdge>addEdge(id, newSourceNode, newTargetNode, directed)
+			edge.type = type
 		]
 		return newGraph
 	}

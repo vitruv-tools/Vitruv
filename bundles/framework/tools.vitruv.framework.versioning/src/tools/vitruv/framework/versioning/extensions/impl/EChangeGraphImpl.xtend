@@ -42,7 +42,7 @@ class EChangeGraphImpl extends SingleGraph {
 	new(String id) {
 		super(id)
 		nodeFactory = new EChangeNodeFactoryImpl
-		
+		edgeFactory = new EChangeEdgeFactoryImpl
 		addAttribute(GraphStreamConstants::stylesheet, styleSheet)
 	}
 }

@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.reactions.tests.versioning
 
 import allElementTypes.NonRoot
+import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -20,7 +21,6 @@ import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-import java.util.List
 
 class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 	@Test

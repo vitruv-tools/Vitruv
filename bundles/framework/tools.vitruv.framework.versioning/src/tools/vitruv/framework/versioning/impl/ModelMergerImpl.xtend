@@ -1,17 +1,17 @@
 package tools.vitruv.framework.versioning.impl
 
-import tools.vitruv.framework.versioning.ModelMerger
 import java.util.List
-import tools.vitruv.framework.versioning.ChangeMatch
+import java.util.Map
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function1
-import tools.vitruv.framework.versioning.Conflict
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.BranchDiff
 import tools.vitruv.framework.versioning.BranchDiffCreator
+import tools.vitruv.framework.versioning.ChangeMatch
+import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.ConflictSeverity
-import tools.vitruv.framework.versioning.BranchDiff
-import java.util.Map
-import tools.vitruv.framework.change.echange.EChange
-import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.versioning.ModelMerger
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 
 class ModelMergerImpl implements ModelMerger {

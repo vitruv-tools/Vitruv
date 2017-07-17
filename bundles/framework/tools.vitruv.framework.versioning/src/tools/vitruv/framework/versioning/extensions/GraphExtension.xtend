@@ -1,16 +1,16 @@
 package tools.vitruv.framework.versioning.extensions
 
 import java.util.Collection
+import java.util.Set
+import java.util.UUID
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.graphstream.graph.Edge
 import org.graphstream.graph.Graph
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeNode
-import tools.vitruv.framework.versioning.extensions.impl.GraphExtensionImpl
-import java.util.UUID
 import tools.vitruv.framework.versioning.extensions.impl.EChangeGraphImpl
-import java.util.Set
+import tools.vitruv.framework.versioning.extensions.impl.GraphExtensionImpl
 
 interface GraphExtension {
 	static GraphExtension instance = GraphExtensionImpl::init
@@ -42,7 +42,7 @@ interface GraphExtension {
 	)
 
 	def Graph cloneGraph(Graph oldgraph, Function1<EChangeNode, Boolean> nodePredicate,
-		Function1<Edge, Boolean> edgePredicate)
+		Function1<EChangeEdge, Boolean> edgePredicate)
 
 	def Collection<Graph> getSubgraphs(Graph graph)
 
