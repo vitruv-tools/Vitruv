@@ -90,7 +90,7 @@ public interface RemoveAndDeleteEObject<T extends EObject, C extends EObjectSubt
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" required="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>>();\nC _removeChange = this.getRemoveChange();\nresult.add(_removeChange);\n<%tools.vitruv.framework.change.echange.eobject.DeleteEObject%><T> _deleteChange = this.getDeleteChange();\nresult.add(_deleteChange);\nreturn result;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt; result = new &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt;();\nC _removeChange = this.getRemoveChange();\nresult.add(_removeChange);\n&lt;%tools.vitruv.framework.change.echange.eobject.DeleteEObject%&gt;&lt;T&gt; _deleteChange = this.getDeleteChange();\nresult.add(_deleteChange);\nreturn result;'"
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();
