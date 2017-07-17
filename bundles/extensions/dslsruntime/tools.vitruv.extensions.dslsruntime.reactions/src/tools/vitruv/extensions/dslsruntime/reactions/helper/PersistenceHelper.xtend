@@ -53,7 +53,7 @@ public final class PersistenceHelper {
 	
 	private static def boolean isUriTestProject(URI uri) {
 		val lastSegment = uri.lastSegment;
-		if (uri.lastSegment == null) {
+		if (uri.lastSegment === null) {
 			throw new IllegalStateException("The URI " + uri + " is empty");
 		}
 		// TODO This is really hacky:

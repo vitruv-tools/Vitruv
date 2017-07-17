@@ -51,7 +51,7 @@ class ModelRepositoryImpl {
 	public def void cleanupRootElementsWithoutResource() {
 		val elementsToRemove = newArrayList() 
 		for (rootElement : rootElements) {
-			if (rootElement.eResource == null) {
+			if (rootElement.eResource === null) {
 				elementsToRemove += rootElement;
 			}
 		}
@@ -72,7 +72,7 @@ class ModelRepositoryImpl {
 		val result = newArrayList();
 		for (root : rootToRecorder.keySet) {
 			rootToRecorder.get(root).endRecording();
-			if (rootToRecorder.get(root).unresolvedChanges != null) {
+			if (rootToRecorder.get(root).unresolvedChanges !== null) {
 				result += rootToRecorder.get(root).unresolvedChanges;	
 			} else {
 				result += rootToRecorder.get(root).resolvedChanges;
@@ -93,7 +93,7 @@ class ModelRepositoryImpl {
 			throw new IllegalStateException("Duplicate recording on element")
 		}
 		val unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
-		val recorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges != null, false);
+		val recorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges !== null, false);
 		val vuri = if (element.eResource !== null) VURI.getInstance(element.eResource) else null;
 		recorder.beginRecording(vuri, #[element]);
 		rootToRecorder.put(element, recorder);

@@ -93,7 +93,7 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements TuidCal
 
 	override VURI getModelVURIContainingIdentifiedEObject(Tuid tuid) {
 		val modelVURI = this.tuidCalculatorAndResolver.getModelVURIContainingIdentifiedEObject(tuid.toString)
-		if (null == modelVURI) {
+		if (null === modelVURI) {
 			return null;
 		}
 		return VURI::getInstance(modelVURI)
