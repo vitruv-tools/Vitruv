@@ -10,7 +10,7 @@
         <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0"/>
         <features name="org.eclipse.emf.common.feature.group" versionRange="2.12.0"/>
         <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.10.0"/>
-        <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.10.0"/>
+        <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.12.0"/>
       </repositories>
       <repositories location="http://vitruv-tools.github.io/updatesite/release/license">
         <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)"/>
