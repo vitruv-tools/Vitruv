@@ -11,6 +11,11 @@ import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.Conflict
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import java.util.List
+import allElementTypes.NonRoot
 
 class AdditionalElementTest extends AbstractAdditionalElementTest {
 	@Test
@@ -68,5 +73,44 @@ class AdditionalElementTest extends AbstractAdditionalElementTest {
 		val allCompareEChanges = otherEChanges + otherCorrespondentEChanges
 		testEchanges.apply(unmatchedOfGraph1, allBaseEChanges)
 		testEchanges.apply(unmatchedOfGraph2, allCompareEChanges)
+	}
+
+	@Test
+	def void testConflictDetector() {
+		assertThat(conflicts.empty, is(true))
+		val conflictFreeEChanges = conflictDetector.conflictFreeOriginalEChanges
+		assertThat(conflictFreeEChanges.length, is(10))
+	}
+
+	@Test
+	def void testModelMerger() {
+		assertThat(conflicts.empty, is(true))
+		val failingFunction = [ Conflict c |
+			assertThat("This method should never been called", true, is(false))
+			return #[]
+		]
+		val ResourceSet source = new ResourceSetImpl
+		modelMerger.init(branchDiff, failingFunction)
+		modelMerger.compute
+		val echanges = modelMerger.resultingOriginalEChanges
+
+		val testOnResourceSet = [ ResourceSet resourceSet, List<EChange> es |
+			assertThat(es.length, is(10))
+			assertThat(es.exists[resolved], is(false))
+			es.forEach [
+				resolveBeforeAndApplyForward(resourceSet)
+			]
+
+			assertThat(resourceSet.allContents.filter[it instanceof NonRoot].map[it as NonRoot].exists [
+				id == additionalID
+			], is(true))
+			assertThat(resourceSet.allContents.filter[it instanceof NonRoot].size, is(4))
+		]
+
+		testOnResourceSet.apply(source, echanges)
+		val ResourceSet target = new ResourceSetImpl
+		val targetEChanges = modelMerger.resultingTriggeredEChanges
+
+		testOnResourceSet.apply(target, targetEChanges)
 	}
 }

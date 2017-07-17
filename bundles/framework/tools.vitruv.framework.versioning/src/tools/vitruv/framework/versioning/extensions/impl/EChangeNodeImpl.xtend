@@ -10,8 +10,12 @@ import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 import tools.vitruv.framework.versioning.NodeType
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.EdgeType
+import org.apache.log4j.Logger
+import org.apache.log4j.Level
 
 class EChangeNodeImpl extends SingleNode implements EChangeNode {
+	static extension Logger = Logger::getLogger(EChangeNodeImpl)
 	static extension EChangeCompareUtil = EChangeCompareUtil::instance
 	static extension EdgeExtension = EdgeExtension::instance
 	@Accessors(PUBLIC_GETTER,PUBLIC_SETTER)
@@ -42,4 +46,13 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 		if (x == newX)
 			throw new IllegalArgumentException
 	}
+
+	override isConflicting() {
+		level = Level::WARN
+		val x = edgeSet.exists[isType(EdgeType::CONFLICTS)]
+		if (x)
+			warn('''«this» is conflicting''')
+		return x
+	}
+
 }

@@ -20,6 +20,9 @@ import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.VitruviusChange
+import java.util.Set
+import tools.vitruv.framework.versioning.ChangeMatch
+import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 class ConflictDetectorImpl implements ConflictDetector {
 	static extension DependencyGraphCreator = DependencyGraphCreator::instance
@@ -32,25 +35,47 @@ class ConflictDetectorImpl implements ConflictDetector {
 	val List<Conflict> conflicts
 
 	@Accessors(PUBLIC_GETTER)
-	val List<EChange> conflictFreeOriginalEChanges
+	val List<EChange> theirConflictFreeOriginalEChanges
 	@Accessors(PUBLIC_GETTER)
-	val List<EChange> conflictFreeTriggeredEChanges
+	val List<EChange> theirConflictFreeTriggeredEChanges
+	@Accessors(PUBLIC_GETTER)
+	val List<EChange> myConflictFreeOriginalEChanges
+	@Accessors(PUBLIC_GETTER)
+	val List<EChange> myConflictFreeTriggeredEChanges
+	@Accessors(PUBLIC_GETTER)
+	val List<EChange> commonConflictFreeOriginalEChanges
+	@Accessors(PUBLIC_GETTER)
+	val List<EChange> commonConflictFreeTriggeredEChanges
+
 	BranchDiff branchDiff
 	VURI myVURI
 	VURI theirVURI
 
+	val List<List<?>> lists
+
 	new() {
 		conflictDetectionStrategy = new ConflictDetectionStrategyImpl
-		conflictFreeOriginalEChanges = newArrayList
-		conflictFreeTriggeredEChanges = newArrayList
 		conflicts = newArrayList
+		commonConflictFreeOriginalEChanges = newArrayList
+		commonConflictFreeTriggeredEChanges = newArrayList
+		myConflictFreeOriginalEChanges = newArrayList
+		myConflictFreeTriggeredEChanges = newArrayList
+		theirConflictFreeOriginalEChanges = newArrayList
+		theirConflictFreeTriggeredEChanges = newArrayList
+		lists = #[
+			commonConflictFreeOriginalEChanges,
+			commonConflictFreeTriggeredEChanges,
+			myConflictFreeOriginalEChanges,
+			myConflictFreeTriggeredEChanges,
+			theirConflictFreeOriginalEChanges,
+			theirConflictFreeTriggeredEChanges
+		]
 	}
 
 	override init(BranchDiff currentbranchDiff) {
 		this.branchDiff = currentbranchDiff
 		conflicts.clear
-		conflictFreeOriginalEChanges.clear
-		conflictFreeTriggeredEChanges.clear
+		lists.forEach[clear]
 		myVURI = branchDiff.baseChanges.get(0).originalVURI
 		theirVURI = branchDiff.compareChanges.get(0).originalVURI
 	}
@@ -60,30 +85,51 @@ class ConflictDetectorImpl implements ConflictDetector {
 		level = Level::DEBUG
 		val List<Conflict> naiveConflicts = new ArrayList
 		val graph1 = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
-		val graph2 = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
-		val myChanges = branchDiff.baseChanges.map[allEChanges].flatten
-		val theirChanges = branchDiff.compareChanges.map[allEChanges].flatten
+		val graph2 = createDependencyGraphFromChangeMatches(branchDiff.
+			compareChanges)
+		val getEChanges = [ Function1<Iterable<ChangeMatch>, Iterable<VitruviusChange>> toEChange, Iterable<ChangeMatch> changeIt |
+			toEChange.apply(changeIt).map[EChanges].flatten
+		]
+		val getOriginalEChanges = getEChanges.curry([Iterable<ChangeMatch> x|x.map[originalChange]])
+		val getTriggeredEChanges = getEChanges.curry([ Iterable<ChangeMatch> x |
+			x.map[targetToCorrespondentChanges.entrySet.map[value].flatten].flatten
+		])
+		val myOriginalEChanges = getOriginalEChanges.apply(branchDiff.baseChanges)
+		val myTriggeredEChanges = getTriggeredEChanges.apply(branchDiff.baseChanges)
+		val myChanges = myOriginalEChanges + myTriggeredEChanges
+		val theirOriginalEChanges = getOriginalEChanges.apply(branchDiff.compareChanges)
+		val theirTriggeredEChanges = getTriggeredEChanges.apply(branchDiff.compareChanges)
+		val theirChanges = theirOriginalEChanges + theirTriggeredEChanges
 		val tester = IsomorphismTesterAlgorithm::createIsomorphismTester
 		tester.init(graph1, graph2)
 		tester.compute
 
 		val combinedGraph = tester.combinedGraph
-		val myUnpairedChanges = tester.unmatchedOfGraph1.map[EChange].toSet
-		val filterFunction = [ Iterable<VitruviusChange> changeIterator |
-			changeIterator.map[EChanges].flatten.filter [
-				!myUnpairedChanges.contains(it)
-			]
+		val toEChangeSet = [Set<EChangeNode> nodes|nodes.map[EChange].toSet]
+		val myUnpairedChanges = toEChangeSet.apply(tester.unmatchedOfGraph1)
+		val theirUnpairedChanges = toEChangeSet.apply(tester.unmatchedOfGraph2)
+		val filterFunction = [ Set<EChange> unpairedChanges, Iterable<EChange> echangeIterator |
+			echangeIterator.filter[!unpairedChanges.contains(it)]
 		]
-		val myConflictFreeOriginalEChanges = filterFunction.apply(branchDiff.baseChanges.map[originalChange])
-		conflictFreeOriginalEChanges += myConflictFreeOriginalEChanges
-		val myConflictFreeTriggeredEChanges = filterFunction.apply(branchDiff.baseChanges.map [
-			targetToCorrespondentChanges.entrySet.map[value].flatten
-		].flatten)
-		conflictFreeTriggeredEChanges += myConflictFreeTriggeredEChanges
-		if (tester.isIsomorphic)
-			return
-		val theirUnpairedChanges = tester.unmatchedOfGraph2.map[EChange].toSet
+		val myFilterFunction = filterFunction.curry(myUnpairedChanges)
+		val theirFilterFunction = filterFunction.curry(theirUnpairedChanges)
 
+		val myOriginalEChangesWithIsomorphicChange = myFilterFunction.apply(myOriginalEChanges)
+		val myTriggeredEChangesWithIsomorphiChange = myFilterFunction.apply(myTriggeredEChanges)
+
+		val theirOriginalEChangesWithIsomorphicChange = theirFilterFunction.apply(theirOriginalEChanges)
+		val theirTriggeredEChangesWithIsomorphiChange = theirFilterFunction.apply(theirTriggeredEChanges)
+
+		if (myOriginalEChangesWithIsomorphicChange.length !== theirOriginalEChangesWithIsomorphicChange.length)
+			throw new IllegalStateException
+		if (myTriggeredEChangesWithIsomorphiChange.length !== theirTriggeredEChangesWithIsomorphiChange.length)
+			throw new IllegalStateException
+
+		commonConflictFreeOriginalEChanges += myOriginalEChangesWithIsomorphicChange
+		commonConflictFreeTriggeredEChanges += myTriggeredEChangesWithIsomorphiChange
+
+		if (tester.isIsomorphic)
+			return;
 		myUnpairedChanges.forEach [ myChange |
 			theirChanges.filter[conflictDetectionStrategy.conflicts(myChange, it)].forEach [
 				processConflict(myChange, it, naiveConflicts)
@@ -95,8 +141,29 @@ class ConflictDetectorImpl implements ConflictDetector {
 				conflictDetectionStrategy.conflicts(theirChange, it)
 			].forEach [
 				processConflict(it, theirChange, naiveConflicts)
+				combinedGraph.addEdge(it, theirChange, EdgeType::CONFLICTS)
 			]
 		]
+
+		val getEChangesWithoutConflict = [Set<EChangeNode> nodeSet|nodeSet.filter[!conflicting].map[EChange].toSet]
+		val myEChangesWithoutConflict = getEChangesWithoutConflict.apply(tester.unmatchedOfGraph1)
+		val theirEChangesWithoutConflict = getEChangesWithoutConflict.apply(tester.unmatchedOfGraph2)
+
+		val isNotConflicting = [Set<EChange> nonConflictingEChangeSet, EChange e|nonConflictingEChangeSet.contains(e)]
+		val myIsNotConflicting = isNotConflicting.curry(myEChangesWithoutConflict)
+		val theirIsNotConflicting = isNotConflicting.curry(theirEChangesWithoutConflict)
+
+		val myOriginalEChangesWithoutConflict = myOriginalEChanges.filter[myIsNotConflicting.apply(it)]
+		val myTriggeredEChangesWithouConflict = myTriggeredEChanges.filter[myIsNotConflicting.apply(it)]
+		val theirOriginalEChangesWithoutConflict = theirOriginalEChanges.filter[theirIsNotConflicting.apply(it)]
+		val theirTriggeredEChangesWithouConflict = theirTriggeredEChanges.filter[theirIsNotConflicting.apply(it)]
+
+		myConflictFreeOriginalEChanges += myOriginalEChangesWithoutConflict
+		theirConflictFreeOriginalEChanges += theirOriginalEChangesWithoutConflict
+
+		myConflictFreeTriggeredEChanges += myTriggeredEChangesWithouConflict
+		theirConflictFreeTriggeredEChanges += theirTriggeredEChangesWithouConflict
+
 		val myConflictedChanges = naiveConflicts.map[it as SimpleChangeConflict].map[sourceChange].toSet
 		val theirConflictedChanges = naiveConflicts.map[it as SimpleChangeConflict].map[targetChange].toSet
 		val mySubgraph = graph1.getSubgraphContainingEChanges(myConflictedChanges)
@@ -164,6 +231,11 @@ class ConflictDetectorImpl implements ConflictDetector {
 			currentConflicts += conflict
 		}
 
+	}
+
+	override getConflictFreeOriginalEChanges() {
+		return (commonConflictFreeOriginalEChanges + myConflictFreeOriginalEChanges +
+			theirConflictFreeOriginalEChanges).toList
 	}
 
 }

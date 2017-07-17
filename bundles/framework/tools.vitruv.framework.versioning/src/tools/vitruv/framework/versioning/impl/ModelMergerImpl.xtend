@@ -12,8 +12,10 @@ import tools.vitruv.framework.versioning.BranchDiff
 import java.util.Map
 import tools.vitruv.framework.change.echange.EChange
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.versioning.extensions.URIRemapper
 
 class ModelMergerImpl implements ModelMerger {
+	static extension URIRemapper = URIRemapper::instance
 	static extension BranchDiffCreator = BranchDiffCreator::instance
 	BranchDiff branchDiff
 	val ConflictDetector conflictDetector
@@ -44,9 +46,34 @@ class ModelMergerImpl implements ModelMerger {
 
 	override compute() {
 		conflictDetector.compute
-		val conflictFreeOriginalEChanges = conflictDetector.conflictFreeOriginalEChanges
-		val conflictFreeTriggeredEChanges = conflictDetector.conflictFreeTriggeredEChanges
+		val getVURI = [Iterable<ChangeMatch> cIt|cIt.get(0).originalVURI]
+		val getTriggeredVURIs = [Iterable<ChangeMatch> cIt|cIt.get(0).targetToCorrespondentChanges.entrySet.map[key]]
+		val myOriginalVURI = getVURI.apply(branchDiff.baseChanges)
+		val theirOriginalVURI = getVURI.apply(branchDiff.compareChanges)
 
+		val myTriggeredVURIs = getTriggeredVURIs.apply(branchDiff.baseChanges)
+		val theirTriggeredVURIs = getTriggeredVURIs.apply(branchDiff.compareChanges)
+
+		val commonConflictFreeOriginalEChanges = conflictDetector.commonConflictFreeOriginalEChanges
+		val commonConflictFreeTriggeredEChanges = conflictDetector.commonConflictFreeTriggeredEChanges
+
+		val myConflictFreeOriginalEChanges = conflictDetector.myConflictFreeOriginalEChanges
+		val myConflictFreeTriggeredEChanges = conflictDetector.myConflictFreeTriggeredEChanges
+
+		val theirConflictFreeOriginalEChanges = conflictDetector.theirConflictFreeOriginalEChanges
+		val theirConflictFreeTriggeredEChanges = conflictDetector.theirConflictFreeTriggeredEChanges
+
+		val remapTheirVURI = createEChangeRemapFunction(theirOriginalVURI, myOriginalVURI)
+		theirConflictFreeOriginalEChanges.forEach[remapTheirVURI.accept(it)]
+		myTriggeredVURIs.forEach [ myTriggeredVURI, i |
+			val theirTriggeredVURI = theirTriggeredVURIs.get(i)
+			val remapTheirTriggeredVURI = createEChangeRemapFunction(theirTriggeredVURI, myTriggeredVURI)
+			theirConflictFreeTriggeredEChanges.forEach[remapTheirTriggeredVURI.accept(it)]
+		]
+		val conflictFreeOriginalEChanges = commonConflictFreeOriginalEChanges + myConflictFreeOriginalEChanges +
+			theirConflictFreeOriginalEChanges
+		val conflictFreeTriggeredEChanges = commonConflictFreeTriggeredEChanges + myConflictFreeTriggeredEChanges +
+			theirConflictFreeTriggeredEChanges
 		val conflicts = conflictDetector.conflicts
 		val softConflicts = conflicts.filter[solvability === ConflictSeverity::SOFT]
 		val originalEChangesFromSoftConflicts = softConflicts.map[sourceDefaultSolution].flatten.toList

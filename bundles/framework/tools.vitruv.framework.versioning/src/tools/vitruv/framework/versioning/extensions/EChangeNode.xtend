@@ -6,19 +6,22 @@ import tools.vitruv.framework.versioning.NodeType
 import tools.vitruv.framework.util.datatypes.VURI
 
 interface EChangeNode extends Node {
+
 	def EChange getEChange()
 
-	def void setEChange(EChange e)
+	def VURI getVuri()
 
-	def void setType(NodeType type)
+	def boolean isConflicting()
 
 	def boolean isEChangeNodeEqual(EChangeNode node2)
 
 	def boolean isTriggered()
 
+	def void setEChange(EChange e)
+
 	def void setTriggered(boolean t)
 
-	def void setVuri(VURI v)
+	def void setType(NodeType type)
 
-	def VURI getVuri()
+	def void setVuri(VURI v)
 }
