@@ -9,6 +9,7 @@ import tools.vitruv.framework.versioning.extensions.EdgeExtension
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 import tools.vitruv.framework.versioning.NodeType
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
+import tools.vitruv.framework.util.datatypes.VURI
 
 class EChangeNodeImpl extends SingleNode implements EChangeNode {
 	static extension EChangeCompareUtil = EChangeCompareUtil::instance
@@ -17,6 +18,9 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 	EChange eChange
 	@Accessors(PUBLIC_GETTER,PUBLIC_SETTER)
 	boolean triggered
+
+	@Accessors(PUBLIC_GETTER,PUBLIC_SETTER)
+	VURI vuri
 
 	protected new(AbstractGraph graph, String id) {
 		super(graph, id)

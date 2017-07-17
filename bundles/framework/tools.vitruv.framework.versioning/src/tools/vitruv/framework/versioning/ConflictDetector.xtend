@@ -25,5 +25,7 @@ interface ConflictDetector {
 
 	def List<Conflict> getConflicts()
 
-	def List<EChange> getConflictFreeEChanges()
+	def List<EChange> getConflictFreeOriginalEChanges()
+
+	def List<EChange> getConflictFreeTriggeredEChanges()
 }

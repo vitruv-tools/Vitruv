@@ -122,6 +122,7 @@ class GraphExtensionImpl implements GraphExtension {
 			val EChangeNode node = newGraph.addNode(oldNode.id)
 			node.EChange = oldNode.EChange
 			node.triggered = oldNode.triggered
+			node.vuri = oldNode.vuri
 		]
 		oldgraph.edgeSet.filter [
 			nodePredicate.apply(sourceNode) && nodePredicate.apply(targetNode)

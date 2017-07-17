@@ -92,7 +92,7 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		assertThat(conflict.type, is(ConflictType::INSERTING_IN_SAME_CONTANER))
 		assertThat(conflict.sourceChanges.size, is(2))
 		assertThat(conflict.targetChanges.size, is(2))
-		val conflictFreeEChanges = conflictDetector.conflictFreeEChanges
+		val conflictFreeEChanges = conflictDetector.conflictFreeOriginalEChanges
 		assertThat(conflictFreeEChanges.length, is(6))
 	}
 
@@ -107,8 +107,8 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		val ResourceSet source = new ResourceSetImpl
 		modelMerger.init(branchDiff, failingFunction)
 		modelMerger.compute
-		val echanges = modelMerger.resultingSourceEChanges
-//		val targetEChanges = modelMerger.resultingSourceEChanges
+		val echanges = modelMerger.resultingOriginalEChanges
+
 		val testOnResourceSet = [ ResourceSet resourceSet, List<EChange> es |
 			assertThat(es.length, is(10))
 			assertThat(es.exists[resolved], is(false))
@@ -123,6 +123,9 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		]
 
 		testOnResourceSet.apply(source, echanges)
+		val ResourceSet target = new ResourceSetImpl
+		val targetEChanges = modelMerger.resultingTriggeredEChanges
 
+		testOnResourceSet.apply(target, targetEChanges)
 	}
 }

@@ -17,8 +17,8 @@ interface ModelMerger {
 
 	def void compute()
 
-	def List<EChange> getResultingSourceEChanges()
+	def List<EChange> getResultingOriginalEChanges()
 
-	def List<EChange> getResultingTargetEChanges()
+	def List<EChange> getResultingTriggeredEChanges()
 
 }

@@ -14,9 +14,15 @@ interface Conflict {
 
 	def void resolveConflict(EList<ChangeMatch> acceptedLocalChangeMatches, EList<ChangeMatch> rejectedRemoteOperations)
 
-	def List<EChange> getDefaultSolution()
+	def List<EChange> getSourceDefaultSolution()
 
-	def VURI getMyVURI()
+	def List<EChange> getTriggeredDefaultSolution()
 
-	def VURI getTheirVURI()
+	def VURI getMyOriginalVURI()
+
+	def VURI getTheirOriginalVURI()
+
+	def List<VURI> getMyTriggeredVURIs()
+
+	def List<VURI> getTheirTriggeredVURIs()
 }

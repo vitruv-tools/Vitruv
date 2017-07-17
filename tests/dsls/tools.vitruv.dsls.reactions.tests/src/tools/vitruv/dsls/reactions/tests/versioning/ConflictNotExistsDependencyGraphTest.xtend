@@ -100,7 +100,7 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 	@Test
 	def void testConflictDetector() {
 		assertThat(conflicts.empty, is(true))
-		val conflictFreeEChanges = conflictDetector.conflictFreeEChanges
+		val conflictFreeEChanges = conflictDetector.conflictFreeOriginalEChanges
 		assertThat(conflictFreeEChanges.length, is(8))
 	}
 }

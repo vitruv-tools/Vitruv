@@ -14,12 +14,12 @@ import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
-import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.VitruviusChange
 
 class ConflictDetectorImpl implements ConflictDetector {
 	static extension DependencyGraphCreator = DependencyGraphCreator::instance
@@ -32,21 +32,25 @@ class ConflictDetectorImpl implements ConflictDetector {
 	val List<Conflict> conflicts
 
 	@Accessors(PUBLIC_GETTER)
-	val List<EChange> conflictFreeEChanges
+	val List<EChange> conflictFreeOriginalEChanges
+	@Accessors(PUBLIC_GETTER)
+	val List<EChange> conflictFreeTriggeredEChanges
 	BranchDiff branchDiff
 	VURI myVURI
 	VURI theirVURI
 
 	new() {
 		conflictDetectionStrategy = new ConflictDetectionStrategyImpl
-		conflictFreeEChanges = newArrayList
+		conflictFreeOriginalEChanges = newArrayList
+		conflictFreeTriggeredEChanges = newArrayList
 		conflicts = newArrayList
 	}
 
 	override init(BranchDiff currentbranchDiff) {
 		this.branchDiff = currentbranchDiff
 		conflicts.clear
-		conflictFreeEChanges.clear
+		conflictFreeOriginalEChanges.clear
+		conflictFreeTriggeredEChanges.clear
 		myVURI = branchDiff.baseChanges.get(0).originalVURI
 		theirVURI = branchDiff.compareChanges.get(0).originalVURI
 	}
@@ -65,10 +69,17 @@ class ConflictDetectorImpl implements ConflictDetector {
 
 		val combinedGraph = tester.combinedGraph
 		val myUnpairedChanges = tester.unmatchedOfGraph1.map[EChange].toSet
-		val myConflictFreeEChanges = branchDiff.baseChanges.map[originalChange.EChanges].flatten.filter [
-			!myUnpairedChanges.contains(it)
+		val filterFunction = [ Iterable<VitruviusChange> changeIterator |
+			changeIterator.map[EChanges].flatten.filter [
+				!myUnpairedChanges.contains(it)
+			]
 		]
-		conflictFreeEChanges += myConflictFreeEChanges
+		val myConflictFreeOriginalEChanges = filterFunction.apply(branchDiff.baseChanges.map[originalChange])
+		conflictFreeOriginalEChanges += myConflictFreeOriginalEChanges
+		val myConflictFreeTriggeredEChanges = filterFunction.apply(branchDiff.baseChanges.map [
+			targetToCorrespondentChanges.entrySet.map[value].flatten
+		].flatten)
+		conflictFreeTriggeredEChanges += myConflictFreeTriggeredEChanges
 		if (tester.isIsomorphic)
 			return
 		val theirUnpairedChanges = tester.unmatchedOfGraph2.map[EChange].toSet
@@ -116,7 +127,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 	private def processConflict(EChange e1, EChange e2, List<Conflict> currentConflicts) {
 		val type = conflictDetectionStrategy.getConflictType(e1, e2)
 		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
-		val conflict = SimpleChangeConflict::createSimpleChangeConflict(type, solvability, e1, e2, myVURI, theirVURI)
+		val conflict = new SimpleChangeConflictImpl(type, solvability, myVURI, theirVURI, #[], #[], e1, e2)
 		currentConflicts += conflict
 	}
 
@@ -126,26 +137,30 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val type = conflictDetectionStrategy.getConflictType(e1, e2)
 		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
 		if (leave1.breadthFirstIterator.size == 1 && leave2.breadthFirstIterator.size == 1) {
-			val conflict = SimpleChangeConflict::createSimpleChangeConflict(type, solvability, e1, e2, myVURI,
-				theirVURI)
-			currentConflicts += conflict
+			val conflict = new SimpleChangeConflictImpl(type, solvability, myVURI, theirVURI, #[], #[], e1, e2)
+
+			currentConflicts +=
+				conflict
 		} else {
 			val myEchanges = newArrayList
 			val myTriggeredEChanges = newArrayList
 			val theirEChanges = newArrayList
 			val theirTriggeredEChanges = newArrayList
-			val fillLists = [ EChangeNode leave, List<EChange> originalList, List<EChange> triggeredList |
+			val myTriggeredVuris = newArrayList
+			val theirTriggeredVuris = newArrayList
+			val fillLists = [ EChangeNode leave, List<EChange> originalList, List<EChange> triggeredList, List<VURI> vuris |
 				leave.<EChangeNode>breadthFirstIterator.forEach [ node |
-					if (node.triggered)
+					if (node.triggered) {
 						triggeredList += node.EChange
-					else
+						vuris += node.vuri
+					} else
 						originalList += node.EChange
 				]
 			]
-			fillLists.apply(leave1, myEchanges, myTriggeredEChanges)
-			fillLists.apply(leave2, theirEChanges, theirTriggeredEChanges)
-			val conflict = MultiChangeConflict::createMultiChangeConflict(type, solvability, e1, e2, myEchanges,
-				theirEChanges, myVURI, theirVURI, myTriggeredEChanges, theirTriggeredEChanges)
+			fillLists.apply(leave1, myEchanges, myTriggeredEChanges, myTriggeredVuris)
+			fillLists.apply(leave2, theirEChanges, theirTriggeredEChanges, theirTriggeredVuris)
+			val conflict = new MultiChangeConflictImpl(type, solvability, e1, e2, myEchanges, theirEChanges, myVURI,
+				theirVURI, myTriggeredEChanges, theirTriggeredEChanges, myTriggeredVuris, theirTriggeredVuris)
 			currentConflicts += conflict
 		}
 

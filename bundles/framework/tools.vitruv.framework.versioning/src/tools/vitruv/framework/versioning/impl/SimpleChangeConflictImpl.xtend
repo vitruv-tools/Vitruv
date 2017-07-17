@@ -16,7 +16,11 @@ class SimpleChangeConflictImpl extends ConflictImpl implements SimpleChangeConfl
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
-	override getDefaultSolution() {
+	override getSourceDefaultSolution() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override getTriggeredDefaultSolution() {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 

@@ -17,15 +17,16 @@ class ModelMergerImpl implements ModelMerger {
 	static extension BranchDiffCreator = BranchDiffCreator::instance
 	BranchDiff branchDiff
 	val ConflictDetector conflictDetector
+
 	@Accessors(PUBLIC_GETTER)
-	val List<EChange> resultingSourceEChanges
+	val List<EChange> resultingOriginalEChanges
 	@Accessors(PUBLIC_GETTER)
-	val List<EChange> resultingTargetEChanges
+	val List<EChange> resultingTriggeredEChanges
 
 	new() {
 		conflictDetector = ConflictDetector::createConflictDetector
-		resultingSourceEChanges = newArrayList
-		resultingTargetEChanges = newArrayList
+		resultingOriginalEChanges = newArrayList
+		resultingTriggeredEChanges = newArrayList
 	}
 
 	override init(List<ChangeMatch> myChanges, List<ChangeMatch> theirChanges,
@@ -37,27 +38,23 @@ class ModelMergerImpl implements ModelMerger {
 		branchDiff = b
 		conflictDetector.init(branchDiff)
 		createMap(branchDiff.baseChanges.get(0), branchDiff.compareChanges.get(0))
-		resultingSourceEChanges.clear
-		resultingTargetEChanges.clear
+		resultingOriginalEChanges.clear
+		resultingTriggeredEChanges.clear
 	}
 
 	override compute() {
 		conflictDetector.compute
-		val conflictFreeEChanges = conflictDetector.conflictFreeEChanges
+		val conflictFreeOriginalEChanges = conflictDetector.conflictFreeOriginalEChanges
+		val conflictFreeTriggeredEChanges = conflictDetector.conflictFreeTriggeredEChanges
+
 		val conflicts = conflictDetector.conflicts
 		val softConflicts = conflicts.filter[solvability === ConflictSeverity::SOFT]
-		val echangesFromSoftConflicts = softConflicts.map[defaultSolution].flatten.toList
-		val myTriggeredEChanges = branchDiff.baseChanges.map [
-			targetToCorrespondentChanges.entrySet.map[value].flatten.map[EChanges]
-		].flatten.flatten.toList
-		val theirTriggeredSourceEChanges = branchDiff.compareChanges.map [
-			targetToCorrespondentChanges.entrySet.map[value].flatten.map[EChanges]
-		].flatten.flatten.toList
-		val sourceEChanges = echangesFromSoftConflicts.filter [
-			!myTriggeredEChanges.contains(it) && !theirTriggeredSourceEChanges.contains(it)
-		]
+		val originalEChangesFromSoftConflicts = softConflicts.map[sourceDefaultSolution].flatten.toList
+		val triggeredEChangesFromSoftConflicts = softConflicts.map[triggeredDefaultSolution].flatten.toList
 
-		resultingSourceEChanges += (conflictFreeEChanges + sourceEChanges)
+		resultingOriginalEChanges += (conflictFreeOriginalEChanges + originalEChangesFromSoftConflicts)
+		resultingTriggeredEChanges += (conflictFreeTriggeredEChanges + triggeredEChangesFromSoftConflicts)
+
 		if (softConflicts.length !== conflicts.length)
 			throw new UnsupportedOperationException
 	}
