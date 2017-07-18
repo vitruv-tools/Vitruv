@@ -46,7 +46,7 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		}
 		val proxyUris = affectedEObjects.filter(InternalEObject).map[eProxyURI].filterNull.filter[segmentCount > 0]
 		if (proxyUris.size > 0) {
-			return VURI.getInstance(proxyUris.get(0));
+			return VURI.getInstance(proxyUris.get(0).trimFragment);
 		}
 	}
 		
