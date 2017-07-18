@@ -14,7 +14,6 @@ import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -73,16 +72,20 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 */
 	protected abstract void cleanup();
 
-	private List<PropagatedChange> propagateChanges(final VURI vuri) {
+	private List<PropagatedChange> propagateChanges() {
 		this.changeRecorder.endRecording();
 		final List<TransactionalChange> changes = unresolveChanges() ? changeRecorder.getUnresolvedChanges() : changeRecorder.getResolvedChanges();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-		return this.getVirtualModel().propagateChange(compositeChange);
+		List<PropagatedChange> propagationResult = this.getVirtualModel().propagateChange(compositeChange);
+		this.changeRecorder.beginRecording();
+		return propagationResult;
 	}
 
 	private void startRecordingChanges(Resource resource) {
 		this.changeRecorder.addToRecording(resource);
-		this.changeRecorder.beginRecording();
+		if (!changeRecorder.isRecording()) {
+			this.changeRecorder.beginRecording();
+		}
 	}
 
 	/**
@@ -109,7 +112,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) throws IOException {
 		Resource resource = object.eResource();
 		EcoreResourceBridge.saveResource(resource);
-		List<PropagatedChange> result = this.propagateChanges(VURI.getInstance(resource));
+		List<PropagatedChange> result = this.propagateChanges();
 		this.startRecordingChanges(resource);
 		return result;
 	}
@@ -149,9 +152,9 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			throw new IllegalArgumentException();
 		}
 		Resource resource = getModelResource(modelPathInProject);
-		VURI vuri = VURI.getInstance(resource);
 		resource.delete(Collections.EMPTY_MAP);
-		propagateChanges(vuri);
+		propagateChanges();
+		this.changeRecorder.removeFromRecording(resource);
 	}
 
 }
