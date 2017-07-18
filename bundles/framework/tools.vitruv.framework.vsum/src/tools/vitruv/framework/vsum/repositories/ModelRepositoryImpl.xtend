@@ -93,7 +93,8 @@ class ModelRepositoryImpl {
 		}
 		val unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
 		val recorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges !== null, false);
-		recorder.beginRecording(#[element]);
+		recorder.addToRecording(element);
+		recorder.beginRecording();
 		rootToRecorder.put(element, recorder);
 		logger.debug("Start recording for " + element);
 	}

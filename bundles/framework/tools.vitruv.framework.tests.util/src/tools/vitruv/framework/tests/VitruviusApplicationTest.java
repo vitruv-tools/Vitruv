@@ -81,7 +81,8 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	}
 
 	private void startRecordingChanges(Resource resource) {
-		this.changeRecorder.beginRecording(Collections.singleton(resource));
+		this.changeRecorder.addToRecording(resource);
+		this.changeRecorder.beginRecording();
 	}
 
 	/**
