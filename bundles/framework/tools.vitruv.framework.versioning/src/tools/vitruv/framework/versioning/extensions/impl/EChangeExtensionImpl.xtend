@@ -9,6 +9,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeExtension
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 
 class EChangeExtensionImpl implements EChangeExtension {
 	static def EChangeExtension init() {
@@ -39,6 +40,10 @@ class EChangeExtensionImpl implements EChangeExtension {
 
 	private static dispatch def String getNodeLabelImpl(ReplaceSingleValuedEAttribute<?, ?> e) {
 		'''replace «e.affectedFeature.shortString»  with "«e.newValue»"'''
+	}
+
+	private static dispatch def String getNodeLabelImpl(CreateAndInsertRoot<?> e) {
+		'''CreateAndInsertRoot@«Integer.toHexString(e.hashCode)»'''
 	}
 
 	private static dispatch def String getNodeLabelImpl(CreateAndInsertNonRoot<?, ?> e) {

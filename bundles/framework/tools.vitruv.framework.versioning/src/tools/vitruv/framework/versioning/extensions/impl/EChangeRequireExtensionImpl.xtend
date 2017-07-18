@@ -6,6 +6,8 @@ import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 
 class EChangeRequireExtensionImpl implements EChangeRequireExtension {
 	static def EChangeRequireExtension init() {
@@ -29,9 +31,16 @@ class EChangeRequireExtensionImpl implements EChangeRequireExtension {
 	}
 
 	private static dispatch def checkForRequireEdgeImpl(CreateAndReplaceNonRoot<?, ?> e1,
-		CreateAndInsertEObject<?, ? extends InsertEReference<?, ?>> e2) {
+		CreateAndInsertNonRoot<?, ?> e2) {
 		val x = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
 		return x
+	}
+
+	private static dispatch def checkForRequireEdgeImpl(
+		CreateAndInsertRoot<?> e1,
+		EChange e2
+	) {
+		true
 	}
 
 	private new() {
