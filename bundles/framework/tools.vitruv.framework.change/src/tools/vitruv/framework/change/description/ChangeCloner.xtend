@@ -24,11 +24,11 @@ class ChangeCloner {
 	}
 	
 	def dispatch VitruviusChange clone(ConcreteApplicableChangeImpl applicableChange) {
-		return new ConcreteApplicableChangeImpl(applicableChange.EChange.cloneEChange, applicableChange.URI);
+		return new ConcreteApplicableChangeImpl(applicableChange.EChange.cloneEChange);
 	}
 	
 	def dispatch VitruviusChange clone(ConcreteChangeImpl concreteChange) {
-		return new ConcreteChangeImpl(concreteChange.EChange.cloneEChange, concreteChange.URI);
+		return new ConcreteChangeImpl(concreteChange.EChange.cloneEChange);
 	}
 	
 	def dispatch VitruviusChange clone(EMFModelChangeImpl modelChange) {

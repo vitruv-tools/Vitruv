@@ -30,7 +30,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 
 	private def void addChanges(Iterable<EChange> eChanges) {
 		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
+			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange));
 		}
 		if (changes.empty) {
 			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));

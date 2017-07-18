@@ -17,6 +17,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
+import tools.vitruv.framework.change.description.impl.ConcreteChangeWithUriImpl
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -50,23 +51,26 @@ class VitruviusChangeFactory {
 		return new LegacyEMFModelChangeImpl(changeDescription, changes);
 	}
 	
-	public def ConcreteChange createConcreteApplicableChange(EChange change, VURI vuri) {
-		return new ConcreteApplicableChangeImpl(change, vuri);
+	public def ConcreteChange createConcreteApplicableChange(EChange change) {
+		return new ConcreteApplicableChangeImpl(change);
 	}
 	
-	public def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
-		return new ConcreteChangeImpl(change, vuri);
+	public def ConcreteChange createConcreteChange(EChange change) {
+		return new ConcreteChangeImpl(change);
+	}
+	
+	public def ConcreteChange createConcreteChangeWithVuri(EChange change, VURI vuri) {
+		return new ConcreteChangeWithUriImpl(vuri, change);
 	}
 	
 	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
-		val vuri = VURI.getInstance(changedFileResource);
 		var EChange eChange = null
 		if (kind == FileChangeKind.Create) {
 			eChange = generateFileCreateChange(changedFileResource);
 		} else {
 			eChange = generateFileDeleteChange(changedFileResource);
 		}
-		return new ConcreteChangeImpl(eChange, vuri)
+		return new ConcreteChangeImpl(eChange)
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {
