@@ -47,7 +47,9 @@ class ModelMergerImpl implements ModelMerger {
 	override compute() {
 		conflictDetector.compute
 		val getVURI = [Iterable<ChangeMatch> cIt|cIt.get(0).originalVURI]
-		val getTriggeredVURIs = [Iterable<ChangeMatch> cIt|cIt.get(0).targetToCorrespondentChanges.entrySet.map[key]]
+		val getTriggeredVURIs = [ Iterable<ChangeMatch> cIt |
+			cIt.get(0).targetToCorrespondentChanges.asMap.entrySet.map[key]
+		]
 		val myOriginalVURI = getVURI.apply(branchDiff.baseChanges)
 		val theirOriginalVURI = getVURI.apply(branchDiff.compareChanges)
 
@@ -92,10 +94,10 @@ class ModelMergerImpl implements ModelMerger {
 
 		val Map<String, String> rootToRootMap = newHashMap
 		rootToRootMap.put(sourceVURI.EMFUri.toFileString, newSourceVURI.EMFUri.toFileString)
-		myChange.targetToCorrespondentChanges.entrySet.forEach [ entry, index |
+		myChange.targetToCorrespondentChanges.asMap.entrySet.forEach [ entry, index |
 			val targetVURI = entry.key
 			// FIXME PS Dirty HACK 
-			val newTargetVURI = theirChange.targetToCorrespondentChanges.entrySet.get(index).key
+			val newTargetVURI = theirChange.targetToCorrespondentChanges.asMap.entrySet.get(index).key
 			rootToRootMap.put(targetVURI.EMFUri.toFileString, newTargetVURI.EMFUri.toFileString)
 		]
 		conflictDetector.addMap(rootToRootMap)

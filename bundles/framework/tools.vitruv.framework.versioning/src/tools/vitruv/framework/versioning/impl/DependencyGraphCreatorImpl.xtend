@@ -13,6 +13,7 @@ import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static extension EChangeRequireExtension = EChangeRequireExtension::instance
@@ -47,7 +48,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		]
 		changeMatches.forEach [ c |
 			c.originalChange.EChanges.forEach [ echange, i |
-				c.targetToCorrespondentChanges.values.forEach [ transChanges |
+				c.targetToCorrespondentChanges.asMap.values.forEach [ transChanges |
 					transChanges.forEach [ transChange |
 						val triggeredEchange = transChange.EChanges.get(i)
 						graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
@@ -74,15 +75,19 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 			node.triggered = isTriggered
 			node.vuri = vuri
 		]
+		val filteredEChanges = echanges.filter[!(it instanceof CreateAndInsertRoot<?>)]
+		graph.savePicture
 		if (echanges.exists[resolved])
 			throw new IllegalStateException("A change was resolved")
 		val Map<EChange, EChange> unresolvedToResolvedMap = newHashMap
-		echanges.forEach [
-			unresolvedToResolvedMap.put(it, resolveAfter(resourceSet))
+		filteredEChanges.forEach [
+			val x = resolveBefore(resourceSet)
+			x.applyForward
+			unresolvedToResolvedMap.put(it, x)
 		]
-		echanges.forEach [ echange |
+		filteredEChanges.forEach [ echange |
 			val resolved = unresolvedToResolvedMap.get(echange)
-			echanges.filter[it !== echange].forEach [ otherEchange |
+			filteredEChanges.filter[it !== echange].forEach [ otherEchange |
 				val otherResolved = unresolvedToResolvedMap.get(otherEchange)
 				val isParent = checkForRequireEdge(resolved, otherResolved)
 				if (isParent)

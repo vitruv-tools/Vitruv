@@ -1,7 +1,6 @@
 package tools.vitruv.framework.versioning.impl
 
-import java.util.List
-import java.util.Map
+import com.google.common.collect.ListMultimap
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.Data
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -14,11 +13,11 @@ class ChangeMatchImpl implements ChangeMatch {
 	static val serialVersionUID = 1L
 	VURI originalVURI
 	VitruviusChange originalChange
-	Map<VURI, List<VitruviusChange>> targetToCorrespondentChanges
+	ListMultimap<VURI, VitruviusChange> targetToCorrespondentChanges
 
 	override getAllEChanges() {
 		val orig = originalChange.EChanges
-		val correspondent = targetToCorrespondentChanges.entrySet.map[value].flatten.map[EChanges].flatten.toList
+		val correspondent = targetToCorrespondentChanges.asMap.entrySet.map[value].flatten.map[EChanges].flatten.toList
 		return (orig + correspondent).toList
 	}
 

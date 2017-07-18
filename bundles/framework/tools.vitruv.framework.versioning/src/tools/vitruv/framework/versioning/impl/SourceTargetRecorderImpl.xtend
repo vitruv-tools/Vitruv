@@ -1,6 +1,5 @@
 package tools.vitruv.framework.versioning.impl
 
-import java.util.ArrayList
 import java.util.List
 import java.util.Map
 import tools.vitruv.framework.change.description.PropagatedChange
@@ -17,19 +16,17 @@ class SourceTargetRecorderImpl implements SourceTargetRecorder {
 	}
 
 	override recordOriginalAndCorrespondentChanges(VURI orignal) {
-		val List<ChangeMatch> matches = new ArrayList
+		val matches = newArrayList
 		changesMatches.put(orignal, matches)
 	}
 
 	override update(VURI vuri, PropagatedChange change, VirtualModel vm) {
 		if (changesMatches.containsKey(vuri)) {
-//			vm.reverseChanges(#[change])
 			if (change.originalChange.EChanges.exists[resolved])
 				throw new IllegalStateException
 			if (change.consequentialChanges.EChanges.exists[resolved])
 				throw new IllegalStateException
 			val match = ChangeMatch::createChangeMatch(change)
-//			vm.forwardChanges(#[change])
 			val changeMatchesList = changesMatches.get(vuri)
 			changeMatchesList += match
 		}

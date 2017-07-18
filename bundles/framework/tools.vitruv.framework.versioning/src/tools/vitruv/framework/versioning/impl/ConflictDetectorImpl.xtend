@@ -92,7 +92,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 		]
 		val getOriginalEChanges = getEChanges.curry([Iterable<ChangeMatch> x|x.map[originalChange]])
 		val getTriggeredEChanges = getEChanges.curry([ Iterable<ChangeMatch> x |
-			x.map[targetToCorrespondentChanges.entrySet.map[value].flatten].flatten
+			x.map[targetToCorrespondentChanges.asMap.entrySet.map[value].flatten].flatten
 		])
 		val myOriginalEChanges = getOriginalEChanges.apply(branchDiff.baseChanges)
 		val myTriggeredEChanges = getTriggeredEChanges.apply(branchDiff.baseChanges)
