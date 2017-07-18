@@ -87,6 +87,14 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			#[]
 	}
 
+	override removePropagatedChange(VURI vuri, String id) {
+		vuriToIds.remove(vuri, id)
+	}
+
+	override addPropagatedChanges(VURI vuri, String id) {
+		vuriToIds.put(vuri, id)
+	}
+
 	override synchronized List<PropagatedChange> propagateChange(VitruviusChange change) {
 		if (change === null || !change.containsConcreteChange) {
 			info('''The change does not contain any changes to synchronize: «change»''')
@@ -169,15 +177,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 				propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult,
 					changedResourcesTracker)
 		}
-
-		val isUnresolved = modelRepository.unresolveChanges
-		val unresolvedPropagatedChange = new PropagatedChangeImpl(clonedChange,
-			VitruviusChangeFactory::instance.createCompositeChange(consequentialChanges))
-		val resolvedPropagatedChange = new PropagatedChangeImpl(change,
-			VitruviusChangeFactory::instance.createCompositeChange(consequentialChanges))
-		val vuri = change.URI
-		addPropagatedChanges(vuri, resolvedPropagatedChange, unresolvedPropagatedChange)
-		propagatedChanges += if (isUnresolved) unresolvedPropagatedChange else resolvedPropagatedChange
+		addPropagatedChanges(clonedChange, change, consequentialChanges, propagatedChanges)
 	}
 
 	private def List<VitruviusChange> propagateChangeForChangePropagationSpecification(
@@ -222,15 +222,29 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		]
 	}
 
-	private def addPropagatedChanges(VURI vuri, PropagatedChange resolvedChange, PropagatedChange unresolvedChange) {
-		if (resolvedChange.originalChange.EChanges.exists[!resolved])
-			throw new IllegalStateException
-		if (unresolvedChange.originalChange.EChanges.exists[resolved])
-			throw new IllegalStateException
+	private def addPropagatedChanges(
+		VitruviusChange unresolvedChange,
+		VitruviusChange resolvedChange,
+		List<VitruviusChange> consequentialChanges,
+		List<PropagatedChange> propagatedChanges
+	) {
+		val isUnresolved = modelRepository.unresolveChanges
+		val vuri = resolvedChange.URI
 		val uuid = UUID::randomUUID.toString
+		val unresolvedPropagatedChange = new PropagatedChangeImpl(uuid, unresolvedChange,
+			VitruviusChangeFactory::instance.createCompositeChange(consequentialChanges))
+		val resolvedPropagatedChange = new PropagatedChangeImpl(uuid, resolvedChange,
+			VitruviusChangeFactory::instance.createCompositeChange(consequentialChanges))
+
+		propagatedChanges += if (isUnresolved) unresolvedPropagatedChange else resolvedPropagatedChange
+		if (resolvedPropagatedChange.originalChange.EChanges.exists[!resolved])
+			throw new IllegalStateException
+		if (unresolvedPropagatedChange.originalChange.EChanges.exists[resolved])
+			throw new IllegalStateException
+
 		vuriToIds.put(vuri, uuid)
-		idToResolvedChanges.put(uuid, resolvedChange)
-		idToUnresolvedChanges.put(uuid, unresolvedChange)
+		idToResolvedChanges.put(uuid, resolvedPropagatedChange)
+		idToUnresolvedChanges.put(uuid, unresolvedPropagatedChange)
 	}
 
 }

@@ -80,7 +80,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override reverseChanges(List<PropagatedChange> changes) {
 
 		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand([|
-			changes.reverseView.forEach[applyBackward]
+			changes.reverseView.forEach [
+				applyBackward
+				changePropagator.removePropagatedChange(originalChange.URI, id)
+			]
 			return null
 		])
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)
@@ -92,7 +95,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	override forwardChanges(List<PropagatedChange> changes) {
 		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand([|
-			changes.forEach[applyForward]
+			changes.forEach [
+				applyForward
+				changePropagator.addPropagatedChanges(originalChange.URI, id)
+			]
 			return null
 		])
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)

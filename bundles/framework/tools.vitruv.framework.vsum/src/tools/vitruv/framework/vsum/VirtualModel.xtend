@@ -22,4 +22,5 @@ interface VirtualModel {
 	def void forwardChanges(List<PropagatedChange> changes)
 
 	def void reverseChanges(List<PropagatedChange> changes)
+	
 }

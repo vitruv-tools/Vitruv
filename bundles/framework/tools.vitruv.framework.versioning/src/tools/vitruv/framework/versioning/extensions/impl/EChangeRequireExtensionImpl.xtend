@@ -2,12 +2,11 @@ package tools.vitruv.framework.versioning.extensions.impl
 
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 
 class EChangeRequireExtensionImpl implements EChangeRequireExtension {
 	static def EChangeRequireExtension init() {

@@ -6,6 +6,7 @@ import tools.vitruv.framework.change.description.VitruviusChange
 
 @Data
 class PropagatedChangeImpl implements PropagatedChange {
+	String id
 	VitruviusChange originalChange
 	VitruviusChange consequentialChanges
 
@@ -24,4 +25,13 @@ class PropagatedChangeImpl implements PropagatedChange {
 		originalChange.applyForward
 		consequentialChanges.applyForward
 	}
+
+	override isResolved() {
+		val allResolved = originalChange.EChanges.forall[resolved]
+		if (allResolved) return true
+		val noneResolved = originalChange.EChanges.forall[!resolved]
+		if (noneResolved) return false
+		throw new IllegalStateException
+	}
+
 }
