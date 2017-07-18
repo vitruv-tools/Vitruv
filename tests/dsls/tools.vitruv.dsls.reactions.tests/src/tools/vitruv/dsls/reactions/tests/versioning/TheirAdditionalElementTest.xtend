@@ -48,10 +48,11 @@ class TheirAdditionalElementTest extends AbstractTheirAdditionalElementTest {
 	def void testWithCorrespondence() {
 		graph = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
 		val otherEChanges = branchDiff.compareChanges.map[originalChange.EChanges].flatten
-		val correspondentEChanges = branchDiff.baseChanges.map[targetToCorrespondentChanges.entrySet].flatten.
-			map[value].flatten.map[EChanges].flatten.toList
-		val otherCorrespondentEChanges = branchDiff.compareChanges.map[targetToCorrespondentChanges.entrySet].flatten.
-			map[value].flatten.map[EChanges].flatten.toList
+		val correspondentEChanges = branchDiff.baseChanges.map[targetToCorrespondentChanges.asMap.entrySet].flatten.map [
+			value
+		].flatten.map[EChanges].flatten.toList
+		val otherCorrespondentEChanges = branchDiff.compareChanges.map[targetToCorrespondentChanges.asMap.entrySet].
+			flatten.map[value].flatten.map[EChanges].flatten.toList
 		val otherGraph = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
 		val IsomorphismTesterAlgorithm tester = new PrimitiveIsomorphismTesterImpl
 		tester.init(graph, otherGraph)

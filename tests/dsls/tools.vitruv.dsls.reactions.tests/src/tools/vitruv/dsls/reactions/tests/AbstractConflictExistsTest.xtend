@@ -12,27 +12,27 @@ abstract class AbstractConflictExistsTest extends AbstractConflictTest {
 		container1.id = containerId
 		rootElement.nonRootObjectContainerHelper = container1
 
-		checkChangeMatchesLength(1, 0)
+		checkChangeMatchesLength(2, 1)
 
 		val container2 = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container2.id = containerId
 		rootElement2.nonRootObjectContainerHelper = container2
 
-		checkChangeMatchesLength(1, 1)
+		checkChangeMatchesLength(2, 2)
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container1)]
-		checkChangeMatchesLength(4, 1)
+		checkChangeMatchesLength(5, 2)
 
 		NON_CONTAINMENT_NON_ROOT_IDS.take(2).forEach[createAndAddNonRoot(container2)]
 		otherNonContainmentId.createAndAddNonRoot(container2)
-		checkChangeMatchesLength(4, 4)
+		checkChangeMatchesLength(5, 5)
 
 		assertModelsEqual
 		assertDifferentNonRootContainment
 
-		val sourceChanges = stRecorder.getChangeMatches(sourceVURI)
-		val targetChanges = stRecorder.getChangeMatches(newSourceVURI)
+		val sourceChanges = virtualModel.getChangeMatches(sourceVURI)
+		val targetChanges = virtualModel.getChangeMatches(newSourceVURI)
 		branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
 		conflictDetector.init(branchDiff)
 		conflictDetector.compute
