@@ -4,8 +4,8 @@ import tools.vitruv.dsls.reactions.tests.AbstractConflictTest
 import allElementTypes.AllElementTypesFactory
 import tools.vitruv.framework.versioning.BranchDiffCreator
 
-abstract class AbstractAdditionalElementTest extends AbstractConflictTest {
-	protected static val additionalID = "addId"
+class AbstractMyAdditionalElementTest extends AbstractConflictTest {
+	protected static val myAdditionialID = "addId"
 
 	override setup() {
 		super.setup
@@ -24,11 +24,11 @@ abstract class AbstractAdditionalElementTest extends AbstractConflictTest {
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container1)]
-		checkChangeMatchesLength(4, 1)
+		myAdditionialID.createAndAddNonRoot(container1)
+		checkChangeMatchesLength(5, 1)
 
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container2)]
-		additionalID.createAndAddNonRoot(container2)
-		checkChangeMatchesLength(4, 5)
+		checkChangeMatchesLength(5, 4)
 
 		assertModelsEqual
 		val sourceChanges = stRecorder.getChangeMatches(sourceVURI)

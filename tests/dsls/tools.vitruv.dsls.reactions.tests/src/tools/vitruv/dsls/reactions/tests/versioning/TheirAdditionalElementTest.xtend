@@ -2,7 +2,6 @@ package tools.vitruv.dsls.reactions.tests.versioning
 
 import java.util.Set
 import org.junit.Test
-import tools.vitruv.dsls.reactions.tests.AbstractAdditionalElementTest
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
 import tools.vitruv.framework.versioning.extensions.EChangeNode
@@ -16,8 +15,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import java.util.List
 import allElementTypes.NonRoot
+import tools.vitruv.dsls.reactions.tests.AbstractTheirAdditionalElementTest
 
-class AdditionalElementTest extends AbstractAdditionalElementTest {
+class TheirAdditionalElementTest extends AbstractTheirAdditionalElementTest {
 	@Test
 	def void testOnlyOriginalEChanges() {
 		graph = createDependencyGraph(changes)
