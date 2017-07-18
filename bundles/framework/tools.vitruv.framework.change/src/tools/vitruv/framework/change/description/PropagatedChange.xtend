@@ -1,25 +1,11 @@
 package tools.vitruv.framework.change.description
 
-import org.eclipse.xtend.lib.annotations.Data
+interface PropagatedChange {
+	def VitruviusChange getOriginalChange()
 
-@Data
-class PropagatedChange {
-	VitruviusChange originalChange
-	VitruviusChange consequentialChanges
+	def VitruviusChange getConsequentialChanges()
 
-	override toString() '''
-		Original change:
-			«originalChange»
-		Consequential change: «consequentialChanges»
-	'''
+	def void applyBackward()
 
-	def applyBackward() {
-		consequentialChanges.applyBackward
-		originalChange.applyBackward
-	}
-
-	def applyForward() {
-		originalChange.applyForward
-		consequentialChanges.applyForward
-	}
+	def void applyForward()
 }
