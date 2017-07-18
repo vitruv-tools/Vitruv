@@ -23,7 +23,7 @@
       <import plugin="org.apache.log4j"/>
       <import plugin="com.google.guava"/>
       <import plugin="org.eclipse.xtext.xbase.lib"/>
-      <import plugin="org.eclipse.xtend.lib" version="2.12.0"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
       <import plugin="org.eclipse.emf.ecore.change"/>
       <import plugin="edu.kit.ipd.sdq.commons.util.emf"/>
