@@ -11,7 +11,6 @@
 
 package tools.vitruv.domains.emf.monitorededitor.monitor;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -26,7 +25,6 @@ import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
  * <p>
@@ -145,7 +143,8 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     protected void resetChangeRecorder() {
         deactivateChangeRecorder();
         changeRecorder = new AtomicEmfChangeRecorder(true);
-        changeRecorder.beginRecording(VURI.getInstance(targetResource), Collections.singletonList(targetResource));
+        changeRecorder.addToRecording(targetResource);
+        changeRecorder.beginRecording();
     }
 
     /**
