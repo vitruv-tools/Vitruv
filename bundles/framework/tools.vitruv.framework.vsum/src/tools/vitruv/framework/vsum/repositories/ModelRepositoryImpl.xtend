@@ -7,7 +7,6 @@ import org.apache.log4j.Logger
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import java.util.Map
 import java.util.HashMap
-import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
 
 class ModelRepositoryImpl {
@@ -94,8 +93,7 @@ class ModelRepositoryImpl {
 		}
 		val unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
 		val recorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges !== null, false);
-		val vuri = if (element.eResource !== null) VURI.getInstance(element.eResource) else null;
-		recorder.beginRecording(vuri, #[element]);
+		recorder.beginRecording(#[element]);
 		rootToRecorder.put(element, recorder);
 		logger.debug("Start recording for " + element);
 	}

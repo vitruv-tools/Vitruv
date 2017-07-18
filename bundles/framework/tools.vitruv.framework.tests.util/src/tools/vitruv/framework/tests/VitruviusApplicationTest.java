@@ -81,8 +81,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	}
 
 	private void startRecordingChanges(Resource resource) {
-		VURI vuri = VURI.getInstance(resource);
-		this.changeRecorder.beginRecording(vuri, Collections.singleton(resource));
+		this.changeRecorder.beginRecording(Collections.singleton(resource));
 	}
 
 	/**

@@ -16,12 +16,10 @@ import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.change.echange.resolve.StagingArea
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 
 class AtomicEmfChangeRecorder {
 	var List<ChangeDescription> changeDescriptions;
-	var VURI modelVURI;
 	var Collection<Notifier> elementsToObserve
 	var boolean unresolveRecordedChanges
 	val boolean updateTuids;
@@ -61,12 +59,11 @@ class AtomicEmfChangeRecorder {
 		this.updateTuids = updateTuids;
 	}
 
-	def void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve) {
-		this.modelVURI = modelVURI;
+	def void beginRecording(Collection<? extends Notifier> elementsToObserve) {
 		this.elementsToObserve.clear();
 		this.elementsToObserve += elementsToObserve;
 		this.changeDescriptions = new ArrayList<ChangeDescription>();
-		changeRecorder.beginRecording(elementsToObserve)
+		changeRecorder.beginRecording(elementsToObserve);
 	}
 
 	/** Stops recording without returning a result */
@@ -105,10 +102,10 @@ class AtomicEmfChangeRecorder {
 	private def createModelChange(ChangeDescription changeDescription, boolean unresolveChanges, boolean updateTuids) {
 		var TransactionalChange result = null;
 		if (unresolveChanges) {
-			result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI)
+			result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription)
 			changeDescription.applyAndReverse()
 		} else {
-			result = VitruviusChangeFactory.instance.createLegacyEMFModelChange(changeDescription, modelVURI);
+			result = VitruviusChangeFactory.instance.createLegacyEMFModelChange(changeDescription);
 			if (updateTuids) {
 				result.applyForward();
 			} else {

@@ -16,8 +16,8 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 	private final VURI vuri;
 	private var boolean canBeBackwardsApplied;
 	
-    public new(Iterable<EChange> eChanges, VURI vuri) {
-        this.vuri = vuri;
+    public new(Iterable<EChange> eChanges) {
+        this.vuri = VURI.getInstance(eChanges.map[affectedEObjects].flatten.filterNull.get(0).eResource);
         this.canBeBackwardsApplied = false;
 		addChanges(eChanges);
     }

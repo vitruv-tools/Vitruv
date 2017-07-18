@@ -32,11 +32,11 @@ class ChangeCloner {
 	}
 	
 	def dispatch VitruviusChange clone(EMFModelChangeImpl modelChange) {
-		return new EMFModelChangeImpl(modelChange.EChanges.map[it.cloneEChange], modelChange.URI);
+		return new EMFModelChangeImpl(modelChange.EChanges.map[it.cloneEChange]);
 	}
 	
 	def dispatch VitruviusChange clone(LegacyEMFModelChangeImpl modelChange) {
-		val clone = new LegacyEMFModelChangeImpl(null, modelChange.EChanges.map[it.cloneEChange], modelChange.URI);
+		val clone = new LegacyEMFModelChangeImpl(null, modelChange.EChanges.map[it.cloneEChange]);
 		val backwardAppliedField = LegacyEMFModelChangeImpl.getDeclaredField("canBeBackwardsApplied");
 		backwardAppliedField.accessible = true;
 		backwardAppliedField.set(clone, backwardAppliedField.get(modelChange));

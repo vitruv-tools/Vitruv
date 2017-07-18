@@ -40,14 +40,14 @@ class VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription) {
 		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
-		return new EMFModelChangeImpl(changes, vuri);
+		return new EMFModelChangeImpl(changes);
 	}
 	
-	public def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+	public def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription) {
 		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
-		return new LegacyEMFModelChangeImpl(changeDescription, changes, vuri);
+		return new LegacyEMFModelChangeImpl(changeDescription, changes);
 	}
 	
 	public def ConcreteChange createConcreteApplicableChange(EChange change, VURI vuri) {
