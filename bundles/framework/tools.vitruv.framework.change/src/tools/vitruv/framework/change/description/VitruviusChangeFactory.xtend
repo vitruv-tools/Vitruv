@@ -17,6 +17,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
+import tools.vitruv.framework.change.description.impl.ConcreteChangeWithUriImpl
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -40,33 +41,36 @@ class VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription) {
 		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
-		return new EMFModelChangeImpl(changes, vuri);
+		return new EMFModelChangeImpl(changes);
 	}
 	
-	public def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+	public def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription) {
 		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
-		return new LegacyEMFModelChangeImpl(changeDescription, changes, vuri);
+		return new LegacyEMFModelChangeImpl(changeDescription, changes);
 	}
 	
-	public def ConcreteChange createConcreteApplicableChange(EChange change, VURI vuri) {
-		return new ConcreteApplicableChangeImpl(change, vuri);
+	public def ConcreteChange createConcreteApplicableChange(EChange change) {
+		return new ConcreteApplicableChangeImpl(change);
 	}
 	
-	public def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
-		return new ConcreteChangeImpl(change, vuri);
+	public def ConcreteChange createConcreteChange(EChange change) {
+		return new ConcreteChangeImpl(change);
+	}
+	
+	public def ConcreteChange createConcreteChangeWithVuri(EChange change, VURI vuri) {
+		return new ConcreteChangeWithUriImpl(vuri, change);
 	}
 	
 	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
-		val vuri = VURI.getInstance(changedFileResource);
 		var EChange eChange = null
 		if (kind == FileChangeKind.Create) {
 			eChange = generateFileCreateChange(changedFileResource);
 		} else {
 			eChange = generateFileDeleteChange(changedFileResource);
 		}
-		return new ConcreteChangeImpl(eChange, vuri)
+		return new ConcreteChangeImpl(eChange)
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {

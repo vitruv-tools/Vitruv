@@ -50,8 +50,8 @@ public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
         IEditorPart datatypeEditor = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.DATATYPE_ECORE);
         eclipseMockCtrl.openNewNonEMFEditorPart();
 
-        VURI exampleVURI = VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile());
-        VURI datatypeVURI = VURI.getInstance(Files.DATATYPE_ECORE.getFile());
+        VURI exampleVURI = VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE));
+        VURI datatypeVURI = VURI.getInstance(getURI(Files.DATATYPE_ECORE));
 
         Set<IEditorPart> foundExampleEditors = syncMgr.findEditorsForModel(exampleVURI);
         Set<IEditorPart> foundDatatypeEditors = syncMgr.findEditorsForModel(datatypeVURI);

@@ -17,15 +17,14 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
+import org.eclipse.emf.ecore.InternalEObject
 
 abstract class AbstractConcreteChange implements ConcreteChange {
 	private static val logger = Logger.getLogger(AbstractConcreteChange);
+	private var EChange eChange;
 	
-	protected EChange eChange;
-	final VURI vuri;
-	
-	new(VURI vuri) {
-		this.vuri = vuri;
+	new(EChange eChange) {
+		this.eChange = eChange;
 	}
 	
 	override containsConcreteChange() {
@@ -41,11 +40,22 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 	
 	override getURI() {
-		return vuri;
+		val resolvedResources = affectedEObjects.map[eResource].filterNull;
+		if (resolvedResources.size > 0) {
+			return VURI.getInstance(resolvedResources.get(0));
+		}
+		val proxyUris = affectedEObjects.filter(InternalEObject).map[eProxyURI].filterNull.filter[segmentCount > 0]
+		if (proxyUris.size > 0) {
+			return VURI.getInstance(proxyUris.get(0).trimFragment);
+		}
 	}
 		
 	override getEChange() {
 		return eChange;
+	}
+	
+	protected def setEChange(EChange eChange) {
+		this.eChange = eChange;
 	}
 	
 	override applyBackward() {
@@ -65,7 +75,7 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 	
 	override getAffectedEObjects() {
-		return this.eChange.affectedEObjects
+		return this.eChange.affectedEObjects.filterNull
 	}
 	
 	private def dispatch Iterable<EObject> getAffectedEObjects(CompoundEChange eChange) {
@@ -103,4 +113,5 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	private def dispatch List<EObject> getAffectedEObjects(EObjectExistenceEChange<EObject> eChange) {
 		return #[eChange.affectedEObject]
 	}
+
 }

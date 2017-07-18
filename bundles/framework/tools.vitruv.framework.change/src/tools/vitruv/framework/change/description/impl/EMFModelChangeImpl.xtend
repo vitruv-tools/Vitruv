@@ -5,7 +5,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.echange.EChange
 
 /**
@@ -13,33 +12,33 @@ import tools.vitruv.framework.change.echange.EChange
  * right before the change described by the recorded {@link ChangeDescription}.
  */
 class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	private final VURI vuri;
 	private var boolean canBeBackwardsApplied;
 	
-    public new(Iterable<EChange> eChanges, VURI vuri) {
-        this.vuri = vuri;
+    public new(Iterable<EChange> eChanges) {
         this.canBeBackwardsApplied = false;
 		addChanges(eChanges);
     }
 
 	private def void addChanges(Iterable<EChange> eChanges) {
 		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteApplicableChange(eChange, vuri));
+			addChange(VitruviusChangeFactory.instance.createConcreteApplicableChange(eChange));
 		}
 		if (changes.empty) {
-			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
+			addChange(VitruviusChangeFactory.instance.createEmptyChange(URI));
 		}
 	}
 
     override String toString() '''
-		«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
+		«EMFModelChangeImpl.simpleName»: VURI «this.URI», EChanges:
 			«FOR eChange : EChanges»
 				Inner change: «eChange»
 			«ENDFOR»
 			'''
         
 	override getURI() {
-		return vuri;
+		val uris = this.changes.map[URI].filterNull
+		if (uris.size > 0) 
+			return uris.get(0);
 	}
 	
 	override containsConcreteChange() {

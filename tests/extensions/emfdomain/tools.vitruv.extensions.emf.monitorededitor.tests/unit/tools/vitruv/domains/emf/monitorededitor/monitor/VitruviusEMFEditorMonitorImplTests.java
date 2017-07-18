@@ -62,7 +62,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         IVitruviusAccessor va = new IVitruviusAccessor() {
             @Override
             public boolean isModelMonitored(VURI modelUri) {
-                assert modelUri == VURI.getInstance(modelURL.getFile());
+                assert modelUri == VURI.getInstance(getURI(modelURL));
                 ensureExecuted.markExecuted();
                 return true;
             }
@@ -103,7 +103,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert !cs.getLastChanges().isEmpty();
 
         for (VitruviusChange change : cs.getLastChanges()) {
-            assert change.getURI() == VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile());
+            assert change.getURI() == VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE));
         }
     }
 
@@ -220,9 +220,9 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert va.getAcceptedModels().isEmpty();
 
         va.setAcceptAll();
-        syncMgr.addModel(VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile()));
+        syncMgr.addModel(VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE)));
 
-        assert va.getAcceptedModels().contains(VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile()));
+        assert va.getAcceptedModels().contains(VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE)));
     }
 
     @Test
@@ -237,7 +237,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
 
         assert listener.isMonitoringEditor(editorPart);
 
-        syncMgr.removeModel(VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile()));
+        syncMgr.removeModel(VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE)));
 
         assert !listener.isMonitoringEditor(editorPart);
     }

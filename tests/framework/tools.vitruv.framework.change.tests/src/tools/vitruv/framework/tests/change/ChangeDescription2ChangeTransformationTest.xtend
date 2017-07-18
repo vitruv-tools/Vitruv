@@ -122,7 +122,8 @@ abstract class ChangeDescription2ChangeTransformationTest {
 
 	public def startRecording() {
 		this.changes = null
-		this.changeRecorder.beginRecording(null, #[rs])
+		this.changeRecorder.addToRecording(rs)
+		this.changeRecorder.beginRecording()
 	}
 
 	public def getRootElement() {

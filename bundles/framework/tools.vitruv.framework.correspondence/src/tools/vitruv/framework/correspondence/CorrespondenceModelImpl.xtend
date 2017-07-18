@@ -101,7 +101,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	
 	override calculateTuidFromEObject(EObject eObject) {
 		val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
-		 if (null == metamodel){
+		 if (null === metamodel){
 		 	return null 
 		 }
          return metamodel.calculateTuid(eObject)
@@ -110,10 +110,10 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	@Deprecated
 	override calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
 		 val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
-		 if(null == metamodel){
+		 if(null === metamodel){
 		 	return null 
 		 }
-		 if(null == virtualRootObject || null == prefix){
+		 if(null === virtualRootObject || null === prefix){
 		 	logger.info("virtualRootObject or prefix is null. Using standard calculation method for EObject " + eObject)
          	return metamodel.calculateTuid(eObject)
      	}

@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>tools.vitruv</groupId>
-		<artifactId>tests</artifactId>
+		<artifactId>extensions-tests</artifactId>
 		<version>0.2.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
@@ -13,8 +13,16 @@
 	<packaging>pom</packaging>
 	<name>EMF Domain Test Modules</name>
 
+	<repositories>
+		<repository>
+			<id>Palladiosimulator</id>
+			<layout>p2</layout>
+			<url>https://sdqweb.ipd.kit.edu/eclipse/palladiosimulator/nightly/</url>
+		</repository>
+	</repositories>
+	
 	<modules>
-		<module>tools.vitruv.domains.emf.monitorededitor.tests</module>
+		<module>tools.vitruv.extensions.emf.monitorededitor.tests</module>
 	</modules>
 	
 </project>

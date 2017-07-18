@@ -48,7 +48,7 @@ public interface CompoundAddition<T extends Object, S extends AdditiveEChange<T>
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation" required="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>> result = new <%org.eclipse.emf.common.util.BasicEList%><<%tools.vitruv.framework.change.echange.AtomicEChange%>>();\n<%org.eclipse.emf.common.util.EList%><S> _additiveChanges = this.getAdditiveChanges();\nresult.addAll(_additiveChanges);\nreturn result;'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='final &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt; result = new &lt;%org.eclipse.emf.common.util.BasicEList%&gt;&lt;&lt;%tools.vitruv.framework.change.echange.AtomicEChange%&gt;&gt;();\n&lt;%org.eclipse.emf.common.util.EList%&gt;&lt;S&gt; _additiveChanges = this.getAdditiveChanges();\nresult.addAll(_additiveChanges);\nreturn result;'"
 	 * @generated
 	 */
 	EList<AtomicEChange> getAtomicChanges();

@@ -20,16 +20,17 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 	private final VURI vuri;
 	private var boolean canBeBackwardsApplied;
 	
-    public new(ChangeDescription changeDescription, Iterable<EChange> eChanges, VURI vuri) {
+    public new(ChangeDescription changeDescription, Iterable<EChange> eChanges) {
     	this.changeDescription = changeDescription;
-        this.vuri = vuri;
+    	val affectedObjects = eChanges.map[affectedEObjects].flatten.filterNull
+        this.vuri = if (affectedObjects.empty) null else VURI.getInstance(affectedObjects.get(0).eResource);
         this.canBeBackwardsApplied = false;
 		addChanges(eChanges);
     }
 
 	private def void addChanges(Iterable<EChange> eChanges) {
 		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
+			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange));
 		}
 		if (changes.empty) {
 			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));

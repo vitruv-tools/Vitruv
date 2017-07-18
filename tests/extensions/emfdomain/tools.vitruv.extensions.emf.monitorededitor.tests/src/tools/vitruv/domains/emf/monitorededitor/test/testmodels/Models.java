@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.pcm.PcmTestUtils;
+import tools.vitruv.domains.emf.monitorededitor.test.utils.BasicTestCase;
 
 public class Models {
     private static Logger LOGGER = Logger.getLogger(Models.class);
@@ -49,13 +50,13 @@ public class Models {
     public static Resource loadModel(URL modelURL) {
 
         ResourceSet resSet = new ResourceSetImpl();
-        resSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-                .put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+        resSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+                new XMIResourceFactoryImpl());
 
         setupURIPathmaps();
 
         EcoreResourceFactoryImpl ecoreResFact = new EcoreResourceFactoryImpl();
-        URI fileName = URI.createFileURI(modelURL.getFile());
+        URI fileName = BasicTestCase.getURI(modelURL);
         LOGGER.info("Trying to load " + fileName);
         Resource ecoreRes = ecoreResFact.createResource(fileName);
         try {

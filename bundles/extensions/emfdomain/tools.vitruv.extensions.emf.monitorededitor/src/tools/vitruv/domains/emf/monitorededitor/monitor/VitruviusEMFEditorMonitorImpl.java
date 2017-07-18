@@ -205,7 +205,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      *            The {@link VURI} for which the associated editors are to be looked up.
      * @return The editors currently editing an EMF model having the given <code>searchURI</code>.
      */
-    protected Set<IEditorPart> findEditorsForModel(VURI searchURI) {
+    public Set<IEditorPart> findEditorsForModel(VURI searchURI) {
         Set<IEditorPart> result = new HashSet<>();
 
         Set<IEditorPart> activeEditors = this.eclipseAdapter.getCurrentlyActiveEditors();
@@ -229,7 +229,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      * 
      * @return The {@link ISynchronizingMonitoredEmfEditor} used to monitor Eclipse editors.
      */
-    protected ISynchronizingMonitoredEmfEditor getChangeRecorderMonitor() {
+    public ISynchronizingMonitoredEmfEditor getChangeRecorderMonitor() {
         return this.changeRecorderMonitor;
     }
 
@@ -277,7 +277,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      * 
      * This method should ONLY be called from single-threaded testing code.
      */
-    protected void disableSynchronizationLagRecognition() {
+    public void disableSynchronizationLagRecognition() {
         LOGGER.warn("Disabling the timestamp-based recognition of synchronization lag. This is only okay"
                 + " in single-threaded testing environments.");
         isSynchronizationLagRecognitionDisabled = true;

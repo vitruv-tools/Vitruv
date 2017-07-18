@@ -126,7 +126,7 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 	}
 
 	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
-		if (null == this.correspondenceCreator) {
+		if (null === this.correspondenceCreator) {
 			throw new RuntimeException("The current view is not able to create new correspondences")
 		}
 		correspondenceModelDelegate.createAndAddCorrespondence(eObjects1, eObjects2, this.correspondenceCreator as Supplier<Correspondence>)

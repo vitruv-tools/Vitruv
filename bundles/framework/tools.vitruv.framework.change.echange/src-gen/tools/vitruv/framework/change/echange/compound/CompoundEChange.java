@@ -54,7 +54,7 @@ public interface CompoundEChange extends EChange {
 	 * @throws IllegalStateException 	The change is already resolved.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, true, false);'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%&gt;.resolveCopy(this, resourceSet, true, false);'"
 	 * @generated
 	 */
 	EChange resolveBeforeAndApplyForward(ResourceSet resourceSet);
@@ -75,7 +75,7 @@ public interface CompoundEChange extends EChange {
 	 * @throws IllegalStateException 	The change is already resolved.
 	 * <!-- end-model-doc -->
 	 * @model unique="false" resourceSetDataType="tools.vitruv.framework.change.echange.compound.ResourceSet" resourceSetUnique="false"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return <%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, false, false);'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%&gt;.resolveCopy(this, resourceSet, false, false);'"
 	 * @generated
 	 */
 	EChange resolveAfterAndApplyBackward(ResourceSet resourceSet);
