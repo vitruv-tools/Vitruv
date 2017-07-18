@@ -28,9 +28,9 @@
 	<repositories>
 		<!-- If you adjust a repository here, please also adjust the repository in the b3 aggregator. -->
 		<repository>
-			<id>Eclipse Neon</id>
+			<id>Eclipse Oxygen</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/neon</url>
+			<url>http://download.eclipse.org/releases/oxygen</url>
 		</repository>
 		<repository>
 			<id>Vitruv License</id>
@@ -41,11 +41,6 @@
 			<id>SDQ Commons</id>
 			<layout>p2</layout>
 			<url>http://kit-sdq.github.io/updatesite/nightly/commons</url>
-		</repository>
-		<repository>
-			<id>Xtext</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.12.0</url>
 		</repository>
 	</repositories>
 

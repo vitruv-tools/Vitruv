@@ -45,14 +45,9 @@
 				<configuration>
 					<repositories>
 						<repository>
-							<id>Eclipse Neon</id>
+							<id>Eclipse</id>
 							<layout>p2</layout>
-							<url>http://download.eclipse.org/releases/neon</url>
-						</repository>
-						<repository>
-							<id>Eclipse Neon Updates</id>
-							<layout>p2</layout>
-							<url>http://download.eclipse.org/eclipse/updates/4.6</url>
+							<url>http://download.eclipse.org/releases/oxygen</url>
 						</repository>
 						<repository>
 							<id>Eclipse CBI Aggregator</id>
