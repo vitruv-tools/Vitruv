@@ -110,7 +110,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		
 		val changeApplicationFunction = [ResourceSet resourceSet |
-				resourceRepository.getModel(change.getURI());
+				// If change has a URI, load the model
+				if (change.URI !== null) resourceRepository.getModel(change.getURI());
                 change.resolveBeforeAndApplyForward(resourceSet)
                 return;
         	];
@@ -119,7 +120,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		change.affectedEObjects.forEach[modelRepository.addRootElement(it)];
 		modelRepository.cleanupRootElements;
 		
-		val changeDomain = metamodelRepository.getDomain(change.getURI.fileExtension);
+		val changedObjects = change.affectedEObjects;
+		if (changedObjects.nullOrEmpty) {
+			throw new IllegalStateException("There are no objects affected by the given changes");
+		}
+		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0));
 		val consequentialChanges = newArrayList();
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
 			consequentialChanges += propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult, changedResourcesTracker);
