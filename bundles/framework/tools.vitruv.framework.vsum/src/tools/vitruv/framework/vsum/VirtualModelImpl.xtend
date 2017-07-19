@@ -19,12 +19,13 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
+import tools.vitruv.framework.vsum.repositories.ModelRepositoryInterface
 
 class VirtualModelImpl implements InternalVirtualModel {
 	protected val ResourceRepositoryImpl resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator
-	val ModelRepositoryImpl modelRepository
+	val ModelRepositoryInterface modelRepository
 	val VitruvDomainRepository metamodelRepository
 	@Accessors(PUBLIC_GETTER)
 	val File folder

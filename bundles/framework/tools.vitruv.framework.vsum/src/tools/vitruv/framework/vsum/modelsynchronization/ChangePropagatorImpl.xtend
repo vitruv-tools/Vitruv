@@ -26,14 +26,14 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.ModelRepository
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
+import tools.vitruv.framework.vsum.repositories.ModelRepositoryInterface
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static extension Logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceProviding correspondenceProviding
 	val ModelRepository resourceRepository
-	val ModelRepositoryImpl modelRepository
+	val ModelRepositoryInterface modelRepository
 	val Set<ChangePropagationListener> changePropagationListeners
 	val VitruvDomainRepository metamodelRepository
 	val ListMultimap<VURI, String> vuriToIds
@@ -45,7 +45,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository,
 		CorrespondenceProviding correspondenceProviding,
-		ModelRepositoryImpl modelRepository
+		ModelRepositoryInterface modelRepository
 	) {
 		this.resourceRepository = resourceRepository
 		this.modelRepository = modelRepository
@@ -128,15 +128,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 	private def void startChangePropagation(VitruviusChange change) {
 		info('''Started synchronizing change: «change»''')
-		for (ChangePropagationListener syncListener : this.changePropagationListeners) {
-			syncListener.startedChangePropagation
-		}
+		changePropagationListeners.forEach[startedChangePropagation]
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
-		for (ChangePropagationListener syncListener : this.changePropagationListeners) {
-			syncListener.finishedChangePropagation
-		}
+		changePropagationListeners.forEach[finishedChangePropagation]
 		info('''Finished synchronizing change: «change»''')
 	}
 
@@ -205,7 +201,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 		// Store modification information
 		val changedEObjects = command.affectedObjects.filter(EObject)
-		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(it.eResource)]
+		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(eResource)]
 		changedResourcesTracker.addSourceResourceOfChange(change)
 
 		propagationResult.integrateResult(command.transformationResult)
@@ -231,15 +227,23 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val isUnresolved = modelRepository.unresolveChanges
 		val vuri = resolvedChange.URI
 		val uuid = UUID::randomUUID.toString
+		val unresolvedTriggeredChanges = modelRepository.lastUnresolvedChanges
+		val resolvedTriggeredChanges = modelRepository.lastResolvedChanges
+		if (unresolvedTriggeredChanges.length !== resolvedTriggeredChanges.length)
+			throw new IllegalStateException('''
+				The length of changes should be equal but there are «unresolvedTriggeredChanges.length» 
+				respectively «resolvedTriggeredChanges.length»
+			''')
+
 		val unresolvedPropagatedChange = new PropagatedChangeImpl(uuid, unresolvedChange,
-			VitruviusChangeFactory::instance.createCompositeChange(consequentialChanges))
+			VitruviusChangeFactory::instance.createCompositeChange(unresolvedTriggeredChanges))
 		val resolvedPropagatedChange = new PropagatedChangeImpl(uuid, resolvedChange,
-			VitruviusChangeFactory::instance.createCompositeChange(consequentialChanges))
+			VitruviusChangeFactory::instance.createCompositeChange(resolvedTriggeredChanges))
 
 		propagatedChanges += if (isUnresolved) unresolvedPropagatedChange else resolvedPropagatedChange
-		if (resolvedPropagatedChange.originalChange.EChanges.exists[!resolved])
+		if (!resolvedPropagatedChange.resolved)
 			throw new IllegalStateException
-		if (unresolvedPropagatedChange.originalChange.EChanges.exists[resolved])
+		if (unresolvedPropagatedChange.resolved)
 			throw new IllegalStateException
 
 		vuriToIds.put(vuri, uuid)

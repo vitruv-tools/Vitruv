@@ -6,6 +6,10 @@ import java.util.List
 
 interface ModelRepositoryInterface {
 
+	def List<VitruviusChange> getLastResolvedChanges()
+
+	def List<VitruviusChange> getLastUnresolvedChanges()
+
 	def List<VitruviusChange> endRecording()
 
 	def boolean unresolveChanges()

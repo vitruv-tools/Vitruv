@@ -28,10 +28,17 @@ class PropagatedChangeImpl implements PropagatedChange {
 
 	override isResolved() {
 		val allResolved = originalChange.EChanges.forall[resolved]
-		if (allResolved) return true
+		val allTriggeredResolved = consequentialChanges.EChanges.forall[resolved]
+		if (allResolved && allTriggeredResolved) return true
 		val noneResolved = originalChange.EChanges.forall[!resolved]
-		if (noneResolved) return false
-		throw new IllegalStateException
+		val noneTriggeredResolved = consequentialChanges.EChanges.forall[!resolved]
+		if (noneResolved && noneTriggeredResolved) return false
+		throw new IllegalStateException('''
+			original all resolved «allResolved»
+			triggerd all resolved «allTriggeredResolved»
+			original all unresolved «noneResolved»
+			triggerd all unresolved «noneTriggeredResolved»
+		''')
 	}
 
 }

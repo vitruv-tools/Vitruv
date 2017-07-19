@@ -94,13 +94,12 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 		// Only take those that do not contain only objectsToAttach (I don't know why)
 		val relevantChangeDescriptions = changeDescriptions.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].
 			toList
-		if (unresolveRecordedChanges) {
-			relevantChangeDescriptions.reverseView.forEach[applyAndReverse]
-			unresolvedChanges = relevantChangeDescriptions.filterNull.map [
-				createModelChange(true, unresolveRecordedChanges && updateTuids)
-			].filterNull.toList
-			correctChanges(unresolvedChanges)
-		}
+		relevantChangeDescriptions.reverseView.forEach[applyAndReverse]
+		unresolvedChanges = relevantChangeDescriptions.filterNull.map [
+			createModelChange(true, unresolveRecordedChanges && updateTuids)
+		].filterNull.toList
+		correctChanges(unresolvedChanges)
+		
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse]
 		resolvedChanges = relevantChangeDescriptions.filterNull.map [
 			createModelChange(false, !unresolveRecordedChanges && updateTuids)

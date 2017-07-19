@@ -1,5 +1,6 @@
 package tools.vitruv.framework.vsum.repositories
 
+import java.util.List
 import java.util.Map
 import java.util.Set
 
@@ -8,11 +9,11 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
 import org.eclipse.emf.ecore.resource.Resource
 
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.description.VitruviusChange
-import java.util.List
+import org.eclipse.xtend.lib.annotations.Accessors
 
 class ModelRepositoryImpl implements ModelRepositoryInterface {
 	static extension Logger = Logger::getLogger(ModelRepositoryImpl)
@@ -25,35 +26,43 @@ class ModelRepositoryImpl implements ModelRepositoryInterface {
 	val Map<EObject, AtomicEmfChangeRecorder> rootToRecorder
 	boolean isRecording = false
 
+	@Accessors(PUBLIC_GETTER)
+	val List<VitruviusChange> lastResolvedChanges
+	@Accessors(PUBLIC_GETTER)
+	val List<VitruviusChange> lastUnresolvedChanges
+
 	private static def VURI getVURI(Resource resource) {
 		VURI::getInstance(resource)
 	}
 
 	new() {
+		lastResolvedChanges = newArrayList
+		lastUnresolvedChanges = newArrayList
 		rootElements = newHashSet
 		rootToRecorder = newHashMap
 	}
 
 	override toString() '''
-		Model repository contents:
+		
+			Model repository contents:
 			«FOR element : rootElements»
 				«element», resource: «element.eResource?.URI»"
 			«ENDFOR»
 	'''
 
-	override boolean unresolveChanges() {
+	override unresolveChanges() {
 		val unresolvePropagatedChanges = System::getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES)
 		return unresolvePropagatedChanges !== null
 	}
 
-	override void addRootElement(EObject rootElement) {
+	override addRootElement(EObject rootElement) {
 		rootElements += rootElement
 		debug("New root in repository " + rootElement)
 		if (isRecording)
 			startRecordingForElement(rootElement)
 	}
 
-	override void cleanupRootElements() {
+	override cleanupRootElements() {
 		val elementsToRemove = newArrayList()
 		for (rootElement : rootElements) {
 			if (rootElement.eContainer !== null && !(rootElement.eContainer instanceof ChangeDescriptionImpl))
@@ -66,7 +75,7 @@ class ModelRepositoryImpl implements ModelRepositoryInterface {
 		]
 	}
 
-	override void cleanupRootElementsWithoutResource() {
+	override cleanupRootElementsWithoutResource() {
 		val elementsToRemove = newArrayList()
 		for (rootElement : rootElements) {
 			if (null === rootElement.eResource)
@@ -78,16 +87,21 @@ class ModelRepositoryImpl implements ModelRepositoryInterface {
 		]
 	}
 
-	override void startRecording() {
+	override startRecording() {
 		rootElements.forEach[startRecordingForElement]
 		isRecording = true
 	}
 
 	override endRecording() {
+		lastResolvedChanges.clear
+		lastUnresolvedChanges.clear
 		val List<VitruviusChange> result = newArrayList
 		rootToRecorder.entrySet.forEach [
 			value.endRecording
-			result += if (value.unresolvedChanges !== null) value.unresolvedChanges else value.resolvedChanges
+			val isUnresolved = value.unresolvedChanges !== null
+			result += if (isUnresolved) value.unresolvedChanges else value.resolvedChanges
+			lastResolvedChanges += value.resolvedChanges
+			lastUnresolvedChanges += value.unresolvedChanges
 			debug("End recording for " + key)
 		]
 		rootToRecorder.clear
@@ -110,9 +124,7 @@ class ModelRepositoryImpl implements ModelRepositoryInterface {
 	}
 
 	private def void removeElementFromRecording(EObject element) {
-		val recorder = rootToRecorder.get(element)
-		if (recorder !== null)
-			recorder.stopRecording
+		rootToRecorder.get(element)?.stopRecording
 		rootToRecorder.remove(element)
 		debug("Abort recording for " + element)
 	}
