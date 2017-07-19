@@ -22,11 +22,7 @@
    <requires>
       <import plugin="org.apache.log4j"/>
       <import plugin="com.google.guava"/>
-      <import plugin="org.eclipse.xtext.xbase.lib"/>
-      <import plugin="org.eclipse.xtend.lib" version="2.12.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtend.lib.macro"/>
       <import plugin="org.eclipse.emf.ecore.change"/>
-      <import plugin="edu.kit.ipd.sdq.commons.util.emf"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.emf.ecore.edit"/>
@@ -38,7 +34,6 @@
       <import plugin="org.eclipse.emf.emfstore.common"/>
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.jdt.launching"/>
-      <import plugin="edu.kit.ipd.sdq.commons.util.java"/>
       <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.eclipse.swt"/>
       <import plugin="org.eclipse.ui.workbench"/>
@@ -47,7 +42,6 @@
       <import plugin="org.eclipse.equinox.registry"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.emf.common.ui"/>
-      <import plugin="edu.kit.ipd.sdq.commons.util.eclipse"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.resources" version="3.10.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.commands"/>
@@ -55,6 +49,12 @@
       <import plugin="org.eclipse.emf.edit"/>
       <import plugin="org.eclipse.gmf.runtime.diagram.ui" version="1.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.gmf.runtime.diagram.ui.resources.editor" version="1.7.0" match="greaterOrEqual"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.eclipse.feature" version="1.1.0.201707141456"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.emf.feature" version="1.1.0.201707141456"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.java.feature" version="1.1.0.201707141456"/>
+      <import feature="org.eclipse.xtend.sdk" version="2.12.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.12.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.12.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
