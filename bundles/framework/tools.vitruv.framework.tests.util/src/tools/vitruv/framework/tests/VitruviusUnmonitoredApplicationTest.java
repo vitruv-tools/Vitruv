@@ -95,7 +95,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 * 
 	 * @param modelPathWithinProject
 	 *            - the path to the resource within the project folder,
-	 *            including the model file extension
+	 *            using "/" as separator char and including the model file extension
 	 * @return the created resource or <code>null</code> if not factory is
 	 *         registered for resource with the given file extension
 	 */
@@ -125,7 +125,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 * 
 	 * @param modelPathWithinProject
 	 *            - the path to the resource within the project folder,
-	 *            including the model file extension
+	 *            using "/" as separator char and including the model file extension
 	 * @return the resource loaded from the given path or <code>null</code> if
 	 *         it could not be loaded
 	 */
@@ -147,7 +147,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 * 
 	 * @param modelPathWithinProject
 	 *            - the path to the resource within the project folder,
-	 *            including the model file extension
+	 *            using "/" as separator char and including the model file extension
 	 * @return the root element of the resource
 	 * @throws IllegalStateException
 	 *             if the resource does not contain a root element
@@ -162,7 +162,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 * 
 	 * @param modelPathWithinProject
 	 *            - the path to the resource within the project folder,
-	 *            including the model file extension
+	 *            using "/" as separator char and including the model file extension
 	 */
 	protected void assertModelExists(String modelPathWithinProject) {
 		boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
@@ -175,7 +175,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 * 
 	 * @param modelPathWithinProject
 	 *            - the path to the resource within the project folder,
-	 *            including the model file extension
+	 *            using "/" as separator char and including the model file extension
 	 */
 	protected void assertModelNotExists(String modelPathWithinProject) {
 		boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri());
@@ -188,10 +188,10 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 * 
 	 * @param firstModelPathWithinProject
 	 *            - the path to the first resource within the project folder,
-	 *            including the model file extension
+	 *            using "/" as separator char and including the model file extension
 	 * @param secondModelPathWithinProject
 	 *            - the path to the second resource within the project folder,
-	 *            including the model file extension
+	 *            using "/" as separator char and including the model file extension
 	 */
 	protected void assertPersistedModelsEqual(String firstModelPathWithinProject, String secondModelPathWithinProject) {
 		ResourceSet testResourceSet = new ResourceSetImpl();

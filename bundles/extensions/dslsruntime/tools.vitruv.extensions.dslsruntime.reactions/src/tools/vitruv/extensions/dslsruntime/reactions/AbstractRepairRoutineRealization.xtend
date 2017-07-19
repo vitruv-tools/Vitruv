@@ -89,7 +89,8 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 		 * @param elementToPersist -
 		 * 		The element to be persisted
 		 * @param persistencePath -
-		 * 		The path relative to the project root folder at which the element shall be persisted (including file name with extension)
+		 * 		The path relative to the project root folder at which the element shall be persisted,
+		 * 		using "/" as separator char and including the file name with extension
 		 */
 		protected def persistProjectRelative(EObject alreadyPersistedObject, EObject elementToPersist,
 			String persistencePath) {

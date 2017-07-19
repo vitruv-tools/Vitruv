@@ -74,7 +74,18 @@ public final class PersistenceHelper {
 		val baseURI = getURIOfElementResourceFolder(source);
 		return baseURI.appendPathToURI(relativePath);
 	}
-
+	
+	/**
+	 * Returns the URI of the project folder, relative as specified in <code>relativePath</code>
+	 * to the project root, determined from the element <code>source</code>.
+	 * 
+	 * @param source -
+	 * 		An {@link EObject} that is persisted within a resource of the project
+	 * @param relativePath -
+	 * 		The relative path within the project to get the {@link URI} for, using "/" as separator char
+	 * 
+	 * @returns the {@link URI} of the folder within the project of the given element
+	 */
 	public static def URI getURIFromSourceProjectFolder(EObject source, String relativePath) {
 		val baseURI = getURIOfElementProject(source);
 		return baseURI.appendPathToURI(relativePath);
