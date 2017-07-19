@@ -24,6 +24,7 @@ import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
 import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
+import tools.vitruv.framework.versioning.Reapplier
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected BranchDiff branchDiff
@@ -35,6 +36,7 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected List<VitruviusChange> changes
 	protected Map<String, String> modelPairs
 	protected ModelMerger modelMerger
+	protected Reapplier reapplier
 	protected Root rootElement2
 //	protected SourceTargetRecorder stRecorder
 	protected VURI newSourceVURI
@@ -59,6 +61,7 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 		roots = #[rootElement, rootElement2]
 		rootElement2.id = newTestSourceModelName
 		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(rootElement2)
+
 		modelMerger = ModelMerger::createModelMerger
 		newSourceVURI = VURI::getInstance(rootElement2.eResource)
 		val uri = URI::createURI(newSourceVURI.EMFUri.toString.replace(newTestSourceModelName, newTestTargetModelName))
@@ -69,7 +72,7 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 			targetVURI.EMFUri.toFileString -> newTargetVURI.EMFUri.toFileString
 		}
 		conflictDetector.addMap(rootToRootMap)
-
+		reapplier = Reapplier::createReapplier
 		assertThat(newSourceVURI, not(equalTo(sourceVURI)))
 		assertThat(newTargetVURI, not(equalTo(targetVURI)))
 		assertThat(newSourceVURI.hashCode, not(is(sourceVURI.hashCode)))

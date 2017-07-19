@@ -53,10 +53,11 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 	def void testWithCorrespondence() {
 		graph = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
 		val otherEChanges = branchDiff.compareChanges.map[originalChange.EChanges].flatten
-		val correspondentEChanges = branchDiff.baseChanges.map[targetToCorrespondentChanges.asMap.entrySet].flatten.
-			map[value].flatten.map[EChanges].flatten.toList
-		val otherCorrespondentEChanges = branchDiff.compareChanges.map[targetToCorrespondentChanges.asMap.entrySet].flatten.
-			map [
+		val correspondentEChanges = branchDiff.baseChanges.map[targetToCorrespondentChanges.asMap.entrySet].flatten.map [
+			value
+		].flatten.map[EChanges].flatten.toList
+		val otherCorrespondentEChanges = branchDiff.compareChanges.map[targetToCorrespondentChanges.asMap.entrySet].
+			flatten.map [
 				value
 			].flatten.map[EChanges].flatten.toList
 		val otherGraph = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
@@ -127,5 +128,21 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		val targetEChanges = modelMerger.resultingTriggeredEChanges
 
 		testOnResourceSet.apply(target, targetEChanges)
+	}
+
+	@Test
+	def void testReapplier() {
+		val failingFunction = [ Conflict c |
+			assertThat("This method should never been called", true, is(false))
+			return #[]
+		]
+		modelMerger.init(branchDiff, failingFunction)
+		modelMerger.compute
+		val echanges = modelMerger.resultingOriginalEChanges
+		val changesToRollback = virtualModel.getResolvedPropagatedChanges(sourceVURI)
+		if (changesToRollback.exists[!resolved])
+			throw new IllegalStateException
+		val reappliedChanges = reapplier.reapply(changesToRollback, echanges, virtualModel)
+		assertThat(reappliedChanges.size, is(10))
 	}
 }
