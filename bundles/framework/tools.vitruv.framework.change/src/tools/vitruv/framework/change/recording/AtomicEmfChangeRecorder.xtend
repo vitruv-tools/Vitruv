@@ -1,6 +1,5 @@
 package tools.vitruv.framework.change.recording
 
-import java.util.ArrayList
 import java.util.Collection
 import java.util.List
 import org.eclipse.emf.common.notify.Notification
@@ -18,14 +17,15 @@ import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 import java.util.Set
+import org.eclipse.xtend.lib.annotations.Accessors
 
 class AtomicEmfChangeRecorder {
-	var List<ChangeDescription> changeDescriptions;
 	val Set<Notifier> elementsToObserve
 	var boolean unresolveRecordedChanges
 	val boolean updateTuids;
 	var List<TransactionalChange> resolvedChanges;
 	var List<TransactionalChange> unresolvedChanges;
+	val AtomicChangeRecorder changeRecorder;
 	
 	/**
 	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
@@ -54,14 +54,13 @@ class AtomicEmfChangeRecorder {
 	 */
 	new(boolean unresolveRecordedChanges, boolean updateTuids) {
 		this.elementsToObserve = newHashSet();
-		changeRecorder.setRecordingTransientFeatures(false)
-		changeRecorder.setResolveProxies(true)
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 		this.updateTuids = updateTuids;
+		this.changeRecorder = new AtomicChangeRecorder();
 	}
 
 	def void beginRecording() {
-		this.changeDescriptions = new ArrayList<ChangeDescription>();
+		changeRecorder.reset;
 		changeRecorder.beginRecording(this.elementsToObserve);
 	}
 	
@@ -94,7 +93,7 @@ class AtomicEmfChangeRecorder {
 		changeRecorder.endRecording();
 		// Only take those that do not contain only objectsToAttach (I don't know why)
 		val relevantChangeDescriptions = 
-			changeDescriptions.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].toList
+			changeRecorder.changeDescriptions.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].toList
 		if (unresolveRecordedChanges) {
 			relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
 			unresolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(true, unresolveRecordedChanges && updateTuids)].filterNull.toList;
@@ -187,10 +186,22 @@ class AtomicEmfChangeRecorder {
 	/**
 	 * A change recorder that restarts after each change notification to get atomic change descriptions.
 	 */
-	ChangeRecorder changeRecorder = new ChangeRecorder() {
+	static class AtomicChangeRecorder extends ChangeRecorder {
 		private Collection<?> rootObjects;
 		private boolean isDisposed = false;
-
+		@Accessors(PUBLIC_GETTER)
+		private var List<ChangeDescription> changeDescriptions;
+		
+		new() {
+			setRecordingTransientFeatures(false);
+			setResolveProxies(true);
+			reset();
+		}
+		
+		public def void reset() {
+			this.changeDescriptions = newArrayList;
+		}
+		
 		override dispose() {
 			this.isDisposed = true;
 			super.dispose()
