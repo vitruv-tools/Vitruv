@@ -46,7 +46,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
         
 	override getURI() {
 		val changeUris = changes.map[URI].filterNull
-		return changeUris?.get(0);
+		return if (!changeUris.empty) changeUris.get(0);
 	}
 	
 	override containsConcreteChange() {
