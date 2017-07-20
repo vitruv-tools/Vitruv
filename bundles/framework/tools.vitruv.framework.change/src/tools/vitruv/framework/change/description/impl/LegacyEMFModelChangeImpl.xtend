@@ -4,7 +4,6 @@ import org.eclipse.emf.ecore.change.ChangeDescription
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.tuid.TuidManager
 import java.util.HashSet
 import org.eclipse.emf.ecore.EObject
@@ -17,13 +16,10 @@ import tools.vitruv.framework.change.echange.EChange
  */
 class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	private final ChangeDescription changeDescription;
-	private final VURI vuri;
 	private var boolean canBeBackwardsApplied;
 	
     public new(ChangeDescription changeDescription, Iterable<EChange> eChanges) {
     	this.changeDescription = changeDescription;
-    	val affectedObjects = eChanges.map[affectedEObjects].flatten.filterNull
-        this.vuri = if (affectedObjects.empty) null else VURI.getInstance(affectedObjects.get(0).eResource);
         this.canBeBackwardsApplied = false;
 		addChanges(eChanges);
     }
@@ -33,7 +29,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange));
 		}
 		if (changes.empty) {
-			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
+			addChange(VitruviusChangeFactory.instance.createEmptyChange(null));
 		}
 	}
 
@@ -42,14 +38,15 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
     }
 
     override String toString() '''
-    	«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
+    	«EMFModelChangeImpl.simpleName»: VURI «this.URI», EChanges:
     		«FOR eChange : EChanges»
     			Inner change: «eChange»
     		«ENDFOR»
     '''
         
 	override getURI() {
-		return vuri;
+		val changeUris = changes.map[URI].filterNull
+		return changeUris?.get(0);
 	}
 	
 	override containsConcreteChange() {
