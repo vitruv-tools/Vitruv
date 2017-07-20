@@ -40,11 +40,11 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 	
 	override getURI() {
-		val resolvedResources = affectedEObjects.map[eResource].filterNull;
+		val resolvedResources = affectedNotReferencedEObjects.map[eResource].filterNull;
 		if (resolvedResources.size > 0) {
 			return VURI.getInstance(resolvedResources.get(0));
 		}
-		val proxyUris = affectedEObjects.filter(InternalEObject).map[eProxyURI].filterNull.filter[segmentCount > 0]
+		val proxyUris = affectedNotReferencedEObjects.filter(InternalEObject).map[eProxyURI].filterNull.filter[segmentCount > 0]
 		if (proxyUris.size > 0) {
 			return VURI.getInstance(proxyUris.get(0).trimFragment);
 		}
@@ -74,8 +74,12 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		// Do nothing
 	}
 	
-	override getAffectedEObjects() {
+	def getAffectedNotReferencedEObjects() {
 		return this.eChange.affectedEObjects.filterNull
+	}
+	
+	override getAffectedEObjects() {
+		return affectedNotReferencedEObjects + this.eChange.referencedEObjects.filterNull
 	}
 	
 	private def dispatch Iterable<EObject> getAffectedEObjects(CompoundEChange eChange) {
@@ -84,6 +88,10 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 			objects.addAll(atomicChange.getAffectedEObjects)
 		}
 		return objects.filterNull
+	}
+	
+	private def dispatch List<EObject> getAffectedEObjects(EChange eChange) {
+		return #[]
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(InsertRootEObject<EObject> eChange) {
@@ -95,15 +103,15 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(InsertEReference<EObject, EObject> eChange) {
-		return #[eChange.newValue, eChange.affectedEObject]
+		return #[eChange.affectedEObject]
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(RemoveEReference<EObject, EObject> eChange) {
-		return #[eChange.oldValue, eChange.affectedEObject]
+		return #[eChange.affectedEObject]
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(ReplaceSingleValuedEReference<EObject, EObject> eChange) {
-		return #[eChange.oldValue, eChange.newValue, eChange.affectedEObject]
+		return #[eChange.affectedEObject]
 	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(FeatureEChange<EObject, ?> eChange) {
@@ -112,6 +120,22 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	
 	private def dispatch List<EObject> getAffectedEObjects(EObjectExistenceEChange<EObject> eChange) {
 		return #[eChange.affectedEObject]
+	}
+	
+	private def dispatch List<EObject> getReferencedEObjects(EChange eChange) {
+		return #[]
+	}
+	
+	private def dispatch List<EObject> getReferencedEObjects(InsertEReference<EObject, EObject> eChange) {
+		return #[eChange.newValue]
+	}
+	
+	private def dispatch List<EObject> getReferencedEObjects(RemoveEReference<EObject, EObject> eChange) {
+		return #[eChange.oldValue]
+	}
+	
+	private def dispatch List<EObject> getReferencedEObjects(ReplaceSingleValuedEReference<EObject, EObject> eChange) {
+		return #[eChange.affectedEObject, eChange.oldValue, eChange.newValue]
 	}
 
 }
