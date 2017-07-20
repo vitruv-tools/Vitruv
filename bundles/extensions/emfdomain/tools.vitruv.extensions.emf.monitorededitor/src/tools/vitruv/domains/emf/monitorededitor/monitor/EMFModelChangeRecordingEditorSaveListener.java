@@ -68,8 +68,8 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      * remains inactive until <code>initialize()</code> is called.
      * 
      * @param editorAdapter
-     *            An {@link IEditorPartAdapter} instance adapting the EMF/GMF editor which needs to
-     *            be monitored.
+     *            An {@link IEditorPartAdapter} instance adapting the EMF/GMF editor which needs to be
+     *            monitored.
      */
     public EMFModelChangeRecordingEditorSaveListener(IEditorPartAdapter editorAdapter) {
         this.targetResource = editorAdapter.getEditedModelResource();
@@ -142,7 +142,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected void resetChangeRecorder() {
         deactivateChangeRecorder();
-        changeRecorder = new AtomicEmfChangeRecorder(true);
+        changeRecorder = new AtomicEmfChangeRecorder(false);
         changeRecorder.addToRecording(targetResource);
         changeRecorder.beginRecording();
     }
@@ -152,7 +152,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected List<TransactionalChange> readOutChangesAndEndRecording() {
         changeRecorder.endRecording();
-        return changeRecorder.getUnresolvedChanges();
+        return changeRecorder.getResolvedChanges();
     }
 
     /**
@@ -198,9 +198,9 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      * The "listener" method getting called when the user saves the edited file.
      * 
      * @param changeDescription
-     *            The EMF {@link ChangeDescription} describing the changes to the EMF model since
-     *            last saving it (rsp. since opening it, in case it has not been saved yet). This
-     *            object is provided "as is" from a {@link ChangeRecorder} instance.
+     *            The EMF {@link ChangeDescription} describing the changes to the EMF model since last
+     *            saving it (rsp. since opening it, in case it has not been saved yet). This object is
+     *            provided "as is" from a {@link ChangeRecorder} instance.
      */
     protected abstract void onSavedResource(List<TransactionalChange> changeDescription);
 }
