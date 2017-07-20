@@ -9,6 +9,7 @@ import java.util.HashSet
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.util.datatypes.VURI
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
@@ -17,9 +18,14 @@ import tools.vitruv.framework.change.echange.EChange
 class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	private final ChangeDescription changeDescription;
 	private var boolean canBeBackwardsApplied;
+	private val VURI savedURI;
 	
     public new(ChangeDescription changeDescription, Iterable<EChange> eChanges) {
     	this.changeDescription = changeDescription;
+    	// Save an URI of the changes: if only a remove change is given, the URI is null otherwise
+    	// but here the change is not applied yet, so the URI can be extracted
+    	val changeUris = eChanges.map[URI].filterNull;
+    	this.savedURI = if (!changeUris.empty) changeUris.get(0);
         this.canBeBackwardsApplied = false;
 		addChanges(eChanges);
     }
@@ -38,7 +44,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
     }
 
     override String toString() '''
-    	«EMFModelChangeImpl.simpleName»: VURI «this.URI», EChanges:
+    	«LegacyEMFModelChangeImpl.simpleName»: VURI «this.URI», EChanges:
     		«FOR eChange : EChanges»
     			Inner change: «eChange»
     		«ENDFOR»
@@ -46,7 +52,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
         
 	override getURI() {
 		val changeUris = changes.map[URI].filterNull
-		return if (!changeUris.empty) changeUris.get(0);
+		return if (!changeUris.empty) changeUris.get(0) else return savedURI;
 	}
 	
 	override containsConcreteChange() {
