@@ -13,6 +13,7 @@ import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static extension EChangeRequireExtension = EChangeRequireExtension::instance
@@ -26,26 +27,28 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	}
 
 	override createDependencyGraph(List<VitruviusChange> changes) {
+		val vuri = changes.get(0).URI
 		val graph = GraphExtension::createNewEChangeGraph
-		createDependencyGraph(graph, changes, true)
+		createDependencyGraph(graph, changes, true, false, vuri)
 		return graph
 	}
 
 	override createDependencyGraphFromChangeMatches(List<ChangeMatch> changeMatches) {
 		val graph = GraphExtension::createNewEChangeGraph
 		val originalChanges = changeMatches.map[originalChange].toList
-		createDependencyGraph(graph, originalChanges, false)
+		val originalVuri = originalChanges.get(0).URI
+		createDependencyGraph(graph, originalChanges, false, false, originalVuri)
 
 		val List<VURI> vuris = changeMatches.get(0).targetToCorrespondentChanges.keySet.toList
 		vuris.forEach [ vuri |
 			val targetChanges = changeMatches.map [ c |
 				c.targetToCorrespondentChanges.get(vuri)
 			].flatten.toList
-			createDependencyGraph(graph, targetChanges, false)
+			createDependencyGraph(graph, targetChanges, false, true, vuri)
 		]
 		changeMatches.forEach [ c |
 			c.originalChange.EChanges.forEach [ echange, i |
-				c.targetToCorrespondentChanges.values.forEach [ transChanges |
+				c.targetToCorrespondentChanges.asMap.values.forEach [ transChanges |
 					transChanges.forEach [ transChange |
 						val triggeredEchange = transChange.EChanges.get(i)
 						graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
@@ -57,7 +60,8 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		return graph
 	}
 
-	private def createDependencyGraph(Graph graph, List<VitruviusChange> changes, boolean print) {
+	private def createDependencyGraph(Graph graph, List<VitruviusChange> changes, boolean print, boolean isTriggered,
+		VURI vuri) {
 		val resourceSet = new ResourceSetImpl
 		// PS Do not use the java 8 or xtend function methods here.
 		// Their laziness can cause problems while applying
@@ -66,16 +70,24 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		changes.forEach [
 			echanges += EChanges
 		]
-		echanges.forEach[graph.addNode(it)]
+		echanges.forEach [
+			val node = graph.addNode(it)
+			node.triggered = isTriggered
+			node.vuri = vuri
+		]
+		val filteredEChanges = echanges.filter[!(it instanceof CreateAndInsertRoot<?>)]
+		graph.savePicture
 		if (echanges.exists[resolved])
 			throw new IllegalStateException("A change was resolved")
 		val Map<EChange, EChange> unresolvedToResolvedMap = newHashMap
-		echanges.forEach [
-			unresolvedToResolvedMap.put(it, resolveAfter(resourceSet))
+		filteredEChanges.forEach [
+			val x = resolveBefore(resourceSet)
+			x.applyForward
+			unresolvedToResolvedMap.put(it, x)
 		]
-		echanges.forEach [ echange |
+		filteredEChanges.forEach [ echange |
 			val resolved = unresolvedToResolvedMap.get(echange)
-			echanges.filter[it !== echange].forEach [ otherEchange |
+			filteredEChanges.filter[it !== echange].forEach [ otherEchange |
 				val otherResolved = unresolvedToResolvedMap.get(otherEchange)
 				val isParent = checkForRequireEdge(resolved, otherResolved)
 				if (isParent)

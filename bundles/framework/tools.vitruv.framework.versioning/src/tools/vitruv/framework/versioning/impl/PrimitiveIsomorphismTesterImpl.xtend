@@ -47,9 +47,9 @@ class PrimitiveIsomorphismTesterImpl implements IsomorphismTesterAlgorithm {
 				return false
 			]
 		].forEach [
-			nodes += it
 			val node = combinedGraph.getNode(EChange)
 			node.type = NodeType::UNPAIRED
+			nodes += node
 		]
 	}
 

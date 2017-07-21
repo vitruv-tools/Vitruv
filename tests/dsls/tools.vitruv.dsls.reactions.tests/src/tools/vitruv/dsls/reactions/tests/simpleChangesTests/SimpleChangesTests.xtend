@@ -17,6 +17,10 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
+import static org.hamcrest.CoreMatchers.is
+import static org.hamcrest.CoreMatchers.hasItem
+import static org.junit.Assert.assertThat
+import tools.vitruv.framework.util.datatypes.VURI
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
@@ -509,7 +513,14 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		nonRoot.id = "testId";
 		root.singleValuedContainmentEReference = nonRoot;
 		val result = saveAndSynchronizeChanges(root);
-		this.virtualModel.reverseChanges(result);
+		val vuri = VURI::getInstance(nonRoot.eResource)
+
+		val propagatedChanges1 = virtualModel.getResolvedPropagatedChanges(vuri)
+		assertThat(propagatedChanges1.length, is(2))
+		virtualModel.reverseChanges(result);
+		val propagatedChanges2 = virtualModel.getResolvedPropagatedChanges(vuri)
+		assertThat(propagatedChanges2.length, is(1))
+		propagatedChanges2.forEach[assertThat(propagatedChanges1.take(propagatedChanges2.length), hasItem(it))]
 		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
 			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 		val testResourceSet = new ResourceSetImpl();
@@ -521,6 +532,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 			true);
 		assertEquals(null, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference);
 		virtualModel.forwardChanges(result)
+		val propagatedChanges3 = virtualModel.getResolvedPropagatedChanges(vuri)
+		assertThat(propagatedChanges3.length, is(2))
+		propagatedChanges3.forEach[assertThat(propagatedChanges1, hasItem(it))]
 	}
 
 	@Test
@@ -530,7 +544,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val newId = "testId";
 		targetRoot.id = newId
 		val propagatedChanges = saveAndSynchronizeChanges(targetRoot);
-		assertEquals(1, propagatedChanges.size);
+		assertEquals(1, propagatedChanges.size)
 		val compositePropagatedChange = propagatedChanges.get(0).consequentialChanges as CompositeContainerChange
 		assertTrue(compositePropagatedChange.EChanges.get(0) instanceof ReplaceSingleValuedEAttribute<?, ?>)
 		val replaceChange = compositePropagatedChange.EChanges.get(0) as ReplaceSingleValuedEAttribute<?, ?>

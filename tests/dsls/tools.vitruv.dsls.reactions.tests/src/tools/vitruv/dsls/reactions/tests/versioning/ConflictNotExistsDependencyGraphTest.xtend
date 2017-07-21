@@ -57,7 +57,7 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 	@Test
 	def testRequireEdgesChangeMatches() {
 		val originalEChanges = branchDiff.baseChanges.map[originalChange].map[EChanges].flatten.toList
-		val targetEChanges = branchDiff.baseChanges.map[it.targetToCorrespondentChanges.values].flatten.flatten.map [
+		val targetEChanges = branchDiff.baseChanges.map[it.targetToCorrespondentChanges.asMap.values].flatten.flatten.map [
 			EChanges
 		].flatten.toList
 		assertThat(originalEChanges.length, is(targetEChanges.length))
@@ -95,5 +95,12 @@ class ConflictNotExistsDependencyGraphTest extends AbstractConflictNotExistsTest
 		assertThat(graph.provideLeaves.length, is(2))
 		assertThat(graph.provideLeaves.toList.get(0), is(graph.getNode(originalEChanges.get(0))))
 		assertThat(graph.calculateComponentNumber, is(2))
+	}
+
+	@Test
+	def void testConflictDetector() {
+		assertThat(conflicts.empty, is(true))
+		val conflictFreeEChanges = conflictDetector.conflictFreeOriginalEChanges
+		assertThat(conflictFreeEChanges.length, is(8))
 	}
 }

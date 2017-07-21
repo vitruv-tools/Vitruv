@@ -1,10 +1,10 @@
 package tools.vitruv.framework.versioning;
 
-public enum ConflictSolvability {
-	MANUAL("manual"), AUTOMATIC("automatic");
+public enum ConflictSeverity {
+	HARD("manual"), SOFT("automatic"), UNKNOWN_SEVERITY("unknow");
 	private final String name;
 
-	private ConflictSolvability(String s) {
+	private ConflictSeverity(String s) {
 		name = s;
 	}
 

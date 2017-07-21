@@ -5,43 +5,47 @@ import allElementTypes.Root
 import java.util.Collection
 import java.util.List
 import java.util.Map
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.graphstream.graph.Graph
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.BranchDiff
+import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DependencyGraphCreator
-import tools.vitruv.framework.versioning.SourceTargetRecorder
-import tools.vitruv.framework.versioning.VersioningXtendFactory
+import tools.vitruv.framework.versioning.ModelMerger
 import tools.vitruv.framework.versioning.extensions.GraphExtension
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.Conflict
-import tools.vitruv.framework.change.description.VitruviusChange
-import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
+import tools.vitruv.framework.versioning.Reapplier
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected BranchDiff branchDiff
 	protected Collection<Root> roots
-	protected List<Conflict> conflicts
+	protected ConflictDetector conflictDetector = ConflictDetector::createConflictDetector
 	protected Graph graph
+	protected List<Conflict> conflicts
 	protected List<EChange> echanges
 	protected List<VitruviusChange> changes
 	protected Map<String, String> modelPairs
+	protected ModelMerger modelMerger
+	protected Reapplier reapplier
 	protected Root rootElement2
-	protected SourceTargetRecorder stRecorder
+//	protected SourceTargetRecorder stRecorder
 	protected VURI newSourceVURI
 	protected VURI newTargetVURI
 	protected VURI sourceVURI
 	protected VURI targetVURI
-	protected static extension ConflictDetector conflictDetector = ConflictDetector::instance
 	protected static extension DependencyGraphCreator = DependencyGraphCreator::instance
 	protected static extension GraphExtension = GraphExtension::instance
+	protected static extension VirtualModelExtension = VirtualModelExtension::instance
 	protected static val containerId = "NonRootObjectContainer"
 	protected static val newTestSourceModelName = "Further_Source_Test_Model"
 	protected static val newTestTargetModelName = "Further_Target_Test_Model"
@@ -53,18 +57,12 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 		targetVURI = VURI::getInstance(
 			URI::createURI(sourceVURI.EMFUri.toString.replace(TEST_SOURCE_MODEL_NAME, TEST_TARGET_MODEL_NAME)))
 
-		stRecorder = VersioningXtendFactory::instance.createSourceTargetRecorder()
-		stRecorder.registerObserver
-		modelPairs = #{
-			TEST_SOURCE_MODEL_NAME -> newTestSourceModelName,
-			TEST_TARGET_MODEL_NAME -> newTestTargetModelName
-		}
-
 		rootElement2 = AllElementTypesFactory::eINSTANCE.createRoot
 		roots = #[rootElement, rootElement2]
 		rootElement2.id = newTestSourceModelName
 		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(rootElement2)
 
+		modelMerger = ModelMerger::createModelMerger
 		newSourceVURI = VURI::getInstance(rootElement2.eResource)
 		val uri = URI::createURI(newSourceVURI.EMFUri.toString.replace(newTestSourceModelName, newTestTargetModelName))
 		newTargetVURI = VURI::getInstance(uri)
@@ -73,13 +71,17 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 			sourceVURI.EMFUri.toFileString -> newSourceVURI.EMFUri.toFileString,
 			targetVURI.EMFUri.toFileString -> newTargetVURI.EMFUri.toFileString
 		}
-		addMap(rootToRootMap)
-		#[sourceVURI, newSourceVURI].forEach[stRecorder.recordOriginalAndCorrespondentChanges(it)]
-
+		conflictDetector.addMap(rootToRootMap)
+		reapplier = Reapplier::createReapplier
 		assertThat(newSourceVURI, not(equalTo(sourceVURI)))
 		assertThat(newTargetVURI, not(equalTo(targetVURI)))
 		assertThat(newSourceVURI.hashCode, not(is(sourceVURI.hashCode)))
 		assertThat(newTargetVURI.hashCode, not(is(targetVURI.hashCode)))
+
+		val sourcePropagatedChanges = virtualModel.getResolvedPropagatedChanges(sourceVURI)
+		val newSourcepropagatedChanges = virtualModel.getResolvedPropagatedChanges(newSourceVURI)
+		assertThat(sourcePropagatedChanges.length, is(1))
+		assertThat(newSourcepropagatedChanges.length, is(1))
 	}
 
 	override unresolveChanges() {
@@ -88,8 +90,9 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 
 	protected def checkChangeMatchesLength(int l1, int l2) {
 		roots.forEach[saveAndSynchronizeChanges]
-		assertThat(stRecorder.getChangeMatches(sourceVURI).length, is(l1))
-		assertThat(stRecorder.getChangeMatches(newSourceVURI).length, is(l2))
+		// FIXME PS "- 1" should be removed if the drop(1) is removed in  virtualModel.getChangeMatches
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(l1 - 1))
+		assertThat(virtualModel.getChangeMatches(newSourceVURI).length, is(l2 - 1))
 	}
 
 	protected final def assertMappedModelsAreEqual() {
