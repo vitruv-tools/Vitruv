@@ -29,6 +29,7 @@ import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryInterface
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
+	static extension ChangeCloner = new ChangeCloner
 	static extension Logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceProviding correspondenceProviding
@@ -153,8 +154,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangePropagationResult propagationResult,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-		val cloner = new ChangeCloner
-		val clonedChange = cloner.clone(change)
+		val clonedChange = clone(change)
 		val changeApplicationFunction = [ ResourceSet resourceSet |
 			resourceRepository.getModel(change.URI)
 			change.resolveBeforeAndApplyForward(resourceSet)
@@ -168,11 +168,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 		val changeDomain = metamodelRepository.getDomain(change.getURI.fileExtension)
 		val consequentialChanges = newArrayList
-		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
+		changePropagationProvider.getChangePropagationSpecifications(changeDomain).forEach [
 			consequentialChanges +=
-				propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult,
-					changedResourcesTracker)
-		}
+				propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
+		]
 		addPropagatedChanges(clonedChange, change, consequentialChanges, propagatedChanges)
 	}
 

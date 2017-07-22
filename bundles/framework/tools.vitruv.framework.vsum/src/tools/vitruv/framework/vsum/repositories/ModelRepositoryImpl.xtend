@@ -43,11 +43,10 @@ class ModelRepositoryImpl implements ModelRepositoryInterface {
 	}
 
 	override toString() '''
-		
-			Model repository contents:
-			«FOR element : rootElements»
-				«element», resource: «element.eResource?.URI»"
-			«ENDFOR»
+		Model repository contents:
+		«FOR element : rootElements»
+			«element», resource: «element.eResource?.URI»"
+		«ENDFOR»
 	'''
 
 	override unresolveChanges() {
@@ -63,27 +62,23 @@ class ModelRepositoryImpl implements ModelRepositoryInterface {
 	}
 
 	override cleanupRootElements() {
-		val elementsToRemove = newArrayList()
-		for (rootElement : rootElements) {
-			if (rootElement.eContainer !== null && !(rootElement.eContainer instanceof ChangeDescriptionImpl))
-				elementsToRemove += rootElement
-		}
+		val elementsToRemove = newArrayList
+		rootElements.filter[eContainer !== null && !(eContainer instanceof ChangeDescriptionImpl)].forEach [
+			elementsToRemove += it
+		]
 		elementsToRemove.forEach [
 			removeElementFromRecording(it)
 			debug("Remove root from repository " + it)
-			rootElements.remove(it)
+			rootElements -= it
 		]
 	}
 
 	override cleanupRootElementsWithoutResource() {
-		val elementsToRemove = newArrayList()
-		for (rootElement : rootElements) {
-			if (null === rootElement.eResource)
-				elementsToRemove += rootElement
-		}
+		val elementsToRemove = newArrayList
+		rootElements.filter[null === eResource].forEach[elementsToRemove += it]
 		elementsToRemove.forEach [
 			debug("Remove root without resource from repository " + it)
-			rootElements.remove(it)
+			rootElements -= it
 		]
 	}
 
@@ -128,5 +123,4 @@ class ModelRepositoryImpl implements ModelRepositoryInterface {
 		rootToRecorder.remove(element)
 		debug("Abort recording for " + element)
 	}
-
 }
