@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: Commonalities Language Eclipse Integration
 Bundle-SymbolicName: tools.vitruv.dsls.commonalities.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -24,4 +24,4 @@ Require-Bundle: org.eclipse.compare,
  tools.vitruv.dsls.commonalities
 Import-Package: org.apache.log4j
 Bundle-Activator: tools.vitruv.dsls.commonalities.ui.internal.CommonalitiesActivator
-Bundle-Vendor: %providerName
+Bundle-Vendor: Vitruv-Tools

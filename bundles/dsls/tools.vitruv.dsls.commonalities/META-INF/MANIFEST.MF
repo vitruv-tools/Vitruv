@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
-Bundle-Vendor: %providerName
+Bundle-Name: Commonalities Language Core
+Bundle-Vendor: Vitruv-Tools
 Bundle-Localization: plugin
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
