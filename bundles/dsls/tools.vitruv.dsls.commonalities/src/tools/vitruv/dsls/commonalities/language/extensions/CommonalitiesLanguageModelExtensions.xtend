@@ -1,14 +1,13 @@
-package tools.vitruv.dsls.commonalities.modelextension
+package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import edu.kit.ipd.sdq.activextendannotations.StaticDelegate
 
 @StaticDelegate(#[
-	AttributeExtension,
-	CommonalityExtension,
+	AttributeDeclarationExtension,
+	CommonalityDeclarationExtension,
 	CommonalitiesLanguageElementExtension,
-	AttributeMappingSpecificationExtension,
-	ImportExtension
+	AttributeMappingSpecificationExtension
 ])
 @Utility class CommonalitiesLanguageModelExtensions {
 }

@@ -1,6 +1,6 @@
-package tools.vitruv.dsls.commonalities.modelextension
+package tools.vitruv.dsls.commonalities.language.extensions
 
-import tools.vitruv.dsls.commonalities.commonalitiesLanguage.CommonalityFile
+import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.activextendannotations.Utility
 
