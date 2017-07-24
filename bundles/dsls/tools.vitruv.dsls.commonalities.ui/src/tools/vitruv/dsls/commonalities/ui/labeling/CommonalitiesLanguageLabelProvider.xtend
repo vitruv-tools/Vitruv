@@ -6,6 +6,7 @@ package tools.vitruv.dsls.commonalities.ui.labeling
 import com.google.inject.Inject
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
+import tools.vitruv.dsls.commonalities.language.elements.Wrapper
 
 /**
  * Provides labels for EObjects.
@@ -28,4 +29,8 @@ class CommonalitiesLanguageLabelProvider extends XbaseLabelProvider {
 //	def image(Greeting ele) {
 //		'Greeting.gif'
 //	}
+
+	def image(Wrapper<?> wrapper) {
+		getImage(wrapper.wrapped)
+	}
 }

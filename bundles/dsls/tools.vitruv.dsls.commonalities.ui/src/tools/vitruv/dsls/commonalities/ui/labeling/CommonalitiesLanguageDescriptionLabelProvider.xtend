@@ -5,7 +5,12 @@ package tools.vitruv.dsls.commonalities.ui.labeling
 
 import org.eclipse.xtext.xbase.ui.labeling.XbaseDescriptionLabelProvider
 import org.eclipse.xtext.resource.IEObjectDescription
-
+import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.emf.ecore.EObject
+import tools.vitruv.dsls.commonalities.language.elements.Metaclass
+import org.eclipse.jface.viewers.StyledString
+import static org.eclipse.jface.viewers.StyledString.*;
+import static tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter.*
 
 /**
  * Provides labels for IEObjectDescriptions and IResourceDescriptions.
@@ -13,11 +18,26 @@ import org.eclipse.xtext.resource.IEObjectDescription
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#label-provider
  */
 class CommonalitiesLanguageDescriptionLabelProvider extends XbaseDescriptionLabelProvider {
-
+	
 	override text(IEObjectDescription description) {
-		switch(description.EClass) {
-			default:
-				super.text(description)			
-		}
+		text(description.EObjectOrProxy, description)
+	}
+	
+	def dispatch text(EObject object, IEObjectDescription description) {
+		super.text(description)
+	}
+	
+	def dispatch text(Metaclass metaclass, IEObjectDescription description) {
+		new StyledString().append(description.name.firstSegment, QUALIFIER_STYLER).append(DOMAIN_METACLASS_SEPARATOR, QUALIFIER_STYLER).append(description.name.getSegment(1))
+	}
+
+	// Labels and icons can be computed like this:
+	
+//	override text(IEObjectDescription ele) {
+//		ele.name.toString
+//	}
+//	 
+	override image(IEObjectDescription ele) {
+		ele.EClass.name + '.gif'
 	}
 }

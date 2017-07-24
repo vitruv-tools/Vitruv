@@ -3,57 +3,33 @@
  */
 package tools.vitruv.dsls.commonalities.ui.contentassist
 
-import org.eclipse.xtext.Assignment
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
-import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
 import com.google.inject.Inject
-import tools.vitruv.dsls.commonalities.scoping.EPackageRegistryScope
-import org.eclipse.jface.viewers.StyledString
-import org.eclipse.jface.viewers.StyledString.Styler
-import static extension tools.vitruv.dsls.commonalities.names.EPackageURINameResolver.getPackageName;
-import org.eclipse.xtext.RuleCall
-import org.eclipse.emf.ecore.EObject
 import com.google.inject.Provider
-import org.eclipse.emf.ecore.EPackage
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
  * on how to customize the content assistant.
  */
 class CommonalitiesLanguageProposalProvider extends AbstractCommonalitiesLanguageProposalProvider {
-
-	@Inject EPackageRegistryScope epackageSope
-	@Inject Provider<MetapackagePrefixMatcher> metapackagePrefixMatcherProvider;
-
-	/*
-	 * Overriding the following methods disables automated completion
-	 */
-	override completeImport_Element(EObject model, Assignment assignment, ContentAssistContext context,
-		ICompletionProposalAcceptor acceptor) {
-	}
-
-	override completeMetapackageImportReference_Package(EObject model, Assignment assignment,
-		ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-	}
-
-	/**
-	 * Content assist for Metamodel URIs in a Metamodel import.
-	 */
-	override complete_PackageLikeImportReference(EObject model, RuleCall ruleCall, ContentAssistContext context,
-		ICompletionProposalAcceptor acceptor) {
-		for (ePackage : epackageSope.allEPackages) {
-			val Styler additionalStyle = StyledString.QUALIFIER_STYLER
-			val styledCompletion = new StyledString().append(ePackage.packageName).append(' - ', additionalStyle).
-				append(ePackage.nsURI, additionalStyle)
-			val completionProposal = createCompletionProposal("'" + ePackage.nsURI + "'", styledCompletion,
-				ePackage.image, metpackageContextFor(ePackage, context))
-			acceptor.accept(completionProposal)
+	
+	@Inject Provider<QualifiedMetaclassProposalFactory> qMetaclassProposalFactory
+	
+	override getProposalFactory(String ruleName, ContentAssistContext contentAssistContext) {
+		switch(ruleName) {
+			case "QualifiedMetaclass":
+				qMetaclassProposalFactory.get.init(contentAssistContext)
+				
+			
+			default:
+				super.getProposalFactory(ruleName, contentAssistContext)
 		}
 	}
 	
-	def private metpackageContextFor(EPackage ePackage, ContentAssistContext context) {
-		val prefixMatcher = metapackagePrefixMatcherProvider.get()
-		prefixMatcher.EPackage = ePackage
-		context.copy.setMatcher(prefixMatcher).toContext
+	def private init(CommonailitiesLanguageProposalFactory factory, ContentAssistContext contentAssistContext) {
+		factory => [
+			context = contentAssistContext
+			proposalProvider = this
+		]
 	}
 }
