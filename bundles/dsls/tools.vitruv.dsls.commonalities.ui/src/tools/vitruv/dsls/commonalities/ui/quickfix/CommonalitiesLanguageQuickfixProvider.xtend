@@ -3,14 +3,14 @@
  */
 package tools.vitruv.dsls.commonalities.ui.quickfix
 
-import tools.vitruv.dsls.mirbase.ui.quickfix.MirBaseQuickfixProvider
+import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
 
 /**
  * Custom quickfixes.
  *
  * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#quick-fixes
  */
-class CommonalitiesLanguageQuickfixProvider extends MirBaseQuickfixProvider {
+class CommonalitiesLanguageQuickfixProvider extends XbaseQuickfixProvider {
 
 //	@Fix(CommonalitiesLanguageValidator.INVALID_NAME)
 //	def capitalizeName(Issue issue, IssueResolutionAcceptor acceptor) {
