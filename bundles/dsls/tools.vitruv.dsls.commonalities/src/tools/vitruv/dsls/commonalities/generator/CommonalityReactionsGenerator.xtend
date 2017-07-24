@@ -19,7 +19,7 @@ package class CommonalityReactionsGenerator extends CommonalityFileGenerator {
 
 	val participationReactions = new HashMap<Participation, Reaction>
 	@Inject ReactionBuilderFactory reactions
-	@Inject IReactionsEnvironmentGenerator reactionsEnvironmentGenerator;
+	// @Inject IReactionsEnvironmentGenerator reactionsEnvironmentGenerator;
 
 	def private reaction(Participation participation) {
 	}

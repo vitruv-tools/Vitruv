@@ -12,7 +12,7 @@ import org.junit.runner.RunWith
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static tools.vitruv.dsls.commonalities.tests.matchers.EResourceMatchers.*;
-import tools.vitruv.dsls.commonalities.commonalitiesLanguage.CommonalityFile
+import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
 @RunWith(XtextRunner)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
@@ -21,22 +21,7 @@ class CommonalitiesLanguageParsingTest {
 	ParseHelper<CommonalityFile> parseHelper
 	
 	@Test
-	def void importDeclaration() {
-		'''
-		import 'http://www.eclipse.org/emf/2002/Ecore'
-		'''
-			.variation("'", '"')
-			.parseTest
-	}
-	
-	@Test
-	def void importDeclarationWithAlias() {
-		'''
-		import 'http://www.eclipse.org/emf/2002/Ecore' as ecore
-		'''
-			.variation("'", '"')
-			.parseTest
-	}
+	def void todo() {}
 	
 	def void parseTest(CharSequence... inputs) {
 		inputs.forEach [input | 
