@@ -24,11 +24,13 @@ Require-Bundle: org.eclipse.xtext,
  tools.vitruv.dsls.reactions;bundle-version="0.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.commonalities,
- tools.vitruv.dsls.commonalities.language,
- tools.vitruv.dsls.commonalities.language.impl,
- tools.vitruv.dsls.commonalities.language.util,
- tools.vitruv.dsls.commonalities.language.elements,
+ tools.vitruv.dsls.commonalities.generator,
  tools.vitruv.dsls.commonalities.jvmmodel,
+ tools.vitruv.dsls.commonalities.language,
+ tools.vitruv.dsls.commonalities.language.elements,
+ tools.vitruv.dsls.commonalities.language.elements.extensions,
+ tools.vitruv.dsls.commonalities.language.extensions,
+ tools.vitruv.dsls.commonalities.language.util,
  tools.vitruv.dsls.commonalities.names,
  tools.vitruv.dsls.commonalities.parser.antlr,
  tools.vitruv.dsls.commonalities.parser.antlr.internal,
@@ -36,7 +38,5 @@ Export-Package: tools.vitruv.dsls.commonalities,
  tools.vitruv.dsls.commonalities.serializer,
  tools.vitruv.dsls.commonalities.services,
  tools.vitruv.dsls.commonalities.validation,
- tools.vitruv.dsls.commonalities.language,
- tools.vitruv.dsls.commonalities.language.impl,
- tools.vitruv.dsls.commonalities.language.util
+ tools.vitruv.dsls.commonalities.language.impl
 Import-Package: org.apache.log4j

@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: tools.vitruv.dsls.commonalities.ui
+Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.dsls.commonalities.ui;singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.dsls.commonalities.ui.contentassist,
@@ -24,3 +24,4 @@ Require-Bundle: org.eclipse.compare,
  tools.vitruv.dsls.commonalities
 Import-Package: org.apache.log4j
 Bundle-Activator: tools.vitruv.dsls.commonalities.ui.internal.CommonalitiesActivator
+Bundle-Vendor: %providerName

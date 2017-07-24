@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: tools.vitruv.dsls.commonalities.ide
+Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.dsls.commonalities.ide;singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.dsls.commonalities.ide.contentassist.antlr,
@@ -13,4 +13,5 @@ Require-Bundle: org.antlr.runtime,
  org.eclipse.xtext.xbase.ide,
  org.eclipse.xtext,
  tools.vitruv.dsls.commonalities
+Bundle-Vendor: %providerName
 

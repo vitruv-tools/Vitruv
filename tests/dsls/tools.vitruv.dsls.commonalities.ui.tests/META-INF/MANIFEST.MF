@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: tools.vitruv.dsls.commonalities.ui.tests
-Bundle-Vendor: tools.vitruv
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.commonalities.ui.tests; singleton:=true
 Bundle-ActivationPolicy: lazy

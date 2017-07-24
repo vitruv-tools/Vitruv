@@ -13,7 +13,6 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<xtextVersion>2.12.0</xtextVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -21,44 +20,6 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.eclipse.xtend</groupId>
-					<artifactId>xtend-maven-plugin</artifactId>
-					<version>${xtextVersion}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>compile</goal>
-								<goal>xtend-install-debug-info</goal>
-								<goal>testCompile</goal>
-								<goal>xtend-test-install-debug-info</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<outputDirectory>${basedir}/xtend-gen</outputDirectory>
-						<testOutputDirectory>${basedir}/xtend-gen</testOutputDirectory>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.5</version>
-					<configuration>
-						<filesets>
-							<fileset>
-								<directory>${basedir}/xtend-gen</directory>
-								<includes>
-									<include>**/*</include>
-								</includes>
-								<directory>${basedir}/xtend-gen</directory>
-								<includes>
-									<include>**/*</include>
-								</includes>
-							</fileset>
-						</filesets>
-					</configuration>
-				</plugin>
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -154,10 +115,7 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<!-- 
-						Can be removed after first generator execution
-						https://bugs.eclipse.org/bugs/show_bug.cgi?id=480097
-					-->
+					<!-- Can be removed after first generator execution https://bugs.eclipse.org/bugs/show_bug.cgi?id=480097 -->
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-compiler-plugin</artifactId>
 					<version>${tycho.version}</version>
