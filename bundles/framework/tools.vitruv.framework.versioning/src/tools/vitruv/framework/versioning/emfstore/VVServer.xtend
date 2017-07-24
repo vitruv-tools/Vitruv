@@ -5,5 +5,5 @@ import java.util.List
 interface VVServer {
 	def VVUsersession login(String name)
 
-	def List<VVRemoteProject> getRemoteProjects()
+	def List<RemoteRepository> getRemoteProjects()
 }

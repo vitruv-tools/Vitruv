@@ -11,5 +11,5 @@ interface VVFactory {
 
 	def LocalRepository createLocalProject(String name)
 
-	def VVRemoteProject createRemoteProject()
+	def RemoteRepository createRemoteProject()
 }

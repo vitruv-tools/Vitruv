@@ -13,13 +13,17 @@ import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.emfstore.VVFactory
 import tools.vitruv.framework.versioning.emfstore.VVModelElementId
 import tools.vitruv.framework.versioning.emfstore.VVModelElementIdUtil
-import tools.vitruv.framework.versioning.emfstore.VVRemoteProject
 import tools.vitruv.framework.versioning.emfstore.VVServer
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.ChangeCloner
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.versioning.emfstore.RemoteRepository
+import java.util.Set
+import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
+import java.util.Map
+import tools.vitruv.framework.versioning.commit.Commit
 
 class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalRepository {
 	static extension ChangeCloner = new ChangeCloner
@@ -28,13 +32,26 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 	Author author
 
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	VVRemoteProject remoteProject
+	RemoteRepository remoteProject
 
 	@Accessors(PUBLIC_GETTER)
 	EList<EObject> modelElements
 
+	val Set<RemoteRepository> remoteRepositories
+	val Map<RemoteRepository, String> lastCommitMap
+
 	new() {
 		super()
+		remoteRepositories = newHashSet
+		lastCommitMap = newHashMap
+	}
+
+	override commit(String s, VirtualModel virtualModel, VURI vuri) {
+		val changeMatches = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
+		val lastChangeId = changeMatches.get(0).id
+		val commit = commit(s, changeMatches)
+		virtualModel.lastPropagatedChangeId = lastChangeId
+		return commit
 	}
 
 	override commit(String s, List<PropagatedChange> changes) {
@@ -87,6 +104,33 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		]
 		newChanges.forEach [
 			virtualModel.propagateChange(it)
+		]
+	}
+
+	override addRemoteRepository(RemoteRepository remoteRepository) {
+		if (null !== remoteRepository)
+			remoteRepositories += remoteRepository
+	}
+
+	override push() throws CommitNotExceptedException {
+		remoteRepositories.forEach [ remoteRepo |
+			var List<Commit> commitsToPush = null
+			val alreadyPushed = lastCommitMap.containsKey(remoteRepo)
+			if (alreadyPushed) {
+				val lastHash = lastCommitMap.get(remoteRepo)
+				commitsToPush = getCommitsFrom(lastHash)
+			} else
+				commitsToPush = commits
+			commitsToPush.forEach [ commit |
+				remoteRepo.push(commit)
+				lastCommitMap.put(remoteRepo, commit.identifier)
+			]
+		]
+	}
+	
+	override pull() {
+		remoteRepositories.forEach[remoteRepo|
+			remoteRepo.pu
 		]
 	}
 

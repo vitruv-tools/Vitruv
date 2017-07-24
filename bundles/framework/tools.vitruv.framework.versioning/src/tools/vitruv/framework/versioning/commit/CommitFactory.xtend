@@ -14,6 +14,6 @@ interface CommitFactory {
 
 	def CommitMessage createCommitMessage(String message, Author author)
 
-	def InitialCommit createInitialCommit()
+	def SimpleCommit createInitialCommit()
 
 }

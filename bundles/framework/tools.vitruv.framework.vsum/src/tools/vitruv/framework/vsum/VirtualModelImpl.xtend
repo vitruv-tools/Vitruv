@@ -110,9 +110,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override setUserInteractor(UserInteracting userInteractor) {
-		for (propagationSpecification : changePropagationSpecificationProvider) {
-			propagationSpecification.userInteracting = userInteractor
-		}
+		changePropagationSpecificationProvider.forEach[userInteracting = userInteractor]
 	}
 
 	override getResolvedPropagatedChanges(VURI vuri) {
@@ -122,4 +120,5 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override getUnresolvedPropagatedChanges(VURI vuri) {
 		changePropagator.getUnresolvedPropagatedChanges(vuri)
 	}
+
 }

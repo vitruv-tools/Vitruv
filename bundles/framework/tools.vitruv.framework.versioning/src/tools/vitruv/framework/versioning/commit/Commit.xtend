@@ -2,16 +2,19 @@ package tools.vitruv.framework.versioning.commit
 
 import java.util.List
 import tools.vitruv.framework.change.description.PropagatedChange
+import java.util.Date
 
 interface Commit {
 
-	def List<PropagatedChange> getChanges()
-
 	def CommitMessage getCommitmessage()
 
-	def List<SimpleCommit> getCommitsBranchedFromThis()
+	def Date getDate()
 
 	def List<MergeCommit> getCommitsMergedFromThis()
 
-	def int getIdentifier()
+	def List<PropagatedChange> getChanges()
+
+	def List<SimpleCommit> getCommitsBranchedFromThis()
+
+	def String getIdentifier()
 }

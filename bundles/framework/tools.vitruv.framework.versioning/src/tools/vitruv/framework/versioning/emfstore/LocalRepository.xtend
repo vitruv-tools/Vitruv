@@ -9,6 +9,7 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.VVObjectContainer
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.VirtualModel
+import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 
 interface LocalRepository extends AbstractRepository, VVObjectContainer<VVModelElementId> {
 
@@ -16,19 +17,27 @@ interface LocalRepository extends AbstractRepository, VVObjectContainer<VVModelE
 
 	def SimpleCommit commit(String s, List<PropagatedChange> changes)
 
+	def SimpleCommit commit(String s, VirtualModel virtualModel, VURI vuri)
+
 	def void checkout(VirtualModel virtualModel, VURI vuri)
 
-	def VVRemoteProject getRemoteProject()
+	def RemoteRepository getRemoteProject()
 
-	def VVRemoteProject shareProject(VVServer server)
+	def RemoteRepository shareProject(VVServer server)
 
 	def void delete()
 
 	def void setAuthor(Author author)
 
-	def void setRemoteProject(VVRemoteProject remote)
+	def void setRemoteProject(RemoteRepository remote)
 
 	def void update()
 
+	def void pull()
+
+	def void push() throws CommitNotExceptedException
+
 	def void update(Function1<List<Conflict>, Boolean> conflictCallback)
+
+	def void addRemoteRepository(RemoteRepository remoteRepository)
 }
