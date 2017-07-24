@@ -7,32 +7,26 @@ import org.junit.Ignore
 import org.junit.Test
 import tools.vitruv.dsls.reactions.tests.AbstractVersioningTest
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.versioning.SourceTargetRecorder
-import tools.vitruv.framework.versioning.VersioningXtendFactory
 
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
+	static protected extension VirtualModelExtension = VirtualModelExtension::instance
 	static extension Logger = Logger::getLogger(SourceTargetRecorderTest)
 
 	static protected val nonRootObjectContainerName = "NonRootObjectContainer"
-	protected SourceTargetRecorder stRecorder
 	protected VURI sourceVURI
 
 	override setup() {
 		super.setup
 		level = Level::DEBUG
-		// Setup sourceTargetRecorder 
-		stRecorder = VersioningXtendFactory::instance.createSourceTargetRecorder()
-		stRecorder.registerObserver
 		sourceVURI = VURI::getInstance(rootElement.eResource)
-		stRecorder.recordOriginalAndCorrespondentChanges(sourceVURI)
 	}
 
 	override cleanup() {
 		super.cleanup
-		stRecorder = null
 	}
 
 	override unresolveChanges() {
@@ -47,8 +41,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		container.id = nonRootObjectContainerName
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		val changesMatches = stRecorder.getChangeMatches(sourceVURI)
-		assertThat(changesMatches.length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
@@ -56,8 +49,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 			rootElement.saveAndSynchronizeChanges
 			assertModelsEqual
 		]
-		assertThat(changesMatches.length, is(4))
-		assertThat(changesMatches.forall[sourceVURI == originalVURI], is(true))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).forall[sourceVURI == originalChange.URI], is(true))
 	}
 
 	@Test
@@ -68,15 +61,14 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 
-		val changesMatches = stRecorder.getChangeMatches(sourceVURI)
-		assertThat(changesMatches.length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(changesMatches.length, is(4))
-		assertThat(changesMatches.forall[sourceVURI == originalVURI], is(true))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).forall[sourceVURI == originalChange.URI], is(true))
 	}
 
 	@Test
@@ -87,15 +79,16 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 
-		val changesMatches = stRecorder.getChangeMatches(sourceVURI)
-		assertThat(changesMatches.length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(changesMatches.length, is(4))
-		changesMatches.forEach[assertThat(originalChange.EChanges.forall[!resolved], is(true))]
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
+		virtualModel.getChangeMatches(sourceVURI).forEach [
+			assertThat(originalChange.EChanges.forall[!resolved], is(true))
+		]
 
 	}
 
