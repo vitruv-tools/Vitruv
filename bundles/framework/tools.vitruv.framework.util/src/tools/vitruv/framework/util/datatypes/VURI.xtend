@@ -69,4 +69,6 @@ abstract class VURI implements Comparable<VURI> {
 
 	def VURI replaceFileExtension(String newFileExt)
 
+	def VURI createVURIByReplacing(String toReplace, String toInsert)
+
 }

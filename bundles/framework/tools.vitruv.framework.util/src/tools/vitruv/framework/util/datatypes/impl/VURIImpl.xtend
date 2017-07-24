@@ -57,6 +57,10 @@ class VURIImpl extends VURI implements Serializable {
 			lastSegment
 	}
 
+	override createVURIByReplacing(String toReplace, String toInsert) {
+		return VURI::getInstance(URI::createURI(toString.replace(toReplace, toInsert)))
+	}
+
 	/** 
 	 * Returns a new VURI that is created from the actual VURI by replacing its
 	 * file extension with newFileExt
@@ -77,4 +81,5 @@ class VURIImpl extends VURI implements Serializable {
 		val emfURIString = stream.readObject as String
 		emfURI = EMFBridge::createURI(emfURIString)
 	}
+
 }
