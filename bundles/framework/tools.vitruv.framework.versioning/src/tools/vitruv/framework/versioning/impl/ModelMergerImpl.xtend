@@ -4,10 +4,10 @@ import java.util.List
 import java.util.Map
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function1
+import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.BranchDiff
 import tools.vitruv.framework.versioning.BranchDiffCreator
-import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.ConflictSeverity
@@ -31,12 +31,12 @@ class ModelMergerImpl implements ModelMerger {
 		resultingTriggeredEChanges = newArrayList
 	}
 
-	override init(List<ChangeMatch> myChanges, List<ChangeMatch> theirChanges,
-		Function1<Conflict, List<ChangeMatch>> cb) {
+	override init(List<PropagatedChange> myChanges, List<PropagatedChange> theirChanges,
+		Function1<Conflict, List<PropagatedChange>> cb) {
 		init(createVersionDiff(myChanges, theirChanges), cb)
 	}
 
-	override init(BranchDiff b, Function1<Conflict, List<ChangeMatch>> cb) {
+	override init(BranchDiff b, Function1<Conflict, List<PropagatedChange>> cb) {
 		branchDiff = b
 		conflictDetector.init(branchDiff)
 		createMap(branchDiff.baseChanges.get(0), branchDiff.compareChanges.get(0))
@@ -46,15 +46,15 @@ class ModelMergerImpl implements ModelMerger {
 
 	override compute() {
 		conflictDetector.compute
-		val getVURI = [Iterable<ChangeMatch> cIt|cIt.get(0).originalVURI]
-		val getTriggeredVURIs = [ Iterable<ChangeMatch> cIt |
-			cIt.get(0).targetToCorrespondentChanges.asMap.entrySet.map[key]
+		val getVURI = [Iterable<PropagatedChange> cIt|cIt.get(0).originalChange.URI]
+		val getTriggeredVURIs = [ Iterable<PropagatedChange> cIt |
+			cIt.get(0).consequentialChanges.URI
 		]
 		val myOriginalVURI = getVURI.apply(branchDiff.baseChanges)
 		val theirOriginalVURI = getVURI.apply(branchDiff.compareChanges)
 
-		val myTriggeredVURIs = getTriggeredVURIs.apply(branchDiff.baseChanges)
-		val theirTriggeredVURIs = getTriggeredVURIs.apply(branchDiff.compareChanges)
+		val myTriggeredVURI = getTriggeredVURIs.apply(branchDiff.baseChanges)
+		val theirTriggeredVURI = getTriggeredVURIs.apply(branchDiff.compareChanges)
 
 		val commonConflictFreeOriginalEChanges = conflictDetector.commonConflictFreeOriginalEChanges
 		val commonConflictFreeTriggeredEChanges = conflictDetector.commonConflictFreeTriggeredEChanges
@@ -67,11 +67,9 @@ class ModelMergerImpl implements ModelMerger {
 
 		val remapTheirVURI = createEChangeRemapFunction(theirOriginalVURI, myOriginalVURI)
 		theirConflictFreeOriginalEChanges.forEach[remapTheirVURI.accept(it)]
-		myTriggeredVURIs.forEach [ myTriggeredVURI, i |
-			val theirTriggeredVURI = theirTriggeredVURIs.get(i)
-			val remapTheirTriggeredVURI = createEChangeRemapFunction(theirTriggeredVURI, myTriggeredVURI)
-			theirConflictFreeTriggeredEChanges.forEach[remapTheirTriggeredVURI.accept(it)]
-		]
+		val remapTheirTriggeredVURI = createEChangeRemapFunction(theirTriggeredVURI, myTriggeredVURI)
+		theirConflictFreeTriggeredEChanges.forEach[remapTheirTriggeredVURI.accept(it)]
+
 		val conflictFreeOriginalEChanges = commonConflictFreeOriginalEChanges + myConflictFreeOriginalEChanges +
 			theirConflictFreeOriginalEChanges
 		val conflictFreeTriggeredEChanges = commonConflictFreeTriggeredEChanges + myConflictFreeTriggeredEChanges +
@@ -88,18 +86,15 @@ class ModelMergerImpl implements ModelMerger {
 			throw new UnsupportedOperationException
 	}
 
-	private def createMap(ChangeMatch myChange, ChangeMatch theirChange) {
-		val sourceVURI = myChange.originalVURI
-		val newSourceVURI = theirChange.originalVURI
+	private def createMap(PropagatedChange myChange, PropagatedChange theirChange) {
+		val sourceVURI = myChange.originalChange.URI
+		val newSourceVURI = theirChange.originalChange.URI
 
 		val Map<String, String> rootToRootMap = newHashMap
 		rootToRootMap.put(sourceVURI.EMFUri.toFileString, newSourceVURI.EMFUri.toFileString)
-		myChange.targetToCorrespondentChanges.asMap.entrySet.forEach [ entry, index |
-			val targetVURI = entry.key
-			// FIXME PS Dirty HACK 
-			val newTargetVURI = theirChange.targetToCorrespondentChanges.asMap.entrySet.get(index).key
-			rootToRootMap.put(targetVURI.EMFUri.toFileString, newTargetVURI.EMFUri.toFileString)
-		]
+		val targetVURI = myChange.consequentialChanges.URI
+		val newTargetVURI = theirChange.consequentialChanges.URI
+		rootToRootMap.put(targetVURI.EMFUri.toFileString, newTargetVURI.EMFUri.toFileString)
 		conflictDetector.addMap(rootToRootMap)
 	}
 

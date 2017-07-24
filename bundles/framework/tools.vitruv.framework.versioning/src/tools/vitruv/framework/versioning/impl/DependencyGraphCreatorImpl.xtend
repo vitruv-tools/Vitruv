@@ -5,15 +5,15 @@ import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.graphstream.graph.Graph
+import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static extension EChangeRequireExtension = EChangeRequireExtension::instance
@@ -33,27 +33,20 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		return graph
 	}
 
-	override createDependencyGraphFromChangeMatches(List<ChangeMatch> changeMatches) {
+	override createDependencyGraphFromChangeMatches(List<PropagatedChange> changeMatches) {
 		val graph = GraphExtension::createNewEChangeGraph
 		val originalChanges = changeMatches.map[originalChange].toList
 		val originalVuri = originalChanges.get(0).URI
 		createDependencyGraph(graph, originalChanges, false, false, originalVuri)
 
-		val List<VURI> vuris = changeMatches.get(0).targetToCorrespondentChanges.keySet.toList
-		vuris.forEach [ vuri |
-			val targetChanges = changeMatches.map [ c |
-				c.targetToCorrespondentChanges.get(vuri)
-			].flatten.toList
-			createDependencyGraph(graph, targetChanges, false, true, vuri)
-		]
+		val targetChanges = changeMatches.map[consequentialChanges]
+		val vuri = changeMatches.get(0).consequentialChanges.URI
+		createDependencyGraph(graph, targetChanges, false, true, vuri)
+
 		changeMatches.forEach [ c |
 			c.originalChange.EChanges.forEach [ echange, i |
-				c.targetToCorrespondentChanges.asMap.values.forEach [ transChanges |
-					transChanges.forEach [ transChange |
-						val triggeredEchange = transChange.EChanges.get(i)
-						graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
-					]
-				]
+				val triggeredEchange = c.consequentialChanges.EChanges.get(i)
+				graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
 			]
 		]
 		graph.savePicture

@@ -3,10 +3,15 @@ package tools.vitruv.framework.versioning.impl
 import java.util.ArrayList
 import java.util.List
 import java.util.Map
+import java.util.Set
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.xbase.lib.Functions.Function1
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.BranchDiff
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetectionStrategy
@@ -18,11 +23,6 @@ import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.GraphExtension
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.description.VitruviusChange
-import java.util.Set
-import tools.vitruv.framework.versioning.ChangeMatch
-import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 class ConflictDetectorImpl implements ConflictDetector {
 	static extension DependencyGraphCreator = DependencyGraphCreator::instance
@@ -76,8 +76,8 @@ class ConflictDetectorImpl implements ConflictDetector {
 		this.branchDiff = currentbranchDiff
 		conflicts.clear
 		lists.forEach[clear]
-		myVURI = branchDiff.baseChanges.get(0).originalVURI
-		theirVURI = branchDiff.compareChanges.get(0).originalVURI
+		myVURI = branchDiff.baseChanges.get(0).originalChange.URI
+		theirVURI = branchDiff.compareChanges.get(0).originalChange.URI
 	}
 
 	override compute() {
@@ -87,12 +87,12 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val graph1 = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
 		val graph2 = createDependencyGraphFromChangeMatches(branchDiff.
 			compareChanges)
-		val getEChanges = [ Function1<Iterable<ChangeMatch>, Iterable<VitruviusChange>> toEChange, Iterable<ChangeMatch> changeIt |
+		val getEChanges = [ Function1<Iterable<PropagatedChange>, Iterable<VitruviusChange>> toEChange, Iterable<PropagatedChange> changeIt |
 			toEChange.apply(changeIt).map[EChanges].flatten
 		]
-		val getOriginalEChanges = getEChanges.curry([Iterable<ChangeMatch> x|x.map[originalChange]])
-		val getTriggeredEChanges = getEChanges.curry([ Iterable<ChangeMatch> x |
-			x.map[targetToCorrespondentChanges.asMap.entrySet.map[value].flatten].flatten
+		val getOriginalEChanges = getEChanges.curry([Iterable<PropagatedChange> x|x.map[originalChange]])
+		val getTriggeredEChanges = getEChanges.curry([ Iterable<PropagatedChange> x |
+			x.map[consequentialChanges]
 		])
 		val myOriginalEChanges = getOriginalEChanges.apply(branchDiff.baseChanges)
 		val myTriggeredEChanges = getTriggeredEChanges.apply(branchDiff.baseChanges)
