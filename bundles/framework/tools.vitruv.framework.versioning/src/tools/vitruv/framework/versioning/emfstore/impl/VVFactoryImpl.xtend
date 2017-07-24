@@ -23,7 +23,7 @@ class VVFactoryImpl implements VVFactory {
 	}
 
 	override createLocalProject(String name) {
-		new VVLocalProjectImpl(name)
+		new LocalRepositoryImpl(name)
 	}
 
 }

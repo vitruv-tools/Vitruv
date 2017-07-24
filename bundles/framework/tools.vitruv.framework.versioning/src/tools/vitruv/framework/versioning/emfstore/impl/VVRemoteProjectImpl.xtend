@@ -1,16 +1,16 @@
 package tools.vitruv.framework.versioning.emfstore.impl
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.versioning.emfstore.VVLocalProject
 import tools.vitruv.framework.versioning.emfstore.VVRemoteProject
 import tools.vitruv.framework.versioning.emfstore.VVServer
 import tools.vitruv.framework.versioning.emfstore.VVFactory
 import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
+import tools.vitruv.framework.versioning.emfstore.LocalRepository
 
-class VVRemoteProjectImpl extends VVProjectImpl implements VVRemoteProject {
+class VVRemoteProjectImpl extends AbstractRepositoryImpl implements VVRemoteProject {
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	VVLocalProject localProject
+	LocalRepository localProject
 
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	VVServer server
