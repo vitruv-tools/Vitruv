@@ -1,12 +1,12 @@
 package tools.vitruv.framework.versioning.commit.impl
 
 import tools.vitruv.framework.versioning.commit.CommitFactory
-import java.util.List
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.versioning.author.Author
 import java.util.Date
-import tools.vitruv.framework.versioning.commit.Commit
+import java.util.List
 import java.util.Random
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.versioning.author.Author
+import tools.vitruv.framework.versioning.commit.Commit
 
 class CommitFactoryImpl implements CommitFactory {
 	static extension Random = new Random
@@ -31,7 +31,7 @@ class CommitFactoryImpl implements CommitFactory {
 		new CommitMessageImpl(new Date, message, author)
 	}
 
-	override createSimpleCommit(List<EChange> changes, String message, Author author, Commit parent) {
+	override createSimpleCommit(List<PropagatedChange> changes, String message, Author author, Commit parent) {
 		val commitMessage = createCommitMessage(message, author)
 		return new SimpleCommitImpl(changes, commitMessage, newArrayList, newArrayList, nextInt, parent)
 

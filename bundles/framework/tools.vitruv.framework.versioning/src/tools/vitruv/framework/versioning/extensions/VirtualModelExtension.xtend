@@ -10,4 +10,8 @@ interface VirtualModelExtension {
 	VirtualModelExtension instance = VirtualModelExtensionImpl::init
 
 	def List<PropagatedChange> getChangeMatches(VirtualModel v, VURI vuri)
+
+	def List<PropagatedChange> getChangeMatchesFrom(VirtualModel v, VURI vuri, String id)
+
+	def List<PropagatedChange> getChangeMatchesFromTo(VirtualModel v, VURI vuri, String from, String to)
 }

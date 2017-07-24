@@ -17,4 +17,12 @@ class VirtualModelExtensionImpl implements VirtualModelExtension {
 		v.getUnresolvedPropagatedChanges(vuri).drop(1).toList
 	}
 
+	override getChangeMatchesFrom(VirtualModel v, VURI vuri, String otherId) {
+		v.getChangeMatches(vuri).dropWhile[id !== otherId].toList
+	}
+
+	override getChangeMatchesFromTo(VirtualModel v, VURI vuri, String from, String to) {
+		v.getChangeMatchesFrom(vuri, from).takeWhile[id !== to].toList
+	}
+
 }
