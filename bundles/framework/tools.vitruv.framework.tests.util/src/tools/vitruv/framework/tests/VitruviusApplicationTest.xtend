@@ -7,14 +7,14 @@ import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.description.ChangeCloner
 import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.description.ChangeCloner
-import tools.vitruv.framework.change.description.VitruviusChange
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -27,32 +27,18 @@ import tools.vitruv.framework.change.description.VitruviusChange
  * @author langhamm
  * @author Heiko Klare
  */
-abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest implements ChangeObservable {
-	List<ChangeObserver> observers
+abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
 	Map<VURI, AtomicEmfChangeRecorder> uriToChangeRecorder
 
 	override beforeTest() {
 		super.beforeTest
 		uriToChangeRecorder = newHashMap
-		observers = newArrayList
 		setup
 	}
 
 	override afterTest() {
 		uriToChangeRecorder.filter[a, recorder|recorder.recording].forEach[a, recorder|recorder.endRecording]
 		cleanup
-	}
-
-	override registerObserver(ChangeObserver observer) {
-		observers += observer
-	}
-
-	override unRegisterObserver(ChangeObserver observer) {
-		observers -= observer
-	}
-
-	override notifyObservers(VURI vuri, PropagatedChange change) {
-		observers.forEach[update(vuri, change, virtualModel)]
 	}
 
 	/**
@@ -152,7 +138,6 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 			throw new IllegalStateException
 		val compositeChange = VitruviusChangeFactory::instance.createCompositeChange(changes)
 		val result = virtualModel.propagateChange(compositeChange)
-		result.forEach[notifyObservers(vuri, it)]
 		return result
 	}
 

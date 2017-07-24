@@ -22,6 +22,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
  * Basic test class for all Vitruvius application tests that require a test
@@ -34,8 +35,11 @@ import static org.junit.Assert.assertTrue
  */
 abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	ResourceSet resourceSet
-	TestUserInteractor testUserInteractor
+	@Accessors(PROTECTED_GETTER)
+	TestUserInteractor userInteractor
+	@Accessors(PROTECTED_GETTER)
 	InternalVirtualModel virtualModel
+	@Accessors(PROTECTED_GETTER)
 	CorrespondenceModel correspondenceModel
 
 	def protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications()
@@ -57,22 +61,10 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	def private void createVirtualModel(String testName) {
 		var String currentTestProjectVsumName = '''«testName»_vsum_'''
 		var Iterable<VitruvDomain> domains = this.getVitruvDomains()
-		this.testUserInteractor = new TestUserInteractor()
+		this.userInteractor = new TestUserInteractor()
 		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, true, domains,
-			createChangePropagationSpecifications(), testUserInteractor)
+			createChangePropagationSpecifications(), userInteractor)
 		this.correspondenceModel = virtualModel.getCorrespondenceModel()
-	}
-
-	def protected CorrespondenceModel getCorrespondenceModel() {
-		return correspondenceModel
-	}
-
-	def protected InternalVirtualModel getVirtualModel() {
-		return virtualModel
-	}
-
-	def protected TestUserInteractor getUserInteractor() {
-		return testUserInteractor
 	}
 
 	def private File getPlatformModelPath(String modelPathWithinProject) {
@@ -122,10 +114,9 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	}
 
 	def protected EObject getFirstRootElement(String modelPathWithinProject, ResourceSet resourceSet) {
-		var List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).getContents()
-		if (resourceContents.size() < 1) {
+		var List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).contents
+		if (resourceContents.size < 1)
 			throw new IllegalStateException("Model has no root")
-		}
 		return resourceContents.get(0)
 	}
 
