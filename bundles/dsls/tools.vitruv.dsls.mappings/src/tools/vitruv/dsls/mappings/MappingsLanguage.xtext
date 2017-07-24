@@ -9,7 +9,8 @@ import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
 MappingsFile:
 	(namespaceImports=XImportSection)?
 	MirBaseFile
-	(mappingsSegments+=MappingsSegment)+;
+	(mappingsSegments+=MappingsSegment)+
+;
 
 MappingsSegment:
 	Documentable
@@ -17,7 +18,8 @@ MappingsSegment:
 	'for' leftDomain=DomainReference 
 	'and' rightDomain=DomainReference
 	(mappings+=Mapping |
-		bootstrapMappings+=BootstrapMapping)*;
+		bootstrapMappings+=BootstrapMapping)*
+;
 		
 Mapping:
 	'mapping' name=ValidID
@@ -35,37 +37,105 @@ Mapping:
 			(bidirectionalizableConditions+=BidirectionalizableCondition)+
 		'}')?
 		('forward execute {'
-			
+			forwardExecutionCode=CodeBlock
+		'} backward execute {'
+			backwardExecutionCode=CodeBlock
 		'}')?
-	'}';
+	'}'
+;
 	
 Parameter:
-	{ClassicallyNamedModelElement};
+	{ClassicallyNamedModelElement}
+;
 	
 SingleSidedCondition returns ConditionExpression:
-	/*/
- 	InExpression
-	| NotNullExpression
-	| EqualsLiteralExpression
-	| DefaultContainExpression
-	| XbaseSignatureConstraintExpression
-	*/
-	'TODO'
+	FeatureCondition |
+	ResourceCondition |
+	CheckAndEnforceCode
 ;
-		
+
+FeatureCondition returns ConditionExpression:
+	(SingleValueCondition |
+	MultiValueCondition |
+	ElementCondition |
+	NotEmptyCondition)
+	feature=MetaclassFeatureReference
+;
+ValueCondition returns ValueCondition:
+	valueExpression=ValueExpression
+;
+
+SingleValueCondition returns ValueCondition:
+	operator=SingleValueConditionOperator
+;
+
+SingleValueConditionOperator:
+	IndexOperator |
+	NumCompareOperator
+;
+
+IndexOperator:
+	negated?='not'
+	'at index'
+	valueExpression=ValueExpression
+	'in'
+;
+
+NumCompareOperator:
+	NotGreaterOperator |
+	LessOperator |
+	NotLessOperator |
+	GreaterOperator
+;
+
+NotGreaterOperator: '<=';
+
+LessOperator: '<';
+
+NotLessOperator: '>=';
+
+GreaterOperator: '>';
+
+MultiValueCondition returns ValueCondition:
+	negated?='not'
+	operator=MultiValueConditionOperator
+;
+
+ValueExpression:
+	{CodeBlock}
+;
+
+MultiValueConditionOperator:
+	'equals' | 'in'
+;
+
+
 BidirectionalizableCondition returns ConditionExpression:
 	'TODO'
 ;
+
+CodeBlock:
+	code=XExpression;
 	
 BootstrapMapping: 
-	'bootstrap mapping'
+	'bootstrap mapping' name=ValidID
+	'{'
+		'create (' (parameters+=Parameter)+ ')' 
+		('with {'
+			bootstrapConditon=SingleSidedCondition
+		'}')?
+	'}'
 ;
 	
 MappingInput:
 	{MappingInput}
 	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
-		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)? ')';
+		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)? ')'
+;
 		
 fragment Documentable:
-	(documentation=ML_COMMENT)?;
+	(documentation=ML_COMMENT)?
+;
+	
+
 		
