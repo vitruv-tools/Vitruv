@@ -1,52 +1,18 @@
 grammar tools.vitruv.dsls.commonalities.CommonalitiesLanguage
 	with org.eclipse.xtext.xbase.Xbase hidden(WS, SL_COMMENT)
 
-generate commonalitiesLanguage "http://www.vitruv.tools/dsls/commonalities/CommonalitiesLanguage"
+generate language "http://vitruv.tools/dsls/commonalities/language"
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://vitruv.tools/dsls/commonalities/language/elements"
 
 CommonalityFile:
-	domain += DomainDeclaration
-	imports += Import*
-	
-	commonality = Commonality
+	concept = ConceptDeclaration
+	commonality = CommonalityDeclaration
 ;
 
-DomainDeclaration:
-	'domain' name=ValidID
-;
-
-
-/***********
- * Imports *
- ***********/
- 
- /*
-  * Concepts can reference metamodels or other concepts. Ecore models are best
-  * referenced by their URI, as this makes importing them platform independent.
-  * Concepts, on the other hand, are only meant to be used inside the project
-  * they are defined in. So referencing them by fully qualified name is
-  * perfectly fine.
-  * 
-  * In effect, there are two import parser rules: one for Metamodels, specified
-  * by a string (the URI) and one for concepts, specified by a fully qualified
-  * name.
-  */
-  
-PackageLikeImportReference:
-	CommonalityImportReference | MetapackageImportReference
-;
-
-MetapackageImportReference:
-	package = [ecore::EPackage|STRING]
-;
-  
-CommonalityImportReference:
-	commonality = [CommonalityFile|QualifiedName]
-;
-
-Import:
-	'import' element = PackageLikeImportReference ('as' alias=ValidID)?
+ConceptDeclaration:
+	'concept' name=ID
 ;
 
 
@@ -54,31 +20,47 @@ Import:
  * Concept Declaration *
  ***********************/
  
-Commonality:
- 	'commonality' name=ValidID '{'
- 		participations += Participation*
- 		attributes += Attribute*
+CommonalityDeclaration:
+ 	'commonality' name=ID '{'
+ 		participations += ParticipationDeclaration*
+ 		attributes += AttributeDeclaration*
  	'}'
 ;
 
-ClassLikeReference:
-	MetaclassReference | CommonalityReference
+DomainReference:
+	domain=[Domain]
 ;
 
-MetaclassReference:
-	metamodel=[ecore::EPackage] '::' metaclass=[ecore::EClass]
+QualifiedMetaclass:
+	ID ':' ID
 ;
 
-CommonalityReference:
-	commonality = [Commonality]
+QualifiedParticipationAttribute:
+	QualifiedMetaclass '.' ID
 ;
 
-Participation:
-	'with' element = ClassLikeReference
+ParticipationDeclaration returns Participation:
+	'with' (SimpleParticipationClassDeclaration | TupleParticipationDeclaration) ('as' alias=ID)?
 ;
 
-Attribute:
-	name=ValidID '{'
+fragment SimpleParticipationClassDeclaration returns Participation:
+	classes+=ParticipationClassDeclaration
+;
+
+fragment TupleParticipationDeclaration returns Participation:
+	'(' classes+=ParticipationClassDeclarationWithAlias (',' classes+=ParticipationClassDeclarationWithAlias)* ')'
+;
+
+ParticipationClassDeclaration returns ParticipationClass:
+	superMetaclass=[Metaclass|QualifiedMetaclass]
+;
+
+ParticipationClassDeclarationWithAlias returns ParticipationClass:
+	ParticipationClassDeclaration ('as' alias=ID)?
+;
+
+AttributeDeclaration:
+	'has' name=ValidID '{'
 		mappings += AttributeMappingSpecifiation*
 	'}'
 ;
@@ -87,10 +69,7 @@ AttributeMappingSpecifiation:
 	AttributeEqualitySpecification
 ;
 
-AttributeLikeReference:
-	meta=[Participation|ValidID] '.' attribute=[ecore::EAttribute|ValidID]
-;
 
 AttributeEqualitySpecification:
-	'=' attribute=AttributeLikeReference
+	'=' attribute = [ParticipationAttribute|QualifiedParticipationAttribute]
 ;

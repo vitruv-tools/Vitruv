@@ -5,7 +5,7 @@ package tools.vitruv.dsls.commonalities.jvmmodel
 
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-import tools.vitruv.dsls.commonalities.commonalitiesLanguage.CommonalityFile
+import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
