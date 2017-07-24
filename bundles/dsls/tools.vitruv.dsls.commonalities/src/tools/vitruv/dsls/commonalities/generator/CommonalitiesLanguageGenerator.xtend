@@ -14,7 +14,7 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 	@Inject Provider<CommonalityReactionsGenerator> reactionsGenerator
 
 	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		subGenerators.forEach[beforeGenerate(input, fsa, context)]
+		//subGenerators.forEach[beforeGenerate(input, fsa, context)]
 	}
 
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
@@ -25,7 +25,7 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 	}
 
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		subGenerators.forEach[afterGenerate(input, fsa, context)]
+		//subGenerators.forEach[afterGenerate(input, fsa, context)]
 	}
 
 	def private subGenerators() {
