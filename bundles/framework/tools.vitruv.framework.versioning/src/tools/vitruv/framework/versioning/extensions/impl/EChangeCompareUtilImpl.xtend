@@ -78,8 +78,10 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && newValueIsEqual
 	}
 
-	private dispatch def boolean compareEchange(CreateAndInsertNonRootImpl<?, ?> e1,
-		CreateAndInsertNonRootImpl<?, ?> e2) {
+	private dispatch def boolean compareEchange(
+		CreateAndInsertNonRootImpl<?, ?> e1,
+		CreateAndInsertNonRootImpl<?, ?> e2
+	) {
 		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
@@ -87,7 +89,10 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
 			e2.insertChange.affectedEObject as InternalEObject)
 		val newValueIsEqual = EcoreUtil::equals(e1.insertChange.newValue, e2.insertChange.newValue)
-		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && newValueIsEqual
+		val indexEqual = e1.insertChange.index === e2.insertChange.index
+		val returnValue = createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && newValueIsEqual &&
+			indexEqual
+		return returnValue
 	}
 
 }

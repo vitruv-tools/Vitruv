@@ -6,27 +6,31 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.util.datatypes.VURI
 
 class ReapplierImpl implements Reapplier {
 
 	override reapply(
+		VURI vuri,
 		List<PropagatedChange> changesToRollBack,
 		List<EChange> echangesToReapply,
 		VirtualModel virtualModel
 	) {
-		val vuri = changesToRollBack.get(0).originalChange.URI
-		val changesToRollbackLength = changesToRollBack.length
-		val changesUntilNow = virtualModel.getResolvedPropagatedChanges(vuri).length
-		changesToRollBack.reverseView.forEach [
-			virtualModel.reverseChanges(#[it])
-		]
+		var changesUntilNowAfterReverse = 0
+		if (!changesToRollBack.empty) {
+			val changesToRollbackLength = changesToRollBack.length
+			val changesUntilNow = virtualModel.getResolvedPropagatedChanges(vuri).length
+			changesToRollBack.reverseView.forEach [
+				virtualModel.reverseChanges(#[it])
+			]
+			changesUntilNowAfterReverse = virtualModel.getUnresolvedPropagatedChanges(vuri).length
+			if (changesUntilNow - changesToRollbackLength !== changesUntilNowAfterReverse)
+				throw new IllegalStateException('''
+					The number of changes recorded after the reverse should be 
+					«changesUntilNow» - «changesToRollBack.length» !== «changesUntilNowAfterReverse»
+				''')
+		}
 
-		val changesUntilNowAfterReverse = virtualModel.getUnresolvedPropagatedChanges(vuri).length
-		if (changesUntilNow - changesToRollbackLength !== changesUntilNowAfterReverse)
-			throw new IllegalStateException('''
-				The number of changes recorded after the reverse should be 
-				«changesUntilNow» - «changesToRollBack.length» !== «changesUntilNowAfterReverse»
-			''')
 		echangesToReapply.map [
 			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it], vuri)
 		].forEach [

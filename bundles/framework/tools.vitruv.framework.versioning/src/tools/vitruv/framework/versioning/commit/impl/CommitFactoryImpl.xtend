@@ -20,10 +20,6 @@ class CommitFactoryImpl implements CommitFactory {
 	private new() {
 	}
 
-	override createMergeCommit() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 	override createInitialCommit() {
 		val commitMessage = createCommitMessage("Initial commit", null)
 		val date = new Date
@@ -34,7 +30,12 @@ class CommitFactoryImpl implements CommitFactory {
 		new CommitMessageImpl(new Date, message, author)
 	}
 
-	override createSimpleCommit(List<PropagatedChange> changes, String message, Author author, String parent) {
+	override createSimpleCommit(
+		List<PropagatedChange> changes,
+		String message,
+		Author author,
+		String parent
+	) {
 		val commitMessage = createCommitMessage(message, author)
 		val date = new Date
 		val oldInfosToHash = '''
@@ -57,6 +58,43 @@ class CommitFactoryImpl implements CommitFactory {
 		val hash = DigestUtils::sha512Hex(stringToHash)
 		return new SimpleCommitImpl(changes, commitMessage, newArrayList, newArrayList, hash, date, parent)
 
+	}
+
+	override createMergeCommit(
+		List<PropagatedChange> changes,
+		String message,
+		Author author,
+		List<String> sources,
+		List<String> targets
+	) {
+		val commitMessage = createCommitMessage(message, author)
+		val date = new Date
+		val oldInfosToHash = '''
+			«date.toString»
+			«message»
+			«author»
+			Sources
+			«FOR source : sources»
+				«source»
+			«ENDFOR»
+			Targets
+			«FOR target : targets»
+				«target»
+			«ENDFOR»
+				«FOR change : changes»
+				«change.originalChange.URI»«change.originalChange»
+				«FOR echange: change.originalChange.EChanges»
+					«echange.fullString »
+				«ENDFOR»
+				«change.consequentialChanges.URI»«change.consequentialChanges»
+				«FOR echange: change.consequentialChanges.EChanges»
+					«echange.fullString »
+				«ENDFOR»
+				«ENDFOR»
+		'''
+		val stringToHash = '''«prefix»«oldInfosToHash.length»«oldInfosToHash»'''
+		val hash = DigestUtils::sha512Hex(stringToHash)
+		return new MergeCommitImpl(changes, commitMessage, newArrayList, newArrayList, hash, date, sources, targets)
 	}
 
 }

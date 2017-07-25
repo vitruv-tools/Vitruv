@@ -55,7 +55,7 @@ class EChangeExtensionImpl implements EChangeExtension {
 	}
 
 	private static dispatch def String getFullStringImpl(EChange e) {
-		throw new UnsupportedOperationException
+		throw new UnsupportedOperationException('''«e»''')
 	}
 
 	private static dispatch def String getFullStringImpl(ReplaceSingleValuedEAttribute<?, ?> e) {

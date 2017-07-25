@@ -8,7 +8,13 @@ import tools.vitruv.framework.versioning.commit.impl.CommitFactoryImpl
 interface CommitFactory {
 	CommitFactory instance = CommitFactoryImpl::init
 
-	def MergeCommit createMergeCommit()
+	def MergeCommit createMergeCommit(
+		List<PropagatedChange> changes,
+		String message,
+		Author author,
+		List<String> source,
+		List<String> target
+	)
 
 	def SimpleCommit createSimpleCommit(List<PropagatedChange> changes, String message, Author author, String parent)
 

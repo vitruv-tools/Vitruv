@@ -45,8 +45,10 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 
 		changeMatches.forEach [ c |
 			c.originalChange.EChanges.forEach [ echange, i |
-				val triggeredEchange = c.consequentialChanges.EChanges.get(i)
-				graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
+				if (!c.consequentialChanges.EChanges.empty) {
+					val triggeredEchange = c.consequentialChanges.EChanges.get(i)
+					graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
+				}
 			]
 		]
 		graph.savePicture

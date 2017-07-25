@@ -7,17 +7,18 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.BranchDiff
-import tools.vitruv.framework.versioning.BranchDiffCreator
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.ConflictSeverity
 import tools.vitruv.framework.versioning.ModelMerger
 import tools.vitruv.framework.versioning.extensions.URIRemapper
+import java.util.function.Consumer
 
 class ModelMergerImpl implements ModelMerger {
 	static extension URIRemapper = URIRemapper::instance
-	static extension BranchDiffCreator = BranchDiffCreator::instance
 	BranchDiff branchDiff
+	Function1<Conflict, List<EChange>> originalCallback
+	Function1<Conflict, List<EChange>> triggeredCallback
 	val ConflictDetector conflictDetector
 
 	@Accessors(PUBLIC_GETTER)
@@ -31,13 +32,14 @@ class ModelMergerImpl implements ModelMerger {
 		resultingTriggeredEChanges = newArrayList
 	}
 
-	override init(List<PropagatedChange> myChanges, List<PropagatedChange> theirChanges,
-		Function1<Conflict, List<PropagatedChange>> cb) {
-		init(createVersionDiff(myChanges, theirChanges), cb)
-	}
-
-	override init(BranchDiff b, Function1<Conflict, List<PropagatedChange>> cb) {
+	override init(
+		BranchDiff b,
+		Function1<Conflict, List<EChange>> ocb,
+		Function1<Conflict, List<EChange>> tcb
+	) {
 		branchDiff = b
+		originalCallback = ocb
+		triggeredCallback = tcb
 		conflictDetector.init(branchDiff)
 		createMap(branchDiff.baseChanges.get(0), branchDiff.compareChanges.get(0))
 		resultingOriginalEChanges.clear
@@ -76,14 +78,27 @@ class ModelMergerImpl implements ModelMerger {
 			theirConflictFreeTriggeredEChanges
 		val conflicts = conflictDetector.conflicts
 		val softConflicts = conflicts.filter[solvability === ConflictSeverity::SOFT]
+		val hardConflicts = conflicts.filter[solvability === ConflictSeverity::HARD]
 		val originalEChangesFromSoftConflicts = softConflicts.map[sourceDefaultSolution].flatten.toList
 		val triggeredEChangesFromSoftConflicts = softConflicts.map[triggeredDefaultSolution].flatten.toList
 
 		resultingOriginalEChanges += (conflictFreeOriginalEChanges + originalEChangesFromSoftConflicts)
-		resultingTriggeredEChanges += (conflictFreeTriggeredEChanges + triggeredEChangesFromSoftConflicts)
+		resultingTriggeredEChanges += (conflictFreeTriggeredEChanges +
+			triggeredEChangesFromSoftConflicts)
+		val conflictFunction = [ List<EChange> echanges, Function1<Conflict, List<EChange>> cb, Consumer<EChange> remap, Conflict c |
+			val propagatedChanges = cb.apply(c)
+			propagatedChanges.forEach[remap.accept(it)]
+			echanges += propagatedChanges
+		]
+		val originalConflictFunction = conflictFunction.curry(resultingOriginalEChanges).curry(originalCallback).curry(
+			remapTheirVURI)
+		val triggeredConflictFunction = conflictFunction.curry(resultingTriggeredEChanges).curry(triggeredCallback).
+			curry(remapTheirTriggeredVURI)
+		hardConflicts.forEach [ hardConflict |
+			originalConflictFunction.apply(hardConflict)
+			triggeredConflictFunction.apply(hardConflict)
+		]
 
-		if (softConflicts.length !== conflicts.length)
-			throw new UnsupportedOperationException
 	}
 
 	private def createMap(PropagatedChange myChange, PropagatedChange theirChange) {
@@ -92,9 +107,11 @@ class ModelMergerImpl implements ModelMerger {
 
 		val Map<String, String> rootToRootMap = newHashMap
 		rootToRootMap.put(sourceVURI.EMFUri.toFileString, newSourceVURI.EMFUri.toFileString)
-		val targetVURI = myChange.consequentialChanges.URI
-		val newTargetVURI = theirChange.consequentialChanges.URI
-		rootToRootMap.put(targetVURI.EMFUri.toFileString, newTargetVURI.EMFUri.toFileString)
+		if (null !== myChange.consequentialChanges.URI) {
+			val targetVURI = myChange.consequentialChanges.URI
+			val newTargetVURI = theirChange.consequentialChanges.URI
+			rootToRootMap.put(targetVURI.EMFUri.toFileString, newTargetVURI.EMFUri.toFileString)
+		}
 		conflictDetector.addMap(rootToRootMap)
 	}
 

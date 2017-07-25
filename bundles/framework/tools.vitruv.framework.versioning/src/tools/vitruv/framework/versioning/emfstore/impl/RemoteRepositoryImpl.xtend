@@ -15,6 +15,7 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 	val Set<Branch> branches
 
 	new() {
+		super()
 		branches = newHashSet(masterBranch)
 	}
 
