@@ -1,7 +1,6 @@
 package tools.vitruv.framework.util.datatypes.impl
 
 import java.io.IOException
-import java.util.List
 import java.util.Map
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -15,7 +14,7 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 
 class ModelInstanceImpl extends AbstractURIHaving implements ModelInstance {
-	static extension Logger = Logger.getLogger(ModelInstanceImpl.getSimpleName())
+	static extension Logger = Logger::getLogger(ModelInstanceImpl.simpleName)
 	@Accessors(PUBLIC_GETTER)
 	Resource resource
 	Map<Object, Object> lastUsedLoadOptions
@@ -27,60 +26,49 @@ class ModelInstanceImpl extends AbstractURIHaving implements ModelInstance {
 		this.resource = resource
 	}
 
-	override VURI getMetamodeURI() {
-		if (getResource() !== null && getResource().getContents().size() ===
-			0) {
-			throw new RuntimeException('''Cannot get the metamodel URI for the model instance at the URI '«»«getURI()»' because it has no root element!''')
-		}
+	override getMetamodeURI() {
+		if (null !== resource && resource.contents.size === 0)
+			throw new RuntimeException('''
+				Cannot get the metamodel URI for the model instance at the URI '«»«URI»' because it has no root element!
+			''')
+
 		var String rootEObjectNamespace
 		try {
-			rootEObjectNamespace = getUniqueRootEObject().eClass().getEPackage().getNsURI().toString()
+			rootEObjectNamespace = uniqueRootEObject.eClass.EPackage.nsURI.toString
 		} catch (RuntimeException e) {
 			warn("A unique root object could not be determined. Trying the first root object instead.")
-			rootEObjectNamespace = getFirstRootEObject().eClass().getEPackage().getNsURI().toString()
+			rootEObjectNamespace = firstRootEObject.eClass.EPackage.nsURI.toString
 		}
 
-		return VURI.getInstance(rootEObjectNamespace)
+		return VURI::getInstance(rootEObjectNamespace)
 	}
 
-	/** 
-	 * Returns the root element of the model instance if it is unique (exactly one root element) and
-	 * throws a {@link java.lang.RuntimeException RuntimeException} otherwise.
-	 * @return the root element
-	 */
-	override EObject getUniqueRootEObject() {
-		return EcoreResourceBridge.getUniqueContentRoot(this.resource, getURI().toString())
+	override getUniqueRootEObject() {
+		return EcoreResourceBridge::getUniqueContentRoot(resource, URI.toString)
 	}
 
-	/** 
+	/**
 	 * Returns the root element of the model instance, which occurs first (depending on the order in
 	 * the resource) and throws a {@link java.lang.RuntimeException RuntimeException} if there is no
 	 * root element.
 	 * @return the root element
 	 */
-	override EObject getFirstRootEObject() {
+	override getFirstRootEObject() {
 		try {
-			return EcoreResourceBridge.getFirstRootEObject(this.resource, getURI().toString())
+			return EcoreResourceBridge::getFirstRootEObject(resource, URI.toString)
 		} catch (RuntimeException re) {
-			var boolean forceLoad = true
-			this.load(this.lastUsedLoadOptions, forceLoad)
-			return EcoreResourceBridge.getFirstRootEObject(this.resource, getURI().toString())
+			val boolean forceLoad = true
+			load(lastUsedLoadOptions, forceLoad)
+			return EcoreResourceBridge::getFirstRootEObject(resource, URI.toString)
 		}
 
 	}
 
-	/** 
-	 * Returns the root element of the model instance if it is unique (exactly one root element) and
-	 * has the type of the given class and throws a {@link java.lang.RuntimeExceptionRuntimeException} otherwise.
-	 * @param rootElementClassthe class of which the root element has to be an instance of
-	 * @return the root element
-	 */
 	override <T extends EObject> T getUniqueRootEObjectIfCorrectlyTyped(Class<T> rootElementClass) {
-		return EcoreResourceBridge.getUniqueContentRootIfCorrectlyTyped(this.resource, getURI().toString(),
-			rootElementClass)
+		return EcoreResourceBridge::getUniqueContentRootIfCorrectlyTyped(resource, URI.toString, rootElementClass)
 	}
 
-	/** 
+	/**
 	 * Returns the root element of the model instance if it is the only one with a compatible type.
 	 * It is NOT necessary to have exactly one root element as long as only one of these element
 	 * matches the given type. If there is not exactly one such element a{@link java.lang.RuntimeException RuntimeException} is thrown.
@@ -88,40 +76,25 @@ class ModelInstanceImpl extends AbstractURIHaving implements ModelInstance {
 	 * @return the root element
 	 */
 	override <T extends EObject> T getUniqueTypedRootEObject(Class<T> rootElementClass) {
-		return EcoreResourceBridge.getUniqueTypedRootEObject(this.resource, getURI().toString(), rootElementClass)
+		return EcoreResourceBridge::getUniqueTypedRootEObject(resource, URI.toString, rootElementClass)
 	}
 
-	override List<EObject> getRootElements() {
-		return this.resource.getContents()
+	override getRootElements() {
+		return resource.contents
 	}
 
-	// TODO HK This should be done differently: The VSUM provides the editing domain!
-	def private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
-		if (null === TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resource.getResourceSet())) {
-			TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resource.getResourceSet())
-		}
-		return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resource.getResourceSet())
-	}
-
-	/** 
-	 * Loads the resource into memory. The load can be forced by setting
-	 * forceLoadByDoingUnloadBeforeLoad to true, which means that the resource will be unloaded
-	 * before we load it again.
-	 */
-	override void load(
+	override load(
 		Map<Object, Object> loadOptions,
 		boolean forceLoadByDoingUnloadBeforeLoad
 	) {
 		EMFCommandBridge.createAndExecuteVitruviusRecordingCommand([
 			{
 				try {
-					if (null !== loadOptions) {
-						this.lastUsedLoadOptions = loadOptions
-					}
-					if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
-						this.resource.unload()
-					}
-					this.resource.load(this.lastUsedLoadOptions)
+					if (null !== loadOptions)
+						lastUsedLoadOptions = loadOptions
+					if (resource.modified || forceLoadByDoingUnloadBeforeLoad)
+						resource.unload
+					resource.load(lastUsedLoadOptions)
 				} catch (IOException e) {
 					// soften
 					throw new RuntimeException(e)
@@ -132,7 +105,14 @@ class ModelInstanceImpl extends AbstractURIHaving implements ModelInstance {
 		], getTransactionalEditingDomain())
 	}
 
-	override void load(Map<Object, Object> loadOptions) {
+	override load(Map<Object, Object> loadOptions) {
 		load(loadOptions, false)
+	}
+
+	// TODO HK This should be done differently: The VSUM provides the editing domain!
+	private def synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
+		if (null === TransactionalEditingDomain::Factory.INSTANCE.getEditingDomain(resource.resourceSet))
+			TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(resource.resourceSet)
+		return TransactionalEditingDomain::Factory.INSTANCE.getEditingDomain(resource.resourceSet)
 	}
 }

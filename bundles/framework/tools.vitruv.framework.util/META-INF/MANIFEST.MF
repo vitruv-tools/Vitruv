@@ -7,7 +7,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.framework.util,
  tools.vitruv.framework.util.bridges,
  tools.vitruv.framework.util.command,
- tools.vitruv.framework.util.datatypes
+ tools.vitruv.framework.util.datatypes,
+ tools.vitruv.framework.util.datatypes.impl
 Require-Bundle: org.apache.log4j,
  org.apache.commons.lang,
  org.junit,

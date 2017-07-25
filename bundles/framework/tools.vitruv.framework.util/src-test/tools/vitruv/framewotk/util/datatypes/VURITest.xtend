@@ -1,24 +1,25 @@
 package tools.vitruv.framewotk.util.datatypes
 
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.util.HashSet
 import java.util.Set
 import org.apache.commons.lang.SystemUtils
 import org.eclipse.emf.common.util.URI
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
 import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.datatypes.VURI
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
-import java.io.FileOutputStream
-import java.io.ObjectOutputStream
-import java.io.FileInputStream
-import java.io.ObjectInputStream
+
 import static org.hamcrest.CoreMatchers.equalTo
+import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertThat
-import java.io.IOException
+import static org.junit.Assert.assertTrue
 
 class VURITest {
 	@Rule
@@ -126,7 +127,7 @@ class VURITest {
 
 	def private void ensureStartsWithPlatformResource(VURI orgVURI) {
 		assertTrue("VURI does not start with platform resource",
-			orgVURI.emfURI.toString.startsWith(VitruviusConstants::platformResourcePrefix))
+			orgVURI.EMFUri.toString.startsWith(VitruviusConstants::platformResourcePrefix))
 	}
 
 	def private void ensureEquals(String orgString, String compString) {
