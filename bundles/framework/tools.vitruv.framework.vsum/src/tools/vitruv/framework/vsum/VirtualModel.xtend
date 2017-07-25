@@ -8,7 +8,11 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 
 interface VirtualModel {
+	def void setLastPropagatedChangeId(VURI vuri, String id)
+
 	def File getFolder()
+
+	def List<PropagatedChange> getUnresolvedPropagatedChangesSinceLastCommit(VURI vuri)
 
 	def List<PropagatedChange> getResolvedPropagatedChanges(VURI vuri)
 

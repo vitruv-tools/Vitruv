@@ -219,7 +219,7 @@ public class ResourceRepositoryImpl
     private ModelInstance loadModelInstance(final VURI modelURI, final VitruvDomain metamodel) {
         URI emfURI = modelURI.getEMFUri();
         Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet, metamodel.getDefaultLoadOptions());
-        ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
+        ModelInstance modelInstance = ModelInstance.createModelInstance(modelURI, modelResource);
         return modelInstance;
     }
 
