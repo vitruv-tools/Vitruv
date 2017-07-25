@@ -30,7 +30,10 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		false
 	}
 
-	private dispatch def boolean isConflicting(CreateAndReplaceNonRoot<?, ?> e1, CreateAndReplaceNonRoot<?, ?> e2) {
+	private dispatch def boolean isConflicting(
+		CreateAndReplaceNonRoot<?, ?> e1,
+		CreateAndReplaceNonRoot<?, ?> e2
+	) {
 		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
@@ -41,7 +44,10 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && !newValueIsEqual
 	}
 
-	private dispatch def boolean isConflicting(CreateAndInsertNonRoot<?, ?> e1, CreateAndInsertNonRoot<?, ?> e2) {
+	private dispatch def boolean isConflicting(
+		CreateAndInsertNonRoot<?, ?> e1,
+		CreateAndInsertNonRoot<?, ?> e2
+	) {
 		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject

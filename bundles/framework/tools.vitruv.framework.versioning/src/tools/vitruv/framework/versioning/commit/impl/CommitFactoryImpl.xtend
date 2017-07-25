@@ -22,8 +22,7 @@ class CommitFactoryImpl implements CommitFactory {
 
 	override createInitialCommit() {
 		val commitMessage = createCommitMessage("Initial commit", null)
-		val date = new Date
-		return new SimpleCommitImpl(#[], commitMessage, newArrayList, newArrayList, initialCommitHash, date, null)
+		return new SimpleCommitImpl(#[], commitMessage, newArrayList, newArrayList, initialCommitHash, null)
 	}
 
 	override createCommitMessage(String message, Author author) {
@@ -37,9 +36,8 @@ class CommitFactoryImpl implements CommitFactory {
 		String parent
 	) {
 		val commitMessage = createCommitMessage(message, author)
-		val date = new Date
 		val oldInfosToHash = '''
-			«date.toString»
+			«commitMessage.date.toString»
 			«message»
 			«author»
 			«parent»
@@ -56,7 +54,7 @@ class CommitFactoryImpl implements CommitFactory {
 		'''
 		val stringToHash = '''«prefix»«oldInfosToHash.length»«oldInfosToHash»'''
 		val hash = DigestUtils::sha512Hex(stringToHash)
-		return new SimpleCommitImpl(changes, commitMessage, newArrayList, newArrayList, hash, date, parent)
+		return new SimpleCommitImpl(changes, commitMessage, newArrayList, newArrayList, hash, parent)
 
 	}
 
@@ -68,9 +66,8 @@ class CommitFactoryImpl implements CommitFactory {
 		List<String> targets
 	) {
 		val commitMessage = createCommitMessage(message, author)
-		val date = new Date
 		val oldInfosToHash = '''
-			«date.toString»
+			«commitMessage.date.toString»
 			«message»
 			«author»
 			Sources
@@ -94,7 +91,7 @@ class CommitFactoryImpl implements CommitFactory {
 		'''
 		val stringToHash = '''«prefix»«oldInfosToHash.length»«oldInfosToHash»'''
 		val hash = DigestUtils::sha512Hex(stringToHash)
-		return new MergeCommitImpl(changes, commitMessage, newArrayList, newArrayList, hash, date, sources, targets)
+		return new MergeCommitImpl(changes, commitMessage, newArrayList, newArrayList, hash, sources, targets)
 	}
 
 }

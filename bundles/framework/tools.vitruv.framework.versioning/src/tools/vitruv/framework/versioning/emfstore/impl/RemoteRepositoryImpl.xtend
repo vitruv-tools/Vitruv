@@ -28,7 +28,8 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 
 	override getIdentifiers(String branchName) {
 		val branch = branchName.branch
-		val ids = branch.commits.map[identifier]
+		val commits = branch.commits
+		val ids = commits.map[identifier]
 		return ids
 	}
 

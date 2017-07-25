@@ -17,6 +17,7 @@ class ReapplierImpl implements Reapplier {
 		VirtualModel virtualModel
 	) {
 		var changesUntilNowAfterReverse = 0
+
 		if (!changesToRollBack.empty) {
 			val changesToRollbackLength = changesToRollBack.length
 			val changesUntilNow = virtualModel.getResolvedPropagatedChanges(vuri).length

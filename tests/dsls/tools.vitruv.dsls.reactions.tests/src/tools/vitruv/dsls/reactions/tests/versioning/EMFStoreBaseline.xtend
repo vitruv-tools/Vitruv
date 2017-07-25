@@ -2,31 +2,31 @@ package tools.vitruv.dsls.reactions.tests.versioning
 
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.emf.emfstore.bowling.BowlingFactory
 import org.eclipse.emf.emfstore.bowling.League
 import org.junit.Test
 import tools.vitruv.dsls.reactions.tests.BowlingDomainProvider
 import tools.vitruv.framework.tests.VitruviusApplicationTest
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.Conflict
+import tools.vitruv.framework.versioning.MultiChangeConflict
+import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryImpl
 import tools.vitruv.framework.versioning.emfstore.impl.RemoteRepositoryImpl
+import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
-import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
-import tools.vitruv.framework.versioning.Conflict
-import tools.vitruv.framework.versioning.MultiChangeConflict
-import org.junit.Ignore
 
 class EMFStoreBaseline extends VitruviusApplicationTest {
 	Author author1
@@ -192,7 +192,6 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		assertThat(leagueCopy.players.get(0).name, equalTo("Maximilian"))
 	}
 
-	@Ignore
 	@Test
 	def void commitHashTest() {
 		val demoProjectName = "DemoProject"
@@ -200,7 +199,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league)
 		val leagueName = "Superbowling League"
 		sourceVURI = VURI::getInstance(league.eResource)
-		for (i : 0 .. 1000) {
+		for (i : 0 .. 100) {
 			league.name = leagueName
 			league.saveAndSynchronizeChanges
 			localRepository.commit('''Commit «i» a''', virtualModel, sourceVURI)
@@ -308,13 +307,13 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		assertThat(localRepository.commits.length, is(2))
 
 		league1.name = "Euro-League"
-		val newPlayer = BowlingFactory.eINSTANCE.createPlayer
-		newPlayer.name = "Eugene"
-		league1.players += newPlayer
+//		val newPlayer = BowlingFactory.eINSTANCE.createPlayer
+//		newPlayer.name = "Eugene"
+//		league1.players += newPlayer
 		league1.saveAndSynchronizeChanges
 
 		val myCommit = localRepository.commit("Commit1", virtualModel, sourceVURI)
-		assertThat(myCommit.changes.length, is(2))
+		assertThat(myCommit.changes.length, is(1))
 		assertThat(localRepository.commits.length, is(3))
 		localRepository.push
 
@@ -334,13 +333,13 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		// Changing the name again value without calling update() on the copy first will cause a conflict on commit.
 		// We also add one change which is non-conflicting, setting the name of the first player.
 		newLeague.name = "EU-League"
-		newLeague.players.get(0).name = "Johannes"
+//		newLeague.players.get(0).name = "Johannes"
 		newLeague.saveAndSynchronizeChanges
 		val testVuri = VURI::getInstance(newLeague.eResource)
 		assertThat(newLocalRepository.commits.length, is(2))
 		val newCommit = newLocalRepository.commit("Commit2", virtualModel, testVuri)
 		assertThat(newLocalRepository.commits.length, is(3))
-		assertThat(newCommit.changes.length, is(2))
+		assertThat(newCommit.changes.length, is(1))
 		try {
 			newLocalRepository.push
 		} catch (CommitNotExceptedException e) {
@@ -354,6 +353,8 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 			val originalCallback = [ Conflict c |
 				if (c instanceof MultiChangeConflict) {
 					return c.targetChanges
+				} else if (c instanceof SimpleChangeConflict) {
+					return #[c.targetChange]
 				} else
 					#[]
 			]
@@ -363,36 +364,16 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 				} else
 					#[]
 			]
-			newLocalRepository.merge(remoteBranch, newLocalRepository.currentBranch, originalCallback,
+			val testLeague1 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
+			assertThat(testLeague1.name, equalTo("Euro-League"))
+			val mergeCommit = newLocalRepository.merge(remoteBranch, newLocalRepository.currentBranch, originalCallback,
 				triggeredCallback, virtualModel)
+			assertThat(mergeCommit.changes.length, is(1))
+			val testLeague2 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
+			assertThat(testLeague2.name, equalTo("EU-League"))
+			assertThat(remoteRepository.commits.length, is(3))
+			newLocalRepository.push
+			assertThat(remoteRepository.commits.length, is(5))
 		}
-
-//		try {
-//			demoProjectCopy.commit("Commit2")
-//		} catch (CommitNotExceptedException e) {
-//			debug(e)
-//			demoProject.update [ conflicts |
-//				val conflict = conflicts.get(0) as SimpleChangeConflict
-//				val EList<ChangeMatch> accepted = new BasicEList
-//				accepted += conflict.sourceChange
-//				val EList<ChangeMatch> rejected = new BasicEList
-//				rejected += conflict.targetChange
-//				conflict.resolveConflict(accepted, rejected)
-//				return true
-//			]
-//			demoProjectCopy.commit("Commit 3");
-//
-//			// After having merged the two projects update local project 1
-//			demoProject.update();
-//
-//			assertThat(league1.name, equalTo(leagueCopy.name))
-//			assertThat(league1.players.size, is(leagueCopy.players.size))
-//
-//			System.out.println("\nLeague name in demoProject  is now: " + league1.getName()); // $NON-NLS-1$
-//			System.out.println("\nLeague name in demoProjectCopy  is now: " + leagueCopy.getName()); // $NON-NLS-1$
-//			System.out.println("\nPlayer name in demoProject is now: " + league1.getPlayers().get(0).getName()); // $NON-NLS-1$
-//			System.out.println("\nPlayer name in demoProjectCopy is now: " + leagueCopy.getPlayers().get(0).getName()); // $NON-NLS-1$
-//		}
 	}
-
 }

@@ -47,6 +47,7 @@ class AbstractRepositoryImpl implements AbstractRepository {
 		branchToCommit.get(branch)
 	}
 
+
 	protected def void addCommit(Commit c, Branch branch) {
 		val lastCommit = branchToCommit.get(branch).last
 		c.changes.forEach [ change |
@@ -54,6 +55,14 @@ class AbstractRepositoryImpl implements AbstractRepository {
 				throw new IllegalStateException
 		]
 		branchToCommit.put(branch, c)
+	}
+
+	protected def void removeCommit(Commit c, Branch branch) {
+		val lastCommit = branchToCommit.get(branch).last
+		if (lastCommit.identifier == c.identifier)
+			branchToCommit.remove(branch, c)
+		else
+			throw new IllegalStateException
 	}
 
 	protected def void addCommit(Commit c) {

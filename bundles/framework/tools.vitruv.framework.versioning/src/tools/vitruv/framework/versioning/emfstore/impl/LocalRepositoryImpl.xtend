@@ -29,6 +29,7 @@ import tools.vitruv.framework.versioning.BranchDiffCreator
 import tools.vitruv.framework.versioning.ModelMerger
 import tools.vitruv.framework.versioning.Reapplier
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.commit.SimpleCommit
 
 class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalRepository {
 	static extension Logger = Logger::getLogger(LocalRepositoryImpl)
@@ -221,7 +222,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		val targetCommits = target.commits
 		val sourceCommitsId = sourceCommits.map[identifier]
 		val targetCommitsId = targetCommits.map[identifier]
-		val vuri = targetCommits.last.changes.get(0).originalChange.URI
+		val vuri = sourceCommits.last.changes.get(0).originalChange.URI
 		var firstDifferentIndex = 0
 		for (i : 0 ..< Math.min(sourceCommits.length, targetCommits.length)) {
 			val sourceId = sourceCommitsId.get(i)
@@ -231,8 +232,8 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		}
 		if (firstDifferentIndex === 0)
 			throw new IllegalStateException('''The intial commit must be equal!''')
-		val sourceCommitsToCompare = sourceCommits.drop(firstDifferentIndex)
-		val targetCommitsToCompare = targetCommits.drop(firstDifferentIndex)
+		val sourceCommitsToCompare = sourceCommits.drop(firstDifferentIndex).toList
+		val targetCommitsToCompare = targetCommits.drop(firstDifferentIndex).toList
 		val sourceChanges = sourceCommitsToCompare.map[changes].flatten.toList
 		val targetChanges = targetCommitsToCompare.map[changes].flatten.toList
 		val branchDiff = createVersionDiff(sourceChanges, targetChanges)
@@ -245,14 +246,28 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 
 		val resolvedTargetChanges = virtualModel.getResolvedPropagatedChanges(vuri)
 		val changesToRollback = resolvedTargetChanges.dropWhile[id !== lastPropagatedTargetChange].drop(1).toList
-		virtualModel.reverseChanges(changesToRollback)
 		val reapplier = Reapplier::createReapplier
 		val reappliedChanges = reapplier.reapply(vuri, changesToRollback, echanges, virtualModel)
 		val sourceIds = sourceCommitsToCompare.map[identifier].toList
 		val tagetIds = targetCommitsToCompare.map[identifier].toList
 		val mergeCommit = createMergeCommit(reappliedChanges, '''Merged «source.name» into «target.name»''', author,
 			sourceIds, tagetIds)
+		targetCommitsToCompare.reverseView.immutableCopy.forEach[
+			removeCommit(it, target)
+		]
+		sourceCommitsToCompare.forEach[addCommit(it, target)]
+		targetCommitsToCompare.forEach[reapplyCommit(it, target)]
 		addCommit(mergeCommit, target)
+		return mergeCommit
 	}
 
+	private def void reapplyCommit(Commit c, Branch branch) {
+		if (c instanceof SimpleCommit) {
+			val lastCommit = commits.last
+			val newCommit = createSimpleCommit(c.changes, c.commitmessage.message, c.commitmessage.author,
+				lastCommit.identifier)
+			addCommit(newCommit, branch)
+		} else
+			throw new IllegalStateException
+	}
 }

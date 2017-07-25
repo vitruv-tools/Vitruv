@@ -7,7 +7,6 @@ import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.commit.CommitMessage
 import tools.vitruv.framework.versioning.commit.MergeCommit
 import tools.vitruv.framework.versioning.commit.SimpleCommit
-import java.util.Date
 
 @Data
 abstract class CommitImpl implements Commit {
@@ -21,5 +20,4 @@ abstract class CommitImpl implements Commit {
 
 	String identifier
 
-	Date date
 }

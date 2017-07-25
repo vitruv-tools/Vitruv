@@ -42,7 +42,10 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 				throw new IllegalStateException('''«affectedContainerPlatformString2» is not lying under root«value»''')
 			val s = affectedContainerPlatformString2.replace(value, key)
 			val x = containerString == s
-			return x
+			// FIXME PS Sometimes URI has '/0' at the end
+			val containerStringWithZero = '''«containerString»0'''
+			val y = containerStringWithZero == s
+			return x || y
 		].fold(false, [current, next|(current || next)])
 	}
 

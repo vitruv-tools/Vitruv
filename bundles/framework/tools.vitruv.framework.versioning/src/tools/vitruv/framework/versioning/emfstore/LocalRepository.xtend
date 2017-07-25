@@ -14,6 +14,7 @@ import tools.vitruv.framework.versioning.branch.Branch
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.commit.MergeCommit
 
 interface LocalRepository extends AbstractRepository {
 
@@ -41,7 +42,7 @@ interface LocalRepository extends AbstractRepository {
 
 	def void checkout(VirtualModel virtualModel, VURI vuri)
 
-	def void merge(
+	def MergeCommit merge(
 		Branch source,
 		Branch target,
 		Function1<Conflict, List<EChange>> originalCallback,
