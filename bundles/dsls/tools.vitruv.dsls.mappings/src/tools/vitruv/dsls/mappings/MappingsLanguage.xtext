@@ -20,7 +20,10 @@ MappingsSegment:
 	(mappings+=Mapping |
 		bootstrapMappings+=BootstrapMapping)*
 ;
-		
+
+/******************/
+/* BEGIN MAPPINGS */		
+/******************/
 Mapping:
 	'mapping' name=ValidID
 		('depends on' input=MappingInput)?
@@ -37,9 +40,9 @@ Mapping:
 			(bidirectionalizableConditions+=BidirectionalizableCondition)+
 		'}')?
 		('forward execute {'
-			forwardExecutionCode=CodeBlock
+			forwardExecutionExpression=UnidirectionalExpression
 		'} backward execute {'
-			backwardExecutionCode=CodeBlock
+			backwardExecutionExpression=UnidirectionalExpression
 		'}')?
 	'}'
 ;
@@ -48,75 +51,150 @@ Parameter:
 	{ClassicallyNamedModelElement}
 ;
 	
-SingleSidedCondition returns ConditionExpression:
-	FeatureCondition |
-	ResourceCondition |
-	CheckAndEnforceCode
+SingleSidedCondition returns Condition:
+	EnforceableCondition |
+	CheckAndEnforceCondition
 ;
 
-FeatureCondition returns ConditionExpression:
-	(SingleValueCondition |
-	MultiValueCondition |
-	ElementCondition |
-	NotEmptyCondition)
-	feature=MetaclassFeatureReference
+/* BEGIN ENFORCEABLE CONDITIONS */
+EnforceableCondition returns SingleSidedCondition:
+	FeatureCondition |
+	ResourceCondition
 ;
-ValueCondition returns ValueCondition:
-	valueExpression=ValueExpression
+
+FeatureCondition returns EnforceableCondition:
+	(SingleValueCondition |
+	 MultiValueCondition |
+	 ElementCondition |
+	 NotEmptyCondition
+	)
+	feature=MetaclassFeatureReference
 ;
 
 SingleValueCondition returns ValueCondition:
-	operator=SingleValueConditionOperator
+	IndexCondition |
+	NumCompareCondition
 ;
 
-SingleValueConditionOperator:
-	IndexOperator |
-	NumCompareOperator
-;
-
-IndexOperator:
-	negated?='not'
-	'at index'
+ValueCondition returns FeatureCondition:
 	valueExpression=ValueExpression
-	'in'
-;
-
-NumCompareOperator:
-	NotGreaterOperator |
-	LessOperator |
-	NotLessOperator |
-	GreaterOperator
-;
-
-NotGreaterOperator: '<=';
-
-LessOperator: '<';
-
-NotLessOperator: '>=';
-
-GreaterOperator: '>';
-
-MultiValueCondition returns ValueCondition:
-	negated?='not'
-	operator=MultiValueConditionOperator
 ;
 
 ValueExpression:
 	{CodeBlock}
 ;
 
-MultiValueConditionOperator:
-	'equals' | 'in'
+IndexCondition returns SingleValueCondition:
+	negated?='not'
+	'at index'
+	indexValueExpression=ValueExpression
+	'in'
 ;
 
-
-BidirectionalizableCondition returns ConditionExpression:
-	'TODO'
+NumCompareCondition returns SingleValueCondition:
+	operator=NumCompareOperator
 ;
 
-CodeBlock:
-	code=XExpression;
+enum NumCompareOperator:
+	NOT_GREATER = '<=' |
+	LESS = "<" |
+	NOT_LESS = ">=" |
+	GREATER = ">"
+;
+
+/*
+NumCompareOperator returns SingleValueConditionOperator:
+	NotGreaterOperator |
+	LessOperator |
+	NotLessOperator |
+	GreaterOperator
+;
+
+NotGreaterOperator returns NumCompareOperator: '<=';
+
+LessOperator returns NumCompareOperator: '<';
+
+NotLessOperator returns NumCompareOperator: '>=';
+
+GreaterOperator returns NumCompareOperator: '>';
+*/
+
+MultiValueCondition returns FeatureCondition:
+	negated?='not'
+	operator=MultiValueConditionOperator
+;
+
+enum MultiValueConditionOperator:
+	EQUALS = 'equals' | 
+	IN = 'in'
+;
+
+ElementCondition returns FeatureCondition:
+	elementExpression=ElementExpression
+	'default contained in'
+;
+
+ElementExpression:
+	{CodeBlock}
+;
+
+NotEmptyCondition returns FeatureCondition:
+	negated?='not'
+	'empty'
+;
+
+ResourceCondition returns EnforceableCondition:
+	'default path for'
+	elementExpression=ElementExpression
+	'='
+	('path of' pathExpression=ElementExpression "+")?
+	path=STRING
+;
+/* END ENFORCEABLE CONDITIONS */
+
+/* BEGIN CHECK AND ENFORCE CONDITION*/
+CheckAndEnforceCondition returns SingleSidedCondition:
+	'check {'
+		checkExpression=CheckExpression
+	'}
+	enforce {'
+		enforceExpression=CheckExpression
+	'}' 
+;
+
+CheckExpression:
+	{CodeBlock}
+;
+
+EnforceExpression:
+	{CodeBlock}
+;
+/* END CHECK AND ENFORCE CONDITION */
+
+/* BEGIN BIDIRECTIONALIZABLE CONDITION */
+BidirectionalizableCondition returns Condition:
+	leftFeature=MetaclassFeatureReference
+	'='
+	rightExpression=BidirectionalizableExpression
+	('update' rightFeature=MetaclassFeatureReference)?
+;
+
+BidirectionalizableExpression:
+	{CodeBlock}
+;
+/* END BIDIRECTIONALIZABLE CONDITION */
+
+UnidirectionalExpression:
+	{CodeBlock}
+;
+
+/******************/
+/* END MAPPINGS */		
+/******************/
 	
+/***************************/
+/* BEGIN BOOTSTRAP MAPPING */		
+/***************************/
 BootstrapMapping: 
 	'bootstrap mapping' name=ValidID
 	'{'
@@ -126,16 +204,31 @@ BootstrapMapping:
 		'}')?
 	'}'
 ;
-	
+
+/***************************/
+/* END BOOTSTRAP MAPPING */		
+/***************************/
+
+
+/***************************/
+/* BEGIN REFACTOR */		
+/***************************/
+// TODO MK: move fragment CodeBlock to MirBase (not MetaBase :-)
+fragment CodeBlock:
+	code=XExpression;
+
+// TODO MK: factor the core of MappingInput and RoutineInput (reactions language) out into MirBase	
 MappingInput:
 	{MappingInput}
+	dependsOn=[Mapping]
 	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
 		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)? ')'
 ;
-		
+	
+// TODO MK: move documentable to MetaBase and use it in Reactions	
 fragment Documentable:
 	(documentation=ML_COMMENT)?
 ;
-	
-
-		
+/***************************/
+/* END REFACTOR */		
+/***************************/
