@@ -7,7 +7,7 @@ Vitruv is a framework for view-based software development. It assumes different 
 which are automatically kept consistent by the framework and its applications.
 
 ## Installation
-Vitruv can be installed in Eclipse Oxygen via the [nightly update site](https://vitruv-tools.github.io/updatesite/nightly). A wiki page provides [detailled instructions for using or extending Vitruv](https://github.com/vitruv-tools/Vitruv/wiki/Getting-Started).
+Vitruv can be installed in Eclipse Oxygen via the [nightly update site](http://vitruv.tools/updatesite/nightly). A wiki page provides [detailled instructions for using or extending Vitruv](https://github.com/vitruv-tools/Vitruv/wiki/Getting-Started).
 
 ## Project Development
 
