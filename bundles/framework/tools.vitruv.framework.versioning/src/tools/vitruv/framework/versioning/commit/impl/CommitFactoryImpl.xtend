@@ -1,12 +1,11 @@
 package tools.vitruv.framework.versioning.commit.impl
 
-import tools.vitruv.framework.versioning.commit.CommitFactory
 import java.util.Date
 import java.util.List
+import org.apache.commons.codec.digest.DigestUtils
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.versioning.author.Author
-import tools.vitruv.framework.versioning.commit.Commit
-import org.apache.commons.codec.digest.DigestUtils
+import tools.vitruv.framework.versioning.commit.CommitFactory
 import tools.vitruv.framework.versioning.extensions.EChangeExtension
 
 class CommitFactoryImpl implements CommitFactory {
@@ -35,14 +34,14 @@ class CommitFactoryImpl implements CommitFactory {
 		new CommitMessageImpl(new Date, message, author)
 	}
 
-	override createSimpleCommit(List<PropagatedChange> changes, String message, Author author, Commit parent) {
+	override createSimpleCommit(List<PropagatedChange> changes, String message, Author author, String parent) {
 		val commitMessage = createCommitMessage(message, author)
 		val date = new Date
 		val oldInfosToHash = '''
 			«date.toString»
 			«message»
 			«author»
-			«parent.identifier»
+			«parent»
 				«FOR change : changes»
 					«change.originalChange.URI»«change.originalChange»
 					«FOR echange: change.originalChange.EChanges»

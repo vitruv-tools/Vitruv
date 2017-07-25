@@ -1,20 +1,20 @@
 package tools.vitruv.framework.versioning.emfstore.impl
 
-import java.util.Set
+import com.google.common.collect.ArrayListMultimap
+import com.google.common.collect.ListMultimap
 import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.versioning.branch.Branch
+import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
 import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.commit.CommitFactory
 import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.AbstractRepository
-import tools.vitruv.framework.versioning.branch.impl.BranchImpl
-import com.google.common.collect.ListMultimap
-import com.google.common.collect.ArrayListMultimap
 
-abstract class AbstractRepositoryImpl implements AbstractRepository {
+class AbstractRepositoryImpl implements AbstractRepository {
 	static protected extension CommitFactory = CommitFactory::instance
-
+	@Accessors(PUBLIC_GETTER)
+	val Branch masterBranch
 	val ListMultimap<Branch, Commit> branchToCommit
 	@Accessors(PUBLIC_GETTER)
 	val String id
@@ -22,18 +22,12 @@ abstract class AbstractRepositoryImpl implements AbstractRepository {
 	val SimpleCommit initialCommit
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	String name
-	@Accessors(PUBLIC_GETTER)
-	val Set<Branch> branches
 
 	@Accessors(PUBLIC_GETTER)
 	protected Commit head
 
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	Branch currentBranch
-
 	new() {
-		branches = newHashSet
-		val Branch masterBranch = new BranchImpl("master")
+		masterBranch = new LocalBranchImpl("master")
 		id = UUID.randomUUID.toString
 		initialCommit = createInitialCommit
 		branchToCommit = ArrayListMultimap::create
@@ -45,14 +39,20 @@ abstract class AbstractRepositoryImpl implements AbstractRepository {
 		commits.dropWhile[id !== from].toList
 	}
 
-	override createBranch(String currentName) {
-		val newBranch = new BranchImpl(currentName)
-		branches += newBranch
-		currentBranch = newBranch
+	override getCommits() {
+		masterBranch.commits
 	}
 
-	override getCommits() {
-		branchToCommit.get(currentBranch)
+	override getCommits(Branch branch) {
+		branchToCommit.get(branch)
+	}
+
+	protected def void addCommit(Commit c, Branch branch) {
+		branchToCommit.put(branch, c)
+	}
+
+	protected def void addCommit(Commit c) {
+		addCommit(c, masterBranch)
 	}
 
 }

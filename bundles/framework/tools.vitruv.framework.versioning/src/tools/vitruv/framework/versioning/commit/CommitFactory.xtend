@@ -10,7 +10,7 @@ interface CommitFactory {
 
 	def MergeCommit createMergeCommit()
 
-	def SimpleCommit createSimpleCommit(List<PropagatedChange> changes, String message, Author author, Commit parent)
+	def SimpleCommit createSimpleCommit(List<PropagatedChange> changes, String message, Author author, String parent)
 
 	def CommitMessage createCommitMessage(String message, Author author)
 

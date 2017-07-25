@@ -1,25 +1,13 @@
-/** 
- */
 package tools.vitruv.framework.versioning.branch.impl
 
-import java.util.Collection
-import org.eclipse.emf.common.notify.Notification
-import org.eclipse.emf.common.notify.NotificationChain
-import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.InternalEObject
-import org.eclipse.emf.ecore.impl.ENotificationImpl
-import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList
-import org.eclipse.emf.ecore.util.InternalEList
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.UserBranch
 import tools.vitruv.framework.versioning.commit.Commit
-import tools.vitruv.framework.versioning.Named
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.Set
 
-class BranchImpl implements Branch, Named {
+class BranchImpl implements Branch {
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	Commit currentHeadCommit
 	@Accessors(PUBLIC_GETTER)
