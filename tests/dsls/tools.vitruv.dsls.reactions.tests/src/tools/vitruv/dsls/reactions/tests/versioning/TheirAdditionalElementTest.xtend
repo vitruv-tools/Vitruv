@@ -88,7 +88,7 @@ class TheirAdditionalElementTest extends AbstractTheirAdditionalElementTest {
 			return #[]
 		]
 		val ResourceSet source = new ResourceSetImpl
-		modelMerger.init(branchDiff, failingFunction)
+		modelMerger.init(branchDiff, failingFunction, failingFunction)
 		modelMerger.compute
 		val echanges = modelMerger.resultingOriginalEChanges
 
