@@ -5,7 +5,7 @@
     updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="6.0" copyrightFields="false" runtimeVersion="2.13" usedGenPackages="platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel#//mirBase">
   <genPackages prefix="MappingsLanguage" basePackage="tools.vitruv.dsls.mappings"
-      disposableProviderFactory="true" fileExtensions="reactions" ecorePackage="MappingsLanguage.ecore#/">
+      disposableProviderFactory="true" fileExtensions="mappings" ecorePackage="MappingsLanguage.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="MappingsLanguage.ecore#//NumCompareOperator">
       <genEnumLiterals ecoreEnumLiteral="MappingsLanguage.ecore#//NumCompareOperator/NOT_GREATER"/>
       <genEnumLiterals ecoreEnumLiteral="MappingsLanguage.ecore#//NumCompareOperator/LESS"/>

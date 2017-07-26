@@ -7,7 +7,7 @@
 			class="tools.vitruv.dsls.mappings.ui.MappingsLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
 			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
 			default="true"
-			extensions="mappings.MappingsLanguage"
+			extensions="mappings"
 			id="tools.vitruv.dsls.mappings.MappingsLanguage"
 			matchingStrategy="tools.vitruv.dsls.mappings.ui.MappingsLanguageExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.editor.JavaEditorInputMatcher"
 			name="MappingsLanguage Editor">
@@ -104,7 +104,7 @@
 		<page
 			class="tools.vitruv.dsls.mappings.ui.MappingsLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
 			id="tools.vitruv.dsls.mappings.MappingsLanguage"
-			name="mappings.MappingsLanguage">
+			name="MappingsLanguage">
 			<keywordReference id="tools.vitruv.dsls.mappings.ui.keyword_MappingsLanguage"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
@@ -116,7 +116,7 @@
 		point="org.eclipse.ui.keywords">
 		<keyword
 			id="tools.vitruv.dsls.mappings.ui.keyword_MappingsLanguage"
-			label="mappings.MappingsLanguage"/>
+			label="MappingsLanguage"/>
 	</extension>
 	<extension
 		point="org.eclipse.ui.commands">
@@ -219,24 +219,24 @@
 			uriExtension="mappings">
 		</resourceServiceProvider>
 	</extension>
-	<!-- marker definitions for tools.vitruv.dsls.Mappings -->
+	<!-- marker definitions for tools.vitruv.dsls.mappings.MappingsLanguage -->
 	<extension
-			id="mappings.check.fast"
-			name="Mappings Problem"
+			id="mappingslanguage.check.fast"
+			name="MappingsLanguage Problem"
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.fast"/>
 		<persistent value="true"/>
 	</extension>
 	<extension
-			id="mappings.check.normal"
-			name="Mappings Problem"
+			id="mappingslanguage.check.normal"
+			name="MappingsLanguage Problem"
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.normal"/>
 		<persistent value="true"/>
 	</extension>
 	<extension
-			id="mappings.check.expensive"
-			name="Mappings Problem"
+			id="mappingslanguage.check.expensive"
+			name="MappingsLanguage Problem"
 			point="org.eclipse.core.resources.markers">
 		<super type="org.eclipse.xtext.ui.check.expensive"/>
 		<persistent value="true"/>
@@ -322,12 +322,12 @@
 			</command>
 		</menuContribution>
 	</extension>
-	<!-- quickfix marker resolution generator for tools.vitruv.dsls.Mappings -->
+	<!-- quickfix marker resolution generator for tools.vitruv.dsls.mappings.MappingsLanguage -->
 	<extension
 			point="org.eclipse.ui.ide.markerResolution">
 		<markerResolutionGenerator
 			class="tools.vitruv.dsls.mappings.ui.MappingsLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="tools.vitruv.dsls.mappings.ui.mappings.check.fast">
+			markerType="tools.vitruv.dsls.mappings.ui.mappingslanguage.check.fast">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
@@ -335,7 +335,7 @@
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
 			class="tools.vitruv.dsls.mappings.ui.MappingsLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="tools.vitruv.dsls.mappings.ui.mappings.check.normal">
+			markerType="tools.vitruv.dsls.mappings.ui.mappingslanguage.check.normal">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
@@ -343,7 +343,7 @@
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
 			class="tools.vitruv.dsls.mappings.ui.MappingsLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="tools.vitruv.dsls.mappings.ui.mappings.check.expensive">
+			markerType="tools.vitruv.dsls.mappings.ui.mappingslanguage.check.expensive">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
@@ -573,7 +573,7 @@
 	<extension point="org.eclipse.compare.contentMergeViewers">
 		<viewer id="tools.vitruv.dsls.mappings.MappingsLanguage.compare.contentMergeViewers"
 			class="tools.vitruv.dsls.mappings.ui.MappingsLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
-			extensions="mappings" label="Mappings Compare">
+			extensions="mappings" label="MappingsLanguage Compare">
 		</viewer>
 	</extension>
 	<extension point="org.eclipse.ui.editors.documentProviders">

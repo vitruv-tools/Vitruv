@@ -7,7 +7,7 @@ import org.eclipse.xtext.xtext.generator.model.project.*
 // TODO MK: refactor commonalities with GenerateReactionsLanguage.mwe2 if possible
 var projectName = "tools.vitruv.dsls.mappings"
 var languageName = "MappingsLanguage"
-var fileExtension = "reactions"
+var fileExtension = "mappings"
 
 var rootPath = ".."
 var qualifiedLanguageName = "${projectName}.${languageName}"
