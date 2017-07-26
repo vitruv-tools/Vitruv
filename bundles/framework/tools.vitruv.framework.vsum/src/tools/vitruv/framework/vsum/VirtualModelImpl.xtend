@@ -22,7 +22,7 @@ import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryInterface
 import java.util.Map
 
-class VirtualModelImpl implements InternalVirtualModel {
+class VirtualModelImpl implements VersioningVirtualModel {
 	protected val ResourceRepositoryImpl resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator

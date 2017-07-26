@@ -40,7 +40,7 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 	}
 	
 	override registerObserver(ChangePropagationObserver observer) {
-		if (observer != null) {
+		if (observer !== null) {
 			this.propagationObserver += observer;
 		}
 	}

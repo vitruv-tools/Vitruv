@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+   <extension
+         id="personsFamiliesApplication"
+         name="Persons-Families Application"
+         point="tools.vitruv.framework.applications.application">
+      <application class="tools.vitruv.demo.applications.familiespersons.FamiliesPersonsApplication" />
+   </extension>
+
+</plugin>

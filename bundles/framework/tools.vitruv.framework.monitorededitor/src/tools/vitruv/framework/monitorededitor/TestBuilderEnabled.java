@@ -4,6 +4,8 @@ import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 
+import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
+
 public class TestBuilderEnabled extends PropertyTester {
 
     private static final String IS_ENABLED = "isEnabled";

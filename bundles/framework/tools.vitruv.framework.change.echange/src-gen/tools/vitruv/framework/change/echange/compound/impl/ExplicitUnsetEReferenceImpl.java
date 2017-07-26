@@ -24,8 +24,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.emf.ecore.xcore.lib.XcoreEListExtensions;
-
+import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
@@ -136,7 +135,7 @@ public class ExplicitUnsetEReferenceImpl<A extends EObject> extends ExplicitUnse
 				return _xifexpression;
 			}
 		};
-		EList<List<AtomicEChange>> _map = XcoreEListExtensions.<EChange, List<AtomicEChange>>map(_changes, _function);
+		List<List<AtomicEChange>> _map = ListExtensions.<EChange, List<AtomicEChange>>map(_changes, _function);
 		Iterable<AtomicEChange> _flatten = Iterables.<AtomicEChange>concat(_map);
 		return ECollections.<AtomicEChange>asEList(((AtomicEChange[])org.eclipse.xtext.xbase.lib.Conversions.unwrapArray(_flatten, AtomicEChange.class)));
 	}

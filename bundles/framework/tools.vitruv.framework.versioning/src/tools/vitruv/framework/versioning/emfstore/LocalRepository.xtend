@@ -9,12 +9,12 @@ import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.RemoteBranch
 import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
-import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.versioning.branch.Branch
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.commit.MergeCommit
+import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 interface LocalRepository extends AbstractRepository {
 
@@ -34,20 +34,20 @@ interface LocalRepository extends AbstractRepository {
 
 	def SimpleCommit commit(String s, List<PropagatedChange> changes)
 
-	def SimpleCommit commit(String s, VirtualModel virtualModel, VURI vuri)
+	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel, VURI vuri)
 
 	def void addOrigin(LocalBranch branch, RemoteRepository remoteRepository)
 
 	def void addRemoteRepository(RemoteRepository remoteRepository)
 
-	def void checkout(VirtualModel virtualModel, VURI vuri)
+	def void checkout(VersioningVirtualModel virtualModel, VURI vuri)
 
 	def MergeCommit merge(
 		Branch source,
 		Branch target,
 		Function1<Conflict, List<EChange>> originalCallback,
 		Function1<Conflict, List<EChange>> triggeredCallback,
-		VirtualModel virtualModel
+		VersioningVirtualModel virtualModel
 	)
 
 	def void pull()

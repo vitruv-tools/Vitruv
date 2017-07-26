@@ -8,8 +8,12 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1
 import tools.vitruv.framework.change.description.ChangeCloner
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.BranchDiffCreator
 import tools.vitruv.framework.versioning.Conflict
+import tools.vitruv.framework.versioning.ModelMerger
+import tools.vitruv.framework.versioning.Reapplier
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.LocalBranch
@@ -17,6 +21,7 @@ import tools.vitruv.framework.versioning.branch.RemoteBranch
 import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
 import tools.vitruv.framework.versioning.branch.impl.RemoteBranchImpl
 import tools.vitruv.framework.versioning.commit.Commit
+import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
@@ -24,12 +29,7 @@ import tools.vitruv.framework.versioning.exceptions.LocalBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException
 import tools.vitruv.framework.versioning.extensions.URIRemapper
-import tools.vitruv.framework.vsum.VirtualModel
-import tools.vitruv.framework.versioning.BranchDiffCreator
-import tools.vitruv.framework.versioning.ModelMerger
-import tools.vitruv.framework.versioning.Reapplier
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.versioning.commit.SimpleCommit
+import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalRepository {
 	static extension Logger = Logger::getLogger(LocalRepositoryImpl)
@@ -70,7 +70,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		addCommit(c, currentBranch)
 	}
 
-	override commit(String s, VirtualModel virtualModel, VURI vuri) {
+	override commit(String s, VersioningVirtualModel virtualModel, VURI vuri) {
 		val changeMatches = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
 		if (changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
@@ -81,7 +81,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 	}
 
 	override commit(String s, List<PropagatedChange> changes) {
-		warn("Please use commit(String s, VirtualModel virtualModel, VURI vuri)")
+		warn("Please use commit(String s, VersioningVirtualModel virtualModel, VURI vuri)")
 		val lastCommit = commits.last
 		val commit = createSimpleCommit(changes, s, author, lastCommit.identifier)
 		addCommit(commit)
@@ -89,7 +89,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		return commit
 	}
 
-	override checkout(VirtualModel virtualModel, VURI vuri) {
+	override checkout(VersioningVirtualModel virtualModel, VURI vuri) {
 		val changeMatches = commits.map[changes].flatten
 		val originalChanges = changeMatches.map[originalChange]
 		val myVURI = originalChanges.get(0).URI
@@ -216,7 +216,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		Branch target,
 		Function1<Conflict, List<EChange>> originalCallback,
 		Function1<Conflict, List<EChange>> triggeredCallback,
-		VirtualModel virtualModel
+		VersioningVirtualModel virtualModel
 	) {
 		val sourceCommits = source.commits
 		val targetCommits = target.commits
@@ -252,7 +252,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		val tagetIds = targetCommitsToCompare.map[identifier].toList
 		val mergeCommit = createMergeCommit(reappliedChanges, '''Merged «source.name» into «target.name»''', author,
 			sourceIds, tagetIds)
-		targetCommitsToCompare.reverseView.immutableCopy.forEach[
+		targetCommitsToCompare.reverseView.immutableCopy.forEach [
 			removeCommit(it, target)
 		]
 		sourceCommitsToCompare.forEach[addCommit(it, target)]

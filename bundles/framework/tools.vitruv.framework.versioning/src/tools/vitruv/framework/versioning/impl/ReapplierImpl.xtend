@@ -1,12 +1,12 @@
 package tools.vitruv.framework.versioning.impl
 
-import tools.vitruv.framework.versioning.Reapplier
 import java.util.List
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.Reapplier
+import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 class ReapplierImpl implements Reapplier {
 
@@ -14,22 +14,15 @@ class ReapplierImpl implements Reapplier {
 		VURI vuri,
 		List<PropagatedChange> changesToRollBack,
 		List<EChange> echangesToReapply,
-		VirtualModel virtualModel
+		VersioningVirtualModel virtualModel
 	) {
 		var changesUntilNowAfterReverse = 0
 
 		if (!changesToRollBack.empty) {
-			val changesToRollbackLength = changesToRollBack.length
-			val changesUntilNow = virtualModel.getResolvedPropagatedChanges(vuri).length
 			changesToRollBack.reverseView.forEach [
 				virtualModel.reverseChanges(#[it])
 			]
 			changesUntilNowAfterReverse = virtualModel.getUnresolvedPropagatedChanges(vuri).length
-			if (changesUntilNow - changesToRollbackLength !== changesUntilNowAfterReverse)
-				throw new IllegalStateException('''
-					The number of changes recorded after the reverse should be 
-					«changesUntilNow» - «changesToRollBack.length» !== «changesUntilNowAfterReverse»
-				''')
 		}
 
 		echangesToReapply.map [

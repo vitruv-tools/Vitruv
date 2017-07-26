@@ -3,17 +3,13 @@ package tools.vitruv.framework.vsum.repositories
 import java.util.List
 import java.util.Map
 import java.util.Set
-
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
-import org.eclipse.emf.ecore.resource.Resource
-
+import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
-import tools.vitruv.framework.util.datatypes.VURI
-import org.eclipse.xtend.lib.annotations.Accessors
 
 class ModelRepositoryImpl implements ModelRepositoryInterface {
 	static extension Logger = Logger::getLogger(ModelRepositoryImpl)
@@ -30,10 +26,6 @@ class ModelRepositoryImpl implements ModelRepositoryInterface {
 	val List<VitruviusChange> lastResolvedChanges
 	@Accessors(PUBLIC_GETTER)
 	val List<VitruviusChange> lastUnresolvedChanges
-
-	private static def VURI getVURI(Resource resource) {
-		VURI::getInstance(resource)
-	}
 
 	new() {
 		lastResolvedChanges = newArrayList
@@ -112,8 +104,8 @@ class ModelRepositoryImpl implements ModelRepositoryInterface {
 		val isUnresolved = unresolveChanges
 		info('''unresolvePropagatedChanges «isUnresolved»''')
 		val AtomicEmfChangeRecorder recorder = new AtomicEmfChangeRecorderImpl(isUnresolved, false)
-		val vuri = element.eResource?.VURI
-		recorder.beginRecording(vuri, #[element])
+		recorder.addToRecording(element)
+		recorder.beginRecording()
 		rootToRecorder.put(element, recorder)
 		debug("Start recording for " + element)
 	}

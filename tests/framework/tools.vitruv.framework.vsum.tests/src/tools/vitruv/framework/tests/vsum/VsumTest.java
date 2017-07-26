@@ -17,6 +17,7 @@ import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusTest;
 import tools.vitruv.framework.tests.util.TestUtil;
@@ -44,10 +45,20 @@ public abstract class VsumTest extends VitruviusTest {
     }
 
     private static final VitruvDomain UmlDomain = new AbstractVitruvDomain("UML", Uml_mockupPackage.eINSTANCE,
-            new AttributeTuidCalculatorAndResolver(Uml_mockupPackage.eINSTANCE.getNsURI(), "id"), UML_FILE_EXT);
+            new AttributeTuidCalculatorAndResolver(Uml_mockupPackage.eINSTANCE.getNsURI(), "id"), UML_FILE_EXT) {
+        @Override
+        public VitruviusProjectBuilderApplicator getBuilderApplicator() {
+            return null;
+        };
+    };
 
     private static final VitruvDomain PcmDomain = new AbstractVitruvDomain("PCM", Pcm_mockupPackage.eINSTANCE,
-            new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eINSTANCE.getNsURI(), "id"), PCM_FILE_EXT);
+            new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eINSTANCE.getNsURI(), "id"), PCM_FILE_EXT) {
+        @Override
+        public VitruviusProjectBuilderApplicator getBuilderApplicator() {
+            return null;
+        };
+    };
 
     protected File getCurrentProjectModelFolder() {
         return new File(getCurrentTestProjectFolder(), "model");

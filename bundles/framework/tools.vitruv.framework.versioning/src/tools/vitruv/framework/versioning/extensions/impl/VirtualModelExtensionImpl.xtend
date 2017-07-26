@@ -1,8 +1,8 @@
 package tools.vitruv.framework.versioning.extensions.impl
 
 import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
-import tools.vitruv.framework.vsum.VirtualModel
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 class VirtualModelExtensionImpl implements VirtualModelExtension {
 	static def VirtualModelExtension init() {
@@ -12,16 +12,16 @@ class VirtualModelExtensionImpl implements VirtualModelExtension {
 	private new() {
 	}
 
-	override getChangeMatches(VirtualModel v, VURI vuri) {
+	override getChangeMatches(VersioningVirtualModel v, VURI vuri) {
 		// FIXME PS drop(1) is a dirty hack to exclude the CreateAndInsertRoot EChanges
 		v.getUnresolvedPropagatedChanges(vuri).drop(1).toList
 	}
 
-	override getChangeMatchesFrom(VirtualModel v, VURI vuri, String otherId) {
+	override getChangeMatchesFrom(VersioningVirtualModel v, VURI vuri, String otherId) {
 		v.getChangeMatches(vuri).dropWhile[id !== otherId].toList
 	}
 
-	override getChangeMatchesFromTo(VirtualModel v, VURI vuri, String from, String to) {
+	override getChangeMatchesFromTo(VersioningVirtualModel v, VURI vuri, String from, String to) {
 		v.getChangeMatchesFrom(vuri, from).takeWhile[id !== to].toList
 	}
 

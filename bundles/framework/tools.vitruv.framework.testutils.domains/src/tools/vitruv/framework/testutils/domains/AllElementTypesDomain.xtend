@@ -1,7 +1,9 @@
 package tools.vitruv.framework.testutils.domains
 
 import allElementTypes.AllElementTypesPackage
+import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.framework.domains.AbstractVitruvDomain
+import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 final class AllElementTypesDomain extends AbstractVitruvDomain {
@@ -9,8 +11,12 @@ final class AllElementTypesDomain extends AbstractVitruvDomain {
 	public static final String FILE_EXTENSION = "allElementTypes"
 
 	package new() {
-		super(METAMODEL_NAME, AllElementTypesPackage.eINSTANCE,
-			new AttributeTuidCalculatorAndResolver(AllElementTypesPackage.eNS_URI,
-				AllElementTypesPackage.Literals.IDENTIFIED__ID.getName()), FILE_EXTENSION)
+		super(METAMODEL_NAME, AllElementTypesPackage::eINSTANCE,
+			new AttributeTuidCalculatorAndResolver(AllElementTypesPackage::eNS_URI,
+				AllElementTypesPackage::Literals::IDENTIFIED__ID.getName()), FILE_EXTENSION)
+	}
+
+	override VitruviusProjectBuilderApplicator getBuilderApplicator() {
+		return new VitruviusEmfBuilderApplicator()
 	}
 }

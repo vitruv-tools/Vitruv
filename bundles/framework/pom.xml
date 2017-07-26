@@ -30,6 +30,7 @@
 		<module>tools.vitruv.framework.util</module>
 		<module>tools.vitruv.framework.vsum</module>
 		<module>tools.vitruv.framework.versioning</module>
+		<module>tools.vitruv.framework.vsum.ui</module>
 	</modules>
 
 </project>

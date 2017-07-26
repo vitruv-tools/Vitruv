@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Demo Domain Families
+Bundle-SymbolicName: tools.vitruv.demo.domains.families;singleton:=true
+Bundle-Version: 0.2.0.qualifier
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.metamodels.families;visibility:=reexport,
+ org.apache.log4j,
+ tools.vitruv.framework.metamodel;visibility:=reexport,
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.tuid,
+ tools.vitruv.extensions.emf
+Export-Package: tools.vitruv.domains.families
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

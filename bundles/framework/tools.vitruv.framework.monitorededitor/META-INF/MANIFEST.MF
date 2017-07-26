@@ -9,14 +9,14 @@ Bundle-Activator: tools.vitruv.framework.monitorededitor.Activator
 Require-Bundle: org.apache.log4j,
  org.eclipse.core.runtime,
  org.eclipse.osgi,
- tools.vitruv.framework.metamodel;visibility:=reexport,
- tools.vitruv.framework.modelsynchronization,
- tools.vitruv.framework.vsum,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.eclipse.core.expressions
+ org.eclipse.core.expressions,
+ org.eclipse.core.resources,
+ tools.vitruv.framework.vsum,
+ tools.vitruv.framework.metamodel
 Export-Package: tools.vitruv.framework.monitorededitor,
  tools.vitruv.framework.monitorededitor.registries
 Bundle-Vendor: vitruv.tools

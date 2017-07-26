@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resourcetype:ResourceRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:resourcetype="http://sdq.ipd.uka.de/PalladioComponentModel/ResourceType/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/ResourceType/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//resourcetype">
+  <resourceInterfaces__ResourceRepository id="_tw_Q8E5CEeCUKeckjJ_n-w" entityName="CpuInterface">
+    <resourceSignatures__ResourceInterface id="_wF22kE5CEeCUKeckjJ_n-w" entityName="process" resourceServiceId="1"/>
+  </resourceInterfaces__ResourceRepository>
+  <resourceInterfaces__ResourceRepository id="_xXv8QE5CEeCUKeckjJ_n-w" entityName="HddInterface">
+    <resourceSignatures__ResourceInterface id="_ygMyEE5CEeCUKeckjJ_n-w" entityName="read" resourceServiceId="1"/>
+    <resourceSignatures__ResourceInterface id="_zUFtIE5CEeCUKeckjJ_n-w" entityName="write" resourceServiceId="2"/>
+  </resourceInterfaces__ResourceRepository>
+  <schedulingPolicies__ResourceRepository id="ProcessorSharing" entityName="Processor Sharing"/>
+  <schedulingPolicies__ResourceRepository id="FCFS" entityName="First-Come-First-Serve"/>
+  <schedulingPolicies__ResourceRepository id="Delay" entityName="Delay"/>
+  <availableResourceTypes_ResourceRepository xsi:type="resourcetype:ProcessingResourceType" id="_oro4gG3fEdy4YaaT-RYrLQ" entityName="CPU">
+    <resourceProvidedRoles__ResourceInterfaceProvidingEntity id="_patY8E5dEeCg1tUg4V9tRw" entityName="ResourceProvidedRole_CpuInterface_CPU" providedResourceInterface__ResourceProvidedRole="_tw_Q8E5CEeCUKeckjJ_n-w"/>
+  </availableResourceTypes_ResourceRepository>
+  <availableResourceTypes_ResourceRepository xsi:type="resourcetype:CommunicationLinkResourceType" id="_o3sScH2AEdyH8uerKnHYug" entityName="LAN"/>
+  <availableResourceTypes_ResourceRepository xsi:type="resourcetype:ProcessingResourceType" id="_BIjHoQ3KEdyouMqirZIhzQ" entityName="HDD">
+    <resourceProvidedRoles__ResourceInterfaceProvidingEntity id="_tCR8kE5dEeCg1tUg4V9tRw" entityName="ResourceProvidedRole_HddInterface_HDD" providedResourceInterface__ResourceProvidedRole="_xXv8QE5CEeCUKeckjJ_n-w"/>
+  </availableResourceTypes_ResourceRepository>
+  <availableResourceTypes_ResourceRepository xsi:type="resourcetype:ProcessingResourceType" id="_nvHX4KkREdyEA_b89s7q9w" entityName="DELAY"/>
+</resourcetype:ResourceRepository>

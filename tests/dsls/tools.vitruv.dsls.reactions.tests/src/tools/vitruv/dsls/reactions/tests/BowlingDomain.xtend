@@ -13,5 +13,10 @@ final class BowlingDomain extends AbstractVitruvDomain {
 			new AttributeTuidCalculatorAndResolver(BowlingPackage::eNS_URI, BowlingPackage.Literals.PLAYER__NAME.name),
 			FILE_EXTENSION)
 		}
+
+		override getBuilderApplicator() {
+			null
+		}
+
 	}
 	

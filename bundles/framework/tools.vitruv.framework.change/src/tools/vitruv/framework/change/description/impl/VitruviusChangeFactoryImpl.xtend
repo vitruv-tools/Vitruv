@@ -36,42 +36,47 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	override createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
-		new EMFModelChangeImpl(changes, vuri)
+	override createEMFModelChange(ChangeDescription changeDescription) {
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
+		return new EMFModelChangeImpl(changes);
 	}
 
 	override copy(TransactionalChange changeToCopy) {
 		val echanges = changeToCopy.EChanges
 		if (!echanges.forall[!resolved])
 			error("There are some resolved changes!")
-		return new EMFModelChangeImpl(echanges, changeToCopy.URI)
+		return new EMFModelChangeImpl(echanges)
 	}
 
 	override createEMFModelChangeFromEChanges(List<EChange> echanges, VURI vuri) {
-		new EMFModelChangeImpl(echanges, vuri)
+		new EMFModelChangeImpl(echanges)
 	}
 
-	override createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
-		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform
-		new LegacyEMFModelChangeImpl(changeDescription, changes, vuri)
+	override createLegacyEMFModelChange(ChangeDescription changeDescription) {
+		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
+		return new LegacyEMFModelChangeImpl(changeDescription, changes);
 	}
 
-	override createConcreteApplicableChange(EChange change, VURI vuri) {
-		new ConcreteApplicableChangeImpl(change, vuri)
+	override createConcreteApplicableChange(EChange change) {
+		return new ConcreteApplicableChangeImpl(change);
 	}
 
-	override createConcreteChange(EChange change, VURI vuri) {
-		new ConcreteChangeImpl(change, vuri)
+	override createConcreteChange(EChange change) {
+		return new ConcreteChangeImpl(change);
+	}
+
+	override createConcreteChangeWithVuri(EChange change, VURI vuri) {
+		return new ConcreteChangeWithUriImpl(vuri, change);
 	}
 
 	override createFileChange(FileChangeKind kind, Resource changedFileResource) {
-		val vuri = VURI::getInstance(changedFileResource)
-		val eChange = if (kind == FileChangeKind::Create)
-				generateFileCreateChange(changedFileResource)
-			else
-				generateFileDeleteChange(changedFileResource)
-		new ConcreteChangeImpl(eChange, vuri)
+		var EChange eChange = null
+		if (kind == FileChangeKind.Create) {
+			eChange = generateFileCreateChange(changedFileResource);
+		} else {
+			eChange = generateFileDeleteChange(changedFileResource);
+		}
+		return new ConcreteChangeImpl(eChange)
 	}
 
 	override createCompositeContainerChange() {
