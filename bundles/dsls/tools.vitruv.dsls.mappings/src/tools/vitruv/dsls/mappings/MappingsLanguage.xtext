@@ -26,7 +26,9 @@ MappingsSegment:
 /******************/
 Mapping:
 	'mapping' name=ValidID
-		('depends on' input=MappingInput)?
+		('depends on (' 
+			dependencies+=Dependency
+		')')?
 	'{'
 		'map (' (leftParameters+=Parameter)+ ')'
 			('with {' 
@@ -45,6 +47,13 @@ Mapping:
 			backwardExecutionExpression=UnidirectionalExpression
 		'}')?
 	'}'
+;
+
+
+// DW: RequiredMapping
+Dependency:
+	mapping=[Mapping]
+	shortName=ValidID
 ;
 	
 Parameter:
@@ -69,6 +78,18 @@ FeatureCondition returns EnforceableCondition:
 	 NotEmptyCondition
 	)
 	feature=MetaclassFeatureReference
+;
+
+FeatureReference:
+	DependentFeatureReference |
+	{MetaclassFeatureReference}
+;
+
+// DW: FeatureOfContextVariable
+DependentFeatureReference:
+	dependeeShortName=[Dependency|ValidID]
+	':'
+	dependeeFeature=MetaclassFeatureReference
 ;
 
 SingleValueCondition returns ValueCondition:
@@ -173,10 +194,10 @@ EnforceExpression:
 
 /* BEGIN BIDIRECTIONALIZABLE CONDITION */
 BidirectionalizableCondition returns Condition:
-	leftFeature=MetaclassFeatureReference
+	featureToBeAssigned=MetaclassFeatureReference
 	'='
-	rightExpression=BidirectionalizableExpression
-	('update' rightFeature=MetaclassFeatureReference)?
+	bidirectionalizableExpression=BidirectionalizableExpression
+	('update' featureToBeUpdated=MetaclassFeatureReference)?
 ;
 
 BidirectionalizableExpression:
@@ -187,7 +208,6 @@ BidirectionalizableExpression:
 UnidirectionalExpression:
 	{CodeBlock}
 ;
-
 /******************/
 /* END MAPPINGS */		
 /******************/
@@ -204,7 +224,6 @@ BootstrapMapping:
 		'}')?
 	'}'
 ;
-
 /***************************/
 /* END BOOTSTRAP MAPPING */		
 /***************************/
@@ -216,14 +235,6 @@ BootstrapMapping:
 // TODO MK: move fragment CodeBlock to MirBase (not MetaBase :-)
 fragment CodeBlock:
 	code=XExpression;
-
-// TODO MK: factor the core of MappingInput and RoutineInput (reactions language) out into MirBase	
-MappingInput:
-	{MappingInput}
-	dependsOn=[Mapping]
-	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
-		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)? ')'
-;
 	
 // TODO MK: move documentable to MetaBase and use it in Reactions	
 fragment Documentable:
