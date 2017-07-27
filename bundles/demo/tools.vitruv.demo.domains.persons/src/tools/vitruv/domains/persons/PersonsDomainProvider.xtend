@@ -6,7 +6,7 @@ class PersonsDomainProvider implements VitruvDomainProvider<PersonsDomain>{
 	private static var PersonsDomain instance;
 	
 	override getDomain() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new PersonsDomain();
 		}
 		return instance;
