@@ -31,20 +31,19 @@ class EChangeCopierImpl implements EChangeCopier {
 
 	override copyEChanges(EChange changeToCopy, VURI vuri) {
 		val copiedEChange = copyThisEChange(changeToCopy)
-		return VitruviusChangeFactory::instance.
-			createEMFModelChangeFromEChanges(#[copiedEChange], vuri) as VitruviusChange
+		return VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[copiedEChange]) as VitruviusChange
 	}
 
 	override copyEMFModelChangeToList(VitruviusChange changeToCopy, VURI vuri) {
 		val newChanges = changeToCopy.copiedEChangeIterator.map [
-			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it], vuri) as VitruviusChange
+			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it]) as VitruviusChange
 		].toList
 		return newChanges
 	}
 
 	override copyEMFModelChangeToSingleChange(VitruviusChange changeToCopy, VURI vuri) {
 		val newEchanges = changeToCopy.copiedEChangeIterator.toList
-		val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(newEchanges, vuri)
+		val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(newEchanges)
 		return newChange
 	}
 

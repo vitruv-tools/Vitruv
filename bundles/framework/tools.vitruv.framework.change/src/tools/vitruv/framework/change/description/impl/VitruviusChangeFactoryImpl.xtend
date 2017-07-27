@@ -48,7 +48,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 		return new EMFModelChangeImpl(echanges)
 	}
 
-	override createEMFModelChangeFromEChanges(List<EChange> echanges, VURI vuri) {
+	override createEMFModelChangeFromEChanges(List<EChange> echanges) {
 		new EMFModelChangeImpl(echanges)
 	}
 
