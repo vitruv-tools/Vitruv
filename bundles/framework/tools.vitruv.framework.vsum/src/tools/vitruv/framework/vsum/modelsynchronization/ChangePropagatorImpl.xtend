@@ -33,14 +33,14 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	static extension Logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceProviding correspondenceProviding
+	val List<EObject> objectsCreatedDuringPropagation
+	val ListMultimap<VURI, String> vuriToIds
+	val Map<String, PropagatedChange> idToResolvedChanges
+	val Map<String, PropagatedChange> idToUnresolvedChanges
 	val ModelRepository resourceRepository
 	val ModelRepositoryImpl modelRepository
 	val Set<ChangePropagationListener> changePropagationListeners
 	val VitruvDomainRepository metamodelRepository
-	val ListMultimap<VURI, String> vuriToIds
-	val Map<String, PropagatedChange> idToUnresolvedChanges
-	val Map<String, PropagatedChange> idToResolvedChanges
-	val List<EObject> objectsCreatedDuringPropagation
 
 	new(
 		ModelRepository resourceRepository,
@@ -62,11 +62,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		objectsCreatedDuringPropagation = newArrayList
 	}
 
-	override objectCreated(EObject createdObject) {
-		objectsCreatedDuringPropagation += createdObject
-		modelRepository.addRootElement(createdObject)
-	}
-
 	override addChangePropagationListener(ChangePropagationListener propagationListener) {
 		if (propagationListener !== null)
 			changePropagationListeners += propagationListener
@@ -75,28 +70,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	override removeChangePropagationListener(ChangePropagationListener propagationListener) {
 		if (propagationListener !== null)
 			changePropagationListeners -= propagationListener
-	}
-
-	override getResolvedPropagatedChanges(VURI vuri) {
-		return if (vuriToIds.containsKey(vuri)) {
-			vuriToIds.get(vuri).map[idToResolvedChanges.get(it)].toList
-		} else
-			#[]
-	}
-
-	override getUnresolvedPropagatedChanges(VURI vuri) {
-		return if (vuriToIds.containsKey(vuri)) {
-			vuriToIds.get(vuri).map[idToUnresolvedChanges.get(it)].toList
-		} else
-			#[]
-	}
-
-	override removePropagatedChange(VURI vuri, String id) {
-		vuriToIds.remove(vuri, id)
-	}
-
-	override addPropagatedChanges(VURI vuri, String id) {
-		vuriToIds.put(vuri, id)
 	}
 
 	override synchronized List<PropagatedChange> propagateChange(VitruviusChange change) {
@@ -125,6 +98,33 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		''')
 		finishChangePropagation(change)
 		return result
+	}
+
+	override getResolvedPropagatedChanges(VURI vuri) {
+		return if (vuriToIds.containsKey(vuri)) {
+			vuriToIds.get(vuri).map[idToResolvedChanges.get(it)].toList
+		} else
+			#[]
+	}
+
+	override getUnresolvedPropagatedChanges(VURI vuri) {
+		return if (vuriToIds.containsKey(vuri)) {
+			vuriToIds.get(vuri).map[idToUnresolvedChanges.get(it)].toList
+		} else
+			#[]
+	}
+
+	override removePropagatedChange(VURI vuri, String id) {
+		vuriToIds.remove(vuri, id)
+	}
+
+	override addPropagatedChanges(VURI vuri, String id) {
+		vuriToIds.put(vuri, id)
+	}
+
+	override objectCreated(EObject createdObject) {
+		objectsCreatedDuringPropagation += createdObject
+		modelRepository.addRootElement(createdObject)
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
@@ -171,13 +171,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0));
 		val consequentialChanges = newArrayList
-		val propagationResult = new ChangePropagationResult();
+		val propagationResult = new ChangePropagationResult
 		resourceRepository.startRecording
 		changePropagationProvider.getChangePropagationSpecifications(changeDomain).forEach [
 			consequentialChanges +=
 				propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
-
 		handleObjectsWithoutResource
 		consequentialChanges += resourceRepository.endRecording
 		consequentialChanges.forEach[debug(it)];
@@ -213,8 +212,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand [|
 			val propResult = propagationSpecification.propagateChange(change, correspondenceModel)
 			modelRepository.cleanupRootElements
-			consequentialChanges += modelRepository.endRecording
-			consequentialChanges.forEach[debug(it)]
 			return propResult
 
 		]
@@ -248,9 +245,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	) {
 		val isUnresolved = modelRepository.unresolveChanges
 		val vuri = resolvedChange.URI
+		if (null === vuri) throw new IllegalStateException
 		val uuid = UUID::randomUUID.toString
-		val unresolvedTriggeredChanges = modelRepository.lastUnresolvedChanges
-		val resolvedTriggeredChanges = modelRepository.lastResolvedChanges
+		val unresolvedTriggeredChanges = resourceRepository.lastUnresolvedChanges
+		val resolvedTriggeredChanges = resourceRepository.lastResolvedChanges
 		if (unresolvedTriggeredChanges.length !== resolvedTriggeredChanges.length)
 			throw new IllegalStateException('''
 				The length of changes should be equal but there are «unresolvedTriggeredChanges.length» 

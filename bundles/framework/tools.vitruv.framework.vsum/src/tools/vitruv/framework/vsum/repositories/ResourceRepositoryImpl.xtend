@@ -3,7 +3,6 @@ package tools.vitruv.framework.vsum.repositories
 import java.io.File
 import java.io.IOException
 import java.util.ArrayList
-import java.util.HashMap
 import java.util.List
 import java.util.Map
 import java.util.Set
@@ -34,19 +33,25 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.helper.FileSystemHelper
+import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.vsum.InternalModelRepository
 
-class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
-	static final String VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
-	static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.getSimpleName())
-	final ResourceSet resourceSet
-	final VitruvDomainRepository metamodelRepository
-	final Map<VURI, ModelInstance> modelInstances
+class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceProviding {
+	static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
+	static extension Logger = Logger.getLogger(ResourceRepositoryImpl.getSimpleName())
+	@Accessors(PUBLIC_GETTER)
+	val ResourceSet resourceSet
+	val VitruvDomainRepository metamodelRepository
+	val Map<VURI, ModelInstance> modelInstances
 	InternalCorrespondenceModel correspondenceModel
-	final FileSystemHelper fileSystemHelper
-	final File folder
-	final AtomicEmfChangeRecorder changeRecorder
+	val FileSystemHelper fileSystemHelper
+	val File folder
+	val AtomicEmfChangeRecorder changeRecorder
+	@Accessors(PUBLIC_GETTER)
+	val List<TransactionalChange> lastResolvedChanges
+	@Accessors(PUBLIC_GETTER)
+	val List<TransactionalChange> lastUnresolvedChanges
 
 	new(File folder, VitruvDomainRepository metamodelRepository) {
 		this(folder, metamodelRepository, null)
@@ -55,15 +60,21 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	new(File folder, VitruvDomainRepository metamodelRepository, ClassLoader classLoader) {
 		this.metamodelRepository = metamodelRepository
 		this.folder = folder
-		this.resourceSet = new ResourceSetImpl()
+		this.resourceSet = new ResourceSetImpl
 		ResourceSetUtil.addExistingFactoriesToResourceSet(this.resourceSet)
-		this.modelInstances = new HashMap<VURI, ModelInstance>()
-		this.fileSystemHelper = new FileSystemHelper(this.folder)
-		initializeCorrespondenceModel()
-		loadVURIsOfVSMUModelInstances()
+		modelInstances = newHashMap
+		fileSystemHelper = new FileSystemHelper(this.folder)
+		initializeCorrespondenceModel
+		loadVURIsOfVSMUModelInstances
+		changeRecorder = new AtomicEmfChangeRecorderImpl(unresolveChanges, false)
+		changeRecorder.addToRecording(this.resourceSet)
+		lastResolvedChanges = newArrayList
+		lastUnresolvedChanges = newArrayList
+	}
+
+	override unresolveChanges() {
 		var String unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES)
-		this.changeRecorder = new AtomicEmfChangeRecorderImpl(unresolvePropagatedChanges !== null, false)
-		this.changeRecorder.addToRecording(this.resourceSet)
+		return unresolvePropagatedChanges !== null
 	}
 
 	/** 
@@ -84,7 +95,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		} catch (RuntimeException re) {
 			// could not load model instance --> this should only be the case when the
 			// model is not existing yet
-			logger.info('''Exception during loading of model instance «modelInstance» occured: «re»''')
+			info('''Exception during loading of model instance «modelInstance» occured: «re»''')
 		}
 
 		return modelInstance
@@ -138,7 +149,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 			val Resource resource = modelInstance.getResource()
 			resource.getContents().add(rootEObject)
 			resource.setModified(true)
-			logger.debug('''Create model with resource: «resource»''')
+			debug('''Create model with resource: «resource»''')
 			TuidManager.getInstance().updateTuidsOfRegisteredObjects()
 			TuidManager.getInstance().flushRegisteredObjectsUnderModification()
 			return null
@@ -146,7 +157,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	override void saveAllModels() {
-		logger.debug('''Saving all models of model repository for VSUM: «this.folder»''')
+		debug('''Saving all models of model repository for VSUM: «this.folder»''')
 		saveAllChangedModels()
 		saveAllChangedCorrespondenceModels()
 	}
@@ -168,7 +179,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		for (ModelInstance modelInstance : this.modelInstances.values()) {
 			var Resource resourceToSave = modelInstance.getResource()
 			if (resourceToSave.isModified()) {
-				logger.debug('''  Saving resource: «resourceToSave»''')
+				debug('''  Saving resource: «resourceToSave»''')
 				saveModelInstance(modelInstance)
 			}
 		}
@@ -176,8 +187,8 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void saveAllChangedCorrespondenceModels() {
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain([
-			logger.
-				debug('''  Saving correspondence model: «ResourceRepositoryImpl.this.correspondenceModel.getResource()»''')
+
+			debug('''  Saving correspondence model: «ResourceRepositoryImpl.this.correspondenceModel.getResource()»''')
 			ResourceRepositoryImpl.this.correspondenceModel.saveModel()
 			ResourceRepositoryImpl.this.correspondenceModel.resetChangedAfterLastSave()
 			return null
@@ -204,21 +215,19 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void initializeCorrespondenceModel() {
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain([
-			{
-				var VURI correspondencesVURI = this.fileSystemHelper.getCorrespondencesVURI()
-				var Resource correspondencesResource = null
-				if (URIUtil.existsResourceAtUri(correspondencesVURI.getEMFUri())) {
-					logger.
-						debug('''Loading correspondence model from: «this.fileSystemHelper.getCorrespondencesVURI()»''')
-					correspondencesResource = this.resourceSet.getResource(correspondencesVURI.getEMFUri(), true)
-				} else {
-					correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri())
-				}
-				this.correspondenceModel = new CorrespondenceModelImpl(
-					new TuidResolverImpl(this.metamodelRepository, this), this, this.metamodelRepository,
-					correspondencesVURI, correspondencesResource)
-				return null
+
+			var VURI correspondencesVURI = this.fileSystemHelper.getCorrespondencesVURI()
+			var Resource correspondencesResource = null
+			if (URIUtil.existsResourceAtUri(correspondencesVURI.getEMFUri())) {
+
+				debug('''Loading correspondence model from: «this.fileSystemHelper.getCorrespondencesVURI()»''')
+				correspondencesResource = this.resourceSet.getResource(correspondencesVURI.getEMFUri(), true)
+			} else {
+				correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri())
 			}
+			this.correspondenceModel = new CorrespondenceModelImpl(new TuidResolverImpl(this.metamodelRepository, this),
+				this, this.metamodelRepository, correspondencesVURI, correspondencesResource)
+			return null
 		])
 	}
 
@@ -260,30 +269,35 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	// }
 	override void startRecording() {
 		this.changeRecorder.beginRecording()
-		logger.debug("Start recording virtual model")
+		debug("Start recording virtual model")
 	}
 
 	override Iterable<TransactionalChange> endRecording() {
-		val List<TransactionalChange> result = new ArrayList<TransactionalChange>()
+		val List<TransactionalChange> result = newArrayList
 		executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand([
-			{
-				this.changeRecorder.endRecording()
-				return null
-			}
+			changeRecorder.endRecording
+			return null
 		]))
-		var List<TransactionalChange> relevantChanges
-		if (this.changeRecorder.getUnresolvedChanges() !== null) {
-			relevantChanges = this.changeRecorder.getUnresolvedChanges()
-		} else {
-			relevantChanges = this.changeRecorder.getResolvedChanges()
-		}
+
+		lastResolvedChanges.clear
+		lastUnresolvedChanges.clear
+		val resolvedChanges = changeRecorder.resolvedChanges
+		val unresolvedChanges = changeRecorder.unresolvedChanges
 		// TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions
 		// that are
 		// supported by the domains of the VirtualModel
-		result.addAll(relevantChanges.stream().filter([ change |
-			change.getURI() === null || !change.getURI().getEMFUri().toString().endsWith("correspondence")
-		]).collect(Collectors.toList()))
-		logger.debug("End recording virtual model")
+		val filterFunction = [ List<TransactionalChange> changes |
+			changes.stream.parallel().filter [ change |
+				change.URI === null || !change.URI.EMFUri.toString.endsWith("correspondence")
+			].collect(Collectors::toList)
+		]
+		val filteredResolved = filterFunction.apply(resolvedChanges)
+		val filteredUnresolved = filterFunction.apply(unresolvedChanges)
+		lastResolvedChanges += filteredResolved
+		lastUnresolvedChanges += filteredUnresolved
+		result += if (unresolveChanges) filteredUnresolved else filteredResolved
+
+		debug("End recording virtual model")
 		return result
 	}
 
@@ -299,11 +313,11 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		val Resource resource = modelInstance.getResource()
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain([
 			try {
-				logger.debug('''Deleting resource: «resource»''')
+				debug('''Deleting resource: «resource»''')
 				resource.delete(null)
 				ResourceRepositoryImpl.this.modelInstances.remove(vuri)
 			} catch (IOException e) {
-				logger.info('''Deletion of resource «resource» did not work. Reason: «e»''')
+				info('''Deletion of resource «resource» did not work. Reason: «e»''')
 			}
 			return null
 		])
@@ -328,7 +342,4 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		executeRecordingCommandOnTransactionalDomain(command)
 	}
 
-	def ResourceSet getResourceSet() {
-		return this.resourceSet
-	}
 }
