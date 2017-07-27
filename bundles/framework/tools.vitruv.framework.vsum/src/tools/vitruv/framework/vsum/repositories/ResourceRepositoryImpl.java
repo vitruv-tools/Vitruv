@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -19,6 +20,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
+import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
+import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
@@ -30,14 +34,14 @@ import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
-import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.InternalModelRepository;
+import tools.vitruv.framework.vsum.ModelRepository;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
-public class ResourceRepositoryImpl
-        implements InternalModelRepository, CorrespondenceProviding, VitruviusRecordingCommandExecutor {
+public class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
+    private static final String VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges";
+
     private static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
@@ -47,6 +51,7 @@ public class ResourceRepositoryImpl
     private InternalCorrespondenceModel correspondenceModel;
     private final FileSystemHelper fileSystemHelper;
     private final File folder;
+    private final AtomicEmfChangeRecorder changeRecorder;
 
     public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository) {
         this(folder, metamodelRepository, null);
@@ -65,6 +70,10 @@ public class ResourceRepositoryImpl
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
+
+        String unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
+        this.changeRecorder = new AtomicEmfChangeRecorderImpl(unresolvePropagatedChanges != null, false);
+        this.changeRecorder.addToRecording(this.resourceSet);
     }
 
     /**
@@ -278,6 +287,35 @@ public class ResourceRepositoryImpl
     // }
     // }
 
+    @Override
+    public void startRecording() {
+        this.changeRecorder.beginRecording();
+        logger.debug("Start recording virtual model");
+    }
+
+    @Override
+    public Iterable<TransactionalChange> endRecording() {
+        final List<TransactionalChange> result = new ArrayList<TransactionalChange>();
+        executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand(() -> {
+            this.changeRecorder.endRecording();
+            return null;
+        }));
+        List<TransactionalChange> relevantChanges;
+        if (this.changeRecorder.getUnresolvedChanges() != null) {
+            relevantChanges = this.changeRecorder.getUnresolvedChanges();
+        } else {
+            relevantChanges = this.changeRecorder.getResolvedChanges();
+        }
+        // TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions
+        // that are
+        // supported by the domains of the VirtualModel
+        result.addAll(relevantChanges.stream().filter(
+                change -> change.getURI() == null || !change.getURI().getEMFUri().toString().endsWith("correspondence"))
+                .collect(Collectors.toList()));
+        logger.debug("End recording virtual model");
+        return result;
+    }
+
     private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
         if (null == TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet)) {
             TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resourceSet);
@@ -329,7 +367,6 @@ public class ResourceRepositoryImpl
         executeRecordingCommandOnTransactionalDomain(command);
     }
 
-    @Override
     public ResourceSet getResourceSet() {
         return this.resourceSet;
     }

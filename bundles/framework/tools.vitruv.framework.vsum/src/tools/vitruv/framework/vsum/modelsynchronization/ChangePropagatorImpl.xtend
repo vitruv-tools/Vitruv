@@ -26,7 +26,7 @@ import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.ModelRepository
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryInterface
+import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static extension ChangeCloner = new ChangeCloner
@@ -34,19 +34,20 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceProviding correspondenceProviding
 	val ModelRepository resourceRepository
-	val ModelRepositoryInterface modelRepository
+	val ModelRepositoryImpl modelRepository
 	val Set<ChangePropagationListener> changePropagationListeners
 	val VitruvDomainRepository metamodelRepository
 	val ListMultimap<VURI, String> vuriToIds
 	val Map<String, PropagatedChange> idToUnresolvedChanges
 	val Map<String, PropagatedChange> idToResolvedChanges
+	val List<EObject> objectsCreatedDuringPropagation
 
 	new(
 		ModelRepository resourceRepository,
 		ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository,
 		CorrespondenceProviding correspondenceProviding,
-		ModelRepositoryInterface modelRepository
+		ModelRepositoryImpl modelRepository
 	) {
 		this.resourceRepository = resourceRepository
 		this.modelRepository = modelRepository
@@ -58,9 +59,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		vuriToIds = ArrayListMultimap.create
 		idToUnresolvedChanges = newHashMap
 		idToResolvedChanges = newHashMap
+		objectsCreatedDuringPropagation = newArrayList
 	}
 
 	override objectCreated(EObject createdObject) {
+		objectsCreatedDuringPropagation += createdObject
 		modelRepository.addRootElement(createdObject)
 	}
 
@@ -108,11 +111,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		change.applyBackwardIfLegacy
 		var List<PropagatedChange> result = newArrayList
 		val changedResourcesTracker = new ChangedResourcesTracker
-		val propagationResult = new ChangePropagationResult
-		propagateSingleChange(change, result, propagationResult, changedResourcesTracker)
+		propagateSingleChange(change, result, changedResourcesTracker)
 		changedResourcesTracker.markNonSourceResourceAsChanged
-		executePropagationResult(propagationResult)
-		modelRepository.cleanupRootElementsWithoutResource
 		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
 		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
 		resourceRepository.saveAllModels
@@ -140,18 +140,16 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	private def dispatch void propagateSingleChange(
 		CompositeContainerChange change,
 		List<PropagatedChange> propagatedChanges,
-		ChangePropagationResult propagationResult,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
 		change.changes.forEach [
-			propagateSingleChange(it, propagatedChanges, propagationResult, changedResourcesTracker)
+			propagateSingleChange(it, propagatedChanges, changedResourcesTracker)
 		]
 	}
 
 	private def dispatch void propagateSingleChange(
 		TransactionalChange change,
 		List<PropagatedChange> propagatedChanges,
-		ChangePropagationResult propagationResult,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
 		val clonedChange = clone(change)
@@ -173,11 +171,31 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0));
 		val consequentialChanges = newArrayList
+		val propagationResult = new ChangePropagationResult();
+		resourceRepository.startRecording
 		changePropagationProvider.getChangePropagationSpecifications(changeDomain).forEach [
 			consequentialChanges +=
 				propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
+
+		handleObjectsWithoutResource
+		consequentialChanges += resourceRepository.endRecording
+		consequentialChanges.forEach[debug(it)];
 		addPropagatedChanges(clonedChange, change, consequentialChanges, propagatedChanges)
+	}
+
+	private def void handleObjectsWithoutResource() {
+		modelRepository.cleanupRootElementsWithoutResource
+		// Find created objects without resource
+		for (createdObjectWithoutResource : objectsCreatedDuringPropagation.filter[eResource === null]) {
+			if (correspondenceProviding.correspondenceModel.hasCorrespondences(#[createdObjectWithoutResource])) {
+				throw new IllegalStateException("Every object must be contained within a resource: " +
+					createdObjectWithoutResource);
+			} else {
+				warn("Object was created but has no correspondence and is thus lost: " + createdObjectWithoutResource);
+			}
+		}
+		objectsCreatedDuringPropagation.clear();
 	}
 
 	private def List<VitruviusChange> propagateChangeForChangePropagationSpecification(
@@ -193,7 +211,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
 		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand [|
-			modelRepository.startRecording
 			val propResult = propagationSpecification.propagateChange(change, correspondenceModel)
 			modelRepository.cleanupRootElements
 			consequentialChanges += modelRepository.endRecording
@@ -208,6 +225,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(eResource)]
 		changedResourcesTracker.addSourceResourceOfChange(change)
 
+		executePropagationResult(command.transformationResult);
 		propagationResult.integrateResult(command.transformationResult)
 		return consequentialChanges
 	}

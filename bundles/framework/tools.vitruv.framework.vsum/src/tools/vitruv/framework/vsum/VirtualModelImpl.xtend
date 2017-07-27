@@ -19,7 +19,6 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryInterface
 import java.util.Map
 
 class VirtualModelImpl implements VersioningVirtualModel {
@@ -27,7 +26,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator
 	val Map<VURI, String> vuriToLastpropagatedChange
-	val ModelRepositoryInterface modelRepository
+	val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository metamodelRepository
 	@Accessors(PUBLIC_GETTER)
 	val File folder
@@ -37,6 +36,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		this.metamodelRepository = new VitruvDomainRepositoryImpl
 		for (metamodel : modelConfiguration.metamodels) {
 			this.metamodelRepository.addDomain(metamodel)
+			metamodel.registerAtTuidManagement
 		}
 		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository)
 		this.modelRepository = new ModelRepositoryImpl
@@ -47,7 +47,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository
 		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider,
-			metamodelRepository, resourceRepository, modelRepository)
+			metamodelRepository, resourceRepository, modelRepository);
 		VirtualModelManager::instance.putVirtualModel(this)
 		vuriToLastpropagatedChange = newHashMap
 	}
