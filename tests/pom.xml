@@ -16,6 +16,7 @@
 	<modules>
 		<module>framework</module>
 		<module>dsls</module>
+		<module>extensions</module>
 	</modules>
 
 	<build>

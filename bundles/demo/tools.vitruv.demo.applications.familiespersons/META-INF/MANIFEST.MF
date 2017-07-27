@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Demo Families-Persons
+Bundle-SymbolicName: tools.vitruv.demo.applications.familiespersons;singleton:=true
+Bundle-Version: 0.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: tools.vitruv.demo.applications.familiespersons.families2persons,
+ tools.vitruv.demo.applications.familiespersons.persons2families,
+ tools.vitruv.framework.applications

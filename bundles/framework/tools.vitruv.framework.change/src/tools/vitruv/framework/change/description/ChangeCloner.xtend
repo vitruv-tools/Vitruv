@@ -24,28 +24,28 @@ class ChangeCloner {
 	}
 
 	def dispatch VitruviusChange clone(ConcreteApplicableChangeImpl applicableChange) {
-		new ConcreteApplicableChangeImpl(applicableChange.EChange.cloneEChange, applicableChange.URI)
+		return new ConcreteApplicableChangeImpl(applicableChange.EChange.cloneEChange);
 	}
 
 	def dispatch VitruviusChange clone(ConcreteChangeImpl concreteChange) {
-		new ConcreteChangeImpl(concreteChange.EChange.cloneEChange, concreteChange.URI)
+		return new ConcreteChangeImpl(concreteChange.EChange.cloneEChange);
 	}
 
 	def dispatch VitruviusChange clone(EMFModelChangeImpl modelChange) {
-		new EMFModelChangeImpl(modelChange.EChanges.map[it.cloneEChange], modelChange.URI)
+		return new EMFModelChangeImpl(modelChange.EChanges.map[it.cloneEChange]);
 	}
 
 	def dispatch VitruviusChange clone(LegacyEMFModelChangeImpl modelChange) {
-		val clone = new LegacyEMFModelChangeImpl(null, modelChange.EChanges.map[it.cloneEChange], modelChange.URI)
-		val backwardAppliedField = LegacyEMFModelChangeImpl.getDeclaredField("canBeBackwardsApplied")
-		backwardAppliedField.accessible = true
-		backwardAppliedField.set(clone, backwardAppliedField.get(modelChange))
-		val changeDescriptionField = LegacyEMFModelChangeImpl.getDeclaredField("changeDescription")
-		changeDescriptionField.accessible = true
-		changeDescriptionField.set(clone, changeDescriptionField.get(modelChange))
-		return clone
+		val clone = new LegacyEMFModelChangeImpl(null, modelChange.EChanges.map[it.cloneEChange]);
+		val backwardAppliedField = LegacyEMFModelChangeImpl.getDeclaredField("canBeBackwardsApplied");
+		backwardAppliedField.accessible = true;
+		backwardAppliedField.set(clone, backwardAppliedField.get(modelChange));
+		val changeDescriptionField = LegacyEMFModelChangeImpl.getDeclaredField("changeDescription");
+		changeDescriptionField.accessible = true;
+		changeDescriptionField.set(clone, changeDescriptionField.get(modelChange));
+		return clone;
 	}
-
+	
 	def dispatch VitruviusChange clone(EmptyChangeImpl emptyChange) {
 		new EmptyChangeImpl(emptyChange.URI)
 	}

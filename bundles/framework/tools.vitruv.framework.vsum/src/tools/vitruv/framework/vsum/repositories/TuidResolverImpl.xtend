@@ -9,7 +9,7 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.vsum.ModelRepository
 
-class TuidResolverImpl implements tools.vitruv.framework.tuid.TuidResolver{
+class TuidResolverImpl implements tools.vitruv.framework.tuid.TuidResolver {
 	private val VitruvDomainRepository domainRepository;
 	private val ModelRepository modelRepository;
 
@@ -56,7 +56,7 @@ class TuidResolverImpl implements tools.vitruv.framework.tuid.TuidResolver{
 	private def EObject resolveEObjectInModelInstance(ModelInstance modelInstance, Tuid tuid) {
 		val TuidAwareVitruvDomain domain = getMetamodelHavingTuid(tuid)
 		// if the tuid is cached because it has no resource the rootEObject is null
-		var rootEObjects = if(modelInstance !== null) modelInstance.rootElements + #[null] else #[null];
+		var rootEObjects = if (modelInstance !== null) modelInstance.rootElements + #[null] else #[null];
 		return rootEObjects.map[domain.resolveEObjectFromRootAndFullTuid(it, tuid)].findFirst[it !== null];
 	}
 }

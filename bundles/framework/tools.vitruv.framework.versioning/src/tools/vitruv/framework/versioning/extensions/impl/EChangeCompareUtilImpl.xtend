@@ -42,7 +42,10 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 				throw new IllegalStateException('''«affectedContainerPlatformString2» is not lying under root«value»''')
 			val s = affectedContainerPlatformString2.replace(value, key)
 			val x = containerString == s
-			return x
+			// FIXME PS Sometimes URI has '/0' at the end
+			val containerStringWithZero = '''«containerString»0'''
+			val y = containerStringWithZero == s
+			return x || y
 		].fold(false, [current, next|(current || next)])
 	}
 
@@ -78,8 +81,10 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && newValueIsEqual
 	}
 
-	private dispatch def boolean compareEchange(CreateAndInsertNonRootImpl<?, ?> e1,
-		CreateAndInsertNonRootImpl<?, ?> e2) {
+	private dispatch def boolean compareEchange(
+		CreateAndInsertNonRootImpl<?, ?> e1,
+		CreateAndInsertNonRootImpl<?, ?> e2
+	) {
 		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
@@ -87,7 +92,10 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
 			e2.insertChange.affectedEObject as InternalEObject)
 		val newValueIsEqual = EcoreUtil::equals(e1.insertChange.newValue, e2.insertChange.newValue)
-		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && newValueIsEqual
+		val indexEqual = e1.insertChange.index === e2.insertChange.index
+		val returnValue = createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && newValueIsEqual &&
+			indexEqual
+		return returnValue
 	}
 
 }

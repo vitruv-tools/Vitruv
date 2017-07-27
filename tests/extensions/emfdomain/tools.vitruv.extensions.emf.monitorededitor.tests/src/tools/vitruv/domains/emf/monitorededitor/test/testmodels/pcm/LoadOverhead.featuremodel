@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<featuremodel:FeatureDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:featuremodel="http://sdq.ipd.uka.de/FeatureModel/2.0" id="_0tXLAIZaEeCphrw1KOqmIw" name="GINPEX Load Overhead Configuration">
+  <rootFeature id="_VxbMYIZcEeCphrw1KOqmIw" name="Load Overhead Parameters">
+    <childrelation xsi:type="featuremodel:Simple">
+      <optionalChildren id="_zkQdgN-1EeC64qz64tn4TA" name="OverheadsForSingleMachines">
+        <attributes xsi:type="featuremodel:IntegerAttribute" id="_gyuRIN-1EeC64qz64tn4TA" name="ThisHasToBeAString: VM"/>
+        <attributes xsi:type="featuremodel:IntegerAttribute" id="_gZypMN-0EeC64qz64tn4TA" name="CpuLoadParameter"/>
+        <attributes xsi:type="featuremodel:IntegerAttribute" id="_hs-IUN-0EeC64qz64tn4TA" name="DiskLoadParameter"/>
+        <attributes xsi:type="featuremodel:IntegerAttribute" id="_jNKvwt-0EeC64qz64tn4TA" name="NetworkLoadParameter"/>
+        <attributes xsi:type="featuremodel:DoubleAttribute" id="_pwq5Ad-0EeC64qz64tn4TA" name="CpuLoadOverhead" defaultValue="1.0"/>
+        <attributes xsi:type="featuremodel:DoubleAttribute" id="_twxRYd-0EeC64qz64tn4TA" name="DiskLoadOverhead" defaultValue="1.0"/>
+        <attributes xsi:type="featuremodel:DoubleAttribute" id="_sov5Y9-0EeC64qz64tn4TA" name="NetworkLoadOverhead" defaultValue="1.0"/>
+      </optionalChildren>
+      <optionalChildren id="_kmhdcN-2EeC64qz64tn4TA" name="MultiMachineOverheads">
+        <attributes xsi:type="featuremodel:IntegerAttribute" id="_UFtL8N-1EeC64qz64tn4TA" name="ThisHasToBeAString: ResourceType"/>
+        <childrelation xsi:type="featuremodel:Simple">
+          <mandatoryChildren id="_tjnUQd-2EeC64qz64tn4TA" name="ResourceOverheadForVM">
+            <attributes xsi:type="featuremodel:IntegerAttribute" id="_PKCjMt-1EeC64qz64tn4TA" name="ResourceLoadParameter"/>
+            <attributes xsi:type="featuremodel:DoubleAttribute" id="_LlmMEd-1EeC64qz64tn4TA" name="ResourceOverhead"/>
+            <attributes xsi:type="featuremodel:IntegerAttribute" id="_WfhjAN-1EeC64qz64tn4TA" name="ThisHasToBeAString: VM"/>
+          </mandatoryChildren>
+        </childrelation>
+      </optionalChildren>
+    </childrelation>
+  </rootFeature>
+</featuremodel:FeatureDiagram>

@@ -3,7 +3,7 @@ package tools.vitruv.framework.versioning.impl
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Data
 import tools.vitruv.framework.versioning.BranchDiff
-import tools.vitruv.framework.versioning.ChangeMatch
+import tools.vitruv.framework.change.description.PropagatedChange
 
 /**
  * Data class to save changes in 
@@ -14,6 +14,6 @@ import tools.vitruv.framework.versioning.ChangeMatch
  */
 @Data
 class BranchDiffImpl implements BranchDiff {
-	List<ChangeMatch> baseChanges
-	List<ChangeMatch> compareChanges
+	List<PropagatedChange> baseChanges
+	List<PropagatedChange> compareChanges
 }

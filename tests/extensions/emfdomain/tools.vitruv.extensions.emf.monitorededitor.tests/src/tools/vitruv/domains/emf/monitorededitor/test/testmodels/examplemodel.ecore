@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="examplemodel">
+  <eClassifiers xsi:type="ecore:EClass" name="ExampleClass2">
+    <eOperations name="wobble">
+      <eParameters name="wobbleSeverity" eType="#//ExampleClass1"/>
+    </eOperations>
+    <eOperations name="toggle"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namedAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="namedReference" eType="#//ExampleClass1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigInteger"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExampleClass1">
+    <eOperations name="wiggle"/>
+    <eOperations name="woggle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigDecimal">
+      <eParameters name="woggleSeverity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    </eOperations>
+    <eOperations name="wabble"/>
+    <eOperations name="gobble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="EnumCarryingClassifier">
+    <eLiterals name="Literal1" literal="Literal1"/>
+    <eLiterals name="Literal2" value="1" literal="Literal2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DerivedClass" eSuperTypes="#//ExampleClass1">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attribute" upperBound="10"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExampleClass3">
+    <eAnnotations source="http://example.com/ref1"/>
+    <eAnnotations source="http://example.com/ref2"/>
+    <eAnnotations source="http://example.com/ref3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EmptyClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExampleClass4">
+    <eOperations name="toggle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

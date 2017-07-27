@@ -4,17 +4,15 @@ import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil
 import java.io.IOException
 import java.util.Collections
 import java.util.List
-import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.description.ChangeCloner
 import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.description.ChangeCloner
-import tools.vitruv.framework.change.description.VitruviusChange
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -27,36 +25,24 @@ import tools.vitruv.framework.change.description.VitruviusChange
  * @author langhamm
  * @author Heiko Klare
  */
-abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest implements ChangeObservable {
-	List<ChangeObserver> observers
-	Map<VURI, AtomicEmfChangeRecorder> uriToChangeRecorder
+abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
+	AtomicEmfChangeRecorder changeRecorder;
 
 	override beforeTest() {
 		super.beforeTest
-		uriToChangeRecorder = newHashMap
-		observers = newArrayList
+		changeRecorder = new AtomicEmfChangeRecorderImpl(unresolveChanges)
 		setup
 	}
 
 	override afterTest() {
-		uriToChangeRecorder.filter[a, recorder|recorder.recording].forEach[a, recorder|recorder.endRecording]
-		cleanup
-	}
-
-	override registerObserver(ChangeObserver observer) {
-		observers += observer
-	}
-
-	override unRegisterObserver(ChangeObserver observer) {
-		observers -= observer
-	}
-
-	override notifyObservers(VURI vuri, PropagatedChange change) {
-		observers.forEach[update(vuri, change, virtualModel)]
+		if (changeRecorder.isRecording()) {
+			changeRecorder.endRecording();
+		}
+		cleanup();
 	}
 
 	/**
-	 * Defines, if recorded changes shall be unresolved and resolved by the change propagation in the VSUM::
+	 * Defines, if recorded changes shall be unresolved and resolved by the change propagation in the VSUM.
 	 * This defaults to <code>false</code>. If the used metamodel allows to use the
 	 * deresolution mechanism, overwrite this method an return <code>true</code>
 	 * @return <code>true</code> if recored changes shall be unresolved, <code>false</code> otherwise
@@ -98,7 +84,7 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	def protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) throws IOException {
 		val resource = object.eResource
 		EcoreResourceBridge::saveResource(resource)
-		val List<PropagatedChange> result = propagateChanges(VURI::getInstance(resource))
+		val List<PropagatedChange> result = propagateChanges()
 		startRecordingChanges(resource)
 		return result
 	}
@@ -131,18 +117,17 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 			throw new IllegalArgumentException
 		}
 		val Resource resource = getModelResource(modelPathInProject)
-		val VURI vuri = VURI::getInstance(resource)
 		resource.delete(Collections.EMPTY_MAP)
-		vuri.propagateChanges
+		propagateChanges
+		changeRecorder.removeFromRecording(resource)
 	}
 
-	private def List<PropagatedChange> propagateChanges(VURI vuri) {
-		val recorder = uriToChangeRecorder.get(vuri)
-		recorder.endRecording
+	private def List<PropagatedChange> propagateChanges() {
+		changeRecorder.endRecording
 		val changes = if (unresolveChanges)
-				recorder.unresolvedChanges
+				changeRecorder.unresolvedChanges
 			else
-				recorder.resolvedChanges
+				changeRecorder.resolvedChanges
 		val ChangeCloner changeCloner = new ChangeCloner
 		val copiedChanges = changes.map [
 			changeCloner.clone(it)
@@ -152,14 +137,13 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 			throw new IllegalStateException
 		val compositeChange = VitruviusChangeFactory::instance.createCompositeChange(changes)
 		val result = virtualModel.propagateChange(compositeChange)
-		result.forEach[notifyObservers(vuri, it)]
 		return result
 	}
 
 	private def startRecordingChanges(Resource resource) {
-		val vuri = VURI::getInstance(resource)
-		val AtomicEmfChangeRecorder recorder = new AtomicEmfChangeRecorderImpl(unresolveChanges)
-		uriToChangeRecorder.put(vuri, recorder)
-		recorder.beginRecording(vuri, Collections::singleton(resource))
+		changeRecorder.addToRecording(resource);
+		if (!changeRecorder.recording) {
+			changeRecorder.beginRecording();
+		}
 	}
 }

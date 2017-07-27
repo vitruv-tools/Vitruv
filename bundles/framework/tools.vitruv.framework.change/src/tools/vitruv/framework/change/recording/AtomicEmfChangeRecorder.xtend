@@ -1,18 +1,16 @@
 package tools.vitruv.framework.change.recording
 
-import java.util.Collection
 import java.util.List
 import org.eclipse.emf.common.notify.Notifier
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.util.datatypes.VURI
 
 interface AtomicEmfChangeRecorder {
+	def void beginRecording()
 
-	def void beginRecording(VURI modelVURI, Collection<? extends Notifier> elementsToObserve)
+	def void addToRecording(Notifier elementToObserve)
 
-	/** 
-	 * Stops recording without returning a result 
-	 */
+	def void removeFromRecording(Notifier elementToObserve)
+
 	def void stopRecording()
 
 	def void endRecording()

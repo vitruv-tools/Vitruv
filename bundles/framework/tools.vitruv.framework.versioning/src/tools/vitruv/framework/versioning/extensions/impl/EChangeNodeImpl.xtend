@@ -31,7 +31,10 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 		val edgesEqual = <EChangeEdge>edgeIterator.forall [ edge1 |
 			node2.exists[edge2|edge1.isEChangeEdgeEqual(edge2)]
 		]
-		return echangeEqual && edgesEqual
+		val otherEdgesEqual = node2.<EChangeEdge>edgeIterator.forall [ edge1 |
+			exists[edge2|edge1.isEChangeEdgeEqual(edge2)]
+		]
+		return echangeEqual && (edgesEqual || otherEdgesEqual)
 	}
 
 	override setType(NodeType type) {

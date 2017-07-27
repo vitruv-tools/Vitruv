@@ -24,7 +24,8 @@ interface ChangeMatch extends Serializable {
 		val originalChange = propagatedChange.originalChange
 		val newChange = cloner.clone(originalChange)
 		val ListMultimap<VURI, VitruviusChange> t = ArrayListMultimap::create
-		t.put(propagatedChange.consequentialChanges.URI, propagatedChange.consequentialChanges)
+		if (propagatedChange.consequentialChanges.URI !== null)
+			t.put(propagatedChange.consequentialChanges.URI, propagatedChange.consequentialChanges)
 		return new ChangeMatchImpl(newChange.URI, newChange, t)
 	}
 

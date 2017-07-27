@@ -1,6 +1,7 @@
 package tools.vitruv.framework.versioning
 
 import java.util.List
+import tools.vitruv.framework.change.description.PropagatedChange
 
 /**
  * 
@@ -10,7 +11,7 @@ import java.util.List
  * @since 2017-06-12
  */
 interface BranchDiff {
-	def List<ChangeMatch> getBaseChanges()
+	def List<PropagatedChange> getBaseChanges()
 
-	def List<ChangeMatch> getCompareChanges()
+	def List<PropagatedChange> getCompareChanges()
 }

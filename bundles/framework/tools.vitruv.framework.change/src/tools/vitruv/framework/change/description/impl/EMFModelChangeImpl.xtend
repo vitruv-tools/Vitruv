@@ -2,42 +2,43 @@ package tools.vitruv.framework.change.description.impl
 
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.ResourceSet
-
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.util.datatypes.VURI
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
  * right before the change described by the recorded {@link ChangeDescription}.
  */
 class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	val VURI vuri
-	var boolean canBeBackwardsApplied
+	private var boolean canBeBackwardsApplied;
 
-	new(Iterable<EChange> eChanges, VURI vuri) {
-		this.vuri = vuri
-		canBeBackwardsApplied = false
-		addChanges(eChanges)
+	public new(Iterable<EChange> eChanges) {
+		this.canBeBackwardsApplied = false;
+		addChanges(eChanges);
 	}
 
 	private def void addChanges(Iterable<EChange> eChanges) {
-		eChanges.map[VitruviusChangeFactory::instance.createConcreteApplicableChange(it, vuri)].forEach[addChange]
-		if (changes.empty)
-			addChange(VitruviusChangeFactory::instance.createEmptyChange(vuri))
+		for (eChange : eChanges) {
+			addChange(VitruviusChangeFactory.instance.createConcreteApplicableChange(eChange));
+		}
+		if (changes.empty) {
+			addChange(VitruviusChangeFactory.instance.createEmptyChange(URI));
+		}
 	}
 
-	override toString() '''
-		«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
-		        «FOR eChange : EChanges»
-		        	Inner change: «eChange»
-		        «ENDFOR»
-	'''
+	override String toString() '''
+		«EMFModelChangeImpl.simpleName»: VURI «this.URI», EChanges:
+			«FOR eChange : EChanges»
+				Inner change: «eChange»
+			«ENDFOR»
+		'''
 
 	override getURI() {
-		vuri
+		val uris = this.changes.map[URI].filterNull
+		if (uris.size > 0)
+			return uris.get(0);
 	}
 
 	override containsConcreteChange() {

@@ -29,6 +29,8 @@ class URIRemapperImpl implements URIRemapper {
 	]
 
 	override createRemapFunction(VURI from, VURI to) {
+		if (null === from || null === to)
+			return []
 		val fromVURIString = from.EMFUri.toString
 		val toVURIString = to.EMFUri.toString
 		return remapURIString.curry(fromVURIString).curry(toVURIString)

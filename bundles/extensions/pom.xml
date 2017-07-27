@@ -17,6 +17,7 @@
 		<module>dslsruntime</module>
 		<module>integration</module>
 		<module>constructionsimulation</module>
+		<module>emfdomain</module>
 	</modules>
 
 </project>

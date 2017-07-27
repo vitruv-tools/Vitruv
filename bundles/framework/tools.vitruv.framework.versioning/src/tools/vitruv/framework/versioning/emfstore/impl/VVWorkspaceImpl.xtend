@@ -4,16 +4,16 @@ import java.util.ArrayList
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.versioning.emfstore.VVFactory
-import tools.vitruv.framework.versioning.emfstore.VVLocalProject
 import tools.vitruv.framework.versioning.emfstore.VVServer
 import tools.vitruv.framework.versioning.emfstore.VVWorkspace
+import tools.vitruv.framework.versioning.emfstore.LocalRepository
 
 class VVWorkspaceImpl implements VVWorkspace {
 	static extension VVFactory v = VVFactory::instance
 	@Accessors(PUBLIC_GETTER)
 	List<VVServer> servers
 	@Accessors(PUBLIC_GETTER)
-	List<VVLocalProject> localProjects
+	List<LocalRepository> localProjects
 
 	new() {
 		servers = new ArrayList

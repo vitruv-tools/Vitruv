@@ -1,15 +1,17 @@
 package tools.vitruv.framework.versioning.commit.impl
 
-import tools.vitruv.framework.versioning.commit.CommitFactory
-import java.util.List
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.versioning.author.Author
 import java.util.Date
-import tools.vitruv.framework.versioning.commit.Commit
-import java.util.Random
+import java.util.List
+import org.apache.commons.codec.digest.DigestUtils
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.versioning.author.Author
+import tools.vitruv.framework.versioning.commit.CommitFactory
+import tools.vitruv.framework.versioning.extensions.EChangeExtension
 
 class CommitFactoryImpl implements CommitFactory {
-	static extension Random = new Random
+	static val prefix = "blob "
+	static val initialCommitHash = "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed"
+	static extension EChangeExtension = EChangeExtension::instance
 
 	static def CommitFactory init() {
 		new CommitFactoryImpl
@@ -18,23 +20,78 @@ class CommitFactoryImpl implements CommitFactory {
 	private new() {
 	}
 
-	override createMergeCommit() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 	override createInitialCommit() {
 		val commitMessage = createCommitMessage("Initial commit", null)
-		return new InitialCommitImpl(#[], commitMessage, newArrayList, newArrayList, nextInt)
+		return new SimpleCommitImpl(#[], commitMessage, newArrayList, newArrayList, initialCommitHash, null)
 	}
 
 	override createCommitMessage(String message, Author author) {
 		new CommitMessageImpl(new Date, message, author)
 	}
 
-	override createSimpleCommit(List<EChange> changes, String message, Author author, Commit parent) {
+	override createSimpleCommit(
+		List<PropagatedChange> changes,
+		String message,
+		Author author,
+		String parent
+	) {
 		val commitMessage = createCommitMessage(message, author)
-		return new SimpleCommitImpl(changes, commitMessage, newArrayList, newArrayList, nextInt, parent)
+		val oldInfosToHash = '''
+			«commitMessage.date.toString»
+			«message»
+			«author»
+			«parent»
+				«FOR change : changes»
+					«change.originalChange.URI»«change.originalChange»
+					«FOR echange: change.originalChange.EChanges»
+						«echange.fullString »
+					«ENDFOR»
+					«change.consequentialChanges.URI»«change.consequentialChanges»
+					«FOR echange: change.consequentialChanges.EChanges»
+						«echange.fullString »
+					«ENDFOR»
+				«ENDFOR»
+		'''
+		val stringToHash = '''«prefix»«oldInfosToHash.length»«oldInfosToHash»'''
+		val hash = DigestUtils::sha512Hex(stringToHash)
+		return new SimpleCommitImpl(changes, commitMessage, newArrayList, newArrayList, hash, parent)
 
+	}
+
+	override createMergeCommit(
+		List<PropagatedChange> changes,
+		String message,
+		Author author,
+		List<String> sources,
+		List<String> targets
+	) {
+		val commitMessage = createCommitMessage(message, author)
+		val oldInfosToHash = '''
+			«commitMessage.date.toString»
+			«message»
+			«author»
+			Sources
+			«FOR source : sources»
+				«source»
+			«ENDFOR»
+			Targets
+			«FOR target : targets»
+				«target»
+			«ENDFOR»
+				«FOR change : changes»
+				«change.originalChange.URI»«change.originalChange»
+				«FOR echange: change.originalChange.EChanges»
+					«echange.fullString »
+				«ENDFOR»
+				«change.consequentialChanges.URI»«change.consequentialChanges»
+				«FOR echange: change.consequentialChanges.EChanges»
+					«echange.fullString »
+				«ENDFOR»
+				«ENDFOR»
+		'''
+		val stringToHash = '''«prefix»«oldInfosToHash.length»«oldInfosToHash»'''
+		val hash = DigestUtils::sha512Hex(stringToHash)
+		return new MergeCommitImpl(changes, commitMessage, newArrayList, newArrayList, hash, sources, targets)
 	}
 
 }

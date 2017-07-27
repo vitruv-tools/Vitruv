@@ -53,13 +53,8 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 	def void testWithCorrespondence() {
 		graph = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
 		val otherEChanges = branchDiff.compareChanges.map[originalChange.EChanges].flatten
-		val correspondentEChanges = branchDiff.baseChanges.map[targetToCorrespondentChanges.asMap.entrySet].flatten.map [
-			value
-		].flatten.map[EChanges].flatten.toList
-		val otherCorrespondentEChanges = branchDiff.compareChanges.map[targetToCorrespondentChanges.asMap.entrySet].
-			flatten.map [
-				value
-			].flatten.map[EChanges].flatten.toList
+		val correspondentEChanges = branchDiff.baseChanges.map[consequentialChanges.EChanges].flatten.toList
+		val otherCorrespondentEChanges = branchDiff.compareChanges.map[consequentialChanges.EChanges].flatten.toList
 		val otherGraph = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
 		val IsomorphismTesterAlgorithm tester = new PrimitiveIsomorphismTesterImpl
 		tester.init(graph, otherGraph)
@@ -106,7 +101,7 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 			return #[]
 		]
 		val ResourceSet source = new ResourceSetImpl
-		modelMerger.init(branchDiff, failingFunction)
+		modelMerger.init(branchDiff, failingFunction, failingFunction)
 		modelMerger.compute
 		val echanges = modelMerger.resultingOriginalEChanges
 
@@ -136,13 +131,13 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 			assertThat("This method should never been called", true, is(false))
 			return #[]
 		]
-		modelMerger.init(branchDiff, failingFunction)
+		modelMerger.init(branchDiff, failingFunction, failingFunction)
 		modelMerger.compute
 		val echanges = modelMerger.resultingOriginalEChanges
 		val changesToRollback = virtualModel.getResolvedPropagatedChanges(sourceVURI)
 		if (changesToRollback.exists[!resolved])
 			throw new IllegalStateException
-		val reappliedChanges = reapplier.reapply(changesToRollback, echanges, virtualModel)
+		val reappliedChanges = reapplier.reapply(sourceVURI, changesToRollback, echanges, virtualModel)
 		assertThat(reappliedChanges.size, is(10))
 	}
 }

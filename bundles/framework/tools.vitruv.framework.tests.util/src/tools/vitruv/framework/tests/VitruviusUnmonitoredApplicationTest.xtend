@@ -19,9 +19,10 @@ import tools.vitruv.framework.tests.util.TestUtil
 import tools.vitruv.framework.util.ResourceSetUtil
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.vsum.InternalVirtualModel
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
+import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 /** 
  * Basic test class for all Vitruvius application tests that require a test
@@ -34,8 +35,11 @@ import static org.junit.Assert.assertTrue
  */
 abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	ResourceSet resourceSet
-	TestUserInteractor testUserInteractor
-	InternalVirtualModel virtualModel
+	@Accessors(PROTECTED_GETTER)
+	TestUserInteractor userInteractor
+	@Accessors(PROTECTED_GETTER)
+	VersioningVirtualModel virtualModel
+	@Accessors(PROTECTED_GETTER)
 	CorrespondenceModel correspondenceModel
 
 	def protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications()
@@ -57,22 +61,10 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	def private void createVirtualModel(String testName) {
 		var String currentTestProjectVsumName = '''«testName»_vsum_'''
 		var Iterable<VitruvDomain> domains = this.getVitruvDomains()
-		this.testUserInteractor = new TestUserInteractor()
+		this.userInteractor = new TestUserInteractor()
 		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, true, domains,
-			createChangePropagationSpecifications(), testUserInteractor)
+			createChangePropagationSpecifications(), userInteractor) as VersioningVirtualModel
 		this.correspondenceModel = virtualModel.getCorrespondenceModel()
-	}
-
-	def protected CorrespondenceModel getCorrespondenceModel() {
-		return correspondenceModel
-	}
-
-	def protected InternalVirtualModel getVirtualModel() {
-		return virtualModel
-	}
-
-	def protected TestUserInteractor getUserInteractor() {
-		return testUserInteractor
 	}
 
 	def private File getPlatformModelPath(String modelPathWithinProject) {
@@ -87,7 +79,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * Creates and returns a resource with the given path relative to the
 	 * project folder.
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
-	 * including the model file extension
+	 * using "/" as separator char and including the model file extension
 	 * @return the created resource or <code>null</code> if not factory is
 	 * registered for resource with the given file extension
 	 */
@@ -113,7 +105,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * Loads and returns the resource with the given path relative to the
 	 * project folder.
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
-	 * including the model file extension
+	 * using "/" as separator char and including the model file extension
 	 * @return the resource loaded from the given path or <code>null</code> if
 	 * it could not be loaded
 	 */
@@ -122,10 +114,9 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	}
 
 	def protected EObject getFirstRootElement(String modelPathWithinProject, ResourceSet resourceSet) {
-		var List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).getContents()
-		if (resourceContents.size() < 1) {
+		var List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).contents
+		if (resourceContents.size < 1)
 			throw new IllegalStateException("Model has no root")
-		}
 		return resourceContents.get(0)
 	}
 
@@ -133,7 +124,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * Returns the first root element within the resource with the given path
 	 * relative to the project folder
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
-	 * including the model file extension
+	 * using "/" as separator char and including the model file extension
 	 * @return the root element of the resource
 	 * @throws IllegalStateExceptionif the resource does not contain a root element
 	 */
@@ -145,7 +136,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * Asserts that a model with the given path relative to the project folder
 	 * exists.
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
-	 * including the model file extension
+	 * using "/" as separator char and including the model file extension
 	 */
 	def protected void assertModelExists(String modelPathWithinProject) {
 		var boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri())
@@ -156,7 +147,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * Asserts that no model with the given path relative to the project folder
 	 * exists.
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
-	 * including the model file extension
+	 * using "/" as separator char and including the model file extension
 	 */
 	def protected void assertModelNotExists(String modelPathWithinProject) {
 		var boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri())
@@ -167,9 +158,9 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * Asserts that the two models persisted in resources with the given paths
 	 * relative to the project folder have equal contents.
 	 * @param firstModelPathWithinProject- the path to the first resource within the project folder,
-	 * including the model file extension
+	 * using "/" as separator char and including the model file extension
 	 * @param secondModelPathWithinProject- the path to the second resource within the project folder,
-	 * including the model file extension
+	 * using "/" as separator char and including the model file extension
 	 */
 	def protected void assertPersistedModelsEqual(String firstModelPathWithinProject,
 		String secondModelPathWithinProject) {

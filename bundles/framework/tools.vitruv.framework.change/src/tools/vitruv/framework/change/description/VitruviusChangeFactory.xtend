@@ -14,7 +14,11 @@ import java.util.List
  * @author
  */
 interface VitruviusChangeFactory {
-	VitruviusChangeFactory instance = VitruviusChangeFactoryImpl::init
+	VitruviusChangeFactory currentInstance = VitruviusChangeFactoryImpl::init
+
+	static def VitruviusChangeFactory getInstance() {
+		return currentInstance
+	}
 
 	public enum FileChangeKind {
 		Create,
@@ -25,17 +29,17 @@ interface VitruviusChangeFactory {
 	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
 	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
-	def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri)
+	def TransactionalChange createEMFModelChange(ChangeDescription changeDescription)
 
 	def TransactionalChange createEMFModelChangeFromEChanges(List<EChange> echanges, VURI vuri)
 
-	def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription, VURI vuri)
+	def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription)
 
 	def TransactionalChange copy(TransactionalChange changeToCopy)
 
-	def ConcreteChange createConcreteApplicableChange(EChange change, VURI vuri)
+	def ConcreteChange createConcreteApplicableChange(EChange change)
 
-	def ConcreteChange createConcreteChange(EChange change, VURI vuri)
+	def ConcreteChange createConcreteChange(EChange change)
 
 	def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource)
 
@@ -48,4 +52,7 @@ interface VitruviusChangeFactory {
 	def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges)
 
 	def <T extends VitruviusChange> T clone(T originalChange)
+
+	def ConcreteChange createConcreteChangeWithVuri(EChange change, VURI vuri)
+
 }

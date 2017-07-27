@@ -20,11 +20,13 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryInterface
+import java.util.Map
 
-class VirtualModelImpl implements InternalVirtualModel {
+class VirtualModelImpl implements VersioningVirtualModel {
 	protected val ResourceRepositoryImpl resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator
+	val Map<VURI, String> vuriToLastpropagatedChange
 	val ModelRepositoryInterface modelRepository
 	val VitruvDomainRepository metamodelRepository
 	@Accessors(PUBLIC_GETTER)
@@ -47,6 +49,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider,
 			metamodelRepository, resourceRepository, modelRepository)
 		VirtualModelManager::instance.putVirtualModel(this)
+		vuriToLastpropagatedChange = newHashMap
 	}
 
 	override getCorrespondenceModel() {
@@ -110,9 +113,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override setUserInteractor(UserInteracting userInteractor) {
-		for (propagationSpecification : changePropagationSpecificationProvider) {
-			propagationSpecification.userInteracting = userInteractor
-		}
+		changePropagationSpecificationProvider.forEach[userInteracting = userInteractor]
 	}
 
 	override getResolvedPropagatedChanges(VURI vuri) {
@@ -122,4 +123,21 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override getUnresolvedPropagatedChanges(VURI vuri) {
 		changePropagator.getUnresolvedPropagatedChanges(vuri)
 	}
+
+	override getUnresolvedPropagatedChangesSinceLastCommit(VURI vuri) {
+		if (vuriToLastpropagatedChange.containsKey(vuri)) {
+			val lastPropagatedId = vuriToLastpropagatedChange.get(vuri)
+			return changePropagator.getUnresolvedPropagatedChanges(vuri).dropWhile [
+				id != lastPropagatedId
+			].drop(1).toList
+		} else {
+			// TODO The drop(1) 
+			return changePropagator.getUnresolvedPropagatedChanges(vuri).drop(1).toList
+		}
+	}
+
+	override setLastPropagatedChangeId(VURI vuri, String id) {
+		vuriToLastpropagatedChange.put(vuri, id)
+	}
+
 }

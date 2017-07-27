@@ -54,6 +54,42 @@ class EChangeExtensionImpl implements EChangeExtension {
 		'''CreateAndReplaceNonRoot@«Integer.toHexString(e.hashCode)»'''
 	}
 
+	private static dispatch def String getFullStringImpl(EChange e) {
+		throw new UnsupportedOperationException('''«e»''')
+	}
+
+	private static dispatch def String getFullStringImpl(ReplaceSingleValuedEAttribute<?, ?> e) {
+		val fullString = '''
+			ReplaceSingleValuedEAttribute
+			«e.affectedEObject.toString» 
+			«e.affectedFeature.toString»
+			«e.newValue»
+			«e.oldValue»
+		'''
+		return fullString
+	}
+
+	private static dispatch def String getFullStringImpl(CreateAndReplaceNonRoot<?, ?> e) {
+		val fullString = '''
+			CreateAndReplaceNonRoot
+			«e.createChange.affectedEObject.toString» 
+			«e.insertChange.affectedEObject.toString»
+			«e.insertChange.affectedFeature.toString»
+		'''
+		return fullString
+	}
+
+	private static dispatch def String getFullStringImpl(CreateAndInsertNonRoot<?, ?> e) {
+		val fullString = '''
+			CreateAndInsertNonRoot
+			«e.createChange.affectedEObject.toString» 
+			«e.insertChange.affectedEObject.toString»
+			«e.insertChange.affectedFeature.toString»
+			«e.insertChange.index»
+		'''
+		return fullString
+	}
+
 	private new() {
 	}
 
@@ -62,5 +98,9 @@ class EChangeExtensionImpl implements EChangeExtension {
 	override getNodeId(EChange e) { e?.toString }
 
 	override getNodeLabel(EChange e) { e.nodeLabelImpl }
+
+	override getFullString(EChange e) {
+		e.fullStringImpl
+	}
 
 }

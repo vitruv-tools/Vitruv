@@ -129,7 +129,7 @@ final class TestUtil {
 		val IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder)
 		val IClasspathEntry[] oldEntries = javaProject.getRawClasspath()
 		val IClasspathEntry[] newEntries = newArrayOfSize(oldEntries.length + 1)
-		java.lang.System::arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length)
+		System::arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length)
 		{
 			val _wrVal_newEntries = newEntries
 			val _wrIndx_newEntries = oldEntries.length
@@ -220,7 +220,11 @@ final class TestUtil {
 	 */
 	def static VitruvDomain createVitruvDomain(String name, EPackage metamodelRootPackage, String fileExt) {
 		val VitruvDomain domain = new AbstractVitruvDomain(name, metamodelRootPackage,
-			new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt)
+			new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt) {
+			override getBuilderApplicator() {
+				return null
+			}
+		}
 		return domain
 	}
 

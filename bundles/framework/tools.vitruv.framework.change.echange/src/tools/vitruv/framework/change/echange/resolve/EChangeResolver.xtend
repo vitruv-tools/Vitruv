@@ -27,8 +27,12 @@ class EChangeResolver {
 	 * 									is {@code null}, it returns {@code null}. If the change was already resolved an exception is thrown.
 	 * @throws IllegalStateException 	The change is already resolved.
 	 */
-	static def EChange resolveCopy(EChange change, ResourceSet resourceSet, boolean resolveBefore,
-		boolean revertAfterResolving) {
+	static def EChange resolveCopy(
+		EChange change,
+		ResourceSet resourceSet,
+		boolean resolveBefore,
+		boolean revertAfterResolving
+	) {
 		val copy = EcoreUtil::copy(change)
 		if (resolve(copy, resourceSet, resolveBefore, revertAfterResolving))
 			return copy
@@ -50,8 +54,12 @@ class EChangeResolver {
 	 * 									is {@code null}, it returns {@code null}. If the change was already resolved an exception is thrown.
 	 * @throws IllegalStateException 	The change is already resolved.
 	 */
-	static def boolean resolve(EChange change, ResourceSet resourceSet, boolean resolveBefore,
-		boolean revertAfterResolving) {
+	static def boolean resolve(
+		EChange change,
+		ResourceSet resourceSet,
+		boolean resolveBefore,
+		boolean revertAfterResolving
+	) {
 		if (change.resolved)
 			throw new IllegalArgumentException
 		return resolveChange(change, resourceSet, resolveBefore, revertAfterResolving)
@@ -70,16 +78,24 @@ class EChangeResolver {
 	/**
 	 * Dispatch method for resolving {@link AtomicEChange}s.
 	 */
-	private def static dispatch boolean resolveChange(AtomicEChange change, ResourceSet resourceSet,
-		boolean resolveBefore, boolean revertAfterResolving) {
+	private def static dispatch boolean resolveChange(
+		AtomicEChange change,
+		ResourceSet resourceSet,
+		boolean resolveBefore,
+		boolean revertAfterResolving
+	) {
 		AtomicEChangeResolver::resolve(change, resourceSet, resolveBefore)
 	}
 
 	/**
 	 * Dispatch method for resolving an {@link CompoundEChange}s.
 	 */
-	private def static dispatch boolean resolveChange(CompoundEChange change, ResourceSet resourceSet,
-		boolean resolveBefore, boolean revertAfterResolving) {
+	private def static dispatch boolean resolveChange(
+		CompoundEChange change,
+		ResourceSet resourceSet,
+		boolean resolveBefore,
+		boolean revertAfterResolving
+	) {
 		CompoundEChangeResolver::resolve(change, resourceSet, resolveBefore, revertAfterResolving)
 	}
 }

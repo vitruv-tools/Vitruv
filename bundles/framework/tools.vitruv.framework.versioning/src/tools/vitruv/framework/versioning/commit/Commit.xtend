@@ -1,17 +1,17 @@
 package tools.vitruv.framework.versioning.commit
 
-import tools.vitruv.framework.change.echange.EChange
 import java.util.List
+import tools.vitruv.framework.change.description.PropagatedChange
 
 interface Commit {
 
-	def List<EChange> getChanges()
-
 	def CommitMessage getCommitmessage()
-
-	def List<SimpleCommit> getCommitsBranchedFromThis()
 
 	def List<MergeCommit> getCommitsMergedFromThis()
 
-	def int getIdentifier()
+	def List<PropagatedChange> getChanges()
+
+	def List<SimpleCommit> getCommitsBranchedFromThis()
+
+	def String getIdentifier()
 }

@@ -11,15 +11,9 @@ interface VirtualModel {
 
 	def File getFolder()
 
-	def List<PropagatedChange> getResolvedPropagatedChanges(VURI vuri)
-
-	def List<PropagatedChange> getUnresolvedPropagatedChanges(VURI vuri)
-
 	def List<PropagatedChange> propagateChange(VitruviusChange change)
 
 	def ModelInstance getModelInstance(VURI modelVuri)
-
-	def void forwardChanges(List<PropagatedChange> changes)
 
 	def void reverseChanges(List<PropagatedChange> changes)
 

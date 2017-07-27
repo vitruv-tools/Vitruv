@@ -32,7 +32,7 @@ public class SimpleVsumTest extends VsumTest {
         createDefaultVirtualModel();
     }
 
-    @Ignore
+    // @Ignore
     @Test
     public void testVsumAddGetChangeAndSaveModel() {
         // create VSUM

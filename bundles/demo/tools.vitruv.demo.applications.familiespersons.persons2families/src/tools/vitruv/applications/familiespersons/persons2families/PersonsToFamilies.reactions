@@ -1,0 +1,179 @@
+import edu.kit.ipd.sdq.metamodels.families.Family
+import java.util.ArrayList
+import java.util.List
+import tools.vitruv.framework.userinteraction.UserInteractionType
+import org.eclipse.emf.common.util.EList
+
+import "edu.kit.ipd.sdq.metamodels.persons" as persons
+import "edu.kit.ipd.sdq.metamodels.families" as families
+
+
+reactions: PersonsToFamilies
+in reaction to changes in Persons
+execute actions in Families
+
+reaction CreatedPersonRegister{
+	after element persons::PersonRegister created and inserted as root
+	call createFamilyRegister(newValue)
+}
+
+routine createFamilyRegister(persons::PersonRegister personRegister){
+	action{
+		val familyRegister = create families::FamilyRegister and initialize{
+		}
+		add correspondence between familyRegister and personRegister
+	}
+}
+
+reaction DeletedPersonRegister{
+	after element persons::PersonRegister deleted
+	call deleteFamilyRegister(affectedEObject)
+}
+
+routine deleteFamilyRegister(persons::PersonRegister personsRegister){
+	match{
+		val familyRegister = retrieve persons::PersonRegister corresponding to personsRegister
+	}
+	
+	action{
+		delete familyRegister
+	}
+}
+
+
+reaction CreatedMale {
+	after element persons::Male created  and inserted in persons::PersonRegister[persons]
+	call createMaleMemberOfFamily(newValue)
+}
+
+routine createMaleMemberOfFamily(persons::Male person){
+	match{
+		val familiesRegister = retrieve families::FamilyRegister corresponding to person.eContainer
+	}
+	action{
+		val member = create families::Member and initialize {
+		member.firstName = person.fullName.split(" ").get(0)
+		}
+		add correspondence between person and member
+		
+		call{
+		// Let user select the family
+		var EList<Family> collectionFamilies = familiesRegister.families 
+		val List<String> familiesNames = new ArrayList<String>(collectionFamilies.size)
+		for (Family f: collectionFamilies) {
+//			if(f.lastName.equals(person.fullName.split(" ").get(1))){
+				familiesNames.add(f.lastName)
+//			}
+		}
+		val String selectMsg = "Please select the family to which the person belongs."
+		val int selected = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsg,
+			familiesNames)
+		val Family selectedFamily = collectionFamilies.get(selected)
+	
+		selectedFamily.lastName = person.fullName.split(" ").get(1)
+		
+		
+		// Let user choose whether the person is a father or a son.
+		var List<String> collectionRoles = new ArrayList
+		collectionRoles += #["Father", "Son"]
+		val String selectMsgRoles = "Please select whether the person is a father or a son."
+		val int selectedRole = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsgRoles, collectionRoles)
+		if(selectedRole == 0){
+			selectedFamily.father = member			
+		} else {
+			selectedFamily.sons.add(member)
+		}
+		addCorr(person, selectedFamily)			
+		}
+		
+	}
+}
+
+routine addCorr(persons::Person person,families::Family family){
+	action{
+		add correspondence between person and family
+	}
+}
+
+reaction CreatedFemale {
+	after element persons::Female created  and inserted in persons::PersonRegister[persons]
+	call createFemaleMemberOfFamily(newValue)
+}
+
+routine createFemaleMemberOfFamily(persons::Female person){
+	match{
+		val familyRegister = retrieve families::FamilyRegister corresponding to person.eContainer
+	}
+	action{
+		val member = create families::Member and initialize {
+		member.firstName = person.fullName.split(" ").get(0)
+		}
+		add correspondence between person and member
+	
+	
+		call{
+		// Let user select the family
+		var EList<Family> collectionFamilies = familyRegister.families
+		val List<String> familiesNames = new ArrayList<String>(collectionFamilies.size)
+		for (Family f: collectionFamilies) {
+//			if(f.lastName.equals(person.fullName.split(" ").get(1))){
+				familiesNames.add(f.lastName)
+//			}
+		}
+		val String selectMsg = "Please select the family to which the person belongs."
+		val int selected = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsg,
+			familiesNames)
+		val Family selectedFamily = collectionFamilies.get(selected)
+	
+		selectedFamily.lastName = person.fullName.split(" ").get(1)
+		
+		
+		// Let user choose whether the person is a mother or a daughter.
+		var List<String> collectionRoles = new ArrayList
+		collectionRoles += #["Mother", "Daughter"]
+		val String selectMsgRoles = "Please select whether the person is a mother or a daughter."
+		val int selectedRole = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsgRoles, collectionRoles)
+		if(selectedRole == 0){
+			selectedFamily.mother = member			
+		} else {
+			selectedFamily.daughters.add(member)
+		}
+		addCorr(person, selectedFamily)	
+		}		
+	}
+}
+
+reaction ChangedFullName {
+	after attribute replaced at persons::Person[fullName]
+	call changeNames(affectedEObject)
+}
+
+routine changeNames(persons::Person person){
+	match {
+		val family = retrieve families::Family corresponding to person
+		val member = retrieve families::Member corresponding to person
+	}
+	action{
+		update family {
+			family.lastName = person.fullName.split(" ").get(1)
+		}
+		update member {
+			member.firstName = person.fullName.split(" ").get(0)
+		}
+	}
+}
+
+reaction DeletePerson {
+	after element persons::Person deleted
+	call deleteMember(affectedEObject)
+}
+
+routine deleteMember(persons::Person person){
+	match{
+		val member = retrieve families::Member corresponding to person
+	}
+	
+	action{
+		delete member
+	}
+}

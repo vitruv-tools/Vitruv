@@ -23,6 +23,12 @@ class EChangeRequireExtensionImpl implements EChangeRequireExtension {
 		return x
 	}
 
+	private static dispatch def checkForRequireEdgeImpl(CreateAndInsertRoot<?> e1,
+		ReplaceSingleValuedEAttribute<?, ?> e2) {
+		val x = e1.createChange.affectedEObject === e2.affectedEObject
+		return x
+	}
+
 	private static dispatch def checkForRequireEdgeImpl(CreateAndInsertEObject<?, ?> e1,
 		ReplaceSingleValuedEAttribute<?, ?> e2) {
 		val x = e1.createChange.affectedEObject === e2.affectedEObject
@@ -37,9 +43,10 @@ class EChangeRequireExtensionImpl implements EChangeRequireExtension {
 
 	private static dispatch def checkForRequireEdgeImpl(
 		CreateAndInsertRoot<?> e1,
-		EChange e2
+		CreateAndReplaceNonRoot<?, ?> e2
 	) {
-		true
+		val x = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
+		return x
 	}
 
 	private new() {

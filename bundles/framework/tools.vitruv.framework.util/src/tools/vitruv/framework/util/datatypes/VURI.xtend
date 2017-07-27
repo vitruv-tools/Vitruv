@@ -1,20 +1,10 @@
 package tools.vitruv.framework.util.datatypes
 
-import java.io.Serializable
-import java.util.HashMap
 import java.util.Map
-
 import org.eclipse.core.resources.IResource
-import org.eclipse.emf.common.CommonPlugin
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtend.lib.annotations.Accessors
-
-import java.io.ObjectOutputStream
-import java.io.IOException
-import java.io.ObjectInputStream
-
-import tools.vitruv.framework.util.bridges.EMFBridge
+import tools.vitruv.framework.util.datatypes.impl.VURIImpl
 
 /** 
  * Implements the multiton design pattern.
@@ -23,39 +13,12 @@ import tools.vitruv.framework.util.bridges.EMFBridge
  * @author kramerm
  * @version 0.2.0
  */
-class VURI implements Comparable<VURI>, Serializable {
-	@Accessors(PUBLIC_GETTER)
-	static val serialVersionUID = 1L
-	static val Map<String, VURI> INSTANCES = new HashMap<String, VURI>
-	@Accessors(PUBLIC_GETTER)
-	transient org.eclipse.emf.common.util.URI emfURI
-
-	/** 
-	 * Multiton classes should not have a public or default constructor. 
-	 */
-	private new(String uriString) {
-		emfURI = EMFBridge::createURI(uriString)
-	}
-
-	override compareTo(VURI otherVURI) {
-		toString.compareTo(otherVURI.toString)
-	}
-
-	override toString() {
-		emfURI.toString
-	}
-
-	def dispatch equals(Object o) {
-		false
-	}
-
-	def dispatch equals(VURI v) {
-		toString == v.toString
-	}
+abstract class VURI implements Comparable<VURI> {
+	static val Map<String, VURI> INSTANCES = newHashMap
 
 	def static synchronized VURI getInstance(String key) {
 		if (!INSTANCES.containsKey(key)) {
-			val instance = new VURI(key)
+			val instance = new VURIImpl(key)
 			val newKey = instance.toString
 			if (INSTANCES.containsKey(newKey)) {
 				val VURI oldInstance = INSTANCES.get(newKey)
@@ -75,14 +38,14 @@ class VURI implements Comparable<VURI>, Serializable {
 	}
 
 	def static VURI getInstance(Resource resource) {
-		resource.URI.getInstance
+		resource.URI.instance
 	}
 
 	def static VURI getInstance(URI uri) {
 		if (null === uri.toFileString)
-			uri.toString.getInstance
+			uri.toString.instance
 		else
-			uri.toFileString.getInstance
+			uri.toFileString.instance
 	}
 
 	def static VURI getInstance(IResource iResource) {
@@ -93,47 +56,19 @@ class VURI implements Comparable<VURI>, Serializable {
 				keyString.append("/")
 			keyString.append(x)
 		]
-		getInstance(keyString.toString)
+		keyString.toString.instance
 	}
 
-	def String toResolvedAbsolutePath() {
-		CommonPlugin::resolve(emfURI).toFileString
-	}
+	def String toResolvedAbsolutePath()
 
-	def URI getEMFUri() {
-		emfURI
-	}
+	def URI getEMFUri()
 
-	def String getFileExtension() {
-		emfURI.fileExtension
-	}
+	def String getFileExtension()
 
-	def String getLastSegment() {
-		val lastSegment = emfURI.lastSegment
-		if (null === lastSegment)
-			""
-		else
-			lastSegment
-	}
+	def String getLastSegment()
 
-	/** 
-	 * Returns a new VURI that is created from the actual VURI by replacing its
-	 * file extension with newFileExt
-	 * @param newFileExt
-	 * @return the new VURI with the replaced file extension
-	 */
-	def VURI replaceFileExtension(String newFileExt) {
-		VURI::getInstance(emfURI.trimFileExtension.appendFileExtension(newFileExt))
-	}
+	def VURI replaceFileExtension(String newFileExt)
 
-	// Needed for serialization
-	private def void writeObject(ObjectOutputStream stream) throws IOException {
-		stream.writeObject(emfURI.toString)
-	}
+	def VURI createVURIByReplacing(String toReplace, String toInsert)
 
-	// Needed for deserialization
-	private def void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		val emfURIString = stream.readObject as String
-		emfURI = EMFBridge::createURI(emfURIString)
-	}
 }

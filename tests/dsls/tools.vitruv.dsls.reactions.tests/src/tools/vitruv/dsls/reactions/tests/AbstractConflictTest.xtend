@@ -5,7 +5,6 @@ import allElementTypes.Root
 import java.util.Collection
 import java.util.List
 import java.util.Map
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.graphstream.graph.Graph
@@ -17,14 +16,14 @@ import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.ModelMerger
+import tools.vitruv.framework.versioning.Reapplier
 import tools.vitruv.framework.versioning.extensions.GraphExtension
+import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
-import tools.vitruv.framework.versioning.Reapplier
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected BranchDiff branchDiff
@@ -38,7 +37,6 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected ModelMerger modelMerger
 	protected Reapplier reapplier
 	protected Root rootElement2
-//	protected SourceTargetRecorder stRecorder
 	protected VURI newSourceVURI
 	protected VURI newTargetVURI
 	protected VURI sourceVURI
@@ -52,10 +50,8 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 
 	override setup() {
 		super.setup
-		// Setup sourceTargetRecorder 
 		sourceVURI = VURI::getInstance(rootElement.eResource)
-		targetVURI = VURI::getInstance(
-			URI::createURI(sourceVURI.EMFUri.toString.replace(TEST_SOURCE_MODEL_NAME, TEST_TARGET_MODEL_NAME)))
+		targetVURI = sourceVURI.createVURIByReplacing(TEST_SOURCE_MODEL_NAME, TEST_TARGET_MODEL_NAME)
 
 		rootElement2 = AllElementTypesFactory::eINSTANCE.createRoot
 		roots = #[rootElement, rootElement2]
@@ -64,8 +60,7 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 
 		modelMerger = ModelMerger::createModelMerger
 		newSourceVURI = VURI::getInstance(rootElement2.eResource)
-		val uri = URI::createURI(newSourceVURI.EMFUri.toString.replace(newTestSourceModelName, newTestTargetModelName))
-		newTargetVURI = VURI::getInstance(uri)
+		newTargetVURI = newSourceVURI.createVURIByReplacing(newTestSourceModelName, newTestTargetModelName)
 
 		val rootToRootMap = #{
 			sourceVURI.EMFUri.toFileString -> newSourceVURI.EMFUri.toFileString,

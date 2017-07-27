@@ -13,4 +13,5 @@ interface EChangeExtension {
 
 	def String getNodeLabel(EChange e)
 
+	def String getFullString(EChange e)
 }

@@ -19,11 +19,11 @@ class VVFactoryImpl implements VVFactory {
 	}
 
 	override createRemoteProject() {
-		new VVRemoteProjectImpl
+		new RemoteRepositoryImpl
 	}
 
 	override createLocalProject(String name) {
-		new VVLocalProjectImpl(name)
+		new LocalRepositoryImpl()
 	}
 
 }

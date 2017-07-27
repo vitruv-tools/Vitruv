@@ -540,7 +540,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	@Test
 	public def void testApplyBidirectional() {
 		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
-		startRecordingChanges(targetRoot);
+		startRecordingChanges(targetRoot)
 		val newId = "testId";
 		targetRoot.id = newId
 		val propagatedChanges = saveAndSynchronizeChanges(targetRoot);

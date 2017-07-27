@@ -10,10 +10,11 @@ interface ModelMerger {
 		new ModelMergerImpl
 	}
 
-	def void init(BranchDiff branchDiff, Function1<Conflict, List<ChangeMatch>> cb)
-
-	def void init(List<ChangeMatch> myChanges, List<ChangeMatch> theirChanges,
-		Function1<Conflict, List<ChangeMatch>> cb)
+	def void init(
+		BranchDiff branchDiff,
+		Function1<Conflict, List<EChange>> originalCallback,
+		Function1<Conflict, List<EChange>> targetCallback
+	)
 
 	def void compute()
 
