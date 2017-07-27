@@ -129,7 +129,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
 			consequentialChanges += propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult, changedResourcesTracker);
 		}
-		executePropagationResult(propagationResult);
 		handleObjectsWithoutResource();
 		propagatedChanges.add(new PropagatedChange(change, VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges)));
 	}
@@ -170,6 +169,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(it.eResource)];
 		changedResourcesTracker.addSourceResourceOfChange(change);
 		
+		executePropagationResult(command.transformationResult);
 		propagationResult.integrateResult(command.transformationResult);
 		return consequentialChanges;
 	}
