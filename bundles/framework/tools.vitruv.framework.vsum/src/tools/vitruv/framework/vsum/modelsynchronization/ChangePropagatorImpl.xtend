@@ -31,6 +31,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	final CorrespondenceProviding correspondenceProviding
 	Set<ChangePropagationListener> changePropagationListeners
 	final ModelRepositoryImpl modelRepository;
+	final List<EObject> objectsCreatedDuringPropagation; 
 	
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding, ModelRepositoryImpl modelRepository) {
@@ -41,6 +42,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.correspondenceProviding = correspondenceProviding
 		this.changePropagationListeners = new HashSet<ChangePropagationListener>()
 		this.metamodelRepository = metamodelRepository;
+		this.objectsCreatedDuringPropagation = newArrayList();
 	}
 
 	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
@@ -66,11 +68,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		change.applyBackwardIfLegacy();
 		var List<PropagatedChange> result = new ArrayList<PropagatedChange>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
-		val propagationResult = new ChangePropagationResult();
-		propagateSingleChange(change, result, propagationResult, changedResourcesTracker);
+		propagateSingleChange(change, result, changedResourcesTracker);
 		changedResourcesTracker.markNonSourceResourceAsChanged();
-		executePropagationResult(propagationResult);
-		modelRepository.cleanupRootElementsWithoutResource
 		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
 		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
 		resourceRepository.saveAllModels
@@ -100,14 +99,14 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	}
 
 	private def dispatch void propagateSingleChange(CompositeContainerChange change, List<PropagatedChange> propagatedChanges,
-		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+		ChangedResourcesTracker changedResourcesTracker) {
 		for (VitruviusChange innerChange : change.getChanges()) {
-			propagateSingleChange(innerChange, propagatedChanges, propagationResult, changedResourcesTracker)
+			propagateSingleChange(innerChange, propagatedChanges, changedResourcesTracker)
 		}
 	}
 
 	private def dispatch void propagateSingleChange(TransactionalChange change, List<PropagatedChange> propagatedChanges, 
-		ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+		ChangedResourcesTracker changedResourcesTracker) {
 		
 		val changeApplicationFunction = [ResourceSet resourceSet |
 				// If change has a URI, load the model
@@ -126,10 +125,26 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		}
 		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0));
 		val consequentialChanges = newArrayList();
+		val propagationResult = new ChangePropagationResult();
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
 			consequentialChanges += propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult, changedResourcesTracker);
 		}
+		executePropagationResult(propagationResult);
+		handleObjectsWithoutResource();
 		propagatedChanges.add(new PropagatedChange(change, VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges)));
+	}
+	
+	private def void handleObjectsWithoutResource() {
+		modelRepository.cleanupRootElementsWithoutResource
+		// Find created objects without resource
+		for (createdObjectWithoutResource : objectsCreatedDuringPropagation.filter[eResource === null]) {
+			if (correspondenceProviding.correspondenceModel.hasCorrespondences(#[createdObjectWithoutResource])) {
+				throw new IllegalStateException("Every object must be contained within a resource: " + createdObjectWithoutResource);
+			} else {
+				logger.warn("Object was created but has no correspondence and is thus lost: " + createdObjectWithoutResource);
+			}
+		}
+		objectsCreatedDuringPropagation.clear();
 	}
 	
 	private def List<VitruviusChange> propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
@@ -171,6 +186,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	}
 	
 	override objectCreated(EObject createdObject) {
+		this.objectsCreatedDuringPropagation += createdObject;
 		this.modelRepository.addRootElement(createdObject);
 	}
 	
