@@ -8,22 +8,13 @@ Export-Package: tools.vitruv.framework.versioning,
  tools.vitruv.framework.versioning.author.impl,
  tools.vitruv.framework.versioning.branch,
  tools.vitruv.framework.versioning.branch.impl,
- tools.vitruv.framework.versioning.branch.util,
  tools.vitruv.framework.versioning.commit,
  tools.vitruv.framework.versioning.commit.impl,
- tools.vitruv.framework.versioning.commit.util,
- tools.vitruv.framework.versioning.conflict,
- tools.vitruv.framework.versioning.conflict.impl,
- tools.vitruv.framework.versioning.conflict.util,
  tools.vitruv.framework.versioning.emfstore,
  tools.vitruv.framework.versioning.emfstore.impl,
  tools.vitruv.framework.versioning.exceptions,
  tools.vitruv.framework.versioning.extensions,
- tools.vitruv.framework.versioning.impl,
- tools.vitruv.framework.versioning.repository,
- tools.vitruv.framework.versioning.repository.impl,
- tools.vitruv.framework.versioning.repository.util,
- tools.vitruv.framework.versioning.util
+ tools.vitruv.framework.versioning.impl
 Bundle-Version: 0.1.1.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName

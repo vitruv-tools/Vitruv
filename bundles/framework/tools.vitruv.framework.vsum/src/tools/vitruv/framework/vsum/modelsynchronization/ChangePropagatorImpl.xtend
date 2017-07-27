@@ -168,9 +168,9 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		modelRepository.cleanupRootElements
 
 		val changedObjects = change.affectedEObjects;
-		if (changedObjects.nullOrEmpty) {
-			throw new IllegalStateException("There are no objects affected by the given changes");
-		}
+		if (changedObjects.nullOrEmpty)
+			throw new IllegalStateException('''There are no objects affected by the given change«change»''');
+
 		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0));
 		val consequentialChanges = newArrayList
 		changePropagationProvider.getChangePropagationSpecifications(changeDomain).forEach [
@@ -245,11 +245,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			VitruviusChangeFactory::instance.createCompositeChange(resolvedTriggeredChanges))
 
 		propagatedChanges += if (isUnresolved) unresolvedPropagatedChange else resolvedPropagatedChange
-		if (!resolvedPropagatedChange.resolved)
-			throw new IllegalStateException
-		if (unresolvedPropagatedChange.resolved)
-			throw new IllegalStateException
-
+//		if (!resolvedPropagatedChange.resolved)
+//			throw new IllegalStateException
+//		if (unresolvedPropagatedChange.resolved)
+//			throw new IllegalStateException
 		vuriToIds.put(vuri, uuid)
 		idToResolvedChanges.put(uuid, resolvedPropagatedChange)
 		idToUnresolvedChanges.put(uuid, unresolvedPropagatedChange)
