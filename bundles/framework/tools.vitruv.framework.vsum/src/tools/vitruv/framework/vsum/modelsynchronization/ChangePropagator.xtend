@@ -14,7 +14,7 @@ interface ChangePropagator {
 
 	def List<PropagatedChange> getUnresolvedPropagatedChanges(VURI vuri)
 
-	/** 
+	/**
 	 * Resort changes and igores undos/redos.
 	 * @param changelist of changes
 	 * @return TODO

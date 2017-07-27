@@ -56,7 +56,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.correspondenceProviding = correspondenceProviding
 		this.metamodelRepository = metamodelRepository
 		changePropagationListeners = newHashSet
-		vuriToIds = ArrayListMultimap.create
+		vuriToIds = ArrayListMultimap::create
 		idToUnresolvedChanges = newHashMap
 		idToResolvedChanges = newHashMap
 		objectsCreatedDuringPropagation = newArrayList
@@ -155,7 +155,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val clonedChange = clone(change)
 		val changeApplicationFunction = [ ResourceSet resourceSet |
 			// If change has a URI, load the model
-			if (change.URI !== null) resourceRepository.getModel(change.getURI());
+			if (change.URI !== null) resourceRepository.getModel(change.URI)
 			change.resolveBeforeAndApplyForward(resourceSet)
 			return
 		]
@@ -165,11 +165,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		change.affectedEObjects.forEach[modelRepository.addRootElement(it)]
 		modelRepository.cleanupRootElements
 
-		val changedObjects = change.affectedEObjects;
+		val changedObjects = change.affectedEObjects
 		if (changedObjects.nullOrEmpty)
-			throw new IllegalStateException('''There are no objects affected by the given change«change»''');
+			throw new IllegalStateException('''There are no objects affected by the given change«change»''')
 
-		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0));
+		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0))
 		val consequentialChanges = newArrayList
 		val propagationResult = new ChangePropagationResult
 		resourceRepository.startRecording
@@ -179,7 +179,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		]
 		handleObjectsWithoutResource
 		consequentialChanges += resourceRepository.endRecording
-		consequentialChanges.forEach[debug(it)];
+		consequentialChanges.forEach[debug(it)]
 		addPropagatedChanges(clonedChange, change, consequentialChanges, propagatedChanges)
 	}
 
@@ -189,12 +189,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		for (createdObjectWithoutResource : objectsCreatedDuringPropagation.filter[eResource === null]) {
 			if (correspondenceProviding.correspondenceModel.hasCorrespondences(#[createdObjectWithoutResource])) {
 				throw new IllegalStateException("Every object must be contained within a resource: " +
-					createdObjectWithoutResource);
+					createdObjectWithoutResource)
 			} else {
-				warn("Object was created but has no correspondence and is thus lost: " + createdObjectWithoutResource);
+				warn("Object was created but has no correspondence and is thus lost: " + createdObjectWithoutResource)
 			}
 		}
-		objectsCreatedDuringPropagation.clear();
+		objectsCreatedDuringPropagation.clear
 	}
 
 	private def List<VitruviusChange> propagateChangeForChangePropagationSpecification(
@@ -222,14 +222,14 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(eResource)]
 		changedResourcesTracker.addSourceResourceOfChange(change)
 
-		executePropagationResult(command.transformationResult);
+		executePropagationResult(command.transformationResult)
 		propagationResult.integrateResult(command.transformationResult)
 		return consequentialChanges
 	}
 
 	private def void executePropagationResult(ChangePropagationResult changePropagationResult) {
 		if (null === changePropagationResult) {
-			info("Current propagation result is null. Can not save new root EObjects.")
+			info("Current propagation result is null. Can not save new root EObjects::")
 			return
 		}
 		changePropagationResult.elementToPersistenceMap.entrySet.forEach [
@@ -250,7 +250,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val resolvedTriggeredChanges = resourceRepository.lastResolvedChanges
 		if (unresolvedTriggeredChanges.length !== resolvedTriggeredChanges.length)
 			throw new IllegalStateException('''
-				The length of changes should be equal but there are «unresolvedTriggeredChanges.length» 
+				The length of changes should be equal but there are «unresolvedTriggeredChanges.length»
 				respectively «resolvedTriggeredChanges.length»
 			''')
 
