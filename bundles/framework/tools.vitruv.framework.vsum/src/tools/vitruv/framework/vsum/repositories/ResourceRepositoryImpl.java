@@ -39,9 +39,9 @@ import tools.vitruv.framework.vsum.ModelRepository;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
 public class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
-	 private static final String VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges";
-	 
-	private static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.class.getSimpleName());
+    private static final String VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges";
+
+    private static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
     private final VitruvDomainRepository metamodelRepository;
@@ -305,6 +305,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         } else {
             relevantChanges = this.changeRecorder.getResolvedChanges();
         }
+        // TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions that are
+        // supported by the domains of the VirtualModel
         result.addAll(relevantChanges.stream().filter(
                 change -> change.getURI() == null || !change.getURI().getEMFUri().toString().endsWith("correspondence"))
                 .collect(Collectors.toList()));
