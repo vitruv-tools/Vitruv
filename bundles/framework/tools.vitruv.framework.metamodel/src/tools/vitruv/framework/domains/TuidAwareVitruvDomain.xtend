@@ -14,4 +14,9 @@ interface TuidAwareVitruvDomain extends URIHaving, Comparable<URIHaving>, TuidCa
 	def VURI getModelVURIContainingIdentifiedEObject(Tuid tuid);
 
 	def Collection<String> getFileExtensions();
+	
+	/**
+	 * Must be called to register the domain at the TUID calculation and resolution system 
+	 */
+	def void registerAtTuidManagement();
 }
