@@ -17,10 +17,10 @@ import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.emfstore.LocalRepository
+import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryImpl
 import tools.vitruv.framework.versioning.emfstore.impl.RemoteRepositoryImpl
-import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 
 import static org.hamcrest.CoreMatchers.equalTo
@@ -246,7 +246,8 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		val currentBranch = localRepository.currentBranch
 		localRepository.addOrigin(currentBranch, remoteRepository)
 		assertThat(remoteRepository.commits.length, is(1))
-		localRepository.push
+		val pushCommit1 = localRepository.push
+		assertThat(pushCommit1, is(PushState::SUCCESS))
 		assertThat(remoteRepository.commits.length, is(2))
 
 		val newMasterBranch = newLocalRepository.currentBranch
@@ -304,7 +305,8 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		localRepository.addOrigin(currentBranch1, remoteRepository)
 		newLocalRepository.addOrigin(currentBranch2, remoteRepository)
 
-		localRepository.push
+		val pushCommit1 = localRepository.push
+		assertThat(pushCommit1, is(PushState::SUCCESS))
 		newLocalRepository.pull
 
 		assertThat(localRepository.commits.length, is(newLocalRepository.commits.length))
@@ -344,40 +346,40 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		val newCommit = newLocalRepository.commit("Commit2", virtualModel, testVuri)
 		assertThat(newLocalRepository.commits.length, is(3))
 		assertThat(newCommit.changes.length, is(1))
-		try {
-			newLocalRepository.push
-		} catch (CommitNotExceptedException e) {
-			val remoteBranch = newLocalRepository.currentBranch.remoteBranch
-			assertThat(newLocalRepository.getCommits(remoteBranch).length, is(2))
-			newLocalRepository.pull
-			assertThat(newLocalRepository.getCommits(remoteBranch).length, is(3))
-			val lastRemoteCommit = newLocalRepository.getCommits(remoteBranch).last
-			val lastLocalCommit = newLocalRepository.getCommits(newLocalRepository.currentBranch).last
-			assertThat(lastRemoteCommit.identifier, not(equalTo(lastLocalCommit.identifier)))
-			val originalCallback = [ Conflict c |
-				if (c instanceof MultiChangeConflict) {
-					return c.targetChanges
-				} else if (c instanceof SimpleChangeConflict) {
-					return #[c.targetChange]
-				} else
-					#[]
-			]
-			val triggeredCallback = [ Conflict c |
-				if (c instanceof MultiChangeConflict) {
-					return c.triggeredTargetChanges
-				} else
-					#[]
-			]
-			val testLeague1 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
-			assertThat(testLeague1.name, equalTo("Euro-League"))
-			val mergeCommit = newLocalRepository.merge(remoteBranch, newLocalRepository.currentBranch, originalCallback,
-				triggeredCallback, virtualModel)
-			assertThat(mergeCommit.changes.length, is(1))
-			val testLeague2 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
-			assertThat(testLeague2.name, equalTo("EU-League"))
-			assertThat(remoteRepository.commits.length, is(3))
-			newLocalRepository.push
-			assertThat(remoteRepository.commits.length, is(5))
-		}
+		val commitAccepted = newLocalRepository.push
+		assertThat(commitAccepted, is(PushState::COMMIT_NOT_ACCEPTED))
+
+		val remoteBranch = newLocalRepository.currentBranch.remoteBranch
+		assertThat(newLocalRepository.getCommits(remoteBranch).length, is(2))
+		newLocalRepository.pull
+		assertThat(newLocalRepository.getCommits(remoteBranch).length, is(3))
+		val lastRemoteCommit = newLocalRepository.getCommits(remoteBranch).last
+		val lastLocalCommit = newLocalRepository.getCommits(newLocalRepository.currentBranch).last
+		assertThat(lastRemoteCommit.identifier, not(equalTo(lastLocalCommit.identifier)))
+		val originalCallback = [ Conflict c |
+			if (c instanceof MultiChangeConflict) {
+				return c.targetChanges
+			} else if (c instanceof SimpleChangeConflict) {
+				return #[c.targetChange]
+			} else
+				#[]
+		]
+		val triggeredCallback = [ Conflict c |
+			if (c instanceof MultiChangeConflict) {
+				return c.triggeredTargetChanges
+			} else
+				#[]
+		]
+		val testLeague1 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
+		assertThat(testLeague1.name, equalTo("Euro-League"))
+		val mergeCommit = newLocalRepository.merge(remoteBranch, newLocalRepository.currentBranch, originalCallback,
+			triggeredCallback, virtualModel)
+		assertThat(mergeCommit.changes.length, is(1))
+		val testLeague2 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
+		assertThat(testLeague2.name, equalTo("EU-League"))
+		assertThat(remoteRepository.commits.length, is(3))
+		val newCommitAccepted = newLocalRepository.push
+		assertThat(newCommitAccepted, is(PushState::SUCCESS))
+		assertThat(remoteRepository.commits.length, is(5))
 	}
 }

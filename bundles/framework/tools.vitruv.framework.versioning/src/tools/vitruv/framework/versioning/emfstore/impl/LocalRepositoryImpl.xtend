@@ -24,12 +24,12 @@ import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
-import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 import tools.vitruv.framework.versioning.exceptions.LocalBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.VersioningVirtualModel
+import tools.vitruv.framework.versioning.emfstore.PushState
 
 class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalRepository {
 	static extension Logger = Logger::getLogger(LocalRepositoryImpl)
@@ -114,7 +114,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		}
 	}
 
-	override push() throws CommitNotExceptedException {
+	override push() {
 		push(currentBranch)
 	}
 
@@ -148,7 +148,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		return newBranch
 	}
 
-	override push(LocalBranch localBranch) throws CommitNotExceptedException {
+	override push(LocalBranch localBranch) {
 		val remoteBranch = localBranch.remoteBranch
 		if (null === remoteBranch)
 			throw new RemoteBranchNotFoundException
@@ -158,12 +158,12 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		val ids = remoteRepo.getIdentifiers(localBranch.name)
 		val currentCommits = localBranch.commits
 		if (ids.length > currentCommits.length)
-			throw new CommitNotExceptedException
-		ids.forEach [ id, i |
-			val currentCommit = currentCommits.get(i)
-			if (currentCommit.identifier != id)
-				throw new CommitNotExceptedException
-		]
+			return PushState::COMMIT_NOT_ACCEPTED
+		val x = 0 ..< ids.length
+		val serverHasNewerCommits = x.map[currentCommits.get(it).identifier -> ids.get(it)].exists[key != value]
+		if (serverHasNewerCommits)
+			return PushState::COMMIT_NOT_ACCEPTED
+
 		val commitsToPush = currentCommits.drop(ids.length)
 		commitsToPush.forEach [ commit |
 			remoteRepo.push(commit, localBranch.name)
@@ -178,6 +178,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 			if (remoteId != localId)
 				throw new IllegalStateException('''Id at «i» should be «localId» but was «remoteId»''')
 		]
+		return PushState::SUCCESS
 	}
 
 	override pull(LocalBranch branch) {
