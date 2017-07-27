@@ -93,7 +93,7 @@ class ModelRepositoryImpl {
 		info('''unresolvePropagatedChanges «isUnresolved»''')
 		val AtomicEmfChangeRecorder recorder = new AtomicEmfChangeRecorderImpl(isUnresolved, false)
 		recorder.addToRecording(element)
-		recorder.beginRecording()
+		recorder.beginRecording
 		rootToRecorder.put(element, recorder)
 		debug("Start recording for " + element)
 	}

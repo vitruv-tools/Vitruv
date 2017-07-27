@@ -245,7 +245,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	) {
 		val isUnresolved = modelRepository.unresolveChanges
 		val vuri = resolvedChange.URI
-		if (null === vuri) throw new IllegalStateException
 		val uuid = UUID::randomUUID.toString
 		val unresolvedTriggeredChanges = resourceRepository.lastUnresolvedChanges
 		val resolvedTriggeredChanges = resourceRepository.lastResolvedChanges
@@ -261,13 +260,16 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			VitruviusChangeFactory::instance.createCompositeChange(resolvedTriggeredChanges))
 
 		propagatedChanges += if (isUnresolved) unresolvedPropagatedChange else resolvedPropagatedChange
-//		if (!resolvedPropagatedChange.resolved)
-//			throw new IllegalStateException
-//		if (unresolvedPropagatedChange.resolved)
-//			throw new IllegalStateException
-		vuriToIds.put(vuri, uuid)
-		idToResolvedChanges.put(uuid, resolvedPropagatedChange)
-		idToUnresolvedChanges.put(uuid, unresolvedPropagatedChange)
+		if (!resolvedPropagatedChange.resolved)
+			throw new IllegalStateException
+		if (unresolvedPropagatedChange.resolved)
+			throw new IllegalStateException
+		if (null !== vuri) {
+			vuriToIds.put(vuri, uuid)
+			idToResolvedChanges.put(uuid, resolvedPropagatedChange)
+			idToUnresolvedChanges.put(uuid, unresolvedPropagatedChange)
+		} else
+			warn('''resolvedChange.URI was null''')
 	}
 
 }
