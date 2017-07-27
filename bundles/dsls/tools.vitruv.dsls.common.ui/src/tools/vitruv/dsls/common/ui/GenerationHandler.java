@@ -55,7 +55,7 @@ public class GenerationHandler extends AbstractHandler {
 
 	private static class ReactionsScope extends LanguageScope {
 		@Inject
-		public IReactionsEnvironmentGenerator reactionsEnvironmentGenerator;
+		public Provider<IReactionsEnvironmentGenerator> reactionsEnvironmentGenerator;
 		
 		@Inject
 		private Provider<EclipseResourceFileSystemAccess2> fileSystemAccessProvider;
@@ -149,12 +149,11 @@ public class GenerationHandler extends AbstractHandler {
 				final IJavaProject javaProject = (IJavaProject) firstElement;
 				final IProject project = javaProject.getProject();
 				final EclipseResourceFileSystemAccess2 srcGenFSA = generateFSA(project);
-				final IReactionsEnvironmentGenerator reactionsEnvironmentGenerator = reactionsScope.reactionsEnvironmentGenerator;
+				final IReactionsEnvironmentGenerator reactionsEnvironmentGenerator = reactionsScope.reactionsEnvironmentGenerator.get();
 				
 				MIRResourceCollectionVisitor resourceVisitor = new MIRResourceCollectionVisitor(project, mappingScope,
 						reactionsScope);
 				acceptForEachSourceClassPathEntry(javaProject, resourceVisitor);
-				reactionsEnvironmentGenerator.cleanAndSetProject(project);
 				mappingScope.mappingLanguageGenerator.initialize();
 
 				final Map<Resource, Collection<Reaction>> generatedReactions = mappingScope.mappingLanguageGenerator.generateAndCreateReactions(resourceVisitor.getMappingResources(), srcGenFSA);

@@ -9,14 +9,9 @@ import java.util.HashMap
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import org.eclipse.emf.ecore.resource.Resource
 import com.google.inject.Inject
-import org.eclipse.core.resources.IProject
-import org.eclipse.core.runtime.NullProgressMonitor
-import org.eclipse.xtext.ui.resource.IResourceSetProvider
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.generator.IFileSystemAccess2
-import java.io.File
 import org.eclipse.xtext.generator.IGenerator
-import org.eclipse.xtext.resource.DerivedStateAwareResource
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
@@ -25,73 +20,68 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.api.generator.IReactionsEnvironmentGenerator
 import tools.vitruv.framework.domains.VitruvDomain
+import static com.google.common.base.Preconditions.*
+import java.util.ArrayList
+import org.eclipse.xtext.resource.XtextResourceSet
+import com.google.inject.Provider
 
 class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
-	@Inject
-	private IGenerator generator;
+	
+	// whether this generator was already used to generate
+	var used = false;
 	
 	@Inject
-	private IResourceSetProvider resourceSetProvider;
-		
-	private List<Resource> resources;
-	private List<Resource> tempResources;
-	
-	private IProject project;
-	
-	public new() {
-		this.tempResources = newArrayList();
-		this.resources = newArrayList();
+	IGenerator generator;
+
+	@Inject
+	Provider<XtextResourceSet> resourceSetProvider
+
+	val resources = new ArrayList<Resource>;
+	val tempResources = new ArrayList<Resource>;
+
+	def private static ReactionsFile getReactionsFileInResource(Resource resource) {
+		val firstContentElement = resource?.contents.get(0)
+		checkArgument(firstContentElement instanceof ReactionsFile,
+			"The given resource must contain a ReactionsFile element (was %s).",
+			firstContentElement?.class?.simpleName);
+
+		return firstContentElement as ReactionsFile;
 	}
-	
-	public override cleanAndSetProject(IProject project) {
-		finishGeneration();
-		this.project = project;
-	}
-	
-	private static def ReactionsFile getReactionsFileInResource(Resource resource) {
-		if (!(resource?.contents.get(0) instanceof ReactionsFile)) {
-			throw new IllegalStateException("The given resource must contain a ReactionsFile element.");
-		}
-		
-		return resource.contents.get(0) as ReactionsFile;
-	}
-	
-	
-	public override void addReaction(String sourceFileName, Reaction reaction) {
-		if (project === null) {
-			throw new IllegalStateException("Project must be set");
-		}
+
+	override void addReaction(String sourceFileName, Reaction reaction) {
 		if (reaction === null) {
 			throw new IllegalArgumentException("Reaction must not be null");
 		}
-		val reactionsSegment = getCorrespondingReactionsSegmentInTempResource(sourceFileName, reaction.reactionsSegment);
+		val reactionsSegment = getCorrespondingReactionsSegmentInTempResource(sourceFileName,
+			reaction.reactionsSegment);
 		reactionsSegment.reactions += reaction;
 	}
-	
-	private def ReactionsSegment getCorrespondingReactionsSegmentInTempResource(String sourceFileName, ReactionsSegment reactionsSegment) {
+
+	def private ReactionsSegment getCorrespondingReactionsSegmentInTempResource(String sourceFileName,
+		ReactionsSegment reactionsSegment) {
 		for (res : tempResources) {
 			if (res.URI.segmentsList.last.equals(sourceFileName + ".reactions")) {
 				val reactionsFile = res.reactionsFileInResource;
 				var ReactionsSegment foundSegment = null;
-				for (segment :  reactionsFile.reactionsSegments) {
-					if (segment.fromDomain.domain == reactionsSegment.fromDomain.domain
-						&& segment.toDomain.domain == reactionsSegment.toDomain.domain
-					) {
+				for (segment : reactionsFile.reactionsSegments) {
+					if (segment.fromDomain.domain == reactionsSegment.fromDomain.domain &&
+						segment.toDomain.domain == reactionsSegment.toDomain.domain) {
 						foundSegment = segment;
-					}	
+					}
 				}
 				if (foundSegment === null) {
 					foundSegment = addReactionsSegment(reactionsFile, reactionsSegment, sourceFileName);
 				}
-				
+
 				return foundSegment;
 			}
 		}
-		val newFile = generateTempResourceWithReactionsFile(project, sourceFileName);
+		val newFile = generateTempResourceWithReactionsFile(sourceFileName);
 		return addReactionsSegment(newFile, reactionsSegment, sourceFileName);
 	}
-	
-	private def ReactionsSegment addReactionsSegment(ReactionsFile fileToAddTo, ReactionsSegment originalSegment, String segmentName) {
+
+	def private ReactionsSegment addReactionsSegment(ReactionsFile fileToAddTo, ReactionsSegment originalSegment,
+		String segmentName) {
 		val newSegment = ReactionsLanguageFactory.eINSTANCE.createReactionsSegment();
 		newSegment.fromDomain = originalSegment.fromDomain;
 		newSegment.toDomain = originalSegment.toDomain;
@@ -99,71 +89,43 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 		fileToAddTo.reactionsSegments += newSegment;
 		return newSegment;
 	}
-	
-	public override void addReactions(String sourceFileName, Iterable<Reaction> reactions) {
+
+	override void addReactions(String sourceFileName, Iterable<Reaction> reactions) {
 		reactions.forEach[addReaction(sourceFileName, it)];
 	}
-	
-	public def override addReactions(Resource reactionsResource) {
-		if (reactionsResource === null || !(reactionsResource.contents.get(0) instanceof ReactionsFile)) {
-			throw new IllegalArgumentException("The given resource is not a reactions file");
-		}
+
+	override addReactions(Resource reactionsResource) {
+		checkArgument(reactionsResource?.contents?.get(0) instanceof ReactionsFile,
+			"The given resource is not a reactions file")
 		this.resources.add(reactionsResource);
 	}
-	
-	public override void generateEnvironment(IFileSystemAccess2 fsa) {
-		if (project === null) {
-			throw new IllegalStateException("Project must be set");
-		}
+
+	override generateEnvironment(IFileSystemAccess2 fsa) {
+		checkState(!used, "This generator was already used to generate an environment")
+		used = true
 		prepareGeneration();
 		generate(fsa);
-		finishGeneration();
 	}
-	
+
 	private def prepareGeneration() {
 		cleanGeneratedFiles();
 	}
-	
-	private def cleanGeneratedFiles() {
-		project.getFolder("src-gen").getFolder(basicMirPackageQualifiedName.replace(".", File.separator)).delete(0, new NullProgressMonitor());
+
+	def private cleanGeneratedFiles() {
+		// project.getFolder("src-gen").getFolder(basicMirPackageQualifiedName.replace(".", File.separator)).delete(0, new NullProgressMonitor());
 	}
-	
-	private def finishGeneration() {
-		removeTempResources();
-		clearReactionsAndResources();
-	}
-	
-	private def ReactionsFile generateTempResourceWithReactionsFile(IProject project, String sourceFileName) {
+
+	def private ReactionsFile generateTempResourceWithReactionsFile(String sourceFileName) {
 		val reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile();
-		val resSet = resourceSetProvider.get(project);
-		val singleReactionResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + "/" + sourceFileName + ".reactions"));
+		val resSet = resourceSetProvider.get();
+		val singleReactionResource = resSet.createResource(
+			URI.createFileURI(System.getProperty("java.io.tmpdir") + "/" + sourceFileName + ".reactions"));
 		singleReactionResource.contents.add(reactionsFile);
 		tempResources += singleReactionResource;
 		return reactionsFile;
 	}
-			
-	private def void removeTempResources() {
-		try {
-			tempResources.forEach[delete(emptyMap)];
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private def clearReactionsAndResources() {
-		this.resources.clear();
-		this.tempResources.clear();
-	}
-	
-	private def reinitializeDerivedStateOfTemporaryResources() {
-		for (res : tempResources) {
-			(res as DerivedStateAwareResource).discardDerivedState();
-			(res as DerivedStateAwareResource).installDerivedState(false);
-		}
-	}
-	
-	private def generate(IFileSystemAccess2 fsa) {
-		reinitializeDerivedStateOfTemporaryResources();		
+
+	def private generate(IFileSystemAccess2 fsa) {
 		val modelCorrespondencesToExecutors = new HashMap<Pair<VitruvDomain, VitruvDomain>, List<String>>;
 		for (resource : resources + tempResources) {
 			for (reactionsSegment : resource.reactionsFileInResource.reactionsSegments) {
@@ -176,51 +138,58 @@ class ReactionsEnvironmentGenerator implements IReactionsEnvironmentGenerator {
 				generateReactions(resource, fsa);
 			}
 		}
-		
+
 		generateChange2CommandTransformings(modelCorrespondencesToExecutors, fsa)
 	}
-	
-	private def void generateChange2CommandTransformings(Map<Pair<VitruvDomain, VitruvDomain>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
+
+	def private void generateChange2CommandTransformings(
+		Map<Pair<VitruvDomain, VitruvDomain>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
 		for (modelCombination : modelCorrepondenceToExecutors.keySet) {
-			val changePropagationSpecificationContent = generateChangePropagationSpecification(modelCombination, modelCorrepondenceToExecutors.get(modelCombination));
-			val changePropagationSpecificationNameGenerator = modelCombination.changePropagationSpecificationClassNameGenerator;
-			fsa.generateFile(changePropagationSpecificationNameGenerator.qualifiedName.filePath, changePropagationSpecificationContent);
+			val changePropagationSpecificationContent = generateChangePropagationSpecification(modelCombination,
+				modelCorrepondenceToExecutors.get(modelCombination));
+			val changePropagationSpecificationNameGenerator = modelCombination.
+				changePropagationSpecificationClassNameGenerator;
+			fsa.generateFile(changePropagationSpecificationNameGenerator.qualifiedName.filePath,
+				changePropagationSpecificationContent);
 		}
 	}
-		
-	private def generateChangePropagationSpecification(Pair<VitruvDomain, VitruvDomain> modelPair, List<String> executorsNames) {
-		val ih = new XtendImportHelper();	
-		val changePropagationSpecificationNameGenerator = modelPair.changePropagationSpecificationClassNameGenerator;
+
+	def private generateChangePropagationSpecification(Pair<VitruvDomain, VitruvDomain> modelPair,
+		List<String> executorsNames) {
+		val ih = new XtendImportHelper();
+		val changePropagationSpecificationNameGenerator = modelPair.
+			changePropagationSpecificationClassNameGenerator;
 		val classImplementation = '''
-		/**
-		 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.name» and «modelPair.second.name».
-		 * To add further change processors overwrite the setup method.
-		 */
-		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangePropagationSpecification)» {
-			public «changePropagationSpecificationNameGenerator.simpleName»() {
-				super(new «ih.typeRef(modelPair.first.providerForDomain.class)»().getDomain(), 
-					new «ih.typeRef(modelPair.second.providerForDomain.class)»().getDomain());
-				setup();
-			}
-			
 			/**
-			 * Adds the reactions change processors to this {@link «changePropagationSpecificationNameGenerator.simpleName»}.
-			 * For adding further change processors overwrite this method and call the super method at the right place.
+			 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.name» and «modelPair.second.name».
+			 * To add further change processors overwrite the setup method.
 			 */
-			protected void setup() {
-				«FOR executorName : executorsNames»
-					this.addChangeMainprocessor(new «executorName»());
-				«ENDFOR»		
+			public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangePropagationSpecification)» {
+				public «changePropagationSpecificationNameGenerator.simpleName»() {
+					super(new «ih.typeRef(modelPair.first.providerForDomain.class)»().getDomain(), 
+						new «ih.typeRef(modelPair.second.providerForDomain.class)»().getDomain());
+					setup();
+				}
+				
+				/**
+				 * Adds the reactions change processors to this {@link «changePropagationSpecificationNameGenerator.simpleName»}.
+				 * For adding further change processors overwrite this method and call the super method at the right place.
+				 */
+				protected void setup() {
+					«FOR executorName : executorsNames»
+						this.addChangeMainprocessor(new «executorName»());
+					«ENDFOR»		
+				}
+				
 			}
-			
-		}
 		'''
-		
+
 		return generateClass(changePropagationSpecificationNameGenerator.packageName, ih, classImplementation);
 	}
-	
-	private def void generateReactions(Resource reactionsResource, IFileSystemAccess fsa) {
+
+	def private void generateReactions(Resource reactionsResource, IFileSystemAccess fsa) {
 		generator.doGenerate(reactionsResource, fsa);
 	}
-	
+
 }
+	
