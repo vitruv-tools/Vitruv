@@ -7,8 +7,9 @@ import org.eclipse.emf.ecore.EObject
 import java.util.concurrent.Callable
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor
 
-interface ModelRepository {
+interface ModelRepository extends VitruviusRecordingCommandExecutor{
 	def void persistRootElement(VURI persistenceVuri, EObject rootElement);
 	def ModelInstance getModel(VURI modelVuri);
 	def void forceReloadModelIfExisting(VURI modelVuri);

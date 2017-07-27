@@ -30,14 +30,12 @@ import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
-import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.ModelRepository;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
-public class ResourceRepositoryImpl
-        implements ModelRepository, CorrespondenceProviding, VitruviusRecordingCommandExecutor {
+public class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
     private static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
@@ -68,9 +66,9 @@ public class ResourceRepositoryImpl
     }
 
     /**
-     * Supports three cases: 1) get registered 2) create non-existing 3) get unregistered but
-     * existing that contains at most a root element without children. But throws an exception if an
-     * instance that contains more than one element exists at the uri.
+     * Supports three cases: 1) get registered 2) create non-existing 3) get unregistered but existing
+     * that contains at most a root element without children. But throws an exception if an instance
+     * that contains more than one element exists at the uri.
      *
      * DECISION Since we do not throw an exception (which can happen in 3) we always return a valid
      * model. Hence the caller do not have to check whether the retrieved model is null.
