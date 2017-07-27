@@ -26,7 +26,7 @@ class ReapplierImpl implements Reapplier {
 		}
 
 		echangesToReapply.map [
-			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it], vuri)
+			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it])
 		].forEach [
 			virtualModel.propagateChange(it)
 		]

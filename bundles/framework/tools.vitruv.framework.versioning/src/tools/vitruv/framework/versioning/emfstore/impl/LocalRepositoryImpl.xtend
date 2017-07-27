@@ -97,7 +97,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		val newChanges = originalChanges.map [
 			val eChanges = EChanges.map[cloneEChange(it)]
 			eChanges.forEach[processTargetEChange.accept(it)]
-			val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(eChanges, vuri)
+			val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(eChanges)
 			return newChange
 		]
 		newChanges.forEach [
