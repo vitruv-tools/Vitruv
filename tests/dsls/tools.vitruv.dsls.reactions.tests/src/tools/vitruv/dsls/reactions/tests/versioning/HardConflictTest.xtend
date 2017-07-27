@@ -145,7 +145,7 @@ class HardConflictTest extends AbstractHardConflictTest {
 		modelMerger.init(branchDiff, originalCallback, triggeredCallback)
 		modelMerger.compute
 		val echanges = modelMerger.resultingOriginalEChanges
-		val changesToRollback = virtualModel.getResolvedPropagatedChanges(sourceVURI)
+		val changesToRollback = virtualModel.getResolvedPropagatedChanges(sourceVURI).drop(1).toList
 		if (changesToRollback.exists[!resolved])
 			throw new IllegalStateException
 		val reappliedChanges = reapplier.reapply(sourceVURI, changesToRollback, echanges, virtualModel)
