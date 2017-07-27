@@ -126,10 +126,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0));
 		val consequentialChanges = newArrayList();
 		val propagationResult = new ChangePropagationResult();
+		resourceRepository.startRecording;
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
 			consequentialChanges += propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult, changedResourcesTracker);
 		}
 		handleObjectsWithoutResource();
+		consequentialChanges += resourceRepository.endRecording();
+		consequentialChanges.forEach[logger.debug(it)];		
 		propagatedChanges.add(new PropagatedChange(change, VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges)));
 	}
 	
@@ -155,15 +158,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
-			modelRepository.startRecording;
 			val propResult = propagationSpecification.propagateChange(change, correspondenceModel);
 			modelRepository.cleanupRootElements();
-			consequentialChanges += modelRepository.endRecording;
-			consequentialChanges.forEach[logger.debug(it)];
 			return propResult;
 		])
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
-					
+
 		// Store modification information
 		val changedEObjects = command.getAffectedObjects().filter(EObject)
 		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(it.eResource)];

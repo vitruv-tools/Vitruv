@@ -8,6 +8,7 @@ import java.util.concurrent.Callable
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor
+import tools.vitruv.framework.change.description.TransactionalChange
 
 interface ModelRepository extends VitruviusRecordingCommandExecutor{
 	def void persistRootElement(VURI persistenceVuri, EObject rootElement);
@@ -23,4 +24,7 @@ interface ModelRepository extends VitruviusRecordingCommandExecutor{
      * @param function The {@link Consumer} to be executed
      */
     def void executeOnResourceSet(Consumer<ResourceSet> function);
+    
+    def void startRecording();
+    def Iterable<TransactionalChange> endRecording();
 }
