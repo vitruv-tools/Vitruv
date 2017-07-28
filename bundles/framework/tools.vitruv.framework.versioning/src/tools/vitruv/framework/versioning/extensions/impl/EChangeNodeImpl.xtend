@@ -14,7 +14,7 @@ import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
 
 class EChangeNodeImpl extends SingleNode implements EChangeNode {
 	static extension EChangeCompareUtil = EChangeCompareUtil::instance
-	@Accessors(PUBLIC_GETTER,PUBLIC_SETTER)
+	@Accessors(PUBLIC_GETTER)
 	EChange eChange
 	@Accessors(PUBLIC_GETTER,PUBLIC_SETTER)
 	boolean triggered
@@ -24,6 +24,14 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 
 	protected new(AbstractGraph graph, String id) {
 		super(graph, id)
+	}
+
+	override setEChange(EChange e) {
+		eChange = e
+		val x = getAttribute(GraphStreamConstants::uiClass)
+		val prefix = if (null === x || "" === x) "" else x + ", "
+		val String s = '''«prefix»«e.class.simpleName»'''
+		setAttribute(GraphStreamConstants::uiClass, s)
 	}
 
 	override isEChangeNodeEqual(EChangeNode node2) {
@@ -39,11 +47,8 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 
 	override setType(NodeType type) {
 		val x = getAttribute(GraphStreamConstants::uiClass)
-		val String s = '''«x»«type.toString»'''
+		val String s = '''«x», «type.toString»'''
 		setAttribute(GraphStreamConstants::uiClass, s)
-		val newX = getAttribute(GraphStreamConstants::uiClass)
-		if (x == newX)
-			throw new IllegalArgumentException
 	}
 
 	override isConflicting() {

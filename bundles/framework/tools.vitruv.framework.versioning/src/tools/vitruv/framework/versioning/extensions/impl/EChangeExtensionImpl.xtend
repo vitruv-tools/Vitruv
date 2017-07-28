@@ -69,6 +69,16 @@ class EChangeExtensionImpl implements EChangeExtension {
 		return fullString
 	}
 
+	private static dispatch def String getFullStringImpl(CreateAndInsertRoot<?> e) {
+		val fullString = '''
+			CreateAndReplaceNonRoot
+			«e.createChange.affectedEObject.toString» 
+			«e.insertChange.uri»
+			«e.insertChange.index»
+		'''
+		return fullString
+	}
+
 	private static dispatch def String getFullStringImpl(CreateAndReplaceNonRoot<?, ?> e) {
 		val fullString = '''
 			CreateAndReplaceNonRoot

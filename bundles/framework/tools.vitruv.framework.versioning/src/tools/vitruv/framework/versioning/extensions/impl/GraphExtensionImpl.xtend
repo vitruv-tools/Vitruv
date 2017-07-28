@@ -191,8 +191,8 @@ class GraphExtensionImpl implements GraphExtension {
 				val attribute = <String>getAttribute(attKey)
 				newNode.addAttribute(attKey, attribute)
 			]
-			newNode.EChange = EChange
 			newNode.setAttribute(GraphStreamConstants::uiClass, '''graph«x»''')
+			newNode.EChange = EChange			
 		]
 		graphMap.put(graph, x + 1)
 		graphToAdd.edgeSet.forEach [

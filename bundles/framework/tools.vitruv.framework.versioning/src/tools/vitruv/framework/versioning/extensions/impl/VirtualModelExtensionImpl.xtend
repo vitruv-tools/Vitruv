@@ -13,8 +13,7 @@ class VirtualModelExtensionImpl implements VirtualModelExtension {
 	}
 
 	override getChangeMatches(VersioningVirtualModel v, VURI vuri) {
-		// FIXME PS drop(1) is a dirty hack to exclude the CreateAndInsertRoot EChanges
-		v.getUnresolvedPropagatedChanges(vuri).drop(1).toList
+		v.getUnresolvedPropagatedChanges(vuri).toList
 	}
 
 	override getChangeMatchesFrom(VersioningVirtualModel v, VURI vuri, String otherId) {
