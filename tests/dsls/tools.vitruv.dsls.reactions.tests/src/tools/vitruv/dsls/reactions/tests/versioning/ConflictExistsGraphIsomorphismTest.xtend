@@ -89,7 +89,7 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		assertThat(conflict.sourceChanges.size, is(2))
 		assertThat(conflict.targetChanges.size, is(2))
 		val conflictFreeEChanges = conflictDetector.conflictFreeOriginalEChanges
-		assertThat(conflictFreeEChanges.length, is(6))
+		assertThat(conflictFreeEChanges.length, is(8))
 	}
 
 	@Test
@@ -106,7 +106,7 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		val echanges = modelMerger.resultingOriginalEChanges
 
 		val testOnResourceSet = [ ResourceSet resourceSet, List<EChange> es |
-			assertThat(es.length, is(10))
+			assertThat(es.length, is(12))
 			assertThat(es.exists[resolved], is(false))
 			es.forEach [
 				resolveBeforeAndApplyForward(resourceSet)
@@ -138,6 +138,6 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		if (changesToRollback.exists[!resolved])
 			throw new IllegalStateException
 		val reappliedChanges = reapplier.reapply(sourceVURI, changesToRollback, echanges, virtualModel)
-		assertThat(reappliedChanges.size, is(10))
+		assertThat(reappliedChanges.size, is(12))
 	}
 }

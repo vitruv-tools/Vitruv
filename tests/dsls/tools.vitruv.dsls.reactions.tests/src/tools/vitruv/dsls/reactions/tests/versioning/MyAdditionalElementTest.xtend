@@ -77,7 +77,7 @@ class MyAdditionalElementTest extends AbstractMyAdditionalElementTest {
 	def void testConflictDetector() {
 		assertThat(conflicts.empty, is(true))
 		val conflictFreeEChanges = conflictDetector.conflictFreeOriginalEChanges
-		assertThat(conflictFreeEChanges.length, is(10))
+		assertThat(conflictFreeEChanges.length, is(12))
 	}
 
 	@Test
@@ -93,7 +93,7 @@ class MyAdditionalElementTest extends AbstractMyAdditionalElementTest {
 		val echanges = modelMerger.resultingOriginalEChanges
 
 		val testOnResourceSet = [ ResourceSet resourceSet, List<EChange> es |
-			assertThat(es.length, is(10))
+			assertThat(es.length, is(12))
 			assertThat(es.exists[resolved], is(false))
 			es.forEach [
 				resolveBeforeAndApplyForward(resourceSet)

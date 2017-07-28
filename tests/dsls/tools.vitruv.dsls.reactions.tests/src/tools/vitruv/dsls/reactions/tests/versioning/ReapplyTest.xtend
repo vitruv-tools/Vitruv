@@ -38,32 +38,31 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 		assertThat(rootElement.eContents.length, is(1))
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
 
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
-
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(5))
 		val originalChanges = virtualModel.getChangeMatches(sourceVURI).map[originalChange]
-		assertThat(originalChanges.length, is(4))
+		assertThat(originalChanges.length, is(5))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
 		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#[pair])
 		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
 			it as EMFModelChangeImpl
-		].map[eChangeCopier.copyEMFModelChangeToSingleChange(it, newSourceVURI)].toList
-		assertThat(copiedChanges.length, is(4))
+		].map[eChangeCopier.copyEMFModelChangeToSingleChange(it)].toList
+		assertThat(copiedChanges.length, is(5))
 
 		virtualModel.propagateChange(copiedChanges.get(0))
 		assertThatNonRootObjectContainerHasRightId
 
-		for (i : 0 ..< 3) {
-			virtualModel.propagateChange(copiedChanges.get(i + 1))
+		copiedChanges.forEach [ c, i |
+			virtualModel.propagateChange(c)
 			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i, true)
-		}
+		]
+
 		newSourceVURI.saveSecondSourceModel
 	}
 
@@ -78,37 +77,40 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 		assertThat(rootElement.eContents.length, is(1))
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
 		val changeMatches1 = virtualModel.getChangeMatches(sourceVURI)
-		assertThat(changeMatches1.length, is(4))
+		assertThat(changeMatches1.length, is(5))
 		changeMatches1.forEach [ c |
 			c.originalChange.EChanges.forEach [ eChange |
 				assertThat(eChange.resolved, is(false))
 			]
 		]
 		val originalChanges = changeMatches1.map[originalChange]
-		assertThat(originalChanges.length, is(4))
+		assertThat(originalChanges.length, is(5))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
 		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#[pair])
 		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
 			it as EMFModelChangeImpl
-		].map[eChangeCopier.copyEMFModelChangeToList(it, newSourceVURI)].flatten.toList
-		assertThat(copiedChanges.length, is(8))
-		val x = copiedChanges.get(0)
-		virtualModel.propagateChange(x)
+		].map[eChangeCopier.copyEMFModelChangeToList(it)].flatten.toList
+		assertThat(copiedChanges.length, is(10))
+
+		for (i : 0 ..< 3) {
+			virtualModel.propagateChange(copiedChanges.get(i))
+		}
+
 		assertThatNonRootObjectContainerIsCreated
-		val y = copiedChanges.get(1)
+		val y = copiedChanges.get(3)
 		virtualModel.propagateChange(y)
 		assertThatNonRootObjectContainerHasRightId
 		for (i : 0 ..< 3) {
-			virtualModel.propagateChange(copiedChanges.get(2 + i * 2))
+			virtualModel.propagateChange(copiedChanges.get(4 + i * 2))
 			assertThatNonRootObjectHasBeenInsertedInContainer(i)
-			virtualModel.propagateChange(copiedChanges.get(3 + i * 2))
+			virtualModel.propagateChange(copiedChanges.get(5 + i * 2))
 			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i)
 		}
 		newSourceVURI.saveSecondSourceModel

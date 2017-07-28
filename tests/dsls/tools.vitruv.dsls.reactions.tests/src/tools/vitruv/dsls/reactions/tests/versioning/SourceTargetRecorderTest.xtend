@@ -41,7 +41,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		container.id = nonRootObjectContainerName
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
@@ -49,7 +49,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 			rootElement.saveAndSynchronizeChanges
 			assertModelsEqual
 		]
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(5))
 		assertThat(virtualModel.getChangeMatches(sourceVURI).forall[sourceVURI == originalChange.URI], is(true))
 	}
 
@@ -61,13 +61,13 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(5))
 		assertThat(virtualModel.getChangeMatches(sourceVURI).forall[sourceVURI == originalChange.URI], is(true))
 	}
 
@@ -79,13 +79,13 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(5))
 		virtualModel.getChangeMatches(sourceVURI).forEach [
 			assertThat(originalChange.EChanges.forall[!resolved], is(true))
 		]

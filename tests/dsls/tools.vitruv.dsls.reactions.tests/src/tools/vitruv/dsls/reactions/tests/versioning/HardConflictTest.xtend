@@ -31,7 +31,7 @@ class HardConflictTest extends AbstractHardConflictTest {
 		assertThat(conflict.sourceChanges.size, is(1))
 		assertThat(conflict.targetChanges.size, is(1))
 		val conflictFreeEChanges = conflictDetector.conflictFreeOriginalEChanges
-		assertThat(conflictFreeEChanges.length, is(1))
+		assertThat(conflictFreeEChanges.length, is(3))
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class HardConflictTest extends AbstractHardConflictTest {
 		val echanges = modelMerger.resultingOriginalEChanges
 
 		val testOnResourceSet = [ ResourceSet resourceSet, List<EChange> es |
-			assertThat(es.length, is(2))
+			assertThat(es.length, is(4))
 			assertThat(es.exists[resolved], is(false))
 			es.forEach [
 				resolveBeforeAndApplyForward(resourceSet)
@@ -103,7 +103,7 @@ class HardConflictTest extends AbstractHardConflictTest {
 		val echanges = modelMerger.resultingOriginalEChanges
 
 		val testOnResourceSet = [ ResourceSet resourceSet, List<EChange> es |
-			assertThat(es.length, is(2))
+			assertThat(es.length, is(4))
 			assertThat(es.exists[resolved], is(false))
 			es.forEach [
 				resolveBeforeAndApplyForward(resourceSet)
@@ -149,7 +149,7 @@ class HardConflictTest extends AbstractHardConflictTest {
 		if (changesToRollback.exists[!resolved])
 			throw new IllegalStateException
 		val reappliedChanges = reapplier.reapply(sourceVURI, changesToRollback, echanges, virtualModel)
-		assertThat(reappliedChanges.size, is(2))
+		assertThat(reappliedChanges.size, is(4))
 		val root = virtualModel.getModelInstance(sourceVURI).firstRootEObject as Root
 		assertThat(root.nonRootObjectContainerHelper.id, equalTo(otherContainerID))
 	}
