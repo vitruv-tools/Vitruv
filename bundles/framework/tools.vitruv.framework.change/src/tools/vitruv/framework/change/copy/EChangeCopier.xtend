@@ -2,7 +2,6 @@ package tools.vitruv.framework.change.copy
 
 import java.util.List
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.echange.EChange
 
 /**
@@ -17,11 +16,11 @@ interface EChangeCopier {
 	 * @param vuri
 	 * @return
 	 */
-	def List<VitruviusChange> copyEMFModelChangeToList(VitruviusChange changeToCopy, VURI vuri)
+	def List<VitruviusChange> copyEMFModelChangeToList(VitruviusChange changeToCopy)
 
-	def VitruviusChange copyEMFModelChangeToSingleChange(VitruviusChange changeToCopy, VURI vuri)
+	def VitruviusChange copyEMFModelChangeToSingleChange(VitruviusChange changeToCopy)
 
-	def VitruviusChange copyEChanges(EChange changeToCopy, VURI vuri)
+	def VitruviusChange copyEChanges(EChange changeToCopy)
 
 	def EChange copy(EChange e)
 

@@ -1,5 +1,6 @@
 package tools.vitruv.framework.change.copy.impl
 
+import java.util.List
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
@@ -12,13 +13,10 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
-import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertNonRootImpl
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
-import tools.vitruv.framework.util.datatypes.VURI
-import java.util.List
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 
 class EChangeCopierImpl implements EChangeCopier {
 	static extension Logger = Logger::getLogger(EChangeCopierImpl)
@@ -29,19 +27,19 @@ class EChangeCopierImpl implements EChangeCopier {
 		this.replacePairs = replacePairs
 	}
 
-	override copyEChanges(EChange changeToCopy, VURI vuri) {
+	override copyEChanges(EChange changeToCopy) {
 		val copiedEChange = copyThisEChange(changeToCopy)
 		return VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[copiedEChange]) as VitruviusChange
 	}
 
-	override copyEMFModelChangeToList(VitruviusChange changeToCopy, VURI vuri) {
+	override copyEMFModelChangeToList(VitruviusChange changeToCopy) {
 		val newChanges = changeToCopy.copiedEChangeIterator.map [
 			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it]) as VitruviusChange
 		].toList
 		return newChanges
 	}
 
-	override copyEMFModelChangeToSingleChange(VitruviusChange changeToCopy, VURI vuri) {
+	override copyEMFModelChangeToSingleChange(VitruviusChange changeToCopy) {
 		val newEchanges = changeToCopy.copiedEChangeIterator.toList
 		val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(newEchanges)
 		return newChange
@@ -51,12 +49,9 @@ class EChangeCopierImpl implements EChangeCopier {
 		throw new UnsupportedOperationException('''Copying EChange «e» is not supported yet!''')
 	}
 
-	private dispatch def CreateAndInsertRoot<?> copyThisEChange(CreateAndInsertRoot<?> createAndInsertNonRoot) {
-		return null
-	}
-
 	private dispatch def CreateAndInsertNonRoot<?, ?> copyThisEChange(
-		CreateAndInsertNonRootImpl<?, ?> createAndInsertNonRoot) {
+		CreateAndInsertNonRoot<?, ?> createAndInsertNonRoot
+	) {
 		val insertChange = createAndInsertNonRoot.insertChange
 		val affectedEObject = insertChange.affectedEObject as InternalEObject
 		val newAffectedEObject = adjust(affectedEObject)
@@ -66,6 +61,12 @@ class EChangeCopierImpl implements EChangeCopier {
 		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
 			createCreateAndInsertNonRootChange(newAffectedEObject, affectedFeature, newValue, index)
 		return change
+	}
+
+	private dispatch def CreateAndInsertRoot<?> copyThisEChange(
+		CreateAndInsertRoot<?> createAndInsertRoot
+	) {
+		EcoreUtil::copy(createAndInsertRoot)
 	}
 
 	private dispatch def CreateAndReplaceNonRoot<?, ?> copyThisEChange(

@@ -26,7 +26,7 @@ import tools.vitruv.framework.util.bridges.EcoreResourceBridge
  * @author Heiko Klare
  */
 abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
-	AtomicEmfChangeRecorder changeRecorder;
+	AtomicEmfChangeRecorder changeRecorder
 
 	override beforeTest() {
 		super.beforeTest
@@ -35,10 +35,9 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	}
 
 	override afterTest() {
-		if (changeRecorder.isRecording()) {
-			changeRecorder.endRecording();
-		}
-		cleanup();
+		if (changeRecorder.recording)
+			changeRecorder.endRecording
+		cleanup
 	}
 
 	/**
