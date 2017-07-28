@@ -5,7 +5,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.google.inject.ImplementedBy
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.environment.ReactionsEnvironmentGenerator
-import org.eclipse.xtext.generator.OutputConfiguration
 
 /**
  * Collects {@linkplain Reaction reactions} and generates all code required
