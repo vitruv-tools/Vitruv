@@ -175,7 +175,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		resourceRepository.startRecording
 		val specifications = changePropagationProvider.getChangePropagationSpecifications(changeDomain)
 		specifications.forEach [
-			consequentialChanges +=
 				propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
 		handleObjectsWithoutResource
@@ -225,7 +224,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 		executePropagationResult(command.transformationResult)
 		propagationResult.integrateResult(command.transformationResult)
-		return consequentialChanges
 	}
 
 	private def void executePropagationResult(ChangePropagationResult changePropagationResult) {
