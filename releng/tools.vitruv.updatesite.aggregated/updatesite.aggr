@@ -19,6 +19,9 @@
         <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
         <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
       </repositories>
+      <repositories location="https://kit-sdq.github.io/updatesite/nightly/xannotations">
+        <features name="edu.kit.ipd.sdq.activextendannotations.feature.feature.group" versionRange="1.0.0.201707141530"/>
+      </repositories>
     </contributions>
   </validationSets>
   <configurations architecture="x86_64"/>

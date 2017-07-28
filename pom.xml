@@ -43,6 +43,11 @@
 			<layout>p2</layout>
 			<url>http://vitruv-tools.github.io/updatesite/release/license</url>
 		</repository>
+		<repository>
+			<id>XAnnotations</id>
+			<layout>p2</layout>
+			<url>https://kit-sdq.github.io/updatesite/nightly/xannotations</url>
+		</repository>
 	</repositories>
 
 	<build>
