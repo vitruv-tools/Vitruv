@@ -128,7 +128,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val propagationResult = new ChangePropagationResult();
 		resourceRepository.startRecording;
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
-			consequentialChanges += propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult, changedResourcesTracker);
+			propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult, changedResourcesTracker);
 		}
 		handleObjectsWithoutResource();
 		consequentialChanges += resourceRepository.endRecording();
@@ -149,11 +149,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		objectsCreatedDuringPropagation.clear();
 	}
 	
-	private def List<VitruviusChange> propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
+	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
 			ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
 		val correspondenceModel = correspondenceProviding.getCorrespondenceModel();
 
-		val List<VitruviusChange> consequentialChanges = newArrayList();
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
@@ -171,7 +170,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		
 		executePropagationResult(command.transformationResult);
 		propagationResult.integrateResult(command.transformationResult);
-		return consequentialChanges;
 	}
 	
 	def private void executePropagationResult(ChangePropagationResult changePropagationResult) {
