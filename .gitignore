@@ -7,6 +7,14 @@ tmp/
 *.swp
 *.class
 
+# Xtext
+src-gen/
+**/model/generated/
+.antlr-generator-*-patch.jar
+
+# EMF
+model-gen/
+
 # Xtend
 xtend-gen/
 *._trace
