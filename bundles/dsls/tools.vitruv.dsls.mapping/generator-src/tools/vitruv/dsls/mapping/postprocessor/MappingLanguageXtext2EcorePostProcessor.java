@@ -13,9 +13,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.xtext.GeneratedMetamodel;
 import org.eclipse.xtext.xtext.ecoreInference.IXtext2EcorePostProcessor;
 
-import tools.vitruv.dsls.mapping.mappingLanguage.Mapping;
-import tools.vitruv.dsls.mapping.mappingLanguage.MappingFile;
-import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMapping;
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile;
 
 @SuppressWarnings("restriction")
@@ -34,8 +31,8 @@ public class MappingLanguageXtext2EcorePostProcessor implements IXtext2EcorePost
 			return;
 		
 		final EPackage ePackage = metamodel.getEPackage();
-		final EClass mappingFileEClass = getEClass(ePackage, MappingFile.class);
-		final EClass mappingEClass = getEClass(ePackage, Mapping.class);
+		final EClass mappingFileEClass = getEClass(ePackage, "MappingFile");
+		final EClass mappingEClass = getEClass(ePackage, "Mapping");
 		
 		// we need to load the model from the platform, since we can't reference the meta model element that
 		// is available as MirBasePackage.LITERALS.MIR_BASE_FILE to the *workflow*.
@@ -47,7 +44,7 @@ public class MappingLanguageXtext2EcorePostProcessor implements IXtext2EcorePost
 		
 		final EReference newRef = EcoreFactory.eINSTANCE.createEReference();
 		newRef.setName("defaultRequirements");
-		newRef.setEType(ePackage.getEClassifier(RequiredMapping.class.getSimpleName()));
+		newRef.setEType(ePackage.getEClassifier("RequiredMapping"));
 		newRef.setLowerBound(0);
 		newRef.setUpperBound(-1);
 		newRef.setContainment(true);

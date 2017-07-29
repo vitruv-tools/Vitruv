@@ -18,7 +18,7 @@ public class MappingLanguageExtendedGenerator extends XtextGenerator {
 						binder.bind(IXtext2EcorePostProcessor.class).to(MappingLanguageXtext2EcorePostProcessor.class);
 					};
 				});				
-			};			
+			};
 		}.createInjectorAndDoEMFRegistration();
 	}
 }
