@@ -3,9 +3,9 @@ package tools.vitruv.dsls.reactions.helper
 import java.util.Map
 import org.eclipse.emf.ecore.EClassifier
 import static extension tools.vitruv.dsls.reactions.helper.StringHelper.*
-import static extension tools.vitruv.dsls.reactions.helper.JavaHelper.*
 
 class XtendImportHelper {
+	public static final char FQN_SEPARATOR = '.';
 	private val Map<String, String> imports = newHashMap
 	private val Map<String, String> staticExtensionImports = newHashMap
 
@@ -53,5 +53,10 @@ class XtendImportHelper {
 		}
 
 		return simpleName
+	}
+
+	def private static isSimpleName(String fqn) {
+		val	lastSeparatorPos = fqn.lastIndexOf(FQN_SEPARATOR);
+		return (lastSeparatorPos == -1);
 	}
 }
