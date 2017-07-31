@@ -170,14 +170,14 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			throw new IllegalStateException('''There are no objects affected by the given change«change»''')
 
 		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0))
-		val consequentialChanges = newArrayList
 		val propagationResult = new ChangePropagationResult
 		resourceRepository.startRecording
 		val specifications = changePropagationProvider.getChangePropagationSpecifications(changeDomain)
 		specifications.forEach [
-				propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
+			propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
 		handleObjectsWithoutResource
+		val consequentialChanges = newArrayList
 		consequentialChanges += resourceRepository.endRecording
 		consequentialChanges.forEach[debug(it)]
 		addPropagatedChanges(clonedChange, change, consequentialChanges, propagatedChanges)
@@ -197,7 +197,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		objectsCreatedDuringPropagation.clear
 	}
 
-	private def List<VitruviusChange> propagateChangeForChangePropagationSpecification(
+	private def propagateChangeForChangePropagationSpecification(
 		TransactionalChange change,
 		ChangePropagationSpecification propagationSpecification,
 		ChangePropagationResult propagationResult,
@@ -205,7 +205,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	) {
 		val correspondenceModel = correspondenceProviding.correspondenceModel
 
-		val List<VitruviusChange> consequentialChanges = newArrayList
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
@@ -239,7 +238,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	private def addPropagatedChanges(
 		VitruviusChange unresolvedChange,
 		VitruviusChange resolvedChange,
-		List<VitruviusChange> consequentialChanges,
+		List<? extends VitruviusChange> consequentialChanges,
 		List<PropagatedChange> propagatedChanges
 	) {
 		val isUnresolved = modelRepository.unresolveChanges
@@ -262,7 +261,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		if (!resolvedPropagatedChange.resolved)
 			error('''«resolvedPropagatedChange» should be resolved, but was not''')
 		if (unresolvedPropagatedChange.resolved)
-			throw new IllegalStateException
+			error('''«unresolvedPropagatedChange» should be unresolved, but was not''')
 		if (null !== vuri) {
 			vuriToIds.put(vuri, uuid)
 			idToResolvedChanges.put(uuid, resolvedPropagatedChange)
