@@ -2,18 +2,17 @@ package tools.vitruv.dsls.reactions.tests.versioning
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
+import org.junit.Ignore
 import org.junit.Test
 import tools.vitruv.framework.change.copy.ChangeCopyFactory
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
+import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.InternalTestVirtualModel
-import tools.vitruv.framework.util.datatypes.VURI
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
-import org.junit.Ignore
-import org.eclipse.emf.common.util.URI
 
 class ReapplyTest extends SourceTargetRecorderTest {
 	static val newTestSourceModelName = "EachTestModelSource2"
@@ -22,9 +21,7 @@ class ReapplyTest extends SourceTargetRecorderTest {
 
 	override setup() {
 		super.setup
-		val sourceVURIString = sourceVURI.EMFUri.toString
-		val newSourceVURIString = sourceVURIString.replace(TEST_SOURCE_MODEL_NAME, newTestSourceModelName)
-		newSourceVURI = VURI::getInstance(URI::createURI(newSourceVURIString))
+		newSourceVURI = createNewVURI(sourceVURI, TEST_SOURCE_MODEL_NAME -> newTestSourceModelName)
 	}
 
 	@Test

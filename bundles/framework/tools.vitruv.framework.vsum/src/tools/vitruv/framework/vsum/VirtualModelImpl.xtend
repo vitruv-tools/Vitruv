@@ -131,8 +131,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 				id != lastPropagatedId
 			].drop(1).toList
 		} else {
-			// TODO The drop(1) 
-			return changePropagator.getUnresolvedPropagatedChanges(vuri).drop(1).toList
+			return changePropagator.getUnresolvedPropagatedChanges(vuri).toList
 		}
 	}
 

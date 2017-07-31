@@ -11,6 +11,8 @@ interface Commit {
 
 	def List<PropagatedChange> getChanges()
 
+	def int getNumberOfChanges()
+
 	def List<SimpleCommit> getCommitsBranchedFromThis()
 
 	def String getIdentifier()

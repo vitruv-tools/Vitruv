@@ -71,7 +71,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 	}
 
 	override commit(String s, VersioningVirtualModel virtualModel, VURI vuri) {
-		val changeMatches = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
+		val changeMatches = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri).immutableCopy
 		if (changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
 		val commit = commit(s, changeMatches)
@@ -95,7 +95,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		val myVURI = originalChanges.get(0).URI
 		val processTargetEChange = createEChangeRemapFunction(myVURI, vuri)
 		val newChanges = originalChanges.map [
-			val eChanges = EChanges.map[cloneEChange(it)]
+			val eChanges = EChanges.map[cloneEChange(it)].toList.immutableCopy
 			eChanges.forEach[processTargetEChange.accept(it)]
 			val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(eChanges)
 			return newChange

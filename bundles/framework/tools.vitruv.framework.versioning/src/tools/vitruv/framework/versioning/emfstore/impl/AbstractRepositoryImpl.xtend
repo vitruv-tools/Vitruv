@@ -47,11 +47,12 @@ class AbstractRepositoryImpl implements AbstractRepository {
 		branchToCommit.get(branch)
 	}
 
-
 	protected def void addCommit(Commit c, Branch branch) {
 		val lastCommit = branchToCommit.get(branch).last
+		if (null !== lastCommit && lastCommit.numberOfChanges !== lastCommit.changes.length)
+			throw new IllegalStateException
 		c.changes.forEach [ change |
-			if (lastCommit.changes.exists[it === change])
+			if (null !== lastCommit && lastCommit.changes.exists[it === change])
 				throw new IllegalStateException
 		]
 		branchToCommit.put(branch, c)

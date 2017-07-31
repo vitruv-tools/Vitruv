@@ -9,10 +9,59 @@ import tools.vitruv.framework.change.echange.EChange
 import java.util.function.Consumer
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 
 class URIRemapperImpl implements URIRemapper {
 	static def URIRemapper init() {
 		new URIRemapperImpl
+	}
+
+	private static dispatch def processEchange(
+		EChange e,
+		Consumer<EObject> cb
+	) {
+		throw new UnsupportedOperationException('''EChange «e» with class «e.class.simpleName» was not handled yet''')
+	}
+
+	private static dispatch def processEchange(
+		ReplaceSingleValuedEAttribute<?, ?> e,
+		Consumer<EObject> cb
+	) {
+		cb.accept(e.affectedEObject)
+	}
+
+	private static dispatch def processEchange(
+		CreateAndInsertRoot<?> e,
+		Consumer<EObject> cb
+	) {
+		// PS Do nothing, but prevent UnsupportedOperationException to be thrown 
+	}
+
+	private static dispatch def processEchange(
+		CreateAndInsertNonRoot<?, ?> e,
+		Consumer<EObject> cb
+	) {
+		cb.accept(e.insertChange.affectedEObject)
+	}
+
+	private static def remapCreateAndInsertRootUri(
+		CreateAndInsertRoot<?> e,
+		String from,
+		String to
+	) {
+		val oldUri = e.insertChange.uri
+		if (oldUri.contains(from)) {
+			val newUri = oldUri.replace(from, to)
+			e.insertChange.uri = newUri
+		}
+	}
+
+	private static def remapCreateAndInsertRootUri(
+		CreateAndInsertRoot<?> e,
+		VURI from,
+		VURI to
+	) {
+		remapCreateAndInsertRootUri(e, from.EMFUri.toString, to.EMFUri.toString)
 	}
 
 	private new() {
@@ -33,7 +82,7 @@ class URIRemapperImpl implements URIRemapper {
 			return []
 		val fromVURIString = from.EMFUri.toString
 		val toVURIString = to.EMFUri.toString
-		return remapURIString.curry(fromVURIString).curry(toVURIString)
+		return createRemapFunction(fromVURIString, toVURIString)
 	}
 
 	override createRemapFunction(String from, String to) {
@@ -42,22 +91,28 @@ class URIRemapperImpl implements URIRemapper {
 
 	override createEChangeRemapFunction(String from, String to) {
 		val remapMyUriFunction = createRemapFunction(from, to)
-		return [EChange e|processEchange(e, remapMyUriFunction)]
+		return [ EChange e |
+			if (e instanceof CreateAndInsertRoot<?>)
+				remapCreateAndInsertRootUri(e, from, to)
+			else
+				processEchange(e, remapMyUriFunction)
+		]
 	}
 
 	override createEChangeRemapFunction(VURI from, VURI to) {
 		val remapTheirUriFunction = createRemapFunction(from, to)
-		return [EChange e|processEchange(e, remapTheirUriFunction)]
+		return [ EChange e |
+			if (e instanceof CreateAndInsertRoot<?>)
+				remapCreateAndInsertRootUri(e, from, to)
+			else
+				processEchange(e, remapTheirUriFunction)
+		]
 	}
 
-	private static dispatch def processEchange(EChange e, Consumer<EObject> cb) {
-	}
-
-	private static dispatch def processEchange(ReplaceSingleValuedEAttribute<?, ?> e, Consumer<EObject> cb) {
-		cb.accept(e.affectedEObject)
-	}
-
-	private static dispatch def processEchange(CreateAndInsertNonRoot<?, ?> e, Consumer<EObject> cb) {
-		cb.accept(e.insertChange.affectedEObject)
+	override createNewVURI(VURI oldVURI, Pair<String, String> stringWithNewString) {
+		val sourceVURIString = oldVURI.EMFUri.toString
+		val newSourceVURIString = sourceVURIString.replace(stringWithNewString.key, stringWithNewString.value)
+		val newSourceVURI = VURI::getInstance(URI::createURI(newSourceVURIString))
+		return newSourceVURI
 	}
 }
