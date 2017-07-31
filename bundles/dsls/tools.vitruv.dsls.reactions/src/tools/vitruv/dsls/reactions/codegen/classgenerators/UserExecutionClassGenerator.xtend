@@ -6,6 +6,7 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import org.eclipse.xtext.common.types.JvmOperation
 import tools.vitruv.dsls.reactions.reactionsLanguage.CodeBlock
+import tools.vitruv.dsls.reactions.generator.SimpleTextXBlockExpression
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
 import org.eclipse.xtext.common.types.JvmTypeReference
@@ -15,7 +16,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealiz
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
-import tools.vitruv.dsls.reactions.generator.SimpleTextXBlockExpression
+import org.eclipse.xtext.common.types.JvmGenericType
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;
@@ -25,8 +26,9 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	private var int counterGetRetrieveTagMethods;
 	private var int counterCallRoutineMethods;
 	private var int counterCheckMatcherPreconditionMethods;
-	
-	new(TypesBuilderExtensionProvider typesBuilderExtensionProvider, EObject objectMappedToClass, String qualifiedClassName) {
+
+	new(TypesBuilderExtensionProvider typesBuilderExtensionProvider, EObject objectMappedToClass,
+		String qualifiedClassName) {
 		super(typesBuilderExtensionProvider)
 		this.objectMappedToClass = objectMappedToClass;
 		this.qualifiedClassName = qualifiedClassName;
@@ -36,30 +38,40 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		this.counterCallRoutineMethods = 1;
 		this.counterCheckMatcherPreconditionMethods = 1;
 	}
-	
+
 	public def String getQualifiedClassName() {
 		return qualifiedClassName;
 	}
-	
+
 	override generateClass() {
 		return objectMappedToClass.toClass(qualifiedClassName) [
-			visibility = JvmVisibility.PRIVATE;
-			static = true;
-			superTypes += typeRef(AbstractRepairRoutineRealization.UserExecution);
-			members += toConstructor() [
-				val reactionExecutionStateParameter = generateReactionExecutionStateParameter();
-				val calledByParameter = generateParameter("calledBy", typeRef(CallHierarchyHaving));
-				parameters += reactionExecutionStateParameter;
-				parameters += calledByParameter;
-				body = '''
-					super(«parameters.get(0).name»);
-				'''
-			]
-			members += generatedMethods;
+			visibility = JvmVisibility.PRIVATE
+			static = true
 		]
 	}
 
-	protected def JvmOperation generateUpdateElementMethod(String elementName, CodeBlock codeBlock, Iterable<AccessibleElement> accessibleElements) {
+	override generateBody(JvmGenericType generatedClass) {
+		generatedClass => [
+			superTypes += typeRef(AbstractRepairRoutineRealization.UserExecution)
+			members += generateConstructor()
+			members += generatedMethods
+		]
+	}
+
+	def private generateConstructor() {
+		objectMappedToClass.toConstructor() [
+			val reactionExecutionStateParameter = generateReactionExecutionStateParameter()
+			val calledByParameter = generateParameter("calledBy", typeRef(CallHierarchyHaving))
+			parameters += reactionExecutionStateParameter
+			parameters += calledByParameter
+			body = '''
+				super(«parameters.get(0).name»);
+			'''
+		]
+	}
+
+	protected def JvmOperation generateUpdateElementMethod(String elementName, CodeBlock codeBlock,
+		Iterable<AccessibleElement> accessibleElements) {
 		return codeBlock.getOrGenerateMethod("update" + elementName.toFirstUpper + "Element", typeRef(Void.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			val code = codeBlock.code;
@@ -68,28 +80,31 @@ class UserExecutionClassGenerator extends ClassGenerator {
 			} else {
 				body = code;
 			}
-		] 
+		]
 	}
-	
-	protected def JvmOperation generateMethodGetRetrieveTag(Taggable taggable, Iterable<AccessibleElement> accessibleElements) {
+
+	protected def JvmOperation generateMethodGetRetrieveTag(Taggable taggable,
+		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getRetrieveTag" + counterGetRetrieveTagMethods++;
-		
+
 		return taggable.tag.getOrGenerateMethod(methodName, typeRef(String)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			body = taggable.tag.code;
-		];		
+		];
 	}
-	
-	protected def JvmOperation generateMethodGetCreateTag(Taggable taggable, Iterable<AccessibleElement> accessibleElements) {
+
+	protected def JvmOperation generateMethodGetCreateTag(Taggable taggable,
+		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getTag" + counterGetTagMethods++;
-		
+
 		return taggable.tag.getOrGenerateMethod(methodName, typeRef(String)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			body = taggable.tag.code;
-		];		
+		];
 	}
-	
-	protected def generateMethodCorrespondencePrecondition(RetrieveModelElement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
+
+	protected def generateMethodCorrespondencePrecondition(RetrieveModelElement elementRetrieve,
+		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getCorrespondingModelElementsPrecondition" + elementRetrieve.name.toFirstUpper;
 		return elementRetrieve.precondition.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			val elementParameter = generateModelElementParameter(elementRetrieve, elementRetrieve.name);
@@ -98,10 +113,11 @@ class UserExecutionClassGenerator extends ClassGenerator {
 			body = elementRetrieve.precondition.code;
 		];
 	}
-	
-	protected def generateMethodGetCorrespondenceSource(RetrieveModelElement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
+
+	protected def generateMethodGetCorrespondenceSource(RetrieveModelElement elementRetrieve,
+		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getCorrepondenceSource" + elementRetrieve.name.toFirstUpper;
-		
+
 		return elementRetrieve.correspondenceSource.getOrGenerateMethod(methodName, typeRef(EObject)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			val correspondenceSourceBlock = elementRetrieve.correspondenceSource?.code;
@@ -112,10 +128,11 @@ class UserExecutionClassGenerator extends ClassGenerator {
 			}
 		];
 	}
-	
-	protected def generateMethodGetElement(ExistingElementReference reference, Iterable<AccessibleElement> accessibleElements) {
+
+	protected def generateMethodGetElement(ExistingElementReference reference,
+		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getElement" + counterGetElementMethods++;
-		
+
 		return reference.code.getOrGenerateMethod(methodName, typeRef(EObject)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			val correspondenceSourceBlock = reference?.code;
@@ -126,16 +143,18 @@ class UserExecutionClassGenerator extends ClassGenerator {
 			}
 		];
 	}
-	
-	protected def JvmOperation generateMethodMatcherPrecondition(MatcherCheckStatement checkStatement, Iterable<AccessibleElement> accessibleElements) {
+
+	protected def JvmOperation generateMethodMatcherPrecondition(MatcherCheckStatement checkStatement,
+		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "checkMatcherPrecondition" + counterCheckMatcherPreconditionMethods++;
 		return checkStatement.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			body = checkStatement.code;
 		];
 	}
-	
-	protected def JvmOperation generateMethodCallRoutine(RoutineCallBlock routineCall, Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
+
+	protected def JvmOperation generateMethodCallRoutine(RoutineCallBlock routineCall,
+		Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
 		if (routineCall.code === null) {
 			return null;
 		}

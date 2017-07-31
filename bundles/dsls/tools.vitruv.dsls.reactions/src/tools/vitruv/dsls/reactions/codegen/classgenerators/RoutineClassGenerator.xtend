@@ -37,18 +37,19 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionPro
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
 	protected extension ReactionElementsCompletionChecker _completionChecker;
-	private final String generalUserExecutionClassQualifiedName;
-	private final ClassNameGenerator routineClassNameGenerator;
-	private final ClassNameGenerator routinesFacadeClassNameGenerator;
-	private final List<NamedMetaclassReference> modelInputElements;
-	private final List<NamedJavaElement> javaInputElements;
-	private extension final UserExecutionClassGenerator userExecutionClassGenerator;
-	private final List<AccessibleElement> currentlyAccessibleElements;
-	private static val USER_EXECUTION_FIELD_NAME = "userExecution";
-	private int elementUpdateCounter;
-	
+	var String generalUserExecutionClassQualifiedName;
+	final ClassNameGenerator routineClassNameGenerator;
+	var ClassNameGenerator routinesFacadeClassNameGenerator;
+	var List<NamedMetaclassReference> modelInputElements;
+	var List<NamedJavaElement> javaInputElements;
+	extension var UserExecutionClassGenerator userExecutionClassGenerator;
+	var List<AccessibleElement> currentlyAccessibleElements;
+	static val USER_EXECUTION_FIELD_NAME = "userExecution";
+	int elementUpdateCounter;
+	var JvmGenericType userExecutionClass
+
 	public new(Routine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
-		super(typesBuilderExtensionProvider);
+		super(typesBuilderExtensionProvider)
 		this.routine = routine;
 		this._completionChecker = new ReactionElementsCompletionChecker();
 		this.routineClassNameGenerator = routine.routineClassNameGenerator;
@@ -62,55 +63,60 @@ class RoutineClassGenerator extends ClassGenerator {
 		this.currentlyAccessibleElements = new ArrayList();
 		this.currentlyAccessibleElements += routine.getInputElements(modelInputElements, javaInputElements);
 	}
-	
+
 	private def Iterable<JvmFormalParameter> generateInputParameters(EObject contextObject) {
 		return generateMethodInputParameters(contextObject, modelInputElements, javaInputElements);
 	}
-	
+
 	protected def generateCurrentlyAccessibleElementsParameters(EObject sourceObject) {
 		this.currentlyAccessibleElements.map[sourceObject.toParameter(name, typeRef(fullyQualifiedType))];
 	}
-	
+
 	protected def generateMethodParameterCallList(JvmOperation method) {
 		return method.parameters.generateMethodParameterCallList;
 	}
-		
+
 	protected def generateMethodParameterCallList(Iterable<JvmFormalParameter> parameters) '''
-		«FOR parameter : parameters.filterNull SEPARATOR ', '»«parameter.name»«ENDFOR»'''
-	
+	«FOR parameter : parameters.filterNull SEPARATOR ', '»«parameter.name»«ENDFOR»'''
+
 	protected def getParameterCallList(String... parameterStrings) '''
-		«FOR parameterName : parameterStrings SEPARATOR ', '»«parameterName»«ENDFOR»'''
-		
-	public override JvmGenericType generateClass() {
+	«FOR parameterName : parameterStrings SEPARATOR ', '»«parameterName»«ENDFOR»'''
+
+	override JvmGenericType generateClass() {
 		if (routine === null) {
 			return null;
 		}
-		
-		val executeMethod = generateMethodExecuteEffect();
-		val userExecutionClass = userExecutionClassGenerator.generateClass;
-		
+
+		userExecutionClass = userExecutionClassGenerator.generateClass()
 		routine.toClass(routineClassNameGenerator.qualifiedName) [
-			visibility = JvmVisibility.PUBLIC;
-			superTypes += typeRef(AbstractRepairRoutineRealization);
-			members += toField(EFFECT_FACADE_FIELD_NAME,  typeRef(routinesFacadeClassNameGenerator.qualifiedName));
-			members += toField(USER_EXECUTION_FIELD_NAME, typeRef(userExecutionClass));
-			members += userExecutionClass;
-			members += generateConstructor();
-			members += generateInputFields();
-			members += executeMethod;
-		];
+			visibility = JvmVisibility.PUBLIC
+		]
 	}
-	
+
+	override generateBody(JvmGenericType generatedClass) {
+		val executeMethod = generateMethodExecuteEffect()
+
+		generatedClass => [
+			superTypes += typeRef(AbstractRepairRoutineRealization)
+			members += routine.toField(EFFECT_FACADE_FIELD_NAME, typeRef(routinesFacadeClassNameGenerator.qualifiedName))
+			members += routine.toField(USER_EXECUTION_FIELD_NAME, typeRef(userExecutionClass))
+			members += userExecutionClassGenerator.generateBody(userExecutionClass)
+			members += routine.generateConstructor()
+			members += generateInputFields()
+			members += executeMethod
+		]
+	}
+
 	private def String getUserExecutionMethodCallString(JvmOperation method) '''
-		«USER_EXECUTION_FIELD_NAME».«method.simpleName»(«method.generateMethodParameterCallList»)'''
-	
+	«USER_EXECUTION_FIELD_NAME».«method.simpleName»(«method.generateMethodParameterCallList»)'''
+
 	protected def Iterable<JvmMember> generateInputFields() {
 		val inputParameters = routine.generateInputParameters()
 		return inputParameters.map[toField(name, parameterType)]
 	}
-	
-	protected def JvmConstructor generateConstructor(JvmGenericType clazz) {
-		return clazz.toConstructor [
+
+	protected def JvmConstructor generateConstructor(Routine routine) {
+		return routine.toConstructor [
 			visibility = JvmVisibility.PUBLIC;
 			val executionStateParameter = generateReactionExecutionStateParameter();
 			val calledByParameter = generateParameter("calledBy", typeRef(CallHierarchyHaving));
@@ -119,18 +125,18 @@ class RoutineClassGenerator extends ClassGenerator {
 			parameters += calledByParameter;
 			parameters += inputParameters;
 			body = '''
-				super(«executionStateParameter.name», «calledByParameter.name»);
-				this.«USER_EXECUTION_FIELD_NAME» = new «generalUserExecutionClassQualifiedName»(getExecutionState(), this);
-				this.«EFFECT_FACADE_FIELD_NAME» = new «routinesFacadeClassNameGenerator.qualifiedName»(getExecutionState(), this);
-				«FOR inputParameter : inputParameters»this.«inputParameter.name» = «inputParameter.name»;«ENDFOR»'''
+			super(«executionStateParameter.name», «calledByParameter.name»);
+			this.«USER_EXECUTION_FIELD_NAME» = new «generalUserExecutionClassQualifiedName»(getExecutionState(), this);
+			this.«EFFECT_FACADE_FIELD_NAME» = new «routinesFacadeClassNameGenerator.qualifiedName»(getExecutionState(), this);
+			«FOR inputParameter : inputParameters»this.«inputParameter.name» = «inputParameter.name»;«ENDFOR»'''
 		]
 	}
-	
-	
+
 	private def dispatch StringConcatenationClient createStatements(CreateModelElement createElement) {
 		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.javaClass)
-		val initializeMethod = if (createElement.initializationBlock !== null) 
-			generateUpdateElementMethod(createElement.name, createElement.initializationBlock, currentlyAccessibleElements);
+		val initializeMethod = if (createElement.initializationBlock !== null)
+				generateUpdateElementMethod(createElement.name, createElement.initializationBlock,
+					currentlyAccessibleElements);
 		val initializeMethodCall = if (initializeMethod !== null) initializeMethod.userExecutionMethodCallString;
 		return '''
 			«getElementCreationCode(createElement)»
@@ -139,7 +145,7 @@ class RoutineClassGenerator extends ClassGenerator {
 			«ENDIF»
 		'''
 	}
-	
+
 	private def dispatch StringConcatenationClient createStatements(RetrieveModelElement retrieveElement) {
 		val retrieveStatement = getGetCorrespondingElementStatement(retrieveElement);
 		val affectedElementClass = retrieveElement.metaclass;
@@ -163,13 +169,13 @@ class RoutineClassGenerator extends ClassGenerator {
 					registerObjectUnderModification(«retrieveStatement»);
 				}
 			«ENDIF»
-		'''	
+		'''
 		if (!retrieveElement.abscence) {
 			currentlyAccessibleElements += new AccessibleElement(retrieveElement.name, retrieveElement.javaClass);
 		}
 		return statements;
 	}
-	
+
 	private def dispatch StringConcatenationClient createStatements(MatcherCheckStatement checkStatement) {
 		val checkMethod = generateMethodMatcherPrecondition(checkStatement, currentlyAccessibleElements);
 		val checkMethodCall = checkMethod.userExecutionMethodCallString;
@@ -178,7 +184,7 @@ class RoutineClassGenerator extends ClassGenerator {
 			return;
 		}''';
 	}
-	
+
 	private def dispatch StringConcatenationClient createStatements(DeleteModelElement deleteElement) {
 		val getElementMethod = generateMethodGetElement(deleteElement.element, currentlyAccessibleElements);
 		val getElementMethodCall = getElementMethod.userExecutionMethodCallString;
@@ -186,49 +192,55 @@ class RoutineClassGenerator extends ClassGenerator {
 			deleteObject(«getElementMethodCall»);
 		'''
 	}
-	
+
 	private def dispatch StringConcatenationClient createStatements(UpdateModelElement updateElement) {
 		val getElementMethod = generateMethodGetElement(updateElement.element, currentlyAccessibleElements);
 		val getElementMethodCall = getElementMethod.userExecutionMethodCallString;
-		val updateMethod = generateUpdateElementMethod("" + elementUpdateCounter++, updateElement.updateBlock, currentlyAccessibleElements);
+		val updateMethod = generateUpdateElementMethod("" + elementUpdateCounter++, updateElement.updateBlock,
+			currentlyAccessibleElements);
 		val updateMethodCall = updateMethod.userExecutionMethodCallString;
 		return '''
 			// val updatedElement «getElementMethodCall»;
 			«updateMethodCall»;
 		'''
 	}
-	
+
 	private def dispatch StringConcatenationClient createStatements(CreateCorrespondence createCorrespondence) {
-		val getFirstElementMethod = generateMethodGetElement(createCorrespondence.firstElement, currentlyAccessibleElements);
+		val getFirstElementMethod = generateMethodGetElement(createCorrespondence.firstElement,
+			currentlyAccessibleElements);
 		val getFirstElementMethodCall = getFirstElementMethod.userExecutionMethodCallString;
-		val getSecondElementMethod = generateMethodGetElement(createCorrespondence.secondElement, currentlyAccessibleElements);
+		val getSecondElementMethod = generateMethodGetElement(createCorrespondence.secondElement,
+			currentlyAccessibleElements);
 		val getSecondElementMethodCall = getSecondElementMethod.userExecutionMethodCallString;
-		val tagMethod = if (createCorrespondence.tag !== null) generateMethodGetCreateTag(createCorrespondence, currentlyAccessibleElements);
+		val tagMethod = if (createCorrespondence.tag !== null) generateMethodGetCreateTag(createCorrespondence,
+				currentlyAccessibleElements);
 		val tagMethodCall = if (tagMethod !== null) tagMethod.userExecutionMethodCallString else '''""''';
 		return '''
 			addCorrespondenceBetween(«getFirstElementMethodCall», «getSecondElementMethodCall», «tagMethodCall»);
 		'''
 	}
-	
+
 	private def dispatch StringConcatenationClient createStatements(RemoveCorrespondence removeCorrespondence) {
-		val getFirstElementMethod = generateMethodGetElement(removeCorrespondence.firstElement, currentlyAccessibleElements);
+		val getFirstElementMethod = generateMethodGetElement(removeCorrespondence.firstElement,
+			currentlyAccessibleElements);
 		val getFirstElementMethodCall = getFirstElementMethod.userExecutionMethodCallString
-		val getSecondElementMethod = generateMethodGetElement(removeCorrespondence.secondElement, currentlyAccessibleElements);
+		val getSecondElementMethod = generateMethodGetElement(removeCorrespondence.secondElement,
+			currentlyAccessibleElements);
 		val getSecondElementMethodCall = getSecondElementMethod.userExecutionMethodCallString;
 		return '''
 			removeCorrespondenceBetween(«getFirstElementMethodCall», «getSecondElementMethodCall»);
 		'''
 	}
-	
+
 	private def dispatch StringConcatenationClient createStatements(RoutineCallStatement routineCall) {
-		val callRoutineMethod = generateMethodCallRoutine(routineCall, currentlyAccessibleElements, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
+		val callRoutineMethod = generateMethodCallRoutine(routineCall, currentlyAccessibleElements,
+			typeRef(routinesFacadeClassNameGenerator.qualifiedName));
 		val parameterCallList = routineCall.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList
 		val StringConcatenationClient callRoutineMethodCall = '''«USER_EXECUTION_FIELD_NAME».«callRoutineMethod.simpleName»(«
 			parameterCallList»«IF !parameterCallList.toString.empty», «ENDIF»«EFFECT_FACADE_FIELD_NAME»);''';
 		return callRoutineMethodCall;
 	}
-	
-	
+
 	protected def generateMethodExecuteEffect() {
 		val methodName = "executeRoutine";
 		val inputParameters = routine.generateInputParameters();
@@ -255,10 +267,10 @@ class RoutineClassGenerator extends ClassGenerator {
 					
 				«ENDFOR»
 				postprocessElements();
-				'''
-		];	
+			'''
+		];
 	}
-		
+
 	private def StringConcatenationClient getTagString(RetrieveModelElement retrieveElement) {
 		if (retrieveElement.tag !== null) {
 			val tagMethod = generateMethodGetRetrieveTag(retrieveElement, currentlyAccessibleElements);
@@ -267,37 +279,37 @@ class RoutineClassGenerator extends ClassGenerator {
 			return '''null'''
 		}
 	}
-	
+
 	private def StringConcatenationClient getPreconditionChecker(RetrieveModelElement retrieveElement) {
 		val affectedElementClass = retrieveElement.javaClass;
 		if (retrieveElement.precondition === null) {
 			return '''(«affectedElementClass» _element) -> true''';
 		}
 		val preconditionMethod = generateMethodCorrespondencePrecondition(retrieveElement, currentlyAccessibleElements);
-		return '''(«affectedElementClass» _element) -> «USER_EXECUTION_FIELD_NAME».«preconditionMethod.simpleName»(«
-			preconditionMethod.generateMethodParameterCallList.toString.replace(retrieveElement.name, "_element")»)'''	
+		return '''(«affectedElementClass» _element) -> «USER_EXECUTION_FIELD_NAME».«preconditionMethod.simpleName»(«preconditionMethod.generateMethodParameterCallList.toString.replace(retrieveElement.name, "_element")»)'''
 	}
-	
+
 	private def StringConcatenationClient getGetCorrespondingElementStatement(RetrieveModelElement retrieveElement) {
 		val affectedElementClass = retrieveElement.javaClass;
 		val correspondingElementPreconditionChecker = getPreconditionChecker(retrieveElement);
-		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrieveElement, currentlyAccessibleElements);
+		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrieveElement,
+			currentlyAccessibleElements);
 		val correspondenceSourceMethodCall = correspondenceSourceMethod.userExecutionMethodCallString;
 		val tagString = getTagString(retrieveElement);
 		return '''
-			getCorrespondingElement(
-				«correspondenceSourceMethodCall», // correspondence source supplier
-				«affectedElementClass».class,
-				«correspondingElementPreconditionChecker», // correspondence precondition checker
-				«tagString»)'''	
+		getCorrespondingElement(
+			«correspondenceSourceMethodCall», // correspondence source supplier
+			«affectedElementClass».class,
+			«correspondingElementPreconditionChecker», // correspondence precondition checker
+			«tagString»)'''
 	}
-	
+
 	private def StringConcatenationClient getElementCreationCode(CreateModelElement elementCreate) {
 		val affectedElementClass = elementCreate.metaclass;
 		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
 		return '''
-			«affectedElementClass.javaClass» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
-			notifyObjectCreated(«elementCreate.name»);'''
+		«affectedElementClass.javaClass» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
+		notifyObjectCreated(«elementCreate.name»);'''
 	}
-	
+
 }

@@ -22,7 +22,9 @@ abstract class ClassGenerator extends TypesBuilderExtensionProvider implements I
 		this.methodMap = new HashMap<String, JvmOperation>();
 	}
 	
-	public def JvmGenericType generateClass();
+	def JvmGenericType generateClass()
+	
+	def JvmGenericType generateBody(JvmGenericType generatedClass) {}
 	
 	override JvmOperation getOrGenerateMethod(EObject contextObject, String methodName, JvmTypeReference returnType, Procedure1<? super JvmOperation> initializer) {
 		if (!methodMap.containsKey(methodName)) {
