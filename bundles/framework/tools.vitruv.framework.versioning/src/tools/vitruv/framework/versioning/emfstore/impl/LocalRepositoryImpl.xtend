@@ -91,7 +91,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 
 	override checkout(VersioningVirtualModel virtualModel, VURI vuri) {
 		val changeMatches = commits.map[changes].flatten
-		val originalChanges = changeMatches.map[originalChange]
+		val originalChanges = changeMatches.map[originalChange].toList.immutableCopy
 		val myVURI = originalChanges.get(0).URI
 		val processTargetEChange = createEChangeRemapFunction(myVURI, vuri)
 		val newChanges = originalChanges.map [
@@ -99,7 +99,7 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 			eChanges.forEach[processTargetEChange.accept(it)]
 			val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(eChanges)
 			return newChange
-		]
+		].toList.immutableCopy
 		newChanges.forEach [
 			virtualModel.propagateChange(it)
 		]

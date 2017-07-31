@@ -20,7 +20,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import org.eclipse.emf.ecore.InternalEObject
 
 abstract class AbstractConcreteChange implements ConcreteChange {
-	private static val logger = Logger.getLogger(AbstractConcreteChange);
+	static extension Logger = Logger::getLogger(AbstractConcreteChange)
 	EChange eChange
 
 	new(EChange eChange) {
@@ -63,16 +63,15 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 
 	override applyBackward() {
-		logger.warn("The applyBackward method is not implemented for " + this.class.simpleName + " yet.");
+		warn("The applyBackward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 
 	override applyForward() {
-		logger.warn("The applyForward method is not implemented for " + this.class.simpleName + " yet.");
+		warn("The applyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		logger.warn("The resolveBeforeAndapplyForward method is not implemented for " + this.class.simpleName +
-			" yet.");
+		warn("The resolveBeforeAndapplyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 
 	override applyBackwardIfLegacy() {
@@ -93,6 +92,11 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 			objects.addAll(atomicChange.getAffectedEObjects)
 		}
 		return objects.filterNull
+	}
+
+	private def dispatch List<EObject> getAffectedEObjects(Void eChange) {
+		error('''«this» with null as echange''')
+		return #[]
 	}
 
 	private def dispatch List<EObject> getAffectedEObjects(EChange eChange) {

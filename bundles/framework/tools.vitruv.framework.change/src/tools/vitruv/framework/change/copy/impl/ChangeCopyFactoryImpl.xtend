@@ -1,7 +1,7 @@
 package tools.vitruv.framework.change.copy.impl
 
 import tools.vitruv.framework.change.copy.ChangeCopyFactory
-import java.util.List
+import java.util.Set
 
 class ChangeCopyFactoryImpl implements ChangeCopyFactory {
 	static def ChangeCopyFactory init() {
@@ -11,7 +11,7 @@ class ChangeCopyFactoryImpl implements ChangeCopyFactory {
 	private new() {
 	}
 
-	override createEChangeCopier(List<Pair<String, String>> replacePairs) {
+	override createEChangeCopier(Set<Pair<String, String>> replacePairs) {
 		new EChangeCopierImpl(replacePairs)
 	}
 

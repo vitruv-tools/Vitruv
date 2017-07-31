@@ -12,19 +12,19 @@ import tools.vitruv.framework.util.datatypes.VURI
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import org.junit.Ignore
+import org.eclipse.emf.common.util.URI
 
 class ReapplyTest extends SourceTargetRecorderTest {
 	static val newTestSourceModelName = "EachTestModelSource2"
 	static val newTestTargetModelName = "EachTestModelTarget2"
 	VURI newSourceVURI
-	Root newRoot
 
 	override setup() {
 		super.setup
-		newRoot = AllElementTypesFactory::eINSTANCE.createRoot
-		newRoot.id = newTestSourceModelName
-		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
-		newSourceVURI = VURI::getInstance(newRoot.eResource)
+		val sourceVURIString = sourceVURI.EMFUri.toString
+		val newSourceVURIString = sourceVURIString.replace(TEST_SOURCE_MODEL_NAME, newTestSourceModelName)
+		newSourceVURI = VURI::getInstance(URI::createURI(newSourceVURIString))
 	}
 
 	@Test
@@ -49,23 +49,25 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		val originalChanges = virtualModel.getChangeMatches(sourceVURI).map[originalChange]
 		assertThat(originalChanges.length, is(5))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
-		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#[pair])
+		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#{pair})
 		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
 			it as EMFModelChangeImpl
 		].map[eChangeCopier.copyEMFModelChangeToSingleChange(it)].toList
 		assertThat(copiedChanges.length, is(5))
 
 		virtualModel.propagateChange(copiedChanges.get(0))
+		virtualModel.propagateChange(copiedChanges.get(1))
 		assertThatNonRootObjectContainerHasRightId
 
-		copiedChanges.forEach [ c, i |
-			virtualModel.propagateChange(c)
+		for (i : 0 ..< 3) {
+			virtualModel.propagateChange(copiedChanges.get(i + 2))
 			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i, true)
-		]
+		}
 
 		newSourceVURI.saveSecondSourceModel
 	}
 
+	@Ignore
 	@Test
 	def void testReapplyAsList() {
 
@@ -93,7 +95,7 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		val originalChanges = changeMatches1.map[originalChange]
 		assertThat(originalChanges.length, is(5))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
-		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#[pair])
+		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#{pair})
 		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
 			it as EMFModelChangeImpl
 		].map[eChangeCopier.copyEMFModelChangeToList(it)].flatten.toList
@@ -169,7 +171,7 @@ class ReapplyTest extends SourceTargetRecorderTest {
 			assertThat(x.apply(targetRootIterator), is(true))
 	}
 
-	private def getResourceSet() {
+	private def getInternalResourceSet() {
 		val internalModel = virtualModel as InternalTestVirtualModel
 		val internalModelRepository = internalModel.modelRepository as InternalModelRepository
 		val resourceSet = internalModelRepository.resourceSet
@@ -185,7 +187,7 @@ class ReapplyTest extends SourceTargetRecorderTest {
 	}
 
 	private def getRootIterator(String name) {
-		resourceSet.resources.filter[URI.toString.contains(name)].map[contents].flatten.filter [
+		internalResourceSet.resources.filter[URI.toString.contains(name)].map[contents].flatten.filter [
 			it instanceof Root
 		].map[it as Root].filter [
 			id == newTestSourceModelName
