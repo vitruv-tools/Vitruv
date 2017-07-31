@@ -8,7 +8,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.emf.emfstore.bowling.BowlingFactory
 import org.eclipse.emf.emfstore.bowling.League
+
 import org.junit.Test
+
 import tools.vitruv.dsls.reactions.tests.BowlingDomainProvider
 import tools.vitruv.framework.tests.VitruviusApplicationTest
 import tools.vitruv.framework.util.datatypes.VURI
@@ -21,16 +23,22 @@ import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryImpl
 import tools.vitruv.framework.versioning.emfstore.impl.RemoteRepositoryImpl
+import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.extensions.URIRemapper
 
 class EMFStoreBaseline extends VitruviusApplicationTest {
+	static extension Logger = Logger::getLogger(EMFStoreBaseline)
 	static extension URIRemapper = URIRemapper::instance
+	static extension VirtualModelExtension = VirtualModelExtension::instance
+	static val MODEL_FILE_EXTENSION = new BowlingDomainProvider().domain.fileExtensions.get(0);
+	static val demoProjectCopyName = "DemoProjectCopy"
+	static val demoProjectName = "DemoProject"
+	static val leagueName = "Superbowling League"
 	Author author1
 	Author author2
 	League league1
@@ -39,12 +47,6 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	RemoteRepository remoteRepository
 	VURI newSourceVURI
 	VURI sourceVURI
-	static extension Logger = Logger::getLogger(EMFStoreBaseline)
-	static extension VirtualModelExtension = VirtualModelExtension::instance
-	static val MODEL_FILE_EXTENSION = new BowlingDomainProvider().domain.fileExtensions.get(0);
-	static val demoProjectCopyName = "DemoProjectCopy"
-	static val demoProjectName = "DemoProject"
-	static val leagueName = "Superbowling League"
 
 	protected static def String getProjectModelPath(String modelName) {
 		'''model/«modelName».«MODEL_FILE_EXTENSION»'''

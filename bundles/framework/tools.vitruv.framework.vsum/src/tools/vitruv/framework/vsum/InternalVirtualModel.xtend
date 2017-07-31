@@ -10,8 +10,11 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListene
 import tools.vitruv.framework.vsum.impl.InternalTestVirtualModelImpl
 
 interface InternalVirtualModel extends VirtualModel {
-	static def InternalTestVirtualModel createInternalTestVirtualModel(File folder, UserInteracting userInteracting,
-		VirtualModelConfiguration modelConfiguration) {
+	static def InternalTestVirtualModel createInternalTestVirtualModel(
+		File folder,
+		UserInteracting userInteracting,
+		VirtualModelConfiguration modelConfiguration
+	) {
 		new InternalTestVirtualModelImpl(folder, userInteracting, modelConfiguration)
 	}
 

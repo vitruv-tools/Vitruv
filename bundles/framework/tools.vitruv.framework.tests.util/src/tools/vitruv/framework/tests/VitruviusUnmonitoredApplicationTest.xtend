@@ -52,7 +52,7 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	@Before
 	override void beforeTest() {
 		super.beforeTest()
-		this.resourceSet = new ResourceSetImpl()
+		this.resourceSet = new ResourceSetImpl
 		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet)
 		var String testMethodName = testName.getMethodName()
 		createVirtualModel(testMethodName)

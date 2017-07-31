@@ -83,13 +83,13 @@ class VirtualModelImpl implements VersioningVirtualModel {
 
 	override reverseChanges(List<PropagatedChange> changes) {
 
-		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand([|
+		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand [|
 			changes.reverseView.forEach [
 				applyBackward
 				changePropagator.removePropagatedChange(originalChange.URI, id)
 			]
 			return null
-		])
+		]
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)
 
 		val changedEObjects = command.affectedObjects.filter(EObject)
@@ -98,13 +98,13 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	}
 
 	override forwardChanges(List<PropagatedChange> changes) {
-		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand([|
+		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand [
 			changes.forEach [
 				applyForward
 				changePropagator.addPropagatedChanges(originalChange.URI, id)
 			]
 			return null
-		])
+		]
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)
 
 		val changedEObjects = command.affectedObjects.filter(EObject)
