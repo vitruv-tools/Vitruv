@@ -42,8 +42,8 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 			visibility = JvmVisibility.PUBLIC;
 			parameters += generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
-				«routineNameGenerator.qualifiedName» effect = new «routineNameGenerator.qualifiedName»(this.executionState, «EFFECT_FACADE_CALLED_BY_FIELD_NAME»,
-					«FOR parameter : parameters SEPARATOR ', '»«parameter.name»«ENDFOR»);
+				«routineNameGenerator.qualifiedName» effect = new «routineNameGenerator.qualifiedName»(this.executionState, «EFFECT_FACADE_CALLED_BY_FIELD_NAME»«
+					»«FOR parameter : parameters BEFORE ', ' SEPARATOR ', '»«parameter.name»«ENDFOR»);
 				effect.applyRoutine();
 				'''			
 		]

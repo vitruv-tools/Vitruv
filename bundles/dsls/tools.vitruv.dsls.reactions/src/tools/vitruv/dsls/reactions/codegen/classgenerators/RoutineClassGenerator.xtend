@@ -222,8 +222,9 @@ class RoutineClassGenerator extends ClassGenerator {
 	
 	private def dispatch StringConcatenationClient createStatements(RoutineCallStatement routineCall) {
 		val callRoutineMethod = generateMethodCallRoutine(routineCall, currentlyAccessibleElements, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
+		val parameterCallList = routineCall.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList
 		val StringConcatenationClient callRoutineMethodCall = '''«USER_EXECUTION_FIELD_NAME».«callRoutineMethod.simpleName»(«
-			routineCall.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList», «EFFECT_FACADE_FIELD_NAME»);''';
+			parameterCallList»«IF !parameterCallList.toString.empty», «ENDIF»«EFFECT_FACADE_FIELD_NAME»);''';
 		return callRoutineMethodCall;
 	}
 	
