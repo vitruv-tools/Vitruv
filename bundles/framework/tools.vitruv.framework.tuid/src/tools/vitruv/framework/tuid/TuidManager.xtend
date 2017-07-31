@@ -9,12 +9,13 @@ import tools.vitruv.framework.util.XtendAssertHelper
 final class TuidManager {
 	static extension Logger = Logger::getLogger(TuidManager)
 	static val instance = new TuidManager
+	val Map<EObject, Tuid> tuidUpdateCache
 	val Set<TuidCalculator> tuidCalculator
 	val Set<TuidUpdateListener> tuidUpdateListener
-	val Map<EObject, Tuid> tuidUpdateCache = newHashMap
 
 	private new() {
 		this.tuidCalculator = newHashSet
+		this.tuidUpdateCache = newHashMap
 		this.tuidUpdateListener = newHashSet
 	}
 
@@ -29,7 +30,7 @@ final class TuidManager {
 	}
 
 	def removeTuidUpdateListener(TuidUpdateListener updateListener) {
-		tuidUpdateListener.remove(updateListener)
+		tuidUpdateListener -= updateListener
 	}
 
 	def void addTuidCalculator(TuidCalculator calculator) {
@@ -43,7 +44,7 @@ final class TuidManager {
 
 	def reinitialize() {
 		flushRegisteredObjectsUnderModification
-		Tuid.reinitialize
+		Tuid::reinitialize
 	}
 
 	private def TuidCalculator getTuidCalculator(EObject object) {
@@ -73,9 +74,8 @@ final class TuidManager {
 	}
 
 	def registerObjectUnderModification(EObject objectUnderModification) {
-		if (objectUnderModification.hasTuidCalculator) {
+		if (objectUnderModification.hasTuidCalculator)
 			tuidUpdateCache.put(objectUnderModification, objectUnderModification.calculateTuid)
-		}
 	}
 
 	def flushRegisteredObjectsUnderModification() {
@@ -83,15 +83,12 @@ final class TuidManager {
 	}
 
 	def updateTuidsOfRegisteredObjects() {
-		for (object : tuidUpdateCache.keySet) {
-			val oldTuid = tuidUpdateCache.get(object)
-			if (hasTuidCalculator(object)) {
-				val newTuid = object.calculateTuid
-				oldTuid.updateTuid(newTuid)
-				debug("Changed Tuid from " + oldTuid + " to " + newTuid)
-				XtendAssertHelper.assertTrue(oldTuid == newTuid)
-			}
-		}
+		tuidUpdateCache.entrySet.filter[hasTuidCalculator(key)].forEach [
+			val newTuid = key.calculateTuid
+			value.updateTuid(newTuid)
+			debug('''Changed Tuid from «value» to «newTuid»''')
+			XtendAssertHelper.assertTrue(value == newTuid)
+		]
 	}
 
 	def updateTuid(EObject oldObject, EObject newObject) {
