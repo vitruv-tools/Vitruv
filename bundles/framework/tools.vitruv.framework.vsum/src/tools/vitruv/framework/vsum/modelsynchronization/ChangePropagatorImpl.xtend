@@ -173,7 +173,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val consequentialChanges = newArrayList
 		val propagationResult = new ChangePropagationResult
 		resourceRepository.startRecording
-		changePropagationProvider.getChangePropagationSpecifications(changeDomain).forEach [
+		val specifications = changePropagationProvider.getChangePropagationSpecifications(changeDomain)
+		specifications.forEach [
 			consequentialChanges +=
 				propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
@@ -261,7 +262,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 		propagatedChanges += if (isUnresolved) unresolvedPropagatedChange else resolvedPropagatedChange
 		if (!resolvedPropagatedChange.resolved)
-			throw new IllegalStateException
+			error('''«resolvedPropagatedChange» should be resolved, but was not''')
 		if (unresolvedPropagatedChange.resolved)
 			throw new IllegalStateException
 		if (null !== vuri) {

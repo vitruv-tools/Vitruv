@@ -47,7 +47,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository
 		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider,
-			metamodelRepository, resourceRepository, modelRepository);
+			metamodelRepository, resourceRepository, modelRepository)
 		VirtualModelManager::instance.putVirtualModel(this)
 		vuriToLastpropagatedChange = newHashMap
 	}
@@ -138,5 +138,4 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	override setLastPropagatedChangeId(VURI vuri, String id) {
 		vuriToLastpropagatedChange.put(vuri, id)
 	}
-
 }

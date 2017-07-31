@@ -13,25 +13,25 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import java.util.List
 
 interface ModelRepository extends VitruviusRecordingCommandExecutor {
-	def void persistRootElement(VURI persistenceVuri, EObject rootElement);
+	def void persistRootElement(VURI persistenceVuri, EObject rootElement)
 
-	def ModelInstance getModel(VURI modelVuri);
+	def ModelInstance getModel(VURI modelVuri)
 
-	def void forceReloadModelIfExisting(VURI modelVuri);
+	def void forceReloadModelIfExisting(VURI modelVuri)
 
-	def void saveAllModels();
+	def void saveAllModels()
 
-	def void createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable);
+	def void createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable)
 
-	def void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command);
+	def void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command)
 
 	/**
 	 * Executes the function on the {@link ResourceSet} of the model repository.
 	 * @param function The {@link Consumer} to be executed
 	 */
-	def void executeOnResourceSet(Consumer<ResourceSet> function);
+	def void executeOnResourceSet(Consumer<ResourceSet> function)
 
-	def void startRecording();
+	def void startRecording()
 
 	def Iterable<TransactionalChange> endRecording()
 
