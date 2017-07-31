@@ -18,7 +18,7 @@ final class ClassNamesGenerators {
 	
 	private new() {}
 	
-	static def generateClass(String packageName, XtendImportHelper importHelper, CharSequence classImplementation) '''
+	static def generateClass(CharSequence classImplementation, String packageName, XtendImportHelper importHelper) '''
 		package «packageName»;
 		
 		«importHelper.generateImportCode»
@@ -99,10 +99,9 @@ final class ClassNamesGenerators {
 		}
 		
 		public override getSimpleName() '''
-			AbstractChangePropagationSpecification«metamodelPairName»'''
+			«metamodelPairName»ChangePropagationSpecification'''
 		
-		public override getPackageName() '''
-			«basicReactionsPackageQualifiedName»'''	
+		public override getPackageName(){ basicReactionsPackageQualifiedName}	
 	}	
 	
 	private static class ExecutorClassNameGenerator extends ClassNameGenerator {

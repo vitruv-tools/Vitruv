@@ -12,6 +12,8 @@ import tools.vitruv.dsls.reactions.linking.ReactionsLinkingService
 import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegate
 import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageGlobalScopeProvider
 import tools.vitruv.dsls.mirbase.scoping.MirBaseQualifiedNameConverter
+import org.eclipse.xtext.generator.IGenerator2
+import tools.vitruv.dsls.reactions.generator.ReactionsLanguageGenerator
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -35,4 +37,12 @@ class ReactionsLanguageRuntimeModule extends AbstractReactionsLanguageRuntimeMod
 		return ReactionsLinkingService;
 	}
 	
+	def Class<? extends IGenerator2> bindIGenerator2() {
+		ReactionsLanguageGenerator
+	}
+	
+	override configure(Binder binder) {
+		super.configure(binder);
+		binder.bind(IGenerator2).to(bindIGenerator2());
+	}
 }

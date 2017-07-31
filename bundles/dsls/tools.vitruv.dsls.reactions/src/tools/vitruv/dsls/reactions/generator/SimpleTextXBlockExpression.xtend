@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.environment;
+package tools.vitruv.dsls.reactions.generator;
 
 import org.eclipse.xtext.xbase.impl.XBlockExpressionImpl
 import org.eclipse.xtend2.lib.StringConcatenationClient

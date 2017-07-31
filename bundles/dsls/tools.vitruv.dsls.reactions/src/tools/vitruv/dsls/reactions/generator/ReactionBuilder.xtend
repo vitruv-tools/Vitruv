@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.environment;
+package tools.vitruv.dsls.reactions.generator;
 
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import org.eclipse.xtend2.lib.StringConcatenationClient
@@ -33,11 +33,10 @@ public class ReactionBuilder implements IReactionBuilder {
 	}
 
 	public override setTrigger(VitruvDomain sourceDomain) {
-		val trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelChange();
+		this.reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelChange();
 		this.reactionsSegment.fromDomain = MirBaseFactory.eINSTANCE.createDomainReference => [
 			domain = sourceDomain.name
 		]
-		this.reaction.trigger = trigger;
 		return this;
 	}
 
