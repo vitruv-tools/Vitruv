@@ -7,6 +7,7 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import tools.vitruv.dsls.reactions.generator.ReactionsEnvironmentGenerator
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.xtext.generator.IGenerator
 
 /**
  * This generator is called by Xtext when compiling Reaction language
@@ -18,9 +19,14 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 class ReactionsLanguageGenerator extends AbstractGenerator {
 
 	@Inject ReactionsEnvironmentGenerator environmentGenerator
+	@Inject IGenerator reactionGenerator
 	ResourceSet lastProcessedResourceSet
 
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		// reactions
+		reactionGenerator.doGenerate(input, fsa)
+		
+		// environment
 		val inputResourceSet = input.resourceSet
 		if (inputResourceSet != lastProcessedResourceSet) {
 			environmentGenerator.generateEnvironment(inputResourceSet, fsa)
