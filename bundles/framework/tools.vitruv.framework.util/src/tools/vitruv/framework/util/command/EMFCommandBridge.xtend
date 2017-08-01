@@ -11,29 +11,27 @@ class EMFCommandBridge {
 	def static VitruviusTransformationRecordingCommand createVitruviusTransformationRecordingCommand(
 		Callable<ChangePropagationResult> callable
 	) {
-		val VitruviusTransformationRecordingCommand recordingCommand = new VitruviusTransformationRecordingCommand() {
+		val VitruviusTransformationRecordingCommand recordingCommand = new VitruviusTransformationRecordingCommand {
 			override protected void doExecute() {
 				try {
-					var ChangePropagationResult transformationResult = callable.call()
-					if (null === transformationResult) {
-						logger.warn(
+					val transformationResult = callable.call
+					if (null === transformationResult)
+						warn(
 							"Transformation change result is null. This indicates that the previous transformation had an error.")
-					}
 					this.transformationResult = transformationResult
 				} catch (Throwable e) {
 					storeAndRethrowException(e)
 				}
-
 			}
 		}
 		return recordingCommand
 	}
 
 	def static VitruviusRecordingCommand createVitruviusRecordingCommand(Callable<Void> callable) {
-		var VitruviusRecordingCommand recordingCommand = new VitruviusRecordingCommand() {
+		val VitruviusRecordingCommand recordingCommand = new VitruviusRecordingCommand {
 			override protected void doExecute() {
 				try {
-					callable.call()
+					callable.call
 				} catch (Throwable e) {
 					storeAndRethrowException(e)
 				}
@@ -43,19 +41,26 @@ class EMFCommandBridge {
 		return recordingCommand
 	}
 
-	def static void executeVitruviusRecordingCommand(TransactionalEditingDomain domain,
-		VitruviusRecordingCommand command) {
-		command.setTransactionDomain(domain)
+	def static void executeVitruviusRecordingCommand(
+		TransactionalEditingDomain domain,
+		VitruviusRecordingCommand command
+	) {
+		command.transactionDomain = domain
 		executeCommand(domain, command)
-		command.rethrowRuntimeExceptionIfExisting()
+		command.rethrowRuntimeExceptionIfExisting
 	}
 
-	def private static void executeCommand(TransactionalEditingDomain domain, Command command) {
-		domain.getCommandStack().execute(command)
+	private def static void executeCommand(
+		TransactionalEditingDomain domain,
+		Command command
+	) {
+		domain.commandStack.execute(command)
 	}
 
-	def static void createAndExecuteVitruviusRecordingCommand(Callable<Void> callable,
-		TransactionalEditingDomain domain) {
+	def static void createAndExecuteVitruviusRecordingCommand(
+		Callable<Void> callable,
+		TransactionalEditingDomain domain
+	) {
 		val VitruviusRecordingCommand command = createVitruviusRecordingCommand(callable)
 		executeVitruviusRecordingCommand(domain, command)
 	}

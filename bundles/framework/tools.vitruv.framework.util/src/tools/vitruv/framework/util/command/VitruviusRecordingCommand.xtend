@@ -13,7 +13,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain
 import tools.vitruv.framework.util.bridges.JavaBridge
 
 abstract class VitruviusRecordingCommand extends RecordingCommand implements Command {
-	protected static val logger = Logger::getLogger(VitruviusRecordingCommand.simpleName)
+	protected static extension Logger = Logger::getLogger(VitruviusRecordingCommand.simpleName)
 	protected ChangePropagationResult transformationResult
 	RuntimeException runtimeException
 
