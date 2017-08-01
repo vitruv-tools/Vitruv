@@ -1,18 +1,19 @@
 package tools.vitruv.framework.util.command
 
-import java.util.Collection
 import java.util.Collections
+
 import org.apache.log4j.Logger
+
 import org.eclipse.emf.common.command.Command
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.transaction.RecordingCommand
 import org.eclipse.emf.transaction.Transaction
 import org.eclipse.emf.transaction.TransactionChangeDescription
 import org.eclipse.emf.transaction.TransactionalEditingDomain
+
 import tools.vitruv.framework.util.bridges.JavaBridge
 
 abstract class VitruviusRecordingCommand extends RecordingCommand implements Command {
-	protected static final Logger logger = Logger.getLogger(VitruviusRecordingCommand.getSimpleName())
+	protected static val logger = Logger::getLogger(VitruviusRecordingCommand.simpleName)
 	protected ChangePropagationResult transformationResult
 	RuntimeException runtimeException
 
@@ -26,24 +27,23 @@ abstract class VitruviusRecordingCommand extends RecordingCommand implements Com
 	}
 
 	override protected void preExecute() {
-		this.runtimeException = null
-		super.preExecute()
+		runtimeException = null
+		super.preExecute
 	}
 
 	def void setRuntimeException(RuntimeException e) {
-		this.runtimeException = e
+		runtimeException = e
 	}
 
 	def void rethrowRuntimeExceptionIfExisting() {
-		if (this.runtimeException !== null) {
-			throw (this.runtimeException)
-		}
+		if (runtimeException !== null)
+			throw (runtimeException)
 	}
 
 	def protected void storeAndRethrowException(Throwable e) {
 		var RuntimeException r
 		if (e instanceof RuntimeException) {
-			r = e as RuntimeException
+			r = e
 		} else {
 			// soften
 			r = new RuntimeException(e)
@@ -53,14 +53,14 @@ abstract class VitruviusRecordingCommand extends RecordingCommand implements Com
 		throw (r)
 	}
 
-	override Collection<?> getAffectedObjects() {
-		var Transaction transaction = JavaBridge.getFieldFromClass(RecordingCommand, "transaction", this)
+	override getAffectedObjects() {
+		val Transaction transaction = JavaBridge::getFieldFromClass(RecordingCommand, "transaction", this)
 		if (transaction === null) {
 			// TODO DW what to do, if transaction is null? when is this the case?
-			return Collections.EMPTY_SET
+			return Collections::EMPTY_SET
 		}
-		val TransactionChangeDescription changeDescription = transaction.getChangeDescription()
-		val Collection<EObject> affectedEObjects = EMFChangeBridge.getAffectedObjects(changeDescription)
+		val TransactionChangeDescription changeDescription = transaction.changeDescription
+		val affectedEObjects = EMFChangeBridge::getAffectedObjects(changeDescription)
 		return affectedEObjects
 	}
 }
