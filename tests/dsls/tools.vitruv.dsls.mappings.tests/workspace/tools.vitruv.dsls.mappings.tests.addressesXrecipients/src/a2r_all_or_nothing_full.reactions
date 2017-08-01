@@ -37,10 +37,7 @@ routine deleteAddressXRecipientLocationCityMappingInstances() {
 		call {
 			val instances = AddressXRecipientLocationCityMapping.getLeftInstances()
 			for (a : instances) {
-				val mappingApplies = AddressXRecipientLocationCityConditions.checkLeftPreconditions(a)
-				if (!mappingApplies) {
-					deleteAddressXRecipientLocationCityMappingInstance(a)
-				}
+				deleteAddressXRecipientLocationCityMappingInstance(a)
 			}
 		}
 	}
@@ -48,6 +45,7 @@ routine deleteAddressXRecipientLocationCityMappingInstances() {
 
 routine deleteAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 	match {
+		check AddressXRecipientLocationCityConditions.checkLeftPreconditions(a)
 		val r = retrieve re::Recipient corresponding to a
 			tagged with "AddressXRecipientLocationCity"
 		val l = retrieve re::Location corresponding to a
@@ -62,9 +60,8 @@ routine deleteAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 		delete r
 		delete l
 		delete c
-		call {
+		execute
 			AddressXRecipientLocationCityMapping.deregisterLeftInstance(a)
-		}
 	}
 }
 
@@ -73,16 +70,16 @@ routine createAddressXRecipientLocationCityMappingInstances() {
 		call {
 			val candidates = AddressXRecipientLocationCityMapping.getLeftCandidates()
 			for (a : candidates) {
-				val mappingApplies = AddressXRecipientLocationCityConditions.checkLeftPreconditions(a)
-				if (mappingApplies) {
-					createAddressXRecipientLocationCityMappingInstance(a)
-				}
+				createAddressXRecipientLocationCityMappingInstance(a)
 			}
 		}
 	}
 }
 
 routine createAddressXRecipientLocationCityMappingInstance(ad::Address a) {
+	match {
+		check AddressXRecipientLocationCityConditions.checkLeftPreconditions(a)
+	}
 	action {
 		val r = create re::Recipient
 		val l = create re::Location
@@ -90,9 +87,8 @@ routine createAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 		add correspondence between a and r
 		add correspondence between a and l
 		add correspondence between a and c
-		call {
+		execute
 			AddressXRecipientLocationCityMapping.registerLeftInstance(a)
-		}
 	}
 }
 

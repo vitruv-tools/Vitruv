@@ -7,7 +7,7 @@ mapping AddressXRecipientLocationCity {
   map (ad::Address a) 
     with { 
       a.number > 0
-      a.zipCode != ""
+      a.zipCode != null
     }
   and (re::Recipient r, re::Location l, re:City c) 
     with { 
@@ -16,6 +16,7 @@ mapping AddressXRecipientLocationCity {
       c.zipCode != null
     }
   such that {
+    a.number = l.number
     a.street = l.street
     a.zipCode = c.zipCode
   }

@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.mdsd.recipients.City
 
 class AddressXRecipientLocationCityConditions {
 	def static boolean checkLeftPreconditions(Address a) {
-		return a.number > 0 && a.zipCode != ""
+		return a.number > 0 && a.zipCode != null
 	}
 	
 	def static boolean checkRightPreconditions(Recipient r, Location l, City c) {
@@ -31,6 +31,8 @@ class AddressXRecipientLocationCityConditions {
 	}
 	
 	def static void enforceFromLeft2Right(Address a, Recipient r, Location l, City c) {
+		// enforce a.number = l.number
+		l.number = a.number
 		// enforce a.street = l.street
 		l.street = a.street
 		// enforce a.zipCode = c.zipCode
@@ -38,6 +40,6 @@ class AddressXRecipientLocationCityConditions {
 	}
 	
 	def static void enforceFromRight2Left(Address a, Recipient r, Location l, City c) {
-		// FIXE MK
+		// FIXME MK
 	}
 }

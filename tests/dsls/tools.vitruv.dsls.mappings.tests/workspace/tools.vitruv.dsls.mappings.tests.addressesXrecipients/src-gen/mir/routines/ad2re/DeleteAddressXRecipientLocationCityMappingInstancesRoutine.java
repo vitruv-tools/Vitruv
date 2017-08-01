@@ -22,12 +22,7 @@ public class DeleteAddressXRecipientLocationCityMappingInstancesRoutine extends 
     public void callRoutine1(@Extension final RoutinesFacade _routinesFacade) {
       final Iterable<Address> instances = AddressXRecipientLocationCityMapping.getLeftInstances();
       for (final Address a : instances) {
-        {
-          final boolean mappingApplies = AddressXRecipientLocationCityConditions.checkLeftPreconditions(a);
-          if ((!mappingApplies)) {
-            _routinesFacade.deleteAddressXRecipientLocationCityMappingInstance(a);
-          }
-        }
+        _routinesFacade.deleteAddressXRecipientLocationCityMappingInstance(a);
       }
     }
   }
