@@ -5,14 +5,13 @@ import org.eclipse.xtext.xtext.generator.model.project.*
 
 var rootPath = ".."
 var projectName = "tools.vitruv.dsls.mirbase"
-var testProjectPath = "../../../tests/dsls/${projectName}"
+var testProjectPath = "${rootPath}/../../tests/dsls/${projectName}"
 
 Workflow {
-	
 	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
-				baseName = "tools.vitruv.dsls.mirbase"
+				baseName = projectName
 				rootPath = rootPath
 				runtimeTest = {
 					enabled = true

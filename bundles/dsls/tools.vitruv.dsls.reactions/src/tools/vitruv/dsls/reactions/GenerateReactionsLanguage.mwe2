@@ -3,43 +3,13 @@ module tools.vitruv.dsls.reactions.GenerateReactions
 import org.eclipse.emf.mwe.utils.*
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
 
 var rootPath = ".."
 var projectName = "tools.vitruv.dsls.reactions"
-var runtimeProject = "../${projectName}"
-var testProjectPath = "../../../tests/dsls/${projectName}"
+var testProjectPath = "${rootPath}/../../tests/dsls/${projectName}"
 
 Workflow {
-	bean = StandaloneSetup {
-    	scanClassPath = true
-    	platformUri = "${runtimeProject}/.."
-    	// The following two lines can be removed, if Xbase is not used.
-    	registerGeneratedEPackage = "org.eclipse.xtext.xbase.XbasePackage"
-    	registerGenModelFile = "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel"
-    	registerGenModelFile = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"
-    	
-    }
-    
-    component = DirectoryCleaner {
-    	directory = "${runtimeProject}/src-gen"
-    }
-    
-    component = DirectoryCleaner {
-    	directory = "${runtimeProject}/model/generated"
-    }
-    
-    component = DirectoryCleaner {
-    	directory = "${testProjectPath}.ui/src-gen"
-    }
-    
-    component = DirectoryCleaner {
-    	directory = "${testProjectPath}.tests/src-gen"
-    }
-    
-    component = DirectoryCleaner {
-    	directory = "${testProjectPath}.ui.tests/src-gen"
-    }
-    
 	component = postprocessor.ReactionsLanguageExtendedGenerator {
 		configuration = {
 			project = StandardProjectConfig {
@@ -73,6 +43,13 @@ Workflow {
 			junitSupport = junit.Junit4Fragment2 {
 				generateStub = false
 			}
+			referencedResource = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"
 		}
+	}
+	
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.dsls.commonalities/src"
+		genModel = "platform:/resource/tools.vitruv.dsls.reactions/model/InputTypes.genmodel"
+		generateCustomClasses = false
 	}
 }

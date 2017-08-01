@@ -66,8 +66,6 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements TuidCal
 		this.nsURIs = (metamodelRootPackage.nsURIsRecursive + furtherRootPackages.map[nsURIsRecursive].flatten).toSet
 		this.defaultLoadOptions = defaultLoadOptions
 		this.defaultSaveOptions = defaultSaveOptions
-		TuidManager.instance.addTuidCalculator(this);
-		TuidManager.instance.addTuidUpdateListener(this);
 	}
 
 	override Collection<String> getFileExtensions() {
@@ -180,6 +178,11 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements TuidCal
 	
 	override getName() {
 		return name;
+	}
+	
+	override registerAtTuidManagement() {
+		TuidManager.instance.addTuidCalculator(this);
+		TuidManager.instance.addTuidUpdateListener(this);
 	}
 	
 }

@@ -30,7 +30,13 @@
 		<repository>
 			<id>Eclipse Oxygen</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/oxygen</url>
+			<!--<url>http://download.eclipse.org/releases/oxygen</url>-->
+			<url>https://sdqbuild.ipd.kit.edu/nexus/content/repositories/eclipse-oxygen-complete/</url>
+		</repository>
+		<repository>
+			<id>SDQ Commons</id>
+			<layout>p2</layout>
+			<url>http://kit-sdq.github.io/updatesite/nightly/commons</url>
 		</repository>
 		<repository>
 			<id>Vitruv License</id>
@@ -38,9 +44,9 @@
 			<url>http://vitruv-tools.github.io/updatesite/release/license</url>
 		</repository>
 		<repository>
-			<id>SDQ Commons</id>
+			<id>XAnnotations</id>
 			<layout>p2</layout>
-			<url>http://kit-sdq.github.io/updatesite/nightly/commons</url>
+			<url>https://kit-sdq.github.io/updatesite/nightly/xannotations</url>
 		</repository>
 	</repositories>
 

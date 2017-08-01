@@ -1,23 +1,22 @@
 package tools.vitruv.framework.tuid
 
-import java.util.List
-import java.util.ArrayList
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import java.util.HashMap
 import tools.vitruv.framework.util.XtendAssertHelper
 import org.apache.log4j.Logger
+import java.util.Set
 
 final class TuidManager {
 	private static val logger = Logger.getLogger(TuidManager);
 	private static val instance = new TuidManager();
-	private val List<TuidCalculator> tuidCalculator;
-	private val List<TuidUpdateListener> tuidUpdateListener;
+	private val Set<TuidCalculator> tuidCalculator;
+	private val Set<TuidUpdateListener> tuidUpdateListener;
 	private val Map<EObject, Tuid> tuidUpdateCache = new HashMap<EObject, Tuid>();
 	
 	private new() {
-		this.tuidCalculator = new ArrayList<TuidCalculator>();
-		this.tuidUpdateListener = new ArrayList<TuidUpdateListener>();
+		this.tuidCalculator = newHashSet();
+		this.tuidUpdateListener = newHashSet();
 	}
 	
 	public static def TuidManager getInstance() {

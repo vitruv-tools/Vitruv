@@ -1,14 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius DSLs MIR Base Language IDE
-Bundle-Version: 0.2.0.qualifier
-Bundle-SymbolicName: tools.vitruv.dsls.mirbase.ide; singleton:=true
-Bundle-ActivationPolicy: lazy
-Require-Bundle: tools.vitruv.dsls.mirbase,
- org.eclipse.xtext.ide,
- org.eclipse.xtext.xbase.ide
+Bundle-SymbolicName: tools.vitruv.dsls.mirbase.ide;singleton:=true
+Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: tools.vitruv.dsls.mirbase.ide.contentassist.antlr.internal,
- tools.vitruv.dsls.mirbase.ide.contentassist.antlr
-Bundle-Vendor: vitruv.tools
+Bundle-ActivationPolicy: lazy
+Export-Package: tools.vitruv.dsls.mirbase.ide.contentassist.antlr,
+ tools.vitruv.dsls.mirbase.ide.contentassist.antlr.internal
+Require-Bundle: org.antlr.runtime,
+ com.google.inject,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ tools.vitruv.dsls.mirbase
 

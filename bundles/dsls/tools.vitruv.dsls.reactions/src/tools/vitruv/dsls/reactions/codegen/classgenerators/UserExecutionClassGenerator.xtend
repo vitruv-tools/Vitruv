@@ -6,7 +6,6 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import org.eclipse.xtext.common.types.JvmOperation
 import tools.vitruv.dsls.reactions.reactionsLanguage.CodeBlock
-import tools.vitruv.dsls.reactions.environment.SimpleTextXBlockExpression
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
 import org.eclipse.xtext.common.types.JvmTypeReference
@@ -16,6 +15,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealiz
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
+import tools.vitruv.dsls.reactions.generator.SimpleTextXBlockExpression
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;

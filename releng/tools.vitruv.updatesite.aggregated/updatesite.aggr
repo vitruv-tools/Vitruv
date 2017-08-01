@@ -5,7 +5,7 @@
       <repositories location="../tools.vitruv.updatesite/target/repository"/>
     </contributions>
     <contributions label="externals">
-      <repositories location="http://download.eclipse.org/releases/oxygen" mirrorArtifacts="false">
+      <repositories location="https://sdqbuild.ipd.kit.edu/nexus/content/groups/eclipse-oxygen-complete/" mirrorArtifacts="false">
         <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.9.0"/>
         <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0"/>
         <features name="org.eclipse.emf.common.feature.group" versionRange="2.12.0"/>
@@ -18,6 +18,9 @@
       <repositories location="http://kit-sdq.github.io/updatesite/nightly/commons">
         <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
         <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
+      </repositories>
+      <repositories location="https://kit-sdq.github.io/updatesite/nightly/xannotations">
+        <features name="edu.kit.ipd.sdq.activextendannotations.feature.feature.group" versionRange="1.0.0.201707141530"/>
       </repositories>
     </contributions>
   </validationSets>

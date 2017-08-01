@@ -32,6 +32,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.metamodelRepository = new VitruvDomainRepositoryImpl();
 		for (metamodel : modelConfiguration.metamodels) {
 			this.metamodelRepository.addDomain(metamodel);
+			metamodel.registerAtTuidManagement();
 		}
 		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository);
 		this.modelRepository = new ModelRepositoryImpl();
