@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: tools.vitruv.dsls.mirbase.ide
+Bundle-Name: Vitruvius DSLs MIR Base Language IDE
 Bundle-SymbolicName: tools.vitruv.dsls.mirbase.ide;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
