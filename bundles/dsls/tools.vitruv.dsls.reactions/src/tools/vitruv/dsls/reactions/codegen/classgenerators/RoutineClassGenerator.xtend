@@ -82,12 +82,12 @@ class RoutineClassGenerator extends ClassGenerator {
 	protected def getParameterCallList(String... parameterStrings) '''
 	«FOR parameterName : parameterStrings SEPARATOR ', '»«parameterName»«ENDFOR»'''
 
-	override JvmGenericType generateClass() {
+	override JvmGenericType generateEmptyClass() {
 		if (routine === null) {
 			return null;
 		}
 
-		userExecutionClass = userExecutionClassGenerator.generateClass()
+		userExecutionClass = userExecutionClassGenerator.generateEmptyClass()
 		routine.toClass(routineClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC
 		]

@@ -46,8 +46,8 @@ class ReactionClassGenerator extends ClassGenerator {
 			reactionClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME);
 	}
 		
-	public override JvmGenericType generateClass() {
-		userExecutionClass = userExecutionClassGenerator.generateClass()
+	public override JvmGenericType generateEmptyClass() {
+		userExecutionClass = userExecutionClassGenerator.generateEmptyClass()
 		reaction.toClass(reactionClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.DEFAULT
 		]
