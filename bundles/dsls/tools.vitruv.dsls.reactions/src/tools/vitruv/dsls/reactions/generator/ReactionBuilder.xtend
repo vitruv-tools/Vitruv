@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.environment;
+package tools.vitruv.dsls.reactions.generator;
 
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import org.eclipse.xtend2.lib.StringConcatenationClient
@@ -13,36 +13,40 @@ public class ReactionBuilder implements IReactionBuilder {
 	private ReactionsSegment reactionsSegment;
 	private Routine routine;
 	private Reaction reaction;
-	
+
 	public new() {
-		this.reaction = ReactionsLanguageFactory.eINSTANCE.createReaction();
+		this.reaction = ReactionsLanguageFactory.eINSTANCE.createReaction() => [
+			callRoutine = ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall
+		]
 		this.routine = ReactionsLanguageFactory.eINSTANCE.createRoutine();
-		this.reactionsSegment = ReactionsLanguageFactory.eINSTANCE.createReactionsSegment();
-		reactionsSegment.reactions += this.reaction;
-		reactionsSegment.routines += this.routine;
+		this.reactionsSegment = ReactionsLanguageFactory.eINSTANCE.createReactionsSegment() => [
+			reactions += this.reaction;
+			routines += this.routine
+		]
 	}
-	
+
 	public override setName(String name) {
 		this.reaction.name = name + "Reaction";
 		this.routine.name = name + "Routine";
 		this.reaction.callRoutine.code = new SimpleTextXBlockExpression('''«this.routine.name»(change); ''');
 		return this;
 	}
-	
+
 	public override setTrigger(VitruvDomain sourceDomain) {
-		val trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelChange();
-		this.reactionsSegment.fromDomain = MirBaseFactory.eINSTANCE.createDomainReference;
-		this.reactionsSegment.fromDomain.domain = sourceDomain.name;
-		this.reaction.trigger = trigger;
+		this.reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelChange();
+		this.reactionsSegment.fromDomain = MirBaseFactory.eINSTANCE.createDomainReference => [
+			domain = sourceDomain.name
+		]
 		return this;
 	}
-	
+
 	public override setTargetChange(VitruvDomain targetDomain) {
-		this.reactionsSegment.toDomain = MirBaseFactory.eINSTANCE.createDomainReference;
-		this.reactionsSegment.toDomain.domain = targetDomain.name;
-		return this;
+		this.reactionsSegment.toDomain = MirBaseFactory.eINSTANCE.createDomainReference => [
+			domain = targetDomain.name
+		]
+		return this
 	}
-	
+
 	public override setExecutionBlock(StringConcatenationClient executionBlockCode) {
 		val executionBlock = ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement();
 		executionBlock.code = new SimpleTextXBlockExpression(executionBlockCode);
@@ -53,7 +57,7 @@ public class ReactionBuilder implements IReactionBuilder {
 		this.routine.matcher = matcher;
 		return this;
 	}
-	
+
 //	private static def MetamodelImport generateMetamodelImport(EPackage pack) {
 //		val metamodelImport = MirBaseFactory.eINSTANCE.createMetamodelImport();
 //		metamodelImport.name = pack.name;
@@ -66,8 +70,7 @@ public class ReactionBuilder implements IReactionBuilder {
 //		metamodelRef.model = metamodelImport;
 //		return metamodelRef;
 //	}
-	
 	public override Reaction generateReaction() {
-		return reaction;	
+		return reaction;
 	}
 }

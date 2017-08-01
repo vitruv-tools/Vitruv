@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -29,6 +30,7 @@ import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
 import org.eclipse.xtext.builder.EclipseResourceFileSystemAccess2;
 import org.eclipse.xtext.generator.OutputConfiguration;
+import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 
 import com.google.common.base.Function;
@@ -37,11 +39,10 @@ import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
 import tools.vitruv.dsls.mapping.generator.IMappingLanguageGenerator;
-import tools.vitruv.dsls.reactions.api.generator.IReactionsEnvironmentGenerator;
+import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction;
 
 import static com.google.common.collect.Maps.uniqueIndex;
-
 
 public class GenerationHandler extends AbstractHandler {
 	private static class LanguageScope {
@@ -55,8 +56,8 @@ public class GenerationHandler extends AbstractHandler {
 
 	private static class ReactionsScope extends LanguageScope {
 		@Inject
-		public IReactionsEnvironmentGenerator reactionsEnvironmentGenerator;
-		
+		public Provider<IReactionsGenerator> reactionsGeneratorProvider;
+
 		@Inject
 		private Provider<EclipseResourceFileSystemAccess2> fileSystemAccessProvider;
 
@@ -79,7 +80,8 @@ public class GenerationHandler extends AbstractHandler {
 		private final MappingScope mappingScope;
 		private final ReactionsScope reactionsScope;
 
-		public MIRResourceCollectionVisitor(IProject project, MappingScope mappingScope, ReactionsScope reactionsScope) {
+		public MIRResourceCollectionVisitor(IProject project, MappingScope mappingScope,
+				ReactionsScope reactionsScope) {
 			this.mappingScope = mappingScope;
 			this.reactionsScope = reactionsScope;
 
@@ -149,30 +151,35 @@ public class GenerationHandler extends AbstractHandler {
 				final IJavaProject javaProject = (IJavaProject) firstElement;
 				final IProject project = javaProject.getProject();
 				final EclipseResourceFileSystemAccess2 srcGenFSA = generateFSA(project);
-				final IReactionsEnvironmentGenerator reactionsEnvironmentGenerator = reactionsScope.reactionsEnvironmentGenerator;
+				final IReactionsGenerator reactionsGenerator = reactionsScope.reactionsGeneratorProvider.get();
 				
 				MIRResourceCollectionVisitor resourceVisitor = new MIRResourceCollectionVisitor(project, mappingScope,
 						reactionsScope);
 				acceptForEachSourceClassPathEntry(javaProject, resourceVisitor);
-				reactionsEnvironmentGenerator.cleanAndSetProject(project);
 				mappingScope.mappingLanguageGenerator.initialize();
 
 				final Map<Resource, Collection<Reaction>> generatedReactions = mappingScope.mappingLanguageGenerator.generateAndCreateReactions(resourceVisitor.getMappingResources(), srcGenFSA);
 				for (Resource mappingResource : generatedReactions.keySet()) {
-					reactionsEnvironmentGenerator.addReactions(mappingResource.getURI().segments()[mappingResource.getURI().segmentCount() - 1].split("\\.")[0], generatedReactions.get(mappingResource));
+					reactionsGenerator.addReaction(mappingResource.getURI().segments()[mappingResource.getURI().segmentCount() - 1].split("\\.")[0], generatedReactions.get(mappingResource));
 				}
 				
-				for (Resource reactionsResource : resourceVisitor.getReactionsResources()) {
-					reactionsEnvironmentGenerator.addReactions(reactionsResource);
+				
+				final Set<XtextResourceSet> reactionResourceSets = resourceVisitor.getReactionsResources()
+						.stream()
+						.map(Resource::getResourceSet)
+						.filter(XtextResourceSet.class::isInstance)
+						.map(XtextResourceSet.class::cast)
+						.collect(Collectors.toSet());
+				for (XtextResourceSet reactionsResourceSet : reactionResourceSets) {
+					reactionsGenerator.addReactionFiles(reactionsResourceSet);
 				}
 				
-				reactionsEnvironmentGenerator.generateEnvironment(srcGenFSA);
+				reactionsGenerator.generate(srcGenFSA);
 			}
 		}
 		return null;
 	}
-	
-	
+
 	private EclipseResourceFileSystemAccess2 generateFSA(IProject project) {
 		EclipseResourceFileSystemAccess2 fsa = reactionsScope.fileSystemAccessProvider.get();
 		fsa.setMonitor(new NullProgressMonitor());
@@ -181,9 +188,10 @@ public class GenerationHandler extends AbstractHandler {
 		fsa.setProject(project);
 		return fsa;
 	}
-	
+
 	protected Map<String, OutputConfiguration> getOutputConfigurations(IProject project) {
-		Set<OutputConfiguration> configurations = reactionsScope.outputConfigurationProvider.getOutputConfigurations(project);
+		Set<OutputConfiguration> configurations = reactionsScope.outputConfigurationProvider
+				.getOutputConfigurations(project);
 		return uniqueIndex(configurations, new Function<OutputConfiguration, String>() {
 			@Override
 			public String apply(OutputConfiguration from) {
