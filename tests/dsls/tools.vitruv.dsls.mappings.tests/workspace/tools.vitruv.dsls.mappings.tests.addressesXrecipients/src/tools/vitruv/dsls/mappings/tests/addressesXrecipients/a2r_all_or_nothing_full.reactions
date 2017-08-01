@@ -1,3 +1,6 @@
+import static extension tools.vitruv.dsls.mappings.tests.addressesXrecipients.AddressXRecipientLocationCityMapping.*
+import static extension tools.vitruv.dsls.mappings.tests.addressesXrecipients.AddressXRecipientLocationCityConditions.*
+
 import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
 import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
 
@@ -35,7 +38,7 @@ routine ensureAddressXRecipientLocationCityMapping() {
 routine deleteAddressXRecipientLocationCityMappingInstances() {
 	action {
 		call {
-			val instances = AddressXRecipientLocationCityMapping.getLeftInstances()
+			val instances = addressXRecipientLocationCityMapping.getLeftInstances()
 			for (a : instances) {
 				deleteAddressXRecipientLocationCityMappingInstance(a)
 			}
@@ -61,14 +64,14 @@ routine deleteAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 		delete l
 		delete c
 		execute
-			AddressXRecipientLocationCityMapping.deregisterLeftInstance(a)
+			addressXRecipientLocationCityMapping.removeLeftInstance(a)
 	}
 }
 
 routine createAddressXRecipientLocationCityMappingInstances() {
 	action {
 		call {
-			val candidates = AddressXRecipientLocationCityMapping.getLeftCandidates()
+			val candidates = addressXRecipientLocationCityMapping.getLeftCandidates()
 			for (a : candidates) {
 				createAddressXRecipientLocationCityMappingInstance(a)
 			}
@@ -88,14 +91,14 @@ routine createAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 		add correspondence between a and l
 		add correspondence between a and c
 		execute
-			AddressXRecipientLocationCityMapping.registerLeftInstance(a)
+			addressXRecipientLocationCityMapping.addLeftInstance(a)
 	}
 }
 
 routine updateAddressXRecipientLocationCityMappingInstances() {
 	action {
 		call {
-			val instances = AddressXRecipientLocationCityMapping.getLeftInstances()
+			val instances = addressXRecipientLocationCityMapping.getLeftInstances()
 			for (a : instances) {
 				updateAddressXRecipientLocationCityMappingInstance(a)
 			}
@@ -124,7 +127,7 @@ routine updateAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 reaction AddressCreated {
 	after element ad::Address created
 	call {
-		AddressXRecipientLocationCityMapping.registerAddress(affectedEObject)
+		addressXRecipientLocationCityMapping.addAddress(affectedEObject)
 		// FIXME MK: IS IT ALREADY GUARANTEED THAT THIS REACTION IS TRIGGERED BEFORE ANY CHANGE?
 	}
 }
@@ -133,7 +136,7 @@ reaction AddressCreated {
 reaction AddressDeleted {
 	after element ad::Address deleted
 	call {
-		AddressXRecipientLocationCityMapping.deregisterAddress(affectedEObject)
+		addressXRecipientLocationCityMapping.removeAddress(affectedEObject)
 		// FIXME MK: IS IT ALREADY GUARANTEED THAT THIS REACTION IS TRIGGERED BEFORE ANY CHANGE?
 	}
 }
