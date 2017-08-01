@@ -1,22 +1,28 @@
 package tools.vitruv.framework.vsum.repositories
 
-import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 import java.io.File
 import java.io.IOException
+
 import java.util.List
 import java.util.Map
 import java.util.Set
 import java.util.concurrent.Callable
 import java.util.function.Consumer
 import java.util.stream.Collectors
+
 import org.apache.log4j.Logger
+
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.transaction.TransactionalEditingDomain
+import org.eclipse.emf.transaction.TransactionalEditingDomain.Factory
 import org.eclipse.xtend.lib.annotations.Accessors
+
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
+
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
@@ -34,8 +40,10 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.helper.FileSystemHelper
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 
 class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceProviding {
+	static extension Factory = TransactionalEditingDomain::Factory::INSTANCE
 	static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
 	static extension Logger = Logger::getLogger(ResourceRepositoryImpl.simpleName)
 	@Accessors(PUBLIC_GETTER)
@@ -154,6 +162,11 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	}
 
 	override startRecording() {
+		changeRecorder.clearNotifiers
+		resourceSet.resources.forEach [
+			changeRecorder.addToRecording(it)
+		]
+		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		debug("Start recording virtual model")
 	}
@@ -165,20 +178,27 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 			return null
 		])
 
-		lastResolvedChanges.clear
-		lastUnresolvedChanges.clear
 		val resolvedChanges = changeRecorder.resolvedChanges
 		val unresolvedChanges = changeRecorder.unresolvedChanges
 		// TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions
 		// that are
 		// supported by the domains of the VirtualModel
 		val filterFunction = [ List<TransactionalChange> changes |
-			changes.parallelStream.filter [ change |
+			// TODO PS When recording on some domains, the first change is a deletion of the root 
+			// an afterwards, the real change sequence starts.
+			val relevantChanges = if (changes.length > 1 &&
+					changes.get(0).EChanges.get(0) instanceof RemoveAndDeleteRoot<?>)
+					changes.drop(1).toList
+				else
+					changes
+			relevantChanges.parallelStream.filter [ change |
 				change.URI === null || !change.URI.EMFUri.toString.endsWith("correspondence")
 			].collect(Collectors::toList)
 		]
 		val filteredResolved = filterFunction.apply(resolvedChanges)
 		val filteredUnresolved = filterFunction.apply(unresolvedChanges)
+		lastResolvedChanges.clear
+		lastUnresolvedChanges.clear
 		lastResolvedChanges += filteredResolved
 		lastUnresolvedChanges += filteredUnresolved
 		result += if (unresolveChanges) filteredUnresolved else filteredResolved
@@ -222,9 +242,8 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	}
 
 	private def synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
-		if (null === TransactionalEditingDomain::Factory::INSTANCE.getEditingDomain(resourceSet))
-			TransactionalEditingDomain::Factory::INSTANCE.createEditingDomain(resourceSet)
-		return TransactionalEditingDomain::Factory::INSTANCE.getEditingDomain(resourceSet)
+		if (null === getEditingDomain(resourceSet)) createEditingDomain(resourceSet)
+		return getEditingDomain(resourceSet)
 	}
 
 	private def void saveVURIsOfVsumModelInstances() {
@@ -253,7 +272,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	 * model. Hence the caller do not have to check whether the retrieved model is null.
 	 */
 	private def ModelInstance getAndLoadModelInstanceOriginal(VURI modelURI, boolean forceLoadByDoingUnloadBeforeLoad) {
-		val ModelInstance modelInstance = getModelInstanceOriginal(modelURI)
+		val modelInstance = getModelInstanceOriginal(modelURI)
 		try {
 			if (modelURI.EMFUri.toString.startsWith("pathmap") || URIUtil::existsResourceAtUri(modelURI.EMFUri)) {
 				modelInstance.load(getMetamodelByURI(modelURI).defaultLoadOptions, forceLoadByDoingUnloadBeforeLoad)
