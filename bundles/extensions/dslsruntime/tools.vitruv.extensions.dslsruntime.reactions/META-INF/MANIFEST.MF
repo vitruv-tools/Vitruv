@@ -23,10 +23,11 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.metamodel
 Bundle-ActivationPolicy: lazy
-Export-Package: tools.vitruv.extensions.dslsruntime.reactions,
- tools.vitruv.extensions.dslsruntime.reactions.structure,
- tools.vitruv.dsls.reactions.meta.correspondence.reactions,
+Export-Package: tools.vitruv.dsls.reactions.meta.correspondence.reactions,
  tools.vitruv.dsls.reactions.meta.correspondence.reactions.impl,
- tools.vitruv.dsls.reactions.meta.correspondence.reactions.util
+ tools.vitruv.dsls.reactions.meta.correspondence.reactions.util,
+ tools.vitruv.extensions.dslsruntime.reactions,
+ tools.vitruv.extensions.dslsruntime.reactions.helper,
+ tools.vitruv.extensions.dslsruntime.reactions.structure
 Import-Package: org.apache.log4j
 
