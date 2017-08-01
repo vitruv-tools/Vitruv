@@ -1,15 +1,18 @@
 package tools.vitruv.framework.vsum.modelsynchronization
 
-import com.google.common.collect.ArrayListMultimap
-import com.google.common.collect.ListMultimap
 import java.util.Collections
 import java.util.List
 import java.util.Map
 import java.util.Set
 import java.util.UUID
+
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
+
+import com.google.common.collect.ArrayListMultimap
+import com.google.common.collect.ListMultimap
+
 import tools.vitruv.framework.change.description.ChangeCloner
 import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.PropagatedChange
@@ -29,8 +32,9 @@ import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
-	static extension ChangeCloner = new ChangeCloner
+	static extension ChangeCloner cc = new ChangeCloner
 	static extension Logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
+	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceProviding correspondenceProviding
 	val List<EObject> objectsCreatedDuringPropagation
@@ -94,7 +98,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			Propagated changes:
 			«FOR propagatedChange : result»
 				Propagated Change:
-			«propagatedChange»«ENDFOR»
+				«propagatedChange»
+			«ENDFOR»
 		''')
 		finishChangePropagation(change)
 		return result
@@ -152,7 +157,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		List<PropagatedChange> propagatedChanges,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-		val clonedChange = clone(change)
+		val clonedChange = cc.clone(change)
 		val changeApplicationFunction = [ ResourceSet resourceSet |
 			// If change has a URI, load the model
 			if (change.URI !== null) resourceRepository.getModel(change.URI)
@@ -208,11 +213,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
-		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand [|
+		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand [
 			val propResult = propagationSpecification.propagateChange(change, correspondenceModel)
 			modelRepository.cleanupRootElements
 			return propResult
-
 		]
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)
 
@@ -227,7 +231,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 	private def void executePropagationResult(ChangePropagationResult changePropagationResult) {
 		if (null === changePropagationResult) {
-			info("Current propagation result is null. Can not save new root EObjects::")
+			info("Current propagation result is null. Can not save new root EObjects.")
 			return
 		}
 		changePropagationResult.elementToPersistenceMap.entrySet.forEach [
@@ -253,11 +257,14 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			''')
 
 		val unresolvedPropagatedChange = new PropagatedChangeImpl(uuid, unresolvedChange,
-			VitruviusChangeFactory::instance.createCompositeChange(unresolvedTriggeredChanges))
+			createCompositeChange(unresolvedTriggeredChanges))
 		val resolvedPropagatedChange = new PropagatedChangeImpl(uuid, resolvedChange,
-			VitruviusChangeFactory::instance.createCompositeChange(resolvedTriggeredChanges))
+			createCompositeChange(resolvedTriggeredChanges))
 
-		propagatedChanges += if (isUnresolved) unresolvedPropagatedChange else resolvedPropagatedChange
+		propagatedChanges += if (isUnresolved)
+			unresolvedPropagatedChange
+		else
+			resolvedPropagatedChange
 		if (!resolvedPropagatedChange.resolved)
 			error('''«resolvedPropagatedChange» should be resolved, but was not''')
 		if (unresolvedPropagatedChange.resolved)
@@ -269,5 +276,4 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		} else
 			warn('''resolvedChange.URI was null''')
 	}
-
 }

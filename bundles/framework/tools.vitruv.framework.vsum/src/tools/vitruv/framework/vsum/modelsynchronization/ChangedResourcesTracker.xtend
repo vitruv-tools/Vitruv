@@ -1,8 +1,10 @@
 package tools.vitruv.framework.vsum.modelsynchronization
 
 import java.util.Set
+
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
@@ -10,8 +12,8 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 
 package class ChangedResourcesTracker {
-	val Set<Resource> sourceModelResources
 	val Set<Resource> involvedModelResources
+	val Set<Resource> sourceModelResources
 
 	new() {
 		involvedModelResources = newHashSet
