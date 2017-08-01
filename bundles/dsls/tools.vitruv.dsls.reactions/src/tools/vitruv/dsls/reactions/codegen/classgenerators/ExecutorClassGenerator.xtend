@@ -16,7 +16,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 		this.reactionsSegment = reactionsSegment;
 	}
 	
-	override generateClass() {
+	override generateEmptyClass() {
 		val executorNameGenerator = reactionsSegment.executorClassNameGenerator;
 		reactionsSegment.toClass(executorNameGenerator.qualifiedName) [
 			superTypes += typeRef(AbstractReactionsExecutor);
