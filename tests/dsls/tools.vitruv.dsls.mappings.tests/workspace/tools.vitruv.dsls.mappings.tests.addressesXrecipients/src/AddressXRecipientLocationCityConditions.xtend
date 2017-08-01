@@ -8,6 +8,15 @@ class AddressXRecipientLocationCityConditions {
 		return a.number > 0 && a.zipCode != ""
 	}
 	
+	def static boolean checkRightPreconditions(Recipient r, Location l, City c) {
+		// FIXME MK
+		return false
+	}
+	
+	def static void enforceLeftPreconditions(Address a) {
+		// FIXME MK
+	}
+	
 	def static void enforceRigthPostconditions(Recipient r, Location l, City c) {
 		// enforce r.business == true
 		r.business = true
@@ -26,5 +35,9 @@ class AddressXRecipientLocationCityConditions {
 		l.street = a.street
 		// enforce a.zipCode = c.zipCode
 		c.zipCode = a.zipCode
+	}
+	
+	def static void enforceFromRight2Left(Address a, Recipient r, Location l, City c) {
+		// FIXE MK
 	}
 }

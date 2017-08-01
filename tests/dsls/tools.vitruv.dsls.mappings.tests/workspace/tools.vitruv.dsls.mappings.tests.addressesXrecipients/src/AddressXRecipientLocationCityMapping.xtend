@@ -6,15 +6,17 @@ import edu.kit.ipd.sdq.commons.util.java.Triple
 
 class AddressXRecipientLocationCityMapping {
 	
+	/********** BEGIN CANDIATE METHODS **********/
 	def static Iterable<Address> getLeftCandidates() {
 		// FIXME MK
 	}
-	
-	def static Iterable<Address> getLeftInstances() {
+		
+	def static Iterable<Triple<Recipient, Location, City>> getRightCandidates() {
 		// FIXME MK
 	}
 	
-	def static Iterable<Triple<Recipient, Location, City>> getRightCandidates() {
+	/********** BEGIN INSTANCE METHODS **********/
+	def static Iterable<Address> getLeftInstances() {
 		// FIXME MK
 	}
 	
@@ -38,6 +40,7 @@ class AddressXRecipientLocationCityMapping {
 		// FIXME MK
 	}
 	
+	/********** BEGIN ELEMENT METHODS **********/
 	def static void registerAddress(Address address) {
 		// FIXME MK
 	}
@@ -68,9 +71,5 @@ class AddressXRecipientLocationCityMapping {
 	
 	def static void deregisterCity(City city) {
 		// FIXME MK
-	}
-	
-	def static boolean isMappingApplicationForAddress(Recipient r, Location l, City c, Recipient correspondingRecipient, Location correspondingLocation, City correspondingCity) {
-		return r == correspondingRecipient && l == correspondingLocation && c == correspondingCity
 	}
 }

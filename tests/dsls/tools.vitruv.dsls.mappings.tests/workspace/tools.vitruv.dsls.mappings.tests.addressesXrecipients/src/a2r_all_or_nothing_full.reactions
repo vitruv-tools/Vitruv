@@ -1,5 +1,3 @@
-import tools.vitruv.framework.change.echange.EChange
-
 import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
 import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
 
@@ -7,28 +5,65 @@ reactions: ad2re
 in reaction to changes in Addresses
 execute actions in Recipients
 
+/********** BEGIN UPDATE REACTIONS **********/
 reaction AnyChange {
 	after any change
 	call {
-		ensureAllMappings(change)
+		ensureAllMappings()
 	}
 }
 
-routine ensureAllMappings(plain EChange as change) {
+routine ensureAllMappings() {
 	action {
 		call {
-			ensureAddressXRecipientLocationCityMapping(change)
-			//ensureTHENAMEMappings(change)
+			ensureAddressXRecipientLocationCityMapping()
+			//ensureTHENEXTNAMEMapping()
 		}
 	}
 }
 
-routine ensureAddressXRecipientLocationCityMapping(plain EChange as change) {
+routine ensureAddressXRecipientLocationCityMapping() {
 	action {
 		call {
+			deleteAddressXRecipientLocationCityMappingInstances()
 			createAddressXRecipientLocationCityMappingInstances()
 			updateAddressXRecipientLocationCityMappingInstances()
-			deleteAddressXRecipientLocationCityMappingInstances()
+		}
+	}
+}
+
+routine deleteAddressXRecipientLocationCityMappingInstances() {
+	action {
+		call {
+			val instances = AddressXRecipientLocationCityMapping.getLeftInstances()
+			for (a : instances) {
+				val mappingApplies = AddressXRecipientLocationCityConditions.checkLeftPreconditions(a)
+				if (!mappingApplies) {
+					deleteAddressXRecipientLocationCityMappingInstance(a)
+				}
+			}
+		}
+	}
+}
+
+routine deleteAddressXRecipientLocationCityMappingInstance(ad::Address a) {
+	match {
+		val r = retrieve re::Recipient corresponding to a
+			tagged with "AddressXRecipientLocationCity"
+		val l = retrieve re::Location corresponding to a
+			tagged with "AddressXRecipientLocationCity"
+		val c = retrieve re::City corresponding to a
+			tagged with "AddressXRecipientLocationCity"
+	}
+	action {
+		remove correspondence between a and r
+		remove correspondence between a and l
+		remove correspondence between a and c
+		delete r
+		delete l
+		delete c
+		call {
+			AddressXRecipientLocationCityMapping.deregisterLeftInstance(a)
 		}
 	}
 }
@@ -89,37 +124,7 @@ routine updateAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 	}
 }
 
-
-routine deregisterIfNoLongerAddressXRecipientLocationCityApplication(ad::Address a, re::Recipient r, re::Location l, re::City c) {
-
-	action {
-
-		
-
-	}
-}
-
-routine deleteAddressXRecipientLocationCityElements(re::Recipient r, re::Location l, re::City c) {
-	action {
-
-	}
-}
-
-routine deleteAddressXRecipientLocationCityMappingInstance(ad::Address a, re::Recipient r, re::Location l, re::City c) {
-	action {
-		remove correspondence between a and r
-		remove correspondence between a and l
-		remove correspondence between a and c
-		delete r
-		delete l
-		delete c
-		call {
-			AddressXRecipientLocationCityMapping.deregisterLeftInstance(a)
-		}
-	}
-}
-
-
+/********** BEGIN CREATE REACTIONS **********/
 reaction AddressCreated {
 	after element ad::Address created
 	call {
@@ -128,6 +133,7 @@ reaction AddressCreated {
 	}
 }
 
+/********** BEGIN DELETE REACTIONS **********/
 reaction AddressDeleted {
 	after element ad::Address deleted
 	call {
@@ -135,23 +141,3 @@ reaction AddressDeleted {
 		// FIXME MK: IS IT ALREADY GUARANTEED THAT THIS REACTION IS TRIGGERED BEFORE ANY CHANGE?
 	}
 }
-
-//mapping AddressXRecipientLocationCity {
-//  map (ad::Address a) 
-//    with { 
-//      a.number > 0
-//      a.zipCode != ""
-//    }
-//  and (re::Recipient r, re::Location l, re:City c) 
-//    with { 
-//      r.business == true
-//      l.number > 0
-//      c.zipCode != null
-//    }
-//  such that {
-//    a.street = l.street
-//    a.zipCode = c.zipCode
-//  }
-//}
-
-
