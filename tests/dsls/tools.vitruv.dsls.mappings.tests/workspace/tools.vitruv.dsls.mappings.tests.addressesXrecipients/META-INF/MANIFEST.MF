@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AddressesXRecipients
+Bundle-SymbolicName: tools.vitruv.dsls.mappings.tests.addressesXrecipients
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: SDQ
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

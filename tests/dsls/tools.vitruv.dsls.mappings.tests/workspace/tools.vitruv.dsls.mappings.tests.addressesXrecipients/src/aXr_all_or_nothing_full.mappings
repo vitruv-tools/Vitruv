@@ -1,0 +1,22 @@
+import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
+import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
+
+mappings: adXre for Addresses and Recipients
+
+mapping AddressXRecipientLocationCity {
+  map (ad::Address a) 
+    with { 
+      a.number > 0
+      a.zipCode != ""
+    }
+  and (re::Recipient r, re::Location l, re:City c) 
+    with { 
+      r.business == true
+      l.number > 0
+      c.zipCode != null
+    }
+  such that {
+    a.street = l.street
+    a.zipCode = c.zipCode
+  }
+}

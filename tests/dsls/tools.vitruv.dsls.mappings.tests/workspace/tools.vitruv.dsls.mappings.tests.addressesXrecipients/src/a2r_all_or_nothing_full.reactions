@@ -1,0 +1,157 @@
+import tools.vitruv.framework.change.echange.EChange
+
+import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
+import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
+
+reactions: ad2re 
+in reaction to changes in Addresses
+execute actions in Recipients
+
+reaction AnyChange {
+	after any change
+	call {
+		ensureAllMappings(change)
+	}
+}
+
+routine ensureAllMappings(plain EChange as change) {
+	action {
+		call {
+			ensureAddressXRecipientLocationCityMapping(change)
+			//ensureTHENAMEMappings(change)
+		}
+	}
+}
+
+routine ensureAddressXRecipientLocationCityMapping(plain EChange as change) {
+	action {
+		call {
+			createAddressXRecipientLocationCityMappingInstances()
+			updateAddressXRecipientLocationCityMappingInstances()
+			deleteAddressXRecipientLocationCityMappingInstances()
+		}
+	}
+}
+
+routine createAddressXRecipientLocationCityMappingInstances() {
+	action {
+		call {
+			val candidates = AddressXRecipientLocationCityMapping.getLeftCandidates()
+			for (a : candidates) {
+				val mappingApplies = AddressXRecipientLocationCityConditions.checkLeftPreconditions(a)
+				if (mappingApplies) {
+					createAddressXRecipientLocationCityMappingInstance(a)
+				}
+			}
+		}
+	}
+}
+
+routine createAddressXRecipientLocationCityMappingInstance(ad::Address a) {
+	action {
+		val r = create re::Recipient
+		val l = create re::Location
+		val c = create re::City
+		add correspondence between a and r
+		add correspondence between a and l
+		add correspondence between a and c
+		call {
+			AddressXRecipientLocationCityMapping.registerLeftInstance(a)
+		}
+	}
+}
+
+routine updateAddressXRecipientLocationCityMappingInstances() {
+	action {
+		call {
+			val instances = AddressXRecipientLocationCityMapping.getLeftInstances()
+			for (a : instances) {
+				updateAddressXRecipientLocationCityMappingInstance(a)
+			}
+		}
+	}
+}
+
+routine updateAddressXRecipientLocationCityMappingInstance(ad::Address a) {
+	match {
+		val r = retrieve re::Recipient corresponding to a
+			tagged with "AddressXRecipientLocationCity"
+		val l = retrieve re::Location corresponding to a
+			tagged with "AddressXRecipientLocationCity"
+		val c = retrieve re::City corresponding to a
+			tagged with "AddressXRecipientLocationCity"
+	}
+	action {
+		call {
+			AddressXRecipientLocationCityConditions.enforceRigthPostconditions(r, l, c)
+			AddressXRecipientLocationCityConditions.enforceFromLeft2Right(a, r, l, c)
+		}
+	}
+}
+
+
+routine deregisterIfNoLongerAddressXRecipientLocationCityApplication(ad::Address a, re::Recipient r, re::Location l, re::City c) {
+
+	action {
+
+		
+
+	}
+}
+
+routine deleteAddressXRecipientLocationCityElements(re::Recipient r, re::Location l, re::City c) {
+	action {
+
+	}
+}
+
+routine deleteAddressXRecipientLocationCityMappingInstance(ad::Address a, re::Recipient r, re::Location l, re::City c) {
+	action {
+		remove correspondence between a and r
+		remove correspondence between a and l
+		remove correspondence between a and c
+		delete r
+		delete l
+		delete c
+		call {
+			AddressXRecipientLocationCityMapping.deregisterLeftInstance(a)
+		}
+	}
+}
+
+
+reaction AddressCreated {
+	after element ad::Address created
+	call {
+		AddressXRecipientLocationCityMapping.registerAddress(affectedEObject)
+		// FIXME MK: IS IT ALREADY GUARANTEED THAT THIS REACTION IS TRIGGERED BEFORE ANY CHANGE?
+	}
+}
+
+reaction AddressDeleted {
+	after element ad::Address deleted
+	call {
+		AddressXRecipientLocationCityMapping.deregisterAddress(affectedEObject)
+		// FIXME MK: IS IT ALREADY GUARANTEED THAT THIS REACTION IS TRIGGERED BEFORE ANY CHANGE?
+	}
+}
+
+//mapping AddressXRecipientLocationCity {
+//  map (ad::Address a) 
+//    with { 
+//      a.number > 0
+//      a.zipCode != ""
+//    }
+//  and (re::Recipient r, re::Location l, re:City c) 
+//    with { 
+//      r.business == true
+//      l.number > 0
+//      c.zipCode != null
+//    }
+//  such that {
+//    a.street = l.street
+//    a.zipCode = c.zipCode
+//  }
+//}
+
+
