@@ -13,52 +13,61 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
-import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import org.eclipse.xtext.testing.XtextRunner
+import org.junit.runner.RunWith
+import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
+import com.google.inject.Inject
+import org.eclipse.xtext.testing.InjectWith
 
+@RunWith(XtextRunner)
+@InjectWith(ReactionsLanguageInjectorProvider)
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
 	private static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
 	private static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
+	@Inject SimpleChangeReactionsCompiler reactionCompiler
+
 	override protected boolean unresolveChanges() {
 		return true;
 	}
-	
+
 	override protected createChangePropagationSpecifications() {
-		return #[new AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes() {}];
+		#[reactionCompiler.newConcreteChangePropagationSpecification()]
 	}
-	
+
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
-	
+
 	private def Root getRootElement() {
 		return TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root;
 	}
-	
+
 	private def String getProjectModelPath(String modelName) {
 		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
 	}
-	
+
 	private def assertModelsEqual() {
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 	}
-	
+
 	protected override setup() {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot();
-		root.setId(TEST_SOURCE_MODEL_NAME);
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root);
+		val root = AllElementTypesFactory.eINSTANCE.createRoot()
+		root.setId(TEST_SOURCE_MODEL_NAME)
+		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+		
 		prepareTestModel();
 		assertModelsEqual();
 	}
-	
+
 	override protected cleanup() {
 		// Do nothing
 	}
-	
+
 	private def prepareTestModel() {
 		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
 		container.setId("NonRootObjectContainer");
@@ -70,23 +79,22 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		}
 		saveAndSynchronizeChanges(rootElement);
 	}
-	
-		
+
 	private def unsetSingleValuedEAttribute(Root rootObject) {
 		rootObject.eUnset(AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_EATTRIBUTE);
 		saveAndSynchronizeChanges(rootElement)
 	}
-	
+
 	private def void unsetSingleValuedNonContainmentNonRootObject(Root rootObject) {
 		rootObject.singleValuedNonContainmentEReference = null;
 		saveAndSynchronizeChanges(rootObject);
 	}
-	
+
 	private def addMultiValuedEAttribute(Root rootObject, Integer value) {
 		rootObject.multiValuedEAttribute.add(value);
 		saveAndSynchronizeChanges(rootObject);
 	}
-	
+
 	private def void replaceMultiValuedEAttribute(Root rootObject, Integer oldValue, Integer newValue) {
 		val oldIndex = rootObject.multiValuedEAttribute.indexOf(oldValue);
 		if (oldIndex == -1) {
@@ -95,7 +103,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		rootObject.multiValuedEAttribute.set(oldIndex, newValue);
 		saveAndSynchronizeChanges(rootObject);
 	}
-	
+
 	private def removeMultiValuedEAttribute(Root rootObject, Integer value) {
 		val oldIndex = rootObject.multiValuedEAttribute.indexOf(value);
 		if (oldIndex == -1) {
@@ -112,9 +120,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		saveAndSynchronizeChanges(nonRootObject);
 		return nonRootObject;
 	}
-	
+
 	private def void replaceMultiValuedContainmentNonRootObject(Root rootObject, String oldId, String newId) {
-		val oldElement = rootObject.multiValuedContainmentEReference.findFirst(nonRoot | nonRoot.id == oldId);
+		val oldElement = rootObject.multiValuedContainmentEReference.findFirst(nonRoot|nonRoot.id == oldId);
 		if (oldElement === null) {
 			throw new IllegalStateException("There is no element with the specified old element id.");
 		}
@@ -124,28 +132,37 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		rootObject.multiValuedContainmentEReference.set(oldIndex, newElement);
 		saveAndSynchronizeChanges(rootObject);
 	}
-	
+
 	private def removeMultiValuedContainmentNonRootObject(Root rootObject, String id) {
-		val objectToRemove = rootObject.multiValuedContainmentEReference.findFirst(nonRoot | nonRoot.id == id);
+		val objectToRemove = rootObject.multiValuedContainmentEReference.findFirst(nonRoot|nonRoot.id == id);
 		if (objectToRemove === null) {
 			throw new IllegalStateException("There is no element with the specified element id.");
 		}
 		rootObject.multiValuedContainmentEReference.remove(objectToRemove);
 		saveAndSynchronizeChanges(rootObject);
 	}
-	
+
 	private def void insertMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val nonRoot = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == id);
+		val nonRoot = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
+			nonRoot |
+				nonRoot.id == id
+		);
 		if (nonRoot === null) {
 			throw new IllegalStateException("There is no element with the specified element id.");
 		}
 		rootObject.multiValuedNonContainmentEReference.add(nonRoot);
 		saveAndSynchronizeChanges(rootObject);
 	}
-	
+
 	private def void replaceMultiValuedNonContainmentNonRootObject(Root rootObject, String oldId, String newId) {
-		val oldElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == oldId);
-		val newElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == newId);
+		val oldElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
+			nonRoot |
+				nonRoot.id == oldId
+		);
+		val newElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
+			nonRoot |
+				nonRoot.id == newId
+		);
 		if (oldElement === null) {
 			throw new IllegalStateException("There is no element with the specified old element id.");
 		}
@@ -159,9 +176,12 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		rootObject.multiValuedNonContainmentEReference.set(oldIndex, newElement);
 		saveAndSynchronizeChanges(rootObject);
 	}
-	
+
 	private def void removeMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val objectToRemove = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == id);
+		val objectToRemove = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
+			nonRoot |
+				nonRoot.id == id
+		);
 		if (objectToRemove === null) {
 			throw new IllegalStateException("There is no element with the specified element id.");
 		}
@@ -171,16 +191,17 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		rootObject.multiValuedNonContainmentEReference.remove(objectToRemove);
 		saveAndSynchronizeChanges(rootObject);
 	}
-		
+
 	private def void permuteMultiValuedNonContamentNonRootObjects(Root rootObject) {
-		ECollections.sort(rootObject.multiValuedNonContainmentEReference, [a, b | - a.id.compareTo(b.id)]);
+		ECollections.sort(rootObject.multiValuedNonContainmentEReference, [a, b|- a.id.compareTo(b.id)]);
 		saveAndSynchronizeChanges(rootObject);
 	}
 
-
-
 	private def NonRoot setSingleValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val nonRootObject = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(nonRoot | nonRoot.id == id);
+		val nonRootObject = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
+			nonRoot |
+				nonRoot.id == id
+		);
 		rootObject.singleValuedNonContainmentEReference = nonRootObject;
 		saveAndSynchronizeChanges(nonRootObject);
 		return nonRootObject;
@@ -197,24 +218,24 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		rootObject.singleValuedContainmentEReference = null;
 		saveAndSynchronizeChanges(rootObject)
 	}
-	
+
 	private def void setElementId(Identified element, String newId) {
 		element.setId(newId);
 		saveAndSynchronizeChanges(element);
 	}
-	
+
 	private def void setSingleValuedEAttribute(Root root, Integer value) {
 		root.singleValuedEAttribute = value;
 		saveAndSynchronizeChanges(root);
 	}
-	
+
 	private def void setSingleValuedPrimitiveTypeEAttribute(Root root, Integer value) {
 		root.singleValuedPrimitiveTypeEAttribute = value;
 		saveAndSynchronizeChanges(root);
 	}
 
 	// TODO HK (Change MM) Unset does not produce any change event at the moment
-	//@Test
+	// @Test
 	public def void testUnsetSingleValuedEAttribute() {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
 		unsetSingleValuedEAttribute(rootElement);
@@ -223,8 +244,8 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-		
-	//@Test
+
+	// @Test
 	public def void testUnsetSingleValuedNonContainmentEReference() throws Throwable {
 		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
 		SimpleChangesTestsExecutionMonitor.reinitialize();
@@ -246,7 +267,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testUpdateSingleValuedPrimitiveTypeEAttribute() {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
@@ -257,7 +278,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testCreateSingleValuedContainmentEReference() throws Throwable {
 		unsetSingleValuedContainmentNonRootObject(rootElement);
@@ -270,7 +291,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testDeleteSingleValuedContainmentEReference() throws Throwable {
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRoot");
@@ -279,12 +300,12 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteEObject);
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
-		//compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
+		// compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testReplaceSingleValuedContainmentEReference() throws Throwable {
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRoot");
@@ -299,7 +320,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testSetSingleValuedNonContainmentEReference() throws Throwable {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
@@ -312,7 +333,6 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertModelsEqual();
 	}
 
-	
 	@Test
 	public def void testReplaceSingleValuedNonContainmentEReference() throws Throwable {
 		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(0));
@@ -325,8 +345,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(nonContainmentNonRootIds.get(1), rootElement.singleValuedNonContainmentEReference.id);
 		assertModelsEqual();
 	}
-	
-	
+
 	@Test
 	public def void testAddMultiValuedEAttribute() throws Throwable {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
@@ -337,7 +356,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testDeleteMultiValuedEAttribute() throws Throwable {
 		addMultiValuedEAttribute(rootElement, 1);
@@ -351,7 +370,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(2, rootElement.multiValuedEAttribute.get(0));
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testReplaceMultiValuedEAttribute() throws Throwable {
 		addMultiValuedEAttribute(rootElement, 1);
@@ -367,7 +386,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(3, rootElement.multiValuedEAttribute.get(1));
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testAddMultiValuedContainmentEReference() throws Throwable {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
@@ -379,7 +398,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testDeleteMultiValuedContainmentEReference() throws Throwable {
 		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
@@ -392,12 +411,13 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testReplaceMultiValuedContainmentEReference() throws Throwable {
 		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
 		SimpleChangesTestsExecutionMonitor.reinitialize();
-		replaceMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest", "multiValuedContainmentNonRootTest2");
+		replaceMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest",
+			"multiValuedContainmentNonRootTest2");
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectInList);
 		compareMonitor.set(ChangeType.DeleteEObject);
@@ -408,7 +428,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals("multiValuedContainmentNonRootTest2", rootElement.multiValuedContainmentEReference.last.id);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testInsertMultiValuedNonContainmentEReference() throws Throwable {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
@@ -417,9 +437,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.set(ChangeType.InsertNonContainmentEReference);
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
-		
+
 	}
-	
+
 	@Test
 	public def void testRemoveMultiValuedNonContainmentEReference() throws Throwable {
 		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
@@ -432,16 +452,17 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, mon);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testReplaceMultiValuedNonContainmentEReference() throws Throwable {
 		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(0));
 		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
 		SimpleChangesTestsExecutionMonitor.reinitialize();
-		replaceMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1), nonContainmentNonRootIds.get(2))
+		replaceMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1),
+			nonContainmentNonRootIds.get(2))
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		// TODO HK (Change MM) this should not be... should be one event!
-		//compareMonitor.set(ChangeType.ReplaceNonContainmentEReference);
+		// compareMonitor.set(ChangeType.ReplaceNonContainmentEReference);
 		compareMonitor.set(ChangeType.RemoveNonContainmentEReference);
 		compareMonitor.set(ChangeType.InsertNonContainmentEReference);
 		compareMonitor.assertEqualWithStatic();
@@ -451,9 +472,9 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	// TODO HK (Change MM) Permute operations are not supported by now? No EChange produced
-	//@Test
+	// @Test
 	public def void testPermuteMultiValuedNonContainmentEReference() throws Throwable {
 		for (nonRootId : nonContainmentNonRootIds) {
 			insertMultiValuedNonContainmentNonRootObject(rootElement, nonRootId);
@@ -465,7 +486,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
 	}
-	
+
 	@Test
 	public def void testDeleteEachTestModel() throws Throwable {
 		assertModelExists(TEST_SOURCE_MODEL_NAME.projectModelPath);
@@ -473,48 +494,53 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertModelNotExists(TEST_SOURCE_MODEL_NAME.projectModelPath);
 		assertModelNotExists(TEST_TARGET_MODEL_NAME.projectModelPath);
 	}
-	
+
 	@Test
 	public def void testCreateFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
-		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
+			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 	}
-	
+
 	@Test
 	public def void testDeleteFurtherModel() throws Throwable {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
 		assertModelExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
-		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
+			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 		deleteAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
 		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 	}
-	
+
 	@Test
 	public def void testReverse() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
 		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
-		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
+			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
 		nonRoot.id = "testId";
 		root.singleValuedContainmentEReference = nonRoot;
 		val result = saveAndSynchronizeChanges(root);
 		this.virtualModel.reverseChanges(result);
-		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
+			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 		val testResourceSet = new ResourceSetImpl();
 		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-		val sourceModel = testResourceSet.getResource(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		val sourceModel = testResourceSet.getResource(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri,
+			true);
 		assertEquals(null, (sourceModel.contents.get(0) as Root).singleValuedContainmentEReference);
-		val targetModel = testResourceSet.getResource(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
+		val targetModel = testResourceSet.getResource(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri,
+			true);
 		assertEquals(null, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference);
 	}
-	
-	
+
 	@Test
 	public def void testApplyBidirectional() {
 		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
@@ -524,8 +550,8 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val propagatedChanges = saveAndSynchronizeChanges(targetRoot);
 		assertEquals(1, propagatedChanges.size);
 		val compositePropagatedChange = propagatedChanges.get(0).consequentialChanges as CompositeContainerChange
-		assertTrue(compositePropagatedChange.EChanges.get(0) instanceof ReplaceSingleValuedEAttribute<?,?>)
-		val replaceChange = compositePropagatedChange.EChanges.get(0) as ReplaceSingleValuedEAttribute<?,?>
+		assertTrue(compositePropagatedChange.EChanges.get(0) instanceof ReplaceSingleValuedEAttribute<?, ?>)
+		val replaceChange = compositePropagatedChange.EChanges.get(0) as ReplaceSingleValuedEAttribute<?, ?>
 		assertEquals(newId, replaceChange.newValue);
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 		val testResourceSet = new ResourceSetImpl();
