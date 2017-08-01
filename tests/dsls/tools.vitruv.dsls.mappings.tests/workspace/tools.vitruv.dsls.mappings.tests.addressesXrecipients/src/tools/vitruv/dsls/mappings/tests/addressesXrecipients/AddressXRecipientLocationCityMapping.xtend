@@ -67,21 +67,36 @@ class AddressXRecipientLocationCityMapping implements Mapping {
 	
 	/********** BEGIN CANDIDATE METHODS **********/
 	def Iterable<Address> getLeftCandidates() {
-		// FIXME MK IMPROVE THIS
-		return mappingRegistry.getLeftCandidates().map[it.get(0) as Address]
+		return mappingRegistry.getLeftCandidates().toLeftTypes
+	}
+	
+	def private Iterable<Address> toLeftTypes(Iterable<Set<Object>> iterable) {
+		// FIXME MK IMPROVE TYPE SAFETY?
+		return iterable.map[
+			it.filter(Address).get(0)
+		]
 	}
 		
 	def Iterable<Triple<Recipient, Location, City>> getRightCandidates() {
-		// FIXME MK
+		// FIXME MK IMPROVE TYPE SAFETY?
+		return mappingRegistry.getRightCandidates().toRightTypes
+	}
+	
+	def private Iterable<Triple<Recipient, Location, City>> toRightTypes(Iterable<Set<Object>> iterable) {
+		return iterable.map[
+			new Triple<Recipient, Location, City>(
+				it.filter(Recipient).get(0), it.filter(Location).get(0), it.filter(City).get(0)
+			)
+		]
 	}
 	
 	/********** BEGIN INSTANCE METHODS **********/
 	def Iterable<Address> getLeftInstances() {
-		// FIXME MK
+		return mappingRegistry.getLeftInstances().toLeftTypes
 	}
 	
 	def Iterable<Triple<Recipient, Location, City>> getRightInstances() {
-		// FIXME MK
+		return mappingRegistry.getRightInstances().toRightTypes
 	}
 	
 	def void addLeftInstance(Address a) {

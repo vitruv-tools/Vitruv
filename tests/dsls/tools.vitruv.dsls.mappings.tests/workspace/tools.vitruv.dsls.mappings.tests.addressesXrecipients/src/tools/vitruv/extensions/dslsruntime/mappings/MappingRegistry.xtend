@@ -12,6 +12,8 @@ class MappingRegistry {
 	val SetMultimap<Class<?>, Object> elementsMap = HashMultimap.create()
 	val List<Set<Object>> leftCandidates = newArrayList()
 	val List<Set<Object>> rightCandidates = newArrayList()
+	val List<Set<Object>> leftInstances = newArrayList()
+	val List<Set<Object>> rightInstances = newArrayList()
 	
 	new(Mapping mapping) {
 		this.mapping = mapping
@@ -91,15 +93,15 @@ class MappingRegistry {
 		}
 	}
 
-//	/********** BEGIN INSTANCE METHODS **********/
-//	def Iterable<Address> getLeftInstances() {
-//		// FIXME MK
-//	}
-//	
-//	def Iterable<Triple<Recipient, Location, City>> getRightInstances() {
-//		// FIXME MK
-//	}
-//	
+	/********** BEGIN INSTANCE METHODS **********/
+	def Iterable<Set<Object>> getLeftInstances() {
+		return leftInstances
+	}
+	
+	def Iterable<Set<Object>> getRightInstances() {
+		return rightInstances
+	}
+	
 //	def void addLeftInstance(Address a) {
 //		// FIXME MK
 //	}
