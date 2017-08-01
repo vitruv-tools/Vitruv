@@ -22,7 +22,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		this.routinesFacadeNameGenerator = reactionsSegment.routinesFacadeClassNameGenerator
 	}
 	
-	public override generateClass() {
+	public override generateEmptyClass() {
 		reactionsSegment.toClass(routinesFacadeNameGenerator.qualifiedName) []
 	}
 	

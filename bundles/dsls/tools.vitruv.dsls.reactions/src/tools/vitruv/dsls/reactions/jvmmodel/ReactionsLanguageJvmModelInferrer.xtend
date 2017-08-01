@@ -59,6 +59,6 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 	}
 	
 	def private static accept(IJvmDeclaredTypeAcceptor acceptor, extension ClassGenerator generator) {
-		acceptor.accept(generator.generateClass()) [generateBody]
+		acceptor.accept(generator.generateEmptyClass()) [generateBody]
 	}
 }

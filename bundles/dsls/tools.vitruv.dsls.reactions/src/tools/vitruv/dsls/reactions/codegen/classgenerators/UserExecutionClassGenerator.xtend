@@ -43,7 +43,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		return qualifiedClassName;
 	}
 
-	override generateClass() {
+	override generateEmptyClass() {
 		return objectMappedToClass.toClass(qualifiedClassName) [
 			visibility = JvmVisibility.PRIVATE
 			static = true
