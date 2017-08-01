@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius DSLs Reactions Language Tests
 Bundle-SymbolicName: tools.vitruv.dsls.reactions.tests;singleton:=true
 Bundle-Version: 0.2.0.qualifier
-Export-Package: tools.vitruv.dsls.reactions.tests
+Export-Package: tools.vitruv.dsls.reactions.tests;x-internal=true
 Require-Bundle: org.junit,
  org.apache.log4j,
  com.google.guava,
@@ -30,7 +30,9 @@ Require-Bundle: org.junit,
  tools.vitruv.extensions.dslsruntime.reactions,
  tools.vitruv.extensions.dslsruntime.mapping,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
- tools.vitruv.framework.testutils.domains
+ tools.vitruv.framework.testutils.domains,
+ org.eclipse.xtext.testing;bundle-version="2.12.0",
+ org.eclipse.xtext.xbase.testing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.junit;version="4.5.0",
  org.junit.runner;version="4.5.0",

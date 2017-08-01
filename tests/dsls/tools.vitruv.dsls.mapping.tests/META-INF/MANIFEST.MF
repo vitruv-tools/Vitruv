@@ -11,7 +11,9 @@ Require-Bundle: tools.vitruv.dsls.mapping,
  org.eclipse.xtext.xbase,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.ui.workbench;resolution:=optional,
- org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
+ org.eclipse.xtext.testing,
+ org.eclipse.xtext.xbase.testing
 Import-Package: org.apache.log4j,
  org.junit;version="4.5.0",
  org.junit.runner;version="4.5.0",
@@ -21,5 +23,5 @@ Import-Package: org.apache.log4j,
  org.junit.runners.model;version="4.5.0",
  org.hamcrest.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: tools.vitruv.dsls.mapping.tests
+Export-Package: tools.vitruv.dsls.mapping.tests;x-internal=true
 Bundle-Vendor: vitruv.tools
