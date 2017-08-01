@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalMappingsLanguageParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'<='", "'equals'", "'in'", "'mappings:'", "'for'", "'and'", "'mapping'", "'{'", "'map ('", "')'", "'and ('", "'}'", "'depends on ('", "'with {'", "'such that {'", "'forward execute {'", "'} backward execute {'", "':'", "'at index'", "'default contained in'", "'empty'", "'default path for'", "'path of'", "'check {'", "'}\\n\\tenforce {'", "'update'", "'bootstrap mapping'", "'create ('", "'as'", "'::'", "'['", "']'", "'instanceof'", "','", "'#'", "';'", "'('", "'if'", "'else'", "'switch'", "'default'", "'case'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'not'", "'using qualified names'", "'?.'", "'|'", "'var'", "'true'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'<='", "'equals'", "'in'", "'mappings:'", "'for'", "'and'", "'mapping'", "'{'", "'map ('", "')'", "'and ('", "'}'", "'depends on ('", "'with {'", "'such that {'", "'forward execute {'", "'} backward execute {'", "':'", "'at index'", "'default contained in'", "'empty'", "'default path for'", "'path of'", "'check {'", "'}\\n\\tenforce {'", "'update'", "'bootstrapping'", "'create ('", "'as'", "'::'", "'['", "']'", "'instanceof'", "','", "'#'", "';'", "'('", "'if'", "'else'", "'switch'", "'default'", "'case'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'not'", "'using qualified names'", "'?.'", "'|'", "'var'", "'true'"
     };
     public static final int RULE_HEX=5;
     public static final int T__50=50;
@@ -1990,23 +1990,23 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
     // $ANTLR end "ruleUnidirectionalExpression"
 
 
-    // $ANTLR start "entryRuleBootstrapMapping"
-    // InternalMappingsLanguage.g:604:1: entryRuleBootstrapMapping : ruleBootstrapMapping EOF ;
-    public final void entryRuleBootstrapMapping() throws RecognitionException {
+    // $ANTLR start "entryRuleBootstrapping"
+    // InternalMappingsLanguage.g:604:1: entryRuleBootstrapping : ruleBootstrapping EOF ;
+    public final void entryRuleBootstrapping() throws RecognitionException {
         try {
-            // InternalMappingsLanguage.g:605:1: ( ruleBootstrapMapping EOF )
-            // InternalMappingsLanguage.g:606:1: ruleBootstrapMapping EOF
+            // InternalMappingsLanguage.g:605:1: ( ruleBootstrapping EOF )
+            // InternalMappingsLanguage.g:606:1: ruleBootstrapping EOF
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingRule()); 
+               before(grammarAccess.getBootstrappingRule()); 
             }
             pushFollow(FOLLOW_1);
-            ruleBootstrapMapping();
+            ruleBootstrapping();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingRule()); 
+               after(grammarAccess.getBootstrappingRule()); 
             }
             match(input,EOF,FOLLOW_2); if (state.failed) return ;
 
@@ -2021,30 +2021,30 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "entryRuleBootstrapMapping"
+    // $ANTLR end "entryRuleBootstrapping"
 
 
-    // $ANTLR start "ruleBootstrapMapping"
-    // InternalMappingsLanguage.g:613:1: ruleBootstrapMapping : ( ( rule__BootstrapMapping__Group__0 ) ) ;
-    public final void ruleBootstrapMapping() throws RecognitionException {
+    // $ANTLR start "ruleBootstrapping"
+    // InternalMappingsLanguage.g:613:1: ruleBootstrapping : ( ( rule__Bootstrapping__Group__0 ) ) ;
+    public final void ruleBootstrapping() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:617:2: ( ( ( rule__BootstrapMapping__Group__0 ) ) )
-            // InternalMappingsLanguage.g:618:2: ( ( rule__BootstrapMapping__Group__0 ) )
+            // InternalMappingsLanguage.g:617:2: ( ( ( rule__Bootstrapping__Group__0 ) ) )
+            // InternalMappingsLanguage.g:618:2: ( ( rule__Bootstrapping__Group__0 ) )
             {
-            // InternalMappingsLanguage.g:618:2: ( ( rule__BootstrapMapping__Group__0 ) )
-            // InternalMappingsLanguage.g:619:3: ( rule__BootstrapMapping__Group__0 )
+            // InternalMappingsLanguage.g:618:2: ( ( rule__Bootstrapping__Group__0 ) )
+            // InternalMappingsLanguage.g:619:3: ( rule__Bootstrapping__Group__0 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getGroup()); 
+               before(grammarAccess.getBootstrappingAccess().getGroup()); 
             }
-            // InternalMappingsLanguage.g:620:3: ( rule__BootstrapMapping__Group__0 )
-            // InternalMappingsLanguage.g:620:4: rule__BootstrapMapping__Group__0
+            // InternalMappingsLanguage.g:620:3: ( rule__Bootstrapping__Group__0 )
+            // InternalMappingsLanguage.g:620:4: rule__Bootstrapping__Group__0
             {
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group__0();
+            rule__Bootstrapping__Group__0();
 
             state._fsp--;
             if (state.failed) return ;
@@ -2052,7 +2052,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getGroup()); 
+               after(grammarAccess.getBootstrappingAccess().getGroup()); 
             }
 
             }
@@ -2072,7 +2072,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "ruleBootstrapMapping"
+    // $ANTLR end "ruleBootstrapping"
 
 
     // $ANTLR start "ruleDocumentable"
@@ -9228,13 +9228,13 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
 
 
     // $ANTLR start "rule__MappingsSegment__Alternatives_7"
-    // InternalMappingsLanguage.g:2733:1: rule__MappingsSegment__Alternatives_7 : ( ( ( rule__MappingsSegment__MappingsAssignment_7_0 ) ) | ( ( rule__MappingsSegment__BootstrapMappingsAssignment_7_1 ) ) );
+    // InternalMappingsLanguage.g:2733:1: rule__MappingsSegment__Alternatives_7 : ( ( ( rule__MappingsSegment__MappingsAssignment_7_0 ) ) | ( ( rule__MappingsSegment__BootstrappingsAssignment_7_1 ) ) );
     public final void rule__MappingsSegment__Alternatives_7() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:2737:1: ( ( ( rule__MappingsSegment__MappingsAssignment_7_0 ) ) | ( ( rule__MappingsSegment__BootstrapMappingsAssignment_7_1 ) ) )
+            // InternalMappingsLanguage.g:2737:1: ( ( ( rule__MappingsSegment__MappingsAssignment_7_0 ) ) | ( ( rule__MappingsSegment__BootstrappingsAssignment_7_1 ) ) )
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -9282,19 +9282,19 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
                     }
                     break;
                 case 2 :
-                    // InternalMappingsLanguage.g:2744:2: ( ( rule__MappingsSegment__BootstrapMappingsAssignment_7_1 ) )
+                    // InternalMappingsLanguage.g:2744:2: ( ( rule__MappingsSegment__BootstrappingsAssignment_7_1 ) )
                     {
-                    // InternalMappingsLanguage.g:2744:2: ( ( rule__MappingsSegment__BootstrapMappingsAssignment_7_1 ) )
-                    // InternalMappingsLanguage.g:2745:3: ( rule__MappingsSegment__BootstrapMappingsAssignment_7_1 )
+                    // InternalMappingsLanguage.g:2744:2: ( ( rule__MappingsSegment__BootstrappingsAssignment_7_1 ) )
+                    // InternalMappingsLanguage.g:2745:3: ( rule__MappingsSegment__BootstrappingsAssignment_7_1 )
                     {
                     if ( state.backtracking==0 ) {
-                       before(grammarAccess.getMappingsSegmentAccess().getBootstrapMappingsAssignment_7_1()); 
+                       before(grammarAccess.getMappingsSegmentAccess().getBootstrappingsAssignment_7_1()); 
                     }
-                    // InternalMappingsLanguage.g:2746:3: ( rule__MappingsSegment__BootstrapMappingsAssignment_7_1 )
-                    // InternalMappingsLanguage.g:2746:4: rule__MappingsSegment__BootstrapMappingsAssignment_7_1
+                    // InternalMappingsLanguage.g:2746:3: ( rule__MappingsSegment__BootstrappingsAssignment_7_1 )
+                    // InternalMappingsLanguage.g:2746:4: rule__MappingsSegment__BootstrappingsAssignment_7_1
                     {
                     pushFollow(FOLLOW_2);
-                    rule__MappingsSegment__BootstrapMappingsAssignment_7_1();
+                    rule__MappingsSegment__BootstrappingsAssignment_7_1();
 
                     state._fsp--;
                     if (state.failed) return ;
@@ -9302,7 +9302,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
                     }
 
                     if ( state.backtracking==0 ) {
-                       after(grammarAccess.getMappingsSegmentAccess().getBootstrapMappingsAssignment_7_1()); 
+                       after(grammarAccess.getMappingsSegmentAccess().getBootstrappingsAssignment_7_1()); 
                     }
 
                     }
@@ -21690,23 +21690,23 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
     // $ANTLR end "rule__BidirectionalizableCondition__Group_3__1__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__0"
-    // InternalMappingsLanguage.g:6156:1: rule__BootstrapMapping__Group__0 : rule__BootstrapMapping__Group__0__Impl rule__BootstrapMapping__Group__1 ;
-    public final void rule__BootstrapMapping__Group__0() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__0"
+    // InternalMappingsLanguage.g:6156:1: rule__Bootstrapping__Group__0 : rule__Bootstrapping__Group__0__Impl rule__Bootstrapping__Group__1 ;
+    public final void rule__Bootstrapping__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6160:1: ( rule__BootstrapMapping__Group__0__Impl rule__BootstrapMapping__Group__1 )
-            // InternalMappingsLanguage.g:6161:2: rule__BootstrapMapping__Group__0__Impl rule__BootstrapMapping__Group__1
+            // InternalMappingsLanguage.g:6160:1: ( rule__Bootstrapping__Group__0__Impl rule__Bootstrapping__Group__1 )
+            // InternalMappingsLanguage.g:6161:2: rule__Bootstrapping__Group__0__Impl rule__Bootstrapping__Group__1
             {
             pushFollow(FOLLOW_9);
-            rule__BootstrapMapping__Group__0__Impl();
+            rule__Bootstrapping__Group__0__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group__1();
+            rule__Bootstrapping__Group__1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -21725,28 +21725,28 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__0"
+    // $ANTLR end "rule__Bootstrapping__Group__0"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__0__Impl"
-    // InternalMappingsLanguage.g:6168:1: rule__BootstrapMapping__Group__0__Impl : ( 'bootstrap mapping' ) ;
-    public final void rule__BootstrapMapping__Group__0__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__0__Impl"
+    // InternalMappingsLanguage.g:6168:1: rule__Bootstrapping__Group__0__Impl : ( 'bootstrapping' ) ;
+    public final void rule__Bootstrapping__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6172:1: ( ( 'bootstrap mapping' ) )
-            // InternalMappingsLanguage.g:6173:1: ( 'bootstrap mapping' )
+            // InternalMappingsLanguage.g:6172:1: ( ( 'bootstrapping' ) )
+            // InternalMappingsLanguage.g:6173:1: ( 'bootstrapping' )
             {
-            // InternalMappingsLanguage.g:6173:1: ( 'bootstrap mapping' )
-            // InternalMappingsLanguage.g:6174:2: 'bootstrap mapping'
+            // InternalMappingsLanguage.g:6173:1: ( 'bootstrapping' )
+            // InternalMappingsLanguage.g:6174:2: 'bootstrapping'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getBootstrapMappingKeyword_0()); 
+               before(grammarAccess.getBootstrappingAccess().getBootstrappingKeyword_0()); 
             }
             match(input,77,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getBootstrapMappingKeyword_0()); 
+               after(grammarAccess.getBootstrappingAccess().getBootstrappingKeyword_0()); 
             }
 
             }
@@ -21766,26 +21766,26 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__0__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group__0__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__1"
-    // InternalMappingsLanguage.g:6183:1: rule__BootstrapMapping__Group__1 : rule__BootstrapMapping__Group__1__Impl rule__BootstrapMapping__Group__2 ;
-    public final void rule__BootstrapMapping__Group__1() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__1"
+    // InternalMappingsLanguage.g:6183:1: rule__Bootstrapping__Group__1 : rule__Bootstrapping__Group__1__Impl rule__Bootstrapping__Group__2 ;
+    public final void rule__Bootstrapping__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6187:1: ( rule__BootstrapMapping__Group__1__Impl rule__BootstrapMapping__Group__2 )
-            // InternalMappingsLanguage.g:6188:2: rule__BootstrapMapping__Group__1__Impl rule__BootstrapMapping__Group__2
+            // InternalMappingsLanguage.g:6187:1: ( rule__Bootstrapping__Group__1__Impl rule__Bootstrapping__Group__2 )
+            // InternalMappingsLanguage.g:6188:2: rule__Bootstrapping__Group__1__Impl rule__Bootstrapping__Group__2
             {
             pushFollow(FOLLOW_34);
-            rule__BootstrapMapping__Group__1__Impl();
+            rule__Bootstrapping__Group__1__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group__2();
+            rule__Bootstrapping__Group__2();
 
             state._fsp--;
             if (state.failed) return ;
@@ -21804,30 +21804,30 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__1"
+    // $ANTLR end "rule__Bootstrapping__Group__1"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__1__Impl"
-    // InternalMappingsLanguage.g:6195:1: rule__BootstrapMapping__Group__1__Impl : ( ( rule__BootstrapMapping__NameAssignment_1 ) ) ;
-    public final void rule__BootstrapMapping__Group__1__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__1__Impl"
+    // InternalMappingsLanguage.g:6195:1: rule__Bootstrapping__Group__1__Impl : ( ( rule__Bootstrapping__NameAssignment_1 ) ) ;
+    public final void rule__Bootstrapping__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6199:1: ( ( ( rule__BootstrapMapping__NameAssignment_1 ) ) )
-            // InternalMappingsLanguage.g:6200:1: ( ( rule__BootstrapMapping__NameAssignment_1 ) )
+            // InternalMappingsLanguage.g:6199:1: ( ( ( rule__Bootstrapping__NameAssignment_1 ) ) )
+            // InternalMappingsLanguage.g:6200:1: ( ( rule__Bootstrapping__NameAssignment_1 ) )
             {
-            // InternalMappingsLanguage.g:6200:1: ( ( rule__BootstrapMapping__NameAssignment_1 ) )
-            // InternalMappingsLanguage.g:6201:2: ( rule__BootstrapMapping__NameAssignment_1 )
+            // InternalMappingsLanguage.g:6200:1: ( ( rule__Bootstrapping__NameAssignment_1 ) )
+            // InternalMappingsLanguage.g:6201:2: ( rule__Bootstrapping__NameAssignment_1 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getNameAssignment_1()); 
+               before(grammarAccess.getBootstrappingAccess().getNameAssignment_1()); 
             }
-            // InternalMappingsLanguage.g:6202:2: ( rule__BootstrapMapping__NameAssignment_1 )
-            // InternalMappingsLanguage.g:6202:3: rule__BootstrapMapping__NameAssignment_1
+            // InternalMappingsLanguage.g:6202:2: ( rule__Bootstrapping__NameAssignment_1 )
+            // InternalMappingsLanguage.g:6202:3: rule__Bootstrapping__NameAssignment_1
             {
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__NameAssignment_1();
+            rule__Bootstrapping__NameAssignment_1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -21835,7 +21835,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getNameAssignment_1()); 
+               after(grammarAccess.getBootstrappingAccess().getNameAssignment_1()); 
             }
 
             }
@@ -21855,26 +21855,26 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__1__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group__1__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__2"
-    // InternalMappingsLanguage.g:6210:1: rule__BootstrapMapping__Group__2 : rule__BootstrapMapping__Group__2__Impl rule__BootstrapMapping__Group__3 ;
-    public final void rule__BootstrapMapping__Group__2() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__2"
+    // InternalMappingsLanguage.g:6210:1: rule__Bootstrapping__Group__2 : rule__Bootstrapping__Group__2__Impl rule__Bootstrapping__Group__3 ;
+    public final void rule__Bootstrapping__Group__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6214:1: ( rule__BootstrapMapping__Group__2__Impl rule__BootstrapMapping__Group__3 )
-            // InternalMappingsLanguage.g:6215:2: rule__BootstrapMapping__Group__2__Impl rule__BootstrapMapping__Group__3
+            // InternalMappingsLanguage.g:6214:1: ( rule__Bootstrapping__Group__2__Impl rule__Bootstrapping__Group__3 )
+            // InternalMappingsLanguage.g:6215:2: rule__Bootstrapping__Group__2__Impl rule__Bootstrapping__Group__3
             {
             pushFollow(FOLLOW_35);
-            rule__BootstrapMapping__Group__2__Impl();
+            rule__Bootstrapping__Group__2__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group__3();
+            rule__Bootstrapping__Group__3();
 
             state._fsp--;
             if (state.failed) return ;
@@ -21893,12 +21893,12 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__2"
+    // $ANTLR end "rule__Bootstrapping__Group__2"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__2__Impl"
-    // InternalMappingsLanguage.g:6222:1: rule__BootstrapMapping__Group__2__Impl : ( '{' ) ;
-    public final void rule__BootstrapMapping__Group__2__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__2__Impl"
+    // InternalMappingsLanguage.g:6222:1: rule__Bootstrapping__Group__2__Impl : ( '{' ) ;
+    public final void rule__Bootstrapping__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -21910,11 +21910,11 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             // InternalMappingsLanguage.g:6228:2: '{'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getLeftCurlyBracketKeyword_2()); 
+               before(grammarAccess.getBootstrappingAccess().getLeftCurlyBracketKeyword_2()); 
             }
             match(input,58,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getLeftCurlyBracketKeyword_2()); 
+               after(grammarAccess.getBootstrappingAccess().getLeftCurlyBracketKeyword_2()); 
             }
 
             }
@@ -21934,26 +21934,26 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__2__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group__2__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__3"
-    // InternalMappingsLanguage.g:6237:1: rule__BootstrapMapping__Group__3 : rule__BootstrapMapping__Group__3__Impl rule__BootstrapMapping__Group__4 ;
-    public final void rule__BootstrapMapping__Group__3() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__3"
+    // InternalMappingsLanguage.g:6237:1: rule__Bootstrapping__Group__3 : rule__Bootstrapping__Group__3__Impl rule__Bootstrapping__Group__4 ;
+    public final void rule__Bootstrapping__Group__3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6241:1: ( rule__BootstrapMapping__Group__3__Impl rule__BootstrapMapping__Group__4 )
-            // InternalMappingsLanguage.g:6242:2: rule__BootstrapMapping__Group__3__Impl rule__BootstrapMapping__Group__4
+            // InternalMappingsLanguage.g:6241:1: ( rule__Bootstrapping__Group__3__Impl rule__Bootstrapping__Group__4 )
+            // InternalMappingsLanguage.g:6242:2: rule__Bootstrapping__Group__3__Impl rule__Bootstrapping__Group__4
             {
             pushFollow(FOLLOW_9);
-            rule__BootstrapMapping__Group__3__Impl();
+            rule__Bootstrapping__Group__3__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group__4();
+            rule__Bootstrapping__Group__4();
 
             state._fsp--;
             if (state.failed) return ;
@@ -21972,12 +21972,12 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__3"
+    // $ANTLR end "rule__Bootstrapping__Group__3"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__3__Impl"
-    // InternalMappingsLanguage.g:6249:1: rule__BootstrapMapping__Group__3__Impl : ( 'create (' ) ;
-    public final void rule__BootstrapMapping__Group__3__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__3__Impl"
+    // InternalMappingsLanguage.g:6249:1: rule__Bootstrapping__Group__3__Impl : ( 'create (' ) ;
+    public final void rule__Bootstrapping__Group__3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -21989,11 +21989,11 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             // InternalMappingsLanguage.g:6255:2: 'create ('
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getCreateKeyword_3()); 
+               before(grammarAccess.getBootstrappingAccess().getCreateKeyword_3()); 
             }
             match(input,78,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getCreateKeyword_3()); 
+               after(grammarAccess.getBootstrappingAccess().getCreateKeyword_3()); 
             }
 
             }
@@ -22013,26 +22013,26 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__3__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group__3__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__4"
-    // InternalMappingsLanguage.g:6264:1: rule__BootstrapMapping__Group__4 : rule__BootstrapMapping__Group__4__Impl rule__BootstrapMapping__Group__5 ;
-    public final void rule__BootstrapMapping__Group__4() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__4"
+    // InternalMappingsLanguage.g:6264:1: rule__Bootstrapping__Group__4 : rule__Bootstrapping__Group__4__Impl rule__Bootstrapping__Group__5 ;
+    public final void rule__Bootstrapping__Group__4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6268:1: ( rule__BootstrapMapping__Group__4__Impl rule__BootstrapMapping__Group__5 )
-            // InternalMappingsLanguage.g:6269:2: rule__BootstrapMapping__Group__4__Impl rule__BootstrapMapping__Group__5
+            // InternalMappingsLanguage.g:6268:1: ( rule__Bootstrapping__Group__4__Impl rule__Bootstrapping__Group__5 )
+            // InternalMappingsLanguage.g:6269:2: rule__Bootstrapping__Group__4__Impl rule__Bootstrapping__Group__5
             {
             pushFollow(FOLLOW_16);
-            rule__BootstrapMapping__Group__4__Impl();
+            rule__Bootstrapping__Group__4__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group__5();
+            rule__Bootstrapping__Group__5();
 
             state._fsp--;
             if (state.failed) return ;
@@ -22051,33 +22051,33 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__4"
+    // $ANTLR end "rule__Bootstrapping__Group__4"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__4__Impl"
-    // InternalMappingsLanguage.g:6276:1: rule__BootstrapMapping__Group__4__Impl : ( ( ( rule__BootstrapMapping__ParametersAssignment_4 ) ) ( ( rule__BootstrapMapping__ParametersAssignment_4 )* ) ) ;
-    public final void rule__BootstrapMapping__Group__4__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__4__Impl"
+    // InternalMappingsLanguage.g:6276:1: rule__Bootstrapping__Group__4__Impl : ( ( ( rule__Bootstrapping__ParametersAssignment_4 ) ) ( ( rule__Bootstrapping__ParametersAssignment_4 )* ) ) ;
+    public final void rule__Bootstrapping__Group__4__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6280:1: ( ( ( ( rule__BootstrapMapping__ParametersAssignment_4 ) ) ( ( rule__BootstrapMapping__ParametersAssignment_4 )* ) ) )
-            // InternalMappingsLanguage.g:6281:1: ( ( ( rule__BootstrapMapping__ParametersAssignment_4 ) ) ( ( rule__BootstrapMapping__ParametersAssignment_4 )* ) )
+            // InternalMappingsLanguage.g:6280:1: ( ( ( ( rule__Bootstrapping__ParametersAssignment_4 ) ) ( ( rule__Bootstrapping__ParametersAssignment_4 )* ) ) )
+            // InternalMappingsLanguage.g:6281:1: ( ( ( rule__Bootstrapping__ParametersAssignment_4 ) ) ( ( rule__Bootstrapping__ParametersAssignment_4 )* ) )
             {
-            // InternalMappingsLanguage.g:6281:1: ( ( ( rule__BootstrapMapping__ParametersAssignment_4 ) ) ( ( rule__BootstrapMapping__ParametersAssignment_4 )* ) )
-            // InternalMappingsLanguage.g:6282:2: ( ( rule__BootstrapMapping__ParametersAssignment_4 ) ) ( ( rule__BootstrapMapping__ParametersAssignment_4 )* )
+            // InternalMappingsLanguage.g:6281:1: ( ( ( rule__Bootstrapping__ParametersAssignment_4 ) ) ( ( rule__Bootstrapping__ParametersAssignment_4 )* ) )
+            // InternalMappingsLanguage.g:6282:2: ( ( rule__Bootstrapping__ParametersAssignment_4 ) ) ( ( rule__Bootstrapping__ParametersAssignment_4 )* )
             {
-            // InternalMappingsLanguage.g:6282:2: ( ( rule__BootstrapMapping__ParametersAssignment_4 ) )
-            // InternalMappingsLanguage.g:6283:3: ( rule__BootstrapMapping__ParametersAssignment_4 )
+            // InternalMappingsLanguage.g:6282:2: ( ( rule__Bootstrapping__ParametersAssignment_4 ) )
+            // InternalMappingsLanguage.g:6283:3: ( rule__Bootstrapping__ParametersAssignment_4 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getParametersAssignment_4()); 
+               before(grammarAccess.getBootstrappingAccess().getParametersAssignment_4()); 
             }
-            // InternalMappingsLanguage.g:6284:3: ( rule__BootstrapMapping__ParametersAssignment_4 )
-            // InternalMappingsLanguage.g:6284:4: rule__BootstrapMapping__ParametersAssignment_4
+            // InternalMappingsLanguage.g:6284:3: ( rule__Bootstrapping__ParametersAssignment_4 )
+            // InternalMappingsLanguage.g:6284:4: rule__Bootstrapping__ParametersAssignment_4
             {
             pushFollow(FOLLOW_4);
-            rule__BootstrapMapping__ParametersAssignment_4();
+            rule__Bootstrapping__ParametersAssignment_4();
 
             state._fsp--;
             if (state.failed) return ;
@@ -22085,18 +22085,18 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getParametersAssignment_4()); 
+               after(grammarAccess.getBootstrappingAccess().getParametersAssignment_4()); 
             }
 
             }
 
-            // InternalMappingsLanguage.g:6287:2: ( ( rule__BootstrapMapping__ParametersAssignment_4 )* )
-            // InternalMappingsLanguage.g:6288:3: ( rule__BootstrapMapping__ParametersAssignment_4 )*
+            // InternalMappingsLanguage.g:6287:2: ( ( rule__Bootstrapping__ParametersAssignment_4 )* )
+            // InternalMappingsLanguage.g:6288:3: ( rule__Bootstrapping__ParametersAssignment_4 )*
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getParametersAssignment_4()); 
+               before(grammarAccess.getBootstrappingAccess().getParametersAssignment_4()); 
             }
-            // InternalMappingsLanguage.g:6289:3: ( rule__BootstrapMapping__ParametersAssignment_4 )*
+            // InternalMappingsLanguage.g:6289:3: ( rule__Bootstrapping__ParametersAssignment_4 )*
             loop66:
             do {
                 int alt66=2;
@@ -22109,10 +22109,10 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
 
                 switch (alt66) {
             	case 1 :
-            	    // InternalMappingsLanguage.g:6289:4: rule__BootstrapMapping__ParametersAssignment_4
+            	    // InternalMappingsLanguage.g:6289:4: rule__Bootstrapping__ParametersAssignment_4
             	    {
             	    pushFollow(FOLLOW_4);
-            	    rule__BootstrapMapping__ParametersAssignment_4();
+            	    rule__Bootstrapping__ParametersAssignment_4();
 
             	    state._fsp--;
             	    if (state.failed) return ;
@@ -22126,7 +22126,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             } while (true);
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getParametersAssignment_4()); 
+               after(grammarAccess.getBootstrappingAccess().getParametersAssignment_4()); 
             }
 
             }
@@ -22149,26 +22149,26 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__4__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group__4__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__5"
-    // InternalMappingsLanguage.g:6298:1: rule__BootstrapMapping__Group__5 : rule__BootstrapMapping__Group__5__Impl rule__BootstrapMapping__Group__6 ;
-    public final void rule__BootstrapMapping__Group__5() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__5"
+    // InternalMappingsLanguage.g:6298:1: rule__Bootstrapping__Group__5 : rule__Bootstrapping__Group__5__Impl rule__Bootstrapping__Group__6 ;
+    public final void rule__Bootstrapping__Group__5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6302:1: ( rule__BootstrapMapping__Group__5__Impl rule__BootstrapMapping__Group__6 )
-            // InternalMappingsLanguage.g:6303:2: rule__BootstrapMapping__Group__5__Impl rule__BootstrapMapping__Group__6
+            // InternalMappingsLanguage.g:6302:1: ( rule__Bootstrapping__Group__5__Impl rule__Bootstrapping__Group__6 )
+            // InternalMappingsLanguage.g:6303:2: rule__Bootstrapping__Group__5__Impl rule__Bootstrapping__Group__6
             {
             pushFollow(FOLLOW_36);
-            rule__BootstrapMapping__Group__5__Impl();
+            rule__Bootstrapping__Group__5__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group__6();
+            rule__Bootstrapping__Group__6();
 
             state._fsp--;
             if (state.failed) return ;
@@ -22187,12 +22187,12 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__5"
+    // $ANTLR end "rule__Bootstrapping__Group__5"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__5__Impl"
-    // InternalMappingsLanguage.g:6310:1: rule__BootstrapMapping__Group__5__Impl : ( ')' ) ;
-    public final void rule__BootstrapMapping__Group__5__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__5__Impl"
+    // InternalMappingsLanguage.g:6310:1: rule__Bootstrapping__Group__5__Impl : ( ')' ) ;
+    public final void rule__Bootstrapping__Group__5__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -22204,11 +22204,11 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             // InternalMappingsLanguage.g:6316:2: ')'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getRightParenthesisKeyword_5()); 
+               before(grammarAccess.getBootstrappingAccess().getRightParenthesisKeyword_5()); 
             }
             match(input,60,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getRightParenthesisKeyword_5()); 
+               after(grammarAccess.getBootstrappingAccess().getRightParenthesisKeyword_5()); 
             }
 
             }
@@ -22228,26 +22228,26 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__5__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group__5__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__6"
-    // InternalMappingsLanguage.g:6325:1: rule__BootstrapMapping__Group__6 : rule__BootstrapMapping__Group__6__Impl rule__BootstrapMapping__Group__7 ;
-    public final void rule__BootstrapMapping__Group__6() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__6"
+    // InternalMappingsLanguage.g:6325:1: rule__Bootstrapping__Group__6 : rule__Bootstrapping__Group__6__Impl rule__Bootstrapping__Group__7 ;
+    public final void rule__Bootstrapping__Group__6() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6329:1: ( rule__BootstrapMapping__Group__6__Impl rule__BootstrapMapping__Group__7 )
-            // InternalMappingsLanguage.g:6330:2: rule__BootstrapMapping__Group__6__Impl rule__BootstrapMapping__Group__7
+            // InternalMappingsLanguage.g:6329:1: ( rule__Bootstrapping__Group__6__Impl rule__Bootstrapping__Group__7 )
+            // InternalMappingsLanguage.g:6330:2: rule__Bootstrapping__Group__6__Impl rule__Bootstrapping__Group__7
             {
             pushFollow(FOLLOW_36);
-            rule__BootstrapMapping__Group__6__Impl();
+            rule__Bootstrapping__Group__6__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group__7();
+            rule__Bootstrapping__Group__7();
 
             state._fsp--;
             if (state.failed) return ;
@@ -22266,26 +22266,26 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__6"
+    // $ANTLR end "rule__Bootstrapping__Group__6"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__6__Impl"
-    // InternalMappingsLanguage.g:6337:1: rule__BootstrapMapping__Group__6__Impl : ( ( rule__BootstrapMapping__Group_6__0 )? ) ;
-    public final void rule__BootstrapMapping__Group__6__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__6__Impl"
+    // InternalMappingsLanguage.g:6337:1: rule__Bootstrapping__Group__6__Impl : ( ( rule__Bootstrapping__Group_6__0 )? ) ;
+    public final void rule__Bootstrapping__Group__6__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6341:1: ( ( ( rule__BootstrapMapping__Group_6__0 )? ) )
-            // InternalMappingsLanguage.g:6342:1: ( ( rule__BootstrapMapping__Group_6__0 )? )
+            // InternalMappingsLanguage.g:6341:1: ( ( ( rule__Bootstrapping__Group_6__0 )? ) )
+            // InternalMappingsLanguage.g:6342:1: ( ( rule__Bootstrapping__Group_6__0 )? )
             {
-            // InternalMappingsLanguage.g:6342:1: ( ( rule__BootstrapMapping__Group_6__0 )? )
-            // InternalMappingsLanguage.g:6343:2: ( rule__BootstrapMapping__Group_6__0 )?
+            // InternalMappingsLanguage.g:6342:1: ( ( rule__Bootstrapping__Group_6__0 )? )
+            // InternalMappingsLanguage.g:6343:2: ( rule__Bootstrapping__Group_6__0 )?
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getGroup_6()); 
+               before(grammarAccess.getBootstrappingAccess().getGroup_6()); 
             }
-            // InternalMappingsLanguage.g:6344:2: ( rule__BootstrapMapping__Group_6__0 )?
+            // InternalMappingsLanguage.g:6344:2: ( rule__Bootstrapping__Group_6__0 )?
             int alt67=2;
             int LA67_0 = input.LA(1);
 
@@ -22294,10 +22294,10 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             }
             switch (alt67) {
                 case 1 :
-                    // InternalMappingsLanguage.g:6344:3: rule__BootstrapMapping__Group_6__0
+                    // InternalMappingsLanguage.g:6344:3: rule__Bootstrapping__Group_6__0
                     {
                     pushFollow(FOLLOW_2);
-                    rule__BootstrapMapping__Group_6__0();
+                    rule__Bootstrapping__Group_6__0();
 
                     state._fsp--;
                     if (state.failed) return ;
@@ -22308,7 +22308,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getGroup_6()); 
+               after(grammarAccess.getBootstrappingAccess().getGroup_6()); 
             }
 
             }
@@ -22328,21 +22328,21 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__6__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group__6__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__7"
-    // InternalMappingsLanguage.g:6352:1: rule__BootstrapMapping__Group__7 : rule__BootstrapMapping__Group__7__Impl ;
-    public final void rule__BootstrapMapping__Group__7() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__7"
+    // InternalMappingsLanguage.g:6352:1: rule__Bootstrapping__Group__7 : rule__Bootstrapping__Group__7__Impl ;
+    public final void rule__Bootstrapping__Group__7() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6356:1: ( rule__BootstrapMapping__Group__7__Impl )
-            // InternalMappingsLanguage.g:6357:2: rule__BootstrapMapping__Group__7__Impl
+            // InternalMappingsLanguage.g:6356:1: ( rule__Bootstrapping__Group__7__Impl )
+            // InternalMappingsLanguage.g:6357:2: rule__Bootstrapping__Group__7__Impl
             {
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group__7__Impl();
+            rule__Bootstrapping__Group__7__Impl();
 
             state._fsp--;
             if (state.failed) return ;
@@ -22361,12 +22361,12 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__7"
+    // $ANTLR end "rule__Bootstrapping__Group__7"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group__7__Impl"
-    // InternalMappingsLanguage.g:6363:1: rule__BootstrapMapping__Group__7__Impl : ( '}' ) ;
-    public final void rule__BootstrapMapping__Group__7__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group__7__Impl"
+    // InternalMappingsLanguage.g:6363:1: rule__Bootstrapping__Group__7__Impl : ( '}' ) ;
+    public final void rule__Bootstrapping__Group__7__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -22378,11 +22378,11 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             // InternalMappingsLanguage.g:6369:2: '}'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getRightCurlyBracketKeyword_7()); 
+               before(grammarAccess.getBootstrappingAccess().getRightCurlyBracketKeyword_7()); 
             }
             match(input,62,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getRightCurlyBracketKeyword_7()); 
+               after(grammarAccess.getBootstrappingAccess().getRightCurlyBracketKeyword_7()); 
             }
 
             }
@@ -22402,26 +22402,26 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group__7__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group__7__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group_6__0"
-    // InternalMappingsLanguage.g:6379:1: rule__BootstrapMapping__Group_6__0 : rule__BootstrapMapping__Group_6__0__Impl rule__BootstrapMapping__Group_6__1 ;
-    public final void rule__BootstrapMapping__Group_6__0() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group_6__0"
+    // InternalMappingsLanguage.g:6379:1: rule__Bootstrapping__Group_6__0 : rule__Bootstrapping__Group_6__0__Impl rule__Bootstrapping__Group_6__1 ;
+    public final void rule__Bootstrapping__Group_6__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6383:1: ( rule__BootstrapMapping__Group_6__0__Impl rule__BootstrapMapping__Group_6__1 )
-            // InternalMappingsLanguage.g:6384:2: rule__BootstrapMapping__Group_6__0__Impl rule__BootstrapMapping__Group_6__1
+            // InternalMappingsLanguage.g:6383:1: ( rule__Bootstrapping__Group_6__0__Impl rule__Bootstrapping__Group_6__1 )
+            // InternalMappingsLanguage.g:6384:2: rule__Bootstrapping__Group_6__0__Impl rule__Bootstrapping__Group_6__1
             {
             pushFollow(FOLLOW_19);
-            rule__BootstrapMapping__Group_6__0__Impl();
+            rule__Bootstrapping__Group_6__0__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group_6__1();
+            rule__Bootstrapping__Group_6__1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -22440,12 +22440,12 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group_6__0"
+    // $ANTLR end "rule__Bootstrapping__Group_6__0"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group_6__0__Impl"
-    // InternalMappingsLanguage.g:6391:1: rule__BootstrapMapping__Group_6__0__Impl : ( 'with {' ) ;
-    public final void rule__BootstrapMapping__Group_6__0__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group_6__0__Impl"
+    // InternalMappingsLanguage.g:6391:1: rule__Bootstrapping__Group_6__0__Impl : ( 'with {' ) ;
+    public final void rule__Bootstrapping__Group_6__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -22457,11 +22457,11 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             // InternalMappingsLanguage.g:6397:2: 'with {'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getWithKeyword_6_0()); 
+               before(grammarAccess.getBootstrappingAccess().getWithKeyword_6_0()); 
             }
             match(input,64,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getWithKeyword_6_0()); 
+               after(grammarAccess.getBootstrappingAccess().getWithKeyword_6_0()); 
             }
 
             }
@@ -22481,26 +22481,26 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group_6__0__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group_6__0__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group_6__1"
-    // InternalMappingsLanguage.g:6406:1: rule__BootstrapMapping__Group_6__1 : rule__BootstrapMapping__Group_6__1__Impl rule__BootstrapMapping__Group_6__2 ;
-    public final void rule__BootstrapMapping__Group_6__1() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group_6__1"
+    // InternalMappingsLanguage.g:6406:1: rule__Bootstrapping__Group_6__1 : rule__Bootstrapping__Group_6__1__Impl rule__Bootstrapping__Group_6__2 ;
+    public final void rule__Bootstrapping__Group_6__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6410:1: ( rule__BootstrapMapping__Group_6__1__Impl rule__BootstrapMapping__Group_6__2 )
-            // InternalMappingsLanguage.g:6411:2: rule__BootstrapMapping__Group_6__1__Impl rule__BootstrapMapping__Group_6__2
+            // InternalMappingsLanguage.g:6410:1: ( rule__Bootstrapping__Group_6__1__Impl rule__Bootstrapping__Group_6__2 )
+            // InternalMappingsLanguage.g:6411:2: rule__Bootstrapping__Group_6__1__Impl rule__Bootstrapping__Group_6__2
             {
             pushFollow(FOLLOW_20);
-            rule__BootstrapMapping__Group_6__1__Impl();
+            rule__Bootstrapping__Group_6__1__Impl();
 
             state._fsp--;
             if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group_6__2();
+            rule__Bootstrapping__Group_6__2();
 
             state._fsp--;
             if (state.failed) return ;
@@ -22519,30 +22519,30 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group_6__1"
+    // $ANTLR end "rule__Bootstrapping__Group_6__1"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group_6__1__Impl"
-    // InternalMappingsLanguage.g:6418:1: rule__BootstrapMapping__Group_6__1__Impl : ( ( rule__BootstrapMapping__BootstrapConditonAssignment_6_1 ) ) ;
-    public final void rule__BootstrapMapping__Group_6__1__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group_6__1__Impl"
+    // InternalMappingsLanguage.g:6418:1: rule__Bootstrapping__Group_6__1__Impl : ( ( rule__Bootstrapping__BootstrapConditonAssignment_6_1 ) ) ;
+    public final void rule__Bootstrapping__Group_6__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6422:1: ( ( ( rule__BootstrapMapping__BootstrapConditonAssignment_6_1 ) ) )
-            // InternalMappingsLanguage.g:6423:1: ( ( rule__BootstrapMapping__BootstrapConditonAssignment_6_1 ) )
+            // InternalMappingsLanguage.g:6422:1: ( ( ( rule__Bootstrapping__BootstrapConditonAssignment_6_1 ) ) )
+            // InternalMappingsLanguage.g:6423:1: ( ( rule__Bootstrapping__BootstrapConditonAssignment_6_1 ) )
             {
-            // InternalMappingsLanguage.g:6423:1: ( ( rule__BootstrapMapping__BootstrapConditonAssignment_6_1 ) )
-            // InternalMappingsLanguage.g:6424:2: ( rule__BootstrapMapping__BootstrapConditonAssignment_6_1 )
+            // InternalMappingsLanguage.g:6423:1: ( ( rule__Bootstrapping__BootstrapConditonAssignment_6_1 ) )
+            // InternalMappingsLanguage.g:6424:2: ( rule__Bootstrapping__BootstrapConditonAssignment_6_1 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getBootstrapConditonAssignment_6_1()); 
+               before(grammarAccess.getBootstrappingAccess().getBootstrapConditonAssignment_6_1()); 
             }
-            // InternalMappingsLanguage.g:6425:2: ( rule__BootstrapMapping__BootstrapConditonAssignment_6_1 )
-            // InternalMappingsLanguage.g:6425:3: rule__BootstrapMapping__BootstrapConditonAssignment_6_1
+            // InternalMappingsLanguage.g:6425:2: ( rule__Bootstrapping__BootstrapConditonAssignment_6_1 )
+            // InternalMappingsLanguage.g:6425:3: rule__Bootstrapping__BootstrapConditonAssignment_6_1
             {
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__BootstrapConditonAssignment_6_1();
+            rule__Bootstrapping__BootstrapConditonAssignment_6_1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -22550,7 +22550,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getBootstrapConditonAssignment_6_1()); 
+               after(grammarAccess.getBootstrappingAccess().getBootstrapConditonAssignment_6_1()); 
             }
 
             }
@@ -22570,21 +22570,21 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group_6__1__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group_6__1__Impl"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group_6__2"
-    // InternalMappingsLanguage.g:6433:1: rule__BootstrapMapping__Group_6__2 : rule__BootstrapMapping__Group_6__2__Impl ;
-    public final void rule__BootstrapMapping__Group_6__2() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group_6__2"
+    // InternalMappingsLanguage.g:6433:1: rule__Bootstrapping__Group_6__2 : rule__Bootstrapping__Group_6__2__Impl ;
+    public final void rule__Bootstrapping__Group_6__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:6437:1: ( rule__BootstrapMapping__Group_6__2__Impl )
-            // InternalMappingsLanguage.g:6438:2: rule__BootstrapMapping__Group_6__2__Impl
+            // InternalMappingsLanguage.g:6437:1: ( rule__Bootstrapping__Group_6__2__Impl )
+            // InternalMappingsLanguage.g:6438:2: rule__Bootstrapping__Group_6__2__Impl
             {
             pushFollow(FOLLOW_2);
-            rule__BootstrapMapping__Group_6__2__Impl();
+            rule__Bootstrapping__Group_6__2__Impl();
 
             state._fsp--;
             if (state.failed) return ;
@@ -22603,12 +22603,12 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group_6__2"
+    // $ANTLR end "rule__Bootstrapping__Group_6__2"
 
 
-    // $ANTLR start "rule__BootstrapMapping__Group_6__2__Impl"
-    // InternalMappingsLanguage.g:6444:1: rule__BootstrapMapping__Group_6__2__Impl : ( '}' ) ;
-    public final void rule__BootstrapMapping__Group_6__2__Impl() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__Group_6__2__Impl"
+    // InternalMappingsLanguage.g:6444:1: rule__Bootstrapping__Group_6__2__Impl : ( '}' ) ;
+    public final void rule__Bootstrapping__Group_6__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -22620,11 +22620,11 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             // InternalMappingsLanguage.g:6450:2: '}'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getRightCurlyBracketKeyword_6_2()); 
+               before(grammarAccess.getBootstrappingAccess().getRightCurlyBracketKeyword_6_2()); 
             }
             match(input,62,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getRightCurlyBracketKeyword_6_2()); 
+               after(grammarAccess.getBootstrappingAccess().getRightCurlyBracketKeyword_6_2()); 
             }
 
             }
@@ -22644,7 +22644,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__Group_6__2__Impl"
+    // $ANTLR end "rule__Bootstrapping__Group_6__2__Impl"
 
 
     // $ANTLR start "rule__MetamodelImport__Group__0"
@@ -61229,29 +61229,29 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
     // $ANTLR end "rule__MappingsSegment__MappingsAssignment_7_0"
 
 
-    // $ANTLR start "rule__MappingsSegment__BootstrapMappingsAssignment_7_1"
-    // InternalMappingsLanguage.g:18599:1: rule__MappingsSegment__BootstrapMappingsAssignment_7_1 : ( ruleBootstrapMapping ) ;
-    public final void rule__MappingsSegment__BootstrapMappingsAssignment_7_1() throws RecognitionException {
+    // $ANTLR start "rule__MappingsSegment__BootstrappingsAssignment_7_1"
+    // InternalMappingsLanguage.g:18599:1: rule__MappingsSegment__BootstrappingsAssignment_7_1 : ( ruleBootstrapping ) ;
+    public final void rule__MappingsSegment__BootstrappingsAssignment_7_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingsLanguage.g:18603:1: ( ( ruleBootstrapMapping ) )
-            // InternalMappingsLanguage.g:18604:2: ( ruleBootstrapMapping )
+            // InternalMappingsLanguage.g:18603:1: ( ( ruleBootstrapping ) )
+            // InternalMappingsLanguage.g:18604:2: ( ruleBootstrapping )
             {
-            // InternalMappingsLanguage.g:18604:2: ( ruleBootstrapMapping )
-            // InternalMappingsLanguage.g:18605:3: ruleBootstrapMapping
+            // InternalMappingsLanguage.g:18604:2: ( ruleBootstrapping )
+            // InternalMappingsLanguage.g:18605:3: ruleBootstrapping
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getMappingsSegmentAccess().getBootstrapMappingsBootstrapMappingParserRuleCall_7_1_0()); 
+               before(grammarAccess.getMappingsSegmentAccess().getBootstrappingsBootstrappingParserRuleCall_7_1_0()); 
             }
             pushFollow(FOLLOW_2);
-            ruleBootstrapMapping();
+            ruleBootstrapping();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getMappingsSegmentAccess().getBootstrapMappingsBootstrapMappingParserRuleCall_7_1_0()); 
+               after(grammarAccess.getMappingsSegmentAccess().getBootstrappingsBootstrappingParserRuleCall_7_1_0()); 
             }
 
             }
@@ -61271,7 +61271,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__MappingsSegment__BootstrapMappingsAssignment_7_1"
+    // $ANTLR end "rule__MappingsSegment__BootstrappingsAssignment_7_1"
 
 
     // $ANTLR start "rule__Mapping__NameAssignment_1"
@@ -62619,9 +62619,9 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
     // $ANTLR end "rule__BidirectionalizableCondition__FeatureToBeUpdatedAssignment_3_1"
 
 
-    // $ANTLR start "rule__BootstrapMapping__NameAssignment_1"
-    // InternalMappingsLanguage.g:19069:1: rule__BootstrapMapping__NameAssignment_1 : ( ruleValidID ) ;
-    public final void rule__BootstrapMapping__NameAssignment_1() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__NameAssignment_1"
+    // InternalMappingsLanguage.g:19069:1: rule__Bootstrapping__NameAssignment_1 : ( ruleValidID ) ;
+    public final void rule__Bootstrapping__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -62633,7 +62633,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             // InternalMappingsLanguage.g:19075:3: ruleValidID
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getNameValidIDParserRuleCall_1_0()); 
+               before(grammarAccess.getBootstrappingAccess().getNameValidIDParserRuleCall_1_0()); 
             }
             pushFollow(FOLLOW_2);
             ruleValidID();
@@ -62641,7 +62641,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getNameValidIDParserRuleCall_1_0()); 
+               after(grammarAccess.getBootstrappingAccess().getNameValidIDParserRuleCall_1_0()); 
             }
 
             }
@@ -62661,12 +62661,12 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__NameAssignment_1"
+    // $ANTLR end "rule__Bootstrapping__NameAssignment_1"
 
 
-    // $ANTLR start "rule__BootstrapMapping__ParametersAssignment_4"
-    // InternalMappingsLanguage.g:19084:1: rule__BootstrapMapping__ParametersAssignment_4 : ( ruleClassicallyNamedModelElement ) ;
-    public final void rule__BootstrapMapping__ParametersAssignment_4() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__ParametersAssignment_4"
+    // InternalMappingsLanguage.g:19084:1: rule__Bootstrapping__ParametersAssignment_4 : ( ruleClassicallyNamedModelElement ) ;
+    public final void rule__Bootstrapping__ParametersAssignment_4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -62678,7 +62678,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             // InternalMappingsLanguage.g:19090:3: ruleClassicallyNamedModelElement
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getParametersClassicallyNamedModelElementParserRuleCall_4_0()); 
+               before(grammarAccess.getBootstrappingAccess().getParametersClassicallyNamedModelElementParserRuleCall_4_0()); 
             }
             pushFollow(FOLLOW_2);
             ruleClassicallyNamedModelElement();
@@ -62686,7 +62686,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getParametersClassicallyNamedModelElementParserRuleCall_4_0()); 
+               after(grammarAccess.getBootstrappingAccess().getParametersClassicallyNamedModelElementParserRuleCall_4_0()); 
             }
 
             }
@@ -62706,12 +62706,12 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__ParametersAssignment_4"
+    // $ANTLR end "rule__Bootstrapping__ParametersAssignment_4"
 
 
-    // $ANTLR start "rule__BootstrapMapping__BootstrapConditonAssignment_6_1"
-    // InternalMappingsLanguage.g:19099:1: rule__BootstrapMapping__BootstrapConditonAssignment_6_1 : ( ruleSingleSidedCondition ) ;
-    public final void rule__BootstrapMapping__BootstrapConditonAssignment_6_1() throws RecognitionException {
+    // $ANTLR start "rule__Bootstrapping__BootstrapConditonAssignment_6_1"
+    // InternalMappingsLanguage.g:19099:1: rule__Bootstrapping__BootstrapConditonAssignment_6_1 : ( ruleSingleSidedCondition ) ;
+    public final void rule__Bootstrapping__BootstrapConditonAssignment_6_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -62723,7 +62723,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             // InternalMappingsLanguage.g:19105:3: ruleSingleSidedCondition
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getBootstrapMappingAccess().getBootstrapConditonSingleSidedConditionParserRuleCall_6_1_0()); 
+               before(grammarAccess.getBootstrappingAccess().getBootstrapConditonSingleSidedConditionParserRuleCall_6_1_0()); 
             }
             pushFollow(FOLLOW_2);
             ruleSingleSidedCondition();
@@ -62731,7 +62731,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getBootstrapMappingAccess().getBootstrapConditonSingleSidedConditionParserRuleCall_6_1_0()); 
+               after(grammarAccess.getBootstrappingAccess().getBootstrapConditonSingleSidedConditionParserRuleCall_6_1_0()); 
             }
 
             }
@@ -62751,7 +62751,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalContentAssis
         }
         return ;
     }
-    // $ANTLR end "rule__BootstrapMapping__BootstrapConditonAssignment_6_1"
+    // $ANTLR end "rule__Bootstrapping__BootstrapConditonAssignment_6_1"
 
 
     // $ANTLR start "rule__Documentable__DocumentationAssignment"

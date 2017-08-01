@@ -18,7 +18,7 @@ MappingsSegment:
 	'for' leftDomain=DomainReference 
 	'and' rightDomain=DomainReference
 	(mappings+=Mapping |
-		bootstrapMappings+=BootstrapMapping)*
+		bootstrappings+=Bootstrapping)*
 ;
 
 /******************/
@@ -56,18 +56,18 @@ Dependency:
 	shortName=ValidID
 ;
 	
-SingleSidedCondition returns Condition:
+SingleSidedCondition: // returns Condition:
 	EnforceableCondition |
 	CheckAndEnforceCondition
 ;
 
 /* BEGIN ENFORCEABLE CONDITIONS */
-EnforceableCondition returns SingleSidedCondition:
+EnforceableCondition: //  returns SingleSidedCondition:
 	FeatureCondition |
 	ResourceCondition
 ;
 
-FeatureCondition returns EnforceableCondition:
+FeatureCondition: //  returns EnforceableCondition:
 	(SingleValueCondition |
 	 MultiValueCondition |
 	 ElementCondition |
@@ -88,12 +88,12 @@ DependentFeatureReference:
 	dependeeFeature=MetaclassFeatureReference
 ;
 
-SingleValueCondition returns ValueCondition:
+SingleValueCondition: //  returns ValueCondition:
 	IndexCondition |
 	NumCompareCondition
 ;
 
-ValueCondition returns FeatureCondition:
+ValueCondition: //  returns FeatureCondition:
 	valueExpression=ValueExpression
 ;
 
@@ -101,14 +101,14 @@ ValueExpression:
 	{CodeBlock}
 ;
 
-IndexCondition returns SingleValueCondition:
+IndexCondition: //  returns SingleValueCondition:
 	negated?='not'
 	'at index'
 	indexValueExpression=ValueExpression
 	'in'
 ;
 
-NumCompareCondition returns SingleValueCondition:
+NumCompareCondition: //  returns SingleValueCondition:
 	operator=NumCompareOperator
 ;
 
@@ -136,7 +136,7 @@ NotLessOperator returns NumCompareOperator: '>=';
 GreaterOperator returns NumCompareOperator: '>';
 */
 
-MultiValueCondition returns FeatureCondition:
+MultiValueCondition: //  returns FeatureCondition:
 	negated?='not'
 	operator=MultiValueConditionOperator
 ;
@@ -146,7 +146,7 @@ enum MultiValueConditionOperator:
 	IN = 'in'
 ;
 
-ElementCondition returns FeatureCondition:
+ElementCondition: //  returns FeatureCondition:
 	elementExpression=ElementExpression
 	'default contained in'
 ;
@@ -155,12 +155,12 @@ ElementExpression:
 	{CodeBlock}
 ;
 
-NotEmptyCondition returns FeatureCondition:
+NotEmptyCondition: //  returns FeatureCondition:
 	negated?='not'
 	'empty'
 ;
 
-ResourceCondition returns EnforceableCondition:
+ResourceCondition: //  returns EnforceableCondition:
 	'default path for'
 	elementExpression=ElementExpression
 	'='
@@ -170,7 +170,7 @@ ResourceCondition returns EnforceableCondition:
 /* END ENFORCEABLE CONDITIONS */
 
 /* BEGIN CHECK AND ENFORCE CONDITION*/
-CheckAndEnforceCondition returns SingleSidedCondition:
+CheckAndEnforceCondition: //  returns SingleSidedCondition:
 	'check {'
 		checkExpression=CheckExpression
 	'}
@@ -189,7 +189,7 @@ EnforceExpression:
 /* END CHECK AND ENFORCE CONDITION */
 
 /* BEGIN BIDIRECTIONALIZABLE CONDITION */
-BidirectionalizableCondition returns Condition:
+BidirectionalizableCondition: //  returns Condition:
 	featureToBeAssigned=MetaclassFeatureReference
 	'='
 	bidirectionalizableExpression=BidirectionalizableExpression
@@ -209,10 +209,10 @@ UnidirectionalExpression:
 /******************/
 	
 /***************************/
-/* BEGIN BOOTSTRAP MAPPING */		
+/* BEGIN BOOTSTRAPPING */		
 /***************************/
-BootstrapMapping: 
-	'bootstrap mapping' name=ValidID
+Bootstrapping: 
+	'bootstrapping' name=ValidID
 	'{'
 		'create (' (parameters+=ClassicallyNamedModelElement)+ ')' 
 		('with {'
@@ -221,7 +221,7 @@ BootstrapMapping:
 	'}'
 ;
 /***************************/
-/* END BOOTSTRAP MAPPING */		
+/* END BOOTSTRAPPING */		
 /***************************/
 
 

@@ -3,22 +3,12 @@
  */
 package tools.vitruv.dsls.mappings.mappingsLanguage;
 
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Enforceable Condition</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getElementExpression <em>Element Expression</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getPathExpression <em>Path Expression</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getPath <em>Path</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getFeature <em>Feature</em>}</li>
- * </ul>
  *
  * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getEnforceableCondition()
  * @model
@@ -26,108 +16,4 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
  */
 public interface EnforceableCondition extends SingleSidedCondition
 {
-  /**
-   * Returns the value of the '<em><b>Element Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Element Expression</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Element Expression</em>' containment reference.
-   * @see #setElementExpression(ElementExpression)
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getEnforceableCondition_ElementExpression()
-   * @model containment="true"
-   * @generated
-   */
-  ElementExpression getElementExpression();
-
-  /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getElementExpression <em>Element Expression</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Element Expression</em>' containment reference.
-   * @see #getElementExpression()
-   * @generated
-   */
-  void setElementExpression(ElementExpression value);
-
-  /**
-   * Returns the value of the '<em><b>Path Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Path Expression</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Path Expression</em>' containment reference.
-   * @see #setPathExpression(ElementExpression)
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getEnforceableCondition_PathExpression()
-   * @model containment="true"
-   * @generated
-   */
-  ElementExpression getPathExpression();
-
-  /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getPathExpression <em>Path Expression</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Path Expression</em>' containment reference.
-   * @see #getPathExpression()
-   * @generated
-   */
-  void setPathExpression(ElementExpression value);
-
-  /**
-   * Returns the value of the '<em><b>Path</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Path</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Path</em>' attribute.
-   * @see #setPath(String)
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getEnforceableCondition_Path()
-   * @model
-   * @generated
-   */
-  String getPath();
-
-  /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getPath <em>Path</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Path</em>' attribute.
-   * @see #getPath()
-   * @generated
-   */
-  void setPath(String value);
-
-  /**
-   * Returns the value of the '<em><b>Feature</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Feature</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Feature</em>' containment reference.
-   * @see #setFeature(MetaclassFeatureReference)
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getEnforceableCondition_Feature()
-   * @model containment="true"
-   * @generated
-   */
-  MetaclassFeatureReference getFeature();
-
-  /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getFeature <em>Feature</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Feature</em>' containment reference.
-   * @see #getFeature()
-   * @generated
-   */
-  void setFeature(MetaclassFeatureReference value);
-
 } // EnforceableCondition

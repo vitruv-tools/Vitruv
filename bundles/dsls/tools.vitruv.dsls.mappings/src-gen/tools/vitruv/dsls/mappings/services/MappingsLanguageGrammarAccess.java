@@ -78,18 +78,18 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Alternatives cAlternatives_7 = (Alternatives)cGroup.eContents().get(7);
 		private final Assignment cMappingsAssignment_7_0 = (Assignment)cAlternatives_7.eContents().get(0);
 		private final RuleCall cMappingsMappingParserRuleCall_7_0_0 = (RuleCall)cMappingsAssignment_7_0.eContents().get(0);
-		private final Assignment cBootstrapMappingsAssignment_7_1 = (Assignment)cAlternatives_7.eContents().get(1);
-		private final RuleCall cBootstrapMappingsBootstrapMappingParserRuleCall_7_1_0 = (RuleCall)cBootstrapMappingsAssignment_7_1.eContents().get(0);
+		private final Assignment cBootstrappingsAssignment_7_1 = (Assignment)cAlternatives_7.eContents().get(1);
+		private final RuleCall cBootstrappingsBootstrappingParserRuleCall_7_1_0 = (RuleCall)cBootstrappingsAssignment_7_1.eContents().get(0);
 		
 		//MappingsSegment:
 		//	Documentable
 		//	'mappings:' name=ValidID
 		//	'for' leftDomain=DomainReference
-		//	'and' rightDomain=DomainReference (mappings+=Mapping | bootstrapMappings+=BootstrapMapping)*;
+		//	'and' rightDomain=DomainReference (mappings+=Mapping | bootstrappings+=Bootstrapping)*;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//Documentable 'mappings:' name=ValidID 'for' leftDomain=DomainReference 'and' rightDomain=DomainReference
-		//(mappings+=Mapping | bootstrapMappings+=BootstrapMapping)*
+		//(mappings+=Mapping | bootstrappings+=Bootstrapping)*
 		public Group getGroup() { return cGroup; }
 		
 		//Documentable
@@ -122,7 +122,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//DomainReference
 		public RuleCall getRightDomainDomainReferenceParserRuleCall_6_0() { return cRightDomainDomainReferenceParserRuleCall_6_0; }
 		
-		//(mappings+=Mapping | bootstrapMappings+=BootstrapMapping)*
+		//(mappings+=Mapping | bootstrappings+=Bootstrapping)*
 		public Alternatives getAlternatives_7() { return cAlternatives_7; }
 		
 		//mappings+=Mapping
@@ -131,11 +131,11 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//Mapping
 		public RuleCall getMappingsMappingParserRuleCall_7_0_0() { return cMappingsMappingParserRuleCall_7_0_0; }
 		
-		//bootstrapMappings+=BootstrapMapping
-		public Assignment getBootstrapMappingsAssignment_7_1() { return cBootstrapMappingsAssignment_7_1; }
+		//bootstrappings+=Bootstrapping
+		public Assignment getBootstrappingsAssignment_7_1() { return cBootstrappingsAssignment_7_1; }
 		
-		//BootstrapMapping
-		public RuleCall getBootstrapMappingsBootstrapMappingParserRuleCall_7_1_0() { return cBootstrapMappingsBootstrapMappingParserRuleCall_7_1_0; }
+		//Bootstrapping
+		public RuleCall getBootstrappingsBootstrappingParserRuleCall_7_1_0() { return cBootstrappingsBootstrappingParserRuleCall_7_1_0; }
 	}
 	public class MappingElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mappings.MappingsLanguage.Mapping");
@@ -372,13 +372,15 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final RuleCall cEnforceableConditionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cCheckAndEnforceConditionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//SingleSidedCondition Condition:
+		//SingleSidedCondition:
 		//	EnforceableCondition | CheckAndEnforceCondition;
 		@Override public ParserRule getRule() { return rule; }
 		
+		//// returns Condition:
 		//EnforceableCondition | CheckAndEnforceCondition
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
+		//// returns Condition:
 		//EnforceableCondition
 		public RuleCall getEnforceableConditionParserRuleCall_0() { return cEnforceableConditionParserRuleCall_0; }
 		
@@ -391,13 +393,15 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final RuleCall cFeatureConditionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cResourceConditionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		///* BEGIN ENFORCEABLE CONDITIONS */ EnforceableCondition SingleSidedCondition:
+		///* BEGIN ENFORCEABLE CONDITIONS */ EnforceableCondition:
 		//	FeatureCondition | ResourceCondition;
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns SingleSidedCondition:
 		//FeatureCondition | ResourceCondition
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
+		////  returns SingleSidedCondition:
 		//FeatureCondition
 		public RuleCall getFeatureConditionParserRuleCall_0() { return cFeatureConditionParserRuleCall_0; }
 		
@@ -415,13 +419,14 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cFeatureAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cFeatureMetaclassFeatureReferenceParserRuleCall_1_0 = (RuleCall)cFeatureAssignment_1.eContents().get(0);
 		
-		//FeatureCondition EnforceableCondition:
+		//FeatureCondition:
 		//	(SingleValueCondition | MultiValueCondition | ElementCondition | NotEmptyCondition) feature=MetaclassFeatureReference;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//(SingleValueCondition | MultiValueCondition | ElementCondition | NotEmptyCondition) feature=MetaclassFeatureReference
 		public Group getGroup() { return cGroup; }
 		
+		////  returns EnforceableCondition:
 		//SingleValueCondition | MultiValueCondition | ElementCondition | NotEmptyCondition
 		public Alternatives getAlternatives_0() { return cAlternatives_0; }
 		
@@ -506,13 +511,15 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final RuleCall cIndexConditionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cNumCompareConditionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//SingleValueCondition ValueCondition:
+		//SingleValueCondition:
 		//	IndexCondition | NumCompareCondition;
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns ValueCondition:
 		//IndexCondition | NumCompareCondition
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
+		////  returns ValueCondition:
 		//IndexCondition
 		public RuleCall getIndexConditionParserRuleCall_0() { return cIndexConditionParserRuleCall_0; }
 		
@@ -524,10 +531,11 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cValueExpressionAssignment = (Assignment)rule.eContents().get(1);
 		private final RuleCall cValueExpressionValueExpressionParserRuleCall_0 = (RuleCall)cValueExpressionAssignment.eContents().get(0);
 		
-		//ValueCondition FeatureCondition:
+		//ValueCondition:
 		//	valueExpression=ValueExpression;
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns FeatureCondition:
 		//valueExpression=ValueExpression
 		public Assignment getValueExpressionAssignment() { return cValueExpressionAssignment; }
 		
@@ -555,16 +563,18 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final RuleCall cIndexValueExpressionValueExpressionParserRuleCall_2_0 = (RuleCall)cIndexValueExpressionAssignment_2.eContents().get(0);
 		private final Keyword cInKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
-		//IndexCondition SingleValueCondition:
+		//IndexCondition:
 		//	negated?='not'
 		//	'at index'
 		//	indexValueExpression=ValueExpression
 		//	'in';
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns SingleValueCondition:
 		//negated?='not' 'at index' indexValueExpression=ValueExpression 'in'
 		public Group getGroup() { return cGroup; }
 		
+		////  returns SingleValueCondition:
 		//negated?='not'
 		public Assignment getNegatedAssignment_0() { return cNegatedAssignment_0; }
 		
@@ -588,10 +598,11 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cOperatorAssignment = (Assignment)rule.eContents().get(1);
 		private final RuleCall cOperatorNumCompareOperatorEnumRuleCall_0 = (RuleCall)cOperatorAssignment.eContents().get(0);
 		
-		//NumCompareCondition SingleValueCondition:
+		//NumCompareCondition:
 		//	operator=NumCompareOperator;
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns SingleValueCondition:
 		//operator=NumCompareOperator
 		public Assignment getOperatorAssignment() { return cOperatorAssignment; }
 		
@@ -621,14 +632,16 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//NotLessOperator returns NumCompareOperator: '>=';
 		//
 		//GreaterOperator returns NumCompareOperator: '>';
-		//*/ MultiValueCondition FeatureCondition:
+		//*/ MultiValueCondition:
 		//	negated?='not'
 		//	operator=MultiValueConditionOperator;
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns FeatureCondition:
 		//negated?='not' operator=MultiValueConditionOperator
 		public Group getGroup() { return cGroup; }
 		
+		////  returns FeatureCondition:
 		//negated?='not'
 		public Assignment getNegatedAssignment_0() { return cNegatedAssignment_0; }
 		
@@ -648,14 +661,16 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final RuleCall cElementExpressionElementExpressionParserRuleCall_0_0 = (RuleCall)cElementExpressionAssignment_0.eContents().get(0);
 		private final Keyword cDefaultContainedInKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
-		//ElementCondition FeatureCondition:
+		//ElementCondition:
 		//	elementExpression=ElementExpression
 		//	'default contained in';
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns FeatureCondition:
 		//elementExpression=ElementExpression 'default contained in'
 		public Group getGroup() { return cGroup; }
 		
+		////  returns FeatureCondition:
 		//elementExpression=ElementExpression
 		public Assignment getElementExpressionAssignment_0() { return cElementExpressionAssignment_0; }
 		
@@ -683,14 +698,16 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Keyword cNegatedNotKeyword_0_0 = (Keyword)cNegatedAssignment_0.eContents().get(0);
 		private final Keyword cEmptyKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
-		//NotEmptyCondition FeatureCondition:
+		//NotEmptyCondition:
 		//	negated?='not'
 		//	'empty';
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns FeatureCondition:
 		//negated?='not' 'empty'
 		public Group getGroup() { return cGroup; }
 		
+		////  returns FeatureCondition:
 		//negated?='not'
 		public Assignment getNegatedAssignment_0() { return cNegatedAssignment_0; }
 		
@@ -715,16 +732,16 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cPathAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cPathSTRINGTerminalRuleCall_4_0 = (RuleCall)cPathAssignment_4.eContents().get(0);
 		
-		//ResourceCondition EnforceableCondition:
-		//	'default path for'
-		//	elementExpression=ElementExpression
-		//	'=' ('path of' pathExpression=ElementExpression "+")?
+		//ResourceCondition: //  returns EnforceableCondition:
+		//	'default path for' elementExpression=ElementExpression '=' ('path of' pathExpression=ElementExpression "+")?
 		//	path=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns EnforceableCondition:
 		//'default path for' elementExpression=ElementExpression '=' ('path of' pathExpression=ElementExpression "+")? path=STRING
 		public Group getGroup() { return cGroup; }
 		
+		////  returns EnforceableCondition:
 		//'default path for'
 		public Keyword getDefaultPathForKeyword_0() { return cDefaultPathForKeyword_0; }
 		
@@ -769,19 +786,17 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final RuleCall cEnforceExpressionCheckExpressionParserRuleCall_3_0 = (RuleCall)cEnforceExpressionAssignment_3.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		///* END ENFORCEABLE CONDITIONS */ /* BEGIN CHECK AND ENFORCE CONDITION*/ CheckAndEnforceCondition SingleSidedCondition:
-		//	'check {'
-		//	checkExpression=CheckExpression
-		//	'}
-		//	enforce {'
-		//	enforceExpression=CheckExpression
-		//	'}';
+		///* END ENFORCEABLE CONDITIONS */ /* BEGIN CHECK AND ENFORCE CONDITION*/ CheckAndEnforceCondition: //  returns SingleSidedCondition:
+		//	'check {' checkExpression=CheckExpression '}
+		//	enforce {' enforceExpression=CheckExpression '}';
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns SingleSidedCondition:
 		//'check {' checkExpression=CheckExpression '}
 		//	enforce {' enforceExpression=CheckExpression '}'
 		public Group getGroup() { return cGroup; }
 		
+		////  returns SingleSidedCondition:
 		//'check {'
 		public Keyword getCheckKeyword_0() { return cCheckKeyword_0; }
 		
@@ -839,16 +854,18 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cFeatureToBeUpdatedAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cFeatureToBeUpdatedMetaclassFeatureReferenceParserRuleCall_3_1_0 = (RuleCall)cFeatureToBeUpdatedAssignment_3_1.eContents().get(0);
 		
-		///* END CHECK AND ENFORCE CONDITION */ /* BEGIN BIDIRECTIONALIZABLE CONDITION */ BidirectionalizableCondition Condition:
+		///* END CHECK AND ENFORCE CONDITION */ /* BEGIN BIDIRECTIONALIZABLE CONDITION */ BidirectionalizableCondition:
 		//	featureToBeAssigned=MetaclassFeatureReference
 		//	'='
 		//	bidirectionalizableExpression=BidirectionalizableExpression ('update' featureToBeUpdated=MetaclassFeatureReference)?;
 		@Override public ParserRule getRule() { return rule; }
 		
+		////  returns Condition:
 		//featureToBeAssigned=MetaclassFeatureReference '=' bidirectionalizableExpression=BidirectionalizableExpression ('update'
 		//featureToBeUpdated=MetaclassFeatureReference)?
 		public Group getGroup() { return cGroup; }
 		
+		////  returns Condition:
 		//featureToBeAssigned=MetaclassFeatureReference
 		public Assignment getFeatureToBeAssignedAssignment_0() { return cFeatureToBeAssignedAssignment_0; }
 		
@@ -898,10 +915,10 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//{CodeBlock}
 		public Action getCodeBlockAction() { return cCodeBlockAction; }
 	}
-	public class BootstrapMappingElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mappings.MappingsLanguage.BootstrapMapping");
+	public class BootstrappingElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mappings.MappingsLanguage.Bootstrapping");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cBootstrapMappingKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cBootstrappingKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
@@ -916,9 +933,9 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Keyword cRightCurlyBracketKeyword_6_2 = (Keyword)cGroup_6.eContents().get(2);
 		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
-		///******************/ /* END MAPPINGS */ /******************/ /***************************/ /* BEGIN BOOTSTRAP MAPPING */
-		///***************************/ BootstrapMapping:
-		//	'bootstrap mapping' name=ValidID
+		///******************/ /* END MAPPINGS */ /******************/ /***************************/ /* BEGIN BOOTSTRAPPING */
+		///***************************/ Bootstrapping:
+		//	'bootstrapping' name=ValidID
 		//	'{'
 		//	'create (' parameters+=ClassicallyNamedModelElement+ ')' ('with {'
 		//	bootstrapConditon=SingleSidedCondition
@@ -926,12 +943,12 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'bootstrap mapping' name=ValidID '{' 'create (' parameters+=ClassicallyNamedModelElement+ ')' ('with {'
+		//'bootstrapping' name=ValidID '{' 'create (' parameters+=ClassicallyNamedModelElement+ ')' ('with {'
 		//bootstrapConditon=SingleSidedCondition '}')? '}'
 		public Group getGroup() { return cGroup; }
 		
-		//'bootstrap mapping'
-		public Keyword getBootstrapMappingKeyword_0() { return cBootstrapMappingKeyword_0; }
+		//'bootstrapping'
+		public Keyword getBootstrappingKeyword_0() { return cBootstrappingKeyword_0; }
 		
 		//name=ValidID
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
@@ -977,7 +994,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cCodeAssignment = (Assignment)rule.eContents().get(1);
 		private final RuleCall cCodeXExpressionParserRuleCall_0 = (RuleCall)cCodeAssignment.eContents().get(0);
 		
-		///***************************/ /* END BOOTSTRAP MAPPING */ /***************************/ /***************************/
+		///***************************/ /* END BOOTSTRAPPING */ /***************************/ /***************************/
 		///* BEGIN REFACTOR */ /***************************/ // TODO MK: move fragment CodeBlock to MirBase (not MetaBase :-)
 		//fragment CodeBlock:
 		//	code=XExpression;
@@ -1108,7 +1125,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	private final BidirectionalizableConditionElements pBidirectionalizableCondition;
 	private final BidirectionalizableExpressionElements pBidirectionalizableExpression;
 	private final UnidirectionalExpressionElements pUnidirectionalExpression;
-	private final BootstrapMappingElements pBootstrapMapping;
+	private final BootstrappingElements pBootstrapping;
 	private final CodeBlockElements pCodeBlock;
 	private final DocumentableElements pDocumentable;
 	
@@ -1156,7 +1173,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		this.pBidirectionalizableCondition = new BidirectionalizableConditionElements();
 		this.pBidirectionalizableExpression = new BidirectionalizableExpressionElements();
 		this.pUnidirectionalExpression = new UnidirectionalExpressionElements();
-		this.pBootstrapMapping = new BootstrapMappingElements();
+		this.pBootstrapping = new BootstrappingElements();
 		this.pCodeBlock = new CodeBlockElements();
 		this.pDocumentable = new DocumentableElements();
 	}
@@ -1212,7 +1229,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	//	Documentable
 	//	'mappings:' name=ValidID
 	//	'for' leftDomain=DomainReference
-	//	'and' rightDomain=DomainReference (mappings+=Mapping | bootstrapMappings+=BootstrapMapping)*;
+	//	'and' rightDomain=DomainReference (mappings+=Mapping | bootstrappings+=Bootstrapping)*;
 	public MappingsSegmentElements getMappingsSegmentAccess() {
 		return pMappingsSegment;
 	}
@@ -1258,7 +1275,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getDependencyAccess().getRule();
 	}
 	
-	//SingleSidedCondition Condition:
+	//SingleSidedCondition:
 	//	EnforceableCondition | CheckAndEnforceCondition;
 	public SingleSidedConditionElements getSingleSidedConditionAccess() {
 		return pSingleSidedCondition;
@@ -1268,7 +1285,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getSingleSidedConditionAccess().getRule();
 	}
 	
-	///* BEGIN ENFORCEABLE CONDITIONS */ EnforceableCondition SingleSidedCondition:
+	///* BEGIN ENFORCEABLE CONDITIONS */ EnforceableCondition:
 	//	FeatureCondition | ResourceCondition;
 	public EnforceableConditionElements getEnforceableConditionAccess() {
 		return pEnforceableCondition;
@@ -1278,7 +1295,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getEnforceableConditionAccess().getRule();
 	}
 	
-	//FeatureCondition EnforceableCondition:
+	//FeatureCondition:
 	//	(SingleValueCondition | MultiValueCondition | ElementCondition | NotEmptyCondition) feature=MetaclassFeatureReference;
 	public FeatureConditionElements getFeatureConditionAccess() {
 		return pFeatureCondition;
@@ -1311,7 +1328,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getDependentFeatureReferenceAccess().getRule();
 	}
 	
-	//SingleValueCondition ValueCondition:
+	//SingleValueCondition:
 	//	IndexCondition | NumCompareCondition;
 	public SingleValueConditionElements getSingleValueConditionAccess() {
 		return pSingleValueCondition;
@@ -1321,7 +1338,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getSingleValueConditionAccess().getRule();
 	}
 	
-	//ValueCondition FeatureCondition:
+	//ValueCondition:
 	//	valueExpression=ValueExpression;
 	public ValueConditionElements getValueConditionAccess() {
 		return pValueCondition;
@@ -1341,7 +1358,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getValueExpressionAccess().getRule();
 	}
 	
-	//IndexCondition SingleValueCondition:
+	//IndexCondition:
 	//	negated?='not'
 	//	'at index'
 	//	indexValueExpression=ValueExpression
@@ -1354,7 +1371,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getIndexConditionAccess().getRule();
 	}
 	
-	//NumCompareCondition SingleValueCondition:
+	//NumCompareCondition:
 	//	operator=NumCompareOperator;
 	public NumCompareConditionElements getNumCompareConditionAccess() {
 		return pNumCompareCondition;
@@ -1392,7 +1409,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	//NotLessOperator returns NumCompareOperator: '>=';
 	//
 	//GreaterOperator returns NumCompareOperator: '>';
-	//*/ MultiValueCondition FeatureCondition:
+	//*/ MultiValueCondition:
 	//	negated?='not'
 	//	operator=MultiValueConditionOperator;
 	public MultiValueConditionElements getMultiValueConditionAccess() {
@@ -1414,7 +1431,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getMultiValueConditionOperatorAccess().getRule();
 	}
 	
-	//ElementCondition FeatureCondition:
+	//ElementCondition:
 	//	elementExpression=ElementExpression
 	//	'default contained in';
 	public ElementConditionElements getElementConditionAccess() {
@@ -1435,7 +1452,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getElementExpressionAccess().getRule();
 	}
 	
-	//NotEmptyCondition FeatureCondition:
+	//NotEmptyCondition:
 	//	negated?='not'
 	//	'empty';
 	public NotEmptyConditionElements getNotEmptyConditionAccess() {
@@ -1446,10 +1463,8 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getNotEmptyConditionAccess().getRule();
 	}
 	
-	//ResourceCondition EnforceableCondition:
-	//	'default path for'
-	//	elementExpression=ElementExpression
-	//	'=' ('path of' pathExpression=ElementExpression "+")?
+	//ResourceCondition: //  returns EnforceableCondition:
+	//	'default path for' elementExpression=ElementExpression '=' ('path of' pathExpression=ElementExpression "+")?
 	//	path=STRING;
 	public ResourceConditionElements getResourceConditionAccess() {
 		return pResourceCondition;
@@ -1459,13 +1474,9 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getResourceConditionAccess().getRule();
 	}
 	
-	///* END ENFORCEABLE CONDITIONS */ /* BEGIN CHECK AND ENFORCE CONDITION*/ CheckAndEnforceCondition SingleSidedCondition:
-	//	'check {'
-	//	checkExpression=CheckExpression
-	//	'}
-	//	enforce {'
-	//	enforceExpression=CheckExpression
-	//	'}';
+	///* END ENFORCEABLE CONDITIONS */ /* BEGIN CHECK AND ENFORCE CONDITION*/ CheckAndEnforceCondition: //  returns SingleSidedCondition:
+	//	'check {' checkExpression=CheckExpression '}
+	//	enforce {' enforceExpression=CheckExpression '}';
 	public CheckAndEnforceConditionElements getCheckAndEnforceConditionAccess() {
 		return pCheckAndEnforceCondition;
 	}
@@ -1494,7 +1505,7 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getEnforceExpressionAccess().getRule();
 	}
 	
-	///* END CHECK AND ENFORCE CONDITION */ /* BEGIN BIDIRECTIONALIZABLE CONDITION */ BidirectionalizableCondition Condition:
+	///* END CHECK AND ENFORCE CONDITION */ /* BEGIN BIDIRECTIONALIZABLE CONDITION */ BidirectionalizableCondition:
 	//	featureToBeAssigned=MetaclassFeatureReference
 	//	'='
 	//	bidirectionalizableExpression=BidirectionalizableExpression ('update' featureToBeUpdated=MetaclassFeatureReference)?;
@@ -1526,23 +1537,23 @@ public class MappingsLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getUnidirectionalExpressionAccess().getRule();
 	}
 	
-	///******************/ /* END MAPPINGS */ /******************/ /***************************/ /* BEGIN BOOTSTRAP MAPPING */
-	///***************************/ BootstrapMapping:
-	//	'bootstrap mapping' name=ValidID
+	///******************/ /* END MAPPINGS */ /******************/ /***************************/ /* BEGIN BOOTSTRAPPING */
+	///***************************/ Bootstrapping:
+	//	'bootstrapping' name=ValidID
 	//	'{'
 	//	'create (' parameters+=ClassicallyNamedModelElement+ ')' ('with {'
 	//	bootstrapConditon=SingleSidedCondition
 	//	'}')?
 	//	'}';
-	public BootstrapMappingElements getBootstrapMappingAccess() {
-		return pBootstrapMapping;
+	public BootstrappingElements getBootstrappingAccess() {
+		return pBootstrapping;
 	}
 	
-	public ParserRule getBootstrapMappingRule() {
-		return getBootstrapMappingAccess().getRule();
+	public ParserRule getBootstrappingRule() {
+		return getBootstrappingAccess().getRule();
 	}
 	
-	///***************************/ /* END BOOTSTRAP MAPPING */ /***************************/ /***************************/
+	///***************************/ /* END BOOTSTRAPPING */ /***************************/ /***************************/
 	///* BEGIN REFACTOR */ /***************************/ // TODO MK: move fragment CodeBlock to MirBase (not MetaBase :-)
 	//fragment CodeBlock:
 	//	code=XExpression;

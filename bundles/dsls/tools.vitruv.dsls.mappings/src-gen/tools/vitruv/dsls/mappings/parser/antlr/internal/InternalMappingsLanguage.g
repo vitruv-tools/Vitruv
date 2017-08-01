@@ -249,18 +249,18 @@ ruleMappingsSegment returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getMappingsSegmentAccess().getBootstrapMappingsBootstrapMappingParserRuleCall_7_1_0());
+						newCompositeNode(grammarAccess.getMappingsSegmentAccess().getBootstrappingsBootstrappingParserRuleCall_7_1_0());
 					}
-					lv_bootstrapMappings_8_0=ruleBootstrapMapping
+					lv_bootstrappings_8_0=ruleBootstrapping
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getMappingsSegmentRule());
 						}
 						add(
 							$current,
-							"bootstrapMappings",
-							lv_bootstrapMappings_8_0,
-							"tools.vitruv.dsls.mappings.MappingsLanguage.BootstrapMapping");
+							"bootstrappings",
+							lv_bootstrappings_8_0,
+							"tools.vitruv.dsls.mappings.MappingsLanguage.Bootstrapping");
 						afterParserOrEnumRuleCall();
 					}
 				)
@@ -1428,15 +1428,15 @@ ruleUnidirectionalExpression returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleBootstrapMapping
-entryRuleBootstrapMapping returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getBootstrapMappingRule()); }
-	iv_ruleBootstrapMapping=ruleBootstrapMapping
-	{ $current=$iv_ruleBootstrapMapping.current; }
+// Entry rule entryRuleBootstrapping
+entryRuleBootstrapping returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getBootstrappingRule()); }
+	iv_ruleBootstrapping=ruleBootstrapping
+	{ $current=$iv_ruleBootstrapping.current; }
 	EOF;
 
-// Rule BootstrapMapping
-ruleBootstrapMapping returns [EObject current=null]
+// Rule Bootstrapping
+ruleBootstrapping returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -1444,19 +1444,19 @@ ruleBootstrapMapping returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='bootstrap mapping'
+		otherlv_0='bootstrapping'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getBootstrapMappingAccess().getBootstrapMappingKeyword_0());
+			newLeafNode(otherlv_0, grammarAccess.getBootstrappingAccess().getBootstrappingKeyword_0());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getBootstrapMappingAccess().getNameValidIDParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getBootstrappingAccess().getNameValidIDParserRuleCall_1_0());
 				}
 				lv_name_1_0=ruleValidID
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getBootstrapMappingRule());
+						$current = createModelElementForParent(grammarAccess.getBootstrappingRule());
 					}
 					set(
 						$current,
@@ -1469,21 +1469,21 @@ ruleBootstrapMapping returns [EObject current=null]
 		)
 		otherlv_2='{'
 		{
-			newLeafNode(otherlv_2, grammarAccess.getBootstrapMappingAccess().getLeftCurlyBracketKeyword_2());
+			newLeafNode(otherlv_2, grammarAccess.getBootstrappingAccess().getLeftCurlyBracketKeyword_2());
 		}
 		otherlv_3='create ('
 		{
-			newLeafNode(otherlv_3, grammarAccess.getBootstrapMappingAccess().getCreateKeyword_3());
+			newLeafNode(otherlv_3, grammarAccess.getBootstrappingAccess().getCreateKeyword_3());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getBootstrapMappingAccess().getParametersClassicallyNamedModelElementParserRuleCall_4_0());
+					newCompositeNode(grammarAccess.getBootstrappingAccess().getParametersClassicallyNamedModelElementParserRuleCall_4_0());
 				}
 				lv_parameters_4_0=ruleClassicallyNamedModelElement
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getBootstrapMappingRule());
+						$current = createModelElementForParent(grammarAccess.getBootstrappingRule());
 					}
 					add(
 						$current,
@@ -1496,22 +1496,22 @@ ruleBootstrapMapping returns [EObject current=null]
 		)+
 		otherlv_5=')'
 		{
-			newLeafNode(otherlv_5, grammarAccess.getBootstrapMappingAccess().getRightParenthesisKeyword_5());
+			newLeafNode(otherlv_5, grammarAccess.getBootstrappingAccess().getRightParenthesisKeyword_5());
 		}
 		(
 			otherlv_6='with {'
 			{
-				newLeafNode(otherlv_6, grammarAccess.getBootstrapMappingAccess().getWithKeyword_6_0());
+				newLeafNode(otherlv_6, grammarAccess.getBootstrappingAccess().getWithKeyword_6_0());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getBootstrapMappingAccess().getBootstrapConditonSingleSidedConditionParserRuleCall_6_1_0());
+						newCompositeNode(grammarAccess.getBootstrappingAccess().getBootstrapConditonSingleSidedConditionParserRuleCall_6_1_0());
 					}
 					lv_bootstrapConditon_7_0=ruleSingleSidedCondition
 					{
 						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getBootstrapMappingRule());
+							$current = createModelElementForParent(grammarAccess.getBootstrappingRule());
 						}
 						set(
 							$current,
@@ -1524,12 +1524,12 @@ ruleBootstrapMapping returns [EObject current=null]
 			)
 			otherlv_8='}'
 			{
-				newLeafNode(otherlv_8, grammarAccess.getBootstrapMappingAccess().getRightCurlyBracketKeyword_6_2());
+				newLeafNode(otherlv_8, grammarAccess.getBootstrappingAccess().getRightCurlyBracketKeyword_6_2());
 			}
 		)?
 		otherlv_9='}'
 		{
-			newLeafNode(otherlv_9, grammarAccess.getBootstrapMappingAccess().getRightCurlyBracketKeyword_7());
+			newLeafNode(otherlv_9, grammarAccess.getBootstrappingAccess().getRightCurlyBracketKeyword_7());
 		}
 	)
 ;

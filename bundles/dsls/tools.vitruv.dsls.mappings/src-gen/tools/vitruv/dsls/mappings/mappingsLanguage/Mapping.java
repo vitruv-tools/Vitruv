@@ -95,7 +95,7 @@ public interface Mapping extends EObject
 
   /**
    * Returns the value of the '<em><b>Left Conditions</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition}.
+   * The list contents are of type {@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Left Conditions</em>' containment reference list isn't clear,
@@ -107,7 +107,7 @@ public interface Mapping extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<Condition> getLeftConditions();
+  EList<SingleSidedCondition> getLeftConditions();
 
   /**
    * Returns the value of the '<em><b>Right Parameters</b></em>' containment reference list.
@@ -127,7 +127,7 @@ public interface Mapping extends EObject
 
   /**
    * Returns the value of the '<em><b>Right Conditions</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition}.
+   * The list contents are of type {@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Right Conditions</em>' containment reference list isn't clear,
@@ -139,11 +139,11 @@ public interface Mapping extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<Condition> getRightConditions();
+  EList<SingleSidedCondition> getRightConditions();
 
   /**
    * Returns the value of the '<em><b>Bidirectionalizable Conditions</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition}.
+   * The list contents are of type {@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Bidirectionalizable Conditions</em>' containment reference list isn't clear,
@@ -155,7 +155,7 @@ public interface Mapping extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<Condition> getBidirectionalizableConditions();
+  EList<BidirectionalizableCondition> getBidirectionalizableConditions();
 
   /**
    * Returns the value of the '<em><b>Forward Execution Expression</b></em>' containment reference.

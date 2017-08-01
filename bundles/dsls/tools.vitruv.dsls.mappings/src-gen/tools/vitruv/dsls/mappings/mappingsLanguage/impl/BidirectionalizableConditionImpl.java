@@ -12,28 +12,28 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableExpression;
-import tools.vitruv.dsls.mappings.mappingsLanguage.Condition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage;
 
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Condition</b></em>'.
+ * An implementation of the model object '<em><b>Bidirectionalizable Condition</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ConditionImpl#getFeatureToBeAssigned <em>Feature To Be Assigned</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ConditionImpl#getBidirectionalizableExpression <em>Bidirectionalizable Expression</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ConditionImpl#getFeatureToBeUpdated <em>Feature To Be Updated</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BidirectionalizableConditionImpl#getFeatureToBeAssigned <em>Feature To Be Assigned</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BidirectionalizableConditionImpl#getBidirectionalizableExpression <em>Bidirectionalizable Expression</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BidirectionalizableConditionImpl#getFeatureToBeUpdated <em>Feature To Be Updated</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ConditionImpl extends MinimalEObjectImpl.Container implements Condition
+public class BidirectionalizableConditionImpl extends MinimalEObjectImpl.Container implements BidirectionalizableCondition
 {
   /**
    * The cached value of the '{@link #getFeatureToBeAssigned() <em>Feature To Be Assigned</em>}' containment reference.
@@ -70,7 +70,7 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ConditionImpl()
+  protected BidirectionalizableConditionImpl()
   {
     super();
   }
@@ -83,7 +83,7 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
   @Override
   protected EClass eStaticClass()
   {
-    return MappingsLanguagePackage.Literals.CONDITION;
+    return MappingsLanguagePackage.Literals.BIDIRECTIONALIZABLE_CONDITION;
   }
 
   /**
@@ -107,7 +107,7 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
     featureToBeAssigned = newFeatureToBeAssigned;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_ASSIGNED, oldFeatureToBeAssigned, newFeatureToBeAssigned);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED, oldFeatureToBeAssigned, newFeatureToBeAssigned);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -124,14 +124,14 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
     {
       NotificationChain msgs = null;
       if (featureToBeAssigned != null)
-        msgs = ((InternalEObject)featureToBeAssigned).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_ASSIGNED, null, msgs);
+        msgs = ((InternalEObject)featureToBeAssigned).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED, null, msgs);
       if (newFeatureToBeAssigned != null)
-        msgs = ((InternalEObject)newFeatureToBeAssigned).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_ASSIGNED, null, msgs);
+        msgs = ((InternalEObject)newFeatureToBeAssigned).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED, null, msgs);
       msgs = basicSetFeatureToBeAssigned(newFeatureToBeAssigned, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_ASSIGNED, newFeatureToBeAssigned, newFeatureToBeAssigned));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED, newFeatureToBeAssigned, newFeatureToBeAssigned));
   }
 
   /**
@@ -155,7 +155,7 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
     bidirectionalizableExpression = newBidirectionalizableExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.CONDITION__BIDIRECTIONALIZABLE_EXPRESSION, oldBidirectionalizableExpression, newBidirectionalizableExpression);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION, oldBidirectionalizableExpression, newBidirectionalizableExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -172,14 +172,14 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
     {
       NotificationChain msgs = null;
       if (bidirectionalizableExpression != null)
-        msgs = ((InternalEObject)bidirectionalizableExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.CONDITION__BIDIRECTIONALIZABLE_EXPRESSION, null, msgs);
+        msgs = ((InternalEObject)bidirectionalizableExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION, null, msgs);
       if (newBidirectionalizableExpression != null)
-        msgs = ((InternalEObject)newBidirectionalizableExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.CONDITION__BIDIRECTIONALIZABLE_EXPRESSION, null, msgs);
+        msgs = ((InternalEObject)newBidirectionalizableExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION, null, msgs);
       msgs = basicSetBidirectionalizableExpression(newBidirectionalizableExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.CONDITION__BIDIRECTIONALIZABLE_EXPRESSION, newBidirectionalizableExpression, newBidirectionalizableExpression));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION, newBidirectionalizableExpression, newBidirectionalizableExpression));
   }
 
   /**
@@ -203,7 +203,7 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
     featureToBeUpdated = newFeatureToBeUpdated;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_UPDATED, oldFeatureToBeUpdated, newFeatureToBeUpdated);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED, oldFeatureToBeUpdated, newFeatureToBeUpdated);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -220,14 +220,14 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
     {
       NotificationChain msgs = null;
       if (featureToBeUpdated != null)
-        msgs = ((InternalEObject)featureToBeUpdated).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_UPDATED, null, msgs);
+        msgs = ((InternalEObject)featureToBeUpdated).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED, null, msgs);
       if (newFeatureToBeUpdated != null)
-        msgs = ((InternalEObject)newFeatureToBeUpdated).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_UPDATED, null, msgs);
+        msgs = ((InternalEObject)newFeatureToBeUpdated).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED, null, msgs);
       msgs = basicSetFeatureToBeUpdated(newFeatureToBeUpdated, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_UPDATED, newFeatureToBeUpdated, newFeatureToBeUpdated));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED, newFeatureToBeUpdated, newFeatureToBeUpdated));
   }
 
   /**
@@ -240,11 +240,11 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_ASSIGNED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED:
         return basicSetFeatureToBeAssigned(null, msgs);
-      case MappingsLanguagePackage.CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
         return basicSetBidirectionalizableExpression(null, msgs);
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_UPDATED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED:
         return basicSetFeatureToBeUpdated(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -260,11 +260,11 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_ASSIGNED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED:
         return getFeatureToBeAssigned();
-      case MappingsLanguagePackage.CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
         return getBidirectionalizableExpression();
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_UPDATED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED:
         return getFeatureToBeUpdated();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -280,13 +280,13 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_ASSIGNED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED:
         setFeatureToBeAssigned((MetaclassFeatureReference)newValue);
         return;
-      case MappingsLanguagePackage.CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
         setBidirectionalizableExpression((BidirectionalizableExpression)newValue);
         return;
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_UPDATED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED:
         setFeatureToBeUpdated((MetaclassFeatureReference)newValue);
         return;
     }
@@ -303,13 +303,13 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_ASSIGNED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED:
         setFeatureToBeAssigned((MetaclassFeatureReference)null);
         return;
-      case MappingsLanguagePackage.CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
         setBidirectionalizableExpression((BidirectionalizableExpression)null);
         return;
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_UPDATED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED:
         setFeatureToBeUpdated((MetaclassFeatureReference)null);
         return;
     }
@@ -326,14 +326,14 @@ public class ConditionImpl extends MinimalEObjectImpl.Container implements Condi
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_ASSIGNED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED:
         return featureToBeAssigned != null;
-      case MappingsLanguagePackage.CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION:
         return bidirectionalizableExpression != null;
-      case MappingsLanguagePackage.CONDITION__FEATURE_TO_BE_UPDATED:
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED:
         return featureToBeUpdated != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //ConditionImpl
+} //BidirectionalizableConditionImpl

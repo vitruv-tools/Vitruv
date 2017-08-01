@@ -17,27 +17,34 @@ import org.eclipse.xtext.xbase.XbasePackage;
 
 import org.eclipse.xtext.xtype.XtypePackage;
 
+import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableExpression;
-import tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping;
+import tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping;
+import tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.CheckExpression;
 import tools.vitruv.dsls.mappings.mappingsLanguage.CodeBlock;
-import tools.vitruv.dsls.mappings.mappingsLanguage.Condition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.Dependency;
 import tools.vitruv.dsls.mappings.mappingsLanguage.DependentFeatureReference;
 import tools.vitruv.dsls.mappings.mappingsLanguage.Documentable;
+import tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.ElementExpression;
 import tools.vitruv.dsls.mappings.mappingsLanguage.EnforceExpression;
 import tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureReference;
+import tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguageFactory;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MetaclassFeatureReference;
+import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator;
+import tools.vitruv.dsls.mappings.mappingsLanguage.NotEmptyCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareOperator;
+import tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.UnidirectionalExpression;
@@ -87,13 +94,6 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass conditionEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass singleSidedConditionEClass = null;
 
   /**
@@ -102,6 +102,13 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * @generated
    */
   private EClass enforceableConditionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass featureConditionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -122,14 +129,14 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass valueConditionEClass = null;
+  private EClass singleValueConditionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass featureConditionEClass = null;
+  private EClass valueConditionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -143,7 +150,28 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass singleValueConditionEClass = null;
+  private EClass indexConditionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass numCompareConditionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass multiValueConditionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementConditionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -151,6 +179,27 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * @generated
    */
   private EClass elementExpressionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass notEmptyConditionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass resourceConditionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass checkAndEnforceConditionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -171,6 +220,13 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass bidirectionalizableConditionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass bidirectionalizableExpressionEClass = null;
 
   /**
@@ -185,7 +241,7 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass bootstrapMappingEClass = null;
+  private EClass bootstrappingEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -376,7 +432,7 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMappingsSegment_BootstrapMappings()
+  public EReference getMappingsSegment_Bootstrappings()
   {
     return (EReference)mappingsSegmentEClass.getEStructuralFeatures().get(4);
   }
@@ -516,69 +572,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getCondition()
-  {
-    return conditionEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCondition_FeatureToBeAssigned()
-  {
-    return (EReference)conditionEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCondition_BidirectionalizableExpression()
-  {
-    return (EReference)conditionEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCondition_FeatureToBeUpdated()
-  {
-    return (EReference)conditionEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getSingleSidedCondition()
   {
     return singleSidedConditionEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getSingleSidedCondition_CheckExpression()
-  {
-    return (EReference)singleSidedConditionEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getSingleSidedCondition_EnforceExpression()
-  {
-    return (EReference)singleSidedConditionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -596,9 +592,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getEnforceableCondition_ElementExpression()
+  public EClass getFeatureCondition()
   {
-    return (EReference)enforceableConditionEClass.getEStructuralFeatures().get(0);
+    return featureConditionEClass;
   }
 
   /**
@@ -606,29 +602,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getEnforceableCondition_PathExpression()
+  public EReference getFeatureCondition_Feature()
   {
-    return (EReference)enforceableConditionEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getEnforceableCondition_Path()
-  {
-    return (EAttribute)enforceableConditionEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getEnforceableCondition_Feature()
-  {
-    return (EReference)enforceableConditionEClass.getEStructuralFeatures().get(3);
+    return (EReference)featureConditionEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -676,6 +652,16 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getSingleValueCondition()
+  {
+    return singleValueConditionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getValueCondition()
   {
     return valueConditionEClass;
@@ -686,39 +672,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getFeatureCondition()
+  public EReference getValueCondition_ValueExpression()
   {
-    return featureConditionEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getFeatureCondition_ValueExpression()
-  {
-    return (EReference)featureConditionEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getFeatureCondition_Negated()
-  {
-    return (EAttribute)featureConditionEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getFeatureCondition_Operator()
-  {
-    return (EAttribute)featureConditionEClass.getEStructuralFeatures().get(2);
+    return (EReference)valueConditionEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -736,9 +692,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getSingleValueCondition()
+  public EClass getIndexCondition()
   {
-    return singleValueConditionEClass;
+    return indexConditionEClass;
   }
 
   /**
@@ -746,9 +702,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getSingleValueCondition_Negated()
+  public EAttribute getIndexCondition_Negated()
   {
-    return (EAttribute)singleValueConditionEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)indexConditionEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -756,9 +712,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getSingleValueCondition_IndexValueExpression()
+  public EReference getIndexCondition_IndexValueExpression()
   {
-    return (EReference)singleValueConditionEClass.getEStructuralFeatures().get(1);
+    return (EReference)indexConditionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -766,9 +722,69 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getSingleValueCondition_Operator()
+  public EClass getNumCompareCondition()
   {
-    return (EAttribute)singleValueConditionEClass.getEStructuralFeatures().get(2);
+    return numCompareConditionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNumCompareCondition_Operator()
+  {
+    return (EAttribute)numCompareConditionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getMultiValueCondition()
+  {
+    return multiValueConditionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getMultiValueCondition_Negated()
+  {
+    return (EAttribute)multiValueConditionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getMultiValueCondition_Operator()
+  {
+    return (EAttribute)multiValueConditionEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementCondition()
+  {
+    return elementConditionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementCondition_ElementExpression()
+  {
+    return (EReference)elementConditionEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -779,6 +795,96 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
   public EClass getElementExpression()
   {
     return elementExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNotEmptyCondition()
+  {
+    return notEmptyConditionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNotEmptyCondition_Negated()
+  {
+    return (EAttribute)notEmptyConditionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getResourceCondition()
+  {
+    return resourceConditionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getResourceCondition_ElementExpression()
+  {
+    return (EReference)resourceConditionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getResourceCondition_PathExpression()
+  {
+    return (EReference)resourceConditionEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getResourceCondition_Path()
+  {
+    return (EAttribute)resourceConditionEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getCheckAndEnforceCondition()
+  {
+    return checkAndEnforceConditionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCheckAndEnforceCondition_CheckExpression()
+  {
+    return (EReference)checkAndEnforceConditionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCheckAndEnforceCondition_EnforceExpression()
+  {
+    return (EReference)checkAndEnforceConditionEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -806,6 +912,46 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getBidirectionalizableCondition()
+  {
+    return bidirectionalizableConditionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getBidirectionalizableCondition_FeatureToBeAssigned()
+  {
+    return (EReference)bidirectionalizableConditionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getBidirectionalizableCondition_BidirectionalizableExpression()
+  {
+    return (EReference)bidirectionalizableConditionEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getBidirectionalizableCondition_FeatureToBeUpdated()
+  {
+    return (EReference)bidirectionalizableConditionEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getBidirectionalizableExpression()
   {
     return bidirectionalizableExpressionEClass;
@@ -826,9 +972,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getBootstrapMapping()
+  public EClass getBootstrapping()
   {
-    return bootstrapMappingEClass;
+    return bootstrappingEClass;
   }
 
   /**
@@ -836,9 +982,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getBootstrapMapping_Name()
+  public EAttribute getBootstrapping_Name()
   {
-    return (EAttribute)bootstrapMappingEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)bootstrappingEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -846,9 +992,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getBootstrapMapping_Parameters()
+  public EReference getBootstrapping_Parameters()
   {
-    return (EReference)bootstrapMappingEClass.getEStructuralFeatures().get(1);
+    return (EReference)bootstrappingEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -856,9 +1002,9 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getBootstrapMapping_BootstrapConditon()
+  public EReference getBootstrapping_BootstrapConditon()
   {
-    return (EReference)bootstrapMappingEClass.getEStructuralFeatures().get(2);
+    return (EReference)bootstrappingEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -970,7 +1116,7 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
     createEReference(mappingsSegmentEClass, MAPPINGS_SEGMENT__LEFT_DOMAIN);
     createEReference(mappingsSegmentEClass, MAPPINGS_SEGMENT__RIGHT_DOMAIN);
     createEReference(mappingsSegmentEClass, MAPPINGS_SEGMENT__MAPPINGS);
-    createEReference(mappingsSegmentEClass, MAPPINGS_SEGMENT__BOOTSTRAP_MAPPINGS);
+    createEReference(mappingsSegmentEClass, MAPPINGS_SEGMENT__BOOTSTRAPPINGS);
 
     mappingEClass = createEClass(MAPPING);
     createEAttribute(mappingEClass, MAPPING__NAME);
@@ -987,20 +1133,12 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
     createEReference(dependencyEClass, DEPENDENCY__MAPPING);
     createEAttribute(dependencyEClass, DEPENDENCY__SHORT_NAME);
 
-    conditionEClass = createEClass(CONDITION);
-    createEReference(conditionEClass, CONDITION__FEATURE_TO_BE_ASSIGNED);
-    createEReference(conditionEClass, CONDITION__BIDIRECTIONALIZABLE_EXPRESSION);
-    createEReference(conditionEClass, CONDITION__FEATURE_TO_BE_UPDATED);
-
     singleSidedConditionEClass = createEClass(SINGLE_SIDED_CONDITION);
-    createEReference(singleSidedConditionEClass, SINGLE_SIDED_CONDITION__CHECK_EXPRESSION);
-    createEReference(singleSidedConditionEClass, SINGLE_SIDED_CONDITION__ENFORCE_EXPRESSION);
 
     enforceableConditionEClass = createEClass(ENFORCEABLE_CONDITION);
-    createEReference(enforceableConditionEClass, ENFORCEABLE_CONDITION__ELEMENT_EXPRESSION);
-    createEReference(enforceableConditionEClass, ENFORCEABLE_CONDITION__PATH_EXPRESSION);
-    createEAttribute(enforceableConditionEClass, ENFORCEABLE_CONDITION__PATH);
-    createEReference(enforceableConditionEClass, ENFORCEABLE_CONDITION__FEATURE);
+
+    featureConditionEClass = createEClass(FEATURE_CONDITION);
+    createEReference(featureConditionEClass, FEATURE_CONDITION__FEATURE);
 
     featureReferenceEClass = createEClass(FEATURE_REFERENCE);
 
@@ -1008,34 +1146,58 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
     createEReference(dependentFeatureReferenceEClass, DEPENDENT_FEATURE_REFERENCE__DEPENDEE_SHORT_NAME);
     createEReference(dependentFeatureReferenceEClass, DEPENDENT_FEATURE_REFERENCE__DEPENDEE_FEATURE);
 
-    valueConditionEClass = createEClass(VALUE_CONDITION);
+    singleValueConditionEClass = createEClass(SINGLE_VALUE_CONDITION);
 
-    featureConditionEClass = createEClass(FEATURE_CONDITION);
-    createEReference(featureConditionEClass, FEATURE_CONDITION__VALUE_EXPRESSION);
-    createEAttribute(featureConditionEClass, FEATURE_CONDITION__NEGATED);
-    createEAttribute(featureConditionEClass, FEATURE_CONDITION__OPERATOR);
+    valueConditionEClass = createEClass(VALUE_CONDITION);
+    createEReference(valueConditionEClass, VALUE_CONDITION__VALUE_EXPRESSION);
 
     valueExpressionEClass = createEClass(VALUE_EXPRESSION);
 
-    singleValueConditionEClass = createEClass(SINGLE_VALUE_CONDITION);
-    createEAttribute(singleValueConditionEClass, SINGLE_VALUE_CONDITION__NEGATED);
-    createEReference(singleValueConditionEClass, SINGLE_VALUE_CONDITION__INDEX_VALUE_EXPRESSION);
-    createEAttribute(singleValueConditionEClass, SINGLE_VALUE_CONDITION__OPERATOR);
+    indexConditionEClass = createEClass(INDEX_CONDITION);
+    createEAttribute(indexConditionEClass, INDEX_CONDITION__NEGATED);
+    createEReference(indexConditionEClass, INDEX_CONDITION__INDEX_VALUE_EXPRESSION);
+
+    numCompareConditionEClass = createEClass(NUM_COMPARE_CONDITION);
+    createEAttribute(numCompareConditionEClass, NUM_COMPARE_CONDITION__OPERATOR);
+
+    multiValueConditionEClass = createEClass(MULTI_VALUE_CONDITION);
+    createEAttribute(multiValueConditionEClass, MULTI_VALUE_CONDITION__NEGATED);
+    createEAttribute(multiValueConditionEClass, MULTI_VALUE_CONDITION__OPERATOR);
+
+    elementConditionEClass = createEClass(ELEMENT_CONDITION);
+    createEReference(elementConditionEClass, ELEMENT_CONDITION__ELEMENT_EXPRESSION);
 
     elementExpressionEClass = createEClass(ELEMENT_EXPRESSION);
+
+    notEmptyConditionEClass = createEClass(NOT_EMPTY_CONDITION);
+    createEAttribute(notEmptyConditionEClass, NOT_EMPTY_CONDITION__NEGATED);
+
+    resourceConditionEClass = createEClass(RESOURCE_CONDITION);
+    createEReference(resourceConditionEClass, RESOURCE_CONDITION__ELEMENT_EXPRESSION);
+    createEReference(resourceConditionEClass, RESOURCE_CONDITION__PATH_EXPRESSION);
+    createEAttribute(resourceConditionEClass, RESOURCE_CONDITION__PATH);
+
+    checkAndEnforceConditionEClass = createEClass(CHECK_AND_ENFORCE_CONDITION);
+    createEReference(checkAndEnforceConditionEClass, CHECK_AND_ENFORCE_CONDITION__CHECK_EXPRESSION);
+    createEReference(checkAndEnforceConditionEClass, CHECK_AND_ENFORCE_CONDITION__ENFORCE_EXPRESSION);
 
     checkExpressionEClass = createEClass(CHECK_EXPRESSION);
 
     enforceExpressionEClass = createEClass(ENFORCE_EXPRESSION);
 
+    bidirectionalizableConditionEClass = createEClass(BIDIRECTIONALIZABLE_CONDITION);
+    createEReference(bidirectionalizableConditionEClass, BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED);
+    createEReference(bidirectionalizableConditionEClass, BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION);
+    createEReference(bidirectionalizableConditionEClass, BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED);
+
     bidirectionalizableExpressionEClass = createEClass(BIDIRECTIONALIZABLE_EXPRESSION);
 
     unidirectionalExpressionEClass = createEClass(UNIDIRECTIONAL_EXPRESSION);
 
-    bootstrapMappingEClass = createEClass(BOOTSTRAP_MAPPING);
-    createEAttribute(bootstrapMappingEClass, BOOTSTRAP_MAPPING__NAME);
-    createEReference(bootstrapMappingEClass, BOOTSTRAP_MAPPING__PARAMETERS);
-    createEReference(bootstrapMappingEClass, BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON);
+    bootstrappingEClass = createEClass(BOOTSTRAPPING);
+    createEAttribute(bootstrappingEClass, BOOTSTRAPPING__NAME);
+    createEReference(bootstrappingEClass, BOOTSTRAPPING__PARAMETERS);
+    createEReference(bootstrappingEClass, BOOTSTRAPPING__BOOTSTRAP_CONDITON);
 
     codeBlockEClass = createEClass(CODE_BLOCK);
     createEReference(codeBlockEClass, CODE_BLOCK__CODE);
@@ -1086,12 +1248,17 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
     // Add supertypes to classes
     mappingsFileEClass.getESuperTypes().add(theMirBasePackage.getMirBaseFile());
     mappingsSegmentEClass.getESuperTypes().add(this.getDocumentable());
-    singleSidedConditionEClass.getESuperTypes().add(this.getCondition());
     enforceableConditionEClass.getESuperTypes().add(this.getSingleSidedCondition());
-    dependentFeatureReferenceEClass.getESuperTypes().add(this.getFeatureReference());
-    valueConditionEClass.getESuperTypes().add(this.getEnforceableCondition());
     featureConditionEClass.getESuperTypes().add(this.getEnforceableCondition());
-    singleValueConditionEClass.getESuperTypes().add(this.getValueCondition());
+    dependentFeatureReferenceEClass.getESuperTypes().add(this.getFeatureReference());
+    singleValueConditionEClass.getESuperTypes().add(this.getFeatureCondition());
+    indexConditionEClass.getESuperTypes().add(this.getSingleValueCondition());
+    numCompareConditionEClass.getESuperTypes().add(this.getSingleValueCondition());
+    multiValueConditionEClass.getESuperTypes().add(this.getFeatureCondition());
+    elementConditionEClass.getESuperTypes().add(this.getFeatureCondition());
+    notEmptyConditionEClass.getESuperTypes().add(this.getFeatureCondition());
+    resourceConditionEClass.getESuperTypes().add(this.getEnforceableCondition());
+    checkAndEnforceConditionEClass.getESuperTypes().add(this.getSingleSidedCondition());
     codeBlockEClass.getESuperTypes().add(this.getValueExpression());
     codeBlockEClass.getESuperTypes().add(this.getElementExpression());
     codeBlockEClass.getESuperTypes().add(this.getCheckExpression());
@@ -1110,16 +1277,16 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
     initEReference(getMappingsSegment_LeftDomain(), theMirBasePackage.getDomainReference(), null, "leftDomain", null, 0, 1, MappingsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMappingsSegment_RightDomain(), theMirBasePackage.getDomainReference(), null, "rightDomain", null, 0, 1, MappingsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMappingsSegment_Mappings(), this.getMapping(), null, "mappings", null, 0, -1, MappingsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMappingsSegment_BootstrapMappings(), this.getBootstrapMapping(), null, "bootstrapMappings", null, 0, -1, MappingsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMappingsSegment_Bootstrappings(), this.getBootstrapping(), null, "bootstrappings", null, 0, -1, MappingsSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mappingEClass, Mapping.class, "Mapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getMapping_Name(), ecorePackage.getEString(), "name", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_Dependencies(), this.getDependency(), null, "dependencies", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_LeftParameters(), theMirBasePackage.getNamedMetaclassReference(), null, "leftParameters", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_LeftConditions(), this.getCondition(), null, "leftConditions", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapping_LeftConditions(), this.getSingleSidedCondition(), null, "leftConditions", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_RightParameters(), theMirBasePackage.getNamedMetaclassReference(), null, "rightParameters", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_RightConditions(), this.getCondition(), null, "rightConditions", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMapping_BidirectionalizableConditions(), this.getCondition(), null, "bidirectionalizableConditions", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapping_RightConditions(), this.getSingleSidedCondition(), null, "rightConditions", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapping_BidirectionalizableConditions(), this.getBidirectionalizableCondition(), null, "bidirectionalizableConditions", null, 0, -1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_ForwardExecutionExpression(), this.getUnidirectionalExpression(), null, "forwardExecutionExpression", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapping_BackwardExecutionExpression(), this.getUnidirectionalExpression(), null, "backwardExecutionExpression", null, 0, 1, Mapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1127,20 +1294,12 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
     initEReference(getDependency_Mapping(), this.getMapping(), null, "mapping", null, 0, 1, Dependency.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getDependency_ShortName(), ecorePackage.getEString(), "shortName", null, 0, 1, Dependency.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(conditionEClass, Condition.class, "Condition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCondition_FeatureToBeAssigned(), theMirBasePackage.getMetaclassFeatureReference(), null, "featureToBeAssigned", null, 0, 1, Condition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCondition_BidirectionalizableExpression(), this.getBidirectionalizableExpression(), null, "bidirectionalizableExpression", null, 0, 1, Condition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCondition_FeatureToBeUpdated(), theMirBasePackage.getMetaclassFeatureReference(), null, "featureToBeUpdated", null, 0, 1, Condition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
     initEClass(singleSidedConditionEClass, SingleSidedCondition.class, "SingleSidedCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getSingleSidedCondition_CheckExpression(), this.getCheckExpression(), null, "checkExpression", null, 0, 1, SingleSidedCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSingleSidedCondition_EnforceExpression(), this.getCheckExpression(), null, "enforceExpression", null, 0, 1, SingleSidedCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(enforceableConditionEClass, EnforceableCondition.class, "EnforceableCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getEnforceableCondition_ElementExpression(), this.getElementExpression(), null, "elementExpression", null, 0, 1, EnforceableCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEnforceableCondition_PathExpression(), this.getElementExpression(), null, "pathExpression", null, 0, 1, EnforceableCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getEnforceableCondition_Path(), ecorePackage.getEString(), "path", null, 0, 1, EnforceableCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEnforceableCondition_Feature(), theMirBasePackage.getMetaclassFeatureReference(), null, "feature", null, 0, 1, EnforceableCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(featureConditionEClass, FeatureCondition.class, "FeatureCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFeatureCondition_Feature(), theMirBasePackage.getMetaclassFeatureReference(), null, "feature", null, 0, 1, FeatureCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(featureReferenceEClass, FeatureReference.class, "FeatureReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1148,34 +1307,58 @@ public class MappingsLanguagePackageImpl extends EPackageImpl implements Mapping
     initEReference(getDependentFeatureReference_DependeeShortName(), this.getDependency(), null, "dependeeShortName", null, 0, 1, DependentFeatureReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getDependentFeatureReference_DependeeFeature(), theMirBasePackage.getMetaclassFeatureReference(), null, "dependeeFeature", null, 0, 1, DependentFeatureReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(valueConditionEClass, ValueCondition.class, "ValueCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(singleValueConditionEClass, SingleValueCondition.class, "SingleValueCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(featureConditionEClass, FeatureCondition.class, "FeatureCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getFeatureCondition_ValueExpression(), this.getValueExpression(), null, "valueExpression", null, 0, 1, FeatureCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getFeatureCondition_Negated(), ecorePackage.getEBoolean(), "negated", null, 0, 1, FeatureCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getFeatureCondition_Operator(), this.getMultiValueConditionOperator(), "operator", null, 0, 1, FeatureCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(valueConditionEClass, ValueCondition.class, "ValueCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getValueCondition_ValueExpression(), this.getValueExpression(), null, "valueExpression", null, 0, 1, ValueCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(valueExpressionEClass, ValueExpression.class, "ValueExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(singleValueConditionEClass, SingleValueCondition.class, "SingleValueCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getSingleValueCondition_Negated(), ecorePackage.getEBoolean(), "negated", null, 0, 1, SingleValueCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSingleValueCondition_IndexValueExpression(), this.getValueExpression(), null, "indexValueExpression", null, 0, 1, SingleValueCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getSingleValueCondition_Operator(), this.getNumCompareOperator(), "operator", null, 0, 1, SingleValueCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(indexConditionEClass, IndexCondition.class, "IndexCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getIndexCondition_Negated(), ecorePackage.getEBoolean(), "negated", null, 0, 1, IndexCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getIndexCondition_IndexValueExpression(), this.getValueExpression(), null, "indexValueExpression", null, 0, 1, IndexCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(numCompareConditionEClass, NumCompareCondition.class, "NumCompareCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getNumCompareCondition_Operator(), this.getNumCompareOperator(), "operator", null, 0, 1, NumCompareCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(multiValueConditionEClass, MultiValueCondition.class, "MultiValueCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getMultiValueCondition_Negated(), ecorePackage.getEBoolean(), "negated", null, 0, 1, MultiValueCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMultiValueCondition_Operator(), this.getMultiValueConditionOperator(), "operator", null, 0, 1, MultiValueCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(elementConditionEClass, ElementCondition.class, "ElementCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getElementCondition_ElementExpression(), this.getElementExpression(), null, "elementExpression", null, 0, 1, ElementCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(elementExpressionEClass, ElementExpression.class, "ElementExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(notEmptyConditionEClass, NotEmptyCondition.class, "NotEmptyCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getNotEmptyCondition_Negated(), ecorePackage.getEBoolean(), "negated", null, 0, 1, NotEmptyCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(resourceConditionEClass, ResourceCondition.class, "ResourceCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getResourceCondition_ElementExpression(), this.getElementExpression(), null, "elementExpression", null, 0, 1, ResourceCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getResourceCondition_PathExpression(), this.getElementExpression(), null, "pathExpression", null, 0, 1, ResourceCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getResourceCondition_Path(), ecorePackage.getEString(), "path", null, 0, 1, ResourceCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(checkAndEnforceConditionEClass, CheckAndEnforceCondition.class, "CheckAndEnforceCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCheckAndEnforceCondition_CheckExpression(), this.getCheckExpression(), null, "checkExpression", null, 0, 1, CheckAndEnforceCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCheckAndEnforceCondition_EnforceExpression(), this.getCheckExpression(), null, "enforceExpression", null, 0, 1, CheckAndEnforceCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(checkExpressionEClass, CheckExpression.class, "CheckExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(enforceExpressionEClass, EnforceExpression.class, "EnforceExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+    initEClass(bidirectionalizableConditionEClass, BidirectionalizableCondition.class, "BidirectionalizableCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getBidirectionalizableCondition_FeatureToBeAssigned(), theMirBasePackage.getMetaclassFeatureReference(), null, "featureToBeAssigned", null, 0, 1, BidirectionalizableCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBidirectionalizableCondition_BidirectionalizableExpression(), this.getBidirectionalizableExpression(), null, "bidirectionalizableExpression", null, 0, 1, BidirectionalizableCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBidirectionalizableCondition_FeatureToBeUpdated(), theMirBasePackage.getMetaclassFeatureReference(), null, "featureToBeUpdated", null, 0, 1, BidirectionalizableCondition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(bidirectionalizableExpressionEClass, BidirectionalizableExpression.class, "BidirectionalizableExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(unidirectionalExpressionEClass, UnidirectionalExpression.class, "UnidirectionalExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(bootstrapMappingEClass, BootstrapMapping.class, "BootstrapMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBootstrapMapping_Name(), ecorePackage.getEString(), "name", null, 0, 1, BootstrapMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBootstrapMapping_Parameters(), theMirBasePackage.getNamedMetaclassReference(), null, "parameters", null, 0, -1, BootstrapMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBootstrapMapping_BootstrapConditon(), this.getCondition(), null, "bootstrapConditon", null, 0, 1, BootstrapMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(bootstrappingEClass, Bootstrapping.class, "Bootstrapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getBootstrapping_Name(), ecorePackage.getEString(), "name", null, 0, 1, Bootstrapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBootstrapping_Parameters(), theMirBasePackage.getNamedMetaclassReference(), null, "parameters", null, 0, -1, Bootstrapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBootstrapping_BootstrapConditon(), this.getSingleSidedCondition(), null, "bootstrapConditon", null, 0, 1, Bootstrapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(codeBlockEClass, CodeBlock.class, "CodeBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getCodeBlock_Code(), theXbasePackage.getXExpression(), null, "code", null, 0, 1, CodeBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

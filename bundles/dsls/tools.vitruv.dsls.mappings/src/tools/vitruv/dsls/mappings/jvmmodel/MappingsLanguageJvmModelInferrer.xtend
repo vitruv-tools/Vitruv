@@ -46,6 +46,9 @@ class MappingsLanguageJvmModelInferrer extends AbstractModelInferrer {
 	 *            <code>true</code>.
 	 */
 	def dispatch void infer(MappingsFile element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+		acceptor.accept(element.toClass("a")) [
+			documentation=element.documentation
+		]
 		// Here you explain how your model is mapped to Java elements, by writing the actual translation code.
 		
 		// An implementation for the initial hello world example could look like this:

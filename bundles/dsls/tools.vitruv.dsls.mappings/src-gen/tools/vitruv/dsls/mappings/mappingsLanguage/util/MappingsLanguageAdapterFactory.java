@@ -98,11 +98,6 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
         return createDependencyAdapter();
       }
       @Override
-      public Adapter caseCondition(Condition object)
-      {
-        return createConditionAdapter();
-      }
-      @Override
       public Adapter caseSingleSidedCondition(SingleSidedCondition object)
       {
         return createSingleSidedConditionAdapter();
@@ -111,6 +106,11 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
       public Adapter caseEnforceableCondition(EnforceableCondition object)
       {
         return createEnforceableConditionAdapter();
+      }
+      @Override
+      public Adapter caseFeatureCondition(FeatureCondition object)
+      {
+        return createFeatureConditionAdapter();
       }
       @Override
       public Adapter caseFeatureReference(FeatureReference object)
@@ -123,14 +123,14 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
         return createDependentFeatureReferenceAdapter();
       }
       @Override
+      public Adapter caseSingleValueCondition(SingleValueCondition object)
+      {
+        return createSingleValueConditionAdapter();
+      }
+      @Override
       public Adapter caseValueCondition(ValueCondition object)
       {
         return createValueConditionAdapter();
-      }
-      @Override
-      public Adapter caseFeatureCondition(FeatureCondition object)
-      {
-        return createFeatureConditionAdapter();
       }
       @Override
       public Adapter caseValueExpression(ValueExpression object)
@@ -138,14 +138,44 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
         return createValueExpressionAdapter();
       }
       @Override
-      public Adapter caseSingleValueCondition(SingleValueCondition object)
+      public Adapter caseIndexCondition(IndexCondition object)
       {
-        return createSingleValueConditionAdapter();
+        return createIndexConditionAdapter();
+      }
+      @Override
+      public Adapter caseNumCompareCondition(NumCompareCondition object)
+      {
+        return createNumCompareConditionAdapter();
+      }
+      @Override
+      public Adapter caseMultiValueCondition(MultiValueCondition object)
+      {
+        return createMultiValueConditionAdapter();
+      }
+      @Override
+      public Adapter caseElementCondition(ElementCondition object)
+      {
+        return createElementConditionAdapter();
       }
       @Override
       public Adapter caseElementExpression(ElementExpression object)
       {
         return createElementExpressionAdapter();
+      }
+      @Override
+      public Adapter caseNotEmptyCondition(NotEmptyCondition object)
+      {
+        return createNotEmptyConditionAdapter();
+      }
+      @Override
+      public Adapter caseResourceCondition(ResourceCondition object)
+      {
+        return createResourceConditionAdapter();
+      }
+      @Override
+      public Adapter caseCheckAndEnforceCondition(CheckAndEnforceCondition object)
+      {
+        return createCheckAndEnforceConditionAdapter();
       }
       @Override
       public Adapter caseCheckExpression(CheckExpression object)
@@ -158,6 +188,11 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
         return createEnforceExpressionAdapter();
       }
       @Override
+      public Adapter caseBidirectionalizableCondition(BidirectionalizableCondition object)
+      {
+        return createBidirectionalizableConditionAdapter();
+      }
+      @Override
       public Adapter caseBidirectionalizableExpression(BidirectionalizableExpression object)
       {
         return createBidirectionalizableExpressionAdapter();
@@ -168,9 +203,9 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
         return createUnidirectionalExpressionAdapter();
       }
       @Override
-      public Adapter caseBootstrapMapping(BootstrapMapping object)
+      public Adapter caseBootstrapping(Bootstrapping object)
       {
-        return createBootstrapMappingAdapter();
+        return createBootstrappingAdapter();
       }
       @Override
       public Adapter caseCodeBlock(CodeBlock object)
@@ -275,21 +310,6 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition <em>Condition</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Condition
-   * @generated
-   */
-  public Adapter createConditionAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition <em>Single Sided Condition</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -315,6 +335,21 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createEnforceableConditionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition <em>Feature Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
+   * @generated
+   */
+  public Adapter createFeatureConditionAdapter()
   {
     return null;
   }
@@ -350,6 +385,21 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition <em>Single Value Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition
+   * @generated
+   */
+  public Adapter createSingleValueConditionAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ValueCondition <em>Value Condition</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -360,21 +410,6 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createValueConditionAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition <em>Feature Condition</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
-   * @generated
-   */
-  public Adapter createFeatureConditionAdapter()
   {
     return null;
   }
@@ -395,16 +430,61 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition <em>Single Value Condition</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition <em>Index Condition</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition
    * @generated
    */
-  public Adapter createSingleValueConditionAdapter()
+  public Adapter createIndexConditionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition <em>Num Compare Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
+   * @generated
+   */
+  public Adapter createNumCompareConditionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition <em>Multi Value Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
+   * @generated
+   */
+  public Adapter createMultiValueConditionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition <em>Element Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition
+   * @generated
+   */
+  public Adapter createElementConditionAdapter()
   {
     return null;
   }
@@ -420,6 +500,51 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createElementExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.NotEmptyCondition <em>Not Empty Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.NotEmptyCondition
+   * @generated
+   */
+  public Adapter createNotEmptyConditionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition <em>Resource Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition
+   * @generated
+   */
+  public Adapter createResourceConditionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition <em>Check And Enforce Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition
+   * @generated
+   */
+  public Adapter createCheckAndEnforceConditionAdapter()
   {
     return null;
   }
@@ -455,6 +580,21 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition <em>Bidirectionalizable Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
+   * @generated
+   */
+  public Adapter createBidirectionalizableConditionAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableExpression <em>Bidirectionalizable Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -485,16 +625,16 @@ public class MappingsLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping <em>Bootstrap Mapping</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping <em>Bootstrapping</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping
    * @generated
    */
-  public Adapter createBootstrapMappingAdapter()
+  public Adapter createBootstrappingAdapter()
   {
     return null;
   }

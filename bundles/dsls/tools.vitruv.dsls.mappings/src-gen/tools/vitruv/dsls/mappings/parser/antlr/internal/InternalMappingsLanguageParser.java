@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_ML_COMMENT", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'mappings:'", "'for'", "'and'", "'mapping'", "'depends on ('", "')'", "'{'", "'map ('", "'with {'", "'}'", "'and ('", "'such that {'", "'forward execute {'", "'} backward execute {'", "':'", "'not'", "'at index'", "'in'", "'default contained in'", "'empty'", "'default path for'", "'='", "'path of'", "'+'", "'check {'", "'}\\n\\tenforce {'", "'update'", "'bootstrap mapping'", "'create ('", "'import'", "'as'", "'using qualified names'", "'::'", "'['", "']'", "'+='", "'-='", "'*='", "'/='", "'%='", "'<'", "'>'", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'?.'", "','", "'('", "'#'", "'|'", "';'", "'if'", "'else'", "'switch'", "'default'", "'case'", "'while'", "'do'", "'var'", "'val'", "'extends'", "'static'", "'extension'", "'super'", "'new'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'<='", "'equals'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_ML_COMMENT", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'mappings:'", "'for'", "'and'", "'mapping'", "'depends on ('", "')'", "'{'", "'map ('", "'with {'", "'}'", "'and ('", "'such that {'", "'forward execute {'", "'} backward execute {'", "':'", "'not'", "'at index'", "'in'", "'default contained in'", "'empty'", "'default path for'", "'='", "'path of'", "'+'", "'check {'", "'}\\n\\tenforce {'", "'update'", "'bootstrapping'", "'create ('", "'import'", "'as'", "'using qualified names'", "'::'", "'['", "']'", "'+='", "'-='", "'*='", "'/='", "'%='", "'<'", "'>'", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'?.'", "','", "'('", "'#'", "'|'", "';'", "'if'", "'else'", "'switch'", "'default'", "'case'", "'while'", "'do'", "'var'", "'val'", "'extends'", "'static'", "'extension'", "'super'", "'new'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'<='", "'equals'"
     };
     public static final int RULE_HEX=7;
     public static final int T__50=50;
@@ -429,7 +429,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
 
 
     // $ANTLR start "ruleMappingsSegment"
-    // InternalMappingsLanguage.g:140:1: ruleMappingsSegment returns [EObject current=null] : (this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrapMappings_8_0= ruleBootstrapMapping ) ) )* ) ;
+    // InternalMappingsLanguage.g:140:1: ruleMappingsSegment returns [EObject current=null] : (this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrappings_8_0= ruleBootstrapping ) ) )* ) ;
     public final EObject ruleMappingsSegment() throws RecognitionException {
         EObject current = null;
 
@@ -446,18 +446,18 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
 
         EObject lv_mappings_7_0 = null;
 
-        EObject lv_bootstrapMappings_8_0 = null;
+        EObject lv_bootstrappings_8_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalMappingsLanguage.g:146:2: ( (this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrapMappings_8_0= ruleBootstrapMapping ) ) )* ) )
-            // InternalMappingsLanguage.g:147:2: (this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrapMappings_8_0= ruleBootstrapMapping ) ) )* )
+            // InternalMappingsLanguage.g:146:2: ( (this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrappings_8_0= ruleBootstrapping ) ) )* ) )
+            // InternalMappingsLanguage.g:147:2: (this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrappings_8_0= ruleBootstrapping ) ) )* )
             {
-            // InternalMappingsLanguage.g:147:2: (this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrapMappings_8_0= ruleBootstrapMapping ) ) )* )
-            // InternalMappingsLanguage.g:148:3: this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrapMappings_8_0= ruleBootstrapMapping ) ) )*
+            // InternalMappingsLanguage.g:147:2: (this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrappings_8_0= ruleBootstrapping ) ) )* )
+            // InternalMappingsLanguage.g:148:3: this_Documentable_0= ruleDocumentable[$current] otherlv_1= 'mappings:' ( (lv_name_2_0= ruleValidID ) ) otherlv_3= 'for' ( (lv_leftDomain_4_0= ruleDomainReference ) ) otherlv_5= 'and' ( (lv_rightDomain_6_0= ruleDomainReference ) ) ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrappings_8_0= ruleBootstrapping ) ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -601,7 +601,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
 
             }
 
-            // InternalMappingsLanguage.g:228:3: ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrapMappings_8_0= ruleBootstrapMapping ) ) )*
+            // InternalMappingsLanguage.g:228:3: ( ( (lv_mappings_7_0= ruleMapping ) ) | ( (lv_bootstrappings_8_0= ruleBootstrapping ) ) )*
             loop3:
             do {
                 int alt3=3;
@@ -658,21 +658,21 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
             	    }
             	    break;
             	case 2 :
-            	    // InternalMappingsLanguage.g:249:4: ( (lv_bootstrapMappings_8_0= ruleBootstrapMapping ) )
+            	    // InternalMappingsLanguage.g:249:4: ( (lv_bootstrappings_8_0= ruleBootstrapping ) )
             	    {
-            	    // InternalMappingsLanguage.g:249:4: ( (lv_bootstrapMappings_8_0= ruleBootstrapMapping ) )
-            	    // InternalMappingsLanguage.g:250:5: (lv_bootstrapMappings_8_0= ruleBootstrapMapping )
+            	    // InternalMappingsLanguage.g:249:4: ( (lv_bootstrappings_8_0= ruleBootstrapping ) )
+            	    // InternalMappingsLanguage.g:250:5: (lv_bootstrappings_8_0= ruleBootstrapping )
             	    {
-            	    // InternalMappingsLanguage.g:250:5: (lv_bootstrapMappings_8_0= ruleBootstrapMapping )
-            	    // InternalMappingsLanguage.g:251:6: lv_bootstrapMappings_8_0= ruleBootstrapMapping
+            	    // InternalMappingsLanguage.g:250:5: (lv_bootstrappings_8_0= ruleBootstrapping )
+            	    // InternalMappingsLanguage.g:251:6: lv_bootstrappings_8_0= ruleBootstrapping
             	    {
             	    if ( state.backtracking==0 ) {
 
-            	      						newCompositeNode(grammarAccess.getMappingsSegmentAccess().getBootstrapMappingsBootstrapMappingParserRuleCall_7_1_0());
+            	      						newCompositeNode(grammarAccess.getMappingsSegmentAccess().getBootstrappingsBootstrappingParserRuleCall_7_1_0());
             	      					
             	    }
             	    pushFollow(FOLLOW_9);
-            	    lv_bootstrapMappings_8_0=ruleBootstrapMapping();
+            	    lv_bootstrappings_8_0=ruleBootstrapping();
 
             	    state._fsp--;
             	    if (state.failed) return current;
@@ -683,9 +683,9 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
             	      						}
             	      						add(
             	      							current,
-            	      							"bootstrapMappings",
-            	      							lv_bootstrapMappings_8_0,
-            	      							"tools.vitruv.dsls.mappings.MappingsLanguage.BootstrapMapping");
+            	      							"bootstrappings",
+            	      							lv_bootstrappings_8_0,
+            	      							"tools.vitruv.dsls.mappings.MappingsLanguage.Bootstrapping");
             	      						afterParserOrEnumRuleCall();
             	      					
             	    }
@@ -4155,28 +4155,28 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
     // $ANTLR end "ruleUnidirectionalExpression"
 
 
-    // $ANTLR start "entryRuleBootstrapMapping"
-    // InternalMappingsLanguage.g:1432:1: entryRuleBootstrapMapping returns [EObject current=null] : iv_ruleBootstrapMapping= ruleBootstrapMapping EOF ;
-    public final EObject entryRuleBootstrapMapping() throws RecognitionException {
+    // $ANTLR start "entryRuleBootstrapping"
+    // InternalMappingsLanguage.g:1432:1: entryRuleBootstrapping returns [EObject current=null] : iv_ruleBootstrapping= ruleBootstrapping EOF ;
+    public final EObject entryRuleBootstrapping() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleBootstrapMapping = null;
+        EObject iv_ruleBootstrapping = null;
 
 
         try {
-            // InternalMappingsLanguage.g:1432:57: (iv_ruleBootstrapMapping= ruleBootstrapMapping EOF )
-            // InternalMappingsLanguage.g:1433:2: iv_ruleBootstrapMapping= ruleBootstrapMapping EOF
+            // InternalMappingsLanguage.g:1432:54: (iv_ruleBootstrapping= ruleBootstrapping EOF )
+            // InternalMappingsLanguage.g:1433:2: iv_ruleBootstrapping= ruleBootstrapping EOF
             {
             if ( state.backtracking==0 ) {
-               newCompositeNode(grammarAccess.getBootstrapMappingRule()); 
+               newCompositeNode(grammarAccess.getBootstrappingRule()); 
             }
             pushFollow(FOLLOW_1);
-            iv_ruleBootstrapMapping=ruleBootstrapMapping();
+            iv_ruleBootstrapping=ruleBootstrapping();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
-               current =iv_ruleBootstrapMapping; 
+               current =iv_ruleBootstrapping; 
             }
             match(input,EOF,FOLLOW_2); if (state.failed) return current;
 
@@ -4192,12 +4192,12 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
         }
         return current;
     }
-    // $ANTLR end "entryRuleBootstrapMapping"
+    // $ANTLR end "entryRuleBootstrapping"
 
 
-    // $ANTLR start "ruleBootstrapMapping"
-    // InternalMappingsLanguage.g:1439:1: ruleBootstrapMapping returns [EObject current=null] : (otherlv_0= 'bootstrap mapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}' ) ;
-    public final EObject ruleBootstrapMapping() throws RecognitionException {
+    // $ANTLR start "ruleBootstrapping"
+    // InternalMappingsLanguage.g:1439:1: ruleBootstrapping returns [EObject current=null] : (otherlv_0= 'bootstrapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}' ) ;
+    public final EObject ruleBootstrapping() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_0=null;
@@ -4218,16 +4218,16 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
         	enterRule();
 
         try {
-            // InternalMappingsLanguage.g:1445:2: ( (otherlv_0= 'bootstrap mapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}' ) )
-            // InternalMappingsLanguage.g:1446:2: (otherlv_0= 'bootstrap mapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}' )
+            // InternalMappingsLanguage.g:1445:2: ( (otherlv_0= 'bootstrapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}' ) )
+            // InternalMappingsLanguage.g:1446:2: (otherlv_0= 'bootstrapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}' )
             {
-            // InternalMappingsLanguage.g:1446:2: (otherlv_0= 'bootstrap mapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}' )
-            // InternalMappingsLanguage.g:1447:3: otherlv_0= 'bootstrap mapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}'
+            // InternalMappingsLanguage.g:1446:2: (otherlv_0= 'bootstrapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}' )
+            // InternalMappingsLanguage.g:1447:3: otherlv_0= 'bootstrapping' ( (lv_name_1_0= ruleValidID ) ) otherlv_2= '{' otherlv_3= 'create (' ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+ otherlv_5= ')' (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )? otherlv_9= '}'
             {
             otherlv_0=(Token)match(input,40,FOLLOW_6); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			newLeafNode(otherlv_0, grammarAccess.getBootstrapMappingAccess().getBootstrapMappingKeyword_0());
+              			newLeafNode(otherlv_0, grammarAccess.getBootstrappingAccess().getBootstrappingKeyword_0());
               		
             }
             // InternalMappingsLanguage.g:1451:3: ( (lv_name_1_0= ruleValidID ) )
@@ -4238,7 +4238,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
             {
             if ( state.backtracking==0 ) {
 
-              					newCompositeNode(grammarAccess.getBootstrapMappingAccess().getNameValidIDParserRuleCall_1_0());
+              					newCompositeNode(grammarAccess.getBootstrappingAccess().getNameValidIDParserRuleCall_1_0());
               				
             }
             pushFollow(FOLLOW_12);
@@ -4249,7 +4249,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
             if ( state.backtracking==0 ) {
 
               					if (current==null) {
-              						current = createModelElementForParent(grammarAccess.getBootstrapMappingRule());
+              						current = createModelElementForParent(grammarAccess.getBootstrappingRule());
               					}
               					set(
               						current,
@@ -4268,13 +4268,13 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
             otherlv_2=(Token)match(input,19,FOLLOW_38); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			newLeafNode(otherlv_2, grammarAccess.getBootstrapMappingAccess().getLeftCurlyBracketKeyword_2());
+              			newLeafNode(otherlv_2, grammarAccess.getBootstrappingAccess().getLeftCurlyBracketKeyword_2());
               		
             }
             otherlv_3=(Token)match(input,41,FOLLOW_6); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			newLeafNode(otherlv_3, grammarAccess.getBootstrapMappingAccess().getCreateKeyword_3());
+              			newLeafNode(otherlv_3, grammarAccess.getBootstrappingAccess().getCreateKeyword_3());
               		
             }
             // InternalMappingsLanguage.g:1478:3: ( (lv_parameters_4_0= ruleClassicallyNamedModelElement ) )+
@@ -4298,7 +4298,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
             	    {
             	    if ( state.backtracking==0 ) {
 
-            	      					newCompositeNode(grammarAccess.getBootstrapMappingAccess().getParametersClassicallyNamedModelElementParserRuleCall_4_0());
+            	      					newCompositeNode(grammarAccess.getBootstrappingAccess().getParametersClassicallyNamedModelElementParserRuleCall_4_0());
             	      				
             	    }
             	    pushFollow(FOLLOW_14);
@@ -4309,7 +4309,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
             	    if ( state.backtracking==0 ) {
 
             	      					if (current==null) {
-            	      						current = createModelElementForParent(grammarAccess.getBootstrapMappingRule());
+            	      						current = createModelElementForParent(grammarAccess.getBootstrappingRule());
             	      					}
             	      					add(
             	      						current,
@@ -4339,7 +4339,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
             otherlv_5=(Token)match(input,18,FOLLOW_39); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			newLeafNode(otherlv_5, grammarAccess.getBootstrapMappingAccess().getRightParenthesisKeyword_5());
+              			newLeafNode(otherlv_5, grammarAccess.getBootstrappingAccess().getRightParenthesisKeyword_5());
               		
             }
             // InternalMappingsLanguage.g:1501:3: (otherlv_6= 'with {' ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) ) otherlv_8= '}' )?
@@ -4356,7 +4356,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
                     otherlv_6=(Token)match(input,21,FOLLOW_16); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      				newLeafNode(otherlv_6, grammarAccess.getBootstrapMappingAccess().getWithKeyword_6_0());
+                      				newLeafNode(otherlv_6, grammarAccess.getBootstrappingAccess().getWithKeyword_6_0());
                       			
                     }
                     // InternalMappingsLanguage.g:1506:4: ( (lv_bootstrapConditon_7_0= ruleSingleSidedCondition ) )
@@ -4367,7 +4367,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
                     {
                     if ( state.backtracking==0 ) {
 
-                      						newCompositeNode(grammarAccess.getBootstrapMappingAccess().getBootstrapConditonSingleSidedConditionParserRuleCall_6_1_0());
+                      						newCompositeNode(grammarAccess.getBootstrappingAccess().getBootstrapConditonSingleSidedConditionParserRuleCall_6_1_0());
                       					
                     }
                     pushFollow(FOLLOW_24);
@@ -4378,7 +4378,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
                     if ( state.backtracking==0 ) {
 
                       						if (current==null) {
-                      							current = createModelElementForParent(grammarAccess.getBootstrapMappingRule());
+                      							current = createModelElementForParent(grammarAccess.getBootstrappingRule());
                       						}
                       						set(
                       							current,
@@ -4397,7 +4397,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
                     otherlv_8=(Token)match(input,22,FOLLOW_24); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      				newLeafNode(otherlv_8, grammarAccess.getBootstrapMappingAccess().getRightCurlyBracketKeyword_6_2());
+                      				newLeafNode(otherlv_8, grammarAccess.getBootstrappingAccess().getRightCurlyBracketKeyword_6_2());
                       			
                     }
 
@@ -4409,7 +4409,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
             otherlv_9=(Token)match(input,22,FOLLOW_2); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			newLeafNode(otherlv_9, grammarAccess.getBootstrapMappingAccess().getRightCurlyBracketKeyword_7());
+              			newLeafNode(otherlv_9, grammarAccess.getBootstrappingAccess().getRightCurlyBracketKeyword_7());
               		
             }
 
@@ -4433,7 +4433,7 @@ public class InternalMappingsLanguageParser extends AbstractInternalAntlrParser 
         }
         return current;
     }
-    // $ANTLR end "ruleBootstrapMapping"
+    // $ANTLR end "ruleBootstrapping"
 
 
     // $ANTLR start "ruleDocumentable"

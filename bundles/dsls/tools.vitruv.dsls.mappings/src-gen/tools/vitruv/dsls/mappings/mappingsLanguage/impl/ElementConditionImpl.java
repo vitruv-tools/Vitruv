@@ -10,43 +10,42 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.ElementExpression;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage;
-import tools.vitruv.dsls.mappings.mappingsLanguage.ValueCondition;
-import tools.vitruv.dsls.mappings.mappingsLanguage.ValueExpression;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Value Condition</b></em>'.
+ * An implementation of the model object '<em><b>Element Condition</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ValueConditionImpl#getValueExpression <em>Value Expression</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ElementConditionImpl#getElementExpression <em>Element Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ValueConditionImpl extends MinimalEObjectImpl.Container implements ValueCondition
+public class ElementConditionImpl extends FeatureConditionImpl implements ElementCondition
 {
   /**
-   * The cached value of the '{@link #getValueExpression() <em>Value Expression</em>}' containment reference.
+   * The cached value of the '{@link #getElementExpression() <em>Element Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getValueExpression()
+   * @see #getElementExpression()
    * @generated
    * @ordered
    */
-  protected ValueExpression valueExpression;
+  protected ElementExpression elementExpression;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ValueConditionImpl()
+  protected ElementConditionImpl()
   {
     super();
   }
@@ -59,7 +58,7 @@ public class ValueConditionImpl extends MinimalEObjectImpl.Container implements 
   @Override
   protected EClass eStaticClass()
   {
-    return MappingsLanguagePackage.Literals.VALUE_CONDITION;
+    return MappingsLanguagePackage.Literals.ELEMENT_CONDITION;
   }
 
   /**
@@ -67,9 +66,9 @@ public class ValueConditionImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public ValueExpression getValueExpression()
+  public ElementExpression getElementExpression()
   {
-    return valueExpression;
+    return elementExpression;
   }
 
   /**
@@ -77,13 +76,13 @@ public class ValueConditionImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetValueExpression(ValueExpression newValueExpression, NotificationChain msgs)
+  public NotificationChain basicSetElementExpression(ElementExpression newElementExpression, NotificationChain msgs)
   {
-    ValueExpression oldValueExpression = valueExpression;
-    valueExpression = newValueExpression;
+    ElementExpression oldElementExpression = elementExpression;
+    elementExpression = newElementExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.VALUE_CONDITION__VALUE_EXPRESSION, oldValueExpression, newValueExpression);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.ELEMENT_CONDITION__ELEMENT_EXPRESSION, oldElementExpression, newElementExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -94,20 +93,20 @@ public class ValueConditionImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setValueExpression(ValueExpression newValueExpression)
+  public void setElementExpression(ElementExpression newElementExpression)
   {
-    if (newValueExpression != valueExpression)
+    if (newElementExpression != elementExpression)
     {
       NotificationChain msgs = null;
-      if (valueExpression != null)
-        msgs = ((InternalEObject)valueExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.VALUE_CONDITION__VALUE_EXPRESSION, null, msgs);
-      if (newValueExpression != null)
-        msgs = ((InternalEObject)newValueExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.VALUE_CONDITION__VALUE_EXPRESSION, null, msgs);
-      msgs = basicSetValueExpression(newValueExpression, msgs);
+      if (elementExpression != null)
+        msgs = ((InternalEObject)elementExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.ELEMENT_CONDITION__ELEMENT_EXPRESSION, null, msgs);
+      if (newElementExpression != null)
+        msgs = ((InternalEObject)newElementExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.ELEMENT_CONDITION__ELEMENT_EXPRESSION, null, msgs);
+      msgs = basicSetElementExpression(newElementExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.VALUE_CONDITION__VALUE_EXPRESSION, newValueExpression, newValueExpression));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.ELEMENT_CONDITION__ELEMENT_EXPRESSION, newElementExpression, newElementExpression));
   }
 
   /**
@@ -120,8 +119,8 @@ public class ValueConditionImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.VALUE_CONDITION__VALUE_EXPRESSION:
-        return basicSetValueExpression(null, msgs);
+      case MappingsLanguagePackage.ELEMENT_CONDITION__ELEMENT_EXPRESSION:
+        return basicSetElementExpression(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -136,8 +135,8 @@ public class ValueConditionImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.VALUE_CONDITION__VALUE_EXPRESSION:
-        return getValueExpression();
+      case MappingsLanguagePackage.ELEMENT_CONDITION__ELEMENT_EXPRESSION:
+        return getElementExpression();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -152,8 +151,8 @@ public class ValueConditionImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.VALUE_CONDITION__VALUE_EXPRESSION:
-        setValueExpression((ValueExpression)newValue);
+      case MappingsLanguagePackage.ELEMENT_CONDITION__ELEMENT_EXPRESSION:
+        setElementExpression((ElementExpression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -169,8 +168,8 @@ public class ValueConditionImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.VALUE_CONDITION__VALUE_EXPRESSION:
-        setValueExpression((ValueExpression)null);
+      case MappingsLanguagePackage.ELEMENT_CONDITION__ELEMENT_EXPRESSION:
+        setElementExpression((ElementExpression)null);
         return;
     }
     super.eUnset(featureID);
@@ -186,10 +185,10 @@ public class ValueConditionImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.VALUE_CONDITION__VALUE_EXPRESSION:
-        return valueExpression != null;
+      case MappingsLanguagePackage.ELEMENT_CONDITION__ELEMENT_EXPRESSION:
+        return elementExpression != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //ValueConditionImpl
+} //ElementConditionImpl

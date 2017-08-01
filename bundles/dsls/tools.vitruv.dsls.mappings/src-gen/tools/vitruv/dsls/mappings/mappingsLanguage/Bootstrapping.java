@@ -11,23 +11,23 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Bootstrap Mapping</b></em>'.
+ * A representation of the model object '<em><b>Bootstrapping</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getName <em>Name</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getParameters <em>Parameters</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getBootstrapConditon <em>Bootstrap Conditon</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getName <em>Name</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getBootstrapConditon <em>Bootstrap Conditon</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBootstrapMapping()
+ * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBootstrapping()
  * @model
  * @generated
  */
-public interface BootstrapMapping extends EObject
+public interface Bootstrapping extends EObject
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -39,14 +39,14 @@ public interface BootstrapMapping extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBootstrapMapping_Name()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBootstrapping_Name()
    * @model
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -65,7 +65,7 @@ public interface BootstrapMapping extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Parameters</em>' containment reference list.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBootstrapMapping_Parameters()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBootstrapping_Parameters()
    * @model containment="true"
    * @generated
    */
@@ -80,21 +80,21 @@ public interface BootstrapMapping extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Bootstrap Conditon</em>' containment reference.
-   * @see #setBootstrapConditon(Condition)
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBootstrapMapping_BootstrapConditon()
+   * @see #setBootstrapConditon(SingleSidedCondition)
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBootstrapping_BootstrapConditon()
    * @model containment="true"
    * @generated
    */
-  Condition getBootstrapConditon();
+  SingleSidedCondition getBootstrapConditon();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getBootstrapConditon <em>Bootstrap Conditon</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getBootstrapConditon <em>Bootstrap Conditon</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Bootstrap Conditon</em>' containment reference.
    * @see #getBootstrapConditon()
    * @generated
    */
-  void setBootstrapConditon(Condition value);
+  void setBootstrapConditon(SingleSidedCondition value);
 
-} // BootstrapMapping
+} // Bootstrapping

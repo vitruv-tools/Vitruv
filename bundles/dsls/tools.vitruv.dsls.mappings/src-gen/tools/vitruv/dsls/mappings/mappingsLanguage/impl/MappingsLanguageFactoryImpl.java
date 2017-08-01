@@ -70,21 +70,28 @@ public class MappingsLanguageFactoryImpl extends EFactoryImpl implements Mapping
       case MappingsLanguagePackage.MAPPINGS_SEGMENT: return createMappingsSegment();
       case MappingsLanguagePackage.MAPPING: return createMapping();
       case MappingsLanguagePackage.DEPENDENCY: return createDependency();
-      case MappingsLanguagePackage.CONDITION: return createCondition();
       case MappingsLanguagePackage.SINGLE_SIDED_CONDITION: return createSingleSidedCondition();
       case MappingsLanguagePackage.ENFORCEABLE_CONDITION: return createEnforceableCondition();
+      case MappingsLanguagePackage.FEATURE_CONDITION: return createFeatureCondition();
       case MappingsLanguagePackage.FEATURE_REFERENCE: return createFeatureReference();
       case MappingsLanguagePackage.DEPENDENT_FEATURE_REFERENCE: return createDependentFeatureReference();
-      case MappingsLanguagePackage.VALUE_CONDITION: return createValueCondition();
-      case MappingsLanguagePackage.FEATURE_CONDITION: return createFeatureCondition();
-      case MappingsLanguagePackage.VALUE_EXPRESSION: return createValueExpression();
       case MappingsLanguagePackage.SINGLE_VALUE_CONDITION: return createSingleValueCondition();
+      case MappingsLanguagePackage.VALUE_CONDITION: return createValueCondition();
+      case MappingsLanguagePackage.VALUE_EXPRESSION: return createValueExpression();
+      case MappingsLanguagePackage.INDEX_CONDITION: return createIndexCondition();
+      case MappingsLanguagePackage.NUM_COMPARE_CONDITION: return createNumCompareCondition();
+      case MappingsLanguagePackage.MULTI_VALUE_CONDITION: return createMultiValueCondition();
+      case MappingsLanguagePackage.ELEMENT_CONDITION: return createElementCondition();
       case MappingsLanguagePackage.ELEMENT_EXPRESSION: return createElementExpression();
+      case MappingsLanguagePackage.NOT_EMPTY_CONDITION: return createNotEmptyCondition();
+      case MappingsLanguagePackage.RESOURCE_CONDITION: return createResourceCondition();
+      case MappingsLanguagePackage.CHECK_AND_ENFORCE_CONDITION: return createCheckAndEnforceCondition();
       case MappingsLanguagePackage.CHECK_EXPRESSION: return createCheckExpression();
       case MappingsLanguagePackage.ENFORCE_EXPRESSION: return createEnforceExpression();
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION: return createBidirectionalizableCondition();
       case MappingsLanguagePackage.BIDIRECTIONALIZABLE_EXPRESSION: return createBidirectionalizableExpression();
       case MappingsLanguagePackage.UNIDIRECTIONAL_EXPRESSION: return createUnidirectionalExpression();
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING: return createBootstrapMapping();
+      case MappingsLanguagePackage.BOOTSTRAPPING: return createBootstrapping();
       case MappingsLanguagePackage.CODE_BLOCK: return createCodeBlock();
       case MappingsLanguagePackage.DOCUMENTABLE: return createDocumentable();
       case MappingsLanguagePackage.METACLASS_FEATURE_REFERENCE: return createMetaclassFeatureReference();
@@ -180,17 +187,6 @@ public class MappingsLanguageFactoryImpl extends EFactoryImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public Condition createCondition()
-  {
-    ConditionImpl condition = new ConditionImpl();
-    return condition;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public SingleSidedCondition createSingleSidedCondition()
   {
     SingleSidedConditionImpl singleSidedCondition = new SingleSidedConditionImpl();
@@ -206,6 +202,17 @@ public class MappingsLanguageFactoryImpl extends EFactoryImpl implements Mapping
   {
     EnforceableConditionImpl enforceableCondition = new EnforceableConditionImpl();
     return enforceableCondition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FeatureCondition createFeatureCondition()
+  {
+    FeatureConditionImpl featureCondition = new FeatureConditionImpl();
+    return featureCondition;
   }
 
   /**
@@ -235,10 +242,10 @@ public class MappingsLanguageFactoryImpl extends EFactoryImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public ValueCondition createValueCondition()
+  public SingleValueCondition createSingleValueCondition()
   {
-    ValueConditionImpl valueCondition = new ValueConditionImpl();
-    return valueCondition;
+    SingleValueConditionImpl singleValueCondition = new SingleValueConditionImpl();
+    return singleValueCondition;
   }
 
   /**
@@ -246,10 +253,10 @@ public class MappingsLanguageFactoryImpl extends EFactoryImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureCondition createFeatureCondition()
+  public ValueCondition createValueCondition()
   {
-    FeatureConditionImpl featureCondition = new FeatureConditionImpl();
-    return featureCondition;
+    ValueConditionImpl valueCondition = new ValueConditionImpl();
+    return valueCondition;
   }
 
   /**
@@ -268,10 +275,43 @@ public class MappingsLanguageFactoryImpl extends EFactoryImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public SingleValueCondition createSingleValueCondition()
+  public IndexCondition createIndexCondition()
   {
-    SingleValueConditionImpl singleValueCondition = new SingleValueConditionImpl();
-    return singleValueCondition;
+    IndexConditionImpl indexCondition = new IndexConditionImpl();
+    return indexCondition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NumCompareCondition createNumCompareCondition()
+  {
+    NumCompareConditionImpl numCompareCondition = new NumCompareConditionImpl();
+    return numCompareCondition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MultiValueCondition createMultiValueCondition()
+  {
+    MultiValueConditionImpl multiValueCondition = new MultiValueConditionImpl();
+    return multiValueCondition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ElementCondition createElementCondition()
+  {
+    ElementConditionImpl elementCondition = new ElementConditionImpl();
+    return elementCondition;
   }
 
   /**
@@ -283,6 +323,39 @@ public class MappingsLanguageFactoryImpl extends EFactoryImpl implements Mapping
   {
     ElementExpressionImpl elementExpression = new ElementExpressionImpl();
     return elementExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotEmptyCondition createNotEmptyCondition()
+  {
+    NotEmptyConditionImpl notEmptyCondition = new NotEmptyConditionImpl();
+    return notEmptyCondition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ResourceCondition createResourceCondition()
+  {
+    ResourceConditionImpl resourceCondition = new ResourceConditionImpl();
+    return resourceCondition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public CheckAndEnforceCondition createCheckAndEnforceCondition()
+  {
+    CheckAndEnforceConditionImpl checkAndEnforceCondition = new CheckAndEnforceConditionImpl();
+    return checkAndEnforceCondition;
   }
 
   /**
@@ -312,6 +385,17 @@ public class MappingsLanguageFactoryImpl extends EFactoryImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
+  public BidirectionalizableCondition createBidirectionalizableCondition()
+  {
+    BidirectionalizableConditionImpl bidirectionalizableCondition = new BidirectionalizableConditionImpl();
+    return bidirectionalizableCondition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public BidirectionalizableExpression createBidirectionalizableExpression()
   {
     BidirectionalizableExpressionImpl bidirectionalizableExpression = new BidirectionalizableExpressionImpl();
@@ -334,10 +418,10 @@ public class MappingsLanguageFactoryImpl extends EFactoryImpl implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public BootstrapMapping createBootstrapMapping()
+  public Bootstrapping createBootstrapping()
   {
-    BootstrapMappingImpl bootstrapMapping = new BootstrapMappingImpl();
-    return bootstrapMapping;
+    BootstrappingImpl bootstrapping = new BootstrappingImpl();
+    return bootstrapping;
   }
 
   /**

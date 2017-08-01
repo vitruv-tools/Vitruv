@@ -60,15 +60,6 @@ public interface MappingsLanguageFactory extends EFactory
   Dependency createDependency();
 
   /**
-   * Returns a new object of class '<em>Condition</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Condition</em>'.
-   * @generated
-   */
-  Condition createCondition();
-
-  /**
    * Returns a new object of class '<em>Single Sided Condition</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -85,6 +76,15 @@ public interface MappingsLanguageFactory extends EFactory
    * @generated
    */
   EnforceableCondition createEnforceableCondition();
+
+  /**
+   * Returns a new object of class '<em>Feature Condition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Feature Condition</em>'.
+   * @generated
+   */
+  FeatureCondition createFeatureCondition();
 
   /**
    * Returns a new object of class '<em>Feature Reference</em>'.
@@ -105,6 +105,15 @@ public interface MappingsLanguageFactory extends EFactory
   DependentFeatureReference createDependentFeatureReference();
 
   /**
+   * Returns a new object of class '<em>Single Value Condition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Single Value Condition</em>'.
+   * @generated
+   */
+  SingleValueCondition createSingleValueCondition();
+
+  /**
    * Returns a new object of class '<em>Value Condition</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -112,15 +121,6 @@ public interface MappingsLanguageFactory extends EFactory
    * @generated
    */
   ValueCondition createValueCondition();
-
-  /**
-   * Returns a new object of class '<em>Feature Condition</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Feature Condition</em>'.
-   * @generated
-   */
-  FeatureCondition createFeatureCondition();
 
   /**
    * Returns a new object of class '<em>Value Expression</em>'.
@@ -132,13 +132,40 @@ public interface MappingsLanguageFactory extends EFactory
   ValueExpression createValueExpression();
 
   /**
-   * Returns a new object of class '<em>Single Value Condition</em>'.
+   * Returns a new object of class '<em>Index Condition</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Single Value Condition</em>'.
+   * @return a new object of class '<em>Index Condition</em>'.
    * @generated
    */
-  SingleValueCondition createSingleValueCondition();
+  IndexCondition createIndexCondition();
+
+  /**
+   * Returns a new object of class '<em>Num Compare Condition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Num Compare Condition</em>'.
+   * @generated
+   */
+  NumCompareCondition createNumCompareCondition();
+
+  /**
+   * Returns a new object of class '<em>Multi Value Condition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Multi Value Condition</em>'.
+   * @generated
+   */
+  MultiValueCondition createMultiValueCondition();
+
+  /**
+   * Returns a new object of class '<em>Element Condition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Element Condition</em>'.
+   * @generated
+   */
+  ElementCondition createElementCondition();
 
   /**
    * Returns a new object of class '<em>Element Expression</em>'.
@@ -148,6 +175,33 @@ public interface MappingsLanguageFactory extends EFactory
    * @generated
    */
   ElementExpression createElementExpression();
+
+  /**
+   * Returns a new object of class '<em>Not Empty Condition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Not Empty Condition</em>'.
+   * @generated
+   */
+  NotEmptyCondition createNotEmptyCondition();
+
+  /**
+   * Returns a new object of class '<em>Resource Condition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Resource Condition</em>'.
+   * @generated
+   */
+  ResourceCondition createResourceCondition();
+
+  /**
+   * Returns a new object of class '<em>Check And Enforce Condition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Check And Enforce Condition</em>'.
+   * @generated
+   */
+  CheckAndEnforceCondition createCheckAndEnforceCondition();
 
   /**
    * Returns a new object of class '<em>Check Expression</em>'.
@@ -168,6 +222,15 @@ public interface MappingsLanguageFactory extends EFactory
   EnforceExpression createEnforceExpression();
 
   /**
+   * Returns a new object of class '<em>Bidirectionalizable Condition</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Bidirectionalizable Condition</em>'.
+   * @generated
+   */
+  BidirectionalizableCondition createBidirectionalizableCondition();
+
+  /**
    * Returns a new object of class '<em>Bidirectionalizable Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -186,13 +249,13 @@ public interface MappingsLanguageFactory extends EFactory
   UnidirectionalExpression createUnidirectionalExpression();
 
   /**
-   * Returns a new object of class '<em>Bootstrap Mapping</em>'.
+   * Returns a new object of class '<em>Bootstrapping</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Bootstrap Mapping</em>'.
+   * @return a new object of class '<em>Bootstrapping</em>'.
    * @generated
    */
-  BootstrapMapping createBootstrapMapping();
+  Bootstrapping createBootstrapping();
 
   /**
    * Returns a new object of class '<em>Code Block</em>'.

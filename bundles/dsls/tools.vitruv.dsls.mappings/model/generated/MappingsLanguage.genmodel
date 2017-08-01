@@ -25,7 +25,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//MappingsSegment/leftDomain"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//MappingsSegment/rightDomain"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//MappingsSegment/mappings"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//MappingsSegment/bootstrapMappings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//MappingsSegment/bootstrappings"/>
     </genClasses>
     <genClasses ecoreClass="MappingsLanguage.ecore#//Mapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//Mapping/name"/>
@@ -42,47 +42,61 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//Dependency/mapping"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//Dependency/shortName"/>
     </genClasses>
-    <genClasses ecoreClass="MappingsLanguage.ecore#//Condition">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//Condition/featureToBeAssigned"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//Condition/bidirectionalizableExpression"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//Condition/featureToBeUpdated"/>
-    </genClasses>
-    <genClasses ecoreClass="MappingsLanguage.ecore#//SingleSidedCondition">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//SingleSidedCondition/checkExpression"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//SingleSidedCondition/enforceExpression"/>
-    </genClasses>
-    <genClasses ecoreClass="MappingsLanguage.ecore#//EnforceableCondition">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//EnforceableCondition/elementExpression"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//EnforceableCondition/pathExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//EnforceableCondition/path"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//EnforceableCondition/feature"/>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//SingleSidedCondition"/>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//EnforceableCondition"/>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//FeatureCondition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//FeatureCondition/feature"/>
     </genClasses>
     <genClasses ecoreClass="MappingsLanguage.ecore#//FeatureReference"/>
     <genClasses ecoreClass="MappingsLanguage.ecore#//DependentFeatureReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//DependentFeatureReference/dependeeShortName"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//DependentFeatureReference/dependeeFeature"/>
     </genClasses>
-    <genClasses ecoreClass="MappingsLanguage.ecore#//ValueCondition"/>
-    <genClasses ecoreClass="MappingsLanguage.ecore#//FeatureCondition">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//FeatureCondition/valueExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//FeatureCondition/negated"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//FeatureCondition/operator"/>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//SingleValueCondition"/>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//ValueCondition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//ValueCondition/valueExpression"/>
     </genClasses>
     <genClasses ecoreClass="MappingsLanguage.ecore#//ValueExpression"/>
-    <genClasses ecoreClass="MappingsLanguage.ecore#//SingleValueCondition">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//SingleValueCondition/negated"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//SingleValueCondition/indexValueExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//SingleValueCondition/operator"/>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//IndexCondition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//IndexCondition/negated"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//IndexCondition/indexValueExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//NumCompareCondition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//NumCompareCondition/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//MultiValueCondition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//MultiValueCondition/negated"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//MultiValueCondition/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//ElementCondition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//ElementCondition/elementExpression"/>
     </genClasses>
     <genClasses ecoreClass="MappingsLanguage.ecore#//ElementExpression"/>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//NotEmptyCondition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//NotEmptyCondition/negated"/>
+    </genClasses>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//ResourceCondition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//ResourceCondition/elementExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//ResourceCondition/pathExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//ResourceCondition/path"/>
+    </genClasses>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//CheckAndEnforceCondition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//CheckAndEnforceCondition/checkExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//CheckAndEnforceCondition/enforceExpression"/>
+    </genClasses>
     <genClasses ecoreClass="MappingsLanguage.ecore#//CheckExpression"/>
     <genClasses ecoreClass="MappingsLanguage.ecore#//EnforceExpression"/>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//BidirectionalizableCondition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//BidirectionalizableCondition/featureToBeAssigned"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//BidirectionalizableCondition/bidirectionalizableExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//BidirectionalizableCondition/featureToBeUpdated"/>
+    </genClasses>
     <genClasses ecoreClass="MappingsLanguage.ecore#//BidirectionalizableExpression"/>
     <genClasses ecoreClass="MappingsLanguage.ecore#//UnidirectionalExpression"/>
-    <genClasses ecoreClass="MappingsLanguage.ecore#//BootstrapMapping">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//BootstrapMapping/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//BootstrapMapping/parameters"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//BootstrapMapping/bootstrapConditon"/>
+    <genClasses ecoreClass="MappingsLanguage.ecore#//Bootstrapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MappingsLanguage.ecore#//Bootstrapping/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//Bootstrapping/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//Bootstrapping/bootstrapConditon"/>
     </genClasses>
     <genClasses ecoreClass="MappingsLanguage.ecore#//CodeBlock">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MappingsLanguage.ecore#//CodeBlock/code"/>

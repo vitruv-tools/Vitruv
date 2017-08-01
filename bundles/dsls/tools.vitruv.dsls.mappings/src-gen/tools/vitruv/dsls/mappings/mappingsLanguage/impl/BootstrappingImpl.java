@@ -19,28 +19,28 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping;
-import tools.vitruv.dsls.mappings.mappingsLanguage.Condition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage;
+import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition;
 
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Bootstrap Mapping</b></em>'.
+ * An implementation of the model object '<em><b>Bootstrapping</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrapMappingImpl#getName <em>Name</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrapMappingImpl#getParameters <em>Parameters</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrapMappingImpl#getBootstrapConditon <em>Bootstrap Conditon</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrappingImpl#getName <em>Name</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrappingImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrappingImpl#getBootstrapConditon <em>Bootstrap Conditon</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implements BootstrapMapping
+public class BootstrappingImpl extends MinimalEObjectImpl.Container implements Bootstrapping
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -80,14 +80,14 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
    * @generated
    * @ordered
    */
-  protected Condition bootstrapConditon;
+  protected SingleSidedCondition bootstrapConditon;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected BootstrapMappingImpl()
+  protected BootstrappingImpl()
   {
     super();
   }
@@ -100,7 +100,7 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
   @Override
   protected EClass eStaticClass()
   {
-    return MappingsLanguagePackage.Literals.BOOTSTRAP_MAPPING;
+    return MappingsLanguagePackage.Literals.BOOTSTRAPPING;
   }
 
   /**
@@ -123,7 +123,7 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BOOTSTRAP_MAPPING__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BOOTSTRAPPING__NAME, oldName, name));
   }
 
   /**
@@ -135,7 +135,7 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
   {
     if (parameters == null)
     {
-      parameters = new EObjectContainmentEList<NamedMetaclassReference>(NamedMetaclassReference.class, this, MappingsLanguagePackage.BOOTSTRAP_MAPPING__PARAMETERS);
+      parameters = new EObjectContainmentEList<NamedMetaclassReference>(NamedMetaclassReference.class, this, MappingsLanguagePackage.BOOTSTRAPPING__PARAMETERS);
     }
     return parameters;
   }
@@ -145,7 +145,7 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public Condition getBootstrapConditon()
+  public SingleSidedCondition getBootstrapConditon()
   {
     return bootstrapConditon;
   }
@@ -155,13 +155,13 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetBootstrapConditon(Condition newBootstrapConditon, NotificationChain msgs)
+  public NotificationChain basicSetBootstrapConditon(SingleSidedCondition newBootstrapConditon, NotificationChain msgs)
   {
-    Condition oldBootstrapConditon = bootstrapConditon;
+    SingleSidedCondition oldBootstrapConditon = bootstrapConditon;
     bootstrapConditon = newBootstrapConditon;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON, oldBootstrapConditon, newBootstrapConditon);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BOOTSTRAPPING__BOOTSTRAP_CONDITON, oldBootstrapConditon, newBootstrapConditon);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -172,20 +172,20 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setBootstrapConditon(Condition newBootstrapConditon)
+  public void setBootstrapConditon(SingleSidedCondition newBootstrapConditon)
   {
     if (newBootstrapConditon != bootstrapConditon)
     {
       NotificationChain msgs = null;
       if (bootstrapConditon != null)
-        msgs = ((InternalEObject)bootstrapConditon).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON, null, msgs);
+        msgs = ((InternalEObject)bootstrapConditon).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BOOTSTRAPPING__BOOTSTRAP_CONDITON, null, msgs);
       if (newBootstrapConditon != null)
-        msgs = ((InternalEObject)newBootstrapConditon).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON, null, msgs);
+        msgs = ((InternalEObject)newBootstrapConditon).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.BOOTSTRAPPING__BOOTSTRAP_CONDITON, null, msgs);
       msgs = basicSetBootstrapConditon(newBootstrapConditon, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON, newBootstrapConditon, newBootstrapConditon));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.BOOTSTRAPPING__BOOTSTRAP_CONDITON, newBootstrapConditon, newBootstrapConditon));
   }
 
   /**
@@ -198,9 +198,9 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__PARAMETERS:
+      case MappingsLanguagePackage.BOOTSTRAPPING__PARAMETERS:
         return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON:
+      case MappingsLanguagePackage.BOOTSTRAPPING__BOOTSTRAP_CONDITON:
         return basicSetBootstrapConditon(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -216,11 +216,11 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__NAME:
+      case MappingsLanguagePackage.BOOTSTRAPPING__NAME:
         return getName();
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__PARAMETERS:
+      case MappingsLanguagePackage.BOOTSTRAPPING__PARAMETERS:
         return getParameters();
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON:
+      case MappingsLanguagePackage.BOOTSTRAPPING__BOOTSTRAP_CONDITON:
         return getBootstrapConditon();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -237,15 +237,15 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__NAME:
+      case MappingsLanguagePackage.BOOTSTRAPPING__NAME:
         setName((String)newValue);
         return;
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__PARAMETERS:
+      case MappingsLanguagePackage.BOOTSTRAPPING__PARAMETERS:
         getParameters().clear();
         getParameters().addAll((Collection<? extends NamedMetaclassReference>)newValue);
         return;
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON:
-        setBootstrapConditon((Condition)newValue);
+      case MappingsLanguagePackage.BOOTSTRAPPING__BOOTSTRAP_CONDITON:
+        setBootstrapConditon((SingleSidedCondition)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -261,14 +261,14 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__NAME:
+      case MappingsLanguagePackage.BOOTSTRAPPING__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__PARAMETERS:
+      case MappingsLanguagePackage.BOOTSTRAPPING__PARAMETERS:
         getParameters().clear();
         return;
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON:
-        setBootstrapConditon((Condition)null);
+      case MappingsLanguagePackage.BOOTSTRAPPING__BOOTSTRAP_CONDITON:
+        setBootstrapConditon((SingleSidedCondition)null);
         return;
     }
     super.eUnset(featureID);
@@ -284,11 +284,11 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__NAME:
+      case MappingsLanguagePackage.BOOTSTRAPPING__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__PARAMETERS:
+      case MappingsLanguagePackage.BOOTSTRAPPING__PARAMETERS:
         return parameters != null && !parameters.isEmpty();
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON:
+      case MappingsLanguagePackage.BOOTSTRAPPING__BOOTSTRAP_CONDITON:
         return bootstrapConditon != null;
     }
     return super.eIsSet(featureID);
@@ -311,4 +311,4 @@ public class BootstrapMappingImpl extends MinimalEObjectImpl.Container implement
     return result.toString();
   }
 
-} //BootstrapMappingImpl
+} //BootstrappingImpl

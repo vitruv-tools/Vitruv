@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping;
+import tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping;
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment;
@@ -37,7 +37,7 @@ import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
  *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsSegmentImpl#getLeftDomain <em>Left Domain</em>}</li>
  *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsSegmentImpl#getRightDomain <em>Right Domain</em>}</li>
  *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsSegmentImpl#getMappings <em>Mappings</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsSegmentImpl#getBootstrapMappings <em>Bootstrap Mappings</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsSegmentImpl#getBootstrappings <em>Bootstrappings</em>}</li>
  * </ul>
  *
  * @generated
@@ -95,14 +95,14 @@ public class MappingsSegmentImpl extends DocumentableImpl implements MappingsSeg
   protected EList<Mapping> mappings;
 
   /**
-   * The cached value of the '{@link #getBootstrapMappings() <em>Bootstrap Mappings</em>}' containment reference list.
+   * The cached value of the '{@link #getBootstrappings() <em>Bootstrappings</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getBootstrapMappings()
+   * @see #getBootstrappings()
    * @generated
    * @ordered
    */
-  protected EList<BootstrapMapping> bootstrapMappings;
+  protected EList<Bootstrapping> bootstrappings;
 
   /**
    * <!-- begin-user-doc -->
@@ -263,13 +263,13 @@ public class MappingsSegmentImpl extends DocumentableImpl implements MappingsSeg
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<BootstrapMapping> getBootstrapMappings()
+  public EList<Bootstrapping> getBootstrappings()
   {
-    if (bootstrapMappings == null)
+    if (bootstrappings == null)
     {
-      bootstrapMappings = new EObjectContainmentEList<BootstrapMapping>(BootstrapMapping.class, this, MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAP_MAPPINGS);
+      bootstrappings = new EObjectContainmentEList<Bootstrapping>(Bootstrapping.class, this, MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAPPINGS);
     }
-    return bootstrapMappings;
+    return bootstrappings;
   }
 
   /**
@@ -288,8 +288,8 @@ public class MappingsSegmentImpl extends DocumentableImpl implements MappingsSeg
         return basicSetRightDomain(null, msgs);
       case MappingsLanguagePackage.MAPPINGS_SEGMENT__MAPPINGS:
         return ((InternalEList<?>)getMappings()).basicRemove(otherEnd, msgs);
-      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAP_MAPPINGS:
-        return ((InternalEList<?>)getBootstrapMappings()).basicRemove(otherEnd, msgs);
+      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAPPINGS:
+        return ((InternalEList<?>)getBootstrappings()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -312,8 +312,8 @@ public class MappingsSegmentImpl extends DocumentableImpl implements MappingsSeg
         return getRightDomain();
       case MappingsLanguagePackage.MAPPINGS_SEGMENT__MAPPINGS:
         return getMappings();
-      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAP_MAPPINGS:
-        return getBootstrapMappings();
+      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAPPINGS:
+        return getBootstrappings();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -342,9 +342,9 @@ public class MappingsSegmentImpl extends DocumentableImpl implements MappingsSeg
         getMappings().clear();
         getMappings().addAll((Collection<? extends Mapping>)newValue);
         return;
-      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAP_MAPPINGS:
-        getBootstrapMappings().clear();
-        getBootstrapMappings().addAll((Collection<? extends BootstrapMapping>)newValue);
+      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAPPINGS:
+        getBootstrappings().clear();
+        getBootstrappings().addAll((Collection<? extends Bootstrapping>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -372,8 +372,8 @@ public class MappingsSegmentImpl extends DocumentableImpl implements MappingsSeg
       case MappingsLanguagePackage.MAPPINGS_SEGMENT__MAPPINGS:
         getMappings().clear();
         return;
-      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAP_MAPPINGS:
-        getBootstrapMappings().clear();
+      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAPPINGS:
+        getBootstrappings().clear();
         return;
     }
     super.eUnset(featureID);
@@ -397,8 +397,8 @@ public class MappingsSegmentImpl extends DocumentableImpl implements MappingsSeg
         return rightDomain != null;
       case MappingsLanguagePackage.MAPPINGS_SEGMENT__MAPPINGS:
         return mappings != null && !mappings.isEmpty();
-      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAP_MAPPINGS:
-        return bootstrapMappings != null && !bootstrapMappings.isEmpty();
+      case MappingsLanguagePackage.MAPPINGS_SEGMENT__BOOTSTRAPPINGS:
+        return bootstrappings != null && !bootstrappings.isEmpty();
     }
     return super.eIsSet(featureID);
   }

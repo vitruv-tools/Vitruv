@@ -13,8 +13,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage;
-import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator;
-import tools.vitruv.dsls.mappings.mappingsLanguage.ValueExpression;
+
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,9 +24,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.ValueExpression;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl#getValueExpression <em>Value Expression</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl#isNegated <em>Negated</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl#getOperator <em>Operator</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl#getFeature <em>Feature</em>}</li>
  * </ul>
  *
  * @generated
@@ -34,54 +32,14 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.ValueExpression;
 public class FeatureConditionImpl extends EnforceableConditionImpl implements FeatureCondition
 {
   /**
-   * The cached value of the '{@link #getValueExpression() <em>Value Expression</em>}' containment reference.
+   * The cached value of the '{@link #getFeature() <em>Feature</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getValueExpression()
+   * @see #getFeature()
    * @generated
    * @ordered
    */
-  protected ValueExpression valueExpression;
-
-  /**
-   * The default value of the '{@link #isNegated() <em>Negated</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isNegated()
-   * @generated
-   * @ordered
-   */
-  protected static final boolean NEGATED_EDEFAULT = false;
-
-  /**
-   * The cached value of the '{@link #isNegated() <em>Negated</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isNegated()
-   * @generated
-   * @ordered
-   */
-  protected boolean negated = NEGATED_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOperator()
-   * @generated
-   * @ordered
-   */
-  protected static final MultiValueConditionOperator OPERATOR_EDEFAULT = MultiValueConditionOperator.EQUALS;
-
-  /**
-   * The cached value of the '{@link #getOperator() <em>Operator</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOperator()
-   * @generated
-   * @ordered
-   */
-  protected MultiValueConditionOperator operator = OPERATOR_EDEFAULT;
+  protected MetaclassFeatureReference feature;
 
   /**
    * <!-- begin-user-doc -->
@@ -109,9 +67,9 @@ public class FeatureConditionImpl extends EnforceableConditionImpl implements Fe
    * <!-- end-user-doc -->
    * @generated
    */
-  public ValueExpression getValueExpression()
+  public MetaclassFeatureReference getFeature()
   {
-    return valueExpression;
+    return feature;
   }
 
   /**
@@ -119,13 +77,13 @@ public class FeatureConditionImpl extends EnforceableConditionImpl implements Fe
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetValueExpression(ValueExpression newValueExpression, NotificationChain msgs)
+  public NotificationChain basicSetFeature(MetaclassFeatureReference newFeature, NotificationChain msgs)
   {
-    ValueExpression oldValueExpression = valueExpression;
-    valueExpression = newValueExpression;
+    MetaclassFeatureReference oldFeature = feature;
+    feature = newFeature;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.FEATURE_CONDITION__VALUE_EXPRESSION, oldValueExpression, newValueExpression);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.FEATURE_CONDITION__FEATURE, oldFeature, newFeature);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -136,66 +94,20 @@ public class FeatureConditionImpl extends EnforceableConditionImpl implements Fe
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setValueExpression(ValueExpression newValueExpression)
+  public void setFeature(MetaclassFeatureReference newFeature)
   {
-    if (newValueExpression != valueExpression)
+    if (newFeature != feature)
     {
       NotificationChain msgs = null;
-      if (valueExpression != null)
-        msgs = ((InternalEObject)valueExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.FEATURE_CONDITION__VALUE_EXPRESSION, null, msgs);
-      if (newValueExpression != null)
-        msgs = ((InternalEObject)newValueExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.FEATURE_CONDITION__VALUE_EXPRESSION, null, msgs);
-      msgs = basicSetValueExpression(newValueExpression, msgs);
+      if (feature != null)
+        msgs = ((InternalEObject)feature).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.FEATURE_CONDITION__FEATURE, null, msgs);
+      if (newFeature != null)
+        msgs = ((InternalEObject)newFeature).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MappingsLanguagePackage.FEATURE_CONDITION__FEATURE, null, msgs);
+      msgs = basicSetFeature(newFeature, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.FEATURE_CONDITION__VALUE_EXPRESSION, newValueExpression, newValueExpression));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean isNegated()
-  {
-    return negated;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setNegated(boolean newNegated)
-  {
-    boolean oldNegated = negated;
-    negated = newNegated;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.FEATURE_CONDITION__NEGATED, oldNegated, negated));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public MultiValueConditionOperator getOperator()
-  {
-    return operator;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setOperator(MultiValueConditionOperator newOperator)
-  {
-    MultiValueConditionOperator oldOperator = operator;
-    operator = newOperator == null ? OPERATOR_EDEFAULT : newOperator;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.FEATURE_CONDITION__OPERATOR, oldOperator, operator));
+      eNotify(new ENotificationImpl(this, Notification.SET, MappingsLanguagePackage.FEATURE_CONDITION__FEATURE, newFeature, newFeature));
   }
 
   /**
@@ -208,8 +120,8 @@ public class FeatureConditionImpl extends EnforceableConditionImpl implements Fe
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.FEATURE_CONDITION__VALUE_EXPRESSION:
-        return basicSetValueExpression(null, msgs);
+      case MappingsLanguagePackage.FEATURE_CONDITION__FEATURE:
+        return basicSetFeature(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -224,12 +136,8 @@ public class FeatureConditionImpl extends EnforceableConditionImpl implements Fe
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.FEATURE_CONDITION__VALUE_EXPRESSION:
-        return getValueExpression();
-      case MappingsLanguagePackage.FEATURE_CONDITION__NEGATED:
-        return isNegated();
-      case MappingsLanguagePackage.FEATURE_CONDITION__OPERATOR:
-        return getOperator();
+      case MappingsLanguagePackage.FEATURE_CONDITION__FEATURE:
+        return getFeature();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -244,14 +152,8 @@ public class FeatureConditionImpl extends EnforceableConditionImpl implements Fe
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.FEATURE_CONDITION__VALUE_EXPRESSION:
-        setValueExpression((ValueExpression)newValue);
-        return;
-      case MappingsLanguagePackage.FEATURE_CONDITION__NEGATED:
-        setNegated((Boolean)newValue);
-        return;
-      case MappingsLanguagePackage.FEATURE_CONDITION__OPERATOR:
-        setOperator((MultiValueConditionOperator)newValue);
+      case MappingsLanguagePackage.FEATURE_CONDITION__FEATURE:
+        setFeature((MetaclassFeatureReference)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -267,14 +169,8 @@ public class FeatureConditionImpl extends EnforceableConditionImpl implements Fe
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.FEATURE_CONDITION__VALUE_EXPRESSION:
-        setValueExpression((ValueExpression)null);
-        return;
-      case MappingsLanguagePackage.FEATURE_CONDITION__NEGATED:
-        setNegated(NEGATED_EDEFAULT);
-        return;
-      case MappingsLanguagePackage.FEATURE_CONDITION__OPERATOR:
-        setOperator(OPERATOR_EDEFAULT);
+      case MappingsLanguagePackage.FEATURE_CONDITION__FEATURE:
+        setFeature((MetaclassFeatureReference)null);
         return;
     }
     super.eUnset(featureID);
@@ -290,33 +186,10 @@ public class FeatureConditionImpl extends EnforceableConditionImpl implements Fe
   {
     switch (featureID)
     {
-      case MappingsLanguagePackage.FEATURE_CONDITION__VALUE_EXPRESSION:
-        return valueExpression != null;
-      case MappingsLanguagePackage.FEATURE_CONDITION__NEGATED:
-        return negated != NEGATED_EDEFAULT;
-      case MappingsLanguagePackage.FEATURE_CONDITION__OPERATOR:
-        return operator != OPERATOR_EDEFAULT;
+      case MappingsLanguagePackage.FEATURE_CONDITION__FEATURE:
+        return feature != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (negated: ");
-    result.append(negated);
-    result.append(", operator: ");
-    result.append(operator);
-    result.append(')');
-    return result.toString();
   }
 
 } //FeatureConditionImpl

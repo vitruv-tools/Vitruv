@@ -20,7 +20,7 @@ import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
  *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment#getLeftDomain <em>Left Domain</em>}</li>
  *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment#getRightDomain <em>Right Domain</em>}</li>
  *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment#getMappings <em>Mappings</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment#getBootstrapMappings <em>Bootstrap Mappings</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment#getBootstrappings <em>Bootstrappings</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getMappingsSegment()
@@ -124,19 +124,19 @@ public interface MappingsSegment extends Documentable
   EList<Mapping> getMappings();
 
   /**
-   * Returns the value of the '<em><b>Bootstrap Mappings</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping}.
+   * Returns the value of the '<em><b>Bootstrappings</b></em>' containment reference list.
+   * The list contents are of type {@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Bootstrap Mappings</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Bootstrappings</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Bootstrap Mappings</em>' containment reference list.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getMappingsSegment_BootstrapMappings()
+   * @return the value of the '<em>Bootstrappings</em>' containment reference list.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getMappingsSegment_Bootstrappings()
    * @model containment="true"
    * @generated
    */
-  EList<BootstrapMapping> getBootstrapMappings();
+  EList<Bootstrapping> getBootstrappings();
 
 } // MappingsSegment

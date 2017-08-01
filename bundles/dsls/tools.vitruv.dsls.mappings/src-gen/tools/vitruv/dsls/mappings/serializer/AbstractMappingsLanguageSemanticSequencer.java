@@ -58,20 +58,24 @@ import org.eclipse.xtext.xtype.XFunctionTypeRef;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypePackage;
-import tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping;
+import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping;
+import tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.CodeBlock;
-import tools.vitruv.dsls.mappings.mappingsLanguage.Condition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.Dependency;
 import tools.vitruv.dsls.mappings.mappingsLanguage.DependentFeatureReference;
-import tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition;
-import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MetaclassFeatureReference;
-import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition;
-import tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.NotEmptyCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.ValueCondition;
 import tools.vitruv.dsls.mappings.services.MappingsLanguageGrammarAccess;
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
@@ -99,14 +103,17 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 		Set<Parameter> parameters = context.getEnabledBooleanParameters();
 		if (epackage == MappingsLanguagePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
-			case MappingsLanguagePackage.BOOTSTRAP_MAPPING:
-				sequence_BootstrapMapping(context, (BootstrapMapping) semanticObject); 
+			case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION:
+				sequence_BidirectionalizableCondition(context, (BidirectionalizableCondition) semanticObject); 
+				return; 
+			case MappingsLanguagePackage.BOOTSTRAPPING:
+				sequence_Bootstrapping(context, (Bootstrapping) semanticObject); 
+				return; 
+			case MappingsLanguagePackage.CHECK_AND_ENFORCE_CONDITION:
+				sequence_CheckAndEnforceCondition(context, (CheckAndEnforceCondition) semanticObject); 
 				return; 
 			case MappingsLanguagePackage.CODE_BLOCK:
 				sequence_BidirectionalizableExpression_CheckExpression_ElementExpression_EnforceExpression_UnidirectionalExpression_ValueExpression(context, (CodeBlock) semanticObject); 
-				return; 
-			case MappingsLanguagePackage.CONDITION:
-				sequence_BidirectionalizableCondition(context, (Condition) semanticObject); 
 				return; 
 			case MappingsLanguagePackage.DEPENDENCY:
 				sequence_Dependency(context, (Dependency) semanticObject); 
@@ -114,30 +121,28 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 			case MappingsLanguagePackage.DEPENDENT_FEATURE_REFERENCE:
 				sequence_DependentFeatureReference(context, (DependentFeatureReference) semanticObject); 
 				return; 
-			case MappingsLanguagePackage.ENFORCEABLE_CONDITION:
-				sequence_ResourceCondition(context, (EnforceableCondition) semanticObject); 
-				return; 
-			case MappingsLanguagePackage.FEATURE_CONDITION:
+			case MappingsLanguagePackage.ELEMENT_CONDITION:
 				if (rule == grammarAccess.getElementConditionRule()) {
-					sequence_ElementCondition(context, (FeatureCondition) semanticObject); 
+					sequence_ElementCondition(context, (ElementCondition) semanticObject); 
 					return; 
 				}
 				else if (rule == grammarAccess.getSingleSidedConditionRule()
 						|| rule == grammarAccess.getEnforceableConditionRule()
 						|| rule == grammarAccess.getFeatureConditionRule()) {
-					sequence_ElementCondition_FeatureCondition_MultiValueCondition_NotEmptyCondition(context, (FeatureCondition) semanticObject); 
+					sequence_ElementCondition_FeatureCondition(context, (ElementCondition) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getMultiValueConditionRule()) {
-					sequence_MultiValueCondition(context, (FeatureCondition) semanticObject); 
+				else break;
+			case MappingsLanguagePackage.INDEX_CONDITION:
+				if (rule == grammarAccess.getSingleSidedConditionRule()
+						|| rule == grammarAccess.getEnforceableConditionRule()
+						|| rule == grammarAccess.getFeatureConditionRule()) {
+					sequence_FeatureCondition_IndexCondition(context, (IndexCondition) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getNotEmptyConditionRule()) {
-					sequence_NotEmptyCondition(context, (FeatureCondition) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getValueConditionRule()) {
-					sequence_ValueCondition(context, (FeatureCondition) semanticObject); 
+				else if (rule == grammarAccess.getSingleValueConditionRule()
+						|| rule == grammarAccess.getIndexConditionRule()) {
+					sequence_IndexCondition(context, (IndexCondition) semanticObject); 
 					return; 
 				}
 				else break;
@@ -153,29 +158,49 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 			case MappingsLanguagePackage.METACLASS_FEATURE_REFERENCE:
 				sequence_FeatureReference(context, (MetaclassFeatureReference) semanticObject); 
 				return; 
-			case MappingsLanguagePackage.SINGLE_SIDED_CONDITION:
-				sequence_CheckAndEnforceCondition(context, (SingleSidedCondition) semanticObject); 
-				return; 
-			case MappingsLanguagePackage.SINGLE_VALUE_CONDITION:
+			case MappingsLanguagePackage.MULTI_VALUE_CONDITION:
 				if (rule == grammarAccess.getSingleSidedConditionRule()
 						|| rule == grammarAccess.getEnforceableConditionRule()
 						|| rule == grammarAccess.getFeatureConditionRule()) {
-					sequence_FeatureCondition_IndexCondition_NumCompareCondition(context, (SingleValueCondition) semanticObject); 
+					sequence_FeatureCondition_MultiValueCondition(context, (MultiValueCondition) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getSingleValueConditionRule()) {
-					sequence_IndexCondition_NumCompareCondition(context, (SingleValueCondition) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getIndexConditionRule()) {
-					sequence_IndexCondition(context, (SingleValueCondition) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getNumCompareConditionRule()) {
-					sequence_NumCompareCondition(context, (SingleValueCondition) semanticObject); 
+				else if (rule == grammarAccess.getMultiValueConditionRule()) {
+					sequence_MultiValueCondition(context, (MultiValueCondition) semanticObject); 
 					return; 
 				}
 				else break;
+			case MappingsLanguagePackage.NOT_EMPTY_CONDITION:
+				if (rule == grammarAccess.getSingleSidedConditionRule()
+						|| rule == grammarAccess.getEnforceableConditionRule()
+						|| rule == grammarAccess.getFeatureConditionRule()) {
+					sequence_FeatureCondition_NotEmptyCondition(context, (NotEmptyCondition) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getNotEmptyConditionRule()) {
+					sequence_NotEmptyCondition(context, (NotEmptyCondition) semanticObject); 
+					return; 
+				}
+				else break;
+			case MappingsLanguagePackage.NUM_COMPARE_CONDITION:
+				if (rule == grammarAccess.getSingleSidedConditionRule()
+						|| rule == grammarAccess.getEnforceableConditionRule()
+						|| rule == grammarAccess.getFeatureConditionRule()) {
+					sequence_FeatureCondition_NumCompareCondition(context, (NumCompareCondition) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getSingleValueConditionRule()
+						|| rule == grammarAccess.getNumCompareConditionRule()) {
+					sequence_NumCompareCondition(context, (NumCompareCondition) semanticObject); 
+					return; 
+				}
+				else break;
+			case MappingsLanguagePackage.RESOURCE_CONDITION:
+				sequence_ResourceCondition(context, (ResourceCondition) semanticObject); 
+				return; 
+			case MappingsLanguagePackage.VALUE_CONDITION:
+				sequence_ValueCondition(context, (ValueCondition) semanticObject); 
+				return; 
 			}
 		else if (epackage == MirBasePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
@@ -462,7 +487,7 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     BidirectionalizableCondition returns Condition
+	 *     BidirectionalizableCondition returns BidirectionalizableCondition
 	 *
 	 * Constraint:
 	 *     (
@@ -471,7 +496,7 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	 *         featureToBeUpdated=MetaclassFeatureReference?
 	 *     )
 	 */
-	protected void sequence_BidirectionalizableCondition(ISerializationContext context, Condition semanticObject) {
+	protected void sequence_BidirectionalizableCondition(ISerializationContext context, BidirectionalizableCondition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -495,30 +520,30 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     BootstrapMapping returns BootstrapMapping
+	 *     Bootstrapping returns Bootstrapping
 	 *
 	 * Constraint:
 	 *     (name=ValidID parameters+=ClassicallyNamedModelElement+ bootstrapConditon=SingleSidedCondition?)
 	 */
-	protected void sequence_BootstrapMapping(ISerializationContext context, BootstrapMapping semanticObject) {
+	protected void sequence_Bootstrapping(ISerializationContext context, Bootstrapping semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     SingleSidedCondition returns SingleSidedCondition
-	 *     CheckAndEnforceCondition returns SingleSidedCondition
+	 *     SingleSidedCondition returns CheckAndEnforceCondition
+	 *     CheckAndEnforceCondition returns CheckAndEnforceCondition
 	 *
 	 * Constraint:
 	 *     (checkExpression=CheckExpression enforceExpression=CheckExpression)
 	 */
-	protected void sequence_CheckAndEnforceCondition(ISerializationContext context, SingleSidedCondition semanticObject) {
+	protected void sequence_CheckAndEnforceCondition(ISerializationContext context, CheckAndEnforceCondition semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.SINGLE_SIDED_CONDITION__CHECK_EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.SINGLE_SIDED_CONDITION__CHECK_EXPRESSION));
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.SINGLE_SIDED_CONDITION__ENFORCE_EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.SINGLE_SIDED_CONDITION__ENFORCE_EXPRESSION));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.CHECK_AND_ENFORCE_CONDITION__CHECK_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.CHECK_AND_ENFORCE_CONDITION__CHECK_EXPRESSION));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.CHECK_AND_ENFORCE_CONDITION__ENFORCE_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.CHECK_AND_ENFORCE_CONDITION__ENFORCE_EXPRESSION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getCheckAndEnforceConditionAccess().getCheckExpressionCheckExpressionParserRuleCall_1_0(), semanticObject.getCheckExpression());
@@ -580,7 +605,7 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	 *         name=ValidID 
 	 *         leftDomain=DomainReference 
 	 *         rightDomain=DomainReference 
-	 *         (mappings+=Mapping | bootstrapMappings+=BootstrapMapping)*
+	 *         (mappings+=Mapping | bootstrappings+=Bootstrapping)*
 	 *     )
 	 */
 	protected void sequence_Documentable_MappingsSegment(ISerializationContext context, MappingsSegment semanticObject) {
@@ -590,15 +615,15 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     ElementCondition returns FeatureCondition
+	 *     ElementCondition returns ElementCondition
 	 *
 	 * Constraint:
 	 *     elementExpression=ElementExpression
 	 */
-	protected void sequence_ElementCondition(ISerializationContext context, FeatureCondition semanticObject) {
+	protected void sequence_ElementCondition(ISerializationContext context, ElementCondition semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.ENFORCEABLE_CONDITION__ELEMENT_EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.ENFORCEABLE_CONDITION__ELEMENT_EXPRESSION));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.ELEMENT_CONDITION__ELEMENT_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.ELEMENT_CONDITION__ELEMENT_EXPRESSION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getElementConditionAccess().getElementExpressionElementExpressionParserRuleCall_0_0(), semanticObject.getElementExpression());
@@ -608,32 +633,122 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     SingleSidedCondition returns FeatureCondition
-	 *     EnforceableCondition returns FeatureCondition
-	 *     FeatureCondition returns FeatureCondition
+	 *     SingleSidedCondition returns ElementCondition
+	 *     EnforceableCondition returns ElementCondition
+	 *     FeatureCondition returns ElementCondition
 	 *
 	 * Constraint:
-	 *     (
-	 *         ((negated?='not' operator=MultiValueConditionOperator) | elementExpression=ElementExpression | negated?='not') 
-	 *         feature=MetaclassFeatureReference
-	 *     )
+	 *     (elementExpression=ElementExpression feature=MetaclassFeatureReference)
 	 */
-	protected void sequence_ElementCondition_FeatureCondition_MultiValueCondition_NotEmptyCondition(ISerializationContext context, FeatureCondition semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+	protected void sequence_ElementCondition_FeatureCondition(ISerializationContext context, ElementCondition semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.ELEMENT_CONDITION__ELEMENT_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.ELEMENT_CONDITION__ELEMENT_EXPRESSION));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getElementConditionAccess().getElementExpressionElementExpressionParserRuleCall_0_0(), semanticObject.getElementExpression());
+		feeder.accept(grammarAccess.getFeatureConditionAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getFeature());
+		feeder.finish();
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     SingleSidedCondition returns SingleValueCondition
-	 *     EnforceableCondition returns SingleValueCondition
-	 *     FeatureCondition returns SingleValueCondition
+	 *     SingleSidedCondition returns IndexCondition
+	 *     EnforceableCondition returns IndexCondition
+	 *     FeatureCondition returns IndexCondition
 	 *
 	 * Constraint:
-	 *     (((negated?='not' indexValueExpression=ValueExpression) | operator=NumCompareOperator) feature=MetaclassFeatureReference)
+	 *     (negated?='not' indexValueExpression=ValueExpression feature=MetaclassFeatureReference)
 	 */
-	protected void sequence_FeatureCondition_IndexCondition_NumCompareCondition(ISerializationContext context, SingleValueCondition semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+	protected void sequence_FeatureCondition_IndexCondition(ISerializationContext context, IndexCondition semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.INDEX_CONDITION__NEGATED) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.INDEX_CONDITION__NEGATED));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.INDEX_CONDITION__INDEX_VALUE_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.INDEX_CONDITION__INDEX_VALUE_EXPRESSION));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getIndexConditionAccess().getNegatedNotKeyword_0_0(), semanticObject.isNegated());
+		feeder.accept(grammarAccess.getIndexConditionAccess().getIndexValueExpressionValueExpressionParserRuleCall_2_0(), semanticObject.getIndexValueExpression());
+		feeder.accept(grammarAccess.getFeatureConditionAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getFeature());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SingleSidedCondition returns MultiValueCondition
+	 *     EnforceableCondition returns MultiValueCondition
+	 *     FeatureCondition returns MultiValueCondition
+	 *
+	 * Constraint:
+	 *     (negated?='not' operator=MultiValueConditionOperator feature=MetaclassFeatureReference)
+	 */
+	protected void sequence_FeatureCondition_MultiValueCondition(ISerializationContext context, MultiValueCondition semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.MULTI_VALUE_CONDITION__NEGATED) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.MULTI_VALUE_CONDITION__NEGATED));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.MULTI_VALUE_CONDITION__OPERATOR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.MULTI_VALUE_CONDITION__OPERATOR));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getMultiValueConditionAccess().getNegatedNotKeyword_0_0(), semanticObject.isNegated());
+		feeder.accept(grammarAccess.getMultiValueConditionAccess().getOperatorMultiValueConditionOperatorEnumRuleCall_1_0(), semanticObject.getOperator());
+		feeder.accept(grammarAccess.getFeatureConditionAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getFeature());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SingleSidedCondition returns NotEmptyCondition
+	 *     EnforceableCondition returns NotEmptyCondition
+	 *     FeatureCondition returns NotEmptyCondition
+	 *
+	 * Constraint:
+	 *     (negated?='not' feature=MetaclassFeatureReference)
+	 */
+	protected void sequence_FeatureCondition_NotEmptyCondition(ISerializationContext context, NotEmptyCondition semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.NOT_EMPTY_CONDITION__NEGATED) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.NOT_EMPTY_CONDITION__NEGATED));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getNotEmptyConditionAccess().getNegatedNotKeyword_0_0(), semanticObject.isNegated());
+		feeder.accept(grammarAccess.getFeatureConditionAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getFeature());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     SingleSidedCondition returns NumCompareCondition
+	 *     EnforceableCondition returns NumCompareCondition
+	 *     FeatureCondition returns NumCompareCondition
+	 *
+	 * Constraint:
+	 *     (operator=NumCompareOperator feature=MetaclassFeatureReference)
+	 */
+	protected void sequence_FeatureCondition_NumCompareCondition(ISerializationContext context, NumCompareCondition semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.NUM_COMPARE_CONDITION__OPERATOR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.NUM_COMPARE_CONDITION__OPERATOR));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__FEATURE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getNumCompareConditionAccess().getOperatorNumCompareOperatorEnumRuleCall_0(), semanticObject.getOperator());
+		feeder.accept(grammarAccess.getFeatureConditionAccess().getFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getFeature());
+		feeder.finish();
 	}
 	
 	
@@ -651,29 +766,18 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     SingleValueCondition returns SingleValueCondition
-	 *
-	 * Constraint:
-	 *     ((negated?='not' indexValueExpression=ValueExpression) | operator=NumCompareOperator)
-	 */
-	protected void sequence_IndexCondition_NumCompareCondition(ISerializationContext context, SingleValueCondition semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     IndexCondition returns SingleValueCondition
+	 *     SingleValueCondition returns IndexCondition
+	 *     IndexCondition returns IndexCondition
 	 *
 	 * Constraint:
 	 *     (negated?='not' indexValueExpression=ValueExpression)
 	 */
-	protected void sequence_IndexCondition(ISerializationContext context, SingleValueCondition semanticObject) {
+	protected void sequence_IndexCondition(ISerializationContext context, IndexCondition semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.SINGLE_VALUE_CONDITION__NEGATED) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.SINGLE_VALUE_CONDITION__NEGATED));
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.SINGLE_VALUE_CONDITION__INDEX_VALUE_EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.SINGLE_VALUE_CONDITION__INDEX_VALUE_EXPRESSION));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.INDEX_CONDITION__NEGATED) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.INDEX_CONDITION__NEGATED));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.INDEX_CONDITION__INDEX_VALUE_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.INDEX_CONDITION__INDEX_VALUE_EXPRESSION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getIndexConditionAccess().getNegatedNotKeyword_0_0(), semanticObject.isNegated());
@@ -717,17 +821,17 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     MultiValueCondition returns FeatureCondition
+	 *     MultiValueCondition returns MultiValueCondition
 	 *
 	 * Constraint:
 	 *     (negated?='not' operator=MultiValueConditionOperator)
 	 */
-	protected void sequence_MultiValueCondition(ISerializationContext context, FeatureCondition semanticObject) {
+	protected void sequence_MultiValueCondition(ISerializationContext context, MultiValueCondition semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__NEGATED) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__NEGATED));
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__OPERATOR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__OPERATOR));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.MULTI_VALUE_CONDITION__NEGATED) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.MULTI_VALUE_CONDITION__NEGATED));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.MULTI_VALUE_CONDITION__OPERATOR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.MULTI_VALUE_CONDITION__OPERATOR));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getMultiValueConditionAccess().getNegatedNotKeyword_0_0(), semanticObject.isNegated());
@@ -738,15 +842,15 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     NotEmptyCondition returns FeatureCondition
+	 *     NotEmptyCondition returns NotEmptyCondition
 	 *
 	 * Constraint:
 	 *     negated?='not'
 	 */
-	protected void sequence_NotEmptyCondition(ISerializationContext context, FeatureCondition semanticObject) {
+	protected void sequence_NotEmptyCondition(ISerializationContext context, NotEmptyCondition semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__NEGATED) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__NEGATED));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.NOT_EMPTY_CONDITION__NEGATED) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.NOT_EMPTY_CONDITION__NEGATED));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getNotEmptyConditionAccess().getNegatedNotKeyword_0_0(), semanticObject.isNegated());
@@ -756,15 +860,16 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     NumCompareCondition returns SingleValueCondition
+	 *     SingleValueCondition returns NumCompareCondition
+	 *     NumCompareCondition returns NumCompareCondition
 	 *
 	 * Constraint:
 	 *     operator=NumCompareOperator
 	 */
-	protected void sequence_NumCompareCondition(ISerializationContext context, SingleValueCondition semanticObject) {
+	protected void sequence_NumCompareCondition(ISerializationContext context, NumCompareCondition semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.SINGLE_VALUE_CONDITION__OPERATOR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.SINGLE_VALUE_CONDITION__OPERATOR));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.NUM_COMPARE_CONDITION__OPERATOR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.NUM_COMPARE_CONDITION__OPERATOR));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getNumCompareConditionAccess().getOperatorNumCompareOperatorEnumRuleCall_0(), semanticObject.getOperator());
@@ -774,29 +879,29 @@ public abstract class AbstractMappingsLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     SingleSidedCondition returns EnforceableCondition
-	 *     EnforceableCondition returns EnforceableCondition
-	 *     ResourceCondition returns EnforceableCondition
+	 *     SingleSidedCondition returns ResourceCondition
+	 *     EnforceableCondition returns ResourceCondition
+	 *     ResourceCondition returns ResourceCondition
 	 *
 	 * Constraint:
 	 *     (elementExpression=ElementExpression pathExpression=ElementExpression? path=STRING)
 	 */
-	protected void sequence_ResourceCondition(ISerializationContext context, EnforceableCondition semanticObject) {
+	protected void sequence_ResourceCondition(ISerializationContext context, ResourceCondition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     ValueCondition returns FeatureCondition
+	 *     ValueCondition returns ValueCondition
 	 *
 	 * Constraint:
 	 *     valueExpression=ValueExpression
 	 */
-	protected void sequence_ValueCondition(ISerializationContext context, FeatureCondition semanticObject) {
+	protected void sequence_ValueCondition(ISerializationContext context, ValueCondition semanticObject) {
 		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__VALUE_EXPRESSION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.FEATURE_CONDITION__VALUE_EXPRESSION));
+			if (transientValues.isValueTransient(semanticObject, MappingsLanguagePackage.Literals.VALUE_CONDITION__VALUE_EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MappingsLanguagePackage.Literals.VALUE_CONDITION__VALUE_EXPRESSION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getValueConditionAccess().getValueExpressionValueExpressionParserRuleCall_0(), semanticObject.getValueExpression());

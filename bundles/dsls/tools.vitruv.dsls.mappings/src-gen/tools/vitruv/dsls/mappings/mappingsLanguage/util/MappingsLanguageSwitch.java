@@ -105,18 +105,10 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MappingsLanguagePackage.CONDITION:
-      {
-        Condition condition = (Condition)theEObject;
-        T result = caseCondition(condition);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case MappingsLanguagePackage.SINGLE_SIDED_CONDITION:
       {
         SingleSidedCondition singleSidedCondition = (SingleSidedCondition)theEObject;
         T result = caseSingleSidedCondition(singleSidedCondition);
-        if (result == null) result = caseCondition(singleSidedCondition);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -125,7 +117,15 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
         EnforceableCondition enforceableCondition = (EnforceableCondition)theEObject;
         T result = caseEnforceableCondition(enforceableCondition);
         if (result == null) result = caseSingleSidedCondition(enforceableCondition);
-        if (result == null) result = caseCondition(enforceableCondition);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingsLanguagePackage.FEATURE_CONDITION:
+      {
+        FeatureCondition featureCondition = (FeatureCondition)theEObject;
+        T result = caseFeatureCondition(featureCondition);
+        if (result == null) result = caseEnforceableCondition(featureCondition);
+        if (result == null) result = caseSingleSidedCondition(featureCondition);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -144,23 +144,20 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MappingsLanguagePackage.SINGLE_VALUE_CONDITION:
+      {
+        SingleValueCondition singleValueCondition = (SingleValueCondition)theEObject;
+        T result = caseSingleValueCondition(singleValueCondition);
+        if (result == null) result = caseFeatureCondition(singleValueCondition);
+        if (result == null) result = caseEnforceableCondition(singleValueCondition);
+        if (result == null) result = caseSingleSidedCondition(singleValueCondition);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MappingsLanguagePackage.VALUE_CONDITION:
       {
         ValueCondition valueCondition = (ValueCondition)theEObject;
         T result = caseValueCondition(valueCondition);
-        if (result == null) result = caseEnforceableCondition(valueCondition);
-        if (result == null) result = caseSingleSidedCondition(valueCondition);
-        if (result == null) result = caseCondition(valueCondition);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MappingsLanguagePackage.FEATURE_CONDITION:
-      {
-        FeatureCondition featureCondition = (FeatureCondition)theEObject;
-        T result = caseFeatureCondition(featureCondition);
-        if (result == null) result = caseEnforceableCondition(featureCondition);
-        if (result == null) result = caseSingleSidedCondition(featureCondition);
-        if (result == null) result = caseCondition(featureCondition);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -171,14 +168,45 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MappingsLanguagePackage.SINGLE_VALUE_CONDITION:
+      case MappingsLanguagePackage.INDEX_CONDITION:
       {
-        SingleValueCondition singleValueCondition = (SingleValueCondition)theEObject;
-        T result = caseSingleValueCondition(singleValueCondition);
-        if (result == null) result = caseValueCondition(singleValueCondition);
-        if (result == null) result = caseEnforceableCondition(singleValueCondition);
-        if (result == null) result = caseSingleSidedCondition(singleValueCondition);
-        if (result == null) result = caseCondition(singleValueCondition);
+        IndexCondition indexCondition = (IndexCondition)theEObject;
+        T result = caseIndexCondition(indexCondition);
+        if (result == null) result = caseSingleValueCondition(indexCondition);
+        if (result == null) result = caseFeatureCondition(indexCondition);
+        if (result == null) result = caseEnforceableCondition(indexCondition);
+        if (result == null) result = caseSingleSidedCondition(indexCondition);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingsLanguagePackage.NUM_COMPARE_CONDITION:
+      {
+        NumCompareCondition numCompareCondition = (NumCompareCondition)theEObject;
+        T result = caseNumCompareCondition(numCompareCondition);
+        if (result == null) result = caseSingleValueCondition(numCompareCondition);
+        if (result == null) result = caseFeatureCondition(numCompareCondition);
+        if (result == null) result = caseEnforceableCondition(numCompareCondition);
+        if (result == null) result = caseSingleSidedCondition(numCompareCondition);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingsLanguagePackage.MULTI_VALUE_CONDITION:
+      {
+        MultiValueCondition multiValueCondition = (MultiValueCondition)theEObject;
+        T result = caseMultiValueCondition(multiValueCondition);
+        if (result == null) result = caseFeatureCondition(multiValueCondition);
+        if (result == null) result = caseEnforceableCondition(multiValueCondition);
+        if (result == null) result = caseSingleSidedCondition(multiValueCondition);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingsLanguagePackage.ELEMENT_CONDITION:
+      {
+        ElementCondition elementCondition = (ElementCondition)theEObject;
+        T result = caseElementCondition(elementCondition);
+        if (result == null) result = caseFeatureCondition(elementCondition);
+        if (result == null) result = caseEnforceableCondition(elementCondition);
+        if (result == null) result = caseSingleSidedCondition(elementCondition);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -186,6 +214,33 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
       {
         ElementExpression elementExpression = (ElementExpression)theEObject;
         T result = caseElementExpression(elementExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingsLanguagePackage.NOT_EMPTY_CONDITION:
+      {
+        NotEmptyCondition notEmptyCondition = (NotEmptyCondition)theEObject;
+        T result = caseNotEmptyCondition(notEmptyCondition);
+        if (result == null) result = caseFeatureCondition(notEmptyCondition);
+        if (result == null) result = caseEnforceableCondition(notEmptyCondition);
+        if (result == null) result = caseSingleSidedCondition(notEmptyCondition);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingsLanguagePackage.RESOURCE_CONDITION:
+      {
+        ResourceCondition resourceCondition = (ResourceCondition)theEObject;
+        T result = caseResourceCondition(resourceCondition);
+        if (result == null) result = caseEnforceableCondition(resourceCondition);
+        if (result == null) result = caseSingleSidedCondition(resourceCondition);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MappingsLanguagePackage.CHECK_AND_ENFORCE_CONDITION:
+      {
+        CheckAndEnforceCondition checkAndEnforceCondition = (CheckAndEnforceCondition)theEObject;
+        T result = caseCheckAndEnforceCondition(checkAndEnforceCondition);
+        if (result == null) result = caseSingleSidedCondition(checkAndEnforceCondition);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -203,6 +258,13 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MappingsLanguagePackage.BIDIRECTIONALIZABLE_CONDITION:
+      {
+        BidirectionalizableCondition bidirectionalizableCondition = (BidirectionalizableCondition)theEObject;
+        T result = caseBidirectionalizableCondition(bidirectionalizableCondition);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MappingsLanguagePackage.BIDIRECTIONALIZABLE_EXPRESSION:
       {
         BidirectionalizableExpression bidirectionalizableExpression = (BidirectionalizableExpression)theEObject;
@@ -217,10 +279,10 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MappingsLanguagePackage.BOOTSTRAP_MAPPING:
+      case MappingsLanguagePackage.BOOTSTRAPPING:
       {
-        BootstrapMapping bootstrapMapping = (BootstrapMapping)theEObject;
-        T result = caseBootstrapMapping(bootstrapMapping);
+        Bootstrapping bootstrapping = (Bootstrapping)theEObject;
+        T result = caseBootstrapping(bootstrapping);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -321,22 +383,6 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Condition</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Condition</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseCondition(Condition object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Single Sided Condition</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -364,6 +410,22 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseEnforceableCondition(EnforceableCondition object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Feature Condition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Feature Condition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseFeatureCondition(FeatureCondition object)
   {
     return null;
   }
@@ -401,6 +463,22 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Single Value Condition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Single Value Condition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSingleValueCondition(SingleValueCondition object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Value Condition</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -412,22 +490,6 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseValueCondition(ValueCondition object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Feature Condition</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Feature Condition</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseFeatureCondition(FeatureCondition object)
   {
     return null;
   }
@@ -449,17 +511,65 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Single Value Condition</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Index Condition</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Single Value Condition</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Index Condition</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseSingleValueCondition(SingleValueCondition object)
+  public T caseIndexCondition(IndexCondition object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Num Compare Condition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Num Compare Condition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNumCompareCondition(NumCompareCondition object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Multi Value Condition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Multi Value Condition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseMultiValueCondition(MultiValueCondition object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element Condition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element Condition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElementCondition(ElementCondition object)
   {
     return null;
   }
@@ -476,6 +586,54 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseElementExpression(ElementExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Not Empty Condition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Not Empty Condition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNotEmptyCondition(NotEmptyCondition object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Resource Condition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Resource Condition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseResourceCondition(ResourceCondition object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Check And Enforce Condition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Check And Enforce Condition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseCheckAndEnforceCondition(CheckAndEnforceCondition object)
   {
     return null;
   }
@@ -513,6 +671,22 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Bidirectionalizable Condition</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Bidirectionalizable Condition</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseBidirectionalizableCondition(BidirectionalizableCondition object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Bidirectionalizable Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -545,17 +719,17 @@ public class MappingsLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Bootstrap Mapping</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Bootstrapping</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Bootstrap Mapping</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Bootstrapping</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseBootstrapMapping(BootstrapMapping object)
+  public T caseBootstrapping(Bootstrapping object)
   {
     return null;
   }

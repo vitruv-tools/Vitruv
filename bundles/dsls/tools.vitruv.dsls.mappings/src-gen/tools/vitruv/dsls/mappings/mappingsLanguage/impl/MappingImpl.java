@@ -19,10 +19,11 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import tools.vitruv.dsls.mappings.mappingsLanguage.Condition;
+import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.Dependency;
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping;
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage;
+import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition;
 import tools.vitruv.dsls.mappings.mappingsLanguage.UnidirectionalExpression;
 
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
@@ -98,7 +99,7 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * @generated
    * @ordered
    */
-  protected EList<Condition> leftConditions;
+  protected EList<SingleSidedCondition> leftConditions;
 
   /**
    * The cached value of the '{@link #getRightParameters() <em>Right Parameters</em>}' containment reference list.
@@ -118,7 +119,7 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * @generated
    * @ordered
    */
-  protected EList<Condition> rightConditions;
+  protected EList<SingleSidedCondition> rightConditions;
 
   /**
    * The cached value of the '{@link #getBidirectionalizableConditions() <em>Bidirectionalizable Conditions</em>}' containment reference list.
@@ -128,7 +129,7 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * @generated
    * @ordered
    */
-  protected EList<Condition> bidirectionalizableConditions;
+  protected EList<BidirectionalizableCondition> bidirectionalizableConditions;
 
   /**
    * The cached value of the '{@link #getForwardExecutionExpression() <em>Forward Execution Expression</em>}' containment reference.
@@ -227,11 +228,11 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Condition> getLeftConditions()
+  public EList<SingleSidedCondition> getLeftConditions()
   {
     if (leftConditions == null)
     {
-      leftConditions = new EObjectContainmentEList<Condition>(Condition.class, this, MappingsLanguagePackage.MAPPING__LEFT_CONDITIONS);
+      leftConditions = new EObjectContainmentEList<SingleSidedCondition>(SingleSidedCondition.class, this, MappingsLanguagePackage.MAPPING__LEFT_CONDITIONS);
     }
     return leftConditions;
   }
@@ -255,11 +256,11 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Condition> getRightConditions()
+  public EList<SingleSidedCondition> getRightConditions()
   {
     if (rightConditions == null)
     {
-      rightConditions = new EObjectContainmentEList<Condition>(Condition.class, this, MappingsLanguagePackage.MAPPING__RIGHT_CONDITIONS);
+      rightConditions = new EObjectContainmentEList<SingleSidedCondition>(SingleSidedCondition.class, this, MappingsLanguagePackage.MAPPING__RIGHT_CONDITIONS);
     }
     return rightConditions;
   }
@@ -269,11 +270,11 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Condition> getBidirectionalizableConditions()
+  public EList<BidirectionalizableCondition> getBidirectionalizableConditions()
   {
     if (bidirectionalizableConditions == null)
     {
-      bidirectionalizableConditions = new EObjectContainmentEList<Condition>(Condition.class, this, MappingsLanguagePackage.MAPPING__BIDIRECTIONALIZABLE_CONDITIONS);
+      bidirectionalizableConditions = new EObjectContainmentEList<BidirectionalizableCondition>(BidirectionalizableCondition.class, this, MappingsLanguagePackage.MAPPING__BIDIRECTIONALIZABLE_CONDITIONS);
     }
     return bidirectionalizableConditions;
   }
@@ -460,7 +461,7 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return;
       case MappingsLanguagePackage.MAPPING__LEFT_CONDITIONS:
         getLeftConditions().clear();
-        getLeftConditions().addAll((Collection<? extends Condition>)newValue);
+        getLeftConditions().addAll((Collection<? extends SingleSidedCondition>)newValue);
         return;
       case MappingsLanguagePackage.MAPPING__RIGHT_PARAMETERS:
         getRightParameters().clear();
@@ -468,11 +469,11 @@ public class MappingImpl extends MinimalEObjectImpl.Container implements Mapping
         return;
       case MappingsLanguagePackage.MAPPING__RIGHT_CONDITIONS:
         getRightConditions().clear();
-        getRightConditions().addAll((Collection<? extends Condition>)newValue);
+        getRightConditions().addAll((Collection<? extends SingleSidedCondition>)newValue);
         return;
       case MappingsLanguagePackage.MAPPING__BIDIRECTIONALIZABLE_CONDITIONS:
         getBidirectionalizableConditions().clear();
-        getBidirectionalizableConditions().addAll((Collection<? extends Condition>)newValue);
+        getBidirectionalizableConditions().addAll((Collection<? extends BidirectionalizableCondition>)newValue);
         return;
       case MappingsLanguagePackage.MAPPING__FORWARD_EXECUTION_EXPRESSION:
         setForwardExecutionExpression((UnidirectionalExpression)newValue);

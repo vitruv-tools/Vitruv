@@ -114,7 +114,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getDocumentable()
    * @generated
    */
-  int DOCUMENTABLE = 20;
+  int DOCUMENTABLE = 27;
 
   /**
    * The feature id for the '<em><b>Documentation</b></em>' attribute.
@@ -190,13 +190,13 @@ public interface MappingsLanguagePackage extends EPackage
   int MAPPINGS_SEGMENT__MAPPINGS = DOCUMENTABLE_FEATURE_COUNT + 3;
 
   /**
-   * The feature id for the '<em><b>Bootstrap Mappings</b></em>' containment reference list.
+   * The feature id for the '<em><b>Bootstrappings</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MAPPINGS_SEGMENT__BOOTSTRAP_MAPPINGS = DOCUMENTABLE_FEATURE_COUNT + 4;
+  int MAPPINGS_SEGMENT__BOOTSTRAPPINGS = DOCUMENTABLE_FEATURE_COUNT + 4;
 
   /**
    * The number of structural features of the '<em>Mappings Segment</em>' class.
@@ -345,52 +345,6 @@ public interface MappingsLanguagePackage extends EPackage
   int DEPENDENCY_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ConditionImpl <em>Condition</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.ConditionImpl
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getCondition()
-   * @generated
-   */
-  int CONDITION = 4;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Assigned</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONDITION__FEATURE_TO_BE_ASSIGNED = 0;
-
-  /**
-   * The feature id for the '<em><b>Bidirectionalizable Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONDITION__BIDIRECTIONALIZABLE_EXPRESSION = 1;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Updated</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONDITION__FEATURE_TO_BE_UPDATED = 2;
-
-  /**
-   * The number of structural features of the '<em>Condition</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONDITION_FEATURE_COUNT = 3;
-
-  /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleSidedConditionImpl <em>Single Sided Condition</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -398,52 +352,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getSingleSidedCondition()
    * @generated
    */
-  int SINGLE_SIDED_CONDITION = 5;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Assigned</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_SIDED_CONDITION__FEATURE_TO_BE_ASSIGNED = CONDITION__FEATURE_TO_BE_ASSIGNED;
-
-  /**
-   * The feature id for the '<em><b>Bidirectionalizable Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_SIDED_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION = CONDITION__BIDIRECTIONALIZABLE_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Updated</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_SIDED_CONDITION__FEATURE_TO_BE_UPDATED = CONDITION__FEATURE_TO_BE_UPDATED;
-
-  /**
-   * The feature id for the '<em><b>Check Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_SIDED_CONDITION__CHECK_EXPRESSION = CONDITION_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Enforce Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_SIDED_CONDITION__ENFORCE_EXPRESSION = CONDITION_FEATURE_COUNT + 1;
+  int SINGLE_SIDED_CONDITION = 4;
 
   /**
    * The number of structural features of the '<em>Single Sided Condition</em>' class.
@@ -452,7 +361,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_SIDED_CONDITION_FEATURE_COUNT = CONDITION_FEATURE_COUNT + 2;
+  int SINGLE_SIDED_CONDITION_FEATURE_COUNT = 0;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.EnforceableConditionImpl <em>Enforceable Condition</em>}' class.
@@ -462,88 +371,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getEnforceableCondition()
    * @generated
    */
-  int ENFORCEABLE_CONDITION = 6;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Assigned</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENFORCEABLE_CONDITION__FEATURE_TO_BE_ASSIGNED = SINGLE_SIDED_CONDITION__FEATURE_TO_BE_ASSIGNED;
-
-  /**
-   * The feature id for the '<em><b>Bidirectionalizable Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENFORCEABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION = SINGLE_SIDED_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Updated</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENFORCEABLE_CONDITION__FEATURE_TO_BE_UPDATED = SINGLE_SIDED_CONDITION__FEATURE_TO_BE_UPDATED;
-
-  /**
-   * The feature id for the '<em><b>Check Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENFORCEABLE_CONDITION__CHECK_EXPRESSION = SINGLE_SIDED_CONDITION__CHECK_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Enforce Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENFORCEABLE_CONDITION__ENFORCE_EXPRESSION = SINGLE_SIDED_CONDITION__ENFORCE_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Element Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENFORCEABLE_CONDITION__ELEMENT_EXPRESSION = SINGLE_SIDED_CONDITION_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Path Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENFORCEABLE_CONDITION__PATH_EXPRESSION = SINGLE_SIDED_CONDITION_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Path</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENFORCEABLE_CONDITION__PATH = SINGLE_SIDED_CONDITION_FEATURE_COUNT + 2;
-
-  /**
-   * The feature id for the '<em><b>Feature</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ENFORCEABLE_CONDITION__FEATURE = SINGLE_SIDED_CONDITION_FEATURE_COUNT + 3;
+  int ENFORCEABLE_CONDITION = 5;
 
   /**
    * The number of structural features of the '<em>Enforceable Condition</em>' class.
@@ -552,7 +380,35 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int ENFORCEABLE_CONDITION_FEATURE_COUNT = SINGLE_SIDED_CONDITION_FEATURE_COUNT + 4;
+  int ENFORCEABLE_CONDITION_FEATURE_COUNT = SINGLE_SIDED_CONDITION_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl <em>Feature Condition</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getFeatureCondition()
+   * @generated
+   */
+  int FEATURE_CONDITION = 6;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FEATURE_CONDITION__FEATURE = ENFORCEABLE_CONDITION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Feature Condition</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FEATURE_CONDITION_FEATURE_COUNT = ENFORCEABLE_CONDITION_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureReferenceImpl <em>Feature Reference</em>}' class.
@@ -611,6 +467,34 @@ public interface MappingsLanguagePackage extends EPackage
   int DEPENDENT_FEATURE_REFERENCE_FEATURE_COUNT = FEATURE_REFERENCE_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleValueConditionImpl <em>Single Value Condition</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleValueConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getSingleValueCondition()
+   * @generated
+   */
+  int SINGLE_VALUE_CONDITION = 9;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_VALUE_CONDITION__FEATURE = FEATURE_CONDITION__FEATURE;
+
+  /**
+   * The number of structural features of the '<em>Single Value Condition</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SINGLE_VALUE_CONDITION_FEATURE_COUNT = FEATURE_CONDITION_FEATURE_COUNT + 0;
+
+  /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ValueConditionImpl <em>Value Condition</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -618,188 +502,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getValueCondition()
    * @generated
    */
-  int VALUE_CONDITION = 9;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Assigned</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION__FEATURE_TO_BE_ASSIGNED = ENFORCEABLE_CONDITION__FEATURE_TO_BE_ASSIGNED;
-
-  /**
-   * The feature id for the '<em><b>Bidirectionalizable Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION = ENFORCEABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Updated</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION__FEATURE_TO_BE_UPDATED = ENFORCEABLE_CONDITION__FEATURE_TO_BE_UPDATED;
-
-  /**
-   * The feature id for the '<em><b>Check Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION__CHECK_EXPRESSION = ENFORCEABLE_CONDITION__CHECK_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Enforce Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION__ENFORCE_EXPRESSION = ENFORCEABLE_CONDITION__ENFORCE_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Element Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION__ELEMENT_EXPRESSION = ENFORCEABLE_CONDITION__ELEMENT_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Path Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION__PATH_EXPRESSION = ENFORCEABLE_CONDITION__PATH_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Path</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION__PATH = ENFORCEABLE_CONDITION__PATH;
-
-  /**
-   * The feature id for the '<em><b>Feature</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION__FEATURE = ENFORCEABLE_CONDITION__FEATURE;
-
-  /**
-   * The number of structural features of the '<em>Value Condition</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int VALUE_CONDITION_FEATURE_COUNT = ENFORCEABLE_CONDITION_FEATURE_COUNT + 0;
-
-  /**
-   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl <em>Feature Condition</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getFeatureCondition()
-   * @generated
-   */
-  int FEATURE_CONDITION = 10;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Assigned</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__FEATURE_TO_BE_ASSIGNED = ENFORCEABLE_CONDITION__FEATURE_TO_BE_ASSIGNED;
-
-  /**
-   * The feature id for the '<em><b>Bidirectionalizable Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION = ENFORCEABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Updated</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__FEATURE_TO_BE_UPDATED = ENFORCEABLE_CONDITION__FEATURE_TO_BE_UPDATED;
-
-  /**
-   * The feature id for the '<em><b>Check Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__CHECK_EXPRESSION = ENFORCEABLE_CONDITION__CHECK_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Enforce Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__ENFORCE_EXPRESSION = ENFORCEABLE_CONDITION__ENFORCE_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Element Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__ELEMENT_EXPRESSION = ENFORCEABLE_CONDITION__ELEMENT_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Path Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__PATH_EXPRESSION = ENFORCEABLE_CONDITION__PATH_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Path</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__PATH = ENFORCEABLE_CONDITION__PATH;
-
-  /**
-   * The feature id for the '<em><b>Feature</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__FEATURE = ENFORCEABLE_CONDITION__FEATURE;
+  int VALUE_CONDITION = 10;
 
   /**
    * The feature id for the '<em><b>Value Expression</b></em>' containment reference.
@@ -808,34 +511,16 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int FEATURE_CONDITION__VALUE_EXPRESSION = ENFORCEABLE_CONDITION_FEATURE_COUNT + 0;
+  int VALUE_CONDITION__VALUE_EXPRESSION = 0;
 
   /**
-   * The feature id for the '<em><b>Negated</b></em>' attribute.
+   * The number of structural features of the '<em>Value Condition</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int FEATURE_CONDITION__NEGATED = ENFORCEABLE_CONDITION_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Operator</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION__OPERATOR = ENFORCEABLE_CONDITION_FEATURE_COUNT + 2;
-
-  /**
-   * The number of structural features of the '<em>Feature Condition</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FEATURE_CONDITION_FEATURE_COUNT = ENFORCEABLE_CONDITION_FEATURE_COUNT + 3;
+  int VALUE_CONDITION_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ValueExpressionImpl <em>Value Expression</em>}' class.
@@ -857,86 +542,14 @@ public interface MappingsLanguagePackage extends EPackage
   int VALUE_EXPRESSION_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleValueConditionImpl <em>Single Value Condition</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.IndexConditionImpl <em>Index Condition</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleValueConditionImpl
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getSingleValueCondition()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.IndexConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getIndexCondition()
    * @generated
    */
-  int SINGLE_VALUE_CONDITION = 12;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Assigned</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUE_CONDITION__FEATURE_TO_BE_ASSIGNED = VALUE_CONDITION__FEATURE_TO_BE_ASSIGNED;
-
-  /**
-   * The feature id for the '<em><b>Bidirectionalizable Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION = VALUE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Feature To Be Updated</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUE_CONDITION__FEATURE_TO_BE_UPDATED = VALUE_CONDITION__FEATURE_TO_BE_UPDATED;
-
-  /**
-   * The feature id for the '<em><b>Check Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUE_CONDITION__CHECK_EXPRESSION = VALUE_CONDITION__CHECK_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Enforce Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUE_CONDITION__ENFORCE_EXPRESSION = VALUE_CONDITION__ENFORCE_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Element Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUE_CONDITION__ELEMENT_EXPRESSION = VALUE_CONDITION__ELEMENT_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Path Expression</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUE_CONDITION__PATH_EXPRESSION = VALUE_CONDITION__PATH_EXPRESSION;
-
-  /**
-   * The feature id for the '<em><b>Path</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_VALUE_CONDITION__PATH = VALUE_CONDITION__PATH;
+  int INDEX_CONDITION = 12;
 
   /**
    * The feature id for the '<em><b>Feature</b></em>' containment reference.
@@ -945,7 +558,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VALUE_CONDITION__FEATURE = VALUE_CONDITION__FEATURE;
+  int INDEX_CONDITION__FEATURE = SINGLE_VALUE_CONDITION__FEATURE;
 
   /**
    * The feature id for the '<em><b>Negated</b></em>' attribute.
@@ -954,7 +567,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VALUE_CONDITION__NEGATED = VALUE_CONDITION_FEATURE_COUNT + 0;
+  int INDEX_CONDITION__NEGATED = SINGLE_VALUE_CONDITION_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Index Value Expression</b></em>' containment reference.
@@ -963,7 +576,35 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VALUE_CONDITION__INDEX_VALUE_EXPRESSION = VALUE_CONDITION_FEATURE_COUNT + 1;
+  int INDEX_CONDITION__INDEX_VALUE_EXPRESSION = SINGLE_VALUE_CONDITION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Index Condition</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INDEX_CONDITION_FEATURE_COUNT = SINGLE_VALUE_CONDITION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.NumCompareConditionImpl <em>Num Compare Condition</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.NumCompareConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getNumCompareCondition()
+   * @generated
+   */
+  int NUM_COMPARE_CONDITION = 13;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NUM_COMPARE_CONDITION__FEATURE = SINGLE_VALUE_CONDITION__FEATURE;
 
   /**
    * The feature id for the '<em><b>Operator</b></em>' attribute.
@@ -972,16 +613,99 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int SINGLE_VALUE_CONDITION__OPERATOR = VALUE_CONDITION_FEATURE_COUNT + 2;
+  int NUM_COMPARE_CONDITION__OPERATOR = SINGLE_VALUE_CONDITION_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the '<em>Single Value Condition</em>' class.
+   * The number of structural features of the '<em>Num Compare Condition</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SINGLE_VALUE_CONDITION_FEATURE_COUNT = VALUE_CONDITION_FEATURE_COUNT + 3;
+  int NUM_COMPARE_CONDITION_FEATURE_COUNT = SINGLE_VALUE_CONDITION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.MultiValueConditionImpl <em>Multi Value Condition</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MultiValueConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getMultiValueCondition()
+   * @generated
+   */
+  int MULTI_VALUE_CONDITION = 14;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MULTI_VALUE_CONDITION__FEATURE = FEATURE_CONDITION__FEATURE;
+
+  /**
+   * The feature id for the '<em><b>Negated</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MULTI_VALUE_CONDITION__NEGATED = FEATURE_CONDITION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Operator</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MULTI_VALUE_CONDITION__OPERATOR = FEATURE_CONDITION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Multi Value Condition</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MULTI_VALUE_CONDITION_FEATURE_COUNT = FEATURE_CONDITION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ElementConditionImpl <em>Element Condition</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.ElementConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getElementCondition()
+   * @generated
+   */
+  int ELEMENT_CONDITION = 15;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_CONDITION__FEATURE = FEATURE_CONDITION__FEATURE;
+
+  /**
+   * The feature id for the '<em><b>Element Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_CONDITION__ELEMENT_EXPRESSION = FEATURE_CONDITION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Element Condition</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ELEMENT_CONDITION_FEATURE_COUNT = FEATURE_CONDITION_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ElementExpressionImpl <em>Element Expression</em>}' class.
@@ -991,7 +715,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getElementExpression()
    * @generated
    */
-  int ELEMENT_EXPRESSION = 13;
+  int ELEMENT_EXPRESSION = 16;
 
   /**
    * The number of structural features of the '<em>Element Expression</em>' class.
@@ -1003,6 +727,126 @@ public interface MappingsLanguagePackage extends EPackage
   int ELEMENT_EXPRESSION_FEATURE_COUNT = 0;
 
   /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.NotEmptyConditionImpl <em>Not Empty Condition</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.NotEmptyConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getNotEmptyCondition()
+   * @generated
+   */
+  int NOT_EMPTY_CONDITION = 17;
+
+  /**
+   * The feature id for the '<em><b>Feature</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_EMPTY_CONDITION__FEATURE = FEATURE_CONDITION__FEATURE;
+
+  /**
+   * The feature id for the '<em><b>Negated</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_EMPTY_CONDITION__NEGATED = FEATURE_CONDITION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Not Empty Condition</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NOT_EMPTY_CONDITION_FEATURE_COUNT = FEATURE_CONDITION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ResourceConditionImpl <em>Resource Condition</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.ResourceConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getResourceCondition()
+   * @generated
+   */
+  int RESOURCE_CONDITION = 18;
+
+  /**
+   * The feature id for the '<em><b>Element Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESOURCE_CONDITION__ELEMENT_EXPRESSION = ENFORCEABLE_CONDITION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Path Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESOURCE_CONDITION__PATH_EXPRESSION = ENFORCEABLE_CONDITION_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Path</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESOURCE_CONDITION__PATH = ENFORCEABLE_CONDITION_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Resource Condition</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESOURCE_CONDITION_FEATURE_COUNT = ENFORCEABLE_CONDITION_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.CheckAndEnforceConditionImpl <em>Check And Enforce Condition</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.CheckAndEnforceConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getCheckAndEnforceCondition()
+   * @generated
+   */
+  int CHECK_AND_ENFORCE_CONDITION = 19;
+
+  /**
+   * The feature id for the '<em><b>Check Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CHECK_AND_ENFORCE_CONDITION__CHECK_EXPRESSION = SINGLE_SIDED_CONDITION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Enforce Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CHECK_AND_ENFORCE_CONDITION__ENFORCE_EXPRESSION = SINGLE_SIDED_CONDITION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Check And Enforce Condition</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CHECK_AND_ENFORCE_CONDITION_FEATURE_COUNT = SINGLE_SIDED_CONDITION_FEATURE_COUNT + 2;
+
+  /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.CheckExpressionImpl <em>Check Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1010,7 +854,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getCheckExpression()
    * @generated
    */
-  int CHECK_EXPRESSION = 14;
+  int CHECK_EXPRESSION = 20;
 
   /**
    * The number of structural features of the '<em>Check Expression</em>' class.
@@ -1029,7 +873,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getEnforceExpression()
    * @generated
    */
-  int ENFORCE_EXPRESSION = 15;
+  int ENFORCE_EXPRESSION = 21;
 
   /**
    * The number of structural features of the '<em>Enforce Expression</em>' class.
@@ -1041,6 +885,52 @@ public interface MappingsLanguagePackage extends EPackage
   int ENFORCE_EXPRESSION_FEATURE_COUNT = 0;
 
   /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BidirectionalizableConditionImpl <em>Bidirectionalizable Condition</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.BidirectionalizableConditionImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getBidirectionalizableCondition()
+   * @generated
+   */
+  int BIDIRECTIONALIZABLE_CONDITION = 22;
+
+  /**
+   * The feature id for the '<em><b>Feature To Be Assigned</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED = 0;
+
+  /**
+   * The feature id for the '<em><b>Bidirectionalizable Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION = 1;
+
+  /**
+   * The feature id for the '<em><b>Feature To Be Updated</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED = 2;
+
+  /**
+   * The number of structural features of the '<em>Bidirectionalizable Condition</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BIDIRECTIONALIZABLE_CONDITION_FEATURE_COUNT = 3;
+
+  /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BidirectionalizableExpressionImpl <em>Bidirectionalizable Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1048,7 +938,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getBidirectionalizableExpression()
    * @generated
    */
-  int BIDIRECTIONALIZABLE_EXPRESSION = 16;
+  int BIDIRECTIONALIZABLE_EXPRESSION = 23;
 
   /**
    * The number of structural features of the '<em>Bidirectionalizable Expression</em>' class.
@@ -1067,7 +957,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getUnidirectionalExpression()
    * @generated
    */
-  int UNIDIRECTIONAL_EXPRESSION = 17;
+  int UNIDIRECTIONAL_EXPRESSION = 24;
 
   /**
    * The number of structural features of the '<em>Unidirectional Expression</em>' class.
@@ -1079,14 +969,14 @@ public interface MappingsLanguagePackage extends EPackage
   int UNIDIRECTIONAL_EXPRESSION_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrapMappingImpl <em>Bootstrap Mapping</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrappingImpl <em>Bootstrapping</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrapMappingImpl
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getBootstrapMapping()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrappingImpl
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getBootstrapping()
    * @generated
    */
-  int BOOTSTRAP_MAPPING = 18;
+  int BOOTSTRAPPING = 25;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1095,7 +985,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int BOOTSTRAP_MAPPING__NAME = 0;
+  int BOOTSTRAPPING__NAME = 0;
 
   /**
    * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -1104,7 +994,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int BOOTSTRAP_MAPPING__PARAMETERS = 1;
+  int BOOTSTRAPPING__PARAMETERS = 1;
 
   /**
    * The feature id for the '<em><b>Bootstrap Conditon</b></em>' containment reference.
@@ -1113,16 +1003,16 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON = 2;
+  int BOOTSTRAPPING__BOOTSTRAP_CONDITON = 2;
 
   /**
-   * The number of structural features of the '<em>Bootstrap Mapping</em>' class.
+   * The number of structural features of the '<em>Bootstrapping</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BOOTSTRAP_MAPPING_FEATURE_COUNT = 3;
+  int BOOTSTRAPPING_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.CodeBlockImpl <em>Code Block</em>}' class.
@@ -1132,7 +1022,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getCodeBlock()
    * @generated
    */
-  int CODE_BLOCK = 19;
+  int CODE_BLOCK = 26;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1160,7 +1050,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getMetaclassFeatureReference()
    * @generated
    */
-  int METACLASS_FEATURE_REFERENCE = 21;
+  int METACLASS_FEATURE_REFERENCE = 28;
 
   /**
    * The number of structural features of the '<em>Metaclass Feature Reference</em>' class.
@@ -1179,7 +1069,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getNumCompareOperator()
    * @generated
    */
-  int NUM_COMPARE_OPERATOR = 22;
+  int NUM_COMPARE_OPERATOR = 29;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator <em>Multi Value Condition Operator</em>}' enum.
@@ -1189,7 +1079,7 @@ public interface MappingsLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getMultiValueConditionOperator()
    * @generated
    */
-  int MULTI_VALUE_CONDITION_OPERATOR = 23;
+  int MULTI_VALUE_CONDITION_OPERATOR = 30;
 
 
   /**
@@ -1279,15 +1169,15 @@ public interface MappingsLanguagePackage extends EPackage
   EReference getMappingsSegment_Mappings();
 
   /**
-   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment#getBootstrapMappings <em>Bootstrap Mappings</em>}'.
+   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment#getBootstrappings <em>Bootstrappings</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Bootstrap Mappings</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment#getBootstrapMappings()
+   * @return the meta object for the containment reference list '<em>Bootstrappings</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment#getBootstrappings()
    * @see #getMappingsSegment()
    * @generated
    */
-  EReference getMappingsSegment_BootstrapMappings();
+  EReference getMappingsSegment_Bootstrappings();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Mapping <em>Mapping</em>}'.
@@ -1431,49 +1321,6 @@ public interface MappingsLanguagePackage extends EPackage
   EAttribute getDependency_ShortName();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition <em>Condition</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Condition</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Condition
-   * @generated
-   */
-  EClass getCondition();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getFeatureToBeAssigned <em>Feature To Be Assigned</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Feature To Be Assigned</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getFeatureToBeAssigned()
-   * @see #getCondition()
-   * @generated
-   */
-  EReference getCondition_FeatureToBeAssigned();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getBidirectionalizableExpression <em>Bidirectionalizable Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Bidirectionalizable Expression</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getBidirectionalizableExpression()
-   * @see #getCondition()
-   * @generated
-   */
-  EReference getCondition_BidirectionalizableExpression();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getFeatureToBeUpdated <em>Feature To Be Updated</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Feature To Be Updated</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getFeatureToBeUpdated()
-   * @see #getCondition()
-   * @generated
-   */
-  EReference getCondition_FeatureToBeUpdated();
-
-  /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition <em>Single Sided Condition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1482,28 +1329,6 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    */
   EClass getSingleSidedCondition();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition#getCheckExpression <em>Check Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Check Expression</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition#getCheckExpression()
-   * @see #getSingleSidedCondition()
-   * @generated
-   */
-  EReference getSingleSidedCondition_CheckExpression();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition#getEnforceExpression <em>Enforce Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Enforce Expression</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition#getEnforceExpression()
-   * @see #getSingleSidedCondition()
-   * @generated
-   */
-  EReference getSingleSidedCondition_EnforceExpression();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition <em>Enforceable Condition</em>}'.
@@ -1516,48 +1341,25 @@ public interface MappingsLanguagePackage extends EPackage
   EClass getEnforceableCondition();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getElementExpression <em>Element Expression</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition <em>Feature Condition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Element Expression</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getElementExpression()
-   * @see #getEnforceableCondition()
+   * @return the meta object for class '<em>Feature Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
    * @generated
    */
-  EReference getEnforceableCondition_ElementExpression();
+  EClass getFeatureCondition();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getPathExpression <em>Path Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Path Expression</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getPathExpression()
-   * @see #getEnforceableCondition()
-   * @generated
-   */
-  EReference getEnforceableCondition_PathExpression();
-
-  /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getPath <em>Path</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Path</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getPath()
-   * @see #getEnforceableCondition()
-   * @generated
-   */
-  EAttribute getEnforceableCondition_Path();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getFeature <em>Feature</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition#getFeature <em>Feature</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Feature</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition#getFeature()
-   * @see #getEnforceableCondition()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition#getFeature()
+   * @see #getFeatureCondition()
    * @generated
    */
-  EReference getEnforceableCondition_Feature();
+  EReference getFeatureCondition_Feature();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.FeatureReference <em>Feature Reference</em>}'.
@@ -1602,6 +1404,16 @@ public interface MappingsLanguagePackage extends EPackage
   EReference getDependentFeatureReference_DependeeFeature();
 
   /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition <em>Single Value Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Single Value Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition
+   * @generated
+   */
+  EClass getSingleValueCondition();
+
+  /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ValueCondition <em>Value Condition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1612,47 +1424,15 @@ public interface MappingsLanguagePackage extends EPackage
   EClass getValueCondition();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition <em>Feature Condition</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Feature Condition</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
-   * @generated
-   */
-  EClass getFeatureCondition();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition#getValueExpression <em>Value Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ValueCondition#getValueExpression <em>Value Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Value Expression</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition#getValueExpression()
-   * @see #getFeatureCondition()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.ValueCondition#getValueExpression()
+   * @see #getValueCondition()
    * @generated
    */
-  EReference getFeatureCondition_ValueExpression();
-
-  /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition#isNegated <em>Negated</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Negated</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition#isNegated()
-   * @see #getFeatureCondition()
-   * @generated
-   */
-  EAttribute getFeatureCondition_Negated();
-
-  /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition#getOperator <em>Operator</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Operator</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition#getOperator()
-   * @see #getFeatureCondition()
-   * @generated
-   */
-  EAttribute getFeatureCondition_Operator();
+  EReference getValueCondition_ValueExpression();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ValueExpression <em>Value Expression</em>}'.
@@ -1665,47 +1445,110 @@ public interface MappingsLanguagePackage extends EPackage
   EClass getValueExpression();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition <em>Single Value Condition</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition <em>Index Condition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Single Value Condition</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition
+   * @return the meta object for class '<em>Index Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition
    * @generated
    */
-  EClass getSingleValueCondition();
+  EClass getIndexCondition();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition#isNegated <em>Negated</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition#isNegated <em>Negated</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Negated</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition#isNegated()
-   * @see #getSingleValueCondition()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition#isNegated()
+   * @see #getIndexCondition()
    * @generated
    */
-  EAttribute getSingleValueCondition_Negated();
+  EAttribute getIndexCondition_Negated();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition#getIndexValueExpression <em>Index Value Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition#getIndexValueExpression <em>Index Value Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Index Value Expression</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition#getIndexValueExpression()
-   * @see #getSingleValueCondition()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition#getIndexValueExpression()
+   * @see #getIndexCondition()
    * @generated
    */
-  EReference getSingleValueCondition_IndexValueExpression();
+  EReference getIndexCondition_IndexValueExpression();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition#getOperator <em>Operator</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition <em>Num Compare Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Num Compare Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
+   * @generated
+   */
+  EClass getNumCompareCondition();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition#getOperator <em>Operator</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Operator</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition#getOperator()
-   * @see #getSingleValueCondition()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition#getOperator()
+   * @see #getNumCompareCondition()
    * @generated
    */
-  EAttribute getSingleValueCondition_Operator();
+  EAttribute getNumCompareCondition_Operator();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition <em>Multi Value Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Multi Value Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
+   * @generated
+   */
+  EClass getMultiValueCondition();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition#isNegated <em>Negated</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Negated</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition#isNegated()
+   * @see #getMultiValueCondition()
+   * @generated
+   */
+  EAttribute getMultiValueCondition_Negated();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition#getOperator <em>Operator</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Operator</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition#getOperator()
+   * @see #getMultiValueCondition()
+   * @generated
+   */
+  EAttribute getMultiValueCondition_Operator();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition <em>Element Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Element Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition
+   * @generated
+   */
+  EClass getElementCondition();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition#getElementExpression <em>Element Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Element Expression</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition#getElementExpression()
+   * @see #getElementCondition()
+   * @generated
+   */
+  EReference getElementCondition_ElementExpression();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ElementExpression <em>Element Expression</em>}'.
@@ -1716,6 +1559,102 @@ public interface MappingsLanguagePackage extends EPackage
    * @generated
    */
   EClass getElementExpression();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.NotEmptyCondition <em>Not Empty Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Not Empty Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.NotEmptyCondition
+   * @generated
+   */
+  EClass getNotEmptyCondition();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.NotEmptyCondition#isNegated <em>Negated</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Negated</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.NotEmptyCondition#isNegated()
+   * @see #getNotEmptyCondition()
+   * @generated
+   */
+  EAttribute getNotEmptyCondition_Negated();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition <em>Resource Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Resource Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition
+   * @generated
+   */
+  EClass getResourceCondition();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition#getElementExpression <em>Element Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Element Expression</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition#getElementExpression()
+   * @see #getResourceCondition()
+   * @generated
+   */
+  EReference getResourceCondition_ElementExpression();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition#getPathExpression <em>Path Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Path Expression</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition#getPathExpression()
+   * @see #getResourceCondition()
+   * @generated
+   */
+  EReference getResourceCondition_PathExpression();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition#getPath <em>Path</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Path</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition#getPath()
+   * @see #getResourceCondition()
+   * @generated
+   */
+  EAttribute getResourceCondition_Path();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition <em>Check And Enforce Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Check And Enforce Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition
+   * @generated
+   */
+  EClass getCheckAndEnforceCondition();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition#getCheckExpression <em>Check Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Check Expression</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition#getCheckExpression()
+   * @see #getCheckAndEnforceCondition()
+   * @generated
+   */
+  EReference getCheckAndEnforceCondition_CheckExpression();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition#getEnforceExpression <em>Enforce Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Enforce Expression</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition#getEnforceExpression()
+   * @see #getCheckAndEnforceCondition()
+   * @generated
+   */
+  EReference getCheckAndEnforceCondition_EnforceExpression();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.CheckExpression <em>Check Expression</em>}'.
@@ -1738,6 +1677,49 @@ public interface MappingsLanguagePackage extends EPackage
   EClass getEnforceExpression();
 
   /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition <em>Bidirectionalizable Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Bidirectionalizable Condition</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
+   * @generated
+   */
+  EClass getBidirectionalizableCondition();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getFeatureToBeAssigned <em>Feature To Be Assigned</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Feature To Be Assigned</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getFeatureToBeAssigned()
+   * @see #getBidirectionalizableCondition()
+   * @generated
+   */
+  EReference getBidirectionalizableCondition_FeatureToBeAssigned();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getBidirectionalizableExpression <em>Bidirectionalizable Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Bidirectionalizable Expression</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getBidirectionalizableExpression()
+   * @see #getBidirectionalizableCondition()
+   * @generated
+   */
+  EReference getBidirectionalizableCondition_BidirectionalizableExpression();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getFeatureToBeUpdated <em>Feature To Be Updated</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Feature To Be Updated</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getFeatureToBeUpdated()
+   * @see #getBidirectionalizableCondition()
+   * @generated
+   */
+  EReference getBidirectionalizableCondition_FeatureToBeUpdated();
+
+  /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableExpression <em>Bidirectionalizable Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1758,47 +1740,47 @@ public interface MappingsLanguagePackage extends EPackage
   EClass getUnidirectionalExpression();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping <em>Bootstrap Mapping</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping <em>Bootstrapping</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Bootstrap Mapping</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping
+   * @return the meta object for class '<em>Bootstrapping</em>'.
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping
    * @generated
    */
-  EClass getBootstrapMapping();
+  EClass getBootstrapping();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getName()
-   * @see #getBootstrapMapping()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getName()
+   * @see #getBootstrapping()
    * @generated
    */
-  EAttribute getBootstrapMapping_Name();
+  EAttribute getBootstrapping_Name();
 
   /**
-   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getParameters <em>Parameters</em>}'.
+   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getParameters <em>Parameters</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Parameters</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getParameters()
-   * @see #getBootstrapMapping()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getParameters()
+   * @see #getBootstrapping()
    * @generated
    */
-  EReference getBootstrapMapping_Parameters();
+  EReference getBootstrapping_Parameters();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getBootstrapConditon <em>Bootstrap Conditon</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getBootstrapConditon <em>Bootstrap Conditon</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Bootstrap Conditon</em>'.
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.BootstrapMapping#getBootstrapConditon()
-   * @see #getBootstrapMapping()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.Bootstrapping#getBootstrapConditon()
+   * @see #getBootstrapping()
    * @generated
    */
-  EReference getBootstrapMapping_BootstrapConditon();
+  EReference getBootstrapping_BootstrapConditon();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mappings.mappingsLanguage.CodeBlock <em>Code Block</em>}'.
@@ -1964,12 +1946,12 @@ public interface MappingsLanguagePackage extends EPackage
     EReference MAPPINGS_SEGMENT__MAPPINGS = eINSTANCE.getMappingsSegment_Mappings();
 
     /**
-     * The meta object literal for the '<em><b>Bootstrap Mappings</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Bootstrappings</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MAPPINGS_SEGMENT__BOOTSTRAP_MAPPINGS = eINSTANCE.getMappingsSegment_BootstrapMappings();
+    EReference MAPPINGS_SEGMENT__BOOTSTRAPPINGS = eINSTANCE.getMappingsSegment_Bootstrappings();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingImpl <em>Mapping</em>}' class.
@@ -2080,40 +2062,6 @@ public interface MappingsLanguagePackage extends EPackage
     EAttribute DEPENDENCY__SHORT_NAME = eINSTANCE.getDependency_ShortName();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ConditionImpl <em>Condition</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.ConditionImpl
-     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getCondition()
-     * @generated
-     */
-    EClass CONDITION = eINSTANCE.getCondition();
-
-    /**
-     * The meta object literal for the '<em><b>Feature To Be Assigned</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONDITION__FEATURE_TO_BE_ASSIGNED = eINSTANCE.getCondition_FeatureToBeAssigned();
-
-    /**
-     * The meta object literal for the '<em><b>Bidirectionalizable Expression</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONDITION__BIDIRECTIONALIZABLE_EXPRESSION = eINSTANCE.getCondition_BidirectionalizableExpression();
-
-    /**
-     * The meta object literal for the '<em><b>Feature To Be Updated</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONDITION__FEATURE_TO_BE_UPDATED = eINSTANCE.getCondition_FeatureToBeUpdated();
-
-    /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleSidedConditionImpl <em>Single Sided Condition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2122,22 +2070,6 @@ public interface MappingsLanguagePackage extends EPackage
      * @generated
      */
     EClass SINGLE_SIDED_CONDITION = eINSTANCE.getSingleSidedCondition();
-
-    /**
-     * The meta object literal for the '<em><b>Check Expression</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference SINGLE_SIDED_CONDITION__CHECK_EXPRESSION = eINSTANCE.getSingleSidedCondition_CheckExpression();
-
-    /**
-     * The meta object literal for the '<em><b>Enforce Expression</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference SINGLE_SIDED_CONDITION__ENFORCE_EXPRESSION = eINSTANCE.getSingleSidedCondition_EnforceExpression();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.EnforceableConditionImpl <em>Enforceable Condition</em>}' class.
@@ -2150,28 +2082,14 @@ public interface MappingsLanguagePackage extends EPackage
     EClass ENFORCEABLE_CONDITION = eINSTANCE.getEnforceableCondition();
 
     /**
-     * The meta object literal for the '<em><b>Element Expression</b></em>' containment reference feature.
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl <em>Feature Condition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getFeatureCondition()
      * @generated
      */
-    EReference ENFORCEABLE_CONDITION__ELEMENT_EXPRESSION = eINSTANCE.getEnforceableCondition_ElementExpression();
-
-    /**
-     * The meta object literal for the '<em><b>Path Expression</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference ENFORCEABLE_CONDITION__PATH_EXPRESSION = eINSTANCE.getEnforceableCondition_PathExpression();
-
-    /**
-     * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute ENFORCEABLE_CONDITION__PATH = eINSTANCE.getEnforceableCondition_Path();
+    EClass FEATURE_CONDITION = eINSTANCE.getFeatureCondition();
 
     /**
      * The meta object literal for the '<em><b>Feature</b></em>' containment reference feature.
@@ -2179,7 +2097,7 @@ public interface MappingsLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ENFORCEABLE_CONDITION__FEATURE = eINSTANCE.getEnforceableCondition_Feature();
+    EReference FEATURE_CONDITION__FEATURE = eINSTANCE.getFeatureCondition_Feature();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureReferenceImpl <em>Feature Reference</em>}' class.
@@ -2218,6 +2136,16 @@ public interface MappingsLanguagePackage extends EPackage
     EReference DEPENDENT_FEATURE_REFERENCE__DEPENDEE_FEATURE = eINSTANCE.getDependentFeatureReference_DependeeFeature();
 
     /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleValueConditionImpl <em>Single Value Condition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleValueConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getSingleValueCondition()
+     * @generated
+     */
+    EClass SINGLE_VALUE_CONDITION = eINSTANCE.getSingleValueCondition();
+
+    /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ValueConditionImpl <em>Value Condition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2228,38 +2156,12 @@ public interface MappingsLanguagePackage extends EPackage
     EClass VALUE_CONDITION = eINSTANCE.getValueCondition();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl <em>Feature Condition</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.FeatureConditionImpl
-     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getFeatureCondition()
-     * @generated
-     */
-    EClass FEATURE_CONDITION = eINSTANCE.getFeatureCondition();
-
-    /**
      * The meta object literal for the '<em><b>Value Expression</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference FEATURE_CONDITION__VALUE_EXPRESSION = eINSTANCE.getFeatureCondition_ValueExpression();
-
-    /**
-     * The meta object literal for the '<em><b>Negated</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute FEATURE_CONDITION__NEGATED = eINSTANCE.getFeatureCondition_Negated();
-
-    /**
-     * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute FEATURE_CONDITION__OPERATOR = eINSTANCE.getFeatureCondition_Operator();
+    EReference VALUE_CONDITION__VALUE_EXPRESSION = eINSTANCE.getValueCondition_ValueExpression();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ValueExpressionImpl <em>Value Expression</em>}' class.
@@ -2272,14 +2174,14 @@ public interface MappingsLanguagePackage extends EPackage
     EClass VALUE_EXPRESSION = eINSTANCE.getValueExpression();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleValueConditionImpl <em>Single Value Condition</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.IndexConditionImpl <em>Index Condition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.SingleValueConditionImpl
-     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getSingleValueCondition()
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.IndexConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getIndexCondition()
      * @generated
      */
-    EClass SINGLE_VALUE_CONDITION = eINSTANCE.getSingleValueCondition();
+    EClass INDEX_CONDITION = eINSTANCE.getIndexCondition();
 
     /**
      * The meta object literal for the '<em><b>Negated</b></em>' attribute feature.
@@ -2287,7 +2189,7 @@ public interface MappingsLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute SINGLE_VALUE_CONDITION__NEGATED = eINSTANCE.getSingleValueCondition_Negated();
+    EAttribute INDEX_CONDITION__NEGATED = eINSTANCE.getIndexCondition_Negated();
 
     /**
      * The meta object literal for the '<em><b>Index Value Expression</b></em>' containment reference feature.
@@ -2295,7 +2197,17 @@ public interface MappingsLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference SINGLE_VALUE_CONDITION__INDEX_VALUE_EXPRESSION = eINSTANCE.getSingleValueCondition_IndexValueExpression();
+    EReference INDEX_CONDITION__INDEX_VALUE_EXPRESSION = eINSTANCE.getIndexCondition_IndexValueExpression();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.NumCompareConditionImpl <em>Num Compare Condition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.NumCompareConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getNumCompareCondition()
+     * @generated
+     */
+    EClass NUM_COMPARE_CONDITION = eINSTANCE.getNumCompareCondition();
 
     /**
      * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
@@ -2303,7 +2215,51 @@ public interface MappingsLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute SINGLE_VALUE_CONDITION__OPERATOR = eINSTANCE.getSingleValueCondition_Operator();
+    EAttribute NUM_COMPARE_CONDITION__OPERATOR = eINSTANCE.getNumCompareCondition_Operator();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.MultiValueConditionImpl <em>Multi Value Condition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MultiValueConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getMultiValueCondition()
+     * @generated
+     */
+    EClass MULTI_VALUE_CONDITION = eINSTANCE.getMultiValueCondition();
+
+    /**
+     * The meta object literal for the '<em><b>Negated</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MULTI_VALUE_CONDITION__NEGATED = eINSTANCE.getMultiValueCondition_Negated();
+
+    /**
+     * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MULTI_VALUE_CONDITION__OPERATOR = eINSTANCE.getMultiValueCondition_Operator();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ElementConditionImpl <em>Element Condition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.ElementConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getElementCondition()
+     * @generated
+     */
+    EClass ELEMENT_CONDITION = eINSTANCE.getElementCondition();
+
+    /**
+     * The meta object literal for the '<em><b>Element Expression</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ELEMENT_CONDITION__ELEMENT_EXPRESSION = eINSTANCE.getElementCondition_ElementExpression();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ElementExpressionImpl <em>Element Expression</em>}' class.
@@ -2314,6 +2270,84 @@ public interface MappingsLanguagePackage extends EPackage
      * @generated
      */
     EClass ELEMENT_EXPRESSION = eINSTANCE.getElementExpression();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.NotEmptyConditionImpl <em>Not Empty Condition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.NotEmptyConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getNotEmptyCondition()
+     * @generated
+     */
+    EClass NOT_EMPTY_CONDITION = eINSTANCE.getNotEmptyCondition();
+
+    /**
+     * The meta object literal for the '<em><b>Negated</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NOT_EMPTY_CONDITION__NEGATED = eINSTANCE.getNotEmptyCondition_Negated();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.ResourceConditionImpl <em>Resource Condition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.ResourceConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getResourceCondition()
+     * @generated
+     */
+    EClass RESOURCE_CONDITION = eINSTANCE.getResourceCondition();
+
+    /**
+     * The meta object literal for the '<em><b>Element Expression</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RESOURCE_CONDITION__ELEMENT_EXPRESSION = eINSTANCE.getResourceCondition_ElementExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Path Expression</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RESOURCE_CONDITION__PATH_EXPRESSION = eINSTANCE.getResourceCondition_PathExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute RESOURCE_CONDITION__PATH = eINSTANCE.getResourceCondition_Path();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.CheckAndEnforceConditionImpl <em>Check And Enforce Condition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.CheckAndEnforceConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getCheckAndEnforceCondition()
+     * @generated
+     */
+    EClass CHECK_AND_ENFORCE_CONDITION = eINSTANCE.getCheckAndEnforceCondition();
+
+    /**
+     * The meta object literal for the '<em><b>Check Expression</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CHECK_AND_ENFORCE_CONDITION__CHECK_EXPRESSION = eINSTANCE.getCheckAndEnforceCondition_CheckExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Enforce Expression</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CHECK_AND_ENFORCE_CONDITION__ENFORCE_EXPRESSION = eINSTANCE.getCheckAndEnforceCondition_EnforceExpression();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.CheckExpressionImpl <em>Check Expression</em>}' class.
@@ -2336,6 +2370,40 @@ public interface MappingsLanguagePackage extends EPackage
     EClass ENFORCE_EXPRESSION = eINSTANCE.getEnforceExpression();
 
     /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BidirectionalizableConditionImpl <em>Bidirectionalizable Condition</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.BidirectionalizableConditionImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getBidirectionalizableCondition()
+     * @generated
+     */
+    EClass BIDIRECTIONALIZABLE_CONDITION = eINSTANCE.getBidirectionalizableCondition();
+
+    /**
+     * The meta object literal for the '<em><b>Feature To Be Assigned</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_ASSIGNED = eINSTANCE.getBidirectionalizableCondition_FeatureToBeAssigned();
+
+    /**
+     * The meta object literal for the '<em><b>Bidirectionalizable Expression</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BIDIRECTIONALIZABLE_CONDITION__BIDIRECTIONALIZABLE_EXPRESSION = eINSTANCE.getBidirectionalizableCondition_BidirectionalizableExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Feature To Be Updated</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BIDIRECTIONALIZABLE_CONDITION__FEATURE_TO_BE_UPDATED = eINSTANCE.getBidirectionalizableCondition_FeatureToBeUpdated();
+
+    /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BidirectionalizableExpressionImpl <em>Bidirectionalizable Expression</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2356,14 +2424,14 @@ public interface MappingsLanguagePackage extends EPackage
     EClass UNIDIRECTIONAL_EXPRESSION = eINSTANCE.getUnidirectionalExpression();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrapMappingImpl <em>Bootstrap Mapping</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrappingImpl <em>Bootstrapping</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrapMappingImpl
-     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getBootstrapMapping()
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.BootstrappingImpl
+     * @see tools.vitruv.dsls.mappings.mappingsLanguage.impl.MappingsLanguagePackageImpl#getBootstrapping()
      * @generated
      */
-    EClass BOOTSTRAP_MAPPING = eINSTANCE.getBootstrapMapping();
+    EClass BOOTSTRAPPING = eINSTANCE.getBootstrapping();
 
     /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -2371,7 +2439,7 @@ public interface MappingsLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute BOOTSTRAP_MAPPING__NAME = eINSTANCE.getBootstrapMapping_Name();
+    EAttribute BOOTSTRAPPING__NAME = eINSTANCE.getBootstrapping_Name();
 
     /**
      * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature.
@@ -2379,7 +2447,7 @@ public interface MappingsLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference BOOTSTRAP_MAPPING__PARAMETERS = eINSTANCE.getBootstrapMapping_Parameters();
+    EReference BOOTSTRAPPING__PARAMETERS = eINSTANCE.getBootstrapping_Parameters();
 
     /**
      * The meta object literal for the '<em><b>Bootstrap Conditon</b></em>' containment reference feature.
@@ -2387,7 +2455,7 @@ public interface MappingsLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference BOOTSTRAP_MAPPING__BOOTSTRAP_CONDITON = eINSTANCE.getBootstrapMapping_BootstrapConditon();
+    EReference BOOTSTRAPPING__BOOTSTRAP_CONDITON = eINSTANCE.getBootstrapping_BootstrapConditon();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.impl.CodeBlockImpl <em>Code Block</em>}' class.

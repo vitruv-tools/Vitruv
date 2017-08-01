@@ -9,23 +9,23 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Condition</b></em>'.
+ * A representation of the model object '<em><b>Bidirectionalizable Condition</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getFeatureToBeAssigned <em>Feature To Be Assigned</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getBidirectionalizableExpression <em>Bidirectionalizable Expression</em>}</li>
- *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getFeatureToBeUpdated <em>Feature To Be Updated</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getFeatureToBeAssigned <em>Feature To Be Assigned</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getBidirectionalizableExpression <em>Bidirectionalizable Expression</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getFeatureToBeUpdated <em>Feature To Be Updated</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getCondition()
+ * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBidirectionalizableCondition()
  * @model
  * @generated
  */
-public interface Condition extends EObject
+public interface BidirectionalizableCondition extends EObject
 {
   /**
    * Returns the value of the '<em><b>Feature To Be Assigned</b></em>' containment reference.
@@ -37,14 +37,14 @@ public interface Condition extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Feature To Be Assigned</em>' containment reference.
    * @see #setFeatureToBeAssigned(MetaclassFeatureReference)
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getCondition_FeatureToBeAssigned()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBidirectionalizableCondition_FeatureToBeAssigned()
    * @model containment="true"
    * @generated
    */
   MetaclassFeatureReference getFeatureToBeAssigned();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getFeatureToBeAssigned <em>Feature To Be Assigned</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getFeatureToBeAssigned <em>Feature To Be Assigned</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Feature To Be Assigned</em>' containment reference.
@@ -63,14 +63,14 @@ public interface Condition extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Bidirectionalizable Expression</em>' containment reference.
    * @see #setBidirectionalizableExpression(BidirectionalizableExpression)
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getCondition_BidirectionalizableExpression()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBidirectionalizableCondition_BidirectionalizableExpression()
    * @model containment="true"
    * @generated
    */
   BidirectionalizableExpression getBidirectionalizableExpression();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getBidirectionalizableExpression <em>Bidirectionalizable Expression</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getBidirectionalizableExpression <em>Bidirectionalizable Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Bidirectionalizable Expression</em>' containment reference.
@@ -89,14 +89,14 @@ public interface Condition extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Feature To Be Updated</em>' containment reference.
    * @see #setFeatureToBeUpdated(MetaclassFeatureReference)
-   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getCondition_FeatureToBeUpdated()
+   * @see tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage#getBidirectionalizableCondition_FeatureToBeUpdated()
    * @model containment="true"
    * @generated
    */
   MetaclassFeatureReference getFeatureToBeUpdated();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.Condition#getFeatureToBeUpdated <em>Feature To Be Updated</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition#getFeatureToBeUpdated <em>Feature To Be Updated</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Feature To Be Updated</em>' containment reference.
@@ -105,4 +105,4 @@ public interface Condition extends EObject
    */
   void setFeatureToBeUpdated(MetaclassFeatureReference value);
 
-} // Condition
+} // BidirectionalizableCondition

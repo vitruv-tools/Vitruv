@@ -98,8 +98,8 @@ public class MappingsLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getCheckAndEnforceConditionAccess().getGroup(), "rule__CheckAndEnforceCondition__Group__0");
 					put(grammarAccess.getBidirectionalizableConditionAccess().getGroup(), "rule__BidirectionalizableCondition__Group__0");
 					put(grammarAccess.getBidirectionalizableConditionAccess().getGroup_3(), "rule__BidirectionalizableCondition__Group_3__0");
-					put(grammarAccess.getBootstrapMappingAccess().getGroup(), "rule__BootstrapMapping__Group__0");
-					put(grammarAccess.getBootstrapMappingAccess().getGroup_6(), "rule__BootstrapMapping__Group_6__0");
+					put(grammarAccess.getBootstrappingAccess().getGroup(), "rule__Bootstrapping__Group__0");
+					put(grammarAccess.getBootstrappingAccess().getGroup_6(), "rule__Bootstrapping__Group_6__0");
 					put(grammarAccess.getMetamodelImportAccess().getGroup(), "rule__MetamodelImport__Group__0");
 					put(grammarAccess.getNamedJavaElementAccess().getGroup(), "rule__NamedJavaElement__Group__0");
 					put(grammarAccess.getMetaclassReferenceAccess().getGroup(), "rule__MetaclassReference__Group__0");
@@ -295,7 +295,7 @@ public class MappingsLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMappingsSegmentAccess().getLeftDomainAssignment_4(), "rule__MappingsSegment__LeftDomainAssignment_4");
 					put(grammarAccess.getMappingsSegmentAccess().getRightDomainAssignment_6(), "rule__MappingsSegment__RightDomainAssignment_6");
 					put(grammarAccess.getMappingsSegmentAccess().getMappingsAssignment_7_0(), "rule__MappingsSegment__MappingsAssignment_7_0");
-					put(grammarAccess.getMappingsSegmentAccess().getBootstrapMappingsAssignment_7_1(), "rule__MappingsSegment__BootstrapMappingsAssignment_7_1");
+					put(grammarAccess.getMappingsSegmentAccess().getBootstrappingsAssignment_7_1(), "rule__MappingsSegment__BootstrappingsAssignment_7_1");
 					put(grammarAccess.getMappingAccess().getNameAssignment_1(), "rule__Mapping__NameAssignment_1");
 					put(grammarAccess.getMappingAccess().getDependenciesAssignment_2_1(), "rule__Mapping__DependenciesAssignment_2_1");
 					put(grammarAccess.getMappingAccess().getLeftParametersAssignment_5(), "rule__Mapping__LeftParametersAssignment_5");
@@ -326,9 +326,9 @@ public class MappingsLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getBidirectionalizableConditionAccess().getFeatureToBeAssignedAssignment_0(), "rule__BidirectionalizableCondition__FeatureToBeAssignedAssignment_0");
 					put(grammarAccess.getBidirectionalizableConditionAccess().getBidirectionalizableExpressionAssignment_2(), "rule__BidirectionalizableCondition__BidirectionalizableExpressionAssignment_2");
 					put(grammarAccess.getBidirectionalizableConditionAccess().getFeatureToBeUpdatedAssignment_3_1(), "rule__BidirectionalizableCondition__FeatureToBeUpdatedAssignment_3_1");
-					put(grammarAccess.getBootstrapMappingAccess().getNameAssignment_1(), "rule__BootstrapMapping__NameAssignment_1");
-					put(grammarAccess.getBootstrapMappingAccess().getParametersAssignment_4(), "rule__BootstrapMapping__ParametersAssignment_4");
-					put(grammarAccess.getBootstrapMappingAccess().getBootstrapConditonAssignment_6_1(), "rule__BootstrapMapping__BootstrapConditonAssignment_6_1");
+					put(grammarAccess.getBootstrappingAccess().getNameAssignment_1(), "rule__Bootstrapping__NameAssignment_1");
+					put(grammarAccess.getBootstrappingAccess().getParametersAssignment_4(), "rule__Bootstrapping__ParametersAssignment_4");
+					put(grammarAccess.getBootstrappingAccess().getBootstrapConditonAssignment_6_1(), "rule__Bootstrapping__BootstrapConditonAssignment_6_1");
 					put(grammarAccess.getCodeBlockAccess().getCodeAssignment(), "rule__CodeBlock__CodeAssignment");
 					put(grammarAccess.getDocumentableAccess().getDocumentationAssignment(), "rule__Documentable__DocumentationAssignment");
 					put(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment(), "rule__MirBaseFile__MetamodelImportsAssignment");
