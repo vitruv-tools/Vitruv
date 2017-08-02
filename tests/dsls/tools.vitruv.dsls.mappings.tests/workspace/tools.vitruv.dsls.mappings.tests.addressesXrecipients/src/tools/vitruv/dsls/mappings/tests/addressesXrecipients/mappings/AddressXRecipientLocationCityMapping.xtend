@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.mappings.tests.addressesXrecipients
+package tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings
 
 import edu.kit.ipd.sdq.commons.util.java.Triple
 import edu.kit.ipd.sdq.mdsd.addresses.Address

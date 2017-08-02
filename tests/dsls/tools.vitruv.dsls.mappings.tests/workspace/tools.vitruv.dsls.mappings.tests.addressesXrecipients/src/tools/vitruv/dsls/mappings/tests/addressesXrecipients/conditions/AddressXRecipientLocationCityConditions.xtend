@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.mappings.tests.addressesXrecipients
+package tools.vitruv.dsls.mappings.tests.addressesXrecipients.conditions
 
 import edu.kit.ipd.sdq.mdsd.addresses.Address
 import edu.kit.ipd.sdq.mdsd.recipients.Recipient

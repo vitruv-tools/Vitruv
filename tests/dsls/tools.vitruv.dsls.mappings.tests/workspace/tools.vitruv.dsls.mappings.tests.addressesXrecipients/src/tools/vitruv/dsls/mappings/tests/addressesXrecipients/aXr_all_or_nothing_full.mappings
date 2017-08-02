@@ -3,21 +3,29 @@ import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
 
 mappings: adXre for Addresses and Recipients
 
-mapping AddressXRecipientLocationCity {
-  map (ad::Address a) 
-    with { 
-      a.number > 0
-      a.zipCode != null
+mapping AdRootXReRoot {
+  map (ad:Addresses aRoot)
+  and (re::Recipients rRoot)
+}
+
+mapping AddressXRecipientLocationCity 
+  depends on (AdRootXReRoot rootXroot) {
+    map (ad::Address a) 
+      with { 
+	a in rootXroot:aRoot.addresses
+	a.number > 0
+	a.zipCode != null
     }
-  and (re::Recipient r, re::Location l, re:City c) 
-    with { 
-      r.business == true
-      l.number > 0
-      c.zipCode != null
+    and (re::Recipient r, re::Location l, re:City c) 
+      with { 
+      	r in rootXroot:rRoot.recipients
+	r.business == true
+	l.number > 0
+	c.zipCode != null
     }
-  such that {
-    a.number = l.number
-    a.street = l.street
-    a.zipCode = c.zipCode
-  }
+    such that {
+      a.number = l.number
+      a.street = l.street
+      a.zipCode = c.zipCode
+    }
 }

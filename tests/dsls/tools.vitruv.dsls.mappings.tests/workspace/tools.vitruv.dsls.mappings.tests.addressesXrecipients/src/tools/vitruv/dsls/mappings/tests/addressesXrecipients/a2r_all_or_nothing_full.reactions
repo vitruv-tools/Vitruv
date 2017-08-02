@@ -1,5 +1,5 @@
-import static extension tools.vitruv.dsls.mappings.tests.addressesXrecipients.AddressXRecipientLocationCityMapping.*
-import static extension tools.vitruv.dsls.mappings.tests.addressesXrecipients.AddressXRecipientLocationCityConditions.*
+import static extension tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AddressXRecipientLocationCityMapping.*
+import static extension tools.vitruv.dsls.mappings.tests.addressesXrecipients.conditions.AddressXRecipientLocationCityConditions.*
 
 import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
 import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
@@ -8,7 +8,7 @@ reactions: ad2re
 in reaction to changes in Addresses
 execute actions in Recipients
 
-/********** BEGIN UPDATE REACTIONS **********/
+/********** UPDATE REACTION **********/
 reaction AnyChange {
 	after any change
 	call {
@@ -16,15 +16,28 @@ reaction AnyChange {
 	}
 }
 
+/********** UPDATE ROUTINE **********/
 routine ensureAllMappings() {
 	action {
 		call {
+//			ensureAdRootXReRootMapping()
 			ensureAddressXRecipientLocationCityMapping()
-			//ensureTHENEXTNAMEMapping()
 		}
 	}
 }
 
+///********** BEGIN AdRootXReRoot MAPPING **********/
+//routine ensureAdRootXReRootMapping() {
+//	action {
+//		call {
+//			deleteAdRootXReRootMappingInstances()
+//			createAdRootXReRootMappingInstances()
+//			updateAdRootXReRootMappingInstances()
+//		}
+//	}
+//}
+
+/********** BEGIN AddressXRecipientLocationCity MAPPING **********/
 routine ensureAddressXRecipientLocationCityMapping() {
 	action {
 		call {
@@ -35,6 +48,7 @@ routine ensureAddressXRecipientLocationCityMapping() {
 	}
 }
 
+/********** BEGIN AddressXRecipientLocationCity DELETE AND CREATE ROUTINES **********/
 routine deleteAddressXRecipientLocationCityMappingInstances() {
 	action {
 		call {
@@ -97,6 +111,7 @@ routine createAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 	}
 }
 
+/********** BEGIN AddressXRecipientLocationCity UPDATE ROUTINES **********/
 routine updateAddressXRecipientLocationCityMappingInstances() {
 	action {
 		call {
