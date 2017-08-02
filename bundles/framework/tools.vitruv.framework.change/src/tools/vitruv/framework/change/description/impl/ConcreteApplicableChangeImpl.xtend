@@ -11,7 +11,9 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 	}
 
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		this.EChange = this.EChange.resolveBefore(resourceSet)
+		val oldEChange = EChange
+		val newEChange = oldEChange.resolveBefore(resourceSet)
+		EChange = newEChange
 		this.registerOldObjectTuidsForUpdate(affectedEObjects)
 		this.EChange.applyForward
 		this.updateTuids

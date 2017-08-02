@@ -15,6 +15,7 @@ class PropagatedChangeImpl implements PropagatedChange {
 	VitruviusChange consequentialChanges
 
 	override toString() '''
+		ID: «id»
 		Original change:
 			«originalChange»
 		Consequential change: «consequentialChanges»

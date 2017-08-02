@@ -26,6 +26,7 @@ import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 
 class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
+	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
 	static extension Logger = Logger::getLogger(AtomicEmfChangeRecorderImpl)
 	val AtomicChangeRecorder changeRecorder
 	val Set<Notifier> elementsToObserve
@@ -137,16 +138,17 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	private def createModelChange(ChangeDescription changeDescription, boolean unresolveChanges, boolean updateTuids) {
 		var TransactionalChange result = null
 		if (unresolveChanges) {
-			result = VitruviusChangeFactory::instance.createEMFModelChange(changeDescription)
+			result = createEMFModelChange(changeDescription)
 			changeDescription.applyAndReverse
 		} else {
-			result = VitruviusChangeFactory::instance.createLegacyEMFModelChange(changeDescription)
+			result = createLegacyEMFModelChange(changeDescription)
 			if (updateTuids) {
 				result.applyForward
 			} else {
 				(result as LegacyEMFModelChangeImpl).applyForwardWithoutTuidUpdate
 			}
 		}
+
 		return result
 	}
 
