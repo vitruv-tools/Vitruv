@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.ChangeCloner
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
@@ -28,7 +27,6 @@ import tools.vitruv.framework.vsum.VirtualModel
  */
 abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
 	static extension  VitruviusChangeFactory = VitruviusChangeFactory::instance
-	static extension  ChangeCloner cc = new ChangeCloner
 	AtomicEmfChangeRecorder changeRecorder
 
 	override beforeTest() {
@@ -144,10 +142,6 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 				changeRecorder.unresolvedChanges
 			else
 				changeRecorder.resolvedChanges
-		val copiedChanges = changes.map[cc.clone(it)]
-		val testForUnresolved = [List<? extends VitruviusChange> l|l.map[EChanges].flatten.exists[resolved]]
-		if (unresolveChanges && (testForUnresolved.apply(changes) || testForUnresolved.apply(copiedChanges)))
-			throw new IllegalStateException
 		val compositeChange = createCompositeChange(changes)
 		val result = currentVirtualModel.propagateChange(compositeChange)
 		return result

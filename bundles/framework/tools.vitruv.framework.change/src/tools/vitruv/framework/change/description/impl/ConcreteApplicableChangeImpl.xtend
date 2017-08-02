@@ -6,6 +6,8 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.tuid.TuidManager
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
+	static extension TuidManager = TuidManager.instance
+
 	public new(EChange eChange) {
 		super(eChange);
 	}
@@ -14,29 +16,28 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 		val oldEChange = EChange
 		val newEChange = oldEChange.resolveBefore(resourceSet)
 		EChange = newEChange
-		this.registerOldObjectTuidsForUpdate(affectedEObjects)
-		this.EChange.applyForward
-		this.updateTuids
+		registerOldObjectTuidsForUpdate(affectedEObjects)
+		EChange.applyForward
+		updateTuids
 	}
 
 	override applyForward() {
-		this.EChange.applyForward
+		EChange.applyForward
 	}
 
 	override applyBackward() {
-		this.EChange.applyBackward
+		EChange.applyBackward
 	}
 
 	private def void registerOldObjectTuidsForUpdate(Iterable<EObject> objects) {
-		val tuidManager = TuidManager.instance
 		for (object : objects) {
-			tuidManager.registerObjectUnderModification(object)
+			registerObjectUnderModification(object)
 		}
 	}
 
 	private def void updateTuids() {
-		TuidManager.instance.updateTuidsOfRegisteredObjects
-		TuidManager.instance.flushRegisteredObjectsUnderModification
+		updateTuidsOfRegisteredObjects
+		flushRegisteredObjectsUnderModification
 	}
 
 }
