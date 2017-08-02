@@ -60,4 +60,13 @@ abstract class ClassGenerator extends TypesBuilderExtensionProvider implements I
 	protected def Iterable<JvmOperation> getGeneratedMethods() {
 		return methodMap.values;
 	}
+	
+	protected def getCommentWithoutMarkers(String documentation) {
+		if (documentation?.length > 4) {
+			val withoutMultilineCommentMarkers = documentation.replaceAll("\\n \\* ","\\n")
+			return withoutMultilineCommentMarkers.substring(2,withoutMultilineCommentMarkers.length-2)
+		} else {
+			return documentation
+		}
+	}
 }

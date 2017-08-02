@@ -97,6 +97,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		val executeMethod = generateMethodExecuteEffect()
 
 		generatedClass => [
+			documentation = getCommentWithoutMarkers(routine.documentation)
 			superTypes += typeRef(AbstractRepairRoutineRealization)
 			members += routine.toField(EFFECT_FACADE_FIELD_NAME, typeRef(routinesFacadeClassNameGenerator.qualifiedName))
 			members += routine.toField(USER_EXECUTION_FIELD_NAME, typeRef(userExecutionClass))

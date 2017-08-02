@@ -59,6 +59,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		generateMethodExecuteReaction()
 		
 		generatedClass => [
+			documentation = getCommentWithoutMarkers(reaction.documentation)
 			superTypes += typeRef(AbstractReactionRealization)
 			members += generatedMethods
 			members += userExecutionClassGenerator.generateBody(userExecutionClass)
