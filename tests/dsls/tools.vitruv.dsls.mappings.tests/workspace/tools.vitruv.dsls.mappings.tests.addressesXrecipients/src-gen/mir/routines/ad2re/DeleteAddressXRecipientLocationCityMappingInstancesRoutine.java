@@ -4,6 +4,7 @@ import edu.kit.ipd.sdq.mdsd.addresses.Address;
 import java.io.IOException;
 import mir.routines.ad2re.RoutinesFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
+import tools.vitruv.dsls.mappings.tests.addressesXrecipients.AddressXRecipientLocationCityMapping;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
@@ -20,7 +21,7 @@ public class DeleteAddressXRecipientLocationCityMappingInstancesRoutine extends 
     }
     
     public void callRoutine1(@Extension final RoutinesFacade _routinesFacade) {
-      final Iterable<Address> instances = AddressXRecipientLocationCityMapping.getLeftInstances();
+      final Iterable<Address> instances = AddressXRecipientLocationCityMapping.addressXRecipientLocationCityMapping().getLeftInstances();
       for (final Address a : instances) {
         _routinesFacade.deleteAddressXRecipientLocationCityMappingInstance(a);
       }
@@ -36,7 +37,7 @@ public class DeleteAddressXRecipientLocationCityMappingInstancesRoutine extends 
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine DeleteAddressXRecipientLocationCityMappingInstancesRoutine with input:");
     
-    userExecution.callRoutine1(, actionsFacade);
+    userExecution.callRoutine1(actionsFacade);
     
     postprocessElements();
   }

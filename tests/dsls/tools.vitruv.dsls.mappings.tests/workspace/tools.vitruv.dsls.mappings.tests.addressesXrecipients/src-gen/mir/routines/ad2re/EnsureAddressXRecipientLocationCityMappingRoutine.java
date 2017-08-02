@@ -34,7 +34,7 @@ public class EnsureAddressXRecipientLocationCityMappingRoutine extends AbstractR
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine EnsureAddressXRecipientLocationCityMappingRoutine with input:");
     
-    userExecution.callRoutine1(, actionsFacade);
+    userExecution.callRoutine1(actionsFacade);
     
     postprocessElements();
   }

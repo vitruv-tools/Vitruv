@@ -48,7 +48,7 @@ routine deleteAddressXRecipientLocationCityMappingInstances() {
 
 routine deleteAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 	match {
-		check AddressXRecipientLocationCityConditions.checkLeftPreconditions(a)
+		check addressXRecipientLocationCityConditions.checkLeftPreconditions(a)
 		val r = retrieve re::Recipient corresponding to a
 			tagged with "AddressXRecipientLocationCity"
 		val l = retrieve re::Location corresponding to a
@@ -63,8 +63,9 @@ routine deleteAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 		delete r
 		delete l
 		delete c
-		execute
+		call {
 			addressXRecipientLocationCityMapping.removeLeftInstance(a)
+		}
 	}
 }
 
@@ -81,7 +82,7 @@ routine createAddressXRecipientLocationCityMappingInstances() {
 
 routine createAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 	match {
-		check AddressXRecipientLocationCityConditions.checkLeftPreconditions(a)
+		check addressXRecipientLocationCityConditions.checkLeftPreconditions(a)
 	}
 	action {
 		val r = create re::Recipient
@@ -90,8 +91,9 @@ routine createAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 		add correspondence between a and r
 		add correspondence between a and l
 		add correspondence between a and c
-		execute
+		call {
 			addressXRecipientLocationCityMapping.addLeftInstance(a)
+		}
 	}
 }
 
@@ -117,8 +119,8 @@ routine updateAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 	}
 	action {
 		call {
-			AddressXRecipientLocationCityConditions.enforceRigthPostconditions(r, l, c)
-			AddressXRecipientLocationCityConditions.enforceFromLeft2Right(a, r, l, c)
+			addressXRecipientLocationCityConditions.enforceRigthPostconditions(r, l, c)
+			addressXRecipientLocationCityConditions.enforceFromLeft2Right(a, r, l, c)
 		}
 	}
 }

@@ -32,7 +32,7 @@ public class EnsureAllMappingsRoutine extends AbstractRepairRoutineRealization {
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine EnsureAllMappingsRoutine with input:");
     
-    userExecution.callRoutine1(, actionsFacade);
+    userExecution.callRoutine1(actionsFacade);
     
     postprocessElements();
   }
