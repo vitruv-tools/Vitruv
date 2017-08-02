@@ -10,8 +10,11 @@ import java.util.function.Consumer
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import org.apache.log4j.Logger
 
 class URIRemapperImpl implements URIRemapper {
+	static extension Logger = Logger::getLogger(URIRemapperImpl)
+
 	static def URIRemapper init() {
 		new URIRemapperImpl
 	}
@@ -69,7 +72,15 @@ class URIRemapperImpl implements URIRemapper {
 
 	val remapURIString = [ String from, String to, EObject e |
 		val internalEObject = e as InternalEObject
-		val proxyString = internalEObject.eProxyURI.toString
+		if (null === internalEObject) {
+			error('''Null as parameter''')
+			return;
+		}
+		val proxyString = internalEObject.eProxyURI?.toString
+		if (null === proxyString) {
+			error('''EObject «e» has no proxyURI''')
+			return;
+		}
 		if (proxyString.contains(from)) {
 			val newProxyString = proxyString.replace(from, to)
 			val newUri = URI::createURI(newProxyString)

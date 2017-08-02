@@ -44,8 +44,9 @@ import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 
 class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceProviding {
 	static extension Factory = TransactionalEditingDomain::Factory::INSTANCE
-	static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
 	static extension Logger = Logger::getLogger(ResourceRepositoryImpl.simpleName)
+	static extension TuidManager = TuidManager::instance
+	static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
 	@Accessors(PUBLIC_GETTER)
 	val ResourceSet resourceSet
 	val VitruvDomainRepository metamodelRepository
@@ -100,8 +101,8 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 			resource.contents += rootEObject
 			resource.modified = true
 			debug('''Create model with resource: «resource»''')
-			TuidManager::instance.updateTuidsOfRegisteredObjects
-			TuidManager::instance.flushRegisteredObjectsUnderModification
+			updateTuidsOfRegisteredObjects
+			flushRegisteredObjectsUnderModification
 			return null
 		]
 	}
