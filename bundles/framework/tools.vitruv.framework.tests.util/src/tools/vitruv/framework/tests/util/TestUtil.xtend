@@ -176,9 +176,13 @@ final class TestUtil {
 	 * @param changePropagationSpecifications- {@link ChangePropagationSpecification}s to add to the VSUM
 	 * @return the created {@link VirtualModel}
 	 */
-	def static InternalVirtualModel createVirtualModel(String virtualModelName, boolean addTimestampAndMakeNameUnique,
-		Iterable<VitruvDomain> metamodels, Iterable<ChangePropagationSpecification> changePropagationSpecifications,
-		UserInteracting userInteracting) {
+	def static InternalVirtualModel createVirtualModel(
+		String virtualModelName,
+		boolean addTimestampAndMakeNameUnique,
+		Iterable<VitruvDomain> metamodels,
+		Iterable<ChangePropagationSpecification> changePropagationSpecifications,
+		UserInteracting userInteracting
+	) {
 		val File testWorkspace = createTestWorkspace
 		return createVirtualModel(new File(testWorkspace, virtualModelName), addTimestampAndMakeNameUnique, metamodels,
 			changePropagationSpecifications, userInteracting)

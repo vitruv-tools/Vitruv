@@ -13,6 +13,7 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
+import tools.vitruv.framework.vsum.VirtualModel
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -26,6 +27,8 @@ import tools.vitruv.framework.util.bridges.EcoreResourceBridge
  * @author Heiko Klare
  */
 abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
+	static extension  VitruviusChangeFactory = VitruviusChangeFactory::instance
+	static extension  ChangeCloner cc = new ChangeCloner
 	AtomicEmfChangeRecorder changeRecorder
 
 	override beforeTest() {
@@ -81,9 +84,16 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	 * @throws IOException
 	 */
 	def protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) throws IOException {
+		saveAndSynchronizeChanges(virtualModel, object)
+	}
+
+	def protected List<PropagatedChange> saveAndSynchronizeChanges(
+		VirtualModel currentVM,
+		EObject object
+	) throws IOException {
 		val resource = object.eResource
 		EcoreResourceBridge::saveResource(resource)
-		val List<PropagatedChange> result = propagateChanges()
+		val List<PropagatedChange> result = propagateChanges(currentVM)
 		startRecordingChanges(resource)
 		return result
 	}
@@ -112,37 +122,40 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	 * @throws IOException
 	 */
 	def protected void deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
+		deleteAndSynchronizeModel(virtualModel, modelPathInProject)
+	}
+
+	def protected void deleteAndSynchronizeModel(
+		VirtualModel currentVirtualModel,
+		String modelPathInProject
+	) throws IOException {
 		if (StringUtil::isEmpty(modelPathInProject)) {
 			throw new IllegalArgumentException
 		}
 		val Resource resource = getModelResource(modelPathInProject)
-		resource.delete(Collections.EMPTY_MAP)
-		propagateChanges
+		resource.delete(Collections::EMPTY_MAP)
+		propagateChanges(currentVirtualModel)
 		changeRecorder.removeFromRecording(resource)
 	}
 
-	private def List<PropagatedChange> propagateChanges() {
+	private def List<PropagatedChange> propagateChanges(VirtualModel currentVirtualModel) {
 		changeRecorder.endRecording
 		val changes = if (unresolveChanges)
 				changeRecorder.unresolvedChanges
 			else
 				changeRecorder.resolvedChanges
-		val ChangeCloner changeCloner = new ChangeCloner
-		val copiedChanges = changes.map [
-			changeCloner.clone(it)
-		]
+		val copiedChanges = changes.map[cc.clone(it)]
 		val testForUnresolved = [List<? extends VitruviusChange> l|l.map[EChanges].flatten.exists[resolved]]
 		if (unresolveChanges && (testForUnresolved.apply(changes) || testForUnresolved.apply(copiedChanges)))
 			throw new IllegalStateException
-		val compositeChange = VitruviusChangeFactory::instance.createCompositeChange(changes)
-		val result = virtualModel.propagateChange(compositeChange)
+		val compositeChange = createCompositeChange(changes)
+		val result = currentVirtualModel.propagateChange(compositeChange)
 		return result
 	}
 
 	private def startRecordingChanges(Resource resource) {
-		changeRecorder.addToRecording(resource);
-		if (!changeRecorder.recording) {
-			changeRecorder.beginRecording();
-		}
+		changeRecorder.addToRecording(resource)
+		if (!changeRecorder.recording)
+			changeRecorder.beginRecording
 	}
 }
