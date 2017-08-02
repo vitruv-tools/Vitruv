@@ -1,14 +1,19 @@
 package tools.vitruv.framework.versioning.emfstore.impl
 
 import java.util.List
+import java.util.Map
 import java.util.Set
+
 import org.apache.log4j.Logger
+
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function1
+
 import tools.vitruv.framework.change.description.ChangeCloner
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.util.XtendAssertHelper
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.BranchDiffCreator
 import tools.vitruv.framework.versioning.Conflict
@@ -23,19 +28,20 @@ import tools.vitruv.framework.versioning.branch.impl.RemoteBranchImpl
 import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.LocalRepository
+import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.exceptions.LocalBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.VersioningVirtualModel
-import tools.vitruv.framework.versioning.emfstore.PushState
 
 class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalRepository {
-	static extension Logger = Logger::getLogger(LocalRepositoryImpl)
 	static extension BranchDiffCreator = BranchDiffCreator::instance
 	static extension ChangeCloner = new ChangeCloner
+	static extension Logger = Logger::getLogger(LocalRepositoryImpl)
 	static extension URIRemapper = URIRemapper::instance
+	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
 
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	Author author
@@ -54,12 +60,18 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	LocalBranch currentBranch
 
+	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
+	VersioningVirtualModel virtualModel
+
+	Map<Branch, String> lastCommitCheckedOut
+
 	new() {
 		super()
 		currentBranch = masterBranch as LocalBranch
-		remoteRepositories = newHashSet
+		lastCommitCheckedOut = newHashMap
 		localBranches = newHashSet(currentBranch)
 		remoteBranches = newHashSet
+		remoteRepositories = newHashSet
 	}
 
 	override getCommits() {
@@ -70,13 +82,27 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		addCommit(c, currentBranch)
 	}
 
-	override commit(String s, VersioningVirtualModel virtualModel, VURI vuri) {
-		val changeMatches = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri).immutableCopy
+	override commit(String s) {
+		commit(s, virtualModel)
+	}
+
+	override commit(String s, VersioningVirtualModel currentVirtualModel) {
+		val changeMatches = currentVirtualModel.allUnresolvedPropagatedChangesSinceLastCommit.immutableCopy
 		if (changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
 		val commit = commit(s, changeMatches)
 		val lastChangeId = changeMatches.last.id
-		virtualModel.setLastPropagatedChangeId(vuri, lastChangeId)
+		currentVirtualModel.allLastPropagatedChangeId = lastChangeId
+		return commit
+	}
+
+	override commit(String s, VersioningVirtualModel currentVirtualModel, VURI vuri) {
+		val changeMatches = currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri).immutableCopy
+		if (changeMatches.empty)
+			throw new IllegalStateException('''No changes since last commit''')
+		val commit = commit(s, changeMatches)
+		val lastChangeId = changeMatches.last.id
+		currentVirtualModel.setLastPropagatedChangeId(vuri, lastChangeId)
 		return commit
 	}
 
@@ -89,7 +115,49 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		return commit
 	}
 
-	override checkout(VersioningVirtualModel virtualModel, VURI vuri) {
+	override checkout() {
+		checkout(virtualModel)
+	}
+
+	private def List<Commit> getRelevantCommits() {
+		val returnValue = if (lastCommitCheckedOut.containsKey(currentBranch)) {
+				val lastCommitId = lastCommitCheckedOut.get(currentBranch)
+				commits.dropWhile[identifier !== lastCommitId].drop(1).toList.immutableCopy
+			} else {
+				commits
+			}
+		return returnValue
+	}
+
+	override checkout(VersioningVirtualModel currentVirtualModel) {
+		val currentRelevantCommits = relevantCommits
+		if (currentRelevantCommits.empty) {
+			info('''No new commits to checkout!''')
+			return
+		}
+		val changeMatches = currentRelevantCommits.map[changes].flatten
+		if (changeMatches.empty) {
+			info('''«currentRelevantCommits» has/have no new changes to apply''')
+			return
+		}
+		val originalChanges = changeMatches.map[id -> originalChange].toList.immutableCopy
+		val newChanges = originalChanges.map [
+			val eChanges = value.EChanges.map[cloneEChange(it)].toList.immutableCopy
+			val newChange = createEMFModelChangeFromEChanges(eChanges)
+			return key -> newChange
+		].toList.immutableCopy
+		newChanges.forEach [
+			currentVirtualModel.propagateChange(value, key)
+		]
+		val newChangeMatches = currentVirtualModel.allUnresolvedPropagatedChanges
+		val oldLastChangeId = changeMatches.last.id
+		val newLastChangeId = newChangeMatches.last.id
+		XtendAssertHelper::assertTrue(oldLastChangeId == newLastChangeId)
+		currentVirtualModel.allLastPropagatedChangeId = newLastChangeId
+		lastCommitCheckedOut.put(currentBranch, currentRelevantCommits.last.identifier)
+	}
+
+	override checkout(VersioningVirtualModel currentVirtualModel, VURI vuri) {
 		val changeMatches = commits.map[changes].flatten
 		val originalChanges = changeMatches.map[originalChange].toList.immutableCopy
 		val myVURI = originalChanges.get(0).URI
@@ -97,15 +165,15 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		val newChanges = originalChanges.map [
 			val eChanges = EChanges.map[cloneEChange(it)].toList.immutableCopy
 			eChanges.forEach[processTargetEChange.accept(it)]
-			val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(eChanges)
+			val newChange = createEMFModelChangeFromEChanges(eChanges)
 			return newChange
 		].toList.immutableCopy
 		newChanges.forEach [
-			virtualModel.propagateChange(it)
+			currentVirtualModel.propagateChange(it)
 		]
-		val newChangeMatches = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
+		val newChangeMatches = currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
 		val lastChangeId = newChangeMatches.last.id
-		virtualModel.setLastPropagatedChangeId(vuri, lastChangeId)
+		currentVirtualModel.setLastPropagatedChangeId(vuri, lastChangeId)
 	}
 
 	override addRemoteRepository(RemoteRepository remoteRepository) {
@@ -216,8 +284,17 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		Branch source,
 		Branch target,
 		Function1<Conflict, List<EChange>> originalCallback,
+		Function1<Conflict, List<EChange>> triggeredCallback
+	) {
+		merge(source, target, originalCallback, triggeredCallback, virtualModel)
+	}
+
+	override merge(
+		Branch source,
+		Branch target,
+		Function1<Conflict, List<EChange>> originalCallback,
 		Function1<Conflict, List<EChange>> triggeredCallback,
-		VersioningVirtualModel virtualModel
+		VersioningVirtualModel currentVirtualModel
 	) {
 		val sourceCommits = source.commits
 		val targetCommits = target.commits
@@ -245,14 +322,19 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		modelMerger.compute
 		val echanges = modelMerger.resultingOriginalEChanges
 
-		val resolvedTargetChanges = virtualModel.getResolvedPropagatedChanges(vuri)
+		val resolvedTargetChanges = currentVirtualModel.getResolvedPropagatedChanges(vuri)
 		val changesToRollback = resolvedTargetChanges.dropWhile[id !== lastPropagatedTargetChange].drop(1).toList
 		val reapplier = Reapplier::createReapplier
-		val reappliedChanges = reapplier.reapply(vuri, changesToRollback, echanges, virtualModel)
+		val reappliedChanges = reapplier.reapply(vuri, changesToRollback, echanges, currentVirtualModel)
 		val sourceIds = sourceCommitsToCompare.map[identifier].toList
 		val tagetIds = targetCommitsToCompare.map[identifier].toList
-		val mergeCommit = createMergeCommit(reappliedChanges, '''Merged «source.name» into «target.name»''', author,
-			sourceIds, tagetIds)
+		val mergeCommit = createMergeCommit(
+			reappliedChanges,
+			'''Merged «source.name» into «target.name»''',
+			author,
+			sourceIds,
+			tagetIds
+		)
 		targetCommitsToCompare.reverseView.immutableCopy.forEach [
 			removeCommit(it, target)
 		]
@@ -271,4 +353,5 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		} else
 			throw new IllegalStateException
 	}
+
 }
