@@ -181,9 +181,14 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		specifications.forEach [
 			propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
-		handleObjectsWithoutResource
+
 		val consequentialChanges = newArrayList
+		// PS This may be working
+		changedResourcesTracker.markNonSourceResourceAsChanged
+		resourceRepository.saveAllModels
+
 		consequentialChanges += resourceRepository.endRecording
+		handleObjectsWithoutResource
 		consequentialChanges.forEach[debug(it)]
 		addPropagatedChanges(clonedChange, change, consequentialChanges, propagatedChanges)
 	}
@@ -232,6 +237,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	private def void executePropagationResult(ChangePropagationResult changePropagationResult) {
 		if (null === changePropagationResult) {
 			info("Current propagation result is null. Can not save new root EObjects.")
+			return
+		}
+		if (changePropagationResult.elementToPersistenceMap.empty) {
+			info("Current propagation result is empty. Can not save new root EObjects.")
 			return
 		}
 		changePropagationResult.elementToPersistenceMap.entrySet.forEach [
