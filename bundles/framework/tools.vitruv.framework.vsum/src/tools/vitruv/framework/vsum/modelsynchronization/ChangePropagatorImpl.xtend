@@ -46,6 +46,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	val Set<ChangePropagationListener> changePropagationListeners
 	val VitruvDomainRepository metamodelRepository
 
+	String currentChangeId
+
 	new(
 		ModelRepository resourceRepository,
 		ChangePropagationSpecificationProvider changePropagationProvider,
@@ -74,6 +76,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	override removeChangePropagationListener(ChangePropagationListener propagationListener) {
 		if (propagationListener !== null)
 			changePropagationListeners -= propagationListener
+	}
+
+	override propagateChange(VitruviusChange change, String changeId) {
+		if (vuriToIds.values.exists[it == changeId])
+			throw new IllegalStateException
+		currentChangeId = changeId
+		propagateChange(change)
 	}
 
 	override synchronized List<PropagatedChange> propagateChange(VitruviusChange change) {
@@ -256,7 +265,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	) {
 		val isUnresolved = modelRepository.unresolveChanges
 		val vuri = resolvedChange.URI
-		val uuid = UUID::randomUUID.toString
+		val uuid = if (null !== currentChangeId) currentChangeId else UUID::randomUUID.toString
+		currentChangeId = null
 		val unresolvedTriggeredChanges = resourceRepository.lastUnresolvedChanges
 		val resolvedTriggeredChanges = resourceRepository.lastResolvedChanges
 		if (unresolvedTriggeredChanges.length !== resolvedTriggeredChanges.length)
@@ -285,4 +295,15 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		} else
 			warn('''resolvedChange.URI was null''')
 	}
+
+	override getAllResolvedPropagatedChanges() {
+		val returnValue = vuriToIds.keySet.map[resolvedPropagatedChanges].flatten.toList
+		return returnValue
+	}
+
+	override getAllUnresolvedPropagatedChanges() {
+		val returnValue = vuriToIds.keySet.map[unresolvedPropagatedChanges].flatten.toList
+		return returnValue
+	}
+
 }

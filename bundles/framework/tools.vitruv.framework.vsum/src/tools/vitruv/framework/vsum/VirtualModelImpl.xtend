@@ -2,9 +2,12 @@ package tools.vitruv.framework.vsum
 
 import java.io.File
 import java.util.List
+import java.util.Map
 import java.util.concurrent.Callable
+
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Accessors
+
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
@@ -19,12 +22,13 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
-import java.util.Map
 
 class VirtualModelImpl implements VersioningVirtualModel {
 	protected val ResourceRepositoryImpl resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator
+	@Accessors(PUBLIC_SETTER)
+	String allLastPropagatedChangeId
 	val Map<VURI, String> vuriToLastpropagatedChange
 	val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository metamodelRepository
@@ -50,6 +54,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 			metamodelRepository, resourceRepository, modelRepository)
 		VirtualModelManager::instance.putVirtualModel(this)
 		vuriToLastpropagatedChange = newHashMap
+		allLastPropagatedChangeId = null
 	}
 
 	override getCorrespondenceModel() {
@@ -124,18 +129,47 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		changePropagator.getUnresolvedPropagatedChanges(vuri)
 	}
 
+	private static def dropAllPreviousChanges(List<PropagatedChange> propagatedChanges, String lastCommitedChange) {
+		val returnValue = propagatedChanges.dropWhile [
+			id != lastCommitedChange
+		].drop(1).toList
+		return returnValue
+	}
+
 	override getUnresolvedPropagatedChangesSinceLastCommit(VURI vuri) {
+		val changes = changePropagator.getUnresolvedPropagatedChanges(vuri)
 		if (vuriToLastpropagatedChange.containsKey(vuri)) {
 			val lastPropagatedId = vuriToLastpropagatedChange.get(vuri)
-			return changePropagator.getUnresolvedPropagatedChanges(vuri).dropWhile [
-				id != lastPropagatedId
-			].drop(1).toList
+			return dropAllPreviousChanges(changes, lastPropagatedId)
 		} else {
-			return changePropagator.getUnresolvedPropagatedChanges(vuri).toList
+			return changes.toList
 		}
+	}
+
+	override getAllUnresolvedPropagatedChangesSinceLastCommit() {
+		val changes = changePropagator.allUnresolvedPropagatedChanges
+		if (null !== allLastPropagatedChangeId) {
+			return dropAllPreviousChanges(changes, allLastPropagatedChangeId)
+		} else {
+			return changes.toList
+		}
+
 	}
 
 	override setLastPropagatedChangeId(VURI vuri, String id) {
 		vuriToLastpropagatedChange.put(vuri, id)
 	}
+
+	override getAllResolvedPropagatedChanges() {
+		changePropagator.allResolvedPropagatedChanges
+	}
+
+	override getAllUnresolvedPropagatedChanges() {
+		changePropagator.allUnresolvedPropagatedChanges
+	}
+
+	override propagateChange(VitruviusChange change, String changeId) {
+		changePropagator.propagateChange(change, changeId)
+	}
+
 }
