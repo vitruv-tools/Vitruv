@@ -129,6 +129,7 @@ ElementCompoundChangeType returns ElementCompoundChangeType:
 // ***************************************
 
 Routine:
+	(documentation=ML_COMMENT)?
 	'routine' name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
