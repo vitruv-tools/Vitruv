@@ -15,7 +15,6 @@
 
 	<modules>
 		<module>tools.vitruv.dsls.common</module>
-		<module>tools.vitruv.dsls.common.ui</module>
 		<module>tools.vitruv.dsls.mirbase</module>
 		<module>tools.vitruv.dsls.mirbase.ide</module>
 		<module>tools.vitruv.dsls.mirbase.ui</module>
