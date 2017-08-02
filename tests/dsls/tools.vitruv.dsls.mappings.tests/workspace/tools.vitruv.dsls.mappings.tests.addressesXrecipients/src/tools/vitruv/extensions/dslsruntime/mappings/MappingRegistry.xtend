@@ -4,16 +4,15 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.SetMultimap
 import com.google.common.collect.Sets
 import java.util.Iterator
-import java.util.List
 import java.util.Set
 
 class MappingRegistry {
 	val Mapping mapping
 	val SetMultimap<Class<?>, Object> elementsMap = HashMultimap.create()
-	val List<Set<Object>> leftCandidates = newArrayList()
-	val List<Set<Object>> rightCandidates = newArrayList()
-	val List<Set<Object>> leftInstances = newArrayList()
-	val List<Set<Object>> rightInstances = newArrayList()
+	val Set<Set<Object>> leftCandidates = newHashSet()
+	val Set<Set<Object>> rightCandidates = newHashSet()
+	val Set<Set<Object>> leftInstances = newHashSet()
+	val Set<Set<Object>> rightInstances = newHashSet()
 	
 	new(Mapping mapping) {
 		this.mapping = mapping
@@ -42,8 +41,8 @@ class MappingRegistry {
 	}
 	
 	def <T> void addElement(Class<T> clazz, T element) {
-		val alreadyMapped = elementsMap.put(clazz, element)
-		if (alreadyMapped) {
+		val elementIsNew = elementsMap.put(clazz, element)
+		if (!elementIsNew) {
 			throw new IllegalStateException('''Cannot register the element '«element»' for the mapping '«this.mapping»'
 			and the class '«clazz»' because it is already registered for them!''')
 		}
@@ -66,31 +65,56 @@ class MappingRegistry {
 		return rightCandidates
 	}
 	
-	def addLeftCandidates(Iterable<Set<Object>> newCandidates) {
-		leftCandidates.addAll(newCandidates)
+	def void addLeftCandidates(Iterable<Set<Object>> candidates) {
+		addSets(leftCandidates, candidates, "left candidate")
 	}
 	
-	def addRightCandidates(Iterable<Set<Object>> newCandidates) {
-		rightCandidates.addAll(newCandidates)
+	def void addRightCandidates(Iterable<Set<Object>> candidates) {
+		addSets(rightCandidates, candidates, "right candidate")
 	}
 	
-	private def removeLeftCandidates(Object object) {
+	private def void addSets(Set<Set<Object>> setsRegistry, Iterable<Set<Object>> sets, String setType) {
+		for (set : sets) {
+			addSet(setsRegistry, set, setType)
+		}
+	}
+	
+	private def void addSet(Set<Set<Object>> setsRegistry, Set<Object> set, String setType) {
+		val setIsNew = setsRegistry.add(set)
+		if (!setIsNew) {
+			throw new IllegalStateException('''Cannot register the «setType» '«set»' for the mapping '«this.mapping»'
+			because it is already registered!''')
+		}
+	}
+	
+	private def void removeLeftCandidates(Object object) {
 		val iterator = leftCandidates.iterator()
-		removeCandidates(iterator, object)
+		removeSetsThatContainAnElement(iterator, object, "left candidates")
 	}
 	
-	private def removeRightCandidates(Object object) {
+	private def void removeRightCandidates(Object object) {
 		val iterator = rightCandidates.iterator()
-		removeCandidates(iterator, object)
+		removeSetsThatContainAnElement(iterator, object, "right candidates")
 	}
 	
-	private def removeCandidates(Iterator<Set<Object>> iterator, Object object) {
+	private def boolean removeSetsThatContainAnElement(Iterator<Set<Object>> iterator, Object element, String setType) {
+		val atLeastOneSetRemoved = removeSetsThatContainAnElement(iterator, element)
+		if (!atLeastOneSetRemoved) {
+			throw new IllegalStateException('''No «setType» to be removed are registered for the element '«element»'
+			in '«iterator.toList»' of the mapping '«this.mapping»'!''')
+		}
+	}
+	
+	private def boolean removeSetsThatContainAnElement(Iterator<Set<Object>> iterator, Object element) {
+		var atLeastOneSetRemoved = false
 		while (iterator.hasNext()) {
-			val candidate = iterator.next()
-			if (candidate.contains(object)) {
+			val pivot = iterator.next()
+			if (pivot.contains(element)) {
 				iterator.remove()
+				atLeastOneSetRemoved = true
 			}
 		}
+		return atLeastOneSetRemoved
 	}
 
 	/********** BEGIN INSTANCE METHODS **********/
@@ -101,20 +125,38 @@ class MappingRegistry {
 	def Iterable<Set<Object>> getRightInstances() {
 		return rightInstances
 	}
-	
-//	def void addLeftInstance(Address a) {
-//		// FIXME MK
-//	}
-//	
-//	def void addRightInstance(Recipient r, Location l, City c) {
-//		// FIXME MK
-//	}
-//	
-	def void removeLeftInstances(Object element) {
-		// FIXME MK
+
+	def void addLeftInstance(Set<Object> instance) {
+		addSet(leftInstances, instance, "right instance")
+	}
+
+	def void addRightInstance(Set<Object> instance) {
+		addSet(rightInstances, instance, "right instance")
 	}
 	
-	def void removeRightInstances(Object element) {
-		// FIXME MK
+	def void removeLeftInstance(Set<Object> instance) {
+		removeSet(leftInstances, instance, "left instance")
+	}
+	
+    def void removeRightInstance(Set<Object> instance) {
+		removeSet(rightInstances, instance, "right instance")
+	}
+	
+	private def void removeSet(Set<Set<Object>> setsRegistry, Set<Object> set, String setType) {
+		val wasRegistered = setsRegistry.remove(set)
+		if (!wasRegistered) {
+			throw new IllegalStateException('''Cannot register the «setType» '«set»' for the mapping '«this.mapping»'
+			because it is not registered!''')
+		}
+	}
+	
+	private def void removeLeftInstances(Object object) {
+		val iterator = leftInstances.iterator()
+		removeSetsThatContainAnElement(iterator, object, "left instances")
+	}
+	
+    private def void removeRightInstances(Object object) {
+		val iterator = rightInstances.iterator()
+		removeSetsThatContainAnElement(iterator, object, "right instances")
 	}
 }

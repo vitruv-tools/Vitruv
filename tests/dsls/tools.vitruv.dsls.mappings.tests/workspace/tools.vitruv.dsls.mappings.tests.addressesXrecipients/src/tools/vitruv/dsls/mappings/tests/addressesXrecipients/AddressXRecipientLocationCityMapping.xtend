@@ -100,24 +100,26 @@ class AddressXRecipientLocationCityMapping implements Mapping {
 	}
 	
 	def void addLeftInstance(Address a) {
-		// FIXME MK
+		mappingRegistry.addLeftInstance(#{a})
 	}
 	
 	def void addRightInstance(Recipient r, Location l, City c) {
-		// FIXME MK
+		mappingRegistry.addRightInstance(#{r,l,c})
 	}
 	
 	def void removeLeftInstance(Address a) {
-		// FIXME MK
+		mappingRegistry.removeLeftInstance(#{a})
 	}
 	
 	def void removeRightInstance(Recipient r, Location l, City c) {
-		// FIXME MK
+		mappingRegistry.removeLeftInstance(#{r, l, c})
 	}
 	
 	/********** BEGIN PRIVATE METHODS **********/
 	def private Iterable<Set<Object>> getNewCandidatesForAddress(Address address) {
-		return #[#{address}]
+//		return #[#{address}]
+		// TODO MK check whether handling the special case of single elements as commented out is necessary
+		return mappingRegistry.cartesianProduct(#{address})
 	}
 	
 	def private Iterable<Set<Object>> getNewCandidatesForRecipient(Recipient recipient) {
