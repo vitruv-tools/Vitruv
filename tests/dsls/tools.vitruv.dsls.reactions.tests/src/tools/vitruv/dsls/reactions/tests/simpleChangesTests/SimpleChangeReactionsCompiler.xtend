@@ -8,7 +8,6 @@ import com.google.inject.Provider
 import java.util.function.Supplier
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import java.nio.file.Files
-import org.eclipse.core.runtime.Platform
 import org.osgi.framework.wiring.BundleWiring
 import com.google.common.io.ByteStreams
 import java.io.FileOutputStream
@@ -20,6 +19,7 @@ import org.eclipse.xtext.generator.JavaIoFileSystemAccess
 import org.eclipse.emf.common.util.URI
 import org.eclipse.jdt.core.compiler.batch.BatchCompiler
 import java.io.PrintWriter
+import org.osgi.framework.FrameworkUtil
 
 class SimpleChangeReactionsCompiler {
 	static val INPUT_REACTION_FILES = #["SimpleChangesTests.reactions", "SimpleChangesRootTests.reactions"]
@@ -61,7 +61,7 @@ class SimpleChangeReactionsCompiler {
 
 	def private compileGeneratedJavaClasses(Path outputFolder) {
 		// copy in compile dependencies
-		val bundle = Platform.getBundle('tools.vitruv.dsls.reactions.tests')
+		val bundle = FrameworkUtil.getBundle(SimpleChangeReactionsCompiler)
 		val availableClassFiles = bundle.adapt(BundleWiring).listResources('/', '*.class',
 			BundleWiring.LISTRESOURCES_RECURSE)
 		val neededClassFiles = availableClassFiles.filter [ classFile |
