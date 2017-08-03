@@ -79,7 +79,7 @@ class SimpleChangeReactionsCompiler {
 		val out = new ByteArrayOutputStream
 		val err = out
 		val ioFolder = outputFolder.toAbsolutePath.toString
-		val success = BatchCompiler.compile(#["-" + COMPLIANCE_LEVEL, "-d", ioFolder, "-classpath", ioFolder, ioFolder],
+		val success = BatchCompiler.compile(#["-" + COMPLIANCE_LEVEL, "-d", ioFolder, "-classpath", ioFolder, "-proc:none", ioFolder],
 			new PrintWriter(out), new PrintWriter(err), null)
 
 		if (!success) {
