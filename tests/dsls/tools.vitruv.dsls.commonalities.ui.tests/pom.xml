@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>tools.vitruv</groupId>
-		<artifactId>tools.vitruv.dsls.commonalities.parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../../../bundles/dsls/tools.vitruv.dsls.commonalities/parent-pom.xml</relativePath>
+		<artifactId>dsls-tests</artifactId>
+		<version>0.2.0-SNAPSHOT</version>
+		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>tools.vitruv.dsls.commonalities.ui.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>

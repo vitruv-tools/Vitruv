@@ -10,15 +10,18 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.api.generator.ReactionBuilderFactory
 import com.google.inject.Inject
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
-import tools.vitruv.dsls.reactions.api.generator.IReactionsEnvironmentGenerator
+import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
 import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import tools.vitruv.dsls.reactions.api.generator.IReactionBuilder
+import com.google.inject.Provider
 
 package class CommonalityReactionsGenerator extends CommonalityFileGenerator {
+	
+	ReactionBuilderFactory reactionBuilderProvider = new ReactionBuilderFactory()
 
 	val participationReactions = new HashMap<Participation, Reaction>
-	@Inject ReactionBuilderFactory reactions
 	// @Inject IReactionsEnvironmentGenerator reactionsEnvironmentGenerator;
 
 	def private reaction(Participation participation) {
@@ -29,8 +32,8 @@ package class CommonalityReactionsGenerator extends CommonalityFileGenerator {
 
 	def private attributeReactions(AttributeMappingSpecifiation mappingSpecification) {
 		mappingSpecification.attributeDeclaration
-		reactions.createReactionBuilder().
-			setName('''«commonalityFile.concept.name»_«commonalityFile.commonality.name»$«mappingSpecification.attributeDeclaration.name»<->«mappingSpecification.participation.name»''')
+		reactionBuilderProvider.createReactionBuilder()
+			.setName('''«commonalityFile.concept.name»_«commonalityFile.commonality.name»$«mappingSpecification.attributeDeclaration.name»<->«mappingSpecification.participation.name»''')
 			.setTrigger(null)
 			.setTargetChange(null)
 			.generateReaction()
