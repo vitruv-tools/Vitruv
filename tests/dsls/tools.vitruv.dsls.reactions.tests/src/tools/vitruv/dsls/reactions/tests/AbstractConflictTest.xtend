@@ -85,9 +85,8 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 
 	protected def checkChangeMatchesLength(int l1, int l2) {
 		roots.forEach[saveAndSynchronizeChanges]
-		// FIXME PS "- 1" should be removed if the drop(1) is removed in  virtualModel.getChangeMatches
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(l1 - 1))
-		assertThat(virtualModel.getChangeMatches(newSourceVURI).length, is(l2 - 1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(l1))
+		assertThat(virtualModel.getChangeMatches(newSourceVURI).length, is(l2))
 	}
 
 	protected final def assertMappedModelsAreEqual() {

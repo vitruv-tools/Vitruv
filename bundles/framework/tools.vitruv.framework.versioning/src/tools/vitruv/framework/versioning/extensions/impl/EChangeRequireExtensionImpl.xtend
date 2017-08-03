@@ -17,36 +17,44 @@ class EChangeRequireExtensionImpl implements EChangeRequireExtension {
 		false
 	}
 
-	private static dispatch def checkForRequireEdgeImpl(CreateAndReplaceNonRoot<?, ?> e1,
-		ReplaceSingleValuedEAttribute<?, ?> e2) {
-		val x = e1.createChange.affectedEObject === e2.affectedEObject
-		return x
+	private static dispatch def checkForRequireEdgeImpl(
+		CreateAndReplaceNonRoot<?, ?> e1,
+		ReplaceSingleValuedEAttribute<?, ?> e2
+	) {
+		val returnValue = e1.createChange.affectedEObject === e2.affectedEObject
+		return returnValue
 	}
 
-	private static dispatch def checkForRequireEdgeImpl(CreateAndInsertRoot<?> e1,
-		ReplaceSingleValuedEAttribute<?, ?> e2) {
-		val x = e1.createChange.affectedEObject === e2.affectedEObject
-		return x
-	}
-
-	private static dispatch def checkForRequireEdgeImpl(CreateAndInsertEObject<?, ?> e1,
-		ReplaceSingleValuedEAttribute<?, ?> e2) {
-		val x = e1.createChange.affectedEObject === e2.affectedEObject
-		return x
-	}
-
-	private static dispatch def checkForRequireEdgeImpl(CreateAndReplaceNonRoot<?, ?> e1,
-		CreateAndInsertNonRoot<?, ?> e2) {
-		val x = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
-		return x
+	private static dispatch def checkForRequireEdgeImpl(
+		CreateAndInsertRoot<?> e1,
+		ReplaceSingleValuedEAttribute<?, ?> e2
+	) {
+		val returnValue = e1.createChange.affectedEObject === e2.affectedEObject
+		return returnValue
 	}
 
 	private static dispatch def checkForRequireEdgeImpl(
 		CreateAndInsertRoot<?> e1,
 		CreateAndReplaceNonRoot<?, ?> e2
 	) {
-		val x = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
-		return x
+		val returnValue = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
+		return returnValue
+	}
+
+	private static dispatch def checkForRequireEdgeImpl(
+		CreateAndInsertEObject<?, ?> e1,
+		ReplaceSingleValuedEAttribute<?, ?> e2
+	) {
+		val returnValue = e1.createChange.affectedEObject === e2.affectedEObject
+		return returnValue
+	}
+
+	private static dispatch def checkForRequireEdgeImpl(
+		CreateAndReplaceNonRoot<?, ?> e1,
+		CreateAndInsertNonRoot<?, ?> e2
+	) {
+		val returnValue = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
+		return returnValue
 	}
 
 	private new() {

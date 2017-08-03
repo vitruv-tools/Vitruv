@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
-/** 
+/**
  * Basic test class for all Vitruvius application tests that require a test
  * project and a VSUM project within the test workspace. The class creates a
  * test project and a VSUM for each test case within the workspace of the
@@ -50,32 +50,31 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	def abstract void afterTest()
 
 	@Before
-	override void beforeTest() {
-		super.beforeTest()
-		this.resourceSet = new ResourceSetImpl()
-		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet)
-		var String testMethodName = testName.getMethodName()
-		createVirtualModel(testMethodName)
+	override beforeTest() {
+		super.beforeTest
+		resourceSet = new ResourceSetImpl
+		ResourceSetUtil::addExistingFactoriesToResourceSet(resourceSet)
+		createVirtualModel(testName.methodName)
 	}
 
-	def private void createVirtualModel(String testName) {
-		var String currentTestProjectVsumName = '''«testName»_vsum_'''
-		var Iterable<VitruvDomain> domains = this.getVitruvDomains()
-		this.userInteractor = new TestUserInteractor()
-		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, true, domains,
+	private def void createVirtualModel(String testName) {
+		val String currentTestProjectVsumName = '''«testName»_vsum_'''
+		val Iterable<VitruvDomain> domains = vitruvDomains
+		userInteractor = new TestUserInteractor
+		virtualModel = TestUtil::createVirtualModel(currentTestProjectVsumName, true, domains,
 			createChangePropagationSpecifications(), userInteractor) as VersioningVirtualModel
-		this.correspondenceModel = virtualModel.getCorrespondenceModel()
+		correspondenceModel = virtualModel.correspondenceModel
 	}
 
-	def private File getPlatformModelPath(String modelPathWithinProject) {
-		return new File(this.getCurrentTestProjectFolder(), modelPathWithinProject)
+	private def File getPlatformModelPath(String modelPathWithinProject) {
+		return new File(currentTestProjectFolder, modelPathWithinProject)
 	}
 
 	def protected VURI getModelVuri(String modelPathWithinProject) {
-		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(getPlatformModelPath(modelPathWithinProject)))
+		VURI::getInstance(EMFBridge.getEmfFileUriForFile(getPlatformModelPath(modelPathWithinProject)))
 	}
 
-	/** 
+	/**
 	 * Creates and returns a resource with the given path relative to the
 	 * project folder.
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
@@ -84,24 +83,24 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * registered for resource with the given file extension
 	 */
 	def protected Resource createModelResource(String modelPathWithinProject) {
-		return resourceSet.createResource(getModelVuri(modelPathWithinProject).getEMFUri())
+		resourceSet.createResource(getModelVuri(modelPathWithinProject).EMFUri)
 	}
 
-	def private Resource getModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
-		return resourceSet.getResource(getModelVuri(modelPathWithinProject).getEMFUri(), true)
+	private def Resource getModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
+		return resourceSet.getResource(getModelVuri(modelPathWithinProject).EMFUri, true)
 	}
 
-	/** 
+	/**
 	 * Loads and returns the resource with the given {@link URI}.
 	 * @param modelUri- The {@link URI} of the resource to load
 	 * @return the resource loaded from the given {@link URI} or
 	 * <code>null</code> if it could not be loaded
 	 */
 	def protected Resource getModelResource(URI modelUri) {
-		return resourceSet.getResource(modelUri, true)
+		resourceSet.getResource(modelUri, true)
 	}
 
-	/** 
+	/**
 	 * Loads and returns the resource with the given path relative to the
 	 * project folder.
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
@@ -110,17 +109,17 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * it could not be loaded
 	 */
 	def protected Resource getModelResource(String modelPathWithinProject) {
-		return getModelResource(modelPathWithinProject, this.resourceSet)
+		getModelResource(modelPathWithinProject, resourceSet)
 	}
 
 	def protected EObject getFirstRootElement(String modelPathWithinProject, ResourceSet resourceSet) {
-		var List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).contents
+		val List<EObject> resourceContents = getModelResource(modelPathWithinProject, resourceSet).contents
 		if (resourceContents.size < 1)
 			throw new IllegalStateException("Model has no root")
 		return resourceContents.get(0)
 	}
 
-	/** 
+	/**
 	 * Returns the first root element within the resource with the given path
 	 * relative to the project folder
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
@@ -129,32 +128,32 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 * @throws IllegalStateExceptionif the resource does not contain a root element
 	 */
 	def protected EObject getFirstRootElement(String modelPathWithinProject) {
-		return getFirstRootElement(modelPathWithinProject, this.resourceSet)
+		getFirstRootElement(modelPathWithinProject, resourceSet)
 	}
 
-	/** 
+	/**
 	 * Asserts that a model with the given path relative to the project folder
 	 * exists.
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
 	 * using "/" as separator char and including the model file extension
 	 */
 	def protected void assertModelExists(String modelPathWithinProject) {
-		var boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri())
+		val boolean modelExists = URIUtil::existsResourceAtUri(getModelVuri(modelPathWithinProject).EMFUri)
 		assertTrue('''Model at «modelPathWithinProject» does not exist bust should''', modelExists)
 	}
 
-	/** 
+	/**
 	 * Asserts that no model with the given path relative to the project folder
 	 * exists.
 	 * @param modelPathWithinProject- the path to the resource within the project folder,
 	 * using "/" as separator char and including the model file extension
 	 */
 	def protected void assertModelNotExists(String modelPathWithinProject) {
-		var boolean modelExists = URIUtil.existsResourceAtUri(getModelVuri(modelPathWithinProject).getEMFUri())
+		val boolean modelExists = URIUtil::existsResourceAtUri(getModelVuri(modelPathWithinProject).EMFUri)
 		assertFalse('''Model at «modelPathWithinProject» exists but should not''', modelExists)
 	}
 
-	/** 
+	/**
 	 * Asserts that the two models persisted in resources with the given paths
 	 * relative to the project folder have equal contents.
 	 * @param firstModelPathWithinProject- the path to the first resource within the project folder,
@@ -164,11 +163,11 @@ abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 	 */
 	def protected void assertPersistedModelsEqual(String firstModelPathWithinProject,
 		String secondModelPathWithinProject) {
-		var ResourceSet testResourceSet = new ResourceSetImpl()
-		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl())
+		val ResourceSet testResourceSet = new ResourceSetImpl
+		testResourceSet.resourceFactoryRegistry.extensionToFactoryMap.put("*", new XMIResourceFactoryImpl)
 		ResourceSetUtil.addExistingFactoriesToResourceSet(testResourceSet)
-		var EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet)
-		var EObject secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet)
+		val firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet)
+		val secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet)
 		assertTrue(EcoreUtil.equals(firstRoot, secondRoot))
 	}
 }

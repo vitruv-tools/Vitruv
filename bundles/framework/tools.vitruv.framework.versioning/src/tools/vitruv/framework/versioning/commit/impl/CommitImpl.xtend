@@ -12,6 +12,8 @@ import tools.vitruv.framework.versioning.commit.SimpleCommit
 abstract class CommitImpl implements Commit {
 	List<PropagatedChange> changes
 
+	int numberOfChanges
+
 	CommitMessage commitmessage
 
 	List<SimpleCommit> commitsBranchedFromThis

@@ -6,9 +6,9 @@ import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
-import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.NoSuchCommitException
+import tools.vitruv.framework.versioning.emfstore.PushState
 
 class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepository {
 	@Accessors(PUBLIC_GETTER)
@@ -22,8 +22,9 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 	override pushCommit(Commit lastCommit, Commit newCommit) {
 		val currentLastCommit = commits.last
 		if (currentLastCommit != lastCommit)
-			throw new CommitNotExceptedException
+			return PushState::COMMIT_NOT_ACCEPTED
 		commits += newCommit
+		return PushState::SUCCESS
 	}
 
 	override getIdentifiers(String branchName) {
@@ -40,15 +41,16 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 		return branch
 	}
 
-	override push(Commit commit, String branchName) throws CommitNotExceptedException {
+	override push(Commit commit, String branchName) {
 		val branch = branchName.branch
 		val currentLastCommit = commits.last
 		if (commit instanceof SimpleCommit) {
 			if (currentLastCommit.identifier != commit.parent)
-				throw new CommitNotExceptedException
+				return PushState::COMMIT_NOT_ACCEPTED
 		}
 		addCommit(commit, branch)
 		head = commit
+		return PushState::SUCCESS
 	}
 
 	override pullCommit(String id, String branchName) {

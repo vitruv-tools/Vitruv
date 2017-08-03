@@ -31,7 +31,7 @@ interface VitruviusChangeFactory {
 	 */
 	def TransactionalChange createEMFModelChange(ChangeDescription changeDescription)
 
-	def TransactionalChange createEMFModelChangeFromEChanges(List<EChange> echanges, VURI vuri)
+	def TransactionalChange createEMFModelChangeFromEChanges(List<EChange> echanges)
 
 	def TransactionalChange createLegacyEMFModelChange(ChangeDescription changeDescription)
 

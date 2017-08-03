@@ -4,8 +4,10 @@ import allElementTypes.AllElementTypesFactory
 import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
 import allElementTypes.Root
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.extensions.URIRemapper
 
 abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTests {
+	protected static extension URIRemapper = URIRemapper::instance
 	protected static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
 	protected static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget"
 	protected static val NON_CONTAINMENT_NON_ROOT_IDS = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]

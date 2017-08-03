@@ -2,21 +2,25 @@ package tools.vitruv.framework.versioning.emfstore
 
 import java.util.List
 import java.util.Set
+
+import org.eclipse.xtext.xbase.lib.Functions.Function1
+
 import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.author.Author
+import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.RemoteBranch
-import tools.vitruv.framework.versioning.commit.SimpleCommit
-import tools.vitruv.framework.versioning.exceptions.CommitNotExceptedException
-import tools.vitruv.framework.versioning.branch.Branch
-import org.eclipse.xtext.xbase.lib.Functions.Function1
-import tools.vitruv.framework.versioning.Conflict
-import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.commit.MergeCommit
+import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 interface LocalRepository extends AbstractRepository {
+	def void setVirtualModel(VersioningVirtualModel versioningVirtualModel)
+
+	def VersioningVirtualModel getVirtualModel()
 
 	def Author getAuthor()
 
@@ -34,11 +38,19 @@ interface LocalRepository extends AbstractRepository {
 
 	def SimpleCommit commit(String s, List<PropagatedChange> changes)
 
+	def SimpleCommit commit(String s)
+
+	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel)
+
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel, VURI vuri)
 
 	def void addOrigin(LocalBranch branch, RemoteRepository remoteRepository)
 
 	def void addRemoteRepository(RemoteRepository remoteRepository)
+
+	def void checkout()
+
+	def void checkout(VersioningVirtualModel virtualModel)
 
 	def void checkout(VersioningVirtualModel virtualModel, VURI vuri)
 
@@ -50,13 +62,20 @@ interface LocalRepository extends AbstractRepository {
 		VersioningVirtualModel virtualModel
 	)
 
+	def MergeCommit merge(
+		Branch source,
+		Branch target,
+		Function1<Conflict, List<EChange>> originalCallback,
+		Function1<Conflict, List<EChange>> triggeredCallback
+	)
+
 	def void pull()
 
 	def void pull(LocalBranch branch)
 
-	def void push() throws CommitNotExceptedException
+	def PushState push()
 
-	def void push(LocalBranch localBranch) throws CommitNotExceptedException
+	def PushState push(LocalBranch localBranch)
 
 	def void setAuthor(Author author)
 

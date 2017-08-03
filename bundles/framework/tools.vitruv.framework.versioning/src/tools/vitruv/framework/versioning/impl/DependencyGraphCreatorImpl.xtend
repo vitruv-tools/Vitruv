@@ -8,12 +8,12 @@ import org.graphstream.graph.Graph
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 import tools.vitruv.framework.versioning.extensions.GraphExtension
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static extension EChangeRequireExtension = EChangeRequireExtension::instance
@@ -55,8 +55,13 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		return graph
 	}
 
-	private def createDependencyGraph(Graph graph, List<VitruviusChange> changes, boolean print, boolean isTriggered,
-		VURI vuri) {
+	private def createDependencyGraph(
+		Graph graph,
+		List<VitruviusChange> changes,
+		boolean print,
+		boolean isTriggered,
+		VURI vuri
+	) {
 		val resourceSet = new ResourceSetImpl
 		// PS Do not use the java 8 or xtend function methods here.
 		// Their laziness can cause problems while applying
@@ -70,19 +75,22 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 			node.triggered = isTriggered
 			node.vuri = vuri
 		]
-		val filteredEChanges = echanges.filter[!(it instanceof CreateAndInsertRoot<?>)]
 		graph.savePicture
 		if (echanges.exists[resolved])
 			throw new IllegalStateException("A change was resolved")
 		val Map<EChange, EChange> unresolvedToResolvedMap = newHashMap
-		filteredEChanges.forEach [
+		echanges.forEach [
+			if (it instanceof CreateAndInsertRoot<?>) {
+				val fileUri = vuri.EMFUri
+				resourceSet.createResource(fileUri)
+			}
 			val x = resolveBefore(resourceSet)
 			x.applyForward
 			unresolvedToResolvedMap.put(it, x)
 		]
-		filteredEChanges.forEach [ echange |
+		echanges.forEach [ echange |
 			val resolved = unresolvedToResolvedMap.get(echange)
-			filteredEChanges.filter[it !== echange].forEach [ otherEchange |
+			echanges.filter[it !== echange].forEach [ otherEchange |
 				val otherResolved = unresolvedToResolvedMap.get(otherEchange)
 				val isParent = checkForRequireEdge(resolved, otherResolved)
 				if (isParent)
@@ -92,5 +100,4 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 		// TODO PS Remove
 		if (print) graph.savePicture
 	}
-
 }

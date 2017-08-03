@@ -7,6 +7,8 @@ import tools.vitruv.framework.change.description.TransactionalChange
 interface AtomicEmfChangeRecorder {
 	def void beginRecording()
 
+	def void clearNotifiers()
+
 	def void addToRecording(Notifier elementToObserve)
 
 	def void removeFromRecording(Notifier elementToObserve)

@@ -10,11 +10,20 @@ interface ChangePropagator {
 
 	def void addPropagatedChanges(VURI vuri, String id)
 
+	def List<PropagatedChange> getAllResolvedPropagatedChanges()
+
+	def List<PropagatedChange> getAllUnresolvedPropagatedChanges()
+
 	def List<PropagatedChange> getResolvedPropagatedChanges(VURI vuri)
 
 	def List<PropagatedChange> getUnresolvedPropagatedChanges(VURI vuri)
 
-	/** 
+	/**
+	 * When reapplying changes which have already an id.
+	 */
+	def List<PropagatedChange> propagateChange(VitruviusChange change, String changeId)
+
+	/**
 	 * Resort changes and igores undos/redos.
 	 * @param changelist of changes
 	 * @return TODO

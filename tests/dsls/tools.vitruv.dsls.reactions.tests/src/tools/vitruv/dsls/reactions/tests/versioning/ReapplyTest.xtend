@@ -2,12 +2,13 @@ package tools.vitruv.dsls.reactions.tests.versioning
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
+import org.junit.Ignore
 import org.junit.Test
 import tools.vitruv.framework.change.copy.ChangeCopyFactory
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
+import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.InternalTestVirtualModel
-import tools.vitruv.framework.util.datatypes.VURI
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
@@ -17,14 +18,10 @@ class ReapplyTest extends SourceTargetRecorderTest {
 	static val newTestSourceModelName = "EachTestModelSource2"
 	static val newTestTargetModelName = "EachTestModelTarget2"
 	VURI newSourceVURI
-	Root newRoot
 
 	override setup() {
 		super.setup
-		newRoot = AllElementTypesFactory::eINSTANCE.createRoot
-		newRoot.id = newTestSourceModelName
-		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(newRoot)
-		newSourceVURI = VURI::getInstance(newRoot.eResource)
+		newSourceVURI = createNewVURI(sourceVURI, TEST_SOURCE_MODEL_NAME -> newTestSourceModelName)
 	}
 
 	@Test
@@ -38,35 +35,36 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 		assertThat(rootElement.eContents.length, is(1))
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
 
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
-
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(4))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(5))
 		val originalChanges = virtualModel.getChangeMatches(sourceVURI).map[originalChange]
-		assertThat(originalChanges.length, is(4))
+		assertThat(originalChanges.length, is(5))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
-		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#[pair])
+		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#{pair})
 		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
 			it as EMFModelChangeImpl
-		].map[eChangeCopier.copyEMFModelChangeToSingleChange(it, newSourceVURI)].toList
-		assertThat(copiedChanges.length, is(4))
+		].map[eChangeCopier.copyEMFModelChangeToSingleChange(it)].toList
+		assertThat(copiedChanges.length, is(5))
 
 		virtualModel.propagateChange(copiedChanges.get(0))
+		virtualModel.propagateChange(copiedChanges.get(1))
 		assertThatNonRootObjectContainerHasRightId
 
 		for (i : 0 ..< 3) {
-			virtualModel.propagateChange(copiedChanges.get(i + 1))
+			virtualModel.propagateChange(copiedChanges.get(i + 2))
 			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i, true)
 		}
+
 		newSourceVURI.saveSecondSourceModel
 	}
 
+	@Ignore
 	@Test
 	def void testReapplyAsList() {
 
@@ -78,37 +76,40 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 		assertThat(rootElement.eContents.length, is(1))
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
 		val changeMatches1 = virtualModel.getChangeMatches(sourceVURI)
-		assertThat(changeMatches1.length, is(4))
+		assertThat(changeMatches1.length, is(5))
 		changeMatches1.forEach [ c |
 			c.originalChange.EChanges.forEach [ eChange |
 				assertThat(eChange.resolved, is(false))
 			]
 		]
 		val originalChanges = changeMatches1.map[originalChange]
-		assertThat(originalChanges.length, is(4))
+		assertThat(originalChanges.length, is(5))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
-		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#[pair])
+		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#{pair})
 		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
 			it as EMFModelChangeImpl
-		].map[eChangeCopier.copyEMFModelChangeToList(it, newSourceVURI)].flatten.toList
-		assertThat(copiedChanges.length, is(8))
-		val x = copiedChanges.get(0)
-		virtualModel.propagateChange(x)
+		].map[eChangeCopier.copyEMFModelChangeToList(it)].flatten.toList
+		assertThat(copiedChanges.length, is(10))
+
+		for (i : 0 ..< 3) {
+			virtualModel.propagateChange(copiedChanges.get(i))
+		}
+
 		assertThatNonRootObjectContainerIsCreated
-		val y = copiedChanges.get(1)
+		val y = copiedChanges.get(3)
 		virtualModel.propagateChange(y)
 		assertThatNonRootObjectContainerHasRightId
 		for (i : 0 ..< 3) {
-			virtualModel.propagateChange(copiedChanges.get(2 + i * 2))
+			virtualModel.propagateChange(copiedChanges.get(4 + i * 2))
 			assertThatNonRootObjectHasBeenInsertedInContainer(i)
-			virtualModel.propagateChange(copiedChanges.get(3 + i * 2))
+			virtualModel.propagateChange(copiedChanges.get(5 + i * 2))
 			assertThatNonRootObjectHasBeenInsertedInContainerAndRightId(i)
 		}
 		newSourceVURI.saveSecondSourceModel
@@ -167,7 +168,7 @@ class ReapplyTest extends SourceTargetRecorderTest {
 			assertThat(x.apply(targetRootIterator), is(true))
 	}
 
-	private def getResourceSet() {
+	private def getInternalResourceSet() {
 		val internalModel = virtualModel as InternalTestVirtualModel
 		val internalModelRepository = internalModel.modelRepository as InternalModelRepository
 		val resourceSet = internalModelRepository.resourceSet
@@ -183,7 +184,7 @@ class ReapplyTest extends SourceTargetRecorderTest {
 	}
 
 	private def getRootIterator(String name) {
-		resourceSet.resources.filter[URI.toString.contains(name)].map[contents].flatten.filter [
+		internalResourceSet.resources.filter[URI.toString.contains(name)].map[contents].flatten.filter [
 			it instanceof Root
 		].map[it as Root].filter [
 			id == newTestSourceModelName

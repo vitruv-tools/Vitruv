@@ -16,4 +16,6 @@ interface URIRemapper {
 	def Consumer<EObject> createRemapFunction(String from, String to)
 
 	def Consumer<EObject> createRemapFunction(VURI from, VURI to)
+
+	def VURI createNewVURI(VURI oldVURI, Pair<String, String> stringWithNewString)
 }

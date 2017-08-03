@@ -161,9 +161,8 @@ final class Tuid implements Serializable {
 	 * segment of the given {@link newTuid}.
 	 */
 	def void updateTuid(Tuid newTuid) {
-		if (this.equals(newTuid)) {
+		if (this == newTuid)
 			return;
-		}
 		moveLastSegment(newTuid)
 	}
 
@@ -251,4 +250,5 @@ lastSegment2TuidMap:
 				return true
 			}
 
-}
+		}
+		

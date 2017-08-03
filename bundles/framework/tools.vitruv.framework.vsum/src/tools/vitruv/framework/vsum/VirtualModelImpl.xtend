@@ -2,9 +2,12 @@ package tools.vitruv.framework.vsum
 
 import java.io.File
 import java.util.List
+import java.util.Map
 import java.util.concurrent.Callable
+
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Accessors
+
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
@@ -19,15 +22,15 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryInterface
-import java.util.Map
 
 class VirtualModelImpl implements VersioningVirtualModel {
 	protected val ResourceRepositoryImpl resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator
+	@Accessors(PUBLIC_SETTER)
+	String allLastPropagatedChangeId
 	val Map<VURI, String> vuriToLastpropagatedChange
-	val ModelRepositoryInterface modelRepository
+	val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository metamodelRepository
 	@Accessors(PUBLIC_GETTER)
 	val File folder
@@ -37,6 +40,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		this.metamodelRepository = new VitruvDomainRepositoryImpl
 		for (metamodel : modelConfiguration.metamodels) {
 			this.metamodelRepository.addDomain(metamodel)
+			metamodel.registerAtTuidManagement
 		}
 		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository)
 		this.modelRepository = new ModelRepositoryImpl
@@ -50,6 +54,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 			metamodelRepository, resourceRepository, modelRepository)
 		VirtualModelManager::instance.putVirtualModel(this)
 		vuriToLastpropagatedChange = newHashMap
+		allLastPropagatedChangeId = null
 	}
 
 	override getCorrespondenceModel() {
@@ -83,13 +88,13 @@ class VirtualModelImpl implements VersioningVirtualModel {
 
 	override reverseChanges(List<PropagatedChange> changes) {
 
-		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand([|
+		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand [|
 			changes.reverseView.forEach [
 				applyBackward
 				changePropagator.removePropagatedChange(originalChange.URI, id)
 			]
 			return null
-		])
+		]
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)
 
 		val changedEObjects = command.affectedObjects.filter(EObject)
@@ -98,13 +103,13 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	}
 
 	override forwardChanges(List<PropagatedChange> changes) {
-		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand([|
+		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand [
 			changes.forEach [
 				applyForward
 				changePropagator.addPropagatedChanges(originalChange.URI, id)
 			]
 			return null
-		])
+		]
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)
 
 		val changedEObjects = command.affectedObjects.filter(EObject)
@@ -124,20 +129,47 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		changePropagator.getUnresolvedPropagatedChanges(vuri)
 	}
 
+	private static def dropAllPreviousChanges(List<PropagatedChange> propagatedChanges, String lastCommitedChange) {
+		val returnValue = propagatedChanges.dropWhile [
+			id != lastCommitedChange
+		].drop(1).toList
+		return returnValue
+	}
+
 	override getUnresolvedPropagatedChangesSinceLastCommit(VURI vuri) {
+		val changes = changePropagator.getUnresolvedPropagatedChanges(vuri)
 		if (vuriToLastpropagatedChange.containsKey(vuri)) {
 			val lastPropagatedId = vuriToLastpropagatedChange.get(vuri)
-			return changePropagator.getUnresolvedPropagatedChanges(vuri).dropWhile [
-				id != lastPropagatedId
-			].drop(1).toList
+			return dropAllPreviousChanges(changes, lastPropagatedId)
 		} else {
-			// TODO The drop(1) 
-			return changePropagator.getUnresolvedPropagatedChanges(vuri).drop(1).toList
+			return changes.toList
 		}
+	}
+
+	override getAllUnresolvedPropagatedChangesSinceLastCommit() {
+		val changes = changePropagator.allUnresolvedPropagatedChanges
+		if (null !== allLastPropagatedChangeId) {
+			return dropAllPreviousChanges(changes, allLastPropagatedChangeId)
+		} else {
+			return changes.toList
+		}
+
 	}
 
 	override setLastPropagatedChangeId(VURI vuri, String id) {
 		vuriToLastpropagatedChange.put(vuri, id)
+	}
+
+	override getAllResolvedPropagatedChanges() {
+		changePropagator.allResolvedPropagatedChanges
+	}
+
+	override getAllUnresolvedPropagatedChanges() {
+		changePropagator.allUnresolvedPropagatedChanges
+	}
+
+	override propagateChange(VitruviusChange change, String changeId) {
+		changePropagator.propagateChange(change, changeId)
 	}
 
 }

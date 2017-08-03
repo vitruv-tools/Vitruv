@@ -67,7 +67,7 @@ class ConflictNotExistsGraphIsomorphismTest extends AbstractConflictNotExistsTes
 	def void testConflictDetector() {
 		assertThat(conflicts.empty, is(true))
 		val conflictFreeEChanges = conflictDetector.conflictFreeOriginalEChanges
-		assertThat(conflictFreeEChanges.length, is(8))
+		assertThat(conflictFreeEChanges.length, is(10))
 	}
 
 }

@@ -4,4 +4,5 @@ interface SimpleCommit extends Commit {
 	def String getParent()
 
 	def boolean isInitialCommit()
+
 }
