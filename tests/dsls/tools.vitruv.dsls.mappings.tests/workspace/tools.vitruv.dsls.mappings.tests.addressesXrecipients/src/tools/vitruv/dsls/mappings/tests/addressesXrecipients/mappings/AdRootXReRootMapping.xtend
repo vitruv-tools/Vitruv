@@ -1,20 +1,18 @@
 package tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings
 
-import tools.vitruv.extensions.dslsruntime.mappings.MappingRegistry
-import tools.vitruv.extensions.dslsruntime.mappings.Mapping
 import edu.kit.ipd.sdq.mdsd.addresses.Addresses
 import edu.kit.ipd.sdq.mdsd.recipients.Recipients
-import java.util.Set
+import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.LeftAdRootXReRootInstanceHalf
+import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.RightAdRootXReRootInstanceHalf
+import tools.vitruv.extensions.dslsruntime.mappings.Mapping
 
-class AdRootXReRootMapping implements Mapping {
+class AdRootXReRootMapping extends Mapping<LeftAdRootXReRootInstanceHalf,RightAdRootXReRootInstanceHalf> {
 	static val singleton = new AdRootXReRootMapping
-	
-	val MappingRegistry mappingRegistry
-	
+
 	private new() {
-		this.mappingRegistry = new MappingRegistry(this)
+		super()
 	}
-	
+
 	def static AdRootXReRootMapping adRootXReRootMapping() {
 		return singleton
 	}
@@ -43,57 +41,19 @@ class AdRootXReRootMapping implements Mapping {
 	}
 	
 	/********** BEGIN CANDIDATE METHODS **********/
-	def Iterable<Addresses> getLeftCandidates() {
-		return mappingRegistry.getLeftCandidates().toLeftTypes
+	def private Iterable<LeftAdRootXReRootInstanceHalf> getNewCandidatesForAddresses(Addresses aRoot) {
+		val aRootSet = #{aRoot}
+		val cartesianProduct = mappingRegistry.cartesianProduct(aRootSet)
+		return cartesianProduct.map[new LeftAdRootXReRootInstanceHalf(
+			it.get(0) as Addresses
+		)]
 	}
 	
-	def private Iterable<Addresses> toLeftTypes(Iterable<Set<Object>> iterable) {
-		return iterable.map[
-			it.filter(Addresses).get(0)
-		]
-	}
-		
-	def Iterable<Recipients> getRightCandidates() {
-		return mappingRegistry.getRightCandidates().toRightTypes
-	}
-	
-	def private Iterable<Recipients> toRightTypes(Iterable<Set<Object>> iterable) {
-		return iterable.map[
-			it.filter(Recipients).get(0)
-		]
-	}
-	
-	/********** BEGIN INSTANCE METHODS **********/
-	def Iterable<Addresses> getLeftInstances() {
-		return mappingRegistry.getLeftInstances().toLeftTypes
-	}
-	
-	def Iterable<Recipients> getRightInstances() {
-		return mappingRegistry.getRightInstances().toRightTypes
-	}
-	
-	def void addLeftInstance(Addresses aRoot) {
-		mappingRegistry.addLeftInstance(#{aRoot})
-	}
-	
-	def void addRightInstance(Recipients rRoot) {
-		mappingRegistry.addRightInstance(#{rRoot})
-	}
-	
-	def void removeLeftInstance(Addresses aRoot) {
-		mappingRegistry.removeLeftInstance(#{aRoot})
-	}
-	
-	def void removeRightInstance(Recipients rRoot) {
-		mappingRegistry.removeLeftInstance(#{rRoot})
-	}
-	
-	/********** BEGIN PRIVATE METHODS **********/
-	def private Iterable<Set<Object>> getNewCandidatesForAddresses(Addresses aRoot) {
-		return mappingRegistry.cartesianProduct(#{aRoot})
-	}
-	
-	def private Iterable<Set<Object>> getNewCandidatesForRecipients(Recipients rRoot) {
-		return mappingRegistry.cartesianProduct(#{rRoot})
+	def private Iterable<RightAdRootXReRootInstanceHalf> getNewCandidatesForRecipients(Recipients rRoot) {
+		val rRootSet = #{rRoot}
+		val cartesianProduct = mappingRegistry.cartesianProduct(rRootSet)
+		return cartesianProduct.map[new RightAdRootXReRootInstanceHalf(
+			it.get(0) as Recipients
+		)]
 	}
 }

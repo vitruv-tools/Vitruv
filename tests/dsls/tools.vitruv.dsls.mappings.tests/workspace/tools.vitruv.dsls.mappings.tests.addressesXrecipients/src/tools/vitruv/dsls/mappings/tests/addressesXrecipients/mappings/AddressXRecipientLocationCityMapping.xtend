@@ -1,22 +1,19 @@
 package tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings
 
-import edu.kit.ipd.sdq.commons.util.java.Triple
 import edu.kit.ipd.sdq.mdsd.addresses.Address
 import edu.kit.ipd.sdq.mdsd.recipients.City
 import edu.kit.ipd.sdq.mdsd.recipients.Location
 import edu.kit.ipd.sdq.mdsd.recipients.Recipient
-import java.util.Set
+import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.LeftAdRootXReRootInstanceHalf
+import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.LeftAddressXRecipientLocationCityInstanceHalf
+import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.RightAdRootXReRootInstanceHalf
+import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.RightAddressXRecipientLocationCityInstanceHalf
 import tools.vitruv.extensions.dslsruntime.mappings.Mapping
-import tools.vitruv.extensions.dslsruntime.mappings.MappingRegistry
 
-class AddressXRecipientLocationCityMapping implements Mapping {
+class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipientLocationCityInstanceHalf,RightAddressXRecipientLocationCityInstanceHalf> {
 	static val singleton = new AddressXRecipientLocationCityMapping
 	
-	val MappingRegistry mappingRegistry
-	
-	private new() {
-		this.mappingRegistry = new MappingRegistry(this)
-	}
+	val AdRootXReRootMapping rootXroot = AdRootXReRootMapping.adRootXReRootMapping
 	
 	def static AddressXRecipientLocationCityMapping addressXRecipientLocationCityMapping() {
 		return singleton
@@ -66,77 +63,55 @@ class AddressXRecipientLocationCityMapping implements Mapping {
 	}
 	
 	/********** BEGIN CANDIDATE METHODS **********/
-	def Iterable<Address> getLeftCandidates() {
-		return mappingRegistry.getLeftCandidates().toLeftTypes
+	def private Iterable<LeftAddressXRecipientLocationCityInstanceHalf> getNewCandidatesForAddress(Address address) {
+		val aRootSet = rootXroot.getLeftCandidates()
+		val aSet = #{address}
+		val cartesianProduct = mappingRegistry.cartesianProduct(aRootSet, aSet)
+		return cartesianProduct.map[new LeftAddressXRecipientLocationCityInstanceHalf(
+			it.get(0) as LeftAdRootXReRootInstanceHalf,
+			it.get(1) as Address
+		)]
 	}
 	
-	def private Iterable<Address> toLeftTypes(Iterable<Set<Object>> iterable) {
-		// FIXME MK IMPROVE TYPE SAFETY?
-		return iterable.map[
-			it.filter(Address).get(0)
-		]
-	}
-		
-	def Iterable<Triple<Recipient, Location, City>> getRightCandidates() {
-		// FIXME MK IMPROVE TYPE SAFETY?
-		return mappingRegistry.getRightCandidates().toRightTypes
-	}
-	
-	def private Iterable<Triple<Recipient, Location, City>> toRightTypes(Iterable<Set<Object>> iterable) {
-		return iterable.map[
-			new Triple<Recipient, Location, City>(
-				it.filter(Recipient).get(0), it.filter(Location).get(0), it.filter(City).get(0)
-			)
-		]
+	def private Iterable<RightAddressXRecipientLocationCityInstanceHalf> getNewCandidatesForRecipient(Recipient recipient) {
+		val rRootSet = rootXroot.getRightCandidates()
+		val rSet = #{recipient}
+		val lSet = mappingRegistry.getElements(Location)
+		val cSet = mappingRegistry.getElements(City)
+		val cartesianProduct = mappingRegistry.cartesianProduct(rRootSet, rSet, lSet, cSet)
+		return cartesianProduct.map[new RightAddressXRecipientLocationCityInstanceHalf(
+			it.get(0) as RightAdRootXReRootInstanceHalf,
+			it.get(1) as Recipient,
+			it.get(2) as Location,
+			it.get(3) as City
+		)]
 	}
 	
-	/********** BEGIN INSTANCE METHODS **********/
-	def Iterable<Address> getLeftInstances() {
-		return mappingRegistry.getLeftInstances().toLeftTypes
+	def private Iterable<RightAddressXRecipientLocationCityInstanceHalf> getNewCandidatesForLocation(Location location) {
+		val rRootSet = rootXroot.getRightCandidates()
+		val rSet = mappingRegistry.getElements(Recipient)
+		val lSet = #{location}
+		val cSet = mappingRegistry.getElements(City)
+		val cartesianProduct = mappingRegistry.cartesianProduct(rRootSet, rSet, lSet, cSet)
+		return cartesianProduct.map[new RightAddressXRecipientLocationCityInstanceHalf(
+			it.get(0) as RightAdRootXReRootInstanceHalf,
+			it.get(1) as Recipient,
+			it.get(2) as Location,
+			it.get(3) as City
+		)]
 	}
 	
-	def Iterable<Triple<Recipient, Location, City>> getRightInstances() {
-		return mappingRegistry.getRightInstances().toRightTypes
-	}
-	
-	def void addLeftInstance(Address a) {
-		mappingRegistry.addLeftInstance(#{a})
-	}
-	
-	def void addRightInstance(Recipient r, Location l, City c) {
-		mappingRegistry.addRightInstance(#{r,l,c})
-	}
-	
-	def void removeLeftInstance(Address a) {
-		mappingRegistry.removeLeftInstance(#{a})
-	}
-	
-	def void removeRightInstance(Recipient r, Location l, City c) {
-		mappingRegistry.removeLeftInstance(#{r, l, c})
-	}
-	
-	/********** BEGIN PRIVATE METHODS **********/
-	def private Iterable<Set<Object>> getNewCandidatesForAddress(Address address) {
-//		return #[#{address}]
-		// TODO MK check whether handling the special case of single elements as commented out is necessary
-		return mappingRegistry.cartesianProduct(#{address})
-	}
-	
-	def private Iterable<Set<Object>> getNewCandidatesForRecipient(Recipient recipient) {
-		val ls = mappingRegistry.getElements(Location)
-		val cs = mappingRegistry.getElements(City)
-		return mappingRegistry.cartesianProduct(#{recipient},ls,cs)
-	}
-	
-	def private Iterable<Set<Object>> getNewCandidatesForLocation(Location location) {
-		val rs = mappingRegistry.getElements(Recipient)
-		val cs = mappingRegistry.getElements(City)
-		return mappingRegistry.cartesianProduct(#{location},rs,cs)
-	}
-	
-	def private Iterable<Set<Object>> getNewCandidatesForCity(City city) {
-		val rs = mappingRegistry.getElements(Recipient)
-		val ls = mappingRegistry.getElements(Location)
-		return mappingRegistry.cartesianProduct(#{city},rs,ls)
+	def private Iterable<RightAddressXRecipientLocationCityInstanceHalf> getNewCandidatesForCity(City city) {
+		val rRootSet = rootXroot.getRightCandidates()
+		val rSet = mappingRegistry.getElements(Recipient)
+		val lSet = mappingRegistry.getElements(Location)
+		val cSet = #{city}
+		val cartesianProduct = mappingRegistry.cartesianProduct(rRootSet, rSet, lSet, cSet)
+		return cartesianProduct.map[new RightAddressXRecipientLocationCityInstanceHalf(
+			it.get(0) as RightAdRootXReRootInstanceHalf,
+			it.get(1) as Recipient,
+			it.get(2) as Location,
+			it.get(3) as City
+		)]
 	}
 }

@@ -1,5 +1,5 @@
+import static extension tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AdRootXReRootMapping.*
 import static extension tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AddressXRecipientLocationCityMapping.*
-import static extension tools.vitruv.dsls.mappings.tests.addressesXrecipients.conditions.AddressXRecipientLocationCityConditions.*
 
 import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
 import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
@@ -8,7 +8,9 @@ reactions: ad2re
 in reaction to changes in Addresses
 execute actions in Recipients
 
-/********** UPDATE REACTION **********/
+/******************************************************
+********** BEGIN GLOBAL REACTION AND ROUTINE **********
+*******************************************************/
 reaction AnyChange {
 	after any change
 	call {
@@ -16,28 +18,108 @@ reaction AnyChange {
 	}
 }
 
-/********** UPDATE ROUTINE **********/
 routine ensureAllMappings() {
 	action {
 		call {
-//			ensureAdRootXReRootMapping()
+			ensureAdRootXReRootMapping()
 			ensureAddressXRecipientLocationCityMapping()
 		}
 	}
 }
 
-///********** BEGIN AdRootXReRoot MAPPING **********/
-//routine ensureAdRootXReRootMapping() {
-//	action {
-//		call {
-//			deleteAdRootXReRootMappingInstances()
-//			createAdRootXReRootMappingInstances()
-//			updateAdRootXReRootMappingInstances()
-//		}
-//	}
-//}
+/******************************************************
+********** BEGIN AdRootXReRoot MAPPING **********
+*******************************************************/
+routine ensureAdRootXReRootMapping() {
+	action {
+		call {
+			deleteAdRootXReRootMappingInstances()
+			createAdRootXReRootMappingInstances()
+			updateAdRootXReRootMappingInstances()
+		}
+	}
+}
 
-/********** BEGIN AddressXRecipientLocationCity MAPPING **********/
+/********** BEGIN AdRootXReRoot DELETE AND CREATE ROUTINES **********/
+routine deleteAdRootXReRootMappingInstances() {
+	action {
+		call {
+			val instances = adRootXReRootMapping.getLeftInstances()
+			for (aRoot : instances) {
+				deleteAdRootXReRootMappingInstance(aRoot)
+			}
+		}
+	}
+}
+
+routine deleteAdRootXReRootMappingInstance(ad::Addresses aRoot) {
+	match {
+		check adRootXReRootConditions.checkLeftPreconditions(aRoot)
+		val rRoot = retrieve re::Recipients corresponding to aRoot
+			tagged with "AdRootXReRoot"
+	}
+	action {
+		remove correspondence between aRoot and rRoot
+		delete rRoot
+		call {
+			adRootXReRootMapping.removeLeftInstance(aRoot)
+		}
+	}
+}
+
+routine createAdRootXReRootMappingInstances() {
+	action {
+		call {
+			val candidates = adRootXReRootMapping.getLeftCandidates()
+			for (aRoot : candidates) {
+				createAdRootXReRootMappingInstance(aRoot)
+			}
+		}
+	}
+}
+
+routine createAdRootXReRootMappingInstance(ad::Addresses aRoot) {
+	match {
+		check adRootXReRootConditions.checkLeftPreconditions(aRoot)
+	}
+	action {
+		val rRoot = create re::Recipients
+		add correspondence between aRoot and rRoot
+		call {
+			adRootXReRootMapping.addLeftInstance(aRoot)
+			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.lastSegment);
+		}
+	}
+}
+
+/********** BEGIN AdRootXReRootMapping UPDATE ROUTINES **********/
+routine updateAdRootXReRootMappingInstances() {
+	action {
+		call {
+			val instances = adRootXReRootMapping.getLeftInstances()
+			for (aRoot : instances) {
+				updateAdRootXReRootMappingInstance(aRoot)
+			}
+		}
+	}
+}
+
+routine updateAdRootXReRootMappingInstance(ad::Addresses aRoot) {
+	match {
+		val rRoot = retrieve re::Recipients corresponding to aRoot
+			tagged with "AdRootXReRootMapping"
+	}
+	action {
+		call {
+			adRootXReRootConditions.enforceRigthPostconditions(rRoot)
+			adRootXReRootConditions.enforceFromLeft2Right(aRoot, rRoot)
+		}
+	}
+}
+
+/******************************************************
+********** BEGIN AddressXRecipientLocationCity MAPPING **********
+*******************************************************/
 routine ensureAddressXRecipientLocationCityMapping() {
 	action {
 		call {
@@ -140,20 +222,36 @@ routine updateAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 	}
 }
 
-/********** BEGIN CREATE REACTIONS **********/
+/******************************************************
+ ********** BEGIN CREATE REACTIONS **********
+ ******************************************************/
+reaction AddressesCreated {
+	after element ad::Addresses created
+	call {
+		adRootXReRootMapping.addAddresses(affectedEObject)
+	}
+}
+
 reaction AddressCreated {
 	after element ad::Address created
 	call {
 		addressXRecipientLocationCityMapping.addAddress(affectedEObject)
-		// FIXME MK: IS IT ALREADY GUARANTEED THAT THIS REACTION IS TRIGGERED BEFORE ANY CHANGE?
 	}
 }
 
-/********** BEGIN DELETE REACTIONS **********/
+/******************************************************
+ ********** BEGIN DELETE REACTIONS **********
+ ******************************************************/
+reaction AddressesDeleted {
+	after element ad::Addresses deleted
+	call {
+		adRootXReRootMapping.removeAddresses(affectedEObject)
+	}
+}
+
 reaction AddressDeleted {
 	after element ad::Address deleted
 	call {
 		addressXRecipientLocationCityMapping.removeAddress(affectedEObject)
-		// FIXME MK: IS IT ALREADY GUARANTEED THAT THIS REACTION IS TRIGGERED BEFORE ANY CHANGE?
 	}
 }

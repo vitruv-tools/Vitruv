@@ -5,21 +5,22 @@ import com.google.common.collect.SetMultimap
 import com.google.common.collect.Sets
 import java.util.Iterator
 import java.util.Set
+import java.util.List
 
-class MappingRegistry {
-	val Mapping mapping
+class MappingRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHalf> {
+	val Mapping<L,R> mapping
 	val SetMultimap<Class<?>, Object> elementsMap = HashMultimap.create()
-	val Set<Set<Object>> leftCandidates = newHashSet()
-	val Set<Set<Object>> rightCandidates = newHashSet()
-	val Set<Set<Object>> leftInstances = newHashSet()
-	val Set<Set<Object>> rightInstances = newHashSet()
+	val Set<L> leftCandidates = newHashSet()
+	val Set<R> rightCandidates = newHashSet()
+	val Set<L> leftInstances = newHashSet()
+	val Set<R> rightInstances = newHashSet()
 	
-	new(Mapping mapping) {
+	new(Mapping<L,R> mapping) {
 		this.mapping = mapping
 	}
 	
-	def <T> Iterable<Set<T>> cartesianProduct(Set<? extends T>... sets) {
-		return Sets.cartesianProduct(sets).map[it.toSet]
+	def <T> Iterable<List<T>> cartesianProduct(Set<? extends T>... sets) {
+		return Sets.cartesianProduct(sets)
 	}
 	
 	/********** BEGIN COMBINED REMOVE METHODS **********/
@@ -57,55 +58,55 @@ class MappingRegistry {
 	}
 	
 	/********** BEGIN CANDIDATE METHODS **********/
-	def Iterable<Set<Object>> getLeftCandidates() {
+	def Set<L> getLeftCandidates() {
 		return leftCandidates
 	}
 			
-	def Iterable<Set<Object>> getRightCandidates() {
+	def Set<R> getRightCandidates() {
 		return rightCandidates
 	}
 	
-	def void addLeftCandidates(Iterable<Set<Object>> candidates) {
-		addSets(leftCandidates, candidates, "left candidate")
+	def void addLeftCandidates(Iterable<L> candidates) {
+		addHalves(leftCandidates, candidates, "left candidate")
 	}
 	
-	def void addRightCandidates(Iterable<Set<Object>> candidates) {
-		addSets(rightCandidates, candidates, "right candidate")
+	def void addRightCandidates(Iterable<R> candidates) {
+		addHalves(rightCandidates, candidates, "right candidate")
 	}
 	
-	private def void addSets(Set<Set<Object>> setsRegistry, Iterable<Set<Object>> sets, String setType) {
-		for (set : sets) {
-			addSet(setsRegistry, set, setType)
+	private def <T> void addHalves(Set<T> halvesRegistry, Iterable<T> halves, String halfType) {
+		for (half : halves) {
+			addSet(halvesRegistry, half, halfType)
 		}
 	}
 	
-	private def void addSet(Set<Set<Object>> setsRegistry, Set<Object> set, String setType) {
-		val setIsNew = setsRegistry.add(set)
-		if (!setIsNew) {
-			throw new IllegalStateException('''Cannot register the «setType» '«set»' for the mapping '«this.mapping»'
+	private def <T> void addSet(Set<T> halvesRegistry, T half, String halfType) {
+		val halfIsNew = halvesRegistry.add(half)
+		if (!halfIsNew) {
+			throw new IllegalStateException('''Cannot register the «halfType» '«half»' for the mapping '«this.mapping»'
 			because it is already registered!''')
 		}
 	}
 	
 	private def void removeLeftCandidates(Object object) {
 		val iterator = leftCandidates.iterator()
-		removeSetsThatContainAnElement(iterator, object, "left candidates")
+		removeHalvesThatContainAnElement(iterator, object, "left candidates")
 	}
 	
 	private def void removeRightCandidates(Object object) {
 		val iterator = rightCandidates.iterator()
-		removeSetsThatContainAnElement(iterator, object, "right candidates")
+		removeHalvesThatContainAnElement(iterator, object, "right candidates")
 	}
 	
-	private def boolean removeSetsThatContainAnElement(Iterator<Set<Object>> iterator, Object element, String setType) {
-		val atLeastOneSetRemoved = removeSetsThatContainAnElement(iterator, element)
+	private def <T extends MappingInstanceHalf> boolean removeHalvesThatContainAnElement(Iterator<T> iterator, Object element, String halfType) {
+		val atLeastOneSetRemoved = removeHalvesThatContainAnElement(iterator, element)
 		if (!atLeastOneSetRemoved) {
-			throw new IllegalStateException('''No «setType» to be removed are registered for the element '«element»'
+			throw new IllegalStateException('''No «halfType» to be removed are registered for the element '«element»'
 			in '«iterator.toList»' of the mapping '«this.mapping»'!''')
 		}
 	}
 	
-	private def boolean removeSetsThatContainAnElement(Iterator<Set<Object>> iterator, Object element) {
+	private def <T extends MappingInstanceHalf> boolean removeHalvesThatContainAnElement(Iterator<T> iterator, Object element) {
 		var atLeastOneSetRemoved = false
 		while (iterator.hasNext()) {
 			val pivot = iterator.next()
@@ -118,45 +119,45 @@ class MappingRegistry {
 	}
 
 	/********** BEGIN INSTANCE METHODS **********/
-	def Iterable<Set<Object>> getLeftInstances() {
+	def Iterable<L> getLeftInstances() {
 		return leftInstances
 	}
 	
-	def Iterable<Set<Object>> getRightInstances() {
+	def Iterable<R> getRightInstances() {
 		return rightInstances
 	}
 
-	def void addLeftInstance(Set<Object> instance) {
+	def void addLeftInstance(L instance) {
 		addSet(leftInstances, instance, "right instance")
 	}
 
-	def void addRightInstance(Set<Object> instance) {
+	def void addRightInstance(R instance) {
 		addSet(rightInstances, instance, "right instance")
 	}
 	
-	def void removeLeftInstance(Set<Object> instance) {
+	def void removeLeftInstance(L instance) {
 		removeSet(leftInstances, instance, "left instance")
 	}
 	
-    def void removeRightInstance(Set<Object> instance) {
+    def void removeRightInstance(R instance) {
 		removeSet(rightInstances, instance, "right instance")
 	}
 	
-	private def void removeSet(Set<Set<Object>> setsRegistry, Set<Object> set, String setType) {
-		val wasRegistered = setsRegistry.remove(set)
+	private def <T> void removeSet(Set<T> halvesRegistry, T half, String halfType) {
+		val wasRegistered = halvesRegistry.remove(half)
 		if (!wasRegistered) {
-			throw new IllegalStateException('''Cannot register the «setType» '«set»' for the mapping '«this.mapping»'
+			throw new IllegalStateException('''Cannot register the «halfType» '«half»' for the mapping '«this.mapping»'
 			because it is not registered!''')
 		}
 	}
 	
 	private def void removeLeftInstances(Object object) {
 		val iterator = leftInstances.iterator()
-		removeSetsThatContainAnElement(iterator, object, "left instances")
+		removeHalvesThatContainAnElement(iterator, object, "left instances")
 	}
 	
     private def void removeRightInstances(Object object) {
 		val iterator = rightInstances.iterator()
-		removeSetsThatContainAnElement(iterator, object, "right instances")
+		removeHalvesThatContainAnElement(iterator, object, "right instances")
 	}
 }

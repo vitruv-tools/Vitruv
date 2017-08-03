@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: tools.vitruv.dsls.mappings.tests.addressesXrecipients.models
-Bundle-SymbolicName: tools.vitruv.dsls.mappings.tests.addressesXrecipients.models; singleton:=true
-Bundle-Version: 0.1.0.qualifier
-Require-Bundle: org.eclipse.emf.ecore
