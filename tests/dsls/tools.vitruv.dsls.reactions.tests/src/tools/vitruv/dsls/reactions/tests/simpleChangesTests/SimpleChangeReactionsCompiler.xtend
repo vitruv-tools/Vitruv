@@ -28,8 +28,8 @@ class SimpleChangeReactionsCompiler {
 	static var Supplier<? extends ChangePropagationSpecification> SIMPLE_CHANGES_PROPGATION_SPEC_SUPLLIER
 	static val String COMPLIANCE_LEVEL = "1.8";
 
-	static val compilationPackageFolders = #['tools/vitruv', 'org/eclipse/xtext/xbase', 'allElementTypes',
-		'com/google/common', 'org/eclipse/emf', 'org/apache/log4j']
+	static val compilationPackageFolders = #['tools/vitruv', 'org/eclipse/xtext/xbase/lib', 'allElementTypes',
+		'com/google/common/base', 'org/eclipse/emf/ecore', 'org/eclipse/emf/common/util', 'org/apache/log4j']
 
 	static var compiled = false
 
