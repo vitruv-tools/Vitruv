@@ -5,8 +5,9 @@ import edu.kit.ipd.sdq.mdsd.recipients.Recipients
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.LeftAdRootXReRootInstanceHalf
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.RightAdRootXReRootInstanceHalf
 import tools.vitruv.extensions.dslsruntime.mappings.Mapping
+import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.instances.AdRootXReRootInstance
 
-class AdRootXReRootMapping extends Mapping<LeftAdRootXReRootInstanceHalf,RightAdRootXReRootInstanceHalf> {
+class AdRootXReRootMapping extends Mapping<LeftAdRootXReRootInstanceHalf,RightAdRootXReRootInstanceHalf,AdRootXReRootInstance> {
 	static val singleton = new AdRootXReRootMapping
 
 	private new() {
@@ -19,7 +20,7 @@ class AdRootXReRootMapping extends Mapping<LeftAdRootXReRootInstanceHalf,RightAd
 	
 	override getMappingName() '''AdRootXReRootMapping'''
 	
-	/********** BEGIN ELEMENT METHODS **********/
+	/********** BEGIN PUBLIC ELEMENT METHODS **********/
 	def void addAddresses(Addresses addresses) {
 		mappingRegistry.addElement(Addresses, addresses)
 		val newLeftCandidates = getNewCandidatesForAddresses(addresses)
@@ -27,7 +28,7 @@ class AdRootXReRootMapping extends Mapping<LeftAdRootXReRootInstanceHalf,RightAd
 	}
 	
 	def void removeAddresses(Addresses addresses) {
-		mappingRegistry.removeLeftElementAndCandidatesAndInstances(Addresses, addresses)
+		mappingRegistry.removeLeftElementCandidatesHalvesAndFullInstances(Addresses, addresses)
 	}
 	
 	def void addRecipients(Recipients recipients) {
@@ -37,10 +38,34 @@ class AdRootXReRootMapping extends Mapping<LeftAdRootXReRootInstanceHalf,RightAd
 	}
 	
 	def void removeRecipients(Recipients recipients) {
-		mappingRegistry.removeRightElementAndCandidatesAndInstances(Recipients, recipients)
+		mappingRegistry.removeRightElementCandidatesHalvesAndFullInstances(Recipients, recipients)
 	}
 	
-	/********** BEGIN CANDIDATE METHODS **********/
+	/********** BEGIN PUBLIC ENFORCEMENT METHODS **********/
+	def void enforceConditionsFromLeft2Right(Addresses aRoot, Recipients rRoot) {
+		val instance = getInstance(aRoot,rRoot)
+		enforceConditionsFromLeft2Right(instance)
+	}
+	
+	def void enforceConditionsFromRight2Left(Addresses aRoot, Recipients rRoot) {
+		val instance = getInstance(aRoot,rRoot)
+		enforceConditionsFromRight2Left(instance)
+	}
+	
+	/********** BEGIN PUBLIC INSTANCE METHODS **********/
+	def void registerFullInstance(Addresses aRoot, Recipients rRoot) {
+		val leftInstance = mappingRegistry.getLeftInstance(#[aRoot])
+		val rightInstance = mappingRegistry.getRightInstance(#[rRoot])
+		val fullInstance = new AdRootXReRootInstance(leftInstance, rightInstance)
+		mappingRegistry.addFullInstance(fullInstance)
+	}
+	
+	/********** BEGIN PRIVATE INSTANCE METHODS **********/
+	private def AdRootXReRootInstance getInstance(Addresses aRoot, Recipients rRoot) {
+		return mappingRegistry.getInstance(#[aRoot], #[rRoot])
+	}
+	
+	/********** BEGIN PRIVATE CANDIDATE METHODS **********/
 	def private Iterable<LeftAdRootXReRootInstanceHalf> getNewCandidatesForAddresses(Addresses aRoot) {
 		val aRootSet = #{aRoot}
 		val cartesianProduct = mappingRegistry.cartesianProduct(aRootSet)

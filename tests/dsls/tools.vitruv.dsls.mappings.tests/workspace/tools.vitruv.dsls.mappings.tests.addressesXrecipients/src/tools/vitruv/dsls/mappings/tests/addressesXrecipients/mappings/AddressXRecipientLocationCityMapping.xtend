@@ -9,8 +9,9 @@ import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.Lef
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.RightAdRootXReRootInstanceHalf
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.RightAddressXRecipientLocationCityInstanceHalf
 import tools.vitruv.extensions.dslsruntime.mappings.Mapping
+import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.instances.AddressXRecipientLocationCityInstance
 
-class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipientLocationCityInstanceHalf,RightAddressXRecipientLocationCityInstanceHalf> {
+class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipientLocationCityInstanceHalf,RightAddressXRecipientLocationCityInstanceHalf,AddressXRecipientLocationCityInstance> {
 	static val singleton = new AddressXRecipientLocationCityMapping
 	
 	val AdRootXReRootMapping rootXroot = AdRootXReRootMapping.adRootXReRootMapping
@@ -21,7 +22,7 @@ class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipient
 	
 	override getMappingName() '''AddressXRecipientLocationCity'''
 		
-	/********** BEGIN ELEMENT METHODS **********/
+	/********** BEGIN PUBLIC ELEMENT METHODS **********/
 	def void addAddress(Address address) {
 		mappingRegistry.addElement(Address, address)
 		val newLeftCandidates = getNewCandidatesForAddress(address)
@@ -29,7 +30,7 @@ class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipient
 	}
 	
 	def void removeAddress(Address address) {
-		mappingRegistry.removeLeftElementAndCandidatesAndInstances(Address, address)
+		mappingRegistry.removeLeftElementCandidatesHalvesAndFullInstances(Address, address)
 	}
 	
 	def void addRecipient(Recipient recipient) {
@@ -39,7 +40,7 @@ class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipient
 	}
 	
 	def void removeRecipient(Recipient recipient) {
-		mappingRegistry.removeRightElementAndCandidatesAndInstances(Recipient, recipient)
+		mappingRegistry.removeRightElementCandidatesHalvesAndFullInstances(Recipient, recipient)
 	}
 	
 	def void addLocation(Location location) {
@@ -49,7 +50,7 @@ class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipient
 	}
 	
 	def void removeLocation(Location location) {
-		mappingRegistry.removeRightElementAndCandidatesAndInstances(Location, location)
+		mappingRegistry.removeRightElementCandidatesHalvesAndFullInstances(Location, location)
 	}
 	
 	def void addCity(City city) {
@@ -59,10 +60,34 @@ class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipient
 	}
 	
 	def void removeCity(City city) {
-		mappingRegistry.removeRightElementAndCandidatesAndInstances(City, city)
+		mappingRegistry.removeRightElementCandidatesHalvesAndFullInstances(City, city)
 	}
 	
-	/********** BEGIN CANDIDATE METHODS **********/
+	/********** BEGIN PUBLIC ENFORCEMENT METHODS **********/
+	def void enforceConditionsFromLeft2Right(Address a, Recipient r, Location l, City c) {
+		val instance = getInstance(a, r, l, c)
+		enforceConditionsFromLeft2Right(instance)
+	}
+	
+	def void enforceConditionsFromRight2Left(Address a, Recipient r, Location l, City c) {
+		val instance = getInstance(a, r, l, c)
+		enforceConditionsFromRight2Left(instance)
+	}
+	
+	/********** BEGIN PUBLIC INSTANCE METHODS **********/
+	def void registerFullInstance(Address a, Recipient r, Location l, City c) {
+		val leftInstance = mappingRegistry.getLeftInstance(#[a])
+		val rightInstance = mappingRegistry.getRightInstance(#[r, l, c])
+		val fullInstance = new AddressXRecipientLocationCityInstance(leftInstance, rightInstance)
+		mappingRegistry.addFullInstance(fullInstance)
+	}
+	
+	/********** BEGIN PRIVATE INSTANCE METHODS **********/
+	private def AddressXRecipientLocationCityInstance getInstance(Address a, Recipient r, Location l, City c) {
+		return mappingRegistry.getInstance(#[a], #[r, l, c])
+	}
+	
+	/********** BEGIN PRIVATE CANDIDATE METHODS **********/
 	def private Iterable<LeftAddressXRecipientLocationCityInstanceHalf> getNewCandidatesForAddress(Address address) {
 		val aRootSet = rootXroot.getLeftCandidates()
 		val aSet = #{address}

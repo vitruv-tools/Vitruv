@@ -29,3 +29,11 @@ mapping AddressXRecipientLocationCity
       a.zipCode = c.zipCode
     }
 }
+
+
+// correspondences are not misused for candidates or dependencies between mappings
+// condition code is printed without changes to halves and instances and can easily be changed or extended there
+// single sided conditions: halves
+// bidirectionalizable conditions: instances
+// calls to checks and all management of candidates and instancesare not shown in reactions but hidden in generic mapping code
+// calls to enforcements are shown in reactions

@@ -6,11 +6,15 @@ import edu.kit.ipd.sdq.mdsd.recipients.Location
 import edu.kit.ipd.sdq.mdsd.recipients.City
 import org.eclipse.xtend.lib.annotations.Data
 
-@Data class RightAddressXRecipientLocationCityInstanceHalf implements MappingInstanceHalf {
+@Data class RightAddressXRecipientLocationCityInstanceHalf extends MappingInstanceHalf {
 	RightAdRootXReRootInstanceHalf rRoot
 	Recipient r
 	Location l
 	City c
+	
+	override getElements() {
+		return #[r,l,c]
+	}
 	
 	override checkConditions() {
 		return r.business == true && l.number > 0 && c.zipCode != null
@@ -27,9 +31,5 @@ import org.eclipse.xtend.lib.annotations.Data
 		if (c.zipCode == null) {
 			c.zipCode == ""
 		}
-	}
-	
-	override contains(Object element) {
-		return element == r || element == l || element == c
 	}
 }

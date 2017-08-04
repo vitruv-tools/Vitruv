@@ -1,23 +1,30 @@
 package tools.vitruv.extensions.dslsruntime.mappings
 
-interface MappingInstance {
-	// Rationale MK: This is not an abstract class with type parameters for two extension fields for left and right halves,
-	// because Xtend does not make extension fields of superclasses available in subclasses. 
+import org.eclipse.xtend.lib.annotations.Accessors
+
+abstract class MappingInstance<L extends MappingInstanceHalf,R extends MappingInstanceHalf> {
+	@Accessors(PROTECTED_GETTER) L leftHalf
+	@Accessors(PROTECTED_GETTER) R rightHalf
+	
+	new(L leftHalf, R rightHalf) {
+		this.leftHalf = leftHalf
+		this.rightHalf = rightHalf
+	}
 
 	def boolean checkLeftConditions() {
-		return true
+		return leftHalf.checkConditions()
 	}
 	
 	def void enforceLeftConditions() {
-		// empty
+		leftHalf.enforceConditions()
 	}
 	
 	def boolean checkRightConditions() {
-		return true
+		return rightHalf.checkConditions()
 	}
 	
 	def void enforceRigthConditions() {
-		// empty
+		rightHalf.enforceConditions
 	}
 	
 	def void enforceFromLeft2Right() {

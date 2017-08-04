@@ -4,32 +4,13 @@ import tools.vitruv.extensions.dslsruntime.mappings.MappingInstance
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.LeftAddressXRecipientLocationCityInstanceHalf
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.halves.RightAddressXRecipientLocationCityInstanceHalf
 
-class AddressXRecipientLocationCityInstance implements MappingInstance {
-	extension LeftAddressXRecipientLocationCityInstanceHalf leftHalf
-	extension RightAddressXRecipientLocationCityInstanceHalf rightHalf
+class AddressXRecipientLocationCityInstance extends MappingInstance<LeftAddressXRecipientLocationCityInstanceHalf,RightAddressXRecipientLocationCityInstanceHalf> {
+	extension LeftAddressXRecipientLocationCityInstanceHalf = leftHalf
+	extension RightAddressXRecipientLocationCityInstanceHalf = rightHalf	
 	
 	new(LeftAddressXRecipientLocationCityInstanceHalf leftHalf, RightAddressXRecipientLocationCityInstanceHalf rightHalf) {
-		this.leftHalf = leftHalf
-		this.rightHalf = rightHalf
+		super(leftHalf, rightHalf)
 	}
-	
-	override checkLeftConditions() {
-		return leftHalf.checkConditions()
-	}
-
-	override enforceLeftConditions() {
-		leftHalf.enforceConditions()
-	}
-	
-	override checkRightConditions() {
-		return rightHalf.checkConditions()
-	}
-	
-	override enforceRigthConditions() {
-		rightHalf.enforceConditions()
-	}
-	
-	// TODO KEEP ON WORKING HERE: private fields with protected getters for halves into mapping instance superclass
 	
 	override enforceFromLeft2Right() {
 		// enforce inverse of:

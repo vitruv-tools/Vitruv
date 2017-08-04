@@ -1,163 +1,145 @@
 package tools.vitruv.extensions.dslsruntime.mappings
 
+import com.google.common.collect.HashBasedTable
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.SetMultimap
 import com.google.common.collect.Sets
-import java.util.Iterator
-import java.util.Set
+import com.google.common.collect.Table
 import java.util.List
+import java.util.Set
 
-class MappingRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHalf> {
-	val Mapping<L,R> mapping
-	val SetMultimap<Class<?>, Object> elementsMap = HashMultimap.create()
-	val Set<L> leftCandidates = newHashSet()
-	val Set<R> rightCandidates = newHashSet()
-	val Set<L> leftInstances = newHashSet()
-	val Set<R> rightInstances = newHashSet()
+class MappingRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHalf, I extends MappingInstance<L,R>> {
+	val String mappingName
+	val SetMultimap<Class<?>, Object> elementsMap
+	val Table<List<Object>,List<Object>,I> instances
+	val MappingRegistryHalf<L> left
+	val MappingRegistryHalf<R> right
 	
-	new(Mapping<L,R> mapping) {
-		this.mapping = mapping
+	new(String mappingName) {
+		this.mappingName = mappingName
+		this.elementsMap = HashMultimap.create()
+		this.instances = HashBasedTable.create()
+		this.left = new MappingRegistryHalf<L>(mappingName, "left")
+		this.right = new MappingRegistryHalf<R>(mappingName, "right")
 	}
 	
+	/**
+	 * Returns the cartesian product of the given sets. Used by generated Mapping code for computing all mapping candidate combinations.
+	 */
 	def <T> Iterable<List<T>> cartesianProduct(Set<? extends T>... sets) {
 		return Sets.cartesianProduct(sets)
 	}
 	
-	/********** BEGIN COMBINED REMOVE METHODS **********/
-	def <T> void removeLeftElementAndCandidatesAndInstances(Class<T> clazz, T element) {
-		removeElement(clazz, element)
-		removeLeftCandidates(element)
-		removeLeftInstances(element)
-	}
-	
-	def <T> void removeRightElementAndCandidatesAndInstances(Class<T> clazz, T element) {
-		removeElement(clazz, element)
-		removeRightCandidates(element)
-		removeRightInstances(element)
-	}
-	
 	/********** BEGIN ELEMENT METHODS **********/
-	def <T> Set<?> getElements(Class<T> clazz) {
+	def <C> Set<?> getElements(Class<C> clazz) {
 		return elementsMap.get(clazz)
 	}
 	
-	def <T> void addElement(Class<T> clazz, T element) {
+	def <C> void addElement(Class<C> clazz, C element) {
 		val elementIsNew = elementsMap.put(clazz, element)
 		if (!elementIsNew) {
-			throw new IllegalStateException('''Cannot register the element '«element»' for the mapping '«this.mapping»'
+			throw new IllegalStateException('''Cannot register the element '«element»' for the mapping '«mappingName»'
 			and the class '«clazz»' because it is already registered for them!''')
 		}
 	}
 	
-	private def <T> void removeElement(Class<T> clazz, T element) {
+	private def <C> void removeElement(Class<C> clazz, C element) {
 		val wasMapped = elementsMap.remove(clazz, element)
 		if (!wasMapped) {
-			throw new IllegalStateException('''Cannot deregister the element '«element»' for the mapping '«mapping»'
+			throw new IllegalStateException('''Cannot deregister the element '«element»' for the mapping '«mappingName»'
 			and the class '«clazz»' because it is not registered for them!''')
 		}
 	}
+		
+	/********** BEGIN COMBINED REMOVE METHODS **********/
+	def <C> void removeLeftElementCandidatesHalvesAndFullInstances(Class<C> clazz, C element) {
+		removeElement(clazz, element)
+		val removedLeftInstances = left.removeCandidatesAndInstancesHalvesForElement(clazz, element)
+		removedLeftInstances.forEach[removeFullInstancesForLeftInstance(it)]
+	}
 	
-	/********** BEGIN CANDIDATE METHODS **********/
+	def <C> void removeRightElementCandidatesHalvesAndFullInstances(Class<C> clazz, C element) {
+		removeElement(clazz, element)
+		val removedRightInstances = right.removeCandidatesAndInstancesHalvesForElement(clazz, element)
+		removedRightInstances.forEach[removeFullInstancesForRightInstance(it)]
+	}
+	
+	/********** BEGIN FULL INSTANCE METHODS **********/
+	def void addFullInstance(I instance) {
+		val previouslyRegisteredInstance = instances.put(instance.leftHalf.getElements(), instance.rightHalf.getElements(), instance)
+		if (previouslyRegisteredInstance !== null) {
+			throw new IllegalStateException(getDeregisterInstanceMessage(instance, previouslyRegisteredInstance))
+		}
+	}
+	
+	private def String getDeregisterInstanceMessage(I instance, I registeredInstance) '''Cannot deregister the mapping instance '«instance»' for the mapping '«mappingName»' 
+			for the left elements '«instance.leftHalf.getElements()»' and the right elements '«instance.rightHalf.getElements()»' 
+			because the mapping instance '«registeredInstance»' is registered for them!'''
+	
+	def I getInstance(List<Object> leftElements, List<Object> rightElements) {
+		return instances.get(leftElements, rightElements)
+	}
+	
+	def removeFullInstancesForLeftInstance(L leftInstanceHalf) {
+		val rightElements2FullInstancesMap = instances.row(leftInstanceHalf.elements)
+		for (rightElements : rightElements2FullInstancesMap.keySet) {
+			instances.remove(leftInstanceHalf.elements, rightElements)
+		}
+	}
+	
+	def removeFullInstancesForRightInstance(R rightInstanceHalf) {
+		val leftElements2FullInstancesMap = instances.column(rightInstanceHalf.elements)
+		for (leftElements : leftElements2FullInstancesMap.keySet) {
+			instances.remove(leftElements, rightInstanceHalf.elements)
+		}
+	}
+	
+	/********** BEGIN DELEGATED CANDIDATE AND INSTANCE HALVES METHODS **********/
 	def Set<L> getLeftCandidates() {
-		return leftCandidates
+		return left.candidates
 	}
 			
 	def Set<R> getRightCandidates() {
-		return rightCandidates
+		return right.candidates
 	}
 	
 	def void addLeftCandidates(Iterable<L> candidates) {
-		addHalves(leftCandidates, candidates, "left candidate")
+		left.addCandidates(candidates)
 	}
 	
 	def void addRightCandidates(Iterable<R> candidates) {
-		addHalves(rightCandidates, candidates, "right candidate")
+		right.addCandidates(candidates)
 	}
 	
-	private def <T> void addHalves(Set<T> halvesRegistry, Iterable<T> halves, String halfType) {
-		for (half : halves) {
-			addSet(halvesRegistry, half, halfType)
-		}
-	}
-	
-	private def <T> void addSet(Set<T> halvesRegistry, T half, String halfType) {
-		val halfIsNew = halvesRegistry.add(half)
-		if (!halfIsNew) {
-			throw new IllegalStateException('''Cannot register the «halfType» '«half»' for the mapping '«this.mapping»'
-			because it is already registered!''')
-		}
-	}
-	
-	private def void removeLeftCandidates(Object object) {
-		val iterator = leftCandidates.iterator()
-		removeHalvesThatContainAnElement(iterator, object, "left candidates")
-	}
-	
-	private def void removeRightCandidates(Object object) {
-		val iterator = rightCandidates.iterator()
-		removeHalvesThatContainAnElement(iterator, object, "right candidates")
-	}
-	
-	private def <T extends MappingInstanceHalf> boolean removeHalvesThatContainAnElement(Iterator<T> iterator, Object element, String halfType) {
-		val atLeastOneSetRemoved = removeHalvesThatContainAnElement(iterator, element)
-		if (!atLeastOneSetRemoved) {
-			throw new IllegalStateException('''No «halfType» to be removed are registered for the element '«element»'
-			in '«iterator.toList»' of the mapping '«this.mapping»'!''')
-		}
-	}
-	
-	private def <T extends MappingInstanceHalf> boolean removeHalvesThatContainAnElement(Iterator<T> iterator, Object element) {
-		var atLeastOneSetRemoved = false
-		while (iterator.hasNext()) {
-			val pivot = iterator.next()
-			if (pivot.contains(element)) {
-				iterator.remove()
-				atLeastOneSetRemoved = true
-			}
-		}
-		return atLeastOneSetRemoved
-	}
-
-	/********** BEGIN INSTANCE METHODS **********/
 	def Iterable<L> getLeftInstances() {
-		return leftInstances
+		return left.instanceHalves
 	}
 	
 	def Iterable<R> getRightInstances() {
-		return rightInstances
+		return right.instanceHalves
 	}
-
-	def void addLeftInstance(L instance) {
-		addSet(leftInstances, instance, "right instance")
+	
+	def L getLeftInstance(List<Object> elements) {
+		return left.getInstanceHalfForElements(elements)
 	}
-
-	def void addRightInstance(R instance) {
-		addSet(rightInstances, instance, "right instance")
+	
+	def R getRightInstance(List<Object> elements) {
+		return right.getInstanceHalfForElements(elements)
+	}
+	
+	def promoteLeftCandidateToInstance(L candidate) {
+		left.promoteCandidateToInstanceHalf(candidate)
+	}
+	
+	def promoteRightCandidateToInstance(R candidate) {
+		right.promoteCandidateToInstanceHalf(candidate)
 	}
 	
 	def void removeLeftInstance(L instance) {
-		removeSet(leftInstances, instance, "left instance")
+		left.removeInstanceHalf(instance)
 	}
 	
     def void removeRightInstance(R instance) {
-		removeSet(rightInstances, instance, "right instance")
-	}
-	
-	private def <T> void removeSet(Set<T> halvesRegistry, T half, String halfType) {
-		val wasRegistered = halvesRegistry.remove(half)
-		if (!wasRegistered) {
-			throw new IllegalStateException('''Cannot register the «halfType» '«half»' for the mapping '«this.mapping»'
-			because it is not registered!''')
-		}
-	}
-	
-	private def void removeLeftInstances(Object object) {
-		val iterator = leftInstances.iterator()
-		removeHalvesThatContainAnElement(iterator, object, "left instances")
-	}
-	
-    private def void removeRightInstances(Object object) {
-		val iterator = rightInstances.iterator()
-		removeHalvesThatContainAnElement(iterator, object, "right instances")
+		right.removeInstanceHalf(instance)
 	}
 }
