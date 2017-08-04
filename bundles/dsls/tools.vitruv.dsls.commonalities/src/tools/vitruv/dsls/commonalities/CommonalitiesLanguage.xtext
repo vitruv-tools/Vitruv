@@ -48,15 +48,11 @@ fragment SimpleParticipationClassDeclaration returns Participation:
 ;
 
 fragment TupleParticipationDeclaration returns Participation:
-	'(' classes+=ParticipationClassDeclarationWithAlias (',' classes+=ParticipationClassDeclarationWithAlias)* ')'
+	'(' classes+=ParticipationClassDeclaration (',' classes+=ParticipationClassDeclaration)* ')'
 ;
 
 ParticipationClassDeclaration returns ParticipationClass:
-	superMetaclass=[Metaclass|QualifiedMetaclass]
-;
-
-ParticipationClassDeclarationWithAlias returns ParticipationClass:
-	ParticipationClassDeclaration ('as' alias=ID)?
+	superMetaclass=[Metaclass|QualifiedMetaclass] ('called' alias=ID)?
 ;
 
 AttributeDeclaration:
