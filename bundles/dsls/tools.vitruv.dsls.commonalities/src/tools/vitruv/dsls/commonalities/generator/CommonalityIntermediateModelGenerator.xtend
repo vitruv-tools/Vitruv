@@ -1,4 +1,3 @@
-
 package tools.vitruv.dsls.commonalities.generator
 
 import org.eclipse.emf.ecore.EcoreFactory
@@ -14,7 +13,7 @@ package class CommonalityIntermediateModelGenerator extends CommonalityFileGener
 
 	override generate() {
 		val outputUri = fsa.getURI(commonalityFile.commonality.name + ".ecore")
-		
+
 		newEcoreResource(outputUri) => [
 			contents += generateCommonalityEPackage(commonalityFile.commonality)
 			save(Collections.emptyMap)
@@ -28,12 +27,14 @@ package class CommonalityIntermediateModelGenerator extends CommonalityFileGener
 	}
 
 	def private generateCommonalityEPackage(CommonalityDeclaration inputCommonality) {
+		val commonalityEClass = EcoreFactory.eINSTANCE.createEClass => [
+			name = inputCommonality.name
+			EStructuralFeatures += inputCommonality.attributes.map[generateEAttribute]
+		]
+		inputCommonality.associateWith(commonalityEClass)
 		EcoreFactory.eINSTANCE.createEPackage => [
 			name = inputCommonality.name
-			EClassifiers += EcoreFactory.eINSTANCE.createEClass => [
-				name = inputCommonality.name
-				EStructuralFeatures += inputCommonality.attributes.map[generateEAttribute]
-			]
+			EClassifiers += commonalityEClass
 		]
 	}
 

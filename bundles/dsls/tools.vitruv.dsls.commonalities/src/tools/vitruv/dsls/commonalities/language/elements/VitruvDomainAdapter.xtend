@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EClass
 import static com.google.common.base.Preconditions.*
 import org.eclipse.emf.ecore.EPackage
 
-package class VitruvDomainAdapter extends VitruvDomainImpl implements Wrapper<VitruvDomain> {
+class VitruvDomainAdapter extends VitruvDomainImpl implements Wrapper<VitruvDomain> {
 
 	VitruvDomain wrappedVitruvDomain
 

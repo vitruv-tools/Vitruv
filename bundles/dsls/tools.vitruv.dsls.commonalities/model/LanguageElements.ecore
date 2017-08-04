@@ -31,6 +31,13 @@
         upperBound="-1" eType="#//Attribute" changeable="false" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="references" ordered="false"
         upperBound="-1" eType="#//Reference" changeable="false" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changeClass" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass" changeable="false"
+        derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The EClass to watch for changes to this Metaclass."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VitruvDomain" eSuperTypes="#//Domain">
     <eOperations name="wrapVitruvDomain">

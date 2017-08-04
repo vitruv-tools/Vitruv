@@ -55,5 +55,9 @@ package class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClas
 	override basicGetPackageLikeContainer() {
 		domain
 	}
+	
+	override basicGetChangeClass() {
+		wrappedEClass
+	}
 
 }

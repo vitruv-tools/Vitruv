@@ -12,20 +12,29 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 
 	@Inject Provider<CommonalityIntermediateModelGenerator> intermediateModelGenerator
 	@Inject Provider<CommonalityReactionsGenerator> reactionsGenerator
+	@Inject Provider<CommonalitiesLanguageGenerationContext> generationContextProvider
+	CommonalitiesLanguageGenerationContext currentGenerationContext
 
 	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		//subGenerators.forEach[beforeGenerate(input, fsa, context)]
+		// subGenerators.forEach[beforeGenerate(input, fsa, context)]
+		currentGenerationContext = generationContextProvider.get()
 	}
 
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val comFile = input.containedCommonalityFile
 		for (generator : subGenerators) {
-			generator.get.withFileSystemAccess(fsa).withContext(context).forCommonalityFile(comFile).generate()
+			generator.get()
+				.withFileSystemAccess(fsa)
+				.withContext(context)
+				.withGenerationContext(currentGenerationContext)
+				.forCommonalityFile(comFile)
+				.generate()
 		}
 	}
 
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		//subGenerators.forEach[afterGenerate(input, fsa, context)]
+		// subGenerators.forEach[afterGenerate(input, fsa, context)]
+		currentGenerationContext = null
 	}
 
 	def private subGenerators() {
