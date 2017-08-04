@@ -12,6 +12,7 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1
 import tools.vitruv.framework.change.description.ChangeCloner
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.description.impl.ChangeClonerImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.XtendAssertHelper
 import tools.vitruv.framework.util.datatypes.VURI
@@ -38,7 +39,7 @@ import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalRepository {
 	static extension BranchDiffCreator = BranchDiffCreator::instance
-	static extension ChangeCloner = new ChangeCloner
+	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(LocalRepositoryImpl)
 	static extension URIRemapper = URIRemapper::instance
 	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance

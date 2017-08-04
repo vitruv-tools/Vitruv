@@ -1,12 +1,14 @@
 package tools.vitruv.framework.tests
 
-import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil
 import java.io.IOException
 import java.util.Collections
 import java.util.List
+
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.description.ChangeCloner
+
+import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil
+
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder

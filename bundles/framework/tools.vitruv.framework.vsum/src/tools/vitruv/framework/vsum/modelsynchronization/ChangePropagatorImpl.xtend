@@ -19,6 +19,7 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.description.impl.ChangeClonerImpl
 import tools.vitruv.framework.change.description.impl.PropagatedChangeImpl
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
@@ -32,7 +33,7 @@ import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
-	static extension ChangeCloner cc = new ChangeCloner
+	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
 	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
 	val ChangePropagationSpecificationProvider changePropagationProvider
@@ -166,10 +167,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		List<PropagatedChange> propagatedChanges,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-		val clonedChange = cc.clone(change)
+		val clonedChange = cloneVitruviusChange(change)
 		val changeApplicationFunction = [ ResourceSet resourceSet |
 			// If change has a URI, load the model
-			if (change.URI !== null) resourceRepository.getModel(change.URI)
+			if(change.URI !== null) resourceRepository.getModel(change.URI)
 			change.resolveBeforeAndApplyForward(resourceSet)
 			return
 		]
@@ -265,7 +266,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	) {
 		val isUnresolved = modelRepository.unresolveChanges
 		val vuri = resolvedChange.URI
-		val uuid = if (null !== currentChangeId) currentChangeId else UUID::randomUUID.toString
+		val uuid = if(null !== currentChangeId) currentChangeId else UUID::randomUUID.toString
 		currentChangeId = null
 		val unresolvedTriggeredChanges = resourceRepository.lastUnresolvedChanges
 		val resolvedTriggeredChanges = resourceRepository.lastResolvedChanges
