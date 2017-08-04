@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.manualTests
+package tools.vitruv.dsls.reactions.generator
 
 import org.junit.Test
 import com.google.inject.Provider

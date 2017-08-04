@@ -9,8 +9,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.framework.domains.VitruvDomain
 
 final class ClassNamesGenerators {
+	public static val FSA_SEPARATOR = "/";
 	private static String BASIC_PACKAGE = "mir";
-	private static val FSA_SEPARATOR = "/";
 	private static val XTEND_FILE_EXTENSION = ".java";
 	private static val REACTIONS_PACKAGE = "reactions";
 	private static String ROUTINES_PACKAGE = "routines";

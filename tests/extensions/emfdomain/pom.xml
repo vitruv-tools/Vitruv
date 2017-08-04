@@ -17,7 +17,7 @@
 		<repository>
 			<id>Palladiosimulator</id>
 			<layout>p2</layout>
-			<url>https://sdqweb.ipd.kit.edu/eclipse/palladiosimulator/nightly/</url>
+			<url>https://sdqbuild.ipd.kit.edu/nexus/content/repositories/palladiosimulator-nightly/</url>
 		</repository>
 	</repositories>
 	
