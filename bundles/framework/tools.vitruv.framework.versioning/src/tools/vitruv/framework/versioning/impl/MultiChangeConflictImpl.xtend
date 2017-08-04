@@ -1,16 +1,18 @@
 package tools.vitruv.framework.versioning.impl
 
 import java.util.List
+
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
-import org.eclipse.emf.common.util.EList
+
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.xtend.lib.annotations.Accessors
+
 import tools.vitruv.framework.change.description.ChangeCloner
+import tools.vitruv.framework.change.description.impl.ChangeClonerImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.versioning.ChangeMatch
 import tools.vitruv.framework.versioning.ConflictSeverity
 import tools.vitruv.framework.versioning.ConflictType
 import tools.vitruv.framework.versioning.MultiChangeConflict
@@ -18,7 +20,7 @@ import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.versioning.impl.ConflictImpl
 
 class MultiChangeConflictImpl extends ConflictImpl implements MultiChangeConflict {
-	static extension ChangeCloner = new ChangeCloner
+	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(MultiChangeConflictImpl)
 	static extension URIRemapper = URIRemapper::instance
 	@Accessors(PUBLIC_GETTER)
@@ -53,11 +55,6 @@ class MultiChangeConflictImpl extends ConflictImpl implements MultiChangeConflic
 		this.triggeredSourceChanges = triggeredSourceChanges
 		this.triggeredTargetChanges = triggeredTargetChanges
 		isDefaultSolutionComputed = false
-	}
-
-	override resolveConflict(EList<ChangeMatch> acceptedLocalChangeMatches,
-		EList<ChangeMatch> rejectedRemoteOperations) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	override getSourceDefaultSolution() {
