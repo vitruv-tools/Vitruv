@@ -41,4 +41,5 @@ interface ModelRepository extends VitruviusRecordingCommandExecutor {
 
 	def boolean unresolveChanges()
 
+	def void setCurrentVURI(VURI original)
 }
