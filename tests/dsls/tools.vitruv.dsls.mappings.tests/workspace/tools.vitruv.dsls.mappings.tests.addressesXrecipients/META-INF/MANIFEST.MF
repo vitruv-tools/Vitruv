@@ -19,8 +19,8 @@ Require-Bundle: org.apache.log4j,
   tools.vitruv.extensions.dslsruntime.mapping,
   edu.kit.ipd.sdq.mdsd.addressesmm,
   edu.kit.ipd.sdq.mdsd.recipientsmm,
-  tools.vitruv.domains.addresses,
-  tools.vitruv.domains.recipients,
+  tools.vitruv.demo.domains.addresses,
+  tools.vitruv.demo.domains.recipients,
   tools.vitruv.extensions.dslsruntime.mappings
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: mir.reactions

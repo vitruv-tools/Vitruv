@@ -1,4 +1,4 @@
-package tools.vitruv.applications.addressesrecipients
+package tools.vitruv.demo.applications.addressesrecipients
 
 import mir.reactions.AddressesToRecipientsChangePropagationSpecification
 import tools.vitruv.framework.applications.AbstractVitruvApplication
