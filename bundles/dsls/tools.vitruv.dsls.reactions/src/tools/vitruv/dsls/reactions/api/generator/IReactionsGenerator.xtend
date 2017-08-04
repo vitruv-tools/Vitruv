@@ -3,9 +3,12 @@ package tools.vitruv.dsls.reactions.api.generator;
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.google.inject.ImplementedBy
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.generator.ReactionsGenerator
 import tools.vitruv.dsls.reactions.generator.ReactionBuilder
 import org.eclipse.xtext.resource.XtextResourceSet
+import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
+import java.nio.file.Path
+import org.eclipse.emf.common.util.URI
+import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 
 /**
  * Generates all code that is necessary to run reactions. Reactions to generate
@@ -21,7 +24,7 @@ import org.eclipse.xtext.resource.XtextResourceSet
  * Clients must obtain instance through Guice, for example by injecting a 
  * {@code Provider<ReactionsGenerator>}.
  */
-@ImplementedBy(ReactionsGenerator)
+@ImplementedBy(ExternalReactionsGenerator)
 interface IReactionsGenerator {
 
 	/**
@@ -51,6 +54,8 @@ interface IReactionsGenerator {
 	 * 		The reaction to add for generation. 
 	 */
 	def void addReaction(String sourceFileName, Iterable<? extends Reaction> reactions)
+	
+	def void addReaction(FluentReactionsFileBuilder reactionBuilder)
 
 	/**
 	 * Adds reaction files that were parsed by Xtext.
@@ -70,4 +75,8 @@ interface IReactionsGenerator {
 	 * reactions.
 	 */
 	def void generate(IFileSystemAccess2 fsa)
+	
+	def void writeReactionsTo(Path outputFolder)
+	def void writeReactionsTo(URI outputFolder)
+	
 }

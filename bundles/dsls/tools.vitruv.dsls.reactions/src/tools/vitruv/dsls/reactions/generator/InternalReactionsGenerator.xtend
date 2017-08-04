@@ -20,8 +20,15 @@ import com.google.inject.Provider
 import edu.kit.ipd.sdq.activextendannotations.Lazy
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
+import org.eclipse.xtext.resource.IResourceFactory
+import java.nio.file.Path
+import org.eclipse.emf.ecore.util.EcoreUtil
+import java.util.Collections
 
-class ReactionsGenerator implements IReactionsGenerator {
+class InternalReactionsGenerator implements IReactionsGenerator {
+
+	static val SYNTHETIC_RESOURCES = URI.createHierarchicalURI("synthetic", null, null, #[], null, null)
 
 	// whether this generator was already used to generate
 	var used = false;
@@ -31,6 +38,9 @@ class ReactionsGenerator implements IReactionsGenerator {
 
 	@Inject
 	Provider<XtextResourceSet> resourceSetProvider
+
+	@Inject
+	var IResourceFactory resourceFactory
 
 	@Inject extension ReactionsEnvironmentGenerator environmentGenerator
 
@@ -101,27 +111,36 @@ class ReactionsGenerator implements IReactionsGenerator {
 		reactions.forEach[addReaction(sourceFileName, it)];
 	}
 
-	override generate(IFileSystemAccess2 fsa) {
-		checkState(!used, "This generator was already used to generate reactions!")
-		used = true
-
+	def private resourcesToGenerate() {
 		// the resource set contents will be changed while we generate, so we
 		// must copy them
 		val reactionFileResourcesCopy = reactionFileResourceSets.flatMap[resources].toList
 		// only compile reaction files. This *will* generate the necessary java
 		// classes but *will not* copy referenced classes
-		val resourcesToGenerate = tempResources + (reactionFileResourcesCopy.filter[containsReactionsFile])
+		tempResources + (reactionFileResourcesCopy.filter[containsReactionsFile])
+	}
+
+	override generate(IFileSystemAccess2 fsa) {
+		checkState(!used, "This generator was already used to generate reactions!")
+		used = true
+
 		resourcesToGenerate.forEach[generateReactions(fsa)]
 
 		reactionFileResourceSets.forEach[generateEnvironment(fsa)]
 	}
 
-	def private ReactionsFile generateTempResourceWithReactionsFile(String sourceFileName) {
-		val reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile()
-		val singleReactionResource = tmpResourceSet.createResource(
-			URI.createFileURI(System.getProperty("java.io.tmpdir") + "/" + sourceFileName + ".reactions"));
+	def private generateTmpResource(String sourceFileName) {
+		val resource = resourceFactory.createResource(
+			SYNTHETIC_RESOURCES.appendSegment(sourceFileName).appendFileExtension("reactions"))
+		tmpResourceSet.resources += resource
+		tempResources += resource
+		return resource
+	}
+
+	def private generateTempResourceWithReactionsFile(String sourceFileName) {
+		val singleReactionResource = generateTmpResource(sourceFileName)
+		val reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile
 		singleReactionResource.contents.add(reactionsFile);
-		tempResources += singleReactionResource;
 		return reactionsFile;
 	}
 
@@ -131,6 +150,26 @@ class ReactionsGenerator implements IReactionsGenerator {
 
 	override addReactionFiles(XtextResourceSet resourceSet) {
 		reactionFileResourceSets.add(resourceSet)
+	}
+
+	override addReaction(FluentReactionsFileBuilder reactionBuilder) {
+		val resource = generateTmpResource(reactionBuilder.fileName)
+		reactionBuilder.attachTo(resource)
+	}
+
+	override writeReactionsTo(Path outputFolder) {
+		val outputUri = URI.createFileURI(outputFolder.toAbsolutePath.toString)
+		writeReactionsTo(outputUri)
+	}
+
+	override writeReactionsTo(URI outputFolderUri) {
+		val outputResourceSet = resourceSetProvider.get
+		resourcesToGenerate.map [ resource |
+			val newResource = resourceFactory.createResource(outputFolderUri.appendSegment(resource.URI.lastSegment))
+			outputResourceSet.resources += newResource
+			newResource.contents += EcoreUtil.copy(resource.reactionsFile)
+			newResource
+		].forEach[save(Collections.emptyMap)]
 	}
 
 }

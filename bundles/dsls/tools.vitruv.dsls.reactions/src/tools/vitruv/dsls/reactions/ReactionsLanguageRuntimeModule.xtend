@@ -14,6 +14,9 @@ import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageGlobalScopeProvider
 import tools.vitruv.dsls.mirbase.scoping.MirBaseQualifiedNameConverter
 import org.eclipse.xtext.generator.IGenerator2
 import tools.vitruv.dsls.reactions.generator.ReactionsLanguageGenerator
+import tools.vitruv.dsls.reactions.generator.InternalReactionsGenerator
+import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
+import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 import org.eclipse.xtext.formatting2.IFormatter2
 import tools.vitruv.dsls.reactions.formatting.ReactionsLanguageFormatter
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
@@ -47,12 +50,18 @@ class ReactionsLanguageRuntimeModule extends AbstractReactionsLanguageRuntimeMod
 	def Class<? extends IFormatter2> bindIFormatter2() {
 		ReactionsLanguageFormatter
 	}
+
+	def Class<? extends IReactionsGenerator> bindIReactionsGenerator() {
+		InternalReactionsGenerator
+	}
 	
 	override configure(Binder binder) {
 		super.configure(binder);
 		binder.bind(IGenerator2).to(bindIGenerator2())
 		binder.bind(IFormatter2).to(bindIFormatter2())
+		binder.bind(IReactionsGenerator).to(bindIReactionsGenerator())
 
+		binder.requestStaticInjection(ExternalReactionsGenerator)
 		binder.requestStaticInjection(FluentReactionsLanguageBuilder)
 	}
 	
