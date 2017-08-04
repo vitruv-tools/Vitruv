@@ -16,6 +16,7 @@ import org.eclipse.xtext.generator.IGenerator2
 import tools.vitruv.dsls.reactions.generator.ReactionsLanguageGenerator
 import org.eclipse.xtext.formatting2.IFormatter2
 import tools.vitruv.dsls.reactions.formatting.ReactionsLanguageFormatter
+import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -49,8 +50,10 @@ class ReactionsLanguageRuntimeModule extends AbstractReactionsLanguageRuntimeMod
 	
 	override configure(Binder binder) {
 		super.configure(binder);
-		
-		binder.bind(IFormatter2).to(bindIFormatter2)		
+		binder.bind(IGenerator2).to(bindIGenerator2())
+		binder.bind(IFormatter2).to(bindIFormatter2())
+
+		binder.requestStaticInjection(FluentReactionsLanguageBuilder)
 	}
 	
 }
