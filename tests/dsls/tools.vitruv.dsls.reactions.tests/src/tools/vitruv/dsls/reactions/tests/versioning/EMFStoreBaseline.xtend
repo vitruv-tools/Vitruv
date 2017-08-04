@@ -32,13 +32,17 @@ import tools.vitruv.framework.vsum.VersioningVirtualModel
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
+
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+import static org.hamcrest.collection.IsEmptyCollection.empty
+
 import static org.junit.Assert.assertThat
 
 class EMFStoreBaseline extends VitruviusApplicationTest {
 	static extension Logger = Logger::getLogger(EMFStoreBaseline)
 	static extension URIRemapper = URIRemapper::instance
 	static extension VirtualModelExtension = VirtualModelExtension::instance
-	static val MODEL_FILE_EXTENSION = new BowlingDomainProvider().domain.fileExtensions.get(0);
+	static val MODEL_FILE_EXTENSION = new BowlingDomainProvider().domain.fileExtensions.get(0)
 	static val demoProjectCopyName = "DemoProjectCopy"
 	static val demoProjectName = "DemoProject"
 	static val leagueName = "Superbowling League"
@@ -58,6 +62,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		} else
 			#[]
 	]
+
 	Author author1
 	Author author2
 	League league1
@@ -84,7 +89,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		return #[new BowlingDomainProvider().domain]
 	}
 
-	override protected setup() {
+	override setup() {
 		localRepository = new LocalRepositoryImpl
 		newLocalRepository = new LocalRepositoryImpl
 		remoteRepository = new RemoteRepositoryImpl
@@ -107,7 +112,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		newLocalRepository.addOrigin(currentBranch2, remoteRepository)
 	}
 
-	override protected cleanup() {
+	override cleanup() {
 	}
 
 	override unresolveChanges() {
@@ -127,13 +132,13 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		sourceVURI = VURI::getInstance(league.eResource)
 
 		assertThat(localRepository.head, is(localRepository.initialCommit))
-		assertThat(localRepository.commits.length, is(1))
+		assertThat(localRepository.commits, hasSize(1))
 		val changeMatches = virtualModel.getChangeMatches(sourceVURI)
 		val commit = localRepository.commit("My message", changeMatches)
-		assertThat(localRepository.commits.length, is(2))
+		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
-		assertThat(commit.changes.empty, is(false))
+		assertThat(commit.changes, not(empty))
 	}
 
 	@Test
@@ -149,20 +154,20 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		sourceVURI = VURI::getInstance(league.eResource)
 
 		assertThat(localRepository.head, is(localRepository.initialCommit))
-		assertThat(localRepository.commits.length, is(1))
+		assertThat(localRepository.commits, hasSize(1))
 		val commit = localRepository.commit("My message", virtualModel, sourceVURI)
-		assertThat(localRepository.commits.length, is(2))
+		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
-		assertThat(commit.changes.empty, is(false))
+		assertThat(commit.changes, not(empty))
 
 		league.name = "Champions League"
 		league.saveAndSynchronizeChanges
 		val secondCommit = localRepository.commit("My message2", virtualModel, sourceVURI)
-		assertThat(localRepository.commits.length, is(3))
+		assertThat(localRepository.commits, hasSize(3))
 		assertThat(localRepository.head, is(secondCommit))
 		assertThat(secondCommit.parent, is(commit.identifier))
-		assertThat(secondCommit.changes.empty, is(false))
+		assertThat(secondCommit.changes, not(empty))
 
 	}
 
@@ -179,16 +184,16 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		sourceVURI = VURI::getInstance(league1.eResource)
 		assertThat(localRepository.currentBranch, not(equalTo(null)))
 		assertThat(localRepository.head, is(localRepository.initialCommit))
-		assertThat(localRepository.commits.length, is(1))
+		assertThat(localRepository.commits, hasSize(1))
 		val changeMatchesBeforeCommit = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
-		assertThat(changeMatchesBeforeCommit.length, is(2))
+		assertThat(changeMatchesBeforeCommit, hasSize(2))
 		val commit = localRepository.commit("My message", virtualModel, sourceVURI)
 		val changeMatchesAfterCommit = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
-		assertThat(changeMatchesAfterCommit.length, is(0))
-		assertThat(localRepository.commits.length, is(2))
+		assertThat(changeMatchesAfterCommit, hasSize(0))
+		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
-		assertThat(commit.changes.empty, is(false))
+		assertThat(commit.changes, not(empty))
 	}
 
 	@Test
@@ -211,9 +216,9 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		val changeMatches = virtualModel.getChangeMatches(sourceVURI)
 
 		assertThat(localRepository.head, is(localRepository.initialCommit))
-		assertThat(localRepository.commits.length, is(1))
+		assertThat(localRepository.commits, hasSize(1))
 		val commit = localRepository.commit("My message", changeMatches)
-		assertThat(localRepository.commits.length, is(2))
+		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
 
@@ -265,24 +270,24 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		league.saveAndSynchronizeChanges
 
 		assertThat(localRepository.head, is(localRepository.initialCommit))
-		assertThat(localRepository.commits.length, is(1))
+		assertThat(localRepository.commits, hasSize(1))
 		val commit = localRepository.commit("My message", virtualModel, sourceVURI)
 
-		assertThat(localRepository.commits.length, is(2))
+		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
 		val currentBranch = localRepository.currentBranch
 		localRepository.addOrigin(currentBranch, remoteRepository)
-		assertThat(remoteRepository.commits.length, is(1))
+		assertThat(remoteRepository.commits, hasSize(1))
 		val pushCommit1 = localRepository.push
 		assertThat(pushCommit1, is(PushState::SUCCESS))
-		assertThat(remoteRepository.commits.length, is(2))
+		assertThat(remoteRepository.commits, hasSize(2))
 
 		val newMasterBranch = newLocalRepository.currentBranch
 		newLocalRepository.addOrigin(newMasterBranch, remoteRepository)
-		assertThat(newLocalRepository.commits.length, is(1))
+		assertThat(newLocalRepository.commits, hasSize(1))
 		newLocalRepository.pull
-		assertThat(newLocalRepository.commits.length, is(2))
+		assertThat(newLocalRepository.commits, hasSize(2))
 
 		newLocalRepository.checkout(virtualModel, newSourceVURI)
 		val leagueCopy = virtualModel.getModelInstance(newSourceVURI).firstRootEObject as League
@@ -312,11 +317,11 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		league1.saveAndSynchronizeChanges
 
 		val commit = localRepository.commit("My message", virtualModel, sourceVURI)
-		assertThat(commit.changes.length, is(3))
+		assertThat(commit.changes, hasSize(3))
 		localRepository.checkout(virtualModel, newSourceVURI)
 		val leagueCopy = virtualModel.getModelInstance(newSourceVURI).firstRootEObject as League
 		assertThat(league1.name, equalTo(leagueCopy.name))
-		assertThat(league1.players.size, is(leagueCopy.players.size))
+		assertThat(league1.players, hasSize(leagueCopy.players.size))
 		league1.players.forEach [ p1 |
 			assertThat(leagueCopy.players.exists[p2|EcoreUtil::equals(p1, p2)], is(true))
 		]
@@ -331,14 +336,14 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		newLocalRepository.pull
 
 		assertThat(localRepository.commits.length, is(newLocalRepository.commits.length))
-		assertThat(localRepository.commits.length, is(2))
+		assertThat(localRepository.commits, hasSize(2))
 
 		league1.name = newName2
 		league1.saveAndSynchronizeChanges
 
 		val myCommit = localRepository.commit("Commit1", virtualModel, sourceVURI)
-		assertThat(myCommit.changes.length, is(1))
-		assertThat(localRepository.commits.length, is(3))
+		assertThat(myCommit.changes, hasSize(1))
+		assertThat(localRepository.commits, hasSize(3))
 		localRepository.push
 
 		newLocalRepository.checkout(virtualModel, newSourceVURI)
@@ -357,17 +362,17 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		newLeague.name = newName1
 		newLeague.saveAndSynchronizeChanges
 		val testVuri = VURI::getInstance(newLeague.eResource)
-		assertThat(newLocalRepository.commits.length, is(2))
+		assertThat(newLocalRepository.commits, hasSize(2))
 		val newCommit = newLocalRepository.commit("Commit2", virtualModel, testVuri)
-		assertThat(newLocalRepository.commits.length, is(3))
-		assertThat(newCommit.changes.length, is(1))
+		assertThat(newLocalRepository.commits, hasSize(3))
+		assertThat(newCommit.changes, hasSize(1))
 		val commitAccepted = newLocalRepository.push
 		assertThat(commitAccepted, is(PushState::COMMIT_NOT_ACCEPTED))
 
 		val remoteBranch = newLocalRepository.currentBranch.remoteBranch
-		assertThat(newLocalRepository.getCommits(remoteBranch).length, is(2))
+		assertThat(newLocalRepository.getCommits(remoteBranch), hasSize(2))
 		newLocalRepository.pull
-		assertThat(newLocalRepository.getCommits(remoteBranch).length, is(3))
+		assertThat(newLocalRepository.getCommits(remoteBranch), hasSize(3))
 		val lastRemoteCommit = newLocalRepository.getCommits(remoteBranch).last
 		val lastLocalCommit = newLocalRepository.getCommits(newLocalRepository.currentBranch).last
 		assertThat(lastRemoteCommit.identifier, not(equalTo(lastLocalCommit.identifier)))
@@ -379,13 +384,13 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 			triggeredCallback,
 			virtualModel
 		)
-		assertThat(mergeCommit.changes.length, is(1))
+		assertThat(mergeCommit.changes, hasSize(1))
 		val testLeague2 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
 		assertThat(testLeague2.name, equalTo(newName1))
-		assertThat(remoteRepository.commits.length, is(3))
+		assertThat(remoteRepository.commits, hasSize(3))
 		val newCommitAccepted = newLocalRepository.push
 		assertThat(newCommitAccepted, is(PushState::SUCCESS))
-		assertThat(remoteRepository.commits.length, is(5))
+		assertThat(remoteRepository.commits, hasSize(5))
 	}
 
 	@Test
@@ -410,7 +415,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		league1.saveAndSynchronizeChanges
 
 		val commit = localRepository.commit("My message", virtualModel)
-		assertThat(commit.changes.length, is(3))
+		assertThat(commit.changes, hasSize(3))
 		localRepository.checkout(newVirtualModel)
 		val leagueCopy = newVirtualModel.getModelInstance(sourceVURI).firstRootEObject as League
 		assertThat(league1.name, equalTo(leagueCopy.name))
@@ -442,11 +447,11 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		league1.saveAndSynchronizeChanges
 
 		val commit = localRepository.commit("My message")
-		assertThat(commit.changes.length, is(3))
+		assertThat(commit.changes, hasSize(3))
 		val pushState = localRepository.push
 		assertThat(pushState, is(PushState::SUCCESS))
 		newLocalRepository.pull
-		assertThat(newLocalRepository.commits.length, is(2))
+		assertThat(newLocalRepository.commits, hasSize(2))
 		newLocalRepository.checkout
 
 		val leagueCopy = newVirtualModel.getModelInstance(sourceVURI).firstRootEObject as League
@@ -457,7 +462,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		]
 
 		assertThat(localRepository.commits.length, is(newLocalRepository.commits.length))
-		assertThat(localRepository.commits.length, is(2))
+		assertThat(localRepository.commits, hasSize(2))
 	}
 
 	@Test
@@ -468,8 +473,8 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		league1.saveAndSynchronizeChanges
 
 		val myCommit = localRepository.commit("Commit1")
-		assertThat(myCommit.changes.length, is(1))
-		assertThat(localRepository.commits.length, is(3))
+		assertThat(myCommit.changes, hasSize(1))
+		assertThat(localRepository.commits, hasSize(3))
 		localRepository.push
 
 		newLocalRepository.checkout
@@ -488,16 +493,16 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		newLeague.name = newName1
 
 		saveAndSynchronizeChanges(newVirtualModel, newLeague)
-		assertThat(newLocalRepository.commits.length, is(2))
+		assertThat(newLocalRepository.commits, hasSize(2))
 		val newCommit = newLocalRepository.commit("Commit2")
-		assertThat(newLocalRepository.commits.length, is(3))
-		assertThat(newCommit.changes.length, is(1))
+		assertThat(newLocalRepository.commits, hasSize(3))
+		assertThat(newCommit.changes, hasSize(1))
 		val commitAccepted = newLocalRepository.push
 		assertThat(commitAccepted, is(PushState::COMMIT_NOT_ACCEPTED))
 		val remoteBranch = newLocalRepository.currentBranch.remoteBranch
-		assertThat(newLocalRepository.getCommits(remoteBranch).length, is(2))
+		assertThat(newLocalRepository.getCommits(remoteBranch), hasSize(2))
 		newLocalRepository.pull
-		assertThat(newLocalRepository.getCommits(remoteBranch).length, is(3))
+		assertThat(newLocalRepository.getCommits(remoteBranch), hasSize(3))
 		val lastRemoteCommit = newLocalRepository.getCommits(remoteBranch).last
 		val lastLocalCommit = newLocalRepository.getCommits(newLocalRepository.currentBranch).last
 		assertThat(lastRemoteCommit.identifier, not(equalTo(lastLocalCommit.identifier)))
@@ -507,12 +512,12 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 			acceptTheirChangesCallback,
 			triggeredCallback
 		)
-		assertThat(mergeCommit.changes.length, is(1))
+		assertThat(mergeCommit.changes, hasSize(1))
 		val testLeague2 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
 		assertThat(testLeague2.name, equalTo(newName2))
-		assertThat(remoteRepository.commits.length, is(3))
+		assertThat(remoteRepository.commits, hasSize(3))
 		val newCommitAccepted = newLocalRepository.push
 		assertThat(newCommitAccepted, is(PushState::SUCCESS))
-		assertThat(remoteRepository.commits.length, is(5))
+		assertThat(remoteRepository.commits, hasSize(5))
 	}
 }
