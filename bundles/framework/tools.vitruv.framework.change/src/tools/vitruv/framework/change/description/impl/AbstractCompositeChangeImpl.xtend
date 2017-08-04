@@ -58,7 +58,7 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 
 		var lastURI = changes.get(0).URI;
 		for (change : changes) {
-			if (lastURI !== null && change.URI != lastURI) {
+			if (lastURI !== null && change.URI !== null && change.URI != lastURI) {
 				return false;
 			}
 			lastURI = change.URI;
