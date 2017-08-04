@@ -80,7 +80,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	}
 
 	override propagateChange(VitruviusChange change, String changeId) {
-		if (vuriToIds.values.exists[it == changeId])
+		if (vuriToIds.values.parallelStream.anyMatch[it == changeId])
 			throw new IllegalStateException
 		currentChangeId = changeId
 		propagateChange(change)
@@ -142,9 +142,20 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		modelRepository.addRootElement(createdObject)
 	}
 
+	override getAllResolvedPropagatedChanges() {
+		val returnValue = vuriToIds.keySet.map[resolvedPropagatedChanges].flatten.toList
+		return returnValue
+	}
+
+	override getAllUnresolvedPropagatedChanges() {
+		val returnValue = vuriToIds.keySet.map[unresolvedPropagatedChanges].flatten.toList
+		return returnValue
+	}
+
 	private def void startChangePropagation(VitruviusChange change) {
 		info('''Started synchronizing change: «change»''')
 		changePropagationListeners.forEach[startedChangePropagation]
+		resourceRepository.currentVURI = change.URI
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
@@ -191,16 +202,9 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		specifications.forEach [
 			propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
-
-		val consequentialChanges = newArrayList
-		// PS This may be working
-		changedResourcesTracker.markNonSourceResourceAsChanged
-		resourceRepository.saveAllModels
-
-		consequentialChanges += resourceRepository.endRecording
 		handleObjectsWithoutResource
-		consequentialChanges.forEach[debug(it)]
-		addPropagatedChanges(clonedChange, change, consequentialChanges, propagatedChanges)
+		resourceRepository.endRecording
+		addPropagatedChanges(clonedChange, change, propagatedChanges)
 	}
 
 	private def void handleObjectsWithoutResource() {
@@ -261,7 +265,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	private def addPropagatedChanges(
 		VitruviusChange unresolvedChange,
 		VitruviusChange resolvedChange,
-		List<? extends VitruviusChange> consequentialChanges,
 		List<PropagatedChange> propagatedChanges
 	) {
 		val isUnresolved = modelRepository.unresolveChanges
@@ -295,16 +298,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			idToUnresolvedChanges.put(uuid, unresolvedPropagatedChange)
 		} else
 			warn('''resolvedChange.URI was null''')
-	}
-
-	override getAllResolvedPropagatedChanges() {
-		val returnValue = vuriToIds.keySet.map[resolvedPropagatedChanges].flatten.toList
-		return returnValue
-	}
-
-	override getAllUnresolvedPropagatedChanges() {
-		val returnValue = vuriToIds.keySet.map[unresolvedPropagatedChanges].flatten.toList
-		return returnValue
 	}
 
 }
