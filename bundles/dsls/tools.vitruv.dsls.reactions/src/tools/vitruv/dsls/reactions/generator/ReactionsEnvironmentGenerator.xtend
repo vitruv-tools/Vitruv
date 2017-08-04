@@ -24,7 +24,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Callable
 import java.util.Arrays
-import java.io.File
+import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators
 
 class ReactionsEnvironmentGenerator {
 
@@ -81,7 +81,7 @@ class ReactionsEnvironmentGenerator {
 	}
 
 	def private shouldKeepExecutor(String executorName, IFileSystemAccess2 fsa) {
-		fsa.isFile('''«executorName.replace('.', File.separator)».java''')
+		fsa.isFile('''«executorName.replace('.', ClassNamesGenerators.FSA_SEPARATOR)».java''')
 	}
 
 	/**
