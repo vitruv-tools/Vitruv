@@ -228,8 +228,11 @@ class RoutineClassGenerator extends ClassGenerator {
 		val getSecondElementMethod = generateMethodGetElement(removeCorrespondence.secondElement,
 			currentlyAccessibleElements);
 		val getSecondElementMethodCall = getSecondElementMethod.userExecutionMethodCallString;
+		val tagMethod = if (removeCorrespondence.tag !== null) generateMethodGetCreateTag(removeCorrespondence,
+				currentlyAccessibleElements);
+		val tagMethodCall = if (tagMethod !== null) tagMethod.userExecutionMethodCallString else '''""''';
 		return '''
-			removeCorrespondenceBetween(«getFirstElementMethodCall», «getSecondElementMethodCall»);
+			removeCorrespondenceBetween(«getFirstElementMethodCall», «getSecondElementMethodCall», «tagMethodCall»);
 		'''
 	}
 

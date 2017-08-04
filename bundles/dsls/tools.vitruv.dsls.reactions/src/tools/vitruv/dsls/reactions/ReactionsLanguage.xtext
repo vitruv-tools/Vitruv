@@ -194,11 +194,12 @@ UpdateModelElementStatement returns UpdateModelElement:
 CreateCorrespondenceStatement returns CreateCorrespondence:
 	{CreateCorrespondence}
 	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
-	('tag with' Taggable)?;
+	('tagged with' Taggable)?;
 	
 RemoveCorrespondenceStatement returns RemoveCorrespondence:
 	{RemoveCorrespondence}
-	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference;
+	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
+	('tagged with' Taggable)?;
 
 
 // ****** CODE BLOCKS ******
