@@ -7,14 +7,15 @@ import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import org.eclipse.emf.ecore.EDataType
 
 @Utility package class AttributeDeclarationExtension {
 
 	/**
 	 * Foo bar
 	 */
-	def static EClassifier getType(AttributeDeclaration attribute) {
-		if (attribute.mappings.length === 0) return EcorePackage.eINSTANCE.EObject
+	def static EDataType getType(AttributeDeclaration attribute) {
+		if (attribute.mappings.length === 0) return EcorePackage.eINSTANCE.EJavaObject
 
 		val mappingIterator = attribute.mappings.iterator
 		val firstMapping = mappingIterator.next

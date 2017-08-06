@@ -4,8 +4,8 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 import edu.kit.ipd.sdq.activextendannotations.StaticDelegate
 
 @StaticDelegate(#[
-	MetaclassExtension
+	tools.vitruv.dsls.commonalities.language.elements.extensions.ParticipationClassExtension
 ])
-@Utility class DomainExtensions {
+@Utility class LanguageElementsExtensions {
 	
 }

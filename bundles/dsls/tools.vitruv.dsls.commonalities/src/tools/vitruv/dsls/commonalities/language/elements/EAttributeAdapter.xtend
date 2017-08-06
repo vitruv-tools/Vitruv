@@ -13,7 +13,7 @@ package class EAttributeAdapter implements Attribute, Wrapper<EAttribute> {
 	}
 
 	override getType() {
-		wrappedEAttribute.EType
+		wrappedEAttribute.EAttributeType
 	}
 	
 	override getWrapped() {

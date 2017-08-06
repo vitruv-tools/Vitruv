@@ -1,28 +1,28 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
-import org.eclipse.emf.ecore.EClassifier
 import tools.vitruv.dsls.commonalities.language.AttributeEqualitySpecification
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import org.eclipse.emf.ecore.EDataType
 
 @Utility
 package class AttributeMappingSpecificationExtension {
 
 	@Pure
-	def static dispatch EClassifier getProvidedType(extension AttributeMappingSpecifiation mappingSpec) {
+	def static dispatch EDataType getProvidedType(extension AttributeMappingSpecifiation mappingSpec) {
 	}
 
 	@Pure
-	def static dispatch EClassifier getRequiredType(extension AttributeMappingSpecifiation mappingSpec) {}
+	def static dispatch EDataType getRequiredType(extension AttributeMappingSpecifiation mappingSpec) {}
 
 	@Pure
-	def static dispatch EClassifier getProvidedType(extension AttributeEqualitySpecification mappingSpec) {
+	def static dispatch EDataType getProvidedType(extension AttributeEqualitySpecification mappingSpec) {
 		attribute.type
 	}
 
 	@Pure
-	def static dispatch EClassifier getRequiredType(extension AttributeEqualitySpecification mappingSpec) {
+	def static dispatch EDataType getRequiredType(extension AttributeEqualitySpecification mappingSpec) {
 		attribute.type
 	}
 
