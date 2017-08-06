@@ -13,6 +13,7 @@ import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
+import static org.hamcrest.CoreMatchers.notNullValue
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.junit.Assert.assertThat
 
@@ -96,14 +97,18 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 	}
 
 	@Test
-	def void testSezializeChangeMatches() {
+	def void testSerializeChangeMatches() {
 		val container = createNonRootObjectContainerHelper
 		container.id = nonRootObjectContainerName
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
+		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
+			createAndAddNonRoot(container)
+			rootElement.saveAndSynchronizeChanges
+		]
 
 		val propagatedChanges = virtualModel.allUnresolvedPropagatedChanges
-		assertThat(propagatedChanges, hasSize(2))
+		assertThat(propagatedChanges, hasSize(5))
 		val serializedChanges = propagatedChanges.map[serialize].toList
 
 		val deserializedChanges = serializedChanges.map[deserialize].toList
@@ -122,6 +127,52 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		assertThat(newRoot.id, equalTo(TEST_SOURCE_MODEL_NAME))
 		val newContainer = newRoot.nonRootObjectContainerHelper
 		assertThat(newContainer.id, equalTo(nonRootObjectContainerName))
+		assertThat(newContainer.nonRootObjectsContainment, hasSize(NON_CONTAINMENT_NON_ROOT_IDS.size))
+
+		NON_CONTAINMENT_NON_ROOT_IDS.forEach [ currentId |
+			val nonRoot = newContainer.nonRootObjectsContainment.findFirst[id == currentId]
+			assertThat(nonRoot, notNullValue)
+		]
+
+	}
+
+	@Test
+	def void testSerializeChangeMatchesOneString() {
+		val container = createNonRootObjectContainerHelper
+		container.id = nonRootObjectContainerName
+		rootElement.nonRootObjectContainerHelper = container
+		rootElement.saveAndSynchronizeChanges
+		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
+			createAndAddNonRoot(container)
+			rootElement.saveAndSynchronizeChanges
+		]
+
+		val propagatedChanges = virtualModel.allUnresolvedPropagatedChanges
+		assertThat(propagatedChanges, hasSize(5))
+		val serializedChanges = propagatedChanges.serializeAll
+
+		val deserializedChanges = serializedChanges.deserializeAll
+		val newVirtualModel = TestUtil::createVirtualModel("newVMname", true, vitruvDomains,
+			createChangePropagationSpecifications, userInteractor) as VersioningVirtualModel
+
+		val originalChanges = newArrayList
+		deserializedChanges.map[originalChange].forEach[originalChanges += it]
+		originalChanges.forEach [
+			newVirtualModel.propagateChange(it)
+		]
+		val modelInstance = newVirtualModel.getModelInstance(sourceVURI)
+		val newRoot = modelInstance.resource.contents.get(0) as Root
+		modelInstance.resource.save(#{})
+		assertThat(newRoot.id, equalTo(TEST_SOURCE_MODEL_NAME))
+		val newContainer = newRoot.nonRootObjectContainerHelper
+		assertThat(newContainer.id, equalTo(nonRootObjectContainerName))
+		assertThat(newContainer.nonRootObjectsContainment, hasSize(NON_CONTAINMENT_NON_ROOT_IDS.size))
+
+		NON_CONTAINMENT_NON_ROOT_IDS.forEach [ currentId |
+			val nonRoot = newContainer.nonRootObjectsContainment.findFirst[id == currentId]
+			assertThat(nonRoot, notNullValue)
+		]
+
 	}
 
 }

@@ -1,35 +1,38 @@
 package tools.vitruv.framework.versioning.extensions.impl
 
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+
+import java.lang.reflect.Constructor
+import java.util.List
+
+import org.eclipse.emf.common.notify.impl.NotificationChainImpl
+import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.common.util.URI
+
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.InternalEObject
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
+
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.PropagatedChangeImpl
-import tools.vitruv.framework.versioning.extensions.EChangeSerializer
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
-import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
-import java.lang.reflect.Constructor
-import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
-import tools.vitruv.framework.change.echange.compound.impl.CreateAndInsertRootImpl
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.InternalEObject
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
-import org.eclipse.emf.ecore.EAttribute
+import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
-import tools.vitruv.framework.change.echange.compound.impl.CreateAndReplaceNonRootImpl
-import org.eclipse.emf.ecore.EReference
-import com.google.gson.JsonObject
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
-import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.common.notify.impl.NotificationChainImpl
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.framework.versioning.extensions.EChangeSerializer
 
 class EChangeSerializerImpl implements EChangeSerializer {
 	static val ResourceSet resourceSet = new ResourceSetImpl
@@ -38,29 +41,11 @@ class EChangeSerializerImpl implements EChangeSerializer {
 	static extension TypeInferringUnresolvingAtomicEChangeFactory = TypeInferringUnresolvingAtomicEChangeFactory::
 		instance
 	static Resource currentResource
-	extension JsonParser = new JsonParser()
+	extension JsonParser = new JsonParser
 
-//	static extension Gson = new Gson
 	static def EChangeSerializer init() {
 		resourceSet.resourceFactoryRegistry.extensionToFactoryMap.put("allelementtypes", new XMIResourceFactoryImpl)
 		new EChangeSerializerImpl
-	}
-
-	private static def boolean set(Object object, String fieldName, Object fieldValue) {
-		var Class<?> clazz = object.getClass();
-		while (clazz !== null) {
-			try {
-				val field = clazz.getDeclaredField(fieldName);
-				field.setAccessible(true);
-				field.set(object, fieldValue);
-				return true;
-			} catch (NoSuchFieldException e) {
-				clazz = clazz.getSuperclass();
-			} catch (Exception e) {
-				throw new IllegalStateException(e);
-			}
-		}
-		return false;
 	}
 
 	private static def EObject createEObject(String className) {
@@ -110,6 +95,14 @@ class EChangeSerializerImpl implements EChangeSerializer {
 		return reference
 	}
 
+	private static def PropagatedChange deserializeIntern(JsonObject jobject) {
+		val id = jobject.get("id").toString
+		val originalChange = jobject.get("originalChange").asJsonObject.deserializeVitruviusChange
+		val consequentialChanges = jobject.get("consequentialChanges").asJsonObject.deserializeVitruviusChange
+		return new PropagatedChangeImpl(id, originalChange, consequentialChanges)
+
+	}
+
 	private new() {
 	}
 
@@ -123,25 +116,36 @@ class EChangeSerializerImpl implements EChangeSerializer {
 	'''
 
 	override deserialize(String changeString) {
-		val jelement = parse(changeString)
-		val jobject = jelement.asJsonObject
-		val id = jobject.get("id").toString
-		val originalChange = jobject.get("originalChange").asJsonObject.deserializeVitruviusChange
-		val consequentialChanges = jobject.get("consequentialChanges").asJsonObject.deserializeVitruviusChange
-		return new PropagatedChangeImpl(id, originalChange, consequentialChanges)
+		val jobject = parse(changeString).asJsonObject
+		return deserializeIntern(jobject)
+	}
 
+	override deserializeAll(String allChangeString) {
+		val jsonArray = parse(allChangeString).asJsonArray
+		return jsonArray.map[deserializeIntern(it as JsonObject)].toList
+	}
+
+	override serializeAll(List<PropagatedChange> changes) {
+		val strings = changes.map[serialize]
+		return '''
+			«FOR s : strings BEFORE '[' SEPARATOR ', ' AFTER ']'»
+				«s»
+	    	«ENDFOR»
+		'''
 	}
 
 	private static def dispatch String serializeVitruviusChange(VitruviusChange vitruviusChange) {
 		null
 	}
 
-	private static def dispatch String serializeEChange(EChange eChange) '''{}'''
+	private static def dispatch String serializeEChange(EChange eChange) {
+		throw new UnsupportedOperationException('''EChange type «eChange.class.name» not (yet) supported ''')
+	}
 
 	private static def EChange deserializeEChange(JsonObject jobject) {
 		val type = jobject.get("type")?.asString
 		var EChange change = null
-		if (type == CreateAndInsertRootImpl.name) {
+		if (type == CreateAndInsertRoot.name) {
 			val className = jobject.get("createdObject").asString
 			val object = createEObject(className)
 			val index = jobject.get("index").asInt
@@ -151,7 +155,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			currentResource = resource
 			change = createCreateAndInsertRootChange(object, resource, index)
 		}
-		if (type == ReplaceSingleValuedEAttributeImpl.name) {
+		if (type == ReplaceSingleValuedEAttribute.name) {
 			val className = jobject.get("affectedEObject").asString
 			val eProxyURIString = jobject.get("eProxyURI").asString
 			val featureObject = jobject.get("feature").asJsonObject
@@ -167,7 +171,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 				newValue
 			)
 		}
-		if (type == CreateAndReplaceNonRootImpl.name) {
+		if (type == CreateAndReplaceNonRoot.name) {
 			val className = jobject.get("createdObject").asString
 			val affectedEObjectClassName = jobject.get("affectedEObject").asString
 			val eProxyURI = jobject.get("eProxyURI").asString
@@ -178,8 +182,31 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			val feature = createReference(affectedEObject, featureObject)
 			change = createCreateAndReplaceNonRootChange(affectedEObject, feature, createdObject)
 		}
+		if (type == CreateAndInsertNonRoot.name) {
+			val affectedEObjectClassName = jobject.get("affectedEObject").asString
+			val affectedEObjectEProxyURI = jobject.get("eProxyURI").asString
+			val createdObjectClassName = jobject.get("createdObject").asString
+			val featureObject = jobject.get("feature").asJsonObject
+			val index = jobject.get("index").asInt
+
+			val createdObject = createEObject(createdObjectClassName)
+			val affectedEObject = createEObject(affectedEObjectClassName, affectedEObjectEProxyURI)
+			val feature = createReference(affectedEObject, featureObject)
+			change = createCreateAndInsertNonRootChange(affectedEObject, feature, createdObject, index)
+		}
 		return change
 	}
+
+	private static def dispatch String serializeEChange(CreateAndInsertNonRoot<?, ?> createAndInsertNonRoot) '''
+		{
+			"affectedEObject": "«createAndInsertNonRoot.insertChange.affectedEObject.class.name»",
+			"createdObject": "«createAndInsertNonRoot.createChange.affectedEObject.class.name»",
+			"eProxyURI": "«(createAndInsertNonRoot.insertChange.affectedEObject as InternalEObject).eProxyURI.toString»",
+			"feature":«createAndInsertNonRoot.insertChange.affectedFeature.serializeFeature»,
+			"index": "«createAndInsertNonRoot.insertChange.index»",
+			"type": "«CreateAndInsertNonRoot.name»"
+		}
+	'''
 
 	private static def dispatch String serializeEChange(CreateAndReplaceNonRoot<?, ?> createAndReplaceNonRoot) '''
 		{
@@ -187,7 +214,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			"createdObject": "«createAndReplaceNonRoot.createChange.affectedEObject.class.name»",
 			"eProxyURI": "«(createAndReplaceNonRoot.insertChange.affectedEObject as InternalEObject).eProxyURI.toString»",
 			"feature":«createAndReplaceNonRoot.insertChange.affectedFeature.serializeFeature»,
-			"type": "«CreateAndReplaceNonRootImpl.name»"
+			"type": "«CreateAndReplaceNonRoot.name»"
 		}
 	'''
 
@@ -201,7 +228,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 				"feature":«replaceSingleValuedEAttribute.affectedFeature.serializeFeature»,
 				"newValue": "«replaceSingleValuedEAttribute.newValue»",
 				"oldValue": "«replaceSingleValuedEAttribute.oldValue»",
-				"type": "«ReplaceSingleValuedEAttributeImpl.name»"
+				"type": "«ReplaceSingleValuedEAttribute.name»"
 			}
 		'''
 	}
@@ -210,7 +237,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 		{
 			"createdObject": "«createAndInsertRoot.createChange.affectedEObject.class.name»",
 			"index": "«createAndInsertRoot.insertChange.index»",
-			"type": "«CreateAndInsertRootImpl.name»",
+			"type": "«CreateAndInsertRoot.name»",
 			"uri": "«createAndInsertRoot.insertChange.uri»"
 		}
 	'''
@@ -254,10 +281,11 @@ class EChangeSerializerImpl implements EChangeSerializer {
 
 	private static def CompositeContainerChangeImpl deserializeComposite(JsonObject jobject) {
 		val changes = jobject.get("changes").asJsonArray.filterNull.map [ jsonElement |
-			(jsonElement as JsonObject).deserializeEMFModelChange as VitruviusChange
+			(jsonElement as JsonObject).deserializeEMFModelChange
 		].filterNull.toList
 		val composite = new CompositeContainerChangeImpl
 		changes.forEach[composite.addChange(it)]
 		return composite
 	}
+
 }
