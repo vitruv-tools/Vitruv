@@ -129,9 +129,8 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 		VirtualModel currentVirtualModel,
 		String modelPathInProject
 	) throws IOException {
-		if (StringUtil::isEmpty(modelPathInProject)) {
+		if (StringUtil::isEmpty(modelPathInProject))
 			throw new IllegalArgumentException
-		}
 		val Resource resource = getModelResource(modelPathInProject)
 		resource.delete(Collections::EMPTY_MAP)
 		propagateChanges(currentVirtualModel)

@@ -322,6 +322,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		val leagueCopy = virtualModel.getModelInstance(newSourceVURI).firstRootEObject as League
 		assertThat(league1.name, equalTo(leagueCopy.name))
 		assertThat(league1.players, hasSize(leagueCopy.players.size))
+
 		league1.players.forEach [ p1 |
 			assertThat(leagueCopy.players.exists[p2|EcoreUtil::equals(p1, p2)], is(true))
 		]

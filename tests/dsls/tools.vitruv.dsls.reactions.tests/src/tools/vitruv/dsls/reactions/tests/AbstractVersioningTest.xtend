@@ -7,6 +7,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 
 abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTests {
+	protected static extension  AllElementTypesFactory = AllElementTypesFactory::eINSTANCE
 	protected static extension URIRemapper = URIRemapper::instance
 	protected static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
 	protected static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget"
@@ -14,7 +15,7 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 
 	protected override setup() {
 		// Create model 
-		val root = AllElementTypesFactory::eINSTANCE.createRoot
+		val root = createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
 		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
 	}
