@@ -14,6 +14,7 @@ import tools.vitruv.dsls.reactions.generator.SimpleTextXBlockExpression
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import org.eclipse.emf.ecore.resource.Resource
 import static com.google.common.base.Preconditions.*
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 final class ReactionsLanguageHelper {
 	private new() {
@@ -41,7 +42,7 @@ final class ReactionsLanguageHelper {
 	}
 
 	public static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {
-		return VitruvDomainProvider.getDomainProviderFromExtensionPoint(domain.name);
+		return VitruvDomainProviderRegistry.getDomainProvider(domain.name);
 	}
 
 	public static def VitruvDomain getDomainForReference(DomainReference domainReference) {
@@ -49,7 +50,7 @@ final class ReactionsLanguageHelper {
 	}
 
 	public static def VitruvDomainProvider<?> getDomainProviderForReference(DomainReference domainReference) {
-		val referencedDomainProvider = VitruvDomainProvider.getDomainProviderFromExtensionPoint(domainReference.domain)
+		val referencedDomainProvider = VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain)
 		if (referencedDomainProvider === null) {
 			throw new IllegalStateException("Given domain reference references no existing domain");
 		}
