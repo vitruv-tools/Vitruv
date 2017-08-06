@@ -16,6 +16,7 @@ import static org.hamcrest.CoreMatchers.*;
 import java.util.function.Predicate
 import java.io.InputStreamReader
 import com.google.common.io.CharStreams
+import org.eclipse.xtext.resource.XtextResourceSet
 
 @RunWith(XtextRunner)
 @InjectWith(ReactionsLanguageInjectorProvider)
@@ -23,6 +24,7 @@ class ReactionsGeneratorTest {
 
 	@Inject Provider<InMemoryFileSystemAccess> fsaProvider
 	@Inject Provider<IReactionsGenerator> generatorProvider
+	@Inject Provider<XtextResourceSet> resourceSetProvider
 	static val allElementTypesDomain = new AllElementTypesDomainProvider().domain
 	static val EXPECTED_CHANGE_PROPAGATION_SPEC_NAME = 'AllElementTypesToAllElementTypesChangePropagationSpecification.java'
 
@@ -38,6 +40,8 @@ class ReactionsGeneratorTest {
 	def testGenerateReactionsEnvironment() {
 		val reaction = createReaction('TestReaction')
 		var generator = generatorProvider.get()
+		generator.useResourceSet(resourceSetProvider.get())
+		
 		val fsa = fsaProvider.get() => [
 			currentSource = "src"
 			outputPath = "src-gen"
@@ -69,6 +73,7 @@ class ReactionsGeneratorTest {
 		fsa.deleteFile(secondExecutorFileName, '')
 
 		generator = generatorProvider.get()
+		generator.useResourceSet(resourceSetProvider.get())
 		generator.addReaction("FourthTestReaction", reaction)
 		generator.generate(fsa)
 		

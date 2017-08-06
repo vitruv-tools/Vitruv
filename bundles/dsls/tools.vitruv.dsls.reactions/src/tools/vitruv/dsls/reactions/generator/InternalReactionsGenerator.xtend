@@ -16,8 +16,6 @@ import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import static com.google.common.base.Preconditions.*
 import java.util.ArrayList
 import org.eclipse.xtext.resource.XtextResourceSet
-import com.google.inject.Provider
-import edu.kit.ipd.sdq.activextendannotations.Lazy
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
@@ -25,6 +23,7 @@ import org.eclipse.xtext.resource.IResourceFactory
 import java.nio.file.Path
 import org.eclipse.emf.ecore.util.EcoreUtil
 import java.util.Collections
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 class InternalReactionsGenerator implements IReactionsGenerator {
 
@@ -37,24 +36,15 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 	IGenerator generator;
 
 	@Inject
-	Provider<XtextResourceSet> resourceSetProvider
-
-	@Inject
-	var IResourceFactory resourceFactory
+	IResourceFactory resourceFactory
 
 	@Inject extension ReactionsEnvironmentGenerator environmentGenerator
 
 	// the resource set we put artificially created reactions in
-	@Lazy XtextResourceSet tmpResourceSet = createTmpResourceSet()
+	ResourceSet artificialReactionsResourceSet
 
-	val tempResources = new ArrayList<Resource>
+	val syntheticResources = new ArrayList<Resource>
 	val reactionFileResourceSets = new ArrayList<XtextResourceSet>
-
-	def private createTmpResourceSet() {
-		val resourceSet = resourceSetProvider.get()
-		reactionFileResourceSets.add(resourceSet)
-		resourceSet
-	}
 
 	def private addReaction(String sourceFileName, Reaction reaction) {
 		checkNotNull(reaction, "Reaction must not be null!")
@@ -65,7 +55,7 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 
 	def private ReactionsSegment getCorrespondingReactionsSegmentInTempResource(String sourceFileName,
 		ReactionsSegment reactionsSegment) {
-		for (res : tempResources) {
+		for (res : syntheticResources) {
 			if (res.getURI.segmentsList.last.equals(sourceFileName + ".reactions")) {
 				val reactionsFile = res.reactionsFile
 				var ReactionsSegment foundSegment = null;
@@ -82,7 +72,7 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 				return foundSegment;
 			}
 		}
-		val newFile = generateTempResourceWithReactionsFile(sourceFileName);
+		val newFile = createSyntheticResourceWithReactionsFile(sourceFileName);
 		return addReactionsSegment(newFile, reactionsSegment, sourceFileName);
 	}
 
@@ -117,28 +107,29 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 		val reactionFileResourcesCopy = reactionFileResourceSets.flatMap[resources].toList
 		// only compile reaction files. This *will* generate the necessary java
 		// classes but *will not* copy referenced classes
-		tempResources + (reactionFileResourcesCopy.filter[containsReactionsFile])
+		syntheticResources + (reactionFileResourcesCopy.filter[containsReactionsFile])
 	}
 
 	override generate(IFileSystemAccess2 fsa) {
 		checkState(!used, "This generator was already used to generate reactions!")
+		pepareArtificialResourceSet()
 		used = true
 
 		resourcesToGenerate.forEach[generateReactions(fsa)]
 
 		reactionFileResourceSets.forEach[generateEnvironment(fsa)]
+		artificialReactionsResourceSet?.generateEnvironment(fsa)
 	}
 
-	def private generateTmpResource(String sourceFileName) {
+	def private createSyntheticResource(String sourceFileName) {
 		val resource = resourceFactory.createResource(
 			SYNTHETIC_RESOURCES.appendSegment(sourceFileName).appendFileExtension("reactions"))
-		tmpResourceSet.resources += resource
-		tempResources += resource
+		syntheticResources += resource
 		return resource
 	}
 
-	def private generateTempResourceWithReactionsFile(String sourceFileName) {
-		val singleReactionResource = generateTmpResource(sourceFileName)
+	def private createSyntheticResourceWithReactionsFile(String sourceFileName) {
+		val singleReactionResource = createSyntheticResource(sourceFileName)
 		val reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile
 		singleReactionResource.contents.add(reactionsFile);
 		return reactionsFile;
@@ -148,12 +139,12 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 		generator.doGenerate(reactionsResource, fsa);
 	}
 
-	override addReactionFiles(XtextResourceSet resourceSet) {
+	override addReactionsFiles(XtextResourceSet resourceSet) {
 		reactionFileResourceSets.add(resourceSet)
 	}
 
-	override addReaction(FluentReactionsFileBuilder reactionBuilder) {
-		val resource = generateTmpResource(reactionBuilder.fileName)
+	override addReactionsFile(FluentReactionsFileBuilder reactionBuilder) {
+		val resource = createSyntheticResource(reactionBuilder.fileName)
 		reactionBuilder.attachTo(resource)
 	}
 
@@ -163,13 +154,28 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 	}
 
 	override writeReactionsTo(URI outputFolderUri) {
-		val outputResourceSet = resourceSetProvider.get
+		pepareArtificialResourceSet()
+
 		resourcesToGenerate.map [ resource |
-			val newResource = resourceFactory.createResource(outputFolderUri.appendSegment(resource.URI.lastSegment))
-			outputResourceSet.resources += newResource
+			val outputUri = outputFolderUri.appendSegment(resource.URI.lastSegment)
+			val newResource = resource.resourceSet.getResource(outputUri, false) 
+				?: resource.resourceSet.createResource(outputUri)
 			newResource.contents += EcoreUtil.copy(resource.reactionsFile)
 			newResource
 		].forEach[save(Collections.emptyMap)]
+	}
+
+	override useResourceSet(ResourceSet resourceSet) {
+		checkNotNull(resourceSet)
+		artificialReactionsResourceSet = resourceSet
+	}
+
+	def private pepareArtificialResourceSet() {
+		if (!syntheticResources.isEmpty) {
+			checkState(artificialReactionsResourceSet !==
+				null, '''A resource set must be provided to generate code from artificial reactions!''')
+			artificialReactionsResourceSet.resources += syntheticResources
+		}
 	}
 
 }
