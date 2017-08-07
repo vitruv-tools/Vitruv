@@ -43,13 +43,6 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 		return ids
 	}
 
-	private def Branch getBranch(String branchName) {
-		val branch = branches.findFirst[name == branchName]
-		if (null === branch)
-			throw new RemoteBranchNotFoundException
-		return branch
-	}
-
 	override push(Commit commit, String branchName) {
 		val branch = branchName.branch
 		val currentLastCommit = commits.last
@@ -70,4 +63,10 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 		return commit
 	}
 
+	private def Branch getBranch(String branchName) {
+		val branch = branches.findFirst[name == branchName]
+		if (null === branch)
+			throw new RemoteBranchNotFoundException
+		return branch
+	}
 }

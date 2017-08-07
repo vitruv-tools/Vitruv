@@ -12,7 +12,6 @@ import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.LocalBranch
-import tools.vitruv.framework.versioning.branch.RemoteBranch
 import tools.vitruv.framework.versioning.commit.MergeCommit
 import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.vsum.VersioningVirtualModel
@@ -28,13 +27,7 @@ interface LocalRepository extends AbstractRepository {
 
 	def LocalBranch getCurrentBranch()
 
-	def RemoteBranch createRemoteBranch(String name, RemoteRepository remoteRepository)
-
-	def RemoteRepository getRemoteProject()
-
 	def Set<LocalBranch> getLocalBranches()
-
-	def Set<RemoteBranch> getRemoteBranches()
 
 	def SimpleCommit commit(String s, List<PropagatedChange> changes)
 
@@ -43,10 +36,6 @@ interface LocalRepository extends AbstractRepository {
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel)
 
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel, VURI vuri)
-
-	def void addOrigin(LocalBranch branch, RemoteRepository remoteRepository)
-
-	def void addRemoteRepository(RemoteRepository remoteRepository)
 
 	def void checkout()
 
@@ -80,7 +69,5 @@ interface LocalRepository extends AbstractRepository {
 	def void setAuthor(Author author)
 
 	def void setCurrentBranch(LocalBranch branch)
-
-	def void setRemoteProject(RemoteRepository remote)
 
 }
