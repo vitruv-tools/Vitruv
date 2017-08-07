@@ -5,6 +5,7 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.versioning.commit.impl.CommitFactoryImpl
 
 interface CommitFactory {
+	static val initialCommitHash = "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed"
 	CommitFactory instance = CommitFactoryImpl::init
 
 	def MergeCommit createMergeCommit(
@@ -12,8 +13,8 @@ interface CommitFactory {
 		String message,
 		String authorName,
 		String authorEMail,
-		List<String> source,
-		List<String> target
+		String source,
+		String target
 	)
 
 	def SimpleCommit createSimpleCommit(

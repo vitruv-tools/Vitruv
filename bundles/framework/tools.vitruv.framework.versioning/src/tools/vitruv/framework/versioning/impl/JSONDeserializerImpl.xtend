@@ -1,7 +1,5 @@
 package tools.vitruv.framework.versioning.impl
 
-import java.util.List
-
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
@@ -27,8 +25,8 @@ class JSONDeserializerImpl implements JSONDeserializer {
 	private new() {
 	}
 
-	private static def List<String> getIdentifiers(JsonObject jsonObject, String key) {
-		jsonObject.get(key).asJsonArray.map[asString].toList
+	private static def String getIdentifiers(JsonObject jsonObject, String key) {
+		jsonObject.get(key).asString
 	}
 
 	private static def CommitMessage createCommitMessageDeserialization(JsonElement jsonObject) {

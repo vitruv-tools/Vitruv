@@ -10,7 +10,7 @@ interface RemoteRepository extends AbstractRepository {
 
 	def List<String> getIdentifiers(String branchName)
 
-	def PushState pushCommit(Commit lastCommit, Commit newCommit)
+	def PushState pushCommit(Commit newCommit)
 
 	def PushState push(Commit commit, String branchName)
 

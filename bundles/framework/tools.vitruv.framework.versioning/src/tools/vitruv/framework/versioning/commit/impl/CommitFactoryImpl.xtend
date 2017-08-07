@@ -9,7 +9,6 @@ import tools.vitruv.framework.versioning.extensions.EChangeExtension
 
 class CommitFactoryImpl implements CommitFactory {
 	static val prefix = "blob "
-	static val initialCommitHash = "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed"
 	static extension EChangeExtension = EChangeExtension::instance
 
 	static def CommitFactory init() {
@@ -68,8 +67,8 @@ class CommitFactoryImpl implements CommitFactory {
 		String message,
 		String authorName,
 		String authorEMail,
-		List<String> sources,
-		List<String> targets
+		String sources,
+		String targets
 	) {
 		val commitMessage = createCommitMessage(message, authorName, authorEMail)
 		val oldInfosToHash = '''
@@ -78,22 +77,18 @@ class CommitFactoryImpl implements CommitFactory {
 			«authorName»
 			«authorEMail»
 			Sources
-			«FOR source : sources»
-				«source»
-			«ENDFOR»
+			«sources»
 			Targets
-			«FOR target : targets»
-				«target»
-			«ENDFOR»
+			«targets»
 				«FOR change : changes»
-				«change.originalChange.URI»«change.originalChange»
-				«FOR echange: change.originalChange.EChanges»
-					«echange.fullString »
-				«ENDFOR»
-				«change.consequentialChanges.URI»«change.consequentialChanges»
-				«FOR echange: change.consequentialChanges.EChanges»
-					«echange.fullString »
-				«ENDFOR»
+					«change.originalChange.URI»«change.originalChange»
+					«FOR echange: change.originalChange.EChanges»
+						«echange.fullString »
+					«ENDFOR»
+					«change.consequentialChanges.URI»«change.consequentialChanges»
+					«FOR echange: change.consequentialChanges.EChanges»
+						«echange.fullString »
+					«ENDFOR»
 				«ENDFOR»
 		'''
 		val stringToHash = '''«prefix»«oldInfosToHash.length»«oldInfosToHash»'''

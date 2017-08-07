@@ -333,8 +333,8 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		val changesToRollback = resolvedTargetChanges.dropWhile[id !== lastPropagatedTargetChange].drop(1).toList
 		val reapplier = Reapplier::createReapplier
 		val reappliedChanges = reapplier.reapply(vuri, changesToRollback, echanges, currentVirtualModel)
-		val sourceIds = sourceCommitsToCompare.map[identifier].toList
-		val tagetIds = targetCommitsToCompare.map[identifier].toList
+		val sourceIds = sourceCommitsToCompare.map[identifier].last
+		val tagetIds = targetCommitsToCompare.map[identifier].last
 		val mergeCommit = createMergeCommit(
 			reappliedChanges,
 			'''Merged «source.name» into «target.name»''',

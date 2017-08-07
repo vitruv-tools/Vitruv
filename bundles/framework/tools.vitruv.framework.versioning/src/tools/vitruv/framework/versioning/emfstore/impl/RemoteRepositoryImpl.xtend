@@ -9,6 +9,7 @@ import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.NoSuchCommitException
 import tools.vitruv.framework.versioning.emfstore.PushState
+import tools.vitruv.framework.versioning.commit.MergeCommit
 
 class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepository {
 	@Accessors(PUBLIC_GETTER)
@@ -19,10 +20,18 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 		branches = newHashSet(masterBranch)
 	}
 
-	override pushCommit(Commit lastCommit, Commit newCommit) {
+	override pushCommit(Commit newCommit) {
 		val currentLastCommit = commits.last
-		if (currentLastCommit != lastCommit)
-			return PushState::COMMIT_NOT_ACCEPTED
+		if (newCommit instanceof SimpleCommit) {
+			if (currentLastCommit.identifier != newCommit.parent)
+				return PushState::COMMIT_NOT_ACCEPTED
+		}
+		if (newCommit instanceof MergeCommit) {
+			if (newCommit.sourceCommit != currentLastCommit.identifier &&
+				newCommit.targetCommit != currentLastCommit.identifier)
+				return PushState::COMMIT_NOT_ACCEPTED
+		}
+
 		commits += newCommit
 		return PushState::SUCCESS
 	}

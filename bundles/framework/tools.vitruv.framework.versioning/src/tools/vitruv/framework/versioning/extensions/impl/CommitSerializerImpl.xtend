@@ -7,6 +7,8 @@ import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
+import com.google.gson.JsonObject
+import com.google.gson.JsonArray
 
 class CommitSerializerImpl implements CommitSerializer {
 	static extension Logger = Logger::getLogger(CommitSerializerImpl)
@@ -26,7 +28,7 @@ class CommitSerializerImpl implements CommitSerializer {
 	override deserializeAll(String allCommitsString) {
 		debug(allCommitsString)
 		val jsonArray = parse(allCommitsString).asJsonArray
-		return jsonArray.map[createDeserialization(asJsonObject)].toList
+		return deserializeAll(jsonArray)
 	}
 
 	override serializeAll(List<Commit> commits) {
@@ -34,6 +36,19 @@ class CommitSerializerImpl implements CommitSerializer {
 		return '''
 			«FOR s : strings BEFORE '[' SEPARATOR ', ' AFTER ']'»«s»«ENDFOR»
 		'''
+	}
+
+	override deserialize(String commitsString) {
+		val jsonObject = parse(commitsString).asJsonObject
+		return jsonObject.deserialize
+	}
+
+	override deserialize(JsonObject jsonObject) {
+		return jsonObject.createDeserialization
+	}
+
+	override deserializeAll(JsonArray allCommitsArray) {
+		return allCommitsArray.map[createDeserialization(asJsonObject)].toList
 	}
 
 }
