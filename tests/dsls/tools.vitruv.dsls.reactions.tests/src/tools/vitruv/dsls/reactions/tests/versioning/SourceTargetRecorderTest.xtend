@@ -109,18 +109,14 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 
 		val propagatedChanges = virtualModel.allUnresolvedPropagatedChanges
 		assertThat(propagatedChanges, hasSize(5))
-		val serializedChanges = propagatedChanges.map[serialize].toList
+		val serializedChanges = propagatedChanges.map[serialize]
 
-		val deserializedChanges = serializedChanges.map[deserialize].toList
+		val deserializedChanges = serializedChanges.map[deserialize]
 		deserializedChanges.forEach[debug(it)]
 		val newVirtualModel = TestUtil::createVirtualModel("newVMname", true, vitruvDomains,
 			createChangePropagationSpecifications, userInteractor) as VersioningVirtualModel
 
-		val originalChanges = newArrayList
-		deserializedChanges.map[originalChange].forEach[originalChanges += it]
-		originalChanges.forEach [
-			newVirtualModel.propagateChange(it)
-		]
+		deserializedChanges.map[originalChange].forEach[newVirtualModel.propagateChange(it)]
 		val modelInstance = newVirtualModel.getModelInstance(sourceVURI)
 		val newRoot = modelInstance.resource.contents.get(0) as Root
 		modelInstance.resource.save(#{})
@@ -155,11 +151,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		val newVirtualModel = TestUtil::createVirtualModel("newVMname", true, vitruvDomains,
 			createChangePropagationSpecifications, userInteractor) as VersioningVirtualModel
 
-		val originalChanges = newArrayList
-		deserializedChanges.map[originalChange].forEach[originalChanges += it]
-		originalChanges.forEach [
-			newVirtualModel.propagateChange(it)
-		]
+		deserializedChanges.map[originalChange].forEach[newVirtualModel.propagateChange(it)]
 		val modelInstance = newVirtualModel.getModelInstance(sourceVURI)
 		val newRoot = modelInstance.resource.contents.get(0) as Root
 		modelInstance.resource.save(#{})
@@ -172,7 +164,6 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 			val nonRoot = newContainer.nonRootObjectsContainment.findFirst[id == currentId]
 			assertThat(nonRoot, notNullValue)
 		]
-
 	}
 
 }

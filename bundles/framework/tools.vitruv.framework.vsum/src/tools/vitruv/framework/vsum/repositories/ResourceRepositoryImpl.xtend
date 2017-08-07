@@ -165,7 +165,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 		lastUnresolvedChanges.clear
 		lastResolvedChanges += filteredResolved
 		lastUnresolvedChanges += filteredUnresolved
-		result += if(unresolveChanges) filteredUnresolved else filteredResolved
+		result += if (unresolveChanges) filteredUnresolved else filteredResolved
 
 		debug("End recording virtual model")
 		return result
@@ -191,6 +191,8 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	}
 
 	override setCurrentVURI(VURI original) {
+		if (original === null)
+			return;
 		// PS Can be set only once!
 		if (null === originalDomain)
 			originalDomain = original.metamodelByURI
@@ -233,7 +235,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	}
 
 	private def synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
-		if(null === getEditingDomain(resourceSet)) createEditingDomain(resourceSet)
+		if (null === getEditingDomain(resourceSet)) createEditingDomain(resourceSet)
 		return getEditingDomain(resourceSet)
 	}
 

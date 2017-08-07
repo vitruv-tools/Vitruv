@@ -37,8 +37,11 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.collection.IsEmptyCollection.empty
 
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.extensions.CommitSerializer
+import tools.vitruv.framework.versioning.commit.SimpleCommit
 
 class EMFStoreBaseline extends VitruviusApplicationTest {
+	static extension CommitSerializer = CommitSerializer::instance
 	static extension Logger = Logger::getLogger(EMFStoreBaseline)
 	static extension URIRemapper = URIRemapper::instance
 	static extension VirtualModelExtension = VirtualModelExtension::instance
@@ -139,6 +142,39 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
 		assertThat(commit.changes, not(empty))
+	}
+
+	@Test
+	def void commitSerializeTest() {
+		val demoProjectName = "DemoProject"
+		val league = BowlingFactory::eINSTANCE.createLeague
+		league.name = leagueName
+		demoProjectName.projectModelPath.createAndSynchronizeModel(league)
+		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		player1.name = "Maximilian"
+		league.players += player1
+		league.saveAndSynchronizeChanges
+		sourceVURI = VURI::getInstance(league.eResource)
+
+		assertThat(localRepository.head, is(localRepository.initialCommit))
+		assertThat(localRepository.commits, hasSize(1))
+		val changeMatches = virtualModel.getChangeMatches(sourceVURI)
+		val message = "My message"
+		val commit = localRepository.commit(message, changeMatches)
+		assertThat(localRepository.commits, hasSize(2))
+		assertThat(localRepository.head, is(commit))
+		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
+		assertThat(commit.changes, not(empty))
+		val commits = localRepository.commits
+		val serialized = serializeAll(commits)
+		val deserialized = deserializeAll(serialized)
+		assertThat(deserialized, hasSize(2))
+		val firstCommit = deserialized.get(0) as SimpleCommit
+		val secondCommit = deserialized.get(1) as SimpleCommit
+		assertThat(firstCommit.changes, empty)
+		assertThat(secondCommit.commitmessage.message, equalTo(message))
+		assertThat(secondCommit.commitmessage.authorName, equalTo(author1.name))
+		assertThat(secondCommit.changes, hasSize(2))
 	}
 
 	@Test
