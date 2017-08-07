@@ -1,0 +1,117 @@
+package tools.vitruv.framework.versioning.server
+
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
+import com.mongodb.MongoClient
+import com.mongodb.client.model.Sorts
+import javax.ws.rs.Consumes
+import javax.ws.rs.GET
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
+import javax.ws.rs.Produces
+import javax.ws.rs.core.Response
+import javax.ws.rs.core.Response.Status
+import org.apache.log4j.Logger
+import org.bson.Document
+import static com.mongodb.client.model.Filters.and
+import static com.mongodb.client.model.Filters.eq
+import static com.mongodb.client.model.Projections.exclude
+import static com.mongodb.client.model.Projections.excludeId
+import static com.mongodb.client.model.Projections.fields
+import tools.vitruv.framework.versioning.commit.CommitFactory
+import tools.vitruv.framework.versioning.commit.impl.CommitMessageImpl
+import tools.vitruv.framework.versioning.commit.impl.MergeCommitImpl
+import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl
+
+@Path("/commit/{branchName}")
+class CommitResource {
+	static extension Logger = Logger::getLogger(CommitResource)
+	static extension Gson = new GsonBuilder().create
+	static extension JsonParser = new JsonParser
+
+	static val mongoClient = new MongoClient
+	static val database = mongoClient.getDatabase("vitruv_versioning")
+	static val collection = database.getCollection("commits");
+
+	@GET
+	@Produces("application/json")
+	def String getCommits(@PathParam("branchName") String branchName) {
+		val commits = collection.find(eq("branch", branchName)).projection(fields(excludeId, exclude("branch"))).
+			fold("[", [ p, c |
+				val currentString = toJson(c)
+				return p + currentString + ", "
+			])
+		val trimLast = commits.substring(0, commits.length - 2) + "]"
+		return trimLast
+	}
+
+	@GET
+	@Path("/{identifier}")
+	@Produces("application/json")
+	def String getSingleCommit(
+		@PathParam("branchName") String branchName,
+		@PathParam("identifier") String identifier
+	) {
+		val commit = collection.find(and(eq("branch", branchName), eq("identifier", identifier))).projection(
+			fields(excludeId, exclude("branch"))).first
+		return toJson(commit)
+	}
+
+	@POST
+	@Consumes("application/json")
+	def Response postCommit(@PathParam("branchName") String branchName, String commitString) {
+		val jsonElement = parse(commitString)
+		if (jsonElement.jsonObject) {
+			val id = jsonElement.asJsonObject.get("identifier").asString
+			if (null === id) {
+				error('''«commitString» has no identifier.''')
+				return Response::status(Status::BAD_REQUEST).build
+			}
+			val alreadyCommit = collection.find(and(eq("branch", branchName), eq("identifier", id))).first
+			if (null !== alreadyCommit) {
+				error('''An commit with id «id» has already been commited''')
+				return Response::status(Status::BAD_REQUEST).build
+			}
+			val lastCommitId = collection.find(eq("branch", branchName)).sort(Sorts::descending("commitmessage.date")).
+				map [
+					getString("identifier")
+				].first
+			val b = fromJson(jsonElement, Document)
+			val type = b.getString("type")
+			if (type == SimpleCommitImpl.name) {
+				val parent = b.getString("parent")
+				if ((parent === null || parent == "") && id != CommitFactory::initialCommitHash) {
+					error('''The commit has no parent and is not the initial commit''')
+					return Response::status(Status::BAD_REQUEST).build
+				}
+				if (parent !== null && parent != "" && parent != lastCommitId) {
+					error('''There have been commits since the last push! Please pull before''')
+					return Response::status(Status::BAD_REQUEST).build
+				}
+			}
+			if (type == MergeCommitImpl.name) {
+				val sourceCommit = b.getString("sourceCommit")
+				val targetCommit = b.getString("targetCommit")
+				if (lastCommitId != sourceCommit && lastCommitId != targetCommit) {
+					error('''There have been commits since the last push! Please pull before''')
+					return Response::status(Status::BAD_REQUEST).build
+				}
+			}
+			val commitMessage = b.get("commitmessage")
+			val commitMessageJson = commitMessage.toJson
+			val newCommitMessage = fromJson(commitMessageJson, CommitMessageImpl)
+			val newCommitMessageBson = new Document("date", newCommitMessage.date).append("message",
+				newCommitMessage.message).append("authorName", newCommitMessage.authorName).append("authorName",
+				newCommitMessage.authorName)
+			b.append("branch", branchName)
+			b.put("commitmessage", newCommitMessageBson)
+			debug('''Add commit «commitString» to branch «branchName»''')
+			collection.insertOne(b)
+			return Response::status(Status::ACCEPTED).build
+		}
+		error('''«commitString» was no valid argument. ''')
+		return Response::status(Status::BAD_REQUEST).build
+	}
+}

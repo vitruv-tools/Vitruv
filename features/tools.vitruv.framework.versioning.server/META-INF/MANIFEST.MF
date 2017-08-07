@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Server
+Bundle-SymbolicName: tools.vitruv.framework.versioning.server
+Bundle-Version: 1.0.0.qualifier
+Export-Package: tools.vitruv.framework.versioning.server
+Require-Bundle: tools.vitruv.framework.versioning;bundle-version="0.1.1",
+ org.apache.log4j;bundle-version="1.2.15"
