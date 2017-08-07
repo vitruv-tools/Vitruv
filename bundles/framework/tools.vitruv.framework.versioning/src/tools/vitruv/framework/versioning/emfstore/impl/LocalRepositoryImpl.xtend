@@ -1,46 +1,18 @@
 package tools.vitruv.framework.versioning.emfstore.impl
 
-import java.util.Set
 import org.apache.log4j.Logger
-import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.versioning.branch.LocalBranch
-import tools.vitruv.framework.versioning.branch.RemoteBranch
 import tools.vitruv.framework.versioning.branch.impl.RemoteBranchImpl
-import tools.vitruv.framework.versioning.emfstore.LocalRepositoryJava
 import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.exceptions.LocalBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException
-import java.util.List
 
-class LocalRepositoryImpl extends AbstractLocalRepository implements LocalRepositoryJava {
+class LocalRepositoryImpl extends AbstractLocalRepository<RemoteRepository> {
 	static extension Logger = Logger::getLogger(LocalRepositoryImpl)
 
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	RemoteRepository remoteProject
-	@Accessors(PUBLIC_GETTER)
-	val List<RemoteBranch> remoteBranches
-
-	val Set<RemoteRepository> remoteRepositories
-
-	new() {
-		super()
-		remoteRepositories = newHashSet
-		remoteBranches = newArrayList
-	}
-
-	override addRemoteRepository(RemoteRepository remoteRepository) {
-		if (null !== remoteRepository) {
-			remoteRepositories += remoteRepository
-		}
-	}
-
-	override push() {
-		push(currentBranch)
-	}
-
-	override addOrigin(LocalBranch branch, RemoteRepository remoteRepository) {
+	override addOrigin(LocalBranch<RemoteRepository> branch, RemoteRepository remoteRepository) {
 		if (!localBranches.exists[it === branch])
 			throw new LocalBranchNotFoundException
 		if (!remoteRepositories.exists[it === remoteRepository])
@@ -63,7 +35,7 @@ class LocalRepositoryImpl extends AbstractLocalRepository implements LocalReposi
 		return newBranch
 	}
 
-	override push(LocalBranch localBranch) {
+	override push(LocalBranch<RemoteRepository> localBranch) {
 		val remoteBranch = localBranch.remoteBranch
 		if (null === remoteBranch)
 			throw new RemoteBranchNotFoundException
@@ -96,7 +68,7 @@ class LocalRepositoryImpl extends AbstractLocalRepository implements LocalReposi
 		return PushState::SUCCESS
 	}
 
-	override pull(LocalBranch branch) {
+	override pull(LocalBranch<RemoteRepository> branch) {
 		val remoteBranch = branch.remoteBranch
 		if (null === remoteBranch)
 			throw new RemoteBranchNotFoundException

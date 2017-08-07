@@ -5,9 +5,9 @@ import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.RemoteBranch
 import org.eclipse.xtend.lib.annotations.Accessors
 
-class LocalBranchImpl extends BranchImpl implements LocalBranch {
+class LocalBranchImpl<T> extends BranchImpl implements LocalBranch<T> {
 	@Accessors(PUBLIC_GETTER,PUBLIC_SETTER)
-	RemoteBranch remoteBranch
+	RemoteBranch<T> remoteBranch
 
 	new(String name) {
 		super(name)

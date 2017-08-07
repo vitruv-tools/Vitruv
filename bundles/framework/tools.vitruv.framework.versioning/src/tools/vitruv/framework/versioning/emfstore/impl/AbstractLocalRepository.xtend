@@ -27,13 +27,11 @@ import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
 import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.LocalRepository
-import tools.vitruv.framework.versioning.emfstore.PushState
-import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
-import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.VersioningVirtualModel
+import tools.vitruv.framework.versioning.branch.RemoteBranch
 
-abstract class AbstractLocalRepository extends AbstractRepositoryImpl implements LocalRepository {
+abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements LocalRepository<T> {
 	static extension BranchDiffCreator = BranchDiffCreator::instance
 	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(AbstractLocalRepository)
@@ -44,21 +42,34 @@ abstract class AbstractLocalRepository extends AbstractRepositoryImpl implements
 	Author author
 
 	@Accessors(PUBLIC_GETTER)
-	val Set<LocalBranch> localBranches
+	val Set<LocalBranch<T>> localBranches
 
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	LocalBranch currentBranch
+	LocalBranch<T> currentBranch
 
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	VersioningVirtualModel virtualModel
 
 	Map<Branch, String> lastCommitCheckedOut
+	@Accessors(PUBLIC_GETTER)
+	val List<RemoteBranch<T>> remoteBranches
+
+	protected val List<T> remoteRepositories
+
+	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
+	T remoteProject
 
 	new() {
 		super()
-		currentBranch = masterBranch as LocalBranch
+		currentBranch = masterBranch as LocalBranch<T>
 		lastCommitCheckedOut = newHashMap
 		localBranches = newHashSet(currentBranch)
+		remoteBranches = newArrayList
+		remoteRepositories = newArrayList
+	}
+
+	override addRemoteRepository(T remoteRepository) {
+		if (null !== remoteRepository) remoteRepositories += remoteRepository
 
 	}
 
@@ -179,66 +190,6 @@ abstract class AbstractLocalRepository extends AbstractRepositoryImpl implements
 		localBranches += newBranch
 		currentBranch = newBranch
 		return newBranch
-	}
-
-	override push(LocalBranch localBranch) {
-		val remoteBranch = localBranch.remoteBranch
-		if (null === remoteBranch)
-			throw new RemoteBranchNotFoundException
-		val remoteRepo = remoteBranch.remoteRepository
-		if (null === remoteRepo)
-			throw new RepositoryNotFoundException
-		val ids = remoteRepo.getIdentifiers(localBranch.name)
-		val currentCommits = localBranch.commits
-		if (ids.length > currentCommits.length)
-			return PushState::COMMIT_NOT_ACCEPTED
-		val x = 0 ..< ids.length
-		val serverHasNewerCommits = x.map[currentCommits.get(it).identifier -> ids.get(it)].exists[key != value]
-		if (serverHasNewerCommits)
-			return PushState::COMMIT_NOT_ACCEPTED
-
-		val commitsToPush = currentCommits.drop(ids.length)
-		commitsToPush.forEach [ commit |
-			remoteRepo.push(commit, localBranch.name)
-			addCommit(commit, remoteBranch)
-		]
-		val localCommits = localBranch.commits.toList
-		val remoteCommits = remoteBranch.commits.toList
-		val localIds = localCommits.map[identifier]
-		val remoteIds = remoteCommits.map[identifier]
-		localIds.forEach [ localId, i |
-			val remoteId = remoteIds.get(i)
-			if (remoteId != localId)
-				throw new IllegalStateException('''Id at «i» should be «localId» but was «remoteId»''')
-		]
-		return PushState::SUCCESS
-	}
-
-	override pull(LocalBranch branch) {
-		val remoteBranch = branch.remoteBranch
-		if (null === remoteBranch)
-			throw new RemoteBranchNotFoundException
-		val remoteRepo = remoteBranch.remoteRepository
-		if (null === remoteRepo)
-			throw new RepositoryNotFoundException
-		val toLocal = branch.commits.length === remoteBranch.commits.length
-		val ids = remoteRepo.getIdentifiers(branch.name)
-		val localIds = remoteBranch.commits.map[identifier]
-		if (localIds.length > ids.length)
-			throw new IllegalStateException
-		localIds.forEach [ localId, i |
-
-			val remoteId = ids.get(i)
-			if (remoteId != localId)
-				throw new IllegalStateException
-		]
-		ids.drop(localIds.length).forEach [ id |
-			debug('''Pulling commit «id»''')
-			val commit = remoteRepo.pullCommit(id, branch.name)
-			addCommit(commit, remoteBranch)
-			if (toLocal)
-				addCommit(commit, branch)
-		]
 	}
 
 	override pull() {

@@ -28,6 +28,7 @@ import static com.mongodb.client.model.Filters.eq
 import static com.mongodb.client.model.Projections.exclude
 import static com.mongodb.client.model.Projections.excludeId
 import static com.mongodb.client.model.Projections.fields
+import javax.ws.rs.QueryParam
 
 @Path("/commit/{branchName}")
 class CommitResource {
@@ -37,14 +38,17 @@ class CommitResource {
 
 	static val mongoClient = new MongoClient
 	static val database = mongoClient.getDatabase("vitruv_versioning")
-	static val collection = database.getCollection("commits");
+	static val collection = database.getCollection("commits")
 
 	@GET
 	@Produces("application/json")
-	def String getCommits(@PathParam("branchName") String branchName) {
+	def String getCommits(
+		@PathParam("branchName") String branchName,
+		@QueryParam("idsonly") String idsOnly
+	) {
 		val commits = collection.find(eq("branch", branchName)).projection(fields(excludeId, exclude("branch"))).
 			fold("[", [ p, c |
-				val currentString = toJson(c)
+				val currentString = if (idsOnly !== null) '''"«c.getString("identifier")»"''' else toJson(c)
 				return p + currentString + ", "
 			])
 		val trimLast = commits.substring(0, commits.length - 2) + "]"
@@ -64,20 +68,17 @@ class CommitResource {
 	}
 
 	@POST
+	@Produces("application/json")
 	@Consumes("application/json")
-	def Response postCommit(@PathParam("branchName") String branchName, String commitString) {
+	def String postCommit(@PathParam("branchName") String branchName, String commitString) {
 		val jsonElement = parse(commitString)
 		if (jsonElement.jsonObject) {
 			val id = jsonElement.asJsonObject.get("identifier").asString
-			if (null === id) {
-				error('''«commitString» has no identifier.''')
-				return Response::status(Status::BAD_REQUEST).build
-			}
+			if (null === id)
+				return createErrorResponse('''«commitString» has no identifier.''')
 			val alreadyCommit = collection.find(and(eq("branch", branchName), eq("identifier", id))).first
-			if (null !== alreadyCommit) {
-				error('''An commit with id «id» has already been commited''')
-				return Response::status(Status::BAD_REQUEST).build
-			}
+			if (null !== alreadyCommit)
+				return createErrorResponse('''An commit with id «id» has already been commited''')
 			val lastCommitId = collection.find(eq("branch", branchName)).sort(Sorts::descending("commitmessage.date")).
 				map [
 					getString("identifier")
@@ -86,22 +87,16 @@ class CommitResource {
 			val type = b.getString("type")
 			if (type == SimpleCommitImpl.name) {
 				val parent = b.getString("parent")
-				if ((parent === null || parent == "") && id != CommitFactory::initialCommitHash) {
-					error('''The commit has no parent and is not the initial commit''')
-					return Response::status(Status::BAD_REQUEST).build
-				}
-				if (parent !== null && parent != "" && parent != lastCommitId) {
-					error('''There have been commits since the last push! Please pull before''')
-					return Response::status(Status::BAD_REQUEST).build
-				}
+				if ((parent === null || parent == "") && id != CommitFactory::initialCommitHash)
+					return createErrorResponse('''The commit has no parent and is not the initial commit''')
+				if (parent !== null && parent != "" && parent != lastCommitId)
+					return createErrorResponse('''There have been commits since the last push! Please pull before''')
 			}
 			if (type == MergeCommitImpl.name) {
 				val sourceCommit = b.getString("sourceCommit")
 				val targetCommit = b.getString("targetCommit")
-				if (lastCommitId != sourceCommit && lastCommitId != targetCommit) {
-					error('''There have been commits since the last push! Please pull before''')
-					return Response::status(Status::BAD_REQUEST).build
-				}
+				if (lastCommitId != sourceCommit && lastCommitId != targetCommit)
+					return createErrorResponse('''There have been commits since the last push! Please pull before''')
 			}
 			val commitMessage = b.get("commitmessage")
 			val commitMessageJson = commitMessage.toJson
@@ -113,9 +108,20 @@ class CommitResource {
 			b.put("commitmessage", newCommitMessageBson)
 			debug('''Add commit «commitString» to branch «branchName»''')
 			collection.insertOne(b)
-			return Response::status(Status::ACCEPTED).build
+			return createResponse("success", "")
 		}
-		error('''«commitString» was no valid argument. ''')
-		return Response::status(Status::BAD_REQUEST).build
+		return createErrorResponse('''«commitString» was no valid argument. ''')
 	}
+
+	private static def String createErrorResponse(String message) {
+		error(message)
+		createResponse("error", message)
+	}
+
+	private static def String createResponse(String state, String message) '''
+		{
+			"message": "«message»",
+			"state": "«state»"
+		}
+	'''
 }

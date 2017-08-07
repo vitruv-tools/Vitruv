@@ -21,7 +21,6 @@ import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.commit.SimpleCommit
-import tools.vitruv.framework.versioning.emfstore.LocalRepositoryJava
 import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryImpl
@@ -39,6 +38,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.collection.IsEmptyCollection.empty
 
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.emfstore.LocalRepository
 
 class EMFStoreBaseline extends VitruviusApplicationTest {
 	static extension CommitSerializer = CommitSerializer::instance
@@ -69,8 +69,8 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	Author author1
 	Author author2
 	League league1
-	LocalRepositoryJava localRepository
-	LocalRepositoryJava newLocalRepository
+	LocalRepository<RemoteRepository> localRepository
+	LocalRepository<RemoteRepository> newLocalRepository
 	RemoteRepository remoteRepository
 	VURI newSourceVURI
 	VURI sourceVURI
