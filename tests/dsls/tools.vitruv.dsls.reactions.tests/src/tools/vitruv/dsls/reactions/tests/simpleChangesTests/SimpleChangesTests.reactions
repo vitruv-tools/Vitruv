@@ -42,9 +42,9 @@ reaction ReplacedSingleValuedEAttribute {
 routine replaceSingleValuedEAttribute(minimal::Root rootElement, Integer value) {
 	match {
 		// The check statements do only test that multiple check statements work
-		check { rootElement != null }
+		check { rootElement !== null }
 		val targetElement = retrieve minimal::Root corresponding to rootElement
-		check { value != null }
+		check { value !== null }
 	}
 	action {
 		update targetElement {
@@ -127,10 +127,10 @@ routine removeNonRoot(minimal::NonRoot removedNonRoot) {
 reaction ReplacedNonRootEObjectSingleReaction {
 	after element minimal::NonRoot replaced at minimal::Root[singleValuedContainmentEReference]
 	call {
-		if (oldValue != null) {
+		if (oldValue !== null) {
 			deleteNonRootEObjectSingle(oldValue);
 		}
-		if (newValue != null) {
+		if (newValue !== null) {
 			createNonRootEObjectSingle(affectedEObject, newValue);
 		}
 	} 
@@ -288,7 +288,7 @@ routine removeNonContainmentReference(minimal::Root rootElement, minimal::NonRoo
  */
 reaction HelperReactionForNonRootObjectContainerInitialization {
 	after element minimal::NonRootObjectContainerHelper replaced at minimal::Root[nonRootObjectContainerHelper]
-		with newValue != null
+		with newValue !== null
 	call createNonRootObjectContainer(affectedEObject, newValue)
 }
 
