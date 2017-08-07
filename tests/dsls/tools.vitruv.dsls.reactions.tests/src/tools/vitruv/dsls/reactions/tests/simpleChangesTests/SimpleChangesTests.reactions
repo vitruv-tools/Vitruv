@@ -369,6 +369,7 @@ reaction AnyChange {
 
 routine testJavaTypes(plain SimpleChangesTestsExecutionMonitor as monitor) {
 	action {
-		call { }
+		call {}
+		execute {}
 	}
 }
