@@ -21,3 +21,5 @@ EvaluationData
 tests/dsls/tools.vitruv.dsls.reactions.tests/*.png
 
 bundles/others/org/org\.eclipse\.uml2\.uml/
+
+bundles/others/org/org\.glassfish\.jersey/
