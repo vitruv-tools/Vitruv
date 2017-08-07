@@ -110,7 +110,13 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 	override commit(String s, List<PropagatedChange> changes) {
 		warn("Please use commit(String s, VersioningVirtualModel virtualModel, VURI vuri)")
 		val lastCommit = commits.last
-		val commit = createSimpleCommit(changes, s, author, lastCommit.identifier)
+		val commit = createSimpleCommit(
+			changes,
+			s,
+			author.name,
+			author.email,
+			lastCommit.identifier
+		)
 		addCommit(commit)
 		head = commit
 		return commit
@@ -332,7 +338,8 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 		val mergeCommit = createMergeCommit(
 			reappliedChanges,
 			'''Merged «source.name» into «target.name»''',
-			author,
+			author.name,
+			author.email,
 			sourceIds,
 			tagetIds
 		)
@@ -348,8 +355,13 @@ class LocalRepositoryImpl extends AbstractRepositoryImpl implements LocalReposit
 	private def void reapplyCommit(Commit c, Branch branch) {
 		if (c instanceof SimpleCommit) {
 			val lastCommit = commits.last
-			val newCommit = createSimpleCommit(c.changes, c.commitmessage.message, c.commitmessage.author,
-				lastCommit.identifier)
+			val newCommit = createSimpleCommit(
+				c.changes,
+				c.commitmessage.message,
+				c.commitmessage.authorName,
+				c.commitmessage.authorEMail,
+				lastCommit.identifier
+			)
 			addCommit(newCommit, branch)
 		} else
 			throw new IllegalStateException

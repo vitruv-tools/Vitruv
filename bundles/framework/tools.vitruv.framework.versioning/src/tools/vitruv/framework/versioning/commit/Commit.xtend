@@ -1,9 +1,11 @@
 package tools.vitruv.framework.versioning.commit
 
 import java.util.List
-import tools.vitruv.framework.change.description.PropagatedChange
 
-interface Commit {
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.versioning.JSONSerializable
+
+interface Commit extends JSONSerializable {
 
 	def CommitMessage getCommitmessage()
 

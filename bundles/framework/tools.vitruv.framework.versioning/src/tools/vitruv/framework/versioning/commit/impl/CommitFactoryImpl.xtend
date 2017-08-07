@@ -4,7 +4,6 @@ import java.util.Date
 import java.util.List
 import org.apache.commons.codec.digest.DigestUtils
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.commit.CommitFactory
 import tools.vitruv.framework.versioning.extensions.EChangeExtension
 
@@ -21,25 +20,31 @@ class CommitFactoryImpl implements CommitFactory {
 	}
 
 	override createInitialCommit() {
-		val commitMessage = createCommitMessage("Initial commit", null)
+		val commitMessage = createCommitMessage("Initial commit", "", "")
 		return new SimpleCommitImpl(#[], 0, commitMessage, newArrayList, newArrayList, initialCommitHash, null)
 	}
 
-	override createCommitMessage(String message, Author author) {
-		new CommitMessageImpl(new Date, message, author)
+	override createCommitMessage(
+		String message,
+		String authorName,
+		String authorEMail
+	) {
+		new CommitMessageImpl(new Date, message, authorName, authorEMail)
 	}
 
 	override createSimpleCommit(
 		List<PropagatedChange> changes,
 		String message,
-		Author author,
+		String authorName,
+		String authorEMail,
 		String parent
 	) {
-		val commitMessage = createCommitMessage(message, author)
+		val commitMessage = createCommitMessage(message, authorName, authorEMail)
 		val oldInfosToHash = '''
 			«commitMessage.date.toString»
 			«message»
-			«author»
+			«authorName»
+			«authorEMail»
 			«parent»
 				«FOR change : changes»
 					«change.originalChange.URI»«change.originalChange»
@@ -61,15 +66,17 @@ class CommitFactoryImpl implements CommitFactory {
 	override createMergeCommit(
 		List<PropagatedChange> changes,
 		String message,
-		Author author,
+		String authorName,
+		String authorEMail,
 		List<String> sources,
 		List<String> targets
 	) {
-		val commitMessage = createCommitMessage(message, author)
+		val commitMessage = createCommitMessage(message, authorName, authorEMail)
 		val oldInfosToHash = '''
 			«commitMessage.date.toString»
 			«message»
-			«author»
+			«authorName»
+			«authorEMail»
 			Sources
 			«FOR source : sources»
 				«source»

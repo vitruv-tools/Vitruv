@@ -1,13 +1,23 @@
 package tools.vitruv.framework.versioning.commit.impl
 
-import tools.vitruv.framework.versioning.commit.CommitMessage
 import java.util.Date
-import tools.vitruv.framework.versioning.author.Author
+
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+
 import org.eclipse.xtend.lib.annotations.Data
+
+import tools.vitruv.framework.versioning.commit.CommitMessage
 
 @Data
 class CommitMessageImpl implements CommitMessage {
+	static extension Gson = new GsonBuilder().create
 	Date date
 	String message
-	Author author
+	String authorName
+	String authorEMail
+
+	override getSerialization() {
+		toJson(this)
+	}
 }

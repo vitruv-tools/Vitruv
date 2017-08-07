@@ -33,6 +33,7 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.versioning.extensions.EChangeSerializer
+import com.google.gson.JsonArray
 
 class EChangeSerializerImpl implements EChangeSerializer {
 	static val ResourceSet resourceSet = new ResourceSetImpl
@@ -41,7 +42,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 	static extension TypeInferringUnresolvingAtomicEChangeFactory = TypeInferringUnresolvingAtomicEChangeFactory::
 		instance
 	static Resource currentResource
-	extension JsonParser = new JsonParser
+	static extension JsonParser = new JsonParser
 
 	static def EChangeSerializer init() {
 		resourceSet.resourceFactoryRegistry.extensionToFactoryMap.put("allelementtypes", new XMIResourceFactoryImpl)
@@ -122,15 +123,19 @@ class EChangeSerializerImpl implements EChangeSerializer {
 
 	override deserializeAll(String allChangeString) {
 		val jsonArray = parse(allChangeString).asJsonArray
+		return deserializeAll(jsonArray)
+	}
+	override deserializeAll(JsonArray jsonArray) {
 		return jsonArray.map[deserializeIntern(it as JsonObject)].toList
 	}
 
 	override serializeAll(List<PropagatedChange> changes) {
 		val strings = changes.map[serialize]
-		return '''
-			«FOR s : strings BEFORE '[' SEPARATOR ', ' AFTER ']'»
+		return '''[
+			«FOR s : strings  SEPARATOR ', ' »
 				«s»
 	    	«ENDFOR»
+	    	]
 		'''
 	}
 
@@ -161,13 +166,17 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			val featureObject = jobject.get("feature").asJsonObject
 			val newValue = jobject.get("newValue").asString
 			val oldValue = jobject.get("oldValue").asString
-
+			
 			val affectedObject = createEObject(className, eProxyURIString)
 			val feature = createFeature(affectedObject, featureObject)
+			var String realOldValue = null 
+			if ("" != oldValue) {
+				realOldValue =  oldValue
+			}
 			change = createReplaceSingleAttributeChange(
 				affectedObject,
 				feature,
-				if ("" == oldValue) null else oldValue,
+				realOldValue,
 				newValue
 			)
 		}
