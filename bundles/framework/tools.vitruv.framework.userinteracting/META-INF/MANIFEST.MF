@@ -10,7 +10,12 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.ui.workbench,
  org.eclipse.jface,
  org.eclipse.emf.common,
- tools.vitruv.framework.util
+ tools.vitruv.framework.util,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Export-Package: tools.vitruv.framework.userinteraction,
  tools.vitruv.framework.userinteraction.impl
 Bundle-Vendor: vitruv.tools
+
