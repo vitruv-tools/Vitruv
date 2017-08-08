@@ -22,8 +22,8 @@ class ExecutorClassGenerator extends ClassGenerator {
 			superTypes += typeRef(AbstractReactionsExecutor);
 			members += toConstructor() [
 				body = '''
-				super(new «reactionsSegment.fromDomain.domainProviderForReference.class»().getDomain(), 
-					new «reactionsSegment.toDomain.domainProviderForReference.class»().getDomain());'''
+				super(new «reactionsSegment.fromDomain.domainProviderForReference.canonicalNameForReference»().getDomain(), 
+					new «reactionsSegment.toDomain.domainProviderForReference.canonicalNameForReference»().getDomain());'''
 			]
 			members += toMethod("setup", typeRef(Void.TYPE)) [
 				visibility = JvmVisibility.PROTECTED;
