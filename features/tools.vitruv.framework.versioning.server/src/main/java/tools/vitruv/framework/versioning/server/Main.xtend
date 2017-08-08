@@ -11,7 +11,7 @@ import org.glassfish.jersey.server.ResourceConfig
  */
 class Main {
 	// Base URI the Grizzly HTTP server will listen on
-	public static final String BASE_URI = "http://localhost:8080/myapp/"
+	static final String BASE_URI = "http://localhost:8080/myapp/"
 
 	/** 
 	 * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -23,7 +23,7 @@ class Main {
 		val ResourceConfig rc = new ResourceConfig().packages("tools.vitruv.framework.versioning.server")
 		// create and start a new instance of grizzly http server
 		// exposing the Jersey application at BASE_URI
-		return GrizzlyHttpServerFactory::createHttpServer(URI.create(BASE_URI), rc)
+		return GrizzlyHttpServerFactory::createHttpServer(URI::create(BASE_URI), rc)
 	}
 
 	/** 

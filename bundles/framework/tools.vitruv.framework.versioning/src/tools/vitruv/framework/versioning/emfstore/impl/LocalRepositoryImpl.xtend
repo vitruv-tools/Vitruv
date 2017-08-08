@@ -12,6 +12,8 @@ import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException
 class LocalRepositoryImpl extends AbstractLocalRepository<RemoteRepository> {
 	static extension Logger = Logger::getLogger(LocalRepositoryImpl)
 
+	override createBranchOnServer(String name, RemoteRepository remoteRemote) {}
+
 	override addOrigin(LocalBranch<RemoteRepository> branch, RemoteRepository remoteRepository) {
 		if (!localBranches.exists[it === branch])
 			throw new LocalBranchNotFoundException

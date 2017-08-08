@@ -7,7 +7,7 @@ import tools.vitruv.framework.versioning.Named
 import tools.vitruv.framework.versioning.author.impl.AuthorImpl
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.UserBranch
-import tools.vitruv.framework.versioning.commit.Commit
+import tools.vitruv.framework.versioning.common.commit.Commit
 
 interface Author extends Named {
 	static def Author createAuthor(String name) {

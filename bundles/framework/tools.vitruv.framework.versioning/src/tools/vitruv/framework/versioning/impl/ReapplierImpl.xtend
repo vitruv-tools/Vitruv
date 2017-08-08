@@ -1,6 +1,7 @@
 package tools.vitruv.framework.versioning.impl
 
 import java.util.List
+import org.eclipse.xtext.xbase.lib.Functions.Function0
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
@@ -16,13 +17,34 @@ class ReapplierImpl implements Reapplier {
 		List<EChange> echangesToReapply,
 		VersioningVirtualModel virtualModel
 	) {
+		reapplyIntern(changesToRollBack, echangesToReapply, virtualModel, [
+			virtualModel.getUnresolvedPropagatedChanges(vuri)
+		])
+	}
+
+	override reapply(
+		List<PropagatedChange> changesToRollBack,
+		List<EChange> echangesToReapply,
+		VersioningVirtualModel virtualModel
+	) {
+		reapplyIntern(changesToRollBack, echangesToReapply, virtualModel, [
+			virtualModel.allUnresolvedPropagatedChangesSinceLastCommit
+		])
+	}
+
+	private static def reapplyIntern(
+		List<PropagatedChange> changesToRollBack,
+		List<EChange> echangesToReapply,
+		VersioningVirtualModel virtualModel,
+		Function0<List<PropagatedChange>> fetchPropagatedChanges
+	) {
 		var changesUntilNowAfterReverse = 0
 
 		if (!changesToRollBack.empty) {
 			changesToRollBack.reverseView.forEach [
 				virtualModel.reverseChanges(#[it])
 			]
-			changesUntilNowAfterReverse = virtualModel.getUnresolvedPropagatedChanges(vuri).length
+			changesUntilNowAfterReverse = fetchPropagatedChanges.apply.length
 		}
 
 		echangesToReapply.map [
@@ -30,7 +52,7 @@ class ReapplierImpl implements Reapplier {
 		].forEach [
 			virtualModel.propagateChange(it)
 		]
-		val newChanges = virtualModel.getUnresolvedPropagatedChanges(vuri).drop(changesUntilNowAfterReverse).toList
+		val newChanges = fetchPropagatedChanges.apply.drop(changesUntilNowAfterReverse).toList
 		return newChanges
 	}
 

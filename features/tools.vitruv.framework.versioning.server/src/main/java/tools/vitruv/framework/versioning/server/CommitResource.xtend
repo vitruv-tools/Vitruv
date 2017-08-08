@@ -7,10 +7,6 @@ import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import com.mongodb.MongoClient
 import com.mongodb.client.model.Sorts
 
 import org.apache.log4j.Logger
@@ -28,14 +24,12 @@ import tools.vitruv.framework.versioning.common.commit.CommitFactory
 import tools.vitruv.framework.versioning.common.commit.impl.CommitMessageImpl
 
 @Path("/commit/{branchName}")
-class CommitResource {
+class CommitResource extends MongoResource {
 	static extension Logger = Logger::getLogger(CommitResource)
-	static extension Gson = new GsonBuilder().create
-	static extension JsonParser = new JsonParser
 
-	static val mongoClient = new MongoClient
-	static val database = mongoClient.getDatabase("vitruv_versioning")
-	static val collection = database.getCollection("commits")
+	static val DEBUG = System::getProperty("DEBUG_COMMIT_RESOURCE") === null
+
+	override protected getCollectionName() { "commits" }
 
 	@GET
 	@Produces("application/json")
@@ -48,8 +42,17 @@ class CommitResource {
 				val currentString = if (idsOnly !== null) '''"«c.getString("identifier")»"''' else toJson(c)
 				return p + currentString + ", "
 			])
-		val trimLast = commits.substring(0, commits.length - 2) + "]"
+		val trimLast = commits.substring(0, Math::max(commits.length - 2, 1)) + "]"
 		return trimLast
+	}
+
+	@POST
+	@Path("/reset")
+	def void reset(
+		@PathParam("branchName") String branchName
+	) {
+		if (DEBUG)
+			collection.deleteMany((eq("branch", branchName)))
 	}
 
 	@GET
@@ -86,8 +89,9 @@ class CommitResource {
 				val parent = b.getString("parent")
 				if ((parent === null || parent == "") && id != CommitFactory::initialCommitHash)
 					return createErrorResponse('''The commit has no parent and is not the initial commit''')
-				if (parent !== null && parent != "" && parent != lastCommitId)
-					return createErrorResponse('''There have been commits since the last push! Please pull before''')
+			// TODO PS Handle simple commits preceeding mergecommits
+			// if (parent !== null && parent != "" && parent != lastCommitId)
+			// return createErrorResponse('''There have been commits since the last push! Please pull before''')
 			}
 			if (type == MergeCommitImpl.name) {
 				val sourceCommit = b.getString("sourceCommit")
@@ -121,4 +125,5 @@ class CommitResource {
 			"state": "«state»"
 		}
 	'''
+
 }

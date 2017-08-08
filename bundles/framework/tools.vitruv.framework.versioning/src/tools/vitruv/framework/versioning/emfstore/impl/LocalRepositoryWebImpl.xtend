@@ -8,15 +8,21 @@ import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.impl.RemoteBranchImpl
 import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.emfstore.impl.AbstractLocalRepository
-import tools.vitruv.framework.versioning.exceptions.BranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.LocalBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
 
 class LocalRepositoryWebImpl extends AbstractLocalRepository<String> {
+
 	static extension CommitSerializer = CommitSerializer::instance
 	static extension JsonParser = new JsonParser
+
+	static def void resetBranch(String branchName, String remoteURL) {
+		val client = ClientBuilder::newClient
+		val target = client.target(remoteURL).path('''commit/«branchName»/reset''')
+		target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity::entity("", MediaType::APPLICATION_JSON_TYPE))
+	}
 
 	override addOrigin(LocalBranch<String> branch, String remoteURL) {
 		if (!localBranches.exists[it === branch])
@@ -46,16 +52,6 @@ class LocalRepositoryWebImpl extends AbstractLocalRepository<String> {
 		newBranch.remoteRepository = remoteURL
 		remoteBranches += newBranch
 		return newBranch
-	}
-
-	def void createBranchOnServer(String name, String remoteURL) {
-		val client = ClientBuilder::newClient
-		val target = client.target(remoteURL).path('''branch''')
-		val response = target.request(MediaType.APPLICATION_JSON_TYPE).post(
-			Entity::entity(name, MediaType::APPLICATION_JSON_TYPE), String)
-		val jelement = parse(response)
-		if (!jelement.jsonObject || jelement.asJsonObject.get("state").asString == "error")
-			throw new BranchNotFoundException
 	}
 
 	override push(LocalBranch<String> localBranch) {
@@ -154,4 +150,22 @@ class LocalRepositoryWebImpl extends AbstractLocalRepository<String> {
 		}
 	}
 
+	override void createBranchOnServer(String name, String remoteURL) {
+		val client = ClientBuilder::newClient
+		val target = client.target(remoteURL).path('''branch''')
+		val response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity::entity(
+			'''
+				{
+					"name": "«name»"
+				}
+			''',
+			MediaType::APPLICATION_JSON_TYPE
+		), String)
+		val jelement = parse(response)
+		if (jelement === null || !jelement.jsonObject)
+			throw new IllegalStateException
+		val state = jelement.asJsonObject.get("state")?.asString
+		if (state === null)
+			throw new IllegalStateException
+	}
 }

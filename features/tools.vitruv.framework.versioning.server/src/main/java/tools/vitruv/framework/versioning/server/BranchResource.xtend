@@ -1,9 +1,5 @@
 package tools.vitruv.framework.versioning.server
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import com.mongodb.MongoClient
 import javax.ws.rs.Consumes
 import javax.ws.rs.GET
 import javax.ws.rs.POST
@@ -17,14 +13,9 @@ import static com.mongodb.client.model.Projections.excludeId
 import static com.mongodb.client.model.Projections.fields
 
 @Path("/branch")
-class BranchResource {
+class BranchResource extends MongoResource {
 
-	static extension Gson = new GsonBuilder().create
-	static extension JsonParser = new JsonParser
-
-	static val mongoClient = new MongoClient
-	static val database = mongoClient.getDatabase("vitruv_versioning")
-	static val collection = database.getCollection("branches")
+	override protected getCollectionName() { "branches" }
 
 	@GET
 	@Path("/{name}")
@@ -78,4 +69,5 @@ class BranchResource {
 			"state": "«state»"
 		}
 	'''
+
 }

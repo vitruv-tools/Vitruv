@@ -16,6 +16,7 @@ Require-Bundle: tools.vitruv.framework.change;bundle-version="0.2.0",
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.emfstore.examplemodel;bundle-version="1.8.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 

@@ -18,7 +18,7 @@ class MergeCommitImpl extends CommitImpl implements MergeCommit {
 			"«CHANGES_KEY»": «changes.serializeAll»,
 			"«COMMITMESSAGE_KEY»": «commitmessage.serialization»,
 			"«IDENTIFIER_KEY»": "«identifier»",
-			"«NUMBEROFCHANGES_KEY»": «numberOfChanges»",
+			"«NUMBEROFCHANGES_KEY»": «numberOfChanges»,
 			"«SOURCE_COMMIT_KEY»": «sourceCommit»,
 			"«TARGET_COMMIT_KEY»": «targetCommit»
 		}

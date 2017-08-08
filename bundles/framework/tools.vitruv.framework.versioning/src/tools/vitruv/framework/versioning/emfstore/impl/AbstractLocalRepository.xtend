@@ -38,6 +38,9 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 	static extension URIRemapper = URIRemapper::instance
 	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
 
+	@Accessors(PUBLIC_SETTER)
+	boolean allFlag
+
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	Author author
 
@@ -187,7 +190,9 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 
 	override createLocalBranch(String currentName) {
 		val newBranch = new LocalBranchImpl(currentName)
+		val currentCommits = commits
 		localBranches += newBranch
+		currentCommits.forEach[addCommit(newBranch)]
 		currentBranch = newBranch
 		return newBranch
 	}
@@ -241,9 +246,14 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		val resolvedTargetChanges = currentVirtualModel.getResolvedPropagatedChanges(vuri)
 		val changesToRollback = resolvedTargetChanges.dropWhile[id !== lastPropagatedTargetChange].drop(1).toList
 		val reapplier = Reapplier::createReapplier
-		val reappliedChanges = reapplier.reapply(vuri, changesToRollback, echanges, currentVirtualModel)
+
+		val reappliedChanges = if (allFlag)
+				reapplier.reapply(changesToRollback, echanges, currentVirtualModel)
+			else
+				reapplier.reapply(vuri, changesToRollback, echanges, currentVirtualModel)
 		val sourceIds = sourceCommitsToCompare.map[identifier].last
 		val tagetIds = targetCommitsToCompare.map[identifier].last
+
 		val mergeCommit = createMergeCommit(
 			reappliedChanges,
 			'''Merged «source.name» into «target.name»''',

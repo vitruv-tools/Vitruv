@@ -55,7 +55,9 @@ class AbstractRepositoryImpl implements AbstractRepository {
 			if (null !== lastCommit && lastCommit.changes.exists[it === change])
 				throw new IllegalStateException
 		]
-		branchToCommit.put(branch, c)
+		val otherCommit = branchToCommit.get(branch).findFirst[identifier == c.identifier]
+		if (otherCommit === null)
+			branchToCommit.put(branch, c)
 	}
 
 	protected def void removeCommit(Commit c, Branch branch) {

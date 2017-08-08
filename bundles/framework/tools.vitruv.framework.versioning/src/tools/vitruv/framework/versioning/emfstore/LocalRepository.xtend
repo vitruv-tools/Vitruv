@@ -18,6 +18,8 @@ import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.versioning.common.commit.MergeCommit
 
 interface LocalRepository<T> extends AbstractRepository {
+	def void setAllFlag(boolean allFlag)
+
 	def Author getAuthor()
 
 	def List<RemoteBranch<T>> getRemoteBranches()
@@ -30,6 +32,8 @@ interface LocalRepository<T> extends AbstractRepository {
 
 	def PushState push(LocalBranch<T> localBranch)
 
+	def RemoteBranch<T> createRemoteBranch(String name, T remoteRepository)
+
 	def Set<LocalBranch<T>> getLocalBranches()
 
 	def SimpleCommit commit(String s)
@@ -40,7 +44,13 @@ interface LocalRepository<T> extends AbstractRepository {
 
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel, VURI vuri)
 
+	def T getRemoteProject()
+
 	def VersioningVirtualModel getVirtualModel()
+
+	def void addOrigin(LocalBranch<T> branch, T remoteRepository)
+
+	def void addRemoteRepository(T remoteRepository)
 
 	def void checkout()
 
@@ -56,17 +66,11 @@ interface LocalRepository<T> extends AbstractRepository {
 
 	def void setCurrentBranch(LocalBranch<T> branch)
 
-	def void setVirtualModel(VersioningVirtualModel versioningVirtualModel)
-
-	def T getRemoteProject()
-
 	def void setRemoteProject(T remote)
 
-	def void addOrigin(LocalBranch<T> branch, T remoteRepository)
+	def void setVirtualModel(VersioningVirtualModel versioningVirtualModel)
 
-	def void addRemoteRepository(T remoteRepository)
-
-	def RemoteBranch<T> createRemoteBranch(String name, T remoteRepository)
+	def void createBranchOnServer(String name, T remoteRemote)
 
 	def MergeCommit merge(
 		Branch source,
