@@ -1,29 +1,23 @@
 package tools.vitruv.framework.versioning.server
 
-import javax.ws.rs.Path
-import javax.ws.rs.GET
-import javax.ws.rs.Produces
-import com.mongodb.MongoClient
-
-import static com.mongodb.client.model.Filters.and
-import static com.mongodb.client.model.Filters.eq
-import static com.mongodb.client.model.Projections.exclude
-import static com.mongodb.client.model.Projections.excludeId
-import static com.mongodb.client.model.Projections.fields
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import javax.ws.rs.POST
-import javax.ws.rs.Consumes
-import javax.ws.rs.core.Response
-import javax.ws.rs.PathParam
 import com.google.gson.JsonParser
-import org.apache.log4j.Logger
-import javax.ws.rs.core.Response.Status
+import com.mongodb.MongoClient
+import javax.ws.rs.Consumes
+import javax.ws.rs.GET
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
+import javax.ws.rs.Produces
 import org.bson.Document
+
+import static com.mongodb.client.model.Filters.eq
+import static com.mongodb.client.model.Projections.excludeId
+import static com.mongodb.client.model.Projections.fields
 
 @Path("/branch")
 class BranchResource {
-	static extension Logger = Logger::getLogger(BranchResource)
 
 	static extension Gson = new GsonBuilder().create
 	static extension JsonParser = new JsonParser
