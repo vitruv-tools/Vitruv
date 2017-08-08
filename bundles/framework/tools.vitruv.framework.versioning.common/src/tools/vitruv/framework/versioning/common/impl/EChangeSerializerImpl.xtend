@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.extensions.impl
+package tools.vitruv.framework.versioning.common.impl
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -32,8 +32,8 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.versioning.extensions.EChangeSerializer
 import com.google.gson.JsonArray
+import tools.vitruv.framework.versioning.common.EChangeSerializer
 
 class EChangeSerializerImpl implements EChangeSerializer {
 	static val ResourceSet resourceSet = new ResourceSetImpl

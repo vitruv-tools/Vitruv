@@ -8,8 +8,6 @@ Export-Package: tools.vitruv.framework.versioning,
  tools.vitruv.framework.versioning.author.impl,
  tools.vitruv.framework.versioning.branch,
  tools.vitruv.framework.versioning.branch.impl,
- tools.vitruv.framework.versioning.commit,
- tools.vitruv.framework.versioning.commit.impl,
  tools.vitruv.framework.versioning.emfstore,
  tools.vitruv.framework.versioning.emfstore.impl,
  tools.vitruv.framework.versioning.exceptions,
@@ -44,11 +42,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.xtend.lib;resolution:=optional,
  org.eclipse.xtend.lib.macro,
  org.graphstream;bundle-version="1.3.0";visibility:=reexport,
- sspace;bundle-version="1.0.0",
  org.eclipse.emf.ecore.change;bundle-version="2.11.0",
  org.apache.commons.codec;bundle-version="1.6.0",
  com.google.gson;bundle-version="2.2.4";visibility:=reexport,
  org.eclipse.emf.ecore.xmi;bundle-version="2.12.0",
- org.eclipse.emf.emfstore.examplemodel;bundle-version="1.8.1"
+ org.eclipse.emf.emfstore.examplemodel;bundle-version="1.8.1",
+ tools.vitruv.framework.versioning.common;bundle-version="1.0.0";visibility:=reexport,
+ javax.ws.rs;bundle-version="2.0.1"
 Bundle-ActivationPolicy: lazy
 

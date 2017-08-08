@@ -1,15 +1,13 @@
-package tools.vitruv.framework.versioning.commit.impl
+package tools.vitruv.framework.versioning.common.commit.impl
 
 import java.util.Date
 import java.util.List
 import org.apache.commons.codec.digest.DigestUtils
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.versioning.commit.CommitFactory
-import tools.vitruv.framework.versioning.extensions.EChangeExtension
+import tools.vitruv.framework.versioning.common.commit.CommitFactory
 
 class CommitFactoryImpl implements CommitFactory {
 	static val prefix = "blob "
-	static extension EChangeExtension = EChangeExtension::instance
 
 	static def CommitFactory init() {
 		new CommitFactoryImpl
@@ -46,13 +44,13 @@ class CommitFactoryImpl implements CommitFactory {
 			«authorEMail»
 			«parent»
 				«FOR change : changes»
-					«change.originalChange.URI»«change.originalChange»
+					«change.originalChange»«change.originalChange»
 					«FOR echange: change.originalChange.EChanges»
-						«echange.fullString »
+						«echange.toString »
 					«ENDFOR»
-					«change.consequentialChanges.URI»«change.consequentialChanges»
+					«change.consequentialChanges»«change.consequentialChanges»
 					«FOR echange: change.consequentialChanges.EChanges»
-						«echange.fullString »
+						«echange.toString »
 					«ENDFOR»
 				«ENDFOR»
 		'''
@@ -81,13 +79,13 @@ class CommitFactoryImpl implements CommitFactory {
 			Targets
 			«targets»
 				«FOR change : changes»
-					«change.originalChange.URI»«change.originalChange»
+					«change.originalChange»«change.originalChange»
 					«FOR echange: change.originalChange.EChanges»
-						«echange.fullString »
+						«echange.toString »
 					«ENDFOR»
-					«change.consequentialChanges.URI»«change.consequentialChanges»
+					«change.consequentialChanges»«change.consequentialChanges»
 					«FOR echange: change.consequentialChanges.EChanges»
-						«echange.fullString »
+						«echange.toString »
 					«ENDFOR»
 				«ENDFOR»
 		'''

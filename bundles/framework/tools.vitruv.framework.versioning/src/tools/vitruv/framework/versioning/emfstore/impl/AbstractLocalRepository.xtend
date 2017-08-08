@@ -24,12 +24,12 @@ import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
-import tools.vitruv.framework.versioning.commit.Commit
-import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 import tools.vitruv.framework.versioning.branch.RemoteBranch
+import tools.vitruv.framework.versioning.common.commit.Commit
+import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 
 abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements LocalRepository<T> {
 	static extension BranchDiffCreator = BranchDiffCreator::instance

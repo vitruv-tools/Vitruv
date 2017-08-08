@@ -3,7 +3,7 @@ package tools.vitruv.framework.versioning.emfstore
 import java.util.List
 import java.util.Set
 import tools.vitruv.framework.versioning.branch.Branch
-import tools.vitruv.framework.versioning.commit.Commit
+import tools.vitruv.framework.versioning.common.commit.Commit
 
 interface RemoteRepository extends AbstractRepository {
 	def Set<Branch> getBranches()

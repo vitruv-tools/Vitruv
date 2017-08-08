@@ -6,10 +6,10 @@ import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
-import tools.vitruv.framework.versioning.commit.Commit
-import tools.vitruv.framework.versioning.commit.CommitFactory
-import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.AbstractRepository
+import tools.vitruv.framework.versioning.common.commit.Commit
+import tools.vitruv.framework.versioning.common.commit.CommitFactory
+import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 
 class AbstractRepositoryImpl implements AbstractRepository {
 	static protected extension CommitFactory = CommitFactory::instance

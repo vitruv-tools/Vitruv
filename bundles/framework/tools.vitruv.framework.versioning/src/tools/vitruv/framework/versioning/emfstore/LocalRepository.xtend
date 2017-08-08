@@ -13,9 +13,9 @@ import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.RemoteBranch
-import tools.vitruv.framework.versioning.commit.MergeCommit
-import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.vsum.VersioningVirtualModel
+import tools.vitruv.framework.versioning.common.commit.SimpleCommit
+import tools.vitruv.framework.versioning.common.commit.MergeCommit
 
 interface LocalRepository<T> extends AbstractRepository {
 	def Author getAuthor()

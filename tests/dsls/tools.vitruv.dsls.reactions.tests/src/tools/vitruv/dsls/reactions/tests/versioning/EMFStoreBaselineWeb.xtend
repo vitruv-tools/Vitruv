@@ -21,9 +21,6 @@ import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.emfstore.PushState
-import tools.vitruv.framework.versioning.emfstore.RemoteRepository
-import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryImpl
-import tools.vitruv.framework.versioning.emfstore.impl.RemoteRepositoryImpl
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
@@ -39,10 +36,11 @@ import static org.hamcrest.collection.IsEmptyCollection.empty
 import static org.junit.Assert.assertThat
 import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
+import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryWebImpl
 
-class EMFStoreBaseline extends VitruviusApplicationTest {
+class EMFStoreBaselineWeb extends VitruviusApplicationTest {
 	static extension CommitSerializer = CommitSerializer::instance
-	static extension Logger = Logger::getLogger(EMFStoreBaseline)
+	static extension Logger = Logger::getLogger(EMFStoreBaselineWeb)
 	static extension URIRemapper = URIRemapper::instance
 	static extension VirtualModelExtension = VirtualModelExtension::instance
 	static val MODEL_FILE_EXTENSION = new BowlingDomainProvider().domain.fileExtensions.get(0)
@@ -69,9 +67,9 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	Author author1
 	Author author2
 	League league1
-	LocalRepository<RemoteRepository> localRepository
-	LocalRepository<RemoteRepository> newLocalRepository
-	RemoteRepository remoteRepository
+	LocalRepository<String> localRepository
+	LocalRepository<String> newLocalRepository
+	String remoteRepository
 	VURI newSourceVURI
 	VURI sourceVURI
 	VersioningVirtualModel newVirtualModel
@@ -93,9 +91,9 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	}
 
 	override setup() {
-		localRepository = new LocalRepositoryImpl
-		newLocalRepository = new LocalRepositoryImpl
-		remoteRepository = new RemoteRepositoryImpl
+		localRepository = new LocalRepositoryWebImpl
+		newLocalRepository = new LocalRepositoryWebImpl
+		remoteRepository = "http://localhost:8080/myapp/"
 
 		localRepository.addRemoteRepository(remoteRepository)
 		newLocalRepository.addRemoteRepository(remoteRepository)
@@ -314,10 +312,8 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
 		val currentBranch = localRepository.currentBranch
 		localRepository.addOrigin(currentBranch, remoteRepository)
-		assertThat(remoteRepository.commits, hasSize(1))
 		val pushCommit1 = localRepository.push
 		assertThat(pushCommit1, is(PushState::SUCCESS))
-		assertThat(remoteRepository.commits, hasSize(2))
 
 		val newMasterBranch = newLocalRepository.currentBranch
 		newLocalRepository.addOrigin(newMasterBranch, remoteRepository)
@@ -424,10 +420,8 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		assertThat(mergeCommit.changes, hasSize(1))
 		val testLeague2 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
 		assertThat(testLeague2.name, equalTo(newName1))
-		assertThat(remoteRepository.commits, hasSize(3))
 		val newCommitAccepted = newLocalRepository.push
 		assertThat(newCommitAccepted, is(PushState::SUCCESS))
-		assertThat(remoteRepository.commits, hasSize(5))
 	}
 
 	@Test
@@ -552,9 +546,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		assertThat(mergeCommit.changes, hasSize(1))
 		val testLeague2 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
 		assertThat(testLeague2.name, equalTo(newName2))
-		assertThat(remoteRepository.commits, hasSize(3))
 		val newCommitAccepted = newLocalRepository.push
 		assertThat(newCommitAccepted, is(PushState::SUCCESS))
-		assertThat(remoteRepository.commits, hasSize(5))
 	}
 }

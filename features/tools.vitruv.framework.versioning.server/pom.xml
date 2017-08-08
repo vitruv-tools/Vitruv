@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>tools.vitruv</groupId>
+    <groupId>tools.vitruv.framework.versioning.server</groupId>
     <artifactId>tools.vitruv.framework.versioning.server</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -17,11 +17,6 @@
                 <version>${jersey.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-            	<groupId>tools.vitruv</groupId>
-            	<artifactId>framework</artifactId>
-            	<version>0.2.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -47,11 +42,6 @@
             <artifactId>junit</artifactId>
             <version>4.9</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-        	<groupId>org.mongodb</groupId>
-        	<artifactId>mongo-java-driver</artifactId>
-        	<version>3.5.0</version>
         </dependency>
     </dependencies>
 

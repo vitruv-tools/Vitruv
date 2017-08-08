@@ -3,12 +3,12 @@ package tools.vitruv.framework.versioning.extensions.impl
 import com.google.gson.JsonParser
 import java.util.List
 import tools.vitruv.framework.versioning.JSONDeserializer
-import tools.vitruv.framework.versioning.commit.Commit
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
 import com.google.gson.JsonObject
 import com.google.gson.JsonArray
+import tools.vitruv.framework.versioning.common.commit.Commit
 
 class CommitSerializerImpl implements CommitSerializer {
 	static extension Logger = Logger::getLogger(CommitSerializerImpl)

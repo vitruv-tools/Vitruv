@@ -1,8 +1,8 @@
-package tools.vitruv.framework.versioning.commit
+package tools.vitruv.framework.versioning.common.commit
 
 import java.util.Date
 
-import tools.vitruv.framework.versioning.JSONSerializable
+import tools.vitruv.framework.versioning.common.JSONSerializable
 
 interface CommitMessage extends JSONSerializable {
 

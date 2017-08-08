@@ -1,8 +1,8 @@
-package tools.vitruv.framework.versioning.commit
+package tools.vitruv.framework.versioning.common.commit
 
 import java.util.List
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.versioning.commit.impl.CommitFactoryImpl
+import tools.vitruv.framework.versioning.common.commit.impl.CommitFactoryImpl
 
 interface CommitFactory {
 	static val initialCommitHash = "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed"

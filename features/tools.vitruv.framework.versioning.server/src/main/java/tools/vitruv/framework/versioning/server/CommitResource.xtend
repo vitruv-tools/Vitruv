@@ -6,8 +6,6 @@ import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
-import javax.ws.rs.core.Response
-import javax.ws.rs.core.Response.Status
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -18,17 +16,16 @@ import com.mongodb.client.model.Sorts
 import org.apache.log4j.Logger
 import org.bson.Document
 
-import tools.vitruv.framework.versioning.commit.CommitFactory
-import tools.vitruv.framework.versioning.commit.impl.CommitMessageImpl
-import tools.vitruv.framework.versioning.commit.impl.MergeCommitImpl
-import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl
-
 import static com.mongodb.client.model.Filters.and
 import static com.mongodb.client.model.Filters.eq
 import static com.mongodb.client.model.Projections.exclude
 import static com.mongodb.client.model.Projections.excludeId
 import static com.mongodb.client.model.Projections.fields
 import javax.ws.rs.QueryParam
+import tools.vitruv.framework.versioning.common.commit.impl.MergeCommitImpl
+import tools.vitruv.framework.versioning.common.commit.impl.SimpleCommitImpl
+import tools.vitruv.framework.versioning.common.commit.CommitFactory
+import tools.vitruv.framework.versioning.common.commit.impl.CommitMessageImpl
 
 @Path("/commit/{branchName}")
 class CommitResource {

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.commit.impl
+package tools.vitruv.framework.versioning.common.commit.impl
 
 import java.util.Date
 
@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder
 
 import org.eclipse.xtend.lib.annotations.Data
 
-import tools.vitruv.framework.versioning.commit.CommitMessage
+import tools.vitruv.framework.versioning.common.commit.CommitMessage
 
 @Data
 class CommitMessageImpl implements CommitMessage {

@@ -7,7 +7,6 @@ import org.junit.Test
 import tools.vitruv.dsls.reactions.tests.AbstractVersioningTest
 import tools.vitruv.framework.tests.util.TestUtil
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.versioning.extensions.EChangeSerializer
 import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
@@ -16,6 +15,7 @@ import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.notNullValue
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.common.EChangeSerializer
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
 	static extension EChangeSerializer = EChangeSerializer::instance

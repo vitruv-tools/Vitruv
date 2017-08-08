@@ -6,13 +6,13 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 
 import tools.vitruv.framework.versioning.JSONDeserializer
-import tools.vitruv.framework.versioning.JSONSerializable
-import tools.vitruv.framework.versioning.commit.CommitMessage
-import tools.vitruv.framework.versioning.commit.impl.CommitImpl
-import tools.vitruv.framework.versioning.commit.impl.CommitMessageImpl
-import tools.vitruv.framework.versioning.commit.impl.MergeCommitImpl
-import tools.vitruv.framework.versioning.commit.impl.SimpleCommitImpl
-import tools.vitruv.framework.versioning.extensions.EChangeSerializer
+import tools.vitruv.framework.versioning.common.EChangeSerializer
+import tools.vitruv.framework.versioning.common.commit.CommitMessage
+import tools.vitruv.framework.versioning.common.commit.impl.CommitMessageImpl
+import tools.vitruv.framework.versioning.common.JSONSerializable
+import tools.vitruv.framework.versioning.common.commit.impl.SimpleCommitImpl
+import tools.vitruv.framework.versioning.common.commit.impl.CommitImpl
+import tools.vitruv.framework.versioning.common.commit.impl.MergeCommitImpl
 
 class JSONDeserializerImpl implements JSONDeserializer {
 	static extension Gson = new GsonBuilder().create

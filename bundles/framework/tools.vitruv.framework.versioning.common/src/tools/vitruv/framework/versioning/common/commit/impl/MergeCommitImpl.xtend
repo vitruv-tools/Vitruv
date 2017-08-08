@@ -1,10 +1,9 @@
-package tools.vitruv.framework.versioning.commit.impl
+package tools.vitruv.framework.versioning.common.commit.impl
 
 import org.eclipse.xtend.lib.annotations.Data
 
-import tools.vitruv.framework.versioning.commit.MergeCommit
-import tools.vitruv.framework.versioning.commit.impl.CommitImpl
-import tools.vitruv.framework.versioning.extensions.EChangeSerializer
+import tools.vitruv.framework.versioning.common.EChangeSerializer
+import tools.vitruv.framework.versioning.common.commit.MergeCommit
 
 @Data
 class MergeCommitImpl extends CommitImpl implements MergeCommit {

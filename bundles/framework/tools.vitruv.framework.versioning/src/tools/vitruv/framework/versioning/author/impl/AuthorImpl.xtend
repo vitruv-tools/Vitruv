@@ -8,7 +8,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.UserBranch
-import tools.vitruv.framework.versioning.commit.Commit
+import tools.vitruv.framework.versioning.common.commit.Commit
 
 class AuthorImpl implements Author {
 	@Accessors(PUBLIC_GETTER)

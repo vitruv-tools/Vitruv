@@ -1,9 +1,9 @@
-package tools.vitruv.framework.versioning.commit
+package tools.vitruv.framework.versioning.common.commit
 
 import java.util.List
 
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.versioning.JSONSerializable
+import tools.vitruv.framework.versioning.common.JSONSerializable
 
 interface Commit extends JSONSerializable {
 

@@ -1,14 +1,14 @@
-package tools.vitruv.framework.versioning.commit.impl
+package tools.vitruv.framework.versioning.common.commit.impl
 
 import java.util.List
 
 import org.eclipse.xtend.lib.annotations.Data
 
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.versioning.commit.Commit
-import tools.vitruv.framework.versioning.commit.CommitMessage
-import tools.vitruv.framework.versioning.commit.MergeCommit
-import tools.vitruv.framework.versioning.commit.SimpleCommit
+import tools.vitruv.framework.versioning.common.commit.Commit
+import tools.vitruv.framework.versioning.common.commit.CommitMessage
+import tools.vitruv.framework.versioning.common.commit.SimpleCommit
+import tools.vitruv.framework.versioning.common.commit.MergeCommit
 
 @Data
 abstract class CommitImpl implements Commit {

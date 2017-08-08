@@ -1,9 +1,9 @@
-package tools.vitruv.framework.versioning.extensions
+package tools.vitruv.framework.versioning.common
 
-import tools.vitruv.framework.versioning.extensions.impl.EChangeSerializerImpl
 import tools.vitruv.framework.change.description.PropagatedChange
 import java.util.List
 import com.google.gson.JsonArray
+import tools.vitruv.framework.versioning.common.impl.EChangeSerializerImpl
 
 interface EChangeSerializer {
 
