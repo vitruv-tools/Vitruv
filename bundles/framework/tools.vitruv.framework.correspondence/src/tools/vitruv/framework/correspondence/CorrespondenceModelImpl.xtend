@@ -31,8 +31,10 @@ import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorrespondenceModel, TuidUpdateListener {
-	static extension TuidManager = TuidManager::instance
+	static extension CorrespondenceFactory = CorrespondenceFactory::eINSTANCE
 	static extension Logger = Logger::getLogger(CorrespondenceModelImpl)
+	static extension TuidManager = TuidManager::instance
+
 	boolean changedAfterLastSave = false
 	protected val ClaimableMap<List<Tuid>, Set<Correspondence>> tuid2CorrespondencesMap
 	Iterable<Pair<List<Tuid>, Set<Correspondence>>> tuidUpdateData
@@ -76,6 +78,7 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 				Trying to unregister «this» from TUIDManager but was not registered yet.
 			''')
 		removeTuidUpdateListener(this)
+		reinitialize
 		isRegistered = false
 	}
 
@@ -141,7 +144,7 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 	}
 
 	override createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
-		val correspondence = CorrespondenceFactory::eINSTANCE.createManualCorrespondence
+		val correspondence = createManualCorrespondence
 		createAndAddCorrespondence(eObjects1, eObjects2, correspondence)
 	}
 
@@ -153,6 +156,9 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 	override getCorrespondencesForTuids(List<Tuid> tuids) {
 		var correspondences = tuid2CorrespondencesMap.get(tuids)
 		if (correspondences === null) {
+			tuid2CorrespondencesMap.entrySet.forEach [
+				debug(it)
+			]
 			correspondences = newHashSet
 			tuid2CorrespondencesMap.put(tuids, correspondences)
 			registerTuidList(tuids)
@@ -345,7 +351,7 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 				// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
 				newSetOfoldTuidLists += oldTuidList
 				// re-add the correspondences entry for the current list of tuids with the new hashcode
-				tuid2CorrespondencesMap.put(oldTuidList, correspondences)
+				tuid2CorrespondencesMap.put(oldTuidList.immutableCopy, correspondences.immutableCopy)
 			}
 			// re-add the entry that maps the tuid to the set if tuid lists that contain it
 			tuid2tuidListsMap.put(tuid, newSetOfoldTuidLists)
@@ -382,7 +388,7 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 				tuidLists = newHashSet
 				tuid2tuidListsMap.put(it, tuidLists)
 			}
-			tuidLists += tuidList
+			tuidLists += tuidList.<Tuid>immutableCopy
 		]
 	}
 
@@ -400,7 +406,7 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 		var Correspondences correspondences = EcoreResourceBridge::getResourceContentRootIfUnique(getResource())?.
 			dynamicCast(Correspondences, "correspondence model")
 		if (correspondences === null) {
-			correspondences = CorrespondenceFactory::eINSTANCE.createCorrespondences
+			correspondences = createCorrespondences
 			correspondencesResource.contents += correspondences
 		} else {
 			registerLoadedCorrespondences(correspondences)

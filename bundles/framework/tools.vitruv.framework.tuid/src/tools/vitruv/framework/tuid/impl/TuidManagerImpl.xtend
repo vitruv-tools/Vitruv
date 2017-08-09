@@ -108,10 +108,14 @@ class TuidManagerImpl implements TuidManager {
 	}
 
 	override notifyListenerBeforeTuidUpdate(Tuid oldTuid) {
-		tuidUpdateListener.forEach[performPreAction(oldTuid)]
+		tuidUpdateListener.forEach [
+			performPreAction(oldTuid)
+		]
 	}
 
 	override notifyListenerAfterTuidUpdate(Tuid newTuid) {
-		tuidUpdateListener.forEach[performPostAction(newTuid)]
+		tuidUpdateListener.forEach [
+			performPostAction(newTuid)
+		]
 	}
 }

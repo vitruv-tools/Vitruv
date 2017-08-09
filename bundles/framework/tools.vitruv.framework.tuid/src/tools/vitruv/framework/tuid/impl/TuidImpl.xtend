@@ -48,37 +48,35 @@ class TuidImpl implements Tuid {
 	static def synchronized Tuid getInstance(String tuidString, boolean recursively) {
 		if (tuidString === null)
 			throw new IllegalArgumentException("The null string is no Tuid!")
-		else {
-			val splitTuidString = split(tuidString)
-			var lastSegmentOrPrefix = SEGMENTS.getMaximalPrefix(splitTuidString)
-			var Tuid instance
-			val lastSegmentOrPrefixString = if (lastSegmentOrPrefix !== null) {
-					lastSegmentOrPrefix.toString(VitruviusConstants.tuidSegmentSeperator)
-				}
-			if (lastSegmentOrPrefixString !== null && lastSegmentOrPrefixString.equals(tuidString)) {
-				// the complete specified tuidString was already mapped
-				val instances = LAST_SEGMENT_2_Tuid_INSTANCES_MAP.get(lastSegmentOrPrefix)
-				if (instances.
-					nullOrEmpty) {
-					if (!recursively)
-						throw new IllegalStateException('''A Tuid instance for the last segment '«»«lastSegmentOrPrefix»' should already have been mapped for the tuidString '«»«tuidString»'!''')
-				} else {
-					return instances.get(0)
-				}
+		val splitTuidString = split(tuidString)
+		var lastSegmentOrPrefix = SEGMENTS.getMaximalPrefix(splitTuidString)
+		var Tuid instance
+		val lastSegmentOrPrefixString = if (lastSegmentOrPrefix !== null) {
+				lastSegmentOrPrefix.toString(VitruviusConstants.tuidSegmentSeperator)
 			}
-			// a real prefix of the specified tuidString or nothing was already mapped (but not
-			// the complete tuidString)
-			instance = new TuidImpl(splitTuidString)
-			var lastSegment = (instance as TuidImpl).lastSegment
-			// also create Tuids for all prefixes of the specified tuidString and register them
-			val segmentIterator = lastSegment.iterator
-			var ForwardHashedBackwardLinkedTree<String>.Segment pivot
-			while (segmentIterator.hasNext) {
-				pivot = segmentIterator.next
-				getInstance(pivot.toString(VitruviusConstants.tuidSegmentSeperator), true)
+		if (lastSegmentOrPrefixString !== null && lastSegmentOrPrefixString.equals(tuidString)) {
+			// the complete specified tuidString was already mapped
+			val instances = LAST_SEGMENT_2_Tuid_INSTANCES_MAP.get(lastSegmentOrPrefix)
+			if (instances.
+				nullOrEmpty) {
+				if (!recursively)
+					throw new IllegalStateException('''A Tuid instance for the last segment '«»«lastSegmentOrPrefix»' should already have been mapped for the tuidString '«»«tuidString»'!''')
+			} else {
+				return instances.get(0)
 			}
-			return instance
 		}
+		// a real prefix of the specified tuidString or nothing was already mapped (but not
+		// the complete tuidString)
+		instance = new TuidImpl(splitTuidString)
+		var lastSegment = (instance as TuidImpl).lastSegment
+		// also create Tuids for all prefixes of the specified tuidString and register them
+		val segmentIterator = lastSegment.iterator
+		var ForwardHashedBackwardLinkedTree<String>.Segment pivot
+		while (segmentIterator.hasNext) {
+			pivot = segmentIterator.next
+			getInstance(pivot.toString(VitruviusConstants.tuidSegmentSeperator), true)
+		}
+		return instance
 	}
 
 	/**
