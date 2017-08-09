@@ -49,7 +49,7 @@ final class Tuid implements Serializable {
 	static var SEGMENTS = generateForwardHashedBackwardLinkedTree()
 	static val LAST_SEGMENT_2_Tuid_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, List<Tuid>>()
 
-	package static def reinitialize() {
+	static def reinitialize() {
 		SEGMENTS = generateForwardHashedBackwardLinkedTree();
 	}
 

@@ -1,112 +1,37 @@
 package tools.vitruv.framework.tuid
 
-import java.util.Map
-import java.util.Set
-import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.util.XtendAssertHelper
+import tools.vitruv.framework.tuid.impl.TuidManagerImpl
 
-final class TuidManager {
-	static extension Logger = Logger::getLogger(TuidManager)
-	static val instance = new TuidManager
-	val Map<EObject, Tuid> tuidUpdateCache
-	val Set<TuidCalculator> tuidCalculator
-	val Set<TuidUpdateListener> tuidUpdateListener
-
-	private new() {
-		tuidCalculator = newHashSet
-		tuidUpdateCache = newHashMap
-		tuidUpdateListener = newHashSet
-	}
+interface TuidManager {
+	static TuidManager instance = TuidManagerImpl::init
 
 	static def TuidManager getInstance() {
 		// This class is a singleton for now. We will probably change that decision later
 		return instance
 	}
 
-	def void addTuidUpdateListener(TuidUpdateListener updateListener) {
-		if (updateListener !== null)
-			tuidUpdateListener += updateListener
-	}
+	def void addTuidCalculator(TuidCalculator calculator)
 
-	def removeTuidUpdateListener(TuidUpdateListener updateListener) {
-		tuidUpdateListener -= updateListener
-	}
+	def void addTuidUpdateListener(TuidUpdateListener updateListener)
 
-	def void addTuidCalculator(TuidCalculator calculator) {
-		if (calculator !== null)
-			tuidCalculator += calculator
-	}
+	def void flushRegisteredObjectsUnderModification()
 
-	def removeTuidCalculator(TuidCalculator calculator) {
-		tuidCalculator -= calculator
-	}
+	def void notifyListenerAfterTuidUpdate(Tuid newTuid)
 
-	def reinitialize() {
-		flushRegisteredObjectsUnderModification
-		Tuid::reinitialize
-	}
+	def void notifyListenerBeforeTuidUpdate(Tuid oldTuid)
 
-	private def TuidCalculator getTuidCalculator(EObject object) {
-		val potentialCalculators = tuidCalculator.filter[canCalculateTuid(object)]
-		if (potentialCalculators.length > 1)
-			throw new IllegalStateException(
-				'''
-				There are two Tuid calculators registered that can handle the EObject: «object», which are
-				«FOR potentialCalculator : potentialCalculators SEPARATOR ", "» «potentialCalculator» «ENDFOR»
-				potentialCalculator
-			''')
-		val resultCalculator = potentialCalculators.get(0)
-		return resultCalculator
-	}
+	def void registerObjectUnderModification(EObject objectUnderModification)
 
-	private def boolean hasTuidCalculator(EObject object) {
-		return object.tuidCalculator !== null
-	}
+	def void reinitialize()
 
-	private def Tuid calculateTuid(EObject object) {
-		val tuidCalculator = object.tuidCalculator
-		if (tuidCalculator === null)
-			throw new IllegalArgumentException("No Tuid calculator registered for EObject: " + object)
-		return tuidCalculator.calculateTuid(object)
-	}
+	def void removeTuidCalculator(TuidCalculator calculator)
 
-	def registerObjectUnderModification(EObject objectUnderModification) {
-		if (objectUnderModification.hasTuidCalculator)
-			tuidUpdateCache.put(objectUnderModification, objectUnderModification.calculateTuid)
-	}
+	def void removeTuidUpdateListener(TuidUpdateListener updateListener)
 
-	def flushRegisteredObjectsUnderModification() {
-		tuidUpdateCache.clear
-	}
+	def void updateTuid(EObject oldObject, EObject newObject)
 
-	def updateTuidsOfRegisteredObjects() {
-		tuidUpdateCache.entrySet.filter[hasTuidCalculator(key)].forEach [
-			val newTuid = key.calculateTuid
-			value.updateTuid(newTuid)
-			debug('''Changed Tuid from «value» to «newTuid»''')
-			XtendAssertHelper::assertTrue(value == newTuid)
-		]
-	}
+	def void updateTuid(Tuid oldTuid, EObject newObject)
 
-	def updateTuid(EObject oldObject, EObject newObject) {
-		if (oldObject.hasTuidCalculator && newObject.hasTuidCalculator) {
-			val oldTuid = oldObject.calculateTuid
-			val newTuid = newObject.calculateTuid
-			oldTuid.updateTuid(newTuid)
-		}
-	}
-
-	def updateTuid(Tuid oldTuid, EObject newObject) {
-		if (newObject.hasTuidCalculator)
-			oldTuid.updateTuid(newObject.calculateTuid)
-	}
-
-	package def notifyListenerBeforeTuidUpdate(Tuid oldTuid) {
-		tuidUpdateListener.forEach[performPreAction(oldTuid)]
-	}
-
-	package def notifyListenerAfterTuidUpdate(Tuid newTuid) {
-		tuidUpdateListener.forEach[performPostAction(newTuid)]
-	}
+	def void updateTuidsOfRegisteredObjects()
 }
