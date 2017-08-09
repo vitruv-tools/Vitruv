@@ -89,32 +89,6 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 		]))
 	}
 
-	private def void registerCorrespondence(Correspondence correspondence) {
-		registerTuidLists(correspondence)
-		registerCorrespondenceForTuids(correspondence)
-	}
-
-	private def registerTuidLists(Correspondence correspondence) {
-		registerTuidList(correspondence.getATuids)
-		registerTuidList(correspondence.getBTuids)
-	}
-
-	private def registerTuidList(List<Tuid> tuidList) {
-		tuidList.forEach [
-			var tuidLists = tuid2tuidListsMap.get(it)
-			if (tuidLists === null) {
-				tuidLists = newHashSet
-				tuid2tuidListsMap.put(it, tuidLists)
-			}
-			tuidLists += tuidList
-		]
-	}
-
-	private def void addCorrespondenceToModel(Correspondence correspondence) {
-		val EList<Correspondence> correspondenceListForAddition = correspondences.correspondences
-		correspondenceListForAddition += correspondence
-	}
-
 	override changedAfterLastSave() {
 		changedAfterLastSave
 	}
@@ -138,12 +112,8 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 		return Tuid::getInstance(metamodel.calculateTuidFromEObject(eObject, virtualRootObject, prefix))
 	}
 
-	private def getMetamodelForEObject(EObject eObject) {
-		domainRepository.getDomain(eObject)
-	}
-
 	override calculateTuidsFromEObjects(List<EObject> eObjects) {
-		eObjects.mapFixed[calculateTuidFromEObject(it)].toList
+		eObjects.mapFixed[calculateTuidFromEObject].toList
 	}
 
 	override claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
@@ -173,13 +143,6 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 	override createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
 		val correspondence = CorrespondenceFactory::eINSTANCE.createManualCorrespondence
 		createAndAddCorrespondence(eObjects1, eObjects2, correspondence)
-	}
-
-	private def createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
-		Correspondence correspondence) {
-		setCorrespondenceFeatures(correspondence, eObjects1, eObjects2)
-		addCorrespondence(correspondence)
-		return correspondence
 	}
 
 	override getCorrespondences(List<EObject> eObjects) {
@@ -213,131 +176,36 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 	) {
 		val allCorrespondences = getCorrespondencesForTuids(tuids)
 		val Set<List<Tuid>> correspondingTuidLists = newHashSet
-		for (Correspondence correspondence : allCorrespondences.filter(correspondenceType)) {
-			val List<Tuid> aTuids = correspondence.ATuids
-			val List<Tuid> bTuids = correspondence.BTuids
-			if (aTuids === null || bTuids === null || aTuids.size == 0 || bTuids.size == 0) {
+		allCorrespondences.filter(correspondenceType).forEach [
+			if (ATuids === null || BTuids === null || ATuids.size == 0 || BTuids.size == 0)
 				throw new IllegalStateException('''
-					The correspondence '«»«correspondence»' links to an empty Tuid '«»«aTuids»' or '«»«bTuids»'!
-				'''.toString)
-			}
-			if (aTuids.equals(tuids))
-				correspondingTuidLists += bTuids
-			else {
-				correspondingTuidLists += aTuids
-			}
-		}
+					The correspondence '«it»' links to an empty Tuid '«ATuids»' or '«BTuids»'!
+				''')
+			correspondingTuidLists += if(ATuids == tuids) BTuids else ATuids
+		]
 		return correspondingTuidLists
 	}
 
 	override saveModel() {
 		try {
-			EcoreResourceBridge::saveResource(getResource(), saveCorrespondenceOptions)
+			EcoreResourceBridge::saveResource(getResource(),
+				saveCorrespondenceOptions)
 		} catch (IOException e) {
 			throw new RuntimeException(
 				'''
-					Could not save correspondence instance '«»«this»' using the resource '«»«getResource()»' and the options '«»«saveCorrespondenceOptions»': «e»
-				'''.toString)
+				Could not save correspondence instance '«»«this»' using the resource '«»«getResource()»' and the options '«»«saveCorrespondenceOptions»': «e»
+			''')
 		}
 	}
 
 	override hasCorrespondences() {
-		for (Set<Correspondence> correspondences : tuid2CorrespondencesMap.values) {
-			if (!correspondences.empty)
-				return true
-		}
-		return false
+		tuid2CorrespondencesMap.values.exists[!empty]
 	}
 
 	override hasCorrespondences(List<EObject> eObjects) {
 		val List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		val Set<Correspondence> correspondences = tuid2CorrespondencesMap.get(tuids)
 		return correspondences !== null && correspondences.size > 0
-	}
-
-	private def Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
-		try {
-			correspondencesResource.load(saveCorrespondenceOptions)
-		} catch (IOException e) {
-			if (e.cause instanceof Exception) {
-				trace(
-					"Could not load correspondence resource - creating new correspondence instance resource."
-				)
-			}
-		}
-		// TODO implement lazy loading for correspondences because they may get really big
-		var Correspondences correspondences = EcoreResourceBridge::getResourceContentRootIfUnique(getResource())?.
-			dynamicCast(Correspondences, "correspondence model")
-		if (correspondences === null) {
-			correspondences = CorrespondenceFactory::eINSTANCE.createCorrespondences
-			correspondencesResource.contents += correspondences
-		} else {
-			registerLoadedCorrespondences(correspondences)
-		}
-		correspondences.correspondenceModel = this
-		return correspondences
-	}
-
-	private def void registerCorrespondenceForTuids(Correspondence correspondence) {
-		val correspondencesForAs = getCorrespondencesForTuids(correspondence.getATuids)
-		correspondencesForAs += correspondence
-		val correspondencesForBs = getCorrespondencesForTuids(correspondence.getBTuids)
-		correspondencesForBs += correspondence
-	}
-
-	private def void registerLoadedCorrespondences(Correspondences correspondences) {
-		for (Correspondence correspondence : correspondences.correspondences) {
-			registerCorrespondence(correspondence)
-		}
-	}
-
-	private def void removeCorrespondenceFromMaps(Correspondence markedCorrespondence) {
-		val List<Tuid> aTuids = markedCorrespondence.getATuids
-		val List<Tuid> bTuids = markedCorrespondence.getBTuids
-		removeTuid2TuidListsEntries(aTuids)
-		removeTuid2TuidListsEntries(bTuids)
-		tuid2CorrespondencesMap.get(aTuids).remove(markedCorrespondence)
-		if (tuid2CorrespondencesMap.get(aTuids).empty)
-			tuid2CorrespondencesMap.remove(aTuids)
-		tuid2CorrespondencesMap.get(bTuids).remove(markedCorrespondence)
-		if (tuid2CorrespondencesMap.get(bTuids).empty)
-			tuid2CorrespondencesMap.remove(bTuids)
-	}
-
-	private def void removeTuid2TuidListsEntries(List<Tuid> tuids) {
-		tuids.forEach [
-			val tuidLists = tuid2tuidListsMap.get(it)
-			tuidLists.remove(tuids)
-		]
-	}
-
-	override removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
-		val markedCorrespondences = markCorrespondenceAndDependingCorrespondences(correspondence)
-		removeMarkedCorrespondences(markedCorrespondences)
-		return markedCorrespondences
-	}
-
-	private def Set<Correspondence> markCorrespondenceAndDependingCorrespondences(Correspondence correspondence) {
-		val Set<Correspondence> markedCorrespondences = newHashSet
-		markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, correspondence)
-		return markedCorrespondences
-	}
-
-	private def void markCorrespondenceAndDependingCorrespondencesRecursively(Set<Correspondence> markedCorrespondences,
-		Correspondence correspondence) {
-		markedCorrespondences += correspondence
-		// FIXME MK detect dependency cycles in correspondences already when the reference is updated
-		for (dependingCorrespondence : correspondence.dependedOnBy) {
-			markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, dependingCorrespondence)
-		}
-	}
-
-	private def removeMarkedCorrespondences(Iterable<Correspondence> markedCorrespondences) {
-		markedCorrespondences.forEach [
-			removeCorrespondenceFromMaps
-			EcoreUtil::remove(it)
-			setChangeAfterLastSaveFlag
-		]
 	}
 
 	override removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects) {
@@ -371,20 +239,6 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 
 	override resolveEObjectFromTuid(Tuid tuid) {
 		tuidResolver.resolveEObjectFromTuid(tuid)
-	}
-
-	def void setChangeAfterLastSaveFlag() {
-		changedAfterLastSave = true
-	}
-
-	private def void setCorrespondenceFeatures(Correspondence correspondence, List<EObject> eObjects1,
-		List<EObject> eObjects2) {
-		val aEObjects = eObjects1
-		val bEObjects = eObjects2
-		val List<Tuid> aTuids = calculateTuidsFromEObjects(aEObjects)
-		correspondence.ATuids += aTuids
-		val List<Tuid> bTuids = calculateTuidsFromEObjects(bEObjects)
-		correspondence.BTuids += bTuids
 	}
 
 	override getAllCorrespondencesWithoutDependencies() {
@@ -501,4 +355,145 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 		]))
 	}
 
+	override removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
+		val markedCorrespondences = markCorrespondenceAndDependingCorrespondences(correspondence)
+		removeMarkedCorrespondences(markedCorrespondences)
+		return markedCorrespondences
+	}
+
+	def void setChangeAfterLastSaveFlag() {
+		changedAfterLastSave = true
+	}
+
+	private def void registerCorrespondence(Correspondence correspondence) {
+		registerTuidLists(correspondence)
+		registerCorrespondenceForTuids(correspondence)
+	}
+
+	private def registerTuidLists(Correspondence correspondence) {
+		registerTuidList(correspondence.getATuids)
+		registerTuidList(correspondence.getBTuids)
+	}
+
+	private def registerTuidList(List<Tuid> tuidList) {
+		tuidList.forEach [
+			var tuidLists = tuid2tuidListsMap.get(it)
+			if (tuidLists === null) {
+				tuidLists = newHashSet
+				tuid2tuidListsMap.put(it, tuidLists)
+			}
+			tuidLists += tuidList
+		]
+	}
+
+	private def Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
+		try {
+			correspondencesResource.load(saveCorrespondenceOptions)
+		} catch (IOException e) {
+			if (e.cause instanceof Exception) {
+				trace(
+					"Could not load correspondence resource - creating new correspondence instance resource."
+				)
+			}
+		}
+		// TODO implement lazy loading for correspondences because they may get really big
+		var Correspondences correspondences = EcoreResourceBridge::getResourceContentRootIfUnique(getResource())?.
+			dynamicCast(Correspondences, "correspondence model")
+		if (correspondences === null) {
+			correspondences = CorrespondenceFactory::eINSTANCE.createCorrespondences
+			correspondencesResource.contents += correspondences
+		} else {
+			registerLoadedCorrespondences(correspondences)
+		}
+		correspondences.correspondenceModel = this
+		return correspondences
+	}
+
+	private def void registerCorrespondenceForTuids(Correspondence correspondence) {
+		val correspondencesForAs = getCorrespondencesForTuids(correspondence.getATuids)
+		correspondencesForAs += correspondence
+		val correspondencesForBs = getCorrespondencesForTuids(correspondence.getBTuids)
+		correspondencesForBs += correspondence
+	}
+
+	private def void registerLoadedCorrespondences(Correspondences correspondences) {
+		for (Correspondence correspondence : correspondences.correspondences) {
+			registerCorrespondence(correspondence)
+		}
+	}
+
+	private def void removeCorrespondenceFromMaps(Correspondence markedCorrespondence) {
+		val List<Tuid> aTuids = markedCorrespondence.getATuids
+		val List<Tuid> bTuids = markedCorrespondence.getBTuids
+		removeTuid2TuidListsEntries(aTuids)
+		removeTuid2TuidListsEntries(bTuids)
+		tuid2CorrespondencesMap.get(aTuids).remove(markedCorrespondence)
+		if (tuid2CorrespondencesMap.get(aTuids).empty)
+			tuid2CorrespondencesMap.remove(aTuids)
+		tuid2CorrespondencesMap.get(bTuids).remove(markedCorrespondence)
+		if (tuid2CorrespondencesMap.get(bTuids).empty)
+			tuid2CorrespondencesMap.remove(bTuids)
+	}
+
+	private def void removeTuid2TuidListsEntries(List<Tuid> tuids) {
+		tuids.forEach [
+			val tuidLists = tuid2tuidListsMap.get(it)
+			tuidLists.remove(tuids)
+		]
+	}
+
+	private def Set<Correspondence> markCorrespondenceAndDependingCorrespondences(Correspondence correspondence) {
+		val Set<Correspondence> markedCorrespondences = newHashSet
+		markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, correspondence)
+		return markedCorrespondences
+	}
+
+	private def void markCorrespondenceAndDependingCorrespondencesRecursively(Set<Correspondence> markedCorrespondences,
+		Correspondence correspondence) {
+		markedCorrespondences += correspondence
+		// FIXME MK detect dependency cycles in correspondences already when the reference is updated
+		for (dependingCorrespondence : correspondence.dependedOnBy) {
+			markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, dependingCorrespondence)
+		}
+	}
+
+	private def removeMarkedCorrespondences(Iterable<Correspondence> markedCorrespondences) {
+		markedCorrespondences.forEach [
+			removeCorrespondenceFromMaps
+			EcoreUtil::remove(it)
+			setChangeAfterLastSaveFlag
+		]
+	}
+
+	private def createAndAddCorrespondence(
+		List<EObject> eObjects1,
+		List<EObject> eObjects2,
+		Correspondence correspondence
+	) {
+		setCorrespondenceFeatures(correspondence, eObjects1, eObjects2)
+		addCorrespondence(correspondence)
+		return correspondence
+	}
+
+	private def void setCorrespondenceFeatures(
+		Correspondence correspondence,
+		List<EObject> eObjects1,
+		List<EObject> eObjects2
+	) {
+		val aEObjects = eObjects1
+		val bEObjects = eObjects2
+		val List<Tuid> aTuids = calculateTuidsFromEObjects(aEObjects)
+		correspondence.ATuids += aTuids
+		val List<Tuid> bTuids = calculateTuidsFromEObjects(bEObjects)
+		correspondence.BTuids += bTuids
+	}
+
+	private def getMetamodelForEObject(EObject eObject) {
+		domainRepository.getDomain(eObject)
+	}
+
+	private def void addCorrespondenceToModel(Correspondence correspondence) {
+		val EList<Correspondence> correspondenceListForAddition = correspondences.correspondences
+		correspondenceListForAddition += correspondence
+	}
 }
