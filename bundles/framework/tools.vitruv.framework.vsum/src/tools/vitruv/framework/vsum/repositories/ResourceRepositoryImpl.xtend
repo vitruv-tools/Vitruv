@@ -43,7 +43,7 @@ import tools.vitruv.framework.vsum.helper.FileSystemHelper
 class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceProviding {
 	static extension Factory = TransactionalEditingDomain::Factory::INSTANCE
 	static extension Logger = Logger::getLogger(ResourceRepositoryImpl.simpleName)
-	static extension TuidManager = TuidManager::instance
+	static extension TuidManager = TuidManager::instance 
 	static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
 
 	@Accessors(PUBLIC_GETTER)

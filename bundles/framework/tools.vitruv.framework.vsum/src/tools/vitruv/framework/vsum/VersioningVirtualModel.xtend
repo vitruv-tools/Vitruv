@@ -29,4 +29,19 @@ interface VersioningVirtualModel extends InternalVirtualModel {
 	def void setAllLastPropagatedChangeId(String id)
 
 	def void setLastPropagatedChangeId(VURI vuri, String id)
+
+	/**
+	 * Method to prevent the 'TUID management with several virtual models' error
+	 * @see https://github.com/vitruv-tools/Vitruv/issues/114
+	 * @author Patrick Stoeckle
+	 */
+	def void registerCorrespondenceModelToTUIDManager()
+
+	/**
+	 * Method to prevent the 'TUID management with several virtual models' error
+	 * @see https://github.com/vitruv-tools/Vitruv/issues/114
+	 * @author Patrick Stoeckle
+	 */
+	def void deregisterCorrespondenceModelFromTUIDManager()
+
 }

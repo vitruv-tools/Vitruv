@@ -1,6 +1,7 @@
 package tools.vitruv.framework.vsum
 
 import java.io.File
+import java.util.Date
 import java.util.List
 import java.util.Map
 import java.util.concurrent.Callable
@@ -12,6 +13,7 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
+import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import tools.vitruv.framework.userinteraction.UserInteracting
@@ -22,7 +24,6 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
-import java.util.Date
 
 class VirtualModelImpl implements VersioningVirtualModel {
 	protected val ResourceRepositoryImpl resourceRepository
@@ -33,12 +34,15 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	@Accessors(PUBLIC_GETTER)
 	val File folder
 
-	// PS Attributes for versioning
-	Date lastCommitDate
-	String allLastPropagatedChangeId
 	@Accessors(PUBLIC_GETTER)
 	UserInteracting userInteractor
+
+	/**  Attribute for versioning */
 	val Map<VURI, String> vuriToLastpropagatedChange
+	/**  Attribute for versioning */
+	Date lastCommitDate
+	/**  Attribute for versioning */
+	String allLastPropagatedChangeId
 
 	private static def dropAllPreviousChanges(
 		List<PropagatedChange> propagatedChanges,
@@ -191,6 +195,14 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	override setAllLastPropagatedChangeId(String id) {
 		allLastPropagatedChangeId = id
 		lastCommitDate = new Date
+	}
+
+	override registerCorrespondenceModelToTUIDManager() {
+		(correspondenceModel as InternalCorrespondenceModel).registerToTUIDManager
+	}
+
+	override deregisterCorrespondenceModelFromTUIDManager() {
+		(correspondenceModel as InternalCorrespondenceModel).deregisterFromTUIDManager
 	}
 
 }

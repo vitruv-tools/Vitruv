@@ -7,4 +7,17 @@ interface InternalCorrespondenceModel extends CorrespondenceModel {
 
 	def void resetChangedAfterLastSave()
 
+	/**
+	 * Method to prevent the 'TUID management with several virtual models' error
+	 * @see https://github.com/vitruv-tools/Vitruv/issues/114
+	 * @author Patrick Stoeckle
+	 */
+	def void registerToTUIDManager()
+
+	/**
+	 * Method to prevent the 'TUID management with several virtual models' error
+	 * @see https://github.com/vitruv-tools/Vitruv/issues/114
+	 * @author Patrick Stoeckle
+	 */
+	def void deregisterFromTUIDManager()
 }

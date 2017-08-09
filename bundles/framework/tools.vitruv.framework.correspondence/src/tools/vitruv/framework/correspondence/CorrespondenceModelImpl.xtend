@@ -42,6 +42,7 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 	val TuidResolver tuidResolver
 	val VitruvDomainRepository domainRepository
 	val VitruviusRecordingCommandExecutor modelCommandExecutor
+	boolean isRegistered = false
 
 	new(TuidResolver tuidResolver, VitruviusRecordingCommandExecutor modelCommandExecutor,
 		VitruvDomainRepository domainRepository, VURI correspondencesVURI, Resource correspondencesResource) {
@@ -57,6 +58,25 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 		this.domainRepository = domainRepository
 		this.tuidResolver = tuidResolver
 		addTuidUpdateListener(this)
+		isRegistered = true
+	}
+
+	override registerToTUIDManager() {
+		if (isRegistered)
+			throw new IllegalStateException('''
+				Trying to register «this» to TUIDManager but was already registered.
+			''')
+		addTuidUpdateListener(this)
+		isRegistered = true
+	}
+
+	override deregisterFromTUIDManager() {
+		if (!isRegistered)
+			throw new IllegalStateException('''
+				Trying to unregister «this» from TUIDManager but was not registered yet.
+			''')
+		removeTuidUpdateListener(this)
+		isRegistered = false
 	}
 
 	override addCorrespondence(Correspondence correspondence) {

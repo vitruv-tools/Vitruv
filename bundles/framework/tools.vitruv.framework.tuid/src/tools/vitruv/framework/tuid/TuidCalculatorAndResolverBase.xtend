@@ -2,18 +2,20 @@ package tools.vitruv.framework.tuid
 
 import java.util.List
 import java.util.Map
+
 import org.apache.log4j.Logger
+
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.URIConverter
 import org.eclipse.xtend.lib.annotations.Accessors
+
 import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.bridges.EcoreBridge
 import tools.vitruv.framework.util.datatypes.ClaimableHashMap
 import tools.vitruv.framework.util.datatypes.ClaimableMap
 import tools.vitruv.framework.util.datatypes.VURI
-import org.apache.log4j.Level
 
 /**
  * Base class for Tuid calculators and resolvers. It handles the default parts of the Tuid like
