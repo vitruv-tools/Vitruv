@@ -14,9 +14,9 @@ final class TuidManager {
 	val Set<TuidUpdateListener> tuidUpdateListener
 
 	private new() {
-		this.tuidCalculator = newHashSet
-		this.tuidUpdateCache = newHashMap
-		this.tuidUpdateListener = newHashSet
+		tuidCalculator = newHashSet
+		tuidUpdateCache = newHashMap
+		tuidUpdateListener = newHashSet
 	}
 
 	static def TuidManager getInstance() {
