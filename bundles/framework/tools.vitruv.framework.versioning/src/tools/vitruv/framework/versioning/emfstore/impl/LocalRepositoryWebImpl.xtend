@@ -1,6 +1,7 @@
 package tools.vitruv.framework.versioning.emfstore.impl
 
 import com.google.gson.JsonParser
+import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.core.MediaType
@@ -14,14 +15,32 @@ import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
 
 class LocalRepositoryWebImpl extends AbstractLocalRepository<String> {
-
 	static extension CommitSerializer = CommitSerializer::instance
 	static extension JsonParser = new JsonParser
+	val Client client
+
+	new() {
+		super()
+		client = ClientBuilder::newClient
+	}
 
 	static def void resetBranch(String branchName, String remoteURL) {
-		val client = ClientBuilder::newClient
-		val target = client.target(remoteURL).path('''commit/«branchName»/reset''')
+		val newClient = ClientBuilder::newClient
+		val target = newClient.target(remoteURL).path('''commit/«branchName»/reset''')
 		target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity::entity("", MediaType::APPLICATION_JSON_TYPE))
+	}
+
+	private static def Iterable<String> getIdentifiers(String remoRepo, String branchName) {
+		val client = ClientBuilder::newClient
+		val target = client.target(remoRepo).path('''commit/«branchName»''').queryParam("idsonly", "true")
+		val response = target.request(MediaType::APPLICATION_JSON_TYPE).get(String)
+		if (response === null || response == "")
+			return #[]
+		val jsonObject = parse(response)
+		if (!jsonObject.jsonArray)
+			return #[]
+		val ids = jsonObject.asJsonArray.map[asString]
+		return ids
 	}
 
 	override addOrigin(LocalBranch<String> branch, String remoteURL) {
@@ -30,7 +49,6 @@ class LocalRepositoryWebImpl extends AbstractLocalRepository<String> {
 		if (!remoteRepositories.exists[it === remoteURL])
 			throw new RepositoryNotFoundException
 		val branchName = branch.name
-		val client = ClientBuilder::newClient
 		val target = client.target(remoteURL).path('''branch/«branchName»''')
 		val response = target.request(MediaType::APPLICATION_JSON_TYPE).get(String)
 		if (response === null || response == "")
@@ -74,7 +92,6 @@ class LocalRepositoryWebImpl extends AbstractLocalRepository<String> {
 		val commitsToPush = currentCommits.drop(ids.length)
 		for (commit : commitsToPush) {
 			val commitString = commit.serialization
-			val client = ClientBuilder::newClient
 			val newTarget = client.target(remoteRepo).path('''commit/«branchName»''')
 			val newResponse = newTarget.request(MediaType::APPLICATION_JSON_TYPE).post(
 				Entity::entity(commitString, MediaType::APPLICATION_JSON_TYPE), String)
@@ -101,19 +118,6 @@ class LocalRepositoryWebImpl extends AbstractLocalRepository<String> {
 		return PushState::SUCCESS
 	}
 
-	private static def Iterable<String> getIdentifiers(String remoRepo, String branchName) {
-		val client = ClientBuilder::newClient
-		val target = client.target(remoRepo).path('''commit/«branchName»''').queryParam("idsonly", "true")
-		val response = target.request(MediaType::APPLICATION_JSON_TYPE).get(String)
-		if (response === null || response == "")
-			return #[]
-		val jsonObject = parse(response)
-		if (!jsonObject.jsonArray)
-			return #[]
-		val ids = jsonObject.asJsonArray.map[asString]
-		return ids
-	}
-
 	override pull(LocalBranch<String> branch) {
 		val branchName = branch.name
 		val remoteBranch = branch.remoteBranch
@@ -135,7 +139,6 @@ class LocalRepositoryWebImpl extends AbstractLocalRepository<String> {
 		val idsToPull = newArrayList
 		ids.drop(localIds.length).forEach[idsToPull += it]
 		for (id : idsToPull) {
-			val client = ClientBuilder::newClient
 			val newTarget = client.target(remoteRepo).path('''commit/«branchName»/«id»''')
 			val newResponse = newTarget.request(MediaType::APPLICATION_JSON_TYPE).get(String)
 			if (newResponse === null || newResponse == "")
@@ -151,7 +154,6 @@ class LocalRepositoryWebImpl extends AbstractLocalRepository<String> {
 	}
 
 	override void createBranchOnServer(String name, String remoteURL) {
-		val client = ClientBuilder::newClient
 		val target = client.target(remoteURL).path('''branch''')
 		val response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity::entity(
 			'''

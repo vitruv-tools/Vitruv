@@ -5,7 +5,6 @@ import java.util.Set
 
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 
-import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.Conflict
@@ -13,9 +12,9 @@ import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.RemoteBranch
-import tools.vitruv.framework.vsum.VersioningVirtualModel
-import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.versioning.common.commit.MergeCommit
+import tools.vitruv.framework.versioning.common.commit.SimpleCommit
+import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 interface LocalRepository<T> extends AbstractRepository {
 	def void setAllFlag(boolean allFlag)
@@ -37,8 +36,6 @@ interface LocalRepository<T> extends AbstractRepository {
 	def Set<LocalBranch<T>> getLocalBranches()
 
 	def SimpleCommit commit(String s)
-
-	def SimpleCommit commit(String s, List<PropagatedChange> changes)
 
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel)
 

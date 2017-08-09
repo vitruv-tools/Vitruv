@@ -181,7 +181,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val clonedChange = cloneVitruviusChange(change)
 		val changeApplicationFunction = [ ResourceSet resourceSet |
 			// If change has a URI, load the model
-			if(change.URI !== null) resourceRepository.getModel(change.URI)
+			if (change.URI !== null) resourceRepository.getModel(change.URI)
 			change.resolveBeforeAndApplyForward(resourceSet)
 			return
 		]
@@ -269,7 +269,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	) {
 		val isUnresolved = modelRepository.unresolveChanges
 		val vuri = resolvedChange.URI
-		val uuid = if(null !== currentChangeId) currentChangeId else UUID::randomUUID.toString
+		val uuid = if (null !== currentChangeId) currentChangeId else UUID::randomUUID.toString
 		currentChangeId = null
 		val unresolvedTriggeredChanges = resourceRepository.lastUnresolvedChanges
 		val resolvedTriggeredChanges = resourceRepository.lastResolvedChanges
@@ -278,7 +278,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 				The length of changes should be equal but there are «unresolvedTriggeredChanges.length»
 				respectively «resolvedTriggeredChanges.length»
 			''')
-
 		val unresolvedPropagatedChange = new PropagatedChangeImpl(uuid, unresolvedChange,
 			createCompositeChange(unresolvedTriggeredChanges))
 		val resolvedPropagatedChange = new PropagatedChangeImpl(uuid, resolvedChange,

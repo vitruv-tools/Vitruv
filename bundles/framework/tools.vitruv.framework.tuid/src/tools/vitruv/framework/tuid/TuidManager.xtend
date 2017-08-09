@@ -48,17 +48,15 @@ final class TuidManager {
 	}
 
 	private def TuidCalculator getTuidCalculator(EObject object) {
-		var TuidCalculator resultCalculator = null
-		for (potentialCalculator : tuidCalculator) {
-			if (potentialCalculator.canCalculateTuid(object)) {
-				if (resultCalculator !== null) {
-					throw new IllegalStateException(
-						"There are two Tuid calculators registered that can handle the EObject: " + object +
-							", which are " + resultCalculator + " and " + potentialCalculator)
-				}
-				resultCalculator = potentialCalculator
-			}
-		}
+		val potentialCalculators = tuidCalculator.filter[canCalculateTuid(object)]
+		if (potentialCalculators.length > 1)
+			throw new IllegalStateException(
+				'''
+				There are two Tuid calculators registered that can handle the EObject: «object», which are
+				«FOR potentialCalculator : potentialCalculators SEPARATOR ", "» «potentialCalculator» «ENDFOR»
+				potentialCalculator
+			''')
+		val resultCalculator = potentialCalculators.get(0)
 		return resultCalculator
 	}
 
@@ -87,7 +85,7 @@ final class TuidManager {
 			val newTuid = key.calculateTuid
 			value.updateTuid(newTuid)
 			debug('''Changed Tuid from «value» to «newTuid»''')
-			XtendAssertHelper.assertTrue(value == newTuid)
+			XtendAssertHelper::assertTrue(value == newTuid)
 		]
 	}
 

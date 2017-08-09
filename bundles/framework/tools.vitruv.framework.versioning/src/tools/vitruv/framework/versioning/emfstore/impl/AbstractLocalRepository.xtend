@@ -30,6 +30,7 @@ import tools.vitruv.framework.vsum.VersioningVirtualModel
 import tools.vitruv.framework.versioning.branch.RemoteBranch
 import tools.vitruv.framework.versioning.common.commit.Commit
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
+import tools.vitruv.framework.tests.TestUserInteractor
 
 abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements LocalRepository<T> {
 	static extension BranchDiffCreator = BranchDiffCreator::instance
@@ -92,7 +93,8 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		val changeMatches = currentVirtualModel.allUnresolvedPropagatedChangesSinceLastCommit.immutableCopy
 		if (changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
-		val commit = commit(s, changeMatches)
+		val userInteractions = currentVirtualModel.userInteractionsSinceLastCommit
+		val commit = commit(s, changeMatches, userInteractions)
 		val lastChangeId = changeMatches.last.id
 		currentVirtualModel.allLastPropagatedChangeId = lastChangeId
 		return commit
@@ -102,13 +104,14 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		val changeMatches = currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri).immutableCopy
 		if (changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
-		val commit = commit(s, changeMatches)
+		val userInteractions = currentVirtualModel.userInteractionsSinceLastCommit
+		val commit = commit(s, changeMatches, userInteractions)
 		val lastChangeId = changeMatches.last.id
 		currentVirtualModel.setLastPropagatedChangeId(vuri, lastChangeId)
 		return commit
 	}
 
-	override commit(String s, List<PropagatedChange> changes) {
+	private def commit(String s, List<PropagatedChange> changes, List<Integer> userInteractions) {
 		warn("Please use commit(String s, VersioningVirtualModel virtualModel, VURI vuri)")
 		val lastCommit = commits.last
 		val commit = createSimpleCommit(
@@ -116,7 +119,8 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 			s,
 			author.name,
 			author.email,
-			lastCommit.identifier
+			lastCommit.identifier,
+			userInteractions
 		)
 		addCommit(commit)
 		head = commit
@@ -154,6 +158,9 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 			val newChange = createEMFModelChangeFromEChanges(eChanges)
 			return key -> newChange
 		].toList.immutableCopy
+		val userInteractions = relevantCommits.map[userInteractions].flatten.toList
+		val userInteractor = currentVirtualModel.userInteractor as TestUserInteractor
+		userInteractor.addNextSelections(userInteractions)
 		newChanges.forEach [
 			currentVirtualModel.propagateChange(value, key)
 		]
@@ -260,7 +267,8 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 			author.name,
 			author.email,
 			sourceIds,
-			tagetIds
+			tagetIds,
+			#[]
 		)
 		targetCommitsToCompare.reverseView.immutableCopy.forEach [
 			removeCommit(it, target)
@@ -279,7 +287,8 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 				c.commitmessage.message,
 				c.commitmessage.authorName,
 				c.commitmessage.authorEMail,
-				lastCommit.identifier
+				lastCommit.identifier,
+				lastCommit.userInteractions
 			)
 			addCommit(newCommit, branch)
 		} else

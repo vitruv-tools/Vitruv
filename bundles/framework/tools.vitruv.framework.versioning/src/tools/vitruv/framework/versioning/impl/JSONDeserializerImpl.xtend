@@ -7,12 +7,12 @@ import com.google.gson.JsonObject
 
 import tools.vitruv.framework.versioning.JSONDeserializer
 import tools.vitruv.framework.versioning.common.EChangeSerializer
-import tools.vitruv.framework.versioning.common.commit.CommitMessage
-import tools.vitruv.framework.versioning.common.commit.impl.CommitMessageImpl
 import tools.vitruv.framework.versioning.common.JSONSerializable
-import tools.vitruv.framework.versioning.common.commit.impl.SimpleCommitImpl
+import tools.vitruv.framework.versioning.common.commit.CommitMessage
 import tools.vitruv.framework.versioning.common.commit.impl.CommitImpl
+import tools.vitruv.framework.versioning.common.commit.impl.CommitMessageImpl
 import tools.vitruv.framework.versioning.common.commit.impl.MergeCommitImpl
+import tools.vitruv.framework.versioning.common.commit.impl.SimpleCommitImpl
 
 class JSONDeserializerImpl implements JSONDeserializer {
 	static extension Gson = new GsonBuilder().create
@@ -42,7 +42,7 @@ class JSONDeserializerImpl implements JSONDeserializer {
 			val commitmessageJSON = jsonObject.get(CommitImpl::COMMITMESSAGE_KEY).asJsonObject
 			val identifier = jsonObject.get(CommitImpl::IDENTIFIER_KEY).asString
 			val numberOfChanges = jsonObject.get(CommitImpl::NUMBEROFCHANGES_KEY).asInt
-
+			val userInteractions = jsonObject.get(CommitImpl::USERINTERACTIONS_KEY).asJsonArray.map[asInt].toList
 			val changes = changesJSON.deserializeAll
 			val commitMessage = createCommitMessageDeserialization(commitmessageJSON)
 			if (type == SimpleCommitImpl.name) {
@@ -54,6 +54,7 @@ class JSONDeserializerImpl implements JSONDeserializer {
 					newArrayList,
 					newArrayList,
 					identifier,
+					userInteractions,
 					parent
 				) as T
 			} else {
@@ -66,6 +67,7 @@ class JSONDeserializerImpl implements JSONDeserializer {
 					newArrayList,
 					newArrayList,
 					identifier,
+					userInteractions,
 					sourceCommits,
 					targetCommits
 				) as T
