@@ -33,7 +33,6 @@ import tools.vitruv.framework.tuid.impl.TuidImpl
  * @author kramerm
  */
 interface Tuid extends Serializable {
-	def void updateTuid(EObject newObject)
 
 	/** 
 	 * Returns the unique Tuid (instance) for the specified tuidString (key).
@@ -48,10 +47,21 @@ interface Tuid extends Serializable {
 		TuidImpl::reinitialize
 	}
 
+	/**
+	 * Returns a String representation of all registered Tuid instances.
+	 * @return a String representation of all registered Tuid instances
+	 */
 	def static String toStrings() {
 		TuidImpl::toStrings
 	}
 
+	/**
+	 * Returns whether the Tuid instance is valid in the sense that all Tuid instances that are
+	 * contained in the forward (tree) registry are also contained in the backward (link) registry
+	 * and vice-versa.
+	 * @return whether the Tuid instance is valid
+	 * @throws a {@link IllegalStateException} if the Tuid instance is not valid
+	 */
 	def static boolean validate() {
 		TuidImpl::validate
 	}
@@ -63,4 +73,5 @@ interface Tuid extends Serializable {
 	 */
 	def void updateTuid(Tuid newTuid)
 
+	def void updateTuid(EObject newObject)
 }

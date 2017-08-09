@@ -29,7 +29,7 @@ class TuidManagerImpl implements TuidManager {
 		tuidUpdateListener = newHashSet
 	}
 
-	override void addTuidUpdateListener(TuidUpdateListener updateListener) {
+	override addTuidUpdateListener(TuidUpdateListener updateListener) {
 		if (updateListener !== null)
 			tuidUpdateListener += updateListener
 	}
@@ -38,7 +38,7 @@ class TuidManagerImpl implements TuidManager {
 		tuidUpdateListener -= updateListener
 	}
 
-	override void addTuidCalculator(TuidCalculator calculator) {
+	override addTuidCalculator(TuidCalculator calculator) {
 		if (calculator !== null)
 			tuidCalculator += calculator
 	}

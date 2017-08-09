@@ -65,7 +65,6 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 		String tuid,
 		URIConverter uriConverter
 	) {
-		level = Level::DEBUG
 		val tuidSegments = tuid.split(VitruviusConstants.tuidSegmentSeperator)
 		if (tuidSegments.length < 2)
 			throw new IllegalStateException("Tuid too short")
