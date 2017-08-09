@@ -1,7 +1,7 @@
 package tools.vitruv.framework.userinteraction.impl
 
+import java.util.Date
 import javax.swing.JOptionPane
-import org.eclipse.emf.common.util.URI
 import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.ui.PlatformUI
@@ -9,26 +9,22 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.framework.util.bridges.EclipseUIBridge
 
-/** 
+/**
  * @author messinger
  * Implements {@link UserInteracting} and decouples {@link UserInteractorDialog} from
  * Platform.
  */
 class UserInteractor implements UserInteracting {
 	static val VITRUVIUS_TEXT_INPUT_DIALOG = "Vitruvius Text Input Dialog"
-	protected Display display
-	protected Shell shell
+	protected val Display display
+	protected val Shell shell
 
 	new() {
-		init
-	}
-
-	def void init() {
 		display = PlatformUI::workbench.display
 		shell = null
 	}
 
-	override void showMessage(UserInteractionType type, String message) {
+	override showMessage(UserInteractionType type, String message) {
 		display.syncExec([
 			switch (type) {
 				case MODAL,
@@ -44,7 +40,7 @@ class UserInteractor implements UserInteracting {
 		])
 	}
 
-	override int selectFromMessage(UserInteractionType type, String message, String... selectionDescriptions) {
+	override selectFromMessage(UserInteractionType type, String message, String... selectionDescriptions) {
 		val int[] result = newIntArrayOfSize(1)
 		display.syncExec([
 			switch (type) {
@@ -75,17 +71,21 @@ class UserInteractor implements UserInteracting {
 		return result.get(0)
 	}
 
-	override String getTextInput(String msg) {
-		val String textInput = JOptionPane.showInputDialog(null, msg, VITRUVIUS_TEXT_INPUT_DIALOG,
+	override getTextInput(String msg) {
+		val String textInput = JOptionPane::showInputDialog(null, msg, VITRUVIUS_TEXT_INPUT_DIALOG,
 			JOptionPane.OK_OPTION)
 		return textInput
 	}
 
-	override URI selectURI(String message) {
+	override selectURI(String message) {
 		EclipseUIBridge::askForNewResource(message)
 	}
 
 	override getAllUserInteractions() {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+
+	override getAllUserInteractionsSince(Date date) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 

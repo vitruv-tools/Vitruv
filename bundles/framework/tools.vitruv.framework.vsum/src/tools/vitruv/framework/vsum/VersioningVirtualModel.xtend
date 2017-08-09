@@ -8,6 +8,8 @@ import tools.vitruv.framework.util.datatypes.VURI
 
 interface VersioningVirtualModel extends InternalVirtualModel {
 
+	def List<Integer> getUserInteractionsSinceLastCommit()
+
 	def List<PropagatedChange> getAllResolvedPropagatedChanges()
 
 	def List<PropagatedChange> getAllUnresolvedPropagatedChanges()

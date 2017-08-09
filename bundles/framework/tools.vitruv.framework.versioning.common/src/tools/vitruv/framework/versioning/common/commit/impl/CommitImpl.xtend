@@ -16,6 +16,8 @@ abstract class CommitImpl implements Commit {
 	public static val COMMITMESSAGE_KEY = "commitmessage"
 	public static val IDENTIFIER_KEY = "identifier"
 	public static val NUMBEROFCHANGES_KEY = "numberOfChanges"
+	public static val USERINTERACTIONS_KEY = "userInteractions"
+
 	List<PropagatedChange> changes
 
 	int numberOfChanges
@@ -28,4 +30,5 @@ abstract class CommitImpl implements Commit {
 
 	String identifier
 
+	List<Integer> userInteractions
 }

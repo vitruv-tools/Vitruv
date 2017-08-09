@@ -13,9 +13,11 @@ interface Commit extends JSONSerializable {
 
 	def List<PropagatedChange> getChanges()
 
-	def int getNumberOfChanges()
-
 	def List<SimpleCommit> getCommitsBranchedFromThis()
 
 	def String getIdentifier()
+
+	def int getNumberOfChanges()
+
+	def List<Integer> getUserInteractions()
 }

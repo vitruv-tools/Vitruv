@@ -20,7 +20,8 @@ class MergeCommitImpl extends CommitImpl implements MergeCommit {
 			"«IDENTIFIER_KEY»": "«identifier»",
 			"«NUMBEROFCHANGES_KEY»": «numberOfChanges»,
 			"«SOURCE_COMMIT_KEY»": «sourceCommit»,
-			"«TARGET_COMMIT_KEY»": «targetCommit»
+			"«TARGET_COMMIT_KEY»": «targetCommit»,
+			"«USERINTERACTIONS_KEY»": [«FOR u : userInteractions SEPARATOR ", "» «u»«ENDFOR»]
 		}
 	'''
 

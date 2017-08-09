@@ -101,7 +101,6 @@ class EChangeSerializerImpl implements EChangeSerializer {
 		val originalChange = jobject.get("originalChange").asJsonObject.deserializeVitruviusChange
 		val consequentialChanges = jobject.get("consequentialChanges").asJsonObject.deserializeVitruviusChange
 		return new PropagatedChangeImpl(id, originalChange, consequentialChanges)
-
 	}
 
 	private new() {

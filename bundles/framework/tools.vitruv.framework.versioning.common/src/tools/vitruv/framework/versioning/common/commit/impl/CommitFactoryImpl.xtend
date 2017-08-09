@@ -18,7 +18,7 @@ class CommitFactoryImpl implements CommitFactory {
 
 	override createInitialCommit() {
 		val commitMessage = createCommitMessage("Initial commit", "", "")
-		return new SimpleCommitImpl(#[], 0, commitMessage, newArrayList, newArrayList, initialCommitHash, null)
+		return new SimpleCommitImpl(#[], 0, commitMessage, newArrayList, newArrayList, initialCommitHash, #[], null)
 	}
 
 	override createCommitMessage(
@@ -34,7 +34,8 @@ class CommitFactoryImpl implements CommitFactory {
 		String message,
 		String authorName,
 		String authorEMail,
-		String parent
+		String parent,
+		List<Integer> userInteractions
 	) {
 		val commitMessage = createCommitMessage(message, authorName, authorEMail)
 		val oldInfosToHash = '''
@@ -56,7 +57,16 @@ class CommitFactoryImpl implements CommitFactory {
 		'''
 		val stringToHash = '''«prefix»«oldInfosToHash.length»«oldInfosToHash»'''
 		val hash = DigestUtils::sha512Hex(stringToHash)
-		return new SimpleCommitImpl(changes, changes.length, commitMessage, newArrayList, newArrayList, hash, parent)
+		return new SimpleCommitImpl(
+			changes,
+			changes.length,
+			commitMessage,
+			newArrayList,
+			newArrayList,
+			hash,
+			userInteractions,
+			parent
+		)
 
 	}
 
@@ -66,7 +76,8 @@ class CommitFactoryImpl implements CommitFactory {
 		String authorName,
 		String authorEMail,
 		String sources,
-		String targets
+		String targets,
+		List<Integer> userInteractions
 	) {
 		val commitMessage = createCommitMessage(message, authorName, authorEMail)
 		val oldInfosToHash = '''
@@ -91,8 +102,17 @@ class CommitFactoryImpl implements CommitFactory {
 		'''
 		val stringToHash = '''«prefix»«oldInfosToHash.length»«oldInfosToHash»'''
 		val hash = DigestUtils::sha512Hex(stringToHash)
-		return new MergeCommitImpl(changes, changes.length, commitMessage, newArrayList, newArrayList, hash, sources,
-			targets)
+		return new MergeCommitImpl(
+			changes,
+			changes.length,
+			commitMessage,
+			newArrayList,
+			newArrayList,
+			hash,
+			userInteractions,
+			sources,
+			targets
+		)
 	}
 
 }

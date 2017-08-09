@@ -1,14 +1,19 @@
 package tools.vitruv.framework.tests
 
-import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil
 import java.util.ArrayList
 import java.util.Arrays
 import java.util.Collection
+import java.util.Date
+import java.util.List
 import java.util.Random
 import java.util.concurrent.ConcurrentLinkedQueue
+
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtend.lib.annotations.Accessors
+
+import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil
+
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.userinteraction.UserInteractionType
 
@@ -27,13 +32,14 @@ class TestUserInteractor implements UserInteracting {
 	val int maxWaittime
 	val int waitTimeRange
 	@Accessors(PUBLIC_GETTER)
-	Collection<String> messageLog
+	val Collection<String> messageLog
+	val List<Pair<Date, Integer>> userInteractions
 
 	new(int minWaittime, int maxWaittime) {
-		if (minWaittime >
-			maxWaittime)
-			throw new RuntimeException('''Configure min and max waittime properly: Min«minWaittime» Max: «maxWaittime»''')
-		
+		if (minWaittime > maxWaittime)
+			throw new RuntimeException('''
+				Configure min and max waittime properly: Min«minWaittime» Max: «maxWaittime»
+			''')
 		this.minWaittime = minWaittime
 		this.maxWaittime = maxWaittime
 		waitTimeRange = maxWaittime - minWaittime
@@ -42,15 +48,25 @@ class TestUserInteractor implements UserInteracting {
 		concurrentURILinkedQueue = new ConcurrentLinkedQueue<URI>
 		random = new Random
 		messageLog = new ArrayList<String>
+		userInteractions = newArrayList
 	}
 
 	new() {
 		this(-1, -1)
 	}
 
+	override getAllUserInteractions() {
+		userInteractions.map[value]
+	}
+
+	override getAllUserInteractionsSince(Date date) {
+		userInteractions.dropWhile[key < date].map[value].toList
+	}
+
 	def void addNextSelections(Integer... nextSelections) {
-		concurrentIntLinkedQueue.clear()
-		concurrentIntLinkedQueue.addAll(Arrays.asList(nextSelections))
+		concurrentIntLinkedQueue.clear
+		nextSelections.forEach[userInteractions += new Date -> it]
+		concurrentIntLinkedQueue.addAll(Arrays::asList(nextSelections))
 	}
 
 	def void addNextSelections(String... nextSelections) {
@@ -104,30 +120,27 @@ class TestUserInteractor implements UserInteracting {
 	override String getTextInput(String msg) {
 		simulateUserThinktime
 		var String text = ""
-		if (!concurrentStringLinkedQueue.isEmpty()) {
-			text = concurrentStringLinkedQueue.poll
-		} else {
+		if (concurrentStringLinkedQueue.empty)
 			throw new IllegalStateException("No user interaction integer selection specified")
-		}
-		info('''«TestUserInteractor.getSimpleName()» selecteded «text»''')
+		text = concurrentStringLinkedQueue.poll
+		info('''
+			«TestUserInteractor.simpleName» selecteded «text»
+		''')
 		return text
 	}
 
 	override URI selectURI(String message) {
-		if (concurrentURILinkedQueue.
-			isEmpty()) {
-			throw new IllegalStateException('''No URI found in «TestUserInteractor.getSimpleName()» for message «message»''')
-		}
-		val URI result = concurrentURILinkedQueue.poll
-		info('''«TestUserInteractor.getSimpleName()» selected «result.toString()»''')
+		if (concurrentURILinkedQueue.empty)
+			throw new IllegalStateException('''
+				No URI found in «TestUserInteractor.simpleName» for message «message»
+			''')
+		val result = concurrentURILinkedQueue.poll
+		info('''«TestUserInteractor.simpleName» selected «result.toString»''')
 		return result
 	}
 
 	def boolean isResourceQueueEmpty() {
-		return concurrentURILinkedQueue.isEmpty()
+		concurrentURILinkedQueue.empty
 	}
 
-	def Collection<String> getMessageLog() {
-		return messageLog
-	}
 }

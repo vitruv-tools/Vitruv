@@ -23,7 +23,8 @@ class SimpleCommitImpl extends CommitImpl implements SimpleCommit {
 			"«IDENTIFIER_KEY»": "«identifier»",
 			"«NUMBEROFCHANGES_KEY»": «numberOfChanges»,
 			"«PARENT_KEY»": "«parent»",
-			"«TYPE_KEY»": "«SimpleCommitImpl.name»"
+			"«TYPE_KEY»": "«SimpleCommitImpl.name»",
+			"«USERINTERACTIONS_KEY»": [«FOR u : userInteractions SEPARATOR ", "» «u»«ENDFOR»]
 		}
 	'''
 

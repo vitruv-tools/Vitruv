@@ -14,7 +14,8 @@ interface CommitFactory {
 		String authorName,
 		String authorEMail,
 		String source,
-		String target
+		String target,
+		List<Integer> userInteractions
 	)
 
 	def SimpleCommit createSimpleCommit(
@@ -22,7 +23,8 @@ interface CommitFactory {
 		String message,
 		String authorName,
 		String authorEMail,
-		String parent
+		String parent,
+		List<Integer> userInteractions
 	)
 
 	def CommitMessage createCommitMessage(
