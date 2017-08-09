@@ -1,14 +1,14 @@
 package tools.vitruv.framework.tests.util
 
-import com.google.common.io.Files
 import java.io.File
-import java.util.ArrayList
 import java.util.Date
 import java.util.List
+
 import org.apache.log4j.ConsoleAppender
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.apache.log4j.PatternLayout
+
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.resources.IProjectDescription
@@ -23,6 +23,9 @@ import org.eclipse.jdt.core.JavaCore
 import org.eclipse.jdt.launching.IVMInstall
 import org.eclipse.jdt.launching.JavaRuntime
 import org.eclipse.jdt.launching.LibraryLocation
+
+import com.google.common.io.Files
+
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.domains.AbstractVitruvDomain
 import tools.vitruv.framework.domains.VitruvDomain
@@ -79,7 +82,7 @@ final class TestUtil {
 		val String timestampedProjectName = addTimestampToString(projectFolder.toString)
 		var File timestampedProjectFolder = new File(timestampedProjectName)
 		var String countedProjectName = timestampedProjectName
-// If project exists, add an index
+		// If project exists, add an index
 		var int counter = 1
 		while (timestampedProjectFolder.exists) {
 			countedProjectName = '''«timestampedProjectName»--«counter++»'''.toString
@@ -92,7 +95,7 @@ final class TestUtil {
 		val String timestampedProjectName = addTimestampToString(projectName)
 		var IProject testProject = TestUtil::getProjectByName(timestampedProjectName)
 		var String countedProjectName = timestampedProjectName
-// If project exists, add an index
+		// If project exists, add an index
 		var int counter = 1
 		while (testProject.exists) {
 			countedProjectName = '''«timestampedProjectName»--«counter++»'''.toString
@@ -102,8 +105,8 @@ final class TestUtil {
 	}
 
 	def static IProject initializeProject(IProject testProject) throws CoreException {
-// copied from:
-// https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
+		// copied from:
+		// https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
 		testProject.create(new NullProgressMonitor)
 		testProject.open(new NullProgressMonitor)
 		val IProjectDescription description = testProject.description
@@ -113,7 +116,7 @@ final class TestUtil {
 		val IFolder binFolder = testProject.getFolder("bin")
 		binFolder.create(false, true, null)
 		javaProject.setOutputLocation(binFolder.fullPath, null)
-		val List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>
+		val List<IClasspathEntry> entries = newArrayList
 		val IVMInstall vmInstall = JavaRuntime::defaultVMInstall
 		if (null !== vmInstall) {
 			val LibraryLocation[] locations = JavaRuntime::getLibraryLocations(vmInstall)
@@ -121,7 +124,7 @@ final class TestUtil {
 				entries.add(JavaCore.newLibraryEntry(element.systemLibraryPath, null, null))
 			}
 		}
-// add libs to project class path
+		// add libs to project class path
 		javaProject.setRawClasspath(entries.toArray(newArrayOfSize(entries.size)), null)
 		val IFolder sourceFolder = testProject.getFolder("src")
 		sourceFolder.create(false, true, null)
@@ -129,11 +132,9 @@ final class TestUtil {
 		val IClasspathEntry[] oldEntries = javaProject.rawClasspath
 		val IClasspathEntry[] newEntries = newArrayOfSize(oldEntries.length + 1)
 		System::arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length)
-		{
-			val _wrVal_newEntries = newEntries
-			val _wrIndx_newEntries = oldEntries.length
-			_wrVal_newEntries.set(_wrIndx_newEntries, JavaCore::newSourceEntry(root.path))
-		}
+		val _wrVal_newEntries = newEntries
+		val _wrIndx_newEntries = oldEntries.length
+		_wrVal_newEntries.set(_wrIndx_newEntries, JavaCore::newSourceEntry(root.path))
 		javaProject.setRawClasspath(newEntries, null)
 		return testProject
 	}
@@ -155,18 +156,18 @@ final class TestUtil {
 		Iterable<ChangePropagationSpecification> changePropagationSpecifications,
 		UserInteracting userInteracting
 	) {
-		var File projectFolder = virtualModelFolder
-		if (addTimestampAndMakeNameUnique)
-			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder)
-		val VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration
-		for (VitruvDomain metamodel : metamodels) {
-			vmodelConfig.addMetamodel(metamodel)
-		}
-		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
-			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification)
-		}
-		val InternalVirtualModel vmodel = InternalVirtualModel::createInternalTestVirtualModel(projectFolder,
-			userInteracting, vmodelConfig)
+		val projectFolder = if (addTimestampAndMakeNameUnique)
+				addTimestampToProjectNameAndMakeUnique(virtualModelFolder)
+			else
+				virtualModelFolder
+		val vmodelConfig = new VirtualModelConfiguration
+		metamodels.forEach[vmodelConfig.addMetamodel(it)]
+		changePropagationSpecifications.forEach[vmodelConfig.addChangePropagationSpecification(it)]
+		val vmodel = InternalVirtualModel::createInternalTestVirtualModel(
+			projectFolder,
+			userInteracting,
+			vmodelConfig
+		)
 		return vmodel
 	}
 
@@ -188,8 +189,13 @@ final class TestUtil {
 		UserInteracting userInteracting
 	) {
 		val File testWorkspace = createTestWorkspace
-		return createVirtualModel(new File(testWorkspace, virtualModelName), addTimestampAndMakeNameUnique, metamodels,
-			changePropagationSpecifications, userInteracting)
+		return createVirtualModel(
+			new File(testWorkspace, virtualModelName),
+			addTimestampAndMakeNameUnique,
+			metamodels,
+			changePropagationSpecifications,
+			userInteracting
+		)
 	}
 
 	def static File createTestWorkspace() {
@@ -206,7 +212,7 @@ final class TestUtil {
 	}
 
 	def static File createProjectFolder(String projectName, boolean addTimestampAndMakeNameUnique) {
-		val File testWorkspace = createTestWorkspace()
+		val File testWorkspace = createTestWorkspace
 		var File projectFolder = new File(testWorkspace, projectName)
 		if (addTimestampAndMakeNameUnique)
 			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder)
@@ -223,18 +229,15 @@ final class TestUtil {
 	 * @return the create {@link VitruvDomain}
 	 */
 	def static VitruvDomain createVitruvDomain(String name, EPackage metamodelRootPackage, String fileExt) {
-		val VitruvDomain domain = new AbstractVitruvDomain(name, metamodelRootPackage,
+		return new AbstractVitruvDomain(name, metamodelRootPackage,
 			new AttributeTuidCalculatorAndResolver(metamodelRootPackage.nsURI), fileExt) {
-			override getBuilderApplicator() {
-				return null
-			}
+			override getBuilderApplicator() { null }
 		}
-		return domain
 	}
 
 	def static String addTimestampToString(String originalString) {
-		val String timestamp = new Date(System::currentTimeMillis()).toString.replace(" ", "_").replace(":", "_")
-		val String stringWithTimeStamp = '''«originalString»_«timestamp»'''.toString
+		val timestamp = new Date(System::currentTimeMillis()).toString.replace(" ", "_").replace(":", "_")
+		val stringWithTimeStamp = '''«originalString»_«timestamp»'''
 		return stringWithTimeStamp
 	}
 
@@ -259,7 +262,7 @@ final class TestUtil {
 	}
 
 	def static IProject getProjectByName(String projectName) {
-		val IProject iProject = ResourcesPlugin::workspace.root.getProject(projectName)
+		val iProject = ResourcesPlugin::workspace.root.getProject(projectName)
 		return iProject
 	}
 }

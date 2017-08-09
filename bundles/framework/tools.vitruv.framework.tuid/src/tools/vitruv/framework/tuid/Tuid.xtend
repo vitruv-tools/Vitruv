@@ -42,7 +42,8 @@ import org.eclipse.emf.ecore.EObject
  * @author kramerm
  */
 final class Tuid implements Serializable {
-
+	static extension TuidManager = TuidManager::
+		instance
 	protected static final long serialVersionUID = 5018494116382201707L
 
 	static var SEGMENTS = generateForwardHashedBackwardLinkedTree()
@@ -53,7 +54,7 @@ final class Tuid implements Serializable {
 	}
 
 	public def updateTuid(EObject newObject) {
-		TuidManager.instance.updateTuid(this, newObject);
+		updateTuid(this, newObject);
 	}
 
 	def private static generateForwardHashedBackwardLinkedTree() {
@@ -135,14 +136,14 @@ final class Tuid implements Serializable {
 	 */
 	def private static synchronized void updateInstance(Tuid tuid,
 		ForwardHashedBackwardLinkedTree<String>.Segment newLastSegment) {
-		TuidManager.instance.notifyListenerBeforeTuidUpdate(tuid)
+		notifyListenerBeforeTuidUpdate(tuid)
 		val oldSegment = tuid.lastSegment
 		val tuidsForOldSegment = new ArrayList<Tuid>(LAST_SEGMENT_2_Tuid_INSTANCES_MAP.remove(oldSegment));
 		for (representant : tuidsForOldSegment) {
 			representant.lastSegment = newLastSegment;
 			mapSegmentToTuid(newLastSegment, representant);
 		}
-		TuidManager.instance.notifyListenerAfterTuidUpdate(tuid)
+		notifyListenerAfterTuidUpdate(tuid)
 	}
 
 	def private static List<String> split(String tuidString) {
@@ -193,10 +194,12 @@ final class Tuid implements Serializable {
 	 * @return a String representation of all registered Tuid instances
 	 */
 	def static String toStrings() {
-		return '''Tuid segments:
-«SEGMENTS.toString()»
-lastSegment2TuidMap:
-«LAST_SEGMENT_2_Tuid_INSTANCES_MAP.toString()»'''
+		return '''
+			Tuid segments:
+					«SEGMENTS.toString()»
+					lastSegment2TuidMap:
+					«LAST_SEGMENT_2_Tuid_INSTANCES_MAP.toString()»
+		'''
 	}
 
 	override int hashCode() {

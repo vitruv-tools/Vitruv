@@ -20,6 +20,7 @@ import tools.vitruv.framework.util.datatypes.VURI
  * @since
  */
 class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
+	static extension TuidManager = TuidManager::instance
 	private final ChangeDescription changeDescription;
 	private var boolean canBeBackwardsApplied;
 	private val VURI savedURI;
@@ -84,8 +85,8 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 	}
 
 	protected def void updateTuids() {
-		TuidManager::instance.updateTuidsOfRegisteredObjects
-		TuidManager::instance.flushRegisteredObjectsUnderModification
+		updateTuidsOfRegisteredObjects
+		flushRegisteredObjectsUnderModification
 	}
 
 	def applyForwardWithoutTuidUpdate() throws IllegalStateException {
@@ -103,7 +104,6 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 	}
 
 	private def registerOldObjectTuidsForUpdate() {
-		val tuidManager = TuidManager::instance
 		val objects = new HashSet<EObject>
 		objects.addAll(changeDescription.objectChanges.keySet.filterNull)
 		objects.addAll(changeDescription.objectChanges.values.flatten.map[referenceValue].filterNull)
@@ -112,7 +112,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 		// Add container objects
 		val containerObjects = objects.map[eContainer].filterNull
 		for (EObject object : objects + containerObjects) {
-			tuidManager.registerObjectUnderModification(object)
+			registerObjectUnderModification(object)
 		}
 	}
 

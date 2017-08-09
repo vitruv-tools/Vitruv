@@ -22,6 +22,7 @@ import tools.vitruv.framework.util.datatypes.AbstractURIHaving
 import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractVitruvDomain extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener, VitruvDomain {
+	static extension TuidManager = TuidManager::instance
 	@Accessors(PUBLIC_GETTER)
 	val Collection<EPackage> furtherRootPackages
 	val Collection<String> fileExtensions
@@ -172,8 +173,8 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements TuidCal
 	override toString() '''Metamodel for namespaces: «nsURIs»'''
 
 	override registerAtTuidManagement() {
-		TuidManager::instance.addTuidCalculator(this)
-		TuidManager::instance.addTuidUpdateListener(this)
+		addTuidCalculator(this)
+		addTuidUpdateListener(this)
 	}
 
 	def boolean isMetamodelForVuri(VURI metamodelVURI) {
