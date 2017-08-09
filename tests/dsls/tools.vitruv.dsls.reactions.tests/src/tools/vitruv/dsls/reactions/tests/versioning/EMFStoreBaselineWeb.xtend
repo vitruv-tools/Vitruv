@@ -25,7 +25,6 @@ import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryWebImpl
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
-import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
@@ -41,7 +40,6 @@ class EMFStoreBaselineWeb extends VitruviusApplicationTest {
 	static extension BowlingFactory = BowlingFactory::eINSTANCE
 	static extension CommitSerializer = CommitSerializer::instance
 	static extension Logger = Logger::getLogger(EMFStoreBaselineWeb)
-	static extension VirtualModelExtension = VirtualModelExtension::instance
 	static val MODEL_FILE_EXTENSION = new BowlingDomainProvider().domain.fileExtensions.get(0)
 	static val demoProjectName = "DemoProject"
 	static val leagueName = "Superbowling League"
@@ -136,8 +134,7 @@ class EMFStoreBaselineWeb extends VitruviusApplicationTest {
 
 		assertThat(localRepository.head, is(localRepository.initialCommit))
 		assertThat(localRepository.commits, hasSize(1))
-		val changeMatches = virtualModel.getChangeMatches(sourceVURI)
-		val commit = localRepository.commit("My message", changeMatches)
+		val commit = localRepository.commit("My message")
 		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
@@ -158,9 +155,8 @@ class EMFStoreBaselineWeb extends VitruviusApplicationTest {
 
 		assertThat(localRepository.head, is(localRepository.initialCommit))
 		assertThat(localRepository.commits, hasSize(1))
-		val changeMatches = virtualModel.getChangeMatches(sourceVURI)
 		val message = "My message"
-		val commit = localRepository.commit(message, changeMatches)
+		val commit = localRepository.commit(message)
 		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))

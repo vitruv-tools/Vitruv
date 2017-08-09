@@ -26,7 +26,6 @@ import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryImpl
 import tools.vitruv.framework.versioning.emfstore.impl.RemoteRepositoryImpl
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
 import tools.vitruv.framework.versioning.extensions.URIRemapper
-import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
@@ -41,10 +40,10 @@ import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 
 class EMFStoreBaseline extends VitruviusApplicationTest {
+	static extension BowlingFactory = BowlingFactory::eINSTANCE
 	static extension CommitSerializer = CommitSerializer::instance
 	static extension Logger = Logger::getLogger(EMFStoreBaseline)
 	static extension URIRemapper = URIRemapper::instance
-	static extension VirtualModelExtension = VirtualModelExtension::instance
 	static val MODEL_FILE_EXTENSION = new BowlingDomainProvider().domain.fileExtensions.get(0)
 	static val demoProjectCopyName = "DemoProjectCopy"
 	static val demoProjectName = "DemoProject"
@@ -125,10 +124,10 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	@Test
 	def void commitTest() {
 		val demoProjectName = "DemoProject"
-		val league = BowlingFactory::eINSTANCE.createLeague
+		val league = createLeague
 		league.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league)
-		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		val player1 = createPlayer
 		player1.name = "Maximilian"
 		league.players += player1
 		league.saveAndSynchronizeChanges
@@ -136,8 +135,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 
 		assertThat(localRepository.head, is(localRepository.initialCommit))
 		assertThat(localRepository.commits, hasSize(1))
-		val changeMatches = virtualModel.getChangeMatches(sourceVURI)
-		val commit = localRepository.commit("My message", changeMatches)
+		val commit = localRepository.commit("My message")
 		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
@@ -147,10 +145,10 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	@Test
 	def void commitSerializeTest() {
 		val demoProjectName = "DemoProject"
-		val league = BowlingFactory::eINSTANCE.createLeague
+		val league = createLeague
 		league.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league)
-		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		val player1 = createPlayer
 		player1.name = "Maximilian"
 		league.players += player1
 		league.saveAndSynchronizeChanges
@@ -158,9 +156,8 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 
 		assertThat(localRepository.head, is(localRepository.initialCommit))
 		assertThat(localRepository.commits, hasSize(1))
-		val changeMatches = virtualModel.getChangeMatches(sourceVURI)
 		val message = "My message"
-		val commit = localRepository.commit(message, changeMatches)
+		val commit = localRepository.commit(message)
 		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
@@ -180,10 +177,10 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	@Test
 	def void twoCommitsTest() {
 		val demoProjectName = "DemoProject"
-		val league = BowlingFactory::eINSTANCE.createLeague
+		val league = createLeague
 		league.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league)
-		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		val player1 = createPlayer
 		player1.name = "Maximilian"
 		league.players += player1
 		league.saveAndSynchronizeChanges
@@ -210,10 +207,10 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	@Test
 	def void commitLastChangesTest() {
 		val demoProjectName = "DemoProject"
-		league1 = BowlingFactory::eINSTANCE.createLeague
+		league1 = createLeague
 		league1.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league1)
-		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		val player1 = createPlayer
 		player1.name = "Maximilian"
 		league1.players += player1
 		league1.saveAndSynchronizeChanges
@@ -236,24 +233,23 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	def void commitAndCheckout() {
 		val demoProjectName = "DemoProject"
 		val demoProjectCopyName = "DemoProjectCopy"
-		val league = BowlingFactory::eINSTANCE.createLeague
-		val league2 = BowlingFactory::eINSTANCE.createLeague
+		val league = createLeague
+		val league2 = createLeague
 		val leagueName = "Superbowling League"
 		league.name = leagueName
 		league2.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league)
 
-		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		val player1 = createPlayer
 		player1.name = "Maximilian"
 		league.players += player1
 		sourceVURI = VURI::getInstance(league.eResource)
 		newSourceVURI = createNewVURI(sourceVURI, demoProjectName -> demoProjectCopyName)
 		league.saveAndSynchronizeChanges
-		val changeMatches = virtualModel.getChangeMatches(sourceVURI)
 
 		assertThat(localRepository.head, is(localRepository.initialCommit))
 		assertThat(localRepository.commits, hasSize(1))
-		val commit = localRepository.commit("My message", changeMatches)
+		val commit = localRepository.commit("My message")
 		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
 		assertThat(commit.parent, is(localRepository.initialCommit.identifier))
@@ -267,7 +263,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	@Test
 	def void commitHashTest() {
 		val demoProjectName = "DemoProject"
-		val league = BowlingFactory::eINSTANCE.createLeague
+		val league = createLeague
 		league.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league)
 		sourceVURI = VURI::getInstance(league.eResource)
@@ -292,13 +288,13 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	def void commitAndPushAndPullTest() {
 		val demoProjectName = "DemoProject"
 		val demoProjectCopyName = "DemoProjectCopy"
-		val league = BowlingFactory::eINSTANCE.createLeague
+		val league = createLeague
 		val leagueName = "Superbowling League"
 
 		league.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league)
 
-		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		val player1 = createPlayer
 		player1.name = "Maximilian"
 		league.players += player1
 		sourceVURI = VURI::getInstance(league.eResource)
@@ -334,7 +330,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	@Test
 	def void emfHelloWorldExample() {
 
-		league1 = BowlingFactory::eINSTANCE.createLeague
+		league1 = createLeague
 		league1.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league1)
 
@@ -343,10 +339,10 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		sourceVURI = VURI::getInstance(league1.eResource)
 		newSourceVURI = createNewVURI(sourceVURI, demoProjectName -> demoProjectCopyName)
 
-		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		val player1 = createPlayer
 		player1.name = "Maximilian"
 		league1.players += player1
-		val player2 = BowlingFactory::eINSTANCE.createPlayer
+		val player2 = createPlayer
 		player2.name = "Ottgar"
 		league1.players += player2
 
@@ -433,7 +429,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	@Test
 	def void emfHelloWorldExample2VirtualModels() {
 
-		league1 = BowlingFactory::eINSTANCE.createLeague
+		league1 = createLeague
 		league1.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league1)
 
@@ -442,10 +438,10 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		sourceVURI = VURI::getInstance(league1.eResource)
 		newSourceVURI = createNewVURI(sourceVURI, demoProjectName -> demoProjectCopyName)
 
-		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		val player1 = createPlayer
 		player1.name = "Maximilian"
 		league1.players += player1
-		val player2 = BowlingFactory::eINSTANCE.createPlayer
+		val player2 = createPlayer
 		player2.name = "Ottgar"
 		league1.players += player2
 
@@ -465,7 +461,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	@Test
 	def void emfHelloWorldExampleWithoutVMpassing() {
 
-		league1 = BowlingFactory::eINSTANCE.createLeague
+		league1 = createLeague
 		league1.name = leagueName
 		demoProjectName.projectModelPath.createAndSynchronizeModel(league1)
 
@@ -474,10 +470,10 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		sourceVURI = VURI::getInstance(league1.eResource)
 		newSourceVURI = createNewVURI(sourceVURI, demoProjectName -> demoProjectCopyName)
 
-		val player1 = BowlingFactory::eINSTANCE.createPlayer
+		val player1 = createPlayer
 		player1.name = "Maximilian"
 		league1.players += player1
-		val player2 = BowlingFactory::eINSTANCE.createPlayer
+		val player2 = createPlayer
 		player2.name = "Ottgar"
 		league1.players += player2
 
