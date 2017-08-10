@@ -16,7 +16,7 @@ import org.eclipse.xtext.xbase.XExpression
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 
 @Accessors(PACKAGE_GETTER)
-class FluentReactionBuilder extends FluentReactionSegmentChildBuilder {
+class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 	var Reaction reaction
 	var anonymousRoutineCounter = 0

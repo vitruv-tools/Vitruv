@@ -20,7 +20,7 @@ import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConsta
 import org.eclipse.xtext.xbase.XbaseFactory
 import org.eclipse.xtext.xbase.XExpression
 
-class FluentRoutineBuilder extends FluentReactionSegmentChildBuilder {
+class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	@Accessors(PACKAGE_GETTER)
 	var Routine routine
