@@ -17,6 +17,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
+import org.eclipse.xtext.xbase.XExpression
+import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;
@@ -25,6 +27,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	private var int counterGetElementMethods;
 	private var int counterGetRetrieveTagMethods;
 	private var int counterCallRoutineMethods;
+	private var int counterExecuteActionMethods;
 	private var int counterCheckMatcherPreconditionMethods;
 
 	new(TypesBuilderExtensionProvider typesBuilderExtensionProvider, EObject objectMappedToClass,
@@ -36,6 +39,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		this.counterGetElementMethods = 1;
 		this.counterGetRetrieveTagMethods = 1;
 		this.counterCallRoutineMethods = 1;
+		this.counterExecuteActionMethods = 1;
 		this.counterCheckMatcherPreconditionMethods = 1;
 	}
 
@@ -153,13 +157,29 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		];
 	}
 
+	protected def JvmOperation generateMethodExecuteAction(ExecuteActionStatement executeAction,
+		Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
+		if (executeAction.code === null) {
+			return null;
+		}
+		val methodName = "executeAction" + counterExecuteActionMethods++;
+		return generateExecutionMethod(executeAction.code, methodName, accessibleElements, facadeClassTypeReference)
+	}
+
 	protected def JvmOperation generateMethodCallRoutine(RoutineCallBlock routineCall,
 		Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
 		if (routineCall.code === null) {
 			return null;
 		}
 		val methodName = "callRoutine" + counterCallRoutineMethods++;
-		val codeBlock = routineCall.code;
+		return generateExecutionMethod(routineCall.code, methodName, accessibleElements, facadeClassTypeReference)
+	}
+
+	private def JvmOperation generateExecutionMethod(XExpression codeBlock, String methodName,
+		Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
+		if (codeBlock === null) {
+			return null;
+		}
 		return codeBlock.getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			val facadeParam = toParameter("_routinesFacade", facadeClassTypeReference);

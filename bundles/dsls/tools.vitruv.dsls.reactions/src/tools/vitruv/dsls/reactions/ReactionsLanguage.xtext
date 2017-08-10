@@ -15,7 +15,7 @@ ReactionsFile:
 ReactionsSegment:
 	'reactions:' name=ValidID
 	'in reaction to changes in' fromDomain=DomainReference 
-	'execute actions in' toDomain=DomainReference
+	'execute' 'actions in' toDomain=DomainReference
 	(reactions+=Reaction |
 		routines+=Routine)*;
 
@@ -176,8 +176,12 @@ RoutineCallStatement returns RoutineCallStatement:
 	RoutineCallBlock;
 
 ActionStatement:
-	CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement | CreateCorrespondenceStatement | RemoveCorrespondenceStatement | ExecuteActionBlock | RoutineCallStatement;
-	
+	CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement | CreateCorrespondenceStatement | RemoveCorrespondenceStatement | ExecuteActionStatement | RoutineCallStatement;
+
+ExecuteActionStatement returns ExecuteActionStatement:
+	{ExecuteActionStatement}
+	'execute' CodeBlock;
+
 CreateModelElementStatement returns CreateModelElement:
 	{CreateModelElement}
 	'val' name=ValidID '=' 'create' MetaclassReference ("and" "initialize" initializationBlock=ExecutionCodeBlock)?;
@@ -189,7 +193,6 @@ DeleteModelElementStatement returns DeleteModelElement:
 UpdateModelElementStatement returns UpdateModelElement:
 	{UpdateModelElement}
 	"update" element=ExistingElementReference updateBlock=ExecutionCodeBlock;
-
 
 CreateCorrespondenceStatement returns CreateCorrespondence:
 	{CreateCorrespondence}
@@ -206,9 +209,6 @@ RemoveCorrespondenceStatement returns RemoveCorrespondence:
 
 fragment CodeBlock:
 	code=XExpression;
-	
-fragment ExecuteActionBlock:
-	'execute' CodeBlock;
 
 fragment RoutineCallBlock:
 // TODO move the variable declaration and assignment for routine returns inside the code block not before it!

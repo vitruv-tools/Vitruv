@@ -33,6 +33,7 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
+import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -239,10 +240,20 @@ class RoutineClassGenerator extends ClassGenerator {
 	private def dispatch StringConcatenationClient createStatements(RoutineCallStatement routineCall) {
 		val callRoutineMethod = generateMethodCallRoutine(routineCall, currentlyAccessibleElements,
 			typeRef(routinesFacadeClassNameGenerator.qualifiedName));
-		val parameterCallList = routineCall.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList
-		val StringConcatenationClient callRoutineMethodCall = '''«USER_EXECUTION_FIELD_NAME».«callRoutineMethod.simpleName»(«
+		return generateExecutionMethodCall(callRoutineMethod);
+	}
+	
+	private def dispatch StringConcatenationClient createStatements(ExecuteActionStatement executeAction) {
+		val executeActionMethod = generateMethodExecuteAction(executeAction, currentlyAccessibleElements,
+			typeRef(routinesFacadeClassNameGenerator.qualifiedName));
+		return generateExecutionMethodCall(executeActionMethod);
+	}
+	
+	private def StringConcatenationClient generateExecutionMethodCall(JvmOperation executionMethod) {
+		val parameterCallList = executionMethod.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList
+		val StringConcatenationClient methodCall = '''«USER_EXECUTION_FIELD_NAME».«executionMethod.simpleName»(«
 			parameterCallList»«IF !parameterCallList.toString.empty», «ENDIF»«EFFECT_FACADE_FIELD_NAME»);''';
-		return callRoutineMethodCall;
+		return methodCall;
 	}
 
 	protected def generateMethodExecuteEffect() {
