@@ -126,10 +126,15 @@ class AtomicEChangeResolver {
 			// Object still exists
 			change.affectedEObject = change.stagingArea.peek as A
 		}
-
+		
 		if (change.affectedEObject === null || change.affectedEObject.eIsProxy || change.stagingArea === null) {
 			return false
 		}
+		
+		if (change.objectId !== null) {
+			EcoreUtil.setID(change.affectedEObject, change.objectId);
+		}
+		
 		return true
 	}
 

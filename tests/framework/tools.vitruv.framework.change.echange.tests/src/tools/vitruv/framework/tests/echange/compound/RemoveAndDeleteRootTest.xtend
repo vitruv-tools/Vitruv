@@ -211,6 +211,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 * Creates new unresolved change.
 	 */
 	def private RemoveAndDeleteRoot<Root> createUnresolvedChange(Root newObject, int index) {
-		return compoundFactory.createRemoveAndDeleteRootChange(newObject, resource, index)	
+		return compoundFactory.createRemoveAndDeleteRootChange(newObject, resource, index, null)	
 	}	
 }

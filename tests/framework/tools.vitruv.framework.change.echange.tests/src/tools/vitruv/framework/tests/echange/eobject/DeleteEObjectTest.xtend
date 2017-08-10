@@ -132,7 +132,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Creates new unresolved change.
 	 */
 	def private DeleteEObject<Root> createUnresolvedChange(Root oldObject) {
-		return atomicFactory.createDeleteEObjectChange(oldObject, resource)
+		return atomicFactory.createDeleteEObjectChange(oldObject, resource, null)
 	}
 	
 }
