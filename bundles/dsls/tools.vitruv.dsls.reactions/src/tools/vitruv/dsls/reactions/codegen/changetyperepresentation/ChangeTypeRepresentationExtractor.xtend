@@ -53,8 +53,8 @@ final class ChangeTypeRepresentationExtractor {
 				hasNewValue = true;
 			}
 		}
-		val affectedEObject = modelAttributeChange.feature.metaclass.instanceClass;
-		val affectedValue = modelAttributeChange.feature.feature.EType.instanceClass;
+		val affectedEObject = modelAttributeChange.feature.metaclass.instanceClassName
+		val affectedValue = modelAttributeChange.feature.feature.EType.instanceClassName
 		val affectedFeature = modelAttributeChange.feature.feature;
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature);
 	}
@@ -78,7 +78,7 @@ final class ChangeTypeRepresentationExtractor {
 				clazz = RootPackage.Literals.REMOVE_ROOT_EOBJECT
 		} 
 		val affectedEObject = null;
-		val affectedValue = if (elementClass !== null) elementClass.instanceClass else EObject;
+		val affectedValue = if (elementClass !== null) elementClass.instanceClassName else EObject.canonicalName
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, !hasNewValue, hasNewValue, null);
 	}
 	
@@ -101,8 +101,8 @@ final class ChangeTypeRepresentationExtractor {
 				hasNewValue = true;
 			}
 		}
-		val affectedEObject = modelElementChange.feature.metaclass.instanceClass;
-		val affectedValue = if (elementClass !== null) elementClass.instanceClass else modelElementChange.feature.feature.EType.instanceClass;
+		val affectedEObject = modelElementChange.feature.metaclass.instanceClassName;
+		val affectedValue = if (elementClass !== null) elementClass.instanceClassName else modelElementChange.feature.feature.EType.instanceClassName;
 		val affectedFeature = modelElementChange.feature.feature; 
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature);
 	}
@@ -116,7 +116,7 @@ final class ChangeTypeRepresentationExtractor {
 			ElementDeletionChangeType:
 				clazz = EobjectPackage.Literals.DELETE_EOBJECT
 		}
-		val affectedEObject = if (elementClass !== null) elementClass.instanceClass else EObject;
+		val affectedEObject = if (elementClass !== null) elementClass.instanceClassName else EObject.canonicalName;
 		val affectedValue = null; 
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, false, false, null);
 	}
