@@ -50,7 +50,7 @@ class ReactionsEnvironmentGenerator {
 	def private ensureChangePropagationSpecification(Pair<VitruvDomain, VitruvDomain> modelCombination,
 		List<ReactionsSegment> segments, IFileSystemAccess2 fsa) {
 		val specificationPath = modelCombination.changePropagationSpecificationClassNameGenerator.qualifiedName.filePath
-		val executors = segments.map[executorClassNameGenerator.qualifiedName]
+		val executors = segments.map [executorClassNameGenerator.qualifiedName]
 		var generateNew = false
 		try {
 			val fileContent = fsa.readBinaryFile(specificationPath)
@@ -114,8 +114,8 @@ class ReactionsEnvironmentGenerator {
 				);
 				
 				public «changePropagationSpecificationNameGenerator.simpleName»() {
-					super(new «modelPair.first.providerForDomain.class.typeRef»().getDomain(), 
-						new «modelPair.second.providerForDomain.class.typeRef»().getDomain());
+					super(new «modelPair.first.providerForDomain.canonicalNameForReference.typeRef»().getDomain(), 
+						new «modelPair.second.providerForDomain.canonicalNameForReference.typeRef»().getDomain());
 					setup();
 				}
 				
