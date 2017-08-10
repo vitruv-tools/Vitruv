@@ -23,11 +23,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet
  * {@link XtextResourceSet} through {@link addReactionFiles}.
  * </ul>
  * 
- * <p>Reaction generation requires access to certain libraries that must be
- * present at the generation target. In Xtext, resolving such cross references
+ * <p>Reaction generation requires linking to elements inside and outside of
+ * the created element’s scope. In Xtext, resolving such cross references
  * is done through resource sets. The caller must provide an appropriate
- * resource set (through {@link #useResourceSet} to resolve references in if
- * artificial reaction are to be generated. 
+ * resource set (through {@link #useResourceSet}) before adding artificial
+ * resources to this generator, to make linking them possible.
  * 
  * <p>This is a one shot generator, meaning that it may only be used once.
  * Clients must obtain instance through Guice, for example by injecting a 
@@ -40,9 +40,8 @@ interface IReactionsGenerator {
 	 * Adds the given {@code reactions} to this generator, so code will
 	 * be generated for them.
 	 * 
-	 * <p>Note that a resource set must be provided (through 
-	 * {@link #useResourceSet}) before attempting to generate code for 
-	 * artificial reactions with this generator.
+	 * <p>A resource set must be provided (through {@link #useResourceSet})
+	 * before calling this method.
 	 * 
 	 * @param sourceFileName
 	 * 		The name of the virtual reactions file the provided 
@@ -58,9 +57,8 @@ interface IReactionsGenerator {
 	 * Adds the given {@code reactions} to this generator, so code will
 	 * be generated for them.
 	 * 
-	 * <p>Note that a resource set must be provided (through 
-	 * {@link #useResourceSet}) before attempting to generate code for 
-	 * artificial reactions with this generator.
+	 * <p>A resource set must be provided (through {@link #useResourceSet})
+	 * before calling this method.
 	 * 
 	 * @param sourceFileName
 	 * 		The name of the virtual reactions file the provided 
@@ -76,9 +74,8 @@ interface IReactionsGenerator {
 	 * Adds the provided reaction file builder to this generator, so code will
 	 * be generated for the objects described by it.
 	 * 
-	 * <p>Note that a resource set must be provided (through 
-	 * {@link #useResourceSet}) before attempting to generate code for 
-	 * artificial reactions with this generator.
+	 * <p>A resource set must be provided (through {@link #useResourceSet})
+	 * before calling this method.
 	 * 
 	 * @param reactionBuilder
 	 * 		The builder describing the reaction file to generate code for.		
@@ -110,6 +107,10 @@ interface IReactionsGenerator {
 	 * does not support generating environments for different sets of
 	 * reactions.
 	 * 
+	 * @param fsa
+	 * 		The file system acces to use for writing the results. Results will
+	 * 		be written to the root of the default output configuration.
+	 * 
 	 * @throws IllegalStateException
 	 * 		If this generator has been used to generate before
 	 */
@@ -117,20 +118,30 @@ interface IReactionsGenerator {
 
 	/**
 	 * Writes all reactions added to this generator to the given 
-	 * {@code outputFolder}, as reactions files.
+	 * file system provider, as reactions files.
 	 * 
 	 * <p>This method’s main purpose is to translate artificial reactions
 	 * created with a builder into serialized reaction files.  
+	 * 
+	 * @param fsa
+	 * 		The file system acces to use for writing the results. Results will
+	 * 		be written to the root of the default output configuration.
 	 */
-	def void writeReactionsTo(Path outputFolder)
-
-	/**
+	def void writeReactions(IFileSystemAccess2 fsa)
+	
+		/**
 	 * Writes all reactions added to this generator to the given 
-	 * {@code outputFolder}, as reactions files.
+	 * file system provider, as reactions files.
 	 * 
 	 * <p>This method’s main purpose is to translate artificial reactions
 	 * created with a builder into serialized reaction files.  
+	 * 
+	 * @param fsa
+	 * 		The file system access to use for writing the results.
+	 * 
+	 * @param subPath
+	 * 		The path in the given file system provider’s default output
+	 * 		configuration to write the results to.
 	 */
-	def void writeReactionsTo(URI outputFolder)
-
+	def void writeReactions(IFileSystemAccess2 fsa, String subPath)
 }
