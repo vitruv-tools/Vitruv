@@ -14,6 +14,7 @@ import tools.vitruv.dsls.reactions.generator.SimpleTextXBlockExpression
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import org.eclipse.emf.ecore.resource.Resource
 import static com.google.common.base.Preconditions.*
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 final class ReactionsLanguageHelper {
 	private new() {
@@ -32,16 +33,16 @@ final class ReactionsLanguageHelper {
 		blockExpression.text.toString;
 	}
 
-	public static def Class<?> getJavaClass(EClass element) {
-		return element.instanceClass;
+	public static def getJavaClassName(EClass element) {
+		element.instanceClassName;
 	}
 
-	public static def Class<?> getJavaClass(MetaclassReference metaclassReference) {
-		return metaclassReference.metaclass.javaClass;
+	public static def getJavaClassName(MetaclassReference metaclassReference) {
+		metaclassReference.metaclass.javaClassName;
 	}
 
 	public static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {
-		return VitruvDomainProvider.getDomainProviderFromExtensionPoint(domain.name);
+		return VitruvDomainProviderRegistry.getDomainProvider(domain.name);
 	}
 
 	public static def VitruvDomain getDomainForReference(DomainReference domainReference) {
@@ -49,7 +50,7 @@ final class ReactionsLanguageHelper {
 	}
 
 	public static def VitruvDomainProvider<?> getDomainProviderForReference(DomainReference domainReference) {
-		val referencedDomainProvider = VitruvDomainProvider.getDomainProviderFromExtensionPoint(domainReference.domain)
+		val referencedDomainProvider = VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain)
 		if (referencedDomainProvider === null) {
 			throw new IllegalStateException("Given domain reference references no existing domain");
 		}
@@ -67,9 +68,9 @@ final class ReactionsLanguageHelper {
 	}
 
 	def static ReactionsFile getReactionsFile(Resource resource) {
-		val firstContentElement = resource?.contents?.get(0)
+		val firstContentElement = resource?.contents?.head
 		checkArgument(firstContentElement instanceof ReactionsFile,
-			"The given resource %s was expected to contain a ReactionsFile element (was %s).", resource,
+			"The given resource %s was expected to contain a ReactionsFile element! (was %s)", resource,
 			firstContentElement?.class?.simpleName);
 
 		return firstContentElement as ReactionsFile;

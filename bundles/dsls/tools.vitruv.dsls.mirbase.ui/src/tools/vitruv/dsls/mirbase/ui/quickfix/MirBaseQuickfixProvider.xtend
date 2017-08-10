@@ -9,12 +9,12 @@ import tools.vitruv.framework.util.bridges.EclipseBridge
 import org.eclipse.xtext.ui.editor.quickfix.Fix
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
 import org.eclipse.xtext.validation.Issue
-import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
 
 import static tools.vitruv.dsls.mirbase.validation.EclipsePluginHelper.*
 import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference
-import tools.vitruv.framework.domains.VitruvDomainProvider
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
 
 /**
  * Custom quickfixes.
@@ -42,9 +42,9 @@ class MirBaseQuickfixProvider extends XbaseQuickfixProvider {
 		acceptor.accept(issue, 'Add dependency.', 'Add the dependency.', null) [ element, context |
 			val domainReference = element as DomainReference
 			
-			val domainProvider = VitruvDomainProvider.getDomainProviderFromExtensionPoint(domainReference.domain);
+			val domainProvider = VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain);
 			val contributorName = EclipseBridge.getNameOfContributorOfExtension(
-					VitruvDomainProvider.EXTENSION_POINT_ID,
+					VitruvDomainProviderRegistry.EXTENSION_POINT_ID,
 					"class", domainProvider.class.name);
 			val project = getProject(domainReference.eResource)
 			if (!hasDependency(project, contributorName)) {

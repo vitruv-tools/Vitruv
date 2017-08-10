@@ -12,7 +12,7 @@ import org.eclipse.xtext.validation.Check
 import static tools.vitruv.dsls.mirbase.validation.EclipsePluginHelper.*
 import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference
-import tools.vitruv.framework.domains.VitruvDomainProvider
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 /**
  * This class contains custom validation rules. 
@@ -41,9 +41,9 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 		if (!isValidDomainReference(domainReference)) {
 			return;
 		}
-		val domainProvider = VitruvDomainProvider.getDomainProviderFromExtensionPoint(domainReference.domain);
+		val domainProvider = VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain);
 		val contributorName = EclipseBridge.getNameOfContributorOfExtension(
-					VitruvDomainProvider.EXTENSION_POINT_ID,
+					VitruvDomainProviderRegistry.EXTENSION_POINT_ID,
 					"class", domainProvider.class.name);
 		val project = getProject(domainReference.eResource)
 		if (!hasDependency(project, contributorName)) {
@@ -77,7 +77,7 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 	
 	@Check
 	def checkDomainRefrence(DomainReference domainReference) {
-		val domainNames = VitruvDomainProvider.allDomainProvidersFromExtensionPoint.map[domain.name].toList;
+		val domainNames = VitruvDomainProviderRegistry.allDomainProviders.map[domain.name].toList;
 	    if (!isValidDomainReference(domainReference)) {
 	    	error('''No domain with the specified name found. Available domains are : «FOR domainName : domainNames SEPARATOR ", "»«domainName»«ENDFOR»''', domainReference,
 	    		MirBasePackage.Literals.DOMAIN_REFERENCE__DOMAIN
@@ -86,7 +86,7 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 	}
 	
 	private def boolean isValidDomainReference(DomainReference domainReference) {
-		val domainNames = VitruvDomainProvider.allDomainProvidersFromExtensionPoint.map[domain.name].toList;
+		val domainNames = VitruvDomainProviderRegistry.allDomainProviders.map[domain.name].toList;
 	    return domainNames.contains(domainReference.domain);
 	}
 }
