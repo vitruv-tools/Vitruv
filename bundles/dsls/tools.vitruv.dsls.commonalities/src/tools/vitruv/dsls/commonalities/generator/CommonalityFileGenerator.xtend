@@ -16,26 +16,9 @@ abstract package class CommonalityFileGenerator {
 	protected extension CommonalitiesLanguageGenerationContext generationContext
 
 	def abstract void generate()
-
-	def CommonalityFileGenerator forCommonalityFile(CommonalityFile commonalityFile) {
-		this.commonalityFile = commonalityFile
-		this
-	}
-
-	def CommonalityFileGenerator withFileSystemAccess(IFileSystemAccess2 fsa) {
-		this.fsa = fsa
-		this
-	}
-
-	def CommonalityFileGenerator withContext(IGeneratorContext context) {
-		this.context = context
-		this
-	}
 	
-	def CommonalityFileGenerator withGenerationContext(CommonalitiesLanguageGenerationContext generationContext) {
-		this.generationContext = generationContext
-		this
-	}
+	def void beforeGenerate() {}
+	def void afterGenerate() {}
 
 	def protected getCommonality() {
 		return commonalityFile.commonality

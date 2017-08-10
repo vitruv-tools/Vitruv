@@ -12,35 +12,47 @@ import org.eclipse.emf.codegen.ecore.generator.Generator
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.common.util.Diagnostic
+import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
-class CommonalityIntermediateModelCodeGenerator extends CommonalityFileGenerator {
+package class CommonalityIntermediateModelCodeGenerator extends CommonalityFileGenerator {
 	static val GENERATED_CODE_COMPLIANCE_LEVEL = GenJDKLevel.JDK80_LITERAL
-	// as list of path segments, relative to the generated ecore file
-	static val GENERATED_CODE_FOLDER = #["model-gen"]
-	
+	static val GENERATED_CODE_FOLDER = "."
+
 	override generate() {
-		val generatedPackage = commonality.generatedIntermediateModelClass.EPackage
-		val generatedCodeDirectory = generatedPackage.eResource.URI.trimSegments(1).appendSegments(GENERATED_CODE_FOLDER)
-		
-		val generatedGenModel = generateGenModel(generatedPackage, generatedCodeDirectory)
-		generateModelCode(generatedGenModel)
+		val generatedCodeDirectory = fsa.getURI(GENERATED_CODE_FOLDER)
+		for (generatedConcept : generatedConcepts) {
+			val generatedPackage = generatedIntermediateModelPackage(generatedConcept)
+			val generatedGenModel = generateGenModel(generatedPackage, generatedConcept, generatedCodeDirectory)
+			generateModelCode(generatedGenModel)
+		}
+		// we can set this only *after* generating, as setting it usually means
+		// that no class needs to be generated. (But the reaction generation 
+		// code relies on the property being set).
+		val oldClassFunction = intermediateModelClassFunction
+		intermediateModelClassFunction = [ commonalityFile |
+			oldClassFunction.apply(commonalityFile) => [
+				instanceClassName = commonalityFile.intermediateModelInstanceClassName
+			]
+		]
 	}
-	
-	def private generateGenModel(EPackage generatedPackage, URI codeGenerationTargetFolder) {
+
+	def private generateGenModel(EPackage generatedPackage, String conceptName, URI codeGenerationTargetFolder) {
 		GenModelFactory.eINSTANCE.createGenModel() => [
 			complianceLevel = GENERATED_CODE_COMPLIANCE_LEVEL
 			modelDirectory = codeGenerationTargetFolder.toGeneratorUri().path()
 			foreignModel += generatedPackage.eResource.URI.lastSegment
-			modelName = commonality.name
 			canGenerate = true
+			modelName = conceptName
 			initialize(Collections.singleton(generatedPackage))
 			genPackages.get(0) => [
-				prefix = commonality.name
+				prefix = conceptName
+				basePackage = conceptName.conceptPackagePathPart
 				adapterFactory = false
 			]
 		]
 	}
-	
+
 	def private toGeneratorUri(URI uriFromFsa) {
 		// we currently only know how to convert platform:/resource URIs. If you
 		// ever see another in the wild (which will break the generation),
@@ -54,21 +66,15 @@ class CommonalityIntermediateModelCodeGenerator extends CommonalityFileGenerator
 	}
 
 	def private generateModelCode(GenModel generatedGenModel) {
-		// Globally register the default generator adapter factory for GenModel
-		// elements (only needed in stand-alone).
-		//
 		GeneratorAdapterFactory.Descriptor.Registry.INSTANCE.addDescriptor(GenModelPackage.eNS_URI,
 			GenModelGeneratorAdapterFactory.DESCRIPTOR)
 
-		// Create the generator and set the model-level input object.
-		//
 		val generator = new Generator() => [
 			input = generatedGenModel
 		]
-		// Generator model code.
-		//
 		val result = generator.generate(generatedGenModel, GenBaseGeneratorAdapter.MODEL_PROJECT_TYPE, new BasicMonitor)
-		println(result)
+		if (result.severity != Diagnostic.OK) {
+			throw new RuntimeException(result.message)
+		}
 	}
-	
 }

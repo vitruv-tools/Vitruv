@@ -7,38 +7,44 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import com.google.inject.Inject
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import com.google.inject.Provider
+import java.util.HashMap
 
 class CommonalitiesLanguageGenerator implements IGenerator2 {
 
 	@Inject Provider<CommonalityIntermediateModelGenerator> intermediateModelGenerator
+	@Inject Provider<CommonalityIntermediateModelCodeGenerator> intermediateModelCodeGenerator
 	@Inject Provider<CommonalityReactionsGenerator> reactionsGenerator
+	
 	@Inject Provider<CommonalitiesLanguageGenerationContext> generationContextProvider
-	CommonalitiesLanguageGenerationContext currentGenerationContext
+	val resourcesSubGenerators = new HashMap<Resource, CommonalityFileGenerator[]>
 
 	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		// subGenerators.forEach[beforeGenerate(input, fsa, context)]
-		currentGenerationContext = generationContextProvider.get()
+		val generationContext = generationContextProvider.get()
+		val commonalityFile = input.containedCommonalityFile
+		val resourceSubGenerators = newSubGenerators()
+		resourceSubGenerators.forEach [
+			it.fsa = fsa
+			it.context = context
+			it.generationContext = generationContext
+			it.commonalityFile = commonalityFile
+		]
+		resourcesSubGenerators.put(input, resourceSubGenerators)
+		resourceSubGenerators.forEach [beforeGenerate]
 	}
 
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		val comFile = input.containedCommonalityFile
-		for (generator : subGenerators) {
-			generator.get()
-				.withFileSystemAccess(fsa)
-				.withContext(context)
-				.withGenerationContext(currentGenerationContext)
-				.forCommonalityFile(comFile)
-				.generate()
-		}
+		val resourceSubGenerators = resourcesSubGenerators.get(input)
+		resourceSubGenerators.forEach [generate]
 	}
 
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		// subGenerators.forEach[afterGenerate(input, fsa, context)]
-		currentGenerationContext = null
+		val resourceSubGenerators = resourcesSubGenerators.get(input)
+		resourceSubGenerators.forEach [afterGenerate]
+		resourcesSubGenerators.remove(input)
 	}
 
-	def private subGenerators() {
-		#[intermediateModelGenerator, reactionsGenerator]
+	def private newSubGenerators() {
+		#[intermediateModelGenerator.get, intermediateModelCodeGenerator.get, reactionsGenerator.get]
 	}
 
 	def static private containedCommonalityFile(Resource input) {

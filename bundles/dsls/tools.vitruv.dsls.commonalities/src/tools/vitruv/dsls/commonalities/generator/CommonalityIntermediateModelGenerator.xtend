@@ -2,7 +2,6 @@ package tools.vitruv.dsls.commonalities.generator
 
 import org.eclipse.emf.ecore.EcoreFactory
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
 import org.eclipse.emf.common.util.URI
 import java.util.Collections
@@ -11,60 +10,111 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.dsls.commonalities.language.CommonalityFile
+import java.util.List
+import java.util.ArrayList
+import java.util.HashSet
+import org.eclipse.emf.ecore.EClass
+import java.util.HashMap
+import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
 package class CommonalityIntermediateModelGenerator extends CommonalityFileGenerator {
 
-	// it does not make *any* sense that all these URIs have the HTTP scheme!
 	static val NS_URI_PREFIX = URI.createURI('http://vitruv.tools/commonalities')
+	static val MODEL_OUTPUT_FILE_EXTENSION = ".ecore"
 
-	override generate() {
-		val outputUri = fsa.getURI(commonality.name + ".ecore")
+	// TODO verify that this caching heuristic actually produces the desired results
+	// see https://github.com/eclipse/xtext-core/issues/413
+	static var int lastSeenResourceSetHash
+	var List<Resource> outputResources = Collections.emptyList
 
-		newEcoreResource(outputUri) => [
-			contents += generateCommonalityEPackage()
-			save(Collections.emptyMap)
+	override beforeGenerate() {
+		val resourceSet = commonalityFile.eResource.resourceSet
+		val intermediatePackageCache = new HashMap<String, EPackage>
+
+		if (resourceSet.hashCode != lastSeenResourceSetHash) {
+			val conceptToCommonalityFile = resourceSet.resources
+				.map [containedCommonalityFile]
+				.filterNull
+				.groupBy [concept.name]
+				
+			outputResources = new ArrayList(conceptToCommonalityFile.size)
+			resourceSet.resourceFactoryRegistry.extensionToFactoryMap.computeIfAbsent('ecore', [new XMLResourceFactoryImpl])
+
+			conceptToCommonalityFile.entrySet.forEach [
+				val concept = key
+				val commonalityFiles = value
+
+				val generatedPackage = generateCommonalityEPackage(concept, commonalityFiles, resourceSet)
+				intermediatePackageCache.put(concept, generatedPackage)
+			]
+			
+			generatedConcepts = new HashSet(conceptToCommonalityFile.keySet)
+
+			lastSeenResourceSetHash = resourceSet.hashCode
+		}
+		
+		intermediateModelPackageFunction = [ conceptName |
+			intermediatePackageCache.computeIfAbsent(conceptName, [
+				resourceSet.getResource(getIntermediateModelOutputUri(conceptName), false).contents.head as EPackage
+			])
+		]
+		
+		val intermediateClassCache = new HashMap<CommonalityFile, EClass>
+		intermediateModelClassFunction = [commonalityFile |
+			intermediateClassCache.computeIfAbsent(commonalityFile, [
+				intermediateModelPackageFunction.apply(commonalityFile.concept.name).EClassifiers
+					.findFirst [name == commonalityFile.intermediateModelClassName] as EClass
+			])
 		]
 	}
 
-	def private newEcoreResource(URI destination) {
-		val resultResourceSet = new ResourceSetImpl
-		resultResourceSet.resourceFactoryRegistry.extensionToFactoryMap.put('ecore', new XMLResourceFactoryImpl)
-		resultResourceSet.createResource(destination)
+	override generate() {
+		outputResources.forEach[save(Collections.emptyMap)]
 	}
 
-	def private generateCommonalityEPackage() {
-		new EPackageGenerator(this).generateEPackage()
+	def private generateCommonalityEPackage(String conceptName, Iterable<CommonalityFile> commonalityFiles,
+		ResourceSet resourceSet) {
+		val conceptIntermediateModelOutputUri = getIntermediateModelOutputUri(conceptName)
+		val outputResource = resourceSet.getResource(conceptIntermediateModelOutputUri, false) ?:
+			resourceSet.createResource(conceptIntermediateModelOutputUri)
+
+		val generatedPackage = new EPackageGenerator(conceptName, commonalityFiles, generationContext).generateEPackage()
+		outputResource.contents += generatedPackage
+		outputResources += outputResource
+		return generatedPackage
 	}
 
 	private static class EPackageGenerator {
-		val extension CommonalityIntermediateModelGenerator parentGenerator
-		val extension CommonalitiesLanguageGenerationContext generationContext
 		val EPackage generatedEPackage = EcoreFactory.eINSTANCE.createEPackage
+		val Iterable<CommonalityFile> commonalityFiles
+		val String conceptName
+		val extension CommonalitiesLanguageGenerationContext generationContext
 
-		private new(CommonalityIntermediateModelGenerator parentGenerator) {
-			this.parentGenerator = parentGenerator
-			this.generationContext = parentGenerator.generationContext
+		private new(String conceptName, Iterable<CommonalityFile> commonalityFiles, CommonalitiesLanguageGenerationContext generationContext) {
+			this.conceptName = conceptName
+			this.commonalityFiles = commonalityFiles
+			this.generationContext = generationContext
 		}
 
 		def private generateEPackage() {
-			val commonalityEClass = generateEClass()
-			commonality.associateWith(commonalityEClass)
-
+			val commonalityEClasses = commonalityFiles.map[generateEClass()]
+			
 			generatedEPackage => [
-				nsURI = NS_URI_PREFIX.appendSegment(commonalityFile.concept.name).appendSegment(commonality.name).
-					toString
-				nsPrefix = commonality.name
-				name = commonality.name
-				EClassifiers += commonalityEClass
+				nsURI = NS_URI_PREFIX.appendSegment(conceptName).toString
+				nsPrefix = conceptName.conceptPackageSimpleName
+				name = conceptName.conceptPackageSimpleName
+				EClassifiers += commonalityEClasses
 			]
-			registerEPackage(commonalityFile.concept.name, generatedEPackage)
-			return generatedEPackage
 		}
 
-		def private generateEClass() {
+		def private generateEClass(CommonalityFile commonalityFile) {
+			val commonality = commonalityFile.commonality
 			EcoreFactory.eINSTANCE.createEClass => [
-				name = commonality.name
-				EStructuralFeatures += commonality.attributes.map [generateEAttribute]
+				name = commonalityFile.intermediateModelClassName
+				EStructuralFeatures += commonality.attributes.map [generateEAttribute()]
 			]
 		}
 
@@ -77,10 +127,9 @@ package class CommonalityIntermediateModelGenerator extends CommonalityFileGener
 		}
 
 		def private getOrCreateDataType(EDataType classifier) {
-			#[generatedEPackage, EcorePackage.eINSTANCE]
-				.flatMap [EClassifiers]
-				.findFirst[instanceClass == classifier.instanceClass]
-				?: createNewEDataType(classifier)
+			#[generatedEPackage, EcorePackage.eINSTANCE].flatMap[EClassifiers].findFirst [
+				instanceClass == classifier.instanceClass
+			] ?: createNewEDataType(classifier)
 		}
 
 		def private createNewEDataType(EDataType classifier) {
@@ -91,6 +140,13 @@ package class CommonalityIntermediateModelGenerator extends CommonalityFileGener
 			generatedEPackage.EClassifiers += newDataType
 			return newDataType
 		}
-
+	}
+	
+	def private static containedCommonalityFile(Resource resource) {
+		resource.contents.filter(CommonalityFile).head
+	}
+	
+	def private getIntermediateModelOutputUri(String conceptName) {
+		fsa.getURI(conceptName + MODEL_OUTPUT_FILE_EXTENSION)
 	}
 }

@@ -1,118 +1,116 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import static tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.*
-import static tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder.*
-import static tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder.*
+import static extension tools.vitruv.dsls.commonalities.language.elements.extensions.LanguageElementsExtensions.*
 import tools.vitruv.dsls.commonalities.language.elements.Participation
-import java.util.HashMap
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.api.generator.ReactionBuilderFactory
 import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.dsls.commonalities.language.elements.ParticipationClass
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import com.google.inject.Inject
 import com.google.inject.Provider
-import java.nio.file.Paths
-import java.nio.file.Files
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+import java.util.function.Supplier
+import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 
 package class CommonalityReactionsGenerator extends CommonalityFileGenerator {
 
 	static val DEBUG_WRITE_REACTIONS = true
-	ReactionBuilderFactory reactionBuilderProvider = new ReactionBuilderFactory()
 
-	val participationReactions = new HashMap<Participation, Reaction>
-	
-	@Inject Provider<IReactionsGenerator> reactionsGeneratorProvider
+	Supplier<IReactionsGenerator> reactionsGeneratorProvider
+	@Inject FluentReactionsLanguageBuilder create
+
+	@Inject
+	new(Provider<IReactionsGenerator> reactionsGeneratorProvider) {
+		this.reactionsGeneratorProvider = [
+			reactionsGeneratorProvider.get() => [
+				useResourceSet(commonalityFile.eResource.resourceSet)
+			]
+		]
+	}
 
 	// @Inject IReactionsEnvironmentGenerator reactionsEnvironmentGenerator;
 	def private reaction(Participation participation) {
 	}
 
 	def private reactionForCommonalityDelete(ParticipationClass participationClass) {
-		reaction('''«participationClass.name»Delete''')
-			.afterElement(participationClass.superMetaclass.changeClass).deleted
-			.call [
-				match [
-					vall("toDelete").retrieve(commonality.changeClass).correspondingTo.oldValue()
-				].action [
-					delete("toDelete")
-				]
+		create.reaction('''«commonality.name»Delete''').afterElement(commonalityFile.changeClass).deleted.call [
+			match [
+				vall("danglingCorrespondence").retrieve(participationClass.changeClass).correspondingTo.affectedEObject
+			].action [
+				delete("danglingCorrespondence")
 			]
+		]
 	}
 
 	def private reactionForParticipationDelete(ParticipationClass participationClass) {
-		reaction('''«commonality.name»Delete''')
-			.afterElement(commonality.changeClass).deleted
-			.call [
-				match [
-					vall("toDelete").retrieve(participationClass.superMetaclass.changeClass).correspondingTo.oldValue()
-				].action [
-					delete("toDelete")
-				]
-		]	
+		create.reaction('''«participationClass.name»Delete''').afterElement(participationClass.changeClass).deleted.call [
+			match [
+				vall("danglingCorrespondence").retrieve(commonalityFile.changeClass).correspondingTo.affectedEObject
+			].action [
+				delete("danglingCorrespondence")
+			]
+		]
 	}
 
 	def private reactionForCommonalityCreate(ParticipationClass participationClass) {
-		reaction('''«participationClass.name»Create''')
-			.afterElement(participationClass.superMetaclass.changeClass).deleted
-			.call [
-				match [
-					vall("toDelete").retrieve(commonality.changeClass).correspondingTo.oldValue()
-				].action [
-					delete("toDelete")
-					addCorrespondenceBetween.oldValue.and("toDelete")
-				]
+		create.reaction('''«commonality.name»Create''').afterElement(commonalityFile.changeClass).created.call [
+			action [
+				vall("newCorrespondence").create(participationClass.changeClass)
+				addCorrespondenceBetween.affectedEObject.and("newCorrespondence")
 			]
+		]
 	}
 
 	def private reactionsForParticipationCreate(ParticipationClass participationClass) {
-		reaction('''«commonality.name»Create''')
-			.afterElement(commonality.changeClass).deleted
-			.call [
-				action [
-					vall("created").create(commonality.changeClass)
-					addCorrespondenceBetween.newValue.and("created")
-				]
-			]	
+		create.reaction('''«participationClass.name»Create''').afterElement(participationClass.changeClass).created.call [
+			action [
+				vall("newCorrespondence").create(commonalityFile.changeClass)
+				addCorrespondenceBetween.affectedEObject.and("newCorrespondence")
+			]
+		]
 	}
 
 	def private attributeReactions(AttributeMappingSpecifiation mappingSpecification) {
+	}
 
-	}
-	
 	def private commonalityChangeReactions(Participation participation) {
-		participation.classes.flatMap [#[reactionForCommonalityDelete, reactionForCommonalityCreate]]
+		participation.classes.flatMap[#[reactionForCommonalityDelete, reactionForCommonalityCreate]]
 	}
-	
+
 	def private participationChangeReactions(Participation participation) {
-		participation.classes.flatMap [#[reactionForParticipationDelete, reactionsForParticipationCreate]]
+		participation.classes.flatMap[#[reactionForParticipationDelete, reactionsForParticipationCreate]]
 	}
 
 	override generate() {
 		val generator = reactionsGeneratorProvider.get()
-		
-		val reactionFile = reactionFile(commonality.name)
+
+		val reactionFile = create.reactionsFile(commonality.name)
 		for (participation : commonalityFile.commonality.participations) {
-			reactionFile += 
-				reactionsSegment('''«commonality.name»To«participation.name»''')
-					.inReactionToChangesIn(commonality.name) // TODO
-					.executeActionsIn(participation.domain.vitruvDomain)
-						+= commonalityChangeReactions(participation)
-					
 			reactionFile +=
-				reactionsSegment('''«commonality.name»From«participation.name»''')
-					.inReactionToChangesIn(participation.domain.vitruvDomain)
-					.executeActionsIn(commonality.name) // TODO
-						+= participationChangeReactions(participation)
-				
+				create.reactionsSegment('''«commonality.name»To«participation.name»''').inReactionToChangesIn(
+					commonalityFile.concept.name).executeActionsIn(participation.domain.vitruvDomain) +=
+					commonalityChangeReactions(participation)
+
+			reactionFile +=
+				create.reactionsSegment('''«commonality.name»From«participation.name»''').inReactionToChangesIn(
+					participation.domain.vitruvDomain).executeActionsIn(commonalityFile.concept.name) +=
+					participationChangeReactions(participation)
+
 		}
-	
-		generator.addReaction(reactionFile)
-		
-		if (DEBUG_WRITE_REACTIONS) {
-			val outputUri = fsa.getURI('reactions')
-			generator.writeReactionsTo(outputUri)		
+
+		VitruvDomainProviderRegistry.registerDomainProvider(commonalityFile.concept.name,
+			commonalityFile.conceptDomain.provider)
+		// TODO participation domains
+		try {
+			generator.addReactionsFile(reactionFile)
+			generator.generate(fsa)
+
+			if (DEBUG_WRITE_REACTIONS) {
+				generator.writeReactions(fsa)
+			}
+		} finally {
+			VitruvDomainProviderRegistry.unregisterDomainProvider(commonalityFile.concept.name)
 		}
+
 	}
 }
