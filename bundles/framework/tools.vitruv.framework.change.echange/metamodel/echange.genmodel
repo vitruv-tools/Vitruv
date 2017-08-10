@@ -3,7 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.framework.change.echange/src-gen"
     editDirectory="" editorDirectory="" modelPluginID="tools.vitruv.framework.change.echange"
     modelName="Change" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    testsDirectory="" importerID="org.eclipse.emf.ecore.xcore.importer" containmentProxies="true"
+    testsDirectory="" containmentProxies="true"
     complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
     operationReflection="true" importOrganizing="true">
   <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
@@ -18,17 +18,7 @@
     </genAnnotations>
     <details key="directoryURI" value="."/>
   </genAnnotations>
-  <foreignModel>Attribute.xcore</foreignModel>
-  <foreignModel>Compound.xcore</foreignModel>
-  <foreignModel>EChange.xcore</foreignModel>
-  <foreignModel>EObject.xcore</foreignModel>
-  <foreignModel>Feature.xcore</foreignModel>
-  <foreignModel>List.xcore</foreignModel>
-  <foreignModel>Reference.xcore</foreignModel>
-  <foreignModel>Root.xcore</foreignModel>
-  <foreignModel>Single.xcore</foreignModel>
   <modelPluginVariables>org.eclipse.xtext.xbase.lib</modelPluginVariables>
-  <modelPluginVariables>org.eclipse.emf.ecore.xcore.lib</modelPluginVariables>
   <genPackages prefix="Attribute" basePackage="tools.vitruv.framework.change.echange.feature"
       disposableProviderFactory="true" ecorePackage="attribute.ecore#/">
     <genClasses image="false" ecoreClass="attribute.ecore#//UpdateAttributeEChange">
