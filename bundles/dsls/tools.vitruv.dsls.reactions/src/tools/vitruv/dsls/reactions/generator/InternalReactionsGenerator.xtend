@@ -29,6 +29,9 @@ import java.util.List
 import java.util.concurrent.ExecutionException
 import java.io.IOException
 import org.eclipse.xtext.util.RuntimeIOException
+import edu.kit.ipd.sdq.activextendannotations.CloseResource
+import java.io.OutputStream
+import java.io.InputStream
 
 class InternalReactionsGenerator implements IReactionsGenerator {
 
@@ -167,17 +170,9 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 			val serializationInput = new PipedOutputStream()
 			val serializationOutput = new PipedInputStream(serializationInput)
 
-			// return null so this is a Callable (which, unlike Runnables, may
-			// throw exceptions) 
+			writePromises += writeExecutor.submit([resource.writeTo(serializationInput)])
 			writePromises += writeExecutor.submit([
-				fsa.generateFile(pathPrefix + resource.URI.lastSegment, serializationOutput)
-				null
-			])
-			writePromises += writeExecutor.submit([
-				resource.save(serializationInput, Collections.emptyMap)
-				// EMF doesn’t close the stream!
-				serializationInput.close()
-				null
+				serializationOutput.writeTo(fsa, pathPrefix + resource.URI.lastSegment)
 			])
 		}
 		for (writePromise : writePromises) {
@@ -190,6 +185,19 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 			}
 		}
 		writeExecutor.shutdown()
+	}
+
+	// both methods return something so referencing them creates a Callable,
+	// which, unlike a Runnable, may throw exceptions.
+	def private static Void writeTo(Resource resource, @CloseResource OutputStream outputStream) throws IOException {
+		resource.save(outputStream, Collections.emptyMap)
+		null
+	}
+
+	def private static Void writeTo(@CloseResource InputStream inputStream, IFileSystemAccess2 fsa,
+		String path) throws RuntimeIOException {
+		fsa.generateFile(path, inputStream)
+		null
 	}
 
 	// makes sure Xtext doesn’t sneaky throw exceptions
