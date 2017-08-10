@@ -21,7 +21,7 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
 		checkState(reactionsFile.reactionsSegments.size >
-			0, '''No reaction segments were added to this reactions file («fileName»)!''')	}
+			0, '''No reactions segments were added to this reactions file («fileName»)!''')	}
 
 	def package start() {
 		readyToBeAttached = true

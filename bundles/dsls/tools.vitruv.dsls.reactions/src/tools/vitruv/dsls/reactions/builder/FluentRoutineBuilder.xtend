@@ -389,7 +389,8 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		if (retrievalMethod instanceof JvmOperation) {
 			val result = retrievalMethod.parameters.findFirst[name == parameterName]
 			if (result === null) {
-				throw new IllegalStateException('''Could not find the right parameter on the retrieval method for the element reference “«parameterName»” in the routine “«routine.name»”''')
+				// most likely an error by the client
+				throw new IllegalStateException('''Could not find the parameter “«parameterName»” of the routine “«routine.name»”''')
 			}
 			return result
 		}
