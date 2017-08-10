@@ -32,12 +32,12 @@ final class ReactionsLanguageHelper {
 		blockExpression.text.toString;
 	}
 
-	public static def Class<?> getJavaClass(EClass element) {
-		return element.instanceClass;
+	public static def getJavaClassName(EClass element) {
+		element.instanceClassName;
 	}
 
-	public static def Class<?> getJavaClass(MetaclassReference metaclassReference) {
-		return metaclassReference.metaclass.javaClass;
+	public static def getJavaClassName(MetaclassReference metaclassReference) {
+		metaclassReference.metaclass.javaClassName;
 	}
 
 	public static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {
@@ -67,9 +67,9 @@ final class ReactionsLanguageHelper {
 	}
 
 	def static ReactionsFile getReactionsFile(Resource resource) {
-		val firstContentElement = resource?.contents?.get(0)
+		val firstContentElement = resource?.contents?.head
 		checkArgument(firstContentElement instanceof ReactionsFile,
-			"The given resource %s was expected to contain a ReactionsFile element (was %s).", resource,
+			"The given resource %s was expected to contain a ReactionsFile element! (was %s)", resource,
 			firstContentElement?.class?.simpleName);
 
 		return firstContentElement as ReactionsFile;
