@@ -158,11 +158,17 @@ class AtomicEmfChangeRecorder {
 	}
 
 	def boolean isRecording() {
-		return changeRecorder.isRecording()
+		if (USE_LEGACY_RECORDER) {
+			return legacyChangeRecorder.isRecording()
+		} else {
+			return changeRecorder.isRecording()
+		}
 	}
 
 	def void dispose() {
-		// changeRecorder.dispose()
+		if (USE_LEGACY_RECORDER) {
+			legacyChangeRecorder.dispose()
+		}
 	}
 
 	/*
