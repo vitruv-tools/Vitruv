@@ -135,7 +135,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def dispatch StringConcatenationClient createStatements(CreateModelElement createElement) {
-		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.javaClass)
+		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.javaClassName)
 		val initializeMethod = if (createElement.initializationBlock !== null)
 				generateUpdateElementMethod(createElement.name, createElement.initializationBlock,
 					currentlyAccessibleElements);
@@ -153,7 +153,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		val affectedElementClass = retrieveElement.metaclass;
 		val StringConcatenationClient statements = '''
 			«IF !retrieveElement.name.nullOrEmpty»
-				«affectedElementClass.javaClass» «retrieveElement.name» = «retrieveStatement»;
+				«affectedElementClass.javaClassName» «retrieveElement.name» = «retrieveStatement»;
 				«IF !retrieveElement.optional && !retrieveElement.abscence»
 					if («retrieveElement.name» == null) {
 						return;
@@ -173,7 +173,7 @@ class RoutineClassGenerator extends ClassGenerator {
 			«ENDIF»
 		'''
 		if (!retrieveElement.abscence) {
-			currentlyAccessibleElements += new AccessibleElement(retrieveElement.name, retrieveElement.javaClass);
+			currentlyAccessibleElements += new AccessibleElement(retrieveElement.name, retrieveElement.javaClassName);
 		}
 		return statements;
 	}
@@ -271,7 +271,7 @@ class RoutineClassGenerator extends ClassGenerator {
 			body = '''
 				getLogger().debug("Called routine «routineClassNameGenerator.simpleName» with input:");
 				«FOR inputParameter : inputParameters»
-					getLogger().debug("   «inputParameter.parameterType.type.simpleName»: " + this.«inputParameter.name»);
+					getLogger().debug("   «inputParameter.name»: " + this.«inputParameter.name»);
 				«ENDFOR»
 				
 				«FOR matcherStatement : matcherStatements»
@@ -296,7 +296,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def StringConcatenationClient getPreconditionChecker(RetrieveModelElement retrieveElement) {
-		val affectedElementClass = retrieveElement.javaClass;
+		val affectedElementClass = retrieveElement.javaClassName;
 		if (retrieveElement.precondition === null) {
 			return '''(«affectedElementClass» _element) -> true''';
 		}
@@ -305,7 +305,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def StringConcatenationClient getGetCorrespondingElementStatement(RetrieveModelElement retrieveElement) {
-		val affectedElementClass = retrieveElement.javaClass;
+		val affectedElementClass = retrieveElement.javaClassName;
 		val correspondingElementPreconditionChecker = getPreconditionChecker(retrieveElement);
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrieveElement,
 			currentlyAccessibleElements);
@@ -323,7 +323,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		val affectedElementClass = elementCreate.metaclass;
 		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
 		return '''
-		«affectedElementClass.javaClass» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
+		«affectedElementClass.javaClassName» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
 		notifyObjectCreated(«elementCreate.name»);'''
 	}
 
