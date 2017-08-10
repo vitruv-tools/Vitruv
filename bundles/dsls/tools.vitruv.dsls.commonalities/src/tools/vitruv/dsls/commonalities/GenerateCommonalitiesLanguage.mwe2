@@ -43,7 +43,7 @@ Workflow {
 					enabled = true
 					root = "${testRootPath}/${baseName}.ui.tests"
 				}
-				createEclipseMetaData = true
+				createEclipseMetaData = false
 			}
 			code = {
 				encoding = "UTF-8"
