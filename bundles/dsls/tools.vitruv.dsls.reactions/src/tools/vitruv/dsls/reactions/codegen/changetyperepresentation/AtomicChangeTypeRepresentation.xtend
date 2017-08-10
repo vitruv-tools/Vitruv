@@ -3,13 +3,10 @@ package tools.vitruv.dsls.reactions.codegen.changetyperepresentation
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
+import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 
 public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 	public static final String changeName = "change";
-	public static final String affectedElementAttribute = "affectedEObject";
-	public static final String affectedFeatureAttribute = "affectedFeature";
-	public static final String oldValueAttribute = "oldValue";
-	public static final String newValueAttribute = "newValue";
 
 	protected final Class<?> changeType;
 	protected final String affectedElementClassCanonicalName
@@ -75,16 +72,16 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 	public def Iterable<AccessibleElement> generatePropertiesParameterList() {
 		val result = <AccessibleElement>newArrayList();
 		if (affectedElementClass !== null) {
-			result.add(new AccessibleElement(affectedElementAttribute, affectedElementClass));
+			result.add(new AccessibleElement(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE, affectedElementClass));
 		}
 		if (affectedFeature !== null) {
-			result.add(new AccessibleElement(affectedFeatureAttribute, affectedFeature.eClass.instanceClass));
+			result.add(new AccessibleElement(CHANGE_AFFECTED_FEATURE_ATTRIBUTE, affectedFeature.eClass.instanceClass));
 		}
 		if (hasOldValue) {
-			result.add(new AccessibleElement(oldValueAttribute, affectedValueClass));
+			result.add(new AccessibleElement(CHANGE_OLD_VALUE_ATTRIBUTE, affectedValueClass));
 		}
 		if (hasNewValue) {
-			result.add(new AccessibleElement(newValueAttribute, affectedValueClass));
+			result.add(new AccessibleElement(CHANGE_NEW_VALUE_ATTRIBUTE, affectedValueClass));
 		}
 		if (result.empty) {
 			result.add(new AccessibleElement(changeName, changeType));
@@ -95,16 +92,16 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 	public def StringConcatenationClient generatePropertiesAssignmentCode(String typedChangeVariableName) {
 		'''
 			«IF affectedElementClass !== null»
-				«affectedElementClass» «affectedElementAttribute» = «typedChangeVariableName».get«affectedElementAttribute.toFirstUpper»();
+				«affectedElementClass» «CHANGE_AFFECTED_ELEMENT_ATTRIBUTE» = «typedChangeVariableName».get«CHANGE_AFFECTED_ELEMENT_ATTRIBUTE.toFirstUpper»();
 			«ENDIF»
 			«IF affectedFeature !== null»
-				«affectedFeature.eClass.instanceClass» «affectedFeatureAttribute» = «typedChangeVariableName».get«affectedFeatureAttribute.toFirstUpper»();
+				«affectedFeature.eClass.instanceClass» «CHANGE_AFFECTED_FEATURE_ATTRIBUTE» = «typedChangeVariableName».get«CHANGE_AFFECTED_FEATURE_ATTRIBUTE.toFirstUpper»();
 			«ENDIF»
 			«IF hasOldValue»
-				«affectedValueClass» «oldValueAttribute» = «typedChangeVariableName».get«oldValueAttribute.toFirstUpper»();
+				«affectedValueClass» «CHANGE_OLD_VALUE_ATTRIBUTE» = «typedChangeVariableName».get«CHANGE_OLD_VALUE_ATTRIBUTE.toFirstUpper»();
 			«ENDIF»
 			«IF hasNewValue»
-				«affectedValueClass» «newValueAttribute» = «typedChangeVariableName».get«newValueAttribute.toFirstUpper»();
+				«affectedValueClass» «CHANGE_NEW_VALUE_ATTRIBUTE» = «typedChangeVariableName».get«CHANGE_NEW_VALUE_ATTRIBUTE.toFirstUpper»();
 			«ENDIF»
 		'''
 	}
