@@ -307,13 +307,22 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Object Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>EObject Existence EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -414,6 +423,15 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_EOBJECT__STAGING_AREA = EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA;
+
+	/**
+	 * The feature id for the '<em><b>Object Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT__OBJECT_ID = EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID;
 
 	/**
 	 * The number of structural features of the '<em>Create EObject</em>' class.
@@ -523,6 +541,15 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int DELETE_EOBJECT__STAGING_AREA = EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA;
+
+	/**
+	 * The feature id for the '<em><b>Object Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT__OBJECT_ID = EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID;
 
 	/**
 	 * The number of structural features of the '<em>Delete EObject</em>' class.
@@ -701,6 +728,17 @@ public interface EobjectPackage extends EPackage {
 	EAttribute getEObjectExistenceEChange_StagingArea();
 
 	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getObjectId <em>Object Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Object Id</em>'.
+	 * @see tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getObjectId()
+	 * @see #getEObjectExistenceEChange()
+	 * @generated
+	 */
+	EAttribute getEObjectExistenceEChange_ObjectId();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.eobject.CreateEObject <em>Create EObject</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -826,6 +864,14 @@ public interface EobjectPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA = eINSTANCE.getEObjectExistenceEChange_StagingArea();
+
+		/**
+		 * The meta object literal for the '<em><b>Object Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID = eINSTANCE.getEObjectExistenceEChange_ObjectId();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.eobject.impl.CreateEObjectImpl <em>Create EObject</em>}' class.
