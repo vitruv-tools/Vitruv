@@ -45,7 +45,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 
 	@Parameters
 	public def static Collection<Boolean> data() {
-		return #[true, false];
+		return #[false, true];
 	}
 	
 	new() {

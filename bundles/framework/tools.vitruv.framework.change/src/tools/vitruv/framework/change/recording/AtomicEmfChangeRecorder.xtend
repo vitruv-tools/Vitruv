@@ -20,13 +20,16 @@ import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 
 class AtomicEmfChangeRecorder {
+	private static val USE_LEGACY_RECORDER = true;
+
 	val Set<Notifier> elementsToObserve
 	var boolean unresolveRecordedChanges
 	val boolean updateTuids;
 	var List<TransactionalChange> resolvedChanges;
 	var List<TransactionalChange> unresolvedChanges;
-	val AtomicChangeRecorder changeRecorder;
-	
+	val NotificationRecorder changeRecorder;
+	val AtomicChangeRecorder legacyChangeRecorder;
+
 	/**
 	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
 	 * the recorded changes, but updated Tuids.
@@ -56,25 +59,38 @@ class AtomicEmfChangeRecorder {
 		this.elementsToObserve = newHashSet();
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 		this.updateTuids = updateTuids;
-		this.changeRecorder = new AtomicChangeRecorder();
+		this.changeRecorder = new NotificationRecorder();
+		this.legacyChangeRecorder = new AtomicChangeRecorder();
 	}
 
 	def void beginRecording() {
-		changeRecorder.reset;
-		changeRecorder.beginRecording(this.elementsToObserve);
+		if (USE_LEGACY_RECORDER) {
+			legacyChangeRecorder.reset;
+			legacyChangeRecorder.beginRecording(this.elementsToObserve);
+		} else {
+			changeRecorder.beginRecording(this.elementsToObserve);
+		}
 	}
-	
+
 	def void addToRecording(Notifier elementToObserve) {
 		this.elementsToObserve += elementToObserve;
 		if (isRecording) {
-			changeRecorder.beginRecording(elementsToObserve);
+			if (USE_LEGACY_RECORDER) {
+				legacyChangeRecorder.beginRecording(elementsToObserve);
+			} else {
+				changeRecorder.beginRecording(elementsToObserve);
+			}
 		}
 	}
-	
+
 	def void removeFromRecording(Notifier elementToObserve) {
 		this.elementsToObserve -= elementToObserve;
 		if (isRecording) {
-			changeRecorder.beginRecording(elementsToObserve);
+			if (USE_LEGACY_RECORDER) {
+				legacyChangeRecorder.beginRecording(elementsToObserve);
+			} else {
+				changeRecorder.beginRecording(elementsToObserve);
+			}
 		}
 	}
 
@@ -83,30 +99,44 @@ class AtomicEmfChangeRecorder {
 		if (!isRecording) {
 			throw new IllegalStateException();
 		}
-		changeRecorder.endRecording();
+		if (USE_LEGACY_RECORDER) {
+			legacyChangeRecorder.endRecording();
+		} else {
+			changeRecorder.endRecording();
+		}
 	}
 
 	def void endRecording() {
 		if (!isRecording) {
 			throw new IllegalStateException();
 		}
-		changeRecorder.endRecording();
-		// Only take those that do not contain only objectsToAttach (I don't know why)
-		val relevantChangeDescriptions = 
-			changeRecorder.changeDescriptions.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].toList
-		if (unresolveRecordedChanges) {
+		if (USE_LEGACY_RECORDER) {
+			legacyChangeRecorder.endRecording();
+			// Only take those that do not contain only objectsToAttach (I don't know why)
+			val relevantChangeDescriptions = legacyChangeRecorder.changeDescriptions.filter [
+				!(objectChanges.isEmpty && resourceChanges.isEmpty)
+			].toList
+			if (unresolveRecordedChanges) {
+				relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
+				unresolvedChanges = relevantChangeDescriptions.filterNull.map [
+					createModelChange(true, unresolveRecordedChanges && updateTuids)
+				].filterNull.toList;
+				correctChanges(unresolvedChanges)
+			}
 			relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
-			unresolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(true, unresolveRecordedChanges && updateTuids)].filterNull.toList;
-			correctChanges(unresolvedChanges)
+			resolvedChanges = relevantChangeDescriptions.filterNull.map [
+				createModelChange(false, !unresolveRecordedChanges && updateTuids)
+			].filterNull.toList;
+		} else {
+			changeRecorder.endRecording();
+			resolvedChanges = changeRecorder.changes.map[VitruviusChangeFactory.instance.createConcreteChange(it)];
 		}
-		relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
-		resolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(false, !unresolveRecordedChanges && updateTuids)].filterNull.toList;
 	}
-	
+
 	public def List<TransactionalChange> getUnresolvedChanges() {
 		return unresolvedChanges;
 	}
-	
+
 	public def List<TransactionalChange> getResolvedChanges() {
 		return resolvedChanges;
 	}
@@ -132,7 +162,7 @@ class AtomicEmfChangeRecorder {
 	}
 
 	def void dispose() {
-		changeRecorder.dispose()
+		// changeRecorder.dispose()
 	}
 
 	/*
@@ -191,17 +221,17 @@ class AtomicEmfChangeRecorder {
 		private boolean isDisposed = false;
 		@Accessors(PUBLIC_GETTER)
 		private var List<ChangeDescription> changeDescriptions;
-		
+
 		new() {
 			setRecordingTransientFeatures(false);
 			setResolveProxies(true);
 			reset();
 		}
-		
+
 		public def void reset() {
 			this.changeDescriptions = newArrayList;
 		}
-		
+
 		override dispose() {
 			this.isDisposed = true;
 			super.dispose()
