@@ -19,9 +19,16 @@ import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import org.eclipse.xtext.resource.IResourceFactory
-import org.eclipse.emf.ecore.util.EcoreUtil
 import java.util.Collections
 import org.eclipse.emf.ecore.resource.ResourceSet
+import java.io.PipedInputStream
+import java.io.PipedOutputStream
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import java.util.List
+import java.util.concurrent.ExecutionException
+import java.io.IOException
+import org.eclipse.xtext.util.RuntimeIOException
 
 class InternalReactionsGenerator implements IReactionsGenerator {
 
@@ -110,7 +117,7 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 		reactionFileResourceSets.forEach[generateEnvironment(fsa)]
 		artificialReactionsResourceSet?.generateEnvironment(fsa)
 	}
-	
+
 	def private createSyntheticResource(String sourceFileName) {
 		var uriAppendix = 1
 		var resourceUri = SYNTHETIC_RESOURCES.appendSegment(sourceFileName).appendFileExtension("reactions")
@@ -138,7 +145,7 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 
 	override addReactionsFiles(XtextResourceSet resourceSet) {
 		reactionFileResourceSets.add(resourceSet)
-		resourcesToGenerate += resourceSet.resources.filter [containsReactionsFile]
+		resourcesToGenerate += resourceSet.resources.filter[containsReactionsFile]
 	}
 
 	override addReactionsFile(FluentReactionsFileBuilder reactionBuilder) {
@@ -148,20 +155,58 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 		reactionBuilder.attachTo(resource)
 	}
 
-	override writeReactions(IFileSystemAccess2 fsa) {
+	override writeReactions(IFileSystemAccess2 fsa) throws IOException {
 		writeReactions(fsa, null)
 	}
-	
-	override writeReactions(IFileSystemAccess2 fsa, String subPath) {
+
+	override writeReactions(IFileSystemAccess2 fsa, String subPath) throws IOException {
 		val pathPrefix = if (subPath === null) '' else if (subPath.endsWith('/')) subPath else subPath + '/'
-		resourcesToGenerate.map [ resource |
-			val outputUri = fsa.getURI(pathPrefix + resource.URI.lastSegment)
-			val newResource = resource.resourceSet.getResource(outputUri, false) ?:
-				resource.resourceSet.createResource(outputUri)
-			newResource.contents.clear()
-			newResource.contents += EcoreUtil.copy(resource.reactionsFile)
-			newResource
-		].forEach[save(Collections.emptyMap)]
+		val writeExecutor = Executors.newCachedThreadPool
+		val List<Future<?>> writePromises = new ArrayList(resourcesToGenerate.size * 2)
+		for (resource : resourcesToGenerate) {
+			val serializationInput = new PipedOutputStream()
+			val serializationOutput = new PipedInputStream(serializationInput)
+
+			// return null so this is a Callable (which, unlike Runnables, may
+			// throw exceptions) 
+			writePromises += writeExecutor.submit([
+				fsa.generateFile(pathPrefix + resource.URI.lastSegment, serializationOutput)
+				null
+			])
+			writePromises += writeExecutor.submit([
+				resource.save(serializationInput, Collections.emptyMap)
+				// EMF doesn’t close the stream!
+				serializationInput.close()
+				null
+			])
+		}
+		for (writePromise : writePromises) {
+			try {
+				writePromise.get()
+			} catch (ExecutionException e) {
+				e.cause.handleWriteException
+			} catch (Throwable e) {
+				throw new IOException(e)
+			}
+		}
+		writeExecutor.shutdown()
+	}
+
+	// makes sure Xtext doesn’t sneaky throw exceptions
+	def private void handleWriteException(Throwable executionException) throws IOException {
+		switch (executionException) {
+			IOException:
+				throw executionException
+			RuntimeIOException: {
+				val realExecutionException = executionException.cause
+				switch (realExecutionException) {
+					IOException: throw realExecutionException
+					default: new IOException(realExecutionException)
+				}
+			}
+			default:
+				throw new IOException(executionException)
+		}
 	}
 
 	override useResourceSet(ResourceSet resourceSet) {
@@ -169,5 +214,5 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 		artificialReactionsResourceSet = resourceSet
 		reactionFileResourceSets += resourceSet
 	}
-	
+
 }

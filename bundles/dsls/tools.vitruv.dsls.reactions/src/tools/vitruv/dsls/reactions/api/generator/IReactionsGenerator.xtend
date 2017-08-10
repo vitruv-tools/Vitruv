@@ -10,6 +10,7 @@ import java.nio.file.Path
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 import org.eclipse.emf.ecore.resource.ResourceSet
+import java.io.IOException
 
 /**
  * Generates all code that is necessary to run reactions. Reactions to generate
@@ -127,7 +128,7 @@ interface IReactionsGenerator {
 	 * 		The file system acces to use for writing the results. Results will
 	 * 		be written to the root of the default output configuration.
 	 */
-	def void writeReactions(IFileSystemAccess2 fsa)
+	def void writeReactions(IFileSystemAccess2 fsa) throws IOException
 	
 		/**
 	 * Writes all reactions added to this generator to the given 
@@ -143,5 +144,5 @@ interface IReactionsGenerator {
 	 * 		The path in the given file system provider’s default output
 	 * 		configuration to write the results to.
 	 */
-	def void writeReactions(IFileSystemAccess2 fsa, String subPath)
+	def void writeReactions(IFileSystemAccess2 fsa, String subPath) throws IOException
 }
