@@ -98,9 +98,10 @@ class TypeInferringAtomicEChangeFactory {
 	 * @param resource The resource which contains the staging area, where the object will be placed in / removed from.
 	 */
 	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
-		A affectedEObject, Resource resource) {
+		A affectedEObject, Resource resource, String objectId) {
 		change.stagingArea = StagingArea.getStagingArea(resource)
 		change.affectedEObject = affectedEObject;
+		change.objectId = objectId;
 	}
 
 	/**
@@ -239,9 +240,9 @@ class TypeInferringAtomicEChangeFactory {
 	 * @param resource The resource, in which staging area the EObject is inserted.
 	 * @return The created CreateEObject EChange.
 	 */
-	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject, Resource resource) {
+	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject, Resource resource, String objectId) {
 		val c = EobjectFactory.eINSTANCE.createCreateEObject()
-		setEObjectExistenceChange(c, affectedEObject, resource)
+		setEObjectExistenceChange(c, affectedEObject, resource, objectId)
 		return c
 	}
 
@@ -251,9 +252,9 @@ class TypeInferringAtomicEChangeFactory {
 	 * @param resource The resource, from which staging area the EObject is removed.
 	 * @return The created DeleteEObject EChange.
 	 */
-	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject, Resource resource) {
+	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject, Resource resource, String objectId) {
 		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
-		setEObjectExistenceChange(c, affectedEObject, resource)
+		setEObjectExistenceChange(c, affectedEObject, resource, objectId)
 		return c
 	}
 
