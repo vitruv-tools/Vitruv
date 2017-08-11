@@ -78,7 +78,6 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 				Trying to unregister «this» from TUIDManager but was not registered yet.
 			''')
 		removeTuidUpdateListener(this)
-		reinitialize
 		isRegistered = false
 	}
 
