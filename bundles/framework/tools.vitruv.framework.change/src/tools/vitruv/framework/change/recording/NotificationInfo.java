@@ -413,7 +413,7 @@ public class NotificationInfo implements Notification {
 	 * @return true if the feature is unsetable and was in the set state before this notification.
 	 */
 	public boolean wasUnset() {
-		return getStructuralFeature().isUnsettable() && !notification.wasSet();
+		return getStructuralFeature().isUnsettable() && notification.wasSet() && !getNotifierModelElement().eIsSet(getStructuralFeature());
 	}
 
 	/**

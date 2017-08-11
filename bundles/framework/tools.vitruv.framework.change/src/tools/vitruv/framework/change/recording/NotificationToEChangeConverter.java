@@ -46,12 +46,12 @@ public final class NotificationToEChangeConverter {
 			}
 //			return handleSetReference(n);
 
-//		case Notification.UNSET:
-//			if (n.isAttributeNotification()) {
-//				return handleUnsetAttribute(n);
-//			}
+		case Notification.UNSET:
+			if (n.isAttributeNotification()) {
+				return handleUnsetAttribute(n);
+			}
 //			return handleUnsetReference(n);
-//
+
 		case Notification.ADD:
 			if (n.isAttributeNotification()) {
 				return handleMultiAttribute(n);
@@ -145,18 +145,7 @@ public final class NotificationToEChangeConverter {
 		break;
 	}
 	
-		if (n.wasUnset()) {
-			ExplicitUnsetEAttribute<EObject, Object> unsetChange = CompoundFactory.eINSTANCE.createExplicitUnsetEAttribute();
-			for (EChange change : changes) {
-				if (change instanceof SubtractiveAttributeEChange<?, ?>) {
-					unsetChange.getSubtractiveChanges().add((SubtractiveAttributeEChange<EObject, Object>) change);		
-				} else {
-					throw new IllegalStateException();
-				}
-			}
-			return Collections.singletonList(unsetChange);
-		}
-
+		
 		return changes;
 	}
 
@@ -290,7 +279,18 @@ public final class NotificationToEChangeConverter {
 			changes.add(op);
 		}
 		
-		// TODO Handle unset
+		if (n.wasUnset()) {
+			ExplicitUnsetEAttribute<EObject, Object> unsetChange = CompoundFactory.eINSTANCE.createExplicitUnsetEAttribute();
+			for (EChange change : changes) {
+				if (change instanceof SubtractiveAttributeEChange<?, ?>) {
+					unsetChange.getSubtractiveChanges().add((SubtractiveAttributeEChange<EObject, Object>) change);		
+				} else {
+					throw new IllegalStateException();
+				}
+			}
+			return Collections.singletonList(unsetChange);
+		}
+		
 		return changes;
 	}
 
@@ -403,12 +403,17 @@ public final class NotificationToEChangeConverter {
 //		}
 //	}
 //
-//	private AbstractOperation handleUnsetAttribute(NotificationInfo n) {
-//		final FeatureOperation op = (FeatureOperation) handleSetAttribute(n);
-//		op.setUnset(UnsetType.IS_UNSET);
-//		return op;
-//	}
-//
+	private Iterable<EChange> handleUnsetAttribute(NotificationInfo n) {
+		Iterable<EChange> op = null;
+		if(!n.getAttribute().isMany())  
+			handleSetAttribute(n); 
+		else {
+			ExplicitUnsetEAttribute<EObject, Object> unsetChange = CompoundFactory.eINSTANCE.createExplicitUnsetEAttribute();
+			return Collections.singletonList(unsetChange);
+		}
+		return op;
+	}
+
 //	private AbstractOperation handleUnsetReference(NotificationInfo n) {
 //		FeatureOperation op;
 //		if (!n.getReference().isMany()) {
