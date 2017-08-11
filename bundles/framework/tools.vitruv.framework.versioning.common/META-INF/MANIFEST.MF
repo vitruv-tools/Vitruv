@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Common
+Bundle-SymbolicName: tools.vitruv.framework.versioning.common
+Bundle-Version: 1.0.0.qualifier
+Export-Package: tools.vitruv.framework.versioning.common,
+ tools.vitruv.framework.versioning.common.commit,
+ tools.vitruv.framework.versioning.common.commit.impl,
+ tools.vitruv.framework.versioning.common.impl
+Require-Bundle: tools.vitruv.framework.change;bundle-version="0.2.0",
+ org.apache.commons.codec;bundle-version="1.6.0",
+ com.google.gson;bundle-version="2.7.0";visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;bundle-version="2.12.0",
+ tools.vitruv.framework.vsum;bundle-version="0.2.0",
+ tools.vitruv.framework.change.processing;bundle-version="0.2.0",
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.emfstore.examplemodel;bundle-version="1.8.1",
+ tools.vitruv.framework.tests.util.metamodels;bundle-version="0.2.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+

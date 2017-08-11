@@ -3,12 +3,13 @@ package tools.vitruv.framework.versioning.emfstore.impl
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.versioning.branch.Branch
-import tools.vitruv.framework.versioning.commit.Commit
-import tools.vitruv.framework.versioning.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.NoSuchCommitException
 import tools.vitruv.framework.versioning.emfstore.PushState
+import tools.vitruv.framework.versioning.common.commit.Commit
+import tools.vitruv.framework.versioning.common.commit.SimpleCommit
+import tools.vitruv.framework.versioning.common.commit.MergeCommit
 
 class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepository {
 	@Accessors(PUBLIC_GETTER)
@@ -19,10 +20,18 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 		branches = newHashSet(masterBranch)
 	}
 
-	override pushCommit(Commit lastCommit, Commit newCommit) {
+	override pushCommit(Commit newCommit) {
 		val currentLastCommit = commits.last
-		if (currentLastCommit != lastCommit)
-			return PushState::COMMIT_NOT_ACCEPTED
+		if (newCommit instanceof SimpleCommit) {
+			if (currentLastCommit.identifier != newCommit.parent)
+				return PushState::COMMIT_NOT_ACCEPTED
+		}
+		if (newCommit instanceof MergeCommit) {
+			if (newCommit.sourceCommit != currentLastCommit.identifier &&
+				newCommit.targetCommit != currentLastCommit.identifier)
+				return PushState::COMMIT_NOT_ACCEPTED
+		}
+
 		commits += newCommit
 		return PushState::SUCCESS
 	}
@@ -32,13 +41,6 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 		val commits = branch.commits
 		val ids = commits.map[identifier]
 		return ids
-	}
-
-	private def Branch getBranch(String branchName) {
-		val branch = branches.findFirst[name == branchName]
-		if (null === branch)
-			throw new RemoteBranchNotFoundException
-		return branch
 	}
 
 	override push(Commit commit, String branchName) {
@@ -61,4 +63,10 @@ class RemoteRepositoryImpl extends AbstractRepositoryImpl implements RemoteRepos
 		return commit
 	}
 
+	private def Branch getBranch(String branchName) {
+		val branch = branches.findFirst[name == branchName]
+		if (null === branch)
+			throw new RemoteBranchNotFoundException
+		return branch
+	}
 }

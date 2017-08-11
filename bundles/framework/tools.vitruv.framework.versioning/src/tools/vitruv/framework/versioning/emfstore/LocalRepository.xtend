@@ -5,7 +5,6 @@ import java.util.Set
 
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 
-import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.Conflict
@@ -13,30 +12,28 @@ import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.RemoteBranch
-import tools.vitruv.framework.versioning.commit.MergeCommit
-import tools.vitruv.framework.versioning.commit.SimpleCommit
+import tools.vitruv.framework.versioning.common.commit.MergeCommit
+import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
-interface LocalRepository extends AbstractRepository {
-	def void setVirtualModel(VersioningVirtualModel versioningVirtualModel)
-
-	def VersioningVirtualModel getVirtualModel()
+interface LocalRepository<T> extends AbstractRepository {
+	def void setAllFlag(boolean allFlag)
 
 	def Author getAuthor()
 
-	def LocalBranch createLocalBranch(String name)
+	def List<RemoteBranch<T>> getRemoteBranches()
 
-	def LocalBranch getCurrentBranch()
+	def LocalBranch<T> createLocalBranch(String name)
 
-	def RemoteBranch createRemoteBranch(String name, RemoteRepository remoteRepository)
+	def LocalBranch<T> getCurrentBranch()
 
-	def RemoteRepository getRemoteProject()
+	def PushState push()
 
-	def Set<LocalBranch> getLocalBranches()
+	def PushState push(LocalBranch<T> localBranch)
 
-	def Set<RemoteBranch> getRemoteBranches()
+	def RemoteBranch<T> createRemoteBranch(String name, T remoteRepository)
 
-	def SimpleCommit commit(String s, List<PropagatedChange> changes)
+	def Set<LocalBranch<T>> getLocalBranches()
 
 	def SimpleCommit commit(String s)
 
@@ -44,15 +41,33 @@ interface LocalRepository extends AbstractRepository {
 
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel, VURI vuri)
 
-	def void addOrigin(LocalBranch branch, RemoteRepository remoteRepository)
+	def T getRemoteProject()
 
-	def void addRemoteRepository(RemoteRepository remoteRepository)
+	def VersioningVirtualModel getVirtualModel()
+
+	def void addOrigin(LocalBranch<T> branch, T remoteRepository)
+
+	def void addRemoteRepository(T remoteRepository)
 
 	def void checkout()
 
 	def void checkout(VersioningVirtualModel virtualModel)
 
 	def void checkout(VersioningVirtualModel virtualModel, VURI vuri)
+
+	def void pull()
+
+	def void pull(LocalBranch<T> branch)
+
+	def void setAuthor(Author author)
+
+	def void setCurrentBranch(LocalBranch<T> branch)
+
+	def void setRemoteProject(T remote)
+
+	def void setVirtualModel(VersioningVirtualModel versioningVirtualModel)
+
+	def void createBranchOnServer(String name, T remoteRemote)
 
 	def MergeCommit merge(
 		Branch source,
@@ -68,19 +83,4 @@ interface LocalRepository extends AbstractRepository {
 		Function1<Conflict, List<EChange>> originalCallback,
 		Function1<Conflict, List<EChange>> triggeredCallback
 	)
-
-	def void pull()
-
-	def void pull(LocalBranch branch)
-
-	def PushState push()
-
-	def PushState push(LocalBranch localBranch)
-
-	def void setAuthor(Author author)
-
-	def void setCurrentBranch(LocalBranch branch)
-
-	def void setRemoteProject(RemoteRepository remote)
-
 }

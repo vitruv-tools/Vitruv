@@ -1,9 +1,9 @@
 package tools.vitruv.framework.versioning.emfstore
 
 import tools.vitruv.framework.versioning.branch.Branch
-import tools.vitruv.framework.versioning.commit.Commit
 import java.util.List
-import tools.vitruv.framework.versioning.commit.SimpleCommit
+import tools.vitruv.framework.versioning.common.commit.Commit
+import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 
 interface AbstractRepository {
 	def Branch getMasterBranch()

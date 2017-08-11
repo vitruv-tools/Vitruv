@@ -1,27 +1,31 @@
 package tools.vitruv.framework.change.description.impl
 
 import java.util.List
+
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
+
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.Resource
+
+import tools.vitruv.framework.change.description.ChangeCloner
+import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
-import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.description.ChangeCloner
+import tools.vitruv.framework.util.datatypes.VURI
 
 /**
  * @version 0.2.0
  * @since 2017-06-06
  */
 class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
+	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(VitruviusChangeFactory)
 
 	private new() {
@@ -98,7 +102,7 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 	}
 
 	override <T extends VitruviusChange> clone(T originalChange) {
-		return new ChangeCloner().clone(originalChange) as T
+		return cloneVitruviusChange(originalChange) as T
 	}
 
 	private def EChange generateFileCreateChange(Resource resource) {

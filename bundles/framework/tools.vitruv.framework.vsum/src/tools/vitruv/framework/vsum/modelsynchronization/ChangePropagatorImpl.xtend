@@ -19,6 +19,7 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.description.impl.ChangeClonerImpl
 import tools.vitruv.framework.change.description.impl.PropagatedChangeImpl
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
@@ -32,7 +33,7 @@ import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
-	static extension ChangeCloner cc = new ChangeCloner
+	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
 	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
 	val ChangePropagationSpecificationProvider changePropagationProvider
@@ -79,7 +80,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	}
 
 	override propagateChange(VitruviusChange change, String changeId) {
-		if (vuriToIds.values.exists[it == changeId])
+		if (vuriToIds.values.parallelStream.anyMatch[it == changeId])
 			throw new IllegalStateException
 		currentChangeId = changeId
 		propagateChange(change)
@@ -141,9 +142,20 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		modelRepository.addRootElement(createdObject)
 	}
 
+	override getAllResolvedPropagatedChanges() {
+		val returnValue = vuriToIds.keySet.map[resolvedPropagatedChanges].flatten.toList
+		return returnValue
+	}
+
+	override getAllUnresolvedPropagatedChanges() {
+		val returnValue = vuriToIds.keySet.map[unresolvedPropagatedChanges].flatten.toList
+		return returnValue
+	}
+
 	private def void startChangePropagation(VitruviusChange change) {
 		info('''Started synchronizing change: «change»''')
 		changePropagationListeners.forEach[startedChangePropagation]
+		resourceRepository.currentVURI = change.URI
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
@@ -166,7 +178,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		List<PropagatedChange> propagatedChanges,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-		val clonedChange = cc.clone(change)
+		val clonedChange = cloneVitruviusChange(change)
 		val changeApplicationFunction = [ ResourceSet resourceSet |
 			// If change has a URI, load the model
 			if (change.URI !== null) resourceRepository.getModel(change.URI)
@@ -190,16 +202,9 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		specifications.forEach [
 			propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
-
-		val consequentialChanges = newArrayList
-		// PS This may be working
-		changedResourcesTracker.markNonSourceResourceAsChanged
-		resourceRepository.saveAllModels
-
-		consequentialChanges += resourceRepository.endRecording
 		handleObjectsWithoutResource
-		consequentialChanges.forEach[debug(it)]
-		addPropagatedChanges(clonedChange, change, consequentialChanges, propagatedChanges)
+		resourceRepository.endRecording
+		addPropagatedChanges(clonedChange, change, propagatedChanges)
 	}
 
 	private def void handleObjectsWithoutResource() {
@@ -260,7 +265,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	private def addPropagatedChanges(
 		VitruviusChange unresolvedChange,
 		VitruviusChange resolvedChange,
-		List<? extends VitruviusChange> consequentialChanges,
 		List<PropagatedChange> propagatedChanges
 	) {
 		val isUnresolved = modelRepository.unresolveChanges
@@ -274,7 +278,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 				The length of changes should be equal but there are «unresolvedTriggeredChanges.length»
 				respectively «resolvedTriggeredChanges.length»
 			''')
-
 		val unresolvedPropagatedChange = new PropagatedChangeImpl(uuid, unresolvedChange,
 			createCompositeChange(unresolvedTriggeredChanges))
 		val resolvedPropagatedChange = new PropagatedChangeImpl(uuid, resolvedChange,
@@ -294,16 +297,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			idToUnresolvedChanges.put(uuid, unresolvedPropagatedChange)
 		} else
 			warn('''resolvedChange.URI was null''')
-	}
-
-	override getAllResolvedPropagatedChanges() {
-		val returnValue = vuriToIds.keySet.map[resolvedPropagatedChanges].flatten.toList
-		return returnValue
-	}
-
-	override getAllUnresolvedPropagatedChanges() {
-		val returnValue = vuriToIds.keySet.map[unresolvedPropagatedChanges].flatten.toList
-		return returnValue
 	}
 
 }

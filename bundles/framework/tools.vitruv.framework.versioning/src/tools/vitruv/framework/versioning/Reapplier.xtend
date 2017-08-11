@@ -18,4 +18,11 @@ interface Reapplier {
 		List<EChange> echangesToReapply,
 		VersioningVirtualModel virtualModel
 	)
+
+	def List<PropagatedChange> reapply(
+		List<PropagatedChange> changesToRollBack,
+		List<EChange> echangesToReapply,
+		VersioningVirtualModel virtualModel
+	)
+
 }

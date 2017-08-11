@@ -6,7 +6,7 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.tuid.TuidManager
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
-	static extension TuidManager = TuidManager.instance
+	static extension TuidManager = TuidManager::instance
 
 	public new(EChange eChange) {
 		super(eChange);

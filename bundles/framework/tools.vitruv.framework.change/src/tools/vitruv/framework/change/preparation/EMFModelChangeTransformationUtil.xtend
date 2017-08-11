@@ -69,12 +69,14 @@ abstract class EMFModelChangeTransformationUtil {
 		getValueList(eObject, attribute) as EList<Object>
 	}
 
-	def static List<EChange> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference,
-		boolean forceCreate) {
+	def static List<EChange> createAdditiveEChangeForReferencedObject(
+		EObject referencingEObject,
+		EReference reference,
+		boolean forceCreate
+	) {
 		val result = new ArrayList<EChange>
 		if (reference.many) {
 			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
-
 				result +=
 					createInsertReferenceChange(referencingEObject, reference,
 						(referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, false)

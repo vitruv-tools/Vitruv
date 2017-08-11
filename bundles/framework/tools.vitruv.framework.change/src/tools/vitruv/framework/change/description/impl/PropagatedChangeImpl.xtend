@@ -1,11 +1,13 @@
 package tools.vitruv.framework.change.description.impl
 
+import java.util.Collection
+
+import org.apache.log4j.Logger
 import org.eclipse.xtend.lib.annotations.Data
+
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
-import java.util.Collection
 import tools.vitruv.framework.change.echange.EChange
-import org.apache.log4j.Logger
 
 @Data
 class PropagatedChangeImpl implements PropagatedChange {

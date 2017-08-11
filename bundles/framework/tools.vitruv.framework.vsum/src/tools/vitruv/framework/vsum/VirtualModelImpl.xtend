@@ -1,6 +1,7 @@
 package tools.vitruv.framework.vsum
 
 import java.io.File
+import java.util.Date
 import java.util.List
 import java.util.Map
 import java.util.concurrent.Callable
@@ -12,6 +13,7 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
+import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import tools.vitruv.framework.userinteraction.UserInteracting
@@ -27,17 +29,37 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	protected val ResourceRepositoryImpl resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator
-	@Accessors(PUBLIC_SETTER)
-	String allLastPropagatedChangeId
-	val Map<VURI, String> vuriToLastpropagatedChange
 	val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository metamodelRepository
 	@Accessors(PUBLIC_GETTER)
 	val File folder
 
-	new(File folder, UserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
+	@Accessors(PUBLIC_GETTER)
+	UserInteracting userInteractor
+
+	/**  Attribute for versioning */
+	val Map<VURI, String> vuriToLastpropagatedChange
+	/**  Attribute for versioning */
+	Date lastCommitDate
+	/**  Attribute for versioning */
+	String allLastPropagatedChangeId
+
+	private static def dropAllPreviousChanges(
+		List<PropagatedChange> propagatedChanges,
+		String lastCommitedChange
+	) {
+		val returnValue = propagatedChanges.dropWhile[id != lastCommitedChange].drop(1).toList
+		return returnValue
+	}
+
+	new(
+		File folder,
+		UserInteracting userInteracting,
+		VirtualModelConfiguration modelConfiguration
+	) {
 		this.folder = folder
 		this.metamodelRepository = new VitruvDomainRepositoryImpl
+		this.userInteractor = userInteracting
 		for (metamodel : modelConfiguration.metamodels) {
 			this.metamodelRepository.addDomain(metamodel)
 			metamodel.registerAtTuidManagement
@@ -87,7 +109,6 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	}
 
 	override reverseChanges(List<PropagatedChange> changes) {
-
 		val command = EMFCommandBridge::createVitruviusTransformationRecordingCommand [|
 			changes.reverseView.forEach [
 				applyBackward
@@ -117,8 +138,9 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		save
 	}
 
-	override setUserInteractor(UserInteracting userInteractor) {
-		changePropagationSpecificationProvider.forEach[userInteracting = userInteractor]
+	override setUserInteractor(UserInteracting userInteract) {
+		this.userInteractor = userInteract
+		changePropagationSpecificationProvider.forEach[userInteracting = userInteract]
 	}
 
 	override getResolvedPropagatedChanges(VURI vuri) {
@@ -127,13 +149,6 @@ class VirtualModelImpl implements VersioningVirtualModel {
 
 	override getUnresolvedPropagatedChanges(VURI vuri) {
 		changePropagator.getUnresolvedPropagatedChanges(vuri)
-	}
-
-	private static def dropAllPreviousChanges(List<PropagatedChange> propagatedChanges, String lastCommitedChange) {
-		val returnValue = propagatedChanges.dropWhile [
-			id != lastCommitedChange
-		].drop(1).toList
-		return returnValue
 	}
 
 	override getUnresolvedPropagatedChangesSinceLastCommit(VURI vuri) {
@@ -148,12 +163,10 @@ class VirtualModelImpl implements VersioningVirtualModel {
 
 	override getAllUnresolvedPropagatedChangesSinceLastCommit() {
 		val changes = changePropagator.allUnresolvedPropagatedChanges
-		if (null !== allLastPropagatedChangeId) {
-			return dropAllPreviousChanges(changes, allLastPropagatedChangeId)
-		} else {
-			return changes.toList
-		}
-
+		return if (null === allLastPropagatedChangeId)
+			changes.toList
+		else
+			dropAllPreviousChanges(changes, allLastPropagatedChangeId)
 	}
 
 	override setLastPropagatedChangeId(VURI vuri, String id) {
@@ -170,6 +183,26 @@ class VirtualModelImpl implements VersioningVirtualModel {
 
 	override propagateChange(VitruviusChange change, String changeId) {
 		changePropagator.propagateChange(change, changeId)
+	}
+
+	override getUserInteractionsSinceLastCommit() {
+		if (null === lastCommitDate)
+			userInteractor.getAllUserInteractions
+		else
+			userInteractor.getAllUserInteractionsSince(lastCommitDate)
+	}
+
+	override setAllLastPropagatedChangeId(String id) {
+		allLastPropagatedChangeId = id
+		lastCommitDate = new Date
+	}
+
+	override registerCorrespondenceModelToTUIDManager() {
+		(correspondenceModel as InternalCorrespondenceModel).registerToTUIDManager
+	}
+
+	override deregisterCorrespondenceModelFromTUIDManager() {
+		(correspondenceModel as InternalCorrespondenceModel).deregisterFromTUIDManager
 	}
 
 }

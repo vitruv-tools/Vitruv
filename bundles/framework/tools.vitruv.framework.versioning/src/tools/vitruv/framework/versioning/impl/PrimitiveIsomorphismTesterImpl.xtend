@@ -53,10 +53,6 @@ class PrimitiveIsomorphismTesterImpl implements IsomorphismTesterAlgorithm {
 		]
 	}
 
-	override findIsomorphism(Graph g1, Graph g2) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 	override init(Graph g1, Graph g2) {
 		combinedGraph = null
 		graph1 = g1

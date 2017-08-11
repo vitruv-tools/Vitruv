@@ -5,14 +5,12 @@ import java.io.IOException
 
 import java.util.List
 import java.util.Map
-import java.util.Set
 import java.util.concurrent.Callable
 import java.util.function.Consumer
 import java.util.stream.Collectors
 
 import org.apache.log4j.Logger
 
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -24,6 +22,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl
@@ -40,17 +39,18 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.helper.FileSystemHelper
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 
 class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceProviding {
 	static extension Factory = TransactionalEditingDomain::Factory::INSTANCE
 	static extension Logger = Logger::getLogger(ResourceRepositoryImpl.simpleName)
-	static extension TuidManager = TuidManager::instance
+	static extension TuidManager = TuidManager::instance 
 	static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
+
 	@Accessors(PUBLIC_GETTER)
 	val ResourceSet resourceSet
 	val VitruvDomainRepository metamodelRepository
 	val Map<VURI, ModelInstance> modelInstances
+	@Accessors(PUBLIC_GETTER)
 	InternalCorrespondenceModel correspondenceModel
 	val FileSystemHelper fileSystemHelper
 	val File folder
@@ -59,6 +59,9 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	val List<TransactionalChange> lastResolvedChanges
 	@Accessors(PUBLIC_GETTER)
 	val List<TransactionalChange> lastUnresolvedChanges
+
+	VitruvDomain originalDomain
+	VitruvDomain currentDomain
 
 	new(File folder, VitruvDomainRepository metamodelRepository) {
 		this(folder, metamodelRepository, null)
@@ -80,7 +83,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	}
 
 	override unresolveChanges() {
-		val String unresolvePropagatedChanges = System::getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES)
+		val unresolvePropagatedChanges = System::getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES)
 		return unresolvePropagatedChanges !== null
 	}
 
@@ -94,10 +97,10 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	}
 
 	override persistRootElement(VURI vuri, EObject rootEObject) {
-		val ModelInstance modelInstance = getModelInstanceOriginal(vuri)
+		val modelInstance = getModelInstanceOriginal(vuri)
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain[
-			TuidManager.instance.registerObjectUnderModification(rootEObject)
-			val Resource resource = modelInstance.resource
+			registerObjectUnderModification(rootEObject)
+			val resource = modelInstance.resource
 			resource.contents += rootEObject
 			resource.modified = true
 			debug('''Create model with resource: «resource»''')
@@ -113,62 +116,21 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 		saveAllChangedCorrespondenceModels
 	}
 
-	private def void deleteEmptyModels() {
-		val List<VURI> vurisToDelete = newArrayList
-		modelInstances.values.filter[rootElements.empty].forEach[vurisToDelete += URI]
-		vurisToDelete.forEach[deleteModel]
-	}
-
-	private def void saveAllChangedModels() {
-		deleteEmptyModels
-		modelInstances.values.filter[resource.modified].forEach [
-			debug('''  Saving resource: «resource»''')
-			saveModelInstance
-		]
-	}
-
-	private def void saveAllChangedCorrespondenceModels() {
-		createRecordingCommandAndExecuteCommandOnTransactionalDomain[
-			debug('''  Saving correspondence model: «ResourceRepositoryImpl.this.correspondenceModel.resource»''')
-			ResourceRepositoryImpl.this.correspondenceModel.saveModel
-			ResourceRepositoryImpl.this.correspondenceModel.resetChangedAfterLastSave
-			return null
-		]
-	}
-
-	def ModelInstance getOrCreateUnregisteredModelInstance(VURI modelURI) {
-		val String fileExtension = modelURI.fileExtension
-		val VitruvDomain metamodel = metamodelRepository.getDomain(fileExtension)
-		if (metamodel ===
-			null)
-			throw new RuntimeException('''
-				Cannot create a new model instance at the uri '«»«modelURI»' because no metamodel is registered for the file extension '«»«fileExtension»'!
-			''')
-		return loadModelInstance(modelURI, metamodel)
-	}
-
-	def ModelInstance loadModelInstance(VURI modelURI, VitruvDomain metamodel) {
-		val URI emfURI = modelURI.EMFUri
-		val Resource modelResource = URIUtil::loadResourceAtURI(emfURI, resourceSet, metamodel.defaultLoadOptions)
-		val ModelInstance modelInstance = ModelInstance::createModelInstance(modelURI, modelResource)
-		return modelInstance
-	}
-
-	/**
-	 * Returns the correspondence model in this model repository
-	 * @return the correspondence model
-	 */
-	override getCorrespondenceModel() {
-		return correspondenceModel
-	}
-
 	override startRecording() {
-		changeRecorder.clearNotifiers
-		resourceSet.resources.forEach [
-			changeRecorder.addToRecording(it)
-		]
-		changeRecorder.addToRecording(resourceSet)
-		changeRecorder.beginRecording
+		if (currentDomain === originalDomain) {
+			changeRecorder.beginRecording
+		} else {
+			changeRecorder.clearNotifiers
+			resourceSet.resources.forEach [ r |
+				changeRecorder.addToRecording(r)
+				// FIXME PS Hack. Objects created by the consistency do not report changes 
+				// to the AtomicChangeRecorder, if only the resource is added. 
+				// This occurs onlqy with unresolved EChanges.
+				r.allContents.forEach[eObject|changeRecorder.addToRecording(eObject)]
+			]
+			changeRecorder.addToRecording(resourceSet)
+			changeRecorder.beginRecording
+		}
 		debug("Start recording virtual model")
 	}
 
@@ -181,9 +143,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 
 		val resolvedChanges = changeRecorder.resolvedChanges
 		val unresolvedChanges = changeRecorder.unresolvedChanges
-		// TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions
-		// that are
-		// supported by the domains of the VirtualModel
+
 		val filterFunction = [ List<TransactionalChange> changes |
 			// TODO PS When recording on some domains, the first change is a deletion of the root 
 			// an afterwards, the real change sequence starts.
@@ -192,6 +152,9 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 					changes.drop(1).toList
 				else
 					changes
+			// TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions
+			// that are
+			// supported by the domains of the VirtualModel
 			relevantChanges.parallelStream.filter [ change |
 				change.URI === null || !change.URI.EMFUri.toString.endsWith("correspondence")
 			].collect(Collectors::toList)
@@ -227,9 +190,38 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 		executeRecordingCommandOnTransactionalDomain(command)
 	}
 
+	override setCurrentVURI(VURI original) {
+		if (original === null)
+			return;
+		// PS Can be set only once!
+		if (null === originalDomain)
+			originalDomain = original.metamodelByURI
+		else
+			warn('''VURI «original» ignored, because original was already set to «originalDomain»''')
+		currentDomain = original.metamodelByURI
+	}
+
+	private def ModelInstance loadModelInstance(VURI modelURI, VitruvDomain metamodel) {
+		val emfURI = modelURI.EMFUri
+		val modelResource = URIUtil::loadResourceAtURI(emfURI, resourceSet, metamodel.defaultLoadOptions)
+		val modelInstance = ModelInstance::createModelInstance(modelURI, modelResource)
+		return modelInstance
+	}
+
+	private def ModelInstance getOrCreateUnregisteredModelInstance(VURI modelURI) {
+		val fileExtension = modelURI.fileExtension
+		val metamodel = metamodelRepository.getDomain(fileExtension)
+		if (metamodel ===
+			null)
+			throw new RuntimeException('''
+				Cannot create a new model instance at the uri '«modelURI»' because no metamodel is registered for the file extension '«»«fileExtension»'!
+			''')
+		return loadModelInstance(modelURI, metamodel)
+	}
+
 	private def void deleteModel(VURI vuri) {
-		val ModelInstance modelInstance = getModelInstanceOriginal(vuri)
-		val Resource resource = modelInstance.resource
+		val modelInstance = getModelInstanceOriginal(vuri)
+		val resource = modelInstance.resource
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain[
 			try {
 				debug('''Deleting resource: «resource»''')
@@ -251,18 +243,15 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 		fileSystemHelper.saveVsumVURIsToFile(modelInstances.keySet)
 	}
 
+	private def void loadVURIsOfVSMUModelInstances() {
+		fileSystemHelper.loadVsumVURIsFromFile.map [
+			it -> loadModelInstance(it, metamodelByURI)
+		].forEach[modelInstances.put(key, value)]
+	}
+
 	private def VitruvDomain getMetamodelByURI(VURI uri) {
 		val fileExtension = uri.fileExtension
 		return metamodelRepository.getDomain(fileExtension)
-	}
-
-	private def void loadVURIsOfVSMUModelInstances() {
-		val Set<VURI> vuris = fileSystemHelper.loadVsumVURIsFromFile
-		for (VURI vuri : vuris) {
-			val VitruvDomain metamodel = getMetamodelByURI(vuri)
-			val ModelInstance modelInstance = loadModelInstance(vuri, metamodel)
-			modelInstances.put(vuri, modelInstance)
-		}
 	}
 
 	/**
@@ -289,7 +278,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 
 	private def void initializeCorrespondenceModel() {
 		createRecordingCommandAndExecuteCommandOnTransactionalDomain[
-			val VURI correspondencesVURI = fileSystemHelper.correspondencesVURI
+			val correspondencesVURI = fileSystemHelper.correspondencesVURI
 			var Resource correspondencesResource = null
 			if (URIUtil::existsResourceAtUri(correspondencesVURI.EMFUri)) {
 
@@ -334,14 +323,28 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 			return null
 		]
 	}
-// private void loadAndMapCorrepondenceInstances() {
-// for (Metamodel metamodel : metamodelManaging) {
-// for (Metamodel metamodel2 : metamodelManaging) {
-// if (metamodel != metamodel2
-// && getCorrespondenceModel(metamodel.URI, metamodel2.URI) === null) {
-// createCorrespondenceModel(new MetamodelPair(metamodel, metamodel2))
-// }
-// }
-// }
-// }
+
+	private def void deleteEmptyModels() {
+		val List<VURI> vurisToDelete = newArrayList
+		modelInstances.values.filter[rootElements.empty].forEach[vurisToDelete += URI]
+		vurisToDelete.forEach[deleteModel]
+	}
+
+	private def void saveAllChangedModels() {
+		deleteEmptyModels
+		modelInstances.values.filter[resource.modified].forEach [
+			debug('''  Saving resource: «resource»''')
+			saveModelInstance
+		]
+	}
+
+	private def void saveAllChangedCorrespondenceModels() {
+		createRecordingCommandAndExecuteCommandOnTransactionalDomain[
+			debug('''  Saving correspondence model: «ResourceRepositoryImpl.this.correspondenceModel.resource»''')
+			ResourceRepositoryImpl.this.correspondenceModel.saveModel
+			ResourceRepositoryImpl.this.correspondenceModel.resetChangedAfterLastSave
+			return null
+		]
+	}
+
 }

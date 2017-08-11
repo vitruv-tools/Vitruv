@@ -16,6 +16,7 @@ import tools.vitruv.framework.tuid.TuidManager
  * @author Heiko Klare
  */
 abstract class VitruviusTest {
+	static extension TuidManager = TuidManager::instance
 	@Rule
 	public TestName testName = new TestName
 	File folder
@@ -46,7 +47,7 @@ abstract class VitruviusTest {
 	 */
 	@Before
 	def void beforeTest() {
-		TuidManager::instance.reinitialize()
+		reinitialize()
 		val testMethodName = testName.methodName
 		this.folder = testProjectCreator.apply(testMethodName)
 	}

@@ -1,6 +1,5 @@
 package tools.vitruv.framework.versioning
 
-import edu.ucla.sspace.graph.graphstream.isomorphism.IsomorphismTester
 import org.graphstream.graph.Graph
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import java.util.Map

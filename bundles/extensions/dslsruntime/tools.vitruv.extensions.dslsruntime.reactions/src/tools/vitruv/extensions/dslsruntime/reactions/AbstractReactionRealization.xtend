@@ -7,29 +7,30 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteracting
 
 abstract class AbstractReactionRealization extends CallHierarchyHaving implements IReactionRealization {
+	static extension TuidManager = TuidManager::instance
 	protected UserInteracting userInteracting;
 	protected ReactionExecutionState executionState;
-	
+
 	override applyEvent(EChange change, ReactionExecutionState reactionExecutionState) {
 		getLogger().debug("Called reaction " + this.getClass().getSimpleName() + " with event: " + change);
-    	
-    	this.executionState = reactionExecutionState;
-    	this.userInteracting = reactionExecutionState.userInteracting;
-    	
-    	if (checkPrecondition(change)) {
-    		try {	
+
+		this.executionState = reactionExecutionState;
+		this.userInteracting = reactionExecutionState.userInteracting;
+
+		if (checkPrecondition(change)) {
+			try {
 				executeReaction(change);
 			} finally {
 				// The reactions was completely executed, so remove all objects registered for modification 
 				// by the effects as they are no longer under modification
 				// even if there was an exception!
-				TuidManager.instance.flushRegisteredObjectsUnderModification();	
+				flushRegisteredObjectsUnderModification();
 			}
 		}
-		
+
 		return executionState.transformationResult;
 	}
-	
+
 	protected def void executeReaction(EChange change);
-	
+
 }
