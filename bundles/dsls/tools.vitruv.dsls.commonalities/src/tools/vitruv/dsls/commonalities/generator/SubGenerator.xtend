@@ -1,12 +1,12 @@
 package tools.vitruv.dsls.commonalities.generator;
 
-import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.generator.IGeneratorContext
 
-abstract package class CommonalityFileGenerator {
+abstract package class SubGenerator {
 
 	protected extension IGeneratorContext context
 	
-	protected extension CommonalitiesLanguageGenerationContext generationContext
+	protected extension GenerationContext generationContext
 
 	def abstract void generate()
 	

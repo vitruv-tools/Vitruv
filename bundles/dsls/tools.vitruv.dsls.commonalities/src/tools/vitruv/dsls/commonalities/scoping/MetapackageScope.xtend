@@ -1,12 +1,13 @@
 package tools.vitruv.dsls.commonalities.scoping
 
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.xtext.scoping.IScope
-import org.eclipse.xtend.lib.annotations.Delegate
-import static org.eclipse.xtext.scoping.Scopes.*
-import org.eclipse.emf.ecore.EClassifier
-import java.util.stream.Stream
 import java.util.stream.Collectors
+import java.util.stream.Stream
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.xtend.lib.annotations.Delegate
+import org.eclipse.xtext.scoping.IScope
+
+import static org.eclipse.xtext.scoping.Scopes.*
 
 package class MetapackageScope implements IScope {
 	@Delegate val IScope classesScope

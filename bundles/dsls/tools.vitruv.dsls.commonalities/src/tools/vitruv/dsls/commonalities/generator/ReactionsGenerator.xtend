@@ -1,17 +1,17 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import tools.vitruv.dsls.commonalities.language.elements.Participation
-import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.dsls.commonalities.language.elements.ParticipationClass
-import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import com.google.inject.Inject
 import com.google.inject.Provider
-import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import java.util.function.Supplier
+import tools.vitruv.dsls.commonalities.language.elements.Participation
+import tools.vitruv.dsls.commonalities.language.elements.ParticipationClass
+import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
-package class CommonalityReactionsGenerator extends CommonalityFileGenerator {
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+
+package class ReactionsGenerator extends SubGenerator {
 
 	static val DEBUG_WRITE_REACTIONS = true
 

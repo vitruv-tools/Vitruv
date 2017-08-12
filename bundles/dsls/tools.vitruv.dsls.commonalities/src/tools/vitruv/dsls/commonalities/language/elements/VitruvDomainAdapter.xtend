@@ -1,11 +1,13 @@
 package tools.vitruv.dsls.commonalities.language.elements
 
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.dsls.commonalities.language.elements.impl.VitruvDomainImpl
 import tools.vitruv.framework.domains.VitruvDomain
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import org.eclipse.emf.ecore.EClass
+
 import static com.google.common.base.Preconditions.*
-import org.eclipse.emf.ecore.EPackage
+
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 class VitruvDomainAdapter extends VitruvDomainImpl implements Wrapper<VitruvDomain> {
 

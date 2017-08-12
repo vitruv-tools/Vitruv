@@ -1,10 +1,10 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
-import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
-import tools.vitruv.dsls.commonalities.language.AttributeEqualitySpecification
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
 import org.eclipse.emf.ecore.EDataType
+import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import tools.vitruv.dsls.commonalities.language.AttributeEqualitySpecification
+import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
 
 @Utility
 package class AttributeMappingSpecificationExtension {

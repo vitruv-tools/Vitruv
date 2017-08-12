@@ -1,13 +1,14 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import tools.vitruv.framework.domains.AbstractVitruvDomain
-import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
-import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
-import tools.vitruv.framework.domains.VitruvDomainProvider
 import java.util.Collections
-import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 import java.util.Set
+import org.eclipse.emf.ecore.EPackage
+import tools.vitruv.framework.domains.AbstractVitruvDomain
+import tools.vitruv.framework.domains.VitruvDomainProvider
+import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
+import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
+
+import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
 class ConceptDomain extends AbstractVitruvDomain {
 	val Provider provider

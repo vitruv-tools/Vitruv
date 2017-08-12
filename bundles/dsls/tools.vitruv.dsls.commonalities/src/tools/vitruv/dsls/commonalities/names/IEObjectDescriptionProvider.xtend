@@ -1,11 +1,11 @@
 package tools.vitruv.dsls.commonalities.names
 
-import org.eclipse.xtext.resource.IEObjectDescription
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.resource.EObjectDescription
 import com.google.inject.Inject
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import java.util.function.Function
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.resource.EObjectDescription
+import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 interface IEObjectDescriptionProvider extends Function<EObject, IEObjectDescription>, Function1<EObject, IEObjectDescription> {

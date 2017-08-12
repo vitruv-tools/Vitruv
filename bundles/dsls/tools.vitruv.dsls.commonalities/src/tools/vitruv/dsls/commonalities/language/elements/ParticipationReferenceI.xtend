@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.commonalities.language.elements
 
 import tools.vitruv.dsls.commonalities.language.elements.impl.ParticipationReferenceImpl
+
 import static com.google.common.base.Preconditions.*
 
 class ParticipationReferenceI extends ParticipationReferenceImpl implements Wrapper<Reference> {

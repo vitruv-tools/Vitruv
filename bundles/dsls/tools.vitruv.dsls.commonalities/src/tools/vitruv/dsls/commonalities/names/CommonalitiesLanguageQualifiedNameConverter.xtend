@@ -1,9 +1,9 @@
 package tools.vitruv.dsls.commonalities.names
 
-import org.eclipse.xtext.naming.IQualifiedNameConverter
-import org.eclipse.xtext.naming.QualifiedName
 import com.google.inject.Singleton
 import java.util.regex.Pattern
+import org.eclipse.xtext.naming.IQualifiedNameConverter
+import org.eclipse.xtext.naming.QualifiedName
 
 @Singleton
 class CommonalitiesLanguageQualifiedNameConverter implements IQualifiedNameConverter {

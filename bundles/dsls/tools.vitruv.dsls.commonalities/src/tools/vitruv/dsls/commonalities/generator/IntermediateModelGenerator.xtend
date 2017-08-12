@@ -1,24 +1,25 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import org.eclipse.emf.ecore.EcoreFactory
-import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
-import org.eclipse.emf.common.util.URI
-import java.util.Collections
-import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EcorePackage
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.dsls.commonalities.language.CommonalityFile
-import java.util.List
 import java.util.ArrayList
+import java.util.Collections
 import java.util.HashSet
-import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+import java.util.List
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EcoreFactory
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
+import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
-package class CommonalityIntermediateModelGenerator extends CommonalityFileGenerator {
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+
+package class IntermediateModelGenerator extends SubGenerator {
 
 	static val NS_URI_PREFIX = URI.createURI('http://vitruv.tools/commonalities')
 
@@ -73,9 +74,9 @@ package class CommonalityIntermediateModelGenerator extends CommonalityFileGener
 		val EPackage generatedEPackage = EcoreFactory.eINSTANCE.createEPackage
 		val Iterable<CommonalityFile> commonalityFiles
 		val String conceptName
-		val extension CommonalitiesLanguageGenerationContext generationContext
+		val extension GenerationContext generationContext
 
-		private new(String conceptName, Iterable<CommonalityFile> commonalityFiles, CommonalitiesLanguageGenerationContext generationContext) {
+		private new(String conceptName, Iterable<CommonalityFile> commonalityFiles, GenerationContext generationContext) {
 			this.conceptName = conceptName
 			this.commonalityFiles = commonalityFiles
 			this.generationContext = generationContext

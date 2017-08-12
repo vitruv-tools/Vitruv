@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.language.elements
 
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.commonalities.language.elements.impl.EClassMetaclassImpl
+
 import static com.google.common.base.Preconditions.*
 
 package class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {

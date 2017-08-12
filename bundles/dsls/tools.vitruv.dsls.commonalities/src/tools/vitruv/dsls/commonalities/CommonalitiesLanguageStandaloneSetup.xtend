@@ -3,7 +3,6 @@
  */
 package tools.vitruv.dsls.commonalities
 
-
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
  */

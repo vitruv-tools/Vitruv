@@ -1,13 +1,14 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
-import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.EClassifier
-import static extension tools.vitruv.dsls.commonalities.language.extensions.AttributeMappingSpecificationExtension.*
-import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
-import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EcorePackage
+import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
+
+import static extension tools.vitruv.dsls.commonalities.language.extensions.AttributeMappingSpecificationExtension.*
 
 @Utility package class AttributeDeclarationExtension {
 

@@ -1,11 +1,12 @@
 package tools.vitruv.dsls.commonalities.scoping
 
+import com.google.inject.Inject
+import com.google.inject.Provider
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import com.google.inject.Inject
 import org.eclipse.xtext.scoping.IGlobalScopeProvider
 import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
-import com.google.inject.Provider
+
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 /**

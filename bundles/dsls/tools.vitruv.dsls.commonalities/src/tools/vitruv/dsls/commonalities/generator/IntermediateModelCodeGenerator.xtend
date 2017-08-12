@@ -1,23 +1,24 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import org.eclipse.emf.codegen.ecore.genmodel.GenModelFactory
-import org.eclipse.emf.codegen.ecore.genmodel.GenJDKLevel
 import java.util.Collections
-import org.eclipse.emf.codegen.ecore.generator.GeneratorAdapterFactory
-import org.eclipse.emf.codegen.ecore.genmodel.generator.GenModelGeneratorAdapterFactory
-import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage
-import org.eclipse.emf.common.util.BasicMonitor
-import org.eclipse.emf.codegen.ecore.genmodel.generator.GenBaseGeneratorAdapter
 import org.eclipse.emf.codegen.ecore.generator.Generator
-import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.codegen.ecore.generator.GeneratorAdapterFactory
+import org.eclipse.emf.codegen.ecore.genmodel.GenJDKLevel
 import org.eclipse.emf.codegen.ecore.genmodel.GenModel
-import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelFactory
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage
+import org.eclipse.emf.codegen.ecore.genmodel.generator.GenBaseGeneratorAdapter
+import org.eclipse.emf.codegen.ecore.genmodel.generator.GenModelGeneratorAdapterFactory
+import org.eclipse.emf.common.util.BasicMonitor
 import org.eclipse.emf.common.util.Diagnostic
-import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
-import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.util.EcoreUtil
 
-package class CommonalityIntermediateModelCodeGenerator extends CommonalityFileGenerator {
+import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+
+package class IntermediateModelCodeGenerator extends SubGenerator {
 	static val GENERATED_CODE_COMPLIANCE_LEVEL = GenJDKLevel.JDK80_LITERAL
 	static val GENERATED_CODE_FOLDER = "."
 	

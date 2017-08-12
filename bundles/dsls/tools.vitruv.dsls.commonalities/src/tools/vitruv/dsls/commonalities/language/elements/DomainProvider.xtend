@@ -3,8 +3,8 @@ package tools.vitruv.dsls.commonalities.language.elements
 import com.google.inject.Singleton
 import edu.kit.ipd.sdq.activextendannotations.Lazy
 import java.util.HashMap
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 @Singleton

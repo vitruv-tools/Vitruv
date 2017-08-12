@@ -1,13 +1,15 @@
 package tools.vitruv.dsls.commonalities.scoping
 
-import org.eclipse.xtext.scoping.IScope
-import org.eclipse.xtext.naming.QualifiedName
-import org.eclipse.emf.ecore.EObject
-import tools.vitruv.dsls.commonalities.language.CommonalityDeclaration
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import static com.google.common.base.Preconditions.*
 import com.google.inject.Inject
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.scoping.IScope
+import tools.vitruv.dsls.commonalities.language.CommonalityDeclaration
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
+
+import static com.google.common.base.Preconditions.*
+
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 class ParticipationAttributesScope implements IScope {
 

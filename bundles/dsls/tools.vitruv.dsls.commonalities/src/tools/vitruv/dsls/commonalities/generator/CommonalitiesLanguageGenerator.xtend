@@ -1,22 +1,22 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import org.eclipse.xtext.generator.IGenerator2
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.generator.IFileSystemAccess2
-import org.eclipse.xtext.generator.IGeneratorContext
 import com.google.inject.Inject
-import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import com.google.inject.Provider
 import java.util.HashMap
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.generator.IFileSystemAccess2
+import org.eclipse.xtext.generator.IGenerator2
+import org.eclipse.xtext.generator.IGeneratorContext
+import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
 class CommonalitiesLanguageGenerator implements IGenerator2 {
 
-	@Inject Provider<CommonalityIntermediateModelGenerator> intermediateModelGenerator
-	@Inject Provider<CommonalityIntermediateModelCodeGenerator> intermediateModelCodeGenerator
-	@Inject Provider<CommonalityReactionsGenerator> reactionsGenerator
+	@Inject Provider<IntermediateModelGenerator> intermediateModelGenerator
+	@Inject Provider<IntermediateModelCodeGenerator> intermediateModelCodeGenerator
+	@Inject Provider<ReactionsGenerator> reactionsGenerator
 	
-	@Inject Provider<CommonalitiesLanguageGenerationContext> generationContextProvider
-	val resourcesSubGenerators = new HashMap<Resource, CommonalityFileGenerator[]>
+	@Inject Provider<GenerationContext> generationContextProvider
+	val resourcesSubGenerators = new HashMap<Resource, SubGenerator[]>
 
 	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val commonalityFile = input.containedCommonalityFile

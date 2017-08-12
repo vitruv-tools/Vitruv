@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.commonalities.language.elements
 
 import tools.vitruv.dsls.commonalities.language.elements.impl.ParticipationAttributeImpl
+
 import static com.google.common.base.Preconditions.*
 
 class ParticipationAttributeI extends ParticipationAttributeImpl implements Wrapper<Attribute> {

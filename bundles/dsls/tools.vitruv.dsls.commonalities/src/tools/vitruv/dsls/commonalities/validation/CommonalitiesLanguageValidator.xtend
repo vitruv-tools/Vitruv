@@ -3,7 +3,6 @@
  */
 package tools.vitruv.dsls.commonalities.validation
 
-
 /**
  * This class contains custom validation rules. 
  *

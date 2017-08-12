@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
-import edu.kit.ipd.sdq.activextendannotations.Utility
 import edu.kit.ipd.sdq.activextendannotations.StaticDelegate
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
 @StaticDelegate(#[
 	AttributeDeclarationExtension,

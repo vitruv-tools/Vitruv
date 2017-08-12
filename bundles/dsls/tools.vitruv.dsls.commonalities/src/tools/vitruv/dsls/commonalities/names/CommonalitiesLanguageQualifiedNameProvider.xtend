@@ -1,11 +1,11 @@
 package tools.vitruv.dsls.commonalities.names
 
-import org.eclipse.xtext.naming.IQualifiedNameProvider
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.naming.QualifiedName
 import com.google.inject.Singleton
-import tools.vitruv.dsls.commonalities.language.elements.MemberLike
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.naming.QualifiedName
 import tools.vitruv.dsls.commonalities.language.elements.ClassLike
+import tools.vitruv.dsls.commonalities.language.elements.MemberLike
 import tools.vitruv.dsls.commonalities.language.elements.PackageLike
 
 @Singleton

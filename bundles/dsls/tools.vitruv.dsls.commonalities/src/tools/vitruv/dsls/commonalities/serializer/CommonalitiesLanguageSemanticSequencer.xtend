@@ -3,6 +3,5 @@
  */
 package tools.vitruv.dsls.commonalities.serializer
 
-
 class CommonalitiesLanguageSemanticSequencer extends AbstractCommonalitiesLanguageSemanticSequencer {
 }

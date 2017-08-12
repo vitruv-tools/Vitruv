@@ -1,20 +1,21 @@
 package tools.vitruv.dsls.commonalities.generator
 
+import java.util.Collections
+import java.util.HashMap
+import java.util.Map
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.dsls.commonalities.language.CommonalityFile
-
-import static com.google.common.base.Preconditions.*
-import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.Collections
-import java.util.Map
-import java.util.HashMap
 import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.generator.IFileSystemAccess2
-import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import tools.vitruv.dsls.commonalities.language.ConceptDeclaration
 
-class CommonalitiesLanguageGenerationContext {
+import static com.google.common.base.Preconditions.*
+
+import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+
+class GenerationContext {
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
 	var CommonalityFile commonalityFile
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
