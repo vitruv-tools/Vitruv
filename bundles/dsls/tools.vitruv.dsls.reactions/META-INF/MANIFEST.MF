@@ -28,7 +28,8 @@ Require-Bundle: org.eclipse.xtext,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.metamodel;visibility:=reexport,
- edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0",
+ tools.vitruv.dsls.common;bundle-version="0.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.reactions,
@@ -36,7 +37,6 @@ Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.builder,
  tools.vitruv.dsls.reactions.codegen.changetyperepresentation,
  tools.vitruv.dsls.reactions.generator;x-friends:="tools.vitruv.dsls.reactions.tests",
- tools.vitruv.dsls.reactions.helper,
  tools.vitruv.dsls.reactions.jvmmodel,
  tools.vitruv.dsls.reactions.parser.antlr,
  tools.vitruv.dsls.reactions.parser.antlr.internal,

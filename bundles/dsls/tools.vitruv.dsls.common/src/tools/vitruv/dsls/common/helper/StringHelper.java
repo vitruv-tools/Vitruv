@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.helper;
+package tools.vitruv.dsls.common.helper;
 
 public class StringHelper {
 	public static String lastFragmentOrComplete(String string, String separator) {

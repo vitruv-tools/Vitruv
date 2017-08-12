@@ -7,7 +7,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.dsls.reactions.helper.XtendImportHelper
+import tools.vitruv.dsls.common.helper.XtendImportHelper
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import org.eclipse.xtext.util.RuntimeIOException

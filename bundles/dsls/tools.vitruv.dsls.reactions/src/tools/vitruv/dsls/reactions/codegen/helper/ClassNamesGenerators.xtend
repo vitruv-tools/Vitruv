@@ -2,7 +2,7 @@ package tools.vitruv.dsls.reactions.codegen.helper
 
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
-import tools.vitruv.dsls.reactions.helper.XtendImportHelper
+import tools.vitruv.dsls.common.helper.XtendImportHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction

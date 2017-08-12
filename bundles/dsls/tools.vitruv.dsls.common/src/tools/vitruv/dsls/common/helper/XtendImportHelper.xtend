@@ -1,8 +1,8 @@
-package tools.vitruv.dsls.reactions.helper
+package tools.vitruv.dsls.common.helper
 
 import java.util.Map
 import org.eclipse.emf.ecore.EClassifier
-import static extension tools.vitruv.dsls.reactions.helper.StringHelper.*
+import static extension tools.vitruv.dsls.common.helper.StringHelper.*
 
 class XtendImportHelper {
 	public static final char FQN_SEPARATOR = '.';
