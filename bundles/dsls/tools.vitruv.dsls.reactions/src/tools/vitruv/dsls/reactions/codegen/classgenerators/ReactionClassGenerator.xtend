@@ -5,7 +5,6 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.JvmOperation
 import static tools.vitruv.dsls.reactions.api.generator.ReactionsLanguageGeneratorConstants.*;
 import tools.vitruv.dsls.reactions.reactionsLanguage.PreconditionCodeBlock
-import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization
 import tools.vitruv.framework.change.echange.EChange
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
@@ -17,6 +16,7 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionPro
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeSequenceRepresentation
+import tools.vitruv.dsls.common.helper.ClassNameGenerator
 
 class ReactionClassGenerator extends ClassGenerator {
 	private static val String CHANCE_COUNTER_VARIABLE = "currentlyMatchedChange";

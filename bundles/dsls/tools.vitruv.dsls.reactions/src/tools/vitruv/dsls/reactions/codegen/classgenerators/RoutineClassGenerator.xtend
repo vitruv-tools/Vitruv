@@ -12,7 +12,6 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLang
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmConstructor
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
-import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
 import java.util.List
@@ -39,6 +38,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RequireAbscenceOfModelEleme
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveManyModelElements
 import java.util.Optional
+import tools.vitruv.dsls.common.helper.ClassNameGenerator
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;

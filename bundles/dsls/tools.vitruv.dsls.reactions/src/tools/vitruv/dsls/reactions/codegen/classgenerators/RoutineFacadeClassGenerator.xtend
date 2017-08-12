@@ -3,7 +3,6 @@ package tools.vitruv.dsls.reactions.codegen.classgenerators
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmVisibility
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
-import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade
@@ -11,6 +10,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
+import tools.vitruv.dsls.common.helper.ClassNameGenerator
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	val ReactionsSegment reactionsSegment
