@@ -36,13 +36,15 @@ import com.google.gson.JsonArray
 import tools.vitruv.framework.versioning.common.EChangeSerializer
 
 class EChangeSerializerImpl implements EChangeSerializer {
-	static val ResourceSet resourceSet = new ResourceSetImpl
 	static extension TypeInferringUnresolvingCompoundEChangeFactory = TypeInferringUnresolvingCompoundEChangeFactory::
 		instance
 	static extension TypeInferringUnresolvingAtomicEChangeFactory = TypeInferringUnresolvingAtomicEChangeFactory::
 		instance
-	static Resource currentResource
 	static extension JsonParser = new JsonParser
+	static val ECHANGES_KEY = "echanges"
+	static val CHANGES_KEY = "changes"
+	static Resource currentResource
+	static val ResourceSet resourceSet = new ResourceSetImpl
 
 	static def EChangeSerializer init() {
 		resourceSet.resourceFactoryRegistry.extensionToFactoryMap.put("allelementtypes", new XMIResourceFactoryImpl)
@@ -151,13 +153,14 @@ class EChangeSerializerImpl implements EChangeSerializer {
 		var EChange change = null
 		if (type == CreateAndInsertRoot.name) {
 			val className = jobject.get("createdObject").asString
-			val object = createEObject(className)
 			val index = jobject.get("index").asInt
+			val object = createEObject(className)
+			val objectId = jobject.get("objectId").asString
 			val resource = resourceSet.createResource(URI::createURI(jobject.get("uri").asString))
 			resource.contents.add(object)
 			resource.save(null)
 			currentResource = resource
-			change = createCreateAndInsertRootChange(object, resource, index)
+			change = createCreateAndInsertRootChange(object, resource, index, objectId)
 		}
 		if (type == ReplaceSingleValuedEAttribute.name) {
 			val className = jobject.get("affectedEObject").asString
@@ -179,28 +182,32 @@ class EChangeSerializerImpl implements EChangeSerializer {
 				newValue
 			)
 		}
+		
 		if (type == CreateAndReplaceNonRoot.name) {
-			val className = jobject.get("createdObject").asString
 			val affectedEObjectClassName = jobject.get("affectedEObject").asString
+			val className = jobject.get("createdObject").asString
 			val eProxyURI = jobject.get("eProxyURI").asString
 			val featureObject = jobject.get("feature").asJsonObject
+			val objectId = jobject.get("objectId").asString
 
 			val createdObject = createEObject(className)
 			val affectedEObject = createEObject(affectedEObjectClassName, eProxyURI)
 			val feature = createReference(affectedEObject, featureObject)
-			change = createCreateAndReplaceNonRootChange(affectedEObject, feature, createdObject)
+			change = createCreateAndReplaceNonRootChange(affectedEObject, feature, createdObject, objectId)
 		}
+		
 		if (type == CreateAndInsertNonRoot.name) {
 			val affectedEObjectClassName = jobject.get("affectedEObject").asString
 			val affectedEObjectEProxyURI = jobject.get("eProxyURI").asString
 			val createdObjectClassName = jobject.get("createdObject").asString
 			val featureObject = jobject.get("feature").asJsonObject
 			val index = jobject.get("index").asInt
+			val objectId = jobject.get("objectId").asString
 
 			val createdObject = createEObject(createdObjectClassName)
 			val affectedEObject = createEObject(affectedEObjectClassName, affectedEObjectEProxyURI)
 			val feature = createReference(affectedEObject, featureObject)
-			change = createCreateAndInsertNonRootChange(affectedEObject, feature, createdObject, index)
+			change = createCreateAndInsertNonRootChange(affectedEObject, feature, createdObject, index, objectId)
 		}
 		return change
 	}
@@ -212,16 +219,30 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			"eProxyURI": "«(createAndInsertNonRoot.insertChange.affectedEObject as InternalEObject).eProxyURI.toString»",
 			"feature":«createAndInsertNonRoot.insertChange.affectedFeature.serializeFeature»,
 			"index": "«createAndInsertNonRoot.insertChange.index»",
+			"objectId":"«createAndInsertNonRoot.createChange.objectId»"
 			"type": "«CreateAndInsertNonRoot.name»"
 		}
 	'''
-
+	
+	private static def dispatch String serializeEChange(
+		CreateAndInsertRoot<?> createAndInsertRoot
+	) '''
+		{
+			"createdObject": "«createAndInsertRoot.createChange.affectedEObject.class.name»",
+			"index": "«createAndInsertRoot.insertChange.index»",
+			"objectId":"«createAndInsertRoot.createChange.objectId»"
+			"type": "«CreateAndInsertRoot.name»",
+			"uri": "«createAndInsertRoot.insertChange.uri»"
+		}
+	'''
+	
 	private static def dispatch String serializeEChange(CreateAndReplaceNonRoot<?, ?> createAndReplaceNonRoot) '''
 		{
 			"affectedEObject": "«createAndReplaceNonRoot.insertChange.affectedEObject.class.name»",
 			"createdObject": "«createAndReplaceNonRoot.createChange.affectedEObject.class.name»",
 			"eProxyURI": "«(createAndReplaceNonRoot.insertChange.affectedEObject as InternalEObject).eProxyURI.toString»",
 			"feature":«createAndReplaceNonRoot.insertChange.affectedFeature.serializeFeature»,
+			"objectId":"«createAndReplaceNonRoot.createChange.objectId»"
 			"type": "«CreateAndReplaceNonRoot.name»"
 		}
 	'''
@@ -241,20 +262,13 @@ class EChangeSerializerImpl implements EChangeSerializer {
 		'''
 	}
 
-	private static def dispatch String serializeEChange(CreateAndInsertRoot<?> createAndInsertRoot) '''
-		{
-			"createdObject": "«createAndInsertRoot.createChange.affectedEObject.class.name»",
-			"index": "«createAndInsertRoot.insertChange.index»",
-			"type": "«CreateAndInsertRoot.name»",
-			"uri": "«createAndInsertRoot.insertChange.uri»"
-		}
-	'''
+	
 
 	private static def dispatch String serializeVitruviusChange(EMFModelChangeImpl vitruviusChange) '''
 		{
 			"type": "«vitruviusChange.class.name»",
 			"vuri": "«vitruviusChange.URI.EMFUri.toString»",
-			"echanges": [
+			"«ECHANGES_KEY»": [
 				«FOR echange : vitruviusChange.EChanges SEPARATOR ','»
 					«echange.serializeEChange»
 				«ENDFOR»
@@ -265,7 +279,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 	private static def dispatch String serializeVitruviusChange(CompositeContainerChangeImpl containerChange) '''
 		{
 			"type": "«containerChange.class.name»",
-			"changes": [
+			"«CHANGES_KEY»": [
 				«FOR change : containerChange.changes SEPARATOR ','»
 					«change.serializeVitruviusChange»
 				«ENDFOR»
@@ -274,21 +288,21 @@ class EChangeSerializerImpl implements EChangeSerializer {
 	'''
 
 	private static def VitruviusChange deserializeVitruviusChange(JsonObject jobject) {
-		if (null !== jobject.get("echanges"))
+		if (null !== jobject.get(ECHANGES_KEY))
 			return jobject.deserializeEMFModelChange
-		if (null !== jobject.get("changes"))
+		if (null !== jobject.get(CHANGES_KEY))
 			return jobject.deserializeComposite
 	}
 
 	private static def EMFModelChangeImpl deserializeEMFModelChange(JsonObject jobject) {
-		val echanges = jobject.get("echanges").asJsonArray.filterNull.map [ jsonElement |
+		val echanges = jobject.get(ECHANGES_KEY).asJsonArray.filterNull.map [ jsonElement |
 			(jsonElement as JsonObject).deserializeEChange
 		].filterNull.toList
 		return new EMFModelChangeImpl(echanges)
 	}
 
 	private static def CompositeContainerChangeImpl deserializeComposite(JsonObject jobject) {
-		val changes = jobject.get("changes").asJsonArray.filterNull.map [ jsonElement |
+		val changes = jobject.get(CHANGES_KEY).asJsonArray.filterNull.map [ jsonElement |
 			(jsonElement as JsonObject).deserializeEMFModelChange
 		].filterNull.toList
 		val composite = new CompositeContainerChangeImpl

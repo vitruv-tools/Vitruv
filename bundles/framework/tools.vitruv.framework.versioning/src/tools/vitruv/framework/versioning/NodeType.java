@@ -1,5 +1,11 @@
 package tools.vitruv.framework.versioning;
 
+/**
+ * Enum for the different node types in the dependency graph.
+ * 
+ * @author Patrick Stoeckle <p.stoeckle@gmx.net>
+ *
+ */
 public enum NodeType {
 	UNPAIRED("unpaired");
 

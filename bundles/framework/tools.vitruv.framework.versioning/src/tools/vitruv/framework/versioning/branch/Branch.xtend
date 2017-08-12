@@ -6,6 +6,10 @@ import tools.vitruv.framework.versioning.Named
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.common.commit.Commit
 
+/**
+ * A branch of the {@link Repository}.
+ * @author Patrick Stoeckle <p.stoeckle@gmx.net>
+ */
 interface Branch extends Named {
 	def Commit getCurrentHeadCommit()
 
@@ -15,5 +19,9 @@ interface Branch extends Named {
 
 	def Set<UserBranch> getChildBranches()
 
+	/**
+	 * Returns true, if this branch is a master branch.
+	 * @return boolean
+	 */
 	def boolean isMasterBranch()
 }
