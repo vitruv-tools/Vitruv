@@ -10,13 +10,13 @@ import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
-class ConceptDomain extends AbstractVitruvDomain {
+package class ConceptDomain extends AbstractVitruvDomain {
 	val Provider provider
 	
 	private new(String conceptName, EPackage mainPackage, Set<EPackage> furtherPackages) {
-		super(conceptName.conceptDomainSimpleName, mainPackage, furtherPackages,
+		super(conceptName.conceptDomainName, mainPackage, furtherPackages,
 			new AttributeTuidCalculatorAndResolver('', #[])) // TODO
-		provider = new Provider(this, conceptName.conceptDomainProviderCanonicalName)
+		provider = new Provider(this, conceptName.conceptDomainProvider.qualifiedName)
 	}
 
 	package new(String conceptName, Iterable<EPackage> packages) {

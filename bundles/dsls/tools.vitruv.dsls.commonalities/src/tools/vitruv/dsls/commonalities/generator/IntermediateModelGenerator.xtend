@@ -96,7 +96,7 @@ package class IntermediateModelGenerator extends SubGenerator {
 		def private generateEClass(CommonalityFile commonalityFile) {
 			val commonality = commonalityFile.commonality
 			EcoreFactory.eINSTANCE.createEClass => [
-				name = commonalityFile.intermediateModelClassName
+				name = commonalityFile.intermediateModelClass.simpleName
 				instanceClassName = commonalityFile.intermediateModelInstanceClassName
 				EStructuralFeatures += commonality.attributes.map [generateEAttribute()]
 			]

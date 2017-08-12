@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
-class GenerationContext {
+package class GenerationContext {
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
 	var CommonalityFile commonalityFile
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
@@ -29,7 +29,7 @@ class GenerationContext {
 	def package getGeneratedIntermediateModelClass(CommonalityFile commonalityFile) {
 		intermediateModelClassCache.computeIfAbsent(commonalityFile, [
 			commonalityFile.concept.generatedIntermediateModelPackage.EClassifiers
-				.findFirst [name == commonalityFile.intermediateModelClassName] as EClass
+				.findFirst [name == commonalityFile.intermediateModelClass] as EClass
 			])
 	}
 

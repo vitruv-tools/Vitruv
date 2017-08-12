@@ -14,6 +14,7 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 	@Inject Provider<IntermediateModelGenerator> intermediateModelGenerator
 	@Inject Provider<IntermediateModelCodeGenerator> intermediateModelCodeGenerator
 	@Inject Provider<ReactionsGenerator> reactionsGenerator
+	@Inject Provider<DomainGenerator> domainGenerator
 	
 	@Inject Provider<GenerationContext> generationContextProvider
 	val resourcesSubGenerators = new HashMap<Resource, SubGenerator[]>
@@ -26,7 +27,6 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 		]
 		val resourceSubGenerators = newSubGenerators()
 		resourceSubGenerators.forEach [
-			it.context = context
 			it.generationContext = generationContext
 		]
 		resourcesSubGenerators.put(input, resourceSubGenerators)
@@ -45,7 +45,7 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 	}
 
 	def private newSubGenerators() {
-		#[intermediateModelGenerator.get, intermediateModelCodeGenerator.get, reactionsGenerator.get]
+		#[intermediateModelGenerator.get, intermediateModelCodeGenerator.get, domainGenerator.get, reactionsGenerator.get]
 	}
 
 	def static private containedCommonalityFile(Resource input) {

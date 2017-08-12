@@ -46,7 +46,7 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 			modelName = conceptName
 			initialize(Collections.singleton(generatedPackage))
 			genPackages.get(0) => [
-				prefix = conceptName
+				prefix = conceptName.intermediateModelClassesPrefix
 				basePackage = conceptName.conceptPackagePathPart
 				adapterFactory = false
 			]
