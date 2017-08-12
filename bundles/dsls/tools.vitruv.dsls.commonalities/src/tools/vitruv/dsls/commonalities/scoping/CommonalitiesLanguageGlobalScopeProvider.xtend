@@ -7,12 +7,10 @@ import com.google.common.base.Predicate
 import org.eclipse.xtext.resource.IEObjectDescription
 import com.google.inject.Inject
 import org.eclipse.xtext.scoping.IScope
-import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 import static tools.vitruv.dsls.commonalities.language.elements.LanguageElementsPackage.Literals.*
 
 class CommonalitiesLanguageGlobalScopeProvider implements IGlobalScopeProvider {
 	
-	@Inject VitruvDomainScope domainScope
 	@Inject MetaclassScope metaclassScope
 	
 	override getScope(Resource context, EReference reference, Predicate<IEObjectDescription> filter) {

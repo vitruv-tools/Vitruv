@@ -16,14 +16,11 @@ import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import java.util.List
 import java.util.ArrayList
 import java.util.HashSet
-import org.eclipse.emf.ecore.EClass
-import java.util.HashMap
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
 package class CommonalityIntermediateModelGenerator extends CommonalityFileGenerator {
 
 	static val NS_URI_PREFIX = URI.createURI('http://vitruv.tools/commonalities')
-	static val MODEL_OUTPUT_FILE_EXTENSION = ".ecore"
 
 	// TODO verify that this caching heuristic actually produces the desired results
 	// see https://github.com/eclipse/xtext-core/issues/413
@@ -32,7 +29,6 @@ package class CommonalityIntermediateModelGenerator extends CommonalityFileGener
 
 	override beforeGenerate() {
 		val resourceSet = commonalityFile.eResource.resourceSet
-		val intermediatePackageCache = new HashMap<String, EPackage>
 
 		if (resourceSet.hashCode != lastSeenResourceSetHash) {
 			val conceptToCommonalityFile = resourceSet.resources
@@ -48,27 +44,13 @@ package class CommonalityIntermediateModelGenerator extends CommonalityFileGener
 				val commonalityFiles = value
 
 				val generatedPackage = generateCommonalityEPackage(concept, commonalityFiles, resourceSet)
-				intermediatePackageCache.put(concept, generatedPackage)
+				reportGeneratedConcept(concept, generatedPackage)
 			]
 			
 			generatedConcepts = new HashSet(conceptToCommonalityFile.keySet)
 
 			lastSeenResourceSetHash = resourceSet.hashCode
 		}
-		
-		intermediateModelPackageFunction = [ conceptName |
-			intermediatePackageCache.computeIfAbsent(conceptName, [
-				resourceSet.getResource(getIntermediateModelOutputUri(conceptName), false).contents.head as EPackage
-			])
-		]
-		
-		val intermediateClassCache = new HashMap<CommonalityFile, EClass>
-		intermediateModelClassFunction = [commonalityFile |
-			intermediateClassCache.computeIfAbsent(commonalityFile, [
-				intermediateModelPackageFunction.apply(commonalityFile.concept.name).EClassifiers
-					.findFirst [name == commonalityFile.intermediateModelClassName] as EClass
-			])
-		]
 	}
 
 	override generate() {
@@ -114,6 +96,7 @@ package class CommonalityIntermediateModelGenerator extends CommonalityFileGener
 			val commonality = commonalityFile.commonality
 			EcoreFactory.eINSTANCE.createEClass => [
 				name = commonalityFile.intermediateModelClassName
+				instanceClassName = commonalityFile.intermediateModelInstanceClassName
 				EStructuralFeatures += commonality.attributes.map [generateEAttribute()]
 			]
 		}
@@ -144,9 +127,5 @@ package class CommonalityIntermediateModelGenerator extends CommonalityFileGener
 	
 	def private static containedCommonalityFile(Resource resource) {
 		resource.contents.filter(CommonalityFile).head
-	}
-	
-	def private getIntermediateModelOutputUri(String conceptName) {
-		fsa.getURI(conceptName + MODEL_OUTPUT_FILE_EXTENSION)
 	}
 }

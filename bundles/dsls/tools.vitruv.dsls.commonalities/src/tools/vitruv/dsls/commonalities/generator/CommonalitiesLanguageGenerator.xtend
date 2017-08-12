@@ -19,14 +19,15 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 	val resourcesSubGenerators = new HashMap<Resource, CommonalityFileGenerator[]>
 
 	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		val generationContext = generationContextProvider.get()
 		val commonalityFile = input.containedCommonalityFile
+		val generationContext = generationContextProvider.get() => [
+			it.commonalityFile = commonalityFile
+			it.fsa = fsa
+		]
 		val resourceSubGenerators = newSubGenerators()
 		resourceSubGenerators.forEach [
-			it.fsa = fsa
 			it.context = context
 			it.generationContext = generationContext
-			it.commonalityFile = commonalityFile
 		]
 		resourcesSubGenerators.put(input, resourceSubGenerators)
 		resourceSubGenerators.forEach [beforeGenerate]

@@ -12,7 +12,7 @@ class DomainProvider {
 
 	/*
 	 * To be referenced from an Xtext language, EObjects must be contained in
-	 * a resource. So we create a fake resource to put the domains it. This 
+	 * a resource. So we create a fake resource to put the domains in. This 
 	 * resource is never serialised and has no other purpose.
 	 */	
 	val static CONTAINER_RESOURCE_URI = URI.createURI('http://vitruv.tools/framework/domains/vitruvdomains')

@@ -5,6 +5,7 @@ import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
 @Utility class GeneratorConstants {
 	static val GENERATED_PACKAGE_PREFIX = "tools.vitruv.commonalities"
+	public static val MODEL_OUTPUT_FILE_EXTENSION = ".ecore"
 	
 	def static getIntermediateModelInstanceClassName(CommonalityFile commonalityFile) {
 		GENERATED_PACKAGE_PREFIX + '.' + commonalityFile.concept.name.toLowerCase + '.' +

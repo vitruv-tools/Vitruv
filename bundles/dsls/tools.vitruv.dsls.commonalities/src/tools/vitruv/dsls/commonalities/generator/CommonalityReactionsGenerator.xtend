@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import static extension tools.vitruv.dsls.commonalities.language.elements.extensions.LanguageElementsExtensions.*
 import tools.vitruv.dsls.commonalities.language.elements.Participation
 import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
@@ -28,49 +27,54 @@ package class CommonalityReactionsGenerator extends CommonalityFileGenerator {
 		]
 	}
 
-	// @Inject IReactionsEnvironmentGenerator reactionsEnvironmentGenerator;
-	def private reaction(Participation participation) {
-	}
-
 	def private reactionForCommonalityDelete(ParticipationClass participationClass) {
-		create.reaction('''«commonality.name»Delete''').afterElement(commonalityFile.changeClass).deleted.call [
-			match [
-				vall("danglingCorrespondence").retrieve(participationClass.changeClass).correspondingTo.affectedEObject
-			].action [
-				delete("danglingCorrespondence")
-			]
+		create.reaction('''«commonality.name»Delete''')
+			.afterElement(commonalityFile.changeClass).deleted
+			.call [
+				match [
+					vall("danglingCorrespondence").retrieve(participationClass.changeClass).correspondingTo.affectedEObject
+				].action [
+					delete("danglingCorrespondence")
+				]
 		]
 	}
 
 	def private reactionForParticipationDelete(ParticipationClass participationClass) {
-		create.reaction('''«participationClass.name»Delete''').afterElement(participationClass.changeClass).deleted.call [
-			match [
-				vall("danglingCorrespondence").retrieve(commonalityFile.changeClass).correspondingTo.affectedEObject
-			].action [
-				delete("danglingCorrespondence")
+		create.reaction('''«participationClass.name»Delete''')
+			.afterElement(participationClass.changeClass).deleted
+			.call [
+				match [
+					vall("danglingCorrespondence").retrieve(commonalityFile.changeClass).correspondingTo.affectedEObject
+				].action [
+					delete("danglingCorrespondence")
+				]
 			]
-		]
 	}
 
 	def private reactionForCommonalityCreate(ParticipationClass participationClass) {
-		create.reaction('''«commonality.name»Create''').afterElement(commonalityFile.changeClass).created.call [
-			action [
-				vall("newCorrespondence").create(participationClass.changeClass)
-				addCorrespondenceBetween.affectedEObject.and("newCorrespondence")
-			]
+		create.reaction('''«commonality.name»Create''')
+			.afterElement(commonalityFile.changeClass).created
+			.call [
+				action [
+					vall("newCorrespondence").create(participationClass.changeClass)
+					addCorrespondenceBetween.affectedEObject.and("newCorrespondence")
+				]
 		]
 	}
 
 	def private reactionsForParticipationCreate(ParticipationClass participationClass) {
-		create.reaction('''«participationClass.name»Create''').afterElement(participationClass.changeClass).created.call [
-			action [
-				vall("newCorrespondence").create(commonalityFile.changeClass)
-				addCorrespondenceBetween.affectedEObject.and("newCorrespondence")
+		create.reaction('''«participationClass.name»Create''')
+			.afterElement(participationClass.changeClass).created
+			.call [
+				action [
+					vall("newCorrespondence").create(commonalityFile.changeClass)
+					addCorrespondenceBetween.affectedEObject.and("newCorrespondence")
+				]
 			]
-		]
 	}
-
-	def private attributeReactions(AttributeMappingSpecifiation mappingSpecification) {
+	
+	def private getChangeClass(ParticipationClass participationClass) {
+		participationClass.superMetaclass.changeClass
 	}
 
 	def private commonalityChangeReactions(Participation participation) {
@@ -87,14 +91,16 @@ package class CommonalityReactionsGenerator extends CommonalityFileGenerator {
 		val reactionFile = create.reactionsFile(commonality.name)
 		for (participation : commonalityFile.commonality.participations) {
 			reactionFile +=
-				create.reactionsSegment('''«commonality.name»To«participation.name»''').inReactionToChangesIn(
-					commonalityFile.concept.name).executeActionsIn(participation.domain.vitruvDomain) +=
-					commonalityChangeReactions(participation)
+				create.reactionsSegment('''«commonality.name»To«participation.name»''')
+					.inReactionToChangesIn(commonalityFile.conceptDomain)
+					.executeActionsIn(participation.domain.vitruvDomain) +=
+						commonalityChangeReactions(participation)
 
 			reactionFile +=
-				create.reactionsSegment('''«commonality.name»From«participation.name»''').inReactionToChangesIn(
-					participation.domain.vitruvDomain).executeActionsIn(commonalityFile.concept.name) +=
-					participationChangeReactions(participation)
+				create.reactionsSegment('''«commonality.name»From«participation.name»''')
+					.inReactionToChangesIn(participation.domain.vitruvDomain)
+					.executeActionsIn(commonalityFile.concept.name) +=
+						participationChangeReactions(participation)
 
 		}
 

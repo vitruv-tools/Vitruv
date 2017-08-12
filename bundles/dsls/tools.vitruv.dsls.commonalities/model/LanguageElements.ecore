@@ -22,6 +22,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="metaclasses" ordered="false"
         upperBound="-1" eType="#//Metaclass" changeable="false" derived="true" containment="true"
         eOpposite="#//Metaclass/domain"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="vitruvDomain" lowerBound="1"
+        eType="#//FrameworkVitruvDomain" changeable="false" volatile="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Metaclass" abstract="true" interface="true"
       eSuperTypes="#//ClassLike">

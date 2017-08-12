@@ -52,6 +52,10 @@ class VitruvDomainAdapter extends VitruvDomainImpl implements Wrapper<VitruvDoma
 		checkWrappedVitruvDomainIsSet()
 		wrappedVitruvDomain.name
 	}
+	
+	override getVitruvDomain() {
+		wrappedVitruvDomain
+	}
 
 	override getWrapped() {
 		wrappedVitruvDomain

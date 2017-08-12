@@ -14,34 +14,33 @@ import org.eclipse.emf.codegen.ecore.genmodel.GenModel
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.common.util.Diagnostic
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.ecore.EClass
 
 package class CommonalityIntermediateModelCodeGenerator extends CommonalityFileGenerator {
 	static val GENERATED_CODE_COMPLIANCE_LEVEL = GenJDKLevel.JDK80_LITERAL
 	static val GENERATED_CODE_FOLDER = "."
-
+	
 	override generate() {
 		val generatedCodeDirectory = fsa.getURI(GENERATED_CODE_FOLDER)
 		for (generatedConcept : generatedConcepts) {
-			val generatedPackage = generatedIntermediateModelPackage(generatedConcept)
-			val generatedGenModel = generateGenModel(generatedPackage, generatedConcept, generatedCodeDirectory)
+			val generatedPackage = generatedConcept.generatedIntermediateModelPackage
+			
+			// instanceClassName is set on the EClasses so reactions generation
+			// works. However, if the attribute is set, no code will be created
+			// for the classes. So we unset the attributes in a copy for code
+			// generation
+			val copiedPackage = EcoreUtil.copy(generatedPackage)
+			copiedPackage.EClassifiers.filter(EClass).forEach [instanceClassName = null]
+			val generatedGenModel = generateGenModel(copiedPackage, generatedConcept, generatedCodeDirectory)
 			generateModelCode(generatedGenModel)
 		}
-		// we can set this only *after* generating, as setting it usually means
-		// that no class needs to be generated. (But the reaction generation 
-		// code relies on the property being set).
-		val oldClassFunction = intermediateModelClassFunction
-		intermediateModelClassFunction = [ commonalityFile |
-			oldClassFunction.apply(commonalityFile) => [
-				instanceClassName = commonalityFile.intermediateModelInstanceClassName
-			]
-		]
 	}
 
 	def private generateGenModel(EPackage generatedPackage, String conceptName, URI codeGenerationTargetFolder) {
 		GenModelFactory.eINSTANCE.createGenModel() => [
 			complianceLevel = GENERATED_CODE_COMPLIANCE_LEVEL
 			modelDirectory = codeGenerationTargetFolder.toGeneratorUri().path()
-			foreignModel += generatedPackage.eResource.URI.lastSegment
 			canGenerate = true
 			modelName = conceptName
 			initialize(Collections.singleton(generatedPackage))

@@ -5,7 +5,6 @@ import tools.vitruv.dsls.commonalities.generator.CommonalitiesLanguageGenerator
 import com.google.inject.Binder
 import org.eclipse.xtext.generator.IGenerator2
 import tools.vitruv.dsls.commonalities.scoping.CommonalitiesLanguageGlobalScopeProvider
-import org.eclipse.xtext.documentation.IEObjectDocumentationProvider
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 import tools.vitruv.dsls.commonalities.names.QualifiedNameProviderDescriptionProvider
 import tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter
