@@ -5,36 +5,44 @@ import allElementTypes.AllElementTypesPackage
 import allElementTypes.Identified
 import allElementTypes.NonRoot
 import allElementTypes.Root
-import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
+import com.google.inject.Inject
 import org.eclipse.emf.common.util.ECollections
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
+import org.eclipse.xtext.testing.InjectWith
+import org.eclipse.xtext.testing.XtextRunner
 import org.junit.Test
+import org.junit.runner.RunWith
 import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
 import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType
 import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.hasItem
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.util.datatypes.VURI
 
+@RunWith(XtextRunner)
+@InjectWith(ReactionsLanguageInjectorProvider)
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
 	static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget"
 	static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model"
 	static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 
+	@Inject
+	SimpleChangeReactionsCompiler reactionCompiler
+
 	override protected unresolveChanges() {
 		true
 	}
 
 	override protected createChangePropagationSpecifications() {
-		#[new AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes {
-		}]
+		#[reactionCompiler.newConcreteChangePropagationSpecification]
 	}
 
 	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]

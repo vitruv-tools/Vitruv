@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Common
-Bundle-SymbolicName: tools.vitruv.framework.versioning.common
+Bundle-SymbolicName: tools.vitruv.framework.versioning.common;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Export-Package: tools.vitruv.framework.versioning.common,
- tools.vitruv.framework.versioning.common.commit,
- tools.vitruv.framework.versioning.common.commit.impl,
- tools.vitruv.framework.versioning.common.impl
+Export-Package: tools.vitruv.framework.versioning.common;uses:="tools.vitruv.framework.change.description,com.google.gson",
+ tools.vitruv.framework.versioning.common.commit;uses:="tools.vitruv.framework.versioning.common",
+ tools.vitruv.framework.versioning.common.commit.impl;uses:="tools.vitruv.framework.versioning.common.commit",
+ tools.vitruv.framework.versioning.common.impl;uses:="tools.vitruv.framework.versioning.common,tools.vitruv.framework.change.description,com.google.gson"
 Require-Bundle: tools.vitruv.framework.change;bundle-version="0.2.0",
  org.apache.commons.codec;bundle-version="1.6.0",
  com.google.gson;bundle-version="2.7.0";visibility:=reexport,

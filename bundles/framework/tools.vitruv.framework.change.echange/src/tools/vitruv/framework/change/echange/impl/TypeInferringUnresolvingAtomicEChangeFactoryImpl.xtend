@@ -14,11 +14,12 @@ import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 
 class TypeInferringUnresolvingAtomicEChangeFactoryImpl extends TypeInferringAtomicEChangeFactoryImpl implements TypeInferringUnresolvingAtomicEChangeFactory {
-	static def TypeInferringUnresolvingAtomicEChangeFactory init() {
-		new TypeInferringUnresolvingAtomicEChangeFactoryImpl
-	}
 
 	private new() {
+	}
+
+	static def TypeInferringUnresolvingAtomicEChangeFactory init() {
+		new TypeInferringUnresolvingAtomicEChangeFactoryImpl
 	}
 
 	override protected setRootChangeFeatures(RootEChange change, Resource resource, int index) {
@@ -42,9 +43,13 @@ class TypeInferringUnresolvingAtomicEChangeFactoryImpl extends TypeInferringAtom
 		change.unresolveEObjectSubtractedEChange
 	}
 
-	override protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
-		A affectedEObject, Resource resource) {
-		super.setEObjectExistenceChange(change, affectedEObject, resource)
+	override protected <A extends EObject> void setEObjectExistenceChange(
+		EObjectExistenceEChange<A> change,
+		A affectedEObject,
+		Resource resource,
+		String objectId
+	) {
+		super.setEObjectExistenceChange(change, affectedEObject, resource, objectId)
 		change.unresolve
 	}
 }

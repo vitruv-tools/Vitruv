@@ -20,7 +20,8 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
 import tools.vitruv.framework.change.echange.impl.TypeInferringCompoundEChangeFactoryImpl
 
 interface TypeInferringCompoundEChangeFactory {
-	TypeInferringCompoundEChangeFactory instance = TypeInferringCompoundEChangeFactoryImpl::init
+	TypeInferringCompoundEChangeFactory instance = TypeInferringCompoundEChangeFactoryImpl::
+		init
 
 	/**
 	 * Creates a new {@link CreateAndInsertRoot} EChange.
@@ -29,8 +30,12 @@ interface TypeInferringCompoundEChangeFactory {
 	 * @param index The index at which the root object will be inserted into the resource.
 	 * @return The created change.
 	 */
-	def <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(T affectedEObject, Resource resource,
-		int index)
+	def <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(
+		T affectedEObject,
+		Resource resource,
+		int index,
+		String objectId
+	)
 
 	/**
 	 * Creates a new {@link CreateAndRemoveDeleteRoot} EChange.
@@ -39,8 +44,12 @@ interface TypeInferringCompoundEChangeFactory {
 	 * @param index The index at which the root object will be removed from the resource.
 	 * @return The created change.
 	 */
-	def <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRootChange(T affectedEObject, Resource resource,
-		int index)
+	def <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRootChange(
+		T affectedEObject,
+		Resource resource,
+		int index,
+		String objectId
+	)
 
 	/**
 	 * Creates a new {@link CreateAndInsertNonRoot} EChange.
@@ -51,7 +60,12 @@ interface TypeInferringCompoundEChangeFactory {
 	 * @return The created change.
 	 */
 	def <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> createCreateAndInsertNonRootChange(
-		A affectedEObject, EReference reference, T newValue, int index)
+		A affectedEObject,
+		EReference reference,
+		T newValue,
+		int index,
+		String objectId
+	)
 
 	/**
 	 * Creates a new {@link RemoveAndDeleteNonRoot} EChange.
@@ -62,7 +76,12 @@ interface TypeInferringCompoundEChangeFactory {
 	 * @return The created change.
 	 */
 	def <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRootChange(
-		A affectedEObject, EReference reference, T oldValue, int index)
+		A affectedEObject,
+		EReference reference,
+		T oldValue,
+		int index,
+		String objectId
+	)
 
 	/**
 	 * Creates a new {@link CreateAndReplaceNonRoot} EChange.
@@ -72,7 +91,11 @@ interface TypeInferringCompoundEChangeFactory {
 	 * @return The created change.
 	 */
 	def <A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRootChange(
-		A affectedEObject, EReference reference, T newValue)
+		A affectedEObject,
+		EReference reference,
+		T newValue,
+		String objectId
+	)
 
 	/**
 	 * Creates a new {@link ReplaceAndDeleteNonRoot} EChange.
@@ -82,38 +105,52 @@ interface TypeInferringCompoundEChangeFactory {
 	 * @return The created change.
 	 */
 	def <A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRootChange(
-		A affectedEObject, EReference reference,
-		T oldValue)
+		A affectedEObject,
+		EReference reference,
+		T oldValue,
+		String objectId
+	)
 
-		/**
-		 * Creates a new {@link CreateAndReplaceAndDeleteNonRoot} EChange.
-		 * @param affectedEObject The affected object, in which feature the non root element will be replaced.
-		 * @param reference The reference of the affected object, in which the non root element will be replaced.
-		 * @param oldValue The replaced and deleted non root element.
-		 * @param newValue The created and replacing non root element.
-		 * @return The created change.
-		 */
-		def <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A, T> createCreateAndReplaceAndDeleteNonRootChange(
-			A affectedEObject, EReference reference, T oldValue, T newValue)
+	/**
+	 * Creates a new {@link CreateAndReplaceAndDeleteNonRoot} EChange.
+	 * @param affectedEObject The affected object, in which feature the non root element will be replaced.
+	 * @param reference The reference of the affected object, in which the non root element will be replaced.
+	 * @param oldValue The replaced and deleted non root element.
+	 * @param newValue The created and replacing non root element.
+	 * @return The created change.
+	 */
+	def <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A, T> createCreateAndReplaceAndDeleteNonRootChange(
+		A affectedEObject,
+		EReference reference,
+		T oldValue,
+		T newValue,
+		String oldObjectId,
+		String newObjectId
+	)
 
-		/**
-		 * Creates a new {@link ExplicitUnsetEAttribute} EChange.
-		 * @param affectedEObject The affected object, which attribute will be unset.
-		 * @param affectedAttribute The affected attribute of the affected object, which will be unset.
-		 * @param changes The subtractive changes, which removes the values of the attribute, before it will be unset.
-		 * @return The created change.
-		 */
-		def <A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttributeChange(
-			A affectedEObject, EAttribute affectedAttribute, List<SubtractiveAttributeEChange<A, T>> changes)
+	/**
+	 * Creates a new {@link ExplicitUnsetEAttribute} EChange.
+	 * @param affectedEObject The affected object, which attribute will be unset.
+	 * @param affectedAttribute The affected attribute of the affected object, which will be unset.
+	 * @param changes The subtractive changes, which removes the values of the attribute, before it will be unset.
+	 * @return The created change.
+	 */
+	def <A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttributeChange(
+		A affectedEObject,
+		EAttribute affectedAttribute,
+		List<SubtractiveAttributeEChange<A, T>> changes
+	)
 
-		/**
-		 * Creates a new {@link ExplicitUnsetEReference} EChange.
-		 * @param affectedEObject The affected object, which reference will be unset.
-		 * @param affectedReference The affected reference of the affected object, which will be unset.
-		 * @param changes The subtractive changes, which removes the values of the reference, before it will be unset.
-		 * @return The created change.
-		 */
-		def <A extends EObject, T extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReferenceChange(
-			A affectedEObject, EReference affectedReference, List<EChange> changes)
-	}
-	
+	/**
+	 * Creates a new {@link ExplicitUnsetEReference} EChange.
+	 * @param affectedEObject The affected object, which reference will be unset.
+	 * @param affectedReference The affected reference of the affected object, which will be unset.
+	 * @param changes The subtractive changes, which removes the values of the reference, before it will be unset.
+	 * @return The created change.
+	 */
+	def <A extends EObject, T extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReferenceChange(
+		A affectedEObject,
+		EReference affectedReference,
+		List<EChange> changes
+	)
+}

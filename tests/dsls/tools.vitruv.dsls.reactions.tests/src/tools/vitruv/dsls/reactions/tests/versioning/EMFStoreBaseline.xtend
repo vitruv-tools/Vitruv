@@ -20,6 +20,8 @@ import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.author.Author
+import tools.vitruv.framework.versioning.common.commit.SimpleCommit
+import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryImpl
@@ -36,8 +38,6 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.collection.IsEmptyCollection.empty
 
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.emfstore.LocalRepository
-import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 
 class EMFStoreBaseline extends VitruviusApplicationTest {
 	static extension BowlingFactory = BowlingFactory::eINSTANCE

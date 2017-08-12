@@ -201,6 +201,6 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 * Creates new unresolved change.
 	 */
 	def private CreateAndInsertNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot, int index) {
-		return compoundFactory.createCreateAndInsertNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index)
+		return compoundFactory.createCreateAndInsertNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index, null)
 	}
 }

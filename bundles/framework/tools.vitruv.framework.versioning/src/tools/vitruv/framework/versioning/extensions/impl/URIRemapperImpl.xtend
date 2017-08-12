@@ -70,7 +70,7 @@ class URIRemapperImpl implements URIRemapper {
 	private new() {
 	}
 
-	val remapURIString = [ String from, String to, EObject e |
+	static val remapURIString = [ String from, String to, EObject e |
 		val internalEObject = e as InternalEObject
 		if (null === internalEObject) {
 			error('''Null as parameter''')

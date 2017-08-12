@@ -15,7 +15,7 @@ ReactionsFile:
 ReactionsSegment:
 	'reactions:' name=ValidID
 	'in reaction to changes in' fromDomain=DomainReference 
-	'execute actions in' toDomain=DomainReference
+	'execute' 'actions in' toDomain=DomainReference
 	(reactions+=Reaction |
 		routines+=Routine)*;
 
@@ -129,6 +129,7 @@ ElementCompoundChangeType returns ElementCompoundChangeType:
 // ***************************************
 
 Routine:
+	(documentation=ML_COMMENT)?
 	'routine' name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
@@ -175,8 +176,12 @@ RoutineCallStatement returns RoutineCallStatement:
 	RoutineCallBlock;
 
 ActionStatement:
-	CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement | CreateCorrespondenceStatement | RemoveCorrespondenceStatement | ExecuteActionBlock | RoutineCallStatement;
-	
+	CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement | CreateCorrespondenceStatement | RemoveCorrespondenceStatement | ExecuteActionStatement | RoutineCallStatement;
+
+ExecuteActionStatement returns ExecuteActionStatement:
+	{ExecuteActionStatement}
+	'execute' CodeBlock;
+
 CreateModelElementStatement returns CreateModelElement:
 	{CreateModelElement}
 	'val' name=ValidID '=' 'create' MetaclassReference ("and" "initialize" initializationBlock=ExecutionCodeBlock)?;
@@ -189,24 +194,21 @@ UpdateModelElementStatement returns UpdateModelElement:
 	{UpdateModelElement}
 	"update" element=ExistingElementReference updateBlock=ExecutionCodeBlock;
 
-
 CreateCorrespondenceStatement returns CreateCorrespondence:
 	{CreateCorrespondence}
 	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
-	('tag with' Taggable)?;
+	('tagged with' Taggable)?;
 	
 RemoveCorrespondenceStatement returns RemoveCorrespondence:
 	{RemoveCorrespondence}
-	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference;
+	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
+	('tagged with' Taggable)?;
 
 
 // ****** CODE BLOCKS ******
 
 fragment CodeBlock:
 	code=XExpression;
-	
-fragment ExecuteActionBlock:
-	'execute' CodeBlock;
 
 fragment RoutineCallBlock:
 // TODO move the variable declaration and assignment for routine returns inside the code block not before it!

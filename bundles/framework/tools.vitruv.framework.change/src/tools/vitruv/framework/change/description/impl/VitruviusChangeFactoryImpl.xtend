@@ -19,12 +19,14 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.util.datatypes.VURI
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * @version 0.2.0
  * @since 2017-06-06
  */
 class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
+	static extension  TypeInferringCompoundEChangeFactory = TypeInferringCompoundEChangeFactory::instance
 	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(VitruviusChangeFactory)
 
@@ -119,8 +121,12 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 						". Propagation of 'root element created' not triggered.")
 					return null
 				}
-				val CreateAndInsertRoot<EObject> createRootEObj = TypeInferringCompoundEChangeFactory::instance.
-					createCreateAndInsertRootChange(rootElement, resource, index)
+				val CreateAndInsertRoot<EObject> createRootEObj = createCreateAndInsertRootChange(
+					rootElement,
+					resource,
+					index,
+					EcoreUtil::getID(rootElement)
+				)
 				createRootEObj
 			}
 
@@ -128,8 +134,12 @@ class VitruviusChangeFactoryImpl implements VitruviusChangeFactory {
 				if (0 < resource.contents.size) {
 					val index = 0
 					val rootElement = resource.contents.get(index)
-					val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory::instance.
-						createRemoveAndDeleteRootChange(rootElement, resource, index)
+					val RemoveAndDeleteRoot<EObject> deleteRootObj = createRemoveAndDeleteRootChange(
+						rootElement,
+						resource,
+						index,
+						EcoreUtil::getID(rootElement)
+					)
 					return deleteRootObj
 				}
 				info("Deleted resource " + VURI::getInstance(resource) + " did not contain any EObject")

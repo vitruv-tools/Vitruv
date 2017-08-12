@@ -21,14 +21,15 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionPro
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 
 class ReactionClassGenerator extends ClassGenerator {
-	protected final Reaction reaction;
-	protected final ChangeTypeRepresentation changeTypeRepresentation;
-	protected final AtomicChangeTypeRepresentation relevantAtomicChangeTypeRepresentation;
-	protected final boolean hasPreconditionBlock;
-	private final ClassNameGenerator reactionClassNameGenerator;
-	private final UserExecutionClassGenerator userExecutionClassGenerator;
-	private final ClassNameGenerator routinesFacadeClassNameGenerator;
-	private final static val typedChangeVariableName = "typedChange";
+	protected final Reaction reaction
+	protected final ChangeTypeRepresentation changeTypeRepresentation
+	protected final AtomicChangeTypeRepresentation relevantAtomicChangeTypeRepresentation
+	protected final boolean hasPreconditionBlock
+	private final ClassNameGenerator reactionClassNameGenerator
+	private final UserExecutionClassGenerator userExecutionClassGenerator
+	private final ClassNameGenerator routinesFacadeClassNameGenerator
+	private final static val typedChangeVariableName = "typedChange"
+	var JvmGenericType userExecutionClass
 	
 	new(Reaction reaction, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
@@ -45,17 +46,24 @@ class ReactionClassGenerator extends ClassGenerator {
 			reactionClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME);
 	}
 		
-	public override JvmGenericType generateClass() {
-		generateMethodGetExpectedChangeType();
-		generateMethodCheckPrecondition();
-		generateMethodExecuteReaction();
-				
+	public override JvmGenericType generateEmptyClass() {
+		userExecutionClass = userExecutionClassGenerator.generateEmptyClass()
 		reaction.toClass(reactionClassNameGenerator.qualifiedName) [
-			visibility = JvmVisibility.DEFAULT;
-			superTypes += typeRef(AbstractReactionRealization);
-			members += generatedMethods;
-			members += userExecutionClassGenerator.generateClass();
-		];
+			visibility = JvmVisibility.DEFAULT
+		]
+	}
+	
+	override generateBody(JvmGenericType generatedClass) {
+		generateMethodGetExpectedChangeType()
+		generateMethodCheckPrecondition()
+		generateMethodExecuteReaction()
+		
+		generatedClass => [
+			documentation = getCommentWithoutMarkers(reaction.documentation)
+			superTypes += typeRef(AbstractReactionRealization)
+			members += generatedMethods
+			members += userExecutionClassGenerator.generateBody(userExecutionClass)
+		]
 	}
 	
 	protected def generateMethodGetExpectedChangeType() {

@@ -15,13 +15,15 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackag
  *
  * @generated
  */
-public class StringImpl extends MinimalEObjectImpl.Container implements tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.String {
+public class StringImpl extends MinimalEObjectImpl.Container implements tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.String
+{
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected StringImpl() {
+	protected StringImpl()
+	{
 		super();
 	}
 
@@ -31,7 +33,8 @@ public class StringImpl extends MinimalEObjectImpl.Container implements tools.vi
 	 * @generated
 	 */
 	@Override
-	protected EClass eStaticClass() {
+	protected EClass eStaticClass()
+	{
 		return InputTypesPackage.Literals.STRING;
 	}
 

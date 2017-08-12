@@ -9,8 +9,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.framework.domains.VitruvDomain
 
 final class ClassNamesGenerators {
+	public static val FSA_SEPARATOR = "/";
 	private static String BASIC_PACKAGE = "mir";
-	private static val FSA_SEPARATOR = "/";
 	private static val XTEND_FILE_EXTENSION = ".java";
 	private static val REACTIONS_PACKAGE = "reactions";
 	private static String ROUTINES_PACKAGE = "routines";
@@ -18,7 +18,7 @@ final class ClassNamesGenerators {
 	
 	private new() {}
 	
-	static def generateClass(String packageName, XtendImportHelper importHelper, CharSequence classImplementation) '''
+	static def generateClass(CharSequence classImplementation, String packageName, XtendImportHelper importHelper) '''
 		package «packageName»;
 		
 		«importHelper.generateImportCode»
@@ -99,10 +99,9 @@ final class ClassNamesGenerators {
 		}
 		
 		public override getSimpleName() '''
-			AbstractChangePropagationSpecification«metamodelPairName»'''
+			«metamodelPairName»ChangePropagationSpecification'''
 		
-		public override getPackageName() '''
-			«basicReactionsPackageQualifiedName»'''	
+		public override getPackageName(){ basicReactionsPackageQualifiedName}	
 	}	
 	
 	private static class ExecutorClassNameGenerator extends ClassNameGenerator {

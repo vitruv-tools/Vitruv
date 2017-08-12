@@ -31,7 +31,7 @@ public interface UpdateReferenceEChange<A extends EObject> extends FeatureEChang
 	 * The affected reference is a containment reference.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" unique="false" required="true"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='<%org.eclipse.emf.ecore.EReference%> _affectedFeature = this.getAffectedFeature();\nreturn _affectedFeature.isContainment();'"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='&lt;%org.eclipse.emf.ecore.EReference%&gt; _affectedFeature = this.getAffectedFeature();\nreturn _affectedFeature.isContainment();'"
 	 * @generated
 	 */
 	boolean isContainment();

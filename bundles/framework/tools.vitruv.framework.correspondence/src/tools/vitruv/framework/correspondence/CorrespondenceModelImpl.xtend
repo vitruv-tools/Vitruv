@@ -193,8 +193,7 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 
 	override saveModel() {
 		try {
-			EcoreResourceBridge::saveResource(getResource(),
-				saveCorrespondenceOptions)
+			EcoreResourceBridge::saveResource(getResource(), saveCorrespondenceOptions)
 		} catch (IOException e) {
 			throw new RuntimeException(
 				'''
@@ -289,8 +288,7 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 		if (domainA.nsUris.contains(metamodelNamespaceUri)) {
 			return correspondence.getATuids
 		} else if (domainB.nsUris.contains(metamodelNamespaceUri)) {
-			return correspondence.
-				getBTuids
+			return correspondence.getBTuids
 		} else {
 			throw new IllegalArgumentException('''Metamodel namespace URI "«metamodelNamespaceUri»" is not a namespace URI of one of the metamodels for the associated mapping''')
 		}
@@ -350,7 +348,7 @@ class CorrespondenceModelImpl extends ModelInstanceImpl implements InternalCorre
 				// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
 				newSetOfoldTuidLists += oldTuidList
 				// re-add the correspondences entry for the current list of tuids with the new hashcode
-				tuid2CorrespondencesMap.put(oldTuidList.immutableCopy, correspondences.immutableCopy)
+				tuid2CorrespondencesMap.put(oldTuidList, correspondences)
 			}
 			// re-add the entry that maps the tuid to the set if tuid lists that contain it
 			tuid2tuidListsMap.put(tuid, newSetOfoldTuidLists)

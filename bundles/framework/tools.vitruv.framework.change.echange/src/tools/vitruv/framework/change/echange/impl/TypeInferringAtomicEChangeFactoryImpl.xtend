@@ -29,12 +29,139 @@ import tools.vitruv.framework.change.echange.root.RootFactory
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 
 class TypeInferringAtomicEChangeFactoryImpl implements TypeInferringAtomicEChangeFactory {
+	static extension AttributeFactory = AttributeFactory::eINSTANCE
+	static extension EobjectFactory = EobjectFactory::eINSTANCE
+	static extension ReferenceFactory = ReferenceFactory::eINSTANCE
+	static extension RootFactory = RootFactory::eINSTANCE
+
+	protected new() {
+	}
 
 	static def TypeInferringAtomicEChangeFactory init() {
 		new TypeInferringAtomicEChangeFactoryImpl
 	}
 
-	protected new() {
+	override <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, Resource resource, int index) {
+		val c = createInsertRootEObject
+		setNewValue(c, newValue)
+		setRootChangeFeatures(c, resource, index)
+		c
+	}
+
+	override <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, Resource resource, int index) {
+		val c = createRemoveRootEObject
+		setOldValue(c, oldValue)
+		setRootChangeFeatures(c, resource, index)
+		c
+	}
+
+	override <A extends EObject, T extends Object> InsertEAttributeValue<A, T> createInsertAttributeChange(
+		A affectedEObject,
+		EAttribute affectedAttribute,
+		int index,
+		T newValue
+	) {
+		val c = createInsertEAttributeValue
+		setFeatureChangeFeatures(c, affectedEObject,
+			affectedAttribute)
+		c.newValue = newValue
+		c.index = index
+		c
+	}
+
+	override <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A, T> createReplaceSingleAttributeChange(
+		A affectedEObject,
+		EAttribute affectedAttribute,
+		T oldValue,
+		T newValue
+	) {
+		val c = createReplaceSingleValuedEAttribute
+		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
+		c.oldValue = oldValue
+		c.newValue = newValue
+		c
+	}
+
+	override <A extends EObject, T extends Object> RemoveEAttributeValue<A, T> createRemoveAttributeChange(
+		A affectedEObject,
+		EAttribute affectedAttribute,
+		int index,
+		T oldValue
+	) {
+		val c = createRemoveEAttributeValue
+		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
+		c.oldValue = oldValue
+		c.index = index
+		c
+	}
+
+	override <A extends EObject, T extends EObject> InsertEReference<A, T> createInsertReferenceChange(
+		A affectedEObject, EReference affectedReference, T newValue, int index) {
+		val c = createInsertEReference
+		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
+		setNewValue(c,
+			newValue)
+		c.index = index
+		c
+	}
+
+	override <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A, T> createReplaceSingleReferenceChange(
+		A affectedEObject,
+		EReference affectedReference,
+		T oldValue,
+		T newValue
+	) {
+		val c = createReplaceSingleValuedEReference
+		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
+		setOldValue(c, oldValue)
+		setNewValue(c, newValue)
+		c
+	}
+
+	override <A extends EObject, T extends EObject> RemoveEReference<A, T> createRemoveReferenceChange(
+		A affectedEObject, EReference affectedReference, T oldValue, int index) {
+		val c = createRemoveEReference
+		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
+		setOldValue(c, oldValue)
+		c.index = index
+		c
+	}
+
+	override <A extends EObject> CreateEObject<A> createCreateEObjectChange(
+		A affectedEObject,
+		Resource resource,
+		String objectId
+	) {
+		val c = createCreateEObject
+		setEObjectExistenceChange(c, affectedEObject, resource, objectId)
+		return c
+	}
+
+	override <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(
+		A affectedEObject,
+		Resource resource,
+		String objectId
+	) {
+		val c = createDeleteEObject
+		setEObjectExistenceChange(c, affectedEObject, resource, objectId)
+		return c
+	}
+
+	/**
+	 * Sets the affected EObject of a EObjectExistenceEChange.
+	 * @param change The EObjectExistenceEChange which affected EObject is to be set.
+	 * @param affectedEObject The affected EObject.
+	 * @param resource The resource which contains the staging area, where the object will be placed in / removed from.
+	 */
+	protected def <A extends EObject> void setEObjectExistenceChange(
+		EObjectExistenceEChange<A> change,
+		A affectedEObject,
+		Resource resource,
+		String objectId
+	) {
+		change.stagingArea = StagingArea::getStagingArea(resource)
+		change.affectedEObject = affectedEObject
+		change.objectId = objectId
 	}
 
 	/**
@@ -56,7 +183,10 @@ class TypeInferringAtomicEChangeFactoryImpl implements TypeInferringAtomicEChang
 	 * @param affectedFeature The affected feature of the change.
 	 */
 	def protected <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(
-		FeatureEChange<A, F> change, A affectedEObject, F affectedFeature) {
+		FeatureEChange<A, F> change,
+		A affectedEObject,
+		F affectedFeature
+	) {
 		change.affectedEObject = affectedEObject
 		change.affectedFeature = affectedFeature
 	}
@@ -79,97 +209,4 @@ class TypeInferringAtomicEChangeFactoryImpl implements TypeInferringAtomicEChang
 		change.oldValue = oldValue
 	}
 
-	/**
-	 * Sets the affected EObject of a EObjectExistenceEChange.
-	 * @param change The EObjectExistenceEChange which affected EObject is to be set.
-	 * @param affectedEObject The affected EObject.
-	 * @param resource The resource which contains the staging area, where the object will be placed in / removed from.
-	 */
-	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
-		A affectedEObject, Resource resource) {
-		change.stagingArea = StagingArea::getStagingArea(resource)
-		change.affectedEObject = affectedEObject
-	}
-
-	override <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, Resource resource, int index) {
-		val c = RootFactory::eINSTANCE.createInsertRootEObject
-		setNewValue(c, newValue)
-		setRootChangeFeatures(c, resource, index)
-		c
-	}
-
-	override <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, Resource resource, int index) {
-		val c = RootFactory::eINSTANCE.createRemoveRootEObject
-		setOldValue(c, oldValue)
-		setRootChangeFeatures(c, resource, index)
-		c
-	}
-
-	override <A extends EObject, T extends Object> InsertEAttributeValue<A, T> createInsertAttributeChange(
-		A affectedEObject, EAttribute affectedAttribute, int index, T newValue) {
-		val c = AttributeFactory::eINSTANCE.createInsertEAttributeValue
-		setFeatureChangeFeatures(c, affectedEObject,
-			affectedAttribute)
-		c.newValue = newValue
-		c.index = index
-		c
-	}
-
-	override <A extends EObject, T extends Object> ReplaceSingleValuedEAttribute<A, T> createReplaceSingleAttributeChange(
-		A affectedEObject, EAttribute affectedAttribute, T oldValue, T newValue) {
-		val c = AttributeFactory::eINSTANCE.createReplaceSingleValuedEAttribute
-		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
-		c.oldValue = oldValue
-		c.newValue = newValue
-		c
-	}
-
-	override <A extends EObject, T extends Object> RemoveEAttributeValue<A, T> createRemoveAttributeChange(
-		A affectedEObject, EAttribute affectedAttribute, int index, T oldValue) {
-		val c = AttributeFactory::eINSTANCE.createRemoveEAttributeValue
-		setFeatureChangeFeatures(c, affectedEObject, affectedAttribute)
-		c.oldValue = oldValue
-		c.index = index
-		c
-	}
-
-	override <A extends EObject, T extends EObject> InsertEReference<A, T> createInsertReferenceChange(
-		A affectedEObject, EReference affectedReference, T newValue, int index) {
-		val c = ReferenceFactory::eINSTANCE.createInsertEReference
-		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
-		setNewValue(c,
-			newValue)
-		c.index = index
-		c
-	}
-
-	override <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A, T> createReplaceSingleReferenceChange(
-		A affectedEObject, EReference affectedReference, T oldValue, T newValue) {
-		val c = ReferenceFactory::eINSTANCE.createReplaceSingleValuedEReference
-		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
-		setOldValue(c, oldValue)
-		setNewValue(c, newValue)
-		c
-	}
-
-	override <A extends EObject, T extends EObject> RemoveEReference<A, T> createRemoveReferenceChange(
-		A affectedEObject, EReference affectedReference, T oldValue, int index) {
-		val c = ReferenceFactory::eINSTANCE.createRemoveEReference
-		setFeatureChangeFeatures(c, affectedEObject, affectedReference)
-		setOldValue(c, oldValue)
-		c.index = index
-		c
-	}
-
-	override <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject, Resource resource) {
-		val c = EobjectFactory::eINSTANCE.createCreateEObject
-		setEObjectExistenceChange(c, affectedEObject, resource)
-		c
-	}
-
-	override <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject, Resource resource) {
-		val c = EobjectFactory::eINSTANCE.createDeleteEObject
-		setEObjectExistenceChange(c, affectedEObject, resource)
-		c
-	}
 }

@@ -20,18 +20,20 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.pde.core,
  org.eclipse.core.runtime,
  tools.vitruv.dsls.common,
- tools.vitruv.framework.metamodel
+ tools.vitruv.framework.metamodel,
+ edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: tools.vitruv.dsls.mirbase.jvmmodel,
+Export-Package: tools.vitruv.dsls.mirbase,
+ tools.vitruv.dsls.mirbase.formatting,
+ tools.vitruv.dsls.mirbase.jvmmodel,
+ tools.vitruv.dsls.mirbase.mirBase,
  tools.vitruv.dsls.mirbase.mirBase.impl,
  tools.vitruv.dsls.mirbase.mirBase.util,
- tools.vitruv.dsls.mirbase.mirBase,
  tools.vitruv.dsls.mirbase.parser.antlr,
  tools.vitruv.dsls.mirbase.parser.antlr.internal,
  tools.vitruv.dsls.mirbase.scoping,
  tools.vitruv.dsls.mirbase.serializer,
  tools.vitruv.dsls.mirbase.services,
- tools.vitruv.dsls.mirbase.validation,
- tools.vitruv.dsls.mirbase
+ tools.vitruv.dsls.mirbase.validation
 Import-Package: org.apache.log4j
 Bundle-Vendor: vitruv.tools

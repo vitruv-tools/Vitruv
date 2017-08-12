@@ -25,14 +25,128 @@ import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.EChange
 
 class TypeInferringCompoundEChangeFactoryImpl implements TypeInferringCompoundEChangeFactory {
-	static def TypeInferringCompoundEChangeFactory init() {
-		new TypeInferringCompoundEChangeFactoryImpl(TypeInferringAtomicEChangeFactory::instance)
-	}
-
+	static extension CompoundFactory = CompoundFactory::eINSTANCE
 	protected TypeInferringAtomicEChangeFactory atomicFactory
 
 	protected new(TypeInferringAtomicEChangeFactory atomicFactory) {
 		this.atomicFactory = atomicFactory
+	}
+
+	static def TypeInferringCompoundEChangeFactory init() {
+		new TypeInferringCompoundEChangeFactoryImpl(TypeInferringAtomicEChangeFactory::instance)
+	}
+
+	override <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(
+		T affectedEObject,
+		Resource resource,
+		int index,
+		String objectId
+	) {
+		val c = createCreateAndInsertRoot
+		c.createChange = atomicFactory.createCreateEObjectChange(affectedEObject, resource, objectId)
+		c.insertChange = atomicFactory.createInsertRootChange(affectedEObject, resource, index)
+		c
+	}
+
+	override <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRootChange(
+		T affectedEObject,
+		Resource resource,
+		int index,
+		String objectId
+	) {
+		val c = createRemoveAndDeleteRoot
+		c.deleteChange = atomicFactory.createDeleteEObjectChange(affectedEObject, resource, objectId)
+		c.removeChange = atomicFactory.createRemoveRootChange(affectedEObject, resource, index)
+		c
+	}
+
+	override <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> createCreateAndInsertNonRootChange(
+		A affectedEObject,
+		EReference reference,
+		T newValue,
+		int index,
+		String objectId
+	) {
+		val c = createCreateAndInsertNonRoot
+		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource, objectId)
+		c.insertChange = atomicFactory.createInsertReferenceChange(affectedEObject, reference, newValue, index)
+		c
+	}
+
+	override <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRootChange(
+		A affectedEObject,
+		EReference reference,
+		T oldValue,
+		int index,
+		String objectId
+	) {
+		val c = createRemoveAndDeleteNonRoot
+		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.eResource, objectId)
+		c.removeChange = atomicFactory.createRemoveReferenceChange(affectedEObject, reference, oldValue, index)
+		c
+	}
+
+	override <A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRootChange(
+		A affectedEObject,
+		EReference reference,
+		T newValue,
+		String objectId
+	) {
+		val c = createCreateAndReplaceNonRoot
+		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource, objectId)
+		c.insertChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, null, newValue)
+		c
+	}
+
+	override <A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRootChange(
+		A affectedEObject,
+		EReference reference,
+		T oldValue,
+		String objectId
+	) {
+		val c = createReplaceAndDeleteNonRoot
+		c.removeChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, oldValue, null)
+		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.eResource,
+			objectId)
+		c
+	}
+
+	override <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A, T> createCreateAndReplaceAndDeleteNonRootChange(
+		A affectedEObject,
+		EReference reference,
+		T oldValue,
+		T newValue,
+		String oldObjectId,
+		String newObjectId
+	) {
+		val c = createCreateAndReplaceAndDeleteNonRoot
+		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.eResource, oldObjectId)
+		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource, newObjectId)
+		c.replaceChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, oldValue,
+			newValue)
+		c
+	}
+
+	override <A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttributeChange(
+		A affectedEObject,
+		EAttribute affectedAttribute,
+		List<SubtractiveAttributeEChange<A, T>> changes
+	) {
+		val c = createExplicitUnsetEAttribute
+		c.setUnsetChangeFeatures(affectedEObject, affectedAttribute)
+		c.setUnsetAttributeChangeSubtractiveChanges(changes)
+		c
+	}
+
+	override <A extends EObject, T extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReferenceChange(
+		A affectedEObject,
+		EReference affectedReference,
+		List<EChange> changes
+	) {
+		val c = createExplicitUnsetEReference
+		c.setUnsetChangeFeatures(affectedEObject, affectedReference)
+		c.setUnsetReferenceChangeEChanges(changes)
+		c
 	}
 
 	/**
@@ -69,80 +183,5 @@ class TypeInferringCompoundEChangeFactoryImpl implements TypeInferringCompoundEC
 		for (c : changes) {
 			change.changes.add(c)
 		}
-	}
-
-	override <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRootChange(T affectedEObject,
-		Resource resource, int index) {
-		val c = CompoundFactory::eINSTANCE.createCreateAndInsertRoot
-		c.createChange = atomicFactory.createCreateEObjectChange(affectedEObject, resource)
-		c.insertChange = atomicFactory.createInsertRootChange(affectedEObject, resource, index)
-		c
-	}
-
-	override <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRootChange(T affectedEObject,
-		Resource resource, int index) {
-		val c = CompoundFactory::eINSTANCE.createRemoveAndDeleteRoot
-		c.deleteChange = atomicFactory.createDeleteEObjectChange(affectedEObject, resource)
-		c.removeChange = atomicFactory.createRemoveRootChange(affectedEObject, resource, index)
-		c
-	}
-
-	override <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> createCreateAndInsertNonRootChange(
-		A affectedEObject, EReference reference, T newValue, int index) {
-		val c = CompoundFactory::eINSTANCE.createCreateAndInsertNonRoot
-		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource)
-		c.insertChange = atomicFactory.createInsertReferenceChange(affectedEObject, reference, newValue, index)
-		c
-	}
-
-	override <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRootChange(
-		A affectedEObject, EReference reference, T oldValue, int index) {
-		val c = CompoundFactory::eINSTANCE.createRemoveAndDeleteNonRoot
-		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.eResource)
-		c.removeChange = atomicFactory.createRemoveReferenceChange(affectedEObject, reference, oldValue, index)
-		c
-	}
-
-	override <A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRootChange(
-		A affectedEObject, EReference reference, T newValue) {
-		val c = CompoundFactory::eINSTANCE.createCreateAndReplaceNonRoot
-		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource)
-		c.insertChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, null, newValue)
-		c
-	}
-
-	override <A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRootChange(
-		A affectedEObject, EReference reference, T oldValue) {
-		val c = CompoundFactory::eINSTANCE.createReplaceAndDeleteNonRoot
-		c.removeChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, oldValue, null)
-		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.
-			eResource)
-		c
-	}
-
-	override <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A, T> createCreateAndReplaceAndDeleteNonRootChange(
-		A affectedEObject, EReference reference, T oldValue, T newValue) {
-		val c = CompoundFactory::eINSTANCE.createCreateAndReplaceAndDeleteNonRoot
-		c.deleteChange = atomicFactory.createDeleteEObjectChange(oldValue, affectedEObject.eResource)
-		c.createChange = atomicFactory.createCreateEObjectChange(newValue, affectedEObject.eResource)
-		c.replaceChange = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, reference, oldValue,
-			newValue)
-		c
-	}
-
-	override <A extends EObject, T extends Object> ExplicitUnsetEAttribute<A, T> createExplicitUnsetEAttributeChange(
-		A affectedEObject, EAttribute affectedAttribute, List<SubtractiveAttributeEChange<A, T>> changes) {
-		val c = CompoundFactory::eINSTANCE.createExplicitUnsetEAttribute
-		c.setUnsetChangeFeatures(affectedEObject, affectedAttribute)
-		c.setUnsetAttributeChangeSubtractiveChanges(changes)
-		c
-	}
-
-	override <A extends EObject, T extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReferenceChange(
-		A affectedEObject, EReference affectedReference, List<EChange> changes) {
-		val c = CompoundFactory::eINSTANCE.createExplicitUnsetEReference
-		c.setUnsetChangeFeatures(affectedEObject, affectedReference)
-		c.setUnsetReferenceChangeEChanges(changes)
-		c
 	}
 }

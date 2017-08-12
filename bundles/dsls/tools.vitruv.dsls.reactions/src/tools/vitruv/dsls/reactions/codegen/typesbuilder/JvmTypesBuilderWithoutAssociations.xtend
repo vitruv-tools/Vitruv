@@ -12,15 +12,16 @@ import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator
 import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.xtext.common.types.JvmGenericType
+import com.google.inject.Singleton
 
+@Singleton
 class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	@Inject
 	private TypesFactory typesFactory;
-		
+
 	@Inject
 	private IJvmModelAssociator associator;
-	
-	
+
 	/**
 	 * Creates a public method with the given name and the given return type and associates it with the given
 	 * sourceElement.
@@ -37,9 +38,8 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	 * @return a result representing a Java method with the given name, <code>null</code> if sourceElement or name are <code>null</code>.
 	 */
 	/* @Nullable */
-	public def JvmOperation generateUnassociatedMethod(/* @Nullable */ String name, /* @Nullable */ JvmTypeReference returnType,
-			/* @Nullable */ Procedure1<? super JvmOperation> initializer) {
-		if(name === null) 
+	public def JvmOperation generateUnassociatedMethod( /* @Nullable */ String name, /* @Nullable */ JvmTypeReference returnType, /* @Nullable */ Procedure1<? super JvmOperation> initializer) {
+		if (name === null)
 			return null;
 		val result = typesFactory.createJvmOperation();
 		result.setSimpleName(name);
@@ -47,9 +47,7 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 		result.setReturnType(cloneWithProxies(returnType));
 		return initializeSafely(result, initializer);
 	}
-	
-	
-	
+
 	/**
 	 * Creates a private field with the given name and the given type associated to the given sourceElement.
 	 * 
@@ -60,17 +58,16 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	 * @return a {@link JvmField} representing a Java field with the given simple name and type.
 	 */
 	/* @Nullable */
-	public def JvmField generateUnassociatedField(/* @Nullable */ String name, /* @Nullable */ JvmTypeReference typeRef) {
+	public def JvmField generateUnassociatedField( /* @Nullable */ String name, /* @Nullable */ JvmTypeReference typeRef) {
 		return generateUnassociatedField(name, typeRef, null);
 	}
-	
+
 	/**
 	 * Same as {@link #toField(EObject, String, JvmTypeReference)} but with an initializer passed as the last argument.
 	 */
-	/* @Nullable */	
-	public def JvmField generateUnassociatedField(/* @Nullable */ String name, /* @Nullable */ JvmTypeReference typeRef, 
-			/* @Nullable */ Procedure1<? super JvmField> initializer) {
-		if(name === null) 
+	/* @Nullable */
+	public def JvmField generateUnassociatedField( /* @Nullable */ String name, /* @Nullable */ JvmTypeReference typeRef, /* @Nullable */ Procedure1<? super JvmField> initializer) {
+		if (name === null)
 			return null;
 		val result = typesFactory.createJvmField();
 		result.setSimpleName(name);
@@ -78,7 +75,7 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 		result.setType(cloneWithProxies(typeRef));
 		return initializeSafely(result, initializer);
 	}
-	
+
 	/**
 	 * Associates a source element with a target element. This association is used for tracing. Navigation, for
 	 * instance, uses this information to find the real declaration of a Jvm element.
@@ -89,27 +86,46 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	 * @return the target for convenience.
 	 */
 	/* @Nullable */
-	public override <T extends EObject> T associate(/* @Nullable */ EObject sourceElement, /* @Nullable */ T target) {
-		if(sourceElement !== null && target !== null && sourceElement.eResource !== null && isValidSource(sourceElement))
+	public override <T extends EObject> T associate( /* @Nullable */ EObject sourceElement, /* @Nullable */ T target) {
+		if (sourceElement !== null && target !== null && sourceElement.eResource !== null &&
+			isValidSource(sourceElement))
 			associator.associate(sourceElement, target);
 		return target;
 	}
-	
+
+	/**
+	 * Associates a source element with a target elementand marks the association as primary
+	 * on both sides. This association is used for tracing. Navigation, for
+	 * instance, uses this information to find the real declaration of a Jvm element.
+	 * 
+	 * @see IJvmModelAssociator
+	 * @see IJvmModelAssociations
+	 * 
+	 * @return the target for convenience.
+	 */
+	/* @Nullable */
+	def <T extends EObject> T associatePrimary( /* @Nullable */ EObject sourceElement, /* @Nullable */ T target) {
+		if (sourceElement !== null && target !== null && sourceElement.eResource !== null &&
+			isValidSource(sourceElement))
+			associator.associatePrimary(sourceElement, target);
+		return target;
+	}
+
 	public def JvmFormalParameter createParameter(String name, JvmTypeReference typeRef) {
 		val result = typesFactory.createJvmFormalParameter();
 		result.setName(name);
 		result.setParameterType(cloneWithProxies(typeRef));
 		return result;
 	}
-	
-	public def JvmGenericType generateUnassociatedClass(/* @Nullable */ String name, /* @Nullable */ Procedure1<? super JvmGenericType> initializer) {
+
+	public def JvmGenericType generateUnassociatedClass( /* @Nullable */ String name, /* @Nullable */ Procedure1<? super JvmGenericType> initializer) {
 		val result = createJvmGenericType(name);
 		if (result === null)
 			return null;
 		return initializeSafely(result, initializer);
 	}
-	
-	protected def JvmGenericType createJvmGenericType(/* @Nullable */ String name) {
+
+	protected def JvmGenericType createJvmGenericType( /* @Nullable */ String name) {
 		if (name === null)
 			return null;
 		val fullName = splitQualifiedName(name);

@@ -79,8 +79,13 @@ class EChangeCopierImpl implements EChangeCopier {
 		val affectedFeature = insertChange.affectedFeature
 		val index = insertChange.index
 		val newValue = insertChange.newValue
-		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
-			createCreateAndInsertNonRootChange(newAffectedEObject, affectedFeature, newValue, index)
+		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.createCreateAndInsertNonRootChange(
+			newAffectedEObject,
+			affectedFeature,
+			newValue,
+			index,
+			EcoreUtil::getID(newValue)
+		)
 		return change
 	}
 
@@ -102,8 +107,12 @@ class EChangeCopierImpl implements EChangeCopier {
 		val newAffectedEObject = adjust(affectedEObject)
 		val affectedFeature = insertChange.affectedFeature
 		val newValue = insertChange.newValue
-		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.
-			createCreateAndReplaceNonRootChange(newAffectedEObject, affectedFeature, newValue)
+		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.createCreateAndReplaceNonRootChange(
+			newAffectedEObject,
+			affectedFeature,
+			newValue,
+			EcoreUtil::getID(newValue)
+		)
 		return change
 	}
 

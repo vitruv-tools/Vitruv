@@ -15,31 +15,37 @@ import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.EChange
 
 final class TypeInferringUnresolvingCompoundEChangeFactoryImpl extends TypeInferringCompoundEChangeFactoryImpl implements TypeInferringUnresolvingCompoundEChangeFactory {
+	private new(TypeInferringAtomicEChangeFactory atomicFactory) {
+		super(atomicFactory)
+	}
 
 	static def TypeInferringUnresolvingCompoundEChangeFactory init() {
 		new TypeInferringUnresolvingCompoundEChangeFactoryImpl(TypeInferringUnresolvingAtomicEChangeFactory::instance)
 	}
 
-	private new(TypeInferringAtomicEChangeFactory atomicFactory) {
-		super(atomicFactory)
-	}
-
 	override protected <A extends EObject, F extends EStructuralFeature> setUnsetChangeFeatures(
-		ExplicitUnsetEFeature<A, F> change, A affectedEObject, F affectedFeature) {
+		ExplicitUnsetEFeature<A, F> change,
+		A affectedEObject,
+		F affectedFeature
+	) {
 		super.setUnsetChangeFeatures(change, affectedEObject, affectedFeature)
 		change.unresolveExplicitUnsetEFeature
 	}
 
 	override protected <A extends EObject, T extends Object> setUnsetAttributeChangeSubtractiveChanges(
-		ExplicitUnsetEAttribute<A, T> change, List<SubtractiveAttributeEChange<A, T>> changes) {
+		ExplicitUnsetEAttribute<A, T> change,
+		List<SubtractiveAttributeEChange<A, T>> changes
+	) {
 		changes.forEach [
 			unresolve
 			change.subtractiveChanges.add(it)
 		]
 	}
 
-	override protected <A extends EObject> setUnsetReferenceChangeEChanges(ExplicitUnsetEReference<A> change,
-		List<EChange> changes) {
+	override protected <A extends EObject> setUnsetReferenceChangeEChanges(
+		ExplicitUnsetEReference<A> change,
+		List<EChange> changes
+	) {
 		changes.forEach [
 			unresolve
 			change.changes.add(it)

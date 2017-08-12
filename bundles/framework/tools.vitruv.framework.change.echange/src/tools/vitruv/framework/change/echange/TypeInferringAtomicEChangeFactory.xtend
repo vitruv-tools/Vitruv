@@ -116,7 +116,11 @@ interface TypeInferringAtomicEChangeFactory {
 	 * @param resource The resource, in which staging area the EObject is inserted.
 	 * @return The created CreateEObject EChange.
 	 */
-	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject, Resource resource)
+	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(
+		A affectedEObject,
+		Resource resource,
+		String objectId
+	)
 
 	/**
 	 * Creates a new {@link DeleteEObject} EChange.
@@ -124,5 +128,9 @@ interface TypeInferringAtomicEChangeFactory {
 	 * @param resource The resource, from which staging area the EObject is removed.
 	 * @return The created DeleteEObject EChange.
 	 */
-	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject, Resource resource)
+	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(
+		A affectedEObject,
+		Resource resource,
+		String objectId
+	)
 }

@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomainProvider;
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry;
 import tools.vitruv.framework.vsum.ui.util.ProjectCreator;
 
 import java.util.HashMap;
@@ -125,7 +126,7 @@ public class DomainSelectionPage extends WizardPage {
 	private void initializeProjectList() {
 		tree.removeAll();
 		IProject projects[] = getProjects();
-		Iterable<VitruvDomainProvider<?>> domainProviders = VitruvDomainProvider.getAllDomainProvidersFromExtensionPoint();
+		Iterable<VitruvDomainProvider<?>> domainProviders = VitruvDomainProviderRegistry.getAllDomainProviders();
 		for (IProject project : projects) {
 			TreeItem t = new TreeItem(tree, SWT.CHECK);
 			t.setText(project.getName());
