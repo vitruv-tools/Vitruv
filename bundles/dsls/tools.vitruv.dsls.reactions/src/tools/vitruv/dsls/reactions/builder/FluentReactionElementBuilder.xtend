@@ -1,19 +1,18 @@
 package tools.vitruv.dsls.reactions.builder
 
-import java.util.LinkedList
-import static com.google.common.base.Preconditions.*
-import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.function.Consumer
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.xtend.lib.annotations.Delegate
-import java.util.List
-import org.eclipse.xtend2.lib.StringConcatenationClient
-import tools.vitruv.dsls.reactions.generator.SimpleTextXBlockExpression
 import java.util.Collections
+import java.util.LinkedList
+import java.util.List
+import java.util.function.Consumer
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtend.lib.annotations.Delegate
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+
+import static com.google.common.base.Preconditions.*
 
 /**
  * Parent class of all fluent builders. The builders work in three phases:
@@ -56,6 +55,7 @@ abstract package class FluentReactionElementBuilder {
 	 */
 	@Accessors(PROTECTED_GETTER)
 	val childBuilders = new PatientList<FluentReactionElementBuilder>
+	@Accessors(PROTECTED_GETTER)
 	var ReactionsFile attachedReactionsFile
 	
 	protected new(FluentBuilderContext context) {
@@ -121,14 +121,6 @@ abstract package class FluentReactionElementBuilder {
 		]
 	}
 	 
-	def protected xExpressionStr(String text) {
-		xExpression('''«text»''')
-	}
-	
-	def protected xExpression(StringConcatenationClient text) {
-		new SimpleTextXBlockExpression(text)
-	}
-	
 	/**
 	 * List offering iteration while the list is being modified.
 	 */

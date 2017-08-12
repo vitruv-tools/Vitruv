@@ -1,24 +1,25 @@
 package tools.vitruv.dsls.reactions.builder
 
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import org.eclipse.emf.ecore.EClass
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.function.Consumer
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import static com.google.common.base.Preconditions.*
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionBuilder
-import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
-import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
+import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
-import org.eclipse.xtext.common.types.JvmOperation
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+
+import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
-import org.eclipse.xtext.xbase.XbaseFactory
-import org.eclipse.xtext.xbase.XExpression
+
+import static extension org.eclipse.xtext.EcoreUtil2.isAssignableFrom
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -32,6 +33,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	var requireAffectedEObject = false
 	@Accessors(PACKAGE_GETTER)
 	var requireAffectedValue = false
+	
 	var EClass valueType
 	var EClass affectedObjectType
 
@@ -51,36 +53,47 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		checkState(!requireAffectedEObject ||
 			affectedObjectType !== null, '''Although required, there was no affected object type set on the «this»''')
 		if (requireOldValue) {
-			addInputElement(CHANGE_OLD_VALUE_ATTRIBUTE, valueType)
+			addInputElementIfNotExists(valueType, CHANGE_OLD_VALUE_ATTRIBUTE)
 		}
 		if (requireNewValue) {
-			addInputElement(CHANGE_NEW_VALUE_ATTRIBUTE, valueType)
+			addInputElementIfNotExists(valueType, CHANGE_NEW_VALUE_ATTRIBUTE)
 		}
 		if (requireAffectedEObject) {
-			addInputElement(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE, affectedObjectType)
+			addInputElementIfNotExists(affectedObjectType, CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
 	}
 
 	def package start() {
 		new RoutineStartBuilder(this)
 	}
+	
+	def private addInputElementIfNotExists(EClass type, String parameterName) {
+		if (routine.input.modelInputElements.findFirst [name == parameterName] !== null) return;
+		addInputElement(type, parameterName)
+	}
 
-	def private addInputElement(String parameterName, EClass type) {
+	def private addInputElement(EClass type, String parameterName) {
 		routine.input.modelInputElements += (MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
 			name = parameterName
 		]).reference(type)
 	}
 
 	def package setValueType(EClass type) {
-		checkState(valueType === null || valueType ==
-			type, '''The «this» already has the value type “«valueType»” set. It thus cannot be set to “«type»”!''')
-		valueType = type
+		if (valueType === null) {
+			valueType = type
+		}
+		if (!valueType.isAssignableFrom(type)) {
+			throw new IllegalStateException('''The «this» already has the value type “«valueType.name»” set, which is not a super type of “«type.name»”. The value type can thus not be set to “«type.name»”!''')
+		}
 	}
 
 	def package setAffectedElementType(EClass type) {
-		checkState(affectedObjectType === null || affectedObjectType ==
-			type, '''The «this» already has the affected element type “«valueType»” set. It thus cannot be set to “«type»”!''')
-		affectedObjectType = type
+		if (affectedObjectType === null) {
+			affectedObjectType = type
+		}
+		if (!affectedObjectType.isAssignableFrom(type)) {
+			throw new IllegalStateException('''The «this» already has the affected element type “«affectedObjectType.name»” set, which is not a super type of “«type.name»”. The affected element type can thus not be set to “«type.name»”!''')
+		}
 	}
 
 	static class MatcherOrActionBuilder extends ActionBuilder {
@@ -106,6 +119,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def input(Consumer<InputBuilder> inputs) {
 			inputs.accept(new InputBuilder(builder))
+			new MatcherOrActionBuilder(builder)
 		}
 
 	}
@@ -118,10 +132,16 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def void model(EClass eClass, String parameterName) {
-			routine.input.modelInputElements += MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
-				metaclass = eClass
-				name = parameterName
-			]
+			detectWellKnownType(eClass, parameterName)
+			addInputElement(eClass, parameterName)
+		}
+		
+		def private detectWellKnownType(EClass eClass, String parameterName) {
+			switch (parameterName) {
+				case CHANGE_OLD_VALUE_ATTRIBUTE,
+				case CHANGE_NEW_VALUE_ATTRIBUTE: valueType = eClass
+				case CHANGE_AFFECTED_ELEMENT_ATTRIBUTE: affectedObjectType = eClass
+			}
 		}
 
 		def void plain(Class<?> javaClass, String parameterName) {

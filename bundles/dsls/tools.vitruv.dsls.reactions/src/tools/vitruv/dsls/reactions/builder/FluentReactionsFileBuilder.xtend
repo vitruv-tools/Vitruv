@@ -1,12 +1,12 @@
 package tools.vitruv.dsls.reactions.builder
 
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import static com.google.common.base.Preconditions.*
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.emf.ecore.resource.Resource
 
-@Accessors(PACKAGE_GETTER)
+import static com.google.common.base.Preconditions.*
+
 class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 
 	val ReactionsFile reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile

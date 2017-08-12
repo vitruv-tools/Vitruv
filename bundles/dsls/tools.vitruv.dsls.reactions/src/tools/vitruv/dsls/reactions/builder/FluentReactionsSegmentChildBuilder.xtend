@@ -3,29 +3,31 @@ package tools.vitruv.dsls.reactions.builder
 import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract package class FluentReactionsSegmentChildBuilder extends FluentReactionElementBuilder {
-	@Accessors(PROTECTED_GETTER, PACKAGE_SETTER)
+	@Accessors(PACKAGE_SETTER)
 	var FluentReactionsSegmentBuilder segmentBuilder
-	
+
 	protected new(FluentBuilderContext context) {
 		super(context)
 	}
 
-	def protected mustBeInSameSegmentAs(FluentReactionsSegmentChildBuilder a, FluentReactionsSegmentChildBuilder b) {
-		checkAssociation(a, b)
-		a.beforeAttached [infect(b)]
-		b.beforeAttached [infect(a)]
+	def protected transferReactionsSegmentTo(FluentReactionsSegmentChildBuilder infector,
+		FluentReactionsSegmentChildBuilder infected) {
+		infector.beforeAttached[infect(infected)]
+		infected.beforeAttached[checkReactionsSegmentIsCompatibleTo(infector)]
 	}
-	
+
 	def private infect(FluentReactionsSegmentChildBuilder infector, FluentReactionsSegmentChildBuilder infected) {
-		checkAssociation(infector, infected)
+		infector.checkReactionsSegmentIsCompatibleTo(infected)
 		if (infector.segmentBuilder !== null && infected.segmentBuilder === null) {
 			infector.segmentBuilder.add(infected)
 		}
 	}
 
-	def private checkAssociation(FluentReactionsSegmentChildBuilder a, FluentReactionsSegmentChildBuilder b) {
-		if (a.segmentBuilder !== null && b.segmentBuilder !== null && a.segmentBuilder != b.segmentBuilder) {
-			throw new RuntimeException('''«a» is in a different reaction segment than «b»!''')
+	def private checkReactionsSegmentIsCompatibleTo(FluentReactionsSegmentChildBuilder a,
+		FluentReactionsSegmentChildBuilder b) {
+		if (a.attachedReactionsFile !== null && b.attachedReactionsFile !== null &&
+			a.attachedReactionsFile != b.attachedReactionsFile) {
+			throw new RuntimeException('''«a» is in a different reaction file than «b»!''')
 		}
 	}
 }

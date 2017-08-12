@@ -1,11 +1,11 @@
 package tools.vitruv.dsls.reactions.builder
 
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder.ReactionsSegmentTargetBuilder
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.framework.domains.VitruvDomain
+
 import static com.google.common.base.Preconditions.*
 
 @Accessors(PACKAGE_GETTER)
