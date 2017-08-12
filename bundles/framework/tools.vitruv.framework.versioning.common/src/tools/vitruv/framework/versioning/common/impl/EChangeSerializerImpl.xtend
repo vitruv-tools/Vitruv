@@ -155,7 +155,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			val className = jobject.get("createdObject").asString
 			val index = jobject.get("index").asInt
 			val object = createEObject(className)
-			val objectId = jobject.get("objectId").asString
+			val objectId = if(jobject.get("objectId").asString != "") jobject.get("objectId").asString else null
 			val resource = resourceSet.createResource(URI::createURI(jobject.get("uri").asString))
 			resource.contents.add(object)
 			resource.save(null)
@@ -188,7 +188,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			val className = jobject.get("createdObject").asString
 			val eProxyURI = jobject.get("eProxyURI").asString
 			val featureObject = jobject.get("feature").asJsonObject
-			val objectId = jobject.get("objectId").asString
+			val objectId = if(jobject.get("objectId").asString != "") jobject.get("objectId").asString else null
 
 			val createdObject = createEObject(className)
 			val affectedEObject = createEObject(affectedEObjectClassName, eProxyURI)
@@ -202,7 +202,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			val createdObjectClassName = jobject.get("createdObject").asString
 			val featureObject = jobject.get("feature").asJsonObject
 			val index = jobject.get("index").asInt
-			val objectId = jobject.get("objectId").asString
+			val objectId = if(jobject.get("objectId").asString != "") jobject.get("objectId").asString else null
 
 			val createdObject = createEObject(createdObjectClassName)
 			val affectedEObject = createEObject(affectedEObjectClassName, affectedEObjectEProxyURI)
@@ -219,7 +219,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			"eProxyURI": "«(createAndInsertNonRoot.insertChange.affectedEObject as InternalEObject).eProxyURI.toString»",
 			"feature":«createAndInsertNonRoot.insertChange.affectedFeature.serializeFeature»,
 			"index": "«createAndInsertNonRoot.insertChange.index»",
-			"objectId":"«createAndInsertNonRoot.createChange.objectId»"
+			"objectId":"«createAndInsertNonRoot.createChange.objectId»",
 			"type": "«CreateAndInsertNonRoot.name»"
 		}
 	'''
@@ -230,7 +230,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 		{
 			"createdObject": "«createAndInsertRoot.createChange.affectedEObject.class.name»",
 			"index": "«createAndInsertRoot.insertChange.index»",
-			"objectId":"«createAndInsertRoot.createChange.objectId»"
+			"objectId":"«createAndInsertRoot.createChange.objectId»",
 			"type": "«CreateAndInsertRoot.name»",
 			"uri": "«createAndInsertRoot.insertChange.uri»"
 		}
@@ -242,7 +242,7 @@ class EChangeSerializerImpl implements EChangeSerializer {
 			"createdObject": "«createAndReplaceNonRoot.createChange.affectedEObject.class.name»",
 			"eProxyURI": "«(createAndReplaceNonRoot.insertChange.affectedEObject as InternalEObject).eProxyURI.toString»",
 			"feature":«createAndReplaceNonRoot.insertChange.affectedFeature.serializeFeature»,
-			"objectId":"«createAndReplaceNonRoot.createChange.objectId»"
+			"objectId":"«createAndReplaceNonRoot.createChange.objectId»",
 			"type": "«CreateAndReplaceNonRoot.name»"
 		}
 	'''

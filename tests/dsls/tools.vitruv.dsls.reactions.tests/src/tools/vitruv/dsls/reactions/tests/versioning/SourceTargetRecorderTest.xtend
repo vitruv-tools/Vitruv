@@ -146,7 +146,7 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		val propagatedChanges = virtualModel.allUnresolvedPropagatedChanges
 		assertThat(propagatedChanges, hasSize(5))
 		val serializedChanges = propagatedChanges.serializeAll
-
+		debug(serializedChanges)
 		val deserializedChanges = serializedChanges.deserializeAll
 		val newVirtualModel = TestUtil::createVirtualModel("newVMname", true, vitruvDomains,
 			createChangePropagationSpecifications, userInteractor) as VersioningVirtualModel
