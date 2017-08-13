@@ -12,11 +12,14 @@ import com.google.gson.JsonParser
 
 import com.mongodb.MongoClient
 import com.mongodb.client.MongoCollection
+import com.mongodb.client.MongoDatabase
 
 abstract class MongoResource {
 	protected static extension Gson = new GsonBuilder().create
 	protected static extension JsonParser = new JsonParser
-	MongoClient mongoClient
+	protected MongoClient mongoClient
+	@Accessors(PROTECTED_GETTER)
+	MongoDatabase database
 	@Accessors(PROTECTED_GETTER)
 	MongoCollection<Document> collection
 
@@ -25,12 +28,16 @@ abstract class MongoResource {
 	@PostConstruct
 	def void postConstruct() {
 		mongoClient = new MongoClient
-		val database = mongoClient.getDatabase("vitruv_versioning")
+		database = mongoClient.getDatabase("vitruv_versioning")
 		collection = database.getCollection(collectionName)
 	}
 
 	@PreDestroy
 	def void preDestroy() {
 		mongoClient.close
+	}
+
+	protected def collectionExists(String collectionName) {
+		return database.listCollectionNames.exists[it == collectionName]
 	}
 }

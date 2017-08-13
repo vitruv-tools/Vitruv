@@ -76,29 +76,7 @@ class CommitResource extends MongoResource {
 			val id = jsonElement.asJsonObject.get("identifier").asString
 			if (null === id)
 				return createErrorResponse('''«commitString» has no identifier.''')
-			val alreadyCommit = collection.find(and(eq("branch", branchName), eq("identifier", id))).first
-			if (null !== alreadyCommit)
-				return createErrorResponse('''An commit with id «id» has already been commited''')
-			val lastCommitId = collection.find(eq("branch", branchName)).sort(Sorts::descending("commitmessage.date")).
-				map [
-					getString("identifier")
-				].first
 			val b = fromJson(jsonElement, Document)
-			val type = b.getString("type")
-			if (type == SimpleCommitImpl.name) {
-				val parent = b.getString("parent")
-				if ((parent === null || parent == "") && id != CommitFactory::initialCommitHash)
-					return createErrorResponse('''The commit has no parent and is not the initial commit''')
-			// TODO PS Handle simple commits preceeding mergecommits
-			// if (parent !== null && parent != "" && parent != lastCommitId)
-			// return createErrorResponse('''There have been commits since the last push! Please pull before''')
-			}
-			if (type == MergeCommitImpl.name) {
-				val sourceCommit = b.getString("sourceCommit")
-				val targetCommit = b.getString("targetCommit")
-				if (lastCommitId != sourceCommit && lastCommitId != targetCommit)
-					return createErrorResponse('''There have been commits since the last push! Please pull before''')
-			}
 			val commitMessage = b.get("commitmessage")
 			val commitMessageJson = commitMessage.toJson
 			val newCommitMessage = fromJson(commitMessageJson, CommitMessageImpl)
@@ -107,6 +85,31 @@ class CommitResource extends MongoResource {
 				newCommitMessage.authorName)
 			b.append("branch", branchName)
 			b.put("commitmessage", newCommitMessageBson)
+			val type = b.getString("type")
+			if (collectionExists(collectionName)) {
+				val alreadyCommit = collection.find(and(eq("branch", branchName), eq("identifier", id))).first
+				if (null !== alreadyCommit)
+					return createErrorResponse('''An commit with id «id» has already been commited''')
+				val lastCommitId = collection.find(eq("branch", branchName)).sort(
+					Sorts::descending("commitmessage.date")).map [
+					getString("identifier")
+				].first
+
+				if (type == SimpleCommitImpl.name) {
+					val parent = b.getString("parent")
+					if ((parent === null || parent == "") && id != CommitFactory::initialCommitHash)
+						return createErrorResponse('''The commit has no parent and is not the initial commit''')
+				// TODO PS Handle simple commits preceeding mergecommits
+				// if (parent !== null && parent != "" && parent != lastCommitId)
+				// return createErrorResponse('''There have been commits since the last push! Please pull before''')
+				}
+				if (type == MergeCommitImpl.name) {
+					val sourceCommit = b.getString("sourceCommit")
+					val targetCommit = b.getString("targetCommit")
+					if (lastCommitId != sourceCommit && lastCommitId != targetCommit)
+						return createErrorResponse('''There have been commits since the last push! Please pull before''')
+				}
+			}
 			debug('''Add commit «commitString» to branch «branchName»''')
 			collection.insertOne(b)
 			return createResponse("success", "")

@@ -3,6 +3,7 @@
 	<name>tools.vitruv.framework.server</name>
 	<comment></comment>
 	<projects>
+		<project>tools.vitruv.framework.versioning.common</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
