@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.server
+package tools.vitruv.framework.server
 
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy

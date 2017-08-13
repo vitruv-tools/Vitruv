@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.server
+package tools.vitruv.framework.server
 
 import javax.ws.rs.Consumes
 import javax.ws.rs.GET

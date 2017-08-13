@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.server
+package tools.vitruv.framework.server
 
 import javax.ws.rs.Consumes
 import javax.ws.rs.GET
@@ -11,11 +11,18 @@ import org.bson.Document
 import static com.mongodb.client.model.Filters.eq
 import static com.mongodb.client.model.Projections.excludeId
 import static com.mongodb.client.model.Projections.fields
+import javax.ws.rs.core.MediaType
 
 @Path("/branch")
 class BranchResource extends MongoResource {
 
 	override protected getCollectionName() { "branches" }
+
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	def String sayPlainTextHello() {
+		return "Hello";
+	}
 
 	@GET
 	@Path("/{name}")
