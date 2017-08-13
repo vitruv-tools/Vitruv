@@ -15,8 +15,7 @@ import tools.vitruv.framework.util.datatypes.ForwardHashedBackwardLinkedTree
 import tools.vitruv.framework.util.datatypes.ForwardHashedBackwardLinkedTree.Segment
 
 class TuidImpl implements Tuid {
-	static extension TuidManager = TuidManager::
-		instance
+	static extension TuidManager = TuidManager::instance
 	protected static val serialVersionUID = 5018494116382201707L
 	static val Map<ForwardHashedBackwardLinkedTree<String>. Segment, List<Tuid>> LAST_SEGMENT_2_Tuid_INSTANCES_MAP = newHashMap
 
@@ -57,8 +56,7 @@ class TuidImpl implements Tuid {
 		if (lastSegmentOrPrefixString !== null && lastSegmentOrPrefixString.equals(tuidString)) {
 			// the complete specified tuidString was already mapped
 			val instances = LAST_SEGMENT_2_Tuid_INSTANCES_MAP.get(lastSegmentOrPrefix)
-			if (instances.
-				nullOrEmpty) {
+			if (instances.nullOrEmpty) {
 				if (!recursively)
 					throw new IllegalStateException('''A Tuid instance for the last segment '«»«lastSegmentOrPrefix»' should already have been mapped for the tuidString '«»«tuidString»'!''')
 			} else {
@@ -91,8 +89,7 @@ class TuidImpl implements Tuid {
 		]
 		val tuids = LAST_SEGMENT_2_Tuid_INSTANCES_MAP.values.map[it.get(0)].toList.immutableCopy
 
-		if (treedTuidStrings.size !== tuids.
-			length)
+		if (treedTuidStrings.size !== tuids.length)
 			throw new IllegalStateException('''
 				«treedTuidStrings.size» Tuids are in the segment tree («treedTuidStrings») but «tuids.size» are mapped by their last segments («tuids»)!
 			''')
@@ -156,12 +153,12 @@ class TuidImpl implements Tuid {
 	}
 
 	override hashCode() {
-		return 31 + (if(lastSegment === null) 0 else lastSegment.hashCode)
+		return 31 + (if (lastSegment === null) 0 else lastSegment.hashCode)
 	}
 
 	override equals(Object obj) {
-		if(this === obj) return true
-		if(obj === null) return false
+		if (this === obj) return true
+		if (obj === null) return false
 		if (getClass() !== obj.class)
 			return false
 		var Tuid other = obj as Tuid

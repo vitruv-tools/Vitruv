@@ -70,7 +70,7 @@ class URIRemapperImpl implements URIRemapper {
 	private new() {
 	}
 
-	static val remapURIString = [ String from, String to, EObject e |
+	public static val REMAP_URI_String = [ String from, String to, EObject e |
 		val internalEObject = e as InternalEObject
 		if (null === internalEObject) {
 			error('''Null as parameter''')
@@ -97,7 +97,7 @@ class URIRemapperImpl implements URIRemapper {
 	}
 
 	override createRemapFunction(String from, String to) {
-		return remapURIString.curry(from).curry(to)
+		return tools.vitruv.framework.versioning.extensions.impl.URIRemapperImpl.REMAP_URI_String.curry(from).curry(to)
 	}
 
 	override createEChangeRemapFunction(String from, String to) {

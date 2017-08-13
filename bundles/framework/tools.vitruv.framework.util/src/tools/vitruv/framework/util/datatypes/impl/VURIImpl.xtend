@@ -72,12 +72,12 @@ class VURIImpl extends VURI implements Serializable {
 	}
 
 	// Needed for serialization
-	private def void writeObject(ObjectOutputStream stream) throws IOException {
+	protected def void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.writeObject(emfURI.toString)
 	}
 
 	// Needed for deserialization
-	private def void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+	protected def void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		val emfURIString = stream.readObject as String
 		emfURI = EMFBridge::createURI(emfURIString)
 	}
