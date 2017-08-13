@@ -60,7 +60,7 @@ package class IntermediateModelGenerator extends SubGenerator {
 
 	def private generateCommonalityEPackage(String conceptName, Iterable<CommonalityFile> commonalityFiles,
 		ResourceSet resourceSet) {
-		val conceptIntermediateModelOutputUri = getIntermediateModelOutputUri(conceptName)
+		val conceptIntermediateModelOutputUri = conceptName.intermediateModelOutputUri
 		val outputResource = resourceSet.getResource(conceptIntermediateModelOutputUri, false) ?:
 			resourceSet.createResource(conceptIntermediateModelOutputUri)
 

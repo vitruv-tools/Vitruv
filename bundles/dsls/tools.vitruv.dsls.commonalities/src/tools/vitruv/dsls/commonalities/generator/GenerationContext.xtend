@@ -29,7 +29,7 @@ package class GenerationContext {
 	def package getGeneratedIntermediateModelClass(CommonalityFile commonalityFile) {
 		intermediateModelClassCache.computeIfAbsent(commonalityFile, [
 			commonalityFile.concept.generatedIntermediateModelPackage.EClassifiers
-				.findFirst [name == commonalityFile.intermediateModelClass] as EClass
+				.findFirst [name == commonalityFile.intermediateModelClass.simpleName] as EClass
 			])
 	}
 
@@ -47,7 +47,7 @@ package class GenerationContext {
 
 	def package getGeneratedIntermediateModelPackage(String conceptName) {
 		intermediateModelPackageCache.computeIfAbsent(conceptName, [
-			resourceSet.getResource(getIntermediateModelOutputUri(conceptName), false).contents.head as EPackage
+			resourceSet.getResource(conceptName.intermediateModelOutputUri, false).contents.head as EPackage
 		])
 	}
 
