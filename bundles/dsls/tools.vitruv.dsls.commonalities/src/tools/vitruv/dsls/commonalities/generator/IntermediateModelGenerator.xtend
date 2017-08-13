@@ -103,20 +103,19 @@ package class IntermediateModelGenerator extends SubGenerator {
 		}
 
 		def private generateEAttribute(AttributeDeclaration attributeDeclaration) {
-			val typeClassifer = getOrCreateDataType(attributeDeclaration.type)
 			EcoreFactory.eINSTANCE.createEAttribute => [
 				name = attributeDeclaration.name
-				EType = typeClassifer
+				EType = attributeDeclaration.type.getOrGenerateEDataType()
 			]
 		}
 
-		def private getOrCreateDataType(EDataType classifier) {
+		def private getOrGenerateEDataType(EDataType classifier) {
 			#[generatedEPackage, EcorePackage.eINSTANCE].flatMap[EClassifiers].findFirst [
 				instanceClass == classifier.instanceClass
-			] ?: createNewEDataType(classifier)
+			] ?: generateEDataType(classifier)
 		}
 
-		def private createNewEDataType(EDataType classifier) {
+		def private generateEDataType(EDataType classifier) {
 			val newDataType = EcoreFactory.eINSTANCE.createEDataType => [
 				name = classifier.instanceClass.name.replace('.', '_')
 				instanceClass = classifier.instanceClass
