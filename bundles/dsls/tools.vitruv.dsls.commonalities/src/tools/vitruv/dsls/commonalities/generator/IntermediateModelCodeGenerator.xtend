@@ -12,9 +12,7 @@ import org.eclipse.emf.codegen.ecore.genmodel.generator.GenModelGeneratorAdapter
 import org.eclipse.emf.common.util.BasicMonitor
 import org.eclipse.emf.common.util.Diagnostic
 import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
@@ -26,14 +24,7 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 		val generatedCodeDirectory = fsa.getURI(GENERATED_CODE_FOLDER)
 		for (generatedConcept : generatedConcepts) {
 			val generatedPackage = generatedConcept.generatedIntermediateModelPackage
-			
-			// instanceClassName is set on the EClasses so reactions generation
-			// works. However, if the attribute is set, no code will be created
-			// for the classes. So we unset the attributes in a copy for code
-			// generation
-			val copiedPackage = EcoreUtil.copy(generatedPackage)
-			copiedPackage.EClassifiers.filter(EClass).forEach [instanceClassName = null]
-			val generatedGenModel = generateGenModel(copiedPackage, generatedConcept, generatedCodeDirectory)
+			val generatedGenModel = generateGenModel(generatedPackage, generatedConcept, generatedCodeDirectory)
 			generateModelCode(generatedGenModel)
 		}
 	}

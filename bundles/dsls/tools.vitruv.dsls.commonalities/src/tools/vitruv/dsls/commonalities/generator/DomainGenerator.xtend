@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.dsls.common.helper.JavaImportHelper
 import tools.vitruv.framework.domains.AbstractVitruvDomain
@@ -25,10 +24,9 @@ package class DomainGenerator extends SubGenerator {
 		
 		fsa.generateFile(domainClass.javaFilePath, '''
 			public class «domainClass.simpleName» extends «AbstractVitruvDomain.typeRef» {
-				private static final «EPackage.typeRef» ROOT_PACKAGE = «'''«conceptName.intermediateModelClassesPrefix»Package'''.typeRef».eINSTANCE;
 				
 				public «domainClass.simpleName»() {
-					super("«conceptName.conceptDomainName»", ROOT_PACKAGE, null); 
+					super("«conceptName.conceptDomainName»", «'''«conceptName.intermediateModelClassesPrefix»Package'''.typeRef».eINSTANCE, null);
 				}
 				
 				@«Override.typeRef»

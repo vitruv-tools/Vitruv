@@ -18,6 +18,8 @@ import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import org.eclipse.emf.ecore.EObject
+import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
 
 package class IntermediateModelGenerator extends SubGenerator {
 
@@ -89,7 +91,8 @@ package class IntermediateModelGenerator extends SubGenerator {
 				nsURI = NS_URI_PREFIX.appendSegment(conceptName).toString
 				nsPrefix = conceptName.conceptPackageSimpleName
 				name = conceptName.conceptPackageSimpleName
-				EClassifiers += commonalityEClasses
+				EClassifiers += commonalityEClasses;
+				EFactoryInstance.referencedAs(conceptName.conceptIntermediateModelPackageFactory.qualifiedName)
 			]
 		}
 
@@ -97,8 +100,8 @@ package class IntermediateModelGenerator extends SubGenerator {
 			val commonality = commonalityFile.commonality
 			EcoreFactory.eINSTANCE.createEClass => [
 				name = commonalityFile.intermediateModelClass.simpleName
-				instanceClassName = commonalityFile.intermediateModelInstanceClassName
 				EStructuralFeatures += commonality.attributes.map [generateEAttribute()]
+				referencedAs(commonalityFile.intermediateModelInstanceClassName)
 			]
 		}
 
@@ -127,5 +130,9 @@ package class IntermediateModelGenerator extends SubGenerator {
 	
 	def private static containedCommonalityFile(Resource resource) {
 		resource.contents.filter(CommonalityFile).head
+	}
+	
+	def private static referencedAs(EObject element, String referenceName) {
+		element.eAdapters += new ReferenceClassNameAdapter(referenceName)
 	}
 }
