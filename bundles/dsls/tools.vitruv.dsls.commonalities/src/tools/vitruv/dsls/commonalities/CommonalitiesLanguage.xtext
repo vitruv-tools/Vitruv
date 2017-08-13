@@ -1,5 +1,5 @@
 grammar tools.vitruv.dsls.commonalities.CommonalitiesLanguage
-	with org.eclipse.xtext.common.Terminals hidden(WS, ML_COMMENT, SL_COMMENT)
+	with org.eclipse.xtext.xbase.Xbase hidden(WS, ML_COMMENT, SL_COMMENT)
 
 generate language "http://vitruv.tools/dsls/commonalities/language"
 
