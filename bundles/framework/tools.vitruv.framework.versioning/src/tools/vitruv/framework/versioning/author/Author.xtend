@@ -9,7 +9,15 @@ import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.UserBranch
 import tools.vitruv.framework.versioning.common.commit.Commit
 
+/**
+ * The author of commits to the {@link Repository}.
+ * @author Patrick Stoeckle <p.stoeckle@gmx.net> 
+ */
 interface Author extends Named {
+	/**
+	 * Creates an author with the given name.
+	 * @param name the name of the author
+	 */
 	static def Author createAuthor(String name) {
 		new AuthorImpl(name)
 	}

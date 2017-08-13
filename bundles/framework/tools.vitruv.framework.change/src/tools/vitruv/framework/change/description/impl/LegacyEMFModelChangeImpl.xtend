@@ -35,10 +35,6 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 		addChanges(eChanges);
 	}
 
-	private def ChangeDescription getChangeDescription() {
-		return this.changeDescription;
-	}
-
 	override String toString() '''
 		«LegacyEMFModelChangeImpl.simpleName»: VURI «this.URI», EChanges:
 			«FOR eChange : EChanges»

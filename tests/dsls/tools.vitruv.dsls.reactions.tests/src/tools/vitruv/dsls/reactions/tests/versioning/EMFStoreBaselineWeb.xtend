@@ -87,7 +87,7 @@ class EMFStoreBaselineWeb extends VitruviusApplicationTest {
 	override setup() {
 		localRepository = new LocalRepositoryWebImpl
 		newLocalRepository = new LocalRepositoryWebImpl
-		remoteRepository = "http://localhost:8080/myapp/"
+		remoteRepository = "http://localhost:8080/tools.vitruv.framework.server/rest/"
 		localRepository.addRemoteRepository(remoteRepository)
 		newLocalRepository.addRemoteRepository(remoteRepository)
 

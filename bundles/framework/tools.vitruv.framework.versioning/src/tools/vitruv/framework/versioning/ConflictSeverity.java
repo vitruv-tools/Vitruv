@@ -1,5 +1,12 @@
 package tools.vitruv.framework.versioning;
 
+/**
+ * Enum for the different conflict severities. The values are HARD, SOFT and
+ * UNKNOWN_SEVERITY
+ * 
+ * @author Patrick Stoeckle <p.stoeckle@gmx.net>
+ *
+ */
 public enum ConflictSeverity {
 	HARD("manual"), SOFT("automatic"), UNKNOWN_SEVERITY("unknow");
 	private final String name;
@@ -9,8 +16,6 @@ public enum ConflictSeverity {
 	}
 
 	public boolean equalsName(String otherName) {
-		// (otherName == null) check is not needed because name.equals(null)
-		// returns false
 		return name.equals(otherName);
 	}
 
