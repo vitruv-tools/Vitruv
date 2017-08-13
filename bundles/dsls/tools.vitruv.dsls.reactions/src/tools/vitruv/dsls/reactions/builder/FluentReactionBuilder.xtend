@@ -146,7 +146,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 	def private argument(JvmOperation routineCallMethod, String parameterName) {
 		val parameter = routineCallMethod.parameters.findFirst[name == parameterName]
 		if (parameter === null) {
-			throw new IllegalStateException('''The routine “«routineCallMethod.simpleName»” does not accept a value called “«parameterName»”!''')
+			throw new IllegalStateException('''The reaction “«reaction.name»” does not provide a value called “«parameterName»”!''')
 		}
 		XbaseFactory.eINSTANCE.createXFeatureCall => [
 			feature = parameter
