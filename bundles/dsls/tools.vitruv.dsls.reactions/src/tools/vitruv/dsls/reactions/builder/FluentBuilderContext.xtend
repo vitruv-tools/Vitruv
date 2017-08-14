@@ -1,8 +1,8 @@
 package tools.vitruv.dsls.reactions.builder
 
+import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
-import com.google.inject.Inject
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 
 /**
