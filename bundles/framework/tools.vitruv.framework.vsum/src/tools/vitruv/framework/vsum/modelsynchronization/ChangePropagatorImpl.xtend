@@ -20,7 +20,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.description.impl.ChangeClonerImpl
-import tools.vitruv.framework.change.description.impl.PropagatedChangeImpl
+import tools.vitruv.framework.change.description.impl.PropagatedChangeWithCorrespondentImpl
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
@@ -154,6 +154,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		return returnValue
 	}
 
+	override getResolvedChange(String id) {
+		return idToResolvedChanges.get(id)
+	}
+
 	private def void startChangePropagation(VitruviusChange change) {
 		info('''Started synchronizing change: «change»''')
 		changePropagationListeners.forEach[startedChangePropagation]
@@ -280,10 +284,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 				The length of changes should be equal but there are «unresolvedTriggeredChanges.length»
 				respectively «resolvedTriggeredChanges.length»
 			''')
-		val unresolvedPropagatedChange = new PropagatedChangeImpl(uuid, unresolvedChange,
+		val unresolvedPropagatedChange = new PropagatedChangeWithCorrespondentImpl(uuid, unresolvedChange,
 			createCompositeChange(unresolvedTriggeredChanges))
-		val resolvedPropagatedChange = new PropagatedChangeImpl(uuid, resolvedChange,
+		val resolvedPropagatedChange = new PropagatedChangeWithCorrespondentImpl(uuid, resolvedChange,
 			createCompositeChange(resolvedTriggeredChanges))
+
+		unresolvedPropagatedChange.correspondent = resolvedPropagatedChange
+		resolvedPropagatedChange.correspondent = unresolvedPropagatedChange
 
 		propagatedChanges += if (isUnresolved)
 			unresolvedPropagatedChange

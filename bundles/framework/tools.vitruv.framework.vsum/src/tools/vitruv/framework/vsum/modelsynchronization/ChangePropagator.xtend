@@ -18,6 +18,8 @@ interface ChangePropagator {
 
 	def List<PropagatedChange> getUnresolvedPropagatedChanges(VURI vuri)
 
+	def PropagatedChange getResolvedChange(String id)
+
 	/**
 	 * When reapplying changes which have already an id.
 	 */

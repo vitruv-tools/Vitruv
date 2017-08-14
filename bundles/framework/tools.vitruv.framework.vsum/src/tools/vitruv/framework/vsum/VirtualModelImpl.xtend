@@ -79,6 +79,10 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		allLastPropagatedChangeId = null
 	}
 
+	override getResolvedChange(String id) {
+		changePropagator.getResolvedChange(id)
+	}
+
 	override getCorrespondenceModel() {
 		resourceRepository.correspondenceModel
 	}

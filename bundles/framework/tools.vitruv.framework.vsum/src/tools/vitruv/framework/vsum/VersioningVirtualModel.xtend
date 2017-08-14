@@ -30,6 +30,8 @@ interface VersioningVirtualModel extends InternalVirtualModel {
 
 	def void forwardChanges(List<PropagatedChange> changes)
 
+	def PropagatedChange getResolvedChange(String id)
+
 	def void setAllLastPropagatedChangeId(String id)
 
 	def void setLastPropagatedChangeId(VURI vuri, String id)
