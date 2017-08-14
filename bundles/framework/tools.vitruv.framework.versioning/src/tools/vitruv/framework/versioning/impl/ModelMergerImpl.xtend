@@ -13,8 +13,10 @@ import tools.vitruv.framework.versioning.ConflictSeverity
 import tools.vitruv.framework.versioning.ModelMerger
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import java.util.function.Consumer
+import org.apache.log4j.Logger
 
 class ModelMergerImpl implements ModelMerger {
+	static extension Logger = Logger::getLogger(ModelMergerImpl)
 	static extension URIRemapper = URIRemapper::instance
 	BranchDiff branchDiff
 	Function1<Conflict, List<EChange>> originalCallback
@@ -83,8 +85,7 @@ class ModelMergerImpl implements ModelMerger {
 		val triggeredEChangesFromSoftConflicts = softConflicts.map[triggeredDefaultSolution].flatten.toList
 
 		resultingOriginalEChanges += (conflictFreeOriginalEChanges + originalEChangesFromSoftConflicts)
-		resultingTriggeredEChanges += (conflictFreeTriggeredEChanges +
-			triggeredEChangesFromSoftConflicts)
+		resultingTriggeredEChanges += (conflictFreeTriggeredEChanges + triggeredEChangesFromSoftConflicts)
 		val conflictFunction = [ List<EChange> echanges, Function1<Conflict, List<EChange>> cb, Consumer<EChange> remap, Conflict c |
 			val propagatedChanges = cb.apply(c)
 			propagatedChanges.forEach[remap.accept(it)]
@@ -104,15 +105,22 @@ class ModelMergerImpl implements ModelMerger {
 	private def createMap(PropagatedChange myChange, PropagatedChange theirChange) {
 		val sourceVURI = myChange.originalChange.URI
 		val newSourceVURI = theirChange.originalChange.URI
-
-		val Map<String, String> rootToRootMap = newHashMap
-		rootToRootMap.put(sourceVURI.EMFUri.toFileString, newSourceVURI.EMFUri.toFileString)
-		if (null !== myChange.consequentialChanges.URI) {
-			val targetVURI = myChange.consequentialChanges.URI
-			val newTargetVURI = theirChange.consequentialChanges.URI
-			rootToRootMap.put(targetVURI.EMFUri.toFileString, newTargetVURI.EMFUri.toFileString)
+		if (sourceVURI.EMFUri.fileExtension == newSourceVURI.EMFUri.fileExtension) {
+			val Map<String, String> rootToRootMap = newHashMap
+			rootToRootMap.put(sourceVURI.EMFUri.toFileString, newSourceVURI.EMFUri.toFileString)
+			if (null !== myChange.consequentialChanges.URI) {
+				val targetVURI = myChange.consequentialChanges.URI
+				val newTargetVURI = theirChange.consequentialChanges.URI
+				rootToRootMap.put(targetVURI.EMFUri.toFileString, newTargetVURI.EMFUri.toFileString)
+			}
+			conflictDetector.addMap(rootToRootMap)
+		} else {
+			warn('''
+				MyVURI: «sourceVURI», 
+				TheirVURI: «newSourceVURI»
+				are not on the same side on the model!
+			''')
 		}
-		conflictDetector.addMap(rootToRootMap)
 	}
 
 }

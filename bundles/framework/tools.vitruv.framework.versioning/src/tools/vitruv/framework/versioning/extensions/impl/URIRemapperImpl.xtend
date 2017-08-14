@@ -11,6 +11,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import org.apache.log4j.Logger
+import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 class URIRemapperImpl implements URIRemapper {
 	static extension Logger = Logger::getLogger(URIRemapperImpl)
@@ -21,28 +22,33 @@ class URIRemapperImpl implements URIRemapper {
 
 	private static dispatch def processEchange(
 		EChange e,
-		Consumer<EObject> cb
+		Consumer<EObject> cb,
+		Function1<String, String> newValueCallback
 	) {
 		throw new UnsupportedOperationException('''EChange «e» with class «e.class.simpleName» was not handled yet''')
 	}
 
 	private static dispatch def processEchange(
-		ReplaceSingleValuedEAttribute<?, ?> e,
-		Consumer<EObject> cb
+		ReplaceSingleValuedEAttribute<?, String> e,
+		Consumer<EObject> cb,
+		Function1<String, String> newValueCallback
 	) {
 		cb.accept(e.affectedEObject)
+		e.newValue = newValueCallback.apply(e.newValue)
 	}
 
 	private static dispatch def processEchange(
 		CreateAndInsertRoot<?> e,
-		Consumer<EObject> cb
+		Consumer<EObject> cb,
+		Function1<String, String> newValueCallback
 	) {
 		// PS Do nothing, but prevent UnsupportedOperationException to be thrown 
 	}
 
 	private static dispatch def processEchange(
 		CreateAndInsertNonRoot<?, ?> e,
-		Consumer<EObject> cb
+		Consumer<EObject> cb,
+		Function1<String, String> newValueCallback
 	) {
 		cb.accept(e.insertChange.affectedEObject)
 	}
@@ -97,26 +103,57 @@ class URIRemapperImpl implements URIRemapper {
 	}
 
 	override createRemapFunction(String from, String to) {
-		return tools.vitruv.framework.versioning.extensions.impl.URIRemapperImpl.REMAP_URI_String.curry(from).curry(to)
+		return REMAP_URI_String.curry(from).curry(to)
 	}
+
+	private static def Function1<String, String> createMyNameRemapFunction(VURI from, VURI to) {
+		if (null === from || null === to)
+			return []
+		val fromVURIString = from.EMFUri.toString
+		val toVURIString = to.EMFUri.toString
+		return createMyNameRemapFunction(fromVURIString, toVURIString)
+	}
+
+	private static def getNameExtracted(String pathWithName) {
+		val segments = pathWithName.split("/")
+		val file = segments.last
+		val nameSegments = file.split("\\.")
+		val nameWithoutSuffix = nameSegments.get(0)
+		return nameWithoutSuffix
+	}
+
+	private static def Function1<String, String> createMyNameRemapFunction(String from, String to) {
+		val name1 = from.nameExtracted
+		val name2 = to.nameExtracted
+		return REMAP_ROOT_VALUE.curry(name1).curry(name2)
+	}
+
+	public static val REMAP_ROOT_VALUE = [ String from, String to, String toApply |
+		if (toApply.contains(from))
+			toApply.replace(from, to)
+		else
+			toApply
+	]
 
 	override createEChangeRemapFunction(String from, String to) {
 		val remapMyUriFunction = createRemapFunction(from, to)
+		val remapMyNameFunction = createMyNameRemapFunction(from, to)
 		return [ EChange e |
 			if (e instanceof CreateAndInsertRoot<?>)
 				remapCreateAndInsertRootUri(e, from, to)
 			else
-				processEchange(e, remapMyUriFunction)
+				processEchange(e, remapMyUriFunction, remapMyNameFunction)
 		]
 	}
 
 	override createEChangeRemapFunction(VURI from, VURI to) {
 		val remapTheirUriFunction = createRemapFunction(from, to)
+		val remapMyNameFunction = createMyNameRemapFunction(from, to)
 		return [ EChange e |
 			if (e instanceof CreateAndInsertRoot<?>)
 				remapCreateAndInsertRootUri(e, from, to)
 			else
-				processEchange(e, remapTheirUriFunction)
+				processEchange(e, remapTheirUriFunction, remapMyNameFunction)
 		]
 	}
 
