@@ -35,7 +35,7 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 
 	def formatStatic(ReactionsSegment segment, extension IFormattableDocument document) {
 		segment.regionFor.keyword('in reaction to changes in').prepend [newLine]
-		segment.regionFor.keyword('execute actions in').prepend [newLine]
+		segment.regionFor.keyword('execute').prepend [newLine]
 		segment.reactions.forEach [formatStatic(document)]
 		segment.routines.forEach [formatStatic(document)]
 	}
