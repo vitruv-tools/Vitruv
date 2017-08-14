@@ -103,6 +103,14 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		changePropagator.addChangePropagationListener(changePropagationListener)
 	}
 
+	override propagateChange(VURI vuri, VitruviusChange change, String changeId) {
+		changePropagator.propagateChange(vuri, change, changeId)
+	}
+
+	override propagateChange(VitruviusChange change, String changeId) {
+		changePropagator.propagateChange(null, change, changeId)
+	}
+
 	override propagateChange(VitruviusChange change) {
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		return changePropagator.propagateChange(change)
@@ -181,15 +189,15 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		changePropagator.allUnresolvedPropagatedChanges
 	}
 
-	override propagateChange(VitruviusChange change, String changeId) {
-		changePropagator.propagateChange(change, changeId)
-	}
-
 	override getUserInteractionsSinceLastCommit() {
 		if (null === lastCommitDate)
-			userInteractor.getAllUserInteractions
+			userInteractor.allUserInteractions
 		else
 			userInteractor.getAllUserInteractionsSince(lastCommitDate)
+	}
+
+	override getUserInteractionsSinceLastCommit(VURI vuri) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	override setAllLastPropagatedChangeId(String id) {

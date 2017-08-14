@@ -86,8 +86,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 		level = Level::DEBUG
 		val List<Conflict> naiveConflicts = new ArrayList
 		val graph1 = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
-		val graph2 = createDependencyGraphFromChangeMatches(branchDiff.
-			compareChanges)
+		val graph2 = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
 		val getEChanges = [ Function1<Iterable<PropagatedChange>, Iterable<VitruviusChange>> toEChange, Iterable<PropagatedChange> changeIt |
 			toEChange.apply(changeIt).map[EChanges].flatten
 		]
@@ -156,8 +155,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val myOriginalEChangesWithoutConflict = myOriginalEChanges.filter[myIsNotConflicting.apply(it)].toList
 		val myTriggeredEChangesWithouConflict = myTriggeredEChanges.filter[myIsNotConflicting.apply(it)].toList
 		val theirOriginalEChangesWithoutConflict = theirOriginalEChanges.filter[theirIsNotConflicting.apply(it)].toList
-		val theirTriggeredEChangesWithouConflict = theirTriggeredEChanges.filter[theirIsNotConflicting.apply(it)].
-			toList
+		val theirTriggeredEChangesWithouConflict = theirTriggeredEChanges.filter[theirIsNotConflicting.apply(it)].toList
 
 		val myOriginalEChangesToAdd = newArrayList
 		val myTriggeredEChangesToAdd = newArrayList
@@ -217,7 +215,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 	}
 
 	override addMap(Map<String, String> rootToRootMap) {
-		rootToRootMap.entrySet.map[new Pair(key, value)].forEach[addPair]
+		rootToRootMap.entrySet.map[key -> value].forEach[addPair]
 	}
 
 	private def processConflict(EChange e1, EChange e2, List<Conflict> currentConflicts) {
@@ -235,8 +233,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 		if (leave1.breadthFirstIterator.size == 1 && leave2.breadthFirstIterator.size == 1) {
 			val conflict = new SimpleChangeConflictImpl(type, solvability, myVURI, theirVURI, #[], #[], e1, e2)
 
-			currentConflicts +=
-				conflict
+			currentConflicts += conflict
 		} else {
 			val myEchanges = newArrayList
 			val myTriggeredEChanges = newArrayList

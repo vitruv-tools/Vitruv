@@ -79,9 +79,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			changePropagationListeners -= propagationListener
 	}
 
-	override propagateChange(VitruviusChange change, String changeId) {
-		if (vuriToIds.values.parallelStream.anyMatch[it == changeId])
-			throw new IllegalStateException
+	override propagateChange(VURI vuri, VitruviusChange change, String changeId) {
+		if (null === vuri && vuriToIds.values.parallelStream.anyMatch[it == changeId])
+			throw new IllegalStateException(''' «changeId»''')
+		else if (vuriToIds.get(vuri).parallelStream.anyMatch[it == changeId])
+			throw new IllegalStateException(''' «changeId»''')
 		currentChangeId = changeId
 		propagateChange(change)
 	}

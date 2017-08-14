@@ -10,6 +10,8 @@ interface VersioningVirtualModel extends InternalVirtualModel {
 
 	def List<Integer> getUserInteractionsSinceLastCommit()
 
+	def List<Integer> getUserInteractionsSinceLastCommit(VURI vuri)
+
 	def List<PropagatedChange> getAllResolvedPropagatedChanges()
 
 	def List<PropagatedChange> getAllUnresolvedPropagatedChanges()
@@ -23,6 +25,8 @@ interface VersioningVirtualModel extends InternalVirtualModel {
 	def List<PropagatedChange> getUnresolvedPropagatedChangesSinceLastCommit(VURI vuri)
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change, String changeId)
+
+	def List<PropagatedChange> propagateChange(VURI vuri, VitruviusChange change, String changeId)
 
 	def void forwardChanges(List<PropagatedChange> changes)
 

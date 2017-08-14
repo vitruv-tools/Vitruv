@@ -37,6 +37,8 @@ interface LocalRepository<T> extends AbstractRepository {
 
 	def SimpleCommit commit(String s)
 
+	def SimpleCommit commit(String s, VURI vuri)
+
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel)
 
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel, VURI vuri)
@@ -50,6 +52,8 @@ interface LocalRepository<T> extends AbstractRepository {
 	def void addRemoteRepository(T remoteRepository)
 
 	def void checkout()
+
+	def void checkout(VURI vuri)
 
 	def void checkout(VersioningVirtualModel virtualModel)
 

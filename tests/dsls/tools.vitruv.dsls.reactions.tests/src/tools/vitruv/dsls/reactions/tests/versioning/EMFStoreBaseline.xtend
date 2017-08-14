@@ -350,11 +350,14 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 
 		val commit = localRepository.commit("My message", virtualModel, sourceVURI)
 		assertThat(commit.changes, hasSize(3))
-		localRepository.checkout(virtualModel, newSourceVURI)
-		val leagueCopy = virtualModel.getModelInstance(newSourceVURI).firstRootEObject as League
+		assertThat(localRepository.push, is(PushState::SUCCESS))
+
+		newLocalRepository.pull
+		newLocalRepository.checkout(newSourceVURI)
+
+		val leagueCopy = newLocalRepository.virtualModel.getModelInstance(newSourceVURI).firstRootEObject as League
 		assertThat(league1.name, equalTo(leagueCopy.name))
 		assertThat(league1.players, hasSize(leagueCopy.players.size))
-
 		league1.players.forEach [ p1 |
 			assertThat(leagueCopy.players.exists[p2|EcoreUtil::equals(p1, p2)], is(true))
 		]
@@ -363,10 +366,6 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	@Test
 	def void emfStoreMergingExample() {
 		emfHelloWorldExample
-
-		val pushCommit1 = localRepository.push
-		assertThat(pushCommit1, is(PushState::SUCCESS))
-		newLocalRepository.pull
 
 		assertThat(localRepository.commits.length, is(newLocalRepository.commits.length))
 		assertThat(localRepository.commits, hasSize(2))
@@ -377,10 +376,10 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		val myCommit = localRepository.commit("Commit1", virtualModel, sourceVURI)
 		assertThat(myCommit.changes, hasSize(1))
 		assertThat(localRepository.commits, hasSize(3))
-		localRepository.push
+		assertThat(localRepository.push, is(PushState::SUCCESS))
 
-		newLocalRepository.checkout(virtualModel, newSourceVURI)
-		val modelInstance = virtualModel.getModelInstance(newSourceVURI)
+		newLocalRepository.checkout(newSourceVURI)
+		val modelInstance = newLocalRepository.virtualModel.getModelInstance(newSourceVURI)
 
 		val newLeague1 = modelInstance.resource.contents.get(0) as League
 		modelInstance.resource.save(#{})

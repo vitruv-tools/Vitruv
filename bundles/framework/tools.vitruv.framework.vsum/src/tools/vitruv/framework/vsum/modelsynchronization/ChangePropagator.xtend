@@ -21,7 +21,7 @@ interface ChangePropagator {
 	/**
 	 * When reapplying changes which have already an id.
 	 */
-	def List<PropagatedChange> propagateChange(VitruviusChange change, String changeId)
+	def List<PropagatedChange> propagateChange(VURI vuri, VitruviusChange change, String changeId)
 
 	/**
 	 * Resort changes and igores undos/redos.

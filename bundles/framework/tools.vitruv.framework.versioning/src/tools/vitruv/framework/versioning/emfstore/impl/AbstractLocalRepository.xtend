@@ -31,6 +31,7 @@ import tools.vitruv.framework.versioning.branch.RemoteBranch
 import tools.vitruv.framework.versioning.common.commit.Commit
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.tests.TestUserInteractor
+import java.util.function.Consumer
 
 abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements LocalRepository<T> {
 	static extension BranchDiffCreator = BranchDiffCreator::instance
@@ -85,34 +86,36 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		addCommit(c, currentBranch)
 	}
 
-	override commit(String s) {
-		commit(s, virtualModel)
+	override commit(String s) { commit(s, virtualModel) }
+
+	override commit(String s, VURI vuri) {
+		if (null === vuri)
+			throw new IllegalStateException("VURI must not be null!")
+		commit(s, virtualModel, vuri)
 	}
 
 	override commit(String s, VersioningVirtualModel currentVirtualModel) {
-		val changeMatches = currentVirtualModel.allUnresolvedPropagatedChangesSinceLastCommit.immutableCopy
-		if (changeMatches.empty)
-			throw new IllegalStateException('''No changes since last commit''')
-		val userInteractions = currentVirtualModel.userInteractionsSinceLastCommit
-		val commit = commit(s, changeMatches, userInteractions)
-		val lastChangeId = changeMatches.last.id
-		currentVirtualModel.allLastPropagatedChangeId = lastChangeId
-		return commit
+		commit(s, currentVirtualModel, null)
 	}
 
 	override commit(String s, VersioningVirtualModel currentVirtualModel, VURI vuri) {
-		val changeMatches = currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri).immutableCopy
+		val changeMatches = if (null === vuri)
+				currentVirtualModel.allUnresolvedPropagatedChangesSinceLastCommit.immutableCopy
+			else
+				currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri).immutableCopy
 		if (changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
 		val userInteractions = currentVirtualModel.userInteractionsSinceLastCommit
 		val commit = commit(s, changeMatches, userInteractions)
 		val lastChangeId = changeMatches.last.id
-		currentVirtualModel.setLastPropagatedChangeId(vuri, lastChangeId)
+		if (null === vuri)
+			currentVirtualModel.allLastPropagatedChangeId = lastChangeId
+		else
+			currentVirtualModel.setLastPropagatedChangeId(vuri, lastChangeId)
 		return commit
 	}
 
 	private def commit(String s, List<PropagatedChange> changes, List<Integer> userInteractions) {
-		warn("Please use commit(String s, VersioningVirtualModel virtualModel, VURI vuri)")
 		val lastCommit = commits.last
 		val commit = createSimpleCommit(
 			changes,
@@ -127,68 +130,87 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		return commit
 	}
 
+	override checkout(VURI vuri) {
+		checkout(virtualModel, vuri)
+	}
+
 	override checkout() {
 		checkout(virtualModel)
 	}
 
-	protected def List<Commit> getRelevantCommits() {
-		val returnValue = if (lastCommitCheckedOut.containsKey(currentBranch)) {
-				val lastCommitId = lastCommitCheckedOut.get(currentBranch)
-				commits.dropWhile[identifier !== lastCommitId].drop(1).toList.immutableCopy
-			} else {
-				commits
-			}
-		return returnValue
+	override checkout(VersioningVirtualModel currentVirtualModel) {
+		checkout(currentVirtualModel, null)
 	}
 
-	override checkout(VersioningVirtualModel currentVirtualModel) {
+	private def calculateChangeMatches() {
 		val currentRelevantCommits = relevantCommits
 		if (currentRelevantCommits.empty) {
 			info('''No new commits to checkout!''')
-			return
+			return #[]
 		}
 		val changeMatches = currentRelevantCommits.map[changes].flatten
 		if (changeMatches.empty) {
 			info('''«currentRelevantCommits» has/have no new changes to apply''')
-			return
+			return #[]
 		}
-		val originalChanges = changeMatches.map[id -> originalChange].toList.immutableCopy
-		val newChanges = originalChanges.map [
-			val eChanges = value.EChanges.map[cloneEChange(it)].toList.immutableCopy
-			val newChange = createEMFModelChangeFromEChanges(eChanges)
-			return key -> newChange
-		].toList.immutableCopy
-		val userInteractions = relevantCommits.map[userInteractions].flatten.toList
-		val userInteractor = currentVirtualModel.userInteractor as TestUserInteractor
-		userInteractor.addNextSelections(userInteractions)
-		newChanges.forEach [
-			currentVirtualModel.propagateChange(value, key)
-		]
-		val newChangeMatches = currentVirtualModel.allUnresolvedPropagatedChanges
-		val oldLastChangeId = changeMatches.last.id
-		val newLastChangeId = newChangeMatches.last.id
-		XtendAssertHelper::assertTrue(oldLastChangeId == newLastChangeId)
-		currentVirtualModel.allLastPropagatedChangeId = newLastChangeId
-		lastCommitCheckedOut.put(currentBranch, currentRelevantCommits.last.identifier)
+		return changeMatches
+
+	}
+
+	private def Consumer<EChange> calculateMapFunction(VURI myVURI, VURI vuri) {
+		if (null === vuri)
+			return []
+		return createEChangeRemapFunction(myVURI, vuri)
 	}
 
 	override checkout(VersioningVirtualModel currentVirtualModel, VURI vuri) {
-		val changeMatches = commits.map[changes].flatten
-		val originalChanges = changeMatches.map[originalChange].toList.immutableCopy
-		val myVURI = originalChanges.get(0).URI
-		val processTargetEChange = createEChangeRemapFunction(myVURI, vuri)
+		val changeMatches = calculateChangeMatches
+		val originalChanges = changeMatches.map[id -> originalChange].toList.immutableCopy
+		if (originalChanges.empty) {
+			info("Nothing to checkout")
+			return
+		}
+		val myVURI = originalChanges.get(0).value.URI
+		val processTargetEChange = calculateMapFunction(myVURI, vuri)
+
+		// PS Create a list with the id of the change and a new change with the adjusted 
+		// VURI.
 		val newChanges = originalChanges.map [
-			val eChanges = EChanges.map[cloneEChange(it)].toList.immutableCopy
+			val eChanges = value.EChanges.map[cloneEChange(it)].toList.immutableCopy
 			eChanges.forEach[processTargetEChange.accept(it)]
 			val newChange = createEMFModelChangeFromEChanges(eChanges)
-			return newChange
+			return key -> newChange
 		].toList.immutableCopy
-		newChanges.forEach [
-			currentVirtualModel.propagateChange(it)
-		]
-		val newChangeMatches = currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
-		val lastChangeId = newChangeMatches.last.id
-		currentVirtualModel.setLastPropagatedChangeId(vuri, lastChangeId)
+
+		// PS Get user interactions from commits and give them to the 
+		// virtual model.  
+		val userInteractions = relevantCommits.map[userInteractions].flatten.toList
+		val userInteractor = currentVirtualModel.userInteractor as TestUserInteractor
+		userInteractor.addNextSelections(userInteractions)
+
+		// PS Propagate changes,
+		if (vuri === null)
+			newChanges.forEach[currentVirtualModel.propagateChange(value, key)]
+		else
+			newChanges.forEach[currentVirtualModel.propagateChange(vuri, value, key)]
+
+		// PS Test, if the identifiers remain the same,
+		val newChangeMatches = if (null === vuri)
+				currentVirtualModel.allUnresolvedPropagatedChanges
+			else
+				currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
+		val oldLastChangeId = changeMatches.last.id
+		val newLastChangeId = newChangeMatches.last.id
+		XtendAssertHelper::assertTrue(oldLastChangeId == newLastChangeId)
+
+		// PS Set the last propagate change ID.
+		if (null === vuri)
+			currentVirtualModel.allLastPropagatedChangeId = newLastChangeId
+		else
+			currentVirtualModel.setLastPropagatedChangeId(vuri, newLastChangeId)
+		val lastCommitId = relevantCommits.last.identifier
+		lastCommitCheckedOut.put(currentBranch, lastCommitId)
+
 	}
 
 	override push() {
@@ -277,6 +299,16 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		targetCommitsToCompare.forEach[reapplyCommit(it, target)]
 		addCommit(mergeCommit, target)
 		return mergeCommit
+	}
+
+	protected def List<Commit> getRelevantCommits() {
+		val returnValue = if (lastCommitCheckedOut.containsKey(currentBranch)) {
+				val lastCommitId = lastCommitCheckedOut.get(currentBranch)
+				commits.dropWhile[identifier !== lastCommitId].drop(1).toList.immutableCopy
+			} else {
+				commits
+			}
+		return returnValue
 	}
 
 	private def void reapplyCommit(Commit c, Branch branch) {
