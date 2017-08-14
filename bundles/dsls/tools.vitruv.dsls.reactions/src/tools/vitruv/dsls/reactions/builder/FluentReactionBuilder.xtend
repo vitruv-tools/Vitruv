@@ -1,28 +1,26 @@
 package tools.vitruv.dsls.reactions.builder
 
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
-import org.eclipse.emf.ecore.EClass
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.function.Consumer
-import static com.google.common.base.Preconditions.*
 import java.util.ArrayList
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
-import org.eclipse.xtext.xbase.XbaseFactory
+import java.util.function.Consumer
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
+import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+
+import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 
-@Accessors(PACKAGE_GETTER)
-class FluentReactionBuilder extends FluentReactionSegmentChildBuilder {
+class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 	var Reaction reaction
 	var anonymousRoutineCounter = 0
 	var EClass valueType
 	var EClass affectedElementType
-	var extension FluentReactionsLanguageBuilder x
 
 	package new(String reactionName, FluentBuilderContext context) {
 		super(context)
@@ -34,7 +32,7 @@ class FluentReactionBuilder extends FluentReactionSegmentChildBuilder {
 	def package start() {
 		return new TriggerBuilder(this)
 	}
-	
+
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
 		checkState(reaction.trigger !== null, '''No trigger was set on the «this»!''')
@@ -96,14 +94,15 @@ class FluentReactionBuilder extends FluentReactionSegmentChildBuilder {
 				readyToBeAttached, '''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
 			checkState((!routineBuilder.requireNewValue && !routineBuilder.requireOldValue) || valueType !==
 				null, '''The «routineBuilder» requires a model value type, but the «builder» doesn’t have one!''')
-			builder.mustBeInSameSegmentAs(routineBuilder)
+			builder.transferReactionsSegmentTo(routineBuilder)
 			reaction.callRoutine = ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall => [
 				code = (XbaseFactory.eINSTANCE.createXFeatureCall => [
 					explicitOperationCall = true
 				]).whenJvmTypes [
 					val routineCallMethod = routineCallMethod
 					feature = routineBuilder.jvmOperation
-					implicitReceiver = routineCallMethod.argument(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
+					implicitReceiver = routineCallMethod.argument(
+						REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
 					featureCallArguments += routineBuilder.requiredArgumentsFrom(routineCallMethod)
 				]
 			]
@@ -129,7 +128,7 @@ class FluentReactionBuilder extends FluentReactionSegmentChildBuilder {
 				routineInitializer)
 		}
 	}
-	
+
 	def private requiredArgumentsFrom(FluentRoutineBuilder routineBuilder, JvmOperation routineCallMethod) {
 		val parameterList = new ArrayList<XExpression>(2)
 		if (routineBuilder.requireNewValue) {
@@ -143,24 +142,24 @@ class FluentReactionBuilder extends FluentReactionSegmentChildBuilder {
 		}
 		return parameterList
 	}
-	
+
 	def private argument(JvmOperation routineCallMethod, String parameterName) {
-		val parameter = routineCallMethod.parameters.findFirst [name == parameterName]
+		val parameter = routineCallMethod.parameters.findFirst[name == parameterName]
 		if (parameter === null) {
-			throw new IllegalStateException('''The routine “«routineCallMethod.simpleName»” does not accept a value called “«parameterName»”!''')
+			throw new IllegalStateException('''The reaction “«reaction.name»” does not provide a value called “«parameterName»”!''')
 		}
 		XbaseFactory.eINSTANCE.createXFeatureCall => [
 			feature = parameter
 		]
 	}
-	
+
 	def private getRoutineCallMethod() {
 		val routineCallMethod = context.jvmModelAssociator.getPrimaryJvmElement(reaction.callRoutine.code)
 		if (routineCallMethod instanceof JvmOperation) {
 			return routineCallMethod
 		}
 		throw new IllegalStateException('''Could not find the routine call method corresponding to the routine call of the reaction “«reaction.name»”''')
-	} 
+	}
 
 	def package getReaction() {
 		reaction
