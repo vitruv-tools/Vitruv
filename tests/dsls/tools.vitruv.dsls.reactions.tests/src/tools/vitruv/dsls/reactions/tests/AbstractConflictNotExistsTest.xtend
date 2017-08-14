@@ -1,7 +1,5 @@
 package tools.vitruv.dsls.reactions.tests
 
-import allElementTypes.AllElementTypesFactory
-import tools.vitruv.framework.versioning.BranchDiffCreator
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
@@ -9,13 +7,13 @@ abstract class AbstractConflictNotExistsTest extends AbstractConflictTest {
 	override setup() {
 		super.setup
 
-		val container1 = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		val container1 = createNonRootObjectContainerHelper
 		container1.id = containerId
 		rootElement.nonRootObjectContainerHelper = container1
 
 		checkChangeMatchesLength(2, 1)
 
-		val container2 = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		val container2 = createNonRootObjectContainerHelper
 		container2.id = containerId
 		rootElement2.nonRootObjectContainerHelper = container2
 
@@ -29,7 +27,7 @@ abstract class AbstractConflictNotExistsTest extends AbstractConflictTest {
 		checkChangeMatchesLength(5, 5)
 
 		assertModelsEqual
-//		assertMappedModelsAreEqual
+		// assertMappedModelsAreEqual
 		val sourceChanges = virtualModel.getChangeMatches(sourceVURI)
 		val targetChanges = virtualModel.getChangeMatches(newSourceVURI)
 		sourceChanges.forEach [
@@ -37,7 +35,7 @@ abstract class AbstractConflictNotExistsTest extends AbstractConflictTest {
 				assertThat(e.resolved, is(false))
 			]
 		]
-		branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
+		branchDiff = createVersionDiff(sourceChanges, targetChanges)
 		conflictDetector.init(branchDiff)
 		conflictDetector.compute
 		conflicts = conflictDetector.conflicts

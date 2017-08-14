@@ -1,12 +1,15 @@
 package tools.vitruv.dsls.reactions.tests
 
-import allElementTypes.AllElementTypesFactory
-import allElementTypes.NonRootObjectContainerHelper
-import allElementTypes.Root
-import com.google.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
 import org.junit.runner.RunWith
+
+import com.google.inject.Inject
+
+import allElementTypes.AllElementTypesFactory
+import allElementTypes.NonRootObjectContainerHelper
+import allElementTypes.Root
+
 import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangeReactionsCompiler
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.extensions.URIRemapper
@@ -14,24 +17,24 @@ import tools.vitruv.framework.versioning.extensions.URIRemapper
 @RunWith(XtextRunner)
 @InjectWith(ReactionsLanguageInjectorProvider)
 abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTests {
-
 	protected static extension AllElementTypesFactory = AllElementTypesFactory::eINSTANCE
 	protected static extension URIRemapper = URIRemapper::instance
+
+	protected static val NON_CONTAINMENT_NON_ROOT_IDS = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
 	protected static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource"
 	protected static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget"
-	protected static val NON_CONTAINMENT_NON_ROOT_IDS = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
 
 	protected static final def void createAndAddNonRoot(String id, NonRootObjectContainerHelper container) {
-		val nonRoot = AllElementTypesFactory::eINSTANCE.createNonRoot
+		val nonRoot = createNonRoot
 		nonRoot.id = id
-		container.nonRootObjectsContainment.add(nonRoot)
+		container.nonRootObjectsContainment += nonRoot
 	}
 
 	@Inject
 	SimpleChangeReactionsCompiler reactionCompiler
 
 	protected override setup() {
-		// Create model 
+		// Create model
 		val root = createRoot
 		root.id = TEST_SOURCE_MODEL_NAME
 		TEST_SOURCE_MODEL_NAME.projectModelPath.createAndSynchronizeModel(root)
@@ -41,7 +44,7 @@ abstract class AbstractVersioningTest extends AbstractAllElementTypesReactionsTe
 		// Do nothing
 	}
 
-	override protected createChangePropagationSpecifications() {
+	override createChangePropagationSpecifications() {
 		#[reactionCompiler.newConcreteChangePropagationSpecification]
 	}
 

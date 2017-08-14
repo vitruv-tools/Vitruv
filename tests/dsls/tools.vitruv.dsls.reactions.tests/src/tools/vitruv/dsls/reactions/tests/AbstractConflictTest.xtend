@@ -1,17 +1,21 @@
 package tools.vitruv.dsls.reactions.tests
 
-import allElementTypes.AllElementTypesFactory
-import allElementTypes.Root
 import java.util.Collection
 import java.util.List
 import java.util.Map
+
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+
 import org.graphstream.graph.Graph
+
+import allElementTypes.Root
+
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.BranchDiff
+import tools.vitruv.framework.versioning.BranchDiffCreator
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DependencyGraphCreator
@@ -23,9 +27,23 @@ import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.not
+import static org.hamcrest.CoreMatchers.notNullValue
+
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize
+
 import static org.junit.Assert.assertThat
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
+	protected static extension DependencyGraphCreator = DependencyGraphCreator::instance
+	protected static extension GraphExtension = GraphExtension::instance
+	protected static extension VirtualModelExtension = VirtualModelExtension::instance
+	protected static extension BranchDiffCreator = BranchDiffCreator::instance
+
+	protected static val containerId = "NonRootObjectContainer"
+	protected static val newTestSourceModelName = "Further_Source_Test_Model"
+	protected static val newTestTargetModelName = "Further_Target_Test_Model"
+
 	protected BranchDiff branchDiff
 	protected Collection<Root> roots
 	protected ConflictDetector conflictDetector = ConflictDetector::createConflictDetector
@@ -41,19 +59,13 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected VURI newTargetVURI
 	protected VURI sourceVURI
 	protected VURI targetVURI
-	protected static extension DependencyGraphCreator = DependencyGraphCreator::instance
-	protected static extension GraphExtension = GraphExtension::instance
-	protected static extension VirtualModelExtension = VirtualModelExtension::instance
-	protected static val containerId = "NonRootObjectContainer"
-	protected static val newTestSourceModelName = "Further_Source_Test_Model"
-	protected static val newTestTargetModelName = "Further_Target_Test_Model"
 
 	override setup() {
 		super.setup
 		sourceVURI = VURI::getInstance(rootElement.eResource)
 		targetVURI = sourceVURI.createVURIByReplacing(TEST_SOURCE_MODEL_NAME, TEST_TARGET_MODEL_NAME)
 
-		rootElement2 = AllElementTypesFactory::eINSTANCE.createRoot
+		rootElement2 = createRoot
 		roots = #[rootElement, rootElement2]
 		rootElement2.id = newTestSourceModelName
 		newTestSourceModelName.projectModelPath.createAndSynchronizeModel(rootElement2)
@@ -75,8 +87,8 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 
 		val sourcePropagatedChanges = virtualModel.getResolvedPropagatedChanges(sourceVURI)
 		val newSourcepropagatedChanges = virtualModel.getResolvedPropagatedChanges(newSourceVURI)
-		assertThat(sourcePropagatedChanges.length, is(1))
-		assertThat(newSourcepropagatedChanges.length, is(1))
+		assertThat(sourcePropagatedChanges, hasSize(1))
+		assertThat(newSourcepropagatedChanges, hasSize(1))
 	}
 
 	override unresolveChanges() {
@@ -85,8 +97,8 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 
 	protected def checkChangeMatchesLength(int l1, int l2) {
 		roots.forEach[saveAndSynchronizeChanges]
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(l1))
-		assertThat(virtualModel.getChangeMatches(newSourceVURI).length, is(l2))
+		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(l1))
+		assertThat(virtualModel.getChangeMatches(newSourceVURI), hasSize(l2))
 	}
 
 	protected final def assertMappedModelsAreEqual() {
@@ -100,10 +112,10 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 		val firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet) as Root
 		val secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet) as Root
 
-		assertThat(firstRoot.eContents.length, is(secondRoot.eContents.length))
+		assertThat(firstRoot.eContents, hasSize(secondRoot.eContents.length))
 		firstRoot.eContents.forEach [ firstElement |
 			val element = secondRoot.eContents.findFirst[EcoreUtil::equals(it, firstElement)]
-			assertThat(element, not(equalTo(null)))
+			assertThat(element, notNullValue)
 		]
 		val id = firstRoot.id
 		if (modelPairs.containsKey(id)) {
@@ -126,10 +138,10 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 		val firstContainer = firstRoot.nonRootObjectContainerHelper
 		val secondContainer = secondRoot.nonRootObjectContainerHelper
 		assertThat(firstContainer.id, equalTo(secondContainer.id))
-		assertThat(firstContainer.nonRootObjectsContainment.size, is(secondContainer.nonRootObjectsContainment.size))
+		assertThat(firstContainer.nonRootObjectsContainment, hasSize(secondContainer.nonRootObjectsContainment.size))
 		val unmatchedElements = firstContainer.nonRootObjectsContainment.filter [ nonRoot1 |
 			secondContainer.nonRootObjectsContainment.forall[!EcoreUtil::equals(it, nonRoot1)]
 		]
-		assertThat(unmatchedElements.size, is(1))
+		assertThat(unmatchedElements, iterableWithSize(1))
 	}
 }

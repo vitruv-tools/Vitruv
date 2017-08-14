@@ -1,22 +1,18 @@
 package tools.vitruv.dsls.reactions.tests
 
-import tools.vitruv.dsls.reactions.tests.AbstractConflictTest
-import allElementTypes.AllElementTypesFactory
-import tools.vitruv.framework.versioning.BranchDiffCreator
-
 class AbstractMyAdditionalElementTest extends AbstractConflictTest {
 	protected static val myAdditionialID = "addId"
 
 	override setup() {
 		super.setup
 
-		val container1 = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		val container1 = createNonRootObjectContainerHelper
 		container1.id = containerId
 		rootElement.nonRootObjectContainerHelper = container1
 
 		checkChangeMatchesLength(2, 1)
 
-		val container2 = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
+		val container2 = createNonRootObjectContainerHelper
 		container2.id = containerId
 		rootElement2.nonRootObjectContainerHelper = container2
 
@@ -33,7 +29,7 @@ class AbstractMyAdditionalElementTest extends AbstractConflictTest {
 		assertModelsEqual
 		val sourceChanges = virtualModel.getChangeMatches(sourceVURI)
 		val targetChanges = virtualModel.getChangeMatches(newSourceVURI)
-		branchDiff = BranchDiffCreator::instance.createVersionDiff(sourceChanges, targetChanges)
+		branchDiff = createVersionDiff(sourceChanges, targetChanges)
 
 		conflictDetector.init(branchDiff)
 		conflictDetector.compute
