@@ -33,7 +33,11 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore	{@code true} if the model is in state before the change,
 	 * 						{@code false} if the model is in state after.
 	 */
-	def package static boolean resolveEChange(EChange change, ResourceSet resourceSet, boolean resolveBefore) {
+	def package static boolean resolveEChange(
+		EChange change,
+		ResourceSet resourceSet,
+		boolean resolveBefore
+	) {
 		if (resourceSet === null) {
 			return false
 		}
@@ -49,7 +53,10 @@ class AtomicEChangeResolver {
 	 * 						{@code false} if the model is in state after.
 	 */
 	def private static <A extends EObject, F extends EStructuralFeature> boolean resolveFeatureEChange(
-		FeatureEChange<A, F> change, ResourceSet resourceSet, boolean resolveBefore) {
+		FeatureEChange<A, F> change,
+		ResourceSet resourceSet,
+		boolean resolveBefore
+	) {
 		if (change.affectedEObject === null || !resolveEChange(change, resourceSet, true)) {
 			return false
 		}
@@ -74,14 +81,19 @@ class AtomicEChangeResolver {
 	 * 						Doesn't affect single valued references.
 	 * @return				The resolved EObject. If the value could not be resolved, the original value.
 	 */
-	def private static <A extends EObject, T extends EObject> EObject resolveReferenceValue(UpdateReferenceEChange<A> change, T value,
-		ResourceSet resourceSet, boolean isInserted, int index) {
+	def private static <A extends EObject, T extends EObject> EObject resolveReferenceValue(
+		UpdateReferenceEChange<A> change,
+		T value,
+		ResourceSet resourceSet,
+		boolean isInserted,
+		int index
+	) {
 		if (value === null) {
 			return null
 		}
 		if (!change.affectedFeature.containment) {
 			// Non containment => New object is already in resource
-			return EChangeUtil.resolveProxy(value, resourceSet)			
+			return EChangeUtil.resolveProxy(value, resourceSet)
 		}
 		if (!isInserted) {
 			// Before => New object is in staging area.
@@ -97,7 +109,7 @@ class AtomicEChangeResolver {
 				}
 			} else {
 				return change.affectedEObject.eGet(change.affectedFeature) as T
-			}			
+			}
 		}
 	}
 
@@ -109,8 +121,11 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def private static <A extends EObject> boolean resolveEObjectExistenceEChange(EObjectExistenceEChange<A> change,
-		ResourceSet resourceSet, boolean newObject) {
+	def private static <A extends EObject> boolean resolveEObjectExistenceEChange(
+		EObjectExistenceEChange<A> change,
+		ResourceSet resourceSet,
+		boolean newObject
+	) {
 		if (change.affectedEObject === null || !change.resolveEChange(resourceSet, true)) {
 			return false
 		}
@@ -126,15 +141,13 @@ class AtomicEChangeResolver {
 			// Object still exists
 			change.affectedEObject = change.stagingArea.peek as A
 		}
-		
+
 		if (change.affectedEObject === null || change.affectedEObject.eIsProxy || change.stagingArea === null) {
 			return false
 		}
-		
-		if (change.objectId !== null) {
-			EcoreUtil.setID(change.affectedEObject, change.objectId);
-		}
-		
+
+		if (change.objectId !== null)
+			EcoreUtil.setID(change.affectedEObject, change.objectId)
 		return true
 	}
 
@@ -146,8 +159,7 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def private static boolean resolveRootEChange(RootEChange change, ResourceSet resourceSet,
-		boolean resolveBefore) {
+	def private static boolean resolveRootEChange(RootEChange change, ResourceSet resourceSet, boolean resolveBefore) {
 		if (!resolveEChange(change, resourceSet, resolveBefore)) {
 			return false
 		}
@@ -170,20 +182,25 @@ class AtomicEChangeResolver {
 	 * 						Depends on the kind of the change and the model state.
 	 * @returns				The resolved value.
 	 */
-	def private static <T extends EObject> resolveRootValue(RootEChange change, T value, ResourceSet resourceSet, boolean isInserted) {
+	def private static <T extends EObject> resolveRootValue(
+		RootEChange change,
+		T value,
+		ResourceSet resourceSet,
+		boolean isInserted
+	) {
 		// Resolve the root object
 		if (isInserted) {
 			// Root object is in resource
 			if (0 <= change.index && change.index < change.resource.contents.size) {
-				return change.resource.contents.get(change.index)				
+				return change.resource.contents.get(change.index)
 			}
 		} else {
 			// Root object is in staging area
 			return StagingArea.getStagingArea(resourceSet).peek
 		}
-		return value		
+		return value
 	}
-	
+
 	/**
 	 * Dispatch method for resolving the {@link EChange}.
 	 * @param change 			The change which should be resolved.
@@ -218,12 +235,15 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(InsertEReference<EObject, EObject> change, ResourceSet resourceSet,
-		boolean resolveBefore) {
+	def package static dispatch boolean resolve(
+		InsertEReference<EObject, EObject> change,
+		ResourceSet resourceSet,
+		boolean resolveBefore
+	) {
 		if (!change.resolveFeatureEChange(resourceSet, resolveBefore)) {
 			return false
 		}
-		
+
 		change.newValue = change.resolveReferenceValue(change.newValue, resourceSet, !resolveBefore, change.index)
 
 		if (change.newValue !== null && change.newValue.eIsProxy) {
@@ -240,12 +260,15 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(RemoveEReference<EObject, EObject> change, ResourceSet resourceSet,
-		boolean resolveBefore) {
+	def package static dispatch boolean resolve(
+		RemoveEReference<EObject, EObject> change,
+		ResourceSet resourceSet,
+		boolean resolveBefore
+	) {
 		if (!change.resolveFeatureEChange(resourceSet, resolveBefore)) {
 			return false
 		}
-		
+
 		change.oldValue = change.resolveReferenceValue(change.oldValue, resourceSet, resolveBefore, change.index)
 
 		if (change.oldValue !== null && change.oldValue.eIsProxy) {
@@ -262,8 +285,11 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(ReplaceSingleValuedEReference<EObject, EObject> change,
-		ResourceSet resourceSet, boolean resolveBefore) {
+	def package static dispatch boolean resolve(
+		ReplaceSingleValuedEReference<EObject, EObject> change,
+		ResourceSet resourceSet,
+		boolean resolveBefore
+	) {
 		if (!change.resolveFeatureEChange(resourceSet, resolveBefore)) {
 			return false
 		}
@@ -286,8 +312,11 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(InsertRootEObject<EObject> change, ResourceSet resourceSet,
-		boolean resolveBefore) {
+	def package static dispatch boolean resolve(
+		InsertRootEObject<EObject> change,
+		ResourceSet resourceSet,
+		boolean resolveBefore
+	) {
 		if (!change.resolveRootEChange(resourceSet, resolveBefore)) {
 			return false
 		}
@@ -308,20 +337,23 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(RemoveRootEObject<EObject> change, ResourceSet resourceSet,
-		boolean resolveBefore) {
+	def package static dispatch boolean resolve(
+		RemoveRootEObject<EObject> change,
+		ResourceSet resourceSet,
+		boolean resolveBefore
+	) {
 		if (!change.resolveRootEChange(resourceSet, resolveBefore)) {
 			return false
 		}
 
 		change.oldValue = change.resolveRootValue(change.oldValue, resourceSet, resolveBefore)
-		
+
 		if (change.oldValue === null || change.oldValue.eIsProxy) {
 			return false
 		}
 		return true
 	}
-	
+
 	/**
 	 * Dispatch method for resolving the {@link CreateEObject} EChange.
 	 * @param change 			The change which should be resolved.
@@ -330,8 +362,11 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(CreateEObject<EObject> change, ResourceSet resourceSet,
-		boolean resolveBefore) {
+	def package static dispatch boolean resolve(
+		CreateEObject<EObject> change,
+		ResourceSet resourceSet,
+		boolean resolveBefore
+	) {
 		return change.resolveEObjectExistenceEChange(resourceSet, resolveBefore)
 	}
 
@@ -343,9 +378,11 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(DeleteEObject<EObject> change, ResourceSet resourceSet,
-		boolean resolveBefore) {
+	def package static dispatch boolean resolve(
+		DeleteEObject<EObject> change,
+		ResourceSet resourceSet,
+		boolean resolveBefore
+	) {
 		return change.resolveEObjectExistenceEChange(resourceSet, !resolveBefore)
 	}
 }
-	
