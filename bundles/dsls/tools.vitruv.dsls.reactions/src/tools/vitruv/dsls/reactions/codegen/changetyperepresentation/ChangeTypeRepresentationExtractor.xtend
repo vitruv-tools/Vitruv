@@ -27,6 +27,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationA
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementRootChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementExistenceChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import org.eclipse.emf.ecore.EcorePackage
 
 final class ChangeTypeRepresentationExtractor {
 
@@ -53,8 +55,8 @@ final class ChangeTypeRepresentationExtractor {
 				hasNewValue = true;
 			}
 		}
-		val affectedEObject = modelAttributeChange.feature.metaclass.instanceClassName
-		val affectedValue = modelAttributeChange.feature.feature.EType.instanceClassName
+		val affectedEObject = modelAttributeChange.feature.metaclass.javaClassName
+		val affectedValue = modelAttributeChange.feature.feature.EType.javaClassName
 		val affectedFeature = modelAttributeChange.feature.feature;
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature);
 	}
@@ -78,7 +80,7 @@ final class ChangeTypeRepresentationExtractor {
 				clazz = RootPackage.Literals.REMOVE_ROOT_EOBJECT
 		} 
 		val affectedEObject = null;
-		val affectedValue = if (elementClass !== null) elementClass.instanceClassName else EObject.canonicalName
+		val affectedValue = if (elementClass !== null) elementClass.javaClassName else EObject.canonicalName
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, !hasNewValue, hasNewValue, null);
 	}
 	
@@ -101,8 +103,8 @@ final class ChangeTypeRepresentationExtractor {
 				hasNewValue = true;
 			}
 		}
-		val affectedEObject = modelElementChange.feature.metaclass.instanceClassName;
-		val affectedValue = if (elementClass !== null) elementClass.instanceClassName else modelElementChange.feature.feature.EType.instanceClassName;
+		val affectedEObject = modelElementChange.feature.metaclass.javaClassName;
+		val affectedValue = if (elementClass !== null) elementClass.javaClassName else modelElementChange.feature.feature.EType.javaClassName;
 		val affectedFeature = modelElementChange.feature.feature; 
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature);
 	}
@@ -116,7 +118,7 @@ final class ChangeTypeRepresentationExtractor {
 			ElementDeletionChangeType:
 				clazz = EobjectPackage.Literals.DELETE_EOBJECT
 		}
-		val affectedEObject = if (elementClass !== null) elementClass.instanceClassName else EObject.canonicalName;
+		val affectedEObject = if (elementClass !== null) elementClass.javaClassName else EcorePackage.eINSTANCE.EObject.javaClassName;
 		val affectedValue = null; 
 		return new AtomicChangeTypeRepresentation(clazz.instanceClass, affectedEObject, affectedValue, false, false, null);
 	}
