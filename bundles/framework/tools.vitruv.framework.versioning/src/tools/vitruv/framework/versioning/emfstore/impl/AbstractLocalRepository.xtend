@@ -32,6 +32,11 @@ import tools.vitruv.framework.versioning.common.commit.Commit
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.tests.TestUserInteractor
 import java.util.function.Consumer
+import tools.vitruv.framework.change.description.PropagatedChangeWithCorrespondent
+import tools.vitruv.framework.util.command.EMFCommandBridge
+import tools.vitruv.framework.util.ResourceSetUtil
+import tools.vitruv.framework.vsum.InternalTestVirtualModel
+import tools.vitruv.framework.vsum.InternalModelRepository
 
 abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements LocalRepository<T> {
 	static extension BranchDiffCreator = BranchDiffCreator::instance
@@ -55,14 +60,14 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	VersioningVirtualModel virtualModel
 
-	Map<Branch, String> lastCommitCheckedOut
 	@Accessors(PUBLIC_GETTER)
 	val List<RemoteBranch<T>> remoteBranches
 
-	protected val List<T> remoteRepositories
-
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	T remoteProject
+
+	Map<Branch, String> lastCommitCheckedOut
+	protected val List<T> remoteRepositories
 
 	new() {
 		super()
@@ -71,6 +76,23 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		localBranches = newHashSet(currentBranch)
 		remoteBranches = newArrayList
 		remoteRepositories = newArrayList
+	}
+
+	private static def void rollback(VersioningVirtualModel vm, List<PropagatedChange> changes) {
+		val modelRepo = (vm as InternalTestVirtualModel).modelRepository as InternalModelRepository
+		val rSet = modelRepo.resourceSet
+		val domain = ResourceSetUtil::getTransactionalEditingDomain(rSet)
+		changes.filter(PropagatedChangeWithCorrespondent).map[correspondent].forEach [
+			val current = it
+			EMFCommandBridge::createAndExecuteVitruviusRecordingCommand(
+				[
+					current.applyBackward
+					return null
+				],
+				domain
+			)
+		]
+		rSet.resources.forEach[save(#{})]
 	}
 
 	override addRemoteRepository(T remoteRepository) {
@@ -115,21 +137,6 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		return commit
 	}
 
-	private def commit(String s, List<PropagatedChange> changes, List<Integer> userInteractions) {
-		val lastCommit = commits.last
-		val commit = createSimpleCommit(
-			changes,
-			s,
-			author.name,
-			author.email,
-			lastCommit.identifier,
-			userInteractions
-		)
-		addCommit(commit)
-		head = commit
-		return commit
-	}
-
 	override checkout(VURI vuri) {
 		checkout(virtualModel, vuri)
 	}
@@ -140,27 +147,6 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 
 	override checkout(VersioningVirtualModel currentVirtualModel) {
 		checkout(currentVirtualModel, null)
-	}
-
-	private def calculateChangeMatches() {
-		val currentRelevantCommits = relevantCommits
-		if (currentRelevantCommits.empty) {
-			info('''No new commits to checkout!''')
-			return #[]
-		}
-		val changeMatches = currentRelevantCommits.map[changes].flatten
-		if (changeMatches.empty) {
-			info('''«currentRelevantCommits» has/have no new changes to apply''')
-			return #[]
-		}
-		return changeMatches
-
-	}
-
-	private def Consumer<EChange> calculateMapFunction(VURI myVURI, VURI vuri) {
-		if (null === vuri)
-			return []
-		return createEChangeRemapFunction(myVURI, vuri)
 	}
 
 	override checkout(VersioningVirtualModel currentVirtualModel, VURI vuri) {
@@ -246,12 +232,25 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		Function1<Conflict, List<EChange>> triggeredCallback,
 		VersioningVirtualModel currentVirtualModel
 	) {
+		merge(source, target, originalCallback, triggeredCallback, currentVirtualModel, null)
+	}
+
+	override merge(
+		Branch source,
+		Branch target,
+		Function1<Conflict, List<EChange>> originalCallback,
+		Function1<Conflict, List<EChange>> triggeredCallback,
+		VersioningVirtualModel currentVirtualModel,
+		VersioningVirtualModel otherVirtualModel
+	) {
 		val sourceCommits = source.commits
 		val targetCommits = target.commits
 		val sourceCommitsId = sourceCommits.map[identifier]
 		val targetCommitsId = targetCommits.map[identifier]
 		val vuri = sourceCommits.last.changes.get(0).originalChange.URI
 		var firstDifferentIndex = 0
+
+		// PS Find the first different commit identifier
 		for (i : 0 ..< Math.min(sourceCommits.length, targetCommits.length)) {
 			val sourceId = sourceCommitsId.get(i)
 			val targetId = targetCommitsId.get(i)
@@ -260,10 +259,17 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		}
 		if (firstDifferentIndex === 0)
 			throw new IllegalStateException('''The intial commit must be equal!''')
+
+		// PS Drop all common commits 
 		val sourceCommitsToCompare = sourceCommits.drop(firstDifferentIndex).toList
 		val targetCommitsToCompare = targetCommits.drop(firstDifferentIndex).toList
 		val sourceChanges = sourceCommitsToCompare.map[changes].flatten.toList
 		val targetChanges = targetCommitsToCompare.map[changes].flatten.toList
+
+		// PS Roll back the changes
+		rollback(otherVirtualModel, sourceChanges)
+		rollback(currentVirtualModel, targetChanges)
+
 		val branchDiff = createVersionDiff(sourceChanges, targetChanges)
 		val modelMerger = ModelMerger::createModelMerger
 		val lastPropagatedTargetChange = targetCommits.get(firstDifferentIndex - 1).changes.last.id
@@ -309,6 +315,42 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 				commits
 			}
 		return returnValue
+	}
+
+	private def calculateChangeMatches() {
+		val currentRelevantCommits = relevantCommits
+		if (currentRelevantCommits.empty) {
+			info('''No new commits to checkout!''')
+			return #[]
+		}
+		val changeMatches = currentRelevantCommits.map[changes].flatten
+		if (changeMatches.empty) {
+			info('''«currentRelevantCommits» has/have no new changes to apply''')
+			return #[]
+		}
+		return changeMatches
+
+	}
+
+	private def Consumer<EChange> calculateMapFunction(VURI myVURI, VURI vuri) {
+		if (null === vuri)
+			return []
+		return createEChangeRemapFunction(myVURI, vuri)
+	}
+
+	private def commit(String s, List<PropagatedChange> changes, List<Integer> userInteractions) {
+		val lastCommit = commits.last
+		val commit = createSimpleCommit(
+			changes,
+			s,
+			author.name,
+			author.email,
+			lastCommit.identifier,
+			userInteractions
+		)
+		addCommit(commit)
+		head = commit
+		return commit
 	}
 
 	private def void reapplyCommit(Commit c, Branch branch) {

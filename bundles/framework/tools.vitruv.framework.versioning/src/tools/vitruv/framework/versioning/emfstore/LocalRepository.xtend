@@ -85,6 +85,15 @@ interface LocalRepository<T> extends AbstractRepository {
 		Branch source,
 		Branch target,
 		Function1<Conflict, List<EChange>> originalCallback,
+		Function1<Conflict, List<EChange>> triggeredCallback,
+		VersioningVirtualModel sourceVirtualModel,
+		VersioningVirtualModel targetVirtualModel
+	)
+
+	def MergeCommit merge(
+		Branch source,
+		Branch target,
+		Function1<Conflict, List<EChange>> originalCallback,
 		Function1<Conflict, List<EChange>> triggeredCallback
 	)
 }

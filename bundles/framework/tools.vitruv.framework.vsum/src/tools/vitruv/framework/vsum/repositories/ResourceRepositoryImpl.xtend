@@ -43,7 +43,7 @@ import tools.vitruv.framework.vsum.helper.FileSystemHelper
 class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceProviding {
 	static extension Factory = TransactionalEditingDomain::Factory::INSTANCE
 	static extension Logger = Logger::getLogger(ResourceRepositoryImpl.simpleName)
-	static extension TuidManager = TuidManager::instance 
+	static extension TuidManager = TuidManager::instance
 	static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
 
 	@Accessors(PUBLIC_GETTER)
@@ -211,8 +211,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	private def ModelInstance getOrCreateUnregisteredModelInstance(VURI modelURI) {
 		val fileExtension = modelURI.fileExtension
 		val metamodel = metamodelRepository.getDomain(fileExtension)
-		if (metamodel ===
-			null)
+		if (metamodel === null)
 			throw new RuntimeException('''
 				Cannot create a new model instance at the uri '«modelURI»' because no metamodel is registered for the file extension '«»«fileExtension»'!
 			''')
