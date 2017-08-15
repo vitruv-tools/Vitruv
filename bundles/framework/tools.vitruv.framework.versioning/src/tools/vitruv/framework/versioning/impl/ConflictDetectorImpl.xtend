@@ -78,11 +78,8 @@ class ConflictDetectorImpl implements ConflictDetector {
 		functionEChangesWithoutConflict.apply(nodes)
 	}
 
-	val ConflictDetectionStrategy conflictDetectionStrategy
-
 	@Accessors(PUBLIC_GETTER)
 	val List<Conflict> conflicts
-
 	@Accessors(PUBLIC_GETTER)
 	val List<EChange> theirConflictFreeOriginalEChanges
 	@Accessors(PUBLIC_GETTER)
@@ -96,11 +93,11 @@ class ConflictDetectorImpl implements ConflictDetector {
 	@Accessors(PUBLIC_GETTER)
 	val List<EChange> commonConflictFreeTriggeredEChanges
 
+	val List<List<?>> lists	
+	val ConflictDetectionStrategy conflictDetectionStrategy
 	BranchDiff branchDiff
 	VURI myVURI
 	VURI theirVURI
-
-	val List<List<?>> lists
 
 	new() {
 		conflictDetectionStrategy = new ConflictDetectionStrategyImpl
