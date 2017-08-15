@@ -2,7 +2,7 @@ package tools.vitruv.dsls.commonalities.generator
 
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.dsls.common.helper.JavaImportHelper
-import tools.vitruv.framework.domains.AbstractVitruvDomain
+import tools.vitruv.extensions.dslruntime.commonalities.IntermediateVitruvDomain
 import tools.vitruv.framework.domains.VitruvDomainProvider
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
 
@@ -23,7 +23,7 @@ package class DomainGenerator extends SubGenerator {
 		val domainClass = conceptName.conceptDomainClass
 		
 		fsa.generateFile(domainClass.javaFilePath, '''
-			public class «domainClass.simpleName» extends «AbstractVitruvDomain.typeRef» {
+			public class «domainClass.simpleName» extends «IntermediateVitruvDomain.typeRef» {
 				
 				public «domainClass.simpleName»() {
 					super("«conceptName.conceptDomainName»", «'''«conceptName.intermediateModelClassesPrefix»Package'''.typeRef».eINSTANCE, null);

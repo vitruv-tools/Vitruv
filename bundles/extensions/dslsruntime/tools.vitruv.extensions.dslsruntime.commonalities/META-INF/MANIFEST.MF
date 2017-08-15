@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: tools.vitruv.extensions.dslsruntime.commonalities;singleton:=true
+Bundle-Version: 0.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: %providerName
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.12.0",
+ tools.vitruv.framework.metamodel;bundle-version="0.2.0"
+Export-Package: tools.vitruv.extensions.dslruntime.commonalities
