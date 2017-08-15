@@ -2,6 +2,7 @@ package tools.vitruv.framework.versioning.impl
 
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
+
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
@@ -26,11 +27,11 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		determineConflictSolvability(e1, e2, type)
 	}
 
-	private dispatch def boolean isConflicting(EChange e1, EChange e2) {
+	private static dispatch def boolean isConflicting(EChange e1, EChange e2) {
 		false
 	}
 
-	private dispatch def boolean isConflicting(
+	private static dispatch def boolean isConflicting(
 		CreateAndReplaceNonRoot<?, ?> e1,
 		CreateAndReplaceNonRoot<?, ?> e2
 	) {
@@ -44,7 +45,7 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && !newValueIsEqual
 	}
 
-	private dispatch def boolean isConflicting(
+	private static dispatch def boolean isConflicting(
 		CreateAndInsertNonRoot<?, ?> e1,
 		CreateAndInsertNonRoot<?, ?> e2
 	) {
@@ -58,7 +59,7 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && indexEqual
 	}
 
-	private dispatch def boolean isConflicting(
+	private static dispatch def boolean isConflicting(
 		ReplaceSingleValuedEAttribute<?, ?> e1,
 		ReplaceSingleValuedEAttribute<?, ?> e2
 	) {
@@ -86,8 +87,11 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		ConflictSeverity::HARD
 	}
 
-	private static dispatch def determineConflictSolvability(CreateAndInsertNonRoot<?, ?> e1,
-		CreateAndInsertNonRoot<?, ?> e2, ConflictType type) {
+	private static dispatch def determineConflictSolvability(
+		CreateAndInsertNonRoot<?, ?> e1,
+		CreateAndInsertNonRoot<?, ?> e2,
+		ConflictType type
+	) {
 		return if (type === ConflictType::INSERTING_IN_SAME_CONTANER)
 			ConflictSeverity::SOFT
 		else
@@ -105,8 +109,10 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		ConflictType::REPLACING_SAME_VALUE
 	}
 
-	private static dispatch def determineConflictType(CreateAndReplaceNonRoot<?, ?> e1,
-		CreateAndReplaceNonRoot<?, ?> e2) {
+	private static dispatch def determineConflictType(
+		CreateAndReplaceNonRoot<?, ?> e1,
+		CreateAndReplaceNonRoot<?, ?> e2
+	) {
 		ConflictType::UNKNOWN
 	}
 

@@ -1,19 +1,24 @@
 package tools.vitruv.framework.versioning.extensions.impl
 
 import java.util.Set
+
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
+
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
-import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
+import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 
 class EChangeCompareUtilImpl implements EChangeCompareUtil {
 	static val Set<Pair<String, String>> rootToRootMap = newHashSet
 	static val Set<Pair<String, String>> nameToNameMap = newHashSet
+
+	private new() {
+	}
 
 	static def EChangeCompareUtil init() {
 		new EChangeCompareUtilImpl
@@ -41,21 +46,17 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 			val fromDirection = string.contains(value) && string2.contains(key)
 			return toDirection || fromDirection
 		].map [
-			val returnValue = if (string.contains(key)) it else new Pair(value, key)
-			return returnValue
+			return if (string.contains(key)) it else value -> key
 		].map [
 			if (!string2.contains(value))
 				throw new IllegalStateException('''«string2» is not lying under root«value»''')
 			val s = string2.replace(value, key)
-			val returnValue = string == s
+			val x = string == s
 			// FIXME PS Sometimes URI has '/0' at the end
 			val containerStringWithZero = '''«string»0'''
 			val y = containerStringWithZero == s
-			return returnValue || y
+			return x || y
 		].fold(false, [current, next|(current || next)])
-	}
-
-	private new() {
 	}
 
 	override addPair(Pair<String, String> pair) {
@@ -97,9 +98,8 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
 		val containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
 			e2.affectedEObject as InternalEObject)
-		val returnValue = (affectedObjectIsEqual || containerIsRootAndMapped) && affectedFeatureIsEqual &&
+		return (affectedObjectIsEqual || containerIsRootAndMapped) && affectedFeatureIsEqual &&
 			(newValueIsEqual || newValueMapped)
-		return returnValue
 	}
 
 	private dispatch def boolean compareEchange(
@@ -128,9 +128,7 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 			e2.insertChange.affectedEObject as InternalEObject)
 		val newValueIsEqual = EcoreUtil::equals(e1.insertChange.newValue, e2.insertChange.newValue)
 		val indexEqual = e1.insertChange.index === e2.insertChange.index
-		val returnValue = createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && newValueIsEqual &&
-			indexEqual
-		return returnValue
+		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && newValueIsEqual && indexEqual
 	}
 
 	private dispatch def boolean compareEchange(
@@ -144,8 +142,7 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 		val uriMappedEqual = isUriMapped(uri1, uri2)
 		val newValueIsEqual = EcoreUtil::equals(e1.insertChange.newValue, e2.insertChange.newValue)
 		val indexEqual = e1.insertChange.index === e2.insertChange.index
-		val returnValue = createdObjectIsEqual && (uriEqual || uriMappedEqual) && newValueIsEqual && indexEqual
-		return returnValue
+		return createdObjectIsEqual && (uriEqual || uriMappedEqual) && newValueIsEqual && indexEqual
 	}
 
 }
