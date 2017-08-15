@@ -23,6 +23,7 @@ public class FileSystemHelper {
     public FileSystemHelper(final File vsumProjectFolder) {
         this.vsumProjectFolder = vsumProjectFolder;
         createFolderIfNotExisting(vsumProjectFolder);
+        createFolderInFolder(getVsumProjectFolder(), VsumConstants.UUID_PROVIDER_AND_RESOLVER_FOLDER_NAME);
         createFolderInFolder(getVsumProjectFolder(), VsumConstants.CORRESPONDENCE_FOLDER_NAME);
         createFolderInFolder(getVsumProjectFolder(), VsumConstants.VSUM_FOLDER_NAME);
     }
@@ -30,6 +31,11 @@ public class FileSystemHelper {
     public VURI getCorrespondencesVURI() {
         File correspondenceFile = getCorrespondenceFile();
         return VURI.getInstance(EMFBridge.getEmfFileUriForFile(correspondenceFile));
+    }
+
+    public VURI getUuidProviderAndResolverVURI() {
+        File uuidFile = getUuidProviderAndResolverFile();
+        return VURI.getInstance(EMFBridge.getEmfFileUriForFile(uuidFile));
     }
 
     public void saveCorrespondenceModelMMURIs() {
@@ -40,20 +46,17 @@ public class FileSystemHelper {
     }
 
     public File getCorrespondenceFile() {
-        String fileName = getCorrespondenceFileName();
-        return getCorrespondenceFile(fileName);
-    }
-
-    public File getCorrespondenceFile(final String fileName) {
-        File correspondenceFile = getFileInFolder(getCorrespondenceFolder(), fileName);
-        return correspondenceFile;
-    }
-
-    private static String getCorrespondenceFileName() {
         String fileExtSeparator = VitruviusConstants.getFileExtSeparator();
         String fileExt = VitruviusConstants.getCorrespondencesFileExt();
         String fileName = "Correspondences" + fileExtSeparator + fileExt;
-        return fileName;
+        return getFileInFolder(getCorrespondenceFolder(), fileName);
+    }
+
+    public File getUuidProviderAndResolverFile() {
+        String fileExtSeparator = VitruviusConstants.getFileExtSeparator();
+        String fileExt = VitruviusConstants.getUuidFileExt();
+        String fileName = "Uuid" + fileExtSeparator + fileExt;
+        return getFileInFolder(getUuidProviderAndResolverFolder(), fileName);
     }
 
     public void saveVsumVURIsToFile(final Set<VURI> vuris) {
@@ -184,6 +187,10 @@ public class FileSystemHelper {
 
     private File getCorrespondenceFolder() {
         return getFolderInFolder(getVsumProjectFolder(), VsumConstants.CORRESPONDENCE_FOLDER_NAME);
+    }
+
+    private File getUuidProviderAndResolverFolder() {
+        return getFolderInFolder(getVsumProjectFolder(), VsumConstants.UUID_PROVIDER_AND_RESOLVER_FOLDER_NAME);
     }
 
     private String getVsumMapFileName() {

@@ -22,6 +22,8 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
+import tools.vitruv.framework.change.uuid.UuidProviderAndResolver;
+import tools.vitruv.framework.change.uuid.UuidProviderAndResolverImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
@@ -51,6 +53,11 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private final FileSystemHelper fileSystemHelper;
     private final File folder;
     private final AtomicEmfChangeRecorder changeRecorder;
+    private UuidProviderAndResolver uuidProviderAndResolver;
+
+    public UuidProviderAndResolver getUuidProviderAndResolver() {
+        return this.uuidProviderAndResolver;
+    }
 
     public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository) {
         this(folder, metamodelRepository, null);
@@ -67,12 +74,12 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.fileSystemHelper = new FileSystemHelper(this.folder);
 
+        String unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
+        initializeUuidProviderAndResolver();
+        this.changeRecorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges != null, false);
+
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
-
-        String unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
-        this.changeRecorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges != null, false);
-        this.changeRecorder.addToRecording(this.resourceSet);
     }
 
     /**
@@ -121,6 +128,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                     // case 2 or 3
                     ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
                     ResourceRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance);
+                    ResourceRepositoryImpl.this.changeRecorder.addToRecording(internalModelInstance.getResource());
                     saveVURIsOfVsumModelInstances();
                     return null;
                 }
@@ -241,8 +249,27 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             } else {
                 correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
             }
+            this.changeRecorder.addToRecording(correspondencesResource);
+            this.changeRecorder.beginRecording();
             this.correspondenceModel = new CorrespondenceModelImpl(new TuidResolverImpl(this.metamodelRepository, this),
                     this, this.metamodelRepository, correspondencesVURI, correspondencesResource);
+            this.changeRecorder.endRecording();
+            return null;
+        });
+    }
+
+    private void initializeUuidProviderAndResolver() {
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
+            VURI uuidProviderVURI = this.fileSystemHelper.getUuidProviderAndResolverVURI();
+            Resource uuidProviderResource = null;
+            if (URIUtil.existsResourceAtUri(uuidProviderVURI.getEMFUri())) {
+                logger.debug("Loading uuid provider and resolver model from: "
+                        + this.fileSystemHelper.getUuidProviderAndResolverVURI());
+                uuidProviderResource = this.resourceSet.getResource(uuidProviderVURI.getEMFUri(), true);
+            } else {
+                uuidProviderResource = this.resourceSet.createResource(uuidProviderVURI.getEMFUri());
+            }
+            this.uuidProviderAndResolver = new UuidProviderAndResolverImpl(this.resourceSet, uuidProviderResource);
             return null;
         });
     }
