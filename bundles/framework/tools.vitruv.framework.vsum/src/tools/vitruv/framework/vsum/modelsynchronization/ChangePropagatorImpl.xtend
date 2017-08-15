@@ -66,9 +66,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		
 		startChangePropagation(change);
 		change.applyBackwardIfLegacy();
-		var List<PropagatedChange> result = new ArrayList<PropagatedChange>()
+		
+		val List<PropagatedChange> thisChangePropagationResult = new ArrayList
 		val changedResourcesTracker = new ChangedResourcesTracker();
-		propagateSingleChange(change, result, changedResourcesTracker);
+		propagateSingleChange(change, thisChangePropagationResult, changedResourcesTracker);
 		changedResourcesTracker.markNonSourceResourceAsChanged();
 		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
 		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
@@ -76,12 +77,20 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		logger.debug(modelRepository);
 		logger.debug('''
 	Propagated changes:
-	«FOR propagatedChange : result»
+	«FOR propagatedChange : thisChangePropagationResult»
 	Propagated Change:
 		«propagatedChange»«ENDFOR»
 		''');
 		finishChangePropagation(change)
-		return result
+		
+		val transitivelyPropagatedChanges = thisChangePropagationResult
+		for (resultingChange : thisChangePropagationResult) {
+			if (resultingChange.consequentialChanges.changeDomain.shouldTransitivelyPropagateChanges) {
+				transitivelyPropagatedChanges += propagateChange(resultingChange.consequentialChanges)
+			}
+		}
+		
+		return transitivelyPropagatedChanges
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
@@ -123,7 +132,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		if (changedObjects.nullOrEmpty) {
 			throw new IllegalStateException("There are no objects affected by the given changes");
 		}
-		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0));
+		val changeDomain = change.changeDomain
 		val consequentialChanges = newArrayList();
 		val propagationResult = new ChangePropagationResult();
 		resourceRepository.startRecording;
@@ -135,6 +144,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		consequentialChanges.forEach[logger.debug(it)];		
 		propagatedChanges.add(new PropagatedChange(change, VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges)));
 	}
+	
+	def private getChangeDomain(VitruviusChange change) {
+		metamodelRepository.getDomain(change.affectedEObjects.head)
+	} 
 	
 	private def void handleObjectsWithoutResource() {
 		modelRepository.cleanupRootElementsWithoutResource
