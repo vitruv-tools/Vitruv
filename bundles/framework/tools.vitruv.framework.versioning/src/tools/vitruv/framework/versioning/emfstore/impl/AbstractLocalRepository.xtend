@@ -267,8 +267,10 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		val targetChanges = targetCommitsToCompare.map[changes].flatten.toList
 
 		// PS Roll back the changes
-		rollback(otherVirtualModel, sourceChanges)
-		rollback(currentVirtualModel, targetChanges)
+		if (null !== otherVirtualModel) {
+			rollback(otherVirtualModel, sourceChanges)
+			rollback(currentVirtualModel, targetChanges)
+		}
 
 		val branchDiff = createVersionDiff(sourceChanges, targetChanges)
 		val modelMerger = ModelMerger::createModelMerger
