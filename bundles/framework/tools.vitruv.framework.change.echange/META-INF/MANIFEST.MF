@@ -45,6 +45,7 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.commons.util.emf,
  tools.vitruv.framework.change.echange;visibility:=reexport,
  org.eclipse.emf.ecore.edit,
- tools.vitruv.framework.util
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.change.uuid;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 

@@ -23,6 +23,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedEObjectID <em>Affected EObject ID</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange()
@@ -81,5 +82,31 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 * @generated
 	 */
 	void setAffectedEObject(A value);
+
+	/**
+	 * Returns the value of the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Affected EObject ID</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Affected EObject ID</em>' attribute.
+	 * @see #setAffectedEObjectID(String)
+	 * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange_AffectedEObjectID()
+	 * @model dataType="tools.vitruv.framework.change.uuid.Uuid"
+	 * @generated
+	 */
+	String getAffectedEObjectID();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedEObjectID <em>Affected EObject ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Affected EObject ID</em>' attribute.
+	 * @see #getAffectedEObjectID()
+	 * @generated
+	 */
+	void setAffectedEObjectID(String value);
 
 } // FeatureEChange

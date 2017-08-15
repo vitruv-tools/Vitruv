@@ -131,8 +131,8 @@ class AtomicEChangeResolver {
 			return false
 		}
 		
-		if (change.objectId !== null) {
-			EcoreUtil.setID(change.affectedEObject, change.objectId);
+		if (change.idAttributeValue !== null) {
+			EcoreUtil.setID(change.affectedEObject, change.idAttributeValue);
 		}
 		
 		return true

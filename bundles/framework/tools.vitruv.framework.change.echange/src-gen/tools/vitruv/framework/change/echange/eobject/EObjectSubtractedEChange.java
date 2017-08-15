@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange#getOldValue <em>Old Value</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange#getOldValueID <em>Old Value ID</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectSubtractedEChange()
@@ -53,5 +54,31 @@ public interface EObjectSubtractedEChange<T extends EObject> extends Subtractive
 	 * @generated
 	 */
 	void setOldValue(T value);
+
+	/**
+	 * Returns the value of the '<em><b>Old Value ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Old Value ID</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Old Value ID</em>' attribute.
+	 * @see #setOldValueID(String)
+	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectSubtractedEChange_OldValueID()
+	 * @model dataType="tools.vitruv.framework.change.uuid.Uuid"
+	 * @generated
+	 */
+	String getOldValueID();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange#getOldValueID <em>Old Value ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Old Value ID</em>' attribute.
+	 * @see #getOldValueID()
+	 * @generated
+	 */
+	void setOldValueID(String value);
 
 } // EObjectSubtractedEChange

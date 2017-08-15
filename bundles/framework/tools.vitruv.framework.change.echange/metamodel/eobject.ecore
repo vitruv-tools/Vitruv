@@ -17,6 +17,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1">
       <eGenericType eTypeParameter="#//EObjectAddedEChange/T"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValueID" eType="ecore:EDataType ../../tools.vitruv.framework.change.uuid/model/Uuid.ecore#//Uuid"/>
     <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//AdditiveEChange">
       <eTypeArguments eTypeParameter="#//EObjectAddedEChange/T"/>
     </eGenericSuperTypes>
@@ -31,6 +32,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="oldValue" lowerBound="1">
       <eGenericType eTypeParameter="#//EObjectSubtractedEChange/T"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValueID" eType="ecore:EDataType ../../tools.vitruv.framework.change.uuid/model/Uuid.ecore#//Uuid"/>
     <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//SubtractiveEChange">
       <eTypeArguments eTypeParameter="#//EObjectSubtractedEChange/T"/>
     </eGenericSuperTypes>
@@ -55,7 +57,8 @@
         <details key="documentation" value="*&#xA;The staging area where the created object will be placed or the deleted&#xA;object be removed from."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectId" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="idAttributeValue" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="affectedEObjectID" eType="ecore:EDataType ../../tools.vitruv.framework.change.uuid/model/Uuid.ecore#//Uuid"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CreateEObject">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

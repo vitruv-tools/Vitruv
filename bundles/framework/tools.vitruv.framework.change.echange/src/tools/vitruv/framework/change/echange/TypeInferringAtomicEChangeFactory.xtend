@@ -101,7 +101,7 @@ class TypeInferringAtomicEChangeFactory {
 		A affectedEObject, Resource resource, String objectId) {
 		change.stagingArea = StagingArea.getStagingArea(resource)
 		change.affectedEObject = affectedEObject;
-		change.objectId = objectId;
+		change.idAttributeValue = objectId;
 	}
 
 	/**

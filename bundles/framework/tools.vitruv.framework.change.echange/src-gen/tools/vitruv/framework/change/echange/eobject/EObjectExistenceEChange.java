@@ -24,7 +24,8 @@ import tools.vitruv.framework.change.echange.resolve.StagingArea;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getAffectedEObject <em>Affected EObject</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getStagingArea <em>Staging Area</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getObjectId <em>Object Id</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getIdAttributeValue <em>Id Attribute Value</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getAffectedEObjectID <em>Affected EObject ID</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange()
@@ -86,29 +87,55 @@ public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChang
 	void setStagingArea(StagingArea value);
 
 	/**
-	 * Returns the value of the '<em><b>Object Id</b></em>' attribute.
+	 * Returns the value of the '<em><b>Id Attribute Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Object Id</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Id Attribute Value</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Object Id</em>' attribute.
-	 * @see #setObjectId(String)
-	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange_ObjectId()
+	 * @return the value of the '<em>Id Attribute Value</em>' attribute.
+	 * @see #setIdAttributeValue(String)
+	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange_IdAttributeValue()
 	 * @model
 	 * @generated
 	 */
-	String getObjectId();
+	String getIdAttributeValue();
 
 	/**
-	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getObjectId <em>Object Id</em>}' attribute.
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getIdAttributeValue <em>Id Attribute Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Object Id</em>' attribute.
-	 * @see #getObjectId()
+	 * @param value the new value of the '<em>Id Attribute Value</em>' attribute.
+	 * @see #getIdAttributeValue()
 	 * @generated
 	 */
-	void setObjectId(String value);
+	void setIdAttributeValue(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Affected EObject ID</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Affected EObject ID</em>' attribute.
+	 * @see #setAffectedEObjectID(String)
+	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange_AffectedEObjectID()
+	 * @model dataType="tools.vitruv.framework.change.uuid.Uuid"
+	 * @generated
+	 */
+	String getAffectedEObjectID();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getAffectedEObjectID <em>Affected EObject ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Affected EObject ID</em>' attribute.
+	 * @see #getAffectedEObjectID()
+	 * @generated
+	 */
+	void setAffectedEObjectID(String value);
 
 } // EObjectExistenceEChange

@@ -91,6 +91,15 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID = FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The number of structural features of the '<em>Update Attribute EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -198,6 +207,15 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -327,6 +345,15 @@ public interface AttributePackage extends EPackage {
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -452,6 +479,15 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT_ID = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT_ID;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -590,6 +626,15 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT_ID = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -724,6 +769,15 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT_ID = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.

@@ -25,7 +25,8 @@ import tools.vitruv.framework.change.echange.resolve.StagingArea;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getStagingArea <em>Staging Area</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getObjectId <em>Object Id</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getIdAttributeValue <em>Id Attribute Value</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getAffectedEObjectID <em>Affected EObject ID</em>}</li>
  * </ul>
  *
  * @generated
@@ -62,24 +63,44 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	protected StagingArea stagingArea = STAGING_AREA_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getObjectId() <em>Object Id</em>}' attribute.
+	 * The default value of the '{@link #getIdAttributeValue() <em>Id Attribute Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getObjectId()
+	 * @see #getIdAttributeValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String OBJECT_ID_EDEFAULT = null;
+	protected static final String ID_ATTRIBUTE_VALUE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getObjectId() <em>Object Id</em>}' attribute.
+	 * The cached value of the '{@link #getIdAttributeValue() <em>Id Attribute Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getObjectId()
+	 * @see #getIdAttributeValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected String objectId = OBJECT_ID_EDEFAULT;
+	protected String idAttributeValue = ID_ATTRIBUTE_VALUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getAffectedEObjectID() <em>Affected EObject ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAffectedEObjectID()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String AFFECTED_EOBJECT_ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAffectedEObjectID() <em>Affected EObject ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAffectedEObjectID()
+	 * @generated
+	 * @ordered
+	 */
+	protected String affectedEObjectID = AFFECTED_EOBJECT_ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -165,8 +186,8 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getObjectId() {
-		return objectId;
+	public String getIdAttributeValue() {
+		return idAttributeValue;
 	}
 
 	/**
@@ -174,11 +195,32 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setObjectId(String newObjectId) {
-		String oldObjectId = objectId;
-		objectId = newObjectId;
+	public void setIdAttributeValue(String newIdAttributeValue) {
+		String oldIdAttributeValue = idAttributeValue;
+		idAttributeValue = newIdAttributeValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID, oldObjectId, objectId));
+			eNotify(new ENotificationImpl(this, Notification.SET, EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE, oldIdAttributeValue, idAttributeValue));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getAffectedEObjectID() {
+		return affectedEObjectID;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAffectedEObjectID(String newAffectedEObjectID) {
+		String oldAffectedEObjectID = affectedEObjectID;
+		affectedEObjectID = newAffectedEObjectID;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID, oldAffectedEObjectID, affectedEObjectID));
 	}
 
 	/**
@@ -194,8 +236,10 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 				return basicGetAffectedEObject();
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
 				return getStagingArea();
-			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID:
-				return getObjectId();
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE:
+				return getIdAttributeValue();
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID:
+				return getAffectedEObjectID();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -215,8 +259,11 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
 				setStagingArea((StagingArea)newValue);
 				return;
-			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID:
-				setObjectId((String)newValue);
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE:
+				setIdAttributeValue((String)newValue);
+				return;
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID:
+				setAffectedEObjectID((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -236,8 +283,11 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
 				setStagingArea(STAGING_AREA_EDEFAULT);
 				return;
-			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID:
-				setObjectId(OBJECT_ID_EDEFAULT);
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE:
+				setIdAttributeValue(ID_ATTRIBUTE_VALUE_EDEFAULT);
+				return;
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID:
+				setAffectedEObjectID(AFFECTED_EOBJECT_ID_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -255,8 +305,10 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 				return affectedEObject != null;
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
 				return STAGING_AREA_EDEFAULT == null ? stagingArea != null : !STAGING_AREA_EDEFAULT.equals(stagingArea);
-			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID:
-				return OBJECT_ID_EDEFAULT == null ? objectId != null : !OBJECT_ID_EDEFAULT.equals(objectId);
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE:
+				return ID_ATTRIBUTE_VALUE_EDEFAULT == null ? idAttributeValue != null : !ID_ATTRIBUTE_VALUE_EDEFAULT.equals(idAttributeValue);
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID:
+				return AFFECTED_EOBJECT_ID_EDEFAULT == null ? affectedEObjectID != null : !AFFECTED_EOBJECT_ID_EDEFAULT.equals(affectedEObjectID);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -273,8 +325,10 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (stagingArea: ");
 		result.append(stagingArea);
-		result.append(", objectId: ");
-		result.append(objectId);
+		result.append(", idAttributeValue: ");
+		result.append(idAttributeValue);
+		result.append(", affectedEObjectID: ");
+		result.append(affectedEObjectID);
 		result.append(')');
 		return result.toString();
 	}

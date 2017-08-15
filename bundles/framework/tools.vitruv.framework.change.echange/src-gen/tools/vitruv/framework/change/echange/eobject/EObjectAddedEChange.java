@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange#getNewValue <em>New Value</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange#getNewValueID <em>New Value ID</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectAddedEChange()
@@ -53,5 +54,31 @@ public interface EObjectAddedEChange<T extends EObject> extends AdditiveEChange<
 	 * @generated
 	 */
 	void setNewValue(T value);
+
+	/**
+	 * Returns the value of the '<em><b>New Value ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>New Value ID</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>New Value ID</em>' attribute.
+	 * @see #setNewValueID(String)
+	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectAddedEChange_NewValueID()
+	 * @model dataType="tools.vitruv.framework.change.uuid.Uuid"
+	 * @generated
+	 */
+	String getNewValueID();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange#getNewValueID <em>New Value ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>New Value ID</em>' attribute.
+	 * @see #getNewValueID()
+	 * @generated
+	 */
+	void setNewValueID(String value);
 
 } // EObjectAddedEChange
