@@ -32,6 +32,12 @@ interface VersioningVirtualModel extends InternalVirtualModel {
 	/**
 	 * Propagates an already recorded {@link PropagatedChange} into the {@link VirtualModel}.
 	 * @param propagatedChange the change to propagate.
+	 * @param vuri the vuri, where the change should be saved
+	 */
+	def void propagateChange(PropagatedChange propagatedChange, VURI vuri)
+
+	/**
+	 * @see propagateChange(PropagatedChange propagatedChange, VURI vuri)
 	 */
 	def void propagateChange(PropagatedChange propagatedChange)
 
