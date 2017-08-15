@@ -1,6 +1,9 @@
 package tools.vitruv.framework.change.copy
 
 import java.util.List
+import java.util.Set
+
+import tools.vitruv.framework.change.copy.impl.EChangeCopierImpl
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
 
@@ -24,4 +27,7 @@ interface EChangeCopier {
 
 	def EChange copy(EChange e)
 
+	static def EChangeCopier createEChangeCopier(Set<Pair<String, String>> replacePairs) {
+		return new EChangeCopierImpl(replacePairs)
+	}
 }

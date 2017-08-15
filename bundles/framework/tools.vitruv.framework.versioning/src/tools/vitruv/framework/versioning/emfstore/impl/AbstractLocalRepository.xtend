@@ -3,18 +3,23 @@ package tools.vitruv.framework.versioning.emfstore.impl
 import java.util.List
 import java.util.Map
 import java.util.Set
+import java.util.function.Consumer
 
 import org.apache.log4j.Logger
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 
-import tools.vitruv.framework.change.description.ChangeCloner
+import tools.vitruv.framework.change.copy.EChangeCopier
 import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.description.PropagatedChangeWithCorrespondent
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.description.impl.ChangeClonerImpl
+import tools.vitruv.framework.change.description.impl.PropagatedChangeImpl
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.util.ResourceSetUtil
 import tools.vitruv.framework.util.XtendAssertHelper
+import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.BranchDiffCreator
 import tools.vitruv.framework.versioning.Conflict
@@ -23,27 +28,23 @@ import tools.vitruv.framework.versioning.Reapplier
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.LocalBranch
-import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
-import tools.vitruv.framework.versioning.emfstore.LocalRepository
-import tools.vitruv.framework.versioning.extensions.URIRemapper
-import tools.vitruv.framework.vsum.VersioningVirtualModel
 import tools.vitruv.framework.versioning.branch.RemoteBranch
+import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
 import tools.vitruv.framework.versioning.common.commit.Commit
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
-import tools.vitruv.framework.tests.TestUserInteractor
-import java.util.function.Consumer
-import tools.vitruv.framework.change.description.PropagatedChangeWithCorrespondent
-import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.framework.util.ResourceSetUtil
-import tools.vitruv.framework.vsum.InternalTestVirtualModel
+import tools.vitruv.framework.versioning.emfstore.LocalRepository
+import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.InternalModelRepository
+import tools.vitruv.framework.vsum.InternalTestVirtualModel
+import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements LocalRepository<T> {
+	// Extensions.
 	static extension BranchDiffCreator = BranchDiffCreator::instance
-	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(AbstractLocalRepository)
 	static extension URIRemapper = URIRemapper::instance
 	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
+	static extension EChangeCopier = EChangeCopier::createEChangeCopier(#{})
 
 	@Accessors(PUBLIC_SETTER)
 	boolean allFlag
@@ -149,36 +150,45 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		checkout(currentVirtualModel, null)
 	}
 
+	private static def getClonedEChanges(VitruviusChange vitruviusChange) {
+		// PS At this point the EChangeCopier::copy method must be used, not the 
+		// ChangeCloner::cloneEChange. This is only creating a shallow copy, whereas
+		// here a "deeper" copy is needed.
+		vitruviusChange.EChanges.map[copy(it)].toList.immutableCopy
+	}
+
 	override checkout(VersioningVirtualModel currentVirtualModel, VURI vuri) {
-		val changeMatches = calculateChangeMatches
-		val originalChanges = changeMatches.map[id -> originalChange].toList.immutableCopy
+		val changeMatches = calculateChangeMatches.toList.immutableCopy
+
+		val originalChanges = changeMatches.map[originalChange]
 		if (originalChanges.empty) {
 			info("Nothing to checkout")
 			return
 		}
-		val myVURI = originalChanges.get(0).value.URI
-		val processTargetEChange = calculateMapFunction(myVURI, vuri)
+		val myVURI = originalChanges.get(0).URI
+		val myTriggeredVURIs = changeMatches.fold(newHashSet, [ Set<VURI> set, changeMatch |
+			set.add(changeMatch.consequentialChanges.URI)
+			return set
+		])
+		val pairedSet = myTriggeredVURIs.filterNull.map[it -> correspondentURI].toSet
+		val triggeredConsumers = pairedSet.map[calculateMapFunction(key, value)]
 
-		// PS Create a list with the id of the change and a new change with the adjusted 
-		// VURI.
-		val newChanges = originalChanges.map [
-			val eChanges = value.EChanges.map[cloneEChange(it)].toList.immutableCopy
-			eChanges.forEach[processTargetEChange.accept(it)]
-			val newChange = createEMFModelChangeFromEChanges(eChanges)
-			return key -> newChange
+		val processTargetEChange = calculateMapFunction(myVURI, vuri)
+		val processTriggeredEChange = [EChange e|triggeredConsumers.forEach[accept(e)]]
+
+		val List<PropagatedChange> newPropagateChanges = changeMatches.map [ changeMatch |
+			val originalEChanges = changeMatch.originalChange.clonedEChanges
+			originalEChanges.parallelStream.forEach(processTargetEChange)
+			val newOriginalChange = createEMFModelChangeFromEChanges(originalEChanges)
+			val triggeredEChanges = changeMatch.consequentialChanges.clonedEChanges
+			triggeredEChanges.parallelStream.forEach(processTriggeredEChange)
+			val newTriggeredChange = createEMFModelChangeFromEChanges(triggeredEChanges)
+
+			return new PropagatedChangeImpl(changeMatch.id, newOriginalChange, newTriggeredChange)
 		].toList.immutableCopy
 
-		// PS Get user interactions from commits and give them to the 
-		// virtual model.  
-		val userInteractions = relevantCommits.map[userInteractions].flatten.toList
-		val userInteractor = currentVirtualModel.userInteractor as TestUserInteractor
-		userInteractor.addNextSelections(userInteractions)
-
 		// PS Propagate changes,
-		if (vuri === null)
-			newChanges.forEach[currentVirtualModel.propagateChange(value, key)]
-		else
-			newChanges.forEach[currentVirtualModel.propagateChange(vuri, value, key)]
+		newPropagateChanges.forEach[currentVirtualModel.propagateChange(it, vuri)]
 
 		// PS Test, if the identifiers remain the same,
 		val newChangeMatches = if (null === vuri)

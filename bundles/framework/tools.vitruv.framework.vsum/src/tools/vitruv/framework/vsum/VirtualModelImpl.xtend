@@ -13,7 +13,6 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
-import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import tools.vitruv.framework.userinteraction.UserInteracting
@@ -107,14 +106,6 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		changePropagator.addChangePropagationListener(changePropagationListener)
 	}
 
-	override propagateChange(VURI vuri, VitruviusChange change, String changeId) {
-		changePropagator.propagateChange(vuri, change, changeId)
-	}
-
-	override propagateChange(VitruviusChange change, String changeId) {
-		changePropagator.propagateChange(null, change, changeId)
-	}
-
 	override propagateChange(VitruviusChange change) {
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		return changePropagator.propagateChange(change)
@@ -200,21 +191,20 @@ class VirtualModelImpl implements VersioningVirtualModel {
 			userInteractor.getAllUserInteractionsSince(lastCommitDate)
 	}
 
-	override getUserInteractionsSinceLastCommit(VURI vuri) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-
 	override setAllLastPropagatedChangeId(String id) {
 		allLastPropagatedChangeId = id
 		lastCommitDate = new Date
 	}
 
-	override registerCorrespondenceModelToTUIDManager() {
-		(correspondenceModel as InternalCorrespondenceModel).registerToTUIDManager
+	/**
+	 * {@inheritDoc}
+	 */
+	override propagateChange(PropagatedChange propagatedChange) {
+		propagateChange(propagatedChange, null)
 	}
 
-	override deregisterCorrespondenceModelFromTUIDManager() {
-		(correspondenceModel as InternalCorrespondenceModel).deregisterFromTUIDManager
+	override propagateChange(PropagatedChange propagatedChange, VURI vuri) {
+		changePropagator.propagateChange(propagatedChange, vuri)
 	}
 
 }

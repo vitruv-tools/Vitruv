@@ -33,9 +33,12 @@ import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
+	// Extensions
 	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
 	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
+
+	// Values 
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceProviding correspondenceProviding
 	val List<EObject> objectsCreatedDuringPropagation
@@ -79,13 +82,35 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			changePropagationListeners -= propagationListener
 	}
 
-	override propagateChange(VURI vuri, VitruviusChange change, String changeId) {
+	/**
+	 * {@inheritDoc} 
+	 */
+	override propagateChange(PropagatedChange propagatedChange, VURI vuri) {
+		val changeId = propagatedChange.id
 		if (null === vuri && vuriToIds.values.parallelStream.anyMatch[it == changeId])
 			throw new IllegalStateException(''' «changeId»''')
 		else if (vuriToIds.get(vuri).parallelStream.anyMatch[it == changeId])
 			throw new IllegalStateException(''' «changeId»''')
 		currentChangeId = changeId
-		propagateChange(change)
+		val originalChange = propagatedChange.originalChange
+		val clonedChange = cloneVitruviusChange(originalChange)
+		val consequentialChanges = propagatedChange.consequentialChanges
+		val changeApplicationFunction = createChangeApplyFunction(originalChange as TransactionalChange)
+
+		resourceRepository.executeOnResourceSet(changeApplicationFunction)
+
+		originalChange.affectedEObjects.forEach[modelRepository.addRootElement(it)]
+		modelRepository.cleanupRootElements
+
+		val changedObjects = originalChange.affectedEObjects
+		if (changedObjects.nullOrEmpty)
+			throw new IllegalStateException('''There are no objects affected by the given change«originalChange»''')
+
+		val consequentialChangesApplicationFunction = createChangeApplyFunction(
+			consequentialChanges as TransactionalChange)
+
+		resourceRepository.executeOnResourceSet(consequentialChangesApplicationFunction)
+		addPropagatedChanges(clonedChange, originalChange, newArrayList)
 	}
 
 	override synchronized List<PropagatedChange> propagateChange(VitruviusChange change) {
@@ -174,9 +199,18 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		List<PropagatedChange> propagatedChanges,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-		change.changes.forEach [
-			propagateSingleChange(it, propagatedChanges, changedResourcesTracker)
-		]
+		change.changes.forEach[propagateSingleChange(it, propagatedChanges, changedResourcesTracker)]
+	}
+
+	static val functionApplyChangeOnResourceSet = [ ModelRepository repo, TransactionalChange change, ResourceSet resourceSet |
+		// If change has a URI, load the model
+		if (change.URI !== null) repo.getModel(change.URI)
+		change.resolveBeforeAndApplyForward(resourceSet)
+		return
+	]
+
+	private def createChangeApplyFunction(TransactionalChange transactionalChange) {
+		functionApplyChangeOnResourceSet.curry(resourceRepository).curry(transactionalChange)
 	}
 
 	private def dispatch void propagateSingleChange(
@@ -185,12 +219,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangedResourcesTracker changedResourcesTracker
 	) {
 		val clonedChange = cloneVitruviusChange(change)
-		val changeApplicationFunction = [ ResourceSet resourceSet |
-			// If change has a URI, load the model
-			if (change.URI !== null) resourceRepository.getModel(change.URI)
-			change.resolveBeforeAndApplyForward(resourceSet)
-			return
-		]
+		val changeApplicationFunction = createChangeApplyFunction(change)
 
 		resourceRepository.executeOnResourceSet(changeApplicationFunction)
 
@@ -204,8 +233,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0))
 		val propagationResult = new ChangePropagationResult
 		resourceRepository.startRecording
-		val specifications = changePropagationProvider.getChangePropagationSpecifications(changeDomain)
-		specifications.forEach [
+		changePropagationProvider.getChangePropagationSpecifications(changeDomain).forEach [
 			propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
 		handleObjectsWithoutResource

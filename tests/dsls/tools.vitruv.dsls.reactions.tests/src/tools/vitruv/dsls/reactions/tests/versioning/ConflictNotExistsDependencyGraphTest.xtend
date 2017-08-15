@@ -1,7 +1,9 @@
 package tools.vitruv.dsls.reactions.tests.versioning
 
 import java.util.Collection
+
 import org.junit.Test
+
 import tools.vitruv.dsls.reactions.tests.AbstractConflictNotExistsTest
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeNode

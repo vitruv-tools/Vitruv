@@ -163,4 +163,18 @@ class URIRemapperImpl implements URIRemapper {
 		val newSourceVURI = VURI::getInstance(URI::createURI(newSourceVURIString))
 		return newSourceVURI
 	}
+
+	override getCorrespondentURI(VURI vuri) {
+		// PS TODO This is a mock. Please implement!
+		val vuriString = vuri.EMFUri.toString
+		val newVuriString = if (vuriString.contains("my_model"))
+				vuriString.replace("my_model", "their_model")
+			else if (vuriString.contains("their_model"))
+				vuriString.replace("their_model", "my_model")
+			else
+				vuriString
+		val newSourceVURI = VURI::getInstance(URI::createURI(newVuriString))
+		return newSourceVURI
+	}
+
 }
