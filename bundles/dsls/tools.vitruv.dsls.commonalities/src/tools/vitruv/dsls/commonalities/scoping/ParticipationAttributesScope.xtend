@@ -51,11 +51,11 @@ class ParticipationAttributesScope implements IScope {
 	}
 
 	override getSingleElement(QualifiedName name) {
-		getElements(name).findFirst [true]
+		getElements(name).head
 	}
 
 	override getSingleElement(EObject object) {
-		getElements(object).findFirst [true]
+		getElements(object).head
 	}
 
 }

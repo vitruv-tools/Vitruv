@@ -38,23 +38,23 @@ class GeneratorConstants {
 
 	@Pure
 	def static getIntermediateModelClassesPrefix(String conceptName) {
-		conceptName
+		conceptName.toFirstUpper
 	}
 
 	@Pure
 	def static getConceptDomainName(String conceptName) {
 		conceptName
 	}
-
+	
 	@Pure
 	def static getConceptDomainClass(String conceptName) {
-		new GenericClassNameGenerator(conceptName.conceptPackageFullName, conceptName.conceptDomainName + "Domain")
+		new GenericClassNameGenerator(conceptName.conceptPackageFullName, conceptName.conceptDomainName.toFirstUpper + "Domain")
 	}
 
 	@Pure
 	def static getConceptDomainProvider(String conceptName) {
 		new GenericClassNameGenerator(conceptName.conceptPackageFullName,
-			conceptName.conceptDomainName + "DomainProvider")
+			conceptName.conceptDomainName.toFirstUpper + "DomainProvider")
 	}
 
 	@Pure

@@ -19,7 +19,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConst
 package class IntermediateModelCodeGenerator extends SubGenerator {
 	static val GENERATED_CODE_COMPLIANCE_LEVEL = GenJDKLevel.JDK80_LITERAL
 	static val GENERATED_CODE_FOLDER = "."
-	
+
 	override generate() {
 		val generatedCodeDirectory = fsa.getURI(GENERATED_CODE_FOLDER)
 		for (generatedConcept : generatedConcepts) {
@@ -32,7 +32,7 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 	def private generateGenModel(EPackage generatedPackage, String conceptName, URI codeGenerationTargetFolder) {
 		GenModelFactory.eINSTANCE.createGenModel() => [
 			complianceLevel = GENERATED_CODE_COMPLIANCE_LEVEL
-			modelDirectory = codeGenerationTargetFolder.toGeneratorUri().path()
+			modelDirectory = codeGenerationTargetFolder.normalized.path
 			canGenerate = true
 			modelName = conceptName
 			initialize(Collections.singleton(generatedPackage))
@@ -44,16 +44,15 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 		]
 	}
 
-	def private toGeneratorUri(URI uriFromFsa) {
-		// we currently only know how to convert platform:/resource URIs. If you
-		// ever see another in the wild (which will break the generation),
-		// use the debugger and learn how to transform it!
+	def private normalized(URI uriFromFsa) {
+		// The EMF generator only supports generating inside an Eclipse
+		// project. 
 		if (uriFromFsa.isPlatformResource) {
 			// does anybody know any meaningful constant to remove this
 			// hardcoded string?
 			return uriFromFsa.deresolve(URI.createURI("platform:/resource/"))
 		}
-		return uriFromFsa
+		throw new IllegalArgumentException('''Intermediate model code generation is only possible inside an Eclipse project.''')
 	}
 
 	def private generateModelCode(GenModel generatedGenModel) {
