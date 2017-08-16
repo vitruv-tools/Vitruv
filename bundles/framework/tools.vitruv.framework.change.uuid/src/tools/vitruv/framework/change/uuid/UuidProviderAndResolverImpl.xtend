@@ -12,13 +12,16 @@ import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import static extension tools.vitruv.framework.util.bridges.JavaBridge.*;
 import org.eclipse.emf.transaction.TransactionalEditingDomain
 import tools.vitruv.framework.util.command.EMFCommandBridge
+import java.util.concurrent.Callable
 
 class UuidProviderAndResolverImpl implements UuidProviderAndResolver {
 	static val logger = Logger.getLogger(UuidProviderAndResolverImpl)
 	UuidToEObjectRepository repository;
 	ResourceSet resourceSet;
+	Resource uuidResource;
 
 	new(ResourceSet resourceSet, Resource uuidResource) {
+		this.uuidResource = uuidResource;
 		this.resourceSet = resourceSet;
 		loadAndRegisterUuidProviderAndResolver(uuidResource);
 	}
@@ -91,17 +94,25 @@ class UuidProviderAndResolverImpl implements UuidProviderAndResolver {
 
 	override registerEObject(String uuid, EObject eObject) {
 		logger.debug("Adding UUID " + uuid + " for EObject: " + eObject);
-		EMFCommandBridge.createAndExecuteVitruviusRecordingCommand([|
+		val Callable<Void> registerEObjectCall = [|
 			repository.uuidToEObject.put(uuid, eObject);
 			repository.EObjectToUuid.put(eObject, uuid);
 			return null;
-		], transactionalEditingDomain);
+		];
+		// If there is a TransactionalEditingDomain registered on the resource set, we have
+		// to also execute our command on that domain, otherwise (e.g. in change tests),
+		// there is no need to execute the command on a TransactionalEditingDomain. It can even
+		// lead to errors if the ResourceSet is also modified by the test, as these modifications
+		// would also have to be made on the TransactionalEditingDomain once it was created.
+		val domain = transactionalEditingDomain;
+		if (domain !== null) {
+			EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(registerEObjectCall, domain);
+		} else {
+			registerEObjectCall.call;
+		}
 	}
 
 	private def synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
-		if(null === TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet)) {
-			TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resourceSet);
-		}
 		return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet);
 	}
 
