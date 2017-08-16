@@ -32,6 +32,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import org.apache.log4j.Level
+import tools.vitruv.framework.vsum.InternalModelRepository
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	// Extensions.
@@ -115,10 +116,14 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			throw new IllegalStateException('''There are no objects affected by the given change«originalChange»''')
 
 		val consequentialChangesApplicationFunction = createChangeApplyFunction(consequentialChange)
+		if (resourceRepository instanceof InternalModelRepository)
+			resourceRepository.isCorrespondencesFilterActive = false
 		resourceRepository.startRecording
 		resourceRepository.executeOnResourceSet(consequentialChangesApplicationFunction)
 		handleObjectsWithoutResource
 		resourceRepository.endRecording
+		if (resourceRepository instanceof InternalModelRepository)
+			resourceRepository.isCorrespondencesFilterActive = true
 		level = Level::DEBUG
 		addPropagatedChanges(clonedChange, originalChange, newArrayList)
 		level = Level::ERROR

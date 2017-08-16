@@ -41,11 +41,15 @@ import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.helper.FileSystemHelper
 
 class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceProviding {
+	// Extensions.
 	static extension Factory = TransactionalEditingDomain::Factory::INSTANCE
 	static extension Logger = Logger::getLogger(ResourceRepositoryImpl.simpleName)
 	static extension TuidManager = TuidManager::instance
+
+	// Static values. 
 	static val VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges"
 
+	// Values.
 	@Accessors(PUBLIC_GETTER)
 	val ResourceSet resourceSet
 	val VitruvDomainRepository metamodelRepository
@@ -60,8 +64,11 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	@Accessors(PUBLIC_GETTER)
 	val List<TransactionalChange> lastUnresolvedChanges
 
+	// Variables.
 	VitruvDomain originalDomain
 	VitruvDomain currentDomain
+	@Accessors(PUBLIC_SETTER)
+	boolean isCorrespondencesFilterActive
 
 	new(File folder, VitruvDomainRepository metamodelRepository) {
 		this(folder, metamodelRepository, null)
@@ -80,6 +87,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 		changeRecorder.addToRecording(this.resourceSet)
 		lastResolvedChanges = newArrayList
 		lastUnresolvedChanges = newArrayList
+		isCorrespondencesFilterActive = true
 	}
 
 	override unresolveChanges() {
@@ -155,9 +163,12 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 			// TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions
 			// that are
 			// supported by the domains of the VirtualModel
-			relevantChanges.parallelStream.filter [ change |
-				change.URI === null || !change.URI.EMFUri.toString.endsWith("correspondence")
-			].collect(Collectors::toList)
+			return if (isCorrespondencesFilterActive)
+				relevantChanges.parallelStream.filter [ change |
+					change.URI === null || !change.URI.EMFUri.toString.endsWith("correspondence")
+				].collect(Collectors::toList)
+			else
+				relevantChanges
 		]
 		val filteredResolved = filterFunction.apply(resolvedChanges)
 		val filteredUnresolved = filterFunction.apply(unresolvedChanges)
