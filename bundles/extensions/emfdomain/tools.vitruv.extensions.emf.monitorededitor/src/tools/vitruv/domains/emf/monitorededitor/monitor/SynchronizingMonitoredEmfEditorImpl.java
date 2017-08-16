@@ -35,7 +35,7 @@ import tools.vitruv.domains.emf.monitorededitor.tools.IEditorManagementListener;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * <p>
@@ -94,7 +94,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
      */
     private final IEclipseAdapter eclipseAdapter = EclipseAdapterProvider.getInstance().getEclipseAdapter();
 
-    private final InternalVirtualModel virtualModel;
+    private final VirtualModel virtualModel;
 
     /**
      * A {@link SynchronizingMonitoredEmfEditorImpl} constructor setting up the new monitor with a
@@ -110,7 +110,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
      *            An {@link IMonitoringDecider} object telling the new instance which editors need to be
      *            monitored.
      */
-    public SynchronizingMonitoredEmfEditorImpl(final InternalVirtualModel virtualModel,
+    public SynchronizingMonitoredEmfEditorImpl(final VirtualModel virtualModel,
             final ResourceChangeSynchronizing changeSynchronizing,
             final IEditorPartAdapterFactory editorPartAdapterFact, final IMonitoringDecider monitoringDecider) {
         this.virtualModel = virtualModel;

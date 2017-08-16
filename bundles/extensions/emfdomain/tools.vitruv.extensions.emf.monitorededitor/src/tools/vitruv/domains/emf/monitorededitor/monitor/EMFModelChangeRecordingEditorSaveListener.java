@@ -26,7 +26,7 @@ import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.change.uuid.UuidProviderAndResolver;
-import tools.vitruv.framework.vsum.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * <p>
@@ -65,7 +65,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /** The listener getting fired when the user saves the edited file. */
     private final SaveEventListenerMgr saveActionListenerManager;
 
-    private InternalVirtualModel virtualModel;
+    private VirtualModel virtualModel;
 
     /**
      * A constructor for {@link EMFModelChangeRecordingEditorSaveListener} instances. The listener
@@ -166,7 +166,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      * Initializes the listener. After calling this method, the listener is active until
      * <code>dispose()</code> is called.
      */
-    public void initialize(InternalVirtualModel virtualModel) {
+    public void initialize(VirtualModel virtualModel) {
         if (!isInitialized) {
             resetChangeRecorder();
             installResourceReloadListener();

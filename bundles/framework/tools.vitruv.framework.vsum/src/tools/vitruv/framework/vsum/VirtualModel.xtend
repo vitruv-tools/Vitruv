@@ -6,10 +6,12 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import java.io.File
 import java.util.List
 import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
 
 interface VirtualModel {
 	def File getFolder();
 	def List<PropagatedChange> propagateChange(VitruviusChange change);
 	def void reverseChanges(List<PropagatedChange> changes);
 	def ModelInstance getModelInstance(VURI modelVuri);
+	def UuidProviderAndResolver getUuidProviderAndResolver();
 }

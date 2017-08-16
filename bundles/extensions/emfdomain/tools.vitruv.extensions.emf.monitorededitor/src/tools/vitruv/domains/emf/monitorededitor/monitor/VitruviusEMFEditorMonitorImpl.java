@@ -37,7 +37,6 @@ import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator;
 
@@ -108,8 +107,8 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     public VitruviusEMFEditorMonitorImpl(IEditorPartAdapterFactory factory, VirtualModel virtualModel,
             IVitruviusAccessor vitruvAccessor) {
         ResourceChangeSynchronizing internalChangeSync = createInternalChangeSynchronizing();
-        changeRecorderMonitor = new SynchronizingMonitoredEmfEditorImpl((InternalVirtualModel) virtualModel,
-                internalChangeSync, factory, monitoringDecider);
+        changeRecorderMonitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel, internalChangeSync, factory,
+                monitoringDecider);
         this.vitruvAccessor = vitruvAccessor;
         this.editorPartAdapterFactory = factory;
         this.virtualModel = virtualModel;
