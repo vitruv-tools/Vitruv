@@ -8,6 +8,7 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import java.util.Map
 import java.util.HashMap
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
+import tools.vitruv.framework.change.uuid.UuidProviderAndResolverImpl
 
 class ModelRepositoryImpl {
 	/**
@@ -92,7 +93,7 @@ class ModelRepositoryImpl {
 			throw new IllegalStateException("Duplicate recording on element")
 		}
 		val unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
-		val recorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges !== null, false);
+		val recorder = new AtomicEmfChangeRecorder(new UuidProviderAndResolverImpl(null, null), false, unresolvePropagatedChanges !== null, false);
 		recorder.addToRecording(element);
 		recorder.beginRecording();
 		rootToRecorder.put(element, recorder);

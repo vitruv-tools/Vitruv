@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import java.util.concurrent.Callable
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
+import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
 
 interface InternalVirtualModel extends VirtualModel {
 	def CorrespondenceModel getCorrespondenceModel();
@@ -14,4 +15,5 @@ interface InternalVirtualModel extends VirtualModel {
 	def void executeCommand(Callable<Void> command);
 	def void addChangePropagationListener(ChangePropagationListener propagationListener);
 	def void setUserInteractor(UserInteracting userInteractor);
+	def UuidProviderAndResolver getUuidProviderAndResolver();
 }

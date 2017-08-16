@@ -18,6 +18,7 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
+import tools.vitruv.framework.change.echange.EChangeIdManager
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ResourceRepositoryImpl resourceRepository;
@@ -26,6 +27,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private val ChangePropagator changePropagator;
 	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
 	private val File folder;
+	private val EChangeIdManager eChangeIdManager;
 	
 	public new(File folder, UserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
 		this.folder = folder;
@@ -43,6 +45,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
 		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider, metamodelRepository, resourceRepository, modelRepository);
+		this.eChangeIdManager = new EChangeIdManager(this.uuidProviderAndResolver, false);
 		VirtualModelManager.instance.putVirtualModel(this);
 	}
 	
@@ -72,7 +75,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 	
 	override propagateChange(VitruviusChange change) {
 		// Save is done by the change propagator because it has to be performed before finishing sync
-		return changePropagator.propagateChange(change);
+		val result = changePropagator.propagateChange(change);
+		change.EChanges.forEach[eChangeIdManager.updateRegisteredObject(it)];
+		return result;
 	}
 	
 	override reverseChanges(List<PropagatedChange> changes) {
@@ -96,4 +101,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override File getFolder() {
 		return folder;
 	}
+	
+	override getUuidProviderAndResolver() {
+		return resourceRepository.uuidProviderAndResolver
+	}
+	
 }

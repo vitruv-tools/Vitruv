@@ -76,7 +76,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
         String unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
         initializeUuidProviderAndResolver();
-        this.changeRecorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges != null, false);
+        this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidProviderAndResolver, false,
+                unresolvePropagatedChanges != null, false);
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();

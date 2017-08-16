@@ -18,6 +18,8 @@ import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
+import tools.vitruv.framework.change.echange.EChangeIdManager
 
 class AtomicEmfChangeRecorder {
 	val Set<Notifier> elementsToObserve
@@ -26,37 +28,58 @@ class AtomicEmfChangeRecorder {
 	var List<TransactionalChange> resolvedChanges;
 	var List<TransactionalChange> unresolvedChanges;
 	val AtomicChangeRecorder changeRecorder;
+	val UuidProviderAndResolver uuidProviderAndResolver;
+	val EChangeIdManager eChangeIdManager;
 	
 	/**
 	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
-	 * the recorded changes, but updated Tuids.
+	 * the recorded changes, but updates {@link Tuid}s.
+	 * 
+	 * @param uuidProviderAndResolver -
+	 * 		the {@link UuidProviderAndResolver} for ID generation
+	 * @param strictMode -
+	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
+	 * 		Should be set to <code>false</code> if model is not recorded from beginning
 	 */
-	new() {
-		this(false, true)
+	new(UuidProviderAndResolver uuidProviderAndResolver, boolean strictMode) {
+		this(uuidProviderAndResolver, strictMode, false, true)
 	}
 
 	/**
-	 * Constructors which updated Tuids
+	 * Constructors which updates {@link Tuid}s.
 	 * 
+	 * @param uuidProviderAndResolver -
+	 * 		the {@link UuidProviderAndResolver} for ID generation
+	 * @param strictMode -
+	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
+	 * 		Should be set to <code>false</code> if model is not recorded from beginning
 	 * @param unresolveRecordedChanges -
 	 * 		The recorded changes will be replaced by unresolved changes, which referenced EObjects are proxy objects.
 	 */
-	new(boolean unresolveRecordedChanges) {
-		this(unresolveRecordedChanges, true);
+	new(UuidProviderAndResolver uuidProviderAndResolver, boolean strictMode, boolean unresolveRecordedChanges) {
+		this(uuidProviderAndResolver, strictMode, unresolveRecordedChanges, true);
 	}
 
 	/**
-	 * Constructor for AtomicEMFChangeRecorder
+	 * Constructor for AtomicEMFChangeRecorder.
+	 * 
+	 * @param uuidProviderAndResolver -
+	 * 		the {@link UuidProviderAndResolver} for ID generation
+	 * @param strictMode -
+	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
+	 * 		Should be set to <code>false</code> if model is not recorded from beginning
 	 * @param unresolveRecordedChanges -
 	 * 		The recorded changes will be replaced by unresolved changes, which referenced EObjects are proxy objects.
 	 * @param updateTuids -
 	 * 		specifies whether TUIDs shall be updated or not.
 	 */
-	new(boolean unresolveRecordedChanges, boolean updateTuids) {
+	new(UuidProviderAndResolver uuidProviderAndResolver, boolean strictMode, boolean unresolveRecordedChanges, boolean updateTuids) {
 		this.elementsToObserve = newHashSet();
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 		this.updateTuids = updateTuids;
 		this.changeRecorder = new AtomicChangeRecorder();
+		this.uuidProviderAndResolver = uuidProviderAndResolver;
+		this.eChangeIdManager = new EChangeIdManager(uuidProviderAndResolver, strictMode)
 	}
 
 	def void beginRecording() {
@@ -123,6 +146,10 @@ class AtomicEmfChangeRecorder {
 			} else {
 				(result as LegacyEMFModelChangeImpl).applyForwardWithoutTuidUpdate();
 			}
+		}
+		// Allow null provider and resolver for test purposes
+		if (uuidProviderAndResolver !== null) {
+			result.EChanges.forEach[eChangeIdManager.setOrGenerateIds(it)]
 		}
 		return result;
 	}
