@@ -2,24 +2,22 @@ package tools.vitruv.framework.versioning.extensions.impl
 
 import org.eclipse.xtend.lib.annotations.Accessors
 
-import org.graphstream.graph.Graph
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.EdgeType
-import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.versioning.extensions.GraphManager
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
+import tools.vitruv.framework.versioning.EChangeGraph
 
 class GraphManagerImpl implements GraphManager {
-	static extension GraphExtension = GraphExtension::instance
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	Graph graph
+	EChangeGraph graph
 
 	static def GraphManager init() {
 		new GraphManagerImpl
 	}
 
 	private new() {
-		graph = GraphExtension::createNewEChangeGraph
+		graph = EChangeGraph::createEChangeGraph
 		System.setProperty(GraphStreamConstants::renderer, GraphStreamConstants::currentRenderer)
 	}
 

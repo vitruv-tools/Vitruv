@@ -20,21 +20,20 @@ import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetectionStrategy
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DependencyGraphCreator
+import tools.vitruv.framework.versioning.EChangeGraph
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 import tools.vitruv.framework.versioning.extensions.EChangeNode
-import tools.vitruv.framework.versioning.extensions.GraphExtension
 
 class ConflictDetectorImpl implements ConflictDetector {
-	// Extensions 
+	// Extensions.
 	static extension DependencyGraphCreator = DependencyGraphCreator::instance
 	static extension EChangeCompareUtil = EChangeCompareUtil::instance
-	static extension GraphExtension = GraphExtension::instance
 	static extension Logger = Logger::getLogger(ConflictDetectorImpl)
 
-	// Functions  
+	// Static functions.
 	static val getEChanges = [ Function1<Iterable<PropagatedChange>, Iterable<VitruviusChange>> toEChange, Iterable<PropagatedChange> changeIt |
 		toEChange.apply(changeIt).map[EChanges].flatten
 	]
@@ -63,21 +62,8 @@ class ConflictDetectorImpl implements ConflictDetector {
 	static val isNotInCommon = [ Collection<EChange> common, EChange e|
 			!common.exists [ o |e.isEChangeEqual(o)]
 		]
-	private static def getOriginalEChanges(Iterable<PropagatedChange> propagatedChanges) {
-		originalEChangesFunction.apply(propagatedChanges)
-	}
-
-	private static def getTriggeredEChanges(Iterable<PropagatedChange> propagatedChanges) {
-		triggeredEChangesFunction.apply(propagatedChanges)
-	}
-
-	private static def getEChangeSet(Set<EChangeNode> nodes) {
-		toEChangeSet.apply(nodes)
-	}
-	private static def getEChangesWithoutConflict(Set<EChangeNode> nodes) {
-		functionEChangesWithoutConflict.apply(nodes)
-	}
-
+	
+	// Values.
 	@Accessors(PUBLIC_GETTER)
 	val List<Conflict> conflicts
 	@Accessors(PUBLIC_GETTER)
@@ -95,6 +81,8 @@ class ConflictDetectorImpl implements ConflictDetector {
 
 	val List<List<?>> lists	
 	val ConflictDetectionStrategy conflictDetectionStrategy
+	
+	// Variables.
 	BranchDiff branchDiff
 	VURI myVURI
 	VURI theirVURI
@@ -117,8 +105,25 @@ class ConflictDetectorImpl implements ConflictDetector {
 			theirConflictFreeTriggeredEChanges
 		]
 	}
+	// Static methods.
+	private static def getOriginalEChanges(Iterable<PropagatedChange> propagatedChanges) {
+		originalEChangesFunction.apply(propagatedChanges)
+	}
+
+	private static def getTriggeredEChanges(Iterable<PropagatedChange> propagatedChanges) {
+		triggeredEChangesFunction.apply(propagatedChanges)
+	}
+
+	private static def getEChangeSet(Set<EChangeNode> nodes) {
+		toEChangeSet.apply(nodes)
+	}
+	private static def getEChangesWithoutConflict(Set<EChangeNode> nodes) {
+		functionEChangesWithoutConflict.apply(nodes)
+	}
+	
+	// Overridden methods.
 	override getConflictFreeOriginalEChanges() {
-		return (commonConflictFreeOriginalEChanges + myConflictFreeOriginalEChanges +
+		(commonConflictFreeOriginalEChanges + myConflictFreeOriginalEChanges +
 			theirConflictFreeOriginalEChanges).toList
 	}
 	
@@ -138,6 +143,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 		// TODO PS Remove 
 		level = Level::DEBUG
 		val List<Conflict> naiveConflicts = newArrayList
+	
 		// PS Create dependency graphs.
 		val graph1 = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
 		val graph2 = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
@@ -244,43 +250,66 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val myConflictedChanges = naiveConflicts.filter(SimpleChangeConflict).map[sourceChange].toSet
 		val theirConflictedChanges = naiveConflicts.filter(SimpleChangeConflict).map[targetChange].toSet
 		
-		// PS Get the subgraphs consisting of the conflicted changes.
-		val mySubgraph = graph1.getSubgraphContainingEChanges(myConflictedChanges)
-		val theirSubgraph = graph2.getSubgraphContainingEChanges(theirConflictedChanges)
-		
-		val leaves1 = mySubgraph.leaves
-		val leaves2 = theirSubgraph.leaves
-		val List<Conflict> cleanedConflicts = newArrayList
-		combinedGraph.savePicture("combined_graph")
-		// Find correspondences in the two subgraphs. 
-		leaves1.forEach [ myLeave |
-			val myEchange = myLeave.EChange
-			val theirLeave = leaves2.findFirst [
-				val theirEChange = EChange
-				return combinedGraph.checkIfEdgeExists(myEchange, theirEChange, EdgeType::CONFLICTS)
-			]
-			if (null !== theirLeave) {
-				processLeave(myLeave, theirLeave, cleanedConflicts)
-			} else {
-				// TODO PS recursively remove Nodes from the graph
-				throw new IllegalStateException
-			}
-		]
-		conflicts += cleanedConflicts
+		val leaves1 = graph1.getLeaves(myConflictedChanges)
+		val leaves2 = graph2.getLeaves(theirConflictedChanges)
+		processConflicts(combinedGraph, leaves1, leaves2)
 	}
-
+	
+	
 	override addMap(Map<String, String> rootToRootMap) {
 		rootToRootMap.entrySet.map[key -> value].forEach[addPair]
 	}
-
+	
+	// Private methods.
 	private def processConflict(EChange e1, EChange e2, List<Conflict> currentConflicts) {
 		val type = conflictDetectionStrategy.getConflictType(e1, e2)
 		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
 		val conflict = new SimpleChangeConflictImpl(type, solvability, myVURI, theirVURI, #[], #[], e1, e2)
 		currentConflicts += conflict
 	}
-
-	private def processLeave(EChangeNode leave1, EChangeNode leave2, List<Conflict> currentConflicts) {
+	
+	private def void processConflicts(EChangeGraph combinedGraph, Iterable<EChangeNode> leaves1, Iterable<EChangeNode> leaves2) {
+		val List<Conflict> cleanedConflicts = newArrayList
+		combinedGraph.savePicture("combined_graph")
+		// Find correspondences in the two subgraphs. 
+		leaves1.forEach [ myLeave |
+			val myEchange = myLeave.EChange
+			// PS Try to find a conflict of type 1.
+			val theirCorrespondentLeave = leaves2.findFirst [
+				val theirEChange = EChange
+				return combinedGraph.checkIfEdgeExists(myEchange, theirEChange, EdgeType::CONFLICTS)
+			]
+			if (null !== theirCorrespondentLeave) {
+				// PS This is an conflict of type 1. The original changes respectively the EChanges of the leaves of 
+				// the subgraphs are conflicting each other.
+				processConflictType1Leave(myLeave, theirCorrespondentLeave, cleanedConflicts)
+			} else {
+				
+				// PS Try to find a conflict of type 3
+				val otherLeave = leaves2.findFirst[theirLeave|
+					myLeave.<EChangeNode>breadthFirstIterator.forall[myNode|
+						theirLeave.<EChangeNode>breadthFirstIterator.exists[theirNode|
+							return combinedGraph.checkIfEdgeExists(myNode.EChange, theirNode.EChange, EdgeType::CONFLICTS)
+						]
+					]		
+				]
+				if (null !== otherLeave){
+					processConflictType3(myLeave, otherLeave, combinedGraph, cleanedConflicts)
+				}else {
+					throw new UnsupportedOperationException("")
+				}
+			}
+		]
+		conflicts += cleanedConflicts
+	}
+	
+	private def getLeaves(EChangeGraph graph, Set<EChange> eChanges) {
+		// PS Get the subgraphs consisting of the conflicted changes.
+		val subgraph = graph.getSubgraphContainingEChanges(eChanges)
+		return subgraph.leaves
+	} 
+	
+	private def processConflictType1Leave(EChangeNode leave1, EChangeNode leave2, Collection<Conflict> currentConflicts) {
 		val e1 = leave1.EChange
 		val e2 = leave2.EChange
 		val type = conflictDetectionStrategy.getConflictType(e1, e2)
@@ -312,7 +341,13 @@ class ConflictDetectorImpl implements ConflictDetector {
 			currentConflicts += conflict
 		}
 	}
-
 	
+	private def processConflictType3(EChangeNode myLeave, EChangeNode theirLeave, EChangeGraph combinedGraph, Collection<Conflict> currentConflicts) {
+		val e1 = myLeave.EChange
+		val nodeInCombinedGraph = combinedGraph.getNode(e1)
+		val type = conflictDetectionStrategy.getConflictType(e1, e2)
+		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
+		
+	}
 
 }

@@ -40,8 +40,10 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
-		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
-			e2.insertChange.affectedEObject as InternalEObject)
+		var containerIsRootAndMapped = containerIsRootAndMapped(
+			affectedContainerPlatformString1,
+			e2.insertChange.affectedEObject as InternalEObject
+		)
 		val newValueIsEqual = EcoreUtil::equals(e1.insertChange.newValue, e2.insertChange.newValue)
 		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && !newValueIsEqual
 	}
@@ -54,8 +56,10 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
-		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
-			e2.insertChange.affectedEObject as InternalEObject)
+		var containerIsRootAndMapped = containerIsRootAndMapped(
+			affectedContainerPlatformString1,
+			e2.insertChange.affectedEObject as InternalEObject
+		)
 		val indexEqual = e1.insertChange.index === e2.insertChange.index
 		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && indexEqual
 	}
@@ -66,12 +70,13 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 	) {
 		val affectedObjectIsEqual = isEObjectEqual(e1.affectedEObject, e2.affectedEObject)
 		val affectedFeatureIsEqual = EcoreUtil::equals(e1.affectedFeature, e2.affectedFeature)
-
 		val newValueIsEqual = e1.newValue == e2.newValue
 		val affectedContainer1 = e1.affectedEObject as InternalEObject
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
-		val containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
-			e2.affectedEObject as InternalEObject)
+		val containerIsRootAndMapped = containerIsRootAndMapped(
+			affectedContainerPlatformString1,
+			e2.affectedEObject as InternalEObject
+		)
 		val returnValue = (affectedObjectIsEqual || containerIsRootAndMapped) && affectedFeatureIsEqual &&
 			!newValueIsEqual
 		return returnValue

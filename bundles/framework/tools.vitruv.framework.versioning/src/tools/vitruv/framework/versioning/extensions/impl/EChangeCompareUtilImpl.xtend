@@ -3,6 +3,7 @@ package tools.vitruv.framework.versioning.extensions.impl
 import java.util.Set
 
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 
@@ -15,7 +16,6 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
-import org.eclipse.emf.ecore.EObject
 
 class EChangeCompareUtilImpl implements EChangeCompareUtil {
 	// Values.
@@ -24,9 +24,9 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 	val Set<Pair<String, String>> rootToRootMap
 
 	private new() {
-		rootToRootMap = newHashSet
-		nameToNameMap = newHashSet
 		idToIdMap = HashBiMap::create
+		nameToNameMap = newHashSet
+		rootToRootMap = newHashSet
 	}
 
 	static def EChangeCompareUtil init() { new EChangeCompareUtilImpl }
