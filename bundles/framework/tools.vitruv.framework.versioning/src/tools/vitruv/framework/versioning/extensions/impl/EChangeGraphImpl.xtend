@@ -101,7 +101,7 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 	}
 
 	override edgesWithType(EdgeType t) {
-		edgeSet.filter[id.contains(t.toString)]
+		edgeSet.filter[e|e.id.contains(t.toString)]
 	}
 
 	override checkIfEdgeExists(EChange e1, EChange e2) {
@@ -113,7 +113,7 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 
 	override checkIfEdgeExists(EChange e1, EChange e2, EdgeType type) {
 		val edgeExists = checkIfEdgeExists(e1, e2)
-		if (!edgeExists)
+		if(!edgeExists)
 			return false
 		val edge = getNode(e1).<EChangeEdge>getEdgeBetween(getNode(e2))
 		return edge.isType(type)
@@ -150,11 +150,11 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 		]
 		this.<EChangeEdge>edgeSet.filter [
 			nodePredicate.apply(sourceNode) && nodePredicate.apply(targetNode)
-		].filter[edgePredicate.apply(it)].forEach [
-			val newSourceNode = newGraph.getNode(sourceNode.id)
-			val newTargetNode = newGraph.getNode(targetNode.id)
-			val edge = newGraph.<EChangeEdge>addEdge(id, newSourceNode, newTargetNode, directed)
-			edge.type = type
+		].filter[edgePredicate.apply(it)].forEach [ edge |
+			val newSourceNode = newGraph.getNode(edge.sourceNode.id)
+			val newTargetNode = newGraph.getNode(edge.targetNode.id)
+			val newEdge = newGraph.<EChangeEdge>addEdge(edge.id, newSourceNode, newTargetNode, edge.directed)
+			newEdge.type = edge.type
 		]
 		return newGraph
 	}
@@ -169,7 +169,7 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 			requiredGraph.edgeSet.forEach [ edge |
 				val source = g.getNode(edge.sourceNode.id)
 				val target = g.getNode(edge.targetNode.id)
-				if (null !== source && null !== target)
+				if(null !== source && null !== target)
 					g.addEdge(edge.id, source, target)
 			]
 			currentGraphs += g
@@ -192,7 +192,7 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 
 	override savePicture(String name) {
 		val isPrintActive = null !== System.getProperty(VM_ARGUMENT_PRINT_PICTURES)
-		if (isPrintActive) {
+		if(isPrintActive) {
 			val fsi = new FileSinkImages(OutputType.PNG, Resolutions.HD720)
 			fsi.setLayoutPolicy(LayoutPolicy.COMPUTED_FULLY_AT_NEW_IMAGE)
 			write(fsi, '''./test_«name»_write.png''')
@@ -204,25 +204,25 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 	}
 
 	override add(EChangeGraph graphToAdd) {
-		val x = if (graphMap.containsKey(this)) {
+		val x = if(graphMap.containsKey(this)) {
 				graphMap.remove(this)
 			} else
 				0
 
-		graphToAdd.<EChangeNode>nodeSet.forEach [
-			val newNode = graph.<EChangeNode>addNode(id)
+		graphToAdd.<EChangeNode>nodeSet.forEach [ node |
+			val newNode = <EChangeNode>addNode(node.id)
 			attributeKeySet.forEach [ attKey |
 				val attribute = <String>getAttribute(attKey)
 				newNode.addAttribute(attKey, attribute)
 			]
 			newNode.setAttribute(GraphStreamConstants::uiClass, '''graph«x»''')
-			newNode.EChange = EChange
+			newNode.EChange = node.EChange
 		]
 		graphMap.put(this, x + 1)
-		graphToAdd.edgeSet.forEach [
-			val newSourceNode = getNode(sourceNode.id)
-			val newTargetNode = getNode(targetNode.id)
-			val edge = addEdge(id, newSourceNode, newTargetNode, directed)
+		graphToAdd.edgeSet.forEach [ currentEdge |
+			val newSourceNode = getNode(currentEdge.sourceNode.id)
+			val newTargetNode = getNode(currentEdge.targetNode.id)
+			val edge = addEdge(currentEdge.id, newSourceNode, newTargetNode, currentEdge.directed)
 			attributeKeySet.forEach [ attKey |
 				val attribute = <String>getAttribute(attKey)
 				edge.addAttribute(attKey, attribute)

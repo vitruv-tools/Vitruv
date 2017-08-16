@@ -41,6 +41,7 @@ class PrimitiveIsomorphismTesterImpl implements IsomorphismTesterAlgorithm {
 		new PrimitiveIsomorphismTesterImpl
 	}
 
+	// Overridden methods.
 	override areIsomorphic(EChangeGraph g1, EChangeGraph g2) {
 		unmatchedOfGraph1.clear
 		unmatchedOfGraph2.clear
@@ -67,6 +68,7 @@ class PrimitiveIsomorphismTesterImpl implements IsomorphismTesterAlgorithm {
 		combinedGraph.savePicture
 	}
 
+	// Private methods.
 	private def void processGraphs(EChangeGraph g1, EChangeGraph g2, Set<EChangeNode> nodes) {
 		g1.<EChangeNode>nodeSet.filter [ node1 |
 			!g2.<EChangeNode>nodeSet.exists [ node2 |

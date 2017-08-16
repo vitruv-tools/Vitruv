@@ -7,8 +7,6 @@ import java.util.Map
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 
-import org.graphstream.graph.Graph
-
 import allElementTypes.Root
 
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -21,7 +19,6 @@ import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DependencyGraphCreator
 import tools.vitruv.framework.versioning.ModelMerger
 import tools.vitruv.framework.versioning.Reapplier
-import tools.vitruv.framework.versioning.extensions.GraphExtension
 import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
 
 import static org.hamcrest.CoreMatchers.equalTo
@@ -33,10 +30,10 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize
 
 import static org.junit.Assert.assertThat
+import tools.vitruv.framework.versioning.EChangeGraph
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected static extension DependencyGraphCreator = DependencyGraphCreator::instance
-	protected static extension GraphExtension = GraphExtension::instance
 	protected static extension VirtualModelExtension = VirtualModelExtension::instance
 	protected static extension BranchDiffCreator = BranchDiffCreator::instance
 
@@ -47,7 +44,7 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected BranchDiff branchDiff
 	protected Collection<Root> roots
 	protected ConflictDetector conflictDetector = ConflictDetector::createConflictDetector
-	protected Graph graph
+	protected EChangeGraph graph
 	protected List<Conflict> conflicts
 	protected List<EChange> echanges
 	protected List<VitruviusChange> changes

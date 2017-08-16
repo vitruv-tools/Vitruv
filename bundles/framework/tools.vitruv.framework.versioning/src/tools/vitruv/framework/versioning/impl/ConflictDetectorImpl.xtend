@@ -26,6 +26,8 @@ import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 import tools.vitruv.framework.versioning.extensions.EChangeNode
+import tools.vitruv.framework.versioning.extensions.EChangeEdge
+import java.util.stream.Collectors
 
 class ConflictDetectorImpl implements ConflictDetector {
 	// Extensions.
@@ -325,7 +327,41 @@ class ConflictDetectorImpl implements ConflictDetector {
 			val theirTriggeredEChanges = newArrayList
 			val myTriggeredVuris = newArrayList
 			val theirTriggeredVuris = newArrayList
-			val fillLists = [ EChangeNode leave, List<EChange> originalList, List<EChange> triggeredList, List<VURI> vuris |
+			
+			fillListsType1(leave1, myEchanges, myTriggeredEChanges, myTriggeredVuris)
+			fillListsType1(leave2, theirEChanges, theirTriggeredEChanges, theirTriggeredVuris)
+			val conflict = new MultiChangeConflictImpl(
+				type, solvability, e1, e2, myEchanges, theirEChanges, myVURI,
+				theirVURI, myTriggeredEChanges, theirTriggeredEChanges, myTriggeredVuris, theirTriggeredVuris
+				)
+			currentConflicts += conflict
+		}
+	}
+	
+	private def processConflictType3(
+		EChangeNode myLeave, EChangeNode theirLeave, EChangeGraph combinedGraph, Collection<Conflict> currentConflicts
+	) {
+		val myEchanges = newArrayList
+		val myTriggeredEChanges = newArrayList
+		val theirEChanges = newArrayList
+		val theirTriggeredEChanges = newArrayList
+		val myVURIs = newArrayList
+		val theirVURIs = newArrayList
+		val myTriggeredVuris = newArrayList
+		val theirTriggeredVuris = newArrayList
+		fillListsType3(myLeave,combinedGraph,myEchanges,theirEChanges, myVURIs, theirVURIs)
+		fillListsType3(theirLeave,combinedGraph,theirTriggeredEChanges, myTriggeredEChanges, theirTriggeredVuris, myTriggeredVuris)
+		val e1 = myLeave.EChange
+		val e2 = getCorrespondentEChange(e1, combinedGraph)
+		val type = conflictDetectionStrategy.getConflictType(e1, e2)
+		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
+		val conflict = new MultiChangeConflictImpl(
+				type, solvability, e1, e2, myEchanges, theirEChanges, myVURI,
+			theirVURI, myTriggeredEChanges, theirTriggeredEChanges, myTriggeredVuris, theirTriggeredVuris
+		)
+		currentConflicts += conflict
+	}
+	private static def fillListsType1 ( EChangeNode leave, List<EChange> originalList, List<EChange> triggeredList, List<VURI> vuris) {
 				leave.<EChangeNode>breadthFirstIterator.forEach [ node |
 					if (node.triggered) {
 						triggeredList += node.EChange
@@ -333,22 +369,28 @@ class ConflictDetectorImpl implements ConflictDetector {
 					} else
 						originalList += node.EChange
 				]
-			]
-			fillLists.apply(leave1, myEchanges, myTriggeredEChanges, myTriggeredVuris)
-			fillLists.apply(leave2, theirEChanges, theirTriggeredEChanges, theirTriggeredVuris)
-			val conflict = new MultiChangeConflictImpl(type, solvability, e1, e2, myEchanges, theirEChanges, myVURI,
-				theirVURI, myTriggeredEChanges, theirTriggeredEChanges, myTriggeredVuris, theirTriggeredVuris)
-			currentConflicts += conflict
-		}
+			}
+	
+	private static  def EChange getCorrespondentEChange(EChange e, EChangeGraph combinedGraph) {
+		val nodeInCombinedGraph = combinedGraph.getNode(e)
+		return nodeInCombinedGraph.<EChangeEdge>leavingEdgeSet.findFirst[type === EdgeType::CONFLICTS]
+		.<EChangeNode>targetNode.EChange
 	}
 	
-	private def processConflictType3(EChangeNode myLeave, EChangeNode theirLeave, EChangeGraph combinedGraph, Collection<Conflict> currentConflicts) {
-		val e1 = myLeave.EChange
+	private static def fillListsType3(
+		EChangeNode leave, EChangeGraph combinedGraph, Collection<EChange> myEChanges,Collection<EChange> theirEChanges,
+		Collection<VURI> myVURIs, 
+		Collection<VURI> theirVURIs 
+	) {
+		val e1 = leave.EChange
 		val nodeInCombinedGraph = combinedGraph.getNode(e1)
-		val edges = nodeInCombinedGraph.
-		val type = conflictDetectionStrategy.getConflictType(e1, e2)
-		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
-		
+		myVURIs += nodeInCombinedGraph.vuri
+	  	val nodesInOtherGraph = nodeInCombinedGraph.<EChangeEdge>leavingEdgeSet.stream.filter[type === EdgeType::CONFLICTS].map[
+			<EChangeNode>targetNode 
+		].collect(Collectors::toSet)
+		myEChanges += e1
+		theirEChanges += nodesInOtherGraph.map[EChange]
+		theirVURIs += nodesInOtherGraph.map[vuri]
 	}
 
 }

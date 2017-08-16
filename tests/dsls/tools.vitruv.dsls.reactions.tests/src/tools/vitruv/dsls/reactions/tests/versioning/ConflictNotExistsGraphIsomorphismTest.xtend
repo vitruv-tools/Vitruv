@@ -1,11 +1,11 @@
 package tools.vitruv.dsls.reactions.tests.versioning
 
 import org.junit.Test
+
 import tools.vitruv.dsls.reactions.tests.AbstractConflictNotExistsTest
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
 import tools.vitruv.framework.versioning.extensions.EChangeNode
-import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.collection.IsEmptyCollection.empty
@@ -20,7 +20,7 @@ class ConflictNotExistsGraphIsomorphismTest extends AbstractConflictNotExistsTes
 		graph = createDependencyGraph(changes)
 		val otherChanges = branchDiff.compareChanges.map[originalChange]
 		val otherGraph = createDependencyGraph(otherChanges)
-		val IsomorphismTesterAlgorithm tester = new PrimitiveIsomorphismTesterImpl
+		val IsomorphismTesterAlgorithm tester = IsomorphismTesterAlgorithm::createIsomorphismTester
 		tester.init(graph, otherGraph)
 		tester.compute
 		assertThat(tester.isIsomorphic, is(true))
@@ -45,7 +45,7 @@ class ConflictNotExistsGraphIsomorphismTest extends AbstractConflictNotExistsTes
 	def void testWithCorrespondence() {
 		graph = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
 		val otherGraph = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
-		val IsomorphismTesterAlgorithm tester = new PrimitiveIsomorphismTesterImpl
+		val IsomorphismTesterAlgorithm tester = IsomorphismTesterAlgorithm::createIsomorphismTester
 		tester.init(graph, otherGraph)
 		tester.compute
 		assertThat(tester.isIsomorphic, is(true))

@@ -18,7 +18,6 @@ import tools.vitruv.framework.versioning.ConflictType
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
 import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.extensions.EChangeNode
-import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.collection.IsEmptyIterable.emptyIterable
@@ -37,7 +36,7 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		val otherChanges = branchDiff.compareChanges.map[originalChange]
 		val otherEChanges = branchDiff.compareChanges.map[originalChange.EChanges].flatten
 		val otherGraph = createDependencyGraph(otherChanges)
-		val IsomorphismTesterAlgorithm tester = new PrimitiveIsomorphismTesterImpl
+		val IsomorphismTesterAlgorithm tester = IsomorphismTesterAlgorithm::createIsomorphismTester
 		tester.init(graph, otherGraph)
 		tester.compute
 		assertThat(tester.isIsomorphic, is(false))
@@ -64,7 +63,7 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		val correspondentEChanges = branchDiff.baseChanges.map[consequentialChanges.EChanges].flatten.toList
 		val otherCorrespondentEChanges = branchDiff.compareChanges.map[consequentialChanges.EChanges].flatten.toList
 		val otherGraph = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
-		val IsomorphismTesterAlgorithm tester = new PrimitiveIsomorphismTesterImpl
+		val IsomorphismTesterAlgorithm tester = IsomorphismTesterAlgorithm::createIsomorphismTester
 		tester.init(graph, otherGraph)
 		tester.compute
 		assertThat(tester.isIsomorphic, is(false))
