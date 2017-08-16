@@ -13,6 +13,7 @@ import tools.vitruv.framework.versioning.ConflictType
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 
 class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
+	// Extensions.
 	static extension EChangeCompareUtil = EChangeCompareUtil::instance
 
 	override conflicts(EChange e1, EChange e2) {
@@ -35,7 +36,7 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		CreateAndReplaceNonRoot<?, ?> e1,
 		CreateAndReplaceNonRoot<?, ?> e2
 	) {
-		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
+		val createdObjectIsEqual = isEObjectEqual(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
@@ -49,7 +50,7 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		CreateAndInsertNonRoot<?, ?> e1,
 		CreateAndInsertNonRoot<?, ?> e2
 	) {
-		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
+		val createdObjectIsEqual = isEObjectEqual(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
@@ -63,8 +64,9 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		ReplaceSingleValuedEAttribute<?, ?> e1,
 		ReplaceSingleValuedEAttribute<?, ?> e2
 	) {
-		val affectedObjectIsEqual = EcoreUtil::equals(e1.affectedEObject, e2.affectedEObject)
+		val affectedObjectIsEqual = isEObjectEqual(e1.affectedEObject, e2.affectedEObject)
 		val affectedFeatureIsEqual = EcoreUtil::equals(e1.affectedFeature, e2.affectedFeature)
+
 		val newValueIsEqual = e1.newValue == e2.newValue
 		val affectedContainer1 = e1.affectedEObject as InternalEObject
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString

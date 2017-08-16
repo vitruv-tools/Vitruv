@@ -117,7 +117,15 @@ class ConflictDetectorImpl implements ConflictDetector {
 			theirConflictFreeTriggeredEChanges
 		]
 	}
-
+	override getConflictFreeOriginalEChanges() {
+		return (commonConflictFreeOriginalEChanges + myConflictFreeOriginalEChanges +
+			theirConflictFreeOriginalEChanges).toList
+	}
+	
+	override addIdToIdPair(Pair<String, String> idPair) {
+		addIdPair(idPair)
+	}
+	
 	override init(BranchDiff currentbranchDiff) {
 		this.branchDiff = currentbranchDiff
 		conflicts.clear
@@ -305,9 +313,6 @@ class ConflictDetectorImpl implements ConflictDetector {
 		}
 	}
 
-	override getConflictFreeOriginalEChanges() {
-		return (commonConflictFreeOriginalEChanges + myConflictFreeOriginalEChanges +
-			theirConflictFreeOriginalEChanges).toList
-	}
+	
 
 }

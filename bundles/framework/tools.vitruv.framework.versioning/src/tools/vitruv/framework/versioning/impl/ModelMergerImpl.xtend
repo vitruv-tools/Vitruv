@@ -2,8 +2,14 @@ package tools.vitruv.framework.versioning.impl
 
 import java.util.List
 import java.util.Map
+import java.util.Set
+import java.util.function.Consumer
+
+import org.apache.log4j.Logger
+
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function1
+
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.BranchDiff
@@ -12,21 +18,25 @@ import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.ConflictSeverity
 import tools.vitruv.framework.versioning.ModelMerger
 import tools.vitruv.framework.versioning.extensions.URIRemapper
-import java.util.function.Consumer
-import org.apache.log4j.Logger
 
 class ModelMergerImpl implements ModelMerger {
+	// Extensions.
 	static extension Logger = Logger::getLogger(ModelMergerImpl)
 	static extension URIRemapper = URIRemapper::instance
+
+	// Values.
+	@Accessors(PUBLIC_GETTER)
+	val List<EChange> resultingOriginalEChanges
+
+	@Accessors(PUBLIC_GETTER)
+	val List<EChange> resultingTriggeredEChanges
+
+	val ConflictDetector conflictDetector
+
+	// Variables.	
 	BranchDiff branchDiff
 	Function1<Conflict, List<EChange>> originalCallback
 	Function1<Conflict, List<EChange>> triggeredCallback
-	val ConflictDetector conflictDetector
-
-	@Accessors(PUBLIC_GETTER)
-	val List<EChange> resultingOriginalEChanges
-	@Accessors(PUBLIC_GETTER)
-	val List<EChange> resultingTriggeredEChanges
 
 	new() {
 		conflictDetector = ConflictDetector::createConflictDetector
@@ -39,10 +49,20 @@ class ModelMergerImpl implements ModelMerger {
 		Function1<Conflict, List<EChange>> ocb,
 		Function1<Conflict, List<EChange>> tcb
 	) {
-		branchDiff = b
+		init(b, ocb, tcb, #{})
+	}
+
+	override init(
+		BranchDiff branchDelta,
+		Function1<Conflict, List<EChange>> ocb,
+		Function1<Conflict, List<EChange>> tcb,
+		Set<Pair<String, String>> idPairsParam
+	) {
+		branchDiff = branchDelta
 		originalCallback = ocb
 		triggeredCallback = tcb
 		conflictDetector.init(branchDiff)
+		idPairsParam.forEach[conflictDetector.addIdToIdPair(it)]
 		createMap(branchDiff.baseChanges.get(0), branchDiff.compareChanges.get(0))
 		resultingOriginalEChanges.clear
 		resultingTriggeredEChanges.clear
