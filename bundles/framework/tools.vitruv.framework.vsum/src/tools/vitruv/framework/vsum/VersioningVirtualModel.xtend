@@ -3,6 +3,7 @@ package tools.vitruv.framework.vsum
 import java.util.List
 
 import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.util.datatypes.VURI
 
 interface VersioningVirtualModel extends InternalVirtualModel {
@@ -28,6 +29,8 @@ interface VersioningVirtualModel extends InternalVirtualModel {
 	def void setAllLastPropagatedChangeId(String id)
 
 	def void setLastPropagatedChangeId(VURI vuri, String id)
+
+	def List<PropagatedChange> propagateChange(VURI vuri, VitruviusChange change, String changeId)
 
 	/**
 	 * Propagates an already recorded {@link PropagatedChange} into the {@link VirtualModel}.

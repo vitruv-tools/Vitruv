@@ -36,4 +36,6 @@ interface ChangePropagator {
 	def void addChangePropagationListener(ChangePropagationListener propagationListener)
 
 	def void removeChangePropagationListener(ChangePropagationListener propagationListener)
+
+	def List<PropagatedChange> propagateChange(VURI vuri, VitruviusChange change, String changeId)
 }

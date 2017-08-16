@@ -81,6 +81,15 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		objectsCreatedDuringPropagation = newArrayList
 	}
 
+	override propagateChange(VURI vuri, VitruviusChange change, String changeId) {
+		if (null === vuri && vuriToIds.values.parallelStream.anyMatch[it == changeId])
+			throw new IllegalStateException(''' «changeId»''')
+		else if (vuriToIds.get(vuri).parallelStream.anyMatch[it == changeId])
+			throw new IllegalStateException(''' «changeId»''')
+		currentChangeId = changeId
+		propagateChange(change)
+	}
+
 	override addChangePropagationListener(ChangePropagationListener propagationListener) {
 		if (propagationListener !== null)
 			changePropagationListeners += propagationListener
@@ -115,11 +124,22 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		if (changedObjects.nullOrEmpty)
 			throw new IllegalStateException('''There are no objects affected by the given change«originalChange»''')
 
-		val consequentialChangesApplicationFunction = createChangeApplyFunction(consequentialChange)
+		val changedResourcesTracker = new ChangedResourcesTracker
+
+		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
+		// each consistency repair routines that uses it,
+		// or: make them read only, i.e. give them a read-only interface!
+		resourceRepository.startRecording
 		if (resourceRepository instanceof InternalModelRepository)
 			resourceRepository.isCorrespondencesFilterActive = false
-		resourceRepository.startRecording
-		resourceRepository.executeOnResourceSet(consequentialChangesApplicationFunction)
+		val consequentialChangeApplicationFunction = createChangeApplyFunction(consequentialChange)
+		resourceRepository.executeOnResourceSet(consequentialChangeApplicationFunction)
+
+		// Store modification information
+		changedResourcesTracker.addSourceResourceOfChange(consequentialChange)
+
+		// executePropagationResult(command.transformationResult)
+		// propagationResult.integrateResult(command.transformationResult)
 		handleObjectsWithoutResource
 		resourceRepository.endRecording
 		if (resourceRepository instanceof InternalModelRepository)

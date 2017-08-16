@@ -43,14 +43,6 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	/**  Attribute for versioning */
 	String allLastPropagatedChangeId
 
-	private static def dropAllPreviousChanges(
-		List<PropagatedChange> propagatedChanges,
-		String lastCommitedChange
-	) {
-		val returnValue = propagatedChanges.dropWhile[id != lastCommitedChange].drop(1).toList
-		return returnValue
-	}
-
 	new(
 		File folder,
 		UserInteracting userInteracting,
@@ -76,6 +68,14 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		VirtualModelManager::instance.putVirtualModel(this)
 		vuriToLastpropagatedChange = newHashMap
 		allLastPropagatedChangeId = null
+	}
+
+	private static def dropAllPreviousChanges(
+		List<PropagatedChange> propagatedChanges,
+		String lastCommitedChange
+	) {
+		val returnValue = propagatedChanges.dropWhile[id != lastCommitedChange].drop(1).toList
+		return returnValue
 	}
 
 	override getResolvedChange(String id) {
@@ -205,6 +205,10 @@ class VirtualModelImpl implements VersioningVirtualModel {
 
 	override propagateChange(PropagatedChange propagatedChange, VURI vuri) {
 		changePropagator.propagateChange(propagatedChange, vuri)
+	}
+
+	override propagateChange(VURI vuri, VitruviusChange change, String changeId) {
+		changePropagator.propagateChange(vuri, change, changeId)
 	}
 
 }

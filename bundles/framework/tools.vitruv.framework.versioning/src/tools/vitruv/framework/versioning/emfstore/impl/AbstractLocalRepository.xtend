@@ -17,6 +17,7 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.description.impl.PropagatedChangeImpl
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.tests.TestUserInteractor
 import tools.vitruv.framework.util.ResourceSetUtil
 import tools.vitruv.framework.util.XtendAssertHelper
 import tools.vitruv.framework.util.command.EMFCommandBridge
@@ -69,6 +70,8 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 
 	Map<Branch, String> lastCommitCheckedOut
 	protected val List<T> remoteRepositories
+	@Accessors(PUBLIC_SETTER)
+	boolean isRePropagatePropagatedChangesActive
 
 	new() {
 		super()
@@ -77,6 +80,14 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		localBranches = newHashSet(currentBranch)
 		remoteBranches = newArrayList
 		remoteRepositories = newArrayList
+		isRePropagatePropagatedChangesActive = false
+	}
+
+	private static def getClonedEChanges(VitruviusChange vitruviusChange) {
+		// PS At this point the EChangeCopier::copy method must be used, not the 
+		// ChangeCloner::cloneEChange. This is only creating a shallow copy, whereas
+		// here a "deeper" copy is needed.
+		vitruviusChange.EChanges.map[copy(it)].toList.immutableCopy
 	}
 
 	private static def void rollback(VersioningVirtualModel vm, List<PropagatedChange> changes) {
@@ -150,14 +161,7 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		checkout(currentVirtualModel, null)
 	}
 
-	private static def getClonedEChanges(VitruviusChange vitruviusChange) {
-		// PS At this point the EChangeCopier::copy method must be used, not the 
-		// ChangeCloner::cloneEChange. This is only creating a shallow copy, whereas
-		// here a "deeper" copy is needed.
-		vitruviusChange.EChanges.map[copy(it)].toList.immutableCopy
-	}
-
-	override checkout(VersioningVirtualModel currentVirtualModel, VURI vuri) {
+	private def checkoutPropagatedChanges(VersioningVirtualModel currentVirtualModel, VURI vuri) {
 		val changeMatches = calculateChangeMatches.toList.immutableCopy
 
 		val originalChanges = changeMatches.map[originalChange]
@@ -206,7 +210,59 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 			currentVirtualModel.setLastPropagatedChangeId(vuri, newLastChangeId)
 		val lastCommitId = relevantCommits.last.identifier
 		lastCommitCheckedOut.put(currentBranch, lastCommitId)
+	}
 
+	private def checkoutOriginalChanges(VersioningVirtualModel currentVirtualModel, VURI vuri) {
+		val changeMatches = calculateChangeMatches
+		val originalChanges = changeMatches.map[id -> originalChange].toList.immutableCopy
+		if (originalChanges.empty) {
+			info("Nothing to checkout")
+			return
+		}
+		val myVURI = originalChanges.get(0).value.URI
+		val processTargetEChange = calculateMapFunction(myVURI, vuri)
+
+		// PS Create a list with the id of the change and a new change with the adjusted 
+		// VURI.
+		val newChanges = originalChanges.map [
+			val eChanges = value.EChanges.map[copy(it)].toList.immutableCopy
+			eChanges.forEach[processTargetEChange.accept(it)]
+			val newChange = createEMFModelChangeFromEChanges(eChanges)
+			return key -> newChange
+		].toList.immutableCopy
+
+		// PS Get user interactions from commits and give them to the 
+		// virtual model.  
+		val userInteractions = relevantCommits.map[userInteractions].flatten.toList
+		val userInteractor = currentVirtualModel.userInteractor as TestUserInteractor
+		userInteractor.addNextSelections(userInteractions)
+
+		// PS Propagate changes,
+		newChanges.forEach[currentVirtualModel.propagateChange(vuri, value, key)]
+
+		// PS Test, if the identifiers remain the same,
+		val newChangeMatches = if (null === vuri)
+				currentVirtualModel.allUnresolvedPropagatedChanges
+			else
+				currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
+		val oldLastChangeId = changeMatches.last.id
+		val newLastChangeId = newChangeMatches.last.id
+		XtendAssertHelper::assertTrue(oldLastChangeId == newLastChangeId)
+
+		// PS Set the last propagate change ID.
+		if (null === vuri)
+			currentVirtualModel.allLastPropagatedChangeId = newLastChangeId
+		else
+			currentVirtualModel.setLastPropagatedChangeId(vuri, newLastChangeId)
+		val lastCommitId = relevantCommits.last.identifier
+		lastCommitCheckedOut.put(currentBranch, lastCommitId)
+	}
+
+	override checkout(VersioningVirtualModel currentVirtualModel, VURI vuri) {
+		if (isRePropagatePropagatedChangesActive)
+			checkoutPropagatedChanges(currentVirtualModel, vuri)
+		else
+			checkoutOriginalChanges(currentVirtualModel, vuri)
 	}
 
 	override push() {
