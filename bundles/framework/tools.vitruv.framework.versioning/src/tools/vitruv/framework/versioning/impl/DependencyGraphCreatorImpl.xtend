@@ -1,40 +1,40 @@
 package tools.vitruv.framework.versioning.impl
 
-import java.util.ArrayList
 import java.util.List
 import java.util.Map
+
+import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.graphstream.graph.Graph
+
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.DependencyGraphCreator
+import tools.vitruv.framework.versioning.EChangeGraph
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
-import tools.vitruv.framework.versioning.extensions.GraphExtension
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 
 class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	static extension EChangeRequireExtension = EChangeRequireExtension::instance
-	static extension GraphExtension = GraphExtension::instance
+
+	private new() {
+	}
 
 	static def DependencyGraphCreator init() {
 		new DependencyGraphCreatorImpl
 	}
 
-	private new() {
-	}
-
 	override createDependencyGraph(List<VitruviusChange> changes) {
 		val vuri = changes.get(0).URI
-		val graph = GraphExtension::createNewEChangeGraph
+		val graph = EChangeGraph::createEChangeGraph
 		createDependencyGraph(graph, changes, true, false, vuri)
 		return graph
 	}
 
 	override createDependencyGraphFromChangeMatches(List<PropagatedChange> changeMatches) {
-		val graph = GraphExtension::createNewEChangeGraph
+		val graph = EChangeGraph::createEChangeGraph
 		val originalChanges = changeMatches.map[originalChange].toList
 		val originalVuri = originalChanges.get(0).URI
 		createDependencyGraph(graph, originalChanges, false, false, originalVuri)
@@ -56,17 +56,17 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 	}
 
 	private def createDependencyGraph(
-		Graph graph,
+		EChangeGraph graph,
 		List<VitruviusChange> changes,
 		boolean print,
 		boolean isTriggered,
 		VURI vuri
 	) {
-		val resourceSet = new ResourceSetImpl
+		val ResourceSet resourceSet = new ResourceSetImpl
 		// PS Do not use the java 8 or xtend function methods here.
 		// Their laziness can cause problems while applying
 		// changes back or forward.
-		val List<EChange> echanges = new ArrayList
+		val List<EChange> echanges = newArrayList
 		changes.forEach [
 			echanges += EChanges
 		]

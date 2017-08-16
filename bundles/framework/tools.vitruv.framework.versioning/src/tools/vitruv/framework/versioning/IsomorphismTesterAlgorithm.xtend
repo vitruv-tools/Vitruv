@@ -8,7 +8,7 @@ import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 
 interface IsomorphismTesterAlgorithm extends IsomorphismTester {
 	static def IsomorphismTesterAlgorithm createIsomorphismTester() {
-		new PrimitiveIsomorphismTesterImpl
+		PrimitiveIsomorphismTesterImpl::createPrimitiveIsomorphismTesterImpl
 	}
 
 	def EChangeGraph getCombinedGraph()
