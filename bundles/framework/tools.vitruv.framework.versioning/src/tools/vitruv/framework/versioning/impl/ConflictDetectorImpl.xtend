@@ -356,12 +356,13 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val type = conflictDetectionStrategy.getConflictType(e1, e2)
 		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
 		val conflict = new MultiChangeConflictImpl(
-				type, solvability, e1, e2, myEchanges, theirEChanges, myVURI,
-			theirVURI, myTriggeredEChanges, theirTriggeredEChanges, myTriggeredVuris, theirTriggeredVuris
+			type, solvability, e1, e2, myEchanges, theirEChanges, myVURIs.get(0),
+			theirVURIs.get(0),
+			myTriggeredEChanges, theirTriggeredEChanges, myTriggeredVuris, theirTriggeredVuris
 		)
 		currentConflicts += conflict
 	}
-	private static def fillListsType1 ( EChangeNode leave, List<EChange> originalList, List<EChange> triggeredList, List<VURI> vuris) {
+	private static def void fillListsType1 ( EChangeNode leave, List<EChange> originalList, List<EChange> triggeredList, List<VURI> vuris) {
 				leave.<EChangeNode>breadthFirstIterator.forEach [ node |
 					if (node.triggered) {
 						triggeredList += node.EChange
@@ -377,7 +378,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 		.<EChangeNode>targetNode.EChange
 	}
 	
-	private static def fillListsType3(
+	private static def void fillListsType3(
 		EChangeNode leave, EChangeGraph combinedGraph, Collection<EChange> myEChanges,Collection<EChange> theirEChanges,
 		Collection<VURI> myVURIs, 
 		Collection<VURI> theirVURIs 
@@ -385,8 +386,8 @@ class ConflictDetectorImpl implements ConflictDetector {
 		val e1 = leave.EChange
 		val nodeInCombinedGraph = combinedGraph.getNode(e1)
 		myVURIs += nodeInCombinedGraph.vuri
-	  	val nodesInOtherGraph = nodeInCombinedGraph.<EChangeEdge>leavingEdgeSet.stream.filter[type === EdgeType::CONFLICTS].map[
-			<EChangeNode>targetNode 
+	  	val nodesInOtherGraph = nodeInCombinedGraph.<EChangeEdge>edgeSet.stream.filter[type === EdgeType::CONFLICTS].map[
+			if (nodeInCombinedGraph === sourceNode) <EChangeNode>targetNode else  <EChangeNode>sourceNode
 		].collect(Collectors::toSet)
 		myEChanges += e1
 		theirEChanges += nodesInOtherGraph.map[EChange]

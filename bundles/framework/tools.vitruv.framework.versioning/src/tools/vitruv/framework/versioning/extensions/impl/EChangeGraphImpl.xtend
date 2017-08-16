@@ -142,7 +142,7 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 
 	override cloneGraph(Function1<EChangeNode, Boolean> nodePredicate, Function1<EChangeEdge, Boolean> edgePredicate) {
 		val newGraph = createNewEChangeGraph
-		this.<EChangeNode>nodeSet.filter[nodePredicate.apply(it)].forEach [ EChangeNode oldNode |
+		this.<EChangeNode>nodeSet.filter(nodePredicate).forEach [ EChangeNode oldNode |
 			val EChangeNode node = newGraph.addNode(oldNode.id)
 			node.EChange = oldNode.EChange
 			node.triggered = oldNode.triggered
@@ -150,7 +150,7 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 		]
 		this.<EChangeEdge>edgeSet.filter [
 			nodePredicate.apply(sourceNode) && nodePredicate.apply(targetNode)
-		].filter[edgePredicate.apply(it)].forEach [ edge |
+		].filter(edgePredicate).forEach [ edge |
 			val newSourceNode = newGraph.getNode(edge.sourceNode.id)
 			val newTargetNode = newGraph.getNode(edge.targetNode.id)
 			val newEdge = newGraph.<EChangeEdge>addEdge(edge.id, newSourceNode, newTargetNode, edge.directed)
@@ -217,6 +217,7 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 			]
 			newNode.setAttribute(GraphStreamConstants::uiClass, '''graph«x»''')
 			newNode.EChange = node.EChange
+			newNode.vuri = node.vuri
 		]
 		graphMap.put(this, x + 1)
 		graphToAdd.edgeSet.forEach [ currentEdge |
@@ -249,6 +250,6 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 	}
 
 	private def determineLeaves(Function1<EChangeNode, Boolean> nodePredicate) {
-		<EChangeNode>nodeSet.filter[nodePredicate.apply(it)]
+		<EChangeNode>nodeSet.filter(nodePredicate)
 	}
 }
