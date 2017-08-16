@@ -408,7 +408,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		val lastRemoteCommit = newLocalRepository.getCommits(remoteBranch).last
 		val lastLocalCommit = newLocalRepository.getCommits(newLocalRepository.currentBranch).last
 		assertThat(lastRemoteCommit.identifier, not(equalTo(lastLocalCommit.identifier)))
-
+		virtualModel.addMappedVURIs(sourceVURI, newSourceVURI)
 		val mergeCommit = newLocalRepository.merge(
 			remoteBranch,
 			newLocalRepository.currentBranch,

@@ -8,6 +8,10 @@ import java.util.concurrent.Callable
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.xbase.lib.Functions.Function1
+
+import com.google.common.collect.BiMap
+import com.google.common.collect.HashBiMap
 
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -25,19 +29,25 @@ import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 
 class VirtualModelImpl implements VersioningVirtualModel {
+	// Values.
+	@Accessors(PUBLIC_GETTER)
+	val File folder
+
 	protected val ResourceRepositoryImpl resourceRepository
+
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val ChangePropagator changePropagator
 	val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository metamodelRepository
-	@Accessors(PUBLIC_GETTER)
-	val File folder
+	/**  Attribute for versioning */
+	val Map<VURI, String> vuriToLastpropagatedChange
+	/**  Attribute for versioning */
+	val BiMap<VURI, VURI> vuriMap
 
+	// Variables.
 	@Accessors(PUBLIC_GETTER)
 	UserInteracting userInteractor
 
-	/**  Attribute for versioning */
-	val Map<VURI, String> vuriToLastpropagatedChange
 	/**  Attribute for versioning */
 	Date lastCommitDate
 	/**  Attribute for versioning */
@@ -49,39 +59,34 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		VirtualModelConfiguration modelConfiguration
 	) {
 		this.folder = folder
-		this.metamodelRepository = new VitruvDomainRepositoryImpl
-		this.userInteractor = userInteracting
-		for (metamodel : modelConfiguration.metamodels) {
-			this.metamodelRepository.addDomain(metamodel)
-			metamodel.registerAtTuidManagement
-		}
-		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository)
-		this.modelRepository = new ModelRepositoryImpl
+		metamodelRepository = new VitruvDomainRepositoryImpl
+		userInteractor = userInteracting
+		modelConfiguration.metamodels.forEach [
+			metamodelRepository.addDomain(it)
+			registerAtTuidManagement
+		]
+		resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository)
+		modelRepository = new ModelRepositoryImpl
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository
-		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
+		modelConfiguration.changePropagationSpecifications.forEach [ changePropagationSpecification |
 			changePropagationSpecification.userInteracting = userInteracting
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
-		}
-		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository
-		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider,
-			metamodelRepository, resourceRepository, modelRepository)
+		]
+		changePropagationSpecificationProvider = changePropagationSpecificationRepository
+		changePropagator = new ChangePropagatorImpl(
+			resourceRepository,
+			changePropagationSpecificationProvider,
+			metamodelRepository,
+			resourceRepository,
+			modelRepository
+		)
 		VirtualModelManager::instance.putVirtualModel(this)
 		vuriToLastpropagatedChange = newHashMap
 		allLastPropagatedChangeId = null
+		vuriMap = HashBiMap::create
 	}
 
-	private static def dropAllPreviousChanges(
-		List<PropagatedChange> propagatedChanges,
-		String lastCommitedChange
-	) {
-		val returnValue = propagatedChanges.dropWhile[id != lastCommitedChange].drop(1).toList
-		return returnValue
-	}
-
-	override getResolvedChange(String id) {
-		changePropagator.getResolvedChange(id)
-	}
-
+	// Overridden methods.
 	override getCorrespondenceModel() {
 		resourceRepository.correspondenceModel
 	}
@@ -146,16 +151,24 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		changePropagationSpecificationProvider.forEach[userInteracting = userInteract]
 	}
 
+	override getMappedVURI(VURI vuri) {
+		if (vuriMap.containsKey(vuri))
+			return vuriMap.get(vuri)
+		if (vuriMap.inverse.containsKey(vuri))
+			return vuriMap.inverse.get(vuri)
+		return null
+	}
+
 	override getResolvedPropagatedChanges(VURI vuri) {
-		changePropagator.getResolvedPropagatedChanges(vuri)
+		getPropagatedChanges(vuri, [VURI newVURI|changePropagator.getResolvedPropagatedChanges(newVURI)])
 	}
 
 	override getUnresolvedPropagatedChanges(VURI vuri) {
-		changePropagator.getUnresolvedPropagatedChanges(vuri)
+		getPropagatedChanges(vuri, [VURI newVURI|changePropagator.getUnresolvedPropagatedChanges(newVURI)])
 	}
 
 	override getUnresolvedPropagatedChangesSinceLastCommit(VURI vuri) {
-		val changes = changePropagator.getUnresolvedPropagatedChanges(vuri)
+		val changes = getUnresolvedPropagatedChanges(vuri)
 		if (vuriToLastpropagatedChange.containsKey(vuri)) {
 			val lastPropagatedId = vuriToLastpropagatedChange.get(vuri)
 			return dropAllPreviousChanges(changes, lastPropagatedId)
@@ -174,6 +187,14 @@ class VirtualModelImpl implements VersioningVirtualModel {
 
 	override setLastPropagatedChangeId(VURI vuri, String id) {
 		vuriToLastpropagatedChange.put(vuri, id)
+		if (vuriMap.containsKey(vuri)) {
+			val vuri2 = vuriMap.get(vuri)
+			vuriToLastpropagatedChange.put(vuri2, id)
+		}
+		if (vuriMap.inverse.containsKey(vuri)) {
+			val vuri2 = vuriMap.inverse.get(vuri)
+			vuriToLastpropagatedChange.put(vuri2, id)
+		}
 	}
 
 	override getAllResolvedPropagatedChanges() {
@@ -209,6 +230,50 @@ class VirtualModelImpl implements VersioningVirtualModel {
 
 	override propagateChange(VURI vuri, VitruviusChange change, String changeId) {
 		changePropagator.propagateChange(vuri, change, changeId)
+	}
+
+	override getResolvedChange(String id) {
+		changePropagator.getResolvedChange(id)
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	override addMappedVURIs(VURI vuri1, VURI vuri2) {
+		vuriMap.put(vuri1, vuri2)
+	}
+
+	// Private methods.
+	private def dropAllPreviousChanges(
+		List<PropagatedChange> propagatedChanges,
+		String lastCommitedChange
+	) {
+		if (propagatedChanges.exists[id == lastCommitedChange])
+			propagatedChanges.dropWhile[id != lastCommitedChange].drop(1).toList
+		else
+			propagatedChanges
+	}
+
+	private def getPropagatedChanges(VURI vuri, Function1<VURI, List<PropagatedChange>> changeFunction) {
+		val changes = newArrayList
+		val unresolvedChanges = changeFunction.apply(vuri)
+		if (unresolvedChanges.empty) {
+			val unresolvedChanges2 = if (vuriMap.containsKey(vuri)) {
+					val vuri2 = vuriMap.get(vuri)
+					changeFunction.apply(vuri2)
+				} else if (vuriMap.inverse.containsKey(vuri)) {
+					val vuri3 = vuriMap.inverse.get(vuri)
+					changeFunction.apply(vuri3)
+				} else {
+					#[]
+				}
+			changes += unresolvedChanges2
+			if (changes.empty)
+				return #[]
+		} else {
+			changes += unresolvedChanges
+		}
+		return changes
 	}
 
 }

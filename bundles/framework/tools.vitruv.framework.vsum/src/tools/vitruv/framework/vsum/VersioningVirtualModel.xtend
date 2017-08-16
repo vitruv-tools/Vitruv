@@ -7,6 +7,15 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.util.datatypes.VURI
 
 interface VersioningVirtualModel extends InternalVirtualModel {
+	/**
+	 * Adds a {@link VURI} pair. This indicates that changes recorded under one of them 
+	 * should be returned also when asking for changes in the other.
+	 * @param vuri1 the first VURI
+	 * @param vuri2 the second VURI
+	 */
+	def void addMappedVURIs(VURI vuri1, VURI vuri2)
+
+	def VURI getMappedVURI(VURI vuri)
 
 	def List<Integer> getUserInteractionsSinceLastCommit()
 
