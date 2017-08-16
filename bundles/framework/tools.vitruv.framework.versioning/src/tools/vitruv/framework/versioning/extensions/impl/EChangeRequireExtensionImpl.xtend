@@ -9,59 +9,54 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.versioning.extensions.EChangeRequireExtension
 
 class EChangeRequireExtensionImpl implements EChangeRequireExtension {
+	private new() {
+	}
+
 	static def EChangeRequireExtension init() {
 		new EChangeRequireExtensionImpl
 	}
 
-	private static dispatch def boolean checkForRequireEdgeImpl(EChange e1, EChange e2) {
+	override checkForRequireEdge(EChange parent, EChange child) {
+		checkForRequireEdgeImpl(parent, child)
+	}
+
+	private dispatch def boolean checkForRequireEdgeImpl(EChange e1, EChange e2) {
 		false
 	}
 
-	private static dispatch def checkForRequireEdgeImpl(
+	private dispatch def checkForRequireEdgeImpl(
 		CreateAndReplaceNonRoot<?, ?> e1,
 		ReplaceSingleValuedEAttribute<?, ?> e2
 	) {
-		val returnValue = e1.createChange.affectedEObject === e2.affectedEObject
-		return returnValue
+		return e1.createChange.affectedEObject === e2.affectedEObject
 	}
 
-	private static dispatch def checkForRequireEdgeImpl(
+	private dispatch def checkForRequireEdgeImpl(
 		CreateAndInsertRoot<?> e1,
 		ReplaceSingleValuedEAttribute<?, ?> e2
 	) {
-		val returnValue = e1.createChange.affectedEObject === e2.affectedEObject
-		return returnValue
+		return e1.createChange.affectedEObject === e2.affectedEObject
 	}
 
-	private static dispatch def checkForRequireEdgeImpl(
+	private dispatch def checkForRequireEdgeImpl(
 		CreateAndInsertRoot<?> e1,
 		CreateAndReplaceNonRoot<?, ?> e2
 	) {
-		val returnValue = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
-		return returnValue
+		return e1.createChange.affectedEObject === e2.insertChange.affectedEObject
 	}
 
-	private static dispatch def checkForRequireEdgeImpl(
+	private dispatch def checkForRequireEdgeImpl(
 		CreateAndInsertEObject<?, ?> e1,
 		ReplaceSingleValuedEAttribute<?, ?> e2
 	) {
-		val returnValue = e1.createChange.affectedEObject === e2.affectedEObject
-		return returnValue
+		return e1.createChange.affectedEObject === e2.affectedEObject
 	}
 
-	private static dispatch def checkForRequireEdgeImpl(
+	private dispatch def checkForRequireEdgeImpl(
 		CreateAndReplaceNonRoot<?, ?> e1,
 		CreateAndInsertNonRoot<?, ?> e2
 	) {
-		val returnValue = e1.createChange.affectedEObject === e2.insertChange.affectedEObject
-		return returnValue
-	}
-
-	private new() {
-	}
-
-	override checkForRequireEdge(EChange parent, EChange child) {
-		checkForRequireEdgeImpl(parent, child)
+		return e1.createChange.affectedEObject === e2.insertChange.affectedEObject
 	}
 
 }

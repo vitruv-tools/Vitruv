@@ -1,6 +1,7 @@
 package tools.vitruv.framework.versioning.extensions
 
 import org.graphstream.graph.Node
+
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.NodeType
 import tools.vitruv.framework.util.datatypes.VURI
@@ -24,4 +25,10 @@ interface EChangeNode extends Node {
 	def void setType(NodeType type)
 
 	def void setVuri(VURI v)
+
+	def boolean isProvideLeave()
+
+	def boolean isLeave()
+
+	def void setLabel(String label)
 }

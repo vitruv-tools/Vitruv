@@ -345,6 +345,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 	private def processConflictType3(EChangeNode myLeave, EChangeNode theirLeave, EChangeGraph combinedGraph, Collection<Conflict> currentConflicts) {
 		val e1 = myLeave.EChange
 		val nodeInCombinedGraph = combinedGraph.getNode(e1)
+		val edges = nodeInCombinedGraph.
 		val type = conflictDetectionStrategy.getConflictType(e1, e2)
 		val solvability = conflictDetectionStrategy.getConflictSolvability(e1, e2, type)
 		

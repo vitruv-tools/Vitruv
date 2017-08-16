@@ -24,11 +24,9 @@ import tools.vitruv.framework.versioning.extensions.EChangeEdge
 import tools.vitruv.framework.versioning.extensions.EChangeExtension
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
-import tools.vitruv.framework.versioning.extensions.NodeExtension
 
 class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 	// Static extensions.
-	static extension NodeExtension = NodeExtension::instance
 	static extension EChangeExtension = EChangeExtension::instance
 
 	// Static values. 
