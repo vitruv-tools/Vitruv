@@ -100,7 +100,7 @@ class ParameterGenerator {
 			case InputTypesPackage.Literals.BYTE: Byte.name
 			case InputTypesPackage.Literals.FLOAT: Float.name
 			case InputTypesPackage.Literals.DOUBLE: Double.name
-			default: eClass.instanceClassName
+			default: eClass.javaClassName
 		}
 	}
 	

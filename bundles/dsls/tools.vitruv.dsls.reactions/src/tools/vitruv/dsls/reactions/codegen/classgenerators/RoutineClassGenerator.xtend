@@ -321,7 +321,7 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	private def StringConcatenationClient getElementCreationCode(CreateModelElement elementCreate) {
 		val affectedElementClass = elementCreate.metaclass;
-		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
+		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.runtimeClassName
 		return '''
 		«affectedElementClass.javaClassName» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
 		notifyObjectCreated(«elementCreate.name»);'''

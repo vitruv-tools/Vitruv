@@ -21,18 +21,22 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import org.eclipse.xtext.resource.IResourceFactory
 import java.util.Collections
 import org.eclipse.emf.ecore.resource.ResourceSet
-import java.io.PipedInputStream
-import java.io.PipedOutputStream
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
-import java.util.List
-import java.util.concurrent.ExecutionException
 import java.io.IOException
 import org.eclipse.xtext.util.RuntimeIOException
+import edu.kit.ipd.sdq.activextendannotations.CloseResource
+import java.io.OutputStream
+import java.io.InputStream
+import java.io.PipedOutputStream
+import java.io.PipedInputStream
+import java.util.concurrent.Executors
+import java.util.concurrent.ExecutionException
 
 class InternalReactionsGenerator implements IReactionsGenerator {
 
 	static val SYNTHETIC_RESOURCES = URI.createHierarchicalURI("synthetic", null, null, #[], null, null)
+	static val serializerExecutor = Executors.newCachedThreadPool([ r |
+		new Thread(r, "Reactions Serializer")
+	])
 
 	// whether this generator was already used to generate
 	var used = false;
@@ -161,51 +165,57 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 
 	override writeReactions(IFileSystemAccess2 fsa, String subPath) throws IOException {
 		val pathPrefix = if (subPath === null) '' else if (subPath.endsWith('/')) subPath else subPath + '/'
-		val writeExecutor = Executors.newCachedThreadPool
-		val List<Future<?>> writePromises = new ArrayList(resourcesToGenerate.size * 2)
 		for (resource : resourcesToGenerate) {
-			val serializationInput = new PipedOutputStream()
-			val serializationOutput = new PipedInputStream(serializationInput)
-
-			// return null so this is a Callable (which, unlike Runnables, may
-			// throw exceptions) 
-			writePromises += writeExecutor.submit([
-				fsa.generateFile(pathPrefix + resource.URI.lastSegment, serializationOutput)
-				null
-			])
-			writePromises += writeExecutor.submit([
-				resource.save(serializationInput, Collections.emptyMap)
-				// EMF doesn’t close the stream!
-				serializationInput.close()
-				null
-			])
-		}
-		for (writePromise : writePromises) {
 			try {
-				writePromise.get()
-			} catch (ExecutionException e) {
-				e.cause.handleWriteException
-			} catch (Throwable e) {
-				throw new IOException(e)
+				val serializationInput = new PipedOutputStream
+				val serializationOutput = new PipedInputStream(serializationInput)
+
+				val writer = serializerExecutor.submit[resource.writeTo(serializationInput)]
+
+				/*
+				 * When this method is called from a generator in Eclipse, the
+				 * current thread holds a lock, preventing other threads from
+				 * writing through the FSA. Because of that, we must not make
+				 * this call in another thread. Note that this is not a problem
+				 * if the FSA supports asynchronous writing.
+				 */
+				serializationOutput.writeTo(fsa, pathPrefix + resource.URI.lastSegment)
+				writer.get()
+			} catch (RuntimeIOException runtimeIoError) {
+				handleRuntimeIoException(runtimeIoError)
+			} catch (ExecutionException writerError) {
+				handleWriteException(writerError.cause)
 			}
 		}
-		writeExecutor.shutdown()
+	}
+
+	// both methods return something so referencing them creates a Callable,
+	// which, unlike a Runnable, may throw exceptions.
+	def private static Void writeTo(Resource resource, @CloseResource OutputStream outputStream) throws IOException {
+		resource.save(outputStream, Collections.emptyMap)
+		null
+	}
+
+	def private static Void writeTo(@CloseResource InputStream inputStream, IFileSystemAccess2 fsa,
+		String path) throws RuntimeIOException {
+		fsa.generateFile(path, inputStream)
+		null
 	}
 
 	// makes sure Xtext doesn’t sneaky throw exceptions
 	def private void handleWriteException(Throwable executionException) throws IOException {
 		switch (executionException) {
-			IOException:
-				throw executionException
-			RuntimeIOException: {
-				val realExecutionException = executionException.cause
-				switch (realExecutionException) {
-					IOException: throw realExecutionException
-					default: new IOException(realExecutionException)
-				}
-			}
-			default:
-				throw new IOException(executionException)
+			IOException: throw executionException
+			RuntimeIOException: handleRuntimeIoException(executionException)
+			default: throw new IOException(executionException)
+		}
+	}
+
+	def private void handleRuntimeIoException(RuntimeIOException runtimeIOException) throws IOException {
+		val realException = runtimeIOException.cause
+		switch (realException) {
+			IOException: throw realException
+			default: throw new IOException(realException)
 		}
 	}
 
