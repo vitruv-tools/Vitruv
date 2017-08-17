@@ -4,7 +4,6 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.EChange
@@ -19,7 +18,6 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
 
 /**
@@ -55,13 +53,13 @@ class AtomicEChangeResolver {
 	def private static <A extends EObject, F extends EStructuralFeature> boolean resolveFeatureEChange(
 		FeatureEChange<A, F> change, ResourceSet resourceSet, boolean resolveBefore) {
 		if (change.affectedEObjectID === null || !resolveEChange(change, resourceSet, true)) {
-			throw new IllegalStateException();
+			return false
 		}
 
 		change.affectedEObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A //EChangeUtil.resolveProxy(change.affectedEObject, resourceSet) as A
 
 		if (change.affectedFeature === null || change.affectedEObject === null || change.affectedEObject.eIsProxy) {
-			throw new IllegalStateException();
+			return false
 		}
 		return true
 	}
