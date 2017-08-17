@@ -18,6 +18,8 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
 
 /**
  * Utility class to unresolve a given EChange.
@@ -65,6 +67,14 @@ public class EChangeUnresolver {
 		change.newValue = createProxy(change.newValue)
 	}	
 
+	/** 
+	 * Unresolves the attributes of the {@link EObjectExistenceEChange} class.
+	 * @param The EObjectExistenceEChange.
+	 */	
+	def static public <T extends EObject> void unresolveEObjectExistenceEChange(EObjectExistenceEChange<T> change) {
+		change.affectedEObject = createProxy(change.affectedEObject)
+	}
+	
 	/** 
 	 * Unresolves the attributes of the {@link EObjectSubtractedEChange} class.
 	 * @param The EObjectSubtractedEChange.
@@ -126,12 +136,20 @@ public class EChangeUnresolver {
 		change.oldValue = createProxy(change.oldValue)
 	}
 	/**
-	 * Dispatch method for {@link EObjectExistenceEChange} to unresolve it.
-	 * @param change The EObjectExistenceEChange.
+	 * Dispatch method for {@link CreateEObject} to unresolve it.
+	 * @param change The CreateEObject change.
 	 */	
-	def dispatch public static void unresolve(EObjectExistenceEChange<EObject> change) {
-		change.affectedEObject = createProxy(change.affectedEObject)
-	}	
+	def dispatch public static void unresolve(CreateEObject<EObject> change) {
+		change.unresolveEObjectExistenceEChange
+	}
+	/**
+	 * Dispatch method for {@link DeleteEObject} to unresolve it.
+	 * @param change The DeleteEObject change.
+	 */	
+	def dispatch public static void unresolve(DeleteEObject<EObject> change) {
+		change.unresolveEObjectExistenceEChange
+		change.consequentialRemoveChanges.forEach[unresolve];
+	}
 	/**
 	 * Dispatch method for {@link ReplaceSingleValuedEReference} to unresolve it.
 	 * @param change The ReplaceSingleValuedEReference.
