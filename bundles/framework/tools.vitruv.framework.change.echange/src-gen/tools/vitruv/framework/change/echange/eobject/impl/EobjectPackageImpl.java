@@ -267,6 +267,15 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getEObjectExistenceEChange_AffectedEObjectType() {
+		return (EReference)eObjectExistenceEChangeEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getCreateEObject() {
 		return createEObjectEClass;
 	}
@@ -329,6 +338,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		createEReference(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT);
 		createEAttribute(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE);
 		createEAttribute(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID);
+		createEReference(eObjectExistenceEChangeEClass, EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_TYPE);
 
 		createEObjectEClass = createEClass(CREATE_EOBJECT);
 
@@ -418,6 +428,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		initEReference(getEObjectExistenceEChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, EObjectExistenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEObjectExistenceEChange_IdAttributeValue(), theEcorePackage.getEString(), "idAttributeValue", null, 0, 1, EObjectExistenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEObjectExistenceEChange_AffectedEObjectID(), theUuidPackage.getUuid(), "affectedEObjectID", null, 0, 1, EObjectExistenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEObjectExistenceEChange_AffectedEObjectType(), theEcorePackage.getEClass(), null, "affectedEObjectType", null, 0, 1, EObjectExistenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

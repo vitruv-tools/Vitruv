@@ -24,6 +24,7 @@ import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getIdAttributeValue <em>Id Attribute Value</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getAffectedEObjectID <em>Affected EObject ID</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getAffectedEObjectType <em>Affected EObject Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -78,6 +79,16 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * @ordered
 	 */
 	protected String affectedEObjectID = AFFECTED_EOBJECT_ID_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAffectedEObjectType() <em>Affected EObject Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAffectedEObjectType()
+	 * @generated
+	 * @ordered
+	 */
+	protected EClass affectedEObjectType;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -184,6 +195,44 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getAffectedEObjectType() {
+		if (affectedEObjectType != null && affectedEObjectType.eIsProxy()) {
+			InternalEObject oldAffectedEObjectType = (InternalEObject)affectedEObjectType;
+			affectedEObjectType = (EClass)eResolveProxy(oldAffectedEObjectType);
+			if (affectedEObjectType != oldAffectedEObjectType) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_TYPE, oldAffectedEObjectType, affectedEObjectType));
+			}
+		}
+		return affectedEObjectType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass basicGetAffectedEObjectType() {
+		return affectedEObjectType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAffectedEObjectType(EClass newAffectedEObjectType) {
+		EClass oldAffectedEObjectType = affectedEObjectType;
+		affectedEObjectType = newAffectedEObjectType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_TYPE, oldAffectedEObjectType, affectedEObjectType));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -194,6 +243,9 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 				return getIdAttributeValue();
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID:
 				return getAffectedEObjectID();
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_TYPE:
+				if (resolve) return getAffectedEObjectType();
+				return basicGetAffectedEObjectType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -216,6 +268,9 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID:
 				setAffectedEObjectID((String)newValue);
 				return;
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_TYPE:
+				setAffectedEObjectType((EClass)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -237,6 +292,9 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID:
 				setAffectedEObjectID(AFFECTED_EOBJECT_ID_EDEFAULT);
 				return;
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_TYPE:
+				setAffectedEObjectType((EClass)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -255,6 +313,8 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 				return ID_ATTRIBUTE_VALUE_EDEFAULT == null ? idAttributeValue != null : !ID_ATTRIBUTE_VALUE_EDEFAULT.equals(idAttributeValue);
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID:
 				return AFFECTED_EOBJECT_ID_EDEFAULT == null ? affectedEObjectID != null : !AFFECTED_EOBJECT_ID_EDEFAULT.equals(affectedEObjectID);
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_TYPE:
+				return affectedEObjectType != null;
 		}
 		return super.eIsSet(featureID);
 	}

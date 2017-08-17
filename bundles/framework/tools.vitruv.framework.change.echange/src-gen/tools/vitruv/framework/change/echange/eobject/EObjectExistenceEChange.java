@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.eobject;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
@@ -23,6 +24,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getAffectedEObject <em>Affected EObject</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getIdAttributeValue <em>Id Attribute Value</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getAffectedEObjectID <em>Affected EObject ID</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getAffectedEObjectType <em>Affected EObject Type</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange()
@@ -107,5 +109,31 @@ public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChang
 	 * @generated
 	 */
 	void setAffectedEObjectID(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Affected EObject Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Affected EObject Type</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Affected EObject Type</em>' reference.
+	 * @see #setAffectedEObjectType(EClass)
+	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange_AffectedEObjectType()
+	 * @model
+	 * @generated
+	 */
+	EClass getAffectedEObjectType();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getAffectedEObjectType <em>Affected EObject Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Affected EObject Type</em>' reference.
+	 * @see #getAffectedEObjectType()
+	 * @generated
+	 */
+	void setAffectedEObjectType(EClass value);
 
 } // EObjectExistenceEChange
