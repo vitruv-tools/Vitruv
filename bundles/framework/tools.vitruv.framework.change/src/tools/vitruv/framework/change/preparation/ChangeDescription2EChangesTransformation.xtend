@@ -24,7 +24,9 @@ import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 public class ChangeDescription2EChangesTransformation {
-
+	// Some tests, especially Java2Pcm need to have recursive recording disabled
+	public static var RECORD_DELETE_RECURSIVELY = true
+	
 	// BEGIN LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
 	// --shadow bullshit-- = make the flat attach part of the change description deep by recursively creating changes for all non-default values (and listing the additional objects to attach, but without any effects)
 	// build a global result list that contains all "object changes" that changed a containment feature
@@ -196,8 +198,10 @@ public class ChangeDescription2EChangesTransformation {
 		
 	def private Iterable<EChange> recursiveRemoval(EObject eObject) {
 		val result = <EChange>newArrayList
-		recursivelyRemoveChangesForNonDefaultAttributesAndContainments(eObject, result)
-		recursivelyRemoveChangesForNonDefaultReferences(eObject, result)
+		if (RECORD_DELETE_RECURSIVELY) {
+			recursivelyRemoveChangesForNonDefaultAttributesAndContainments(eObject, result)
+			recursivelyRemoveChangesForNonDefaultReferences(eObject, result)
+		}
 		return result;
 	}
 
