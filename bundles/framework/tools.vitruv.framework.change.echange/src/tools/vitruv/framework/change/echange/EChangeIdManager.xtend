@@ -6,6 +6,8 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
 
 /**
  * Provides logic for initializing the IDs within changes and for updating
@@ -33,8 +35,6 @@ class EChangeIdManager {
 	def void setOrGenerateIds(EChange eChange) {
 		switch eChange {
 			EObjectExistenceEChange<?>:
-				setOrGenerateAffectedEObjectId(eChange)
-			FeatureEChange<?,?>:
 				setOrGenerateAffectedEObjectId(eChange)
 			CompoundEChange:
 				eChange.atomicChanges.forEach[setOrGenerateIds]
@@ -70,14 +70,22 @@ class EChangeIdManager {
 		subtractedEChange.oldValueID = uuidProviderAndResolver.getOrRegisterUuid(subtractedEChange.oldValue)
 	}
 
-	private def void setOrGenerateAffectedEObjectId(EObjectExistenceEChange<?> existenceChange) {
-		if(existenceChange.affectedEObject === null) {
+	private def dispatch void setOrGenerateAffectedEObjectId(CreateEObject<?> createChange) {
+		if(createChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
-		existenceChange.affectedEObjectID = uuidProviderAndResolver.getOrRegisterUuid(existenceChange.affectedEObject);
+		createChange.affectedEObjectID = uuidProviderAndResolver.getOrRegisterUuid(createChange.affectedEObject);
+	}
+	
+	private def dispatch void setOrGenerateAffectedEObjectId(DeleteEObject<?> deleteChange) {
+		if(deleteChange.affectedEObject === null) {
+			throw new IllegalStateException();
+		}
+		deleteChange.affectedEObjectID = uuidProviderAndResolver.getOrRegisterUuid(deleteChange.affectedEObject);
+		deleteChange.consequentialRemoveChanges.forEach[setOrGenerateIds]
 	}
 
-	private def void setOrGenerateAffectedEObjectId(FeatureEChange<?, ?> featureChange) {
+	private def dispatch void setOrGenerateAffectedEObjectId(FeatureEChange<?, ?> featureChange) {
 		if(featureChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
