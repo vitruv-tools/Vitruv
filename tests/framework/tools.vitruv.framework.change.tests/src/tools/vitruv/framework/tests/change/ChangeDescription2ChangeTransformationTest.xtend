@@ -22,6 +22,7 @@ import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.Parameterized.Parameter
 import java.util.Collection
 import tools.vitruv.framework.change.uuid.UuidProviderAndResolverImpl
+import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver
 
 /** 
  * @author langhamm
@@ -69,7 +70,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	 */
 	@Before
 	def void beforeTest() {
-		this.changeRecorder = new AtomicEmfChangeRecorder(new UuidProviderAndResolverImpl(rs, null), false, this.unresolveAndResolveRecordedEChanges)
+		val uuidProviderAndResolver = new UuidProviderAndResolverImpl(rs, null)
+		AtomicEChangeResolver.uuidProviderAndResolver = uuidProviderAndResolver;
+		this.changeRecorder = new AtomicEmfChangeRecorder(uuidProviderAndResolver, false, this.unresolveAndResolveRecordedEChanges)
 		this.rootElement = createRootInResource(1);
 	}
 

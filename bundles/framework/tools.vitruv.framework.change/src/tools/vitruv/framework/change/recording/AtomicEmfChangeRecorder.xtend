@@ -120,7 +120,8 @@ class AtomicEmfChangeRecorder {
 		if (unresolveRecordedChanges) {
 			relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
 			unresolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(true, unresolveRecordedChanges && updateTuids)].filterNull.toList;
-			correctChanges(unresolvedChanges)
+			unresolvedChanges.map[EChanges].flatten.forEach[EChangeUnresolver.unresolve(it)]
+			// correctChanges(unresolvedChanges)
 		}
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
 		resolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(false, !unresolveRecordedChanges && updateTuids)].filterNull.toList;

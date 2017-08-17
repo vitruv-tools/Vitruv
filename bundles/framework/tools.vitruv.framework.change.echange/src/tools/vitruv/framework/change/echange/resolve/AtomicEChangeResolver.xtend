@@ -20,11 +20,15 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.util.EChangeUtil
+import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
 
 /**
  * Static class for resolving EChanges internally.
  */
 class AtomicEChangeResolver {
+	// FIXME HK This should not not not be static
+	public static UuidProviderAndResolver uuidProviderAndResolver;
+	
 	/**
 	 * Resolves {@link EChange} attributes.
 	 * @param change 		The change which should be resolved.
@@ -50,14 +54,14 @@ class AtomicEChangeResolver {
 	 */
 	def private static <A extends EObject, F extends EStructuralFeature> boolean resolveFeatureEChange(
 		FeatureEChange<A, F> change, ResourceSet resourceSet, boolean resolveBefore) {
-		if (change.affectedEObject === null || !resolveEChange(change, resourceSet, true)) {
-			return false
+		if (change.affectedEObjectID === null || !resolveEChange(change, resourceSet, true)) {
+			throw new IllegalStateException();
 		}
 
-		change.affectedEObject = EChangeUtil.resolveProxy(change.affectedEObject, resourceSet) as A
+		change.affectedEObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A //EChangeUtil.resolveProxy(change.affectedEObject, resourceSet) as A
 
 		if (change.affectedFeature === null || change.affectedEObject === null || change.affectedEObject.eIsProxy) {
-			return false
+			throw new IllegalStateException();
 		}
 		return true
 	}
@@ -74,18 +78,20 @@ class AtomicEChangeResolver {
 	 * 						Doesn't affect single valued references.
 	 * @return				The resolved EObject. If the value could not be resolved, the original value.
 	 */
-	def private static <A extends EObject, T extends EObject> EObject resolveReferenceValue(UpdateReferenceEChange<A> change, T value,
+	def private static <A extends EObject, T extends EObject> EObject resolveReferenceValue(UpdateReferenceEChange<A> change, T value, String valueId,
 		ResourceSet resourceSet, boolean isInserted, int index) {
 		if (value === null) {
-			return null
+			return null;
 		}
 		if (!change.affectedFeature.containment) {
 			// Non containment => New object is already in resource
-			return EChangeUtil.resolveProxy(value, resourceSet)			
+			return uuidProviderAndResolver.getEObject(valueId)
+//			return EChangeUtil.resolveProxy(value, resourceSet)			
 		}
 		if (!isInserted) {
 			// Before => New object is in staging area.
-			return StagingArea.getStagingArea(resourceSet).peek
+			return uuidProviderAndResolver.getEObject(valueId);
+//			return StagingArea.getStagingArea(resourceSet).peek
 		} else {
 			// After => New object is in containment reference.
 			if (change.affectedFeature.many) {
@@ -115,19 +121,29 @@ class AtomicEChangeResolver {
 			return false
 		}
 		// Get the staging area where the created object will placed in or deleted from.
-		change.stagingArea = StagingArea.getStagingArea(resourceSet)
+//		change.stagingArea = StagingArea.getStagingArea(resourceSet)
 
 		// Resolve the affected object
 		if (newObject) {
 			// Create new one
-			change.affectedEObject = EcoreUtil.copy(change.affectedEObject)
-			(change.affectedEObject as InternalEObject).eSetProxyURI(null)
+			val oldObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A;
+			// TODO HK This copy operation should not be necessary if deletions are represented recursively
+			if (oldObject !== null && oldObject.eResource?.resourceSet == resourceSet) {
+				change.affectedEObject = EcoreUtil.copy(oldObject);
+			} else {
+				change.affectedEObject = EcoreUtil.create(change.affectedEObject.eClass) as A;
+			}
+			
+//			change.affectedEObject = EcoreUtil.copy(change.affectedEObject)
+//			(change.affectedEObject as InternalEObject).eSetProxyURI(null)
 		} else {
 			// Object still exists
-			change.affectedEObject = change.stagingArea.peek as A
+			change.affectedEObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A; //change.stagingArea.peek as A
 		}
 		
-		if (change.affectedEObject === null || change.affectedEObject.eIsProxy || change.stagingArea === null) {
+		uuidProviderAndResolver.registerEObject(change.affectedEObjectID, change.affectedEObject);
+		
+		if (change.affectedEObject === null || change.affectedEObject.eIsProxy) { //} || change.stagingArea === null) {
 			return false
 		}
 		
@@ -179,7 +195,13 @@ class AtomicEChangeResolver {
 			}
 		} else {
 			// Root object is in staging area
-			return StagingArea.getStagingArea(resourceSet).peek
+			if (change instanceof InsertRootEObject<?>) {
+				return uuidProviderAndResolver.getEObject(change.newValueID)	
+			} else if (change instanceof RemoveRootEObject<?>) {
+				return uuidProviderAndResolver.getEObject(change.oldValueID)	
+			}
+			
+//			return StagingArea.getStagingArea(resourceSet).peek
 		}
 		return value		
 	}
@@ -224,7 +246,7 @@ class AtomicEChangeResolver {
 			return false
 		}
 		
-		change.newValue = change.resolveReferenceValue(change.newValue, resourceSet, !resolveBefore, change.index)
+		change.newValue = change.resolveReferenceValue(change.newValue, change.newValueID, resourceSet, !resolveBefore, change.index)
 
 		if (change.newValue !== null && change.newValue.eIsProxy) {
 			return false
@@ -246,7 +268,7 @@ class AtomicEChangeResolver {
 			return false
 		}
 		
-		change.oldValue = change.resolveReferenceValue(change.oldValue, resourceSet, resolveBefore, change.index)
+		change.oldValue = change.resolveReferenceValue(change.oldValue, change.oldValueID, resourceSet, resolveBefore, change.index)
 
 		if (change.oldValue !== null && change.oldValue.eIsProxy) {
 			return false
@@ -268,8 +290,8 @@ class AtomicEChangeResolver {
 			return false
 		}
 
-		change.newValue = change.resolveReferenceValue(change.newValue, resourceSet, !resolveBefore, -1)
-		change.oldValue = change.resolveReferenceValue(change.oldValue, resourceSet, resolveBefore, -1)
+		change.newValue = change.resolveReferenceValue(change.newValue, change.newValueID, resourceSet, !resolveBefore, -1)
+		change.oldValue = change.resolveReferenceValue(change.oldValue, change.oldValueID, resourceSet, resolveBefore, -1)
 
 		if ((change.newValue !== null && change.newValue.eIsProxy) ||
 			(change.oldValue !== null && change.oldValue.eIsProxy)) {

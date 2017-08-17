@@ -21,6 +21,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.change.uuid.UuidProviderAndResolver;
 import tools.vitruv.framework.change.uuid.UuidProviderAndResolverImpl;
@@ -271,6 +272,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                 uuidProviderResource = this.resourceSet.createResource(uuidProviderVURI.getEMFUri());
             }
             this.uuidProviderAndResolver = new UuidProviderAndResolverImpl(this.resourceSet, uuidProviderResource);
+            AtomicEChangeResolver.uuidProviderAndResolver = this.uuidProviderAndResolver;
             return null;
         });
     }
