@@ -4,7 +4,6 @@ package tools.vitruv.framework.change.echange.eobject;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -316,22 +315,13 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Staging Area</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
 	 * The feature id for the '<em><b>Id Attribute Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+	int EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
@@ -340,7 +330,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
+	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>EObject Existence EChange</em>' class.
@@ -349,7 +339,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 4;
+	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -441,15 +431,6 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_EOBJECT__AFFECTED_EOBJECT = EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT;
-
-	/**
-	 * The feature id for the '<em><b>Staging Area</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CREATE_EOBJECT__STAGING_AREA = EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA;
 
 	/**
 	 * The feature id for the '<em><b>Id Attribute Value</b></em>' attribute.
@@ -570,15 +551,6 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT__AFFECTED_EOBJECT = EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Staging Area</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DELETE_EOBJECT__STAGING_AREA = EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA;
-
-	/**
 	 * The feature id for the '<em><b>Id Attribute Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -678,27 +650,6 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT_OPERATION_COUNT = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '<em>EObj</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getEObj()
-	 * @generated
-	 */
-	int EOBJ = 5;
-
-	/**
-	 * The meta object id for the '<em>Staging Area</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.resolve.StagingArea
-	 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getStagingArea()
-	 * @generated
-	 */
-	int STAGING_AREA = 6;
-
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange <em>EObject Added EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -784,17 +735,6 @@ public interface EobjectPackage extends EPackage {
 	EReference getEObjectExistenceEChange_AffectedEObject();
 
 	/**
-	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getStagingArea <em>Staging Area</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Staging Area</em>'.
-	 * @see tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getStagingArea()
-	 * @see #getEObjectExistenceEChange()
-	 * @generated
-	 */
-	EAttribute getEObjectExistenceEChange_StagingArea();
-
-	/**
 	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange#getIdAttributeValue <em>Id Attribute Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -835,28 +775,6 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getDeleteEObject();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EObject <em>EObj</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>EObj</em>'.
-	 * @see org.eclipse.emf.ecore.EObject
-	 * @model instanceClass="org.eclipse.emf.ecore.EObject"
-	 * @generated
-	 */
-	EDataType getEObj();
-
-	/**
-	 * Returns the meta object for data type '{@link tools.vitruv.framework.change.echange.resolve.StagingArea <em>Staging Area</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Staging Area</em>'.
-	 * @see tools.vitruv.framework.change.echange.resolve.StagingArea
-	 * @model instanceClass="tools.vitruv.framework.change.echange.resolve.StagingArea"
-	 * @generated
-	 */
-	EDataType getStagingArea();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -952,14 +870,6 @@ public interface EobjectPackage extends EPackage {
 		EReference EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT = eINSTANCE.getEObjectExistenceEChange_AffectedEObject();
 
 		/**
-		 * The meta object literal for the '<em><b>Staging Area</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA = eINSTANCE.getEObjectExistenceEChange_StagingArea();
-
-		/**
 		 * The meta object literal for the '<em><b>Id Attribute Value</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -994,26 +904,6 @@ public interface EobjectPackage extends EPackage {
 		 * @generated
 		 */
 		EClass DELETE_EOBJECT = eINSTANCE.getDeleteEObject();
-
-		/**
-		 * The meta object literal for the '<em>EObj</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.EObject
-		 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getEObj()
-		 * @generated
-		 */
-		EDataType EOBJ = eINSTANCE.getEObj();
-
-		/**
-		 * The meta object literal for the '<em>Staging Area</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.resolve.StagingArea
-		 * @see tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl#getStagingArea()
-		 * @generated
-		 */
-		EDataType STAGING_AREA = eINSTANCE.getStagingArea();
 
 	}
 

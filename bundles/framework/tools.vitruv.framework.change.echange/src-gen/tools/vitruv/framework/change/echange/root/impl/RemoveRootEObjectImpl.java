@@ -86,7 +86,7 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 */
 	@SuppressWarnings("unchecked")
 	public T getOldValue() {
-		if (oldValue != null && ((EObject)oldValue).eIsProxy()) {
+		if (oldValue != null && oldValue.eIsProxy()) {
 			InternalEObject oldOldValue = (InternalEObject)oldValue;
 			oldValue = (T)eResolveProxy(oldOldValue);
 			if (oldValue != oldOldValue) {

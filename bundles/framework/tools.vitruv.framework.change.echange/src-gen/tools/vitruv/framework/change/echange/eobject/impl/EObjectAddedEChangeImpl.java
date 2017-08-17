@@ -85,7 +85,7 @@ public abstract class EObjectAddedEChangeImpl<T extends EObject> extends Additiv
 	 */
 	@SuppressWarnings("unchecked")
 	public T getNewValue() {
-		if (newValue != null && ((EObject)newValue).eIsProxy()) {
+		if (newValue != null && newValue.eIsProxy()) {
 			InternalEObject oldNewValue = (InternalEObject)newValue;
 			newValue = (T)eResolveProxy(oldNewValue);
 			if (newValue != oldNewValue) {

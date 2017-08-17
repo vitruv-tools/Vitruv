@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getCreateEObject()
- * @model ABounds="tools.vitruv.framework.change.echange.eobject.EObj"
+ * @model
  * @generated
  */
 public interface CreateEObject<A extends EObject> extends EObjectExistenceEChange<A> {

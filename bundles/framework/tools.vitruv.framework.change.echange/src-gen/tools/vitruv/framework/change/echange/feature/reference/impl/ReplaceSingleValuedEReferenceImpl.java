@@ -128,7 +128,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 */
 	@SuppressWarnings("unchecked")
 	public T getNewValue() {
-		if (newValue != null && ((EObject)newValue).eIsProxy()) {
+		if (newValue != null && newValue.eIsProxy()) {
 			InternalEObject oldNewValue = (InternalEObject)newValue;
 			newValue = (T)eResolveProxy(oldNewValue);
 			if (newValue != oldNewValue) {
@@ -188,7 +188,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 */
 	@SuppressWarnings("unchecked")
 	public T getOldValue() {
-		if (oldValue != null && ((EObject)oldValue).eIsProxy()) {
+		if (oldValue != null && oldValue.eIsProxy()) {
 			InternalEObject oldOldValue = (InternalEObject)oldValue;
 			oldValue = (T)eResolveProxy(oldOldValue);
 			if (oldValue != oldOldValue) {

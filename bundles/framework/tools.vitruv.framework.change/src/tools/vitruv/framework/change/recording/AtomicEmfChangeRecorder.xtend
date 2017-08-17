@@ -4,17 +4,11 @@ import java.util.Collection
 import java.util.List
 import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.Notifier
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.change.util.ChangeRecorder
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
-import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -121,7 +115,6 @@ class AtomicEmfChangeRecorder {
 			relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
 			unresolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(true, unresolveRecordedChanges && updateTuids)].filterNull.toList;
 			unresolvedChanges.map[EChanges].flatten.forEach[EChangeUnresolver.unresolve(it)]
-			// correctChanges(unresolvedChanges)
 		}
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
 		resolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(false, !unresolveRecordedChanges && updateTuids)].filterNull.toList;
@@ -161,54 +154,6 @@ class AtomicEmfChangeRecorder {
 
 	def void dispose() {
 		changeRecorder.dispose()
-	}
-
-	/*
-	 * The recorder doesn't produce the correct changes, because all created changes of one change
-	 * description are resolved to the same state before all changes were applied. Every atomic change must be resolved 
-	 * directly to the state before itself is applied => roll everything back and re-apply all changes, while
-	 * correcting the wrong changes.
-	 */
-	def private void correctChanges(List<TransactionalChange> changes) {
-		var eChanges = changes.map [
-			val echanges = it.EChanges;
-			return echanges;
-		].flatten.toList;
-		// Roll back
-		for (c : eChanges.reverseView) {
-			updateStagingArea(c) // corrects the missing or wrong staging area of CreateEObject changes.
-			if (c.isResolved) {
-				c.applyBackward
-			}
-		}
-		// Apply again and unresolve the results if necessary
-		for (c : eChanges) {
-			val EChange copy = EcoreUtil.copy(c)
-			EChangeUnresolver.unresolve(c)
-			if (copy.isResolved) {
-				copy.applyForward
-			}
-		}
-	}
-
-	/*
-	 * Updates the staging area to the current state of the model.
-	 */
-	def private dispatch void updateStagingArea(EChange change) {
-		// Is needed to create a dispatch method which is applicable for EChange base class.
-	}
-
-	def private dispatch void updateStagingArea(CreateEObject<EObject> change) {
-		// The newly created object is in an resource after the change, so
-		// the correct staging area can be chosen, before the change
-		// is applied backward.
-		change.stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
-	}
-
-	def private dispatch void updateStagingArea(CompoundEChange change) {
-		for (a : change.atomicChanges) {
-			updateStagingArea(a)
-		}
 	}
 
 	/**

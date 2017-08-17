@@ -85,7 +85,7 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 	 */
 	@SuppressWarnings("unchecked")
 	public T getOldValue() {
-		if (oldValue != null && ((EObject)oldValue).eIsProxy()) {
+		if (oldValue != null && oldValue.eIsProxy()) {
 			InternalEObject oldOldValue = (InternalEObject)oldValue;
 			oldValue = (T)eResolveProxy(oldOldValue);
 			if (oldValue != oldOldValue) {

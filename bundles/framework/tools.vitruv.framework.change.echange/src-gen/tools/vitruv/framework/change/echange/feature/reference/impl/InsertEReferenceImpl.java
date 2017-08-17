@@ -93,7 +93,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 */
 	@SuppressWarnings("unchecked")
 	public T getNewValue() {
-		if (newValue != null && ((EObject)newValue).eIsProxy()) {
+		if (newValue != null && newValue.eIsProxy()) {
 			InternalEObject oldNewValue = (InternalEObject)newValue;
 			newValue = (T)eResolveProxy(oldNewValue);
 			if (newValue != oldNewValue) {

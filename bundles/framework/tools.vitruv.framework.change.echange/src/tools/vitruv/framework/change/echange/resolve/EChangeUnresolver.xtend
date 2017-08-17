@@ -131,7 +131,6 @@ public class EChangeUnresolver {
 	 */	
 	def dispatch public static void unresolve(EObjectExistenceEChange<EObject> change) {
 		change.affectedEObject = createProxy(change.affectedEObject)
-		change.stagingArea = null
 	}	
 	/**
 	 * Dispatch method for {@link ReplaceSingleValuedEReference} to unresolve it.

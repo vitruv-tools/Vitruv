@@ -15,7 +15,6 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
@@ -26,18 +25,18 @@ import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHel
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 
 class AtomicEChangeAssertHelper {
-	public def static assertEObjectExistenceChange(EChange change, EObject affectedEObject, StagingArea stagingArea) {
+	public def static assertEObjectExistenceChange(EChange change, EObject affectedEObject) {
 		val eObjectExistingChange = assertObjectInstanceOf(change, EObjectExistenceEChange);
 		eObjectExistingChange.assertAffectedEObject(affectedEObject)
 	}
-	public def static assertCreateEObject(EChange change, EObject affectedEObject, StagingArea stagingArea) {
+	public def static assertCreateEObject(EChange change, EObject affectedEObject) {
 		val createEObject = assertObjectInstanceOf(change, CreateEObject);
-		createEObject.assertEObjectExistenceChange(affectedEObject, stagingArea);
+		createEObject.assertEObjectExistenceChange(affectedEObject);
 	}
 			
-	public def static assertDeleteEObject(EChange change, EObject affectedEObject, StagingArea stagingArea) {
+	public def static assertDeleteEObject(EChange change, EObject affectedEObject) {
 		val deleteEObject = assertObjectInstanceOf(change, DeleteEObject);
-		deleteEObject.assertEObjectExistenceChange(affectedEObject, stagingArea);
+		deleteEObject.assertEObjectExistenceChange(affectedEObject);
 	}
 	
 	def public static assertRootEChange(EChange change, String uri, Resource resource) {

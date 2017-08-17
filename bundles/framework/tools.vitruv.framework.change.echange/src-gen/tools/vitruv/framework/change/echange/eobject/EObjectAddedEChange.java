@@ -25,7 +25,7 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectAddedEChange()
- * @model abstract="true" TBounds="tools.vitruv.framework.change.echange.eobject.EObj"
+ * @model abstract="true"
  * @generated
  */
 public interface EObjectAddedEChange<T extends EObject> extends AdditiveEChange<T> {
@@ -40,7 +40,7 @@ public interface EObjectAddedEChange<T extends EObject> extends AdditiveEChange<
 	 * @return the value of the '<em>New Value</em>' reference.
 	 * @see #setNewValue(EObject)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectAddedEChange_NewValue()
-	 * @model kind="reference" required="true"
+	 * @model required="true"
 	 * @generated
 	 */
 	T getNewValue();

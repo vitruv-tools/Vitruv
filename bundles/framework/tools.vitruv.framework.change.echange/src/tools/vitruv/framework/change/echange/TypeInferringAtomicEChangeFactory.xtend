@@ -24,7 +24,6 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.root.RootFactory
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.echange.resolve.StagingArea
 
 /**
  * Factory singleton class for elements of change models.
@@ -99,7 +98,6 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
 		A affectedEObject, Resource resource, String objectId) {
-		change.stagingArea = StagingArea.getStagingArea(resource)
 		change.affectedEObject = affectedEObject;
 		change.idAttributeValue = objectId;
 	}
