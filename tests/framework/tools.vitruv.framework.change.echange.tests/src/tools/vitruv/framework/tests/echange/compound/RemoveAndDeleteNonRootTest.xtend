@@ -101,7 +101,6 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, 1)
 		Assert.assertFalse(referenceContent.contains(newValue))
 		Assert.assertTrue(referenceContent.contains(newValue2))
-		Assert.assertTrue(stagingArea.empty)
 	
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 0).resolveBefore(resourceSet)
@@ -138,7 +137,6 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		
 		Assert.assertEquals(referenceContent.size, 1)	
 		Assert.assertTrue(referenceContent.contains(newValue2))
-		Assert.assertTrue(stagingArea.empty)
 				
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -172,7 +170,6 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, 2)
 		newValue.assertEqualsOrCopy(referenceContent.get(0))
 		newValue2.assertEqualsOrCopy(referenceContent.get(1))
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -180,7 +177,6 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private void assertIsStateAfter() {
 		Assert.assertEquals(referenceContent.size, 0)
-		Assert.assertTrue(stagingArea.empty)		
 	}
 
 	/**

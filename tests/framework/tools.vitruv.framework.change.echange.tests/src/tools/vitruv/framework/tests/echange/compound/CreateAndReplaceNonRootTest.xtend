@@ -147,7 +147,6 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	 */
 	def private void assertIsStateBefore() {
 		Assert.assertNull(affectedEObject.eGet(affectedFeature))
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -155,7 +154,6 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	 */
 	def private void assertIsStateAfter() {
 		newNonRootObject.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as NonRoot)
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**

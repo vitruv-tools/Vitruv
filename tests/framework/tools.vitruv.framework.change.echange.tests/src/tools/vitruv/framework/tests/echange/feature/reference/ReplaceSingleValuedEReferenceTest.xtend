@@ -104,7 +104,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		
 		// Set state after
 		prepareReference(newValue)
-		prepareStagingArea(oldValue)
 		
 		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) as ReplaceSingleValuedEReference<Root, NonRoot>
@@ -265,7 +264,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		
 		// Set state after
 		prepareReference(newValue)
-		prepareStagingArea(oldValue)
 		assertIsStateAfter(oldValue)		
 		
 		// Apply backward
@@ -292,7 +290,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		
 		// Set state after
 		prepareReference(newValue)
-		prepareStagingArea(oldValue)
 		assertIsStateAfter(oldValue)
 		
 		// Apply backward
@@ -334,7 +331,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void isContainmentTest() {
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		prepareReference(oldValue)
-		prepareStagingArea(newValue)
 	}
 	
 	/**
@@ -368,11 +364,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void assertIsStateBefore(NonRoot valueInStagingArea) {
 		resourceIsStateBefore
 		oldValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)
-		if (affectedFeature.containment && valueInStagingArea !== null) {
-			valueInStagingArea.assertEqualsOrCopy(stagingArea.peek)
-		} else {
-			Assert.assertTrue(stagingArea.empty)
-		}
 	}
 	
 	/**
@@ -395,11 +386,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void assertIsStateAfter(NonRoot valueInStagingArea) {
 		resourceIsStateBefore
 		newValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)		
-		if (affectedFeature.containment && valueInStagingArea !== null) {
-			valueInStagingArea.assertEqualsOrCopy(stagingArea.peek)
-		} else {
-			Assert.assertTrue(stagingArea.empty)
-		}
 	}
 	
 	/**

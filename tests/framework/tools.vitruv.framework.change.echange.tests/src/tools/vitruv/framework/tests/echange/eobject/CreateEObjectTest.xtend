@@ -1,7 +1,6 @@
 package tools.vitruv.framework.tests.echange.eobject
 
 import allElementTypes.Root
-import org.junit.Assert
 import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import org.junit.Before
@@ -84,7 +83,6 @@ class CreateEObjectTest extends EObjectTest {
 	 * Sets the state of the model before the change.
 	 */
 	def private void prepareStateBefore() {
-		stagingArea.clear
 		assertIsStateBefore
 	}
 	
@@ -92,8 +90,6 @@ class CreateEObjectTest extends EObjectTest {
 	 * Sets the state of the model after the change.
 	 */
 	def private void prepareStateAfter(Root object) {
-		stagingArea.clear
-		stagingArea.add(object)
 		assertIsStateAfter(object)
 	}
 	
@@ -101,15 +97,12 @@ class CreateEObjectTest extends EObjectTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter(Root object) {
-		Assert.assertFalse(stagingArea.empty)
-		object.assertEqualsOrCopy(stagingArea.peek)
 	}
 	
 	/**

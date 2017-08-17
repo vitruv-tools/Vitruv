@@ -176,12 +176,10 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Apply forward
 	 	resolvedChange.assertApplyForward
 	 	
-		Assert.assertTrue(stagingArea.empty)
 		Assert.assertEquals(referenceContent.size, 1)
 		Assert.assertSame(referenceContent.get(0), newValue)
 		
 		// Prepare and create change 2
-		prepareStagingArea(newValue2) // another change would fill the staging area.
 		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(resourceSet)
 	 	
 	 	// Apply forward 2
@@ -242,7 +240,6 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 	resolvedChange.assertApplyForward
 	 	
 	 	// Create change 2 and apply forward			
-		prepareStagingArea(newValue2)	
 		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(resourceSet)
 	 	resolvedChange2.assertApplyForward	
 	 	
@@ -252,11 +249,8 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertFalse(stagingArea.empty)
 		Assert.assertEquals(referenceContent.size, 1)
 		Assert.assertSame(referenceContent.get(0), newValue)		
-		// Now another change would delete the element in the staging area (or reinsert)
-		stagingArea.clear
 		
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -314,7 +308,6 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	def private void isContainmentTest() {
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
-		prepareStagingArea(newValue)
 		assertIsStateBefore
 	}
 	
@@ -341,11 +334,6 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private void assertIsStateBefore() {
 		Assert.assertEquals(referenceContent.size, 0)
-		if (affectedFeature.containment) {
-			Assert.assertFalse(stagingArea.empty)	
-		} else {
-			Assert.assertTrue(stagingArea.empty)			
-		}	
 	}
 	
 	/**
@@ -355,7 +343,6 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, 2)	
 		newValue.assertEqualsOrCopy(referenceContent.get(0))
 		newValue2.assertEqualsOrCopy(referenceContent.get(1))
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**

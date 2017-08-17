@@ -113,7 +113,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		
 		var NonRoot valueAfterChange2 = affectedEObject.eGet(affectedFeature) as NonRoot
 		valueAfterChange2.assertEqualsOrCopy(newValue2)
-		Assert.assertTrue(stagingArea.empty)			
 	}
 	
 	/**
@@ -153,7 +152,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertTrue(stagingArea.empty)
 		oldValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as NonRoot)		
 	}
 	
@@ -161,7 +159,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertTrue(stagingArea.empty)
 		newValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as NonRoot)
 	}
 	

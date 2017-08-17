@@ -106,7 +106,6 @@ class CreateAndInsertRootTest extends EChangeTest {
 	
 		Assert.assertEquals(resourceContent.size, 2)
 		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertTrue(stagingArea.empty)
 		
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore(resourceSet)
@@ -144,7 +143,6 @@ class CreateAndInsertRootTest extends EChangeTest {
 		Assert.assertEquals(resourceContent.size, 2)
 		Assert.assertTrue(resourceContent.contains(resolvedChange.createChange.affectedEObject))
 		Assert.assertFalse(resourceContent.contains(resolvedChange2.createChange.affectedEObject))		
-		Assert.assertTrue(stagingArea.empty)	
 		
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -167,7 +165,6 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 */
 	def private void assertIsStateBefore() {
 		Assert.assertEquals(resourceContent.size, 1)
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -177,7 +174,6 @@ class CreateAndInsertRootTest extends EChangeTest {
 		Assert.assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**

@@ -1,7 +1,6 @@
 package tools.vitruv.framework.tests.echange.eobject
 
 import allElementTypes.Root
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
@@ -100,8 +99,6 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Sets the state of the model before a change.
 	 */
 	def private void prepareStateBefore(Root stagingAreaObject) {
-		stagingArea.clear
-		stagingArea.add(stagingAreaObject)
 		assertIsStateBefore(stagingAreaObject)
 	}
 	
@@ -109,7 +106,6 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Sets the state of the model after a change.
 	 */
 	def private void prepareStateAfter() {
-		stagingArea.clear	
 		assertIsStateAfter
 	}
 	
@@ -117,15 +113,12 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore(Root stagingAreaObject) {
-		Assert.assertFalse(stagingArea.empty)
-		stagingAreaObject.assertEqualsOrCopy(stagingArea.peek)
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
