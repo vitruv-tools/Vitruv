@@ -1,27 +1,27 @@
 package tools.vitruv.framework.versioning
 
-import org.graphstream.graph.Graph
-import tools.vitruv.framework.versioning.extensions.EChangeNode
 import java.util.Map
 import java.util.Set
+
+import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
 
 interface IsomorphismTesterAlgorithm extends IsomorphismTester {
 	static def IsomorphismTesterAlgorithm createIsomorphismTester() {
-		new PrimitiveIsomorphismTesterImpl
+		PrimitiveIsomorphismTesterImpl::createPrimitiveIsomorphismTesterImpl
 	}
 
-	def void init(Graph g1, Graph g2)
-
-	def void compute()
-
-	def boolean isIsomorphic()
-
-	def Graph getCombinedGraph()
+	def EChangeGraph getCombinedGraph()
 
 	def Map<EChangeNode, EChangeNode> getIsomorphism()
 
 	def Set<EChangeNode> getUnmatchedOfGraph1()
 
 	def Set<EChangeNode> getUnmatchedOfGraph2()
+
+	def boolean isIsomorphic()
+
+	def void compute()
+
+	def void init(EChangeGraph g1, EChangeGraph g2)
 }

@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests
 
-import java.util.ArrayList
 import java.util.Arrays
 import java.util.Collection
 import java.util.Date
@@ -24,6 +23,7 @@ import tools.vitruv.framework.userinteraction.UserInteractionType
  */
 class TestUserInteractor implements UserInteracting {
 	static extension Logger = Logger::getLogger(TestUserInteractor)
+
 	val ConcurrentLinkedQueue<Integer> concurrentIntLinkedQueue
 	val ConcurrentLinkedQueue<String> concurrentStringLinkedQueue
 	val ConcurrentLinkedQueue<URI> concurrentURILinkedQueue
@@ -31,6 +31,7 @@ class TestUserInteractor implements UserInteracting {
 	val int minWaittime
 	val int maxWaittime
 	val int waitTimeRange
+
 	@Accessors(PUBLIC_GETTER)
 	val Collection<String> messageLog
 	val List<Pair<Date, Integer>> userInteractions
@@ -47,7 +48,7 @@ class TestUserInteractor implements UserInteracting {
 		concurrentStringLinkedQueue = new ConcurrentLinkedQueue<String>
 		concurrentURILinkedQueue = new ConcurrentLinkedQueue<URI>
 		random = new Random
-		messageLog = new ArrayList<String>
+		messageLog = newArrayList
 		userInteractions = newArrayList
 	}
 

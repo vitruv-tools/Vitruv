@@ -1,9 +1,11 @@
 package tools.vitruv.dsls.reactions.tests.versioning
 
-import allElementTypes.AllElementTypesFactory
-import allElementTypes.Root
 import org.junit.Ignore
 import org.junit.Test
+
+import allElementTypes.AllElementTypesFactory
+import allElementTypes.Root
+
 import tools.vitruv.framework.change.copy.ChangeCopyFactory
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.util.datatypes.VURI
@@ -12,6 +14,9 @@ import tools.vitruv.framework.vsum.InternalTestVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
+
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+
 import static org.junit.Assert.assertThat
 
 class ReapplyTest extends SourceTargetRecorderTest {
@@ -27,30 +32,30 @@ class ReapplyTest extends SourceTargetRecorderTest {
 	@Test
 	def void testReapply() {
 
-		// Create container and synchronize 
-		assertThat(rootElement.eContents.length, is(0))
+		// Create container and synchronize
+		assertThat(rootElement.eContents, hasSize(0))
 		assertThat(rootElement.nonRootObjectContainerHelper, equalTo(null))
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = nonRootObjectContainerName
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(rootElement.eContents.length, is(1))
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(2))
+		assertThat(rootElement.eContents, hasSize(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
 
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(5))
+		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(5))
 		val originalChanges = virtualModel.getChangeMatches(sourceVURI).map[originalChange]
-		assertThat(originalChanges.length, is(5))
+		assertThat(originalChanges, hasSize(5))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
 		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#{pair})
-		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
+		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl]::map [
 			it as EMFModelChangeImpl
 		].map[eChangeCopier.copyEMFModelChangeToSingleChange(it)].toList
-		assertThat(copiedChanges.length, is(5))
+		assertThat(copiedChanges, hasSize(5))
 
 		virtualModel.propagateChange(copiedChanges.get(0))
 		virtualModel.propagateChange(copiedChanges.get(1))
@@ -68,35 +73,35 @@ class ReapplyTest extends SourceTargetRecorderTest {
 	@Test
 	def void testReapplyAsList() {
 
-		// Create container and synchronize 
-		assertThat(rootElement.eContents.length, is(0))
+		// Create container and synchronize
+		assertThat(rootElement.eContents, hasSize(0))
 		assertThat(rootElement.nonRootObjectContainerHelper, equalTo(null))
 		val container = AllElementTypesFactory::eINSTANCE.createNonRootObjectContainerHelper
 		container.id = nonRootObjectContainerName
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(rootElement.eContents.length, is(1))
-		assertThat(virtualModel.getChangeMatches(sourceVURI).length, is(2))
+		assertThat(rootElement.eContents, hasSize(1))
+		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
 		val changeMatches1 = virtualModel.getChangeMatches(sourceVURI)
-		assertThat(changeMatches1.length, is(5))
+		assertThat(changeMatches1, hasSize(5))
 		changeMatches1.forEach [ c |
 			c.originalChange.EChanges.forEach [ eChange |
 				assertThat(eChange.resolved, is(false))
 			]
 		]
 		val originalChanges = changeMatches1.map[originalChange]
-		assertThat(originalChanges.length, is(5))
+		assertThat(originalChanges, hasSize(5))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
 		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#{pair})
-		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl].map [
+		val copiedChanges = originalChanges.filter[it instanceof EMFModelChangeImpl]::map [
 			it as EMFModelChangeImpl
 		].map[eChangeCopier.copyEMFModelChangeToList(it)].flatten.toList
-		assertThat(copiedChanges.length, is(10))
+		assertThat(copiedChanges, hasSize(10))
 
 		for (i : 0 ..< 3) {
 			virtualModel.propagateChange(copiedChanges.get(i))
@@ -186,7 +191,7 @@ class ReapplyTest extends SourceTargetRecorderTest {
 	private def getRootIterator(String name) {
 		internalResourceSet.resources.filter[URI.toString.contains(name)].map[contents].flatten.filter [
 			it instanceof Root
-		].map[it as Root].filter [
+		].map[it as Root]::filter [
 			id == newTestSourceModelName
 		]
 	}

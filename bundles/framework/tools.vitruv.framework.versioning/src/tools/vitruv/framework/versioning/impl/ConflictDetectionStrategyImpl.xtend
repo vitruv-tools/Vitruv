@@ -2,6 +2,7 @@ package tools.vitruv.framework.versioning.impl
 
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
+
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
@@ -12,6 +13,7 @@ import tools.vitruv.framework.versioning.ConflictType
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 
 class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
+	// Extensions.
 	static extension EChangeCompareUtil = EChangeCompareUtil::instance
 
 	override conflicts(EChange e1, EChange e2) {
@@ -26,49 +28,55 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		determineConflictSolvability(e1, e2, type)
 	}
 
-	private dispatch def boolean isConflicting(EChange e1, EChange e2) {
+	private static dispatch def boolean isConflicting(EChange e1, EChange e2) {
 		false
 	}
 
-	private dispatch def boolean isConflicting(
+	private static dispatch def boolean isConflicting(
 		CreateAndReplaceNonRoot<?, ?> e1,
 		CreateAndReplaceNonRoot<?, ?> e2
 	) {
-		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
+		val createdObjectIsEqual = isEObjectEqual(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
-		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
-			e2.insertChange.affectedEObject as InternalEObject)
+		var containerIsRootAndMapped = containerIsRootAndMapped(
+			affectedContainerPlatformString1,
+			e2.insertChange.affectedEObject as InternalEObject
+		)
 		val newValueIsEqual = EcoreUtil::equals(e1.insertChange.newValue, e2.insertChange.newValue)
 		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && !newValueIsEqual
 	}
 
-	private dispatch def boolean isConflicting(
+	private static dispatch def boolean isConflicting(
 		CreateAndInsertNonRoot<?, ?> e1,
 		CreateAndInsertNonRoot<?, ?> e2
 	) {
-		val createdObjectIsEqual = EcoreUtil::equals(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
+		val createdObjectIsEqual = isEObjectEqual(e1.createChange.affectedEObject, e2.createChange.affectedEObject)
 		val containerIsEqual = EcoreUtil::equals(e1.insertChange.affectedEObject, e2.insertChange.affectedEObject)
 		val affectedContainer1 = e1.insertChange.affectedEObject as InternalEObject
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
-		var containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
-			e2.insertChange.affectedEObject as InternalEObject)
+		var containerIsRootAndMapped = containerIsRootAndMapped(
+			affectedContainerPlatformString1,
+			e2.insertChange.affectedEObject as InternalEObject
+		)
 		val indexEqual = e1.insertChange.index === e2.insertChange.index
 		return createdObjectIsEqual && (containerIsEqual || containerIsRootAndMapped) && indexEqual
 	}
 
-	private dispatch def boolean isConflicting(
+	private static dispatch def boolean isConflicting(
 		ReplaceSingleValuedEAttribute<?, ?> e1,
 		ReplaceSingleValuedEAttribute<?, ?> e2
 	) {
-		val affectedObjectIsEqual = EcoreUtil::equals(e1.affectedEObject, e2.affectedEObject)
+		val affectedObjectIsEqual = isEObjectEqual(e1.affectedEObject, e2.affectedEObject)
 		val affectedFeatureIsEqual = EcoreUtil::equals(e1.affectedFeature, e2.affectedFeature)
 		val newValueIsEqual = e1.newValue == e2.newValue
 		val affectedContainer1 = e1.affectedEObject as InternalEObject
 		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
-		val containerIsRootAndMapped = containerIsRootAndMapped(affectedContainerPlatformString1,
-			e2.affectedEObject as InternalEObject)
+		val containerIsRootAndMapped = containerIsRootAndMapped(
+			affectedContainerPlatformString1,
+			e2.affectedEObject as InternalEObject
+		)
 		val returnValue = (affectedObjectIsEqual || containerIsRootAndMapped) && affectedFeatureIsEqual &&
 			!newValueIsEqual
 		return returnValue
@@ -86,8 +94,11 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		ConflictSeverity::HARD
 	}
 
-	private static dispatch def determineConflictSolvability(CreateAndInsertNonRoot<?, ?> e1,
-		CreateAndInsertNonRoot<?, ?> e2, ConflictType type) {
+	private static dispatch def determineConflictSolvability(
+		CreateAndInsertNonRoot<?, ?> e1,
+		CreateAndInsertNonRoot<?, ?> e2,
+		ConflictType type
+	) {
 		return if (type === ConflictType::INSERTING_IN_SAME_CONTANER)
 			ConflictSeverity::SOFT
 		else
@@ -105,8 +116,10 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		ConflictType::REPLACING_SAME_VALUE
 	}
 
-	private static dispatch def determineConflictType(CreateAndReplaceNonRoot<?, ?> e1,
-		CreateAndReplaceNonRoot<?, ?> e2) {
+	private static dispatch def determineConflictType(
+		CreateAndReplaceNonRoot<?, ?> e1,
+		CreateAndReplaceNonRoot<?, ?> e2
+	) {
 		ConflictType::UNKNOWN
 	}
 

@@ -21,9 +21,8 @@ class EChangeUtil {
 	 */
 	static def resolveProxy(EObject proxy, ResourceSet resourceSet) {
 		if (proxy !== null && resourceSet !== null)
-			EcoreUtil::resolve(proxy, resourceSet)
-		else
-			proxy
+			return EcoreUtil::resolve(proxy, resourceSet)
+		return proxy
 	}
 
 	/**

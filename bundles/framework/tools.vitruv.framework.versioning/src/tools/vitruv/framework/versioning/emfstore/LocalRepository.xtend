@@ -17,8 +17,6 @@ import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 interface LocalRepository<T> extends AbstractRepository {
-	def void setAllFlag(boolean allFlag)
-
 	def Author getAuthor()
 
 	def List<RemoteBranch<T>> getRemoteBranches()
@@ -37,6 +35,8 @@ interface LocalRepository<T> extends AbstractRepository {
 
 	def SimpleCommit commit(String s)
 
+	def SimpleCommit commit(String s, VURI vuri)
+
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel)
 
 	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel, VURI vuri)
@@ -51,13 +51,19 @@ interface LocalRepository<T> extends AbstractRepository {
 
 	def void checkout()
 
+	def void checkout(VURI vuri)
+
 	def void checkout(VersioningVirtualModel virtualModel)
 
 	def void checkout(VersioningVirtualModel virtualModel, VURI vuri)
 
+	def void createBranchOnServer(String name, T remoteRemote)
+
 	def void pull()
 
 	def void pull(LocalBranch<T> branch)
+
+	def void setAllFlag(boolean allFlag)
 
 	def void setAuthor(Author author)
 
@@ -67,11 +73,19 @@ interface LocalRepository<T> extends AbstractRepository {
 
 	def void setVirtualModel(VersioningVirtualModel versioningVirtualModel)
 
-	def void createBranchOnServer(String name, T remoteRemote)
+	def void addIDPair(Pair<String, String> pair)
 
 	def MergeCommit merge(
 		Branch source,
 		Branch target,
+		Function1<Conflict, List<EChange>> originalCallback,
+		Function1<Conflict, List<EChange>> triggeredCallback,
+		VersioningVirtualModel virtualModel
+	)
+
+	def MergeCommit merge(
+		Pair<Branch, VersioningVirtualModel> sourcePair,
+		Pair<Branch, VersioningVirtualModel> targetPair,
 		Function1<Conflict, List<EChange>> originalCallback,
 		Function1<Conflict, List<EChange>> triggeredCallback,
 		VersioningVirtualModel virtualModel

@@ -1,20 +1,24 @@
 package tools.vitruv.framework.versioning.extensions
 
-import org.graphstream.graph.Edge
-import org.graphstream.graph.Graph
+import java.util.Collection
+
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.versioning.EChangeGraph
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.extensions.impl.GraphManagerImpl
-import java.util.Collection
 
 interface GraphManager {
 	static GraphManager instance = GraphManagerImpl::init
 
-	def Graph getGraph()
+	def Collection<EChangeGraph> getSubgraphs()
 
-	def Iterable<Edge> edgesWithType(EdgeType t)
+	def EChangeGraph getGraph()
 
 	def EChangeNode getNode(EChange e)
+
+	def Iterable<EChangeNode> getLeaves()
+
+	def Iterable<EChangeEdge> edgesWithType(EdgeType t)
 
 	def boolean checkIfEdgeExists(EChange e1, EChange e2)
 
@@ -26,12 +30,8 @@ interface GraphManager {
 
 	def void addNode(EChange e)
 
-	def void setGraph(Graph graph)
-
-	def Iterable<EChangeNode> getLeaves()
-
-	def Collection<Graph> getSubgraphs()
-
 	def void savePicture()
+
+	def void setGraph(EChangeGraph graph)
 
 }

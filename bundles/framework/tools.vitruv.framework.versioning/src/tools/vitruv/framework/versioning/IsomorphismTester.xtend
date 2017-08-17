@@ -1,7 +1,5 @@
 package tools.vitruv.framework.versioning
 
-import org.graphstream.graph.Graph
-
 interface IsomorphismTester {
-	def boolean areIsomorphic(Graph g1, Graph g2)
+	def boolean areIsomorphic(EChangeGraph g1, EChangeGraph g2)
 }

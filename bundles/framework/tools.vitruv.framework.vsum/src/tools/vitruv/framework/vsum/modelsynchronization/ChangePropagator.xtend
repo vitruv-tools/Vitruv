@@ -18,10 +18,13 @@ interface ChangePropagator {
 
 	def List<PropagatedChange> getUnresolvedPropagatedChanges(VURI vuri)
 
+	def PropagatedChange getResolvedChange(String id)
+
 	/**
-	 * When reapplying changes which have already an id.
+	 * Propagates an already recorded {@link PropagatedChange} .
+	 * @param propagatedChange the  
 	 */
-	def List<PropagatedChange> propagateChange(VitruviusChange change, String changeId)
+	def void propagateChange(PropagatedChange propagatedChange, VURI vuri)
 
 	/**
 	 * Resort changes and igores undos/redos.
@@ -33,4 +36,6 @@ interface ChangePropagator {
 	def void addChangePropagationListener(ChangePropagationListener propagationListener)
 
 	def void removeChangePropagationListener(ChangePropagationListener propagationListener)
+
+	def List<PropagatedChange> propagateChange(VURI vuri, VitruviusChange change, String changeId)
 }

@@ -1,11 +1,14 @@
 package tools.vitruv.framework.change.copy.impl
 
 import java.util.Set
+
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
+
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
+
 import tools.vitruv.framework.change.copy.EChangeCopier
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
@@ -19,7 +22,9 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 class EChangeCopierImpl implements EChangeCopier {
+	// Extensions.
 	static extension Logger = Logger::getLogger(EChangeCopierImpl)
+	// Values.
 	val Set<Pair<String, String>> replacePairs
 	val Set<Pair<String, String>> nameReplacePairs
 
@@ -32,10 +37,11 @@ class EChangeCopierImpl implements EChangeCopier {
 	}
 
 	private static def adjustString(Set<Pair<String, String>> setOfPairs, String stringToModify) {
-		val containsSource = setOfPairs.
-			exists[stringToModify.contains(key)]
-		if (!containsSource)
+		val containsSource = setOfPairs.exists[stringToModify.contains(key)]
+		if (!containsSource && !setOfPairs.empty)
 			throw new IllegalStateException('''AffectedEObject «stringToModify» lies not under any source of «setOfPairs»''')
+		if (setOfPairs.empty)
+			return stringToModify;
 		val pair = setOfPairs.findFirst[stringToModify.contains(key)]
 		val newProxyUriString = stringToModify.replace(pair.key, pair.value)
 		return newProxyUriString

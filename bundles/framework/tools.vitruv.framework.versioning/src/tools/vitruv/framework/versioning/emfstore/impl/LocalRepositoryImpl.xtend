@@ -95,5 +95,4 @@ class LocalRepositoryImpl extends AbstractLocalRepository<RemoteRepository> {
 				addCommit(commit, branch)
 		]
 	}
-
 }

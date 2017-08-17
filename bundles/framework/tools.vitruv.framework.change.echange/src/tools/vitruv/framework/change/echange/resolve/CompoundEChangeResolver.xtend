@@ -1,10 +1,12 @@
 package tools.vitruv.framework.change.echange.resolve
 
 import java.util.List
+
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
+
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
@@ -14,18 +16,22 @@ import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 class CompoundEChangeResolver {
 	/**
-	 * Resolving the {@link CompoundEChange} EChange.
+	 * Resolving the {@link CompoundEChange} EChange::
 	 * @param change 				The change which should be resolved.
-	 * @param resourceSet 			The resources set with the EObject which the 
+	 * @param resourceSet 			The resources set with the EObject which the
 	 * 								change should be resolved to.
 	 * @param resolveBefore			{@code true} if the model is in state before the change,
 	 * 								{@code false} if the model is in state after.
 	 * @param revertAfterResolving	{@code true} if the change should be reverted after resolving
 	 * 								the compound change.
 	 */
-	def private static boolean resolveCompoundEChange(CompoundEChange change, ResourceSet resourceSet,
-		boolean resolveBefore, boolean revertAfterResolving) {
-		if (!AtomicEChangeResolver.resolveEChange(change, resourceSet, resolveBefore) ||
+	private def static boolean resolveCompoundEChange(
+		CompoundEChange change,
+		ResourceSet resourceSet,
+		boolean resolveBefore,
+		boolean revertAfterResolving
+	) {
+		if (!AtomicEChangeResolver::resolveEChange(change, resourceSet, resolveBefore) ||
 			!resolveAtomicChanges(change, resourceSet, resolveBefore, revertAfterResolving)) {
 			return false
 		}
@@ -33,22 +39,21 @@ class CompoundEChangeResolver {
 	}
 
 	/**
-	 * Resolves the atomic EChanges of a compound EChange. 
+	 * Resolves the atomic EChanges of a compound EChange::
 	 * The atomic EChanges will be applied while resolving.
 	 * @param change 				The change which should be resolved.
-	 * @param resourceSet 			The resources set with the EObject which the 
+	 * @param resourceSet 			The resources set with the EObject which the
 	 * 								change should be resolved to.
 	 * @param resolveBefore			{@code true} if the model is in state before the change,
 	 * 								{@code false} if the model is in state after.
 	 * @param revertAfterResolving	{@code true} if the change should be reverted after resolving
 	 * 								the atomic changes.
 	 */
-	def private static boolean resolveAtomicChanges(CompoundEChange change, ResourceSet resourceSet,
+	private def static boolean resolveAtomicChanges(CompoundEChange change, ResourceSet resourceSet,
 		boolean resolveBefore, boolean revertAfterResolving) {
 		var List<AtomicEChange> atomicChanges = change.atomicChanges
-		if (!resolveBefore) {
+		if (!resolveBefore)
 			atomicChanges.reverse
-		}
 
 		val appliedChanges = new BasicEList<EChange>
 		for (AtomicEChange c : atomicChanges) {
@@ -60,21 +65,20 @@ class CompoundEChangeResolver {
 				}
 				return false
 			} else {
-				appliedChanges.add(c)
+				appliedChanges += c
 			}
 		}
 
 		// Revert all changes which were made resolving the compound change.
-		if (revertAfterResolving) {
+		if (revertAfterResolving)
 			ApplyEChangeSwitch.applyEChange(change, !resolveBefore)
-		}
 		return true
 	}
 
 	/**
-	 * Dispatch method for resolving the {@link CompoundEChange} EChange.
+	 * Dispatch method for resolving the {@link CompoundEChange} EChange::
 	 * @param change 				The change which should be resolved.
-	 * @param resourceSet 			The resources set with the EObject which the 
+	 * @param resourceSet 			The resources set with the EObject which the
 	 * 								change should be resolved to.
 	 * @param resolveBefore			{@code true} if the model is in state before the change,
 	 * 								{@code false} if the model is in state after.
@@ -91,9 +95,9 @@ class CompoundEChangeResolver {
 	}
 
 	/**
-	 * Dispatch method for resolving the {@link CompoundEChange} EChange.
+	 * Dispatch method for resolving the {@link CompoundEChange} EChange::
 	 * @param change 				The change which should be resolved.
-	 * @param resourceSet 			The resources set with the EObject which the 
+	 * @param resourceSet 			The resources set with the EObject which the
 	 * 								change should be resolved to.
 	 * @param resolveBefore			{@code true} if the model is in state before the change,
 	 * 								{@code false} if the model is in state after.
@@ -113,16 +117,14 @@ class CompoundEChangeResolver {
 
 		change.affectedEObject = EChangeUtil::resolveProxy(change.affectedEObject, resourceSet)
 
-		if (change.affectedEObject === null || change.affectedEObject.eIsProxy) {
+		if (change.affectedEObject === null || change.affectedEObject.eIsProxy)
 			return false
-		}
 
-		// Unset change is special case of compound changes, because the application of the 
+		// Unset change is special case of compound changes, because the application of the
 		// atomic changes (removing all elements) != application of the compound change (explicit unset command)
 		// => Attribute needs to be unset additionally.
-		if ((!revertAfterResolving && resolveBefore) || (revertAfterResolving && !resolveBefore)) {
+		if ((!revertAfterResolving && resolveBefore) || (revertAfterResolving && !resolveBefore))
 			change.applyForward // Calls single unset command
-		}
 		return true
 	}
 }

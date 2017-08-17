@@ -19,6 +19,8 @@ interface ConflictDetector {
 
 	def void addMap(Map<String, String> rootToRootMap)
 
+	def void addIdToIdPair(Pair<String, String> idPair)
+
 	def void init(BranchDiff branchDiff)
 
 	def void compute()

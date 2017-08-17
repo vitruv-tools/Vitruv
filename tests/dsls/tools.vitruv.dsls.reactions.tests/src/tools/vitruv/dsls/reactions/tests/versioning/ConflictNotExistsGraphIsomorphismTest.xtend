@@ -1,11 +1,14 @@
 package tools.vitruv.dsls.reactions.tests.versioning
 
 import org.junit.Test
+
 import tools.vitruv.dsls.reactions.tests.AbstractConflictNotExistsTest
 import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
 import tools.vitruv.framework.versioning.extensions.EChangeNode
-import tools.vitruv.framework.versioning.impl.PrimitiveIsomorphismTesterImpl
+
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+import static org.hamcrest.collection.IsEmptyCollection.empty
 
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
@@ -17,18 +20,18 @@ class ConflictNotExistsGraphIsomorphismTest extends AbstractConflictNotExistsTes
 		graph = createDependencyGraph(changes)
 		val otherChanges = branchDiff.compareChanges.map[originalChange]
 		val otherGraph = createDependencyGraph(otherChanges)
-		val IsomorphismTesterAlgorithm tester = new PrimitiveIsomorphismTesterImpl
+		val IsomorphismTesterAlgorithm tester = IsomorphismTesterAlgorithm::createIsomorphismTester
 		tester.init(graph, otherGraph)
 		tester.compute
 		assertThat(tester.isIsomorphic, is(true))
 		val combinedGraph = tester.combinedGraph
-		assertThat(combinedGraph.nodeSet.size, is(graph.nodeSet.size + otherGraph.nodeSet.size))
+		assertThat(combinedGraph.nodeSet, hasSize(graph.nodeSet.size + otherGraph.nodeSet.size))
 		assertThat(combinedGraph.edgeSet.size >= graph.edgeSet.size + otherGraph.edgeSet.size, is(true))
 		val iso = tester.isomorphism
 		val unmatchedOfGraph1 = tester.unmatchedOfGraph1
 		val unmatchedOfGraph2 = tester.unmatchedOfGraph2
-		assertThat(unmatchedOfGraph1.empty, is(true))
-		assertThat(unmatchedOfGraph2.empty, is(true))
+		assertThat(unmatchedOfGraph1, is(empty))
+		assertThat(unmatchedOfGraph2, is(empty))
 		graph.<EChangeNode>nodeSet.forEach [ node1 |
 			val node2 = iso.get(node1)
 			assertThat(otherGraph.<EChangeNode>nodeSet.exists[node2 == it], is(true))
@@ -42,18 +45,18 @@ class ConflictNotExistsGraphIsomorphismTest extends AbstractConflictNotExistsTes
 	def void testWithCorrespondence() {
 		graph = createDependencyGraphFromChangeMatches(branchDiff.baseChanges)
 		val otherGraph = createDependencyGraphFromChangeMatches(branchDiff.compareChanges)
-		val IsomorphismTesterAlgorithm tester = new PrimitiveIsomorphismTesterImpl
+		val IsomorphismTesterAlgorithm tester = IsomorphismTesterAlgorithm::createIsomorphismTester
 		tester.init(graph, otherGraph)
 		tester.compute
 		assertThat(tester.isIsomorphic, is(true))
 		val combinedGraph = tester.combinedGraph
-		assertThat(combinedGraph.nodeSet.size, is(graph.nodeSet.size + otherGraph.nodeSet.size))
+		assertThat(combinedGraph.nodeSet, hasSize(graph.nodeSet.size + otherGraph.nodeSet.size))
 		assertThat(combinedGraph.edgeSet.size >= graph.edgeSet.size + otherGraph.edgeSet.size, is(true))
 		val iso = tester.isomorphism
 		val unmatchedOfGraph1 = tester.unmatchedOfGraph1
 		val unmatchedOfGraph2 = tester.unmatchedOfGraph2
-		assertThat(unmatchedOfGraph1.empty, is(true))
-		assertThat(unmatchedOfGraph2.empty, is(true))
+		assertThat(unmatchedOfGraph1, is(empty))
+		assertThat(unmatchedOfGraph2, is(empty))
 		graph.<EChangeNode>nodeSet.forEach [ node1 |
 			val node2 = iso.get(node1)
 			assertThat(otherGraph.<EChangeNode>nodeSet.exists[node2 == it], is(true))
@@ -65,9 +68,9 @@ class ConflictNotExistsGraphIsomorphismTest extends AbstractConflictNotExistsTes
 
 	@Test
 	def void testConflictDetector() {
-		assertThat(conflicts.empty, is(true))
+		assertThat(conflicts, is(empty))
 		val conflictFreeEChanges = conflictDetector.conflictFreeOriginalEChanges
-		assertThat(conflictFreeEChanges.length, is(10))
+		assertThat(conflictFreeEChanges, hasSize(10))
 	}
 
 }

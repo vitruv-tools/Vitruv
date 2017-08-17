@@ -28,7 +28,7 @@ import tools.vitruv.framework.vsum.VirtualModel
  * @author Heiko Klare
  */
 abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
-	static extension  VitruviusChangeFactory = VitruviusChangeFactory::instance
+	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
 	AtomicEmfChangeRecorder changeRecorder
 
 	override beforeTest() {
@@ -101,7 +101,8 @@ abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationT
 	/**
 	 * A model with the given root element at the given path within the test
 	 * project gets created. The changes for the insertion of the root element
-	 * are propagated and recording of further changes is started. No call to{@link #startRecordingChanges(EObject)} is necessary.
+	 * are propagated and recording of further changes is started. 
+	 * No call to{@link #startRecordingChanges(EObject)} is necessary.
 	 * @param modelPathInProjectpath within project to persist the model at
 	 * @param rootElementroot element to persist
 	 * @throws IOException

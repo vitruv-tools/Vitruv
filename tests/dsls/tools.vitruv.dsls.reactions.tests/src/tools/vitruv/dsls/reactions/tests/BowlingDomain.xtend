@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.reactions.tests
 
-import tools.vitruv.framework.domains.AbstractVitruvDomain
 import org.eclipse.emf.emfstore.bowling.BowlingPackage
+import tools.vitruv.framework.domains.AbstractVitruvDomain
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 final class BowlingDomain extends AbstractVitruvDomain {
@@ -10,13 +10,12 @@ final class BowlingDomain extends AbstractVitruvDomain {
 
 	package new() {
 		super(METAMODEL_NAME, BowlingPackage::eINSTANCE,
-			new AttributeTuidCalculatorAndResolver(BowlingPackage::eNS_URI, BowlingPackage.Literals.PLAYER__NAME.name),
+			new AttributeTuidCalculatorAndResolver(BowlingPackage::eNS_URI, BowlingPackage::Literals.PLAYER__NAME.name),
 			FILE_EXTENSION)
-		}
-
-		override getBuilderApplicator() {
-			null
-		}
-
 	}
-	
+
+	override getBuilderApplicator() {
+		null
+	}
+
+}

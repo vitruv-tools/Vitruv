@@ -4,7 +4,7 @@ import tools.vitruv.framework.domains.VitruvDomainProvider
 
 class BowlingDomainProvider implements VitruvDomainProvider<BowlingDomain> {
 
-	public static final String EXTENSION_ID = "tools.vitruv.framework.testutils.domains.bowlingDomainProvider"
+	public static val EXTENSION_ID = "tools.vitruv.framework.testutils.domains.bowlingDomainProvider"
 
 	static BowlingDomain instance = new BowlingDomain
 

@@ -1,25 +1,36 @@
 package tools.vitruv.framework.versioning.emfstore.impl
 
+import java.util.UUID
+
+import org.eclipse.xtend.lib.annotations.Accessors
+
 import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.ListMultimap
-import java.util.UUID
-import org.eclipse.xtend.lib.annotations.Accessors
+
 import tools.vitruv.framework.versioning.branch.Branch
 import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
-import tools.vitruv.framework.versioning.emfstore.AbstractRepository
 import tools.vitruv.framework.versioning.common.commit.Commit
 import tools.vitruv.framework.versioning.common.commit.CommitFactory
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
+import tools.vitruv.framework.versioning.emfstore.AbstractRepository
 
 class AbstractRepositoryImpl implements AbstractRepository {
+	// Extensions.
 	static protected extension CommitFactory = CommitFactory::instance
+
+	// Values.
 	@Accessors(PUBLIC_GETTER)
 	val Branch masterBranch
-	val ListMultimap<Branch, Commit> branchToCommit
+
 	@Accessors(PUBLIC_GETTER)
 	val String id
+
 	@Accessors(PUBLIC_GETTER)
 	val SimpleCommit initialCommit
+
+	val ListMultimap<Branch, Commit> branchToCommit
+
+	// Variables.
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	String name
 
@@ -35,6 +46,7 @@ class AbstractRepositoryImpl implements AbstractRepository {
 		head = initialCommit
 	}
 
+	// Overridden methods.
 	override getCommitsFrom(String from) {
 		commits.dropWhile[id !== from].toList
 	}
@@ -47,22 +59,23 @@ class AbstractRepositoryImpl implements AbstractRepository {
 		branchToCommit.get(branch)
 	}
 
+	// Protected methods.
 	protected def void addCommit(Commit c, Branch branch) {
 		val lastCommit = branchToCommit.get(branch).last
-		if (null !== lastCommit && lastCommit.numberOfChanges !== lastCommit.changes.length)
+		if(null !== lastCommit && lastCommit.numberOfChanges !== lastCommit.changes.length)
 			throw new IllegalStateException
 		c.changes.forEach [ change |
-			if (null !== lastCommit && lastCommit.changes.exists[it === change])
+			if(null !== lastCommit && lastCommit.changes.exists[it === change])
 				throw new IllegalStateException
 		]
 		val otherCommit = branchToCommit.get(branch).findFirst[identifier == c.identifier]
-		if (otherCommit === null)
+		if(otherCommit === null)
 			branchToCommit.put(branch, c)
 	}
 
 	protected def void removeCommit(Commit c, Branch branch) {
 		val lastCommit = branchToCommit.get(branch).last
-		if (lastCommit.identifier == c.identifier)
+		if(lastCommit.identifier == c.identifier)
 			branchToCommit.remove(branch, c)
 		else
 			throw new IllegalStateException

@@ -11,6 +11,7 @@ import tools.vitruv.framework.change.echange.EChange
 
 @Data
 class PropagatedChangeImpl implements PropagatedChange {
+	// Extensions.
 	static extension Logger = Logger::getLogger(PropagatedChangeImpl)
 	String id
 	VitruviusChange originalChange

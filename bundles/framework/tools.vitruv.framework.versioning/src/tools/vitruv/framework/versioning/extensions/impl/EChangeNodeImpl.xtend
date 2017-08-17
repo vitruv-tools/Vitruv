@@ -11,6 +11,7 @@ import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
 import tools.vitruv.framework.versioning.extensions.EChangeEdge
 import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.GraphStreamConstants
+import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 class EChangeNodeImpl extends SingleNode implements EChangeNode {
 	static extension EChangeCompareUtil = EChangeCompareUtil::instance
@@ -55,4 +56,19 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 		return <EChangeEdge>edgeSet.exists[isType(EdgeType::CONFLICTS)]
 	}
 
+	override isProvideLeave() {
+		determineIsLeave([EChangeEdge e|!e.isType(EdgeType::REQUIRED)])
+	}
+
+	override setLabel(String label) {
+		addAttribute(GraphStreamConstants::uiLabel, label)
+	}
+
+	override isLeave() {
+		determineIsLeave([EChangeEdge e|!e.isType(EdgeType::REQUIRED) && !e.isType(EdgeType::TRIGGERS)])
+	}
+
+	private def determineIsLeave(Function1<EChangeEdge, Boolean> predicate) {
+		<EChangeEdge>enteringEdgeSet.forall[predicate.apply(it)]
+	}
 }

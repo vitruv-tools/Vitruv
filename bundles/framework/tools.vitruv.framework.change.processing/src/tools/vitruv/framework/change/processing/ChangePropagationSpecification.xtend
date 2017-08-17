@@ -8,8 +8,12 @@ import tools.vitruv.framework.domains.VitruvDomain
 
 interface ChangePropagationSpecification extends ChangePropagationObservable {
 	def void setUserInteracting(UserInteracting userInteracting);
+
 	def VitruvDomain getSourceDomain();
+
 	def VitruvDomain getTargetDomain();
+
 	def boolean doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel);
+
 	def ChangePropagationResult propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel);
 }

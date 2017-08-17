@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
+
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
@@ -31,9 +32,9 @@ class EChangeUnresolver {
 	 */
 	static def <A extends EObject> A createProxy(A resolvedObject) {
 		if (resolvedObject !== null) {
-// TODO: Elbert S. Change when eobjects are removed recursively
+			// TODO: Elbert S. Change when eobjects are removed recursively
 			val proxy = EcoreUtil::copy(resolvedObject) as InternalEObject
-//val proxy = EcoreUtil::create(resolvedObject.eClass) as InternalEObject
+			// val proxy = EcoreUtil::create(resolvedObject.eClass) as InternalEObject
 			proxy.eSetProxyURI(EcoreUtil::getURI(resolvedObject))
 			return proxy as A
 		}
@@ -53,7 +54,8 @@ class EChangeUnresolver {
 	 * @param The FeatureEChange.
 	 */
 	static def <A extends EObject, F extends EStructuralFeature> void unresolveFeatureEChange(
-		FeatureEChange<A, F> change) {
+		FeatureEChange<A, F> change
+	) {
 		change.affectedEObject = createProxy(change.affectedEObject)
 	}
 
@@ -86,7 +88,8 @@ class EChangeUnresolver {
 	 * @param The ExplicitUnsetEFeature change.
 	 */
 	static def <A extends EObject, F extends EStructuralFeature> void unresolveExplicitUnsetEFeature(
-		ExplicitUnsetEFeature<A, F> change) {
+		ExplicitUnsetEFeature<A, F> change
+	) {
 		change.affectedEObject = createProxy(change.affectedEObject)
 	}
 

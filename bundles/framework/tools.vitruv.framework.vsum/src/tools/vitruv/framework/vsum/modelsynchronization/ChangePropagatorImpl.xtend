@@ -20,7 +20,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.description.impl.ChangeClonerImpl
-import tools.vitruv.framework.change.description.impl.PropagatedChangeImpl
+import tools.vitruv.framework.change.description.impl.PropagatedChangeWithCorrespondentImpl
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
@@ -31,11 +31,16 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
+import org.apache.log4j.Level
+import tools.vitruv.framework.vsum.InternalModelRepository
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
+	// Extensions.
 	static extension ChangeCloner = new ChangeClonerImpl
 	static extension Logger = Logger::getLogger(ChangePropagatorImpl.simpleName)
 	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
+
+	// Values.
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceProviding correspondenceProviding
 	val List<EObject> objectsCreatedDuringPropagation
@@ -47,6 +52,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	val Set<ChangePropagationListener> changePropagationListeners
 	val VitruvDomainRepository metamodelRepository
 
+	// Static functions. 
+	static val functionApplyChangeOnResourceSet = [ ModelRepository repo, TransactionalChange change, ResourceSet resourceSet |
+		// If change has a URI, load the model
+		if (change.URI !== null) repo.getModel(change.URI)
+		change.resolveBeforeAndApplyForward(resourceSet)
+		return
+	]
 	String currentChangeId
 
 	new(
@@ -69,6 +81,15 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		objectsCreatedDuringPropagation = newArrayList
 	}
 
+	override propagateChange(VURI vuri, VitruviusChange change, String changeId) {
+		if (null === vuri && vuriToIds.values.parallelStream.anyMatch[it == changeId])
+			throw new IllegalStateException(''' «changeId»''')
+		else if (vuriToIds.get(vuri).parallelStream.anyMatch[it == changeId])
+			throw new IllegalStateException(''' «changeId»''')
+		currentChangeId = changeId
+		propagateChange(change)
+	}
+
 	override addChangePropagationListener(ChangePropagationListener propagationListener) {
 		if (propagationListener !== null)
 			changePropagationListeners += propagationListener
@@ -79,11 +100,53 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			changePropagationListeners -= propagationListener
 	}
 
-	override propagateChange(VitruviusChange change, String changeId) {
-		if (vuriToIds.values.parallelStream.anyMatch[it == changeId])
-			throw new IllegalStateException
+	/**
+	 * {@inheritDoc} 
+	 */
+	override propagateChange(PropagatedChange propagatedChange, VURI vuri) {
+		val changeId = propagatedChange.id
+		if (null === vuri && vuriToIds.values.parallelStream.anyMatch[it == changeId])
+			throw new IllegalStateException(''' «changeId»''')
+		else if (vuriToIds.get(vuri).parallelStream.anyMatch[it == changeId])
+			throw new IllegalStateException(''' «changeId»''')
 		currentChangeId = changeId
-		propagateChange(change)
+		val originalChange = propagatedChange.originalChange
+		val clonedChange = cloneVitruviusChange(originalChange)
+		val consequentialChange = propagatedChange.consequentialChanges as TransactionalChange
+		val changeApplicationFunction = createChangeApplyFunction(originalChange as TransactionalChange)
+
+		resourceRepository.executeOnResourceSet(changeApplicationFunction)
+
+		originalChange.affectedEObjects.forEach[modelRepository.addRootElement(it)]
+		modelRepository.cleanupRootElements
+
+		val changedObjects = originalChange.affectedEObjects
+		if (changedObjects.nullOrEmpty)
+			throw new IllegalStateException('''There are no objects affected by the given change«originalChange»''')
+
+		val changedResourcesTracker = new ChangedResourcesTracker
+
+		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
+		// each consistency repair routines that uses it,
+		// or: make them read only, i.e. give them a read-only interface!
+		resourceRepository.startRecording
+		if (resourceRepository instanceof InternalModelRepository)
+			resourceRepository.isCorrespondencesFilterActive = false
+		val consequentialChangeApplicationFunction = createChangeApplyFunction(consequentialChange)
+		resourceRepository.executeOnResourceSet(consequentialChangeApplicationFunction)
+
+		// Store modification information
+		changedResourcesTracker.addSourceResourceOfChange(consequentialChange)
+
+		// executePropagationResult(command.transformationResult)
+		// propagationResult.integrateResult(command.transformationResult)
+		handleObjectsWithoutResource
+		resourceRepository.endRecording
+		if (resourceRepository instanceof InternalModelRepository)
+			resourceRepository.isCorrespondencesFilterActive = true
+		level = Level::DEBUG
+		addPropagatedChanges(clonedChange, originalChange, newArrayList)
+		level = Level::ERROR
 	}
 
 	override synchronized List<PropagatedChange> propagateChange(VitruviusChange change) {
@@ -116,16 +179,16 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	}
 
 	override getResolvedPropagatedChanges(VURI vuri) {
-		return if (vuriToIds.containsKey(vuri)) {
+		return if (vuriToIds.containsKey(vuri))
 			vuriToIds.get(vuri).map[idToResolvedChanges.get(it)].toList
-		} else
+		else
 			#[]
 	}
 
 	override getUnresolvedPropagatedChanges(VURI vuri) {
-		return if (vuriToIds.containsKey(vuri)) {
+		return if (vuriToIds.containsKey(vuri))
 			vuriToIds.get(vuri).map[idToUnresolvedChanges.get(it)].toList
-		} else
+		else
 			#[]
 	}
 
@@ -152,6 +215,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		return returnValue
 	}
 
+	override getResolvedChange(String id) {
+		return idToResolvedChanges.get(id)
+	}
+
 	private def void startChangePropagation(VitruviusChange change) {
 		info('''Started synchronizing change: «change»''')
 		changePropagationListeners.forEach[startedChangePropagation]
@@ -168,9 +235,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		List<PropagatedChange> propagatedChanges,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-		change.changes.forEach [
-			propagateSingleChange(it, propagatedChanges, changedResourcesTracker)
-		]
+		change.changes.forEach[propagateSingleChange(it, propagatedChanges, changedResourcesTracker)]
+	}
+
+	private def createChangeApplyFunction(TransactionalChange transactionalChange) {
+		functionApplyChangeOnResourceSet.curry(resourceRepository).curry(transactionalChange)
 	}
 
 	private def dispatch void propagateSingleChange(
@@ -179,12 +248,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangedResourcesTracker changedResourcesTracker
 	) {
 		val clonedChange = cloneVitruviusChange(change)
-		val changeApplicationFunction = [ ResourceSet resourceSet |
-			// If change has a URI, load the model
-			if (change.URI !== null) resourceRepository.getModel(change.URI)
-			change.resolveBeforeAndApplyForward(resourceSet)
-			return
-		]
+		val changeApplicationFunction = createChangeApplyFunction(change)
 
 		resourceRepository.executeOnResourceSet(changeApplicationFunction)
 
@@ -198,8 +262,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val changeDomain = metamodelRepository.getDomain(changedObjects.get(0))
 		val propagationResult = new ChangePropagationResult
 		resourceRepository.startRecording
-		val specifications = changePropagationProvider.getChangePropagationSpecifications(changeDomain)
-		specifications.forEach [
+		changePropagationProvider.getChangePropagationSpecifications(changeDomain).forEach [
 			propagateChangeForChangePropagationSpecification(change, it, propagationResult, changedResourcesTracker)
 		]
 		handleObjectsWithoutResource
@@ -278,10 +341,24 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 				The length of changes should be equal but there are «unresolvedTriggeredChanges.length»
 				respectively «resolvedTriggeredChanges.length»
 			''')
-		val unresolvedPropagatedChange = new PropagatedChangeImpl(uuid, unresolvedChange,
-			createCompositeChange(unresolvedTriggeredChanges))
-		val resolvedPropagatedChange = new PropagatedChangeImpl(uuid, resolvedChange,
-			createCompositeChange(resolvedTriggeredChanges))
+		val unresolvedPropagatedChange = new PropagatedChangeWithCorrespondentImpl(
+			uuid,
+			unresolvedChange,
+			createCompositeChange(unresolvedTriggeredChanges)
+		)
+		val resolvedPropagatedChange = new PropagatedChangeWithCorrespondentImpl(
+			uuid,
+			resolvedChange,
+			createCompositeChange(resolvedTriggeredChanges)
+		)
+		debug('''
+			Unresolved: «unresolvedPropagatedChange»
+		''')
+		debug('''
+			Resolved: «resolvedPropagatedChange»
+		''')
+		unresolvedPropagatedChange.correspondent = resolvedPropagatedChange
+		resolvedPropagatedChange.correspondent = unresolvedPropagatedChange
 
 		propagatedChanges += if (isUnresolved)
 			unresolvedPropagatedChange
@@ -295,8 +372,9 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			vuriToIds.put(vuri, uuid)
 			idToResolvedChanges.put(uuid, resolvedPropagatedChange)
 			idToUnresolvedChanges.put(uuid, unresolvedPropagatedChange)
-		} else
+		} else {
 			warn('''resolvedChange.URI was null''')
+		}
 	}
 
 }
