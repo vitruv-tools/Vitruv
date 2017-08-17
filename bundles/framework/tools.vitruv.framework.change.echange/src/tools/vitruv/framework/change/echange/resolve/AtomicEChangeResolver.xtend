@@ -79,7 +79,7 @@ class AtomicEChangeResolver {
 	 */
 	def private static <A extends EObject, T extends EObject> EObject resolveReferenceValue(UpdateReferenceEChange<A> change, T value, String valueId,
 		ResourceSet resourceSet, boolean isInserted, int index) {
-		if (value === null) {
+		if (valueId === null) {
 			return null;
 		}
 		if (!change.affectedFeature.containment) {
@@ -114,7 +114,7 @@ class AtomicEChangeResolver {
 	 */
 	def private static <A extends EObject> boolean resolveEObjectExistenceEChange(EObjectExistenceEChange<A> change,
 		ResourceSet resourceSet, boolean newObject) {
-		if (change.affectedEObject === null || !change.resolveEChange(resourceSet, true)) {
+		if (change.affectedEObjectID === null || !change.resolveEChange(resourceSet, true)) {
 			return false
 		}
 

@@ -64,7 +64,7 @@ public class EChangeUnresolver {
 	 * @param The EObjectAddedEChange.
 	 */
 	def static public <T extends EObject> void unresolveEObjectAddedEChange(EObjectAddedEChange<T> change) {
-		change.newValue = createProxy(change.newValue)
+		change.newValue = null
 	}	
 
 	/** 
@@ -80,7 +80,7 @@ public class EChangeUnresolver {
 	 * @param The EObjectSubtractedEChange.
 	 */	
 	def static public <T extends EObject> void unresolveEObjectSubtractedEChange(EObjectSubtractedEChange<T> change) {
-		change.oldValue = createProxy(change.oldValue)
+		change.oldValue = null
 	}
 
 	/** 
