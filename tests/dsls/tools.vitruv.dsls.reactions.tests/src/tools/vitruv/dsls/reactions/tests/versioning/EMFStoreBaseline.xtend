@@ -418,7 +418,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		)
 		assertThat(mergeCommit.changes, hasSize(1))
 		val testLeague2 = virtualModel.getModelInstance(sourceVURI).firstRootEObject as League
-		assertThat(testLeague2.name, equalTo(newName1))
+		assertThat(testLeague2.name, equalTo(newName2))
 		assertThat(remoteRepository.commits, hasSize(3))
 		val newCommitAccepted = newLocalRepository.push
 		assertThat(newCommitAccepted, is(PushState::SUCCESS))

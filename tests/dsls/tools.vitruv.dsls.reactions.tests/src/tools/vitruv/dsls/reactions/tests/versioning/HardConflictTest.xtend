@@ -149,7 +149,7 @@ class HardConflictTest extends AbstractHardConflictTest {
 		val changesToRollback = virtualModel.getResolvedPropagatedChanges(sourceVURI).drop(1).toList
 		if (changesToRollback.exists[!resolved])
 			throw new IllegalStateException
-		val reappliedChanges = reapplier.reapply(sourceVURI, changesToRollback, echanges, virtualModel)
+		val reappliedChanges = reapplier.reapply(changesToRollback, echanges, virtualModel, sourceVURI)
 		assertThat(reappliedChanges, hasSize(4))
 		val root = virtualModel.getModelInstance(sourceVURI).firstRootEObject as Root
 		assertThat(root.nonRootObjectContainerHelper.id, equalTo(otherContainerID))

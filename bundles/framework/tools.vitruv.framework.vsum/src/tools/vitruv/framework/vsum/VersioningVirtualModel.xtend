@@ -10,10 +10,20 @@ interface VersioningVirtualModel extends InternalVirtualModel {
 	/**
 	 * Adds a {@link VURI} pair. This indicates that changes recorded under one of them 
 	 * should be returned also when asking for changes in the other.
+	 * Example: my_repository.uml <-> their_repository.uml
 	 * @param vuri1 the first VURI
 	 * @param vuri2 the second VURI
 	 */
 	def void addMappedVURIs(VURI vuri1, VURI vuri2)
+
+	/**
+	 * Adds a {@link VURI} pair. This indicates that changes recorded under one of them 
+	 * should be returned also when asking for changes in the other.
+	 * Example: my_repository.uml <-> my_repository.repository
+	 * @param vuri1 the first VURI
+	 * @param vuri2 the second VURI
+	 */
+	def void addTriggeredRelation(VURI source, VURI target)
 
 	def VURI getMappedVURI(VURI vuri)
 

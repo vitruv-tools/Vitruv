@@ -43,6 +43,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 	val Map<VURI, String> vuriToLastpropagatedChange
 	/**  Attribute for versioning */
 	val BiMap<VURI, VURI> vuriMap
+	val BiMap<VURI, VURI> vuriSourceToTargetMap
 
 	// Variables.
 	@Accessors(PUBLIC_GETTER)
@@ -84,6 +85,7 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		vuriToLastpropagatedChange = newHashMap
 		allLastPropagatedChangeId = null
 		vuriMap = HashBiMap::create
+		vuriSourceToTargetMap = HashBiMap::create
 	}
 
 	// Overridden methods.
@@ -171,7 +173,20 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		val changes = getUnresolvedPropagatedChanges(vuri)
 		if (vuriToLastpropagatedChange.containsKey(vuri)) {
 			val lastPropagatedId = vuriToLastpropagatedChange.get(vuri)
-			return dropAllPreviousChanges(changes, lastPropagatedId)
+			val filteredChanges = dropAllPreviousChanges(changes, lastPropagatedId)
+			if (filteredChanges.empty) {
+				// FIXME PS This is a dirty hack! 
+				// Please handle correct!
+				val otherChanges = getUnresolvedChanges(
+					vuriSourceToTargetMap,
+					vuri,
+					[VURI newVURI|changePropagator.getUnresolvedPropagatedChanges(newVURI)]
+				)
+
+				return otherChanges.reverseView.take(changes.length).toList.reverseView
+			} else {
+				return filteredChanges
+			}
 		} else {
 			return changes.toList
 		}
@@ -243,6 +258,13 @@ class VirtualModelImpl implements VersioningVirtualModel {
 		vuriMap.put(vuri1, vuri2)
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	override addTriggeredRelation(VURI source, VURI target) {
+		vuriSourceToTargetMap.put(source, target)
+	}
+
 	// Private methods.
 	private def dropAllPreviousChanges(
 		List<PropagatedChange> propagatedChanges,
@@ -254,22 +276,30 @@ class VirtualModelImpl implements VersioningVirtualModel {
 			propagatedChanges
 	}
 
+	private def getUnresolvedChanges(
+		BiMap<VURI, VURI> bimap,
+		VURI vuri,
+		Function1<VURI, List<PropagatedChange>> changeFunction
+	) {
+		if (bimap.containsKey(vuri)) {
+			val vuri2 = bimap.get(vuri)
+			return changeFunction.apply(vuri2)
+		}
+		if (bimap.inverse.containsKey(vuri)) {
+			val vuri3 = bimap.inverse.get(vuri)
+			return changeFunction.apply(vuri3)
+		}
+		return #[]
+	}
+
 	private def getPropagatedChanges(VURI vuri, Function1<VURI, List<PropagatedChange>> changeFunction) {
 		val changes = newArrayList
 		val unresolvedChanges = changeFunction.apply(vuri)
 		if (unresolvedChanges.empty) {
-			val unresolvedChanges2 = if (vuriMap.containsKey(vuri)) {
-					val vuri2 = vuriMap.get(vuri)
-					changeFunction.apply(vuri2)
-				} else if (vuriMap.inverse.containsKey(vuri)) {
-					val vuri3 = vuriMap.inverse.get(vuri)
-					changeFunction.apply(vuri3)
-				} else {
-					#[]
-				}
-			changes += unresolvedChanges2
-			if (changes.empty)
-				return #[]
+			changes += getUnresolvedChanges(vuriMap, vuri, changeFunction)
+			if (changes.empty) {
+				changes += getUnresolvedChanges(vuriSourceToTargetMap, vuri, changeFunction)
+			}
 		} else {
 			changes += unresolvedChanges
 		}
