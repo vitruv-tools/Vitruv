@@ -56,7 +56,7 @@ public class EChangeUnresolver {
 	 * @param The FeatureEChange.
 	 */
 	def static public <A extends EObject, F extends EStructuralFeature> void unresolveFeatureEChange(FeatureEChange<A,F> change) {
-		change.affectedEObject = createProxy(change.affectedEObject)
+		change.affectedEObject = null
 	}
 	
 	/** 
@@ -72,7 +72,7 @@ public class EChangeUnresolver {
 	 * @param The EObjectExistenceEChange.
 	 */	
 	def static public <T extends EObject> void unresolveEObjectExistenceEChange(EObjectExistenceEChange<T> change) {
-		change.affectedEObject = createProxy(change.affectedEObject)
+		change.affectedEObject = null
 	}
 	
 	/** 
