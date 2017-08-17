@@ -57,7 +57,7 @@ class AtomicEChangeResolver {
 			return false
 		}
 
-		change.affectedEObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A //EChangeUtil.resolveProxy(change.affectedEObject, resourceSet) as A
+		change.affectedEObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A
 
 		if (change.affectedFeature === null || change.affectedEObject === null || change.affectedEObject.eIsProxy) {
 			return false
@@ -85,12 +85,10 @@ class AtomicEChangeResolver {
 		if (!change.affectedFeature.containment) {
 			// Non containment => New object is already in resource
 			return uuidProviderAndResolver.getEObject(valueId)
-//			return EChangeUtil.resolveProxy(value, resourceSet)			
 		}
 		if (!isInserted) {
 			// Before => New object is in staging area.
 			return uuidProviderAndResolver.getEObject(valueId);
-//			return StagingArea.getStagingArea(resourceSet).peek
 		} else {
 			// After => New object is in containment reference.
 			if (change.affectedFeature.many) {
@@ -119,30 +117,19 @@ class AtomicEChangeResolver {
 		if (change.affectedEObject === null || !change.resolveEChange(resourceSet, true)) {
 			return false
 		}
-		// Get the staging area where the created object will placed in or deleted from.
-//		change.stagingArea = StagingArea.getStagingArea(resourceSet)
 
 		// Resolve the affected object
 		if (newObject) {
 			// Create new one
-			val oldObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A;
-			// TODO HK This copy operation should not be necessary if deletions are represented recursively
-			if (oldObject !== null && oldObject.eResource?.resourceSet == resourceSet) {
-				change.affectedEObject = EcoreUtil.copy(oldObject);
-			} else {
-				change.affectedEObject = EcoreUtil.create(change.affectedEObject.eClass) as A;
-			}
-			
-//			change.affectedEObject = EcoreUtil.copy(change.affectedEObject)
-//			(change.affectedEObject as InternalEObject).eSetProxyURI(null)
+			change.affectedEObject = EcoreUtil.create(change.affectedEObject.eClass) as A;
 		} else {
 			// Object still exists
-			change.affectedEObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A; //change.stagingArea.peek as A
+			change.affectedEObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A;
 		}
 		
 		uuidProviderAndResolver.registerEObject(change.affectedEObjectID, change.affectedEObject);
 		
-		if (change.affectedEObject === null || change.affectedEObject.eIsProxy) { //} || change.stagingArea === null) {
+		if (change.affectedEObject === null || change.affectedEObject.eIsProxy) {
 			return false
 		}
 		
@@ -199,8 +186,6 @@ class AtomicEChangeResolver {
 			} else if (change instanceof RemoveRootEObject<?>) {
 				return uuidProviderAndResolver.getEObject(change.oldValueID)	
 			}
-			
-//			return StagingArea.getStagingArea(resourceSet).peek
 		}
 		return value		
 	}
