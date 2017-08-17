@@ -19,6 +19,7 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import org.eclipse.emf.edit.command.RemoveCommand
 
 /**
  * Switch to create commands for all EChange classes.
@@ -86,8 +87,8 @@ package class ApplyBackwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(InsertRootEObject<EObject> change) {
-		// Will be automatically removed from resource because object can only be in one resource.
-		return #[]
+		val editingDomain = EChangeUtil.getEditingDomain(change.newValue)
+		return #[new RemoveCommand(editingDomain, change.resource.contents, change.newValue)]
 	}
 
 	/**
