@@ -569,13 +569,22 @@ public interface EobjectPackage extends EPackage {
 	int DELETE_EOBJECT__AFFECTED_EOBJECT_ID = EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID;
 
 	/**
+	 * The feature id for the '<em><b>Consequential Remove Changes</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT__CONSEQUENTIAL_REMOVE_CHANGES = EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Delete EObject</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DELETE_EOBJECT_FEATURE_COUNT = EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT + 0;
+	int DELETE_EOBJECT_FEATURE_COUNT = EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -777,6 +786,17 @@ public interface EobjectPackage extends EPackage {
 	EClass getDeleteEObject();
 
 	/**
+	 * Returns the meta object for the reference list '{@link tools.vitruv.framework.change.echange.eobject.DeleteEObject#getConsequentialRemoveChanges <em>Consequential Remove Changes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Consequential Remove Changes</em>'.
+	 * @see tools.vitruv.framework.change.echange.eobject.DeleteEObject#getConsequentialRemoveChanges()
+	 * @see #getDeleteEObject()
+	 * @generated
+	 */
+	EReference getDeleteEObject_ConsequentialRemoveChanges();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -904,6 +924,14 @@ public interface EobjectPackage extends EPackage {
 		 * @generated
 		 */
 		EClass DELETE_EOBJECT = eINSTANCE.getDeleteEObject();
+
+		/**
+		 * The meta object literal for the '<em><b>Consequential Remove Changes</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DELETE_EOBJECT__CONSEQUENTIAL_REMOVE_CHANGES = eINSTANCE.getDeleteEObject_ConsequentialRemoveChanges();
 
 	}
 

@@ -285,6 +285,15 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getDeleteEObject_ConsequentialRemoveChanges() {
+		return (EReference)deleteEObjectEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EobjectFactory getEobjectFactory() {
 		return (EobjectFactory)getEFactoryInstance();
 	}
@@ -324,6 +333,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		createEObjectEClass = createEClass(CREATE_EOBJECT);
 
 		deleteEObjectEClass = createEClass(DELETE_EOBJECT);
+		createEReference(deleteEObjectEClass, DELETE_EOBJECT__CONSEQUENTIAL_REMOVE_CHANGES);
 	}
 
 	/**
@@ -412,6 +422,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(deleteEObjectEClass, DeleteEObject.class, "DeleteEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDeleteEObject_ConsequentialRemoveChanges(), theEChangePackage.getEChange(), null, "consequentialRemoveChanges", null, 0, -1, DeleteEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
