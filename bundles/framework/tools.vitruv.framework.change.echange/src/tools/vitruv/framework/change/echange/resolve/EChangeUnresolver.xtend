@@ -17,6 +17,7 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.AtomicEChange
+import tools.vitruv.framework.change.echange.EChange
 
 /**
  * Utility class to unresolve a given EChange.
@@ -90,6 +91,9 @@ public class EChangeUnresolver {
 		change.affectedEObject = createProxy(change.affectedEObject)
 	}
 	
+	def dispatch public static void unresolve(EChange change) {
+	}
+	
 	/**
 	 * Dispatch method for {@link CompoundEChange} to unresolve it.
 	 * @param change The CompoundEChange.
@@ -110,6 +114,9 @@ public class EChangeUnresolver {
 	 * @param change The InsertRootEObject.
 	 */	
 	def dispatch public static void unresolve(InsertRootEObject<EObject> change) {
+		if (change.newValueID === null) {
+			throw new IllegalStateException();
+		}
 		change.unresolveRootEChange
 		change.newValue = createProxy(change.newValue)
 	}	
@@ -118,6 +125,9 @@ public class EChangeUnresolver {
 	 * @param change The RemoveRootEObject.
 	 */
 	def dispatch public static void unresolve(RemoveRootEObject<EObject> change) {
+		if (change.oldValueID === null) {
+			throw new IllegalStateException();
+		}
 		change.unresolveRootEChange
 		change.oldValue = createProxy(change.oldValue)
 	}
@@ -126,6 +136,9 @@ public class EChangeUnresolver {
 	 * @param change The EObjectExistenceEChange.
 	 */	
 	def dispatch public static void unresolve(EObjectExistenceEChange<EObject> change) {
+		if (change.affectedEObjectID === null) {
+			throw new IllegalStateException();
+		}
 		change.affectedEObject = createProxy(change.affectedEObject)
 		change.stagingArea = null
 	}	
@@ -134,6 +147,9 @@ public class EChangeUnresolver {
 	 * @param change The ReplaceSingleValuedEReference.
 	 */	
 	def dispatch public static void unresolve(ReplaceSingleValuedEReference<EObject, EObject> change) {
+		if (change.affectedEObjectID === null || (change.oldValueID === null && change.newValueID === null)) {
+			throw new IllegalStateException();
+		}
 		change.unresolveEObjectAddedEChange
 		change.unresolveEObjectSubtractedEChange
 		change.unresolveFeatureEChange
@@ -144,6 +160,9 @@ public class EChangeUnresolver {
 	 * @param change The InsertEReference.
 	 */	
 	def dispatch public static void unresolve(InsertEReference<EObject, EObject> change) {
+		if (change.affectedEObjectID === null || change.newValueID === null) {
+			throw new IllegalStateException();
+		}
 		change.unresolveEObjectAddedEChange
 		change.unresolveFeatureEChange		
 	}
@@ -153,6 +172,9 @@ public class EChangeUnresolver {
 	 * @param change The RemoveEReference.
 	 */	
 	def dispatch public static void unresolve(RemoveEReference<EObject, EObject> change) {
+		if (change.affectedEObjectID === null || change.oldValueID === null) {
+			throw new IllegalStateException();
+		}
 		change.unresolveEObjectSubtractedEChange
 		change.unresolveFeatureEChange		
 	}
@@ -162,6 +184,9 @@ public class EChangeUnresolver {
 	 * @param change The FeatureEChange.
 	 */
 	def dispatch public static void unresolve(FeatureEChange<EObject, EStructuralFeature> change) {
+		if (change.affectedEObjectID === null) {
+			throw new IllegalStateException();
+		}
 		change.unresolveFeatureEChange
 	}
 }
