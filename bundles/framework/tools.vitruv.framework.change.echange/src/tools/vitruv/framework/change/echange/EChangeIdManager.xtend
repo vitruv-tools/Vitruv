@@ -32,16 +32,20 @@ class EChangeIdManager {
 
 	def void setOrGenerateIds(EChange eChange) {
 		switch eChange {
-			EObjectAddedEChange<?>:
-				setOrGenerateNewValueId(eChange)
-			EObjectSubtractedEChange<?>:
-				setOrGenerateOldValueId(eChange)
 			EObjectExistenceEChange<?>:
 				setOrGenerateAffectedEObjectId(eChange)
 			FeatureEChange<?,?>:
 				setOrGenerateAffectedEObjectId(eChange)
 			CompoundEChange:
 				eChange.atomicChanges.forEach[setOrGenerateIds]
+		}
+		switch eChange {
+			EObjectSubtractedEChange<?>:
+				setOrGenerateOldValueId(eChange)
+		}
+		switch eChange {
+			EObjectAddedEChange<?>:
+				setOrGenerateNewValueId(eChange)
 		}
 	}
 
