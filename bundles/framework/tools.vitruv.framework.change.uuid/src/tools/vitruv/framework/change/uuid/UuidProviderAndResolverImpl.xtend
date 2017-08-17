@@ -33,7 +33,8 @@ class UuidProviderAndResolverImpl implements UuidProviderAndResolver {
 		if(repository === null) {
 			repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository;
 			if(uuidResource !== null) {
-				uuidResource.getContents().add(repository)
+				// TODO HK Reenable resource creation
+				//uuidResource.getContents().add(repository)
 			}
 		}
 		this.repository = repository;
@@ -105,7 +106,7 @@ class UuidProviderAndResolverImpl implements UuidProviderAndResolver {
 		// lead to errors if the ResourceSet is also modified by the test, as these modifications
 		// would also have to be made on the TransactionalEditingDomain once it was created.
 		val domain = transactionalEditingDomain;
-		if (domain !== null) {
+		if (domain !== null && eObject.eResource?.resourceSet === resourceSet) {
 			EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(registerEObjectCall, domain);
 		} else {
 			registerEObjectCall.call;
