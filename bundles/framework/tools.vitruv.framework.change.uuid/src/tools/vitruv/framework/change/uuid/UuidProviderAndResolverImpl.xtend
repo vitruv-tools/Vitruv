@@ -74,7 +74,7 @@ class UuidProviderAndResolverImpl implements UuidProviderAndResolver {
 		val eObject = repository.uuidToEObject.get(uuid);
 		if(eObject.eIsProxy) {
 			val resolvedObject = EcoreUtil.resolve(eObject, resourceSet);
-			if(resolvedObject === null) {
+			if(resolvedObject === null || resolvedObject.eIsProxy) {
 				throw new IllegalStateException("No EObject could be found for UUID: " + uuid);
 			}
 			return resolvedObject;
