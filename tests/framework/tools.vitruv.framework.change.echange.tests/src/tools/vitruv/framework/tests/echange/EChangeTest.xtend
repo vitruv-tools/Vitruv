@@ -17,6 +17,8 @@ import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChan
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.resolve.StagingArea
 import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.change.uuid.UuidProviderAndResolverImpl
+import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver
 
 /**
  * Default class for testing EChange changes.
@@ -72,8 +74,10 @@ import org.eclipse.emf.ecore.EObject
  		stagingArea = StagingArea.getStagingArea(resourceSet)
  		
  		// Factorys for creating changes
- 		atomicFactory = TypeInferringUnresolvingAtomicEChangeFactory.instance
- 		compoundFactory = TypeInferringUnresolvingCompoundEChangeFactory.instance
+ 		val uuidProviderAndResolver = new UuidProviderAndResolverImpl(resourceSet, null)
+ 		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidProviderAndResolver);
+ 		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidProviderAndResolver);
+ 		AtomicEChangeResolver.uuidProviderAndResolver = uuidProviderAndResolver
  	}
  	
  	/**
