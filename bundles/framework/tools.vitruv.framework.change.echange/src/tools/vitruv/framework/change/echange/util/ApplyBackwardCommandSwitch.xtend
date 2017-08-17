@@ -114,7 +114,7 @@ package class ApplyBackwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(DeleteEObject<EObject> change) {
-		return #[]
+		return change.consequentialRemoveChanges.reverseView.map[commands].flatten.toList;
 	}
 
 	/**
