@@ -25,6 +25,7 @@
         upperBound="-1" eType="#//NonRoot2" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Identified2" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id2" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id2" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
   </eClassifiers>
 </ecore:EPackage>
