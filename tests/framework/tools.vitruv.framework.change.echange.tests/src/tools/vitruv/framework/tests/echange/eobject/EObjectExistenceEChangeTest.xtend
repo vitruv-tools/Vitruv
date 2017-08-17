@@ -63,7 +63,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * Test resolves a {@link EObjectExistenceEChangeTest} EChange with a null
 	 * affected EObject.
 	 */
-	@Test(expected=IllegalStateException)
+	@Test(expected=IllegalArgumentException)
 	def public void resolveInvalidAffectedEObjectTest() {
 		createdObject = null
 		

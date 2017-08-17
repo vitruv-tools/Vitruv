@@ -121,7 +121,7 @@ class AtomicEChangeResolver {
 		// Resolve the affected object
 		if (newObject) {
 			// Create new one
-			change.affectedEObject = EcoreUtil.create(change.affectedEObject.eClass) as A;
+			change.affectedEObject = EcoreUtil.create(change.affectedEObjectType) as A;
 		} else {
 			// Object still exists
 			change.affectedEObject = uuidProviderAndResolver.getEObject(change.affectedEObjectID) as A;
