@@ -61,6 +61,10 @@ class TuidManagerImpl implements TuidManager {
 				«FOR potentialCalculator : potentialCalculators SEPARATOR ", "» «potentialCalculator» «ENDFOR»
 				potentialCalculator
 			''')
+		if (potentialCalculators.empty) {
+			warn('''No TUIDCalculator for EObject «object»''')
+			return null
+		}
 		val resultCalculator = potentialCalculators.get(0)
 		return resultCalculator
 	}
