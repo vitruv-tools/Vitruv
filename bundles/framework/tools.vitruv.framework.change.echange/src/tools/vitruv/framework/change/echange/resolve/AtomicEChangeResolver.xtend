@@ -19,6 +19,7 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
+import java.util.List
 
 /**
  * Static class for resolving EChanges internally.
@@ -365,7 +366,28 @@ class AtomicEChangeResolver {
 	 */
 	def package static dispatch boolean resolve(DeleteEObject<EObject> change, ResourceSet resourceSet,
 		boolean resolveBefore) {
-		return change.resolveEObjectExistenceEChange(resourceSet, !resolveBefore)
+		var result = true;
+		val consequentialChanges = change.consequentialRemoveChanges
+		if (resolveBefore) {
+			result = consequentialChanges.resolveChangeList(resourceSet, resolveBefore);	
+		}
+		result = result && change.resolveEObjectExistenceEChange(resourceSet, !resolveBefore)
+		if (!resolveBefore) {
+			result = consequentialChanges.resolveChangeList(resourceSet, resolveBefore);	
+		}
+		return result;
+	}
+	
+	/**
+	 * Dispatch method for resolving the given list of changes.
+	 * @param changeList 		The change list which should be resolved.
+	 * @param resourceSet 		The resources set with the EObject which the 
+	 * 							change should be resolved to.
+	 * @param resolveBefore		{@code true} if the model is in state before the change,
+	 * 							{@code false} if the model is in state after.
+	 */
+	def private static boolean resolveChangeList(List<EChange> changeList, ResourceSet resourceSet, boolean resolveBefore) {
+		return changeList.fold(true, [res, localChange | res && EChangeResolver.resolve(localChange, resourceSet, resolveBefore, false)]);	
 	}
 }
 	
