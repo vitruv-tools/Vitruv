@@ -29,8 +29,8 @@ class ResolutionChecker {
 	
 	public static def dispatch isResolved(EObjectExistenceEChange<?> existenceChange) {
 		return (existenceChange.getAffectedEObject() !== null &&
-			!existenceChange.getAffectedEObject().eIsProxy() && 
-			existenceChange.getStagingArea() !== null);
+			!existenceChange.getAffectedEObject().eIsProxy());// && 
+			//existenceChange.getStagingArea() !== null);
 	}
 	
 	public static def dispatch isResolved(FeatureEChange<?,?> featureChange) {

@@ -4,9 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import tools.vitruv.framework.tests.echange.command.AddToStagingAreaCommandTest;
 import tools.vitruv.framework.tests.echange.command.RemoveAtCommandTest;
-import tools.vitruv.framework.tests.echange.command.RemoveFromStagingAreaCommandTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndInsertNonRootTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndInsertRootTest;
 import tools.vitruv.framework.tests.echange.compound.CreateAndReplaceAndDeleteNonRootTest;
@@ -58,9 +56,7 @@ import tools.vitruv.framework.tests.echange.root.RemoveRootEObjectTest;
 	CreateAndReplaceAndDeleteNonRootTest.class,
 	
 	// Additional tests
-	RemoveAtCommandTest.class,
-	AddToStagingAreaCommandTest.class,
-	RemoveFromStagingAreaCommandTest.class})
+	RemoveAtCommandTest.class})
 
 public class EChangeTestSuite {
 
