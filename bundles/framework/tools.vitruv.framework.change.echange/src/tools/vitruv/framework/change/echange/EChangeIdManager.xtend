@@ -34,7 +34,8 @@ class EChangeIdManager {
 
 	def void setOrGenerateIds(EChange eChange) {
 		switch eChange {
-			EObjectExistenceEChange<?>:
+			EObjectExistenceEChange<?>,
+			FeatureEChange<?,?>:
 				setOrGenerateAffectedEObjectId(eChange)
 			CompoundEChange:
 				eChange.atomicChanges.forEach[setOrGenerateIds]
