@@ -73,9 +73,9 @@ class UserExecutionClassGenerator extends ClassGenerator {
 
 	protected def JvmOperation generateUpdateElementMethod(String elementName, CodeBlock codeBlock,
 		Iterable<AccessibleElement> accessibleElements) {
-		return codeBlock.getOrGenerateMethod("update" + elementName.toFirstUpper + "Element", typeRef(Void.TYPE)) [
+		val code = codeBlock.code;
+		return code.getOrGenerateMethod("update" + elementName.toFirstUpper + "Element", typeRef(Void.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
-			val code = codeBlock.code;
 			if (code instanceof SimpleTextXBlockExpression) {
 				body = code.text;
 			} else {
