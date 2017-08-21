@@ -8,6 +8,7 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
@@ -56,27 +57,38 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 				elementType = MirBaseFactory.eINSTANCE.createMetaclassReference.reference(element)
 			]
 			reaction.trigger = change
-			affectedElementType = element
-			return new ChangeTypeBuilder(builder, change)
+			return new ChangeTypeBuilder(builder, change, element)
 		}
 	}
 
 	static class ChangeTypeBuilder {
 		val extension FluentReactionBuilder builder
 		val ModelElementChange modelElementChange
+		val EClass element
 
-		private new(FluentReactionBuilder builder, ModelElementChange modelElementChange) {
+		private new(FluentReactionBuilder builder, ModelElementChange modelElementChange, EClass element) {
 			this.builder = builder
 			this.modelElementChange = modelElementChange
+			this.element = element
 		}
 
 		def created() {
-			modelElementChange.changeType = ReactionsLanguageFactory.eINSTANCE.createElementCreationChangeType
-			return new RoutineCallBuilder(builder)
+			affectedElementType = element
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementCreationChangeType)
 		}
 
 		def deleted() {
-			modelElementChange.changeType = ReactionsLanguageFactory.eINSTANCE.createElementDeletionChangeType
+			affectedElementType = element
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementDeletionChangeType)
+		}
+		
+		def insertedAsRoot() {
+			valueType = element
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionAsRootChangeType)
+		}
+		
+		def private continueWithChangeType(ElementChangeType changeType) {
+			modelElementChange.changeType = changeType
 			return new RoutineCallBuilder(builder)
 		}
 	}
