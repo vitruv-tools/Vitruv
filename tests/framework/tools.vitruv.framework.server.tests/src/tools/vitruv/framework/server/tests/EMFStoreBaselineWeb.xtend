@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.versioning
+package tools.vitruv.framework.server.tests
 
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
@@ -23,7 +23,6 @@ import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.LocalRepository
 import tools.vitruv.framework.versioning.emfstore.PushState
-import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryWebImpl
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
@@ -87,7 +86,7 @@ class EMFStoreBaselineWeb extends VitruviusApplicationTest {
 	override setup() {
 		localRepository = new LocalRepositoryWebImpl
 		newLocalRepository = new LocalRepositoryWebImpl
-		remoteRepository = "http://localhost:8080/tools.vitruv.framework.server/rest/"
+		remoteRepository = "http://localhost:8888/tools.vitruv.framework.server/rest/"
 		localRepository.addRemoteRepository(remoteRepository)
 		newLocalRepository.addRemoteRepository(remoteRepository)
 

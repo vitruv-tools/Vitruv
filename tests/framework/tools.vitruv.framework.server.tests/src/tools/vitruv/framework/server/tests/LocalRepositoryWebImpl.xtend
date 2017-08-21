@@ -1,10 +1,12 @@
-package tools.vitruv.framework.versioning.emfstore.impl
+package tools.vitruv.framework.server.tests
 
-import com.google.gson.JsonParser
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.core.MediaType
+
+import com.google.gson.JsonParser
+
 import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.impl.RemoteBranchImpl
 import tools.vitruv.framework.versioning.emfstore.PushState
