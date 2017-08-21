@@ -10,6 +10,7 @@ import static com.google.common.base.Preconditions.*
 class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 
 	val ReactionsFile reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile
+	
 	@Accessors(PUBLIC_GETTER)
 	var String fileName
 
