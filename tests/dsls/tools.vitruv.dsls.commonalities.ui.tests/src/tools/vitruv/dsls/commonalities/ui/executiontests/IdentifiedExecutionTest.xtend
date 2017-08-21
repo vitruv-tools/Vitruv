@@ -1,20 +1,18 @@
 package tools.vitruv.dsls.commonalities.ui.executiontests
 
-import tools.vitruv.framework.tests.VitruviusApplicationTest
-import tools.vitruv.framework.testutils.domains.UmlMockupDomainProvider
-import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider
 import tools.vitruv.framework.testutils.domains.AllElementTypes2DomainProvider
-import tools.vitruv.framework.testutils.domains.PcmMockupDomainProvider
 import org.junit.runner.RunWith
 import org.eclipse.xtext.testing.XtextRunner
 import org.eclipse.xtext.testing.InjectWith
 import com.google.inject.Inject
 import org.junit.Test
 import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorProvider
+import allElementTypes.AllElementTypesFactory
+import tools.vitruv.framework.domains.VitruvDomainProvider
 
 @RunWith(XtextRunner)
 @InjectWith(CommonalitiesLanguageUiInjectorProvider)
-class IdentifiedExecutionTest extends VitruviusApplicationTest {
+class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	
 	@Inject ExecutionTestCompiler compiler
 
@@ -28,12 +26,15 @@ class IdentifiedExecutionTest extends VitruviusApplicationTest {
 		compiler.changePropagationDefinitions
 	}
 
-	override protected getVitruvDomains() {
-		#[new AllElementTypesDomainProvider, new AllElementTypes2DomainProvider, new PcmMockupDomainProvider,
-			new UmlMockupDomainProvider].map[domain]
+	@Test
+	def void rootInsert() {
+		val root = AllElementTypesFactory.eINSTANCE.createRoot => [
+			id = 'testid'
+		]
+		createAndSynchronizeModel(AllElementTypes2DomainProvider.sourceModelName, root)
 	}
 	
-	@Test
-	def void foo() {}
-
+	def private String getSourceModelName(Class<? extends VitruvDomainProvider<?>> domain) {
+		'''model/source.«domain.newInstance.domain.fileExtensions.head»'''
+	}
 }
