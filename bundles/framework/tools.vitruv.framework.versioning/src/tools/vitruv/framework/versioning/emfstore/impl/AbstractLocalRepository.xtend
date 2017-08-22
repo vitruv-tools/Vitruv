@@ -40,7 +40,6 @@ import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.InternalTestVirtualModel
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
-
 abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements LocalRepository<T> {
 	// Extensions.
 	static extension BranchDiffCreator = BranchDiffCreator::instance
@@ -137,32 +136,32 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		addCommit(c, currentBranch)
 	}
 
-	override commit(String s) { commit(s, virtualModel) }
+	override commit(String message) { commit(message, virtualModel) }
 
-	override commit(String s, VURI vuri) {
+	override commit(String message, VURI vuri) {
 		if(null === vuri)
 			throw new IllegalStateException("VURI must not be null!")
-		commit(s, virtualModel, vuri)
+		commit(message, virtualModel, vuri)
 	}
 
-	override commit(String s, VersioningVirtualModel currentVirtualModel) {
-		commit(s, currentVirtualModel, null)
+	override commit(String message, VersioningVirtualModel currentVirtualModel) {
+		commit(message, currentVirtualModel, null)
 	}
 
-	override commit(String s, VersioningVirtualModel currentVirtualModel, VURI vuri) {
-		val changeMatches = if(null === vuri)
+	override commit(String message, VersioningVirtualModel currentVirtualModel, VURI vuriWhichShouldBeCommited) {
+		val changeMatches = if(null === vuriWhichShouldBeCommited)
 				currentVirtualModel.allUnresolvedPropagatedChangesSinceLastCommit.immutableCopy
 			else
-				currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri).immutableCopy
+				currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuriWhichShouldBeCommited).immutableCopy
 		if(changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
 		val userInteractions = currentVirtualModel.userInteractionsSinceLastCommit
-		val commit = commit(s, changeMatches, userInteractions)
+		val commit = commit(message, changeMatches, userInteractions)
 		val lastChangeId = changeMatches.last.id
-		if(null === vuri)
+		if(null === vuriWhichShouldBeCommited)
 			currentVirtualModel.allLastPropagatedChangeId = lastChangeId
 		else
-			currentVirtualModel.setLastPropagatedChangeId(vuri, lastChangeId)
+			currentVirtualModel.setLastPropagatedChangeId(vuriWhichShouldBeCommited, lastChangeId)
 		return commit
 	}
 
@@ -439,11 +438,11 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		return createEChangeRemapFunction(myVURI, vuri)
 	}
 
-	private def commit(String s, List<PropagatedChange> changes, List<Integer> userInteractions) {
+	private def commit(String message, List<PropagatedChange> changes, List<Integer> userInteractions) {
 		val lastCommit = commits.last
 		val commit = createSimpleCommit(
 			changes,
-			s,
+			message,
 			author.name,
 			author.email,
 			lastCommit.identifier,
@@ -454,14 +453,14 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		return commit
 	}
 
-	private def void reapplyCommit(Commit c, Branch branch) {
-		if(c instanceof SimpleCommit) {
+	private def void reapplyCommit(Commit commit, Branch branch) {
+		if(commit instanceof SimpleCommit) {
 			val lastCommit = commits.last
 			val newCommit = createSimpleCommit(
-				c.changes,
-				c.commitmessage.message,
-				c.commitmessage.authorName,
-				c.commitmessage.authorEMail,
+				commit.changes,
+				commit.commitmessage.message,
+				commit.commitmessage.authorName,
+				commit.commitmessage.authorEMail,
 				lastCommit.identifier,
 				lastCommit.userInteractions
 			)
