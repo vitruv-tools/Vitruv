@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.versioning
+package tools.vitruv.framework.versioning.tests
 
 import java.util.List
 import java.util.Set
@@ -9,7 +9,6 @@ import org.junit.Test
 
 import allElementTypes.NonRoot
 
-import tools.vitruv.dsls.reactions.tests.AbstractTheirAdditionalElementTest
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm

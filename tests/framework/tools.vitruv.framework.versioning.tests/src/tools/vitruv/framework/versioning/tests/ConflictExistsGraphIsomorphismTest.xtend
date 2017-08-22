@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.versioning
+package tools.vitruv.framework.versioning.tests
 
 import java.util.List
 import java.util.Set
@@ -10,7 +10,6 @@ import org.junit.Test
 
 import allElementTypes.NonRoot
 
-import tools.vitruv.dsls.reactions.tests.AbstractConflictExistsTest
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictSeverity
@@ -141,7 +140,7 @@ class ConflictExistsGraphIsomorphismTest extends AbstractConflictExistsTest {
 		modelMerger.init(branchDiff, failingFunction, failingFunction)
 		modelMerger.compute
 		val echanges = modelMerger.resultingOriginalEChanges
-		val changesToRollback = virtualModel.getResolvedPropagatedChanges(sourceVURI).drop(1).toList
+		val changesToRollback = versioningVirtualModel.getResolvedPropagatedChanges(sourceVURI).drop(1).toList
 		if (changesToRollback.exists[!resolved])
 			throw new IllegalStateException
 		val reappliedChanges = reapplier.reapply(changesToRollback, echanges, virtualModel, sourceVURI)

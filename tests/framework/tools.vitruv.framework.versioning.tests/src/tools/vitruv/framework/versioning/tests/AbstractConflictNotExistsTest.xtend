@@ -1,10 +1,12 @@
-package tools.vitruv.dsls.reactions.tests
+package tools.vitruv.framework.versioning.tests
 
-abstract class AbstractConflictExistsTest extends AbstractConflictTest {
-	protected static val otherNonContainmentId = "OtherID"
+import static org.hamcrest.CoreMatchers.is
+import static org.junit.Assert.assertThat
 
+abstract class AbstractConflictNotExistsTest extends AbstractConflictTest {
 	override setup() {
 		super.setup
+
 		val container1 = createNonRootObjectContainerHelper
 		container1.id = containerId
 		rootElement.nonRootObjectContainerHelper = container1
@@ -21,22 +23,23 @@ abstract class AbstractConflictExistsTest extends AbstractConflictTest {
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container1)]
 		checkChangeMatchesLength(5, 2)
 
-		NON_CONTAINMENT_NON_ROOT_IDS.take(2).forEach[createAndAddNonRoot(container2)]
-		otherNonContainmentId.createAndAddNonRoot(container2)
+		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container2)]
 		checkChangeMatchesLength(5, 5)
 
 		assertModelsEqual
-		assertDifferentNonRootContainment
-
-		val sourceChanges = virtualModel.getChangeMatches(sourceVURI)
-		val targetChanges = virtualModel.getChangeMatches(newSourceVURI)
+		// assertMappedModelsAreEqual
+		val sourceChanges = versioningVirtualModel.getUnresolvedPropagatedChanges(sourceVURI)
+		val targetChanges = versioningVirtualModel.getUnresolvedPropagatedChanges(newSourceVURI)
+		sourceChanges.forEach [
+			originalChange.EChanges.forEach [ e |
+				assertThat(e.resolved, is(false))
+			]
+		]
 		branchDiff = createVersionDiff(sourceChanges, targetChanges)
 		conflictDetector.init(branchDiff)
 		conflictDetector.compute
 		conflicts = conflictDetector.conflicts
 		changes = branchDiff.baseChanges.map[originalChange].toList
 		echanges = changes.map[EChanges].flatten.toList
-
 	}
-
 }

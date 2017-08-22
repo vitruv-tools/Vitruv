@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests
+package tools.vitruv.framework.versioning.tests
 
 import java.util.Collection
 import java.util.List
@@ -17,9 +17,10 @@ import tools.vitruv.framework.versioning.BranchDiffCreator
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictDetector
 import tools.vitruv.framework.versioning.DependencyGraphCreator
+import tools.vitruv.framework.versioning.EChangeGraph
 import tools.vitruv.framework.versioning.ModelMerger
 import tools.vitruv.framework.versioning.Reapplier
-import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
+import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
@@ -30,11 +31,9 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize
 
 import static org.junit.Assert.assertThat
-import tools.vitruv.framework.versioning.EChangeGraph
 
 abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected static extension DependencyGraphCreator = DependencyGraphCreator::instance
-	protected static extension VirtualModelExtension = VirtualModelExtension::instance
 	protected static extension BranchDiffCreator = BranchDiffCreator::instance
 
 	protected static val containerId = "NonRootObjectContainer"
@@ -56,6 +55,10 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 	protected VURI newTargetVURI
 	protected VURI sourceVURI
 	protected VURI targetVURI
+
+	def InternalTestVersioningVirtualModel getVersioningVirtualModel() {
+		return virtualModel as InternalTestVersioningVirtualModel
+	}
 
 	override setup() {
 		super.setup
@@ -82,8 +85,10 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 		assertThat(newSourceVURI.hashCode, not(is(sourceVURI.hashCode)))
 		assertThat(newTargetVURI.hashCode, not(is(targetVURI.hashCode)))
 
-		val sourcePropagatedChanges = virtualModel.getResolvedPropagatedChanges(sourceVURI)
-		val newSourcepropagatedChanges = virtualModel.getResolvedPropagatedChanges(newSourceVURI)
+		val sourcePropagatedChanges = (virtualModel as InternalTestVersioningVirtualModel).
+			getUnresolvedPropagatedChanges(sourceVURI)
+		val newSourcepropagatedChanges = (virtualModel as InternalTestVersioningVirtualModel).
+			getUnresolvedPropagatedChanges(newSourceVURI)
 		assertThat(sourcePropagatedChanges, hasSize(1))
 		assertThat(newSourcepropagatedChanges, hasSize(1))
 	}
@@ -94,8 +99,10 @@ abstract class AbstractConflictTest extends AbstractVersioningTest {
 
 	protected def checkChangeMatchesLength(int l1, int l2) {
 		roots.forEach[saveAndSynchronizeChanges]
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(l1))
-		assertThat(virtualModel.getChangeMatches(newSourceVURI), hasSize(l2))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(l1))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(newSourceVURI),
+			hasSize(l2))
 	}
 
 	protected final def assertMappedModelsAreEqual() {

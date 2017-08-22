@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.versioning
+package tools.vitruv.framework.versioning.tests
 
 import java.util.List
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -8,7 +8,6 @@ import org.junit.Test
 import allElementTypes.NonRootObjectContainerHelper
 import allElementTypes.Root
 
-import tools.vitruv.dsls.reactions.tests.AbstractHardConflictTest
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.ConflictSeverity
@@ -146,7 +145,7 @@ class HardConflictTest extends AbstractHardConflictTest {
 		modelMerger.init(branchDiff, originalCallback, triggeredCallback)
 		modelMerger.compute
 		val echanges = modelMerger.resultingOriginalEChanges
-		val changesToRollback = virtualModel.getResolvedPropagatedChanges(sourceVURI).drop(1).toList
+		val changesToRollback = versioningVirtualModel.getResolvedPropagatedChanges(sourceVURI).drop(1).toList
 		if (changesToRollback.exists[!resolved])
 			throw new IllegalStateException
 		val reappliedChanges = reapplier.reapply(changesToRollback, echanges, virtualModel, sourceVURI)

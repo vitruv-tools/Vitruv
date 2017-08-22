@@ -133,7 +133,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 				changeRecorder.addToRecording(r)
 				// FIXME PS Hack. Objects created by the consistency do not report changes 
 				// to the AtomicChangeRecorder, if only the resource is added. 
-				// This occurs onlqy with unresolved EChanges.
+				// This occurs only with unresolved EChanges.
 				r.allContents.forEach[eObject|changeRecorder.addToRecording(eObject)]
 			]
 			changeRecorder.addToRecording(resourceSet)
@@ -176,6 +176,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 		lastUnresolvedChanges.clear
 		lastResolvedChanges += filteredResolved
 		lastUnresolvedChanges += filteredUnresolved
+		
 		result += if (unresolveChanges) filteredUnresolved else filteredResolved
 
 		debug("End recording virtual model")

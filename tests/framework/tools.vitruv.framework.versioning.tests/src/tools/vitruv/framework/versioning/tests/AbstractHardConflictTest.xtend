@@ -1,11 +1,10 @@
-package tools.vitruv.dsls.reactions.tests
+package tools.vitruv.framework.versioning.tests
 
-abstract class AbstractTheirAdditionalElementTest extends AbstractConflictTest {
-	protected static val additionalID = "addId"
+abstract class AbstractHardConflictTest extends AbstractConflictTest {
+	protected static val otherContainerID = "test"
 
 	override setup() {
 		super.setup
-
 		val container1 = createNonRootObjectContainerHelper
 		container1.id = containerId
 		rootElement.nonRootObjectContainerHelper = container1
@@ -13,28 +12,19 @@ abstract class AbstractTheirAdditionalElementTest extends AbstractConflictTest {
 		checkChangeMatchesLength(2, 1)
 
 		val container2 = createNonRootObjectContainerHelper
-		container2.id = containerId
+		container2.id = otherContainerID
 		rootElement2.nonRootObjectContainerHelper = container2
 
 		checkChangeMatchesLength(2, 2)
 
-		// Create and add non roots
-		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container1)]
-		checkChangeMatchesLength(5, 2)
-
-		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container2)]
-		additionalID.createAndAddNonRoot(container2)
-		checkChangeMatchesLength(5, 6)
-
-		assertModelsEqual
-		val sourceChanges = virtualModel.getChangeMatches(sourceVURI)
-		val targetChanges = virtualModel.getChangeMatches(newSourceVURI)
+		val sourceChanges = versioningVirtualModel.getUnresolvedPropagatedChanges(sourceVURI)
+		val targetChanges = versioningVirtualModel.getUnresolvedPropagatedChanges(newSourceVURI)
 		branchDiff = createVersionDiff(sourceChanges, targetChanges)
-
 		conflictDetector.init(branchDiff)
 		conflictDetector.compute
 		conflicts = conflictDetector.conflicts
 		changes = branchDiff.baseChanges.map[originalChange].toList
 		echanges = changes.map[EChanges].flatten.toList
 	}
+
 }

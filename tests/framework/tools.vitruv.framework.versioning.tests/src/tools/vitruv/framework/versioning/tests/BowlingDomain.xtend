@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests
+package tools.vitruv.framework.versioning.tests
 
 import org.eclipse.emf.emfstore.bowling.BowlingPackage
 import tools.vitruv.framework.domains.AbstractVitruvDomain

@@ -181,7 +181,7 @@ final class TestUtil {
 	 * @param changePropagationSpecifications- {@link ChangePropagationSpecification}s to add to the VSUM
 	 * @return the created {@link VirtualModel}
 	 */
-	def static InternalVirtualModel createVirtualModel(
+	def static VirtualModel createVirtualModel(
 		String virtualModelName,
 		boolean addTimestampAndMakeNameUnique,
 		Iterable<VitruvDomain> metamodels,

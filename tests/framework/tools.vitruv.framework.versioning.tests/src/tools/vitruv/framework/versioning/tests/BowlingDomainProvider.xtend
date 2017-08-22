@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests
+package tools.vitruv.framework.versioning.tests
 
 import tools.vitruv.framework.domains.VitruvDomainProvider
 

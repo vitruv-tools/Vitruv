@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.versioning
+package tools.vitruv.framework.versioning.tests
 
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
@@ -12,7 +12,6 @@ import org.eclipse.emf.emfstore.bowling.League
 
 import org.junit.Test
 
-import tools.vitruv.dsls.reactions.tests.BowlingDomainProvider
 import tools.vitruv.framework.tests.VitruviusApplicationTest
 import tools.vitruv.framework.tests.util.TestUtil
 import tools.vitruv.framework.util.datatypes.VURI
@@ -21,14 +20,14 @@ import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
-import tools.vitruv.framework.versioning.emfstore.LocalRepository
+import tools.vitruv.framework.versioning.emfstore.InternalTestLocalRepository
 import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.emfstore.RemoteRepository
 import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryImpl
 import tools.vitruv.framework.versioning.emfstore.impl.RemoteRepositoryImpl
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
 import tools.vitruv.framework.versioning.extensions.URIRemapper
-import tools.vitruv.framework.vsum.VersioningVirtualModel
+import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
 import static org.hamcrest.CoreMatchers.is
@@ -68,12 +67,12 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 	Author author1
 	Author author2
 	League league1
-	LocalRepository<RemoteRepository> localRepository
-	LocalRepository<RemoteRepository> newLocalRepository
+	InternalTestLocalRepository<RemoteRepository> localRepository
+	InternalTestLocalRepository<RemoteRepository> newLocalRepository
 	RemoteRepository remoteRepository
 	VURI newSourceVURI
 	VURI sourceVURI
-	VersioningVirtualModel newVirtualModel
+	InternalTestVersioningVirtualModel newVirtualModel
 
 	protected static def String getProjectModelPath(String modelName) {
 		'''model/«modelName».«MODEL_FILE_EXTENSION»'''
@@ -104,7 +103,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		localRepository.author = author1
 		newLocalRepository.author = author2
 		newVirtualModel = TestUtil::createVirtualModel("newVMname", true, vitruvDomains,
-			createChangePropagationSpecifications, userInteractor) as VersioningVirtualModel
+			createChangePropagationSpecifications, userInteractor) as InternalTestVersioningVirtualModel
 
 		localRepository.virtualModel = virtualModel
 		newLocalRepository.virtualModel = newVirtualModel
@@ -218,10 +217,12 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		assertThat(localRepository.currentBranch, not(equalTo(null)))
 		assertThat(localRepository.head, is(localRepository.initialCommit))
 		assertThat(localRepository.commits, hasSize(1))
-		val changeMatchesBeforeCommit = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
+		val changeMatchesBeforeCommit = (virtualModel as InternalTestVersioningVirtualModel).
+			getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
 		assertThat(changeMatchesBeforeCommit, hasSize(2))
 		val commit = localRepository.commit("My message", virtualModel, sourceVURI)
-		val changeMatchesAfterCommit = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
+		val changeMatchesAfterCommit = (virtualModel as InternalTestVersioningVirtualModel).
+			getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
 		assertThat(changeMatchesAfterCommit, hasSize(0))
 		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))
@@ -408,7 +409,7 @@ class EMFStoreBaseline extends VitruviusApplicationTest {
 		val lastRemoteCommit = newLocalRepository.getCommits(remoteBranch).last
 		val lastLocalCommit = newLocalRepository.getCommits(newLocalRepository.currentBranch).last
 		assertThat(lastRemoteCommit.identifier, not(equalTo(lastLocalCommit.identifier)))
-		virtualModel.addMappedVURIs(sourceVURI, newSourceVURI)
+		(virtualModel as InternalTestVersioningVirtualModel).addMappedVURIs(sourceVURI, newSourceVURI)
 		val mergeCommit = newLocalRepository.merge(
 			remoteBranch,
 			newLocalRepository.currentBranch,

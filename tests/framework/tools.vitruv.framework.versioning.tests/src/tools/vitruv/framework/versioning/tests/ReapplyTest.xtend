@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.versioning
+package tools.vitruv.framework.versioning.tests
 
 import org.junit.Ignore
 import org.junit.Test
@@ -10,6 +10,7 @@ import tools.vitruv.framework.change.copy.ChangeCopyFactory
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalModelRepository
+import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 import tools.vitruv.framework.vsum.InternalTestVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
@@ -40,15 +41,18 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 		assertThat(rootElement.eContents, hasSize(1))
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(2))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
 
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(5))
-		val originalChanges = virtualModel.getChangeMatches(sourceVURI).map[originalChange]
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(5))
+		val originalChanges = (virtualModel as InternalTestVersioningVirtualModel).
+			getUnresolvedPropagatedChanges(sourceVURI).map[originalChange]
 		assertThat(originalChanges, hasSize(5))
 		val pair = new Pair(sourceVURI.EMFUri.toString, newSourceVURI.EMFUri.toString)
 		val eChangeCopier = ChangeCopyFactory::instance.createEChangeCopier(#{pair})
@@ -81,13 +85,15 @@ class ReapplyTest extends SourceTargetRecorderTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 		assertThat(rootElement.eContents, hasSize(1))
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(2))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		val changeMatches1 = virtualModel.getChangeMatches(sourceVURI)
+		val changeMatches1 = (virtualModel as InternalTestVersioningVirtualModel).
+			getUnresolvedPropagatedChanges(sourceVURI)
 		assertThat(changeMatches1, hasSize(5))
 		changeMatches1.forEach [ c |
 			c.originalChange.EChanges.forEach [ eChange |

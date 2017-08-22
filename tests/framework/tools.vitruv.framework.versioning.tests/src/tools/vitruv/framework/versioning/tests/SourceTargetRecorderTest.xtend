@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.versioning
+package tools.vitruv.framework.versioning.tests
 
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
@@ -7,11 +7,10 @@ import org.junit.Test
 
 import allElementTypes.Root
 
-import tools.vitruv.dsls.reactions.tests.AbstractVersioningTest
 import tools.vitruv.framework.tests.util.TestUtil
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.common.EChangeSerializer
-import tools.vitruv.framework.versioning.extensions.VirtualModelExtension
+import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
@@ -23,9 +22,9 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.junit.Assert.assertThat
 
 class SourceTargetRecorderTest extends AbstractVersioningTest {
+	// Static extensions.
 	static extension EChangeSerializer = EChangeSerializer::instance
 	static extension Logger = Logger::getLogger(SourceTargetRecorderTest)
-	static protected extension VirtualModelExtension = VirtualModelExtension::instance
 
 	static protected val nonRootObjectContainerName = "NonRootObjectContainer"
 	protected VURI sourceVURI
@@ -50,7 +49,8 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		container.id = nonRootObjectContainerName
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(2))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach [
@@ -58,8 +58,10 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 			rootElement.saveAndSynchronizeChanges
 			assertModelsEqual
 		]
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(5))
-		assertThat(virtualModel.getChangeMatches(sourceVURI).forall[sourceVURI == originalChange.URI], is(true))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(5))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI).
+			forall[sourceVURI == originalChange.URI], is(true))
 	}
 
 	@Test
@@ -70,14 +72,17 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(2))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(5))
-		assertThat(virtualModel.getChangeMatches(sourceVURI).forall[sourceVURI == originalChange.URI], is(true))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(5))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI).
+			forall[sourceVURI == originalChange.URI], is(true))
 	}
 
 	@Test
@@ -88,14 +93,16 @@ class SourceTargetRecorderTest extends AbstractVersioningTest {
 		rootElement.nonRootObjectContainerHelper = container
 		rootElement.saveAndSynchronizeChanges
 
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(2))
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(2))
 
 		// Create and add non roots
 		NON_CONTAINMENT_NON_ROOT_IDS.forEach[createAndAddNonRoot(container)]
 		rootElement.saveAndSynchronizeChanges
 		assertModelsEqual
-		assertThat(virtualModel.getChangeMatches(sourceVURI), hasSize(5))
-		virtualModel.getChangeMatches(sourceVURI).forEach [
+		assertThat((virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI),
+			hasSize(5))
+		(virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChanges(sourceVURI).forEach [
 			assertThat(originalChange.EChanges.forall[!resolved], is(true))
 		]
 

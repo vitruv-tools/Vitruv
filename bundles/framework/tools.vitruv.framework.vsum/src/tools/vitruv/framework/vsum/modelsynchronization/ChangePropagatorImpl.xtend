@@ -44,9 +44,17 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceProviding correspondenceProviding
 	val List<EObject> objectsCreatedDuringPropagation
+
+	// TODO BEGIN This class records the PropagatedChanges. The unresolved PropagatedChanges
+	// are used for the versioning, but to roll back the changes, it is necessary to get for an 
+	// unresolved change the correspondent resolved change. Therefore the ID of an unresolved and a 
+	// correspondent resolved change are the same and both changes are saved in a map.
+	// This is no longer necessary if unresolved changes can be rolled back.    
 	val ListMultimap<VURI, String> vuriToIds
 	val Map<String, PropagatedChange> idToResolvedChanges
 	val Map<String, PropagatedChange> idToUnresolvedChanges
+	// END 
+	
 	val ModelRepository resourceRepository
 	val ModelRepositoryImpl modelRepository
 	val Set<ChangePropagationListener> changePropagationListeners

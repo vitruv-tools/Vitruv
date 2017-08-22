@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests
+package tools.vitruv.framework.versioning.tests
 
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
@@ -10,6 +10,8 @@ import allElementTypes.AllElementTypesFactory
 import allElementTypes.NonRootObjectContainerHelper
 import allElementTypes.Root
 
+import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
+import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
 import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangeReactionsCompiler
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.extensions.URIRemapper
