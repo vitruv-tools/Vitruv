@@ -39,6 +39,8 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.helper.FileSystemHelper
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceProviding {
 	// Extensions.
@@ -156,10 +158,22 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 			// TODO PS When recording on some domains, the first change is a deletion of the root 
 			// an afterwards, the real change sequence starts.
 			val relevantChanges = if (changes.length > 1 &&
-					changes.get(0).EChanges.get(0) instanceof RemoveAndDeleteRoot<?>)
-					changes.drop(1).toList
-				else
+					changes.get(0).EChanges.get(0) instanceof RemoveAndDeleteRoot<?> &&
+					changes.get(0).EChanges.get(1) instanceof CreateAndInsertRoot<?>) {
+					val firstEChange = changes.get(0).EChanges.get(0) as RemoveAndDeleteRoot<?>
+					val secondEChange = changes.get(0).EChanges.get(1) as CreateAndInsertRoot<?>
+					val uriEqual = firstEChange.removeChange.uri == secondEChange.insertChange.uri
+					val objectEqual = EcoreUtil::equals(
+						firstEChange.deleteChange.affectedEObject,
+						secondEChange.createChange.affectedEObject
+					)
+					if (uriEqual && objectEqual)
+						changes.drop(1).toList
+					else
+						changes
+				} else {
 					changes
+				}
 			// TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions
 			// that are
 			// supported by the domains of the VirtualModel
