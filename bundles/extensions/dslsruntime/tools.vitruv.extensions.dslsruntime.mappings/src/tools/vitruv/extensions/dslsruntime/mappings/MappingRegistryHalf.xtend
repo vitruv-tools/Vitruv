@@ -73,7 +73,7 @@ class MappingRegistryHalf<H extends MappingInstanceHalf> {
 		addInstanceHalf(candidate)
 	}
 
-	private def void addInstanceHalf(H instanceHalf) {
+	def void addInstanceHalf(H instanceHalf) {
 		val previouslyRegisteredHalf = instanceHalvesRegistry.put(instanceHalf.getElements(), instanceHalf)
 		if (previouslyRegisteredHalf !== null) {
 			throw new IllegalStateException('''Cannot register the «sideName» mapping instance half '«instanceHalf»' for the mapping '«mappingName»'

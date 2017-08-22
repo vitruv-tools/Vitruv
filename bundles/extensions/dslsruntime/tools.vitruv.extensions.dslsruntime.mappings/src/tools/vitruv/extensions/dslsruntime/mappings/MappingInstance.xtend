@@ -3,8 +3,8 @@ package tools.vitruv.extensions.dslsruntime.mappings
 import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class MappingInstance<L extends MappingInstanceHalf,R extends MappingInstanceHalf> {
-	@Accessors(PROTECTED_GETTER) L leftHalf
-	@Accessors(PROTECTED_GETTER) R rightHalf
+	@Accessors(PUBLIC_GETTER) L leftHalf
+	@Accessors(PUBLIC_GETTER) R rightHalf
 	
 	new(L leftHalf, R rightHalf) {
 		this.leftHalf = leftHalf

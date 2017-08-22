@@ -43,26 +43,38 @@ class AdRootXReRootMapping extends Mapping<LeftAdRootXReRootInstanceHalf,RightAd
 	
 	/********** BEGIN PUBLIC ENFORCEMENT METHODS **********/
 	def void enforceConditionsFromLeft2Right(Addresses aRoot, Recipients rRoot) {
-		val instance = getInstance(aRoot,rRoot)
+		val instance = getFullInstance(aRoot, rRoot)
 		enforceConditionsFromLeft2Right(instance)
 	}
 	
 	def void enforceConditionsFromRight2Left(Addresses aRoot, Recipients rRoot) {
-		val instance = getInstance(aRoot,rRoot)
+		val instance = getFullInstance(aRoot, rRoot)
 		enforceConditionsFromRight2Left(instance)
 	}
 	
 	/********** BEGIN PUBLIC INSTANCE METHODS **********/
-	def void registerFullInstance(Addresses aRoot, Recipients rRoot) {
+	def void registerLeftAndFullInstance(Addresses aRoot, Recipients rRoot) {
+		val leftInstance = new LeftAdRootXReRootInstanceHalf(aRoot)
+		mappingRegistry.addLeftInstance(leftInstance)
+		registerFullInstance(aRoot, rRoot)
+	}
+	
+	def void registerRightAndFullInstance(Addresses aRoot, Recipients rRoot) {
+		val rightInstance = new RightAdRootXReRootInstanceHalf(rRoot)
+		mappingRegistry.addRightInstance(rightInstance)
+		registerFullInstance(aRoot, rRoot)
+	}
+	
+	def AdRootXReRootInstance getFullInstance(Addresses aRoot, Recipients rRoot) {
+		return mappingRegistry.getFullInstance(#[aRoot], #[rRoot])
+	}
+
+	/********** BEGIN PRIVATE INSTANCE METHODS **********/	
+	private def void registerFullInstance(Addresses aRoot, Recipients rRoot) {
 		val leftInstance = mappingRegistry.getLeftInstance(#[aRoot])
 		val rightInstance = mappingRegistry.getRightInstance(#[rRoot])
 		val fullInstance = new AdRootXReRootInstance(leftInstance, rightInstance)
 		mappingRegistry.addFullInstance(fullInstance)
-	}
-	
-	/********** BEGIN PRIVATE INSTANCE METHODS **********/
-	private def AdRootXReRootInstance getInstance(Addresses aRoot, Recipients rRoot) {
-		return mappingRegistry.getInstance(#[aRoot], #[rRoot])
 	}
 	
 	/********** BEGIN PRIVATE CANDIDATE METHODS **********/

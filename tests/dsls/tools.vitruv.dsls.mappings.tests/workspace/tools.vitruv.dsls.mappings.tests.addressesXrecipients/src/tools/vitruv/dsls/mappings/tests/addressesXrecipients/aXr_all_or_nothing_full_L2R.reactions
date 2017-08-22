@@ -1,5 +1,6 @@
 import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AdRootXReRootMapping.*
 import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AddressXRecipientLocationCityMapping.*
+import tools.vitruv.demo.domains.recipients.RecipientsNamespace
 
 import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
 import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
@@ -81,8 +82,8 @@ routine createAdRootXReRootMappingInstance(ad::Addresses aRoot) {
 		add correspondence between aRoot and rRoot
 			tag with "AdRootXReRoot"
 		call {
-			adRootXReRootMapping.registerFullInstance(aRoot, rRoot)
-			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.lastSegment)
+			adRootXReRootMapping.registerRightAndFullInstance(aRoot, rRoot)
+			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.lastSegment + "." + RecipientsNamespace.FILE_EXTENSION)
 		}
 	}
 }
@@ -161,13 +162,17 @@ routine createAddressXRecipientLocationCityMappingInstances() {
 		call {
 			val newInstances = addressXRecipientLocationCityMapping.promoteValidatedLeftCandidatesToInstances()
 			for (newInstance : newInstances) {
-				createAddressXRecipientLocationCityMappingInstance(newInstance.a)
+				createAddressXRecipientLocationCityMappingInstance(newInstance.rootXroot.ARoot, newInstance.a)
 			}
 		}
 	}
 }
 
-routine createAddressXRecipientLocationCityMappingInstance(ad::Address a) {
+routine createAddressXRecipientLocationCityMappingInstance(ad::Addresses aRoot, ad::Address a) {
+	match {
+		val rRoot = retrieve re::Recipients corresponding to aRoot
+			tagged with "AdRootXReRootMapping"
+	}
 	action {
 		val r = create re::Recipient
 		val l = create re::Location
@@ -179,7 +184,7 @@ routine createAddressXRecipientLocationCityMappingInstance(ad::Address a) {
 		add correspondence between a and c
 			tag with "AddressXRecipientLocationCity"
 		call {
-			addressXRecipientLocationCityMapping.registerFullInstance(a, r, l, c)
+			addressXRecipientLocationCityMapping.registerRightAndFullInstance(aRoot, rRoot, a, r, l, c)
 		}
 	}
 }

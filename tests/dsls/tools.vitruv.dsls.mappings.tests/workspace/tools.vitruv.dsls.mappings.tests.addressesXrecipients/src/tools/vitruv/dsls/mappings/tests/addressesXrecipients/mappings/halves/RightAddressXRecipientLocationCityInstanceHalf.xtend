@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.mdsd.recipients.City
 import org.eclipse.xtend.lib.annotations.Data
 
 @Data class RightAddressXRecipientLocationCityInstanceHalf extends MappingInstanceHalf {
-	RightAdRootXReRootInstanceHalf rRoot
+	RightAdRootXReRootInstanceHalf rootXroot
 	Recipient r
 	Location l
 	City c

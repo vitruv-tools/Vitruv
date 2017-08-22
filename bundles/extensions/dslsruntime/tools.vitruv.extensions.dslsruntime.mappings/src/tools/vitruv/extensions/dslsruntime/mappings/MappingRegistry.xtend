@@ -76,7 +76,7 @@ class MappingRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHa
 			for the left elements '«instance.leftHalf.getElements()»' and the right elements '«instance.rightHalf.getElements()»' 
 			because the mapping instance '«registeredInstance»' is registered for them!'''
 	
-	def I getInstance(List<Object> leftElements, List<Object> rightElements) {
+	def I getFullInstance(List<Object> leftElements, List<Object> rightElements) {
 		return instances.get(leftElements, rightElements)
 	}
 	
@@ -133,6 +133,14 @@ class MappingRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHa
 	
 	def promoteRightCandidateToInstance(R candidate) {
 		right.promoteCandidateToInstanceHalf(candidate)
+	}
+	
+	def addLeftInstance(L instance) {
+		left.addInstanceHalf(instance)
+	}
+	
+	def addRightInstance(R instance) {
+		right.addInstanceHalf(instance)
 	}
 	
 	def void removeLeftInstance(L instance) {

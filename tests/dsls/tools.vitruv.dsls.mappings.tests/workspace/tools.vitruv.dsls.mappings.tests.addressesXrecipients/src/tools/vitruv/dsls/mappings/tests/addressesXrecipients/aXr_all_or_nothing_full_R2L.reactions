@@ -81,7 +81,7 @@ routine createAdRootXReRootMappingInstance(re::Recipients rRoot) {
 		add correspondence between aRoot and rRoot
 			tag with "AdRootXReRoot"
 		call {
-			adRootXReRootMapping.registerFullInstance(aRoot, rRoot)
+			adRootXReRootMapping.registerLeftAndFullInstance(aRoot, rRoot)
 			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.lastSegment)
 		}
 	}
@@ -155,13 +155,17 @@ routine createAddressXRecipientLocationCityMappingInstances() {
 		call {
 			val newInstances = addressXRecipientLocationCityMapping.promoteValidatedRightCandidatesToInstances()
 			for (newInstance : newInstances) {
-				createAddressXRecipientLocationCityMappingInstance(newInstance.r, newInstance.l, newInstance.c)
+				createAddressXRecipientLocationCityMappingInstance(newInstance.rootXroot.RRoot, newInstance.r, newInstance.l, newInstance.c)
 			}
 		}
 	}
 }
 
-routine createAddressXRecipientLocationCityMappingInstance(re::Recipient r, re::Location l, re::City c) {
+routine createAddressXRecipientLocationCityMappingInstance(re::Recipients rRoot, re::Recipient r, re::Location l, re::City c) {
+	match {
+		val aRoot = retrieve ad::Addresses corresponding to rRoot
+			tagged with "AdRootXReRootMapping"
+	}
 	action {
 		val a = create ad::Address
 		add correspondence between a and r
@@ -171,7 +175,7 @@ routine createAddressXRecipientLocationCityMappingInstance(re::Recipient r, re::
 		add correspondence between a and c
 			tag with "AddressXRecipientLocationCity"
 		call {
-			addressXRecipientLocationCityMapping.registerFullInstance(a, r, l, c)
+			addressXRecipientLocationCityMapping.registerLeftAndFullInstance(aRoot, rRoot, a, r, l, c)
 		}
 	}
 }
