@@ -199,8 +199,8 @@ public class ChangeDescription2EChangesTransformation {
 	def private Iterable<EChange> recursiveRemoval(EObject eObject) {
 		val result = <EChange>newArrayList
 		if (RECORD_DELETE_RECURSIVELY) {
-			recursivelyRemoveChangesForNonDefaultAttributesAndContainments(eObject, result)
 			recursivelyRemoveChangesForNonDefaultReferences(eObject, result)
+			recursivelyRemoveChangesForNonDefaultAttributesAndContainments(eObject, result)
 		}
 		return result;
 	}
