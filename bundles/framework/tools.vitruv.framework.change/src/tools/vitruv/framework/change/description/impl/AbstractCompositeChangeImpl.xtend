@@ -9,40 +9,37 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
-    List<C> changes;
+	List<C> changes;
 
-    new() {
-        this.changes = new LinkedList<C>();
-    }
+	new() {
+		this.changes = new LinkedList<C>();
+	}
 
-    new(List<? extends C> changes) {
-        this.changes = new LinkedList<C>(changes);
-    }
+	new(List<? extends C> changes) {
+		this.changes = new LinkedList<C>(changes);
+	}
 
-    override List<C> getChanges() {
-        return new LinkedList<C>(this.changes);
-    }
+	override List<C> getChanges() {
+		return new LinkedList<C>(this.changes);
+	}
 
-    override addChange(C change) {
+	override addChange(C change) {
 		if (change !== null) this.changes.add(change);
-    }
-	
+	}
+
 	override removeChange(C change) {
 		if (change !== null) this.changes.remove(change);
 	}
-				
+
 	override containsConcreteChange() {
-		var containsConcreteChange = false;
 		for (change : changes) {
-			if (change instanceof CompositeChange<?>) {
-				containsConcreteChange = containsConcreteChange || change.containsConcreteChange();
-			} else {
-				containsConcreteChange = containsConcreteChange || true;
+			if (change.containsConcreteChange) {
+				return true
 			}
 		}
-		return containsConcreteChange;
+		return false
 	}
-	
+
 	override getURI() {
 		if (changes.empty) {
 			return null;
@@ -50,7 +47,7 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 			return changes.get(0).URI;
 		}
 	}
-	
+
 	override validate() {
 		if (!this.containsConcreteChange()) {
 			return false;
@@ -65,42 +62,43 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		}
 		return true;
 	}
-	
+
 	override getEChanges() {
-		return changes.fold(new ArrayList<EChange>(), 
-			[eChangeList, change | 
+		return changes.fold(
+			new ArrayList<EChange>(),
+			[ eChangeList, change |
 				eChangeList.addAll(change.EChanges);
 				return eChangeList;
 			]
 		);
 	}
-	
+
 	override applyBackward() throws IllegalStateException {
 		for (change : changes.reverseView) {
 			change.applyBackward();
 		}
 	}
-	
+
 	override applyForward() throws IllegalStateException {
 		for (change : changes.reverseView) {
 			change.applyForward();
 		}
 	}
-		
+
 	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
 		for (c : changes) {
 			c.resolveBeforeAndApplyForward(resourceSet)
 		}
 	}
-	
+
 	override applyBackwardIfLegacy() {
 		for (change : changes.reverseView) {
 			change.applyBackwardIfLegacy();
 		}
 	}
-	
+
 	override getAffectedEObjects() {
-		return changes.fold(newArrayList, [list, element | list += element.affectedEObjects; return list]).filterNull;
+		return changes.fold(newArrayList, [list, element|list += element.affectedEObjects; return list]).filterNull;
 	}
-	
+
 }

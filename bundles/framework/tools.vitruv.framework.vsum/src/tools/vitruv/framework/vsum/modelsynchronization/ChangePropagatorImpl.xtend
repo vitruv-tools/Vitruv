@@ -31,10 +31,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	final CorrespondenceProviding correspondenceProviding
 	Set<ChangePropagationListener> changePropagationListeners
 	final ModelRepositoryImpl modelRepository;
-	final List<EObject> objectsCreatedDuringPropagation; 
-	
+	final List<EObject> objectsCreatedDuringPropagation;
+
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
-		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding, ModelRepositoryImpl modelRepository) {
+		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding,
+		ModelRepositoryImpl modelRepository) {
 		this.resourceRepository = resourceRepository
 		this.modelRepository = modelRepository;
 		this.changePropagationProvider = changePropagationProvider
@@ -63,10 +64,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		if (!change.validate()) {
 			throw new IllegalArgumentException('''Change contains changes from different models: «change»''')
 		}
-		
+
 		startChangePropagation(change);
 		change.applyBackwardIfLegacy();
-		
+
 		val List<PropagatedChange> thisChangePropagationResult = new ArrayList
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		propagateSingleChange(change, thisChangePropagationResult, changedResourcesTracker);
@@ -76,28 +77,33 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		resourceRepository.saveAllModels
 		logger.debug(modelRepository);
 		logger.debug('''
-	Propagated changes:
-	«FOR propagatedChange : thisChangePropagationResult»
-	Propagated Change:
-		«propagatedChange»«ENDFOR»
-		''');
+			Propagated changes:
+			«FOR propagatedChange : thisChangePropagationResult»
+				Propagated Change:
+				«propagatedChange»«ENDFOR»
+			''');
 		finishChangePropagation(change)
-		
-		val transitivelyPropagatedChanges = thisChangePropagationResult
+
+		val transitivelyPropagatedChanges = new ArrayList
 		for (resultingChange : thisChangePropagationResult) {
-			if (resultingChange.consequentialChanges.changeDomain.shouldTransitivelyPropagateChanges) {
-				transitivelyPropagatedChanges += propagateChange(resultingChange.consequentialChanges)
+			if (resultingChange.consequentialChanges.containsConcreteChange &&
+				resultingChange.consequentialChanges.changeDomain.shouldTransitivelyPropagateChanges) {
+				resourceRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain [
+					transitivelyPropagatedChanges += propagateChange(resultingChange.consequentialChanges)
+					null
+				]
 			}
 		}
-		
-		return transitivelyPropagatedChanges
+		thisChangePropagationResult += transitivelyPropagatedChanges
+
+		return thisChangePropagationResult
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
 		logger.info('''Started synchronizing change: «change»''')
 		for (ChangePropagationListener syncListener : this.changePropagationListeners) {
 			syncListener.startedChangePropagation()
-		}	
+		}
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
@@ -107,27 +113,27 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		logger.info('''Finished synchronizing change: «change»''')
 	}
 
-	private def dispatch void propagateSingleChange(CompositeContainerChange change, List<PropagatedChange> propagatedChanges,
-		ChangedResourcesTracker changedResourcesTracker) {
+	private def dispatch void propagateSingleChange(CompositeContainerChange change,
+		List<PropagatedChange> propagatedChanges, ChangedResourcesTracker changedResourcesTracker) {
 		for (VitruviusChange innerChange : change.getChanges()) {
 			propagateSingleChange(innerChange, propagatedChanges, changedResourcesTracker)
 		}
 	}
 
-	private def dispatch void propagateSingleChange(TransactionalChange change, List<PropagatedChange> propagatedChanges, 
-		ChangedResourcesTracker changedResourcesTracker) {
-		
-		val changeApplicationFunction = [ResourceSet resourceSet |
-				// If change has a URI, load the model
-				if (change.URI !== null) resourceRepository.getModel(change.getURI());
-                change.resolveBeforeAndApplyForward(resourceSet)
-                return;
-        	];
+	private def dispatch void propagateSingleChange(TransactionalChange change,
+		List<PropagatedChange> propagatedChanges, ChangedResourcesTracker changedResourcesTracker) {
+
+		val changeApplicationFunction = [ ResourceSet resourceSet |
+			// If change has a URI, load the model
+			if (change.URI !== null) resourceRepository.getModel(change.getURI());
+			change.resolveBeforeAndApplyForward(resourceSet)
+			return;
+		];
 		this.resourceRepository.executeOnResourceSet(changeApplicationFunction);
-		
+
 		change.affectedEObjects.forEach[modelRepository.addRootElement(it)];
 		modelRepository.cleanupRootElements;
-		
+
 		val changedObjects = change.affectedEObjects;
 		if (changedObjects.nullOrEmpty) {
 			throw new IllegalStateException("There are no objects affected by the given changes");
@@ -136,34 +142,41 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val consequentialChanges = newArrayList();
 		val propagationResult = new ChangePropagationResult();
 		resourceRepository.startRecording;
-		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeDomain)) {
-			propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult, changedResourcesTracker);
+		for (propagationSpecification : changePropagationProvider.
+			getChangePropagationSpecifications(changeDomain)) {
+			propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult,
+				changedResourcesTracker);
 		}
 		handleObjectsWithoutResource();
 		consequentialChanges += resourceRepository.endRecording();
-		consequentialChanges.forEach[logger.debug(it)];		
-		propagatedChanges.add(new PropagatedChange(change, VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges)));
+		consequentialChanges.forEach[logger.debug(it)];
+		propagatedChanges.add(
+			new PropagatedChange(change,
+				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges)));
 	}
-	
+
 	def private getChangeDomain(VitruviusChange change) {
 		metamodelRepository.getDomain(change.affectedEObjects.head)
-	} 
-	
+	}
+
 	private def void handleObjectsWithoutResource() {
 		modelRepository.cleanupRootElementsWithoutResource
 		// Find created objects without resource
 		for (createdObjectWithoutResource : objectsCreatedDuringPropagation.filter[eResource === null]) {
-			if (correspondenceProviding.correspondenceModel.hasCorrespondences(#[createdObjectWithoutResource])) {
+			if (correspondenceProviding.correspondenceModel.hasCorrespondences(
+				#[createdObjectWithoutResource])) {
 				throw new IllegalStateException("Every object must be contained within a resource: " + createdObjectWithoutResource);
 			} else {
-				logger.warn("Object was created but has no correspondence and is thus lost: " + createdObjectWithoutResource);
+				logger.warn("Object was created but has no correspondence and is thus lost: " +
+					createdObjectWithoutResource);
 			}
 		}
 		objectsCreatedDuringPropagation.clear();
 	}
-	
-	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
-			ChangePropagationResult propagationResult, ChangedResourcesTracker changedResourcesTracker) {
+
+	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change,
+		ChangePropagationSpecification propagationSpecification, ChangePropagationResult propagationResult,
+		ChangedResourcesTracker changedResourcesTracker) {
 		val correspondenceModel = correspondenceProviding.getCorrespondenceModel();
 
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
@@ -180,11 +193,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val changedEObjects = command.getAffectedObjects().filter(EObject)
 		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(it.eResource)];
 		changedResourcesTracker.addSourceResourceOfChange(change);
-		
+
 		executePropagationResult(command.transformationResult);
 		propagationResult.integrateResult(command.transformationResult);
 	}
-	
+
 	def private void executePropagationResult(ChangePropagationResult changePropagationResult) {
 		if (null === changePropagationResult) {
 			logger.info("Current propagation result is null. Can not save new root EObjects.")
@@ -192,13 +205,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		}
 		val elementsToPersist = changePropagationResult.getElementToPersistenceMap();
 		for (element : elementsToPersist.keySet) {
-			resourceRepository.persistRootElement(elementsToPersist.get(element), element);	
+			resourceRepository.persistRootElement(elementsToPersist.get(element), element);
 		}
 	}
-	
+
 	override objectCreated(EObject createdObject) {
 		this.objectsCreatedDuringPropagation += createdObject;
 		this.modelRepository.addRootElement(createdObject);
 	}
-	
+
 }
