@@ -97,10 +97,10 @@ package class EMFModelChangeTransformationUtil {
 		return result;
 	}
 	
-		def static List<EChange> createSubtractiveEChangeForReferencedObject(EObject referencingEObject, EReference reference, boolean forceDelete) {
+	def static List<EChange> createSubtractiveEChangeForReferencedObject(EObject referencingEObject, EReference reference, boolean forceDelete) {
 		val result = new ArrayList<EChange>(); 
 		if (reference.isMany) {
-			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
+			for (referenceValue : referencingEObject.getReferenceValueList(reference).reverseView) {
 				result += createRemoveReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, null, null, false);
 			}
 		} else {
