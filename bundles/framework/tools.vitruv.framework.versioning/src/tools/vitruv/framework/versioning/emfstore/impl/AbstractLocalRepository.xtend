@@ -41,6 +41,8 @@ import tools.vitruv.framework.vsum.InternalTestVirtualModel
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
+
 abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements InternalTestLocalRepository<T> {
 	// Extensions.
 	static extension BranchDiffCreator = BranchDiffCreator::instance
@@ -398,9 +400,7 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		// PS Create a list with the id of the change and a new change with the adjusted 
 		// VURI.
 		val newChanges = originalChanges.map [
-			// TODO PS This immutable copy is important. If it is missing, 
-			// a RuntimeException will be thrown.
-			val eChanges = value.EChanges.map[copy(it)].toList.immutableCopy
+			val eChanges = value.EChanges.mapFixed[copy(it)]
 			eChanges.forEach(processTargetEChange)
 			val newChange = createEMFModelChangeFromEChanges(eChanges)
 			return key -> newChange

@@ -15,6 +15,8 @@ import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
+
 class ReapplierImpl implements Reapplier {
 	// Static extensions.
 	static extension EChangeCopier = EChangeCopier::createEChangeCopier(#{})
@@ -70,7 +72,7 @@ class ReapplierImpl implements Reapplier {
 			]
 			changesUntilNowAfterReverse = fetchPropagatedChanges.apply.length
 		}
-		val consumers = replaceMap.entrySet.map [
+		val consumers = replaceMap.entrySet.mapFixed [
 			createEChangeRemapFunction(key, value)
 		]
 		val echangeMapFunction = [ EChange e |
@@ -79,7 +81,7 @@ class ReapplierImpl implements Reapplier {
 			]
 		]
 		// PS This immutable copy is important.
-		val newEChanges = echangesToReapply.map[copy(it)].toList.immutableCopy
+		val newEChanges = echangesToReapply.mapFixed[copy(it)]
 		newEChanges.forEach(echangeMapFunction)
 		newEChanges.map [
 			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it])
