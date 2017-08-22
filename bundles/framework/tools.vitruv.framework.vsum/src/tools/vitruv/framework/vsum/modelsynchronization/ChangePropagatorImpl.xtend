@@ -6,7 +6,9 @@ import java.util.Map
 import java.util.Set
 import java.util.UUID
 
+import org.apache.log4j.Level
 import org.apache.log4j.Logger
+
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 
@@ -31,8 +33,6 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
-import org.apache.log4j.Level
-import tools.vitruv.framework.vsum.InternalModelRepository
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	// Extensions.
@@ -54,7 +54,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	val Map<String, PropagatedChange> idToResolvedChanges
 	val Map<String, PropagatedChange> idToUnresolvedChanges
 	// END 
-	
 	val ModelRepository resourceRepository
 	val ModelRepositoryImpl modelRepository
 	val Set<ChangePropagationListener> changePropagationListeners
@@ -138,8 +137,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
 		resourceRepository.startRecording
-		if (resourceRepository instanceof InternalModelRepository)
-			resourceRepository.isCorrespondencesFilterActive = false
+
 		val consequentialChangeApplicationFunction = createChangeApplyFunction(consequentialChange)
 		resourceRepository.executeOnResourceSet(consequentialChangeApplicationFunction)
 
@@ -150,8 +148,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// propagationResult.integrateResult(command.transformationResult)
 		handleObjectsWithoutResource
 		resourceRepository.endRecording
-		if (resourceRepository instanceof InternalModelRepository)
-			resourceRepository.isCorrespondencesFilterActive = true
 		level = Level::DEBUG
 		addPropagatedChanges(clonedChange, originalChange, newArrayList)
 		level = Level::ERROR
@@ -344,7 +340,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		currentChangeId = null
 		val unresolvedTriggeredChanges = resourceRepository.lastUnresolvedChanges
 		val resolvedTriggeredChanges = resourceRepository.lastResolvedChanges
-		
+
 		val unresolvedPropagatedChange = new PropagatedChangeWithCorrespondentImpl(
 			uuid,
 			unresolvedChange,

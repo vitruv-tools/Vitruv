@@ -24,6 +24,9 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
+import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
+import java.util.stream.Collectors
 
 class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 	static extension VitruviusChangeFactory = VitruviusChangeFactory::instance
@@ -115,16 +118,51 @@ class AtomicEmfChangeRecorderImpl implements AtomicEmfChangeRecorder {
 			!(objectChanges.isEmpty && resourceChanges.isEmpty)
 		].toList.immutableCopy
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse]
-		unresolvedChanges += relevantChangeDescriptions.filterNull.map [
+		val currentUnresolved = relevantChangeDescriptions.filterNull.map [
 			createModelChange(true, unresolveRecordedChanges && updateTuids)
-		].filterNull
+		].filterNull.toList
 
-		correctChanges(unresolvedChanges)
+		correctChanges(currentUnresolved)
 
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse]
-		resolvedChanges += relevantChangeDescriptions.filterNull.map [
+		val currentResolved = relevantChangeDescriptions.filterNull.map [
 			createModelChange(false, !unresolveRecordedChanges && updateTuids)
-		].filterNull
+		].filterNull.toList
+
+		val filterFunction = [ List<TransactionalChange> changes |
+			// TODO PS When recording on some domains, the first change is a deletion of the root 
+			// an afterwards, the real change sequence starts.
+			val relevantChanges = if (changes.length > 1 &&
+					changes.get(0).EChanges.get(0) instanceof RemoveAndDeleteRoot<?> &&
+					changes.get(0).EChanges.get(1) instanceof CreateAndInsertRoot<?>) {
+					val firstEChange = changes.get(0).EChanges.get(0) as RemoveAndDeleteRoot<?>
+					val secondEChange = changes.get(0).EChanges.get(1) as CreateAndInsertRoot<?>
+					val uriEqual = firstEChange.removeChange.uri == secondEChange.insertChange.uri
+					val objectEqual = EcoreUtil::equals(
+						firstEChange.deleteChange.affectedEObject,
+						secondEChange.createChange.affectedEObject
+					)
+					if (uriEqual && objectEqual) {
+						changes.drop(1).toList
+					} else {
+						changes
+					}
+				} else {
+					changes
+				}
+			// TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions
+			// that are
+			// supported by the domains of the VirtualModel
+			relevantChanges.stream.filter [ change |
+				change.URI === null || !change.URI.EMFUri.toString.endsWith("correspondence")
+			].collect(Collectors::toList)
+		]
+
+		val filteredResolved = filterFunction.apply(currentResolved)
+		val filteredUnresolved = filterFunction.apply(currentUnresolved)
+
+		unresolvedChanges += filteredUnresolved
+		resolvedChanges += filteredResolved
 	}
 
 	override isRecording() {
