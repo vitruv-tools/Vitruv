@@ -34,13 +34,13 @@ import tools.vitruv.framework.versioning.branch.RemoteBranch
 import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
 import tools.vitruv.framework.versioning.common.commit.Commit
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
-import tools.vitruv.framework.versioning.emfstore.LocalRepository
+import tools.vitruv.framework.versioning.emfstore.InternalTestLocalRepository
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.InternalTestVirtualModel
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
-abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements LocalRepository<T> {
+abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements InternalTestLocalRepository<T> {
 	// Extensions.
 	static extension BranchDiffCreator = BranchDiffCreator::instance
 	static extension Logger = Logger::getLogger(AbstractLocalRepository)
@@ -152,7 +152,8 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		val changeMatches = if(null === vuriWhichShouldBeCommited)
 				currentVirtualModel.allUnresolvedPropagatedChangesSinceLastCommit.immutableCopy
 			else
-				currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuriWhichShouldBeCommited).immutableCopy
+				currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuriWhichShouldBeCommited).
+					immutableCopy
 		if(changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
 		val userInteractions = currentVirtualModel.userInteractionsSinceLastCommit
