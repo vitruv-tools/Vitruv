@@ -16,9 +16,11 @@ import tools.vitruv.framework.vsum.VersioningVirtualModel
 import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 
 class ReapplierImpl implements Reapplier {
+	// Static extensions.
 	static extension EChangeCopier = EChangeCopier::createEChangeCopier(#{})
 	static extension URIRemapper = URIRemapper::instance
 
+	// Overridden methods.
 	override reapply(
 		List<PropagatedChange> changesToRollBack,
 		List<EChange> echangesToReapply,
@@ -68,15 +70,17 @@ class ReapplierImpl implements Reapplier {
 			]
 			changesUntilNowAfterReverse = fetchPropagatedChanges.apply.length
 		}
-		val consumers = replaceMap.entrySet.map[createEChangeRemapFunction(key, value)].toList.immutableCopy
+		val consumers = replaceMap.entrySet.map [
+			createEChangeRemapFunction(key, value)
+		]
 		val echangeMapFunction = [ EChange e |
 			consumers.forEach [ consumer |
 				consumer.accept(e)
 			]
 		]
-
+		// PS This immutable copy is important.
 		val newEChanges = echangesToReapply.map[copy(it)].toList.immutableCopy
-		newEChanges.forEach[echangeMapFunction.apply(it)]
+		newEChanges.forEach(echangeMapFunction)
 		newEChanges.map [
 			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it])
 		].forEach [

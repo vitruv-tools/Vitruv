@@ -101,7 +101,7 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		// PS At this point the EChangeCopier::copy method must be used, not the 
 		// ChangeCloner::cloneEChange. This is only creating a shallow copy, whereas
 		// here a "deeper" copy is needed.
-		vitruviusChange.EChanges.map[copy(it)].toList.immutableCopy
+		vitruviusChange.EChanges.map[copy(it)]
 	}
 
 	private static def void rollback(VersioningVirtualModel vm, List<PropagatedChange> changes) {
@@ -151,10 +151,10 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 
 	override commit(String message, VersioningVirtualModel currentVirtualModel, VURI vuriWhichShouldBeCommited) {
 		val changeMatches = if(null === vuriWhichShouldBeCommited)
-				currentVirtualModel.allUnresolvedPropagatedChangesSinceLastCommit.immutableCopy
+				currentVirtualModel.allUnresolvedPropagatedChangesSinceLastCommit
 			else
 				(currentVirtualModel as InternalTestVersioningVirtualModel).
-					getUnresolvedPropagatedChangesSinceLastCommit(vuriWhichShouldBeCommited).immutableCopy
+					getUnresolvedPropagatedChangesSinceLastCommit(vuriWhichShouldBeCommited)
 		if(changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
 		val userInteractions = (currentVirtualModel as InternalTestVersioningVirtualModel).
@@ -314,7 +314,7 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 			tagetIds,
 			#[]
 		)
-		targetCommitsToCompare.reverseView.immutableCopy.forEach [
+		targetCommitsToCompare.reverseView.forEach [
 			removeCommit(it, target)
 		]
 		sourceCommitsToCompare.forEach[addCommit(it, target)]
@@ -323,10 +323,10 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		return mergeCommit
 	}
 
-	protected def List<Commit> getRelevantCommits() {
+	protected def Iterable<Commit> getRelevantCommits() {
 		val returnValue = if(lastCommitCheckedOut.containsKey(currentBranch)) {
 				val lastCommitId = lastCommitCheckedOut.get(currentBranch)
-				commits.dropWhile[identifier !== lastCommitId].drop(1).toList.immutableCopy
+				commits.dropWhile[identifier !== lastCommitId].drop(1)
 			} else {
 				commits
 			}
@@ -362,8 +362,13 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 			triggeredEChanges.parallelStream.forEach(processTriggeredEChange)
 			val newTriggeredChange = createEMFModelChangeFromEChanges(triggeredEChanges)
 
-			return new PropagatedChangeImpl(changeMatch.id, newOriginalChange, newTriggeredChange)
-		].toList.immutableCopy
+			val PropagatedChange propagatedChange = new PropagatedChangeImpl(
+				changeMatch.id,
+				newOriginalChange,
+				newTriggeredChange
+			)
+			return propagatedChange
+		].toList
 
 		// PS Propagate changes,
 		newPropagateChanges.forEach [
@@ -376,7 +381,7 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		VersioningVirtualModel currentVirtualModel,
 		VURI vuri
 	) {
-		val originalChanges = changeMatches.map[id -> originalChange].toList.immutableCopy
+		val originalChanges = changeMatches.map[id -> originalChange]
 		if(originalChanges.empty) {
 			info("Nothing to checkout")
 			return
@@ -393,15 +398,17 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		// PS Create a list with the id of the change and a new change with the adjusted 
 		// VURI.
 		val newChanges = originalChanges.map [
+			// TODO PS This immutable copy is important. If it is missing, 
+			// a RuntimeException will be thrown.
 			val eChanges = value.EChanges.map[copy(it)].toList.immutableCopy
-			eChanges.forEach[processTargetEChange.accept(it)]
+			eChanges.forEach(processTargetEChange)
 			val newChange = createEMFModelChangeFromEChanges(eChanges)
 			return key -> newChange
-		].toList.immutableCopy
+		]
 
 		// PS Get user interactions from commits and give them to the 
 		// virtual model.  
-		val userInteractions = relevantCommits.map[userInteractions].flatten.toList
+		val userInteractions = relevantCommits.map[userInteractions].flatten
 		val userInteractor = currentVirtualModel.userInteractor as TestUserInteractor
 		userInteractor.addNextSelections(userInteractions)
 
