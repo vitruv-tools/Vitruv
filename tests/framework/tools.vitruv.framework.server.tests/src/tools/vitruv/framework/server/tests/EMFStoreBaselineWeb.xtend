@@ -12,7 +12,6 @@ import org.eclipse.emf.emfstore.bowling.League
 
 import org.junit.Test
 
-import tools.vitruv.dsls.reactions.tests.BowlingDomainProvider
 import tools.vitruv.framework.tests.VitruviusApplicationTest
 import tools.vitruv.framework.tests.util.TestUtil
 import tools.vitruv.framework.util.datatypes.VURI
@@ -21,9 +20,11 @@ import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
-import tools.vitruv.framework.versioning.emfstore.LocalRepository
+import tools.vitruv.framework.versioning.emfstore.InternalTestLocalRepository
 import tools.vitruv.framework.versioning.emfstore.PushState
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
+import tools.vitruv.framework.versioning.tests.BowlingDomainProvider
+import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 import static org.hamcrest.CoreMatchers.equalTo
@@ -62,8 +63,8 @@ class EMFStoreBaselineWeb extends VitruviusApplicationTest {
 	Author author1
 	Author author2
 	League league1
-	LocalRepository<String> localRepository
-	LocalRepository<String> newLocalRepository
+	InternalTestLocalRepository<String> localRepository
+	InternalTestLocalRepository<String> newLocalRepository
 	String remoteRepository
 	VURI sourceVURI
 
@@ -216,10 +217,12 @@ class EMFStoreBaselineWeb extends VitruviusApplicationTest {
 		assertThat(localRepository.currentBranch, not(equalTo(null)))
 		assertThat(localRepository.head, is(localRepository.initialCommit))
 		assertThat(localRepository.commits, hasSize(1))
-		val changeMatchesBeforeCommit = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
+		val changeMatchesBeforeCommit = (virtualModel as InternalTestVersioningVirtualModel).
+			getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
 		assertThat(changeMatchesBeforeCommit, hasSize(2))
 		val commit = localRepository.commit("My message", virtualModel, sourceVURI)
-		val changeMatchesAfterCommit = virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
+		val changeMatchesAfterCommit = (virtualModel as InternalTestVersioningVirtualModel).
+			getUnresolvedPropagatedChangesSinceLastCommit(sourceVURI)
 		assertThat(changeMatchesAfterCommit, hasSize(0))
 		assertThat(localRepository.commits, hasSize(2))
 		assertThat(localRepository.head, is(commit))

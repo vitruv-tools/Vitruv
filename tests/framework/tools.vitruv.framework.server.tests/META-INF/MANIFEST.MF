@@ -16,5 +16,6 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.tests.util;bundle-version="0.2.0",
  tools.vitruv.framework.versioning;bundle-version="0.1.1",
  org.hamcrest.library;bundle-version="1.3.0",
- javax.ws.rs;bundle-version="2.0.1"
+ javax.ws.rs;bundle-version="2.0.1",
+ tools.vitruv.framework.versioning.tests;bundle-version="1.0.0"
 

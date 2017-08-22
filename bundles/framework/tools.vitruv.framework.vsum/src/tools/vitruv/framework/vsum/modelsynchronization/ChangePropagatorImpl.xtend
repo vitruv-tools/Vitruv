@@ -344,11 +344,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		currentChangeId = null
 		val unresolvedTriggeredChanges = resourceRepository.lastUnresolvedChanges
 		val resolvedTriggeredChanges = resourceRepository.lastResolvedChanges
-		if (unresolvedTriggeredChanges.length !== resolvedTriggeredChanges.length)
-			throw new IllegalStateException('''
-				The length of changes should be equal but there are «unresolvedTriggeredChanges.length»
-				respectively «resolvedTriggeredChanges.length»
-			''')
+		
 		val unresolvedPropagatedChange = new PropagatedChangeWithCorrespondentImpl(
 			uuid,
 			unresolvedChange,

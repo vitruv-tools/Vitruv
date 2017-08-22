@@ -172,11 +172,16 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 		]
 		val filteredResolved = filterFunction.apply(resolvedChanges)
 		val filteredUnresolved = filterFunction.apply(unresolvedChanges)
+		if (filteredResolved.length !== filteredUnresolved.length)
+			throw new IllegalStateException('''
+				The length of changes should be equal but there are «filteredResolved.length»
+				respectively «filteredUnresolved.length»
+			''')
 		lastResolvedChanges.clear
 		lastUnresolvedChanges.clear
 		lastResolvedChanges += filteredResolved
 		lastUnresolvedChanges += filteredUnresolved
-		
+
 		result += if (unresolveChanges) filteredUnresolved else filteredResolved
 
 		debug("End recording virtual model")
