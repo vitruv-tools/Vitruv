@@ -25,7 +25,7 @@ import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolver;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
@@ -146,7 +146,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected void resetChangeRecorder() {
         deactivateChangeRecorder();
-        UuidProviderAndResolver uuidProviderAndResolver = virtualModel != null
+        UuidGeneratorAndResolver uuidProviderAndResolver = virtualModel != null
                 ? virtualModel.getUuidProviderAndResolver()
                 : null;
         changeRecorder = new AtomicEmfChangeRecorder(uuidProviderAndResolver, false, false);

@@ -1,6 +1,5 @@
 package tools.vitruv.framework.change.echange
 
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
@@ -8,13 +7,14 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 
 /**
  * Provides logic for initializing the IDs within changes and for updating
  * the object references in the {@link UuidProviderAndResolver}. 
  */
 class EChangeIdManager {
-	val UuidProviderAndResolver uuidProviderAndResolver;
+	val UuidGeneratorAndResolver uuidProviderAndResolver;
 	val boolean strictMode;
 
 	/**
@@ -27,7 +27,7 @@ class EChangeIdManager {
 	 * 		if an element that should already have an ID does no have one. Using non-strict mode can be 
 	 * 		necessary if model changes are not recorded from beginning of model creation
 	 */
-	new(UuidProviderAndResolver uuidProviderAndResolver, boolean strictMode) {
+	new(UuidGeneratorAndResolver uuidProviderAndResolver, boolean strictMode) {
 		this.uuidProviderAndResolver = uuidProviderAndResolver;
 		this.strictMode = strictMode;
 	}

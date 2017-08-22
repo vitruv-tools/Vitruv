@@ -22,7 +22,7 @@ import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolver;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -57,7 +57,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public UuidProviderAndResolver getUuidProviderAndResolver() {
+        public UuidGeneratorAndResolver getUuidProviderAndResolver() {
             return null;
         }
     };
@@ -134,7 +134,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public UuidProviderAndResolver getUuidProviderAndResolver() {
+        public UuidGeneratorAndResolver getUuidProviderAndResolver() {
             return null;
         }
 

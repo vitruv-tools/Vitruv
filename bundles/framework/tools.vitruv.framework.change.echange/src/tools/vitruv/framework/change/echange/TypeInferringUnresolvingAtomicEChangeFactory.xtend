@@ -4,9 +4,9 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnresolver.*
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 
 /**
  * Factory singleton class for elements of change models.
@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EReference
 final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEChangeFactory {
 	val EChangeIdManager eChangeIdManager;
 	
-	new(UuidProviderAndResolver uuidProviderAndResolver) {
+	new(UuidGeneratorAndResolver uuidProviderAndResolver) {
 		this.eChangeIdManager = new EChangeIdManager(uuidProviderAndResolver, false);
 	}
 	

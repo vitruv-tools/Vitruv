@@ -12,8 +12,9 @@ import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
 import tools.vitruv.framework.change.echange.EChangeIdManager
+import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 
 class AtomicEmfChangeRecorder {
 	val Set<Notifier> elementsToObserve
@@ -22,7 +23,7 @@ class AtomicEmfChangeRecorder {
 	var List<TransactionalChange> resolvedChanges;
 	var List<TransactionalChange> unresolvedChanges;
 	val AtomicChangeRecorder changeRecorder;
-	val UuidProviderAndResolver uuidProviderAndResolver;
+	val UuidGeneratorAndResolver uuidProviderAndResolver;
 	val EChangeIdManager eChangeIdManager;
 	
 	/**
@@ -35,7 +36,7 @@ class AtomicEmfChangeRecorder {
 	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
 	 * 		Should be set to <code>false</code> if model is not recorded from beginning
 	 */
-	new(UuidProviderAndResolver uuidProviderAndResolver, boolean strictMode) {
+	new(UuidGeneratorAndResolver uuidProviderAndResolver, boolean strictMode) {
 		this(uuidProviderAndResolver, strictMode, false, true)
 	}
 
@@ -50,7 +51,7 @@ class AtomicEmfChangeRecorder {
 	 * @param unresolveRecordedChanges -
 	 * 		The recorded changes will be replaced by unresolved changes, which referenced EObjects are proxy objects.
 	 */
-	new(UuidProviderAndResolver uuidProviderAndResolver, boolean strictMode, boolean unresolveRecordedChanges) {
+	new(UuidGeneratorAndResolver uuidProviderAndResolver, boolean strictMode, boolean unresolveRecordedChanges) {
 		this(uuidProviderAndResolver, strictMode, unresolveRecordedChanges, true);
 	}
 
@@ -67,7 +68,7 @@ class AtomicEmfChangeRecorder {
 	 * @param updateTuids -
 	 * 		specifies whether TUIDs shall be updated or not.
 	 */
-	new(UuidProviderAndResolver uuidProviderAndResolver, boolean strictMode, boolean unresolveRecordedChanges, boolean updateTuids) {
+	new(UuidGeneratorAndResolver uuidProviderAndResolver, boolean strictMode, boolean unresolveRecordedChanges, boolean updateTuids) {
 		this.elementsToObserve = newHashSet();
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 		this.updateTuids = updateTuids;

@@ -18,15 +18,15 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
 import java.util.List
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 
 /**
  * Static class for resolving EChanges internally.
  */
 class AtomicEChangeResolver {
 	// FIXME HK This should not not not be static
-	public static UuidProviderAndResolver uuidProviderAndResolver;
+	public static UuidGeneratorAndResolver uuidProviderAndResolver;
 	
 	/**
 	 * Resolves {@link EChange} attributes.

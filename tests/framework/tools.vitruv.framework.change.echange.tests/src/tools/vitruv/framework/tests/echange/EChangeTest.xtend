@@ -15,8 +15,8 @@ import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolverImpl
 import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
 
 /**
  * Default class for testing EChange changes.
@@ -64,7 +64,7 @@ import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver
  		resource.save(null)
  		
  		// Factorys for creating changes
- 		val uuidProviderAndResolver = new UuidProviderAndResolverImpl(resourceSet, null)
+ 		val uuidProviderAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, null)
  		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidProviderAndResolver);
  		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidProviderAndResolver);
  		AtomicEChangeResolver.uuidProviderAndResolver = uuidProviderAndResolver

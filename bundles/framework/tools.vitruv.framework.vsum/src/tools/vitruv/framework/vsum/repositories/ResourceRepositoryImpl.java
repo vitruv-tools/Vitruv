@@ -23,8 +23,8 @@ import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolver;
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolverImpl;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
@@ -54,9 +54,9 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private final FileSystemHelper fileSystemHelper;
     private final File folder;
     private final AtomicEmfChangeRecorder changeRecorder;
-    private UuidProviderAndResolver uuidProviderAndResolver;
+    private UuidGeneratorAndResolver uuidProviderAndResolver;
 
-    public UuidProviderAndResolver getUuidProviderAndResolver() {
+    public UuidGeneratorAndResolver getUuidProviderAndResolver() {
         return this.uuidProviderAndResolver;
     }
 
@@ -130,6 +130,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                     // case 2 or 3
                     ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
                     ResourceRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance);
+                    logger.debug("Adding model instance for URI: " + modelURI);
                     ResourceRepositoryImpl.this.changeRecorder.addToRecording(internalModelInstance.getResource());
                     saveVURIsOfVsumModelInstances();
                     return null;
@@ -271,7 +272,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             } else {
                 uuidProviderResource = this.resourceSet.createResource(uuidProviderVURI.getEMFUri());
             }
-            this.uuidProviderAndResolver = new UuidProviderAndResolverImpl(this.resourceSet, uuidProviderResource);
+            this.uuidProviderAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource);
             AtomicEChangeResolver.uuidProviderAndResolver = this.uuidProviderAndResolver;
             return null;
         });

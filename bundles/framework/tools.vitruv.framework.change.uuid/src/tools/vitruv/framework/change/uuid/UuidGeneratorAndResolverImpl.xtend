@@ -1,6 +1,5 @@
 package tools.vitruv.framework.change.uuid
 
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.uuid.UuidToEObjectRepository
 import tools.vitruv.framework.change.uuid.UuidFactory
@@ -13,9 +12,10 @@ import static extension tools.vitruv.framework.util.bridges.JavaBridge.*;
 import org.eclipse.emf.transaction.TransactionalEditingDomain
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import java.util.concurrent.Callable
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
-class UuidProviderAndResolverImpl implements UuidProviderAndResolver {
-	static val logger = Logger.getLogger(UuidProviderAndResolverImpl)
+class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
+	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
 	UuidToEObjectRepository repository;
 	ResourceSet resourceSet;
 	Resource uuidResource;
@@ -96,6 +96,7 @@ class UuidProviderAndResolverImpl implements UuidProviderAndResolver {
 	override registerEObject(String uuid, EObject eObject) {
 		logger.debug("Adding UUID " + uuid + " for EObject: " + eObject);
 		val Callable<Void> registerEObjectCall = [|
+			repository.EObjectToUuid.entrySet.filter[value == uuid].mapFixed[key].forEach[repository.EObjectToUuid.remove(it)]
 			repository.uuidToEObject.put(uuid, eObject);
 			repository.EObjectToUuid.put(eObject, uuid);
 			return null;

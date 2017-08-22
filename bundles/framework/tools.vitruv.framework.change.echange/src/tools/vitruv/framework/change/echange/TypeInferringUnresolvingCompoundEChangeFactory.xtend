@@ -9,10 +9,10 @@ import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnresolver.*
-import tools.vitruv.framework.change.uuid.UuidProviderAndResolver
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 
 final class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferringCompoundEChangeFactory {
-	new(UuidProviderAndResolver uuidProviderAndResolver) {
+	new(UuidGeneratorAndResolver uuidProviderAndResolver) {
 		super(new TypeInferringUnresolvingAtomicEChangeFactory(uuidProviderAndResolver));
 	}
 	
