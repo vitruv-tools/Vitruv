@@ -1,0 +1,263 @@
+import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AdRootXReRootMapping.*
+import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AddressXRecipientLocationCityMapping.*
+
+import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
+import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
+
+reactions: adXre_R2L 
+in reaction to changes in Recipients
+execute actions in Addresses
+
+/******************************************************
+********** BEGIN GLOBAL REACTION AND ROUTINE **********
+*******************************************************/
+reaction AnyChange {
+	after any change
+	call {
+		ensureAllMappings()
+	}
+}
+
+routine ensureAllMappings() {
+	action {
+		call {
+			ensureAdRootXReRootMapping()
+			ensureAddressXRecipientLocationCityMapping()
+		}
+	}
+}
+
+/******************************************************
+********** BEGIN AdRootXReRoot MAPPING **********
+*******************************************************/
+routine ensureAdRootXReRootMapping() {
+	action {
+		call {
+			deleteAdRootXReRootMappingInstances()
+			createAdRootXReRootMappingInstances()
+			updateAdRootXReRootMappingInstances()
+		}
+	}
+}
+
+/********** BEGIN AdRootXReRoot DELETE ROUTINES **********/
+routine deleteAdRootXReRootMappingInstances() {
+	action {
+		call {
+			val invalidatedInstances = adRootXReRootMapping.removeInvalidatedRightInstances()
+			for (invalidatedInstance : invalidatedInstances) {
+				deleteAdRootXReRootMappingElements(invalidatedInstance.RRoot)
+			}
+		}
+	}
+}
+
+routine deleteAdRootXReRootMappingElements(re::Recipients rRoot) {
+	match {
+		val aRoot = retrieve ad::Addresses corresponding to rRoot
+			tagged with "AdRootXReRoot"
+	}
+	action {
+		remove correspondence between aRoot and rRoot // FIXME MK: tagged with "AdRootXReRoot"
+		delete aRoot
+	}
+}
+
+/********** BEGIN AdRootXReRoot CREATE ROUTINES **********/
+routine createAdRootXReRootMappingInstances() {
+	action {
+		call {
+			val newInstances = adRootXReRootMapping.promoteValidatedRightCandidatesToInstances()
+			for (newInstance : newInstances) {
+				createAdRootXReRootMappingInstance(newInstance.RRoot)
+			}
+		}
+	}
+}
+
+routine createAdRootXReRootMappingInstance(re::Recipients rRoot) {
+	action {
+		val aRoot = create ad::Addresses
+		add correspondence between aRoot and rRoot
+			tag with "AdRootXReRoot"
+		call {
+			adRootXReRootMapping.registerFullInstance(aRoot, rRoot)
+			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.lastSegment)
+		}
+	}
+}
+
+/********** BEGIN AdRootXReRootMapping UPDATE ROUTINES **********/
+routine updateAdRootXReRootMappingInstances() {
+	action {
+		call {
+			val instances = adRootXReRootMapping.getRightInstances()
+			for (instance : instances) {
+				updateAdRootXReRootMappingInstance(instance.RRoot)
+			}
+		}
+	}
+}
+
+routine updateAdRootXReRootMappingInstance(re::Recipients rRoot) {
+	match {
+		val aRoot = retrieve ad::Addresses corresponding to rRoot
+			tagged with "AdRootXReRootMapping"
+	}
+	action {
+		call {
+			adRootXReRootMapping.enforceConditionsFromRight2Left(aRoot, rRoot)
+		}
+	}
+}
+
+/******************************************************
+********** BEGIN AddressXRecipientLocationCity MAPPING **********
+*******************************************************/
+routine ensureAddressXRecipientLocationCityMapping() {
+	action {
+		call {
+			deleteAddressXRecipientLocationCityMappingInstances()
+			createAddressXRecipientLocationCityMappingInstances()
+			updateAddressXRecipientLocationCityMappingInstances()
+		}
+	}
+}
+
+/********** BEGIN AddressXRecipientLocationCity DELETE ROUTINES **********/
+routine deleteAddressXRecipientLocationCityMappingInstances() {
+	action {
+		call {
+			val instances = addressXRecipientLocationCityMapping.removeInvalidatedRightInstances()
+			for (invalidatedInstance : instances) {
+				deleteAddressXRecipientLocationCityMappingInstance(invalidatedInstance.r, invalidatedInstance.l, invalidatedInstance.c)
+			}
+		}
+	}
+}
+
+routine deleteAddressXRecipientLocationCityMappingInstance(re::Recipient r, re::Location l, re::City c) {
+	match {
+		val a = retrieve ad::Address corresponding to r//FIXME MK: ,l,c
+			tagged with "AddressXRecipientLocationCity"
+	}
+	action {
+		remove correspondence between a and r // FIXME MK: tagged with "AddressXRecipientLocationCity"
+		remove correspondence between a and l // FIXME MK: tagged with "AddressXRecipientLocationCity"
+		remove correspondence between a and c // FIXME MK: tagged with "AddressXRecipientLocationCity"
+		delete a
+	}
+}
+
+/********** BEGIN AddressXRecipientLocationCity CREATE ROUTINES **********/
+routine createAddressXRecipientLocationCityMappingInstances() {
+	action {
+		call {
+			val newInstances = addressXRecipientLocationCityMapping.promoteValidatedRightCandidatesToInstances()
+			for (newInstance : newInstances) {
+				createAddressXRecipientLocationCityMappingInstance(newInstance.r, newInstance.l, newInstance.c)
+			}
+		}
+	}
+}
+
+routine createAddressXRecipientLocationCityMappingInstance(re::Recipient r, re::Location l, re::City c) {
+	action {
+		val a = create ad::Address
+		add correspondence between a and r
+			tag with "AddressXRecipientLocationCity"
+		add correspondence between a and l
+			tag with "AddressXRecipientLocationCity"
+		add correspondence between a and c
+			tag with "AddressXRecipientLocationCity"
+		call {
+			addressXRecipientLocationCityMapping.registerFullInstance(a, r, l, c)
+		}
+	}
+}
+
+/********** BEGIN AddressXRecipientLocationCity UPDATE ROUTINES **********/
+routine updateAddressXRecipientLocationCityMappingInstances() {
+	action {
+		call {
+			val instances = addressXRecipientLocationCityMapping.getRightInstances()
+			for (instance : instances) {
+				updateAddressXRecipientLocationCityMappingInstance(instance.r, instance.l, instance.c)
+			}
+		}
+	}
+}
+
+routine updateAddressXRecipientLocationCityMappingInstance(re::Recipient r, re::Location l, re::City c) {
+	match {
+		val a = retrieve ad::Address corresponding to r//FIXME MK: ,l,c
+			tagged with "AddressXRecipientLocationCity"
+	}
+	action {
+		call {
+			addressXRecipientLocationCityMapping.enforceConditionsFromRight2Left(a, r, l, c)
+		}
+	}
+}
+
+/******************************************************
+ ********** BEGIN CREATE REACTIONS **********
+ ******************************************************/
+reaction RecipientsCreated {
+	after element re::Recipients created
+	call {
+		adRootXReRootMapping.addRecipients(affectedEObject)
+	}
+}
+
+reaction RecipientCreated {
+	after element re::Recipient created
+	call {
+		addressXRecipientLocationCityMapping.addRecipient(affectedEObject)
+	}
+}
+
+reaction LocationCreated {
+	after element re::Location created
+	call {
+		addressXRecipientLocationCityMapping.addLocation(affectedEObject)
+	}
+}
+
+reaction CityCreated {
+	after element re::City created
+	call {
+		addressXRecipientLocationCityMapping.addCity(affectedEObject)
+	}
+}
+
+/******************************************************
+ ********** BEGIN DELETE REACTIONS **********
+ ******************************************************/
+reaction RecipientsDeleted {
+	after element re::Recipients deleted
+	call {
+		adRootXReRootMapping.removeRecipients(affectedEObject)
+	}
+}
+
+reaction RecipientDeleted {
+	after element re::Recipient deleted
+	call {
+		addressXRecipientLocationCityMapping.removeRecipient(affectedEObject)
+	}
+}
+
+reaction LocationDeleted {
+	after element re::Location deleted
+	call {
+		addressXRecipientLocationCityMapping.removeLocation(affectedEObject)
+	}
+}
+
+reaction CityDeleted {
+	after element re::City deleted
+	call {
+		addressXRecipientLocationCityMapping.removeCity(affectedEObject)
+	}
+}

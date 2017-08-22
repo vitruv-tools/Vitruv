@@ -1,7 +1,8 @@
 package tools.vitruv.extensions.dslsruntime.mappings
 
-import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.Set
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 
 /**
  * Generic base class for mappings on the metamodel level as defined with the mappings language. 
@@ -25,14 +26,32 @@ abstract class Mapping<L extends MappingInstanceHalf, R extends MappingInstanceH
 		return mappingRegistry.getLeftInstances()
 	}
 	
+	def Iterable<R> getRightInstances() {
+		return mappingRegistry.getRightInstances()
+	}
+	
 	def Iterable<L> removeInvalidatedLeftInstances() {
 		val instances = getLeftInstances()
+		removeInvalidatedInstances(instances, [
+			mappingRegistry.removeLeftInstance(it)
+			mappingRegistry.removeFullInstancesForLeftInstance(it)
+		])
+	}
+	
+	def Iterable<R> removeInvalidatedRightInstances() {
+		val instances = getRightInstances()
+		removeInvalidatedInstances(instances, [
+			mappingRegistry.removeRightInstance(it)
+			mappingRegistry.removeFullInstancesForRightInstance(it)
+		])
+	}
+	
+	private def <H extends MappingInstanceHalf> Iterable<H> removeInvalidatedInstances(Iterable<H> instances, Procedure1<H> procedure) {
 		val invalidatedInstances = newHashSet()
 		for (instance : instances) {
 			val preconditionsStillHold = instance.checkConditions()
 			if (!preconditionsStillHold) {
-				mappingRegistry.removeLeftInstance(instance)
-				mappingRegistry.removeFullInstancesForLeftInstance(instance)
+				procedure.apply(instance)
 				invalidatedInstances.add(instance)
 			}
 		}
@@ -41,11 +60,24 @@ abstract class Mapping<L extends MappingInstanceHalf, R extends MappingInstanceH
 	
 	def Iterable<L> promoteValidatedLeftCandidatesToInstances() {
 		val candidates = getLeftCandidates()
+		return promoteValidatedCandidatesToInstances(candidates, [
+			mappingRegistry.promoteLeftCandidateToInstance(it)
+		])		
+	}
+	
+	def Iterable<R> promoteValidatedRightCandidatesToInstances() {
+		val candidates = getRightCandidates()
+		return promoteValidatedCandidatesToInstances(candidates, [
+			mappingRegistry.promoteRightCandidateToInstance(it)
+		])		
+	}
+	
+	private def <H extends MappingInstanceHalf> Iterable<H> promoteValidatedCandidatesToInstances(Iterable<H> candidates, Procedure1<H> procedure) {
 		val newInstances = newHashSet()
 		for (candidate : candidates) {
 			val preconditionsHold = candidate.checkConditions()
 			if (preconditionsHold) {
-				mappingRegistry.promoteLeftCandidateToInstance(candidate)
+				procedure.apply(candidate)
 				newInstances.add(candidate)
 			}
 		}

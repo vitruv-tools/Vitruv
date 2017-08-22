@@ -4,7 +4,7 @@ import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.Add
 import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
 import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
 
-reactions: ad2re 
+reactions: adXre_L2R 
 in reaction to changes in Addresses
 execute actions in Recipients
 
