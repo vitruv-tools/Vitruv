@@ -13,6 +13,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.Reapplier
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.VersioningVirtualModel
+import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 
 class ReapplierImpl implements Reapplier {
 	static extension EChangeCopier = EChangeCopier::createEChangeCopier(#{})
@@ -47,7 +48,7 @@ class ReapplierImpl implements Reapplier {
 		if(null === vuri)
 			throw new IllegalStateException("VURI vuri must not be null!")
 		reapplyIntern(vuri, changesToRollBack, echangesToReapply, virtualModel, [
-			virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
+			(virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChangesSinceLastCommit(vuri)
 		], replaceMap)
 	}
 

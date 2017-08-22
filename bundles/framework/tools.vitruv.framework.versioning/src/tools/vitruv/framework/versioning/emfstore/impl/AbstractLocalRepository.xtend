@@ -39,6 +39,7 @@ import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.InternalTestVirtualModel
 import tools.vitruv.framework.vsum.VersioningVirtualModel
+import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 
 abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl implements InternalTestLocalRepository<T> {
 	// Extensions.
@@ -152,17 +153,19 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		val changeMatches = if(null === vuriWhichShouldBeCommited)
 				currentVirtualModel.allUnresolvedPropagatedChangesSinceLastCommit.immutableCopy
 			else
-				currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuriWhichShouldBeCommited).
-					immutableCopy
+				(currentVirtualModel as InternalTestVersioningVirtualModel).
+					getUnresolvedPropagatedChangesSinceLastCommit(vuriWhichShouldBeCommited).immutableCopy
 		if(changeMatches.empty)
 			throw new IllegalStateException('''No changes since last commit''')
-		val userInteractions = currentVirtualModel.userInteractionsSinceLastCommit
+		val userInteractions = (currentVirtualModel as InternalTestVersioningVirtualModel).
+			userInteractionsSinceLastCommit
 		val commit = commit(message, changeMatches, userInteractions)
 		val lastChangeId = changeMatches.last.id
 		if(null === vuriWhichShouldBeCommited)
 			currentVirtualModel.allLastPropagatedChangeId = lastChangeId
 		else
-			currentVirtualModel.setLastPropagatedChangeId(vuriWhichShouldBeCommited, lastChangeId)
+			(currentVirtualModel as InternalTestVersioningVirtualModel).setLastPropagatedChangeId(
+				vuriWhichShouldBeCommited, lastChangeId)
 		return commit
 	}
 
@@ -192,7 +195,8 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		val newChangeMatches = if(null === vuri)
 				currentVirtualModel.allUnresolvedPropagatedChanges
 			else
-				currentVirtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
+				(currentVirtualModel as InternalTestVersioningVirtualModel).
+					getUnresolvedPropagatedChangesSinceLastCommit(vuri)
 
 		val oldLastChangeId = changeMatches.last.id
 		val newLastChangeId = newChangeMatches.last.id
@@ -202,7 +206,7 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		if(null === vuri)
 			currentVirtualModel.allLastPropagatedChangeId = newLastChangeId
 		else
-			currentVirtualModel.setLastPropagatedChangeId(vuri, newLastChangeId)
+			(currentVirtualModel as InternalTestVersioningVirtualModel).setLastPropagatedChangeId(vuri, newLastChangeId)
 		val lastCommitId = relevantCommits.last.identifier
 		lastCommitCheckedOut.put(currentBranch, lastCommitId)
 	}
@@ -289,7 +293,8 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		modelMerger.compute
 		val echanges = modelMerger.resultingOriginalEChanges
 
-		val resolvedTargetChanges = currentVirtualModel.getResolvedPropagatedChanges(vuri)
+		val resolvedTargetChanges = (currentVirtualModel as InternalTestVersioningVirtualModel).
+			getResolvedPropagatedChanges(vuri)
 		val changesToRollback = resolvedTargetChanges.dropWhile[id !== lastPropagatedTargetChange].drop(1).toList
 		val reapplier = Reapplier::createReapplier
 
@@ -361,7 +366,9 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		].toList.immutableCopy
 
 		// PS Propagate changes,
-		newPropagateChanges.forEach[currentVirtualModel.propagateChange(it, vuri)]
+		newPropagateChanges.forEach [
+			(currentVirtualModel as InternalTestVersioningVirtualModel).propagateChange(it, vuri)
+		]
 	}
 
 	private def checkoutOriginalChanges(
@@ -377,7 +384,7 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		val oldVURI = originalChanges.get(0).value.URI
 		val oldTriggeredVURIs = changeMatches.toList.stream.map[consequentialChanges.URI].collect(Collectors::toSet)
 
-		currentVirtualModel.addMappedVURIs(oldVURI, vuri)
+		(currentVirtualModel as InternalTestVersioningVirtualModel).addMappedVURIs(oldVURI, vuri)
 		// PS In when reapplying changes to the old VURI, this VURI should be replace by 
 		// the new one.
 		vuriToVuriMap.put(oldVURI, vuri)
@@ -401,7 +408,7 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		// PS Propagate changes,
 		val newTriggerdVURIs = newHashSet
 		newChanges.forEach [
-			val x = currentVirtualModel.propagateChange(vuri, value, key)
+			val x = (currentVirtualModel as InternalTestVersioningVirtualModel).propagateChange(vuri, value, key)
 			x.forEach[newTriggerdVURIs += consequentialChanges.URI]
 		]
 		oldTriggeredVURIs.forEach [ oldTriggeredVURI |
@@ -409,8 +416,9 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 				n.EMFUri.fileExtension == oldTriggeredVURI.EMFUri.fileExtension
 			]
 			if(null !== newTriggeredVURI) {
-				currentVirtualModel.addMappedVURIs(oldTriggeredVURI, newTriggeredVURI)
-				currentVirtualModel.addTriggeredRelation(vuri, newTriggeredVURI)
+				(currentVirtualModel as InternalTestVersioningVirtualModel).addMappedVURIs(oldTriggeredVURI,
+					newTriggeredVURI)
+				(currentVirtualModel as InternalTestVersioningVirtualModel).addTriggeredRelation(vuri, newTriggeredVURI)
 				vuriToVuriMap.put(oldTriggeredVURI, newTriggeredVURI)
 
 			}
