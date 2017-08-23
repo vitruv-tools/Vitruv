@@ -43,10 +43,6 @@ class EmptyChangeImpl implements TransactionalChange {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	override applyBackwardIfLegacy() {
-		// Do nothing
-	}
-	
 	override unresolveIfApplicable() {
 		// Do nothing
 	}

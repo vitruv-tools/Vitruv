@@ -74,10 +74,6 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		logger.warn("The resolveAfterAndApplyBackward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 	
-	override applyBackwardIfLegacy() {
-		// Do nothing
-	}
-	
 	override unresolveIfApplicable() {
 		// Do nothing	
 	}

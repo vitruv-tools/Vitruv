@@ -65,7 +65,6 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		}
 		
 		startChangePropagation(change);
-		change.applyBackwardIfLegacy();
 		var List<PropagatedChange> result = new ArrayList<PropagatedChange>()
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		propagateSingleChange(change, result, changedResourcesTracker);

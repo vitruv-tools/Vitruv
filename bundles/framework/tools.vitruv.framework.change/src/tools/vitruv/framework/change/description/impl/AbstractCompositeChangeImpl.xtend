@@ -100,12 +100,6 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		}
 	}
 	
-	override applyBackwardIfLegacy() {
-		for (change : changes.reverseView) {
-			change.applyBackwardIfLegacy();
-		}
-	}
-	
 	override getAffectedEObjects() {
 		return changes.fold(newArrayList, [list, element | list += element.affectedEObjects; return list]).filterNull;
 	}
