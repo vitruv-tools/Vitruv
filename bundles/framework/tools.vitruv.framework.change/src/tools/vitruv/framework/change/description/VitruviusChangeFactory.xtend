@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
-import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
@@ -43,7 +42,13 @@ class VitruviusChangeFactory {
 	 */
 	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription) {
 		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
-		return new EMFModelChangeImpl(changes);
+		val compositeChange = createCompositeTransactionalChange;
+		if (changes.empty) {
+			compositeChange.addChange(createEmptyChange(null));
+		} else {
+			changes.map[createConcreteApplicableChange(it)].forEach[compositeChange.addChange(it)];
+		}
+		return compositeChange
 	}
 	
 	public def ConcreteChange createConcreteApplicableChange(EChange change) {

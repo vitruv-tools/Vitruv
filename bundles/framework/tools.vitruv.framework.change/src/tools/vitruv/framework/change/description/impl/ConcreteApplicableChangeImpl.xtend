@@ -8,30 +8,43 @@ import tools.vitruv.framework.change.uuid.UuidResolver
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
+	private var boolean canBeBackwardsApplied;
+	
     public new(EChange eChange) {
     	super(eChange);
+    	this.canBeBackwardsApplied = true;
     }
 
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		this.EChange = this.EChange.resolveBefore(uuidResolver)
 		this.registerOldObjectTuidsForUpdate(this.affectedEObjects)
-		this.EChange.applyForward
+		this.canBeBackwardsApplied = false;
+		applyForward()
 		this.updateTuids
 	}
 	
 	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
 		this.EChange = this.EChange.resolveAfter(uuidResolver)
 		this.registerOldObjectTuidsForUpdate(this.affectedEObjects)
-		this.EChange.applyBackward
+		this.canBeBackwardsApplied = true;
+		applyBackward()
 		this.updateTuids
 	}
 	
 	override applyForward() {
+		if (this.canBeBackwardsApplied) {
+			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
+		}
 		this.EChange.applyForward
+		this.canBeBackwardsApplied = true;
 	}
 
 	override applyBackward() {
+		if (!this.canBeBackwardsApplied) {
+			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
+		}
 		this.EChange.applyBackward
+		this.canBeBackwardsApplied = false;
 	}
 	
 	private def void registerOldObjectTuidsForUpdate(Iterable<EObject> objects) {

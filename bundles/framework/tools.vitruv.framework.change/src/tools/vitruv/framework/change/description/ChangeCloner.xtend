@@ -4,7 +4,6 @@ import tools.vitruv.framework.change.description.impl.CompositeTransactionalChan
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
@@ -28,10 +27,6 @@ class ChangeCloner {
 	
 	def dispatch VitruviusChange clone(ConcreteChangeImpl concreteChange) {
 		return new ConcreteChangeImpl(concreteChange.EChange.cloneEChange);
-	}
-	
-	def dispatch VitruviusChange clone(EMFModelChangeImpl modelChange) {
-		return new EMFModelChangeImpl(modelChange.EChanges.map[it.cloneEChange]);
 	}
 	
 	def dispatch VitruviusChange clone(EmptyChangeImpl emptyChange) {

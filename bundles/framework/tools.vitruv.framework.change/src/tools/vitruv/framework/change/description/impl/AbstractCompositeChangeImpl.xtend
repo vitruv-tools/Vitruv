@@ -44,10 +44,11 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	}
 	
 	override getURI() {
-		if (changes.empty) {
-			return null;
+		val uris = this.changes.map[URI].filterNull
+		if (!uris.empty) {
+			return uris.get(0);
 		} else {
-			return changes.get(0).URI;
+			return null;
 		}
 	}
 	
