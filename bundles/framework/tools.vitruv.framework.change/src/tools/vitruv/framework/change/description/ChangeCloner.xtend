@@ -8,7 +8,6 @@ import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
-import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 
 class ChangeCloner {
 	def dispatch VitruviusChange clone(CompositeContainerChangeImpl containerChange) {
@@ -33,17 +32,6 @@ class ChangeCloner {
 	
 	def dispatch VitruviusChange clone(EMFModelChangeImpl modelChange) {
 		return new EMFModelChangeImpl(modelChange.EChanges.map[it.cloneEChange]);
-	}
-	
-	def dispatch VitruviusChange clone(LegacyEMFModelChangeImpl modelChange) {
-		val clone = new LegacyEMFModelChangeImpl(null, modelChange.EChanges.map[it.cloneEChange]);
-		val backwardAppliedField = LegacyEMFModelChangeImpl.getDeclaredField("canBeBackwardsApplied");
-		backwardAppliedField.accessible = true;
-		backwardAppliedField.set(clone, backwardAppliedField.get(modelChange));
-		val changeDescriptionField = LegacyEMFModelChangeImpl.getDeclaredField("changeDescription");
-		changeDescriptionField.accessible = true;
-		changeDescriptionField.set(clone, changeDescriptionField.get(modelChange));
-		return clone;
 	}
 	
 	def dispatch VitruviusChange clone(EmptyChangeImpl emptyChange) {
