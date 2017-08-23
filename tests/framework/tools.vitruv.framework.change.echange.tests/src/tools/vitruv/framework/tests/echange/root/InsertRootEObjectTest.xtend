@@ -7,6 +7,7 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link InsertRootEObject} EChange,
@@ -26,7 +27,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
 			as InsertRootEObject<Root>	
 		resolvedChange.assertIsResolved(newRootObject, resource)
 		assertIsStateBefore
@@ -48,7 +49,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		resourceContent.add(1, newRootObject)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) 
 			as InsertRootEObject<Root>	
 		resolvedChange.assertIsResolved(newRootObject, resource)
 	}
@@ -63,7 +64,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -76,7 +77,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 		
 		// Create change and resolve 1
-		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(uuidGeneratorAndResolver)
 			as InsertRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 					
@@ -87,7 +88,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		Assert.assertTrue(newRootObject == resourceContent.get(1))
 		
 		// Create change and resolve 2
-		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore(uuidGeneratorAndResolver)
 			as InsertRootEObject<Root>
 		resolvedChange2.assertIsResolved(newRootObject2, resource)
 			
@@ -108,12 +109,12 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 		
 		// Create change and resolve and apply forward 1
-		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(uuidGeneratorAndResolver)
 			as InsertRootEObject<Root>
 		resolvedChange.assertApplyForward
 		
 		// Create change and resolve and apply forward 2
-		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore(uuidGeneratorAndResolver)
 			as InsertRootEObject<Root>
 		resolvedChange2.assertApplyForward
 				
@@ -143,7 +144,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		Assert.assertTrue(resourceContent.size < index)
 		
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(newRootObject, index).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newRootObject, index).resolveBefore(uuidGeneratorAndResolver)
 			as InsertRootEObject<Root>	
 		resolvedChange.assertIsResolved(newRootObject, resource)	
 		

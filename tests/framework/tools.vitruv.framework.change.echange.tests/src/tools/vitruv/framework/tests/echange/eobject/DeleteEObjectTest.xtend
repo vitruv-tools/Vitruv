@@ -6,6 +6,7 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link DeleteEObject} EChange,
@@ -28,7 +29,7 @@ class DeleteEObjectTest extends EObjectTest {
 		val unresolvedChange = createUnresolvedChange(createdObject)
 			
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -39,7 +40,7 @@ class DeleteEObjectTest extends EObjectTest {
 	@Test
 	def public void applyForwardTest() {
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(uuidGeneratorAndResolver)
 			as DeleteEObject<Root>
 			
 		// Apply forward
@@ -52,7 +53,7 @@ class DeleteEObjectTest extends EObjectTest {
 		prepareStateBefore(createdObject2)
 		
 		// Create change and resolve 2
-		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(uuidGeneratorAndResolver)
 			as DeleteEObject<Root>
 			
 		// Apply forward 2
@@ -72,7 +73,7 @@ class DeleteEObjectTest extends EObjectTest {
 		prepareStateAfter
 		
 		// Create change and resolve 1
-		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter(resourceSet)
+		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter(uuidGeneratorAndResolver)
 			as DeleteEObject<Root>
 			
 		// Apply backward 1
@@ -85,7 +86,7 @@ class DeleteEObjectTest extends EObjectTest {
 		prepareStateAfter	
 		
 		// Create change and resolve 2
-		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveAfter(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveAfter(uuidGeneratorAndResolver)
 			as DeleteEObject<Root>
 			
 		// Apply backward 1

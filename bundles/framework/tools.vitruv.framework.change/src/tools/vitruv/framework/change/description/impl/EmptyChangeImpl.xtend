@@ -2,7 +2,7 @@ package tools.vitruv.framework.change.description.impl
 
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.TransactionalChange
-import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 class EmptyChangeImpl implements TransactionalChange {
 	private val VURI vuri;
@@ -35,7 +35,7 @@ class EmptyChangeImpl implements TransactionalChange {
 		// Nothing to be done
 	}
 	
-	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		
 	}
 	

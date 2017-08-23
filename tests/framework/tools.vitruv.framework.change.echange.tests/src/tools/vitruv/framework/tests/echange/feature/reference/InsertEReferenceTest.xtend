@@ -11,6 +11,7 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link InsertEReferenceValue} EChange,
@@ -42,7 +43,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
 			as InsertEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
@@ -63,7 +64,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) as InsertEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) as InsertEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)				
 	}
 	
@@ -86,7 +87,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		prepareReference(newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) as InsertEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) as InsertEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)			
 	}
 	
@@ -109,7 +110,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		prepareReference(newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) as InsertEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) as InsertEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)						
 	}
 	
@@ -126,7 +127,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newValue, 0)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -142,7 +143,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		isNonContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 	 	
 	 	// Apply forward
 	 	resolvedChange.assertApplyForward
@@ -150,7 +151,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 	Assert.assertSame(referenceContent.get(0), newValue)
 
 	 	// Create change 2 (resolved)
-		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
 	 	
 	 	// Apply forward 2
 	 	resolvedChange2.assertApplyForward
@@ -171,7 +172,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change (resolved)		
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 		
 		// Apply forward
 	 	resolvedChange.assertApplyForward
@@ -180,7 +181,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertSame(referenceContent.get(0), newValue)
 		
 		// Prepare and create change 2
-		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
 	 	
 	 	// Apply forward 2
 	 	resolvedChange2.assertApplyForward
@@ -201,11 +202,11 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		isNonContainmentTest
 		
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 	 	Assert.assertTrue(resolvedChange.applyForward)
 	 	
 	 	// Create change 2 and apply forward			
-		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
 	 	Assert.assertTrue(resolvedChange2.applyForward)			
 		
 		// State after
@@ -236,11 +237,11 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 	 	resolvedChange.assertApplyForward
 	 	
 	 	// Create change 2 and apply forward			
-		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
 	 	resolvedChange2.assertApplyForward	
 	 	
 	 	// State after
@@ -270,7 +271,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, 0)
 		
 		// Create and resolve
-		val resolvedChange = createUnresolvedChange(newValue, index).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, index).resolveBefore(uuidGeneratorAndResolver)
 			as InsertEReference<Root, NonRoot>		
 		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 		
@@ -291,7 +292,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Create and resolve change
 		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createInsertReferenceChange
 			(invalidAffectedEObject, affectedFeature, newValue, 0).
-			resolveBefore(resourceSet)
+			resolveBefore(uuidGeneratorAndResolver)
 		Assert.assertTrue(resolvedChange.isResolved)
 		
 		// NonRoot has no such feature

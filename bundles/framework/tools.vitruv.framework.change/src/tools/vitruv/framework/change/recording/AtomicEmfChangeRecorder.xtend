@@ -15,6 +15,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.echange.EChangeIdManager
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 class AtomicEmfChangeRecorder {
 	val Set<Notifier> elementsToObserve
@@ -23,7 +24,8 @@ class AtomicEmfChangeRecorder {
 	var List<TransactionalChange> resolvedChanges;
 	var List<TransactionalChange> unresolvedChanges;
 	val AtomicChangeRecorder changeRecorder;
-	val UuidGeneratorAndResolver uuidProviderAndResolver;
+	val UuidResolver globalUuidResolver;
+	val UuidGeneratorAndResolver localUuidGeneratorAndResolver;
 	val EChangeIdManager eChangeIdManager;
 	
 	/**
@@ -36,8 +38,8 @@ class AtomicEmfChangeRecorder {
 	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
 	 * 		Should be set to <code>false</code> if model is not recorded from beginning
 	 */
-	new(UuidGeneratorAndResolver uuidProviderAndResolver, boolean strictMode) {
-		this(uuidProviderAndResolver, strictMode, false, true)
+	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
+		this(globalUuidResolver, localUuidGeneratorAndResolver, strictMode, false, true)
 	}
 
 	/**
@@ -51,8 +53,8 @@ class AtomicEmfChangeRecorder {
 	 * @param unresolveRecordedChanges -
 	 * 		The recorded changes will be replaced by unresolved changes, which referenced EObjects are proxy objects.
 	 */
-	new(UuidGeneratorAndResolver uuidProviderAndResolver, boolean strictMode, boolean unresolveRecordedChanges) {
-		this(uuidProviderAndResolver, strictMode, unresolveRecordedChanges, true);
+	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode, boolean unresolveRecordedChanges) {
+		this(globalUuidResolver, localUuidGeneratorAndResolver, strictMode, unresolveRecordedChanges, true);
 	}
 
 	/**
@@ -68,13 +70,14 @@ class AtomicEmfChangeRecorder {
 	 * @param updateTuids -
 	 * 		specifies whether TUIDs shall be updated or not.
 	 */
-	new(UuidGeneratorAndResolver uuidProviderAndResolver, boolean strictMode, boolean unresolveRecordedChanges, boolean updateTuids) {
+	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode, boolean unresolveRecordedChanges, boolean updateTuids) {
 		this.elementsToObserve = newHashSet();
 		this.unresolveRecordedChanges = unresolveRecordedChanges
 		this.updateTuids = updateTuids;
 		this.changeRecorder = new AtomicChangeRecorder();
-		this.uuidProviderAndResolver = uuidProviderAndResolver;
-		this.eChangeIdManager = new EChangeIdManager(uuidProviderAndResolver, strictMode)
+		this.globalUuidResolver = globalUuidResolver;
+		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
+		this.eChangeIdManager = new EChangeIdManager(globalUuidResolver, localUuidGeneratorAndResolver, strictMode)
 	}
 
 	def void beginRecording() {
@@ -85,7 +88,17 @@ class AtomicEmfChangeRecorder {
 	def void addToRecording(Notifier elementToObserve) {
 		this.elementsToObserve += elementToObserve;
 		if (isRecording) {
+//			val elements = newArrayList;
+//			elements += elementsToObserve;
+//			if (elementToObserve instanceof Resource) {
+//				val iter = elementToObserve.allContents
+//				while (iter.hasNext) {
+//					elements += iter.next;	
+//				}
+//			}
+			//changeRecorder.beginRecording(elements);
 			changeRecorder.beginRecording(elementsToObserve);
+			
 		}
 	}
 	
@@ -143,7 +156,7 @@ class AtomicEmfChangeRecorder {
 			}
 		}
 		// Allow null provider and resolver for test purposes
-		if (uuidProviderAndResolver !== null) {
+		if (localUuidGeneratorAndResolver !== null && globalUuidResolver !== null) {
 			result.EChanges.forEach[eChangeIdManager.setOrGenerateIds(it)]
 		}
 		return result;

@@ -1,11 +1,11 @@
 package tools.vitruv.framework.change.description.impl
 
 import org.eclipse.emf.ecore.change.ChangeDescription
-import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
@@ -69,12 +69,12 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
 		this.canBeBackwardsApplied = true;
 	}
 	
-	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		if (this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
 		for (c : changes) {
-			c.resolveBeforeAndApplyForward(resourceSet)
+			c.resolveBeforeAndApplyForward(uuidResolver)
 		}
 		this.canBeBackwardsApplied = true;
 	}

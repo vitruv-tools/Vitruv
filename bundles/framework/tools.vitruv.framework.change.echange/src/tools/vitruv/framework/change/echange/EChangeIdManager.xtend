@@ -8,13 +8,16 @@ import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.change.uuid.UuidResolver
+import org.eclipse.emf.ecore.EObject
 
 /**
  * Provides logic for initializing the IDs within changes and for updating
  * the object references in the {@link UuidProviderAndResolver}. 
  */
 class EChangeIdManager {
-	val UuidGeneratorAndResolver uuidProviderAndResolver;
+	val UuidResolver globalUuidResolver;
+	val UuidGeneratorAndResolver localUuidGeneratorAndResolver;
 	val boolean strictMode;
 
 	/**
@@ -27,8 +30,9 @@ class EChangeIdManager {
 	 * 		if an element that should already have an ID does no have one. Using non-strict mode can be 
 	 * 		necessary if model changes are not recorded from beginning of model creation
 	 */
-	new(UuidGeneratorAndResolver uuidProviderAndResolver, boolean strictMode) {
-		this.uuidProviderAndResolver = uuidProviderAndResolver;
+	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
+		this.globalUuidResolver = globalUuidResolver;
+		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
 		this.strictMode = strictMode;
 	}
 
@@ -50,39 +54,47 @@ class EChangeIdManager {
 		}
 	}
 
+	private def String getOrGenerateValue(EObject object, boolean strictMode) {
+		if (globalUuidResolver.hasUuid(object)) {
+			return globalUuidResolver.getUuid(object);
+		} else {
+			if(!localUuidGeneratorAndResolver.hasUuid(object)) {
+				if(strictMode) {
+					throw new IllegalStateException("No UUID registered for existing EObject: " + object);
+				}
+				return localUuidGeneratorAndResolver.registerEObject(object);
+			} else {
+				return localUuidGeneratorAndResolver.getUuid(object);
+			}
+		}
+	}
+
 	private def void setOrGenerateNewValueId(EObjectAddedEChange<?> addedEChange) {
 		if(addedEChange.newValue === null) {
 			return;
 		}
-		if(!uuidProviderAndResolver.hasUuid(addedEChange.newValue)) {
-			if(strictMode) {
-				throw new IllegalStateException();
-			}
-			addedEChange.newValueID = uuidProviderAndResolver.registerEObject(addedEChange.newValue);
-		} else {
-			addedEChange.newValueID = uuidProviderAndResolver.getUuid(addedEChange.newValue);
-		}
-	}
+		addedEChange.newValueID = getOrGenerateValue(addedEChange.newValue, strictMode);
+	}	
 
 	private def void setOrGenerateOldValueId(EObjectSubtractedEChange<?> subtractedEChange) {
 		if(subtractedEChange.oldValue === null) {
 			return;
 		}
-		subtractedEChange.oldValueID = uuidProviderAndResolver.getOrRegisterUuid(subtractedEChange.oldValue)
+		subtractedEChange.oldValueID = getOrGenerateValue(subtractedEChange.oldValue, false);
 	}
 
 	private def dispatch void setOrGenerateAffectedEObjectId(CreateEObject<?> createChange) {
 		if(createChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
-		createChange.affectedEObjectID = uuidProviderAndResolver.getOrRegisterUuid(createChange.affectedEObject);
+		createChange.affectedEObjectID = getOrGenerateValue(createChange.affectedEObject, false);
 	}
 	
 	private def dispatch void setOrGenerateAffectedEObjectId(DeleteEObject<?> deleteChange) {
 		if(deleteChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
-		deleteChange.affectedEObjectID = uuidProviderAndResolver.getOrRegisterUuid(deleteChange.affectedEObject);
+		deleteChange.affectedEObjectID = getOrGenerateValue(deleteChange.affectedEObject, false);
 		deleteChange.consequentialRemoveChanges.forEach[setOrGenerateIds]
 	}
 
@@ -90,14 +102,7 @@ class EChangeIdManager {
 		if(featureChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
-		if(!uuidProviderAndResolver.hasUuid(featureChange.affectedEObject)) {
-			if(strictMode) {
-				throw new IllegalStateException();
-			}
-			featureChange.affectedEObjectID = uuidProviderAndResolver.registerEObject(featureChange.affectedEObject);
-		} else {
-			featureChange.affectedEObjectID = uuidProviderAndResolver.getUuid(featureChange.affectedEObject);
-		}
+		featureChange.affectedEObjectID = getOrGenerateValue(featureChange.affectedEObject, strictMode);
 	}
 
 	def void updateRegisteredObject(EChange eChange) {
@@ -119,27 +124,27 @@ class EChangeIdManager {
 		if(addedEChange.newValue === null) {
 			return;
 		}
-		uuidProviderAndResolver.registerEObject(addedEChange.newValueID, addedEChange.newValue);
+		globalUuidResolver.registerEObject(addedEChange.newValueID, addedEChange.newValue);
 	}
 
 	private def updateOldValueId(EObjectSubtractedEChange<?> subtractedEChange) {
 		if(subtractedEChange.oldValue === null) {
 			return;
 		}
-		uuidProviderAndResolver.registerEObject(subtractedEChange.oldValueID, subtractedEChange.oldValue);
+		globalUuidResolver.registerEObject(subtractedEChange.oldValueID, subtractedEChange.oldValue);
 	}
 
 	private def updateAffectedEObjectId(EObjectExistenceEChange<?> existenceChange) {
 		if(existenceChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
-		uuidProviderAndResolver.registerEObject(existenceChange.affectedEObjectID, existenceChange.affectedEObject);
+		globalUuidResolver.registerEObject(existenceChange.affectedEObjectID, existenceChange.affectedEObject);
 	}
 
 	private def updateAffectedEObjectId(FeatureEChange<?, ?> featureChange) {
 		if(featureChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
-		uuidProviderAndResolver.registerEObject(featureChange.affectedEObjectID, featureChange.affectedEObject);
+		globalUuidResolver.registerEObject(featureChange.affectedEObjectID, featureChange.affectedEObject);
 	}
 }

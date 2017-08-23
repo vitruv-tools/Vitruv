@@ -3,10 +3,10 @@ package tools.vitruv.framework.change.description.impl
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.List
-import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
     List<C> changes;
@@ -87,9 +87,9 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		}
 	}
 		
-	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		for (c : changes) {
-			c.resolveBeforeAndApplyForward(resourceSet)
+			c.resolveBeforeAndApplyForward(uuidResolver)
 		}
 	}
 	

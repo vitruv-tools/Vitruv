@@ -12,6 +12,7 @@ import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*; 
 
 /**
  * Test class for the concrete {@link CreateAndReplaceNonRoot} EChange,
@@ -44,7 +45,7 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newNonRootObject)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 			as CreateAndReplaceNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newNonRootObject)
 		
@@ -67,7 +68,7 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 		prepareStateAfter
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
 			as CreateAndReplaceNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newNonRootObject)
 		
@@ -85,7 +86,7 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange(newNonRootObject)
 		
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -97,7 +98,7 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	@Test
 	def public void applyForwardTest() {
 		// Create and resolve and apply
-		val resolvedChange = createUnresolvedChange(newNonRootObject).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newNonRootObject).resolveBefore(uuidGeneratorAndResolver)
 			as CreateAndReplaceNonRoot<Root, NonRoot>
 		resolvedChange.assertApplyForward
 		
@@ -113,7 +114,7 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	@Test
 	def public void applyBackwardTest() {
 		// Create and resolve
-		val resolvedChange = createUnresolvedChange(newNonRootObject).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newNonRootObject).resolveBefore(uuidGeneratorAndResolver)
 			as CreateAndReplaceNonRoot<Root, NonRoot>
 			
 		// Set state after
@@ -163,10 +164,10 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 		Assert.assertFalse(change.isResolved)
 		Assert.assertFalse(change.createChange.isResolved)
 		Assert.assertFalse(change.insertChange.isResolved)
-		Assert.assertNotSame(change.createChange.affectedEObject, newValue)
-		Assert.assertNotSame(change.insertChange.newValue, newValue)
-		Assert.assertNotSame(change.insertChange.affectedEObject, affectedEObject)
-		Assert.assertNotSame(change.createChange.affectedEObject, change.insertChange.newValue)
+		Assert.assertNull(change.createChange.affectedEObject)
+		Assert.assertNull(change.insertChange.newValue)
+		Assert.assertNull(change.insertChange.affectedEObject);
+		Assert.assertEquals(change.insertChange.newValueID, change.createChange.affectedEObjectID)
 	}
 	
 	/**

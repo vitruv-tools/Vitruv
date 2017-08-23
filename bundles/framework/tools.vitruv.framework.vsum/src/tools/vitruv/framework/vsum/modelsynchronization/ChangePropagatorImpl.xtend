@@ -16,12 +16,12 @@ import tools.vitruv.framework.correspondence.CorrespondenceProviding
 import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.ModelRepository
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -108,13 +108,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	private def dispatch void propagateSingleChange(TransactionalChange change, List<PropagatedChange> propagatedChanges, 
 		ChangedResourcesTracker changedResourcesTracker) {
 		
-		val changeApplicationFunction = [ResourceSet resourceSet |
+		val changeApplicationFunction = [UuidResolver uuidResolver |
 				// If change has a URI, load the model
 				if (change.URI !== null) resourceRepository.getModel(change.getURI());
-                change.resolveBeforeAndApplyForward(resourceSet)
+                change.resolveBeforeAndApplyForward(uuidResolver)
                 return;
         	];
-		this.resourceRepository.executeOnResourceSet(changeApplicationFunction);
+		this.resourceRepository.executeOnUuidResolver(changeApplicationFunction);
 		
 		change.affectedEObjects.forEach[modelRepository.addRootElement(it)];
 		modelRepository.cleanupRootElements;

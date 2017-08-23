@@ -12,7 +12,6 @@ import static extension tools.vitruv.framework.util.bridges.JavaBridge.*;
 import org.eclipse.emf.transaction.TransactionalEditingDomain
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import java.util.concurrent.Callable
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
@@ -96,7 +95,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override registerEObject(String uuid, EObject eObject) {
 		logger.debug("Adding UUID " + uuid + " for EObject: " + eObject);
 		val Callable<Void> registerEObjectCall = [|
-			repository.EObjectToUuid.entrySet.filter[value == uuid].mapFixed[key].forEach[repository.EObjectToUuid.remove(it)]
+			repository.EObjectToUuid.removeIf[value == uuid];
 			repository.uuidToEObject.put(uuid, eObject);
 			repository.EObjectToUuid.put(eObject, uuid);
 			return null;
@@ -129,6 +128,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		} else {
 			return existingUuid;
 		}
+	}
+	
+	override getResourceSet() {
+		return resourceSet;
 	}
 
 }

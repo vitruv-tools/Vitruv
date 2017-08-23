@@ -15,6 +15,8 @@ import org.junit.Before;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tests.util.TestUtil;
@@ -40,6 +42,8 @@ import static org.junit.Assert.assertTrue;
 public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 
 	private ResourceSet resourceSet;
+	private UuidGeneratorAndResolver uuidGeneratorAndResolver;
+	
 	private TestUserInteractor testUserInteractor;
 	private InternalVirtualModel virtualModel;
 	private CorrespondenceModel correspondenceModel;
@@ -55,6 +59,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	public void beforeTest() {
 		super.beforeTest();
 		this.resourceSet = new ResourceSetImpl();
+		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, null);
 		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet);
 		String testMethodName = testName.getMethodName();
 		createVirtualModel(testMethodName);
@@ -200,6 +205,10 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet);
 		EObject secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet);
 		assertTrue(EcoreUtil.equals(firstRoot, secondRoot));
+	}
+
+	protected UuidGeneratorAndResolver getLocalUuidGeneratorAndResolver() {
+		return uuidGeneratorAndResolver;
 	}
 
 }

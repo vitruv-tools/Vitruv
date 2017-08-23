@@ -7,9 +7,9 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.tuid.TuidManager
 import java.util.HashSet
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
@@ -112,7 +112,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
         TuidManager.instance.flushRegisteredObjectsUnderModification();
     }
     
-	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		applyForward();
 	}
 	

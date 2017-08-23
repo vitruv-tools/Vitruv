@@ -19,7 +19,7 @@ final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAt
 	val EChangeIdManager eChangeIdManager;
 	
 	new(UuidGeneratorAndResolver uuidProviderAndResolver) {
-		this.eChangeIdManager = new EChangeIdManager(uuidProviderAndResolver, false);
+		this.eChangeIdManager = new EChangeIdManager(uuidProviderAndResolver, uuidProviderAndResolver, false);
 	}
 	
 	def private setIds(EChange change) {

@@ -21,10 +21,10 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.change.description.TransactionalChange;
-import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl;
+import tools.vitruv.framework.change.uuid.UuidResolver;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
@@ -77,8 +77,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
         String unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
         initializeUuidProviderAndResolver();
-        this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidProviderAndResolver, false,
-                unresolvePropagatedChanges != null, false);
+        this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidProviderAndResolver, this.uuidProviderAndResolver,
+                false, unresolvePropagatedChanges != null, false);
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
@@ -273,7 +273,6 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                 uuidProviderResource = this.resourceSet.createResource(uuidProviderVURI.getEMFUri());
             }
             this.uuidProviderAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource);
-            AtomicEChangeResolver.uuidProviderAndResolver = this.uuidProviderAndResolver;
             return null;
         });
     }
@@ -381,11 +380,11 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     @Override
-    public void executeOnResourceSet(final Consumer<ResourceSet> function) {
+    public void executeOnUuidResolver(final Consumer<UuidResolver> function) {
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() {
-                function.accept(ResourceRepositoryImpl.this.resourceSet);
+                function.accept(ResourceRepositoryImpl.this.uuidProviderAndResolver);
                 return null;
             }
         });

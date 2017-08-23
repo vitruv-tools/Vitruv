@@ -93,7 +93,7 @@ class ModelRepositoryImpl {
 			throw new IllegalStateException("Duplicate recording on element")
 		}
 		val unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
-		val recorder = new AtomicEmfChangeRecorder(new UuidGeneratorAndResolverImpl(null, null), false, unresolvePropagatedChanges !== null, false);
+		val recorder = new AtomicEmfChangeRecorder(new UuidGeneratorAndResolverImpl(null, null), new UuidGeneratorAndResolverImpl(null, null), false, unresolvePropagatedChanges !== null, false);
 		recorder.addToRecording(element);
 		recorder.beginRecording();
 		rootToRecorder.put(element, recorder);

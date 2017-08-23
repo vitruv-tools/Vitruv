@@ -1,17 +1,18 @@
 package tools.vitruv.framework.change.description.impl
 
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.tuid.TuidManager
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
     public new(EChange eChange) {
     	super(eChange);
     }
 
-	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
-		this.EChange = this.EChange.resolveBefore(resourceSet)
+	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
+		this.EChange = this.EChange.resolveBefore(uuidResolver)
 		this.registerOldObjectTuidsForUpdate(this.affectedEObjects)
 		this.EChange.applyForward
 		this.updateTuids

@@ -5,7 +5,6 @@ import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.resource.ResourceSet
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
@@ -18,6 +17,7 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import org.eclipse.emf.ecore.InternalEObject
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 abstract class AbstractConcreteChange implements ConcreteChange {
 	private static val logger = Logger.getLogger(AbstractConcreteChange);
@@ -66,7 +66,7 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		logger.warn("The applyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 	
-	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		logger.warn("The resolveBeforeAndapplyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 	

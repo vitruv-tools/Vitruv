@@ -12,6 +12,7 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link RemoveEReference} EChange, 
@@ -43,7 +44,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
@@ -64,7 +65,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
@@ -88,7 +89,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		prepareReferenceAfter
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) 
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)			
 	}
@@ -109,7 +110,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) 
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)									
 	}
@@ -127,7 +128,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newValue, 0)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -143,7 +144,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		isNonContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 		
 	 	// Apply forward
 	 	resolvedChange.assertApplyForward
@@ -152,7 +153,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.get(0), newValue2)
 		
 		// Create change 2 (resolved)
-		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(uuidGeneratorAndResolver)
 			
 		// Apply forward 2
 		resolvedChange2.assertApplyForward
@@ -173,7 +174,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 		
 	 	// Apply forward
 	 	resolvedChange.assertApplyForward
@@ -182,7 +183,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.get(0), newValue2)
 		
 		// Create change 2 (resolved)
-		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(uuidGeneratorAndResolver)
 			
 		// Apply forward 2
 		resolvedChange2.assertApplyForward
@@ -201,11 +202,11 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		isNonContainmentTest
 
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 	 	resolvedChange.assertApplyForward
 		
 	 	// Create change 2 and apply forward			
-		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(uuidGeneratorAndResolver)
 	 	resolvedChange2.assertApplyForward
 
 		// State after
@@ -234,11 +235,11 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 	 	resolvedChange.assertApplyForward
 		
 	 	// Create change 2 and apply forward			
-		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(uuidGeneratorAndResolver)
 	 	resolvedChange2.assertApplyForward
 
 		// State after
@@ -269,7 +270,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		Assert.assertTrue(referenceContent.get(0) == newValue)
 		
 		// Create and resolve
-		val resolvedChange = createUnresolvedChange(newValue, index).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(newValue, index).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 		
@@ -290,7 +291,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 		
 		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createRemoveReferenceChange
 		(invalidAffectedEObject, affectedFeature, newValue, 0).
-			resolveBefore(resourceSet)
+			resolveBefore(uuidGeneratorAndResolver)
 		Assert.assertTrue(resolvedChange.isResolved)
 			
 		// NonRoot has no such feature

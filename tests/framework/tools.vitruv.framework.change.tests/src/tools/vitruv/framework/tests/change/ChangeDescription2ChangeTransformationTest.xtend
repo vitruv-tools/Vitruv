@@ -21,8 +21,9 @@ import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.Parameterized.Parameter
 import java.util.Collection
-import tools.vitruv.framework.change.echange.resolve.AtomicEChangeResolver
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 
 /** 
  * @author langhamm
@@ -36,6 +37,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	@Parameter
 	public boolean unresolveAndResolveRecordedEChanges
 	var rs = new ResourceSetImpl
+	var UuidGeneratorAndResolver uuidGeneratorAndResolver;
 	val private List<File> filesToDelete = new ArrayList<File>();
 
 	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
@@ -70,9 +72,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	 */
 	@Before
 	def void beforeTest() {
-		val uuidProviderAndResolver = new UuidGeneratorAndResolverImpl(rs, null)
-		AtomicEChangeResolver.uuidProviderAndResolver = uuidProviderAndResolver;
-		this.changeRecorder = new AtomicEmfChangeRecorder(uuidProviderAndResolver, false, this.unresolveAndResolveRecordedEChanges)
+		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(rs, null)
+		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
+		this.changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver, uuidGeneratorAndResolver, false, this.unresolveAndResolveRecordedEChanges)
 		this.rootElement = createRootInResource(1);
 	}
 
@@ -93,7 +95,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 			this.changes = endRecording()
 			if (this.unresolveAndResolveRecordedEChanges) {
 				for (var i = this.changes.length - 1; i >= 0; i--) {
-					this.changes.set(i, changes.get(i).resolveAfterAndApplyBackward(this.rs));
+					this.changes.set(i, changes.get(i).resolveAfterAndApplyBackward(this.uuidGeneratorAndResolver));
 				}	
 				for (change : this.changes) {
 					change.applyForward;
