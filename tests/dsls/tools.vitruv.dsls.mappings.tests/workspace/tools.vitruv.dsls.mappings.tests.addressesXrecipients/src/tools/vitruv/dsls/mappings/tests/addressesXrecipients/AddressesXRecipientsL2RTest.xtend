@@ -1,14 +1,15 @@
 package tools.vitruv.dsls.mappings.tests.addressesXrecipients
 
-import edu.kit.ipd.sdq.mdsd.addresses.AddressesFactory
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients
-import org.junit.Test
-import static org.junit.Assert.*
-import mir.reactions.AddressesToRecipientsChangePropagationSpecification
-import edu.kit.ipd.sdq.mdsd.recipients.Recipient
 import edu.kit.ipd.sdq.mdsd.addresses.Address
-import edu.kit.ipd.sdq.mdsd.recipients.Location
+import edu.kit.ipd.sdq.mdsd.addresses.AddressesFactory
 import edu.kit.ipd.sdq.mdsd.recipients.City
+import edu.kit.ipd.sdq.mdsd.recipients.Location
+import edu.kit.ipd.sdq.mdsd.recipients.Recipient
+import edu.kit.ipd.sdq.mdsd.recipients.Recipients
+import mir.reactions.AddressesToRecipientsChangePropagationSpecification
+import org.junit.Test
+
+import static org.junit.Assert.*
 
 class AddressesXRecipientsL2RTest extends AddressesXRecipientsTest {
 	
@@ -41,56 +42,44 @@ class AddressesXRecipientsL2RTest extends AddressesXRecipientsTest {
 		val correspondingParent = roots.value
 		val child = AddressesFactory.eINSTANCE.createAddress()
 		parent.addresses.add(child)
-		saveAndAssertNoCorrespondences(child)
-		child.number = 42
-		saveAndAssertNoCorrespondences(child)	
-		child.street = "Page St"
-		saveAndAssertNoCorrespondences(child)
-		child.zipCode = "SW1P4EN"
+		// "initial address model" (see Table 7.4 in dx.doi.org/10.5445/IR/1000069284)
+		
+		saveAndAssertNoAddressCorrespondences(child)
+		child.number = number
+		saveAndAssertNoAddressCorrespondences(child)	
+		child.street = street
+		// "address model after 1st change" (Table 7.4)
+		
+		saveAndAssertNoAddressCorrespondences(child)
+		child.zipCode = zipCode
+		// "address model after 2nd change" (Table 7.4)
+		
 		saveAndSynchronizeChanges(child)
-		// RECIPIENT
-		val correspondingRecipient = getCorresponding(child, Recipient)?.get(0)
-		// check existence
+		// check recipient
+		val correspondingRecipient = getCorrespondingChild(child, Recipient)?.get(0)
 		assertNotNull(correspondingRecipient)
-		// check containment
-		assertEquals(correspondingRecipient, correspondingParent.recipients?.get(0))
-		// check features
-		assertTrue(correspondingRecipient.business)
-		// LOCATION
-		val correspondingLocation = getCorresponding(child, Location)?.get(0)
-		// check existence
+		assertRecipient(correspondingRecipient, correspondingParent)
+		// check location
+		val correspondingLocation = getCorrespondingChild(child, Location)?.get(0)
 		assertNotNull(correspondingLocation)
-		// check containment
-		assertEquals(correspondingLocation, correspondingRecipient.locatedAt)
-		// check features
-		assertEquals(child.number, correspondingLocation.number)
-		assertEquals(child.street, correspondingLocation.street)
-		// CITY
-		val correspondingCity = getCorresponding(child, City)?.get(0)
-		// check existence
+		assertLocation(correspondingLocation, correspondingRecipient, child, parent)
+		// check city
+		val correspondingCity = getCorrespondingChild(child, City)?.get(0)
 		assertNotNull(correspondingCity)
-		// check containment
-		assertEquals(correspondingCity, correspondingRecipient.locatedIn)
-		// check features
-		assertEquals(child.zipCode, correspondingCity.zipCode)
+		assertCity(correspondingCity, correspondingRecipient, child, parent)
 	}
 	
-	private def saveAndAssertNoCorrespondences(Address address) {
+	private def saveAndAssertNoAddressCorrespondences(Address address) {
 		saveAndSynchronizeChanges(address)
-		assertNoCorrespondences(address)
+		assertNoAddressCorrespondences(address)
 	}
 	
-	private def assertNoCorrespondences(Address address) {
-		val correspondingRecipients = getCorresponding(address, Recipient)
+	private def assertNoAddressCorrespondences(Address address) {
+		val correspondingRecipients = getCorrespondingChild(address, Recipient)
 		assertTrue(correspondingRecipients.empty)
-		val correspondingLocations = getCorresponding(address, Location)
+		val correspondingLocations = getCorrespondingChild(address, Location)
 		assertTrue(correspondingLocations.empty)
-		val correspondingCities = getCorresponding(address, City)
+		val correspondingCities = getCorrespondingChild(address, City)
 		assertTrue(correspondingCities.empty)
 	}
-	
-	private def <T> getCorresponding(Address address, Class<T> clazz) {
-		return getCorrespondingObjectsOfType(address, childMappingName, clazz)
-	}
-
 }
