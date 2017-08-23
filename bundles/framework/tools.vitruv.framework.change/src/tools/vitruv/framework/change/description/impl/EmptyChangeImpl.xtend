@@ -39,6 +39,10 @@ class EmptyChangeImpl implements TransactionalChange {
 		
 	}
 	
+	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 	override applyBackwardIfLegacy() {
 		// Do nothing
 	}

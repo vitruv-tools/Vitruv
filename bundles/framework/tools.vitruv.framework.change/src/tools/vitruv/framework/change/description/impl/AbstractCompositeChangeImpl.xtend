@@ -93,6 +93,12 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		}
 	}
 	
+	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
+		for (c : changes.reverseView) {
+			c.resolveAfterAndApplyBackward(uuidResolver)
+		}
+	}
+	
 	override applyBackwardIfLegacy() {
 		for (change : changes.reverseView) {
 			change.applyBackwardIfLegacy();

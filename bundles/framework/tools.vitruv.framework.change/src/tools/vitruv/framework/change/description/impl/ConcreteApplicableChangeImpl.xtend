@@ -18,6 +18,13 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 		this.updateTuids
 	}
 	
+	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
+		this.EChange = this.EChange.resolveAfter(uuidResolver)
+		this.registerOldObjectTuidsForUpdate(this.affectedEObjects)
+		this.EChange.applyBackward
+		this.updateTuids
+	}
+	
 	override applyForward() {
 		this.EChange.applyForward
 	}
