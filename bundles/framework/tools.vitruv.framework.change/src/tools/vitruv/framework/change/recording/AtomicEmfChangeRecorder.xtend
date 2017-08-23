@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.echange.EChangeIdManager
@@ -113,7 +112,7 @@ class AtomicEmfChangeRecorder {
 
 	private def createModelChange(ChangeDescription changeDescription, boolean updateTuids) {
 		var TransactionalChange result = null;
-		result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription)
+		result = VitruviusChangeFactory.instance.createTransactionalChange(changeDescription)
 		changeDescription.applyAndReverse()
 		// Allow null provider and resolver for test purposes
 		if (localUuidGeneratorAndResolver !== null && globalUuidResolver !== null) {
