@@ -5,6 +5,7 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.tuid.TuidManager
 import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
     public new(EChange eChange) {
@@ -43,6 +44,10 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 	private def void updateTuids() {
 		TuidManager.instance.updateTuidsOfRegisteredObjects
 		TuidManager.instance.flushRegisteredObjectsUnderModification
+	}
+	
+	override unresolveIfApplicable() {
+		EChanges.forEach[EChangeUnresolver.unresolve(it)]	
 	}
 	
 }

@@ -18,7 +18,6 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import org.eclipse.emf.ecore.InternalEObject
 import tools.vitruv.framework.change.uuid.UuidResolver
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 abstract class AbstractConcreteChange implements ConcreteChange {
 	private static val logger = Logger.getLogger(AbstractConcreteChange);
@@ -79,8 +78,8 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		// Do nothing
 	}
 	
-	override unresolveIfNonLegacy() {
-		EChanges.forEach[EChangeUnresolver.unresolve(it)]	
+	override unresolveIfApplicable() {
+		// Do nothing	
 	}
 		
 	def getAffectedNotReferencedEObjects() {

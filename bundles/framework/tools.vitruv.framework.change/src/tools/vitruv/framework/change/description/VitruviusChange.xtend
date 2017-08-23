@@ -56,7 +56,7 @@ interface VitruviusChange extends URIHaving {
 	
 	def void applyBackwardIfLegacy();
 	
-	def void unresolveIfNonLegacy();
+	def void unresolveIfApplicable();
 	
 	def Iterable<EObject> getAffectedEObjects();
 }

@@ -47,7 +47,7 @@ class EmptyChangeImpl implements TransactionalChange {
 		// Do nothing
 	}
 	
-	override unresolveIfNonLegacy() {
+	override unresolveIfApplicable() {
 		// Do nothing
 	}
 	

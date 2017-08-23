@@ -120,7 +120,7 @@ class LegacyEMFModelChangeImpl extends AbstractCompositeChangeImpl<Transactional
 		this.applyBackward();
 	}
 	
-	override unresolveIfNonLegacy() {
+	override unresolveIfApplicable() {
 		// Do nothing as its legacy
 	}
 			
