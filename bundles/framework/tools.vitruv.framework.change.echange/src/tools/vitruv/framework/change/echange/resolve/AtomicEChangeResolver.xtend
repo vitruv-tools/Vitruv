@@ -150,7 +150,7 @@ class AtomicEChangeResolver {
 		change.resource = uuidResolver.resourceSet.getResource(URI.createURI(change.uri), false)
 
 		if (change.resource === null) {
-			return false
+			change.resource = uuidResolver.resourceSet.createResource(URI.createURI(change.uri))
 		}
 		return true
 	}

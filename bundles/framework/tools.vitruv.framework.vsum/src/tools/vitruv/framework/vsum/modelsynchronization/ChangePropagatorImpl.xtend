@@ -109,8 +109,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangedResourcesTracker changedResourcesTracker) {
 		
 		val changeApplicationFunction = [UuidResolver uuidResolver |
-				// If change has a URI, load the model
-				if (change.URI !== null) resourceRepository.getModel(change.getURI());
+				// If change has a URI, load the model -- we do this in the change resolver now
+				//if (change.URI !== null) resourceRepository.getModel(change.getURI());
                 change.resolveBeforeAndApplyForward(uuidResolver)
                 return;
         	];
