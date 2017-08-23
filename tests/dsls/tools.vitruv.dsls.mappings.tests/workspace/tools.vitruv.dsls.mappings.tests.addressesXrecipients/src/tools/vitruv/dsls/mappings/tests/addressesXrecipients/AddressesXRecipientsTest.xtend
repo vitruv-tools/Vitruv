@@ -34,9 +34,9 @@ abstract class AddressesXRecipientsTest extends VitruviusApplicationTest {
 		return modelFolder + fileName + "." + RecipientsNamespace.FILE_EXTENSION
 	}
 	
-	def String getRootMappingName() '''AdRootXReRoot'''
+	def String getRootMappingName() '''AdRootXReRootMapping'''
 	
-	def String getChildMappingName() '''AddressXRecipientLocationCity'''
+	def String getChildMappingName() '''AddressXRecipientLocationCityMapping'''
 	
 	def String getRootModelName() '''rootModel'''
 	
@@ -45,19 +45,19 @@ abstract class AddressesXRecipientsTest extends VitruviusApplicationTest {
 		return ReactionsCorrespondenceHelper.getCorrespondingObjectsOfType(correspondenceModel, eObject, tag, clazz)
 	}
 	
-	def <T> T syncAndAssertRoot(EObject root, String path, Class<T> typeOfOtherRoot) {
+	def <T> T syncAndAssertRoot(EObject root, String path, Class<T> typeOfCorrespondingRoot) {
 		createAndSynchronizeModel(path, root)
-		val otherRoot = getCorrespondingObjectsOfType(root, rootMappingName, typeOfOtherRoot)?.get(0)
-		assertNotNull(otherRoot)
-		return otherRoot
+		val correspondingRoot = getCorrespondingObjectsOfType(root, rootMappingName, typeOfCorrespondingRoot)?.get(0)
+		assertNotNull(correspondingRoot)
+		return correspondingRoot
 	}
 	
-	def void deleteAndAssertRoot(EObject root, EObject otherRoot) {
+	def void deleteAndAssertRoot(EObject root, EObject correspondingRoot) {
 		val resource = root.eResource
-		val otherResource = otherRoot.eResource
-		assertNotNull(otherResource)
+		val correspondingResource = correspondingRoot.eResource
+		assertNotNull(correspondingResource)
 		EcoreUtil.remove(root)
 		saveAndSynchronizeChanges(resource)
-		assertNull(otherRoot.eResource)
+		assertNull(correspondingRoot.eResource)
 	}
 }

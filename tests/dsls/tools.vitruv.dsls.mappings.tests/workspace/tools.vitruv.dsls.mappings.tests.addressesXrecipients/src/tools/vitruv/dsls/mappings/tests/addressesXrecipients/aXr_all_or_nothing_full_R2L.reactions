@@ -56,7 +56,7 @@ routine deleteAdRootXReRootMappingInstances() {
 routine deleteAdRootXReRootMappingElements(re::Recipients rRoot) {
 	match {
 		val aRoot = retrieve ad::Addresses corresponding to rRoot
-			tagged with "AdRootXReRoot"
+			tagged with "AdRootXReRootMapping"
 	}
 	action {
 		remove correspondence between aRoot and rRoot // FIXME MK: tagged with "AdRootXReRoot"
@@ -80,9 +80,10 @@ routine createAdRootXReRootMappingInstance(re::Recipients rRoot) {
 	action {
 		val aRoot = create ad::Addresses
 		add correspondence between aRoot and rRoot
-			tag with "AdRootXReRoot"
+			tag with "AdRootXReRootMapping"
 		call {
 			adRootXReRootMapping.registerLeftAndFullInstance(aRoot, rRoot)
+			adRootXReRootMapping.enforceConditionsFromRight2Left(aRoot, rRoot)
 			persistProjectRelative(rRoot, aRoot, rRoot.eResource.URI.trimFileExtension.lastSegment + "." + AddressesNamespace.FILE_EXTENSION)
 		}
 	}
@@ -140,7 +141,7 @@ routine deleteAddressXRecipientLocationCityMappingInstances() {
 routine deleteAddressXRecipientLocationCityMappingInstance(re::Recipient r, re::Location l, re::City c) {
 	match {
 		val a = retrieve ad::Address corresponding to r//FIXME MK: ,l,c
-			tagged with "AddressXRecipientLocationCity"
+			tagged with "AddressXRecipientLocationCityMapping"
 	}
 	action {
 		remove correspondence between a and r // FIXME MK: tagged with "AddressXRecipientLocationCity"
@@ -170,13 +171,14 @@ routine createAddressXRecipientLocationCityMappingInstance(re::Recipients rRoot,
 	action {
 		val a = create ad::Address
 		add correspondence between a and r
-			tag with "AddressXRecipientLocationCity"
+			tag with "AddressXRecipientLocationCityMapping"
 		add correspondence between a and l
-			tag with "AddressXRecipientLocationCity"
+			tag with "AddressXRecipientLocationCityMapping"
 		add correspondence between a and c
-			tag with "AddressXRecipientLocationCity"
+			tag with "AddressXRecipientLocationCityMapping"
 		call {
 			addressXRecipientLocationCityMapping.registerLeftAndFullInstance(aRoot, rRoot, a, r, l, c)
+			addressXRecipientLocationCityMapping.enforceConditionsFromRight2Left(a, r, l, c)
 		}
 	}
 }
@@ -196,7 +198,7 @@ routine updateAddressXRecipientLocationCityMappingInstances() {
 routine updateAddressXRecipientLocationCityMappingInstance(re::Recipient r, re::Location l, re::City c) {
 	match {
 		val a = retrieve ad::Address corresponding to r//FIXME MK: ,l,c
-			tagged with "AddressXRecipientLocationCity"
+			tagged with "AddressXRecipientLocationCityMapping"
 	}
 	action {
 		call {

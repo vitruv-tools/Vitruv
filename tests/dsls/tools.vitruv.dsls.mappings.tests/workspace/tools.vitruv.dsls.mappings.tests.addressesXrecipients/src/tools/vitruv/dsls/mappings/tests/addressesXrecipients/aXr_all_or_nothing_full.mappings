@@ -20,7 +20,9 @@ mapping AddressXRecipientLocationCity
       with { 
       	r in rootXroot:rRoot.recipients
 	r.business == true
+	r.locatedAt == l
 	l.number > 0
+	r.locatedIn == c
 	c.zipCode != null
     }
     such that {

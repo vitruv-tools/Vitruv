@@ -17,16 +17,28 @@ import org.eclipse.xtend.lib.annotations.Data
 	}
 	
 	override checkConditions() {
-		return super.checkConditions() && r.business == true && l.number > 0 && c.zipCode != null
+		return super.checkConditions() && 
+		rootXroot.RRoot.recipients.contains(r) && 
+		r.business == true && 
+		r.locatedAt == l &&
+		l.number > 0 && 
+		r.locatedIn == c &&
+		c.zipCode != null
 	}
 	
 	override enforceConditions() {
+		// enforce r in rootXroot:rRoot.recipients
+		rootXroot.RRoot.recipients.add(r)
 		// enforce r.business == true
 		r.business = true
+		// enforce r.locatedAt == l
+		r.locatedAt = l
 		// enforce l.number > 0
 		if (l.number <= 0) {
 			l.number = 0
 		}
+		// enforce r.locatedIn == c
+		r.locatedIn = c
 		// enforce c.zipCode != null
 		if (c.zipCode == null) {
 			c.zipCode == ""

@@ -105,7 +105,7 @@ class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipient
 	
 	/********** BEGIN PRIVATE CANDIDATE METHODS **********/
 	def private Iterable<LeftAddressXRecipientLocationCityInstanceHalf> getNewCandidatesForAddress(Address address) {
-		val aRootSet = rootXrootMapping.getLeftCandidates()
+		val aRootSet = rootXrootMapping.getLeftCandidatesAndInstances()
 		val aSet = #{address}
 		val cartesianProduct = mappingRegistry.cartesianProduct(aRootSet, aSet)
 		return cartesianProduct.map[new LeftAddressXRecipientLocationCityInstanceHalf(
@@ -115,7 +115,7 @@ class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipient
 	}
 	
 	def private Iterable<RightAddressXRecipientLocationCityInstanceHalf> getNewCandidatesForRecipient(Recipient recipient) {
-		val rRootSet = rootXrootMapping.getRightCandidates()
+		val rRootSet = rootXrootMapping.getRightCandidatesAndInstances()
 		val rSet = #{recipient}
 		val lSet = mappingRegistry.getElements(Location)
 		val cSet = mappingRegistry.getElements(City)
@@ -129,7 +129,7 @@ class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipient
 	}
 	
 	def private Iterable<RightAddressXRecipientLocationCityInstanceHalf> getNewCandidatesForLocation(Location location) {
-		val rRootSet = rootXrootMapping.getRightCandidates()
+		val rRootSet = rootXrootMapping.getRightCandidatesAndInstances()
 		val rSet = mappingRegistry.getElements(Recipient)
 		val lSet = #{location}
 		val cSet = mappingRegistry.getElements(City)
@@ -143,7 +143,7 @@ class AddressXRecipientLocationCityMapping extends Mapping<LeftAddressXRecipient
 	}
 	
 	def private Iterable<RightAddressXRecipientLocationCityInstanceHalf> getNewCandidatesForCity(City city) {
-		val rRootSet = rootXrootMapping.getRightCandidates()
+		val rRootSet = rootXrootMapping.getRightCandidatesAndInstances()
 		val rSet = mappingRegistry.getElements(Recipient)
 		val lSet = mappingRegistry.getElements(Location)
 		val cSet = #{city}

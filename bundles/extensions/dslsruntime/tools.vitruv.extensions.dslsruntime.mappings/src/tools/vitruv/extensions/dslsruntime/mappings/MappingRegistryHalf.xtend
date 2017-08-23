@@ -28,6 +28,13 @@ class MappingRegistryHalf<H extends MappingInstanceHalf> {
 		return candidatesRegistry
 	}
 	
+	def Set<H> getCandidatesAndInstances() {
+		val candidatesAndInstances = newHashSet()
+		candidatesAndInstances.addAll(candidatesRegistry)
+		candidatesAndInstances.addAll(instanceHalves)
+		return candidatesAndInstances
+	}
+	
 	def void addCandidates(Iterable<H> candidates) {
 		for (candidate : candidates) {
 			val candidateIsNew = candidatesRegistry.add(candidate)

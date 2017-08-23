@@ -13,10 +13,15 @@ import org.eclipse.xtend.lib.annotations.Data
 	}
 	
 	override checkConditions() {
-		return super.checkConditions() && a.number > 0 && a.zipCode != null
+		return super.checkConditions() && 
+		rootXroot.ARoot.addresses.contains(a) && 
+		a.number > 0 &&
+		a.zipCode != null
 	}
 
 	override enforceConditions() {
+		// enforce a in rootXroot:aRoot.addresses
+		rootXroot.ARoot.addresses.add(a)
 		// enforce a.number > 0
       	if (a.number <= 0) {
 			a.number = 0

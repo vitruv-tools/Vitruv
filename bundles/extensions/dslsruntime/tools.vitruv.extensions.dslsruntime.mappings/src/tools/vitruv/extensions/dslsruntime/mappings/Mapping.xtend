@@ -30,6 +30,14 @@ abstract class Mapping<L extends MappingInstanceHalf, R extends MappingInstanceH
 		return mappingRegistry.getRightInstances()
 	}
 	
+	def Set<L> getLeftCandidatesAndInstances() {
+		return mappingRegistry.getLeftCandidatesAndInstances()
+	}
+	
+	def Set<R> getRightCandidatesAndInstances() {
+		return mappingRegistry.getRightCandidatesAndInstances()
+	}
+	
 	def Iterable<L> removeInvalidatedLeftInstances() {
 		val instances = getLeftInstances()
 		removeInvalidatedInstances(instances, [

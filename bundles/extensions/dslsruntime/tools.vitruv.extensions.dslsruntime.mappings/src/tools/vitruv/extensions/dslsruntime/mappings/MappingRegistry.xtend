@@ -120,6 +120,14 @@ class MappingRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHa
 		return right.instanceHalves
 	}
 	
+	def Set<L> getLeftCandidatesAndInstances() {
+		return left.candidatesAndInstances
+	}
+	
+	def Set<R> getRightCandidatesAndInstances() {
+		return right.candidatesAndInstances
+	}
+	
 	def L getLeftInstance(List<Object> elements) {
 		return left.getInstanceHalfForElements(elements)
 	}
