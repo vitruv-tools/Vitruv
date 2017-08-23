@@ -11,7 +11,6 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.echange.EChangeIdManager
-import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.uuid.UuidResolver
 
