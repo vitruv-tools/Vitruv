@@ -22,7 +22,7 @@ import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHel
 
 class CompoundEChangeAssertHelper {
 	def public static <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> assertCreateAndInsertNonRoot(
-			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex, boolean unresolvedChanges) {
+			EChange change, A affectedEObject, EStructuralFeature affectedFeature, T expectedNewValue, int expectedIndex) {
 		val createAndInsert = change.assertObjectInstanceOf(CreateAndInsertNonRoot)
 		createAndInsert.createChange.assertCreateEObject(expectedNewValue);
 		createAndInsert.insertChange.assertInsertEReference(affectedEObject, affectedFeature, expectedNewValue,
@@ -49,7 +49,7 @@ class CompoundEChangeAssertHelper {
 	}
 	
 	def static void assertCreateAndReplaceNonRoot(EChange change, EObject expectedNewValue,
-		EObject affectedEObject, EStructuralFeature affectedFeature, boolean unresolvedChanges) {
+		EObject affectedEObject, EStructuralFeature affectedFeature) {
 		val compositeChange = assertObjectInstanceOf(change, CreateAndReplaceNonRoot)
 		compositeChange.createChange.assertCreateEObject(expectedNewValue)
 		compositeChange.insertChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature,

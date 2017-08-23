@@ -96,10 +96,10 @@ class AtomicEChangeAssertHelper {
 	}
 	
 	def static void assertSetSingleValuedEReference(EChange change,	EObject affectedEObject, EStructuralFeature affectedFeature, 
-			EObject expectedNewValue, boolean isContainment, boolean isCreate, boolean unresolvedChanges) {
+			EObject expectedNewValue, boolean isContainment, boolean isCreate) {
 		if (isContainment && isCreate) {
 			val createAndReplaceChange = change.assertObjectInstanceOf(CreateAndReplaceNonRoot)
-			createAndReplaceChange.assertCreateAndReplaceNonRoot(expectedNewValue, affectedEObject, affectedFeature, unresolvedChanges)
+			createAndReplaceChange.assertCreateAndReplaceNonRoot(expectedNewValue, affectedEObject, affectedFeature)
 		} else {
 			val replaceChange = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
 			replaceChange.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, null, expectedNewValue, isContainment);

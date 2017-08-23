@@ -33,10 +33,6 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	
 	@Inject SimpleChangeReactionsCompiler reactionCompiler
 
-	override protected boolean unresolveChanges() {
-		return true;
-	}
-
 	override protected createChangePropagationSpecifications() {
 		#[reactionCompiler.newConcreteChangePropagationSpecification()]
 	}

@@ -42,8 +42,6 @@ import tools.vitruv.framework.vsum.ModelRepository;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
 public class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
-    private static final String VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges";
-
     private static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
@@ -75,10 +73,9 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.fileSystemHelper = new FileSystemHelper(this.folder);
 
-        String unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
         initializeUuidProviderAndResolver();
         this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidProviderAndResolver, this.uuidProviderAndResolver,
-                false, unresolvePropagatedChanges != null, false);
+                false, false);
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
@@ -329,12 +326,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             this.changeRecorder.endRecording();
             return null;
         }));
-        List<TransactionalChange> relevantChanges;
-        if (this.changeRecorder.getUnresolvedChanges() != null) {
-            relevantChanges = this.changeRecorder.getUnresolvedChanges();
-        } else {
-            relevantChanges = this.changeRecorder.getResolvedChanges();
-        }
+        List<TransactionalChange> relevantChanges = this.changeRecorder.getChanges();
         // TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions that are
         // supported by the domains of the VirtualModel
         result.addAll(relevantChanges.stream().filter(

@@ -149,7 +149,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
         UuidGeneratorAndResolver uuidProviderAndResolver = virtualModel != null
                 ? virtualModel.getUuidProviderAndResolver()
                 : null;
-        changeRecorder = new AtomicEmfChangeRecorder(uuidProviderAndResolver, false, false);
+        changeRecorder = new AtomicEmfChangeRecorder(uuidProviderAndResolver, false);
         changeRecorder.addToRecording(targetResource);
         changeRecorder.beginRecording();
     }
@@ -159,7 +159,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected List<TransactionalChange> readOutChangesAndEndRecording() {
         changeRecorder.endRecording();
-        return changeRecorder.getResolvedChanges();
+        return changeRecorder.getChanges();
     }
 
     /**
