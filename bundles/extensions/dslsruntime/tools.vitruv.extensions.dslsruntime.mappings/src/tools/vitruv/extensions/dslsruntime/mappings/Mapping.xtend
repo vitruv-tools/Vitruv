@@ -51,9 +51,14 @@ abstract class Mapping<L extends MappingInstanceHalf, R extends MappingInstanceH
 		for (instance : instances) {
 			val preconditionsStillHold = instance.checkConditions()
 			if (!preconditionsStillHold) {
-				procedure.apply(instance)
 				invalidatedInstances.add(instance)
 			}
+		}
+		// apply passed procedure while iterating over 'invalidatedInstances'
+		// not over 'instances' as the procedure may contain code that 
+		// modifies 'instances' but not 'invalidatedInstances' concurrently
+		for (invalidatedInstance : invalidatedInstances) {
+			procedure.apply(invalidatedInstance)
 		}
 		return invalidatedInstances
 	}
@@ -77,9 +82,14 @@ abstract class Mapping<L extends MappingInstanceHalf, R extends MappingInstanceH
 		for (candidate : candidates) {
 			val preconditionsHold = candidate.checkConditions()
 			if (preconditionsHold) {
-				procedure.apply(candidate)
 				newInstances.add(candidate)
 			}
+		}
+		// apply passed procedure while iterating over 'newInstances'
+		// not over 'candidates' as the procedure may contain code that 
+		// modifies 'candidates' but not 'newInstances' concurrently
+		for (newInstance : newInstances) {
+			procedure.apply(newInstance)
 		}
 		return newInstances
 	}
@@ -93,26 +103,6 @@ abstract class Mapping<L extends MappingInstanceHalf, R extends MappingInstanceH
 		instance.enforceLeftConditions()
 		instance.enforceFromRight2Left()
 	}
-//	
-//	def Iterable<R> getRightInstances() {
-//		return mappingRegistry.getRightInstances()
-//	}
-//	
-//	private def void addLeftInstance(L instance) {
-//		mappingRegistry.addLeftInstance(instance)
-//	}
-//	
-//	def void addRightInstance(R instance) {
-//		mappingRegistry.addRightInstance(instance)
-//	}
-//	
-//	private def void removeLeftInstance(L instance) {
-//		mappingRegistry.removeLeftInstance(instance)
-//	}
-//	
-//	def void removeRightInstance(R instance) {
-//		mappingRegistry.removeRightInstance(instance)
-//	}
 	
 	/** 
 	 * Returns the name of the mapping for debugging and error messages.

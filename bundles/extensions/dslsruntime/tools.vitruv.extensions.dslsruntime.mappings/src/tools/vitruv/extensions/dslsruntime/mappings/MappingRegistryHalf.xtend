@@ -1,14 +1,17 @@
 package tools.vitruv.extensions.dslsruntime.mappings
 
 import java.util.List
+import org.apache.log4j.Logger
 import java.util.Map
 import java.util.Set
+import org.eclipse.emf.ecore.EObject
 
 class MappingRegistryHalf<H extends MappingInstanceHalf> {
+	static extension Logger LOGGER = Logger.getLogger(MappingRegistryHalf.getSimpleName())
 	val String mappingName
 	val String sideName
 	val Set<H> candidatesRegistry = newHashSet()
-	val Map<List<Object>,H> instanceHalvesRegistry = newHashMap()
+	val Map<List<EObject>,H> instanceHalvesRegistry = newHashMap()
 
 	new(String mappingName, String sideName) {
 		this.mappingName = mappingName
@@ -16,7 +19,7 @@ class MappingRegistryHalf<H extends MappingInstanceHalf> {
 	}
 	
 	/********** BEGIN CANDIDATE METHODS **********/
-	def <C> List<H> removeCandidatesAndInstancesHalvesForElement(Class<C> clazz, C element) {
+	def <C extends EObject> List<H> removeCandidatesAndInstancesHalvesForElement(Class<C> clazz, C element) {
 		removeCandidatesForElement(element)
 		return removeInstanceHalvesForElement(element)
 	}
@@ -35,7 +38,7 @@ class MappingRegistryHalf<H extends MappingInstanceHalf> {
 		}
 	}
 
-	private def boolean removeCandidatesForElement(Object element) {
+	private def boolean removeCandidatesForElement(EObject element) {
 		val iterator = candidatesRegistry.iterator()
 		var atLeastOneSetRemoved = false
 		while (iterator.hasNext()) {
@@ -46,9 +49,10 @@ class MappingRegistryHalf<H extends MappingInstanceHalf> {
 			}
 		}
 		if (!atLeastOneSetRemoved) {
-			throw new IllegalStateException('''No «sideName» candidates to be removed are registered for the element '«element»'
-			in '«iterator.toList»' of the mapping '«mappingName»'!''')
+			info('''No «sideName» candidates to be removed are registered for the element '«element»'
+			in '«iterator.toList»' of the mapping '«mappingName»'.''')
 		}
+		return atLeastOneSetRemoved
 	}
 	
 	private def void removeCandidate(H candidate) {

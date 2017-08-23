@@ -17,7 +17,7 @@ import org.eclipse.xtend.lib.annotations.Data
 	}
 	
 	override checkConditions() {
-		return r.business == true && l.number > 0 && c.zipCode != null
+		return super.checkConditions() && r.business == true && l.number > 0 && c.zipCode != null
 	}
 	
 	override enforceConditions() {

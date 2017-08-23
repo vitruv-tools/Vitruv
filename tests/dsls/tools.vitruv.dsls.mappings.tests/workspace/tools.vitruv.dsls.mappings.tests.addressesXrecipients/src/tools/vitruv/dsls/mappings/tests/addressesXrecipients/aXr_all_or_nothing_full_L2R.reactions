@@ -83,7 +83,7 @@ routine createAdRootXReRootMappingInstance(ad::Addresses aRoot) {
 			tag with "AdRootXReRoot"
 		call {
 			adRootXReRootMapping.registerRightAndFullInstance(aRoot, rRoot)
-			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.lastSegment + "." + RecipientsNamespace.FILE_EXTENSION)
+			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.trimFileExtension.lastSegment + "." + RecipientsNamespace.FILE_EXTENSION)
 		}
 	}
 }

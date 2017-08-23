@@ -1,5 +1,6 @@
 import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AdRootXReRootMapping.*
 import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AddressXRecipientLocationCityMapping.*
+import tools.vitruv.demo.domains.addresses.AddressesNamespace
 
 import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
 import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
@@ -82,7 +83,7 @@ routine createAdRootXReRootMappingInstance(re::Recipients rRoot) {
 			tag with "AdRootXReRoot"
 		call {
 			adRootXReRootMapping.registerLeftAndFullInstance(aRoot, rRoot)
-			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.lastSegment)
+			persistProjectRelative(rRoot, aRoot, rRoot.eResource.URI.trimFileExtension.lastSegment + "." + AddressesNamespace.FILE_EXTENSION)
 		}
 	}
 }

@@ -7,11 +7,12 @@ import com.google.common.collect.Sets
 import com.google.common.collect.Table
 import java.util.List
 import java.util.Set
+import org.eclipse.emf.ecore.EObject
 
 class MappingRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHalf, I extends MappingInstance<L,R>> {
 	val String mappingName
-	val SetMultimap<Class<?>, Object> elementsMap
-	val Table<List<Object>,List<Object>,I> instances
+	val SetMultimap<Class<?>, EObject> elementsMap
+	val Table<List<EObject>,List<EObject>,I> instances
 	val MappingRegistryHalf<L> left
 	val MappingRegistryHalf<R> right
 	
@@ -35,7 +36,7 @@ class MappingRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHa
 		return elementsMap.get(clazz)
 	}
 	
-	def <C> void addElement(Class<C> clazz, C element) {
+	def <C extends EObject> void addElement(Class<C> clazz, C element) {
 		val elementIsNew = elementsMap.put(clazz, element)
 		if (!elementIsNew) {
 			throw new IllegalStateException('''Cannot register the element '«element»' for the mapping '«mappingName»'
@@ -52,13 +53,13 @@ class MappingRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHa
 	}
 		
 	/********** BEGIN COMBINED REMOVE METHODS **********/
-	def <C> void removeLeftElementCandidatesHalvesAndFullInstances(Class<C> clazz, C element) {
+	def <C extends EObject> void removeLeftElementCandidatesHalvesAndFullInstances(Class<C> clazz, C element) {
 		removeElement(clazz, element)
 		val removedLeftInstances = left.removeCandidatesAndInstancesHalvesForElement(clazz, element)
 		removedLeftInstances.forEach[removeFullInstancesForLeftInstance(it)]
 	}
 	
-	def <C> void removeRightElementCandidatesHalvesAndFullInstances(Class<C> clazz, C element) {
+	def <C extends EObject> void removeRightElementCandidatesHalvesAndFullInstances(Class<C> clazz, C element) {
 		removeElement(clazz, element)
 		val removedRightInstances = right.removeCandidatesAndInstancesHalvesForElement(clazz, element)
 		removedRightInstances.forEach[removeFullInstancesForRightInstance(it)]

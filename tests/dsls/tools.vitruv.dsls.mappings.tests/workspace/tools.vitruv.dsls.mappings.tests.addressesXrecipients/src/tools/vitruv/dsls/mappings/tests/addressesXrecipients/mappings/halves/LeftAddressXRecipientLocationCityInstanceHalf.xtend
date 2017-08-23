@@ -13,7 +13,7 @@ import org.eclipse.xtend.lib.annotations.Data
 	}
 	
 	override checkConditions() {
-		return a.number > 0 && a.zipCode != null
+		return super.checkConditions() && a.number > 0 && a.zipCode != null
 	}
 
 	override enforceConditions() {
