@@ -74,6 +74,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 	
 	override propagateChange(VitruviusChange change) {
+		change.unresolveIfNonLegacy
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		val result = changePropagator.propagateChange(change);
 		change.EChanges.forEach[eChangeIdManager.updateRegisteredObject(it)];

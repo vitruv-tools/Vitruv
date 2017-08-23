@@ -19,6 +19,7 @@ import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
 import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 /** 
  * @author langhamm
@@ -80,6 +81,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	protected def List<EChange> getChanges() {
 		if (this.changes === null) {
 			this.changes = endRecording()
+			this.changes.forEach[EChangeUnresolver.unresolve(it)]
 			for (var i = this.changes.length - 1; i >= 0; i--) {
 				this.changes.set(i, changes.get(i).resolveAfterAndApplyBackward(this.uuidGeneratorAndResolver));
 			}	

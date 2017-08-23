@@ -47,6 +47,10 @@ class EmptyChangeImpl implements TransactionalChange {
 		// Do nothing
 	}
 	
+	override unresolveIfNonLegacy() {
+		// Do nothing
+	}
+	
 	override getAffectedEObjects() {
 		return #[]
 	}

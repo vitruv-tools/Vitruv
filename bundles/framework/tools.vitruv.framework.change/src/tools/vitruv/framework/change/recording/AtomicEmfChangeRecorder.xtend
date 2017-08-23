@@ -105,7 +105,6 @@ class AtomicEmfChangeRecorder {
 			changeRecorder.changeDescriptions.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].toList
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
 		changes = relevantChangeDescriptions.filterNull.map[createModelChange(updateTuids)].filterNull.toList;
-		changes.map[EChanges].flatten.forEach[EChangeUnresolver.unresolve(it)]
 	}
 	
 	public def List<TransactionalChange> getChanges() {

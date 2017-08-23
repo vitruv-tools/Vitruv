@@ -327,6 +327,9 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             return null;
         }));
         List<TransactionalChange> relevantChanges = this.changeRecorder.getChanges();
+        for (TransactionalChange change : relevantChanges) {
+            change.unresolveIfNonLegacy();
+        }
         // TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions that are
         // supported by the domains of the VirtualModel
         result.addAll(relevantChanges.stream().filter(
