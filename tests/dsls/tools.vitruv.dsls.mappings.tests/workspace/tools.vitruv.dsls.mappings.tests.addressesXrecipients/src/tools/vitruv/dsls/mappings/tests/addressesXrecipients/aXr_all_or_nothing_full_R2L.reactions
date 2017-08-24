@@ -80,7 +80,7 @@ routine createAdRootXReRootMappingInstance(re::Recipients rRoot) {
 	action {
 		val aRoot = create ad::Addresses
 		add correspondence between aRoot and rRoot
-			tag with "AdRootXReRootMapping"
+			tagged with "AdRootXReRootMapping"
 		call {
 			adRootXReRootMapping.registerLeftAndFullInstance(aRoot, rRoot)
 			adRootXReRootMapping.enforceConditionsFromRight2Left(aRoot, rRoot)
@@ -171,11 +171,11 @@ routine createAddressXRecipientLocationCityMappingInstance(re::Recipients rRoot,
 	action {
 		val a = create ad::Address
 		add correspondence between a and r
-			tag with "AddressXRecipientLocationCityMapping"
+			tagged with "AddressXRecipientLocationCityMapping"
 		add correspondence between a and l
-			tag with "AddressXRecipientLocationCityMapping"
+			tagged with "AddressXRecipientLocationCityMapping"
 		add correspondence between a and c
-			tag with "AddressXRecipientLocationCityMapping"
+			tagged with "AddressXRecipientLocationCityMapping"
 		call {
 			addressXRecipientLocationCityMapping.registerLeftAndFullInstance(aRoot, rRoot, a, r, l, c)
 			addressXRecipientLocationCityMapping.enforceConditionsFromRight2Left(a, r, l, c)

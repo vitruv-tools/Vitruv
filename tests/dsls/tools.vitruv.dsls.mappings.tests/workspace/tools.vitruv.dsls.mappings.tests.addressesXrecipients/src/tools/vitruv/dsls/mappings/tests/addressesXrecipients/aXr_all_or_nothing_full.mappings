@@ -4,7 +4,7 @@ import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
 mappings: adXre for Addresses and Recipients
 
 mapping AdRootXReRoot {
-  map (ad:Addresses aRoot)
+  map (ad::Addresses aRoot)
   and (re::Recipients rRoot)
 }
 
