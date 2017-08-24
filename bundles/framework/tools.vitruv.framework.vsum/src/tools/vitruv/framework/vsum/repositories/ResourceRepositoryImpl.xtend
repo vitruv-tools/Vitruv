@@ -7,7 +7,6 @@ import java.util.List
 import java.util.Map
 import java.util.concurrent.Callable
 import java.util.function.Consumer
-import java.util.stream.Collectors
 
 import org.apache.log4j.Logger
 
@@ -22,7 +21,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.change.recording.impl.AtomicEmfChangeRecorderImpl
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl
@@ -67,8 +65,6 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 	// Variables.
 	VitruvDomain originalDomain
 	VitruvDomain currentDomain
-	@Accessors(PUBLIC_SETTER)
-	boolean isCorrespondencesFilterActive
 
 	new(File folder, VitruvDomainRepository metamodelRepository) {
 		this(folder, metamodelRepository, null)
@@ -87,7 +83,6 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 		changeRecorder.addToRecording(this.resourceSet)
 		lastResolvedChanges = newArrayList
 		lastUnresolvedChanges = newArrayList
-		isCorrespondencesFilterActive = true
 	}
 
 	override unresolveChanges() {
@@ -133,7 +128,7 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 				changeRecorder.addToRecording(r)
 				// FIXME PS Hack. Objects created by the consistency do not report changes 
 				// to the AtomicChangeRecorder, if only the resource is added. 
-				// This occurs onlqy with unresolved EChanges.
+				// This occurs only with unresolved EChanges.
 				r.allContents.forEach[eObject|changeRecorder.addToRecording(eObject)]
 			]
 			changeRecorder.addToRecording(resourceSet)
@@ -152,31 +147,16 @@ class ResourceRepositoryImpl implements InternalModelRepository, CorrespondenceP
 		val resolvedChanges = changeRecorder.resolvedChanges
 		val unresolvedChanges = changeRecorder.unresolvedChanges
 
-		val filterFunction = [ List<TransactionalChange> changes |
-			// TODO PS When recording on some domains, the first change is a deletion of the root 
-			// an afterwards, the real change sequence starts.
-			val relevantChanges = if (changes.length > 1 &&
-					changes.get(0).EChanges.get(0) instanceof RemoveAndDeleteRoot<?>)
-					changes.drop(1).toList
-				else
-					changes
-			// TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions
-			// that are
-			// supported by the domains of the VirtualModel
-			return if (isCorrespondencesFilterActive)
-				relevantChanges.parallelStream.filter [ change |
-					change.URI === null || !change.URI.EMFUri.toString.endsWith("correspondence")
-				].collect(Collectors::toList)
-			else
-				relevantChanges
-		]
-		val filteredResolved = filterFunction.apply(resolvedChanges)
-		val filteredUnresolved = filterFunction.apply(unresolvedChanges)
 		lastResolvedChanges.clear
 		lastUnresolvedChanges.clear
-		lastResolvedChanges += filteredResolved
-		lastUnresolvedChanges += filteredUnresolved
-		result += if (unresolveChanges) filteredUnresolved else filteredResolved
+		lastResolvedChanges += resolvedChanges
+		lastUnresolvedChanges += unresolvedChanges
+		if (lastResolvedChanges.length !== lastUnresolvedChanges.length)
+			throw new IllegalStateException('''
+				The length of changes should be equal but there are «lastResolvedChanges.length»
+				respectively «lastUnresolvedChanges.length»
+			''')
+		result += if (unresolveChanges) unresolvedChanges else resolvedChanges
 
 		debug("End recording virtual model")
 		return result

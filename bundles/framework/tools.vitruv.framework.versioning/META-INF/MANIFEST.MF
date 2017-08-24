@@ -17,37 +17,15 @@ Bundle-Version: 0.1.1.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime,
- org.apache.log4j,
- com.google.guava,
- org.eclipse.emf.ecore;visibility:=reexport,
- tools.vitruv.framework.util,
- tools.vitruv.framework.vsum;visibility:=reexport,
+Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.tests.util,
  tools.vitruv.framework.tests.util.metamodels,
- tools.vitruv.framework.change;visibility:=reexport,
- tools.vitruv.framework.change.processing,
- tools.vitruv.framework.correspondence,
- tools.vitruv.framework.modelsynchronization,
- tools.vitruv.framework.userinteraction,
- tools.vitruv.framework.metamodel,
- tools.vitruv.framework.tuid,
  tools.vitruv.dsls.reactions,
- tools.vitruv.dsls.reactions.ui,
  tools.vitruv.extensions.dslsruntime.reactions,
- tools.vitruv.extensions.dslsruntime.mapping,
- org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
- tools.vitruv.framework.change.echange;visibility:=reexport,
- org.eclipse.xtext.xbase.lib;resolution:=optional,
- org.eclipse.xtend.lib;resolution:=optional,
- org.eclipse.xtend.lib.macro,
+ org.eclipse.xtend.lib,
  org.graphstream;bundle-version="1.3.0";visibility:=reexport,
- org.eclipse.emf.ecore.change;bundle-version="2.11.0",
- org.apache.commons.codec;bundle-version="1.6.0",
- com.google.gson;bundle-version="2.2.4";visibility:=reexport,
  org.eclipse.emf.ecore.xmi;bundle-version="2.12.0",
  org.eclipse.emf.emfstore.examplemodel;bundle-version="1.8.1",
- tools.vitruv.framework.versioning.common;bundle-version="1.0.0";visibility:=reexport,
- javax.ws.rs;bundle-version="2.0.1"
+ tools.vitruv.framework.versioning.common;bundle-version="1.0.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 

@@ -6,5 +6,5 @@ import tools.vitruv.framework.change.copy.impl.ChangeCopyFactoryImpl
 interface ChangeCopyFactory {
 	ChangeCopyFactory instance = ChangeCopyFactoryImpl::init
 
-	def EChangeCopier createEChangeCopier(Set<Pair<String, String>> replacePairs)
+	def ChangeCopier createEChangeCopier(Set<Pair<String, String>> replacePairs)
 }

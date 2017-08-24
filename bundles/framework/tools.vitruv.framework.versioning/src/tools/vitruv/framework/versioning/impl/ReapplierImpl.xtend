@@ -5,19 +5,24 @@ import java.util.Map
 
 import org.eclipse.xtext.xbase.lib.Functions.Function0
 
-import tools.vitruv.framework.change.copy.EChangeCopier
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.copy.EChangeCopier
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.Reapplier
 import tools.vitruv.framework.versioning.extensions.URIRemapper
+import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 import tools.vitruv.framework.vsum.VersioningVirtualModel
 
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
+
 class ReapplierImpl implements Reapplier {
+	// Static extensions.
 	static extension EChangeCopier = EChangeCopier::createEChangeCopier(#{})
 	static extension URIRemapper = URIRemapper::instance
 
+	// Overridden methods.
 	override reapply(
 		List<PropagatedChange> changesToRollBack,
 		List<EChange> echangesToReapply,
@@ -47,7 +52,7 @@ class ReapplierImpl implements Reapplier {
 		if(null === vuri)
 			throw new IllegalStateException("VURI vuri must not be null!")
 		reapplyIntern(vuri, changesToRollBack, echangesToReapply, virtualModel, [
-			virtualModel.getUnresolvedPropagatedChangesSinceLastCommit(vuri)
+			(virtualModel as InternalTestVersioningVirtualModel).getUnresolvedPropagatedChangesSinceLastCommit(vuri)
 		], replaceMap)
 	}
 
@@ -67,15 +72,17 @@ class ReapplierImpl implements Reapplier {
 			]
 			changesUntilNowAfterReverse = fetchPropagatedChanges.apply.length
 		}
-		val consumers = replaceMap.entrySet.map[createEChangeRemapFunction(key, value)].toList.immutableCopy
+		val consumers = replaceMap.entrySet.mapFixed [
+			createEChangeRemapFunction(key, value)
+		]
 		val echangeMapFunction = [ EChange e |
 			consumers.forEach [ consumer |
 				consumer.accept(e)
 			]
 		]
-
-		val newEChanges = echangesToReapply.map[copy(it)].toList.immutableCopy
-		newEChanges.forEach[echangeMapFunction.apply(it)]
+		// PS This immutable copy is important.
+		val newEChanges = echangesToReapply.mapFixed[copy(it)]
+		newEChanges.forEach(echangeMapFunction)
 		newEChanges.map [
 			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it])
 		].forEach [

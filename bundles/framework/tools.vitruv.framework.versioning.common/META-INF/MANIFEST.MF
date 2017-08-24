@@ -13,10 +13,7 @@ Require-Bundle: tools.vitruv.framework.change;bundle-version="0.2.0";visibility:
  org.eclipse.emf.ecore.xmi;bundle-version="2.12.0",
  tools.vitruv.framework.vsum;bundle-version="0.2.0",
  tools.vitruv.framework.change.processing;bundle-version="0.2.0",
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
  org.eclipse.emf.emfstore.examplemodel;bundle-version="1.8.1",
  tools.vitruv.framework.tests.util.metamodels;bundle-version="0.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -19,5 +19,7 @@ interface Commit extends JSONSerializable {
 
 	def int getNumberOfChanges()
 
+	// TODO PS this can only handle user interactions as selections. 
+	// Other user selection cannot be handled yet.
 	def List<Integer> getUserInteractions()
 }

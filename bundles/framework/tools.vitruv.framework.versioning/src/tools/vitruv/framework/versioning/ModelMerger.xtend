@@ -19,6 +19,17 @@ interface ModelMerger {
 		Function1<Conflict, List<EChange>> targetCallback
 	)
 
+	/**
+	 * The original callback is a function which takes a conflict and returns a list
+	 * of {@link EChange}s. For the prototype, this could be and function which return either 
+	 * the changes of the source or the original changes of the target. 
+	 * For a real application, the original callback should call a dialog or 
+	 * something, through which the user could select the changes which should remain.
+	 * TODO PS The target callback does nothing because {@link PropagatedChange}s cannot be 
+	 * reapplied.
+	 * @param originalCallback 
+	 * @param targetCallback 
+	 */
 	def void init(
 		BranchDiff branchDiff,
 		Function1<Conflict, List<EChange>> originalCallback,

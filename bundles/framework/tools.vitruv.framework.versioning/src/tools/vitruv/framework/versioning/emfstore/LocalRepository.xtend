@@ -6,7 +6,6 @@ import java.util.Set
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.Conflict
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.branch.Branch
@@ -35,12 +34,6 @@ interface LocalRepository<T> extends AbstractRepository {
 
 	def SimpleCommit commit(String s)
 
-	def SimpleCommit commit(String s, VURI vuri)
-
-	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel)
-
-	def SimpleCommit commit(String s, VersioningVirtualModel virtualModel, VURI vuri)
-
 	def T getRemoteProject()
 
 	def VersioningVirtualModel getVirtualModel()
@@ -51,19 +44,11 @@ interface LocalRepository<T> extends AbstractRepository {
 
 	def void checkout()
 
-	def void checkout(VURI vuri)
-
-	def void checkout(VersioningVirtualModel virtualModel)
-
-	def void checkout(VersioningVirtualModel virtualModel, VURI vuri)
-
 	def void createBranchOnServer(String name, T remoteRemote)
 
 	def void pull()
 
 	def void pull(LocalBranch<T> branch)
-
-	def void setAllFlag(boolean allFlag)
 
 	def void setAuthor(Author author)
 

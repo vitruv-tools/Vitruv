@@ -28,7 +28,7 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 
-class VirtualModelImpl implements VersioningVirtualModel {
+class VirtualModelImpl implements InternalTestVersioningVirtualModel {
 	// Values.
 	@Accessors(PUBLIC_GETTER)
 	val File folder

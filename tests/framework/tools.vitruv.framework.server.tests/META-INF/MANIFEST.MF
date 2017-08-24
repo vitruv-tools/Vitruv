@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: tools.vitruv.framework.server.tests
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.emf.ecore;bundle-version="2.13.0",
+ org.eclipse.emf.ecore.xmi;bundle-version="2.13.0",
+ org.eclipse.emf.emfstore.examplemodel;bundle-version="1.9.0",
+ org.junit;bundle-version="4.12.0",
+ tools.vitruv.dsls.reactions.tests;bundle-version="0.2.0",
+ tools.vitruv.framework.tests.util;bundle-version="0.2.0",
+ tools.vitruv.framework.versioning;bundle-version="0.1.1",
+ org.hamcrest.library;bundle-version="1.3.0",
+ javax.ws.rs;bundle-version="2.0.1",
+ tools.vitruv.framework.versioning.tests;bundle-version="1.0.0"
+
