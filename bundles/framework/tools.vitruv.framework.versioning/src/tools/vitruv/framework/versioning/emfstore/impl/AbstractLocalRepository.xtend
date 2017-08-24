@@ -409,6 +409,8 @@ abstract class AbstractLocalRepository<T> extends AbstractRepositoryImpl impleme
 		// PS Get user interactions from commits and give them to the 
 		// virtual model.  
 		val userInteractions = relevantCommits.map[userInteractions].flatten
+		// TODO PS These two lines are only necessary because the original changes have to be reapplied.
+		// Remove these lines when reapplying the PropagatedChanges.
 		val userInteractor = currentVirtualModel.userInteractor as TestUserInteractor
 		userInteractor.addNextSelections(userInteractions)
 
