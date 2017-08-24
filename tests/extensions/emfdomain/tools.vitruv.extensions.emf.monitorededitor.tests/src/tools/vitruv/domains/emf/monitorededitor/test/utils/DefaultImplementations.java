@@ -57,7 +57,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public UuidGeneratorAndResolver getUuidProviderAndResolver() {
+        public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
             return null;
         }
     };
@@ -134,7 +134,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public UuidGeneratorAndResolver getUuidProviderAndResolver() {
+        public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
             return null;
         }
 

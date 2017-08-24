@@ -52,10 +52,10 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private final FileSystemHelper fileSystemHelper;
     private final File folder;
     private final AtomicEmfChangeRecorder changeRecorder;
-    private UuidGeneratorAndResolver uuidProviderAndResolver;
+    private UuidGeneratorAndResolver uuidGeneratorAndResolver;
 
-    public UuidGeneratorAndResolver getUuidProviderAndResolver() {
-        return this.uuidProviderAndResolver;
+    public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
+        return this.uuidGeneratorAndResolver;
     }
 
     public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository) {
@@ -74,7 +74,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         this.fileSystemHelper = new FileSystemHelper(this.folder);
 
         initializeUuidProviderAndResolver();
-        this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidProviderAndResolver, this.uuidProviderAndResolver,
+        this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver, this.uuidGeneratorAndResolver,
                 false, false);
 
         initializeCorrespondenceModel();
@@ -269,7 +269,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             } else {
                 uuidProviderResource = this.resourceSet.createResource(uuidProviderVURI.getEMFUri());
             }
-            this.uuidProviderAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource);
+            this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource);
             return null;
         });
     }
@@ -379,7 +379,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() {
-                function.accept(ResourceRepositoryImpl.this.uuidProviderAndResolver);
+                function.accept(ResourceRepositoryImpl.this.uuidGeneratorAndResolver);
                 return null;
             }
         });

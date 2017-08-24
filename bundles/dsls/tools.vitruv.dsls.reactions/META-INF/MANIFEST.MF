@@ -29,6 +29,7 @@ Require-Bundle: org.eclipse.xtext,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.metamodel;visibility:=reexport,
  edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.api.generator,

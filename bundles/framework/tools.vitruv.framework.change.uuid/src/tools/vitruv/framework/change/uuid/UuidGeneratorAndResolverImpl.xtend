@@ -33,7 +33,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository;
 			if(uuidResource !== null) {
 				// TODO HK Reenable resource creation
-				//uuidResource.getContents().add(repository)
+				uuidResource.getContents().add(repository)
 			}
 		}
 		this.repository = repository;

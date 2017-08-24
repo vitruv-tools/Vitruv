@@ -13,5 +13,5 @@ interface VirtualModel {
 	def List<PropagatedChange> propagateChange(VitruviusChange change);
 	def void reverseChanges(List<PropagatedChange> changes);
 	def ModelInstance getModelInstance(VURI modelVuri);
-	def UuidGeneratorAndResolver getUuidProviderAndResolver();
+	def UuidGeneratorAndResolver getUuidGeneratorAndResolver();
 }

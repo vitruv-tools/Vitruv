@@ -45,7 +45,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
 		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider, metamodelRepository, resourceRepository, modelRepository);
-		this.eChangeIdManager = new EChangeIdManager(this.uuidProviderAndResolver, this.uuidProviderAndResolver, false);
+		this.eChangeIdManager = new EChangeIdManager(this.uuidGeneratorAndResolver, this.uuidGeneratorAndResolver, false);
 		VirtualModelManager.instance.putVirtualModel(this);
 	}
 	
@@ -77,13 +77,16 @@ class VirtualModelImpl implements InternalVirtualModel {
 		change.unresolveIfApplicable
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		val result = changePropagator.propagateChange(change);
-		change.EChanges.forEach[eChangeIdManager.updateRegisteredObject(it)];
+		resourceRepository.executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand [
+			change.EChanges.forEach[eChangeIdManager.updateRegisteredObject(it)]
+			return null;
+		]);
 		return result;
 	}
 	
 	override reverseChanges(List<PropagatedChange> changes) {
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
-			changes.reverseView.forEach[it.applyBackward(uuidProviderAndResolver)];
+			changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)];
 			return null;
 		])
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
@@ -103,8 +106,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return folder;
 	}
 	
-	override getUuidProviderAndResolver() {
-		return resourceRepository.uuidProviderAndResolver
+	override getUuidGeneratorAndResolver() {
+		return resourceRepository.uuidGeneratorAndResolver
 	}
 	
 }

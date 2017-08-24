@@ -33,7 +33,7 @@ class EChangeIdManager {
 	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
 		this.globalUuidResolver = globalUuidResolver;
 		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
-		this.strictMode = strictMode;
+		this.strictMode = false;
 	}
 
 	def void setOrGenerateIds(EChange eChange) {
