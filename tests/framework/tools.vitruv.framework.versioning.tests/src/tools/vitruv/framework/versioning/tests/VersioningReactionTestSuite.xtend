@@ -8,6 +8,6 @@ import org.junit.runners.Suite.SuiteClasses
 @SuiteClasses(#[ConflictNotExistsDependencyGraphTest, ConflictNotExistsGraphIsomorphismTest, ReapplyTest,
 	SourceTargetRecorderTest, ConflictExistsGraphIsomorphismTest, TheirAdditionalElementTest, MyAdditionalElementTest,
 	HardConflictTest, EMFStoreBaseline])
-class VersioningReactionTests {
+class VersioningReactionTestSuite {
 	
 }
