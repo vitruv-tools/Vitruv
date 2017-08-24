@@ -22,12 +22,15 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import org.eclipse.emf.edit.command.RemoveCommand
+import org.apache.log4j.Logger
 
 /**
  * Switch to create commands for all EChange classes.
  * The commands applies the EChanges forward.
  */
 package class ApplyForwardCommandSwitch {
+	static val Logger logger = Logger.getLogger(ApplyForwardCommandSwitch)
+	
 	/**
 	 * Dispatch method to create commands to apply a {@link InsertEAttributeValue} change forward.
 	 * @param object The change which commands should be created.
@@ -63,16 +66,28 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(InsertEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		if(EChangeUtil.alreadyContainsObject(change.affectedEObject, change.affectedFeature, change.newValue)) {
+			if (change.affectedFeature.EOpposite === null) {
+				logger.warn("Tried to add value " + change.newValue + ", but although not opposite feature was not contained in " + change.affectedEObject);
+			} 
+			return #[];
+		}
 		return #[new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue,
-				change.index)];
+			change.index)];
 	}
-
+	
 	/**
 	 * Dispatch method to create commands to apply a {@link RemoveEReference} change forward.
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		if(!EChangeUtil.alreadyContainsObject(change.affectedEObject, change.affectedFeature, change.oldValue)) {
+			if (change.affectedFeature.EOpposite === null) {
+				logger.warn("Tried to remove value " + change.oldValue + ", but although not opposite feature was not contained in " + change.affectedEObject);
+			} 
+			return #[];
+		}
 		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue,
 				change.index)];
 	}
